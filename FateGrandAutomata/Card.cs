@@ -160,19 +160,21 @@ namespace FateGrandAutomata
         {
             var storagePerPriority = new Dictionary<CardScore, List<int>>();
 
-            // TODO: Do this with one screenshot
-            for (var cardSlot = 0; cardSlot < 5; ++cardSlot)
+            Game.UseSameSnapIn(() =>
             {
-                var score = GetCardAffinity(Game.BattleCardAffinityRegionArray[cardSlot])
-                            | GetCardType(Game.BattleCardTypeRegionArray[cardSlot]);
-
-                if (!storagePerPriority.ContainsKey(score))
+                for (var cardSlot = 0; cardSlot < 5; ++cardSlot)
                 {
-                    storagePerPriority.Add(score, new List<int>());
-                }
+                    var score = GetCardAffinity(Game.BattleCardAffinityRegionArray[cardSlot])
+                                | GetCardType(Game.BattleCardTypeRegionArray[cardSlot]);
 
-                storagePerPriority[score].Add(cardSlot);
-            }
+                    if (!storagePerPriority.ContainsKey(score))
+                    {
+                        storagePerPriority.Add(score, new List<int>());
+                    }
+
+                    storagePerPriority[score].Add(cardSlot);
+                }
+            });
 
             return storagePerPriority;
         }

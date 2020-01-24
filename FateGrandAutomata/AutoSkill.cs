@@ -48,7 +48,7 @@ namespace FateGrandAutomata
 
         void CastNoblePhantasm(Point Location)
         {
-            if (!Battle.HasClickedAttacked)
+            if (!Battle.HasClickedAttack)
             {
                 Battle.ClickAttack();
 

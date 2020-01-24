@@ -28,5 +28,7 @@ namespace FateGrandAutomata
         public void WaitVanish(Pattern Image, int? Timeout = null) => throw new NotImplementedException();
 
         public bool Exists(Pattern Image, int? Timeout = null) => throw new NotImplementedException();
+
+        public void Save(string FilePath) => throw new NotImplementedException();
     }
 }
