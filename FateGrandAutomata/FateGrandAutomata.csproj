@@ -74,7 +74,9 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scaling.cs" />
+    <Compile Include="SearchFunction.cs" />
     <Compile Include="Support.cs" />
+    <Compile Include="SupportSearchResult.cs" />
     <Compile Include="SupportSelectionMode.cs" />
   </ItemGroup>
   <ItemGroup>

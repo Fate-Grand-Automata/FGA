@@ -22,6 +22,19 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
+        public static T UseSameSnapIn<T>(Func<T> Action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Scroll(Point Start, Point End)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IEnumerable<Region> FindAll(Pattern Pattern) => throw new NotImplementedException();
+        public static IEnumerable<Region> FindAll(Region Region, Pattern Pattern) => throw new NotImplementedException();
+
         public static void SetImmersiveMode(bool Active) => throw new NotImplementedException();
 
         public static void AutoGameArea(bool Active) => throw new NotImplementedException();
@@ -71,7 +84,7 @@ namespace FateGrandAutomata
         public static Region SupportFriendsRegion { get; } = new Region(448, 332, 1210, 1091);
 
         // TODO: Different for each server
-        public static Region SupportSwipeEndClick => throw new NotImplementedException();
+        public static Point SupportSwipeEndClick => throw new NotImplementedException();
 
         public static Region[] SupportListItemRegionArray { get;  } =
         {

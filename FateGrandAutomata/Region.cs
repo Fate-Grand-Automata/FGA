@@ -30,5 +30,12 @@ namespace FateGrandAutomata
         public bool Exists(Pattern Image, int? Timeout = null) => throw new NotImplementedException();
 
         public void Save(string FilePath) => throw new NotImplementedException();
+
+        public void Click()
+        {
+            var center = new Point(X + W / 2, Y + H / 2);
+
+            center.Click();
+        }
     }
 }

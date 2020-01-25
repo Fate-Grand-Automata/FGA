@@ -16,12 +16,23 @@
 
         public static bool UnstableFastSkipDeadAnimation { get; set; }
 
-        public static string SupportFriendNames { get; set; }
+        public static class Support
+        {
+            public static string FriendNames { get; set; }
 
-        public static string SupportPreferredServants { get; set; }
-        
-        public static string SupportPreferredCEs { get; set; }
+            public static string PreferredServants { get; set; }
 
-        public static SupportSelectionMode SupportSelectionMode { get; set; }
+            public static string PreferredCEs { get; set; }
+
+            public static bool FriendsOnly { get; set; }
+
+            public static int SwipesPerUpdate { get; set; } = 10;
+
+            public static int MaxUpdates { get; set; } = 3;
+
+            public static SupportSelectionMode SelectionMode { get; set; }
+
+            public static SupportSelectionMode FallbackTo { get; set; }
+        }
     }
 }
