@@ -6,8 +6,6 @@ namespace FateGrandAutomata
 {
     public class Support
     {
-        const string SupportImagePath = "image_SUPPORT/";
-
         const int CraftEssenceHeight = 90;
 
         const string LimitBrokenCharacter = "*";
@@ -55,7 +53,7 @@ namespace FateGrandAutomata
 
         public bool SelectSupport(SupportSelectionMode SelectionMode)
         {
-            var pattern = new Pattern(Game.GeneralImagePath + "support_screen.png");
+            var pattern = ImageLocator.SupportScreen;
             while (!Game.SupportScreenRegion.Exists(pattern)) { }
 
             switch (SelectionMode)
@@ -92,7 +90,7 @@ namespace FateGrandAutomata
             Game.Wait(1);
             Game.SupportFirstSupportClick.Click();
 
-            var pattern = new Pattern(Game.GeneralImagePath + "support_screen.png");
+            var pattern = ImageLocator.SupportScreen;
 
             // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
             if (Game.SupportScreenRegion.Exists(pattern))
@@ -254,7 +252,7 @@ namespace FateGrandAutomata
         {
             foreach (var friendName in _friendNameArray)
             {
-                foreach (var theFriend in Game.FindAll(Game.SupportFriendsRegion, new Pattern(SupportImagePath + friendName)))
+                foreach (var theFriend in Game.FindAll(Game.SupportFriendsRegion, ImageLocator.LoadSupportImagePattern(friendName)))
                 {
                     return theFriend;
                 }
@@ -267,7 +265,7 @@ namespace FateGrandAutomata
         {
             foreach (var preferredServant in _preferredServantArray)
             {
-                foreach (var servant in Game.FindAll(Game.SupportListRegion, new Pattern(SupportImagePath + preferredServant)))
+                foreach (var servant in Game.FindAll(Game.SupportListRegion, ImageLocator.LoadSupportImagePattern(preferredServant)))
                 {
                     yield return servant;
                 }
@@ -278,7 +276,7 @@ namespace FateGrandAutomata
         {
             foreach (var preferredCraftEssence in _preferredCraftEssenceTable)
             {
-                var craftEssences = Game.FindAll(SearchRegion, new Pattern(SupportImagePath + preferredCraftEssence.Name));
+                var craftEssences = Game.FindAll(SearchRegion, ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name));
 
                 foreach (var craftEssence in craftEssences)
                 {
@@ -295,7 +293,7 @@ namespace FateGrandAutomata
         Region FindSupportBounds(Region Support)
         {
             var supportBound = new Region(76, 0, 2356, 428);
-            var regionAnchor = new Pattern(SupportImagePath + "support_region_tool.png");
+            var regionAnchor = ImageLocator.SupportRegionTool;
             var regionArray = Game.FindAll(new Region(1670, 0, 90, 1440), regionAnchor);
             var defaultRegion = supportBound;
 
@@ -315,7 +313,7 @@ namespace FateGrandAutomata
 
         bool IsFriend(Region Region)
         {
-            var friendPattern = new Pattern(Game.GeneralImagePath + "friend.png");
+            var friendPattern = ImageLocator.Friend;
 
             return !Preferences.Support.FriendsOnly || Region.Exists(friendPattern);
         }
@@ -325,7 +323,7 @@ namespace FateGrandAutomata
             var limitBreakRegion = Game.SupportLimitBreakRegion;
             limitBreakRegion.Y = CraftEssence.Y;
 
-            var limitBreakPattern = new Pattern(Game.GeneralImagePath + "limitBroken.png");
+            var limitBreakPattern = ImageLocator.LimitBroken;
 
             return limitBreakRegion.Exists(limitBreakPattern);
         }

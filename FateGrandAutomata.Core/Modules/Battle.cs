@@ -36,7 +36,7 @@ namespace FateGrandAutomata
 
         public bool IsIdle()
         {
-            return Game.BattleScreenRegion.Exists(new Pattern(Game.GeneralImagePath + "battle.png"));
+            return Game.BattleScreenRegion.Exists(ImageLocator.Battle);
         }
 
         public void ClickAttack()
@@ -62,8 +62,8 @@ namespace FateGrandAutomata
 
         bool IsPriorityTarget(Region Target)
         {
-            var isDanger = Target.Exists(new Pattern(Game.GeneralImagePath + "target_danger.png"));
-            var isServant = Target.Exists(new Pattern(Game.GeneralImagePath + "target_servant.png"));
+            var isDanger = Target.Exists(ImageLocator.TargetDanger);
+            var isServant = Target.Exists(ImageLocator.TargetServant);
 
             return isDanger || isServant;
         }
@@ -160,22 +160,21 @@ namespace FateGrandAutomata
             }
         }
 
+        Pattern _generatedStageCounterSnapshot;
+
         bool DidStageChange()
         {
             // Alternative fix for different font of stage count number among different regions, worked pretty damn well tho.
             // This will compare last screenshot with current screen, effectively get to know if stage changed or not.
 
-            var currentStagePattern = new Pattern(Game.GeneralImagePath + "_GeneratedStageCounterSnapshot.png")
-            {
-                Similarity = 0.7
-            };
-
-            return !Game.BattleStageCountRegion.Exists(currentStagePattern);
+            return !Game.BattleStageCountRegion.Exists(_generatedStageCounterSnapshot);
         }
 
         void TakeStageSnapshot()
         {
-            Game.BattleStageCountRegion.Save(Game.GeneralImagePath + "_GeneratedStageCounterSnapshot.png");
+            _generatedStageCounterSnapshot = Game.BattleStageCountRegion.Save();
+
+            _generatedStageCounterSnapshot.Similarity = 0.7;
 
             _hasTakenFirstStageSnapshot = true;
         }

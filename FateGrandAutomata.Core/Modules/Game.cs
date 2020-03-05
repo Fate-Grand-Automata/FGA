@@ -6,8 +6,6 @@ namespace FateGrandAutomata
 {
     public static class Game
     {
-        public const string GeneralImagePath = "images/";
-
         public static void Wait(double Seconds)
         {
             Thread.Sleep(TimeSpan.FromSeconds(Seconds));

@@ -19,7 +19,7 @@ namespace FateGrandAutomata
 
         void WaitForAnimationToFinish(int? Timeout = null)
         {
-            var img = new Pattern(Game.GeneralImagePath + "battle.png");
+            var img = ImageLocator.Battle;
 
             // slow devices need this. do not remove.
             Game.BattleScreenRegion.WaitVanish(img, 2);

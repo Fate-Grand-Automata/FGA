@@ -121,12 +121,12 @@ namespace FateGrandAutomata
 
         CardScore GetCardAffinity(Region Region)
         {
-            if (Region.Exists(new Pattern(Game.GeneralImagePath + "weak.png")))
+            if (Region.Exists(ImageLocator.Weak))
             {
                 return CardScore.Weak;
             }
 
-            if (Region.Exists(new Pattern(Game.GeneralImagePath + "resist.png")))
+            if (Region.Exists(ImageLocator.Resist))
             {
                 return CardScore.Resist;
             }
@@ -136,17 +136,17 @@ namespace FateGrandAutomata
 
         CardScore GetCardType(Region Region)
         {
-            if (Region.Exists(new Pattern(Game.GeneralImagePath + "buster.png")))
+            if (Region.Exists(ImageLocator.Buster))
             {
                 return CardScore.Buster;
             }
 
-            if (Region.Exists(new Pattern(Game.GeneralImagePath + "art.png")))
+            if (Region.Exists(ImageLocator.Art))
             {
                 return CardScore.Arts;
             }
 
-            if (Region.Exists(new Pattern(Game.GeneralImagePath + "quick.png")))
+            if (Region.Exists(ImageLocator.Quick))
             {
                 return CardScore.Quick;
             }
