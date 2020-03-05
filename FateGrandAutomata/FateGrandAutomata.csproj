@@ -60,24 +60,9 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoSkill.cs" />
-    <Compile Include="Battle.cs" />
-    <Compile Include="BattleNoblePhantasmType.cs" />
-    <Compile Include="Card.cs" />
-    <Compile Include="CardScore.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="Pattern.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Point.cs" />
-    <Compile Include="Preferences.cs" />
-    <Compile Include="Region.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scaling.cs" />
-    <Compile Include="SearchFunction.cs" />
-    <Compile Include="Support.cs" />
-    <Compile Include="SupportSearchResult.cs" />
-    <Compile Include="SupportSelectionMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -123,6 +108,12 @@
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FateGrandAutomata.Core\FateGrandAutomata.Core.csproj">
+      <Project>{7aaabee9-b875-404e-9956-664884ca9a07}</Project>
+      <Name>FateGrandAutomata.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

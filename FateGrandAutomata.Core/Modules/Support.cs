@@ -10,7 +10,7 @@ namespace FateGrandAutomata
 
         const int CraftEssenceHeight = 90;
 
-        const char LimitBrokenCharacter = '*';
+        const string LimitBrokenCharacter = "*";
 
         readonly List<string> _preferredServantArray = new List<string>(),
             _friendNameArray = new List<string>();
@@ -48,7 +48,7 @@ namespace FateGrandAutomata
             foreach (var craftEssence in Split(Preferences.Support.PreferredCEs))
             {
                 _preferredCraftEssenceTable.Add((
-                    craftEssence.Replace(LimitBrokenCharacter.ToString(), ""),
+                    craftEssence.Replace(LimitBrokenCharacter, ""),
                     craftEssence.StartsWith(LimitBrokenCharacter)));
             }
         }

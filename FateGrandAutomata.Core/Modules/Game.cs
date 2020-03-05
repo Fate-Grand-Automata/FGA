@@ -105,7 +105,7 @@ namespace FateGrandAutomata
         public static Point SupportListTopClick { get; } = new Point(2480, 360);
         public static Point SupportFirstSupportClick { get; } = new Point(1900, 500);
 
-        public static Region BattleScreenRegion = new Region(2105, 1259, 336, 116); // see docs/battle_region.png
+        public static Region BattleScreenRegion { get; } = new Region(2105, 1259, 336, 116); // see docs/battle_region.png
 
         // TODO: Different for each server
         public static Region BattleStageCountRegion => throw new NotImplementedException();
