@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FateGrandAutomata
+﻿namespace FateGrandAutomata
 {
     public static class GameAreaManager
     {

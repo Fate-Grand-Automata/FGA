@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Android.Content;
 using Android.Util;
 using Android.Views;
+using Android.Widget;
 using Java.Interop;
 
 namespace FateGrandAutomata
@@ -56,7 +57,7 @@ namespace FateGrandAutomata
 
         public void Toast(string Msg)
         {
-            throw new NotImplementedException();
+            Android.Widget.Toast.MakeText(_context, Msg, ToastLength.Short);
         }
 
         public void Click(Location Location)
