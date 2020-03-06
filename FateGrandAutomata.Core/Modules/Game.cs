@@ -6,6 +6,11 @@ namespace FateGrandAutomata
 {
     public static class Game
     {
+        public const int ImageWidth = 1280,
+            ImageHeight = 720,
+            ScriptWidth = 2560,
+            ScriptHeight = 1440;
+
         public static void Wait(double Seconds)
         {
             Thread.Sleep(TimeSpan.FromSeconds(Seconds));
@@ -29,12 +34,12 @@ namespace FateGrandAutomata
         public static Location MenuBoostItem3Click { get; } = new Location(1280, 1000);
         public static Location MenuBoostItemSkipClick { get; } = new Location(1652, 1304);
 
-        public static Dictionary<string, Location> MenuBoostItemClickArray { get;  } = new Dictionary<string, Location>
+        public static Location[] MenuBoostItemClickArray { get;  } = new[]
         {
-            ["1"] = MenuBoostItem1Click,
-            ["2"] = MenuBoostItem2Click,
-            ["3"] = MenuBoostItem3Click,
-            ["disabled"] = MenuBoostItemSkipClick
+            MenuBoostItemSkipClick,
+            MenuBoostItem1Click,
+            MenuBoostItem2Click,
+            MenuBoostItem3Click
         };
 
         public static Region StaminaScreenRegion { get; } = new Region(600, 200, 300, 300);

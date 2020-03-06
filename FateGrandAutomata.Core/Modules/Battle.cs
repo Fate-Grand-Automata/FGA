@@ -167,14 +167,12 @@ namespace FateGrandAutomata
             // Alternative fix for different font of stage count number among different regions, worked pretty damn well tho.
             // This will compare last screenshot with current screen, effectively get to know if stage changed or not.
 
-            return !Game.BattleStageCountRegion.Exists(_generatedStageCounterSnapshot);
+            return !Game.BattleStageCountRegion.Exists(_generatedStageCounterSnapshot, Similarity: 0.7);
         }
 
         void TakeStageSnapshot()
         {
             _generatedStageCounterSnapshot = Game.BattleStageCountRegion.Save();
-
-            _generatedStageCounterSnapshot.Similarity = 0.7;
 
             _hasTakenFirstStageSnapshot = true;
         }

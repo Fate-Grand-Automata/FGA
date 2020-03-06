@@ -23,9 +23,11 @@ namespace FateGrandAutomata
 
         void Click(Location Location);
 
+        void ContinueClick(Location Location, int Times, int Timeout = -1);
+
         void WaitVanish(Region Region, Pattern Image, int? Timeout = null);
 
-        bool Exists(Region Region, Pattern Image, int? Timeout = null);
+        bool Exists(Region Region, Pattern Image, int? Timeout = null, double? Similarity = null);
 
         Pattern Save(Region Region);
     }

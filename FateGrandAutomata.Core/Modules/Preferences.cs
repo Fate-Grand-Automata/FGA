@@ -2,6 +2,8 @@
 {
     public static class Preferences
     {
+        public static GameServer GameServer { get; set; }
+
         public static bool SkillConfirmation { get; set; }
 
         public static bool EnableAutoSkill { get; set; }
@@ -15,6 +17,15 @@
         public static bool BattleAutoChooseTarget { get; set; }
 
         public static bool UnstableFastSkipDeadAnimation { get; set; }
+
+        public static bool StorySkip { get; set; }
+
+        public static bool StopAfterBond10 { get; set; }
+
+        /// <summary>
+        /// 0 (skip) - 3
+        /// </summary>
+        public static int BoostItemSelectionMode { get; set; }
 
         public static class Support
         {
@@ -33,6 +44,15 @@
             public static SupportSelectionMode SelectionMode { get; set; }
 
             public static SupportSelectionMode FallbackTo { get; set; }
+        }
+
+        public static class Refill
+        {
+            public static bool Enabled { get; set; }
+
+            public static int Repetitions { get; set; }
+
+            public static RefillResource Resource { get; set; }
         }
     }
 }

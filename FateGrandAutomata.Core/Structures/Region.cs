@@ -27,7 +27,7 @@ namespace FateGrandAutomata
 
         public void WaitVanish(Pattern Image, int? Timeout = null) => Game.Impl.WaitVanish(this, Image, Timeout);
 
-        public bool Exists(Pattern Image, int? Timeout = null) => Game.Impl.Exists(this, Image, Timeout);
+        public bool Exists(Pattern Image, int? Timeout = null, double? Similarity = null) => Game.Impl.Exists(this, Image, Timeout, Similarity);
 
         public Pattern Save() => Game.Impl.Save(this);
 
