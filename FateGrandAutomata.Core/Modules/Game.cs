@@ -17,19 +17,19 @@ namespace FateGrandAutomata
         public static Region ContinueRegion { get; } = new Region(1400, 1000, 600, 200);
         public static Region MenuStorySkipRegion { get; } = new Region(2240, 20, 300, 120);
 
-        public static Point MenuSelectQuestClick { get; } = new Point(1900, 400);
-        public static Point MenuStartQuestClick { get; } = new Point(2400, 1350);
-        public static Point ContinueClick { get; } = new Point(1650, 1120);
-        public static Point MenuStorySkipClick { get; } = new Point(2360, 80);
-        public static Point MenuStorySkipYesClick { get; } = new Point(1600, 1100);
+        public static Location MenuSelectQuestClick { get; } = new Location(1900, 400);
+        public static Location MenuStartQuestClick { get; } = new Location(2400, 1350);
+        public static Location ContinueClick { get; } = new Location(1650, 1120);
+        public static Location MenuStorySkipClick { get; } = new Location(2360, 80);
+        public static Location MenuStorySkipYesClick { get; } = new Location(1600, 1100);
 
         // see docs/menu_boost_item_click_array.png
-        public static Point MenuBoostItem1Click { get; } = new Point(1280, 418);
-        public static Point MenuBoostItem2Click { get; } = new Point(1280, 726);
-        public static Point MenuBoostItem3Click { get; } = new Point(1280, 1000);
-        public static Point MenuBoostItemSkipClick { get; } = new Point(1652, 1304);
+        public static Location MenuBoostItem1Click { get; } = new Location(1280, 418);
+        public static Location MenuBoostItem2Click { get; } = new Location(1280, 726);
+        public static Location MenuBoostItem3Click { get; } = new Location(1280, 1000);
+        public static Location MenuBoostItemSkipClick { get; } = new Location(1652, 1304);
 
-        public static Dictionary<string, Point> MenuBoostItemClickArray { get;  } = new Dictionary<string, Point>
+        public static Dictionary<string, Location> MenuBoostItemClickArray { get;  } = new Dictionary<string, Location>
         {
             ["1"] = MenuBoostItem1Click,
             ["2"] = MenuBoostItem2Click,
@@ -38,19 +38,19 @@ namespace FateGrandAutomata
         };
 
         public static Region StaminaScreenRegion { get; } = new Region(600, 200, 300, 300);
-        public static Point StaminaOkClick { get; } = new Point(1650, 1120);
-        public static Point StaminaSqClick { get; } = new Point(1270, 345);
-        public static Point StaminaGoldClick { get; } = new Point(1270, 634);
-        public static Point StaminaSilverClick { get; } = new Point(1270, 922);
-        public static Point StaminaBronzeClick { get; } = new Point(1270, 1140);
+        public static Location StaminaOkClick { get; } = new Location(1650, 1120);
+        public static Location StaminaSqClick { get; } = new Location(1270, 345);
+        public static Location StaminaGoldClick { get; } = new Location(1270, 634);
+        public static Location StaminaSilverClick { get; } = new Location(1270, 922);
+        public static Location StaminaBronzeClick { get; } = new Location(1270, 1140);
 
         public static Region SupportScreenRegion { get; } = new Region(0, 0, 110, 332);
         public static Region SupportListRegion { get; } = new Region(70, 332, 378, 1091); // see docs/support_list_region.png
-        public static Point SupportSwipeStartClick { get; } = new Point(35, 1190);
+        public static Location SupportSwipeStartClick { get; } = new Location(35, 1190);
         public static Region SupportFriendsRegion { get; } = new Region(448, 332, 1210, 1091);
 
         // TODO: Different for each server
-        public static Point SupportSwipeEndClick => throw new NotImplementedException();
+        public static Location SupportSwipeEndClick => throw new NotImplementedException();
 
         public static Region[] SupportListItemRegionArray { get;  } =
         {
@@ -66,19 +66,19 @@ namespace FateGrandAutomata
         public static Region SupportLimitBreakRegion { get; } = new Region(376, 0, 16, 90);
         public static Region SupportFriendRegion => new Region(2234, SupportListRegion.Y, 120, SupportListRegion.H); // see docs/friend_region.png
 
-        public static Point SupportUpdateClick { get; } = new Point(1670, 250);
-        public static Point SupportUpdateYesClick { get; } = new Point(1480, 1110);
-        public static Point SupportListTopClick { get; } = new Point(2480, 360);
-        public static Point SupportFirstSupportClick { get; } = new Point(1900, 500);
+        public static Location SupportUpdateClick { get; } = new Location(1670, 250);
+        public static Location SupportUpdateYesClick { get; } = new Location(1480, 1110);
+        public static Location SupportListTopClick { get; } = new Location(2480, 360);
+        public static Location SupportFirstSupportClick { get; } = new Location(1900, 500);
 
         public static Region BattleScreenRegion { get; } = new Region(2105, 1259, 336, 116); // see docs/battle_region.png
 
         // TODO: Different for each server
         public static Region BattleStageCountRegion => throw new NotImplementedException();
 
-        public static Point BattleExtrainfoWindowCloseClick { get; } = new Point(2550, 0);
-        public static Point BattleAttackClick { get; } = new Point(2300, 1200);
-        public static Point BattleSkipDeathAnimationClick { get; } = new Point(1700, 100); // see docs/skip_death_animation_click.png
+        public static Location BattleExtrainfoWindowCloseClick { get; } = new Location(2550, 0);
+        public static Location BattleAttackClick { get; } = new Location(2300, 1200);
+        public static Location BattleSkipDeathAnimationClick { get; } = new Location(1700, 100); // see docs/skip_death_animation_click.png
 
         // see docs/target_regions.png
         public static Region[] BattleTargetRegionArray { get; } =
@@ -88,40 +88,40 @@ namespace FateGrandAutomata
             new Region(967, 0, 476, 220)
         };
 
-        public static Point[] BattleTargetClickArray { get; } =
+        public static Location[] BattleTargetClickArray { get; } =
         {
-            new Point(90, 80),
-            new Point(570, 80),
-            new Point(1050, 80)
+            new Location(90, 80),
+            new Location(570, 80),
+            new Location(1050, 80)
         };
 
-        public static Point BattleSkill1Click { get; } = new Point(140, 1160);
-        public static Point BattleSkill2Click { get; } = new Point(340, 1160);
-        public static Point BattleSkill3Click { get; } = new Point(540, 1160);
-        public static Point BattleSkill4Click { get; } = new Point(770, 1160);
-        public static Point BattleSkill5Click { get; } = new Point(970, 1160);
-        public static Point BattleSkill6Click { get; } = new Point(1140, 1160);
-        public static Point BattleSkill7Click { get; } = new Point(1400, 1160);
-        public static Point BattleSkill8Click { get; } = new Point(1600, 1160);
-        public static Point BattleSkill9Click { get; } = new Point(1800, 1160);
-        public static Point BattleSkillOkClick { get; } = new Point(1680, 850);
+        public static Location BattleSkill1Click { get; } = new Location(140, 1160);
+        public static Location BattleSkill2Click { get; } = new Location(340, 1160);
+        public static Location BattleSkill3Click { get; } = new Location(540, 1160);
+        public static Location BattleSkill4Click { get; } = new Location(770, 1160);
+        public static Location BattleSkill5Click { get; } = new Location(970, 1160);
+        public static Location BattleSkill6Click { get; } = new Location(1140, 1160);
+        public static Location BattleSkill7Click { get; } = new Location(1400, 1160);
+        public static Location BattleSkill8Click { get; } = new Location(1600, 1160);
+        public static Location BattleSkill9Click { get; } = new Location(1800, 1160);
+        public static Location BattleSkillOkClick { get; } = new Location(1680, 850);
 
-        public static Point BattleServant1Click { get; } = new Point(700, 880);
-        public static Point BattleServant2Click { get; } = new Point(1280, 880);
-        public static Point BattleServant3Click { get; } = new Point(1940, 880);
+        public static Location BattleServant1Click { get; } = new Location(700, 880);
+        public static Location BattleServant2Click { get; } = new Location(1280, 880);
+        public static Location BattleServant3Click { get; } = new Location(1940, 880);
 
-        public static Point BattleMasterSkillOpenClick { get; } = new Point(2380, 640);
-        public static Point BattleMasterSkill1Click { get; } = new Point(1820, 620);
-        public static Point BattleMasterSkill2Click { get; } = new Point(2000, 620);
-        public static Point BattleMasterSkill3Click { get; } = new Point(2160, 620);
+        public static Location BattleMasterSkillOpenClick { get; } = new Location(2380, 640);
+        public static Location BattleMasterSkill1Click { get; } = new Location(1820, 620);
+        public static Location BattleMasterSkill2Click { get; } = new Location(2000, 620);
+        public static Location BattleMasterSkill3Click { get; } = new Location(2160, 620);
 
-        public static Point BattleStartingMember1Click { get; } = new Point(280, 700);
-        public static Point BattleStartingMember2Click { get; } = new Point(680, 700);
-        public static Point BattleStartingMember3Click { get; } = new Point(1080, 700);
-        public static Point BattleSubMember1Click { get; } = new Point(1480, 700);
-        public static Point BattleSubMember2Click { get; } = new Point(1880, 700);
-        public static Point BattleSubMember3Click { get; } = new Point(2280, 700);
-        public static Point BattleOrderChangeOkClick { get; } = new Point(1280, 1260);
+        public static Location BattleStartingMember1Click { get; } = new Location(280, 700);
+        public static Location BattleStartingMember2Click { get; } = new Location(680, 700);
+        public static Location BattleStartingMember3Click { get; } = new Location(1080, 700);
+        public static Location BattleSubMember1Click { get; } = new Location(1480, 700);
+        public static Location BattleSubMember2Click { get; } = new Location(1880, 700);
+        public static Location BattleSubMember3Click { get; } = new Location(2280, 700);
+        public static Location BattleOrderChangeOkClick { get; } = new Location(1280, 1260);
 
         public static Region[] BattleCardAffinityRegionArray { get; } = {
             // see docs/card_affinity_regions.png
@@ -141,27 +141,27 @@ namespace FateGrandAutomata
             new Region(2048, 1060, 512, 200)
         };
 
-        public static Point[] BattleCommandCardClickArray { get; } = {
-            new Point(300, 1000),
-            new Point(750, 1000),
-            new Point(1300, 1000),
-            new Point(1800, 1000),
-            new Point(2350, 1000),
+        public static Location[] BattleCommandCardClickArray { get; } = {
+            new Location(300, 1000),
+            new Location(750, 1000),
+            new Location(1300, 1000),
+            new Location(1800, 1000),
+            new Location(2350, 1000),
         };
 
-        public static Point[] BattleNpCardClickArray { get; } = {
-            new Point(1000, 220),
-            new Point(1300, 400),
-            new Point(1740, 400)
+        public static Location[] BattleNpCardClickArray { get; } = {
+            new Location(1000, 220),
+            new Location(1300, 400),
+            new Location(1740, 400)
         };
 
         public static Region ResultScreenRegion { get; } = new Region(100, 300, 700, 200);
         public static Region ResultBondRegion { get; } = new Region(2000, 820, 120, 120);
         public static Region ResultCeRewardRegion { get; } = new Region(1050, 1216, 33, 28);
-        public static Point ResultCeRewardCloseClick { get; } = new Point(80, 60);
+        public static Location ResultCeRewardCloseClick { get; } = new Location(80, 60);
         public static Region ResultFriendRequestRegion { get; } = new Region(660, 120, 140, 160);
-        public static Point ResultFriendRequestRejectClick { get; } = new Point(600, 1200);
+        public static Location ResultFriendRequestRejectClick { get; } = new Location(600, 1200);
         public static Region ResultQuestRewardRegion { get; } = new Region(1630, 140, 370, 250);
-        public static Point ResultNextClick { get; } = new Point(2200, 1350); // see docs/quest_result_next_click.png
+        public static Location ResultNextClick { get; } = new Location(2200, 1350); // see docs/quest_result_next_click.png
     }
 }

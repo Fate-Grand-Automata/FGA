@@ -54,7 +54,7 @@ namespace FateGrandAutomata
 
         public void ApplyAspectRatioFix(int ScriptWidth, int ScriptHeight, int ImageWidth, int ImageHeight)
         {
-            Game.Impl.SetImmersiveMode(true);
+            Game.Impl.ImmersiveMode = true;
             Game.Impl.AutoGameArea(true);
 
             var gameWithBorders = Game.Impl.GetGameArea();

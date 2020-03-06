@@ -1,10 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Content;
+using Android.Util;
+using Android.Views;
+using Java.Interop;
 
 namespace FateGrandAutomata
 {
     public class AndroidImpl : IPlatformImpl
     {
+        readonly Context _context;
+
+        public AndroidImpl(Context Context)
+        {
+            _context = Context;
+        }
+
+        public (int Width, int Height) WindowSize
+        {
+            get
+            {
+                var metrics = new DisplayMetrics();
+                var wm = _context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+
+                wm.DefaultDisplay.GetMetrics(metrics);
+
+                return (metrics.WidthPixels, metrics.HeightPixels);
+            }
+        }
+
         public void UseSameSnapIn(Action Action)
         {
             throw new NotImplementedException();
@@ -15,7 +39,7 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
-        public void Scroll(Point Start, Point End)
+        public void Scroll(Location Start, Location End)
         {
             throw new NotImplementedException();
         }
@@ -30,10 +54,7 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
-        public void SetImmersiveMode(bool Active)
-        {
-            throw new NotImplementedException();
-        }
+        public bool ImmersiveMode { get; set; }
 
         public void AutoGameArea(bool Active)
         {
@@ -65,7 +86,7 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
-        public void Click(Point Point)
+        public void Click(Location Location)
         {
             throw new NotImplementedException();
         }

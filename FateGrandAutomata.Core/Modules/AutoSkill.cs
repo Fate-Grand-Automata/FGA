@@ -27,7 +27,7 @@ namespace FateGrandAutomata
             Game.BattleScreenRegion.Exists(img, Timeout ?? 5);
         }
 
-        void CastSkill(Point Location)
+        void CastSkill(Location Location)
         {
             Location.Click();
 
@@ -39,14 +39,14 @@ namespace FateGrandAutomata
             WaitForAnimationToFinish();
         }
 
-        void SelectSkillTarget(Point Location)
+        void SelectSkillTarget(Location Location)
         {
             Location.Click();
 
             WaitForAnimationToFinish();
         }
 
-        void CastNoblePhantasm(Point Location)
+        void CastNoblePhantasm(Location Location)
         {
             if (!Battle.HasClickedAttack)
             {
@@ -66,7 +66,7 @@ namespace FateGrandAutomata
             Game.Wait(0.3);
         }
 
-        void CastMasterSkill(Point Location)
+        void CastMasterSkill(Location Location)
         {
             OpenMasterSkillMenu();
 
@@ -94,14 +94,14 @@ namespace FateGrandAutomata
             ChangeArray(_startingMemberFunctionArray);
         }
 
-        void SelectStartingMember(Point Location)
+        void SelectStartingMember(Location Location)
         {
             Location.Click();
 
             ChangeArray(_subMemberFunctionArray);
         }
 
-        void SelectSubMemeber(Point Location)
+        void SelectSubMemeber(Location Location)
         {
             Location.Click();
 
@@ -119,7 +119,7 @@ namespace FateGrandAutomata
             ChangeArray(_enemyTargetArray);
         }
 
-        void SelectEnemyTarget(Point Location)
+        void SelectEnemyTarget(Location Location)
         {
             Location.Click();
 

@@ -33,7 +33,7 @@ namespace FateGrandAutomata
 
         public void Click()
         {
-            var center = new Point(X + W / 2, Y + H / 2);
+            var center = new Location(X + W / 2, Y + H / 2);
 
             center.Click();
         }
