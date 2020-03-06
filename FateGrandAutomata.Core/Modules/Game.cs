@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace FateGrandAutomata
@@ -54,8 +53,13 @@ namespace FateGrandAutomata
         public static Location SupportSwipeStartClick { get; } = new Location(35, 1190);
         public static Region SupportFriendsRegion { get; } = new Region(448, 332, 1210, 1091);
 
-        // TODO: Different for each server
-        public static Location SupportSwipeEndClick => throw new NotImplementedException();
+        public static Location SupportSwipeEndClick => Preferences.GameServer switch
+        {
+            GameServer.En => new Location(35, 390),
+            GameServer.Jp => new Location(35, 350),
+            GameServer.Cn => new Location(35, 390),
+            GameServer.Tw => new Location(35, 390)
+        };
 
         public static Region[] SupportListItemRegionArray { get;  } =
         {
@@ -78,8 +82,13 @@ namespace FateGrandAutomata
 
         public static Region BattleScreenRegion { get; } = new Region(2105, 1259, 336, 116); // see docs/battle_region.png
 
-        // TODO: Different for each server
-        public static Region BattleStageCountRegion => throw new NotImplementedException();
+        public static Region BattleStageCountRegion => Preferences.GameServer switch
+        {
+            GameServer.En => new Region(1722, 25, 46, 53),
+            GameServer.Jp => new Region(1722, 25, 46, 53),
+            GameServer.Cn => new Region(1722, 25, 46, 53),
+            GameServer.Tw => new Region(1710, 25, 55, 60)
+        };
 
         public static Location BattleExtrainfoWindowCloseClick { get; } = new Location(2550, 0);
         public static Location BattleAttackClick { get; } = new Location(2300, 1200);
