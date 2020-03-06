@@ -142,7 +142,7 @@ namespace FateGrandAutomata
                 return (SupportSearchResult.Found, support);
             }
 
-            return Game.UseSameSnapIn(PerformSearch);
+            return Game.Impl.UseSameSnapIn(PerformSearch);
         }
 
         bool SelectFriend()
@@ -179,7 +179,7 @@ namespace FateGrandAutomata
 
                 else if (numberOfUpdates < Preferences.Support.MaxUpdates)
                 {
-                    Game.Toast("Support list will be updated in 3 seconds.");
+                    Game.Impl.Toast("Support list will be updated in 3 seconds.");
                     Game.Wait(3);
 
                     Game.SupportUpdateClick.Click();
@@ -245,14 +245,14 @@ namespace FateGrandAutomata
 
         void ScrollList()
         {
-            Game.Scroll(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick);
+            Game.Impl.Scroll(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick);
         }
 
         Region FindFriendName()
         {
             foreach (var friendName in _friendNameArray)
             {
-                foreach (var theFriend in Game.FindAll(Game.SupportFriendsRegion, ImageLocator.LoadSupportImagePattern(friendName)))
+                foreach (var theFriend in Game.Impl.FindAll(Game.SupportFriendsRegion, ImageLocator.LoadSupportImagePattern(friendName)))
                 {
                     return theFriend;
                 }
@@ -265,7 +265,7 @@ namespace FateGrandAutomata
         {
             foreach (var preferredServant in _preferredServantArray)
             {
-                foreach (var servant in Game.FindAll(Game.SupportListRegion, ImageLocator.LoadSupportImagePattern(preferredServant)))
+                foreach (var servant in Game.Impl.FindAll(Game.SupportListRegion, ImageLocator.LoadSupportImagePattern(preferredServant)))
                 {
                     yield return servant;
                 }
@@ -276,7 +276,7 @@ namespace FateGrandAutomata
         {
             foreach (var preferredCraftEssence in _preferredCraftEssenceTable)
             {
-                var craftEssences = Game.FindAll(SearchRegion, ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name));
+                var craftEssences = Game.Impl.FindAll(SearchRegion, ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name));
 
                 foreach (var craftEssence in craftEssences)
                 {
@@ -294,7 +294,7 @@ namespace FateGrandAutomata
         {
             var supportBound = new Region(76, 0, 2356, 428);
             var regionAnchor = ImageLocator.SupportRegionTool;
-            var regionArray = Game.FindAll(new Region(1670, 0, 90, 1440), regionAnchor);
+            var regionArray = Game.Impl.FindAll(new Region(1670, 0, 90, 1440), regionAnchor);
             var defaultRegion = supportBound;
 
             foreach (var testRegion in regionArray)
@@ -307,7 +307,7 @@ namespace FateGrandAutomata
                 }
             }
 
-            Game.Toast("Default Region being returned; file an issue on the github for this issue");
+            Game.Impl.Toast("Default Region being returned; file an issue on the github for this issue");
             return defaultRegion;
         }
 

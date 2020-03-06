@@ -11,39 +11,7 @@ namespace FateGrandAutomata
             Thread.Sleep(TimeSpan.FromSeconds(Seconds));
         }
 
-        // Use same screenshot for all exists functions.
-        // Not sure if I interpret this right
-        public static void UseSameSnapIn(Action Action)
-        {
-            Action.Invoke();
-
-            throw new NotImplementedException();
-        }
-
-        public static T UseSameSnapIn<T>(Func<T> Action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Scroll(Point Start, Point End)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static IEnumerable<Region> FindAll(Pattern Pattern) => throw new NotImplementedException();
-        public static IEnumerable<Region> FindAll(Region Region, Pattern Pattern) => throw new NotImplementedException();
-
-        public static void SetImmersiveMode(bool Active) => throw new NotImplementedException();
-
-        public static void AutoGameArea(bool Active) => throw new NotImplementedException();
-
-        public static Region GetGameArea() => throw new NotImplementedException();
-        public static void SetGameArea(Region Region) => throw new NotImplementedException();
-
-        public static void SetScriptDimension(bool CompareByWidth, int Pixels) => throw new NotImplementedException();
-        public static void SetCompareDimension(bool CompareByWidth, int Pixels) => throw new NotImplementedException();
-
-        public static void Toast(string Msg) => throw new NotImplementedException();
+        public static IPlatformImpl Impl { get; set; }
 
         public static Region MenuScreenRegion { get; } = new Region(2100, 1200, 1000, 1000);
         public static Region ContinueRegion { get; } = new Region(1400, 1000, 600, 200);

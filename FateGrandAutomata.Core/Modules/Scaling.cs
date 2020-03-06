@@ -54,10 +54,10 @@ namespace FateGrandAutomata
 
         public void ApplyAspectRatioFix(int ScriptWidth, int ScriptHeight, int ImageWidth, int ImageHeight)
         {
-            Game.SetImmersiveMode(true);
-            Game.AutoGameArea(true);
+            Game.Impl.SetImmersiveMode(true);
+            Game.Impl.AutoGameArea(true);
 
-            var gameWithBorders = Game.GetGameArea();
+            var gameWithBorders = Game.Impl.GetGameArea();
             var scaleMethod = DecideScaleMethod(ScriptWidth, ScriptHeight,
                 gameWithBorders.W, gameWithBorders.H);
             var gameWithoutBorders = CalculateGameAreaWithoutBorders(ScriptWidth, ScriptHeight,
@@ -65,17 +65,17 @@ namespace FateGrandAutomata
                 scaleMethod.Rate);
             var gameWithoutBordersAndNotch = ApplyNotchOffset(gameWithoutBorders, gameWithBorders.X);
 
-            Game.SetGameArea(gameWithoutBordersAndNotch);
+            Game.Impl.SetGameArea(gameWithoutBordersAndNotch);
 
             if (scaleMethod.ByWidth)
             {
-                Game.SetScriptDimension(true, ScriptWidth);
-                Game.SetCompareDimension(true, ImageWidth);
+                Game.Impl.SetScriptDimension(true, ScriptWidth);
+                Game.Impl.SetCompareDimension(true, ImageWidth);
             }
             else
             {
-                Game.SetScriptDimension(false, ScriptHeight);
-                Game.SetCompareDimension(false, ImageHeight);
+                Game.Impl.SetScriptDimension(false, ScriptHeight);
+                Game.Impl.SetCompareDimension(false, ImageHeight);
             }
         }
     }

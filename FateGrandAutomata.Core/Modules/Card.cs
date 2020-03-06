@@ -151,7 +151,7 @@ namespace FateGrandAutomata
                 return CardScore.Quick;
             }
 
-            Game.Toast($"Failed to determine Card type (X: {Region.X}, Y: {Region.Y}, W: {Region.W}, H: {Region.H})");
+            Game.Impl.Toast($"Failed to determine Card type (X: {Region.X}, Y: {Region.Y}, W: {Region.W}, H: {Region.H})");
 
             return CardScore.Buster;
         }
@@ -160,7 +160,7 @@ namespace FateGrandAutomata
         {
             var storagePerPriority = new Dictionary<CardScore, List<int>>();
 
-            Game.UseSameSnapIn(() =>
+            Game.Impl.UseSameSnapIn(() =>
             {
                 for (var cardSlot = 0; cardSlot < 5; ++cardSlot)
                 {

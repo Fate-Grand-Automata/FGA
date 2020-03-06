@@ -108,7 +108,7 @@ namespace FateGrandAutomata
 
         public void PerformBattle()
         {
-            Game.UseSameSnapIn(OnTurnStarted);
+            Game.Impl.UseSameSnapIn(OnTurnStarted);
             Game.Wait(2);
 
             if (Preferences.EnableAutoSkill)
