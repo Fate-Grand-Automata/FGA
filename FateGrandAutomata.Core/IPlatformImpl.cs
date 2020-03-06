@@ -19,24 +19,6 @@ namespace FateGrandAutomata
 
         IEnumerable<Region> FindAll(Region Region, Pattern Pattern);
 
-        /// <summary>
-        /// Set if we need to account for navbar above app.
-        /// </summary>
-        bool ImmersiveMode { get; set; }
-
-        void AutoGameArea(bool Active);
-
-        Region GetGameArea();
-        
-        void SetGameArea(Region Region);
-
-        void SetScriptDimension(bool CompareByWidth, int Pixels);
-        
-        /// <summary>
-        /// Image Matching dimension. All images, regions, locations
-        /// </summary>
-        void SetCompareDimension(bool CompareByWidth, int Pixels);
-
         void Toast(string Msg);
 
         void Click(Location Location);

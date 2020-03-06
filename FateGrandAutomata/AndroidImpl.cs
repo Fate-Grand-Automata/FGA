@@ -54,33 +54,6 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
-        public bool ImmersiveMode { get; set; }
-
-        public void AutoGameArea(bool Active)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Region GetGameArea()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetGameArea(Region Region)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetScriptDimension(bool CompareByWidth, int Pixels)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetCompareDimension(bool CompareByWidth, int Pixels)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Toast(string Msg)
         {
             throw new NotImplementedException();
