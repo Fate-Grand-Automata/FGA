@@ -15,6 +15,6 @@ namespace FateGrandAutomata
             this.Y = Y;
         }
 
-        public void Click() => throw new NotImplementedException();
+        public void Click() => Game.Impl.Click(this);
     }
 }

@@ -25,11 +25,11 @@ namespace FateGrandAutomata
                    && Y + H <= R.Y + R.H;
         }
 
-        public void WaitVanish(Pattern Image, int? Timeout = null) => throw new NotImplementedException();
+        public void WaitVanish(Pattern Image, int? Timeout = null) => Game.Impl.WaitVanish(this, Image, Timeout);
 
-        public bool Exists(Pattern Image, int? Timeout = null) => throw new NotImplementedException();
+        public bool Exists(Pattern Image, int? Timeout = null) => Game.Impl.Exists(this, Image, Timeout);
 
-        public Pattern Save() => throw new NotImplementedException();
+        public Pattern Save() => Game.Impl.Save(this);
 
         public void Click()
         {

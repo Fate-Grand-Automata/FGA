@@ -30,5 +30,13 @@ namespace FateGrandAutomata
         void SetCompareDimension(bool CompareByWidth, int Pixels);
 
         void Toast(string Msg);
+
+        void Click(Point Point);
+
+        void WaitVanish(Region Region, Pattern Image, int? Timeout = null);
+
+        bool Exists(Region Region, Pattern Image, int? Timeout = null);
+
+        Pattern Save(Region Region);
     }
 }

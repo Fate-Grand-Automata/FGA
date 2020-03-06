@@ -64,5 +64,25 @@ namespace FateGrandAutomata
         {
             throw new NotImplementedException();
         }
+
+        public void Click(Point Point)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WaitVanish(Region Region, Pattern Image, int? Timeout = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Exists(Region Region, Pattern Image, int? Timeout = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Pattern Save(Region Region)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
