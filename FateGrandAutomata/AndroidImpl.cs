@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.AccessibilityServices;
 using Android.Content;
+using Android.Graphics;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -10,11 +12,11 @@ namespace FateGrandAutomata
 {
     public class AndroidImpl : IPlatformImpl
     {
-        readonly Context _context;
+        readonly AccessibilityService _accessibilityService;
 
-        public AndroidImpl(Context Context)
+        public AndroidImpl(AccessibilityService AccessibilityService)
         {
-            _context = Context;
+            _accessibilityService = AccessibilityService;
         }
 
         public (int Width, int Height) WindowSize
@@ -22,7 +24,7 @@ namespace FateGrandAutomata
             get
             {
                 var metrics = new DisplayMetrics();
-                var wm = _context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+                var wm = _accessibilityService.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
 
                 wm.DefaultDisplay.GetMetrics(metrics);
 
@@ -42,7 +44,16 @@ namespace FateGrandAutomata
 
         public void Scroll(Location Start, Location End)
         {
-            throw new NotImplementedException();
+            const int Duration = 500;
+
+            var swipePath = new Path();
+            swipePath.MoveTo(Start.X, Start.Y);
+            swipePath.LineTo(End.X, End.Y);
+            
+            var gestureBuilder = new GestureDescription.Builder();
+            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, Duration));
+            
+            _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
         }
 
         public IEnumerable<Region> FindAll(Pattern Pattern)
@@ -57,12 +68,20 @@ namespace FateGrandAutomata
 
         public void Toast(string Msg)
         {
-            Android.Widget.Toast.MakeText(_context, Msg, ToastLength.Short);
+            Android.Widget.Toast.MakeText(_accessibilityService, Msg, ToastLength.Short);
         }
 
         public void Click(Location Location)
         {
-            throw new NotImplementedException();
+            const int Duration = 1;
+
+            var swipePath = new Path();
+            swipePath.MoveTo(Location.X, Location.Y);
+
+            var gestureBuilder = new GestureDescription.Builder();
+            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, Duration));
+
+            _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
         }
 
         public void ContinueClick(Location Location, int Times, int Timeout = -1)
