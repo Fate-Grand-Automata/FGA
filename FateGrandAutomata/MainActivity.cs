@@ -1,16 +1,12 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
-using Android.Graphics;
-using Android.Hardware.Display;
-using Android.Media;
 using Android.Media.Projection;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AlertDialog = Android.App.AlertDialog;
@@ -31,33 +27,8 @@ namespace FateGrandAutomata
 
             var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
-
-            if (savedInstanceState != null)
-            {
-                _resultCode = (Result) savedInstanceState.GetInt(STATE_RESULT_CODE);
-                _resultData = (Intent) savedInstanceState.GetParcelable(STATE_RESULT_DATA);
-            }
-
-            var metrics = new DisplayMetrics();
-            WindowManager.DefaultDisplay.GetMetrics(metrics);
-            _screenDensity = (int) metrics.DensityDpi;
-            _screenWidth = metrics.WidthPixels;
-            _screenHeight = metrics.HeightPixels;
-
-            _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 1);
-
-            _mediaProjectionManager = (MediaProjectionManager) GetSystemService(Context.MediaProjectionService);
-        }
-
-        protected override void OnSaveInstanceState(Bundle outState)
-        {
-            base.OnSaveInstanceState(outState);
-
-            if (_resultData != null)
-            {
-                outState.PutInt(STATE_RESULT_CODE, (int)_resultCode);
-                outState.PutParcelable(STATE_RESULT_DATA, _resultData);
-            }
+            
+            _mediaProjectionManager = (MediaProjectionManager) GetSystemService(MediaProjectionService);
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -70,98 +41,10 @@ namespace FateGrandAutomata
                     return;
                 }
 
-                _resultCode = resultCode;
-                _resultData = data;
-
                 var intent = new Intent(FabServiceBroadcastReceiver.SEND_MEDIA_PROJECTION_TOKEN);
                 intent.PutExtra(FabServiceBroadcastReceiver.MED_PROJ_TOKEN, data);
                 SendBroadcast(intent);
-
-                //SetupMediaProjection();
-                //SetupVirtualDisplay();
             }
-        }
-
-        void SetupMediaProjection()
-        {
-            _mediaProjection = _mediaProjectionManager.GetMediaProjection((int) _resultCode, _resultData);
-        }
-
-        void SetupVirtualDisplay()
-        {
-            _virtualDisplay = _mediaProjection.CreateVirtualDisplay("ScreenCapture",
-                _screenWidth, _screenHeight, _screenDensity,
-                DisplayFlags.None, _imageReader.Surface, null, null);
-        }
-
-        Bitmap AcquireLatestImage()
-        {
-            using var img = _imageReader.AcquireLatestImage();
-
-            var planes = img.GetPlanes();
-            var buffer = planes[0].Buffer;
-            var pixelStride = planes[0].PixelStride;
-            var rowStride = planes[0].RowStride;
-            var rowPadding = rowStride - pixelStride * _screenWidth;
-
-            var bmp = Bitmap.CreateBitmap(_screenWidth + rowPadding / pixelStride, _screenHeight, Bitmap.Config.Argb8888);
-
-            bmp.CopyPixelsFromBuffer(buffer);
-
-            return bmp;
-        }
-
-        void TeardownMediaProjection()
-        {
-            if (_mediaProjection != null)
-            {
-                _mediaProjection.Stop();
-                _mediaProjection = null;
-            }
-        }
-
-        void StartScreenCapture()
-        {
-            if (_mediaProjection != null)
-            {
-                SetupVirtualDisplay();
-            }
-            else if (_resultCode != 0 && _resultData != null)
-            {
-                SetupMediaProjection();
-                SetupVirtualDisplay();
-            }
-            else
-            {
-                // This initiates a prompt dialog for the user to confirm screen projection.
-                StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
-            }
-        }
-
-        void StopScreenCapture()
-        {
-            if (_virtualDisplay == null)
-            {
-                return;
-            }
-
-            _virtualDisplay.Release();
-            _virtualDisplay = null;
-
-            _imageReader.Close();
-            _imageReader = null;
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-            StopScreenCapture();
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            TeardownMediaProjection();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -172,7 +55,7 @@ namespace FateGrandAutomata
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            int id = item.ItemId;
+            var id = item.ItemId;
             if (id == Resource.Id.action_settings)
             {
                 return true;
@@ -181,13 +64,14 @@ namespace FateGrandAutomata
             return base.OnOptionsItemSelected(item);
         }
 
-        private void FabOnClick(object sender, EventArgs eventArgs)
+        void FabOnClick(object sender, EventArgs eventArgs)
         {
             if (this.IsAccessibilityServiceEnabled<GlobalFabService>())
             {
                 SendBroadcast(new Intent(FabServiceBroadcastReceiver.TOGGLE_SERVICE_INTENT));
 
-                StartScreenCapture();
+                // This initiates a prompt dialog for the user to confirm screen projection.
+                StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
             }
             else
             {
@@ -222,17 +106,8 @@ namespace FateGrandAutomata
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        const string STATE_RESULT_CODE = "result_code", STATE_RESULT_DATA = "result_data";
-
         const int REQUEST_MEDIA_PROJECTION = 1;
 
-        int _screenDensity, _screenWidth, _screenHeight;
-        Result _resultCode;
-        Intent _resultData;
-
-        ImageReader _imageReader;
-        MediaProjection _mediaProjection;
-        VirtualDisplay _virtualDisplay;
         MediaProjectionManager _mediaProjectionManager;
     }
 }
