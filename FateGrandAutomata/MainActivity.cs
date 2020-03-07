@@ -12,6 +12,7 @@ using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AlertDialog = Android.App.AlertDialog;
 
 namespace FateGrandAutomata
 {
@@ -177,7 +178,25 @@ namespace FateGrandAutomata
         private void FabOnClick(object sender, EventArgs eventArgs)
         {
             //StartScreenCapture();
-            SendBroadcast(new Intent(FabServiceBroadcastReceiver.TOGGLE_SERVICE_INTENT));
+
+            if (this.IsAccessibilityServiceEnabled<GlobalFabService>())
+            {
+                SendBroadcast(new Intent(FabServiceBroadcastReceiver.TOGGLE_SERVICE_INTENT));
+            }
+            else
+            {
+                var alertDialog = new AlertDialog.Builder(this);
+                alertDialog.SetTitle("Accessibility Disabled")
+                    .SetMessage("Turn on accessibility for this app from System settings")
+                    .SetNeutralButton("OK", (S, E) =>
+                    {
+                        if (S is Dialog dialog)
+                        {
+                            dialog.Dismiss();
+                        }
+                    })
+                    .Show();
+            }
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
