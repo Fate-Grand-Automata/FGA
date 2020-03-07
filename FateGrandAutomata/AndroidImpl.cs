@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Android.AccessibilityServices;
 using Android.Content;
 using Android.Graphics;
+using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -66,9 +67,12 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
+        readonly Lazy<Handler> _handler = new Lazy<Handler>(() => new Handler(Looper.MainLooper));
+
         public void Toast(string Msg)
         {
-            Android.Widget.Toast.MakeText(_accessibilityService, Msg, ToastLength.Short).Show();
+            _handler.Value.Post(() =>
+                Android.Widget.Toast.MakeText(_accessibilityService, Msg, ToastLength.Short).Show());
         }
 
         public void Click(Location Location)

@@ -32,6 +32,8 @@ namespace FateGrandAutomata
 
         protected override void OnServiceConnected()
         {
+            Game.Impl = new AndroidImpl(this);
+
             var wm = GetSystemService(WindowService).JavaCast<IWindowManager>();
 
             _layout = new FrameLayout(this);
