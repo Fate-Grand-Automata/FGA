@@ -6,6 +6,7 @@ using Android.Hardware.Display;
 using Android.Media;
 using Android.Media.Projection;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
@@ -188,7 +189,18 @@ namespace FateGrandAutomata
                 var alertDialog = new AlertDialog.Builder(this);
                 alertDialog.SetTitle("Accessibility Disabled")
                     .SetMessage("Turn on accessibility for this app from System settings")
-                    .SetNeutralButton("OK", (S, E) =>
+                    .SetPositiveButton("Go To Settings", (S, E) =>
+                    {
+                        if (S is Dialog dialog)
+                        {
+                            dialog.Dismiss();
+                        }
+
+                        // Open Acessibility Settings
+                        var intent = new Intent(Settings.ActionAccessibilitySettings);
+                        StartActivity(intent);
+                    })
+                    .SetNegativeButton("Cancel", (S, E) =>
                     {
                         if (S is Dialog dialog)
                         {
