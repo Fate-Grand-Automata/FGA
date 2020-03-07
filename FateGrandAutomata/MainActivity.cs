@@ -67,13 +67,18 @@ namespace FateGrandAutomata
                 if (resultCode != Result.Ok)
                 {
                     Toast.MakeText(this, "Canceled", ToastLength.Short).Show();
+                    return;
                 }
 
                 _resultCode = resultCode;
                 _resultData = data;
 
-                SetupMediaProjection();
-                SetupVirtualDisplay();
+                var intent = new Intent(FabServiceBroadcastReceiver.SEND_MEDIA_PROJECTION_TOKEN);
+                intent.PutExtra(FabServiceBroadcastReceiver.MED_PROJ_TOKEN, data);
+                SendBroadcast(intent);
+
+                //SetupMediaProjection();
+                //SetupVirtualDisplay();
             }
         }
 
@@ -178,11 +183,11 @@ namespace FateGrandAutomata
 
         private void FabOnClick(object sender, EventArgs eventArgs)
         {
-            //StartScreenCapture();
-
             if (this.IsAccessibilityServiceEnabled<GlobalFabService>())
             {
                 SendBroadcast(new Intent(FabServiceBroadcastReceiver.TOGGLE_SERVICE_INTENT));
+
+                StartScreenCapture();
             }
             else
             {

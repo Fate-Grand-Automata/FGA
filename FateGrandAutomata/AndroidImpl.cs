@@ -68,7 +68,7 @@ namespace FateGrandAutomata
 
         public void Toast(string Msg)
         {
-            Android.Widget.Toast.MakeText(_accessibilityService, Msg, ToastLength.Short);
+            Android.Widget.Toast.MakeText(_accessibilityService, Msg, ToastLength.Short).Show();
         }
 
         public void Click(Location Location)

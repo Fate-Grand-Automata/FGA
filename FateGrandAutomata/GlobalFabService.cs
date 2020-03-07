@@ -1,7 +1,9 @@
 ﻿using Android;
 using Android.AccessibilityServices;
 using Android.App;
+using Android.Content;
 using Android.Graphics;
+using Android.Media.Projection;
 using Android.Views;
 using Android.Views.Accessibility;
 using Android.Widget;
@@ -17,6 +19,9 @@ namespace FateGrandAutomata
         FrameLayout _layout;
         FabServiceBroadcastReceiver _broadcastReceiver;
         bool _fabVisible;
+
+        MediaProjectionManager _mediaProjectionManager;
+        MediaProjection _mediaProjection;
 
         protected override void OnServiceConnected()
         {
@@ -53,6 +58,13 @@ namespace FateGrandAutomata
                     wm.AddView(_layout, lp);
                     _fabVisible = true;
                 }
+            };
+
+            _mediaProjectionManager = (MediaProjectionManager)GetSystemService(Context.MediaProjectionService);
+
+            _broadcastReceiver.MediaProjectionToken += Token =>
+            {
+                _mediaProjection = _mediaProjectionManager.GetMediaProjection((int) Result.Ok, Token);
             };
         }
 
