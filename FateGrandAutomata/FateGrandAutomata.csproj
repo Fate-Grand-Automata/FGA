@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidImpl.cs" />
+    <Compile Include="FabServiceBroadcastReceiver.cs" />
     <Compile Include="GlobalFabService.cs" />
     <Compile Include="ImageComparer.cs" />
     <Compile Include="MainActivity.cs" />

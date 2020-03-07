@@ -15,6 +15,8 @@ namespace FateGrandAutomata
     public class GlobalFabService : AccessibilityService
     {
         FrameLayout _layout;
+        FabServiceBroadcastReceiver _broadcastReceiver;
+        bool _fabVisible;
 
         protected override void OnServiceConnected()
         {
@@ -33,7 +35,25 @@ namespace FateGrandAutomata
 
             var inflator = LayoutInflater.From(this);
             inflator.Inflate(Resource.Layout.global_fab_layout, _layout);
-            wm.AddView(_layout, lp);
+
+            _broadcastReceiver = new FabServiceBroadcastReceiver();
+            var intentFilter = _broadcastReceiver.CreateIntentFilter();
+
+            RegisterReceiver(_broadcastReceiver, intentFilter);
+
+            _broadcastReceiver.ToggleService += () =>
+            {
+                if (_fabVisible)
+                {
+                    wm.RemoveView(_layout);
+                    _fabVisible = false;
+                }
+                else
+                {
+                    wm.AddView(_layout, lp);
+                    _fabVisible = true;
+                }
+            };
         }
 
         public override void OnAccessibilityEvent(AccessibilityEvent e)

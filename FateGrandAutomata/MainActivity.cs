@@ -176,7 +176,8 @@ namespace FateGrandAutomata
 
         private void FabOnClick(object sender, EventArgs eventArgs)
         {
-            StartScreenCapture();
+            //StartScreenCapture();
+            SendBroadcast(new Intent(FabServiceBroadcastReceiver.TOGGLE_SERVICE_INTENT));
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
