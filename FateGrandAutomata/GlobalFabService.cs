@@ -35,6 +35,20 @@ namespace FateGrandAutomata
         public override bool OnUnbind(Intent intent)
         {
             Instance = null;
+            Started = false;
+
+            _virtualDisplay.Release();
+            _virtualDisplay = null;
+
+            _imageReader.Close();
+            _imageReader = null;
+
+            if (_mediaProjection != null)
+            {
+                _mediaProjection.Stop();
+                _mediaProjection = null;
+            }
+
             return base.OnUnbind(intent);
         }
 
@@ -125,29 +139,6 @@ namespace FateGrandAutomata
             return bmp;
         }
 
-        void TeardownMediaProjection()
-        {
-            if (_mediaProjection != null)
-            {
-                _mediaProjection.Stop();
-                _mediaProjection = null;
-            }
-        }
-
-        void StopScreenCapture()
-        {
-            if (_virtualDisplay == null)
-            {
-                return;
-            }
-
-            _virtualDisplay.Release();
-            _virtualDisplay = null;
-
-            _imageReader.Close();
-            _imageReader = null;
-        }
-
         void SetupVirtualDisplay()
         {
             _virtualDisplay = _mediaProjection.CreateVirtualDisplay("ScreenCapture",
@@ -155,12 +146,8 @@ namespace FateGrandAutomata
                 DisplayFlags.None, _imageReader.Surface, null, null);
         }
 
-        public override void OnAccessibilityEvent(AccessibilityEvent e)
-        {
-        }
+        public override void OnAccessibilityEvent(AccessibilityEvent e) { }
 
-        public override void OnInterrupt()
-        {
-        }
+        public override void OnInterrupt() { }
     }
 }
