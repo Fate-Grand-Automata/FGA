@@ -17,7 +17,7 @@ namespace FateGrandAutomata
     [Service(Permission = Manifest.Permission.BindAccessibilityService)]
     [IntentFilter(new [] { "android.accessibilityservice.AccessibilityService" })]
     [MetaData("android.accessibilityservice", Resource = "@xml/global_fab_service")]
-    public class GlobalFabService : AccessibilityService, IGlobalFab
+    public class GlobalFabService : AccessibilityService
     {
         FrameLayout _layout;
         FabServiceBroadcastReceiver _broadcastReceiver;
@@ -140,20 +140,6 @@ namespace FateGrandAutomata
 
         public override void OnInterrupt()
         {
-        }
-
-        public bool HasMediaProjectionToken => _mediaProjection != null;
-
-        public bool IsStarted { get; private set; }
-        
-        public void Start(Intent MediaProjectionToken = null)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Stop()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
