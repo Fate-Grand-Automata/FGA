@@ -41,9 +41,7 @@ namespace FateGrandAutomata
                     return;
                 }
 
-                var intent = new Intent(FabServiceBroadcastReceiver.SEND_MEDIA_PROJECTION_TOKEN);
-                intent.PutExtra(FabServiceBroadcastReceiver.MED_PROJ_TOKEN, data);
-                SendBroadcast(intent);
+                GlobalFabService.Instance.Start(data);
             }
         }
 
@@ -66,12 +64,23 @@ namespace FateGrandAutomata
 
         void FabOnClick(object sender, EventArgs eventArgs)
         {
-            if (this.IsAccessibilityServiceEnabled<GlobalFabService>())
+            if (GlobalFabService.Instance != null)
             {
-                SendBroadcast(new Intent(FabServiceBroadcastReceiver.TOGGLE_SERVICE_INTENT));
+                var instance = GlobalFabService.Instance;
 
-                // This initiates a prompt dialog for the user to confirm screen projection.
-                StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
+                if (instance.Started)
+                {
+                    instance.Stop();
+                }
+                else
+                {
+                    if (GlobalFabService.Instance.HasMediaProjectionToken)
+                    {
+                        instance.Start();
+                    }
+                    // This initiates a prompt dialog for the user to confirm screen projection.
+                    else StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
+                }
             }
             else
             {

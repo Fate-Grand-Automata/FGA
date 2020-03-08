@@ -20,8 +20,8 @@ namespace FateGrandAutomata
     public class GlobalFabService : AccessibilityService
     {
         FrameLayout _layout;
-        FabServiceBroadcastReceiver _broadcastReceiver;
-        bool _fabVisible;
+        IWindowManager _windowManager;
+        WindowManagerLayoutParams _layoutParams;
 
         int _screenDensity, _screenWidth, _screenHeight;
 
@@ -30,14 +30,61 @@ namespace FateGrandAutomata
         VirtualDisplay _virtualDisplay;
         ImageReader _imageReader;
 
+        public static GlobalFabService Instance { get; private set; }
+
+        public override bool OnUnbind(Intent intent)
+        {
+            Instance = null;
+            return base.OnUnbind(intent);
+        }
+
+        public bool HasMediaProjectionToken => _mediaProjection != null;
+
+        public bool Started { get; private set; }
+
+        public bool Start(Intent MediaProjectionToken = null)
+        {
+            if (Started)
+            {
+                return false;
+            }
+
+            if (MediaProjectionToken != null)
+            {
+                _mediaProjection = _mediaProjectionManager.GetMediaProjection((int)Result.Ok, MediaProjectionToken);
+
+                SetupVirtualDisplay();
+            }
+
+            _windowManager.AddView(_layout, _layoutParams);
+            Started = true;
+
+            return true;
+        }
+
+        public bool Stop()
+        {
+            if (!Started)
+            {
+                return false;
+            }
+
+            _windowManager.RemoveView(_layout);
+            Started = false;
+
+            return true;
+        }
+
         protected override void OnServiceConnected()
         {
+            Instance = this;
+
             Game.Impl = new AndroidImpl(this);
 
-            var wm = GetSystemService(WindowService).JavaCast<IWindowManager>();
+            _windowManager = GetSystemService(WindowService).JavaCast<IWindowManager>();
 
             _layout = new FrameLayout(this);
-            var lp = new WindowManagerLayoutParams
+            _layoutParams = new WindowManagerLayoutParams
             {
                 Type = WindowManagerTypes.AccessibilityOverlay,
                 Format = Format.Translucent,
@@ -50,41 +97,15 @@ namespace FateGrandAutomata
             var inflator = LayoutInflater.From(this);
             inflator.Inflate(Resource.Layout.global_fab_layout, _layout);
 
-            _broadcastReceiver = new FabServiceBroadcastReceiver();
-            var intentFilter = _broadcastReceiver.CreateIntentFilter();
-
-            RegisterReceiver(_broadcastReceiver, intentFilter);
-
-            _broadcastReceiver.ToggleService += () =>
-            {
-                if (_fabVisible)
-                {
-                    wm.RemoveView(_layout);
-                    _fabVisible = false;
-                }
-                else
-                {
-                    wm.AddView(_layout, lp);
-                    _fabVisible = true;
-                }
-            };
-
             _mediaProjectionManager = (MediaProjectionManager)GetSystemService(Context.MediaProjectionService);
 
             var metrics = new DisplayMetrics();
-            wm.DefaultDisplay.GetMetrics(metrics);
+            _windowManager.DefaultDisplay.GetMetrics(metrics);
             _screenDensity = (int)metrics.DensityDpi;
             _screenWidth = metrics.WidthPixels;
             _screenHeight = metrics.HeightPixels;
 
             _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 1);
-
-            _broadcastReceiver.MediaProjectionToken += Token =>
-            {
-                _mediaProjection = _mediaProjectionManager.GetMediaProjection((int) Result.Ok, Token);
-
-                SetupVirtualDisplay();
-            };
         }
 
         Bitmap AcquireLatestImage()
