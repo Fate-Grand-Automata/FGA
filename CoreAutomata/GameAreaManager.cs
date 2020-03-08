@@ -1,4 +1,4 @@
-﻿namespace FateGrandAutomata
+﻿namespace CoreAutomata
 {
     public static class GameAreaManager
     {
@@ -23,7 +23,7 @@
                     return _gameArea;
                 }
 
-                var window = Game.Impl.WindowSize;
+                var window = AutomataApi.WindowSize;
                 var region = new Region(0, 0, window.Width, window.Height);
 
                 if (!ImmersiveMode)

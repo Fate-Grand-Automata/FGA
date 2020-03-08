@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -9,13 +8,6 @@ namespace FateGrandAutomata
             ImageHeight = 720,
             ScriptWidth = 2560,
             ScriptHeight = 1440;
-
-        public static void Wait(double Seconds)
-        {
-            Thread.Sleep(TimeSpan.FromSeconds(Seconds));
-        }
-
-        public static IPlatformImpl Impl { get; set; }
 
         public static Region MenuScreenRegion { get; } = new Region(2100, 1200, 1000, 1000);
         public static Region ContinueRegion { get; } = new Region(1400, 1000, 600, 200);

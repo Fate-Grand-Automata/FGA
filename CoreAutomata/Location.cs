@@ -1,4 +1,4 @@
-﻿namespace FateGrandAutomata
+﻿namespace CoreAutomata
 {
     public class Location
     {
@@ -13,6 +13,6 @@
             this.Y = Y;
         }
 
-        public void Click() => Game.Impl.Click(this);
+        public void Click() => AutomataApi.Click(this);
     }
 }

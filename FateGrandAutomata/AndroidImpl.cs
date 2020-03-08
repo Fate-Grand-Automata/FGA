@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Android.AccessibilityServices;
 using Android.Content;
 using Android.Graphics;
@@ -7,7 +6,10 @@ using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using CoreAutomata;
 using Java.Interop;
+using Pattern = CoreAutomata.Pattern;
+using Region = CoreAutomata.Region;
 
 namespace FateGrandAutomata
 {
@@ -33,16 +35,6 @@ namespace FateGrandAutomata
             }
         }
 
-        public void UseSameSnapIn(Action Action)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T UseSameSnapIn<T>(Func<T> Action)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Scroll(Location Start, Location End)
         {
             const int Duration = 500;
@@ -55,16 +47,6 @@ namespace FateGrandAutomata
             gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, Duration));
             
             _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
-        }
-
-        public IEnumerable<Region> FindAll(Pattern Pattern)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Region> FindAll(Region Region, Pattern Pattern)
-        {
-            throw new NotImplementedException();
         }
 
         readonly Lazy<Handler> _handler = new Lazy<Handler>(() => new Handler(Looper.MainLooper));
@@ -93,17 +75,7 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
-        public void WaitVanish(Region Region, Pattern Image, int? Timeout = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Exists(Region Region, Pattern Image, int? Timeout = null, double? Similarity = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Pattern Save(Region Region)
+        public Pattern Screenshot(Region Region)
         {
             throw new NotImplementedException();
         }

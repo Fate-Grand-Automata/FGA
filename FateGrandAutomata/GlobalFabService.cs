@@ -10,6 +10,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.Accessibility;
 using Android.Widget;
+using CoreAutomata;
 using Java.Interop;
 
 namespace FateGrandAutomata
@@ -93,7 +94,7 @@ namespace FateGrandAutomata
         {
             Instance = this;
 
-            Game.Impl = new AndroidImpl(this);
+            AutomataApi.RegisterPlatform(new AndroidImpl(this));
 
             _windowManager = GetSystemService(WindowService).JavaCast<IWindowManager>();
 

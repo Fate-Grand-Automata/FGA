@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -87,7 +88,7 @@ namespace FateGrandAutomata
 
         bool SelectFirst()
         {
-            Game.Wait(1);
+            AutomataApi.Wait(1);
             Game.SupportFirstSupportClick.Click();
 
             var pattern = ImageLocator.SupportScreen;
@@ -95,17 +96,17 @@ namespace FateGrandAutomata
             // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
             if (Game.SupportScreenRegion.Exists(pattern))
             {
-                Game.Wait(2);
+                AutomataApi.Wait(2);
 
                 while (Game.SupportScreenRegion.Exists(pattern))
                 {
-                    Game.Wait(10);
+                    AutomataApi.Wait(10);
                     Game.SupportUpdateClick.Click();
-                    Game.Wait(1);
+                    AutomataApi.Wait(1);
                     Game.SupportUpdateYesClick.Click();
-                    Game.Wait(3);
+                    AutomataApi.Wait(3);
                     Game.SupportFirstSupportClick.Click();
-                    Game.Wait(1);
+                    AutomataApi.Wait(1);
                 }
             }
 
@@ -142,7 +143,7 @@ namespace FateGrandAutomata
                 return (SupportSearchResult.Found, support);
             }
 
-            return Game.Impl.UseSameSnapIn(PerformSearch);
+            return AutomataApi.UseSameSnapIn(PerformSearch);
         }
 
         bool SelectFriend()
@@ -174,18 +175,18 @@ namespace FateGrandAutomata
                 {
                     ScrollList();
                     ++numberOfSwipes;
-                    Game.Wait(0.3);
+                    AutomataApi.Wait(0.3);
                 }
 
                 else if (numberOfUpdates < Preferences.Support.MaxUpdates)
                 {
-                    Game.Impl.Toast("Support list will be updated in 3 seconds.");
-                    Game.Wait(3);
+                    AutomataApi.Toast("Support list will be updated in 3 seconds.");
+                    AutomataApi.Wait(3);
 
                     Game.SupportUpdateClick.Click();
-                    Game.Wait(1);
+                    AutomataApi.Wait(1);
                     Game.SupportUpdateYesClick.Click();
-                    Game.Wait(3);
+                    AutomataApi.Wait(3);
 
                     ++numberOfUpdates;
                     numberOfSwipes = 0;
@@ -245,14 +246,14 @@ namespace FateGrandAutomata
 
         void ScrollList()
         {
-            Game.Impl.Scroll(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick);
+            AutomataApi.Scroll(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick);
         }
 
         Region FindFriendName()
         {
             foreach (var friendName in _friendNameArray)
             {
-                foreach (var theFriend in Game.Impl.FindAll(Game.SupportFriendsRegion, ImageLocator.LoadSupportImagePattern(friendName)))
+                foreach (var theFriend in AutomataApi.FindAll(Game.SupportFriendsRegion, ImageLocator.LoadSupportImagePattern(friendName)))
                 {
                     return theFriend;
                 }
@@ -265,7 +266,7 @@ namespace FateGrandAutomata
         {
             foreach (var preferredServant in _preferredServantArray)
             {
-                foreach (var servant in Game.Impl.FindAll(Game.SupportListRegion, ImageLocator.LoadSupportImagePattern(preferredServant)))
+                foreach (var servant in AutomataApi.FindAll(Game.SupportListRegion, ImageLocator.LoadSupportImagePattern(preferredServant)))
                 {
                     yield return servant;
                 }
@@ -276,7 +277,7 @@ namespace FateGrandAutomata
         {
             foreach (var preferredCraftEssence in _preferredCraftEssenceTable)
             {
-                var craftEssences = Game.Impl.FindAll(SearchRegion, ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name));
+                var craftEssences = AutomataApi.FindAll(SearchRegion, ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name));
 
                 foreach (var craftEssence in craftEssences)
                 {
@@ -294,7 +295,7 @@ namespace FateGrandAutomata
         {
             var supportBound = new Region(76, 0, 2356, 428);
             var regionAnchor = ImageLocator.SupportRegionTool;
-            var regionArray = Game.Impl.FindAll(new Region(1670, 0, 90, 1440), regionAnchor);
+            var regionArray = AutomataApi.FindAll(new Region(1670, 0, 90, 1440), regionAnchor);
             var defaultRegion = supportBound;
 
             foreach (var testRegion in regionArray)
@@ -307,7 +308,7 @@ namespace FateGrandAutomata
                 }
             }
 
-            Game.Impl.Toast("Default Region being returned; file an issue on the github for this issue");
+            AutomataApi.Toast("Default Region being returned; file an issue on the github for this issue");
             return defaultRegion;
         }
 

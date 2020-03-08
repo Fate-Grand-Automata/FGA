@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FateGrandAutomata
+﻿namespace CoreAutomata
 {
     public class Region
     {
@@ -25,11 +23,11 @@ namespace FateGrandAutomata
                    && Y + H <= R.Y + R.H;
         }
 
-        public void WaitVanish(Pattern Image, int? Timeout = null) => Game.Impl.WaitVanish(this, Image, Timeout);
+        public void WaitVanish(Pattern Image, int? Timeout = null) => AutomataApi.WaitVanish(this, Image, Timeout);
 
-        public bool Exists(Pattern Image, int? Timeout = null, double? Similarity = null) => Game.Impl.Exists(this, Image, Timeout, Similarity);
+        public bool Exists(Pattern Image, int? Timeout = null, double? Similarity = null) => AutomataApi.Exists(this, Image, Timeout, Similarity);
 
-        public Pattern Save() => Game.Impl.Save(this);
+        public Pattern Save() => AutomataApi.Save(this);
 
         public void Click()
         {

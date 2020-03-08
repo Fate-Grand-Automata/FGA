@@ -1,4 +1,4 @@
-﻿namespace FateGrandAutomata
+﻿namespace CoreAutomata
 {
     public class Pattern
     {

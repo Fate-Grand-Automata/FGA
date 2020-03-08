@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -44,11 +45,11 @@ namespace FateGrandAutomata
                         break;
                 }
 
-                Game.Wait(1);
+                AutomataApi.Wait(1);
                 Game.StaminaOkClick.Click();
                 ++_stonesUsed;
 
-                Game.Wait(3);
+                AutomataApi.Wait(3);
             }
             else throw new Exception("AP ran out!");
         }
@@ -58,7 +59,7 @@ namespace FateGrandAutomata
         {
             Game.MenuStartQuestClick.Click();
 
-            Game.Wait(2);
+            AutomataApi.Wait(2);
 
             Game.MenuBoostItemClickArray[Preferences.BoostItemSelectionMode].Click();
 
@@ -67,12 +68,12 @@ namespace FateGrandAutomata
 
             if (Preferences.StorySkip)
             {
-                Game.Wait(10);
+                AutomataApi.Wait(10);
 
                 if (Game.MenuStorySkipRegion.Exists(ImageLocator.StorySkip))
                 {
                     Game.MenuStorySkipClick.Click();
-                    Game.Wait(0.5);
+                    AutomataApi.Wait(0.5);
                     Game.MenuStorySkipYesClick.Click();
                 }
             }
@@ -91,7 +92,7 @@ namespace FateGrandAutomata
 
             // Click uppermost quest
             Game.MenuSelectQuestClick.Click();
-            Game.Wait(1.5);
+            AutomataApi.Wait(1.5);
 
             // Auto refill
             while (Game.StaminaScreenRegion.Exists(ImageLocator.Stamina))
@@ -111,7 +112,7 @@ namespace FateGrandAutomata
         void Result()
         {
             // Validator document https://github.com/29988122/Fate-Grand-Order_Lua/wiki/In-Game-Result-Screen-Flow for detail.
-            Game.Impl.ContinueClick(Game.ResultNextClick, 55);
+            AutomataApi.ContinueClick(Game.ResultNextClick, 55);
 
             // Checking if there was a Bond CE reward
             if (Game.ResultCeRewardRegion.Exists(ImageLocator.Bond10Reward))
@@ -124,10 +125,10 @@ namespace FateGrandAutomata
                 Game.ResultCeRewardCloseClick.Click();
 
                 // Still need to proceed through reward screen.
-                Game.Impl.ContinueClick(Game.ResultNextClick, 35);
+                AutomataApi.ContinueClick(Game.ResultNextClick, 35);
             }
 
-            Game.Wait(5);
+            AutomataApi.Wait(5);
 
             // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
             if (Game.ResultFriendRequestRegion.Exists(ImageLocator.FriendRequest))
@@ -135,7 +136,7 @@ namespace FateGrandAutomata
                 Game.ResultFriendRequestRejectClick.Click();
             }
 
-            Game.Wait(1);
+            AutomataApi.Wait(1);
 
             // Only for JP currently. Searches for the Continue option after select Free Quests
             if (Preferences.GameServer == GameServer.Jp && Game.ContinueRegion.Exists(ImageLocator.Confirm))
@@ -147,7 +148,7 @@ namespace FateGrandAutomata
                 Game.ContinueClick.Click();
                 _battle.ResetState();
 
-                Game.Wait(1.5);
+                AutomataApi.Wait(1.5);
 
                 // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
                 while (Game.StaminaScreenRegion.Exists(ImageLocator.Stamina))
@@ -164,22 +165,22 @@ namespace FateGrandAutomata
                 if (Game.MenuStorySkipRegion.Exists(ImageLocator.StorySkip))
                 {
                     Game.MenuStorySkipClick.Click();
-                    Game.Wait(0.5);
+                    AutomataApi.Wait(0.5);
                     Game.MenuStorySkipYesClick.Click();
                 }
             }
 
-            Game.Wait(10);
+            AutomataApi.Wait(10);
 
             // Quest Completion reward. Exits the screen when it is presented.
             if (Game.ResultCeRewardRegion.Exists(ImageLocator.Bond10Reward))
             {
                 Game.ResultCeRewardCloseClick.Click();
-                Game.Wait(1);
+                AutomataApi.Wait(1);
                 Game.ResultCeRewardCloseClick.Click();
             }
 
-            Game.Wait(5);
+            AutomataApi.Wait(5);
 
             // 1st time quest reward screen, eg. Mana Prisms, Event CE, Materials, etc.
             if (Game.ResultQuestRewardRegion.Exists(ImageLocator.QuestReward))
@@ -208,7 +209,7 @@ namespace FateGrandAutomata
                 }
                 else if (_isContinuing == 0)
                 {
-                    Game.Wait(2.5);
+                    AutomataApi.Wait(2.5);
                     StartQuest();
                 }
             }
@@ -235,7 +236,7 @@ namespace FateGrandAutomata
             _battle.Init(_autoSkill, _card);
             _card.Init(_autoSkill, _battle);
 
-            Game.Impl.Toast("Will only select servant/danger enemy as noble phantasm target, unless specified using Skill Command. Please check github for further detail.");
+            AutomataApi.Toast("Will only select servant/danger enemy as noble phantasm target, unless specified using Skill Command. Please check github for further detail.");
         }
 
         public void Run()
@@ -255,7 +256,7 @@ namespace FateGrandAutomata
             // Loop through SCREENS until a Validator returns true/1
             while (true)
             {
-                var actor = Game.Impl.UseSameSnapIn(() =>
+                var actor = AutomataApi.UseSameSnapIn(() =>
                 {
                     return screens.Where(M => M.Validator())
                         .Select(M => M.Actor)
@@ -264,7 +265,7 @@ namespace FateGrandAutomata
 
                 actor?.Invoke();
 
-                Game.Wait(1);
+                AutomataApi.Wait(1);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -151,7 +152,7 @@ namespace FateGrandAutomata
                 return CardScore.Quick;
             }
 
-            Game.Impl.Toast($"Failed to determine Card type (X: {Region.X}, Y: {Region.Y}, W: {Region.W}, H: {Region.H})");
+            AutomataApi.Toast($"Failed to determine Card type (X: {Region.X}, Y: {Region.Y}, W: {Region.W}, H: {Region.H})");
 
             return CardScore.Buster;
         }
@@ -160,7 +161,7 @@ namespace FateGrandAutomata
         {
             var storagePerPriority = new Dictionary<CardScore, List<int>>();
 
-            Game.Impl.UseSameSnapIn(() =>
+            AutomataApi.UseSameSnapIn(() =>
             {
                 for (var cardSlot = 0; cardSlot < 5; ++cardSlot)
                 {

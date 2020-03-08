@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FateGrandAutomata", "FateGrandAutomata\FateGrandAutomata.csproj", "{C1A0FE33-86C6-43F6-98F7-B646650AD442}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FateGrandAutomata.Core", "FateGrandAutomata.Core\FateGrandAutomata.Core.csproj", "{7AAABEE9-B875-404E-9956-664884CA9A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FateGrandAutomata.Core", "FateGrandAutomata.Core\FateGrandAutomata.Core.csproj", "{7AAABEE9-B875-404E-9956-664884CA9A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreAutomata", "CoreAutomata\CoreAutomata.csproj", "{BD09E6D0-3625-4D4B-84B4-3548F660E2B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{7AAABEE9-B875-404E-9956-664884CA9A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AAABEE9-B875-404E-9956-664884CA9A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AAABEE9-B875-404E-9956-664884CA9A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD09E6D0-3625-4D4B-84B4-3548F660E2B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD09E6D0-3625-4D4B-84B4-3548F660E2B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD09E6D0-3625-4D4B-84B4-3548F660E2B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD09E6D0-3625-4D4B-84B4-3548F660E2B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -44,7 +45,7 @@ namespace FateGrandAutomata
             Game.BattleAttackClick.Click();
 
             // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
-            Game.Wait(1.5);
+            AutomataApi.Wait(1.5);
 
             HasClickedAttack = true;
         }
@@ -56,7 +57,7 @@ namespace FateGrandAutomata
             {
                 Game.BattleSkipDeathAnimationClick.Click();
 
-                Game.Wait(1);
+                AutomataApi.Wait(1);
             }
         }
 
@@ -72,7 +73,7 @@ namespace FateGrandAutomata
         {
             Game.BattleTargetClickArray[Index].Click();
 
-            Game.Wait(0.5);
+            AutomataApi.Wait(0.5);
 
             Game.BattleExtrainfoWindowCloseClick.Click();
 
@@ -108,8 +109,8 @@ namespace FateGrandAutomata
 
         public void PerformBattle()
         {
-            Game.Impl.UseSameSnapIn(OnTurnStarted);
-            Game.Wait(2);
+            AutomataApi.UseSameSnapIn(OnTurnStarted);
+            AutomataApi.Wait(2);
 
             if (Preferences.EnableAutoSkill)
             {
@@ -133,7 +134,7 @@ namespace FateGrandAutomata
                 SkipDeathAnimation();
             }
 
-            Game.Wait(2);
+            AutomataApi.Wait(2);
         }
 
         void OnTurnStarted()

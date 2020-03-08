@@ -6,4 +6,12 @@
     <LangVersion>8</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Structures\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreAutomata\CoreAutomata.csproj" />
+  </ItemGroup>
+
 </Project>

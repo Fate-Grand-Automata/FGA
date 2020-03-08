@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -53,7 +54,7 @@ namespace FateGrandAutomata
                 Battle.ClickAttack();
 
                 // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-                Game.Wait(2);
+                AutomataApi.Wait(2);
             }
 
             Location.Click();
@@ -63,7 +64,7 @@ namespace FateGrandAutomata
         {
             Game.BattleMasterSkillOpenClick.Click();
             
-            Game.Wait(0.3);
+            AutomataApi.Wait(0.3);
         }
 
         void CastMasterSkill(Location Location)
@@ -89,7 +90,7 @@ namespace FateGrandAutomata
                 Game.BattleSkillOkClick.Click();
             }
 
-            Game.Wait(0.3);
+            AutomataApi.Wait(0.3);
 
             ChangeArray(_startingMemberFunctionArray);
         }
@@ -105,7 +106,7 @@ namespace FateGrandAutomata
         {
             Location.Click();
 
-            Game.Wait(0.3);
+            AutomataApi.Wait(0.3);
 
             Game.BattleOrderChangeOkClick.Click();
 
@@ -123,7 +124,7 @@ namespace FateGrandAutomata
         {
             Location.Click();
 
-            Game.Wait(0.5);
+            AutomataApi.Wait(0.5);
 
             // Exit any extra menu
             Game.BattleExtrainfoWindowCloseClick.Click();
