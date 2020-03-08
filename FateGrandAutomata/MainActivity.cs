@@ -99,6 +99,7 @@ namespace FateGrandAutomata
                     .Show();
             }
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -109,6 +110,10 @@ namespace FateGrandAutomata
         const int REQUEST_MEDIA_PROJECTION = 1;
 
         MediaProjectionManager _mediaProjectionManager;
+
+        public void UpdateUiForBoundService() { }
+
+        public void UpdateUiForUnboundService() { }
     }
 }
 

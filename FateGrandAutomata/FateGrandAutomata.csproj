@@ -68,7 +68,10 @@
     <Compile Include="AndroidImpl.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FabServiceBroadcastReceiver.cs" />
+    <Compile Include="GlobalFabBinder.cs" />
     <Compile Include="GlobalFabService.cs" />
+    <Compile Include="GlobalFabServiceConnection.cs" />
+    <Compile Include="IGlobalFab.cs" />
     <Compile Include="ImageComparer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
