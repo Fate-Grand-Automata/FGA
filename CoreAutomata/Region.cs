@@ -7,6 +7,8 @@
         public int W { get; set; }
         public int H { get; set; }
 
+        public Location Location => new Location(X, Y);
+
         public Region(int X, int Y, int W, int H)
         {
             this.X = X;
@@ -23,11 +25,11 @@
                    && Y + H <= R.Y + R.H;
         }
 
-        public void WaitVanish(Pattern Image, int? Timeout = null) => AutomataApi.WaitVanish(this, Image, Timeout);
+        public void WaitVanish(IPattern Image, int? Timeout = null) => AutomataApi.WaitVanish(this, Image, Timeout);
 
-        public bool Exists(Pattern Image, int? Timeout = null, double? Similarity = null) => AutomataApi.Exists(this, Image, Timeout, Similarity);
+        public bool Exists(IPattern Image, int? Timeout = null, double? Similarity = null) => AutomataApi.Exists(this, Image, Timeout, Similarity);
 
-        public Pattern Save() => AutomataApi.Save(this);
+        public IPattern Save() => AutomataApi.Save(this);
 
         public void Click()
         {

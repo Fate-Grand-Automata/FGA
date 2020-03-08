@@ -13,7 +13,7 @@ namespace FateGrandAutomata
         readonly Battle _battle = new Battle();
         readonly AutoSkill _autoSkill = new AutoSkill();
 
-        int _stonesUsed = 0;
+        int _stonesUsed;
         int? _isContinuing = 0;
 
         void RefillStamina()

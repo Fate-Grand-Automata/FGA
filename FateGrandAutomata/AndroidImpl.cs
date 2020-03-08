@@ -1,15 +1,16 @@
 ﻿using System;
+using System.IO;
 using Android.AccessibilityServices;
 using Android.Content;
-using Android.Graphics;
 using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CoreAutomata;
 using Java.Interop;
-using Pattern = CoreAutomata.Pattern;
+using Path = Android.Graphics.Path;
 using Region = CoreAutomata.Region;
+using Size = CoreAutomata.Size;
 
 namespace FateGrandAutomata
 {
@@ -22,7 +23,7 @@ namespace FateGrandAutomata
             _accessibilityService = AccessibilityService;
         }
 
-        public (int Width, int Height) WindowSize
+        public Size WindowSize
         {
             get
             {
@@ -31,7 +32,7 @@ namespace FateGrandAutomata
 
                 wm.DefaultDisplay.GetMetrics(metrics);
 
-                return (metrics.WidthPixels, metrics.HeightPixels);
+                return new Size(metrics.WidthPixels, metrics.HeightPixels);
             }
         }
 
@@ -75,7 +76,12 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
-        public Pattern Screenshot(Region Region)
+        public IPattern Screenshot(Region Region, Size? TargetSize = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPattern LoadPattern(Stream Stream, Size? TargetSize = null)
         {
             throw new NotImplementedException();
         }

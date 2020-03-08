@@ -161,7 +161,7 @@ namespace FateGrandAutomata
             }
         }
 
-        Pattern _generatedStageCounterSnapshot;
+        IPattern _generatedStageCounterSnapshot;
 
         bool DidStageChange()
         {
