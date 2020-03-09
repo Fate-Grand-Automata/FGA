@@ -14,6 +14,28 @@ namespace CoreAutomata
             _platformImpl = Impl;
         }
 
+        public static double MinSimilarity { get; set; } = 0.7;
+
+        static bool UsePreviousSnap { get; set; }
+
+        static IPattern _previousPattern;
+
+        static void Snapshot()
+        {
+            _previousPattern = _platformImpl.Screenshot();
+            UsePreviousSnap = true;
+        }
+
+        static IPattern GetScreenshot()
+        {
+            if (UsePreviousSnap)
+            {
+                return _previousPattern;
+            }
+
+            return _previousPattern = _platformImpl.Screenshot();
+        }
+
         public static IPattern LoadPattern(Stream Stream)
         {
             return _platformImpl.LoadPattern(Stream);
@@ -38,11 +60,28 @@ namespace CoreAutomata
             throw new NotImplementedException();
         }
 
-        public static IPattern Save(Region Region) => _platformImpl.Screenshot().Crop(Region.Transform());
+        public static IPattern Save(Region Region) => GetScreenshot().Crop(Region.Transform());
 
-        public static void UseSameSnapIn(Action Action) => throw new NotImplementedException();
+        public static void UseSameSnapIn(Action Action) => UseSameSnapIn(() =>
+        {
+            Action();
+            return 0;
+        });
 
-        public static T UseSameSnapIn<T>(Func<T> Action) => throw new NotImplementedException();
+        public static T UseSameSnapIn<T>(Func<T> Action)
+        {
+            Snapshot();
+            UsePreviousSnap = true;
+
+            try
+            {
+                return Action();
+            }
+            finally
+            {
+                UsePreviousSnap = false;
+            }
+        }
 
         public static void Scroll(Location Start, Location End) => _platformImpl.Scroll(Start.Transform(), End.Transform());
 
