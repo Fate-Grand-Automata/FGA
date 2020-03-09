@@ -7,6 +7,56 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\En\art.png" />
+    <None Remove="images\En\battle.png" />
+    <None Remove="images\En\bond.png" />
+    <None Remove="images\En\buster.png" />
+    <None Remove="images\En\ce_reward.png" />
+    <None Remove="images\En\friend.png" />
+    <None Remove="images\En\friendrequest.png" />
+    <None Remove="images\En\limitBroken.png" />
+    <None Remove="images\En\lottery.png" />
+    <None Remove="images\En\menu.png" />
+    <None Remove="images\En\questreward.png" />
+    <None Remove="images\En\quick.png" />
+    <None Remove="images\En\resist.png" />
+    <None Remove="images\En\result.png" />
+    <None Remove="images\En\stamina.png" />
+    <None Remove="images\En\StopGifts.png" />
+    <None Remove="images\En\storyskip.png" />
+    <None Remove="images\En\support_screen.png" />
+    <None Remove="images\En\target_danger.png" />
+    <None Remove="images\En\target_servant.png" />
+    <None Remove="images\En\weak.png" />
+    <None Remove="images\Support\support_region_tool.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="images\En\art.png" />
+    <EmbeddedResource Include="images\En\battle.png" />
+    <EmbeddedResource Include="images\En\bond.png" />
+    <EmbeddedResource Include="images\En\buster.png" />
+    <EmbeddedResource Include="images\En\ce_reward.png" />
+    <EmbeddedResource Include="images\En\friend.png" />
+    <EmbeddedResource Include="images\En\friendrequest.png" />
+    <EmbeddedResource Include="images\En\limitBroken.png" />
+    <EmbeddedResource Include="images\En\lottery.png" />
+    <EmbeddedResource Include="images\En\menu.png" />
+    <EmbeddedResource Include="images\En\questreward.png" />
+    <EmbeddedResource Include="images\En\quick.png" />
+    <EmbeddedResource Include="images\En\resist.png" />
+    <EmbeddedResource Include="images\En\result.png" />
+    <EmbeddedResource Include="images\En\stamina.png" />
+    <EmbeddedResource Include="images\En\StopGifts.png" />
+    <EmbeddedResource Include="images\En\storyskip.png" />
+    <EmbeddedResource Include="images\En\support_screen.png" />
+    <EmbeddedResource Include="images\En\target_danger.png" />
+    <EmbeddedResource Include="images\En\target_servant.png" />
+    <EmbeddedResource Include="images\En\weak.png" />
+    <EmbeddedResource Include="images\Support\support_region_tool.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Structures\" />
   </ItemGroup>
 
