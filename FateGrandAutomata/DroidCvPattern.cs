@@ -59,7 +59,7 @@ namespace FateGrandAutomata
 
         public int Height => Mat.Height();
 
-        public IEnumerable<Region> FindMatches(IPattern Template, double Similarity)
+        public IEnumerable<Match> FindMatches(IPattern Template, double Similarity)
         {
             var result = new Mat();
 
@@ -70,9 +70,12 @@ namespace FateGrandAutomata
             {
                 for (var y = 0; y < result.Height(); ++y)
                 {
-                    if (result.Get(x, y)[0] >= Similarity)
+                    var score = result.Get(x, y)[0];
+
+                    if (score >= Similarity)
                     {
-                        yield return new Region(x, y, Template.Width, Template.Height);
+                        var location = new Region(x, y, Template.Width, Template.Height);
+                        yield return new Match(location, score);
                     }
                 }
             }

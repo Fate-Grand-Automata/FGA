@@ -13,7 +13,7 @@
         {
             var gameArea = GameAreaManager.GameArea;
 
-            var (compareByWidth, pixels) = GameAreaManager.CompareDimension;
+            var (compareByWidth, pixels) = GameAreaManager.ScriptDimension;
 
             if (pixels == -1)
             {

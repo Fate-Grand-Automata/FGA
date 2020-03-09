@@ -8,7 +8,7 @@ namespace CoreAutomata
 
         bool IsMatch(IPattern Template, double Similarity);
 
-        IEnumerable<Region> FindMatches(IPattern Template, double Similarity);
+        IEnumerable<Match> FindMatches(IPattern Template, double Similarity);
 
         int Width { get; }
 
