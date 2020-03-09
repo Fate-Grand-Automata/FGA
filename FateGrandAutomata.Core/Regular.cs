@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using CoreAutomata;
 
 namespace FateGrandAutomata
@@ -238,7 +240,26 @@ namespace FateGrandAutomata
             AutomataApi.Toast("Will only select servant/danger enemy as noble phantasm target, unless specified using Skill Command. Please check github for further detail.");
         }
 
+        readonly ManualResetEventSlim _continue = new ManualResetEventSlim(false);
+
+        Task _loopTask;
+
         public void Run()
+        {
+            _continue.Set();
+
+            if (_loopTask == null)
+            {
+                _loopTask = Task.Factory.StartNew(Loop);
+            }
+        }
+
+        public void Stop()
+        {
+            _continue.Reset();
+        }
+
+        void Loop()
         {
             Init();
 
@@ -255,6 +276,8 @@ namespace FateGrandAutomata
             // Loop through SCREENS until a Validator returns true/1
             while (true)
             {
+                _continue.Wait();
+
                 var actor = AutomataApi.UseSameSnapIn(() =>
                 {
                     return screens.Where(M => M.Validator())

@@ -95,6 +95,8 @@ namespace FateGrandAutomata
             return true;
         }
 
+        Regular _regular = new Regular();
+
         void StartScript()
         {
             if (!ServiceStarted)
@@ -108,7 +110,7 @@ namespace FateGrandAutomata
             }
 
             _scriptCtrlBtn.Text = "STOP";
-            AutomataApi.Toast("Started");
+            _regular.Run();
 
             _scriptStarted = true;
         }
@@ -120,7 +122,7 @@ namespace FateGrandAutomata
             }
 
             _scriptCtrlBtn.Text = "START";
-            AutomataApi.Toast("Stopped");
+            _regular.Stop();
 
             _scriptStarted = false;
         }
