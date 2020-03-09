@@ -7,6 +7,10 @@
         public int W { get; set; }
         public int H { get; set; }
 
+        public int R => X + W;
+
+        public int B => Y + H;
+
         public Location Location => new Location(X, Y);
 
         public Region(int X, int Y, int W, int H)

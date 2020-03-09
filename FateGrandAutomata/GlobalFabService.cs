@@ -12,6 +12,8 @@ using Android.Views.Accessibility;
 using Android.Widget;
 using CoreAutomata;
 using Java.Interop;
+using Org.Opencv.Core;
+using Org.Opencv.Imgcodecs;
 
 namespace FateGrandAutomata
 {
@@ -120,24 +122,20 @@ namespace FateGrandAutomata
             _screenWidth = metrics.WidthPixels;
             _screenHeight = metrics.HeightPixels;
 
-            _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 1);
+            _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, ImageFormatType.Jpeg, 2);
         }
 
-        Bitmap AcquireLatestImage()
+        public IPattern AcquireLatestImage()
         {
             using var img = _imageReader.AcquireLatestImage();
 
-            var planes = img.GetPlanes();
-            var buffer = planes[0].Buffer;
-            var pixelStride = planes[0].PixelStride;
-            var rowStride = planes[0].RowStride;
-            var rowPadding = rowStride - pixelStride * _screenWidth;
+            var byteBuffer = img.GetPlanes()[0].Buffer;
+            var data = new byte[byteBuffer.Remaining()];
+            byteBuffer.Get(data);
 
-            var bmp = Bitmap.CreateBitmap(_screenWidth + rowPadding / pixelStride, _screenHeight, Bitmap.Config.Argb8888);
+            var mat = Imgcodecs.Imdecode(new MatOfByte(data), Imgcodecs.CvLoadImageUnchanged);
 
-            bmp.CopyPixelsFromBuffer(buffer);
-
-            return bmp;
+            return new DroidCvPattern(mat);
         }
 
         void SetupVirtualDisplay()

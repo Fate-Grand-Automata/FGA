@@ -14,8 +14,8 @@ namespace CoreAutomata
 
         void ContinueClick(Location Location, int Times, int Timeout = -1);
 
-        IPattern Screenshot(Region Region, Size? TargetSize = null);
+        IPattern Screenshot();
 
-        IPattern LoadPattern(Stream Stream, Size? TargetSize = null);
+        IPattern LoadPattern(Stream Stream);
     }
 }

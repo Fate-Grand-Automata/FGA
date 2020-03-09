@@ -76,14 +76,16 @@ namespace FateGrandAutomata
             throw new NotImplementedException();
         }
 
-        public IPattern Screenshot(Region Region, Size? TargetSize = null)
+        public IPattern Screenshot()
         {
-            throw new NotImplementedException();
+            return GlobalFabService
+                .Instance
+                .AcquireLatestImage();
         }
 
-        public IPattern LoadPattern(Stream Stream, Size? TargetSize = null)
+        public IPattern LoadPattern(Stream Stream)
         {
-            throw new NotImplementedException();
+            return new DroidCvPattern(Stream);
         }
     }
 }

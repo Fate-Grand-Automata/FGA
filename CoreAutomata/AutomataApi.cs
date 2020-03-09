@@ -38,7 +38,7 @@ namespace CoreAutomata
             throw new NotImplementedException();
         }
 
-        public static IPattern Save(Region Region) => _platformImpl.Screenshot(Region.Transform());
+        public static IPattern Save(Region Region) => _platformImpl.Screenshot().Crop(Region.Transform());
 
         public static void UseSameSnapIn(Action Action) => throw new NotImplementedException();
 
