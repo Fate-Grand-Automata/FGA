@@ -16,26 +16,6 @@ namespace CoreAutomata
 
         public static double MinSimilarity { get; set; } = 0.7;
 
-        static bool UsePreviousSnap { get; set; }
-
-        static IPattern _previousPattern;
-
-        static void Snapshot()
-        {
-            _previousPattern = _platformImpl.Screenshot();
-            UsePreviousSnap = true;
-        }
-
-        static IPattern GetScreenshot()
-        {
-            if (UsePreviousSnap)
-            {
-                return _previousPattern;
-            }
-
-            return _previousPattern = _platformImpl.Screenshot();
-        }
-
         public static IPattern LoadPattern(Stream Stream)
         {
             return _platformImpl.LoadPattern(Stream);
@@ -60,7 +40,7 @@ namespace CoreAutomata
             throw new NotImplementedException();
         }
 
-        public static IPattern Save(Region Region) => GetScreenshot().Crop(Region.Transform());
+        public static IPattern Save(Region Region) => ScreenshotManager.GetScreenshot().Crop(Region.Transform());
 
         public static void UseSameSnapIn(Action Action) => UseSameSnapIn(() =>
         {
@@ -70,8 +50,8 @@ namespace CoreAutomata
 
         public static T UseSameSnapIn<T>(Func<T> Action)
         {
-            Snapshot();
-            UsePreviousSnap = true;
+            ScreenshotManager.Snapshot();
+            ScreenshotManager.UsePreviousSnap = true;
 
             try
             {
@@ -79,7 +59,7 @@ namespace CoreAutomata
             }
             finally
             {
-                UsePreviousSnap = false;
+                ScreenshotManager.UsePreviousSnap = false;
             }
         }
 

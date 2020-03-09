@@ -41,5 +41,13 @@
 
             center.Click();
         }
+
+        public static Region operator *(Region Region, double Scale)
+        {
+            return new Region((int)(Region.X * Scale),
+                (int)(Region.Y * Scale),
+                (int)(Region.W * Scale),
+                (int)(Region.H * Scale));
+        }
     }
 }

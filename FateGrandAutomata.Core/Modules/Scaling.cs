@@ -36,13 +36,13 @@ namespace FateGrandAutomata
             int ScreenHeight,
             double ScaleRate)
         {
-            var scriptScaledToScreen = Scale(ScriptWidth, ScriptHeight, ScaleRate);
+            var (scaledW, scaledH) = Scale(ScriptWidth, ScriptHeight, ScaleRate);
 
             return new Region(
-                CalculateBorderThickness(ScreenWidth, scriptScaledToScreen.Width), // Offset (X)
-                CalculateBorderThickness(ScreenHeight, scriptScaledToScreen.Height), // Offset (Y)
-                scriptScaledToScreen.Width, // Game Width (without borders)
-                scriptScaledToScreen.Height // Game Height (without borders)
+                CalculateBorderThickness(ScreenWidth, scaledW), // Offset (X)
+                CalculateBorderThickness(ScreenHeight, scaledH), // Offset (Y)
+                scaledW, // Game Width (without borders)
+                scaledH // Game Height (without borders)
             );
         }
 
@@ -59,24 +59,24 @@ namespace FateGrandAutomata
             GameAreaManager.AutoGameArea = true;
 
             var gameWithBorders = GameAreaManager.GameArea;
-            var scaleMethod = DecideScaleMethod(ScriptWidth, ScriptHeight,
+            var (scaleByWidth, scaleRate) = DecideScaleMethod(ScriptWidth, ScriptHeight,
                 gameWithBorders.W, gameWithBorders.H);
             var gameWithoutBorders = CalculateGameAreaWithoutBorders(ScriptWidth, ScriptHeight,
                 gameWithBorders.W, gameWithBorders.H,
-                scaleMethod.Rate);
+                scaleRate);
             var gameWithoutBordersAndNotch = ApplyNotchOffset(gameWithoutBorders, gameWithBorders.X);
 
             GameAreaManager.GameArea = gameWithoutBordersAndNotch;
 
-            if (scaleMethod.ByWidth)
+            if (scaleByWidth)
             {
-                GameAreaManager.ScriptDimension = (true, ScriptWidth);
-                GameAreaManager.CompareDimension = (true, ImageWidth);
+                GameAreaManager.ScriptDimension = new CompareSettings(true, ScriptWidth);
+                GameAreaManager.CompareDimension = new CompareSettings(true, ImageWidth);
             }
             else
             {
-                GameAreaManager.ScriptDimension = (false, ScriptHeight);
-                GameAreaManager.CompareDimension = (false, ImageHeight);
+                GameAreaManager.ScriptDimension = new CompareSettings(false, ScriptHeight);
+                GameAreaManager.CompareDimension = new CompareSettings(false, ImageHeight);
             }
         }
     }

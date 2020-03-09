@@ -44,11 +44,11 @@
         /// <summary>
         /// Dimensions at which script was written. Compare dimension can be smaller for faster image comparison.
         /// </summary>
-        public static (bool CompareByWidth, int Pixels) ScriptDimension { get; set; } = (true, -1);
+        public static CompareSettings ScriptDimension { get; set; }
 
         /// <summary>
         /// Image Matching dimension. All images, regions, locations are scaled to this to keep the script device independent.
         /// </summary>
-        public static (bool CompareByWidth, int Pixels) CompareDimension { get; set; } = (true, -1);
+        public static CompareSettings CompareDimension { get; set; }
     }
 }
