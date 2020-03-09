@@ -33,7 +33,7 @@ namespace FateGrandAutomata
                 var data = new byte[byteBuffer.Remaining()];
                 byteBuffer.Get(data);
 
-                var mat = new Mat(_latestImage.Height, _latestImage.Width, CvType.Cv8uc4);
+                var mat = new Mat(_latestImage.Height, _latestImage.Width, CvType.Cv8u);
 
                 mat.Put(0, 0, data);
 

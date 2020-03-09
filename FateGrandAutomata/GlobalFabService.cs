@@ -162,7 +162,7 @@ namespace FateGrandAutomata
                 else StartScript();
             };
 
-            _mediaProjectionManager = (MediaProjectionManager)GetSystemService(Context.MediaProjectionService);
+            _mediaProjectionManager = (MediaProjectionManager)GetSystemService(MediaProjectionService);
 
             var metrics = new DisplayMetrics();
             _windowManager.DefaultDisplay.GetMetrics(metrics);
