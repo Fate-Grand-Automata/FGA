@@ -9,7 +9,6 @@ using Android.Widget;
 using CoreAutomata;
 using Java.Interop;
 using Path = Android.Graphics.Path;
-using Region = CoreAutomata.Region;
 using Size = CoreAutomata.Size;
 
 namespace FateGrandAutomata

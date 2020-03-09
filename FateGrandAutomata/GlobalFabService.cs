@@ -32,6 +32,7 @@ namespace FateGrandAutomata
         MediaProjection _mediaProjection;
         VirtualDisplay _virtualDisplay;
         ImageReader _imageReader;
+        ImgListener _imgListener;
 
         public static GlobalFabService Instance { get; private set; }
 
@@ -123,19 +124,13 @@ namespace FateGrandAutomata
             _screenHeight = metrics.HeightPixels;
 
             _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, ImageFormatType.Jpeg, 2);
+            _imgListener = new ImgListener();
+            _imageReader.SetOnImageAvailableListener(_imgListener, null);
         }
 
         public IPattern AcquireLatestImage()
         {
-            using var img = _imageReader.AcquireLatestImage();
-
-            var byteBuffer = img.GetPlanes()[0].Buffer;
-            var data = new byte[byteBuffer.Remaining()];
-            byteBuffer.Get(data);
-
-            var mat = Imgcodecs.Imdecode(new MatOfByte(data), Imgcodecs.CvLoadImageUnchanged);
-
-            return new DroidCvPattern(mat);
+            return _imgListener.AcquirePattern();
         }
 
         void SetupVirtualDisplay()

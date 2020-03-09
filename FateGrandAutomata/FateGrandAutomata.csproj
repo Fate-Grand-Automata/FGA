@@ -68,6 +68,7 @@
     <Compile Include="AndroidImpl.cs" />
     <Compile Include="DroidCvPattern.cs" />
     <Compile Include="GlobalFabService.cs" />
+    <Compile Include="ImgListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
