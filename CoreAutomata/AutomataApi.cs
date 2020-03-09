@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
@@ -30,17 +31,66 @@ namespace CoreAutomata
 
         public static void Click(Location Location) => _platformImpl.Click(Location.Transform());
 
-        public static void WaitVanish(Region Region, IPattern Image, int? Timeout = null)
+        static bool ExistsNow(Region Region, IPattern Image, double? Similarity)
         {
-            throw new NotImplementedException();
+            return ScreenshotManager.GetScreenshot()
+                .Crop(Region.TransformToImage())
+                .IsMatch(Image, Similarity ?? MinSimilarity);
+        }
+
+        static readonly Stopwatch Stopwatch = new Stopwatch();
+
+        static bool CheckConditionLoop(Func<bool> Condition, double? Timeout)
+        {
+            Stopwatch.Restart();
+
+            try
+            {
+                while (true)
+                {
+                    var scanStartTimestamp = Stopwatch.Elapsed;
+
+                    if (Condition.Invoke())
+                    {
+                        return true;
+                    }
+
+                    if (Timeout == null || Stopwatch.Elapsed.TotalSeconds > Timeout)
+                    {
+                        break;
+                    }
+
+                    var scanIntervalMs = 1000 / ScanRate;
+                    var timeToWaitMs = (scanStartTimestamp + TimeSpan.FromMilliseconds(scanIntervalMs) - Stopwatch.Elapsed).TotalMilliseconds;
+
+                    if (timeToWaitMs > 0)
+                    {
+                        Wait(timeToWaitMs);
+                    }
+                }
+            }
+            finally
+            {
+                Stopwatch.Reset();
+            }
+
+            return false;
+        }
+
+        public static bool WaitVanish(Region Region, IPattern Image, int? Timeout = null, double? Similarity = null)
+        {
+            return CheckConditionLoop(() => !ExistsNow(Region, Image, Similarity), Timeout);
         }
 
         public static bool Exists(Region Region, IPattern Image, int? Timeout = null, double? Similarity = null)
         {
-            throw new NotImplementedException();
+            return CheckConditionLoop(() => ExistsNow(Region, Image, Similarity), Timeout);
         }
 
-        public static IPattern Save(Region Region) => ScreenshotManager.GetScreenshot().Crop(Region.Transform());
+        public static double ScanRate { get; set; } = 3;
+
+        public static IPattern Save(Region Region) => ScreenshotManager.GetScreenshot()
+            .Crop(Region.TransformToImage());
 
         public static void UseSameSnapIn(Action Action) => UseSameSnapIn(() =>
         {
@@ -65,14 +115,17 @@ namespace CoreAutomata
 
         public static void Scroll(Location Start, Location End) => _platformImpl.Scroll(Start.Transform(), End.Transform());
 
-        public static IEnumerable<Region> FindAll(IPattern Pattern)
+        public static IEnumerable<Match> FindAll(IPattern Pattern, double? Similarity = null)
         {
-            throw new NotImplementedException();
+            return ScreenshotManager.GetScreenshot()
+                .FindMatches(Pattern, Similarity ?? MinSimilarity);
         }
 
-        public static IEnumerable<Region> FindAll(Region Region, IPattern Pattern)
+        public static IEnumerable<Match> FindAll(Region Region, IPattern Pattern, double? Similarity = null)
         {
-            throw new NotImplementedException();
+            return ScreenshotManager.GetScreenshot()
+                .Crop(Region.TransformToImage())
+                .FindMatches(Pattern, Similarity ?? MinSimilarity);
         }
 
         public static void Toast(string Msg) => _platformImpl.Toast(Msg);
