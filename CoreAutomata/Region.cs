@@ -1,4 +1,6 @@
-﻿namespace CoreAutomata
+﻿using System;
+
+namespace CoreAutomata
 {
     public class Region
     {
@@ -44,10 +46,11 @@
 
         public static Region operator *(Region Region, double Scale)
         {
-            return new Region((int)(Region.X * Scale),
-                (int)(Region.Y * Scale),
-                (int)(Region.W * Scale),
-                (int)(Region.H * Scale));
+            return new Region(
+                (int)Math.Round(Region.X * Scale),
+                (int)Math.Round(Region.Y * Scale),
+                (int)Math.Round(Region.W * Scale),
+                (int)Math.Round(Region.H * Scale));
         }
     }
 }
