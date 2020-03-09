@@ -1,7 +1,6 @@
 ﻿using Android.Media;
 using CoreAutomata;
 using Org.Opencv.Core;
-using Org.Opencv.Imgcodecs;
 
 namespace FateGrandAutomata
 {
@@ -34,10 +33,9 @@ namespace FateGrandAutomata
                 var data = new byte[byteBuffer.Remaining()];
                 byteBuffer.Get(data);
 
-                var mat = Imgcodecs.Imdecode(new MatOfByte(data), Imgcodecs.CvLoadImageUnchanged);
+                var mat = new Mat(_latestImage.Width, _latestImage.Height, CvType.Cv8uc4);
 
-                _latestImage.Close();
-                _latestImage = null;
+                mat.Put(0, 0, data);
 
                 return new DroidCvPattern(mat);
             }

@@ -170,7 +170,7 @@ namespace FateGrandAutomata
             _screenWidth = metrics.WidthPixels;
             _screenHeight = metrics.HeightPixels;
 
-            _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, ImageFormatType.Jpeg, 2);
+            _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
             _imgListener = new ImgListener();
             _imageReader.SetOnImageAvailableListener(_imgListener, null);
         }

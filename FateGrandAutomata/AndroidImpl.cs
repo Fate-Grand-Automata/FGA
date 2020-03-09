@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using CoreAutomata;
 using Java.Interop;
+using Org.Opencv.Android;
 using Path = Android.Graphics.Path;
 using Size = CoreAutomata.Size;
 
@@ -20,6 +21,8 @@ namespace FateGrandAutomata
         public AndroidImpl(AccessibilityService AccessibilityService)
         {
             _accessibilityService = AccessibilityService;
+
+            OpenCVLoader.InitDebug();
         }
 
         public Size WindowSize

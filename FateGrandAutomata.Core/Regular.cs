@@ -218,7 +218,7 @@ namespace FateGrandAutomata
 
         void PsaDialogue()
         {
-            throw new NotImplementedException();
+            AutomataApi.Toast("PsaDialogue");
         }
 
         // Initialize Aspect Ratio adjustment for different sized screens,ask for input from user for Autoskill plus confirming Apple/Stone usage
@@ -244,13 +244,21 @@ namespace FateGrandAutomata
 
         Task _loopTask;
 
-        public void Run()
+        public async void Run()
         {
             _continue.Set();
 
             if (_loopTask == null)
             {
                 _loopTask = Task.Factory.StartNew(Loop);
+                try
+                {
+                    await _loopTask;
+                }
+                catch (Exception E)
+                {
+                    Console.WriteLine(E);
+                }
             }
         }
 
