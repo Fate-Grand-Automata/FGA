@@ -68,7 +68,7 @@ namespace FateGrandAutomata
             {
                 var instance = GlobalFabService.Instance;
 
-                if (instance.Started)
+                if (instance.ServiceStarted)
                 {
                     instance.Stop();
                 }

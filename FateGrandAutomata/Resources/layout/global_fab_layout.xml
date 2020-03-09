@@ -8,7 +8,7 @@
               tools:showIn="@layout/global_fab_layout">
   <Button
     android:id="@+id/power"
-    android:text="Hello"
+    android:text="START"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"/>
 </LinearLayout>

@@ -12,8 +12,6 @@ using Android.Views.Accessibility;
 using Android.Widget;
 using CoreAutomata;
 using Java.Interop;
-using Org.Opencv.Core;
-using Org.Opencv.Imgcodecs;
 
 namespace FateGrandAutomata
 {
@@ -39,7 +37,7 @@ namespace FateGrandAutomata
         public override bool OnUnbind(Intent intent)
         {
             Instance = null;
-            Started = false;
+            ServiceStarted = false;
 
             _virtualDisplay.Release();
             _virtualDisplay = null;
@@ -58,11 +56,13 @@ namespace FateGrandAutomata
 
         public bool HasMediaProjectionToken => _mediaProjection != null;
 
-        public bool Started { get; private set; }
+        public bool ServiceStarted { get; private set; }
+
+        bool _scriptStarted;
 
         public bool Start(Intent MediaProjectionToken = null)
         {
-            if (Started)
+            if (ServiceStarted)
             {
                 return false;
             }
@@ -75,20 +75,20 @@ namespace FateGrandAutomata
             }
 
             _windowManager.AddView(_layout, _layoutParams);
-            Started = true;
+            ServiceStarted = true;
 
             return true;
         }
 
         public bool Stop()
         {
-            if (!Started)
+            if (!ServiceStarted)
             {
                 return false;
             }
 
             _windowManager.RemoveView(_layout);
-            Started = false;
+            ServiceStarted = false;
 
             return true;
         }
@@ -114,6 +114,26 @@ namespace FateGrandAutomata
 
             var inflator = LayoutInflater.From(this);
             inflator.Inflate(Resource.Layout.global_fab_layout, _layout);
+
+            var scriptCtrlBtn = _layout.FindViewById<Button>(Resource.Id.power);
+
+            scriptCtrlBtn.Click += (S, E) =>
+            {
+                if (_scriptStarted)
+                {
+                    scriptCtrlBtn.Text = "START";
+                    AutomataApi.Toast("Stopped");
+
+                    _scriptStarted = false;
+                }
+                else
+                {
+                    scriptCtrlBtn.Text = "STOP";
+                    AutomataApi.Toast("Started");
+
+                    _scriptStarted = true;
+                }
+            };
 
             _mediaProjectionManager = (MediaProjectionManager)GetSystemService(Context.MediaProjectionService);
 
