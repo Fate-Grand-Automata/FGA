@@ -38,7 +38,7 @@ namespace FateGrandAutomata
 
         public IPattern Crop(Region Region)
         {
-            var result = new Mat(Mat, new Rect(new Point(Region.X, Region.Y), new Org.Opencv.Core.Size(Region.W, Region.H)));
+            var result = new Mat(Mat, new Rect(Region.X, Region.Y, Region.W, Region.H));
 
             return new DroidCvPattern(result);
         }
