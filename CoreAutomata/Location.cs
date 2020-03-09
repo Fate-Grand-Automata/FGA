@@ -1,4 +1,6 @@
-﻿namespace CoreAutomata
+﻿using System;
+
+namespace CoreAutomata
 {
     public class Location
     {
@@ -14,5 +16,10 @@
         }
 
         public void Click() => AutomataApi.Click(this);
+
+        public static Location operator *(Location Location, double Scale)
+        {
+            return new Location((int)Math.Round(Location.X * Scale), (int)Math.Round(Location.Y * Scale));
+        }
     }
 }

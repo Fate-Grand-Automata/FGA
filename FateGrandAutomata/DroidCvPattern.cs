@@ -38,7 +38,19 @@ namespace FateGrandAutomata
 
         public IPattern Crop(Region Region)
         {
-            var result = new Mat(Mat, new Rect(Region.X, Region.Y, Region.W, Region.H));
+            var rect = new Rect(Region.X, Region.Y, Region.W, Region.H);
+
+            if (rect.X + rect.Width > Width)
+            {
+                rect.X = Width - rect.Width;
+            }
+
+            if (rect.Y + rect.Height > Height)
+            {
+                rect.Y = Height - rect.Height;
+            }
+
+            var result = new Mat(Mat, rect);
 
             return new DroidCvPattern(result);
         }

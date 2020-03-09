@@ -2,61 +2,76 @@
 {
     static class TransformationExtensions
     {
-        static double ScreenToImageScale()
+        static double? ScreenToImageScale()
         {
             var targetDimensions = GameAreaManager.CompareDimension ?? GameAreaManager.ScriptDimension;
 
             if (targetDimensions == null)
             {
-                return 1;
+                return null;
             }
 
             var gameArea = GameAreaManager.GameArea;
 
-            var scale = targetDimensions.CompareByWidth
-                ? targetDimensions.Pixels / (double)gameArea.W
-                : targetDimensions.Pixels / (double)gameArea.H;
+            if (targetDimensions.CompareByWidth)
+            {
+                if (targetDimensions.Pixels == gameArea.W)
+                {
+                    return null;
+                }
 
-            return scale;
+                return targetDimensions.Pixels / (double) gameArea.W;
+            }
+
+            if (targetDimensions.Pixels == gameArea.H)
+            {
+                return null;
+            }
+
+            return targetDimensions.Pixels / (double) gameArea.H;
         }
 
         public static IPattern Transform(this IPattern Pattern)
         {
             var scale = ScreenToImageScale();
 
-            return Pattern.Resize(new Size(Pattern.Width, Pattern.Height) * scale);
+            return scale == null
+                ? Pattern
+                : Pattern.Resize(new Size(Pattern.Width, Pattern.Height) * scale.Value);
         }
 
         public static Location Transform(this Location Location)
         {
-            return new Region(Location.X, Location.Y, 0, 0)
-                .Transform()
-                .Location;
-        }
+            var scale = ScriptToScreenScale();
 
-        public static Location TransformToImage(this Location Location)
-        {
-            return new Region(Location.X, Location.Y, 0, 0)
-                .TransformToImage()
-                .Location;
+            return scale == null
+                ? Location
+                : Location * scale.Value;
         }
 
         public static Region TransformToImage(this Region Region)
         {
             // Script -> Screen
-            Region = Region.Transform();
+            var scale1 = ScriptToScreenScale();
 
             // Screen -> Image
-            var scale = ScreenToImageScale();
+            var scale2 = ScreenToImageScale();
+
+            if (scale1 == null && scale2 == null)
+            {
+                return Region;
+            }
+
+            var scale = (scale1 ?? 1) * (scale2 ?? 1);
 
             return Region * scale;
         }
 
-        public static Region Transform(this Region Region)
+        static double? ScriptToScreenScale()
         {
             if (GameAreaManager.ScriptDimension == null)
             {
-                return Region;
+                return null;
             }
 
             var sourceRegion = GameAreaManager.ScriptDimension;
@@ -64,11 +79,22 @@
 
             var pixels = sourceRegion.Pixels;
 
-            var scale = sourceRegion.CompareByWidth
-                ? targetRegion.W / (double)pixels
-                : targetRegion.H / (double)pixels;
+            if (sourceRegion.CompareByWidth)
+            {
+                if (targetRegion.W == pixels)
+                {
+                    return null;
+                }
 
-            return Region * scale;
+                return targetRegion.W / (double) pixels;
+            }
+
+            if (targetRegion.H == pixels)
+            {
+                return null;
+            }
+
+            return targetRegion.H / (double) pixels;
         }
     }
 }
