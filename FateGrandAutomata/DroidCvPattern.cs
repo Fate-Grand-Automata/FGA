@@ -17,10 +17,11 @@ namespace FateGrandAutomata
 
         public DroidCvPattern(Stream Stream)
         {
-            using var ms = new MemoryStream();
+            var buffer = new byte[Stream.Length];
+            using var ms = new MemoryStream(buffer);
             Stream.CopyTo(ms);
 
-            var raw = new MatOfByte(ms.ToArray());
+            using var raw = new MatOfByte(buffer);
 
             Mat = Imgcodecs.Imdecode(raw, 0);
         }
@@ -59,12 +60,12 @@ namespace FateGrandAutomata
         {
             var result = new Mat();
 
-            // max is used for tmccorr
-            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmCcorr);
+            // min is used for tmsqdiffnormed
+            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmSqdiffNormed);
 
             var minMaxLocResult = Core.MinMaxLoc(result);
 
-            return minMaxLocResult.MaxVal >= Similarity;
+            return minMaxLocResult.MinVal <= (1 - Similarity);
         }
 
         public int Width => Mat.Width();

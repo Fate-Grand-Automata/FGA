@@ -11,7 +11,7 @@ namespace FateGrandAutomata
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = $"{nameof(FateGrandAutomata)}.{FilePath}";
 
-            var stream = assembly.GetManifestResourceStream(resourceName);
+            using var stream = assembly.GetManifestResourceStream(resourceName);
 
             return AutomataApi.LoadPattern(stream);
         }

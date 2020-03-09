@@ -17,7 +17,7 @@ namespace CoreAutomata
             ScreenshotManager.RegisterPlatform(Impl);
         }
 
-        public static double MinSimilarity { get; set; } = 0.7;
+        public static double MinSimilarity { get; set; } = 0.85;
 
         public static IPattern LoadPattern(Stream Stream)
         {
