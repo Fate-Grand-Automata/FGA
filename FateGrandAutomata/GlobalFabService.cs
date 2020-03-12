@@ -95,7 +95,7 @@ namespace FateGrandAutomata
             return true;
         }
 
-        Regular _regular = new Regular();
+        Regular _regular;
 
         void StartScript()
         {
@@ -108,6 +108,8 @@ namespace FateGrandAutomata
             {
                 return;
             }
+
+            _regular = new Regular();
 
             _scriptCtrlBtn.Text = "STOP";
             _regular.Run();
@@ -123,6 +125,8 @@ namespace FateGrandAutomata
 
             _scriptCtrlBtn.Text = "START";
             _regular.Stop();
+
+            _regular = null;
 
             _scriptStarted = false;
         }

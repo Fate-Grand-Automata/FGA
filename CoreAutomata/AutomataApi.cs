@@ -10,6 +10,11 @@ namespace CoreAutomata
     {
         static IPlatformImpl _platformImpl;
 
+        static AutomataApi()
+        {
+            DebugMsgReceived += Console.WriteLine;
+        }
+
         public static void RegisterPlatform(IPlatformImpl Impl)
         {
             _platformImpl = Impl;
@@ -136,5 +141,13 @@ namespace CoreAutomata
         {
             _platformImpl.ContinueClick(Location.Transform(), Times, Timeout);
         }
+
+        [Conditional("DEBUG")]
+        public static void WriteDebug(string Msg)
+        {
+            DebugMsgReceived?.Invoke(Msg);
+        }
+
+        public static event Action<string> DebugMsgReceived;
     }
 }

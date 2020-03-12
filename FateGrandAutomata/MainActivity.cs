@@ -9,6 +9,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using CoreAutomata;
 using AlertDialog = Android.App.AlertDialog;
 
 namespace FateGrandAutomata
@@ -27,6 +28,13 @@ namespace FateGrandAutomata
 
             var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
+
+            var debugMsgTextBox = FindViewById<TextView>(Resource.Id.debug_msg);
+            AutomataApi.DebugMsgReceived += Msg =>
+            {
+                debugMsgTextBox.Append("\n");
+                debugMsgTextBox.Append(Msg);
+            };
             
             _mediaProjectionManager = (MediaProjectionManager) GetSystemService(MediaProjectionService);
         }

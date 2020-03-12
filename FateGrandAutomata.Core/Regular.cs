@@ -257,7 +257,7 @@ namespace FateGrandAutomata
                 }
                 catch (Exception E)
                 {
-                    Console.WriteLine(E);
+                    AutomataApi.WriteDebug(E.ToString());
                 }
             }
         }
