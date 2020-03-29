@@ -15,5 +15,7 @@ namespace CoreAutomata
         int Height { get; }
 
         IPattern Crop(Region Region);
+
+        void Save(string Filename);
     }
 }

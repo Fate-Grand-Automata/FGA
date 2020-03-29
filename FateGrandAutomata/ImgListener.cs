@@ -1,4 +1,5 @@
-﻿using Android.Media;
+﻿using Android.Graphics;
+using Android.Media;
 using CoreAutomata;
 using Org.Opencv.Core;
 
@@ -29,13 +30,22 @@ namespace FateGrandAutomata
                     return null;
                 }
 
-                var byteBuffer = _latestImage.GetPlanes()[0].Buffer;
-                var data = new byte[byteBuffer.Remaining()];
-                byteBuffer.Get(data);
+                var width = _latestImage.Width;
+                var height = _latestImage.Height;
 
-                var mat = new Mat(_latestImage.Height, _latestImage.Width, CvType.Cv8u);
+                var planes = _latestImage.GetPlanes();
+                var buffer = planes[0].Buffer;
 
-                mat.Put(0, 0, data);
+                var pixelStride = planes[0].PixelStride;
+                var rowStride = planes[0].RowStride;
+                var rowPadding = rowStride - pixelStride * width;
+
+                var bitmap = Bitmap.CreateBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.Argb8888);
+                bitmap.CopyPixelsFromBuffer(buffer);
+                bitmap = Bitmap.CreateBitmap(bitmap, 0, 0, width, height);
+                
+                var mat = new Mat();
+                Org.Opencv.Android.Utils.BitmapToMat(bitmap, mat);
 
                 return new DroidCvPattern(mat);
             }

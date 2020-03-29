@@ -1,12 +1,17 @@
 ﻿using System;
+using Android;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Media.Projection;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
 using Android.Support.V7.App;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CoreAutomata;
@@ -30,10 +35,14 @@ namespace FateGrandAutomata
             fab.Click += FabOnClick;
 
             var debugMsgTextBox = FindViewById<TextView>(Resource.Id.debug_msg);
+            debugMsgTextBox.MovementMethod = new ScrollingMovementMethod();
             AutomataApi.DebugMsgReceived += Msg =>
             {
-                debugMsgTextBox.Append("\n");
-                debugMsgTextBox.Append(Msg);
+                RunOnUiThread(() =>
+                {
+                    debugMsgTextBox.Append("\n");
+                    debugMsgTextBox.Append(Msg);
+                });
             };
             
             _mediaProjectionManager = (MediaProjectionManager) GetSystemService(MediaProjectionService);
@@ -72,6 +81,14 @@ namespace FateGrandAutomata
 
         void FabOnClick(object sender, EventArgs eventArgs)
         {
+            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != Permission.Granted)
+            {
+                ActivityCompat.RequestPermissions(
+                    this,
+                    new[] { Manifest.Permission.WriteExternalStorage },
+                    0);
+            }
+
             if (GlobalFabService.Instance != null)
             {
                 var instance = GlobalFabService.Instance;

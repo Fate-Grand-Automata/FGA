@@ -18,5 +18,7 @@ namespace CoreAutomata
         {
             return new Size((int)Math.Round(Size.Width * Scale), (int)Math.Round(Size.Height * Scale));
         }
+
+        public override string ToString() => $"{Width}x{Height}";
     }
 }

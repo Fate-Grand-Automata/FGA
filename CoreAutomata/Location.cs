@@ -21,5 +21,7 @@ namespace CoreAutomata
         {
             return new Location((int)Math.Round(Location.X * Scale), (int)Math.Round(Location.Y * Scale));
         }
+
+        public override string ToString() => $"({X}, {Y})";
     }
 }

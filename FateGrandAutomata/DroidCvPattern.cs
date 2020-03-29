@@ -23,7 +23,7 @@ namespace FateGrandAutomata
 
             using var raw = new MatOfByte(buffer);
 
-            Mat = Imgcodecs.Imdecode(raw, 0);
+            Mat = Imgcodecs.Imdecode(raw, Imgcodecs.CvLoadImageUnchanged);
         }
 
         public Mat Mat { get; }
@@ -56,6 +56,11 @@ namespace FateGrandAutomata
             return new DroidCvPattern(result);
         }
 
+        public void Save(string Filename)
+        {
+            Imgcodecs.Imwrite(Filename, Mat);
+        }
+
         public bool IsMatch(IPattern Template, double Similarity)
         {
             var result = new Mat();
@@ -64,6 +69,8 @@ namespace FateGrandAutomata
             Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmSqdiffNormed);
 
             var minMaxLocResult = Core.MinMaxLoc(result);
+
+            AutomataApi.WriteDebug($"Similarity: {minMaxLocResult.MinVal} <= {1 - Similarity}");
 
             return minMaxLocResult.MinVal <= (1 - Similarity);
         }

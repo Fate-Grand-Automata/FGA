@@ -75,7 +75,9 @@ namespace FateGrandAutomata
 
         public void ContinueClick(Location Location, int Times, int Timeout = -1)
         {
-            throw new NotImplementedException();
+            Click(Location);
+
+            AutomataApi.WriteDebug($"{nameof(ContinueClick)} not implemented");
         }
 
         public IPattern Screenshot()
