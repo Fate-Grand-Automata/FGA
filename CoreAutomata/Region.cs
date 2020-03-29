@@ -53,6 +53,6 @@ namespace CoreAutomata
                 (int)Math.Round(Region.H * Scale));
         }
 
-        public override string ToString() => $"({X}, {Y}) ({W}x{H})";
+        public override string ToString() => $"({X}, {Y}) {W}x{H}";
     }
 }

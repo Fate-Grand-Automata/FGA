@@ -12,7 +12,7 @@ namespace CoreAutomata
 
         static AutomataApi()
         {
-            DebugMsgReceived += Console.WriteLine;
+            DebugMsgReceived += Msg => Console.WriteLine($"DBG: {Msg}");
         }
 
         public static void RegisterPlatform(IPlatformImpl Impl)
@@ -34,14 +34,49 @@ namespace CoreAutomata
             Thread.Sleep(TimeSpan.FromSeconds(Seconds));
         }
 
-        public static Size WindowSize => _platformImpl.WindowSize;
+        public static Size WindowSize
+        {
+            get
+            {
+                var size = _platformImpl.WindowSize;
 
-        public static void Click(Location Location) => _platformImpl.Click(Location.Transform());
+                WriteDebug($"Query Window Size: {size}");
+
+                return size;
+            }
+        }
+
+        public static void Click(Location Location)
+        {
+            var trLoc = Location.Transform();
+
+            WriteDebug($"Clicking: {Location} -> {trLoc}");
+
+            _platformImpl.Click(trLoc);
+        }
+
+        static int n = 4;
 
         static bool ExistsNow(Region Region, IPattern Image, double? Similarity)
         {
-            return ScreenshotManager.GetScreenshot()
-                .Crop(Region.TransformToImage())
+            var sshot = ScreenshotManager.GetScreenshot();
+
+            WriteDebug($"ScreenShot: {sshot.Width}x{sshot.Height}");
+
+            WriteDebug($"{Region} -> {Region.TransformToImage()}");
+
+            Region = Region.TransformToImage();
+
+            sshot = sshot.Crop(Region);
+
+            WriteDebug($"Cropped: {sshot.Width}x{sshot.Height}");
+
+            if (n-- > 0)
+            {
+                sshot.Save($"/storage/emulated/0/Pictures/img{n + 1}.png");
+            }
+
+            return sshot
                 .IsMatch(Image, Similarity ?? MinSimilarity);
         }
 
