@@ -1,18 +1,53 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Android.Graphics;
+using Android.Media;
 using CoreAutomata;
 using Org.Opencv.Core;
 using Org.Opencv.Imgcodecs;
 using Org.Opencv.Imgproc;
+using Rect = Org.Opencv.Core.Rect;
+using Region = CoreAutomata.Region;
 using Size = CoreAutomata.Size;
+using Stream = System.IO.Stream;
 
 namespace FateGrandAutomata
 {
     public class DroidCvPattern : IPattern
     {
-        public DroidCvPattern(Mat Mat)
+        DroidCvPattern(Mat Mat)
         {
             this.Mat = Mat;
+        }
+
+        public DroidCvPattern(Image Image) : this(MatFromImage(Image))
+        {
+        }
+
+        static Mat MatFromImage(Image Image)
+        {
+            var width = Image.Width;
+            var height = Image.Height;
+
+            var planes = Image.GetPlanes();
+            var buffer = planes[0].Buffer;
+
+            var pixelStride = planes[0].PixelStride;
+            var rowStride = planes[0].RowStride;
+            var rowPadding = rowStride - pixelStride * width;
+
+            var bitmap = Bitmap.CreateBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.Argb8888);
+            bitmap.CopyPixelsFromBuffer(buffer);
+            bitmap = Bitmap.CreateBitmap(bitmap, 0, 0, width, height);
+
+            using var mat = new Mat();
+            Org.Opencv.Android.Utils.BitmapToMat(bitmap, mat);
+
+            var cvtMat = new Mat();
+
+            Imgproc.CvtColor(mat, cvtMat, Imgproc.ColorBgra2bgr);
+
+            return cvtMat;
         }
 
         public DroidCvPattern(Stream Stream)
@@ -23,7 +58,7 @@ namespace FateGrandAutomata
 
             using var raw = new MatOfByte(buffer);
 
-            Mat = Imgcodecs.Imdecode(raw, Imgcodecs.CvLoadImageUnchanged);
+            Mat = Imgcodecs.Imdecode(raw, Imgcodecs.CvLoadImageColor);
         }
 
         public Mat Mat { get; }
@@ -65,14 +100,13 @@ namespace FateGrandAutomata
         {
             var result = new Mat();
 
-            // min is used for tmsqdiffnormed
-            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmSqdiffNormed);
+            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmCcoeffNormed);
 
             var minMaxLocResult = Core.MinMaxLoc(result);
 
-            AutomataApi.WriteDebug($"Similarity: {minMaxLocResult.MinVal} <= {1 - Similarity}");
+            AutomataApi.WriteDebug($"Similarity: {minMaxLocResult.MaxVal} >= {Similarity}");
 
-            return minMaxLocResult.MinVal <= (1 - Similarity);
+            return minMaxLocResult.MaxVal >= Similarity;
         }
 
         public int Width => Mat.Width();
@@ -84,7 +118,7 @@ namespace FateGrandAutomata
             var result = new Mat();
 
             // max is used for tmccoeff
-            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmCcoeff);
+            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmCcoeffNormed);
 
             for (var x = 0; x < result.Width(); ++x)
             {

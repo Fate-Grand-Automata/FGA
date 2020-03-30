@@ -6,9 +6,9 @@
 
         public static bool SkillConfirmation { get; set; }
 
-        public static bool EnableAutoSkill { get; set; }
+        public static bool EnableAutoSkill { get; set; } = true;
 
-        public static string SkillCommand { get; set; } = "";
+        public static string SkillCommand { get; set; } = "4,#,f5,#,i6";
 
         public static string BattleCardPriority { get; set; } = "BAQ";
 
@@ -33,7 +33,7 @@
 
             public static string PreferredServants { get; set; }
 
-            public static string PreferredCEs { get; set; }
+            public static string PreferredCEs { get; set; } = "*mona_lisa.png";
 
             public static bool FriendsOnly { get; set; }
 
@@ -41,9 +41,9 @@
 
             public static int MaxUpdates { get; set; } = 3;
 
-            public static SupportSelectionMode SelectionMode { get; set; }
+            public static SupportSelectionMode SelectionMode { get; set; } = SupportSelectionMode.Preferred;
 
-            public static SupportSelectionMode FallbackTo { get; set; }
+            public static SupportSelectionMode FallbackTo { get; set; } = SupportSelectionMode.First;
         }
 
         public static class Refill

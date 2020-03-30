@@ -28,6 +28,7 @@
     <None Remove="images\En\target_danger.png" />
     <None Remove="images\En\target_servant.png" />
     <None Remove="images\En\weak.png" />
+    <None Remove="images\Support\mona_lisa.png" />
     <None Remove="images\Support\support_region_tool.png" />
   </ItemGroup>
 
@@ -53,6 +54,7 @@
     <EmbeddedResource Include="images\En\target_danger.png" />
     <EmbeddedResource Include="images\En\target_servant.png" />
     <EmbeddedResource Include="images\En\weak.png" />
+    <EmbeddedResource Include="images\Support\mona_lisa.png" />
     <EmbeddedResource Include="images\Support\support_region_tool.png" />
   </ItemGroup>
 
