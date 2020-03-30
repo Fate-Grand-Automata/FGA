@@ -98,11 +98,11 @@ namespace FateGrandAutomata
 
         public bool IsMatch(IPattern Template, double Similarity)
         {
-            var result = new Mat();
+            using var result = new Mat();
 
             Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmCcoeffNormed);
 
-            var minMaxLocResult = Core.MinMaxLoc(result);
+            using var minMaxLocResult = Core.MinMaxLoc(result);
 
             AutomataApi.WriteDebug($"Similarity: {minMaxLocResult.MaxVal} >= {Similarity}");
 
@@ -115,23 +115,27 @@ namespace FateGrandAutomata
 
         public IEnumerable<Match> FindMatches(IPattern Template, double Similarity)
         {
-            var result = new Mat();
+            using var result = new Mat();
 
             // max is used for tmccoeff
             Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmCcoeffNormed);
 
-            for (var x = 0; x < result.Width(); ++x)
-            {
-                for (var y = 0; y < result.Height(); ++y)
-                {
-                    var score = result.Get(x, y)[0];
+            Imgproc.Threshold(result, result, 0.1, 1, Imgproc.ThreshTozero);
 
-                    if (score >= Similarity)
-                    {
-                        var location = new Region(x, y, Template.Width, Template.Height);
-                        yield return new Match(location, score);
-                    }
+            while (true)
+            {
+                using var minMaxLocResult = Core.MinMaxLoc(result);
+                var score = minMaxLocResult.MaxVal;
+
+                if (score >= Similarity)
+                {
+                    var loc = minMaxLocResult.MaxLoc;
+                    var location = new Region((int)loc.X, (int)loc.Y, Template.Width, Template.Height);
+                    yield return new Match(location, score);
+
+                    Imgproc.FloodFill(result, null, loc, new Scalar(0));
                 }
+                else break;
             }
         }
     }
