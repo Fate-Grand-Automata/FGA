@@ -61,22 +61,9 @@ namespace CoreAutomata
         {
             var sshot = ScreenshotManager.GetScreenshot();
 
-            WriteDebug($"ScreenShot: {sshot.Width}x{sshot.Height}");
+            WriteDebug($"[{sshot.Width}x{sshot.Height}] @ [{Region} -> {Region.TransformToImage()}]");
 
-            WriteDebug($"{Region} -> {Region.TransformToImage()}");
-
-            Region = Region.TransformToImage();
-
-            sshot = sshot.Crop(Region);
-
-            WriteDebug($"Cropped: {sshot.Width}x{sshot.Height}");
-
-            if (n-- > 0)
-            {
-                sshot.Save($"/storage/emulated/0/Pictures/img{n + 1}.png");
-            }
-
-            return sshot
+            return sshot.Crop(Region.TransformToImage())
                 .IsMatch(Image, Similarity ?? MinSimilarity);
         }
 

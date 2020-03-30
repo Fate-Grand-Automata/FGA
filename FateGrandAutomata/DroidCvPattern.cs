@@ -45,7 +45,7 @@ namespace FateGrandAutomata
 
             var cvtMat = new Mat();
 
-            Imgproc.CvtColor(mat, cvtMat, Imgproc.ColorBgra2bgr);
+            Imgproc.CvtColor(mat, cvtMat, Imgproc.ColorRgba2bgr);
 
             return cvtMat;
         }

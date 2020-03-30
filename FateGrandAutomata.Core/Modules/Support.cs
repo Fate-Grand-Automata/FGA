@@ -20,7 +20,10 @@ namespace FateGrandAutomata
         {
             static IEnumerable<string> Split(string Str)
             {
-                foreach (var s in Str.Split(','))
+                if (Str == null)
+                    yield break;
+
+                foreach (var s in Str.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                 {
                     var val = s.Trim();
 
@@ -34,13 +37,13 @@ namespace FateGrandAutomata
             // Friend names
             foreach (var friend in Split(Preferences.Support.FriendNames))
             {
-                _friendNameArray.Add(friend.Trim());
+                _friendNameArray.Add(friend);
             }
 
             // Servants
             foreach (var servant in Split(Preferences.Support.PreferredServants))
             {
-                _preferredServantArray.Add(servant.Trim());
+                _preferredServantArray.Add(servant);
             }
 
             // Craft essences

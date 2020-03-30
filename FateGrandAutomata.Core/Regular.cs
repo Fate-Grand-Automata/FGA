@@ -237,6 +237,8 @@ namespace FateGrandAutomata
             _battle.Init(_autoSkill, _card);
             _card.Init(_autoSkill, _battle);
 
+            _support.Init();
+
             AutomataApi.Toast("Will only select servant/danger enemy as noble phantasm target, unless specified using Skill Command. Please check github for further detail.");
         }
 
