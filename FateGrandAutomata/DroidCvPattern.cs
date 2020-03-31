@@ -36,12 +36,12 @@ namespace FateGrandAutomata
             var rowStride = planes[0].RowStride;
             var rowPadding = rowStride - pixelStride * width;
 
-            var bitmap = Bitmap.CreateBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.Argb8888);
+            using var bitmap = Bitmap.CreateBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.Argb8888);
             bitmap.CopyPixelsFromBuffer(buffer);
-            bitmap = Bitmap.CreateBitmap(bitmap, 0, 0, width, height);
+            using var correctedBitmap = Bitmap.CreateBitmap(bitmap, 0, 0, width, height);
 
             using var mat = new Mat();
-            Org.Opencv.Android.Utils.BitmapToMat(bitmap, mat);
+            Org.Opencv.Android.Utils.BitmapToMat(correctedBitmap, mat);
 
             var cvtMat = new Mat();
 
@@ -62,6 +62,11 @@ namespace FateGrandAutomata
         }
 
         public Mat Mat { get; }
+
+        public void Dispose()
+        {
+            Mat.Dispose();
+        }
 
         public IPattern Resize(Size Size)
         {

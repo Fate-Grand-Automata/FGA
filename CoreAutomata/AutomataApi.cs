@@ -130,7 +130,6 @@ namespace CoreAutomata
         public static T UseSameSnapIn<T>(Func<T> Action)
         {
             ScreenshotManager.Snapshot();
-            ScreenshotManager.UsePreviousSnap = true;
 
             try
             {

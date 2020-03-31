@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CoreAutomata
 {
-    public interface IPattern
+    public interface IPattern : IDisposable
     {
         IPattern Resize(Size Size);
 

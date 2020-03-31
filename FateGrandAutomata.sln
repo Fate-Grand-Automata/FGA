@@ -7,7 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FateGrandAutomata", "FateGr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FateGrandAutomata.Core", "FateGrandAutomata.Core\FateGrandAutomata.Core.csproj", "{7AAABEE9-B875-404E-9956-664884CA9A07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreAutomata", "CoreAutomata\CoreAutomata.csproj", "{BD09E6D0-3625-4D4B-84B4-3548F660E2B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreAutomata", "CoreAutomata\CoreAutomata.csproj", "{BD09E6D0-3625-4D4B-84B4-3548F660E2B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0587DADB-30FF-48C8-98A4-433708094282}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
