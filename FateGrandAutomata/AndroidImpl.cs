@@ -40,16 +40,19 @@ namespace FateGrandAutomata
 
         public void Scroll(Location Start, Location End)
         {
-            const int Duration = 500;
+            const int delay = 500;
+            const int duration = 1000;
 
             var swipePath = new Path();
             swipePath.MoveTo(Start.X, Start.Y);
             swipePath.LineTo(End.X, End.Y);
             
             var gestureBuilder = new GestureDescription.Builder();
-            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, Duration));
+            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, delay, duration));
             
             _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
+
+            AutomataApi.Wait(2);
         }
 
         readonly Lazy<Handler> _handler = new Lazy<Handler>(() => new Handler(Looper.MainLooper));
@@ -62,15 +65,18 @@ namespace FateGrandAutomata
 
         public void Click(Location Location)
         {
-            const int Duration = 1;
+            const int delay = 1000;
+            const int duration = 1;
 
             var swipePath = new Path();
             swipePath.MoveTo(Location.X, Location.Y);
 
             var gestureBuilder = new GestureDescription.Builder();
-            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, Duration));
+            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, delay, duration));
 
             _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
+
+            AutomataApi.Wait(1.5);
         }
 
         public void ContinueClick(Location Location, int Times, int Timeout = -1)

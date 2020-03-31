@@ -138,7 +138,8 @@ namespace FateGrandAutomata
                     var location = new Region((int)loc.X, (int)loc.Y, Template.Width, Template.Height);
                     yield return new Match(location, score);
 
-                    Imgproc.FloodFill(result, null, loc, new Scalar(0));
+                    using var mask = new Mat();
+                    Imgproc.FloodFill(result, mask, loc, new Scalar(0));
                 }
                 else break;
             }

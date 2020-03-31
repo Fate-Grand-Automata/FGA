@@ -8,6 +8,7 @@ namespace FateGrandAutomata
         readonly object _syncLock = new object();
 
         Image _latestImage;
+        IPattern _lastestPattern;
 
         public void OnImageAvailable(ImageReader Reader)
         {
@@ -16,6 +17,7 @@ namespace FateGrandAutomata
                 _latestImage?.Close();
 
                 _latestImage = Reader.AcquireLatestImage();
+                _lastestPattern = null;
             }
         }
 
@@ -28,7 +30,7 @@ namespace FateGrandAutomata
                     return null;
                 }
 
-                return new DroidCvPattern(_latestImage);
+                return _lastestPattern ??= new DroidCvPattern(_latestImage);
             }
         }
     }
