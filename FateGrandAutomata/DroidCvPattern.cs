@@ -125,8 +125,6 @@ namespace FateGrandAutomata
 
             Imgproc.Threshold(result, result, 0.1, 1, Imgproc.ThreshTozero);
 
-            AutomataApi.WriteDebug("Begin Find");
-
             while (true)
             {
                 using var minMaxLocResult = Core.MinMaxLoc(result);
@@ -136,8 +134,6 @@ namespace FateGrandAutomata
                 {
                     var loc = minMaxLocResult.MaxLoc;
                     var region = new Region((int)loc.X, (int)loc.Y, Template.Width, Template.Height);
-
-                    AutomataApi.WriteDebug($"{region}: {score}");
 
                     yield return new Match(region, score);
 

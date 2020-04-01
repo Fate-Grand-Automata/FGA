@@ -15,7 +15,11 @@ using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CoreAutomata;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 using AlertDialog = Android.App.AlertDialog;
+using DialogFragment = Android.Support.V4.App.DialogFragment;
+using View = Android.Views.View;
 
 namespace FateGrandAutomata
 {
@@ -27,6 +31,8 @@ namespace FateGrandAutomata
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+
+            Forms.Init(this, savedInstanceState);
 
             var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -73,10 +79,25 @@ namespace FateGrandAutomata
             var id = item.ItemId;
             if (id == Resource.Id.action_settings)
             {
+                OpenSettings();
                 return true;
             }
 
             return base.OnOptionsItemSelected(item);
+        }
+
+        void OpenSettings()
+        {
+            new DlgFrgmnt().Show(SupportFragmentManager, nameof(DlgFrgmnt));
+        }
+
+        class DlgFrgmnt : DialogFragment
+        {
+            public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+            {
+                var settingsPage = new SettingsPage().CreateSupportFragment(Context);
+                return settingsPage.OnCreateView(inflater, container, savedInstanceState);
+            }
         }
 
         void FabOnClick(object sender, EventArgs eventArgs)
