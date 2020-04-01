@@ -109,8 +109,6 @@ namespace FateGrandAutomata
 
             using var minMaxLocResult = Core.MinMaxLoc(result);
 
-            AutomataApi.WriteDebug($"Similarity: {minMaxLocResult.MaxVal} >= {Similarity}");
-
             return minMaxLocResult.MaxVal >= Similarity;
         }
 
@@ -127,6 +125,8 @@ namespace FateGrandAutomata
 
             Imgproc.Threshold(result, result, 0.1, 1, Imgproc.ThreshTozero);
 
+            AutomataApi.WriteDebug("Begin Find");
+
             while (true)
             {
                 using var minMaxLocResult = Core.MinMaxLoc(result);
@@ -135,8 +135,11 @@ namespace FateGrandAutomata
                 if (score >= Similarity)
                 {
                     var loc = minMaxLocResult.MaxLoc;
-                    var location = new Region((int)loc.X, (int)loc.Y, Template.Width, Template.Height);
-                    yield return new Match(location, score);
+                    var region = new Region((int)loc.X, (int)loc.Y, Template.Width, Template.Height);
+
+                    AutomataApi.WriteDebug($"{region}: {score}");
+
+                    yield return new Match(region, score);
 
                     using var mask = new Mat();
                     Imgproc.FloodFill(result, mask, loc, new Scalar(0));

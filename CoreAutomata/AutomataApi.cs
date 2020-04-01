@@ -34,36 +34,14 @@ namespace CoreAutomata
             Thread.Sleep(TimeSpan.FromSeconds(Seconds));
         }
 
-        public static Size WindowSize
-        {
-            get
-            {
-                var size = _platformImpl.WindowSize;
+        public static Size WindowSize => _platformImpl.WindowSize;
 
-                WriteDebug($"Query Window Size: {size}");
-
-                return size;
-            }
-        }
-
-        public static void Click(Location Location)
-        {
-            var trLoc = Location.Transform();
-
-            WriteDebug($"Clicking: {Location} -> {trLoc}");
-
-            _platformImpl.Click(trLoc);
-        }
-
-        static int n = 4;
+        public static void Click(Location Location) => _platformImpl.Click(Location.Transform());
 
         static bool ExistsNow(Region Region, IPattern Image, double? Similarity)
         {
-            var sshot = ScreenshotManager.GetScreenshot();
-
-            WriteDebug($"[{sshot.Width}x{sshot.Height}] @ [{Region} -> {Region.TransformToImage()}]");
-
-            return sshot.Crop(Region.TransformToImage())
+            return ScreenshotManager.GetScreenshot()
+                .Crop(Region.TransformToImage())
                 .IsMatch(Image, Similarity ?? MinSimilarity);
         }
 
