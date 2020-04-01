@@ -242,63 +242,62 @@ namespace FateGrandAutomata
             AutomataApi.Toast("Will only select servant/danger enemy as noble phantasm target, unless specified using Skill Command. Please check github for further detail.");
         }
 
-        readonly ManualResetEventSlim _continue = new ManualResetEventSlim(false);
+        Thread _loopThread;
 
-        Task _loopTask;
-
-        public async void Run()
+        public void Run()
         {
-            _continue.Set();
-
-            if (_loopTask == null)
+            if (_loopThread == null)
             {
-                _loopTask = Task.Factory.StartNew(Loop);
-                try
-                {
-                    await _loopTask;
-                }
-                catch (Exception E)
-                {
-                    AutomataApi.WriteDebug(E.ToString());
-                }
+                _loopThread = new Thread(Loop);
+                _loopThread.Start();
             }
         }
 
         public void Stop()
         {
-            _continue.Reset();
+            _loopThread?.Abort();
+        }
+
+        static bool LogError(Exception E)
+        {
+            AutomataApi.WriteDebug(E.ToString());
+
+            return false;
         }
 
         void Loop()
         {
-            Init();
-
-            // SCREENS represents list of Validators and Actors
-            // When Validator returns true/1, perform the Actor
-            var screens = new (Func<bool> Validator, Action Actor)[]
+            try
             {
-                (_battle.IsIdle, _battle.PerformBattle),
-                (IsInMenu, Menu),
-                (IsInResult, Result),
-                (IsInSupport, Support)
-            };
+                Init();
 
-            // Loop through SCREENS until a Validator returns true/1
-            while (true)
-            {
-                _continue.Wait();
-
-                var actor = AutomataApi.UseSameSnapIn(() =>
+                // SCREENS represents list of Validators and Actors
+                // When Validator returns true/1, perform the Actor
+                var screens = new (Func<bool> Validator, Action Actor)[]
                 {
-                    return screens.Where(M => M.Validator())
-                        .Select(M => M.Actor)
-                        .FirstOrDefault();
-                });
+                    (_battle.IsIdle, _battle.PerformBattle),
+                    (IsInMenu, Menu),
+                    (IsInResult, Result),
+                    (IsInSupport, Support)
+                };
 
-                actor?.Invoke();
+                // Loop through SCREENS until a Validator returns true/1
+                while (true)
+                {
+                    var actor = AutomataApi.UseSameSnapIn(() =>
+                    {
+                        return screens.Where(M => M.Validator())
+                            .Select(M => M.Actor)
+                            .FirstOrDefault();
+                    });
 
-                AutomataApi.Wait(1);
+                    actor?.Invoke();
+
+                    AutomataApi.Wait(1);
+                }
             }
+            catch (ThreadAbortException) { }
+            catch (Exception e) when (LogError(e)) { }
         }
     }
 }
