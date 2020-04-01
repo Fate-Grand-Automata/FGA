@@ -41,8 +41,14 @@ namespace CoreAutomata
 
         static bool ExistsNow(Region Region, IPattern Image, double? Similarity)
         {
-            return ScreenshotManager.GetScreenshot()
-                .Crop(Region.TransformToImage())
+            var sshot = ScreenshotManager.GetScreenshot();
+
+            if (Region != null)
+            {
+                sshot = sshot.Crop(Region.TransformToImage());
+            }
+
+            return sshot
                 .IsMatch(Image, Similarity ?? MinSimilarity);
         }
 
