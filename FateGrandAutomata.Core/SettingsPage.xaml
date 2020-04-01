@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              x:Class="FateGrandAutomata.SettingsPage">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="5">
             <Label Text="Refill"
                    FontAttributes="Bold"/>
             <Grid BindingContext="{x:Static local:Preferences.Instance}">
@@ -20,29 +20,41 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <local:IntEnumConverter x:Key="IntEnumConverter"/>
+                </Grid.Resources>
 
                 <Label Text="Enabled"
-                       Margin="2"/>
-                <CheckBox Grid.Column="1"
-                          Grid.Row="0"
-                          Margin="2"
-                          IsChecked="{Binding Refill.Enabled}"/>
+                       Margin="2"
+                       VerticalTextAlignment="Center"/>
+                <Switch Grid.Column="1"
+                        Grid.Row="0"
+                        Margin="2"
+                        OnColor="Orange"
+                        ThumbColor="Gray"
+                        IsToggled="{Binding Refill.Enabled}"/>
 
                 <Label Text="Resource"
                        Grid.Row="1"
                        Grid.Column="0"
-                       Margin="2"/>
+                       Margin="2"
+                       VerticalTextAlignment="Center"/>
                 <Picker Grid.Row="1"
                         Grid.Column="1"
-                        Margin="2"/>
+                        Margin="2"
+                        ItemsSource="{Binding RefillResourceNames, Source={x:Static local:PreferencesViewHelper.Instance}}"
+                        SelectedIndex="{Binding Refill.Resource, Converter={StaticResource IntEnumConverter}}"/>
 
                 <Label Text="Repetitions"
                        Grid.Row="2"
                        Grid.Column="0"
-                       Margin="2"/>
+                       Margin="2"
+                       VerticalTextAlignment="Center"/>
                 <Entry Grid.Row="2"
                        Grid.Column="1"
-                       Margin="2"/>
+                       Margin="2"
+                       Keyboard="Numeric"
+                       Text="{Binding Refill.Repetitions}"/>
             </Grid>
         </StackLayout>
     </ContentPage.Content>
