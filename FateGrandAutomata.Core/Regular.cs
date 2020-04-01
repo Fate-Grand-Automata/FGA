@@ -17,9 +17,9 @@ namespace FateGrandAutomata
 
         void RefillStamina()
         {
-            if (Preferences.Refill.Enabled && _stonesUsed < Preferences.Refill.Repetitions)
+            if (Preferences.Instance.Refill.Enabled && _stonesUsed < Preferences.Instance.Refill.Repetitions)
             {
-                switch (Preferences.Refill.Resource)
+                switch (Preferences.Instance.Refill.Resource)
                 {
                     case RefillResource.SQ:
                         Game.StaminaSqClick.Click();
@@ -60,12 +60,12 @@ namespace FateGrandAutomata
 
             AutomataApi.Wait(2);
 
-            Game.MenuBoostItemClickArray[Preferences.BoostItemSelectionMode].Click();
+            Game.MenuBoostItemClickArray[Preferences.Instance.BoostItemSelectionMode].Click();
 
             // in case you run out of items
             Game.MenuBoostItemSkipClick.Click();
 
-            if (Preferences.StorySkip)
+            if (Preferences.Instance.StorySkip)
             {
                 AutomataApi.Wait(10);
 
@@ -116,7 +116,7 @@ namespace FateGrandAutomata
             // Checking if there was a Bond CE reward
             if (Game.ResultCeRewardRegion.Exists(ImageLocator.Bond10Reward))
             {
-                if (Preferences.StopAfterBond10)
+                if (Preferences.Instance.StopAfterBond10)
                 {
                     throw new ScriptExitException("Bond 10 CE GET!");
                 }
@@ -138,7 +138,7 @@ namespace FateGrandAutomata
             AutomataApi.Wait(1);
 
             // Only for JP currently. Searches for the Continue option after select Free Quests
-            if (Preferences.GameServer == GameServer.Jp && Game.ContinueRegion.Exists(ImageLocator.Confirm))
+            if (Preferences.Instance.GameServer == GameServer.Jp && Game.ContinueRegion.Exists(ImageLocator.Confirm))
             {
                 // Needed to show we don't need to enter the "StartQuest" function
                 _isContinuing = 1;
@@ -159,7 +159,7 @@ namespace FateGrandAutomata
             }
 
             // Post-battle story is sometimes there.
-            if (Preferences.StorySkip)
+            if (Preferences.Instance.StorySkip)
             {
                 if (Game.MenuStorySkipRegion.Exists(ImageLocator.StorySkip))
                 {
@@ -198,7 +198,7 @@ namespace FateGrandAutomata
         void Support()
         {
             // Friend selection
-            var hasSelectedSupport = _support.SelectSupport(Preferences.Support.SelectionMode);
+            var hasSelectedSupport = _support.SelectSupport(Preferences.Instance.Support.SelectionMode);
 
             if (hasSelectedSupport)
             {

@@ -3,13 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:FateGrandAutomata;assembly=FateGrandAutomata.Core"
              mc:Ignorable="d"
              x:Class="FateGrandAutomata.SettingsPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Refill"
+                   FontAttributes="Bold"/>
+            <Grid BindingContext="{x:Static local:Preferences.Instance}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Label Text="Enabled"
+                       Margin="2"/>
+                <CheckBox Grid.Column="1"
+                          Grid.Row="0"
+                          Margin="2"
+                          IsChecked="{Binding Refill.Enabled}"/>
+
+                <Label Text="Resource"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       Margin="2"/>
+                <Picker Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="2"/>
+
+                <Label Text="Repetitions"
+                       Grid.Row="2"
+                       Grid.Column="0"
+                       Margin="2"/>
+                <Entry Grid.Row="2"
+                       Grid.Column="1"
+                       Margin="2"/>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -18,7 +18,7 @@ namespace FateGrandAutomata
 
         static Lazy<IPattern> GetLazyGeneralPattern(string Filename)
         {
-            return new Lazy<IPattern>(() => CreatePattern($"images.{Preferences.GameServer}.{Filename}"));
+            return new Lazy<IPattern>(() => CreatePattern($"images.{Preferences.Instance.GameServer}.{Filename}"));
         }
 
         static readonly Lazy<IPattern> _battle = GetLazyGeneralPattern("battle.png");

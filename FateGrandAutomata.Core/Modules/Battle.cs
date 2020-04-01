@@ -112,7 +112,7 @@ namespace FateGrandAutomata
             AutomataApi.UseSameSnapIn(OnTurnStarted);
             AutomataApi.Wait(2);
 
-            if (Preferences.EnableAutoSkill)
+            if (Preferences.Instance.EnableAutoSkill)
             {
                 AutoSkill.Execute();
             }
@@ -129,7 +129,7 @@ namespace FateGrandAutomata
 
             Card.ClickCommandCards();
 
-            if (Preferences.UnstableFastSkipDeadAnimation)
+            if (Preferences.Instance.UnstableFastSkipDeadAnimation)
             {
                 SkipDeathAnimation();
             }
@@ -145,7 +145,7 @@ namespace FateGrandAutomata
 
             HasClickedAttack = false;
 
-            if (!HasChoosenTarget && Preferences.BattleAutoChooseTarget)
+            if (!HasChoosenTarget && Preferences.Instance.BattleAutoChooseTarget)
             {
                 AutoChooseTarget();
             }

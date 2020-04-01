@@ -32,7 +32,7 @@ namespace FateGrandAutomata
         {
             Location.Click();
 
-            if (Preferences.SkillConfirmation)
+            if (Preferences.Instance.SkillConfirmation)
             {
                 Game.BattleSkillOkClick.Click();
             }
@@ -85,7 +85,7 @@ namespace FateGrandAutomata
 
             Game.BattleMasterSkill3Click.Click();
 
-            if (Preferences.SkillConfirmation)
+            if (Preferences.Instance.SkillConfirmation)
             {
                 Game.BattleSkillOkClick.Click();
             }
@@ -191,7 +191,7 @@ namespace FateGrandAutomata
         {
             var stageCount = 0;
 
-            foreach (var commandList in Preferences.SkillCommand.Split(','))
+            foreach (var commandList in Preferences.Instance.SkillCommand.Split(','))
             {
                 if (Regex.IsMatch(commandList, @"[^0]"))
                 {
@@ -226,7 +226,7 @@ namespace FateGrandAutomata
 
         public void ResetState()
         {
-            IsFinished = !Preferences.EnableAutoSkill;
+            IsFinished = !Preferences.Instance.EnableAutoSkill;
 
             ChangeArray(_defaultFunctionArray);
         }
@@ -236,7 +236,7 @@ namespace FateGrandAutomata
             Battle = BattleModule;
             Card = CardModule;
 
-            if (Preferences.EnableAutoSkill)
+            if (Preferences.Instance.EnableAutoSkill)
             {
                 InitCommands();
             }

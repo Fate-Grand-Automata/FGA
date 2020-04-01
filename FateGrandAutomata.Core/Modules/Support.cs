@@ -35,19 +35,19 @@ namespace FateGrandAutomata
             }
 
             // Friend names
-            foreach (var friend in Split(Preferences.Support.FriendNames))
+            foreach (var friend in Split(Preferences.Instance.Support.FriendNames))
             {
                 _friendNameArray.Add(friend);
             }
 
             // Servants
-            foreach (var servant in Split(Preferences.Support.PreferredServants))
+            foreach (var servant in Split(Preferences.Instance.Support.PreferredServants))
             {
                 _preferredServantArray.Add(servant);
             }
 
             // Craft essences
-            foreach (var craftEssence in Split(Preferences.Support.PreferredCEs))
+            foreach (var craftEssence in Split(Preferences.Instance.Support.PreferredCEs))
             {
                 _preferredCraftEssenceTable.Add((
                     craftEssence.Replace(LimitBrokenCharacter, ""),
@@ -173,14 +173,14 @@ namespace FateGrandAutomata
                     return true;
                 }
 
-                if (result == SupportSearchResult.NotFound && numberOfSwipes < Preferences.Support.SwipesPerUpdate)
+                if (result == SupportSearchResult.NotFound && numberOfSwipes < Preferences.Instance.Support.SwipesPerUpdate)
                 {
                     ScrollList();
                     ++numberOfSwipes;
                     AutomataApi.Wait(0.3);
                 }
 
-                else if (numberOfUpdates < Preferences.Support.MaxUpdates)
+                else if (numberOfUpdates < Preferences.Instance.Support.MaxUpdates)
                 {
                     AutomataApi.Toast("Support list will be updated in 3 seconds.");
                     AutomataApi.Wait(3);
@@ -198,7 +198,7 @@ namespace FateGrandAutomata
                 {
                     // -- okay, we have run out of options, let's give up
                     Game.SupportListTopClick.Click();
-                    return SelectSupport(Preferences.Support.FallbackTo);
+                    return SelectSupport(Preferences.Instance.Support.FallbackTo);
                 }
             }
         }
@@ -318,7 +318,7 @@ namespace FateGrandAutomata
         {
             var friendPattern = ImageLocator.Friend;
 
-            return !Preferences.Support.FriendsOnly || Region.Exists(friendPattern);
+            return !Preferences.Instance.Support.FriendsOnly || Region.Exists(friendPattern);
         }
 
         bool IsLimitBroken(Region CraftEssence)

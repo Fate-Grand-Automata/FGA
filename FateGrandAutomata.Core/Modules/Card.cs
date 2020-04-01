@@ -23,7 +23,7 @@ namespace FateGrandAutomata
         {
             var errorString = "Battle_CardPriority Error at '";
 
-            if (Preferences.BattleCardPriority.Length == 3)
+            if (Preferences.Instance.BattleCardPriority.Length == 3)
             {
                 InitCardPriorityArraySimple(errorString);
             }
@@ -32,7 +32,7 @@ namespace FateGrandAutomata
 
         void InitCardPriorityArraySimple(string ErrorString)
         {
-            foreach (var card in Preferences.BattleCardPriority)
+            foreach (var card in Preferences.Instance.BattleCardPriority)
             {
                 var score = CardScore.Normal;
 
@@ -64,7 +64,7 @@ namespace FateGrandAutomata
         {
             var cardCounter = 0;
 
-            foreach (var i in Preferences.BattleCardPriority.Split(','))
+            foreach (var i in Preferences.Instance.BattleCardPriority.Split(','))
             {
                 var card = i.ToUpper().Trim();
 
@@ -116,7 +116,7 @@ namespace FateGrandAutomata
 
             if (cardCounter != 9)
             {
-                throw new FormatException($"{ErrorString}{Preferences.BattleCardPriority}': Expected 9 cards, but {cardCounter} found.");
+                throw new FormatException($"{ErrorString}{Preferences.Instance.BattleCardPriority}': Expected 9 cards, but {cardCounter} found.");
             }
         }
 
@@ -202,8 +202,8 @@ namespace FateGrandAutomata
         {
             get
             {
-                var weCanSpam = Preferences.BattleNoblePhantasm == BattleNoblePhantasmType.Spam;
-                var weAreInDanger = Preferences.BattleNoblePhantasm == BattleNoblePhantasmType.Danger
+                var weCanSpam = Preferences.Instance.BattleNoblePhantasm == BattleNoblePhantasmType.Spam;
+                var weAreInDanger = Preferences.Instance.BattleNoblePhantasm == BattleNoblePhantasmType.Danger
                                     && Battle.HasChoosenTarget;
 
                 return (weCanSpam || weAreInDanger) && AutoSkill.IsFinished;

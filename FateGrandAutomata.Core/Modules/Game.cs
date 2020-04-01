@@ -45,7 +45,7 @@ namespace FateGrandAutomata
         public static Location SupportSwipeStartClick { get; } = new Location(35, 1190);
         public static Region SupportFriendsRegion { get; } = new Region(448, 332, 1210, 1091);
 
-        public static Location SupportSwipeEndClick => Preferences.GameServer switch
+        public static Location SupportSwipeEndClick => Preferences.Instance.GameServer switch
         {
             GameServer.En => new Location(35, 390),
             GameServer.Jp => new Location(35, 350),
@@ -74,7 +74,7 @@ namespace FateGrandAutomata
 
         public static Region BattleScreenRegion { get; } = new Region(2105, 1259, 336, 116); // see docs/battle_region.png
 
-        public static Region BattleStageCountRegion => Preferences.GameServer switch
+        public static Region BattleStageCountRegion => Preferences.Instance.GameServer switch
         {
             GameServer.En => new Region(1722, 25, 46, 53),
             GameServer.Jp => new Region(1722, 25, 46, 53),
