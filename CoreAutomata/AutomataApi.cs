@@ -139,7 +139,18 @@ namespace CoreAutomata
 
             return sshot
                 .FindMatches(Pattern, Similarity ?? MinSimilarity)
-                .Select(M => new Match(M.TransformFromImage(), M.Score));
+                .Select(M =>
+                {
+                    var region = M.TransformFromImage();
+
+                    if (Region != null)
+                    {
+                        region.X += Region.X;
+                        region.Y += Region.Y;
+                    }
+                    
+                    return new Match(region, M.Score);
+                });
         }
 
         public static void Toast(string Msg) => _platformImpl.Toast(Msg);

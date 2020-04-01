@@ -80,7 +80,7 @@
                 return Region;
             }
 
-            var scale = (1 / scale1 ?? 1) * (1 / scale2 ?? 1);
+            var scale = (1 / (scale1 ?? 1)) * (1 / (scale2 ?? 1));
 
             return Region * scale;
         }
