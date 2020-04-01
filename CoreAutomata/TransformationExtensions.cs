@@ -67,6 +67,24 @@
             return Region * scale;
         }
 
+        public static Region TransformFromImage(this Region Region)
+        {
+            // Script -> Screen
+            var scale1 = ScriptToScreenScale();
+
+            // Screen -> Image
+            var scale2 = ScreenToImageScale();
+
+            if (scale1 == null && scale2 == null)
+            {
+                return Region;
+            }
+
+            var scale = (1 / scale1 ?? 1) * (1 / scale2 ?? 1);
+
+            return Region * scale;
+        }
+
         static double? ScriptToScreenScale()
         {
             if (GameAreaManager.ScriptDimension == null)

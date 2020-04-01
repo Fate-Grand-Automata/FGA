@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace CoreAutomata
@@ -121,17 +122,18 @@ namespace CoreAutomata
 
         public static void Scroll(Location Start, Location End) => _platformImpl.Scroll(Start.Transform(), End.Transform());
 
-        public static IEnumerable<Match> FindAll(IPattern Pattern, double? Similarity = null)
-        {
-            return ScreenshotManager.GetScreenshot()
-                .FindMatches(Pattern, Similarity ?? MinSimilarity);
-        }
-
         public static IEnumerable<Match> FindAll(Region Region, IPattern Pattern, double? Similarity = null)
         {
-            return ScreenshotManager.GetScreenshot()
-                .Crop(Region.TransformToImage())
-                .FindMatches(Pattern, Similarity ?? MinSimilarity);
+            var sshot = ScreenshotManager.GetScreenshot();
+
+            if (Region != null)
+            {
+                sshot = sshot.Crop(Region.TransformToImage());
+            }
+
+            return sshot
+                .FindMatches(Pattern, Similarity ?? MinSimilarity)
+                .Select(M => new Match(M.TransformFromImage(), M.Score));
         }
 
         public static void Toast(string Msg) => _platformImpl.Toast(Msg);
