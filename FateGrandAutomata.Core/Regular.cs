@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using CoreAutomata;
 
 namespace FateGrandAutomata
 {
-    public class Regular
+    public class Regular : EntryPoint
     {
         readonly Scaling _scaling = new Scaling();
         readonly Support _support = new Support();
@@ -52,7 +50,7 @@ namespace FateGrandAutomata
 
                 AutomataApi.Wait(3);
             }
-            else throw new Exception("AP ran out!");
+            else throw new ScriptExitException("AP ran out!");
         }
 
         // Click begin quest in Formation selection, then select boost item, if applicable, then confirm selection.
@@ -120,7 +118,7 @@ namespace FateGrandAutomata
             {
                 if (Preferences.StopAfterBond10)
                 {
-                    throw new Exception("Bond 10 CE GET!");
+                    throw new ScriptExitException("Bond 10 CE GET!");
                 }
 
                 Game.ResultCeRewardCloseClick.Click();
@@ -242,62 +240,34 @@ namespace FateGrandAutomata
             AutomataApi.Toast("Will only select servant/danger enemy as noble phantasm target, unless specified using Skill Command. Please check github for further detail.");
         }
 
-        Thread _loopThread;
-
-        public void Run()
+        protected override void Script()
         {
-            if (_loopThread == null)
+            Init();
+
+            // SCREENS represents list of Validators and Actors
+            // When Validator returns true/1, perform the Actor
+            var screens = new (Func<bool> Validator, Action Actor)[]
             {
-                _loopThread = new Thread(Loop);
-                _loopThread.Start();
-            }
-        }
+                (_battle.IsIdle, _battle.PerformBattle),
+                (IsInMenu, Menu),
+                (IsInResult, Result),
+                (IsInSupport, Support)
+            };
 
-        public void Stop()
-        {
-            _loopThread?.Abort();
-        }
-
-        static bool LogError(Exception E)
-        {
-            AutomataApi.WriteDebug(E.ToString());
-
-            return false;
-        }
-
-        void Loop()
-        {
-            try
+            // Loop through SCREENS until a Validator returns true/1
+            while (true)
             {
-                Init();
-
-                // SCREENS represents list of Validators and Actors
-                // When Validator returns true/1, perform the Actor
-                var screens = new (Func<bool> Validator, Action Actor)[]
+                var actor = AutomataApi.UseSameSnapIn(() =>
                 {
-                    (_battle.IsIdle, _battle.PerformBattle),
-                    (IsInMenu, Menu),
-                    (IsInResult, Result),
-                    (IsInSupport, Support)
-                };
+                    return screens.Where(M => M.Validator())
+                        .Select(M => M.Actor)
+                        .FirstOrDefault();
+                });
 
-                // Loop through SCREENS until a Validator returns true/1
-                while (true)
-                {
-                    var actor = AutomataApi.UseSameSnapIn(() =>
-                    {
-                        return screens.Where(M => M.Validator())
-                            .Select(M => M.Actor)
-                            .FirstOrDefault();
-                    });
+                actor?.Invoke();
 
-                    actor?.Invoke();
-
-                    AutomataApi.Wait(1);
-                }
+                AutomataApi.Wait(1);
             }
-            catch (ThreadAbortException) { }
-            catch (Exception e) when (LogError(e)) { }
         }
     }
 }

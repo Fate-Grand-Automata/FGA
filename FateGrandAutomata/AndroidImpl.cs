@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Android.AccessibilityServices;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Util;
@@ -40,8 +41,8 @@ namespace FateGrandAutomata
 
         public void Scroll(Location Start, Location End)
         {
-            const int delay = 500;
-            const int duration = 1000;
+            const int delay = 100;
+            const int duration = 500;
 
             var swipePath = new Path();
             swipePath.MoveTo(Start.X, Start.Y);
@@ -52,7 +53,7 @@ namespace FateGrandAutomata
             
             _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
 
-            AutomataApi.Wait(2);
+            AutomataApi.Wait(1);
         }
 
         readonly Lazy<Handler> _handler = new Lazy<Handler>(() => new Handler(Looper.MainLooper));
@@ -65,7 +66,7 @@ namespace FateGrandAutomata
 
         public void Click(Location Location)
         {
-            const int delay = 1000;
+            const int delay = 100;
             const int duration = 1;
 
             var swipePath = new Path();
@@ -76,7 +77,7 @@ namespace FateGrandAutomata
 
             _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
 
-            AutomataApi.Wait(1.5);
+            AutomataApi.Wait(0.3);
         }
 
         public void ContinueClick(Location Location, int Times, int Timeout = -1)
@@ -96,6 +97,14 @@ namespace FateGrandAutomata
         public IPattern LoadPattern(Stream Stream)
         {
             return new DroidCvPattern(Stream);
+        }
+
+        public void MessageBox(string Title, string Message)
+        {
+            var alertDialog = new AlertDialog.Builder(_accessibilityService);
+            alertDialog.SetTitle(Title)
+                .SetMessage(Message)
+                .Show();
         }
     }
 }

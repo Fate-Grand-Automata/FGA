@@ -95,7 +95,15 @@ namespace FateGrandAutomata
             return true;
         }
 
-        Regular _regular;
+        EntryPoint _entryPoint;
+
+        void OnScriptExit(string Message = null)
+        {
+            _scriptCtrlBtn.Text = "START";
+            _entryPoint = null;
+
+            _scriptStarted = false;
+        }
 
         void StartScript()
         {
@@ -109,10 +117,11 @@ namespace FateGrandAutomata
                 return;
             }
 
-            _regular = new Regular();
+            _entryPoint = new Regular();
+            _entryPoint.ScriptExit += OnScriptExit;
 
             _scriptCtrlBtn.Text = "STOP";
-            _regular.Run();
+            _entryPoint.Run();
 
             _scriptStarted = true;
         }
@@ -123,12 +132,10 @@ namespace FateGrandAutomata
                 return;
             }
 
-            _scriptCtrlBtn.Text = "START";
-            _regular.Stop();
+            _entryPoint.ScriptExit -= OnScriptExit;
+            _entryPoint.Stop();
 
-            _regular = null;
-
-            _scriptStarted = false;
+            OnScriptExit();
         }
 
         Button _scriptCtrlBtn;

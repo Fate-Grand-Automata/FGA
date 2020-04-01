@@ -85,8 +85,7 @@ namespace FateGrandAutomata
 
         void SelectManual()
         {
-            // TODO: Pause for manual support selection.
-            throw new NotImplementedException();
+            throw new ScriptExitException("Support selection set to Manual");
         }
 
         bool SelectFirst()

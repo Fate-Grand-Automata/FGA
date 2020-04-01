@@ -160,6 +160,11 @@ namespace CoreAutomata
             _platformImpl.ContinueClick(Location.Transform(), Times, Timeout);
         }
 
+        public static void ShowMessageBox(string Title, string Message)
+        {
+            _platformImpl.MessageBox(Title, Message);
+        }
+
         [Conditional("DEBUG")]
         public static void WriteDebug(string Msg)
         {

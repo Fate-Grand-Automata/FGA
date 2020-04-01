@@ -17,5 +17,7 @@ namespace CoreAutomata
         IPattern Screenshot();
 
         IPattern LoadPattern(Stream Stream);
+
+        void MessageBox(string Title, string Message);
     }
 }
