@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Label ordering must match values -->
-    <array name="refill_type_labels">
-        <item>All Apples</item>
-        <item>Gold</item>
-        <item>Silver</item>
-        <item>Bronze</item>
-        <item>SQ</item>
-    </array>
+  <!-- Label ordering must match values -->
+  <array name="refill_type_labels">
+    <item>All Apples</item>
+    <item>Gold</item>
+    <item>Silver</item>
+    <item>Bronze</item>
+    <item>SQ</item>
+  </array>
 
-    <array name="refill_type_values">
-        <item>AllApples</item>
-        <item>Gold</item>
-        <item>Silver</item>
-        <item>Bronze</item>
-        <item>SQ</item>
-    </array>
+  <array name="refill_type_values">
+    <item>AllApples</item>
+    <item>Gold</item>
+    <item>Silver</item>
+    <item>Bronze</item>
+    <item>SQ</item>
+  </array>
+
+  <array name="boost_item_labels">
+    <item>disabled</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </array>
+
+  <array name="boost_item_values">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </array>
+
+  <array name="battle_np_types">
+    <item>None</item>
+    <item>Spam</item>
+    <item>Danger</item>
+  </array>
+
+  <array name="game_servers">
+    <item>En</item>
+    <item>Jp</item>
+    <item>Cn</item>
+    <item>Tw</item>
+  </array>
+
+  <array name="support_selection_modes">
+    <item>First</item>
+    <item>Manual</item>
+    <item>Preferred</item>
+    <item>Friend</item>
+  </array>
 </resources>
