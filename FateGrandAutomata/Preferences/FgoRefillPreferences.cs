@@ -1,4 +1,6 @@
-﻿namespace FateGrandAutomata
+﻿using R = FateGrandAutomata.Resource.String;
+
+namespace FateGrandAutomata
 {
     public class FgoRefillPreferences : IFgoRefillPreferences
     {
@@ -9,10 +11,10 @@
             _preferences = Preferences;
         }
 
-        public bool Enabled => _preferences.GetBool("refill_enabled");
+        public bool Enabled => _preferences.GetBool(R.pref_refill_enabled);
 
-        public int Repetitions => _preferences.GetInt("refill_repetitions");
+        public int Repetitions => _preferences.GetInt(R.pref_refill_repetitions);
 
-        public RefillResource Resource => _preferences.GetEnum<RefillResource>("refill_resource");
+        public RefillResource Resource => _preferences.GetEnum<RefillResource>(R.pref_refill_resource);
     }
 }

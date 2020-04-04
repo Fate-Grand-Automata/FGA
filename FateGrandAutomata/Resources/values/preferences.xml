@@ -1,0 +1,26 @@
+<resources>
+    <string name="pref_gameserver">gameserver</string>
+    <string name="pref_skill_conf">skill_conf</string>
+    <string name="pref_autoskill_enable">autoskill_enable</string>
+    <string name="pref_skill_cmd">skill_cmd</string>
+    <string name="pref_card_priority">card_priority</string>
+    <string name="pref_battle_np">battle_np</string>
+    <string name="pref_auto_choose_target">auto_choose_target</string>
+    <string name="pref_fast_skip_dead">fast_skip_dead</string>
+    <string name="pref_story_skip">story_skip</string>
+    <string name="pref_stop_bond10">stop_bond10</string>
+    <string name="pref_boost_item">boost_item</string>
+
+    <string name="pref_refill_enabled">refill_enabled</string>
+    <string name="pref_refill_repetitions">refill_repetitions</string>
+    <string name="pref_refill_resource">refill_resource</string>
+  
+    <string name="pref_support_friend_names">support_friend_names</string>
+    <string name="pref_support_pref_servant">support_pref_servant</string>
+    <string name="pref_support_pref_ce">support_pref_ce</string>
+    <string name="pref_support_friends_only">support_friends_only</string>
+    <string name="pref_support_swipes_per_update">support_swipes_per_update</string>
+    <string name="pref_support_max_updates">support_max_updates</string>
+    <string name="pref_support_mode">support_mode</string>
+    <string name="pref_support_fallback">support_fallback</string>
+</resources>

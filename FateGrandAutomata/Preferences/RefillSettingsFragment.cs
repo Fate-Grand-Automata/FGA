@@ -11,7 +11,7 @@ namespace FateGrandAutomata
         {
             SetPreferencesFromResource(Resource.Xml.refill_preferences, rootKey);
 
-            if (FindPreference("refill_repetitions") is EditTextPreference repetitionPref)
+            if (FindPreference(GetString(Resource.String.pref_refill_repetitions)) is EditTextPreference repetitionPref)
             {
                 repetitionPref.MakeNumeric();
             }

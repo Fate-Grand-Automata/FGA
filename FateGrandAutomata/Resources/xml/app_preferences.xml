@@ -8,4 +8,10 @@
     app:summary="Manage AP refill"
     app:fragment="fgautomata.RefillSettingsFragment"/>
 
+  <Preference
+    app:key="support"
+    app:title="Support"
+    app:summary="Manage Support Selection"
+    app:fragment="fgautomata.SupportSettingsFragment"/>
+
 </PreferenceScreen>
