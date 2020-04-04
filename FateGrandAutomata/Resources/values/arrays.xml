@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Label ordering must match values -->
+    <array name="refill_type_labels">
+        <item>All Apples</item>
+        <item>Gold</item>
+        <item>Silver</item>
+        <item>Bronze</item>
+        <item>SQ</item>
+    </array>
+
+    <array name="refill_type_values">
+        <item>AllApples</item>
+        <item>Gold</item>
+        <item>Silver</item>
+        <item>Bronze</item>
+        <item>SQ</item>
+    </array>
+</resources>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <PreferenceCategory
+    app:key="refill_category"
+    app:title="Refill">
+    <SwitchPreferenceCompat
+      app:key="refill_enabled"
+      app:title="Enable Refill"
+      app:defaultValue="false"/>
+
+    <EditTextPreference
+      app:key="refill_repetitions"
+      app:title="Repetitions"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue="0"/>
+
+    <ListPreference
+      app:defaultValue="0"
+      app:entries="@array/refill_type_labels"
+      app:entryValues="@array/refill_type_values"
+      app:key="refill_resource"
+      app:title="Resource"
+      app:useSimpleSummaryProvider="true"/>
+  </PreferenceCategory>
+
+</PreferenceScreen>

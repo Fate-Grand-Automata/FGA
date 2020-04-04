@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <Preference
+    app:key="refill"
+    app:title="Refill"
+    app:summary="Manage AP refill"
+    app:fragment="fgautomata.RefillSettingsFragment"/>
+
+</PreferenceScreen>

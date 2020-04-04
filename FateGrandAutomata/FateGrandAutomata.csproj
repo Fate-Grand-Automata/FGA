@@ -70,8 +70,15 @@
     <Compile Include="GlobalFabService.cs" />
     <Compile Include="ImgListener.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Preferences\FgoPreferences.cs" />
+    <Compile Include="Preferences\FgoRefillPreferences.cs" />
+    <Compile Include="Preferences\FgoSupportPreferences.cs" />
+    <Compile Include="Preferences\PreferenceExtensions.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Preferences\SettingsActivity.cs" />
+    <Compile Include="Preferences\RefillSettingsFragment.cs" />
+    <Compile Include="Preferences\SettingsFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -139,6 +146,27 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\global_fab_service.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\xml\app_preferences.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\settings.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\xml\refill_preferences.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\arrays.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

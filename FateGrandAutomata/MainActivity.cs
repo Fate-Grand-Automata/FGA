@@ -82,6 +82,7 @@ namespace FateGrandAutomata
 
         void OpenSettings()
         {
+            StartActivity(typeof(SettingsActivity));
         }
 
         void FabOnClick(object sender, EventArgs eventArgs)
