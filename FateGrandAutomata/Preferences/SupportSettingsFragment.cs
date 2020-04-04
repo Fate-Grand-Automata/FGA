@@ -7,9 +7,20 @@ namespace FateGrandAutomata
     [Register("fgautomata.SupportSettingsFragment")]
     public class SupportSettingsFragment : PreferenceFragmentCompat
     {
-        public override void OnCreatePreferences(Bundle savedInstanceState, string rootKey)
+        void MakeNumeric(int PreferenceKey)
         {
-            SetPreferencesFromResource(Resource.Xml.support_preferences, rootKey);
+            if (FindPreference(GetString(PreferenceKey)) is EditTextPreference preference)
+            {
+                preference.MakeNumeric();
+            }
+        }
+
+        public override void OnCreatePreferences(Bundle SavedInstanceState, string RootKey)
+        {
+            SetPreferencesFromResource(Resource.Xml.support_preferences, RootKey);
+
+            MakeNumeric(Resource.String.pref_support_swipes_per_update);
+            MakeNumeric(Resource.String.pref_support_max_updates);
         }
     }
 }

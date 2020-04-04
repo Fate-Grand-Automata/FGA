@@ -7,9 +7,9 @@ namespace FateGrandAutomata
     [Activity(Label = "Settings")]
     public class SettingsActivity : AppCompatActivity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle SavedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
+            base.OnCreate(SavedInstanceState);
 
             SetContentView(Resource.Layout.settings);
 

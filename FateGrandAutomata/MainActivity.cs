@@ -22,11 +22,13 @@ namespace FateGrandAutomata
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle SavedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            base.OnCreate(SavedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, SavedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+
+            Preferences.SetPreference(new FgoPreferences(this));
 
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -48,36 +50,36 @@ namespace FateGrandAutomata
             _mediaProjectionManager = (MediaProjectionManager) GetSystemService(MediaProjectionService);
         }
 
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        protected override void OnActivityResult(int RequestCode, Result ResultCode, Intent Data)
         {
-            if (requestCode == REQUEST_MEDIA_PROJECTION)
+            if (RequestCode == RequestMediaProjection)
             {
-                if (resultCode != Result.Ok)
+                if (ResultCode != Result.Ok)
                 {
                     Toast.MakeText(this, "Canceled", ToastLength.Short).Show();
                     return;
                 }
 
-                GlobalFabService.Instance.Start(data);
+                GlobalFabService.Instance.Start(Data);
             }
         }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
+        public override bool OnCreateOptionsMenu(IMenu Menu)
         {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
+            MenuInflater.Inflate(Resource.Menu.menu_main, Menu);
             return true;
         }
 
-        public override bool OnOptionsItemSelected(IMenuItem item)
+        public override bool OnOptionsItemSelected(IMenuItem Item)
         {
-            var id = item.ItemId;
+            var id = Item.ItemId;
             if (id == Resource.Id.action_settings)
             {
                 OpenSettings();
                 return true;
             }
 
-            return base.OnOptionsItemSelected(item);
+            return base.OnOptionsItemSelected(Item);
         }
 
         void OpenSettings()
@@ -85,7 +87,7 @@ namespace FateGrandAutomata
             StartActivity(typeof(SettingsActivity));
         }
 
-        void FabOnClick(object sender, EventArgs eventArgs)
+        void FabOnClick(object Sender, EventArgs EventArgs)
         {
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != Permission.Granted)
             {
@@ -110,7 +112,7 @@ namespace FateGrandAutomata
                         instance.Start();
                     }
                     // This initiates a prompt dialog for the user to confirm screen projection.
-                    else StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
+                    else StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), RequestMediaProjection);
                 }
             }
             else
@@ -139,14 +141,14 @@ namespace FateGrandAutomata
                     .Show();
             }
         }
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int RequestCode, string[] Permissions, [GeneratedEnum] Android.Content.PM.Permission[] GrantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(RequestCode, Permissions, GrantResults);
 
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            base.OnRequestPermissionsResult(RequestCode, Permissions, GrantResults);
         }
 
-        const int REQUEST_MEDIA_PROJECTION = 1;
+        const int RequestMediaProjection = 1;
 
         MediaProjectionManager _mediaProjectionManager;
     }

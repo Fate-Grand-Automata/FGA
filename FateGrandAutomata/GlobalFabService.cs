@@ -34,7 +34,7 @@ namespace FateGrandAutomata
 
         public static GlobalFabService Instance { get; private set; }
 
-        public override bool OnUnbind(Intent intent)
+        public override bool OnUnbind(Intent Intent)
         {
             Instance = null;
             ServiceStarted = false;
@@ -51,7 +51,7 @@ namespace FateGrandAutomata
                 _mediaProjection = null;
             }
 
-            return base.OnUnbind(intent);
+            return base.OnUnbind(Intent);
         }
 
         public bool HasMediaProjectionToken => _mediaProjection != null;
@@ -198,7 +198,7 @@ namespace FateGrandAutomata
                 DisplayFlags.None, _imageReader.Surface, null, null);
         }
 
-        public override void OnAccessibilityEvent(AccessibilityEvent e) { }
+        public override void OnAccessibilityEvent(AccessibilityEvent E) { }
 
         public override void OnInterrupt() { }
     }

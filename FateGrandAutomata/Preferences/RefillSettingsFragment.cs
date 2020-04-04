@@ -7,9 +7,9 @@ namespace FateGrandAutomata
     [Register("fgautomata.RefillSettingsFragment")]
     public class RefillSettingsFragment : PreferenceFragmentCompat
     {
-        public override void OnCreatePreferences(Bundle savedInstanceState, string rootKey)
+        public override void OnCreatePreferences(Bundle SavedInstanceState, string RootKey)
         {
-            SetPreferencesFromResource(Resource.Xml.refill_preferences, rootKey);
+            SetPreferencesFromResource(Resource.Xml.refill_preferences, RootKey);
 
             if (FindPreference(GetString(Resource.String.pref_refill_repetitions)) is EditTextPreference repetitionPref)
             {

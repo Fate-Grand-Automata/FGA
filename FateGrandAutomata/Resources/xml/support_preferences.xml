@@ -12,22 +12,50 @@
       app:defaultValue="false"/>
 
     <EditTextPreference
-      app:key="@string/pref_support_pref_ce"
-      app:title="Preferred CEs"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue=""/>
-
-    <EditTextPreference
       app:key="@string/pref_support_pref_servant"
       app:title="Preferred Servants"
       app:useSimpleSummaryProvider="true"
       app:defaultValue=""/>
 
     <EditTextPreference
+      app:key="@string/pref_support_pref_ce"
+      app:title="Preferred CEs"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue=""/>
+
+    <EditTextPreference
+      app:key="@string/pref_support_swipes_per_update"
+      app:title="Swipes per Update"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue="10"/>
+
+    <EditTextPreference
+      app:key="@string/pref_support_max_updates"
+      app:title="Max Updates"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue="3"/>
+
+    <EditTextPreference
       app:key="@string/pref_support_friend_names"
       app:title="Friend names"
       app:useSimpleSummaryProvider="true"
       app:defaultValue=""/>
+
+    <ListPreference
+      app:defaultValue="First"
+      app:entries="@array/support_selection_modes"
+      app:entryValues="@array/support_selection_modes"
+      app:key="@string/pref_support_mode"
+      app:title="Selection Mode"
+      app:useSimpleSummaryProvider="true"/>
+
+    <ListPreference
+      app:defaultValue="Manual"
+      app:entries="@array/support_selection_modes"
+      app:entryValues="@array/support_selection_modes"
+      app:key="@string/pref_support_fallback"
+      app:title="Fallback Selection Mode"
+      app:useSimpleSummaryProvider="true"/>
     
   </PreferenceCategory>
 
