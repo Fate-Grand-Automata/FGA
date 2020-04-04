@@ -15,23 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CoreAutomata\CoreAutomata.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="SettingsPage.xaml.cs">
-      <DependentUpon>SettingsPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="SettingsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

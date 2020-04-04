@@ -7,19 +7,15 @@ using Android.Media.Projection;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.App;
-using Android.Support.V4.Content;
-using Android.Support.V7.App;
 using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
 using CoreAutomata;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
+using Google.Android.Material.FloatingActionButton;
 using AlertDialog = Android.App.AlertDialog;
-using DialogFragment = Android.Support.V4.App.DialogFragment;
-using View = Android.Views.View;
 
 namespace FateGrandAutomata
 {
@@ -32,9 +28,7 @@ namespace FateGrandAutomata
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            Forms.Init(this, savedInstanceState);
-
-            var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
             var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
@@ -88,16 +82,6 @@ namespace FateGrandAutomata
 
         void OpenSettings()
         {
-            new DlgFrgmnt().Show(SupportFragmentManager, nameof(DlgFrgmnt));
-        }
-
-        class DlgFrgmnt : DialogFragment
-        {
-            public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-            {
-                var settingsPage = new SettingsPage().CreateSupportFragment(Context);
-                return settingsPage.OnCreateView(inflater, container, savedInstanceState);
-            }
         }
 
         void FabOnClick(object sender, EventArgs eventArgs)
