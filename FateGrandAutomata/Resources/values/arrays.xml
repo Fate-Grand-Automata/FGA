@@ -18,18 +18,18 @@
   </array>
 
   <array name="boost_item_labels">
-    <item>disabled</item>
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
+    <item>Disabled</item>
+    <item>Item 1</item>
+    <item>Item 2</item>
+    <item>Item 3</item>
   </array>
 
-  <array name="boost_item_values">
+  <string-array name="boost_item_values">
     <item>0</item>
     <item>1</item>
     <item>2</item>
     <item>3</item>
-  </array>
+  </string-array>
 
   <array name="battle_np_types">
     <item>None</item>
