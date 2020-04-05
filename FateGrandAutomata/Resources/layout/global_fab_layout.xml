@@ -7,7 +7,7 @@
               android:layout_height="wrap_content"
               tools:showIn="@layout/global_fab_layout">
   <Button
-    android:id="@+id/power"
+    android:id="@+id/script_toggle_btn"
     android:text="▶"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

@@ -11,7 +11,6 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
-using Google.Android.Material.FloatingActionButton;
 using AlertDialog = Android.App.AlertDialog;
 
 namespace FateGrandAutomata
@@ -28,8 +27,8 @@ namespace FateGrandAutomata
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
-            var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            var serviceToggleBtn = FindViewById<Button>(Resource.Id.service_toggle_btn);
+            serviceToggleBtn.Click += ServiceToggleBtnOnClick;
 
             CheckStorageWritePermission();
             IgnoreBatteryOptimizations();
@@ -127,7 +126,7 @@ namespace FateGrandAutomata
             return false;
         }
 
-        void FabOnClick(object Sender, EventArgs EventArgs)
+        void ServiceToggleBtnOnClick(object Sender, EventArgs EventArgs)
         {
             if (!CheckAccessibilityService()) 
                 return;

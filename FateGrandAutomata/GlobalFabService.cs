@@ -163,7 +163,7 @@ namespace FateGrandAutomata
             var inflator = LayoutInflater.From(this);
             inflator.Inflate(Resource.Layout.global_fab_layout, _layout);
 
-            _scriptCtrlBtn = _layout.FindViewById<Button>(Resource.Id.power);
+            _scriptCtrlBtn = _layout.FindViewById<Button>(Resource.Id.script_toggle_btn);
 
             _scriptCtrlBtn.Click += (S, E) =>
             {
