@@ -39,7 +39,8 @@
       app:key="@string/pref_skill_cmd"
       app:title="Skill Command"
       app:useSimpleSummaryProvider="true"
-      app:defaultValue=""/>
+      app:defaultValue=""
+      app:dependency="@string/pref_autoskill_enable"/>
   </PreferenceCategory>
 
   <EditTextPreference

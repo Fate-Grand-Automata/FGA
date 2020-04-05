@@ -14,7 +14,8 @@
       app:key="@string/pref_refill_repetitions"
       app:title="Repetitions"
       app:useSimpleSummaryProvider="true"
-      app:defaultValue="0"/>
+      app:defaultValue="0"
+      app:dependency="@string/pref_refill_enabled"/>
 
     <ListPreference
       app:defaultValue="AllApples"
@@ -22,7 +23,8 @@
       app:entryValues="@array/refill_type_values"
       app:key="@string/pref_refill_resource"
       app:title="Resource"
-      app:useSimpleSummaryProvider="true"/>
+      app:useSimpleSummaryProvider="true"
+      app:dependency="@string/pref_refill_enabled"/>
   </PreferenceCategory>
 
 </PreferenceScreen>
