@@ -12,7 +12,7 @@ namespace CoreAutomata
 
         void Click(Location Location);
 
-        void ContinueClick(Location Location, int Times, int Timeout = -1);
+        void ContinueClick(Location Location, int Times);
 
         IPattern Screenshot();
 

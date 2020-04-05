@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using Android.AccessibilityServices;
 using Android.App;
 using Android.Content;
@@ -51,9 +52,7 @@ namespace FateGrandAutomata
             var gestureBuilder = new GestureDescription.Builder();
             gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
             
-            _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
-
-            AutomataApi.Wait(0.5);
+            PerformGesture(gestureBuilder.Build());
         }
 
         readonly Lazy<Handler> _handler = new Lazy<Handler>(() => new Handler(Looper.MainLooper));
@@ -74,16 +73,85 @@ namespace FateGrandAutomata
             var gestureBuilder = new GestureDescription.Builder();
             gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
 
-            _accessibilityService.DispatchGesture(gestureBuilder.Build(), null, null);
-
-            AutomataApi.Wait(0.1);
+            PerformGesture(gestureBuilder.Build());
         }
 
-        public void ContinueClick(Location Location, int Times, int Timeout = -1)
+        class GestureCompletedCallback : AccessibilityService.GestureResultCallback
         {
-            Click(Location);
+            readonly ManualResetEventSlim _event;
 
-            AutomataApi.WriteDebug($"{nameof(ContinueClick)} not implemented");
+            public GestureCompletedCallback(ManualResetEventSlim Event)
+            {
+                _event = Event;
+            }
+
+            public override void OnCompleted(GestureDescription GestureDescription)
+            {
+                _event.Set();
+                base.OnCompleted(GestureDescription);
+            }
+
+            public override void OnCancelled(GestureDescription GestureDescription)
+            {
+                _event.Set();
+                base.OnCancelled(GestureDescription);
+            }
+        }
+
+        readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
+
+        void PerformGesture(GestureDescription Gesture, bool DoWait = true)
+        {
+            _gestureWaitHandle.Reset();
+
+            _accessibilityService.DispatchGesture(Gesture, new GestureCompletedCallback(_gestureWaitHandle), null);
+
+            if (DoWait)
+            {
+                AutomataApi.Wait(GestureWait);
+            }
+
+            _gestureWaitHandle.Wait();
+        }
+
+        const double GestureWait = 0.1;
+
+        public void ContinueClick(Location Location, int Times)
+        {
+            var maxStrokesPerSet = GestureDescription.MaxStrokeCount;
+
+            var clicksLeft = Times;
+
+            const int delayPerClick = 50;
+
+            while (clicksLeft > 0)
+            {
+                var time = 0L;
+
+                var numberOfClicksInCurrentSet = Math.Min(clicksLeft, maxStrokesPerSet);
+
+                var gestureBuilder = new GestureDescription.Builder();
+
+                for (var i = 0; i < numberOfClicksInCurrentSet; ++i)
+                {
+                    const int duration = 1;
+
+                    var swipePath = new Path();
+                    swipePath.MoveTo(Location.X, Location.Y);
+
+                    var stroke = new GestureDescription.StrokeDescription(swipePath, time, duration);
+
+                    gestureBuilder.AddStroke(stroke);
+
+                    time += stroke.Duration + delayPerClick;
+                }
+
+                PerformGesture(gestureBuilder.Build(), false);
+
+                clicksLeft -= numberOfClicksInCurrentSet;
+            }
+
+            AutomataApi.Wait(GestureWait);
         }
 
         public IPattern Screenshot()

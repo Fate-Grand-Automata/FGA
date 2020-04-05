@@ -163,9 +163,9 @@ namespace CoreAutomata
 
         public static void Toast(string Msg) => _platformImpl?.Toast(Msg);
 
-        public static void ContinueClick(Location Location, int Times, int Timeout = -1)
+        public static void ContinueClick(Location Location, int Times)
         {
-            _platformImpl.ContinueClick(Location.Transform(), Times, Timeout);
+            _platformImpl.ContinueClick(Location.Transform(), Times);
         }
 
         public static void ShowMessageBox(string Title, string Message)
