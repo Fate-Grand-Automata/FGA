@@ -26,8 +26,6 @@ namespace FateGrandAutomata
             Xamarin.Essentials.Platform.Init(this, SavedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            Preferences.SetPreference(new FgoPreferences(this));
-
             var toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 

@@ -13,10 +13,14 @@ namespace FateGrandAutomata
 
             SetContentView(Resource.Layout.settings);
 
-            SupportFragmentManager
-                .BeginTransaction()
-                .Replace(Resource.Id.settings_container, new SettingsFragment())
-                .Commit();
+            // Add the fragment only on first launch
+            if (SavedInstanceState == null)
+            {
+                SupportFragmentManager
+                    .BeginTransaction()
+                    .Replace(Resource.Id.settings_container, new SettingsFragment())
+                    .Commit();
+            }
         }
     }
 }

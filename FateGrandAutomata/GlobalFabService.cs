@@ -145,6 +145,7 @@ namespace FateGrandAutomata
             Instance = this;
 
             AutomataApi.RegisterPlatform(new AndroidImpl(this));
+            Preferences.SetPreference(new FgoPreferences(this));
 
             _windowManager = GetSystemService(WindowService).JavaCast<IWindowManager>();
 
