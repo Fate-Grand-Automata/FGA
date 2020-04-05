@@ -98,7 +98,7 @@ namespace FateGrandAutomata
 
         void OnScriptExit(string Message = null)
         {
-            _scriptCtrlBtn.Post(() => _scriptCtrlBtn.Text = "START");
+            _scriptCtrlBtn.Post(() => _scriptCtrlBtn.Text = "▶");
             
             _entryPoint = null;
 
@@ -120,7 +120,7 @@ namespace FateGrandAutomata
             _entryPoint = new Regular();
             _entryPoint.ScriptExit += OnScriptExit;
 
-            _scriptCtrlBtn.Text = "STOP";
+            _scriptCtrlBtn.Text = "■";
             _entryPoint.Run();
 
             _scriptStarted = true;

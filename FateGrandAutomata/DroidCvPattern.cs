@@ -65,7 +65,7 @@ namespace FateGrandAutomata
 
         public void Dispose()
         {
-            Mat.Dispose();
+            Mat.Release();
         }
 
         public IPattern Resize(Size Size)

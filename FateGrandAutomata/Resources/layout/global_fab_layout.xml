@@ -8,9 +8,15 @@
               tools:showIn="@layout/global_fab_layout">
   <Button
     android:id="@+id/power"
-    android:text="START"
+    android:text="▶"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingHorizontal="7sp"
+    android:paddingTop="3sp"
+    android:paddingBottom="7sp"
+    android:textSize="30sp"
+    android:minHeight="0sp"
+    android:minWidth="0sp"
     android:layout_marginHorizontal="5px"
     android:layout_marginVertical="5px"/>
 </RelativeLayout>

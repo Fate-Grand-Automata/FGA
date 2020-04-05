@@ -26,28 +26,34 @@ namespace FateGrandAutomata
 
         public IPattern AcquirePattern()
         {
+            var createNewPattern = false;
+
             lock (_syncLock)
             {
                 if (_newImgAvailable)
                 {
-                    var latestImage = _imageReader.AcquireLatestImage();
-
-                    try
-                    {
-                        _lastestPattern?.Dispose();
-                        _lastestPattern = new DroidCvPattern(latestImage);
-                    }
-                    finally
-                    {
-                        // Close is required for ImageReader. Dispose doesn't work.
-                        latestImage.Close();
-                    }
-
+                    createNewPattern = true;
                     _newImgAvailable = false;
                 }
-
-                return _lastestPattern;
             }
+
+            if (createNewPattern)
+            {
+                var latestImage = _imageReader.AcquireLatestImage();
+
+                try
+                {
+                    _lastestPattern?.Dispose();
+                    _lastestPattern = new DroidCvPattern(latestImage);
+                }
+                finally
+                {
+                    // Close is required for ImageReader. Dispose doesn't work.
+                    latestImage.Close();
+                }
+            }
+
+            return _lastestPattern;
         }
     }
 }
