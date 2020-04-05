@@ -1,4 +1,4 @@
-# FateGrandAutomata
+# Fate/Grand Automata
 Fate/Grand auto-battle app for Android.
 This is pretty much a C# port of [Fate-Grand-Order_Lua][FGOLua] but has an inbuilt Sikuli-like API.
 Also, includes a UI for configuring Settings.
