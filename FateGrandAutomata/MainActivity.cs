@@ -33,6 +33,8 @@ namespace FateGrandAutomata
             fab.Click += FabOnClick;
             
             _mediaProjectionManager = (MediaProjectionManager) GetSystemService(MediaProjectionService);
+
+            CheckStorageWritePermission();
         }
 
         protected override void OnActivityResult(int RequestCode, Result ResultCode, Intent Data)
@@ -72,7 +74,7 @@ namespace FateGrandAutomata
             StartActivity(typeof(SettingsActivity));
         }
 
-        void FabOnClick(object Sender, EventArgs EventArgs)
+        void CheckStorageWritePermission()
         {
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != Permission.Granted)
             {
@@ -81,7 +83,10 @@ namespace FateGrandAutomata
                     new[] { Manifest.Permission.WriteExternalStorage },
                     0);
             }
+        }
 
+        void FabOnClick(object Sender, EventArgs EventArgs)
+        {
             if (GlobalFabService.Instance != null)
             {
                 var instance = GlobalFabService.Instance;
