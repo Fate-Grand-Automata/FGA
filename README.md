@@ -16,7 +16,8 @@ It runs on [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/),
 Battery optimizations can screw up the functionality of the app. App tries to disabled them automatically but you might also have to do that manually.
 
 ## What to do about bugs?
-This is a project I made solely for the purpose of running on my phone.
+This is a lazy project (see how the commits are named :laughing:) and I'm a beginner in Android.
+I made solely for the purpose of running on my phone.
 You can use the code if you want, but I can't really help you to debug it on your phone if you face any problems.
 Debugging really is a pain due to FGO not allowing `Developer Mode` to be `ON` during execution.
 Though, I welcome contributions if you could figure out the cause of the problem.
@@ -35,6 +36,18 @@ Though, I welcome contributions if you could figure out the cause of the problem
 
 Settings can be opened from the app's menu (three dots on top-right corner).
 For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] project.
+
+## Limitations
+1. Support servant images are not present
+2. Only 2 CE images are available: `mona_lisa.png` and `chaldea_lunchtime.png`
+3. Autskill list not supported.
+4. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
+4. Not up-to-date with FGOLua.
+
+## Upcoming Features
+1. File picker for Support Servant/CE images.
+2. Autoskill list
+3. Support image maker? Automatically crop out servant/ce image from a screenshot.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!
