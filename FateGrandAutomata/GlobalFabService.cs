@@ -36,20 +36,19 @@ namespace FateGrandAutomata
 
         public override bool OnUnbind(Intent Intent)
         {
+            Stop();
+
             Instance = null;
             ServiceStarted = false;
 
-            _virtualDisplay.Release();
+            _virtualDisplay?.Release();
             _virtualDisplay = null;
 
-            _imageReader.Close();
+            _imageReader?.Close();
             _imageReader = null;
 
-            if (_mediaProjection != null)
-            {
-                _mediaProjection.Stop();
-                _mediaProjection = null;
-            }
+            _mediaProjection?.Stop();
+            _mediaProjection = null;
 
             return base.OnUnbind(Intent);
         }
@@ -99,7 +98,8 @@ namespace FateGrandAutomata
 
         void OnScriptExit(string Message = null)
         {
-            _scriptCtrlBtn.Text = "START";
+            _scriptCtrlBtn.Post(() => _scriptCtrlBtn.Text = "START");
+            
             _entryPoint = null;
 
             _scriptStarted = false;
@@ -182,7 +182,7 @@ namespace FateGrandAutomata
             _screenHeight = metrics.HeightPixels;
 
             _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
-            _imgListener = new ImgListener();
+            _imgListener = new ImgListener(_imageReader);
             _imageReader.SetOnImageAvailableListener(_imgListener, null);
         }
 

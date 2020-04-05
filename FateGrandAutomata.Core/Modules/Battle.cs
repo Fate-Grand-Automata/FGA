@@ -11,8 +11,8 @@ namespace FateGrandAutomata
 
         public bool HasChoosenTarget { get; private set; }
 
-        public int CurrentStage { get; private set; }
-        public int CurrentTurn { get; private set; }
+        public int CurrentStage { get; private set; } = -1;
+        public int CurrentTurn { get; private set; } = -1;
 
         public AutoSkill AutoSkill { get; private set; }
 
@@ -30,7 +30,7 @@ namespace FateGrandAutomata
         {
             AutoSkill.ResetState();
 
-            CurrentStage = CurrentTurn = 0;
+            CurrentStage = CurrentTurn = -1;
 
             _hasTakenFirstStageSnapshot = HasChoosenTarget = HasClickedAttack = false;
         }
@@ -83,7 +83,7 @@ namespace FateGrandAutomata
         void OnStageChanged()
         {
             ++CurrentStage;
-            CurrentTurn = 0;
+            CurrentTurn = -1;
             HasChoosenTarget = false;
         }
 

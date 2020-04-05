@@ -36,7 +36,7 @@ namespace CoreAutomata
             }
             catch (ThreadAbortException)
             {
-                AutomataApi.ShowMessageBox("User Aborted", "Script stopped by user");
+                // Script stopped by user
             }
             catch (ScriptExitException e)
             {

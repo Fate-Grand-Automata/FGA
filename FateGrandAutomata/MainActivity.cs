@@ -7,13 +7,11 @@ using Android.Media.Projection;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
-using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
-using CoreAutomata;
 using Google.Android.Material.FloatingActionButton;
 using AlertDialog = Android.App.AlertDialog;
 
@@ -35,17 +33,6 @@ namespace FateGrandAutomata
 
             var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
-
-            var debugMsgTextBox = FindViewById<TextView>(Resource.Id.debug_msg);
-            debugMsgTextBox.MovementMethod = new ScrollingMovementMethod();
-            AutomataApi.DebugMsgReceived += Msg =>
-            {
-                RunOnUiThread(() =>
-                {
-                    debugMsgTextBox.Append("\n");
-                    debugMsgTextBox.Append(Msg);
-                });
-            };
             
             _mediaProjectionManager = (MediaProjectionManager) GetSystemService(MediaProjectionService);
         }

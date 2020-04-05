@@ -7,17 +7,20 @@ namespace FateGrandAutomata
     {
         readonly object _syncLock = new object();
 
-        Image _latestImage;
         IPattern _lastestPattern;
+        bool _newImgAvailable;
+        readonly ImageReader _imageReader;
+
+        public ImgListener(ImageReader ImageReader)
+        {
+            _imageReader = ImageReader;
+        }
 
         public void OnImageAvailable(ImageReader Reader)
         {
             lock (_syncLock)
             {
-                _latestImage?.Close();
-
-                _latestImage = Reader.AcquireLatestImage();
-                _lastestPattern = null;
+                _newImgAvailable = true;
             }
         }
 
@@ -25,12 +28,25 @@ namespace FateGrandAutomata
         {
             lock (_syncLock)
             {
-                if (_latestImage == null)
+                if (_newImgAvailable)
                 {
-                    return null;
+                    var latestImage = _imageReader.AcquireLatestImage();
+
+                    try
+                    {
+                        _lastestPattern?.Dispose();
+                        _lastestPattern = new DroidCvPattern(latestImage);
+                    }
+                    finally
+                    {
+                        // Close is required for ImageReader. Dispose doesn't work.
+                        latestImage.Close();
+                    }
+
+                    _newImgAvailable = false;
                 }
 
-                return _lastestPattern ??= new DroidCvPattern(_latestImage);
+                return _lastestPattern;
             }
         }
     }

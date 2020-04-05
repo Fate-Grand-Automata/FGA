@@ -13,7 +13,14 @@ namespace CoreAutomata
 
         static AutomataApi()
         {
-            DebugMsgReceived += Msg => Console.WriteLine($"DBG: {Msg}");
+            DebugMsgReceived += Msg =>
+            {
+                Msg = $"DBG: {Msg}";
+
+                Console.WriteLine(Msg);
+
+                Toast(Msg);
+            };
         }
 
         public static void RegisterPlatform(IPlatformImpl Impl)
@@ -74,12 +81,13 @@ namespace CoreAutomata
                         break;
                     }
 
-                    var scanIntervalMs = 1000 / ScanRate;
-                    var timeToWaitMs = (scanStartTimestamp + TimeSpan.FromMilliseconds(scanIntervalMs) - Stopwatch.Elapsed).TotalMilliseconds;
+                    var scanInterval = TimeSpan.FromMilliseconds(1000 / ScanRate);
+                    var elapsed = Stopwatch.Elapsed - scanStartTimestamp;
+                    var timeToWaitSec = (scanInterval - elapsed).TotalSeconds;
 
-                    if (timeToWaitMs > 0)
+                    if (timeToWaitSec > 0)
                     {
-                        Wait(timeToWaitMs);
+                        Wait(timeToWaitSec);
                     }
                 }
             }
@@ -153,7 +161,7 @@ namespace CoreAutomata
                 });
         }
 
-        public static void Toast(string Msg) => _platformImpl.Toast(Msg);
+        public static void Toast(string Msg) => _platformImpl?.Toast(Msg);
 
         public static void ContinueClick(Location Location, int Times, int Timeout = -1)
         {
