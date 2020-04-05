@@ -182,8 +182,14 @@ namespace FateGrandAutomata
             _screenWidth = metrics.WidthPixels;
             _screenHeight = metrics.HeightPixels;
 
+            // Retrieve images in Landscape
+            if (_screenHeight > _screenWidth)
+            {
+                (_screenWidth, _screenHeight) = (_screenHeight, _screenWidth);
+            }
+
             _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
-            _imgListener = new ImgListener(_imageReader, _windowManager.DefaultDisplay);
+            _imgListener = new ImgListener(_imageReader);
             _imageReader.SetOnImageAvailableListener(_imgListener, null);
         }
 
