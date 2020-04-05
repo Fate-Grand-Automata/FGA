@@ -35,6 +35,20 @@ namespace FateGrandAutomata
             _mediaProjectionManager = (MediaProjectionManager) GetSystemService(MediaProjectionService);
 
             CheckStorageWritePermission();
+            IgnoreBatteryOptimizations();
+        }
+
+        void IgnoreBatteryOptimizations()
+        {
+            var powerManager = (PowerManager) GetSystemService(PowerService);
+
+            if (powerManager.IsIgnoringBatteryOptimizations(PackageName))
+            {
+                return;
+            }
+
+            StartActivity(new Intent(Settings.ActionRequestIgnoreBatteryOptimizations,
+                Android.Net.Uri.Parse("package:" + PackageName)));
         }
 
         protected override void OnActivityResult(int RequestCode, Result ResultCode, Intent Data)
