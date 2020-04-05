@@ -1,11 +1,11 @@
 # FateGrandAutomata
 Fate/Grand auto-battle app for Android.
-This is pretty much a C# port of [Fate-Grand-Order_Lua](https://github.com/29988122/Fate-Grand-Order_Lua) but has an inbuilt Sikuli-like API.
+This is pretty much a C# port of [Fate-Grand-Order_Lua][FGOLua] but has an inbuilt Sikuli-like API.
 Also, includes a UI for configuring Settings.
 
 ## Why make another?
 Fate/Grand Order is all about farming.
-We already have an awesome auto battle script named [Fate-Grand-Order_Lua](https://github.com/29988122/Fate-Grand-Order_Lua) which uses AnkuLua (an implementation of Sikuli using Lua language for scripting on Android).
+We already have an awesome auto battle script named [Fate-Grand-Order_Lua][FGOLua] which uses AnkuLua (an implementation of Sikuli using Lua language for scripting on Android).
 The only problem I had was that, in trial versions, AnkuLua limits scripts to run for a maximum of 30 min and after which there is a cooldown period.
 Any of the hardcore farmers out there know that this is not enough for the lottery events.
 So, being the salty F2P that I am, instead of buying an AnkuLua subscription, I thought why not make something similar.
@@ -25,7 +25,16 @@ Though, I welcome contributions if you could figure out the cause of the problem
 1. Download from GitHub Releases. I can't put this app on Play Store due to some restrictive features this app uses.
 2. Install on your phone. You'll need to enable installing apps out of Play Store.
 3. Launch the app. Grant it permissions it asks for: Write External Storage, Ignore Battery Optimizations.
-4. Click on `Toggle Service`. You would be prompted to turn on the Accessibility service and taken to Accessibility Settings page
+4. Click on `Toggle Service`. You would be prompted to turn on the Accessibility service and taken to Accessibility Settings page.
+   If you turned ON Accessibility service right, now click again on `Toggle Service`.
+5. Now, you can see a button with play icon on it floating on screen.
+6. Open F/GO and Go to the node you want to farm.
+8. Press Play to start. The same button can be pressed to stop later.
+
+Settings can be opened from the app's menu (three dots on top-right corner).
+For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] project.
 
 ## Like the project? Want to support me?
 Just pray that I can roll Skadi!
+
+[FGOLua]: https://github.com/29988122/Fate-Grand-Order_Lua
