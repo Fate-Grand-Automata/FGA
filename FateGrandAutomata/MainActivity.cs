@@ -85,50 +85,56 @@ namespace FateGrandAutomata
             }
         }
 
-        void FabOnClick(object Sender, EventArgs EventArgs)
+        bool CheckAccessibilityService()
         {
             if (GlobalFabService.Instance != null)
-            {
-                var instance = GlobalFabService.Instance;
+                return true;
 
-                if (instance.ServiceStarted)
+            var alertDialog = new AlertDialog.Builder(this);
+            alertDialog.SetTitle("Accessibility Disabled")
+                .SetMessage("Turn on accessibility for this app from System settings")
+                .SetPositiveButton("Go To Settings", (S, E) =>
                 {
-                    instance.Stop();
-                }
-                else
-                {
-                    if (GlobalFabService.Instance.HasMediaProjectionToken)
+                    if (S is Dialog dialog)
                     {
-                        instance.Start();
+                        dialog.Dismiss();
                     }
-                    // This initiates a prompt dialog for the user to confirm screen projection.
-                    else StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), RequestMediaProjection);
-                }
+
+                    // Open Acessibility Settings
+                    var intent = new Intent(Settings.ActionAccessibilitySettings);
+                    StartActivity(intent);
+                })
+                .SetNegativeButton("Cancel", (S, E) =>
+                {
+                    if (S is Dialog dialog)
+                    {
+                        dialog.Dismiss();
+                    }
+                })
+                .Show();
+
+            return false;
+        }
+
+        void FabOnClick(object Sender, EventArgs EventArgs)
+        {
+            if (!CheckAccessibilityService()) 
+                return;
+
+            var instance = GlobalFabService.Instance;
+
+            if (instance.ServiceStarted)
+            {
+                instance.Stop();
             }
             else
             {
-                var alertDialog = new AlertDialog.Builder(this);
-                alertDialog.SetTitle("Accessibility Disabled")
-                    .SetMessage("Turn on accessibility for this app from System settings")
-                    .SetPositiveButton("Go To Settings", (S, E) =>
-                    {
-                        if (S is Dialog dialog)
-                        {
-                            dialog.Dismiss();
-                        }
-
-                        // Open Acessibility Settings
-                        var intent = new Intent(Settings.ActionAccessibilitySettings);
-                        StartActivity(intent);
-                    })
-                    .SetNegativeButton("Cancel", (S, E) =>
-                    {
-                        if (S is Dialog dialog)
-                        {
-                            dialog.Dismiss();
-                        }
-                    })
-                    .Show();
+                if (GlobalFabService.Instance.HasMediaProjectionToken)
+                {
+                    instance.Start();
+                }
+                // This initiates a prompt dialog for the user to confirm screen projection.
+                else StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), RequestMediaProjection);
             }
         }
         public override void OnRequestPermissionsResult(int RequestCode, string[] Permissions, [GeneratedEnum] Android.Content.PM.Permission[] GrantResults)
