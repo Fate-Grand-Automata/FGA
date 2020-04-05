@@ -3,7 +3,6 @@ using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Media.Projection;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
@@ -31,8 +30,6 @@ namespace FateGrandAutomata
 
             var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             fab.Click += FabOnClick;
-            
-            _mediaProjectionManager = (MediaProjectionManager) GetSystemService(MediaProjectionService);
 
             CheckStorageWritePermission();
             IgnoreBatteryOptimizations();
@@ -148,7 +145,7 @@ namespace FateGrandAutomata
                     instance.Start();
                 }
                 // This initiates a prompt dialog for the user to confirm screen projection.
-                else StartActivityForResult(_mediaProjectionManager.CreateScreenCaptureIntent(), RequestMediaProjection);
+                else StartActivityForResult(instance.MediaProjectionManager.CreateScreenCaptureIntent(), RequestMediaProjection);
             }
         }
         public override void OnRequestPermissionsResult(int RequestCode, string[] Permissions, [GeneratedEnum] Android.Content.PM.Permission[] GrantResults)
@@ -159,8 +156,6 @@ namespace FateGrandAutomata
         }
 
         const int RequestMediaProjection = 1;
-
-        MediaProjectionManager _mediaProjectionManager;
     }
 }
 

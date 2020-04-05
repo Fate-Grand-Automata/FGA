@@ -26,7 +26,7 @@ namespace FateGrandAutomata
 
         int _screenDensity, _screenWidth, _screenHeight;
 
-        MediaProjectionManager _mediaProjectionManager;
+        public MediaProjectionManager MediaProjectionManager { get; private set; }
         MediaProjection _mediaProjection;
         VirtualDisplay _virtualDisplay;
         ImageReader _imageReader;
@@ -68,7 +68,7 @@ namespace FateGrandAutomata
 
             if (MediaProjectionToken != null)
             {
-                _mediaProjection = _mediaProjectionManager.GetMediaProjection((int)Result.Ok, MediaProjectionToken);
+                _mediaProjection = MediaProjectionManager.GetMediaProjection((int)Result.Ok, MediaProjectionToken);
 
                 SetupVirtualDisplay();
             }
@@ -174,7 +174,7 @@ namespace FateGrandAutomata
                 else StartScript();
             };
 
-            _mediaProjectionManager = (MediaProjectionManager)GetSystemService(MediaProjectionService);
+            MediaProjectionManager = (MediaProjectionManager)GetSystemService(MediaProjectionService);
 
             var metrics = new DisplayMetrics();
             _windowManager.DefaultDisplay.GetMetrics(metrics);
