@@ -183,7 +183,7 @@ namespace FateGrandAutomata
             _screenHeight = metrics.HeightPixels;
 
             _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
-            _imgListener = new ImgListener(_imageReader);
+            _imgListener = new ImgListener(_imageReader, _windowManager.DefaultDisplay);
             _imageReader.SetOnImageAvailableListener(_imgListener, null);
         }
 
