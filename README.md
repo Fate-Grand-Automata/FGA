@@ -26,9 +26,11 @@ Though, I welcome contributions if you could figure out the cause of the problem
 2. Install on your phone. You'll need to enable installing apps out of Play Store.
 3. Launch the app. Grant it permissions it asks for: Write External Storage, Ignore Battery Optimizations.
 4. Click on `Toggle Service`. You would be prompted to turn on the Accessibility service and taken to Accessibility Settings page.
-   If you turned ON Accessibility service right, now click again on `Toggle Service`.
-5. Now, you can see a button with play icon on it floating on screen.
-6. Open F/GO and Go to the node you want to farm.
+   If it is already ON, turn it OFF and then turn it ON again.
+   If you turned ON Accessibility service right now, click again on `Toggle Service`.
+5. You would be asked for Media Projection permission.
+6. Now, you can see a button with play icon on it floating on screen.
+7. Open F/GO and Go to the node you want to farm.
 8. Press Play to start. The same button can be pressed to stop later.
 
 Settings can be opened from the app's menu (three dots on top-right corner).
