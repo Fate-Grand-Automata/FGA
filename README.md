@@ -43,11 +43,13 @@ For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] proje
 3. Autskill list not supported.
 4. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
 4. Not up-to-date with FGOLua.
+5. No support for Auto-gacha, Auto-lottery, Auto-giftbox.
 
 ## Upcoming Features
 1. File picker for Support Servant/CE images.
 2. Autoskill list
 3. Support image maker? Automatically crop out servant/ce image from a screenshot.
+4. Auto-gacha, Auto-lottery, Auto-giftbox.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

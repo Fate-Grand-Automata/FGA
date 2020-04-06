@@ -89,6 +89,8 @@ namespace FateGrandAutomata
         {
             _battle.ResetState();
 
+            AutomataApi.Toast($"{_stonesUsed} refills used out of {Preferences.Instance.Refill.Repetitions}");
+
             // Click uppermost quest
             Game.MenuSelectQuestClick.Click();
             AutomataApi.Wait(1.5);
