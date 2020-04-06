@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using CoreAutomata;
 
@@ -6,14 +8,24 @@ namespace FateGrandAutomata
 {
     public static class ImageLocator
     {
+        public static Func<string, Stream> FileLoader { get; set; }
+
         static IPattern CreatePattern(string FilePath)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = $"{nameof(FateGrandAutomata)}.{FilePath}";
 
-            using var stream = assembly.GetManifestResourceStream(resourceName);
+            var stream = assembly.GetManifestResourceStream(resourceName);
 
-            return AutomataApi.LoadPattern(stream);
+            if (stream == null)
+            {
+                return null;
+            }
+
+            using (stream)
+            {
+                return AutomataApi.LoadPattern(stream);
+            }
         }
 
         static GameServer _currentGameServer;
@@ -92,9 +104,28 @@ namespace FateGrandAutomata
 
         public static IPattern Withdraw => GetRegionPattern("withdraw.png");
 
+        public const string SupportImageFolderName = "Fate-Grand-Automata/support";
+
         public static IPattern LoadSupportImagePattern(string FileName)
         {
-            return CreatePattern($"images.Support.{FileName}");
+            var pattern = CreatePattern($"images.Support.{FileName}");
+
+            if (pattern != null)
+            {
+                return pattern;
+            }
+
+            var stream = FileLoader?.Invoke(FileName);
+
+            if (stream == null)
+            {
+                throw new ScriptExitException($"Unable to load image: {FileName}. Put images in {SupportImageFolderName} folder");
+            }
+
+            using (stream)
+            {
+                return AutomataApi.LoadPattern(stream);
+            }
         }
     }
 }

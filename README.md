@@ -24,6 +24,7 @@ Though, I welcome contributions if you could figure out the cause of the problem
 
 ## How to Use?
 1. Download from [GitHub Releases](https://github.com/MathewSachin/FateGrandAutomata/releases/). I can't put this app on `Play Store` due to some restrictive features this app uses.
+   The APK available there might not always be the latest one. This README is written according to the latest commit of the code.
 2. Install on your phone. You'll need to enable installing apps out of `Play Store`.
 3. Launch the app. Grant it permissions it asks for: `Read External Storage`, `Write External Storage`, `Ignore Battery Optimizations`.
 4. Click on `Toggle Service`. You would be prompted to turn on the `Accessibility Service` and taken to `Accessibility Settings` page.
@@ -34,22 +35,25 @@ Though, I welcome contributions if you could figure out the cause of the problem
 7. Open F/GO and Go to the node you want to farm.
 8. Press Play to start. The same button can be pressed to stop later.
 
+## How to configure?
 Settings can be opened from the app's menu (three dots on top-right corner).
 For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] project.
 
+## Where to put Servant/CE images?
+The app only comes with `mona_lisa.png` and `chaldea_lunchtime.png`.
+If you want to use any other preferred servant or ce, put their image in `Fate-Grand-Automata/support` folder.
+Create the folder if it doesn't already exist.
+For information on how to use support selection, see the original [Fate-Grand-Order_Lua][FGOLua] project.
+
 ## Limitations
-1. Support servant images are not present
-2. Only 2 CE images are available: `mona_lisa.png` and `chaldea_lunchtime.png`
-3. Autskill list not supported.
-4. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
-5. No support for Auto-gacha, Auto-lottery, Auto-giftbox.
-6. I only test for EN server. Other server images are included, but not tested.
+1. Autskill list not supported.
+2. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
+3. No support for Auto-gacha, Auto-lottery, Auto-giftbox.
 
 ## Upcoming Features
-1. File picker for Support Servant/CE images.
-2. Autoskill list
+1. Autoskill list
+2. Auto-gacha, Auto-lottery, Auto-giftbox.
 3. Support image maker? Automatically crop out servant/ce image from a screenshot.
-4. Auto-gacha, Auto-lottery, Auto-giftbox.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

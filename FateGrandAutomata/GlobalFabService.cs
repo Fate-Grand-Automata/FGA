@@ -1,4 +1,5 @@
-﻿using Android;
+﻿using System.IO;
+using Android;
 using Android.AccessibilityServices;
 using Android.App;
 using Android.Content;
@@ -6,12 +7,14 @@ using Android.Graphics;
 using Android.Hardware.Display;
 using Android.Media;
 using Android.Media.Projection;
+using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Views.Accessibility;
 using Android.Widget;
 using CoreAutomata;
 using Java.Interop;
+using Path = System.IO.Path;
 
 namespace FateGrandAutomata
 {
@@ -191,6 +194,32 @@ namespace FateGrandAutomata
             _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
             _imgListener = new ImgListener(_imageReader);
             _imageReader.SetOnImageAvailableListener(_imgListener, null);
+
+            ImageLocator.FileLoader = FileLoader;
+        }
+
+        static System.IO.Stream FileLoader(string Filename)
+        {
+            PrepareSupportImageFolder();
+
+            var filepath = Path.Combine(GetSupportImgFolder(), Filename);
+
+            return File.Exists(filepath)
+                ? File.OpenRead(filepath)
+                : null;
+        }
+
+        static string GetSupportImgFolder() =>
+            Path.Combine(Environment.ExternalStorageDirectory.AbsolutePath, ImageLocator.SupportImageFolderName);
+
+        static void PrepareSupportImageFolder()
+        {
+            var folder = GetSupportImgFolder();
+
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
         }
 
         public IPattern AcquireLatestImage()
