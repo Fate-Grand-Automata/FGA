@@ -45,14 +45,19 @@ If you want to use any other preferred servant or ce, put their image in `Fate-G
 Create the folder if it doesn't already exist.
 For information on how to use support selection, see the original [Fate-Grand-Order_Lua][FGOLua] project.
 
+## What about other scripts like Lottery and Friend Gacha?
+There is an option in Settings called `Script Mode`.
+It defaults to `Battle`.
+Set it to the script you require.
+
 ## Limitations
 1. Autoskill list not supported.
 2. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
-3. No support for Auto-gacha, Auto-lottery, Auto-giftbox.
+3. No support for Auto-giftbox.
 
 ## Upcoming Features
 1. Autoskill list
-2. Auto-gacha, Auto-lottery, Auto-giftbox.
+2. Auto-giftbox.
 3. Support image maker? Automatically crop out servant/ce image from a screenshot.
 
 ## Like the project? Want to support me?

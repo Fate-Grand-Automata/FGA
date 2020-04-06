@@ -2,6 +2,8 @@
 {
     public interface IFgoPreferences
     {
+        ScriptMode ScriptMode { get; }
+
         GameServer GameServer { get; }
 
         bool SkillConfirmation { get; }

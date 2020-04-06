@@ -372,7 +372,13 @@ namespace FateGrandAutomata
 			public const int refill_type_values = 2130903045;
 			
 			// aapt resource value: 0x7F030006
-			public const int support_selection_modes = 2130903046;
+			public const int script_mode_labels = 2130903046;
+			
+			// aapt resource value: 0x7F030007
+			public const int script_mode_values = 2130903047;
+			
+			// aapt resource value: 0x7F030008
+			public const int support_selection_modes = 2130903048;
 			
 			static Array()
 			{
@@ -4859,8 +4865,8 @@ namespace FateGrandAutomata
 			// aapt resource value: 0x7F0F002C
 			public const int path_password_strike_through = 2131689516;
 			
-			// aapt resource value: 0x7F0F0044
-			public const int preference_copied = 2131689540;
+			// aapt resource value: 0x7F0F0045
+			public const int preference_copied = 2131689541;
 			
 			// aapt resource value: 0x7F0F002E
 			public const int pref_autoskill_enable = 2131689518;
@@ -4893,58 +4899,61 @@ namespace FateGrandAutomata
 			public const int pref_refill_resource = 2131689526;
 			
 			// aapt resource value: 0x7F0F0037
-			public const int pref_skill_cmd = 2131689527;
+			public const int pref_script_mode = 2131689527;
 			
 			// aapt resource value: 0x7F0F0038
-			public const int pref_skill_conf = 2131689528;
+			public const int pref_skill_cmd = 2131689528;
 			
 			// aapt resource value: 0x7F0F0039
-			public const int pref_stop_bond10 = 2131689529;
+			public const int pref_skill_conf = 2131689529;
 			
 			// aapt resource value: 0x7F0F003A
-			public const int pref_story_skip = 2131689530;
+			public const int pref_stop_bond10 = 2131689530;
 			
 			// aapt resource value: 0x7F0F003B
-			public const int pref_support_fallback = 2131689531;
-			
-			// aapt resource value: 0x7F0F003D
-			public const int pref_support_friends_only = 2131689533;
+			public const int pref_story_skip = 2131689531;
 			
 			// aapt resource value: 0x7F0F003C
-			public const int pref_support_friend_names = 2131689532;
+			public const int pref_support_fallback = 2131689532;
 			
 			// aapt resource value: 0x7F0F003E
-			public const int pref_support_max_updates = 2131689534;
+			public const int pref_support_friends_only = 2131689534;
+			
+			// aapt resource value: 0x7F0F003D
+			public const int pref_support_friend_names = 2131689533;
 			
 			// aapt resource value: 0x7F0F003F
-			public const int pref_support_mode = 2131689535;
+			public const int pref_support_max_updates = 2131689535;
 			
 			// aapt resource value: 0x7F0F0040
-			public const int pref_support_pref_ce = 2131689536;
+			public const int pref_support_mode = 2131689536;
 			
 			// aapt resource value: 0x7F0F0041
-			public const int pref_support_pref_servant = 2131689537;
+			public const int pref_support_pref_ce = 2131689537;
 			
 			// aapt resource value: 0x7F0F0042
-			public const int pref_support_swipes_per_update = 2131689538;
+			public const int pref_support_pref_servant = 2131689538;
 			
 			// aapt resource value: 0x7F0F0043
-			public const int pref_withdraw_enabled = 2131689539;
+			public const int pref_support_swipes_per_update = 2131689539;
 			
-			// aapt resource value: 0x7F0F0045
-			public const int search_menu_title = 2131689541;
+			// aapt resource value: 0x7F0F0044
+			public const int pref_withdraw_enabled = 2131689540;
 			
 			// aapt resource value: 0x7F0F0046
-			public const int status_bar_notification_info_overflow = 2131689542;
+			public const int search_menu_title = 2131689542;
 			
 			// aapt resource value: 0x7F0F0047
-			public const int summary_collapsed_preference_list = 2131689543;
+			public const int status_bar_notification_info_overflow = 2131689543;
 			
 			// aapt resource value: 0x7F0F0048
-			public const int v7_preference_off = 2131689544;
+			public const int summary_collapsed_preference_list = 2131689544;
 			
 			// aapt resource value: 0x7F0F0049
-			public const int v7_preference_on = 2131689545;
+			public const int v7_preference_off = 2131689545;
+			
+			// aapt resource value: 0x7F0F004A
+			public const int v7_preference_on = 2131689546;
 			
 			static String()
 			{

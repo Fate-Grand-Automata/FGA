@@ -45,6 +45,8 @@ namespace FateGrandAutomata
 
         // ----- //
 
+        public ScriptMode ScriptMode => GetEnum<ScriptMode>(R.pref_script_mode);
+
         public GameServer GameServer => GetEnum<GameServer>(R.pref_gameserver);
 
         public bool SkillConfirmation => GetBool(R.pref_skill_conf);

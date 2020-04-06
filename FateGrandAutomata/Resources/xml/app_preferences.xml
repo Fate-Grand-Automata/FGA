@@ -3,6 +3,14 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <ListPreference
+    app:defaultValue="Battle"
+    app:entries="@array/script_mode_labels"
+    app:entryValues="@array/script_mode_values"
+    app:key="@string/pref_script_mode"
+    app:title="Script Mode"
+    app:useSimpleSummaryProvider="true"/>
+
+  <ListPreference
     app:defaultValue="En"
     app:entries="@array/game_servers"
     app:entryValues="@array/game_servers"

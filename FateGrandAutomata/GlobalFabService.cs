@@ -108,6 +108,13 @@ namespace FateGrandAutomata
             _scriptStarted = false;
         }
 
+        static EntryPoint GetEntryPoint() => Preferences.Instance.ScriptMode switch
+        {
+            ScriptMode.Lottery => new AutoLottery(),
+            ScriptMode.FriendGacha => new AutoFriendGacha(),
+            _ => new AutoBattle()
+        };
+
         void StartScript()
         {
             if (!ServiceStarted)
@@ -120,7 +127,7 @@ namespace FateGrandAutomata
                 return;
             }
 
-            _entryPoint = new AutoBattle();
+            _entryPoint = GetEntryPoint();
             _entryPoint.ScriptExit += OnScriptExit;
 
             _scriptCtrlBtn.Text = "■";

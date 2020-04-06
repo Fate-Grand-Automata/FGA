@@ -50,4 +50,16 @@
     <item>Preferred</item>
     <item>Friend</item>
   </array>
+
+  <array name="script_mode_labels">
+    <item>Battle</item>
+    <item>Lottery</item>
+    <item>Friend Gacha</item>
+  </array>
+
+  <array name="script_mode_values">
+    <item>Battle</item>
+    <item>Lottery</item>
+    <item>FriendGacha</item>
+  </array>
 </resources>
