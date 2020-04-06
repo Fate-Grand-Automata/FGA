@@ -149,7 +149,6 @@ namespace FateGrandAutomata
 
             AutomataApi.RegisterPlatform(new AndroidImpl(this));
             Preferences.SetPreference(new FgoPreferences(this));
-            Scaling.Init();
 
             _windowManager = GetSystemService(WindowService).JavaCast<IWindowManager>();
 

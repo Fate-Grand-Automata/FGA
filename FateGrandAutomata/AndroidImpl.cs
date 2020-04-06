@@ -114,7 +114,7 @@ namespace FateGrandAutomata
             _gestureWaitHandle.Wait();
         }
 
-        const double GestureWait = 0.1;
+        const double GestureWait = 0.3;
 
         public void ContinueClick(Location Location, int Times)
         {

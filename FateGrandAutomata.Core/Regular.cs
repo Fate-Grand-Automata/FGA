@@ -243,6 +243,8 @@ namespace FateGrandAutomata
         // Then initialize the Autoskill, Battle, and Card modules in modules.
         void Init()
         {
+            Scaling.Init();
+
             _autoSkill.Init(_battle, _card);
             _battle.Init(_autoSkill, _card);
             _card.Init(_autoSkill, _battle);

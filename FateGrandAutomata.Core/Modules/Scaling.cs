@@ -80,8 +80,15 @@ namespace FateGrandAutomata
             }
         }
 
+        static bool _initialized;
+
         public static void Init()
         {
+            if (_initialized)
+            {
+                return;
+            }
+
             var scaling = new Scaling();
             
             // Set only ONCE
@@ -89,6 +96,8 @@ namespace FateGrandAutomata
                 Game.ScriptHeight,
                 Game.ImageWidth,
                 Game.ImageHeight);
+
+            _initialized = true;
         }
     }
 }
