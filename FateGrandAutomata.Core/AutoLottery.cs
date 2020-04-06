@@ -2,6 +2,7 @@
 
 namespace FateGrandAutomata
 {
+    // Not Tested
     public class AutoLottery : EntryPoint
     {
         static readonly Location SpinClick = new Location(834, 860);
