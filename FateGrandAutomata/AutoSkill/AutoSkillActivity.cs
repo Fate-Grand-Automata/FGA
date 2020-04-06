@@ -4,7 +4,6 @@ using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Preference;
@@ -12,7 +11,7 @@ using AndroidX.Preference;
 namespace FateGrandAutomata
 {
     [Activity(Label = "AutoSkill List")]
-    [Register("fgautomata." + nameof(AutoSkillActivity))]
+    [IntentFilter(new [] { "fgautomata." + nameof(AutoSkillActivity) })]
     public class AutoSkillActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle SavedInstanceState)

@@ -4896,40 +4896,40 @@ namespace FateGrandAutomata
 			public const int pref_autoskill_name = 2131689522;
 			
 			// aapt resource value: 0x7F0F0033
-			public const int pref_autoskill_servant = 2131689523;
+			public const int pref_autoskill_selected = 2131689523;
+			
+			// aapt resource value: 0x7F0F0034
+			public const int pref_autoskill_servant = 2131689524;
 			
 			// aapt resource value: 0x7F0F002D
 			public const int pref_auto_choose_target = 2131689517;
 			
-			// aapt resource value: 0x7F0F0034
-			public const int pref_battle_np = 2131689524;
-			
 			// aapt resource value: 0x7F0F0035
-			public const int pref_boost_item = 2131689525;
+			public const int pref_battle_np = 2131689525;
 			
 			// aapt resource value: 0x7F0F0036
-			public const int pref_card_priority = 2131689526;
+			public const int pref_boost_item = 2131689526;
 			
 			// aapt resource value: 0x7F0F0037
-			public const int pref_fast_skip_dead = 2131689527;
+			public const int pref_card_priority = 2131689527;
 			
 			// aapt resource value: 0x7F0F0038
-			public const int pref_gameserver = 2131689528;
+			public const int pref_fast_skip_dead = 2131689528;
 			
 			// aapt resource value: 0x7F0F0039
-			public const int pref_refill_enabled = 2131689529;
+			public const int pref_gameserver = 2131689529;
 			
 			// aapt resource value: 0x7F0F003A
-			public const int pref_refill_repetitions = 2131689530;
+			public const int pref_refill_enabled = 2131689530;
 			
 			// aapt resource value: 0x7F0F003B
-			public const int pref_refill_resource = 2131689531;
+			public const int pref_refill_repetitions = 2131689531;
 			
 			// aapt resource value: 0x7F0F003C
-			public const int pref_script_mode = 2131689532;
+			public const int pref_refill_resource = 2131689532;
 			
 			// aapt resource value: 0x7F0F003D
-			public const int pref_skill_cmd = 2131689533;
+			public const int pref_script_mode = 2131689533;
 			
 			// aapt resource value: 0x7F0F003E
 			public const int pref_skill_conf = 2131689534;

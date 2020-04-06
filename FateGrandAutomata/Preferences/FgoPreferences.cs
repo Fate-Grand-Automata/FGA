@@ -53,7 +53,20 @@ namespace FateGrandAutomata
 
         public bool EnableAutoSkill => GetBool(R.pref_autoskill_enable);
 
-        public string SkillCommand => GetString(R.pref_skill_cmd);
+        public string SkillCommand
+        {
+            get
+            {
+                var selectedAutoskillConfig = GetString(R.pref_autoskill_selected);
+
+                if (string.IsNullOrWhiteSpace(selectedAutoskillConfig))
+                    return "";
+
+                var prefManager = _context.GetSharedPreferences(selectedAutoskillConfig, FileCreationMode.Private);
+
+                return prefManager.GetString(_context.GetString(R.pref_autoskill_cmd), "");
+            }
+        }
 
         public string BattleCardPriority => GetString(R.pref_card_priority, "BAQ");
 

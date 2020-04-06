@@ -43,12 +43,18 @@
       app:title="Skill Confirmation"
       app:defaultValue="false"/>
 
-    <EditTextPreference
-      app:key="@string/pref_skill_cmd"
-      app:title="Skill Command"
+    <ListPreference
+      app:key="@string/pref_autoskill_selected"
+      app:title="Selected Autoskill Config"
       app:useSimpleSummaryProvider="true"
       app:defaultValue=""
       app:dependency="@string/pref_autoskill_enable"/>
+
+    <Preference
+      app:key="autoskill_manage"
+      app:title="Manage Autoskill Configuration">
+      <intent app:action="fgautomata.AutoSkillActivity"/>
+    </Preference>
   </PreferenceCategory>
 
   <EditTextPreference
