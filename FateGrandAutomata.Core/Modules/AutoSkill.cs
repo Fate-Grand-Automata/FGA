@@ -11,9 +11,15 @@ namespace FateGrandAutomata
         readonly Dictionary<char, Action> _defaultFunctionArray,
             _startingMemberFunctionArray,
             _subMemberFunctionArray,
-            _enemyTargetArray;
+            _enemyTargetArray,
+            _cardsPressed;
 
         public bool IsFinished { get; private set; }
+
+        public bool NpsClicked { get; private set; }
+
+        const int Normal = 1,
+            Chaining = 2;
 
         public Battle Battle { get; private set; }
         public Card Card { get; private set; }
@@ -57,7 +63,18 @@ namespace FateGrandAutomata
                 AutomataApi.Wait(2);
             }
 
+            /*
+                Embed the PreloadNP Feature in this function to as a prerequisite for chaining to be viable.
+               
+                Problem with Chaining (as of right now). PreloadNP feature clicks cards prior to knowing what NPs are being clicked.
+                
+                If the NP was known (in this function for instance) then the script can register the face of the NP user first,
+                then use that face to determine what cards to select in PreloadNP.
+             */
+
             Location.Click();
+
+            NpsClicked = true;
         }
 
         void OpenMasterSkillMenu()
@@ -132,6 +149,26 @@ namespace FateGrandAutomata
             ChangeArray(_defaultFunctionArray);
         }
 
+        void PreloadNp()
+        {
+            if (!Battle.HasClickedAttack)
+            {
+                Battle.ClickAttack();
+
+                // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
+                AutomataApi.Wait(2);
+            }
+
+            ChangeArray(_cardsPressed);
+        }
+
+        void PressCards(int NoOfCards)
+        {
+            Card.ClickCommandCards(NoOfCards);
+
+            ChangeArray(_defaultFunctionArray);
+        }
+
         public AutoSkill()
         {
             _defaultFunctionArray = new Dictionary<char, Action>
@@ -152,6 +189,8 @@ namespace FateGrandAutomata
 
                 ['x'] = BeginOrderChange,
                 ['t'] = SelectTarget,
+                ['n'] = PreloadNp,
+
                 ['0'] = () => { },
 
                 ['1'] = () => SelectSkillTarget(Game.BattleServant1Click),
@@ -183,6 +222,12 @@ namespace FateGrandAutomata
                 ['2'] = () => SelectEnemyTarget(Game.BattleTargetClickArray[1]),
                 ['3'] = () => SelectEnemyTarget(Game.BattleTargetClickArray[2]),
             };
+
+            _cardsPressed = new Dictionary<char, Action>
+            {
+                ['1'] = () => PressCards(1),
+                ['2'] = () => PressCards(2)
+            };
         }
 
         readonly List<List<string>> _commandTable = new List<List<string>>();
@@ -205,9 +250,9 @@ namespace FateGrandAutomata
                         throw new FormatException($"Error at '{commandList}': '#' must be preceded and followed by ','! Correct: ',#,'");
                     }
 
-                    if (Regex.IsMatch(commandList, @"[^a-l1-6#tx]"))
+                    if (Regex.IsMatch(commandList, @"[^a-l1-6#ntx]"))
                     {
-                        throw new FormatException($"Error at '{commandList}': Skill Command exceeded alphanumeric range! Expected 'x' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.");
+                        throw new FormatException($"Error at '{commandList}': Skill Command exceeded alphanumeric range! Expected 'x', 'n', 't' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.");
                     }
                 }
 
@@ -267,7 +312,12 @@ namespace FateGrandAutomata
             }
         }
 
-        public void Execute()
+        public void ResetNpTimer()
+        {
+            NpsClicked = false;
+        }
+
+        public bool Execute()
         {
             var commandList = GetCommandListFor(Battle.CurrentStage, Battle.CurrentTurn);
 
@@ -280,6 +330,8 @@ namespace FateGrandAutomata
                 // this will allow NP spam after all commands have been executed
                 IsFinished = true;
             }
+
+            return NpsClicked;
         }
     }
 }

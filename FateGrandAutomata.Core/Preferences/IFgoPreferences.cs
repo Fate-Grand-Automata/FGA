@@ -22,6 +22,8 @@
 
         bool StopAfterBond10 { get; }
 
+        bool DebugMode { get; }
+
         /// <summary>
         /// 0 (skip) - 3
         /// </summary>

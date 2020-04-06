@@ -50,6 +50,7 @@ For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] proje
 2. Autoskill list
 3. Support image maker? Automatically crop out servant/ce image from a screenshot.
 4. Auto-gacha, Auto-lottery, Auto-giftbox.
+5. Only supports EN version. Other version images not included right now.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

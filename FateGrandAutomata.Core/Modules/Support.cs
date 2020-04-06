@@ -188,6 +188,12 @@ namespace FateGrandAutomata
                     Game.SupportUpdateClick.Click();
                     AutomataApi.Wait(1);
                     Game.SupportUpdateYesClick.Click();
+
+                    while (Game.NeedsToRetry())
+                    {
+                        Game.Retry();
+                    }
+
                     AutomataApi.Wait(3);
 
                     ++numberOfUpdates;
@@ -297,12 +303,12 @@ namespace FateGrandAutomata
         {
             var supportBound = new Region(76, 0, 2356, 428);
             var regionAnchor = ImageLocator.SupportRegionTool;
-            var regionArray = AutomataApi.FindAll(new Region(1670, 0, 90, 1440), regionAnchor);
+            var regionArray = AutomataApi.FindAll(new Region(2100, 0, 300, 1440), regionAnchor);
             var defaultRegion = supportBound;
 
             foreach (var testRegion in regionArray)
             {
-                supportBound.Y = testRegion.Y - 156;
+                supportBound.Y = testRegion.Y - 114;
 
                 if (supportBound.Contains(Support))
                 {
@@ -310,7 +316,7 @@ namespace FateGrandAutomata
                 }
             }
 
-            AutomataApi.Toast("Default Region being returned; file an issue on the github for this issue");
+            // AutomataApi.Toast("Default Region being returned; file an issue on the github for this issue");
             return defaultRegion;
         }
 
@@ -328,7 +334,7 @@ namespace FateGrandAutomata
 
             var limitBreakPattern = ImageLocator.LimitBroken;
 
-            return limitBreakRegion.Exists(limitBreakPattern);
+            return limitBreakRegion.Exists(limitBreakPattern, Similarity: 0.85);
         }
     }
 }

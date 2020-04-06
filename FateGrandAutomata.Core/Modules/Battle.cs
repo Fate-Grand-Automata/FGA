@@ -9,6 +9,14 @@ namespace FateGrandAutomata
 
         public bool HasClickedAttack { get; private set; }
 
+        bool _chaining,
+            chaining;
+
+        bool? chains;
+
+        int _npsClicked,
+            _servantChain;
+
         public bool HasChoosenTarget { get; private set; }
 
         public int CurrentStage { get; private set; } = -1;
@@ -23,6 +31,8 @@ namespace FateGrandAutomata
             AutoSkill = AutoSkillModule;
             Card = CardModule;
 
+            chaining = chains ?? false;
+
             ResetState();
         }
 
@@ -33,6 +43,9 @@ namespace FateGrandAutomata
             CurrentStage = CurrentTurn = -1;
 
             _hasTakenFirstStageSnapshot = HasChoosenTarget = HasClickedAttack = false;
+            _chaining = chaining;
+            _servantChain = 0;
+            _npsClicked = 0;
         }
 
         public bool IsIdle()
@@ -48,6 +61,8 @@ namespace FateGrandAutomata
             AutomataApi.Wait(1.5);
 
             HasClickedAttack = true;
+
+            Card.ReadCommandCards();
         }
 
         void SkipDeathAnimation()
@@ -112,9 +127,13 @@ namespace FateGrandAutomata
             AutomataApi.UseSameSnapIn(OnTurnStarted);
             AutomataApi.Wait(2);
 
+            var NpsClicked = false;
+
             if (Preferences.Instance.EnableAutoSkill)
             {
-                AutoSkill.Execute();
+                NpsClicked = AutoSkill.Execute();
+
+                AutoSkill.ResetNpTimer();
             }
 
             if (!HasClickedAttack)
@@ -124,17 +143,19 @@ namespace FateGrandAutomata
 
             if (Card.CanClickNpCards)
             {
-                Card.ClickNpCards();
+                NpsClicked = Card.ClickNpCards();
             }
 
-            Card.ClickCommandCards();
+            Card.ClickCommandCards(5);
 
             if (Preferences.Instance.UnstableFastSkipDeadAnimation)
             {
                 SkipDeathAnimation();
             }
 
-            AutomataApi.Wait(2);
+            Card.ResetCommandCards();
+            
+            AutomataApi.Wait(NpsClicked ? 25 : 5);
         }
 
         void OnTurnStarted()
@@ -155,9 +176,9 @@ namespace FateGrandAutomata
         {
             if (!_hasTakenFirstStageSnapshot || DidStageChange())
             {
-                TakeStageSnapshot();
-
                 OnStageChanged();
+
+                TakeStageSnapshot();
             }
         }
 
@@ -177,6 +198,19 @@ namespace FateGrandAutomata
             _generatedStageCounterSnapshot = Game.BattleStageCountRegion.Save();
 
             _hasTakenFirstStageSnapshot = true;
+        }
+
+        void BraveChainNp(int NoOfNp)
+        {
+            _servantChain = NoOfNp - 3;
+            ++_npsClicked;
+            _chaining = chaining;
+
+            // TODO: Check if this is the variable to use
+            if (_npsClicked > 1)
+            {
+                _chaining = false;
+            }
         }
     }
 }

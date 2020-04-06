@@ -65,8 +65,7 @@ namespace FateGrandAutomata
 
         public static IPattern SupportScreen => _supportScreen.Value;
 
-        static readonly Lazy<IPattern> _supportRegionTool
-            = new Lazy<IPattern>(() => LoadSupportImagePattern("support_region_tool.png"));
+        static readonly Lazy<IPattern> _supportRegionTool = GetLazyGeneralPattern("support_region_tool.png");
 
         public static IPattern SupportRegionTool => _supportRegionTool.Value;
 
@@ -105,6 +104,14 @@ namespace FateGrandAutomata
         static readonly Lazy<IPattern> _questReward = GetLazyGeneralPattern("questreward.png");
 
         public static IPattern QuestReward => _questReward.Value;
+
+        static readonly Lazy<IPattern> _retry = GetLazyGeneralPattern("retry.png");
+
+        public static IPattern Retry => _retry.Value;
+
+        static readonly Lazy<IPattern> _withdraw = GetLazyGeneralPattern("withdraw.png");
+
+        public static IPattern Withdraw => _withdraw.Value;
 
         public static IPattern LoadSupportImagePattern(string FileName)
         {

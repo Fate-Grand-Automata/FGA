@@ -67,6 +67,9 @@ namespace FateGrandAutomata
 
         public int BoostItemSelectionMode => GetInt(R.pref_boost_item);
 
+        // TODO: Support debug mode
+        public bool DebugMode => false;
+
         public IFgoSupportPreferences Support { get; }
 
         public IFgoRefillPreferences Refill { get; }

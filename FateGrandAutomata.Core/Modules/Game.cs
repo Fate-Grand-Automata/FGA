@@ -19,6 +19,10 @@ namespace FateGrandAutomata
         public static Location MenuStorySkipClick { get; } = new Location(2360, 80);
         public static Location MenuStorySkipYesClick { get; } = new Location(1600, 1100);
 
+        public static Region RetryRegion { get; } = new Region(1300, 1000, 700, 300);
+        public static Region WithdrawRegion { get; } = new Region(400, 540, 1800, 190);
+        public static Location WithdrawAcceptClick { get; } = new Location(1765, 720);
+
         // see docs/menu_boost_item_click_array.png
         public static Location MenuBoostItem1Click { get; } = new Location(1280, 418);
         public static Location MenuBoostItem2Click { get; } = new Location(1280, 726);
@@ -40,7 +44,7 @@ namespace FateGrandAutomata
         public static Location StaminaSilverClick { get; } = new Location(1270, 922);
         public static Location StaminaBronzeClick { get; } = new Location(1270, 1140);
 
-        public static Region SupportScreenRegion { get; } = new Region(0, 0, 110, 332);
+        public static Region SupportScreenRegion { get; } = new Region(0, 0, 200, 400);
         public static Region SupportListRegion { get; } = new Region(70, 332, 378, 1091); // see docs/support_list_region.png
         public static Location SupportSwipeStartClick { get; } = new Location(35, 1190);
         public static Region SupportFriendsRegion { get; } = new Region(448, 332, 1210, 1091);
@@ -161,6 +165,19 @@ namespace FateGrandAutomata
             new Location(1740, 400)
         };
 
+        public static Region[] BattleServantFaceRegionArray { get; } =
+        {
+            new Region(106, 800, 300, 200),
+            new Region(620, 800, 300, 200),
+            new Region(1130, 800, 300, 200),
+            new Region(1644, 800, 300, 200),
+            new Region(2160, 800, 300, 200),
+
+            new Region(678, 190, 300, 200),
+            new Region(1138, 190, 300, 200),
+            new Region(1606, 190, 300, 200)
+        };
+
         public static Region ResultScreenRegion { get; } = new Region(100, 300, 700, 200);
         public static Region ResultBondRegion { get; } = new Region(2000, 820, 120, 120);
         public static Region ResultCeRewardRegion { get; } = new Region(1050, 1216, 33, 28);
@@ -169,5 +186,17 @@ namespace FateGrandAutomata
         public static Location ResultFriendRequestRejectClick { get; } = new Location(600, 1200);
         public static Region ResultQuestRewardRegion { get; } = new Region(1630, 140, 370, 250);
         public static Location ResultNextClick { get; } = new Location(2200, 1350); // see docs/quest_result_next_click.png
+
+        public static bool NeedsToRetry()
+        {
+            return RetryRegion.Exists(ImageLocator.Retry);
+        }
+
+        public static void Retry()
+        {
+            RetryRegion.Click();
+
+            AutomataApi.Wait(2);
+        }
     }
 }

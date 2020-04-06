@@ -53,6 +53,11 @@ namespace CoreAutomata
                 (int)Math.Round(Region.H * Scale));
         }
 
+        public void Highlight(int Duration)
+        {
+            throw new NotImplementedException($"{nameof(Highlight)} is not implemented");
+        }
+
         public override string ToString() => $"({X}, {Y}) {W}x{H}";
     }
 }

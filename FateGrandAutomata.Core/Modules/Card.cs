@@ -11,6 +11,11 @@ namespace FateGrandAutomata
 
         readonly List<CardScore> _cardPriorityArray = new List<CardScore>();
 
+        Dictionary<CardScore, List<int>> _commandCards = new Dictionary<CardScore, List<int>>();
+        int _cardsClickedSoFar;
+
+        bool chains;
+
         public void Init(AutoSkill AutoSkillModule, Battle BattleModule)
         {
             AutoSkill = AutoSkillModule;
@@ -180,20 +185,36 @@ namespace FateGrandAutomata
             return storagePerPriority;
         }
 
-        public void ClickCommandCards()
+        public void ClickCommandCards(int Clicks)
         {
-            var commandCards = GetCommandCards();
+            if (chains)
+            {
+                return;
+            }
+
+            var i = 1;
 
             foreach (var cardPriority in _cardPriorityArray)
             {
-                if (!commandCards.ContainsKey(cardPriority))
+                if (!_commandCards.ContainsKey(cardPriority))
                     continue;
 
-                var currentCardTypeStorage = commandCards[cardPriority];
+                var currentCardTypeStorage = _commandCards[cardPriority];
 
                 foreach (var cardSlot in currentCardTypeStorage)
                 {
-                    Game.BattleCommandCardClickArray[cardSlot].Click();
+                    if (Clicks < i)
+                    {
+                        _cardsClickedSoFar = i - 1;
+                        return;
+                    }
+
+                    if (i > _cardsClickedSoFar)
+                    {
+                        Game.BattleCommandCardClickArray[cardSlot].Click();
+                    }
+
+                    ++i;
                 }
             }
         }
@@ -210,12 +231,29 @@ namespace FateGrandAutomata
             }
         }
 
-        public void ClickNpCards()
+        public bool ClickNpCards()
         {
+            var npsClicked = false;
+
             foreach (var npCard in Game.BattleNpCardClickArray)
             {
                 npCard.Click();
+
+                npsClicked = true;
             }
+
+            return npsClicked;
+        }
+
+        public void ReadCommandCards()
+        {
+            _commandCards = GetCommandCards();
+        }
+
+        public void ResetCommandCards()
+        {
+            _commandCards = new Dictionary<CardScore, List<int>>();
+            _cardsClickedSoFar = 0;
         }
     }
 }

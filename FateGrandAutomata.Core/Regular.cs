@@ -53,6 +53,26 @@ namespace FateGrandAutomata
             else throw new ScriptExitException("AP ran out!");
         }
 
+        bool NeedsToWithdraw()
+        {
+            return Game.WithdrawRegion.Exists(ImageLocator.Withdraw);
+        }
+
+        void Withdraw()
+        {
+            Game.WithdrawRegion.Click();
+
+            AutomataApi.Wait(0.5);
+
+            // Click the "Accept" button after choosing to withdraw
+            Game.WithdrawAcceptClick.Click();
+
+            AutomataApi.Wait(1);
+
+            // Click the "Close" button after accepting the withdrawal
+            Game.StaminaBronzeClick.Click();
+        }
+
         // Click begin quest in Formation selection, then select boost item, if applicable, then confirm selection.
         void StartQuest()
         {
@@ -186,6 +206,7 @@ namespace FateGrandAutomata
             // 1st time quest reward screen, eg. Mana Prisms, Event CE, Materials, etc.
             if (Game.ResultQuestRewardRegion.Exists(ImageLocator.QuestReward))
             {
+                AutomataApi.Wait(1);
                 Game.ResultNextClick.Click();
             }
         }
@@ -212,6 +233,11 @@ namespace FateGrandAutomata
                 {
                     AutomataApi.Wait(2.5);
                     StartQuest();
+
+                    // Wait timer til battle starts.
+                    // Uses less battery to wait than to search for images for 25 seconds.
+                    // Adjust according to device.
+                    AutomataApi.Wait(25);
                 }
             }
         }
@@ -246,14 +272,21 @@ namespace FateGrandAutomata
         {
             Init();
 
+            while (Preferences.Instance.DebugMode)
+            {
+                Game.MenuScreenRegion.Highlight(5);
+            }
+
             // SCREENS represents list of Validators and Actors
             // When Validator returns true/1, perform the Actor
             var screens = new (Func<bool> Validator, Action Actor)[]
             {
+                (Game.NeedsToRetry, Game.Retry),
                 (_battle.IsIdle, _battle.PerformBattle),
                 (IsInMenu, Menu),
                 (IsInResult, Result),
-                (IsInSupport, Support)
+                (IsInSupport, Support),
+                (NeedsToWithdraw, Withdraw)
             };
 
             // Loop through SCREENS until a Validator returns true/1
