@@ -43,7 +43,7 @@ For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] proje
 3. Autskill list not supported.
 4. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
 5. No support for Auto-gacha, Auto-lottery, Auto-giftbox.
-6. Only supports EN version. Other version images not included right now.
+6. I only test for EN server. Other server images are included, but not tested.
 
 ## Upcoming Features
 1. File picker for Support Servant/CE images.
