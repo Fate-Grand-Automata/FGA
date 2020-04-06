@@ -120,7 +120,7 @@ namespace FateGrandAutomata
                 return;
             }
 
-            _entryPoint = new Regular();
+            _entryPoint = new AutoBattle();
             _entryPoint.ScriptExit += OnScriptExit;
 
             _scriptCtrlBtn.Text = "■";

@@ -4,7 +4,7 @@ using CoreAutomata;
 
 namespace FateGrandAutomata
 {
-    public class Regular : EntryPoint
+    public class AutoBattle : EntryPoint
     {
         readonly Support _support = new Support();
         readonly Card _card = new Card();
