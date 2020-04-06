@@ -104,6 +104,10 @@ namespace FateGrandAutomata
 
         public static IPattern Withdraw => GetRegionPattern("withdraw.png");
 
+        public static IPattern FinishedLotteryBox => GetRegionPattern("lottery.png");
+
+        public static IPattern PresentBoxFull => GetRegionPattern("StopGifts.png");
+
         public const string SupportImageFolderName = "Fate-Grand-Automata/support";
 
         public static IPattern LoadSupportImagePattern(string FileName)

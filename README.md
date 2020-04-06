@@ -46,7 +46,7 @@ Create the folder if it doesn't already exist.
 For information on how to use support selection, see the original [Fate-Grand-Order_Lua][FGOLua] project.
 
 ## Limitations
-1. Autskill list not supported.
+1. Autoskill list not supported.
 2. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
 3. No support for Auto-gacha, Auto-lottery, Auto-giftbox.
 
