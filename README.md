@@ -25,7 +25,7 @@ Though, I welcome contributions if you could figure out the cause of the problem
 ## How to Use?
 1. Download from [GitHub Releases](https://github.com/MathewSachin/FateGrandAutomata/releases/). I can't put this app on `Play Store` due to some restrictive features this app uses.
 2. Install on your phone. You'll need to enable installing apps out of `Play Store`.
-3. Launch the app. Grant it permissions it asks for: `Write External Storage`, `Ignore Battery Optimizations`.
+3. Launch the app. Grant it permissions it asks for: `Read External Storage`, `Write External Storage`, `Ignore Battery Optimizations`.
 4. Click on `Toggle Service`. You would be prompted to turn on the `Accessibility Service` and taken to `Accessibility Settings` page.
    If it is already ON, turn it OFF and then turn it ON again.
    If you turned ON `Accessibility Service` right now, click again on `Toggle Service`.

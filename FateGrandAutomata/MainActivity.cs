@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Android;
 using Android.App;
 using Android.Content;
@@ -30,7 +31,7 @@ namespace FateGrandAutomata
             var serviceToggleBtn = FindViewById<Button>(Resource.Id.service_toggle_btn);
             serviceToggleBtn.Click += ServiceToggleBtnOnClick;
 
-            CheckStorageWritePermission();
+            CheckPermissions();
             IgnoreBatteryOptimizations();
         }
 
@@ -84,13 +85,23 @@ namespace FateGrandAutomata
             StartActivity(typeof(SettingsActivity));
         }
 
-        void CheckStorageWritePermission()
+        void CheckPermissions()
         {
-            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != Permission.Granted)
+            var permissionsToCheck = new[]
+            {
+                Manifest.Permission.WriteExternalStorage,
+                Manifest.Permission.ReadExternalStorage
+            };
+
+            var permissionsToRequest = permissionsToCheck
+                .Where(M => ContextCompat.CheckSelfPermission(this, M) != Permission.Granted)
+                .ToArray();
+
+            if (permissionsToRequest.Length > 0)
             {
                 ActivityCompat.RequestPermissions(
                     this,
-                    new[] { Manifest.Permission.WriteExternalStorage },
+                    permissionsToRequest,
                     0);
             }
         }

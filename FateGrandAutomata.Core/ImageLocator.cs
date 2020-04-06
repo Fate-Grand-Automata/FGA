@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using CoreAutomata;
 
@@ -16,102 +16,81 @@ namespace FateGrandAutomata
             return AutomataApi.LoadPattern(stream);
         }
 
-        static Lazy<IPattern> GetLazyGeneralPattern(string Filename)
+        static GameServer _currentGameServer;
+        static readonly Dictionary<string, IPattern> RegionCachedPatterns = new Dictionary<string, IPattern>();
+
+        static IPattern GetRegionPattern(string Filename)
         {
-            return new Lazy<IPattern>(() => CreatePattern($"images.{Preferences.Instance.GameServer}.{Filename}"));
+            var server = Preferences.Instance.GameServer;
+
+            // Reload Patterns on Server change
+            if (_currentGameServer != server)
+            {
+                foreach (var pattern in RegionCachedPatterns.Values)
+                {
+                    pattern.Dispose();
+                }
+
+                RegionCachedPatterns.Clear();
+
+                _currentGameServer = server;
+            }
+
+            if (!RegionCachedPatterns.ContainsKey(Filename))
+            {
+                var pattern = CreatePattern($"images.{Preferences.Instance.GameServer}.{Filename}");
+                
+                RegionCachedPatterns.Add(Filename, pattern);
+            }
+
+            return RegionCachedPatterns[Filename];
         }
 
-        static readonly Lazy<IPattern> _battle = GetLazyGeneralPattern("battle.png");
+        public static IPattern Battle => GetRegionPattern("battle.png");
 
-        public static IPattern Battle => _battle.Value;
+        public static IPattern TargetDanger => GetRegionPattern("target_danger.png");
 
-        static readonly Lazy<IPattern> _targetDanger = GetLazyGeneralPattern("target_danger.png");
+        public static IPattern TargetServant => GetRegionPattern("target_servant.png");
 
-        public static IPattern TargetDanger => _targetDanger.Value;
+        public static IPattern Buster => GetRegionPattern("buster.png");
 
-        static readonly Lazy<IPattern> _targetServant = GetLazyGeneralPattern("target_servant.png");
+        public static IPattern Art => GetRegionPattern("art.png");
 
-        public static IPattern TargetServant => _targetServant.Value;
+        public static IPattern Quick => GetRegionPattern("quick.png");
 
-        static readonly Lazy<IPattern> _buster = GetLazyGeneralPattern("buster.png");
+        public static IPattern Weak => GetRegionPattern("weak.png");
 
-        public static IPattern Buster => _buster.Value;
+        public static IPattern Resist => GetRegionPattern("resist.png");
 
-        static readonly Lazy<IPattern> _art = GetLazyGeneralPattern("art.png");
+        public static IPattern Friend => GetRegionPattern("friend.png");
 
-        public static IPattern Art => _art.Value;
+        public static IPattern LimitBroken => GetRegionPattern("limitBroken.png");
 
-        static readonly Lazy<IPattern> _quick = GetLazyGeneralPattern("quick.png");
+        public static IPattern SupportScreen => GetRegionPattern("support_screen.png");
 
-        public static IPattern Quick => _quick.Value;
+        public static IPattern SupportRegionTool => GetRegionPattern("support_region_tool.png");
 
-        static readonly Lazy<IPattern> _weak = GetLazyGeneralPattern("weak.png");
+        public static IPattern StorySkip => GetRegionPattern("storyskip.png");
 
-        public static IPattern Weak => _weak.Value;
+        public static IPattern Menu => GetRegionPattern("menu.png");
 
-        static readonly Lazy<IPattern> _resist = GetLazyGeneralPattern("resist.png");
+        public static IPattern Stamina => GetRegionPattern("stamina.png");
 
-        public static IPattern Resist => _resist.Value;
+        public static IPattern Result => GetRegionPattern("result.png");
 
-        static readonly Lazy<IPattern> _friend = GetLazyGeneralPattern("friend.png");
+        public static IPattern Bond => GetRegionPattern("bond.png");
 
-        public static IPattern Friend => _friend.Value;
+        public static IPattern Bond10Reward => GetRegionPattern("ce_reward.png");
 
-        static readonly Lazy<IPattern> _limitBroken = GetLazyGeneralPattern("limitBroken.png");
+        public static IPattern FriendRequest => GetRegionPattern("friendrequest.png");
 
-        public static IPattern LimitBroken => _limitBroken.Value;
+        public static IPattern Confirm => GetRegionPattern("confirm.png");
 
-        static readonly Lazy<IPattern> _supportScreen = GetLazyGeneralPattern("support_screen.png");
+        public static IPattern QuestReward => GetRegionPattern("questreward.png");
 
-        public static IPattern SupportScreen => _supportScreen.Value;
+        public static IPattern Retry => GetRegionPattern("retry.png");
 
-        static readonly Lazy<IPattern> _supportRegionTool = GetLazyGeneralPattern("support_region_tool.png");
-
-        public static IPattern SupportRegionTool => _supportRegionTool.Value;
-
-        static readonly Lazy<IPattern> _storySkip = GetLazyGeneralPattern("storyskip.png");
-
-        public static IPattern StorySkip => _storySkip.Value;
-
-        static readonly Lazy<IPattern> _menu = GetLazyGeneralPattern("menu.png");
-
-        public static IPattern Menu => _menu.Value;
-
-        static readonly Lazy<IPattern> _stamina = GetLazyGeneralPattern("stamina.png");
-
-        public static IPattern Stamina => _stamina.Value;
-
-        static readonly Lazy<IPattern> _result = GetLazyGeneralPattern("result.png");
-
-        public static IPattern Result => _result.Value;
-
-        static readonly Lazy<IPattern> _bond = GetLazyGeneralPattern("bond.png");
-
-        public static IPattern Bond => _bond.Value;
-
-        static readonly Lazy<IPattern> _ceReward = GetLazyGeneralPattern("ce_reward.png");
-
-        public static IPattern Bond10Reward => _ceReward.Value;
-
-        static readonly Lazy<IPattern> _friendRequest = GetLazyGeneralPattern("friendrequest.png");
-
-        public static IPattern FriendRequest => _friendRequest.Value;
-
-        static readonly Lazy<IPattern> _confirm = GetLazyGeneralPattern("confirm.png");
-
-        public static IPattern Confirm => _confirm.Value;
-
-        static readonly Lazy<IPattern> _questReward = GetLazyGeneralPattern("questreward.png");
-
-        public static IPattern QuestReward => _questReward.Value;
-
-        static readonly Lazy<IPattern> _retry = GetLazyGeneralPattern("retry.png");
-
-        public static IPattern Retry => _retry.Value;
-
-        static readonly Lazy<IPattern> _withdraw = GetLazyGeneralPattern("withdraw.png");
-
-        public static IPattern Withdraw => _withdraw.Value;
+        public static IPattern Withdraw => GetRegionPattern("withdraw.png");
 
         public static IPattern LoadSupportImagePattern(string FileName)
         {
