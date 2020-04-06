@@ -6,7 +6,6 @@ namespace FateGrandAutomata
 {
     public class Regular : EntryPoint
     {
-        readonly Scaling _scaling = new Scaling();
         readonly Support _support = new Support();
         readonly Card _card = new Card();
         readonly Battle _battle = new Battle();
@@ -240,23 +239,10 @@ namespace FateGrandAutomata
             }
         }
 
-        void PsaDialogue()
-        {
-            AutomataApi.Toast("PsaDialogue");
-        }
-
         // Initialize Aspect Ratio adjustment for different sized screens,ask for input from user for Autoskill plus confirming Apple/Stone usage
         // Then initialize the Autoskill, Battle, and Card modules in modules.
         void Init()
         {
-            // Set only ONCE for every separated script run.
-            _scaling.ApplyAspectRatioFix(Game.ScriptWidth,
-                Game.ScriptHeight,
-                Game.ImageWidth,
-                Game.ImageHeight);
-
-            PsaDialogue();
-
             _autoSkill.Init(_battle, _card);
             _battle.Init(_autoSkill, _card);
             _card.Init(_autoSkill, _battle);

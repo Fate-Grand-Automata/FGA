@@ -79,5 +79,16 @@ namespace FateGrandAutomata
                 GameAreaManager.CompareDimension = new CompareSettings(false, ImageHeight);
             }
         }
+
+        public static void Init()
+        {
+            var scaling = new Scaling();
+            
+            // Set only ONCE
+            scaling.ApplyAspectRatioFix(Game.ScriptWidth,
+                Game.ScriptHeight,
+                Game.ImageWidth,
+                Game.ImageHeight);
+        }
     }
 }
