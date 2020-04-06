@@ -22,6 +22,8 @@
 
         bool StopAfterBond10 { get; }
 
+        bool WithdrawEnabled { get; }
+
         bool DebugMode { get; }
 
         /// <summary>

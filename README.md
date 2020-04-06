@@ -17,7 +17,7 @@ Battery optimizations can screw up the functionality of the app. App tries to di
 
 ## What to do about bugs?
 This is a lazy project (see how the commits are named :laughing:) and I'm a beginner in Android.
-I made solely for the purpose of running on my phone.
+I made it solely for the purpose of running on my phone.
 You can use the code if you want, but I can't really help you to debug it on your phone if you face any problems.
 Debugging really is a pain due to FGO not allowing `Developer Mode` to be `ON` during execution.
 Though, I welcome contributions if you could figure out the cause of the problem.
@@ -42,15 +42,14 @@ For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] proje
 2. Only 2 CE images are available: `mona_lisa.png` and `chaldea_lunchtime.png`
 3. Autskill list not supported.
 4. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
-4. Not up-to-date with FGOLua.
 5. No support for Auto-gacha, Auto-lottery, Auto-giftbox.
+6. Only supports EN version. Other version images not included right now.
 
 ## Upcoming Features
 1. File picker for Support Servant/CE images.
 2. Autoskill list
 3. Support image maker? Automatically crop out servant/ce image from a screenshot.
 4. Auto-gacha, Auto-lottery, Auto-giftbox.
-5. Only supports EN version. Other version images not included right now.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

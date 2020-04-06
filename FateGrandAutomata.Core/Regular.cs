@@ -13,7 +13,7 @@ namespace FateGrandAutomata
         readonly AutoSkill _autoSkill = new AutoSkill();
 
         int _stonesUsed;
-        int? _isContinuing = 0;
+        bool _isContinuing;
 
         void RefillStamina()
         {
@@ -60,6 +60,11 @@ namespace FateGrandAutomata
 
         void Withdraw()
         {
+            if (!Preferences.Instance.WithdrawEnabled)
+            {
+                throw new ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.");
+            }
+
             Game.WithdrawRegion.Click();
 
             AutomataApi.Wait(0.5);
@@ -163,7 +168,7 @@ namespace FateGrandAutomata
             if (Preferences.Instance.GameServer == GameServer.Jp && Game.ContinueRegion.Exists(ImageLocator.Confirm))
             {
                 // Needed to show we don't need to enter the "StartQuest" function
-                _isContinuing = 1;
+                _isContinuing = true;
 
                 // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
                 Game.ContinueClick.Click();
@@ -223,22 +228,15 @@ namespace FateGrandAutomata
             // Friend selection
             var hasSelectedSupport = _support.SelectSupport(Preferences.Instance.Support.SelectionMode);
 
-            if (hasSelectedSupport)
+            if (hasSelectedSupport && !_isContinuing)
             {
-                if (_isContinuing == null)
-                {
-                    StartQuest();
-                }
-                else if (_isContinuing == 0)
-                {
-                    AutomataApi.Wait(2.5);
-                    StartQuest();
+                AutomataApi.Wait(2.5);
+                StartQuest();
 
-                    // Wait timer til battle starts.
-                    // Uses less battery to wait than to search for images for 25 seconds.
-                    // Adjust according to device.
-                    AutomataApi.Wait(25);
-                }
+                // Wait timer till battle starts.
+                // Uses less battery to wait than to search for images for a few seconds.
+                // Adjust according to device.
+                AutomataApi.Wait(10);
             }
         }
 

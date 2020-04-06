@@ -68,6 +68,11 @@
     app:defaultValue="false"/>
 
   <SwitchPreferenceCompat
+    app:key="@string/pref_withdraw_enabled"
+    app:title="Enable Withdraw"
+    app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
     app:key="@string/pref_stop_bond10"
     app:title="Stop on Bond 10"
     app:defaultValue="false"/>

@@ -242,17 +242,17 @@ namespace FateGrandAutomata
                 {
                     if (Regex.IsMatch(commandList, @"^[1-3]"))
                     {
-                        throw new FormatException($"Error at '{commandList}': Skill Command cannot start with number '1', '2' and '3'!");
+                        throw new ScriptExitException($"Error at '{commandList}': Skill Command cannot start with number '1', '2' and '3'!");
                     }
 
                     if (Regex.IsMatch(commandList, @"[^,]#") || Regex.IsMatch(commandList, @"#[^,]"))
                     {
-                        throw new FormatException($"Error at '{commandList}': '#' must be preceded and followed by ','! Correct: ',#,'");
+                        throw new ScriptExitException($"Error at '{commandList}': '#' must be preceded and followed by ','! Correct: ',#,'");
                     }
 
                     if (Regex.IsMatch(commandList, @"[^a-l1-6#ntx]"))
                     {
-                        throw new FormatException($"Error at '{commandList}': Skill Command exceeded alphanumeric range! Expected 'x', 'n', 't' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.");
+                        throw new ScriptExitException($"Error at '{commandList}': Skill Command exceeded alphanumeric range! Expected 'x', 'n', 't' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.");
                     }
                 }
 

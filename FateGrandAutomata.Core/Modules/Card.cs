@@ -56,7 +56,7 @@ namespace FateGrandAutomata
                         break;
 
                     default:
-                        throw new FormatException($"{ErrorString}{card}': Only 'B', 'A' and 'Q' are allowed in simple mode.");
+                        throw new ScriptExitException($"{ErrorString}{card}': Only 'B', 'A' and 'Q' are allowed in simple mode.");
                 }
 
                 _cardPriorityArray.Add(score | CardScore.Weak);
@@ -75,7 +75,7 @@ namespace FateGrandAutomata
 
                 if (card.Length < 1 || card.Length > 2)
                 {
-                    throw new FormatException($"{ErrorString}{card}': Invalid card length.");
+                    throw new ScriptExitException($"{ErrorString}{card}': Invalid card length.");
                 }
 
                 var score = CardScore.Normal;
@@ -95,7 +95,7 @@ namespace FateGrandAutomata
                         break;
 
                     default:
-                        throw new FormatException($"{ErrorString}{card}': Only 'B', 'A' and 'Q' are valid card types.");
+                        throw new ScriptExitException($"{ErrorString}{card}': Only 'B', 'A' and 'Q' are valid card types.");
                 }
 
                 if (card.Length == 2)
@@ -111,7 +111,7 @@ namespace FateGrandAutomata
                             break;
 
                         default:
-                            throw new FormatException($"{ErrorString}{card}': Only 'W', and 'R' are valid card affinities.");
+                            throw new ScriptExitException($"{ErrorString}{card}': Only 'W', and 'R' are valid card affinities.");
                     }
                 }
 
@@ -121,7 +121,7 @@ namespace FateGrandAutomata
 
             if (cardCounter != 9)
             {
-                throw new FormatException($"{ErrorString}{Preferences.Instance.BattleCardPriority}': Expected 9 cards, but {cardCounter} found.");
+                throw new ScriptExitException($"{ErrorString}{Preferences.Instance.BattleCardPriority}': Expected 9 cards, but {cardCounter} found.");
             }
         }
 

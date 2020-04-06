@@ -63,6 +63,8 @@ namespace FateGrandAutomata
 
         public bool StorySkip => GetBool(R.pref_story_skip);
 
+        public bool WithdrawEnabled => GetBool(R.pref_withdraw_enabled);
+
         public bool StopAfterBond10 => GetBool(R.pref_stop_bond10);
 
         public int BoostItemSelectionMode => GetInt(R.pref_boost_item);

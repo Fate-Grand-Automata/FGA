@@ -308,7 +308,7 @@ namespace FateGrandAutomata
 
             foreach (var testRegion in regionArray)
             {
-                supportBound.Y = testRegion.Y - 114;
+                supportBound.Y = testRegion.Y - 70;
 
                 if (supportBound.Contains(Support))
                 {
@@ -334,7 +334,7 @@ namespace FateGrandAutomata
 
             var limitBreakPattern = ImageLocator.LimitBroken;
 
-            return limitBreakRegion.Exists(limitBreakPattern, Similarity: 0.85);
+            return limitBreakRegion.Exists(limitBreakPattern, Similarity: 0.8);
         }
     }
 }
