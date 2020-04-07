@@ -99,9 +99,18 @@ namespace FateGrandAutomata
 
         EntryPoint _entryPoint;
 
+        void SetScriptControlBtnIcon(int IconId)
+        {
+            _scriptCtrlBtn.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(IconId),
+                null, null, null);
+        }
+
         void OnScriptExit(string Message = null)
         {
-            _scriptCtrlBtn.Post(() => _scriptCtrlBtn.Text = "▶");
+            _scriptCtrlBtn.Post(() =>
+            {
+                SetScriptControlBtnIcon(Resource.Drawable.ic_play);
+            });
             
             _entryPoint = null;
 
@@ -130,7 +139,8 @@ namespace FateGrandAutomata
             _entryPoint = GetEntryPoint();
             _entryPoint.ScriptExit += OnScriptExit;
 
-            _scriptCtrlBtn.Text = "■";
+            SetScriptControlBtnIcon(Resource.Drawable.ic_stop);
+
             _entryPoint.Run();
 
             _scriptStarted = true;

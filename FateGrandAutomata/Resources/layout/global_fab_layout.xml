@@ -8,13 +8,9 @@
               tools:showIn="@layout/global_fab_layout">
   <Button
     android:id="@+id/script_toggle_btn"
-    android:text="▶"
+    android:drawableLeft="@drawable/ic_play"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="7sp"
-    android:paddingTop="3sp"
-    android:paddingBottom="7sp"
-    android:textSize="30sp"
     android:minHeight="0sp"
     android:minWidth="0sp"
     android:layout_marginHorizontal="5px"
