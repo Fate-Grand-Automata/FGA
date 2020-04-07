@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Android.Graphics;
-using Android.Media;
 using CoreAutomata;
 using Org.Opencv.Core;
 using Org.Opencv.Imgcodecs;
@@ -15,39 +13,12 @@ namespace FateGrandAutomata
 {
     public class DroidCvPattern : IPattern
     {
-        DroidCvPattern(Mat Mat)
+        readonly bool _ownsMat = true;
+
+        public DroidCvPattern(Mat Mat, bool OwnsMat = true)
         {
             this.Mat = Mat;
-        }
-
-        public DroidCvPattern(Image Image) : this(MatFromImage(Image))
-        {
-        }
-
-        static Mat MatFromImage(Image Image)
-        {
-            var width = Image.Width;
-            var height = Image.Height;
-
-            var planes = Image.GetPlanes();
-            var buffer = planes[0].Buffer;
-
-            var pixelStride = planes[0].PixelStride;
-            var rowStride = planes[0].RowStride;
-            var rowPadding = rowStride - pixelStride * width;
-
-            using var bitmap = Bitmap.CreateBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.Argb8888);
-            bitmap.CopyPixelsFromBuffer(buffer);
-            using var correctedBitmap = Bitmap.CreateBitmap(bitmap, 0, 0, width, height);
-
-            using var mat = new Mat();
-            Org.Opencv.Android.Utils.BitmapToMat(correctedBitmap, mat);
-
-            var cvtMat = new Mat();
-
-            Imgproc.CvtColor(mat, cvtMat, Imgproc.ColorRgba2bgr);
-
-            return cvtMat;
+            _ownsMat = OwnsMat;
         }
 
         public DroidCvPattern(Stream Stream)
@@ -65,7 +36,10 @@ namespace FateGrandAutomata
 
         public void Dispose()
         {
-            Mat.Release();
+            if (_ownsMat)
+            {
+                Mat.Release();
+            }
         }
 
         public IPattern Resize(Size Size)
@@ -142,6 +116,11 @@ namespace FateGrandAutomata
                 }
                 else break;
             }
+        }
+
+        public IPattern Copy()
+        {
+            return new DroidCvPattern(Mat.Clone());
         }
     }
 }

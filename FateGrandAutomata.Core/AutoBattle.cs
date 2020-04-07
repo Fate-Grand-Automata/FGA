@@ -229,7 +229,7 @@ namespace FateGrandAutomata
 
             if (hasSelectedSupport && !_isContinuing)
             {
-                AutomataApi.Wait(2.5);
+                AutomataApi.Wait(4);
                 StartQuest();
 
                 // Wait timer till battle starts.

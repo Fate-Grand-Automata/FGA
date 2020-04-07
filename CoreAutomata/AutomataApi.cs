@@ -111,8 +111,9 @@ namespace CoreAutomata
 
         public static double ScanRate { get; set; } = 3;
 
-        public static IPattern Save(Region Region) => ScreenshotManager.GetScreenshot()
-            .Crop(Region.TransformToImage());
+        public static IPattern GetCopy(Region Region) => ScreenshotManager.GetScreenshot()
+            .Crop(Region.TransformToImage())
+            .Copy();
 
         public static void UseSameSnapIn(Action Action) => UseSameSnapIn(() =>
         {

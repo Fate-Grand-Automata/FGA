@@ -195,7 +195,9 @@ namespace FateGrandAutomata
         void TakeStageSnapshot()
         {
             _generatedStageCounterSnapshot?.Dispose();
-            _generatedStageCounterSnapshot = Game.BattleStageCountRegion.Save();
+
+            // It is important that the image gets cloned here.
+            _generatedStageCounterSnapshot = Game.BattleStageCountRegion.GetPattern();
 
             _hasTakenFirstStageSnapshot = true;
         }

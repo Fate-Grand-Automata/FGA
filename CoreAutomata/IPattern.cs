@@ -18,5 +18,7 @@ namespace CoreAutomata
         IPattern Crop(Region Region);
 
         void Save(string Filename);
+
+        IPattern Copy();
     }
 }

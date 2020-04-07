@@ -35,7 +35,7 @@ namespace CoreAutomata
 
         public bool Exists(IPattern Image, int? Timeout = null, double? Similarity = null) => AutomataApi.Exists(this, Image, Timeout, Similarity);
 
-        public IPattern Save() => AutomataApi.Save(this);
+        public IPattern GetPattern() => AutomataApi.GetCopy(this);
 
         public void Click()
         {

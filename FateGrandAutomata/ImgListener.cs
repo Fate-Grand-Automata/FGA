@@ -1,5 +1,8 @@
-﻿using Android.Media;
+﻿using Android.Graphics;
+using Android.Media;
 using CoreAutomata;
+using Org.Opencv.Core;
+using Org.Opencv.Imgproc;
 
 namespace FateGrandAutomata
 {
@@ -44,7 +47,7 @@ namespace FateGrandAutomata
                 try
                 {
                     _lastestPattern?.Dispose();
-                    _lastestPattern = new DroidCvPattern(latestImage);
+                    _lastestPattern = MatFromImage(latestImage);
                 }
                 finally
                 {
@@ -54,6 +57,44 @@ namespace FateGrandAutomata
             }
 
             return _lastestPattern;
+        }
+
+        readonly Mat _convertedMat = new Mat(),
+            _colorCorrectedMat = new Mat();
+
+        Bitmap _readBitmap;
+        bool _cropRequired;
+
+        IPattern MatFromImage(Image Image)
+        {
+            var width = Image.Width;
+            var height = Image.Height;
+
+            var planes = Image.GetPlanes();
+            var buffer = planes[0].Buffer;
+
+            if (_readBitmap == null)
+            {
+                var pixelStride = planes[0].PixelStride;
+                var rowStride = planes[0].RowStride;
+                var rowPadding = rowStride - pixelStride * width;
+
+                _cropRequired = (rowPadding / pixelStride) != 0;
+
+                _readBitmap = Bitmap.CreateBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.Argb8888);
+            }
+
+            _readBitmap.CopyPixelsFromBuffer(buffer); 
+
+            var correctedBitmap = _cropRequired
+                ? Bitmap.CreateBitmap(_readBitmap, 0, 0, width, height)
+                : _readBitmap;
+
+            Org.Opencv.Android.Utils.BitmapToMat(correctedBitmap, _convertedMat);
+
+            Imgproc.CvtColor(_convertedMat, _colorCorrectedMat, Imgproc.ColorRgba2bgr);
+
+            return new DroidCvPattern(_colorCorrectedMat, false);
         }
     }
 }
