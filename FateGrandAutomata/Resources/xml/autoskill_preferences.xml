@@ -2,28 +2,30 @@
 <PreferenceScreen
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <EditTextPreference
-    app:key="@string/pref_autoskill_name"
-    app:title="Name"
-    app:useSimpleSummaryProvider="true"
-    app:defaultValue="--"/>
+  <PreferenceCategory
+    app:key="autoskill_category"
+    app:title="Auto Skill">
+    <SwitchPreferenceCompat
+      app:key="@string/pref_autoskill_enable"
+      app:title="Enable Auto Skill"
+      app:defaultValue="false"/>
 
-  <EditTextPreference
-    app:key="@string/pref_autoskill_cmd"
-    app:title="Skill Command"
-    app:useSimpleSummaryProvider="true"
-    app:defaultValue=""/>
+    <SwitchPreferenceCompat
+      app:key="@string/pref_skill_conf"
+      app:title="Skill Confirmation"
+      app:defaultValue="false"/>
 
-  <EditTextPreference
-    app:key="@string/pref_autoskill_servant"
-    app:title="Preferred Servants"
-    app:useSimpleSummaryProvider="true"
-    app:defaultValue=""/>
+    <ListPreference
+      app:key="@string/pref_autoskill_selected"
+      app:title="Selected Autoskill Config"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue=""
+      app:dependency="@string/pref_autoskill_enable"/>
 
-  <EditTextPreference
-    app:key="@string/pref_autoskill_ce"
-    app:title="Preferred CEs"
-    app:useSimpleSummaryProvider="true"
-    app:defaultValue=""/>
+    <Preference
+      app:key="@string/pref_autoskill_manage"
+      app:title="Manage Autoskill Configurations"
+      app:summary="Add/Edit/Delete configurations"/>
+  </PreferenceCategory>
 
 </PreferenceScreen>

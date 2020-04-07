@@ -13,7 +13,7 @@ namespace FateGrandAutomata
 
             PreferenceManager.SharedPreferencesName = autoskillItemKey;
 
-            SetPreferencesFromResource(Resource.Xml.autoskill_preferences, RootKey);
+            SetPreferencesFromResource(Resource.Xml.autoskill_item_preferences, RootKey);
         }
     }
 }

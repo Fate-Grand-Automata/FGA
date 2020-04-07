@@ -4877,8 +4877,8 @@ namespace FateGrandAutomata
 			// aapt resource value: 0x7F0F002C
 			public const int path_password_strike_through = 2131689516;
 			
-			// aapt resource value: 0x7F0F004A
-			public const int preference_copied = 2131689546;
+			// aapt resource value: 0x7F0F004B
+			public const int preference_copied = 2131689547;
 			
 			// aapt resource value: 0x7F0F002E
 			public const int pref_autoskill_ce = 2131689518;
@@ -4893,94 +4893,97 @@ namespace FateGrandAutomata
 			public const int pref_autoskill_list = 2131689521;
 			
 			// aapt resource value: 0x7F0F0032
-			public const int pref_autoskill_name = 2131689522;
+			public const int pref_autoskill_manage = 2131689522;
 			
 			// aapt resource value: 0x7F0F0033
-			public const int pref_autoskill_selected = 2131689523;
+			public const int pref_autoskill_name = 2131689523;
 			
 			// aapt resource value: 0x7F0F0034
-			public const int pref_autoskill_servant = 2131689524;
+			public const int pref_autoskill_selected = 2131689524;
+			
+			// aapt resource value: 0x7F0F0035
+			public const int pref_autoskill_servant = 2131689525;
 			
 			// aapt resource value: 0x7F0F002D
 			public const int pref_auto_choose_target = 2131689517;
 			
-			// aapt resource value: 0x7F0F0035
-			public const int pref_battle_np = 2131689525;
-			
 			// aapt resource value: 0x7F0F0036
-			public const int pref_boost_item = 2131689526;
+			public const int pref_battle_np = 2131689526;
 			
 			// aapt resource value: 0x7F0F0037
-			public const int pref_card_priority = 2131689527;
+			public const int pref_boost_item = 2131689527;
 			
 			// aapt resource value: 0x7F0F0038
-			public const int pref_fast_skip_dead = 2131689528;
+			public const int pref_card_priority = 2131689528;
 			
 			// aapt resource value: 0x7F0F0039
-			public const int pref_gameserver = 2131689529;
+			public const int pref_fast_skip_dead = 2131689529;
 			
 			// aapt resource value: 0x7F0F003A
-			public const int pref_refill_enabled = 2131689530;
+			public const int pref_gameserver = 2131689530;
 			
 			// aapt resource value: 0x7F0F003B
-			public const int pref_refill_repetitions = 2131689531;
+			public const int pref_refill_enabled = 2131689531;
 			
 			// aapt resource value: 0x7F0F003C
-			public const int pref_refill_resource = 2131689532;
+			public const int pref_refill_repetitions = 2131689532;
 			
 			// aapt resource value: 0x7F0F003D
-			public const int pref_script_mode = 2131689533;
+			public const int pref_refill_resource = 2131689533;
 			
 			// aapt resource value: 0x7F0F003E
-			public const int pref_skill_conf = 2131689534;
+			public const int pref_script_mode = 2131689534;
 			
 			// aapt resource value: 0x7F0F003F
-			public const int pref_stop_bond10 = 2131689535;
+			public const int pref_skill_conf = 2131689535;
 			
 			// aapt resource value: 0x7F0F0040
-			public const int pref_story_skip = 2131689536;
+			public const int pref_stop_bond10 = 2131689536;
 			
 			// aapt resource value: 0x7F0F0041
-			public const int pref_support_fallback = 2131689537;
-			
-			// aapt resource value: 0x7F0F0043
-			public const int pref_support_friends_only = 2131689539;
+			public const int pref_story_skip = 2131689537;
 			
 			// aapt resource value: 0x7F0F0042
-			public const int pref_support_friend_names = 2131689538;
+			public const int pref_support_fallback = 2131689538;
 			
 			// aapt resource value: 0x7F0F0044
-			public const int pref_support_max_updates = 2131689540;
+			public const int pref_support_friends_only = 2131689540;
+			
+			// aapt resource value: 0x7F0F0043
+			public const int pref_support_friend_names = 2131689539;
 			
 			// aapt resource value: 0x7F0F0045
-			public const int pref_support_mode = 2131689541;
+			public const int pref_support_max_updates = 2131689541;
 			
 			// aapt resource value: 0x7F0F0046
-			public const int pref_support_pref_ce = 2131689542;
+			public const int pref_support_mode = 2131689542;
 			
 			// aapt resource value: 0x7F0F0047
-			public const int pref_support_pref_servant = 2131689543;
+			public const int pref_support_pref_ce = 2131689543;
 			
 			// aapt resource value: 0x7F0F0048
-			public const int pref_support_swipes_per_update = 2131689544;
+			public const int pref_support_pref_servant = 2131689544;
 			
 			// aapt resource value: 0x7F0F0049
-			public const int pref_withdraw_enabled = 2131689545;
+			public const int pref_support_swipes_per_update = 2131689545;
 			
-			// aapt resource value: 0x7F0F004B
-			public const int search_menu_title = 2131689547;
+			// aapt resource value: 0x7F0F004A
+			public const int pref_withdraw_enabled = 2131689546;
 			
 			// aapt resource value: 0x7F0F004C
-			public const int status_bar_notification_info_overflow = 2131689548;
+			public const int search_menu_title = 2131689548;
 			
 			// aapt resource value: 0x7F0F004D
-			public const int summary_collapsed_preference_list = 2131689549;
+			public const int status_bar_notification_info_overflow = 2131689549;
 			
 			// aapt resource value: 0x7F0F004E
-			public const int v7_preference_off = 2131689550;
+			public const int summary_collapsed_preference_list = 2131689550;
 			
 			// aapt resource value: 0x7F0F004F
-			public const int v7_preference_on = 2131689551;
+			public const int v7_preference_off = 2131689551;
+			
+			// aapt resource value: 0x7F0F0050
+			public const int v7_preference_on = 2131689552;
 			
 			static String()
 			{
@@ -10191,19 +10194,22 @@ namespace FateGrandAutomata
 			public const int app_preferences = 2131886080;
 			
 			// aapt resource value: 0x7F120001
-			public const int autoskill_preferences = 2131886081;
+			public const int autoskill_item_preferences = 2131886081;
 			
 			// aapt resource value: 0x7F120002
-			public const int global_fab_service = 2131886082;
+			public const int autoskill_preferences = 2131886082;
 			
 			// aapt resource value: 0x7F120003
-			public const int refill_preferences = 2131886083;
+			public const int global_fab_service = 2131886083;
 			
 			// aapt resource value: 0x7F120004
-			public const int support_preferences = 2131886084;
+			public const int refill_preferences = 2131886084;
 			
 			// aapt resource value: 0x7F120005
-			public const int xamarin_essentials_fileprovider_file_paths = 2131886085;
+			public const int support_preferences = 2131886085;
+			
+			// aapt resource value: 0x7F120006
+			public const int xamarin_essentials_fileprovider_file_paths = 2131886086;
 			
 			static Xml()
 			{
