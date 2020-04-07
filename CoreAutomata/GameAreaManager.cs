@@ -2,6 +2,13 @@
 {
     public static class GameAreaManager
     {
+        public static void Reset()
+        {
+            ImmersiveMode = AutoGameArea = false;
+            ScriptDimension = CompareDimension = null;
+            _gameArea = null;
+        }
+
         /// <summary>
         /// Set if we need to account for navbar above app.
         /// </summary>

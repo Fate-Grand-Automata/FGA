@@ -8,12 +8,13 @@
     app:entryValues="@array/script_mode_values"
     app:key="@string/pref_script_mode"
     app:title="Script Mode"
+    app:icon="@drawable/ic_script"
     app:useSimpleSummaryProvider="true"/>
 
   <ListPreference
     app:defaultValue="En"
-    app:entries="@array/game_servers"
-    app:entryValues="@array/game_servers"
+    app:entries="@array/game_server_labels"
+    app:entryValues="@array/game_server_values"
     app:key="@string/pref_gameserver"
     app:title="Game Server"
     app:icon="@drawable/ic_earth"
@@ -46,6 +47,7 @@
     <EditTextPreference
       app:key="@string/pref_card_priority"
       app:title="Card Priority"
+      app:icon="@drawable/ic_sort"
       app:useSimpleSummaryProvider="true"
       app:defaultValue="BAQ"/>
 
@@ -54,6 +56,7 @@
       app:entries="@array/battle_np_types"
       app:entryValues="@array/battle_np_types"
       app:key="@string/pref_battle_np"
+      app:icon="@drawable/ic_star"
       app:title="Cast Noble Phantasm"
       app:useSimpleSummaryProvider="true"/>
 
@@ -78,6 +81,7 @@
     <SwitchPreferenceCompat
       app:key="@string/pref_stop_bond10"
       app:title="Stop on Bond 10"
+      app:icon="@drawable/ic_diamond"
       app:defaultValue="false"/>
 
     <ListPreference
@@ -91,7 +95,9 @@
 
     <SwitchPreferenceCompat
       app:key="@string/pref_fast_skip_dead"
-      app:title="Fast Skip death animation (unstable)"
+      app:title="Fast Skip death animation"
+      app:icon="@drawable/ic_radio"
+      app:summary="Unstable feature"
       app:defaultValue="false"/>
   </PreferenceCategory>
 </PreferenceScreen>

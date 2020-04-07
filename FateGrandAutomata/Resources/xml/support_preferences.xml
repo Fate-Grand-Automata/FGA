@@ -6,10 +6,14 @@
     app:key="support_category"
     app:title="Support">
 
-    <SwitchPreferenceCompat
-      app:key="@string/pref_support_friends_only"
-      app:title="Friends Only"
-      app:defaultValue="false"/>
+    <ListPreference
+      app:defaultValue="First"
+      app:entries="@array/support_selection_modes"
+      app:entryValues="@array/support_selection_modes"
+      app:key="@string/pref_support_mode"
+      app:title="Selection Mode"
+      app:icon="@drawable/ic_dots_vertical"
+      app:useSimpleSummaryProvider="true"/>
 
     <EditTextPreference
       app:key="@string/pref_support_pref_servant"
@@ -25,39 +29,41 @@
       app:useSimpleSummaryProvider="true"
       app:defaultValue=""/>
 
-    <EditTextPreference
-      app:key="@string/pref_support_swipes_per_update"
-      app:title="Swipes per Update"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue="10"/>
-
-    <EditTextPreference
-      app:key="@string/pref_support_max_updates"
-      app:title="Max Updates"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue="3"/>
-
-    <EditTextPreference
-      app:key="@string/pref_support_friend_names"
-      app:title="Friend names"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue=""/>
-
-    <ListPreference
-      app:defaultValue="First"
-      app:entries="@array/support_selection_modes"
-      app:entryValues="@array/support_selection_modes"
-      app:key="@string/pref_support_mode"
-      app:title="Selection Mode"
-      app:useSimpleSummaryProvider="true"/>
-
     <ListPreference
       app:defaultValue="Manual"
       app:entries="@array/support_selection_modes"
       app:entryValues="@array/support_selection_modes"
       app:key="@string/pref_support_fallback"
       app:title="Fallback Selection Mode"
+      app:icon="@drawable/ic_dots_vertical"
       app:useSimpleSummaryProvider="true"/>
+
+    <SwitchPreferenceCompat
+      app:key="@string/pref_support_friends_only"
+      app:title="Friends Only"
+      app:icon="@drawable/ic_friend"
+      app:defaultValue="false"/>
+
+    <EditTextPreference
+      app:key="@string/pref_support_friend_names"
+      app:title="Friend names"
+      app:icon="@drawable/ic_friend"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue=""/>
+
+    <EditTextPreference
+      app:key="@string/pref_support_swipes_per_update"
+      app:title="Swipes per Update"
+      app:icon="@drawable/ic_swipe"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue="10"/>
+
+    <EditTextPreference
+      app:key="@string/pref_support_max_updates"
+      app:title="Max Updates"
+      app:icon="@drawable/ic_swipe"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue="3"/>
     
   </PreferenceCategory>
 

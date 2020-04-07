@@ -57,6 +57,7 @@ Set it to the script you require.
 ## Upcoming Features
 1. Auto-giftbox.
 2. Support image maker? Automatically crop out servant/ce image from a screenshot.
+3. Notch support?
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

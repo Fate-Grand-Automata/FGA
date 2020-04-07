@@ -3,9 +3,9 @@ using CoreAutomata;
 
 namespace FateGrandAutomata
 {
-    public class Scaling
+    public static class Scaling
     {
-        (bool ByWidth, double Rate) DecideScaleMethod(int OriginalWidth, int OriginalHeight, int DesiredWidth, int DesiredHeight)
+        static (bool ByWidth, double Rate) DecideScaleMethod(int OriginalWidth, int OriginalHeight, int DesiredWidth, int DesiredHeight)
         {
             var rateToScaleByWidth = DesiredWidth / (double) OriginalWidth;
             var rateToScaleByHeight = DesiredHeight / (double) OriginalHeight;
@@ -15,7 +15,7 @@ namespace FateGrandAutomata
                 : (false, rateToScaleByHeight);
         }
 
-        (int Width, int Height) Scale(int OriginalWidth, int OriginalHeight, double Rate)
+        static (int Width, int Height) Scale(int OriginalWidth, int OriginalHeight, double Rate)
         {
             var w = (int) Math.Round(OriginalWidth * Rate);
             var h = (int) Math.Round(OriginalHeight * Rate);
@@ -23,14 +23,14 @@ namespace FateGrandAutomata
             return (w, h);
         }
 
-        int CalculateBorderThickness(int Outer, int Inner)
+        static int CalculateBorderThickness(int Outer, int Inner)
         {
             var size = Math.Abs(Outer - Inner);
 
             return (int) Math.Round(size / 2.0);
         }
 
-        Region CalculateGameAreaWithoutBorders(int ScriptWidth,
+        static Region CalculateGameAreaWithoutBorders(int ScriptWidth,
             int ScriptHeight,
             int ScreenWidth,
             int ScreenHeight,
@@ -46,14 +46,14 @@ namespace FateGrandAutomata
             );
         }
 
-        Region ApplyNotchOffset(Region Region, int NotchOffset)
+        static Region ApplyNotchOffset(Region Region, int NotchOffset)
         {
             Region.X += NotchOffset;
 
             return Region;
         }
 
-        public void ApplyAspectRatioFix(int ScriptWidth, int ScriptHeight, int ImageWidth, int ImageHeight)
+        static void ApplyAspectRatioFix(int ScriptWidth, int ScriptHeight, int ImageWidth, int ImageHeight)
         {
             GameAreaManager.ImmersiveMode = true;
             GameAreaManager.AutoGameArea = true;
@@ -80,24 +80,15 @@ namespace FateGrandAutomata
             }
         }
 
-        static bool _initialized;
-
         public static void Init()
         {
-            if (_initialized)
-            {
-                return;
-            }
+            GameAreaManager.Reset();
 
-            var scaling = new Scaling();
-            
             // Set only ONCE
-            scaling.ApplyAspectRatioFix(Game.ScriptWidth,
+            ApplyAspectRatioFix(Game.ScriptWidth,
                 Game.ScriptHeight,
                 Game.ImageWidth,
                 Game.ImageHeight);
-
-            _initialized = true;
         }
     }
 }

@@ -5,6 +5,7 @@
   <EditTextPreference
     app:key="@string/pref_autoskill_name"
     app:title="Name"
+    app:icon="@drawable/ic_text_short"
     app:useSimpleSummaryProvider="true"
     app:defaultValue="--"/>
 

@@ -8,17 +8,19 @@
     <SwitchPreferenceCompat
       app:key="@string/pref_autoskill_enable"
       app:title="Enable Auto Skill"
-      app:icon="@drawable/ic_wand"
+      app:icon="@drawable/ic_check"
       app:defaultValue="false"/>
 
     <SwitchPreferenceCompat
       app:key="@string/pref_skill_conf"
       app:title="Skill Confirmation"
+      app:icon="@drawable/ic_radio"
       app:defaultValue="false"/>
 
     <ListPreference
       app:key="@string/pref_autoskill_selected"
       app:title="Selected Autoskill Config"
+      app:icon="@drawable/ic_wand"
       app:useSimpleSummaryProvider="true"
       app:defaultValue=""
       app:dependency="@string/pref_autoskill_enable"/>
