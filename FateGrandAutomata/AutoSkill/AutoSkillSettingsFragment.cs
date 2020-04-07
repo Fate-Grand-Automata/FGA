@@ -1,4 +1,7 @@
-﻿using Android.OS;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Android.Content;
+using Android.OS;
 using Android.Runtime;
 using AndroidX.Preference;
 
@@ -14,6 +17,53 @@ namespace FateGrandAutomata
             PreferenceManager.SharedPreferencesName = autoskillItemKey;
 
             SetPreferencesFromResource(Resource.Xml.autoskill_item_preferences, RootKey);
+
+            if (FindPreference(GetString(Resource.String.pref_autoskill_delete)) is { } deleteBtn)
+            {
+                void OnDeleteBtnOnPreferenceClick(object S, Preference.PreferenceClickEventArgs E)
+                {
+                    DeleteItem(autoskillItemKey);
+                }
+
+                deleteBtn.PreferenceClick += OnDeleteBtnOnPreferenceClick;
+            }
+        }
+
+        void DeleteItem(string AutoskillItemKey)
+        {
+            Activity.DeleteSharedPreferences(AutoskillItemKey);
+
+            var prefs = PreferenceManager.GetDefaultSharedPreferences(Activity);
+
+            var autoskillItemsKeys = GetString(Resource.String.pref_autoskill_list);
+            var autoskillItems = prefs.GetStringSet(autoskillItemsKeys, new List<string>())
+                .ToList();
+            autoskillItems.Remove(AutoskillItemKey);
+
+            prefs
+                .Edit()
+                .PutStringSet(autoskillItemsKeys, autoskillItems)
+                .Commit();
+
+            UnselectItem(AutoskillItemKey, prefs, autoskillItems);
+
+            // We opened a separate activity for autoskill item
+            Activity.Finish();
+        }
+
+        void UnselectItem(string AutoskillItemKey, ISharedPreferences Prefs, IReadOnlyCollection<string> AutoskillItems)
+        {
+            var selectedAutoskillKey = GetString(Resource.String.pref_autoskill_selected);
+            var selectedAutoSkill = Prefs.GetString(selectedAutoskillKey, "");
+
+            if (selectedAutoSkill == AutoskillItemKey)
+            {
+                selectedAutoSkill = AutoskillItems.Count > 0 ? AutoskillItems.First() : "";
+
+                Prefs.Edit()
+                    .PutString(selectedAutoskillKey, selectedAutoSkill)
+                    .Commit();
+            }
         }
     }
 }

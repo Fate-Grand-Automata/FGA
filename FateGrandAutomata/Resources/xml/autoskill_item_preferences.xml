@@ -26,4 +26,9 @@
     app:useSimpleSummaryProvider="true"
     app:defaultValue=""/>
 
+  <Preference
+    app:key="@string/pref_autoskill_delete"
+    app:title="Delete Configuration"
+    app:icon="@drawable/ic_delete"/>
+
 </PreferenceScreen>
