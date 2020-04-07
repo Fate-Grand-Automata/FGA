@@ -3,6 +3,7 @@ using System.Linq;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using AndroidX.AppCompat.App;
 using AndroidX.Preference;
 
 namespace FateGrandAutomata
@@ -22,7 +23,15 @@ namespace FateGrandAutomata
             {
                 void OnDeleteBtnOnPreferenceClick(object S, Preference.PreferenceClickEventArgs E)
                 {
-                    DeleteItem(autoskillItemKey);
+                    new AlertDialog.Builder(Activity)
+                        .SetMessage("Are you sure you want to delete this configuration?")
+                        .SetTitle("Confirm Deletion")
+                        .SetPositiveButton("Delete", (S, E) =>
+                        {
+                            DeleteItem(autoskillItemKey);
+                        })
+                        .SetNegativeButton("Cancel", (S, E) => { })
+                        .Show();
                 }
 
                 deleteBtn.PreferenceClick += OnDeleteBtnOnPreferenceClick;

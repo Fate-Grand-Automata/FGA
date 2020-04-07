@@ -40,7 +40,7 @@ Settings can be opened from the app's menu (three dots on top-right corner).
 For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] project.
 
 Autoskill configuration can be created at `Settings/AutoSkill/Manage Autoskill configurations`.  
-You won't be prompted at script start for the config to use. You need to set the `Selected Autoskill Config` value.
+You won't be prompted at script start for the config to use. You need to set the `Settings/AutoSkill/Selected Autoskill Config` value.
 
 ## Where to put Servant/CE images?
 The app only comes with `mona_lisa.png` and `chaldea_lunchtime.png`.

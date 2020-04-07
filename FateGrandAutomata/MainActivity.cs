@@ -111,27 +111,16 @@ namespace FateGrandAutomata
             if (GlobalFabService.Instance != null)
                 return true;
 
-            var alertDialog = new AlertDialog.Builder(this);
-            alertDialog.SetTitle("Accessibility Disabled")
+            new AlertDialog.Builder(this)
+                .SetTitle("Accessibility Disabled")
                 .SetMessage("Turn on accessibility for this app from System settings")
                 .SetPositiveButton("Go To Settings", (S, E) =>
                 {
-                    if (S is Dialog dialog)
-                    {
-                        dialog.Dismiss();
-                    }
-
                     // Open Acessibility Settings
                     var intent = new Intent(Settings.ActionAccessibilitySettings);
                     StartActivity(intent);
                 })
-                .SetNegativeButton("Cancel", (S, E) =>
-                {
-                    if (S is Dialog dialog)
-                    {
-                        dialog.Dismiss();
-                    }
-                })
+                .SetNegativeButton("Cancel", (S, E) => { })
                 .Show();
 
             return false;
