@@ -31,6 +31,9 @@ namespace FateGrandAutomata
             var serviceToggleBtn = FindViewById<Button>(Resource.Id.service_toggle_btn);
             serviceToggleBtn.Click += ServiceToggleBtnOnClick;
 
+            var settingsBtn = FindViewById<Button>(Resource.Id.configure_btn);
+            settingsBtn.Click += (S, E) => OpenSettings();
+
             CheckPermissions();
             IgnoreBatteryOptimizations();
         }
@@ -60,24 +63,6 @@ namespace FateGrandAutomata
 
                 GlobalFabService.Instance.Start(Data);
             }
-        }
-
-        public override bool OnCreateOptionsMenu(IMenu Menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.menu_main, Menu);
-            return true;
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem Item)
-        {
-            var id = Item.ItemId;
-            if (id == Resource.Id.action_settings)
-            {
-                OpenSettings();
-                return true;
-            }
-
-            return base.OnOptionsItemSelected(Item);
         }
 
         void OpenSettings()

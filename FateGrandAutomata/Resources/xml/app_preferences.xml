@@ -16,23 +16,27 @@
     app:entryValues="@array/game_servers"
     app:key="@string/pref_gameserver"
     app:title="Game Server"
+    app:icon="@drawable/ic_earth"
     app:useSimpleSummaryProvider="true"/>
 
   <Preference
     app:key="refill"
     app:title="Refill"
+    app:icon="@drawable/ic_apple"
     app:summary="Manage AP refill"
     app:fragment="fgautomata.RefillSettingsFragment"/>
 
   <Preference
     app:key="support"
     app:title="Support"
+    app:icon="@drawable/ic_friend"
     app:summary="Manage Support Selection"
     app:fragment="fgautomata.SupportSettingsFragment"/>
 
   <Preference
     app:key="autoskill"
     app:title="Auto Skill"
+    app:icon="@drawable/ic_wand"
     app:summary="Manage Auto Skill"
     app:fragment="fgautomata.ManageAutoSkillSettingsFragment"/>
 
@@ -55,17 +59,20 @@
 
     <SwitchPreferenceCompat
       app:key="@string/pref_auto_choose_target"
+      app:icon="@drawable/ic_target"
       app:title="Auto choose target"
       app:defaultValue="true"/>
 
     <SwitchPreferenceCompat
       app:key="@string/pref_story_skip"
       app:title="Story Skip"
+      app:icon="@drawable/ic_fast_forward"
       app:defaultValue="false"/>
 
     <SwitchPreferenceCompat
       app:key="@string/pref_withdraw_enabled"
       app:title="Enable Withdraw"
+      app:icon="@drawable/ic_exit_run"
       app:defaultValue="false"/>
 
     <SwitchPreferenceCompat
@@ -79,6 +86,7 @@
       app:entryValues="@array/boost_item_values"
       app:key="@string/pref_boost_item"
       app:title="Boost Item"
+      app:icon="@drawable/ic_boost"
       app:useSimpleSummaryProvider="true"/>
 
     <SwitchPreferenceCompat

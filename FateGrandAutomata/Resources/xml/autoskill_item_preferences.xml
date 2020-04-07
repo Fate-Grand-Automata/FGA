@@ -11,18 +11,21 @@
   <EditTextPreference
     app:key="@string/pref_autoskill_cmd"
     app:title="Skill Command"
+    app:icon="@drawable/ic_terminal"
     app:useSimpleSummaryProvider="true"
     app:defaultValue=""/>
 
   <EditTextPreference
     app:key="@string/pref_autoskill_servant"
     app:title="Preferred Servants"
+    app:icon="@drawable/ic_crown"
     app:useSimpleSummaryProvider="true"
     app:defaultValue=""/>
 
   <EditTextPreference
     app:key="@string/pref_autoskill_ce"
     app:title="Preferred CEs"
+    app:icon="@drawable/ic_card"
     app:useSimpleSummaryProvider="true"
     app:defaultValue=""/>
 

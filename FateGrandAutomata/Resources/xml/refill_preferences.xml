@@ -8,6 +8,7 @@
     <SwitchPreferenceCompat
       app:key="@string/pref_refill_enabled"
       app:title="Enable Refill"
+      app:icon="@drawable/ic_apple"
       app:defaultValue="false"/>
 
     <EditTextPreference

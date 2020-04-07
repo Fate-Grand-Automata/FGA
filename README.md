@@ -15,6 +15,8 @@ This was a great learning experience and something different from your usual And
 It runs on [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/), uses [OpenCV](https://opencv.org/) for image recognition, uses Android's [Acessibility](https://developer.android.com/guide/topics/ui/accessibility) and [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) APIs.
 Battery optimizations can screw up the functionality of the app. App tries to disabled them automatically but you might also have to do that manually.
 
+The icons are from https://materialdesignicons.com/
+
 ## What to do about bugs?
 This is a lazy project (see how the commits are named :laughing:) and I'm a beginner in Android.
 I made it solely for the purpose of running on my phone.
@@ -36,7 +38,6 @@ Though, I welcome contributions if you could figure out the cause of the problem
 8. Press Play to start. The same button can be pressed to stop later.
 
 ## How to configure?
-Settings can be opened from the app's menu (three dots on top-right corner).
 For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] project.
 
 Autoskill configuration can be created at `Settings/AutoSkill/Manage Autoskill configurations`.  

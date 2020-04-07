@@ -14,12 +14,14 @@
     <EditTextPreference
       app:key="@string/pref_support_pref_servant"
       app:title="Preferred Servants"
+      app:icon="@drawable/ic_crown"
       app:useSimpleSummaryProvider="true"
       app:defaultValue=""/>
 
     <EditTextPreference
       app:key="@string/pref_support_pref_ce"
       app:title="Preferred CEs"
+      app:icon="@drawable/ic_card"
       app:useSimpleSummaryProvider="true"
       app:defaultValue=""/>
 

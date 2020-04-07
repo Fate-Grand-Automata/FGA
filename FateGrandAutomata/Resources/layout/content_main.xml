@@ -1,16 +1,27 @@
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingHorizontal="10dip">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="SkaSka"/>
+  <Button
+    android:id="@+id/service_toggle_btn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="TOGGLE SERVICE"
+    android:drawableLeft="@drawable/ic_launch"/>
 
-</RelativeLayout>
+  <Button
+    android:id="@+id/configure_btn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/action_settings"
+    android:drawableLeft="@drawable/ic_settings"/>
+
+</LinearLayout>
