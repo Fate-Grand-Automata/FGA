@@ -3518,58 +3518,61 @@ namespace FateGrandAutomata
 			public const int ic_mtrl_chip_close_circle = 2131230831;
 			
 			// aapt resource value: 0x7F080070
-			public const int mtrl_snackbar_background = 2131230832;
+			public const int ic_plus = 2131230832;
 			
 			// aapt resource value: 0x7F080071
-			public const int mtrl_tabs_default_indicator = 2131230833;
+			public const int mtrl_snackbar_background = 2131230833;
 			
 			// aapt resource value: 0x7F080072
-			public const int navigation_empty_icon = 2131230834;
+			public const int mtrl_tabs_default_indicator = 2131230834;
 			
 			// aapt resource value: 0x7F080073
-			public const int notification_action_background = 2131230835;
+			public const int navigation_empty_icon = 2131230835;
 			
 			// aapt resource value: 0x7F080074
-			public const int notification_bg = 2131230836;
+			public const int notification_action_background = 2131230836;
 			
 			// aapt resource value: 0x7F080075
-			public const int notification_bg_low = 2131230837;
+			public const int notification_bg = 2131230837;
 			
 			// aapt resource value: 0x7F080076
-			public const int notification_bg_low_normal = 2131230838;
+			public const int notification_bg_low = 2131230838;
 			
 			// aapt resource value: 0x7F080077
-			public const int notification_bg_low_pressed = 2131230839;
+			public const int notification_bg_low_normal = 2131230839;
 			
 			// aapt resource value: 0x7F080078
-			public const int notification_bg_normal = 2131230840;
+			public const int notification_bg_low_pressed = 2131230840;
 			
 			// aapt resource value: 0x7F080079
-			public const int notification_bg_normal_pressed = 2131230841;
+			public const int notification_bg_normal = 2131230841;
 			
 			// aapt resource value: 0x7F08007A
-			public const int notification_icon_background = 2131230842;
+			public const int notification_bg_normal_pressed = 2131230842;
 			
 			// aapt resource value: 0x7F08007B
-			public const int notification_template_icon_bg = 2131230843;
+			public const int notification_icon_background = 2131230843;
 			
 			// aapt resource value: 0x7F08007C
-			public const int notification_template_icon_low_bg = 2131230844;
+			public const int notification_template_icon_bg = 2131230844;
 			
 			// aapt resource value: 0x7F08007D
-			public const int notification_tile_bg = 2131230845;
+			public const int notification_template_icon_low_bg = 2131230845;
 			
 			// aapt resource value: 0x7F08007E
-			public const int notify_panel_notification_icon_bg = 2131230846;
+			public const int notification_tile_bg = 2131230846;
 			
 			// aapt resource value: 0x7F08007F
-			public const int preference_list_divider_material = 2131230847;
+			public const int notify_panel_notification_icon_bg = 2131230847;
 			
 			// aapt resource value: 0x7F080080
-			public const int tooltip_frame_dark = 2131230848;
+			public const int preference_list_divider_material = 2131230848;
 			
 			// aapt resource value: 0x7F080081
-			public const int tooltip_frame_light = 2131230849;
+			public const int tooltip_frame_dark = 2131230849;
+			
+			// aapt resource value: 0x7F080082
+			public const int tooltip_frame_light = 2131230850;
 			
 			static Drawable()
 			{
