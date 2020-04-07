@@ -118,40 +118,21 @@ namespace FateGrandAutomata
 
         public void ContinueClick(Location Location, int Times)
         {
-            var maxStrokesPerSet = GestureDescription.MaxStrokeCount;
+            const int clickTime = 50;
+            const int clickDelay = 10;
 
-            var clicksLeft = Times;
-
-            const int delayPerClick = 50;
-
-            while (clicksLeft > 0)
+            while (Times-- > 0)
             {
-                var time = 0L;
+                var swipePath = new Path();
+                swipePath.MoveTo(Location.X, Location.Y);
 
-                var numberOfClicksInCurrentSet = Math.Min(clicksLeft, maxStrokesPerSet);
+                var stroke = new GestureDescription.StrokeDescription(swipePath, clickDelay, clickTime);
 
-                var gestureBuilder = new GestureDescription.Builder();
-
-                for (var i = 0; i < numberOfClicksInCurrentSet; ++i)
-                {
-                    const int duration = 1;
-
-                    var swipePath = new Path();
-                    swipePath.MoveTo(Location.X, Location.Y);
-
-                    var stroke = new GestureDescription.StrokeDescription(swipePath, time, duration);
-
-                    gestureBuilder.AddStroke(stroke);
-
-                    time += stroke.Duration + delayPerClick;
-                }
+                var gestureBuilder = new GestureDescription.Builder()
+                    .AddStroke(stroke);
 
                 PerformGesture(gestureBuilder.Build(), false);
-
-                clicksLeft -= numberOfClicksInCurrentSet;
             }
-
-            AutomataApi.Wait(GestureWait);
         }
 
         public IPattern Screenshot()
