@@ -39,6 +39,9 @@ Though, I welcome contributions if you could figure out the cause of the problem
 Settings can be opened from the app's menu (three dots on top-right corner).
 For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] project.
 
+Autoskill configuration can be created at `Settings/AutoSkill/Manage Autoskill configurations`.  
+You won't be prompted at script start for the config to use. You need to set the `Settings/AutoSkill/Selected Autoskill Config` value.
+
 ## Where to put Servant/CE images?
 The app only comes with `mona_lisa.png` and `chaldea_lunchtime.png`.
 If you want to use any other preferred servant or ce, put their image in `Fate-Grand-Automata/support` folder.
@@ -50,15 +53,9 @@ There is an option in Settings called `Script Mode`.
 It defaults to `Battle`.
 Set it to the script you require.
 
-## Limitations
-1. Autoskill list not supported.
-2. The AutoSupport within AutoSkill feature I contributed to FGOLua isn't available here.
-3. No support for Auto-giftbox.
-
 ## Upcoming Features
-1. Autoskill list
-2. Auto-giftbox.
-3. Support image maker? Automatically crop out servant/ce image from a screenshot.
+1. Auto-giftbox.
+2. Support image maker? Automatically crop out servant/ce image from a screenshot.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

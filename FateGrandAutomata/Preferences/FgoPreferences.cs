@@ -22,7 +22,7 @@ namespace FateGrandAutomata
             }
 
             Refill = new FgoRefillPreferences(this);
-            Support = new FgoSupportPreferences(this);
+            Support = new FgoSupportPreferences(this, Context);
         }
 
         string K(int KeyId) => _context.GetString(KeyId);
@@ -53,7 +53,27 @@ namespace FateGrandAutomata
 
         public bool EnableAutoSkill => GetBool(R.pref_autoskill_enable);
 
-        public string SkillCommand => GetString(R.pref_skill_cmd);
+        public ISharedPreferences GetPreferencesForSelectedAutoSkill()
+        {
+            if (!EnableAutoSkill)
+                return null;
+
+            var selectedAutoskillConfig = GetString(R.pref_autoskill_selected);
+
+            return string.IsNullOrWhiteSpace(selectedAutoskillConfig)
+                ? null
+                : _context.GetSharedPreferences(selectedAutoskillConfig, FileCreationMode.Private);
+        }
+
+        public string SkillCommand
+        {
+            get
+            {
+                var prefs = GetPreferencesForSelectedAutoSkill();
+
+                return prefs?.GetString(_context.GetString(R.pref_autoskill_cmd), "");
+            }
+        }
 
         public string BattleCardPriority => GetString(R.pref_card_priority, "BAQ");
 

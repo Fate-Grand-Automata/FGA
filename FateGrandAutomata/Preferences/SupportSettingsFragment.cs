@@ -4,7 +4,7 @@ using AndroidX.Preference;
 
 namespace FateGrandAutomata
 {
-    [Register("fgautomata.SupportSettingsFragment")]
+    [Register("fgautomata." + nameof(SupportSettingsFragment))]
     public class SupportSettingsFragment : PreferenceFragmentCompat
     {
         void MakeNumeric(int PreferenceKey)

@@ -4,7 +4,7 @@ using AndroidX.Preference;
 
 namespace FateGrandAutomata
 {
-    [Register("fgautomata.RefillSettingsFragment")]
+    [Register("fgautomata." + nameof(RefillSettingsFragment))]
     public class RefillSettingsFragment : PreferenceFragmentCompat
     {
         public override void OnCreatePreferences(Bundle SavedInstanceState, string RootKey)

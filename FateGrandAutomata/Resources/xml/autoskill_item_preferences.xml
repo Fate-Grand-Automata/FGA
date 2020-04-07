@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <EditTextPreference
+    app:key="@string/pref_autoskill_name"
+    app:title="Name"
+    app:useSimpleSummaryProvider="true"
+    app:defaultValue="--"/>
+
+  <EditTextPreference
+    app:key="@string/pref_autoskill_cmd"
+    app:title="Skill Command"
+    app:useSimpleSummaryProvider="true"
+    app:defaultValue=""/>
+
+  <EditTextPreference
+    app:key="@string/pref_autoskill_servant"
+    app:title="Preferred Servants"
+    app:useSimpleSummaryProvider="true"
+    app:defaultValue=""/>
+
+  <EditTextPreference
+    app:key="@string/pref_autoskill_ce"
+    app:title="Preferred CEs"
+    app:useSimpleSummaryProvider="true"
+    app:defaultValue=""/>
+
+  <Preference
+    app:key="@string/pref_autoskill_delete"
+    app:title="Delete Configuration"
+    app:icon="@drawable/ic_delete"/>
+
+</PreferenceScreen>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <PreferenceCategory
+    app:key="autoskill_category"
+    app:title="Auto Skill">
+    <SwitchPreferenceCompat
+      app:key="@string/pref_autoskill_enable"
+      app:title="Enable Auto Skill"
+      app:defaultValue="false"/>
+
+    <SwitchPreferenceCompat
+      app:key="@string/pref_skill_conf"
+      app:title="Skill Confirmation"
+      app:defaultValue="false"/>
+
+    <ListPreference
+      app:key="@string/pref_autoskill_selected"
+      app:title="Selected Autoskill Config"
+      app:useSimpleSummaryProvider="true"
+      app:defaultValue=""
+      app:dependency="@string/pref_autoskill_enable"/>
+
+    <Preference
+      app:key="@string/pref_autoskill_manage"
+      app:title="Manage Autoskill Configurations"
+      app:summary="Add/Edit/Delete configurations"/>
+  </PreferenceCategory>
+
+</PreferenceScreen>

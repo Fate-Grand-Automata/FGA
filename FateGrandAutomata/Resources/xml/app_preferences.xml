@@ -30,72 +30,60 @@
     app:summary="Manage Support Selection"
     app:fragment="fgautomata.SupportSettingsFragment"/>
 
+  <Preference
+    app:key="autoskill"
+    app:title="Auto Skill"
+    app:summary="Manage Auto Skill"
+    app:fragment="fgautomata.ManageAutoSkillSettingsFragment"/>
+
   <PreferenceCategory
-    app:key="autoskill_category"
-    app:title="Auto Skill">
-    <SwitchPreferenceCompat
-      app:key="@string/pref_autoskill_enable"
-      app:title="Enable Auto Skill"
-      app:defaultValue="false"/>
-
-    <SwitchPreferenceCompat
-      app:key="@string/pref_skill_conf"
-      app:title="Skill Confirmation"
-      app:defaultValue="false"/>
-
+    app:key="category_other"
+    app:title="Other">
     <EditTextPreference
-      app:key="@string/pref_skill_cmd"
-      app:title="Skill Command"
+      app:key="@string/pref_card_priority"
+      app:title="Card Priority"
       app:useSimpleSummaryProvider="true"
-      app:defaultValue=""
-      app:dependency="@string/pref_autoskill_enable"/>
+      app:defaultValue="BAQ"/>
+
+    <ListPreference
+      app:defaultValue="None"
+      app:entries="@array/battle_np_types"
+      app:entryValues="@array/battle_np_types"
+      app:key="@string/pref_battle_np"
+      app:title="Cast Noble Phantasm"
+      app:useSimpleSummaryProvider="true"/>
+
+    <SwitchPreferenceCompat
+      app:key="@string/pref_auto_choose_target"
+      app:title="Auto choose target"
+      app:defaultValue="true"/>
+
+    <SwitchPreferenceCompat
+      app:key="@string/pref_story_skip"
+      app:title="Story Skip"
+      app:defaultValue="false"/>
+
+    <SwitchPreferenceCompat
+      app:key="@string/pref_withdraw_enabled"
+      app:title="Enable Withdraw"
+      app:defaultValue="false"/>
+
+    <SwitchPreferenceCompat
+      app:key="@string/pref_stop_bond10"
+      app:title="Stop on Bond 10"
+      app:defaultValue="false"/>
+
+    <ListPreference
+      app:defaultValue="0"
+      app:entries="@array/boost_item_labels"
+      app:entryValues="@array/boost_item_values"
+      app:key="@string/pref_boost_item"
+      app:title="Boost Item"
+      app:useSimpleSummaryProvider="true"/>
+
+    <SwitchPreferenceCompat
+      app:key="@string/pref_fast_skip_dead"
+      app:title="Fast Skip death animation (unstable)"
+      app:defaultValue="false"/>
   </PreferenceCategory>
-
-  <EditTextPreference
-    app:key="@string/pref_card_priority"
-    app:title="Card Priority"
-    app:useSimpleSummaryProvider="true"
-    app:defaultValue="BAQ"/>
-
-  <ListPreference
-    app:defaultValue="None"
-    app:entries="@array/battle_np_types"
-    app:entryValues="@array/battle_np_types"
-    app:key="@string/pref_battle_np"
-    app:title="Cast Noble Phantasm"
-    app:useSimpleSummaryProvider="true"/>
-
-  <SwitchPreferenceCompat
-    app:key="@string/pref_auto_choose_target"
-    app:title="Auto choose target"
-    app:defaultValue="true"/>
-
-  <SwitchPreferenceCompat
-    app:key="@string/pref_story_skip"
-    app:title="Story Skip"
-    app:defaultValue="false"/>
-
-  <SwitchPreferenceCompat
-    app:key="@string/pref_withdraw_enabled"
-    app:title="Enable Withdraw"
-    app:defaultValue="false"/>
-
-  <SwitchPreferenceCompat
-    app:key="@string/pref_stop_bond10"
-    app:title="Stop on Bond 10"
-    app:defaultValue="false"/>
-
-  <ListPreference
-    app:defaultValue="0"
-    app:entries="@array/boost_item_labels"
-    app:entryValues="@array/boost_item_values"
-    app:key="@string/pref_boost_item"
-    app:title="Boost Item"
-    app:useSimpleSummaryProvider="true"/>
-
-  <SwitchPreferenceCompat
-    app:key="@string/pref_fast_skip_dead"
-    app:title="Fast Skip death animation (unstable)"
-    app:defaultValue="false"/>
-
 </PreferenceScreen>
