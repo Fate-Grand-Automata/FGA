@@ -10,6 +10,11 @@
     android:gravity="center"
     android:paddingHorizontal="10dip">
 
+  <TextView
+      android:id="@+id/status_textview"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+
   <Button
     android:id="@+id/service_toggle_btn"
     android:layout_width="match_parent"

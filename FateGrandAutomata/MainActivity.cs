@@ -35,6 +35,63 @@ namespace FateGrandAutomata
 
             CheckPermissions();
             IgnoreBatteryOptimizations();
+            ShowStatusText();
+        }
+
+        protected override void OnRestart()
+        {
+            base.OnRestart();
+            ShowStatusText();
+        }
+
+        void ShowStatusText()
+        {
+            if (GlobalFabService.Instance == null)
+            {
+                return;
+            }
+
+            var statusTextView = FindViewById<TextView>(Resource.Id.status_textview);
+
+            var autoskillOn = Preferences.Instance.EnableAutoSkill;
+            var autoskillCmd = autoskillOn
+                ? $" - {Preferences.Instance.SkillCommand}"
+                : "";
+
+            var refillPrefs = Preferences.Instance.Refill;
+
+            var autoRefillOn = refillPrefs.Enabled;
+            var autoRefillStatus = autoRefillOn
+                ? $" - {refillPrefs.Enabled} x{refillPrefs.Repetitions}"
+                : "";
+
+            var supportPrefs = Preferences.Instance.Support;
+            var preferredMode = supportPrefs.SelectionMode == SupportSelectionMode.Preferred;
+
+            static string Any(string Value) => string.IsNullOrWhiteSpace(Value)
+                ? "Any"
+                : Value;
+
+            var supportStatus = preferredMode
+                ? $"Servants: '{Any(supportPrefs.PreferredServants)}', CEs: '{Any(supportPrefs.PreferredCEs)}'"
+                : "";
+
+            static string OnOff(bool Value) => Value ? "ON" : "OFF";
+
+            var statusText = $"Mode: {Preferences.Instance.ScriptMode}";
+
+            if (Preferences.Instance.ScriptMode == ScriptMode.Battle)
+            {
+                statusText += $@"
+Server: {Preferences.Instance.GameServer}
+Auto Skill: {OnOff(autoskillOn)}{autoskillCmd}
+Auto Refill: {OnOff(autoRefillOn)}{autoRefillStatus}
+Auto Support Selection: {supportPrefs.SelectionMode}
+{supportStatus}
+";
+            }
+
+            statusTextView.Text = statusText;
         }
 
         void IgnoreBatteryOptimizations()
@@ -97,7 +154,7 @@ namespace FateGrandAutomata
 
             new AlertDialog.Builder(this)
                 .SetTitle("Accessibility Disabled")
-                .SetMessage("Turn on accessibility for this app from System settings")
+                .SetMessage("Turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.")
                 .SetPositiveButton("Go To Settings", (S, E) =>
                 {
                     // Open Acessibility Settings
