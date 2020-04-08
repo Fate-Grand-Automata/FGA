@@ -44,15 +44,18 @@ namespace FateGrandAutomata
             {
                 var latestImage = _imageReader.AcquireLatestImage();
 
-                try
+                if (latestImage != null)
                 {
-                    _lastestPattern?.Dispose();
-                    _lastestPattern = MatFromImage(latestImage);
-                }
-                finally
-                {
-                    // Close is required for ImageReader. Dispose doesn't work.
-                    latestImage.Close();
+                    try
+                    {
+                        _lastestPattern?.Dispose();
+                        _lastestPattern = MatFromImage(latestImage);
+                    }
+                    finally
+                    {
+                        // Close is required for ImageReader. Dispose doesn't work.
+                        latestImage.Close();
+                    }
                 }
             }
 
