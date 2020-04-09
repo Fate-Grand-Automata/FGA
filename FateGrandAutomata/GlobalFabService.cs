@@ -34,6 +34,7 @@ namespace FateGrandAutomata
         VirtualDisplay _virtualDisplay;
         ImageReader _imageReader;
         ImgListener _imgListener;
+        Intent _mediaProjectionToken;
 
         public static GlobalFabService Instance { get; private set; }
 
@@ -44,23 +45,33 @@ namespace FateGrandAutomata
             Instance = null;
             ServiceStarted = false;
 
-            _virtualDisplay?.Release();
-            _virtualDisplay = null;
-
             _imageReader?.Close();
             _imageReader = null;
-
-            _mediaProjection?.Stop();
-            _mediaProjection = null;
 
             return base.OnUnbind(Intent);
         }
 
-        public bool HasMediaProjectionToken => _mediaProjection != null;
+        void StopMediaProjection()
+        {
+            _virtualDisplay?.Release();
+            _virtualDisplay = null;
+
+            _mediaProjection?.Stop();
+            _mediaProjection = null;
+        }
+
+        public bool HasMediaProjectionToken => _mediaProjectionToken != null;
 
         public bool ServiceStarted { get; private set; }
 
         bool _scriptStarted;
+
+        void StartMediaProjection()
+        {
+            _mediaProjection = MediaProjectionManager.GetMediaProjection((int)Result.Ok, _mediaProjectionToken);
+
+            SetupVirtualDisplay();
+        }
 
         public bool Start(Intent MediaProjectionToken = null)
         {
@@ -71,9 +82,7 @@ namespace FateGrandAutomata
 
             if (MediaProjectionToken != null)
             {
-                _mediaProjection = MediaProjectionManager.GetMediaProjection((int)Result.Ok, MediaProjectionToken);
-
-                SetupVirtualDisplay();
+                _mediaProjectionToken = MediaProjectionToken;
             }
 
             _windowManager.AddView(_layout, _layoutParams);
@@ -136,6 +145,8 @@ namespace FateGrandAutomata
                 return;
             }
 
+            StartMediaProjection();
+
             _entryPoint = GetEntryPoint();
             _entryPoint.ScriptExit += OnScriptExit;
 
@@ -154,6 +165,8 @@ namespace FateGrandAutomata
 
             _entryPoint.ScriptExit -= OnScriptExit;
             _entryPoint.Stop();
+
+            StopMediaProjection();
 
             OnScriptExit();
         }
