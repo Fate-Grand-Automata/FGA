@@ -137,7 +137,7 @@ namespace FateGrandAutomata
 
         public IPattern Screenshot()
         {
-            return GlobalFabService
+            return ScriptRunnerService
                 .Instance
                 .AcquireLatestImage();
         }

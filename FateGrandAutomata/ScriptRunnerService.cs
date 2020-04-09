@@ -20,8 +20,8 @@ namespace FateGrandAutomata
 {
     [Service(Permission = Manifest.Permission.BindAccessibilityService)]
     [IntentFilter(new [] { "android.accessibilityservice.AccessibilityService" })]
-    [MetaData("android.accessibilityservice", Resource = "@xml/global_fab_service")]
-    public class GlobalFabService : AccessibilityService
+    [MetaData("android.accessibilityservice", Resource = "@xml/script_runner_service")]
+    public class ScriptRunnerService : AccessibilityService
     {
         FrameLayout _layout;
         IWindowManager _windowManager;
@@ -36,7 +36,7 @@ namespace FateGrandAutomata
         ImgListener _imgListener;
         Intent _mediaProjectionToken;
 
-        public static GlobalFabService Instance { get; private set; }
+        public static ScriptRunnerService Instance { get; private set; }
 
         public override bool OnUnbind(Intent Intent)
         {
@@ -194,7 +194,7 @@ namespace FateGrandAutomata
             };
 
             var inflator = LayoutInflater.From(this);
-            inflator.Inflate(Resource.Layout.global_fab_layout, _layout);
+            inflator.Inflate(Resource.Layout.script_runner, _layout);
 
             _scriptCtrlBtn = _layout.FindViewById<Button>(Resource.Id.script_toggle_btn);
 

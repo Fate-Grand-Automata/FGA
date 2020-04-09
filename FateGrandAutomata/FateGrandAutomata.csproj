@@ -74,7 +74,7 @@
     <Compile Include="AutoSkill\AutoSkillActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
     <Compile Include="DroidCvPattern.cs" />
-    <Compile Include="GlobalFabService.cs" />
+    <Compile Include="ScriptRunnerService.cs" />
     <Compile Include="ImgListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Preferences\FgoPreferences.cs" />
@@ -153,10 +153,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\global_fab_layout.xml" />
+    <AndroidResource Include="Resources\layout\script_runner.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\xml\global_fab_service.xml" />
+    <AndroidResource Include="Resources\xml\script_runner_service.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\app_preferences.xml" />

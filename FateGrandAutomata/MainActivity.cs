@@ -46,7 +46,7 @@ namespace FateGrandAutomata
 
         void ShowStatusText()
         {
-            if (GlobalFabService.Instance == null)
+            if (ScriptRunnerService.Instance == null)
             {
                 return;
             }
@@ -117,7 +117,7 @@ Auto Support Selection: {supportPrefs.SelectionMode}
                     return;
                 }
 
-                GlobalFabService.Instance.Start(Data);
+                ScriptRunnerService.Instance.Start(Data);
             }
         }
 
@@ -149,7 +149,7 @@ Auto Support Selection: {supportPrefs.SelectionMode}
 
         bool CheckAccessibilityService()
         {
-            if (GlobalFabService.Instance != null)
+            if (ScriptRunnerService.Instance != null)
                 return true;
 
             new AlertDialog.Builder(this)
@@ -172,7 +172,7 @@ Auto Support Selection: {supportPrefs.SelectionMode}
             if (!CheckAccessibilityService()) 
                 return;
 
-            var instance = GlobalFabService.Instance;
+            var instance = ScriptRunnerService.Instance;
 
             if (instance.ServiceStarted)
             {
@@ -180,7 +180,7 @@ Auto Support Selection: {supportPrefs.SelectionMode}
             }
             else
             {
-                if (GlobalFabService.Instance.HasMediaProjectionToken)
+                if (ScriptRunnerService.Instance.HasMediaProjectionToken)
                 {
                     instance.Start();
                 }

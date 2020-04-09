@@ -4689,82 +4689,82 @@ namespace FateGrandAutomata
 			public const int expand_button = 2131492913;
 			
 			// aapt resource value: 0x7F0C0032
-			public const int global_fab_layout = 2131492914;
+			public const int image_frame = 2131492914;
 			
 			// aapt resource value: 0x7F0C0033
-			public const int image_frame = 2131492915;
+			public const int mtrl_layout_snackbar = 2131492915;
 			
 			// aapt resource value: 0x7F0C0034
-			public const int mtrl_layout_snackbar = 2131492916;
+			public const int mtrl_layout_snackbar_include = 2131492916;
 			
 			// aapt resource value: 0x7F0C0035
-			public const int mtrl_layout_snackbar_include = 2131492917;
+			public const int notification_action = 2131492917;
 			
 			// aapt resource value: 0x7F0C0036
-			public const int notification_action = 2131492918;
+			public const int notification_action_tombstone = 2131492918;
 			
 			// aapt resource value: 0x7F0C0037
-			public const int notification_action_tombstone = 2131492919;
+			public const int notification_template_custom_big = 2131492919;
 			
 			// aapt resource value: 0x7F0C0038
-			public const int notification_template_custom_big = 2131492920;
+			public const int notification_template_icon_group = 2131492920;
 			
 			// aapt resource value: 0x7F0C0039
-			public const int notification_template_icon_group = 2131492921;
+			public const int notification_template_part_chronometer = 2131492921;
 			
 			// aapt resource value: 0x7F0C003A
-			public const int notification_template_part_chronometer = 2131492922;
+			public const int notification_template_part_time = 2131492922;
 			
 			// aapt resource value: 0x7F0C003B
-			public const int notification_template_part_time = 2131492923;
+			public const int preference = 2131492923;
 			
 			// aapt resource value: 0x7F0C003C
-			public const int preference = 2131492924;
+			public const int preference_category = 2131492924;
 			
 			// aapt resource value: 0x7F0C003D
-			public const int preference_category = 2131492925;
+			public const int preference_category_material = 2131492925;
 			
 			// aapt resource value: 0x7F0C003E
-			public const int preference_category_material = 2131492926;
+			public const int preference_dialog_edittext = 2131492926;
 			
 			// aapt resource value: 0x7F0C003F
-			public const int preference_dialog_edittext = 2131492927;
+			public const int preference_dropdown = 2131492927;
 			
 			// aapt resource value: 0x7F0C0040
-			public const int preference_dropdown = 2131492928;
+			public const int preference_dropdown_material = 2131492928;
 			
 			// aapt resource value: 0x7F0C0041
-			public const int preference_dropdown_material = 2131492929;
+			public const int preference_information = 2131492929;
 			
 			// aapt resource value: 0x7F0C0042
-			public const int preference_information = 2131492930;
+			public const int preference_information_material = 2131492930;
 			
 			// aapt resource value: 0x7F0C0043
-			public const int preference_information_material = 2131492931;
+			public const int preference_list_fragment = 2131492931;
 			
 			// aapt resource value: 0x7F0C0044
-			public const int preference_list_fragment = 2131492932;
+			public const int preference_material = 2131492932;
 			
 			// aapt resource value: 0x7F0C0045
-			public const int preference_material = 2131492933;
+			public const int preference_recyclerview = 2131492933;
 			
 			// aapt resource value: 0x7F0C0046
-			public const int preference_recyclerview = 2131492934;
+			public const int preference_widget_checkbox = 2131492934;
 			
 			// aapt resource value: 0x7F0C0047
-			public const int preference_widget_checkbox = 2131492935;
+			public const int preference_widget_seekbar = 2131492935;
 			
 			// aapt resource value: 0x7F0C0048
-			public const int preference_widget_seekbar = 2131492936;
+			public const int preference_widget_seekbar_material = 2131492936;
 			
 			// aapt resource value: 0x7F0C0049
-			public const int preference_widget_seekbar_material = 2131492937;
+			public const int preference_widget_switch = 2131492937;
 			
 			// aapt resource value: 0x7F0C004A
-			public const int preference_widget_switch = 2131492938;
+			public const int preference_widget_switch_compat = 2131492938;
 			
 			// aapt resource value: 0x7F0C004B
-			public const int preference_widget_switch_compat = 2131492939;
+			public const int script_runner = 2131492939;
 			
 			// aapt resource value: 0x7F0C004C
 			public const int select_dialog_item_material = 2131492940;
@@ -5051,16 +5051,19 @@ namespace FateGrandAutomata
 			public const int search_menu_title = 2131624013;
 			
 			// aapt resource value: 0x7F0E004E
-			public const int status_bar_notification_info_overflow = 2131624014;
+			public const int service_runner_description = 2131624014;
 			
 			// aapt resource value: 0x7F0E004F
-			public const int summary_collapsed_preference_list = 2131624015;
+			public const int status_bar_notification_info_overflow = 2131624015;
 			
 			// aapt resource value: 0x7F0E0050
-			public const int v7_preference_off = 2131624016;
+			public const int summary_collapsed_preference_list = 2131624016;
 			
 			// aapt resource value: 0x7F0E0051
-			public const int v7_preference_on = 2131624017;
+			public const int v7_preference_off = 2131624017;
+			
+			// aapt resource value: 0x7F0E0052
+			public const int v7_preference_on = 2131624018;
 			
 			static String()
 			{
@@ -10277,10 +10280,10 @@ namespace FateGrandAutomata
 			public const int autoskill_preferences = 2131820546;
 			
 			// aapt resource value: 0x7F110003
-			public const int global_fab_service = 2131820547;
+			public const int refill_preferences = 2131820547;
 			
 			// aapt resource value: 0x7F110004
-			public const int refill_preferences = 2131820548;
+			public const int script_runner_service = 2131820548;
 			
 			// aapt resource value: 0x7F110005
 			public const int support_preferences = 2131820549;

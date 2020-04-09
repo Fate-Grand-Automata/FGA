@@ -1,10 +1,12 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Runtime;
 using AndroidX.AppCompat.App;
 
 namespace FateGrandAutomata
 {
     [Activity(Label = "Settings")]
+    [Register("fgautomata." + nameof(SettingsActivity))]
     public class SettingsActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle SavedInstanceState)
