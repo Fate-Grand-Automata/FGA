@@ -13,7 +13,7 @@ This was a great learning experience and something different from your usual And
 
 ## How does it work?
 It runs on [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/), uses [OpenCV](https://opencv.org/) for image recognition, uses Android's [Acessibility](https://developer.android.com/guide/topics/ui/accessibility) and [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) APIs.
-Battery optimizations can screw up the functionality of the app. App tries to disabled them automatically but you might also have to do that manually.
+Battery optimizations can screw up the functionality of the app. App tries to disable them automatically but you might also have to do that manually.
 
 The icons are from https://materialdesignicons.com/
 
@@ -36,7 +36,7 @@ Also, phones with **notches** would generally not work with my implementation ri
 4. Click on `Toggle Service`. You would be prompted to turn on the `Accessibility Service` and taken to `Accessibility Settings` page.
    If it is already ON, turn it OFF and then turn it ON again.
    If you turned ON `Accessibility Service` right now, click again on `Toggle Service`.
-5. You would be asked `for Media Projection` permission.
+5. You would be asked for `Media Projection` permission.
 6. Now, you can see a button with play icon on it floating on screen.
 7. Open F/GO and Go to the node you want to farm.
 8. Press Play to start. The same button can be pressed to stop later.

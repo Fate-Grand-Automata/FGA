@@ -34,7 +34,6 @@ namespace FateGrandAutomata
         VirtualDisplay _virtualDisplay;
         ImageReader _imageReader;
         ImgListener _imgListener;
-        Intent _mediaProjectionToken;
 
         public static ScriptRunnerService Instance { get; private set; }
 
@@ -51,27 +50,11 @@ namespace FateGrandAutomata
             return base.OnUnbind(Intent);
         }
 
-        void StopMediaProjection()
-        {
-            _virtualDisplay?.Release();
-            _virtualDisplay = null;
-
-            _mediaProjection?.Stop();
-            _mediaProjection = null;
-        }
-
-        public bool HasMediaProjectionToken => _mediaProjectionToken != null;
+        public bool HasMediaProjectionToken => _mediaProjection != null;
 
         public bool ServiceStarted { get; private set; }
 
         bool _scriptStarted;
-
-        void StartMediaProjection()
-        {
-            _mediaProjection = MediaProjectionManager.GetMediaProjection((int)Result.Ok, _mediaProjectionToken);
-
-            SetupVirtualDisplay();
-        }
 
         public bool Start(Intent MediaProjectionToken = null)
         {
@@ -82,7 +65,7 @@ namespace FateGrandAutomata
 
             if (MediaProjectionToken != null)
             {
-                _mediaProjectionToken = MediaProjectionToken;
+                _mediaProjection = MediaProjectionManager.GetMediaProjection((int)Result.Ok, MediaProjectionToken);
             }
 
             _windowManager.AddView(_layout, _layoutParams);
@@ -145,7 +128,7 @@ namespace FateGrandAutomata
                 return;
             }
 
-            StartMediaProjection();
+            SetupVirtualDisplay();
 
             _entryPoint = GetEntryPoint();
             _entryPoint.ScriptExit += OnScriptExit;
@@ -166,7 +149,8 @@ namespace FateGrandAutomata
             _entryPoint.ScriptExit -= OnScriptExit;
             _entryPoint.Stop();
 
-            StopMediaProjection();
+            _virtualDisplay?.Release();
+            _virtualDisplay = null;
 
             OnScriptExit();
         }
