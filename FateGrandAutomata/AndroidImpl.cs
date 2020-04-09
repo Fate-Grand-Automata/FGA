@@ -34,7 +34,7 @@ namespace FateGrandAutomata
                 var metrics = new DisplayMetrics();
                 var wm = _accessibilityService.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
 
-                wm.DefaultDisplay.GetMetrics(metrics);
+                wm.DefaultDisplay.GetRealMetrics(metrics);
 
                 var w = metrics.WidthPixels;
                 var h = metrics.HeightPixels;

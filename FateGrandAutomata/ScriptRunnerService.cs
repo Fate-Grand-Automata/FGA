@@ -194,7 +194,7 @@ namespace FateGrandAutomata
             MediaProjectionManager = (MediaProjectionManager)GetSystemService(MediaProjectionService);
 
             var metrics = new DisplayMetrics();
-            _windowManager.DefaultDisplay.GetMetrics(metrics);
+            _windowManager.DefaultDisplay.GetRealMetrics(metrics);
             _screenDensity = (int)metrics.DensityDpi;
             _screenWidth = metrics.WidthPixels;
             _screenHeight = metrics.HeightPixels;
