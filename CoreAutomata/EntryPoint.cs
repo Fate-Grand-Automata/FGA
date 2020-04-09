@@ -50,7 +50,7 @@ namespace CoreAutomata
 
                 ScriptExit?.Invoke(e.Message);
 
-                AutomataApi.ShowMessageBox("Unexpected Error", e.Message);
+                AutomataApi.ShowMessageBox("Unexpected Error", e.ToString());
             }
         }
 

@@ -41,25 +41,11 @@ namespace FateGrandAutomata
                 var x = 0;
                 var y = 0;
 
-                if (Cutout != null)
+                var cutout = GetCutout(wm.DefaultDisplay.Rotation);
+
+                if (cutout != null)
                 {
-                    var (l, t, r, b) = Cutout.Value;
-                    var rotation = wm.DefaultDisplay.Rotation;
-
-                    switch (rotation)
-                    {
-                        case SurfaceOrientation.Rotation90:
-                            (l, t, r, b) = (t, r, b, l);
-                            break;
-
-                        case SurfaceOrientation.Rotation180:
-                            (l, t, r, b) = (r, b, l, t);
-                            break;
-
-                        case SurfaceOrientation.Rotation270:
-                            (l, t, r, b) = (b, l, t, r);
-                            break;
-                    }
+                    var (l, t, r, b) = cutout.Value;
 
                     x = l;
                     y = t;
@@ -71,7 +57,35 @@ namespace FateGrandAutomata
             }
         }
 
-        public (int L, int T, int R, int B)? Cutout => GameAreaManager.AutoGameArea ? MainActivity.Cutout : null;
+        static (int L, int T, int R, int B)? GetCutout(SurfaceOrientation Rotation)
+        {
+            if (!GameAreaManager.AutoGameArea)
+                return null;
+
+            var cutout = MainActivity.Cutout;
+
+            if (cutout == null)
+                return null;
+
+            var (l, t, r, b) = cutout.Value;
+
+            switch (Rotation)
+            {
+                case SurfaceOrientation.Rotation90:
+                    (l, t, r, b) = (t, r, b, l);
+                    break;
+
+                case SurfaceOrientation.Rotation180:
+                    (l, t, r, b) = (r, b, l, t);
+                    break;
+
+                case SurfaceOrientation.Rotation270:
+                    (l, t, r, b) = (b, l, t, r);
+                    break;
+            }
+
+            return (l, t, r, b);
+        }
 
         public void Scroll(Location Start, Location End)
         {

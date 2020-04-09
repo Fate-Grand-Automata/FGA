@@ -23,15 +23,7 @@
 
         public static Region GameArea
         {
-            get
-            {
-                if (_gameArea != null)
-                {
-                    return _gameArea;
-                }
-
-                return _gameArea = AutomataApi.WindowRegion;
-            }
+            get => _gameArea ??= AutomataApi.WindowRegion;
             set => _gameArea = value;
         }
 
