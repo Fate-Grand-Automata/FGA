@@ -7,6 +7,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
+using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.App;
@@ -36,6 +37,48 @@ namespace FateGrandAutomata
             CheckPermissions();
             IgnoreBatteryOptimizations();
             ShowStatusText();
+        }
+
+        public static (int L, int T, int R, int B)? Cutout { get; private set; }
+        bool _cutoutFound;
+
+        public override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+
+            if (!_cutoutFound && Build.VERSION.SdkInt >= BuildVersionCodes.P)
+            {
+                var cutout = Window.DecorView.RootWindowInsets.DisplayCutout;
+                var l = cutout.SafeInsetLeft;
+                var t = cutout.SafeInsetTop;
+                var r = cutout.SafeInsetRight;
+                var b = cutout.SafeInsetBottom;
+
+                if (!(l == 0 && t == 0 && r == 0 && b == 0))
+                {
+                    var wm = GetSystemService(WindowService).JavaCast<IWindowManager>();
+                    var rotation = wm.DefaultDisplay.Rotation;
+
+                    switch (rotation)
+                    {
+                        case SurfaceOrientation.Rotation90:
+                            (l, t, r, b) = (b, l, t, r);
+                            break;
+
+                        case SurfaceOrientation.Rotation180:
+                            (l, t, r, b) = (r, b, l, t);
+                            break;
+
+                        case SurfaceOrientation.Rotation270:
+                            (l, t, r, b) = (t, r, b, l);
+                            break;
+                    }
+
+                    Cutout = (l, t, r, b);
+                }
+
+                _cutoutFound = true;
+            }
         }
 
         protected override void OnRestart()

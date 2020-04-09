@@ -15,7 +15,18 @@
 
         static IPattern GetScaledScreenshot()
         {
-            return _platformImpl.Screenshot().Transform();
+            var sshot = _platformImpl.Screenshot();
+            var cutout = AutomataApi.Cutout;
+
+            if (cutout != null)
+            {
+                var (l, t, r, b) = cutout.Value;
+                var w = sshot.Width - l - r;
+                var h = sshot.Height - t - b;
+                sshot.Crop(new Region(l, t, w, h));
+            }
+
+            return sshot.Transform();
         }
 
         public static void Snapshot()

@@ -30,20 +30,7 @@
                     return _gameArea;
                 }
 
-                var window = AutomataApi.WindowSize;
-                var region = new Region(0, 0, window.Width, window.Height);
-
-                if (!ImmersiveMode)
-                {
-                    // TODO: Remove Navigation buttons. Not required for FGO.
-                }
-
-                if (AutoGameArea)
-                {
-                    // TODO: Remove notch area on Android P and above.
-                }
-
-                return _gameArea = region;
+                return _gameArea = AutomataApi.WindowRegion;
             }
             set => _gameArea = value;
         }

@@ -13,7 +13,6 @@ using CoreAutomata;
 using Java.Interop;
 using Org.Opencv.Android;
 using Path = Android.Graphics.Path;
-using Size = CoreAutomata.Size;
 
 namespace FateGrandAutomata
 {
@@ -28,7 +27,7 @@ namespace FateGrandAutomata
             OpenCVLoader.InitDebug();
         }
 
-        public Size WindowSize
+        public Region WindowRegion
         {
             get
             {
@@ -37,9 +36,42 @@ namespace FateGrandAutomata
 
                 wm.DefaultDisplay.GetMetrics(metrics);
 
-                return new Size(metrics.WidthPixels, metrics.HeightPixels);
+                var w = metrics.WidthPixels;
+                var h = metrics.HeightPixels;
+                var x = 0;
+                var y = 0;
+
+                if (Cutout != null)
+                {
+                    var (l, t, r, b) = Cutout.Value;
+                    var rotation = wm.DefaultDisplay.Rotation;
+
+                    switch (rotation)
+                    {
+                        case SurfaceOrientation.Rotation90:
+                            (l, t, r, b) = (t, r, b, l);
+                            break;
+
+                        case SurfaceOrientation.Rotation180:
+                            (l, t, r, b) = (r, b, l, t);
+                            break;
+
+                        case SurfaceOrientation.Rotation270:
+                            (l, t, r, b) = (b, l, t, r);
+                            break;
+                    }
+
+                    x = l;
+                    y = t;
+                    w -= l + r;
+                    h -= t + b;
+                }
+
+                return new Region(x, y, w, h);
             }
         }
+
+        public (int L, int T, int R, int B)? Cutout => GameAreaManager.AutoGameArea ? MainActivity.Cutout : null;
 
         public void Scroll(Location Start, Location End)
         {
