@@ -48,7 +48,7 @@
                 ? Location
                 : Location * scale.Value;
 
-            var gameArea = AutomataApi.WindowRegion;
+            var gameArea = GameAreaManager.GameArea;
 
             return new Location(scaledPoint.X + gameArea.X, scaledPoint.Y + gameArea.Y);
         }
