@@ -38,6 +38,13 @@ namespace FateGrandAutomata
             ShowStatusText();
         }
 
+        public override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+
+            CutoutManager.ApplyCutout(this);
+        }
+
         protected override void OnRestart()
         {
             base.OnRestart();

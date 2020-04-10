@@ -5,15 +5,11 @@ using Android.AccessibilityServices;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Util;
-using Android.Views;
 using Android.Widget;
 using AndroidX.Core.App;
 using CoreAutomata;
-using Java.Interop;
 using Org.Opencv.Android;
 using Path = Android.Graphics.Path;
-using Size = CoreAutomata.Size;
 
 namespace FateGrandAutomata
 {
@@ -28,18 +24,7 @@ namespace FateGrandAutomata
             OpenCVLoader.InitDebug();
         }
 
-        public Size WindowSize
-        {
-            get
-            {
-                var metrics = new DisplayMetrics();
-                var wm = _accessibilityService.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
-
-                wm.DefaultDisplay.GetMetrics(metrics);
-
-                return new Size(metrics.WidthPixels, metrics.HeightPixels);
-            }
-        }
+        public Region WindowRegion => CutoutManager.GetCutoutAppliedRegion(_accessibilityService);
 
         public void Scroll(Location Start, Location End)
         {

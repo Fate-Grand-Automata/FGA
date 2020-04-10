@@ -15,7 +15,10 @@
 
         static IPattern GetScaledScreenshot()
         {
-            return _platformImpl.Screenshot().Transform();
+            return _platformImpl
+                .Screenshot()
+                .Crop(GameAreaManager.GameArea)
+                .Transform();
         }
 
         public static void Snapshot()

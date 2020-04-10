@@ -42,7 +42,7 @@ namespace CoreAutomata
             Thread.Sleep(TimeSpan.FromSeconds(Seconds));
         }
 
-        public static Size WindowSize => _platformImpl.WindowSize;
+        public static Region WindowRegion => _platformImpl.WindowRegion;
 
         public static void Click(Location Location) => _platformImpl.Click(Location.Transform());
 

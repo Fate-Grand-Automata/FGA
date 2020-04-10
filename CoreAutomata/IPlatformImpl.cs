@@ -4,7 +4,7 @@ namespace CoreAutomata
 {
     public interface IPlatformImpl
     {
-        Size WindowSize { get; }
+        Region WindowRegion { get; }
 
         void Scroll(Location Start, Location End);
 

@@ -44,9 +44,13 @@
         {
             var scale = ScriptToScreenScale();
 
-            return scale == null
+            var scaledPoint = scale == null
                 ? Location
                 : Location * scale.Value;
+
+            var gameArea = AutomataApi.WindowRegion;
+
+            return new Location(scaledPoint.X + gameArea.X, scaledPoint.Y + gameArea.Y);
         }
 
         public static Region TransformToImage(this Region Region)
