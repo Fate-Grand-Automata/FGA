@@ -5,12 +5,9 @@ using Android.AccessibilityServices;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Util;
-using Android.Views;
 using Android.Widget;
 using AndroidX.Core.App;
 using CoreAutomata;
-using Java.Interop;
 using Org.Opencv.Android;
 using Path = Android.Graphics.Path;
 
@@ -27,65 +24,7 @@ namespace FateGrandAutomata
             OpenCVLoader.InitDebug();
         }
 
-        public Region WindowRegion
-        {
-            get
-            {
-                var metrics = new DisplayMetrics();
-                var wm = _accessibilityService.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
-
-                wm.DefaultDisplay.GetRealMetrics(metrics);
-
-                var w = metrics.WidthPixels;
-                var h = metrics.HeightPixels;
-                var x = 0;
-                var y = 0;
-
-                var cutout = GetCutout(wm.DefaultDisplay.Rotation);
-
-                if (cutout != null)
-                {
-                    var (l, t, r, b) = cutout.Value;
-
-                    x = l;
-                    y = t;
-                    w -= l + r;
-                    h -= t + b;
-                }
-
-                return new Region(x, y, w, h);
-            }
-        }
-
-        static (int L, int T, int R, int B)? GetCutout(SurfaceOrientation Rotation)
-        {
-            if (!GameAreaManager.AutoGameArea)
-                return null;
-
-            var cutout = MainActivity.Cutout;
-
-            if (cutout == null)
-                return null;
-
-            var (l, t, r, b) = cutout.Value;
-
-            switch (Rotation)
-            {
-                case SurfaceOrientation.Rotation90:
-                    (l, t, r, b) = (t, r, b, l);
-                    break;
-
-                case SurfaceOrientation.Rotation180:
-                    (l, t, r, b) = (r, b, l, t);
-                    break;
-
-                case SurfaceOrientation.Rotation270:
-                    (l, t, r, b) = (b, l, t, r);
-                    break;
-            }
-
-            return (l, t, r, b);
-        }
+        public Region WindowRegion => CutoutManager.GetCutoutAppliedRegion(_accessibilityService);
 
         public void Scroll(Location Start, Location End)
         {

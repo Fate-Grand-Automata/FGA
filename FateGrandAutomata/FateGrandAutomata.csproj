@@ -73,6 +73,7 @@
     <Compile Include="AndroidImpl.cs" />
     <Compile Include="AutoSkill\AutoSkillActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
+    <Compile Include="CutoutManager.cs" />
     <Compile Include="DroidCvPattern.cs" />
     <Compile Include="ScriptRunnerService.cs" />
     <Compile Include="ImgListener.cs" />

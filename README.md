@@ -24,9 +24,7 @@ You can use the code if you want, but I can't really help you to debug it on you
 Debugging really is a pain due to FGO not allowing `Developer Mode` to be `ON` during execution.
 Though, I welcome contributions if you could figure out the cause of the problem.
 
-Scaling will generally be an issue. I've only tested this on my 1280x720p phone, which is exactly the image size used by the script and it works great for me.
-But, I'm not sure if the way I did it would work fine for other resolutions.  
-Also, phones with **notches** would generally not work with my implementation right now.
+**Note:** If your device has a notch, Don't rotate your screen when the script is running.
 
 ## How to Use?
 1. Download from [GitHub Releases](https://github.com/MathewSachin/FateGrandAutomata/releases/). I can't put this app on `Play Store` due to some restrictive features this app uses.
@@ -61,7 +59,6 @@ Set it to the script you require.
 ## Upcoming Features
 1. Auto-giftbox.
 2. Support image maker? Automatically crop out servant/ce image from a screenshot.
-3. Notch support?
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!
