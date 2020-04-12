@@ -18,6 +18,8 @@ namespace CoreAutomata
 
         IPattern LoadPattern(Stream Stream);
 
+        string StorageRootDir { get; }
+
         void MessageBox(string Title, string Message);
     }
 }

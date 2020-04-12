@@ -2,7 +2,6 @@
 
 namespace FateGrandAutomata
 {
-    // Not Tested
     public class AutoFriendGacha : EntryPoint
     {
         protected override void Script()

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using CoreAutomata;
@@ -8,7 +7,29 @@ namespace FateGrandAutomata
 {
     public static class ImageLocator
     {
-        public static Func<string, Stream> FileLoader { get; set; }
+        static Stream FileLoader(string Filename)
+        {
+            var filepath = Path.Combine(SupportImgFolder, Filename);
+
+            return File.Exists(filepath)
+                ? File.OpenRead(filepath)
+                : null;
+        }
+
+        public static string SupportImgFolder
+        {
+            get
+            {
+                var dir = Path.Combine(AutomataApi.StorageDir, "support");
+
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                return dir;
+            }
+        }
 
         static IPattern CreatePattern(string FilePath)
         {
@@ -108,8 +129,6 @@ namespace FateGrandAutomata
 
         public static IPattern PresentBoxFull => GetRegionPattern("StopGifts.png");
 
-        public const string SupportImageFolderName = "Fate-Grand-Automata/support";
-
         public static IPattern LoadSupportImagePattern(string FileName)
         {
             var pattern = CreatePattern($"images.Support.{FileName}");
@@ -119,11 +138,11 @@ namespace FateGrandAutomata
                 return pattern;
             }
 
-            var stream = FileLoader?.Invoke(FileName);
+            var stream = FileLoader(FileName);
 
             if (stream == null)
             {
-                throw new ScriptExitException($"Unable to load image: {FileName}. Put images in {SupportImageFolderName} folder");
+                throw new ScriptExitException($"Unable to load image: {FileName}. Put images in {SupportImgFolder} folder");
             }
 
             using (stream)

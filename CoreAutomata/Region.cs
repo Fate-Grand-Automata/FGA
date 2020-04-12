@@ -23,12 +23,12 @@ namespace CoreAutomata
             this.H = H;
         }
 
-        public bool Contains(Region R)
+        public bool Contains(Region Region)
         {
-            return X <= R.X
-                   && X + W <= R.X + R.W
-                   && Y <= R.Y
-                   && Y + H <= R.Y + R.H;
+            return X <= Region.X
+                   && Y <= Region.Y
+                   && R >= Region.R
+                   && B >= Region.B;
         }
 
         public void WaitVanish(IPattern Image, int? Timeout = null) => AutomataApi.WaitVanish(this, Image, Timeout);

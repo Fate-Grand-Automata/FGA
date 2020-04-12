@@ -9,6 +9,7 @@ using Android.Widget;
 using AndroidX.Core.App;
 using CoreAutomata;
 using Org.Opencv.Android;
+using Environment = Android.OS.Environment;
 using Path = Android.Graphics.Path;
 
 namespace FateGrandAutomata
@@ -180,5 +181,7 @@ namespace FateGrandAutomata
 
             notifyManager.Notify(_notificationId++, builder.Build());
         }
+
+        public string StorageRootDir => Environment.ExternalStorageDirectory.AbsolutePath;
     }
 }

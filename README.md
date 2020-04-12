@@ -56,9 +56,17 @@ There is an option in Settings called `Script Mode`.
 It defaults to `Battle`.
 Set it to the script you require.
 
+## How to use Support Image Maker?
+`Support Image Maker` automatically creates images from the Support screen that can be used with the script.
+
+1. Set the `Script Mode` option in Settings to `Support Image Maker`.
+2. Now, click on `Toggle Service` button, the `Play` button shows itself.
+3. Open F/GO. Go to support selection screen and ensure that the Servant/CE you want is visible (It is important that the complete Servant + CE region is visible).
+4. Click on Play. The script should exit almost immediately. Images are saved to `Fate-Grand-Automata/support` folder.
+5. Rename the files to whatever you want and then use with Auto Support Selection.
+
 ## Upcoming Features
 1. Auto-giftbox.
-2. Support image maker? Automatically crop out servant/ce image from a screenshot.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

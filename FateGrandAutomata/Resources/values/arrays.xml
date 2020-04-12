@@ -62,11 +62,13 @@
     <item>Battle</item>
     <item>Lottery</item>
     <item>Friend Gacha</item>
+    <item>Support Image Maker</item>
   </array>
 
   <array name="script_mode_values">
     <item>Battle</item>
     <item>Lottery</item>
     <item>FriendGacha</item>
+    <item>SupportImageMaker</item>
   </array>
 </resources>

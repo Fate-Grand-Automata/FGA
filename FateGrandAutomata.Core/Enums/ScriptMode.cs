@@ -4,6 +4,7 @@
     {
         Battle,
         Lottery,
-        FriendGacha
+        FriendGacha,
+        SupportImageMaker
     }
 }
