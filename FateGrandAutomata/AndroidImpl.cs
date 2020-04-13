@@ -2,11 +2,8 @@
 using System.IO;
 using System.Threading;
 using Android.AccessibilityServices;
-using Android.App;
-using Android.Content;
 using Android.OS;
 using Android.Widget;
-using AndroidX.Core.App;
 using CoreAutomata;
 using Org.Opencv.Android;
 using Environment = Android.OS.Environment;
@@ -16,9 +13,9 @@ namespace FateGrandAutomata
 {
     public class AndroidImpl : IPlatformImpl
     {
-        readonly AccessibilityService _accessibilityService;
+        readonly ScriptRunnerService _accessibilityService;
 
-        public AndroidImpl(AccessibilityService AccessibilityService)
+        public AndroidImpl(ScriptRunnerService AccessibilityService)
         {
             _accessibilityService = AccessibilityService;
 
@@ -133,53 +130,18 @@ namespace FateGrandAutomata
             return new DroidCvPattern(Stream);
         }
 
-        const string ChannelId = "fategrandautomata-notifications";
-        bool _channelCreated;
-
-        void CreateNotificationChannel()
-        {
-            if (_channelCreated)
-                return;
-
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                var channel = new NotificationChannel(ChannelId,
-                    ChannelId,
-                    NotificationImportance.High)
-                {
-                    Description = ChannelId
-                };
-
-                channel.EnableVibration(true);
-                channel.SetVibrationPattern(new []{100L, 200L});
-
-                var notifyManager = (NotificationManager) _accessibilityService.GetSystemService(Context.NotificationService);
-
-                notifyManager.CreateNotificationChannel(channel);
-            }
-
-            _channelCreated = true;
-        }
-
-        int _notificationId;
-
         public void MessageBox(string Title, string Message)
         {
-            CreateNotificationChannel();
+            _handler.Value.Post(() =>
+            {
+                var msg = $"{Title.ToUpper()}: {Message}";
 
-            var builder = new NotificationCompat.Builder(_accessibilityService, ChannelId)
-                .SetContentTitle(Title)
-                .SetContentText(Message)
-                .SetSmallIcon(Android.Resource.Drawable.IcDialogEmail)
-                .SetStyle(new NotificationCompat.BigTextStyle()
-                    .BigText(Message))
-                .SetPriority(NotificationCompat.PriorityHigh)
-                .SetAutoCancel(true)
-                .SetVibrate(new []{100L, 200L});
+                Android.Widget.Toast
+                    .MakeText(_accessibilityService, msg, ToastLength.Long)
+                    .Show();
 
-            var notifyManager = (NotificationManager)_accessibilityService.GetSystemService(Context.NotificationService);
-
-            notifyManager.Notify(_notificationId++, builder.Build());
+                _accessibilityService.ShowStatusNotification(msg);
+            });
         }
 
         public string StorageRootDir => Environment.ExternalStorageDirectory.AbsolutePath;

@@ -41,7 +41,7 @@ namespace FateGrandAutomata
                 ++i;
             }
 
-            throw new ScriptExitException("Support Images Generated");
+            throw new ScriptExitException($"Support Images {(i == 0 ? "were NOT " : "")}Generated");
         }
     }
 }

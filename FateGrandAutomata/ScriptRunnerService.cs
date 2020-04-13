@@ -6,10 +6,12 @@ using Android.Graphics;
 using Android.Hardware.Display;
 using Android.Media;
 using Android.Media.Projection;
+using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Views.Accessibility;
 using Android.Widget;
+using AndroidX.Core.App;
 using CoreAutomata;
 using Java.Interop;
 
@@ -70,6 +72,8 @@ namespace FateGrandAutomata
             _windowManager.AddView(_layout, _layoutParams);
             ServiceStarted = true;
 
+            ShowForegroundNotification();
+
             return true;
         }
 
@@ -87,6 +91,8 @@ namespace FateGrandAutomata
 
             _windowManager.RemoveView(_layout);
             ServiceStarted = false;
+
+            HideForegroundNotification();
 
             return true;
         }
@@ -139,7 +145,10 @@ namespace FateGrandAutomata
             _entryPoint.Run();
 
             _scriptStarted = true;
+
+            ShowStatusNotification("Script Running");
         }
+
         void StopScript()
         {
             if (!_scriptStarted)
@@ -151,6 +160,8 @@ namespace FateGrandAutomata
             _entryPoint.Stop();
 
             OnScriptExit();
+
+            ShowStatusNotification("Ready");
         }
 
         Button _scriptCtrlBtn;
@@ -223,5 +234,70 @@ namespace FateGrandAutomata
         public override void OnAccessibilityEvent(AccessibilityEvent E) { }
 
         public override void OnInterrupt() { }
+
+        const string ChannelId = "fategrandautomata-notifications";
+        bool _channelCreated;
+
+        void CreateNotificationChannel()
+        {
+            if (_channelCreated)
+                return;
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                var channel = new NotificationChannel(ChannelId,
+                    ChannelId,
+                    NotificationImportance.Max)
+                {
+                    Description = ChannelId
+                };
+
+                var notifyManager = NotificationManagerCompat.From(this);
+
+                notifyManager.CreateNotificationChannel(channel);
+            }
+
+            _channelCreated = true;
+        }
+
+        void HideForegroundNotification() => StopForeground(true);
+
+        NotificationCompat.Builder StartBuildNotification()
+        {
+            CreateNotificationChannel();
+
+            var activityIntent = PendingIntent
+                .GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0);
+
+            return new NotificationCompat.Builder(this, ChannelId)
+                .SetOngoing(true)
+                .SetContentTitle(GetString(Resource.String.app_name))
+                .SetContentText("Accessibility Service Running")
+                .SetSmallIcon(Resource.Mipmap.ic_launcher)
+                .SetPriority(NotificationCompat.PriorityMax)
+                .SetContentIntent(activityIntent);
+        }
+
+        const int ForegroundNotificationId = 1;
+
+        public void ShowStatusNotification(string Msg)
+        {
+            var builder = StartBuildNotification()
+                .SetContentText(Msg)
+                .SetStyle(new NotificationCompat
+                    .BigTextStyle()
+                    .BigText(Msg));
+
+            NotificationManagerCompat
+                .From(this)
+                .Notify(ForegroundNotificationId, builder.Build());
+        }
+
+        void ShowForegroundNotification()
+        {
+            var builder = StartBuildNotification();
+
+            StartForeground(ForegroundNotificationId, builder.Build());
+        }
     }
 }
