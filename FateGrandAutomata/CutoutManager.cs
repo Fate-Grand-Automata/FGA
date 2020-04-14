@@ -23,6 +23,8 @@ namespace FateGrandAutomata
                 return;
 
             var cutout = MainActivity.Window.DecorView.RootWindowInsets.DisplayCutout;
+            if (cutout == null)
+                return;
 
             var l = cutout.SafeInsetLeft;
             var t = cutout.SafeInsetTop;
