@@ -27,7 +27,7 @@ namespace FateGrandAutomata
 
                 if (prefs != null)
                 {
-                    var servantSet = prefs.GetStringSet(_context.GetString(R.pref_autoskill_servant), new List<string>());
+                    var servantSet = prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
 
                     var servants = new List<string>();
 
@@ -66,7 +66,7 @@ namespace FateGrandAutomata
 
                 if (prefs != null)
                 {
-                    var ceSet = prefs.GetStringSet(_context.GetString(R.pref_autoskill_ce), new List<string>());
+                    var ceSet = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
 
                     var ces = new List<string>();
 
@@ -84,7 +84,7 @@ namespace FateGrandAutomata
 
                     if (ces.Count > 0)
                     {
-                        var isMlb = prefs.GetBoolean(_context.GetString(R.pref_autoskill_ce_mlb), false);
+                        var isMlb = prefs.GetBoolean(_context.GetString(R.pref_support_pref_ce_mlb), false);
 
                         return string.Join(", ", ces
                             .Select(M => isMlb ? $"{Support.LimitBrokenCharacter}{M}" : M));
@@ -109,8 +109,8 @@ namespace FateGrandAutomata
 
                 if (prefs != null)
                 {
-                    var servants = prefs.GetStringSet(_context.GetString(R.pref_autoskill_servant), new List<string>());
-                    var ces = prefs.GetStringSet(_context.GetString(R.pref_autoskill_ce), new List<string>());
+                    var servants = prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
+                    var ces = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
 
                     if (servants.Count > 0 || ces.Count > 0)
                     {

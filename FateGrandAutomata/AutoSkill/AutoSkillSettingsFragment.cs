@@ -20,7 +20,7 @@ namespace FateGrandAutomata
 
             SetPreferencesFromResource(Resource.Xml.autoskill_item_preferences, RootKey);
 
-            if (FindPreference(GetString(Resource.String.pref_autoskill_servant)) is MultiSelectListPreference pref)
+            if (FindPreference(GetString(Resource.String.pref_support_pref_servant)) is MultiSelectListPreference pref)
             {
                 var entries = Directory
                     .EnumerateFileSystemEntries(ImageLocator.SupportServantImgFolder)
@@ -32,13 +32,13 @@ namespace FateGrandAutomata
                 pref.SetEntries(entries);
                 pref.SummaryProvider = new MultiSelectListSummaryProvider();
 
-                if (FindPreference(GetString(Resource.String.pref_autoskill_servant_clear)) is { } servClear)
+                if (FindPreference(GetString(Resource.String.pref_support_pref_servant_clear)) is { } servClear)
                 {
                     servClear.PreferenceClick += (S, E) => pref.Values = new List<string>();
                 }
             }
 
-            if (FindPreference(GetString(Resource.String.pref_autoskill_ce)) is MultiSelectListPreference prefce)
+            if (FindPreference(GetString(Resource.String.pref_support_pref_ce)) is MultiSelectListPreference prefce)
             {
                 var entries = Directory
                     .EnumerateFiles(ImageLocator.SupportCeImgFolder)
@@ -53,7 +53,7 @@ namespace FateGrandAutomata
                 prefce.SetEntries(entries);
                 prefce.SummaryProvider = new MultiSelectListSummaryProvider();
 
-                if (FindPreference(GetString(Resource.String.pref_autoskill_ce_clear)) is { } ceClear)
+                if (FindPreference(GetString(Resource.String.pref_support_pref_ce_clear)) is { } ceClear)
                 {
                     ceClear.PreferenceClick += (S, E) => prefce.Values = new List<string>();
                 }

@@ -25,12 +25,12 @@
     app:key="pref_servant_category"
     app:title="Preferred Servants">
     <MultiSelectListPreference
-      app:key="@string/pref_autoskill_servant"
+      app:key="@string/pref_support_pref_servant"
       app:title="Preferred Servants"
       app:icon="@drawable/ic_crown"/>
 
     <Preference
-      app:key="@string/pref_autoskill_servant_clear"
+      app:key="@string/pref_support_pref_servant_clear"
       app:title="Clear Servant Preferences"
       app:icon="@drawable/ic_clear"/>
   </PreferenceCategory>
@@ -39,18 +39,18 @@
     app:key="pref_ce_category"
     app:title="Preferred CEs">
     <MultiSelectListPreference
-      app:key="@string/pref_autoskill_ce"
+      app:key="@string/pref_support_pref_ce"
       app:title="Preferred CEs"
       app:icon="@drawable/ic_card"/>
 
     <SwitchPreferenceCompat
-      app:key="@string/pref_autoskill_ce_mlb"
+      app:key="@string/pref_support_pref_ce_mlb"
       app:title="Max-limit broken"
       app:icon="@drawable/ic_radio"
       app:defaultValue="false"/>
 
     <Preference
-      app:key="@string/pref_autoskill_ce_clear"
+      app:key="@string/pref_support_pref_ce_clear"
       app:title="Clear CE Preferences"
       app:icon="@drawable/ic_clear"/>
   </PreferenceCategory>
