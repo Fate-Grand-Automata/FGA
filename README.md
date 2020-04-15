@@ -44,12 +44,40 @@ For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] proje
 
 Autoskill configuration can be created at `Settings/AutoSkill/Manage Autoskill configurations`.  
 You won't be prompted at script start for the config to use. You need to set the `Settings/AutoSkill/Selected Autoskill Config` value.
+If you've set a Servant or CE in the currently selected Autoskill configuration and Autoskill is Enabled, then support selection mode is assumed to be preffered.
 
 ## Where to put Servant/CE images?
 The app only comes with `mona_lisa.png` and `chaldea_lunchtime.png`.
-If you want to use any other preferred servant or ce, put their image in `Fate-Grand-Automata/support` folder.
+If you want to use any other preferred servant or ce, you need to manually include their images.
+Put Servant images in `Fate-Grand-Automata/support/servant` folder and
+CE images in `Fate-Grand-Automata/support/ce` folder.
+Instead of having to select multiple ascension images for a servant, you can put all the images of a servant in a folder and select the folder in settings.
 Create the folder if it doesn't already exist.
 For information on how to use support selection, see the original [Fate-Grand-Order_Lua][FGOLua] project.
+
+Here's what an example directory structure looks like:
+
+```
+Fate-Grand-Automata/
+-- support/
+-- -- servants/
+-- -- -- ozy4.png
+-- -- -- melt4.png
+-- -- -- Merlin/
+-- -- -- -- merlin1.png
+-- -- -- -- merlin2.png
+-- -- -- -- merlin3.png
+-- -- -- -- merlin4.png
+-- -- -- -- merlin_c.png
+-- -- -- Waver/
+-- -- -- -- waver1.png
+-- -- -- -- waver2.png
+-- -- -- -- waver3.png
+-- -- -- -- waver4.png
+-- -- ce/
+-- -- -- kscope.png
+-- -- -- black_grail.png
+```
 
 ## What about other scripts like Lottery and Friend Gacha?
 There is an option in Settings called `Script Mode`.
