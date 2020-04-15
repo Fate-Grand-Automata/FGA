@@ -112,7 +112,12 @@ namespace FateGrandAutomata
                     yield return new Match(region, score);
 
                     using var mask = new Mat();
-                    Imgproc.FloodFill(result, mask, loc, new Scalar(0));
+                    // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
+                    const double floodFillDiff = 0.05;
+                    Imgproc.FloodFill(result, mask, loc, new Scalar(0),
+                        new Rect(),
+                        new Scalar(floodFillDiff), new Scalar(floodFillDiff),
+                        0);
                 }
                 else break;
             }
