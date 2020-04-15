@@ -216,7 +216,7 @@ namespace FateGrandAutomata
         }
 
         // Checks if Support Selection menu is up
-        bool IsInSupport()
+        public static bool IsInSupport()
         {
             return Game.SupportScreenRegion.Exists(ImageLocator.SupportScreen, Similarity: 0.85);
         }

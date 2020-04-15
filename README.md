@@ -58,6 +58,7 @@ Set it to the script you require.
 
 ## How to use Support Image Maker?
 `Support Image Maker` automatically creates images from the Support screen that can be used with the script.
+You can also use it from the Friend List which is easier since you don't have to keep refreshing till the desired Servant/CE shows up.
 
 1. Set the `Script Mode` option in Settings to `Support Image Maker`.
 2. Now, click on `Toggle Service` button, the `Play` button shows itself.
