@@ -32,7 +32,7 @@ namespace FateGrandAutomata
                 
                 var pattern = supportBound.GetPattern();
 
-                var servant = pattern.Crop(new Region(0, 0, pattern.Width, 44));
+                var servant = pattern.Crop(new Region(0, 0, 125, 44));
                 servant.Save(Path.Combine(ImageLocator.SupportImgFolder, $"{timestamp}_servant{i}.png"));
 
                 var ce = pattern.Crop(new Region(0, 80, pattern.Width, 30));
