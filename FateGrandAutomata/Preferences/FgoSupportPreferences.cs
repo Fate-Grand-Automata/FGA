@@ -64,19 +64,9 @@ namespace FateGrandAutomata
 
                 var ceSet = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
 
-                var ces = new List<string>();
-
                 var ceImgFolderName = Path.GetFileName(ImageLocator.SupportCeImgFolder);
 
-                foreach (var ceEntry in ceSet)
-                {
-                    if (ceEntry == AutoSkillSettingsFragment.MonaLisa
-                        || ceEntry == AutoSkillSettingsFragment.ChaldeaLunchtime)
-                    {
-                        ces.Add(ceEntry);
-                    }
-                    else ces.Add(Path.Combine(ceImgFolderName, ceEntry));
-                }
+                var ces = ceSet.Select(M => Path.Combine(ceImgFolderName, M)).ToList();
 
                 if (ces.Count > 0)
                 {

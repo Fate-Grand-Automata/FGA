@@ -37,8 +37,6 @@ namespace FateGrandAutomata
                 var entries = Directory
                     .EnumerateFiles(ImageLocator.SupportCeImgFolder)
                     .Select(Path.GetFileName)
-                    .Append(MonaLisa)
-                    .Append(ChaldeaLunchtime)
                     .OrderBy(M => M)
                     .Distinct()
                     .ToArray();
@@ -82,9 +80,6 @@ namespace FateGrandAutomata
                 deleteBtn.PreferenceClick += OnDeleteBtnOnPreferenceClick;
             }
         }
-
-        public const string MonaLisa = "mona_lisa.png";
-        public const string ChaldeaLunchtime = "chaldea_lunchtime.png";
 
         void DeleteItem(string AutoskillItemKey)
         {

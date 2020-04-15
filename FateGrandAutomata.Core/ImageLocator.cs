@@ -16,6 +16,55 @@ namespace FateGrandAutomata
                 : null;
         }
 
+        static void SupportImgExtractor(string FolderName)
+        {
+            var resNamespace = $"{nameof(FateGrandAutomata)}.images.Support.{FolderName}";
+
+            var outDir = Path.Combine(SupportImgFolder, FolderName);
+
+            if (!Directory.Exists(outDir))
+            {
+                Directory.CreateDirectory(outDir);
+            }
+
+            var assembly = Assembly.GetExecutingAssembly();
+
+            foreach (var resName in assembly.GetManifestResourceNames())
+            {
+                if (!resName.StartsWith(resNamespace))
+                    continue;
+
+                var fileName = resName.Substring(resNamespace.Length + 1);
+                var indexOfDot = fileName.IndexOf('.');
+                var lastIndexOfDot = fileName.LastIndexOf('.');
+
+                if (indexOfDot != lastIndexOfDot)
+                {
+                    fileName = fileName.Remove(indexOfDot, 1)
+                        .Insert(indexOfDot, "/");
+                }
+
+                var outpath = Path.Combine(outDir, fileName);
+
+                var dirName = Path.GetDirectoryName(outpath);
+                if (!Directory.Exists(dirName))
+                {
+                    Directory.CreateDirectory(dirName);
+                }
+
+                using var stream = assembly.GetManifestResourceStream(resName);
+
+                using var f = File.OpenWrite(outpath);
+                stream.CopyTo(f);
+            }
+        }
+
+        public static void ExtractSupportImgs()
+        {
+            SupportImgExtractor("servant");
+            SupportImgExtractor("ce");
+        }
+
         public static string SupportImgFolder
         {
             get
@@ -161,13 +210,6 @@ namespace FateGrandAutomata
 
         public static IPattern LoadSupportImagePattern(string FileName)
         {
-            var pattern = CreatePattern($"images.Support.{FileName}");
-
-            if (pattern != null)
-            {
-                return pattern;
-            }
-
             var stream = FileLoader(FileName);
 
             if (stream == null)
