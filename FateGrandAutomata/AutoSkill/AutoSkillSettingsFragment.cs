@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Android.Content;
 using Android.OS;
@@ -19,6 +20,45 @@ namespace FateGrandAutomata
 
             SetPreferencesFromResource(Resource.Xml.autoskill_item_preferences, RootKey);
 
+            if (FindPreference(GetString(Resource.String.pref_autoskill_servant)) is MultiSelectListPreference pref)
+            {
+                var entries = Directory
+                    .EnumerateFileSystemEntries(ImageLocator.SupportServantImgFolder)
+                    .Select(Path.GetFileName)
+                    .OrderBy(M => M)
+                    .ToArray();
+
+                pref.SetEntryValues(entries);
+                pref.SetEntries(entries);
+                pref.SummaryProvider = new MultiSelectListSummaryProvider();
+
+                if (FindPreference(GetString(Resource.String.pref_autoskill_servant_clear)) is { } servClear)
+                {
+                    servClear.PreferenceClick += (S, E) => pref.Values = new List<string>();
+                }
+            }
+
+            if (FindPreference(GetString(Resource.String.pref_autoskill_ce)) is MultiSelectListPreference prefce)
+            {
+                var entries = Directory
+                    .EnumerateFiles(ImageLocator.SupportCeImgFolder)
+                    .Select(Path.GetFileName)
+                    .Append(MonaLisa)
+                    .Append(ChaldeaLunchtime)
+                    .OrderBy(M => M)
+                    .Distinct()
+                    .ToArray();
+
+                prefce.SetEntryValues(entries);
+                prefce.SetEntries(entries);
+                prefce.SummaryProvider = new MultiSelectListSummaryProvider();
+
+                if (FindPreference(GetString(Resource.String.pref_autoskill_ce_clear)) is { } ceClear)
+                {
+                    ceClear.PreferenceClick += (S, E) => prefce.Values = new List<string>();
+                }
+            }
+
             if (FindPreference(GetString(Resource.String.pref_autoskill_delete)) is { } deleteBtn)
             {
                 void OnDeleteBtnOnPreferenceClick(object S, Preference.PreferenceClickEventArgs E)
@@ -37,6 +77,9 @@ namespace FateGrandAutomata
                 deleteBtn.PreferenceClick += OnDeleteBtnOnPreferenceClick;
             }
         }
+
+        public const string MonaLisa = "mona_lisa.png";
+        public const string ChaldeaLunchtime = "chaldea_lunchtime.png";
 
         void DeleteItem(string AutoskillItemKey)
         {

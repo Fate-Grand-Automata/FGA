@@ -31,6 +31,36 @@ namespace FateGrandAutomata
             }
         }
 
+        public static string SupportServantImgFolder
+        {
+            get
+            {
+                var dir = Path.Combine(SupportImgFolder, "servant");
+
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                return dir;
+            }
+        }
+
+        public static string SupportCeImgFolder
+        {
+            get
+            {
+                var dir = Path.Combine(SupportImgFolder, "ce");
+
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                return dir;
+            }
+        }
+
         static IPattern CreatePattern(string FilePath)
         {
             var assembly = Assembly.GetExecutingAssembly();

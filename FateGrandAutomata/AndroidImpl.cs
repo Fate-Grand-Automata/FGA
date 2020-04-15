@@ -19,6 +19,8 @@ namespace FateGrandAutomata
         {
             _accessibilityService = AccessibilityService;
 
+            RegisterStorageRootDir();
+
             OpenCVLoader.InitDebug();
         }
 
@@ -144,6 +146,9 @@ namespace FateGrandAutomata
             });
         }
 
-        public string StorageRootDir => Environment.ExternalStorageDirectory.AbsolutePath;
+        public static void RegisterStorageRootDir()
+        {
+            AutomataApi.SetStorageRootDir(Environment.ExternalStorageDirectory.AbsolutePath);
+        }
     }
 }

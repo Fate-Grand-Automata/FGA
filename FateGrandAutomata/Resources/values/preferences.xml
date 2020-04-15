@@ -31,6 +31,9 @@
     <string name="pref_autoskill_list">autoskill_list</string>
     <string name="pref_autoskill_name">autoskill_name</string>
     <string name="pref_autoskill_cmd">autoskill_cmd</string>
-    <string name="pref_autoskill_servant">autoskill_servant</string>
-    <string name="pref_autoskill_ce">autoskill_ce</string>
+    <string name="pref_autoskill_servant">autoskill_servant_2</string>
+    <string name="pref_autoskill_servant_clear">autoskill_servant_clear</string>
+    <string name="pref_autoskill_ce">autoskill_ce_2</string>
+    <string name="pref_autoskill_ce_mlb">autoskill_ce_mlb</string>
+    <string name="pref_autoskill_ce_clear">autoskill_ce_clear</string>
 </resources>

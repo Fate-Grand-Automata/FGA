@@ -33,17 +33,19 @@ namespace FateGrandAutomata
             var settingsBtn = FindViewById<Button>(Resource.Id.configure_btn);
             settingsBtn.Click += (S, E) => OpenSettings();
 
-            CheckPermissions();
-            IgnoreBatteryOptimizations();
-
-            // Add the fragment only on first launch
+            // Only on first launch
             if (SavedInstanceState == null)
             {
                 SupportFragmentManager
                     .BeginTransaction()
                     .Replace(Resource.Id.main_pref_frame, new MainSettingsFragment())
                     .Commit();
+
+                CheckPermissions();
+                IgnoreBatteryOptimizations();
             }
+
+            AndroidImpl.RegisterStorageRootDir();
         }
 
         public override void OnAttachedToWindow()

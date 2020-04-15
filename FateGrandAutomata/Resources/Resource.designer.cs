@@ -3524,139 +3524,142 @@ namespace FateGrandAutomata
 			public const int ic_check = 2131230832;
 			
 			// aapt resource value: 0x7F080071
-			public const int ic_crown = 2131230833;
+			public const int ic_clear = 2131230833;
 			
 			// aapt resource value: 0x7F080072
-			public const int ic_delete = 2131230834;
+			public const int ic_crown = 2131230834;
 			
 			// aapt resource value: 0x7F080073
-			public const int ic_diamond = 2131230835;
+			public const int ic_delete = 2131230835;
 			
 			// aapt resource value: 0x7F080074
-			public const int ic_dots_vertical = 2131230836;
+			public const int ic_diamond = 2131230836;
 			
 			// aapt resource value: 0x7F080075
-			public const int ic_earth = 2131230837;
+			public const int ic_dots_vertical = 2131230837;
 			
 			// aapt resource value: 0x7F080076
-			public const int ic_exit_run = 2131230838;
+			public const int ic_earth = 2131230838;
 			
 			// aapt resource value: 0x7F080077
-			public const int ic_fast_forward = 2131230839;
+			public const int ic_exit_run = 2131230839;
 			
 			// aapt resource value: 0x7F080078
-			public const int ic_friend = 2131230840;
+			public const int ic_fast_forward = 2131230840;
 			
 			// aapt resource value: 0x7F080079
-			public const int ic_launch = 2131230841;
+			public const int ic_friend = 2131230841;
 			
 			// aapt resource value: 0x7F08007A
-			public const int ic_list = 2131230842;
+			public const int ic_launch = 2131230842;
 			
 			// aapt resource value: 0x7F08007B
-			public const int ic_mtrl_chip_checked_black = 2131230843;
+			public const int ic_list = 2131230843;
 			
 			// aapt resource value: 0x7F08007C
-			public const int ic_mtrl_chip_checked_circle = 2131230844;
+			public const int ic_mtrl_chip_checked_black = 2131230844;
 			
 			// aapt resource value: 0x7F08007D
-			public const int ic_mtrl_chip_close_circle = 2131230845;
+			public const int ic_mtrl_chip_checked_circle = 2131230845;
 			
 			// aapt resource value: 0x7F08007E
-			public const int ic_play = 2131230846;
+			public const int ic_mtrl_chip_close_circle = 2131230846;
 			
 			// aapt resource value: 0x7F08007F
-			public const int ic_plus = 2131230847;
+			public const int ic_play = 2131230847;
 			
 			// aapt resource value: 0x7F080080
-			public const int ic_radio = 2131230848;
+			public const int ic_plus = 2131230848;
 			
 			// aapt resource value: 0x7F080081
-			public const int ic_repeat = 2131230849;
+			public const int ic_radio = 2131230849;
 			
 			// aapt resource value: 0x7F080082
-			public const int ic_script = 2131230850;
+			public const int ic_repeat = 2131230850;
 			
 			// aapt resource value: 0x7F080083
-			public const int ic_settings = 2131230851;
+			public const int ic_script = 2131230851;
 			
 			// aapt resource value: 0x7F080084
-			public const int ic_sort = 2131230852;
+			public const int ic_settings = 2131230852;
 			
 			// aapt resource value: 0x7F080085
-			public const int ic_star = 2131230853;
+			public const int ic_sort = 2131230853;
 			
 			// aapt resource value: 0x7F080086
-			public const int ic_stop = 2131230854;
+			public const int ic_star = 2131230854;
 			
 			// aapt resource value: 0x7F080087
-			public const int ic_swipe = 2131230855;
+			public const int ic_stop = 2131230855;
 			
 			// aapt resource value: 0x7F080088
-			public const int ic_target = 2131230856;
+			public const int ic_swipe = 2131230856;
 			
 			// aapt resource value: 0x7F080089
-			public const int ic_terminal = 2131230857;
+			public const int ic_target = 2131230857;
 			
 			// aapt resource value: 0x7F08008A
-			public const int ic_text_short = 2131230858;
+			public const int ic_terminal = 2131230858;
 			
 			// aapt resource value: 0x7F08008B
-			public const int ic_wand = 2131230859;
+			public const int ic_text_short = 2131230859;
 			
 			// aapt resource value: 0x7F08008C
-			public const int mtrl_snackbar_background = 2131230860;
+			public const int ic_wand = 2131230860;
 			
 			// aapt resource value: 0x7F08008D
-			public const int mtrl_tabs_default_indicator = 2131230861;
+			public const int mtrl_snackbar_background = 2131230861;
 			
 			// aapt resource value: 0x7F08008E
-			public const int navigation_empty_icon = 2131230862;
+			public const int mtrl_tabs_default_indicator = 2131230862;
 			
 			// aapt resource value: 0x7F08008F
-			public const int notification_action_background = 2131230863;
+			public const int navigation_empty_icon = 2131230863;
 			
 			// aapt resource value: 0x7F080090
-			public const int notification_bg = 2131230864;
+			public const int notification_action_background = 2131230864;
 			
 			// aapt resource value: 0x7F080091
-			public const int notification_bg_low = 2131230865;
+			public const int notification_bg = 2131230865;
 			
 			// aapt resource value: 0x7F080092
-			public const int notification_bg_low_normal = 2131230866;
+			public const int notification_bg_low = 2131230866;
 			
 			// aapt resource value: 0x7F080093
-			public const int notification_bg_low_pressed = 2131230867;
+			public const int notification_bg_low_normal = 2131230867;
 			
 			// aapt resource value: 0x7F080094
-			public const int notification_bg_normal = 2131230868;
+			public const int notification_bg_low_pressed = 2131230868;
 			
 			// aapt resource value: 0x7F080095
-			public const int notification_bg_normal_pressed = 2131230869;
+			public const int notification_bg_normal = 2131230869;
 			
 			// aapt resource value: 0x7F080096
-			public const int notification_icon_background = 2131230870;
+			public const int notification_bg_normal_pressed = 2131230870;
 			
 			// aapt resource value: 0x7F080097
-			public const int notification_template_icon_bg = 2131230871;
+			public const int notification_icon_background = 2131230871;
 			
 			// aapt resource value: 0x7F080098
-			public const int notification_template_icon_low_bg = 2131230872;
+			public const int notification_template_icon_bg = 2131230872;
 			
 			// aapt resource value: 0x7F080099
-			public const int notification_tile_bg = 2131230873;
+			public const int notification_template_icon_low_bg = 2131230873;
 			
 			// aapt resource value: 0x7F08009A
-			public const int notify_panel_notification_icon_bg = 2131230874;
+			public const int notification_tile_bg = 2131230874;
 			
 			// aapt resource value: 0x7F08009B
-			public const int preference_list_divider_material = 2131230875;
+			public const int notify_panel_notification_icon_bg = 2131230875;
 			
 			// aapt resource value: 0x7F08009C
-			public const int tooltip_frame_dark = 2131230876;
+			public const int preference_list_divider_material = 2131230876;
 			
 			// aapt resource value: 0x7F08009D
-			public const int tooltip_frame_light = 2131230877;
+			public const int tooltip_frame_dark = 2131230877;
+			
+			// aapt resource value: 0x7F08009E
+			public const int tooltip_frame_light = 2131230878;
 			
 			static Drawable()
 			{
@@ -4951,119 +4954,128 @@ namespace FateGrandAutomata
 			// aapt resource value: 0x7F0E002C
 			public const int path_password_strike_through = 2131623980;
 			
-			// aapt resource value: 0x7F0E004C
-			public const int preference_copied = 2131624012;
+			// aapt resource value: 0x7F0E004F
+			public const int preference_copied = 2131624015;
 			
 			// aapt resource value: 0x7F0E002E
 			public const int pref_autoskill_ce = 2131623982;
 			
 			// aapt resource value: 0x7F0E002F
-			public const int pref_autoskill_cmd = 2131623983;
+			public const int pref_autoskill_ce_clear = 2131623983;
 			
 			// aapt resource value: 0x7F0E0030
-			public const int pref_autoskill_delete = 2131623984;
+			public const int pref_autoskill_ce_mlb = 2131623984;
 			
 			// aapt resource value: 0x7F0E0031
-			public const int pref_autoskill_enable = 2131623985;
+			public const int pref_autoskill_cmd = 2131623985;
 			
 			// aapt resource value: 0x7F0E0032
-			public const int pref_autoskill_list = 2131623986;
+			public const int pref_autoskill_delete = 2131623986;
 			
 			// aapt resource value: 0x7F0E0033
-			public const int pref_autoskill_manage = 2131623987;
+			public const int pref_autoskill_enable = 2131623987;
 			
 			// aapt resource value: 0x7F0E0034
-			public const int pref_autoskill_name = 2131623988;
+			public const int pref_autoskill_list = 2131623988;
 			
 			// aapt resource value: 0x7F0E0035
-			public const int pref_autoskill_selected = 2131623989;
+			public const int pref_autoskill_manage = 2131623989;
 			
 			// aapt resource value: 0x7F0E0036
-			public const int pref_autoskill_servant = 2131623990;
+			public const int pref_autoskill_name = 2131623990;
+			
+			// aapt resource value: 0x7F0E0037
+			public const int pref_autoskill_selected = 2131623991;
+			
+			// aapt resource value: 0x7F0E0038
+			public const int pref_autoskill_servant = 2131623992;
+			
+			// aapt resource value: 0x7F0E0039
+			public const int pref_autoskill_servant_clear = 2131623993;
 			
 			// aapt resource value: 0x7F0E002D
 			public const int pref_auto_choose_target = 2131623981;
 			
-			// aapt resource value: 0x7F0E0037
-			public const int pref_battle_np = 2131623991;
-			
-			// aapt resource value: 0x7F0E0038
-			public const int pref_boost_item = 2131623992;
-			
-			// aapt resource value: 0x7F0E0039
-			public const int pref_card_priority = 2131623993;
-			
 			// aapt resource value: 0x7F0E003A
-			public const int pref_fast_skip_dead = 2131623994;
+			public const int pref_battle_np = 2131623994;
 			
 			// aapt resource value: 0x7F0E003B
-			public const int pref_gameserver = 2131623995;
+			public const int pref_boost_item = 2131623995;
 			
 			// aapt resource value: 0x7F0E003C
-			public const int pref_refill_enabled = 2131623996;
+			public const int pref_card_priority = 2131623996;
 			
 			// aapt resource value: 0x7F0E003D
-			public const int pref_refill_repetitions = 2131623997;
+			public const int pref_fast_skip_dead = 2131623997;
 			
 			// aapt resource value: 0x7F0E003E
-			public const int pref_refill_resource = 2131623998;
+			public const int pref_gameserver = 2131623998;
 			
 			// aapt resource value: 0x7F0E003F
-			public const int pref_script_mode = 2131623999;
+			public const int pref_refill_enabled = 2131623999;
 			
 			// aapt resource value: 0x7F0E0040
-			public const int pref_skill_conf = 2131624000;
+			public const int pref_refill_repetitions = 2131624000;
 			
 			// aapt resource value: 0x7F0E0041
-			public const int pref_stop_bond10 = 2131624001;
+			public const int pref_refill_resource = 2131624001;
 			
 			// aapt resource value: 0x7F0E0042
-			public const int pref_story_skip = 2131624002;
+			public const int pref_script_mode = 2131624002;
 			
 			// aapt resource value: 0x7F0E0043
-			public const int pref_support_fallback = 2131624003;
-			
-			// aapt resource value: 0x7F0E0045
-			public const int pref_support_friends_only = 2131624005;
+			public const int pref_skill_conf = 2131624003;
 			
 			// aapt resource value: 0x7F0E0044
-			public const int pref_support_friend_names = 2131624004;
+			public const int pref_stop_bond10 = 2131624004;
+			
+			// aapt resource value: 0x7F0E0045
+			public const int pref_story_skip = 2131624005;
 			
 			// aapt resource value: 0x7F0E0046
-			public const int pref_support_max_updates = 2131624006;
-			
-			// aapt resource value: 0x7F0E0047
-			public const int pref_support_mode = 2131624007;
+			public const int pref_support_fallback = 2131624006;
 			
 			// aapt resource value: 0x7F0E0048
-			public const int pref_support_pref_ce = 2131624008;
+			public const int pref_support_friends_only = 2131624008;
+			
+			// aapt resource value: 0x7F0E0047
+			public const int pref_support_friend_names = 2131624007;
 			
 			// aapt resource value: 0x7F0E0049
-			public const int pref_support_pref_servant = 2131624009;
+			public const int pref_support_max_updates = 2131624009;
 			
 			// aapt resource value: 0x7F0E004A
-			public const int pref_support_swipes_per_update = 2131624010;
+			public const int pref_support_mode = 2131624010;
 			
 			// aapt resource value: 0x7F0E004B
-			public const int pref_withdraw_enabled = 2131624011;
+			public const int pref_support_pref_ce = 2131624011;
+			
+			// aapt resource value: 0x7F0E004C
+			public const int pref_support_pref_servant = 2131624012;
 			
 			// aapt resource value: 0x7F0E004D
-			public const int search_menu_title = 2131624013;
+			public const int pref_support_swipes_per_update = 2131624013;
 			
 			// aapt resource value: 0x7F0E004E
-			public const int service_runner_description = 2131624014;
-			
-			// aapt resource value: 0x7F0E004F
-			public const int status_bar_notification_info_overflow = 2131624015;
+			public const int pref_withdraw_enabled = 2131624014;
 			
 			// aapt resource value: 0x7F0E0050
-			public const int summary_collapsed_preference_list = 2131624016;
+			public const int search_menu_title = 2131624016;
 			
 			// aapt resource value: 0x7F0E0051
-			public const int v7_preference_off = 2131624017;
+			public const int service_runner_description = 2131624017;
 			
 			// aapt resource value: 0x7F0E0052
-			public const int v7_preference_on = 2131624018;
+			public const int status_bar_notification_info_overflow = 2131624018;
+			
+			// aapt resource value: 0x7F0E0053
+			public const int summary_collapsed_preference_list = 2131624019;
+			
+			// aapt resource value: 0x7F0E0054
+			public const int v7_preference_off = 2131624020;
+			
+			// aapt resource value: 0x7F0E0055
+			public const int v7_preference_on = 2131624021;
 			
 			static String()
 			{
