@@ -38,7 +38,6 @@ namespace FateGrandAutomata
                     .EnumerateFiles(ImageLocator.SupportCeImgFolder)
                     .Select(Path.GetFileName)
                     .OrderBy(M => M)
-                    .Distinct()
                     .ToArray();
 
                 prefce.SetEntryValues(entries);

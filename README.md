@@ -51,10 +51,9 @@ Put Servant images in `Fate-Grand-Automata/support/servant` folder and
 CE images in `Fate-Grand-Automata/support/ce` folder.
 
 The app has some common Servant/CEs inbuilt. You can extract them using the `Extract Default Support Images` option.
-If you want to use any other preferred servant or ce, you need to manually include their images.
+If you want to use any other preferred servant or ce, you have to create their images using `Support Image Maker` script.
 
 Instead of having to select multiple ascension images for a servant, you can put all the images of a servant in a folder and select the folder in settings.
-Create the folder if it doesn't already exist.
 
 Here's what an example directory structure looks like:
 
