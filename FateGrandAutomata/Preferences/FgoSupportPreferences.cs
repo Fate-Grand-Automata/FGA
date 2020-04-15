@@ -23,38 +23,36 @@ namespace FateGrandAutomata
         {
             get
             {
-                var prefs = _preferences.GetPreferencesForSelectedAutoSkill();
+                var prefs = _preferences.GetPreferencesForSelectedAutoSkill() ?? _preferences.DefaultPrefs;
 
-                if (prefs != null)
+                var servantSet =
+                    prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
+
+                var servants = new List<string>();
+
+                foreach (var servEntry in servantSet)
                 {
-                    var servantSet = prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
+                    var path = Path.Combine(ImageLocator.SupportServantImgFolder, servEntry);
 
-                    var servants = new List<string>();
-
-                    foreach (var servEntry in servantSet)
+                    if (Directory.Exists(path))
                     {
-                        var path = Path.Combine(ImageLocator.SupportServantImgFolder, servEntry);
+                        var fileNames = Directory
+                            .EnumerateFiles(path)
+                            .Select(M => Path.Combine(servEntry, Path.GetFileName(M)));
 
-                        if (Directory.Exists(path))
-                        {
-                            var fileNames = Directory
-                                .EnumerateFiles(path)
-                                .Select(M => Path.Combine(servEntry, Path.GetFileName(M)));
-
-                            servants.AddRange(fileNames);
-                        }
-                        else servants.Add(servEntry);
+                        servants.AddRange(fileNames);
                     }
-
-                    var servantImgFolderName = Path.GetFileName(ImageLocator.SupportServantImgFolder);
-
-                    if (servants.Count > 0)
-                    {
-                        return string.Join(", ", servants.Select(M => Path.Combine(servantImgFolderName, M)));
-                    }
+                    else servants.Add(servEntry);
                 }
 
-                return _preferences.GetString(R.pref_support_pref_servant);
+                var servantImgFolderName = Path.GetFileName(ImageLocator.SupportServantImgFolder);
+
+                if (servants.Count > 0)
+                {
+                    return string.Join(", ", servants.Select(M => Path.Combine(servantImgFolderName, M)));
+                }
+
+                return "";
             }
         }
 
@@ -62,36 +60,33 @@ namespace FateGrandAutomata
         {
             get
             {
-                var prefs = _preferences.GetPreferencesForSelectedAutoSkill();
+                var prefs = _preferences.GetPreferencesForSelectedAutoSkill() ?? _preferences.DefaultPrefs;
 
-                if (prefs != null)
+                var ceSet = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
+
+                var ces = new List<string>();
+
+                var ceImgFolderName = Path.GetFileName(ImageLocator.SupportCeImgFolder);
+
+                foreach (var ceEntry in ceSet)
                 {
-                    var ceSet = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
-
-                    var ces = new List<string>();
-
-                    var ceImgFolderName = Path.GetFileName(ImageLocator.SupportCeImgFolder);
-
-                    foreach (var ceEntry in ceSet)
+                    if (ceEntry == AutoSkillSettingsFragment.MonaLisa
+                        || ceEntry == AutoSkillSettingsFragment.ChaldeaLunchtime)
                     {
-                        if (ceEntry == AutoSkillSettingsFragment.MonaLisa
-                            || ceEntry == AutoSkillSettingsFragment.ChaldeaLunchtime)
-                        {
-                            ces.Add(ceEntry);
-                        }
-                        else ces.Add(Path.Combine(ceImgFolderName, ceEntry));
+                        ces.Add(ceEntry);
                     }
-
-                    if (ces.Count > 0)
-                    {
-                        var isMlb = prefs.GetBoolean(_context.GetString(R.pref_support_pref_ce_mlb), false);
-
-                        return string.Join(", ", ces
-                            .Select(M => isMlb ? $"{Support.LimitBrokenCharacter}{M}" : M));
-                    }
+                    else ces.Add(Path.Combine(ceImgFolderName, ceEntry));
                 }
 
-                return _preferences.GetString(R.pref_support_pref_ce);
+                if (ces.Count > 0)
+                {
+                    var isMlb = prefs.GetBoolean(_context.GetString(R.pref_support_pref_ce_mlb), false);
+
+                    return string.Join(", ", ces
+                        .Select(M => isMlb ? $"{Support.LimitBrokenCharacter}{M}" : M));
+                }
+
+                return "";
             }
         }
 

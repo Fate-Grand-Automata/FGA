@@ -12,15 +12,9 @@ namespace FateGrandAutomata
     [Register("fgautomata." + nameof(AutoSkillSettingsFragment))]
     public class AutoSkillSettingsFragment : PreferenceFragmentCompat
     {
-        public override void OnCreatePreferences(Bundle SavedInstanceState, string RootKey)
+        public static void SetupServantAndCEPrefs(PreferenceFragmentCompat Pref)
         {
-            var autoskillItemKey = Arguments.GetString(AutoSkillItemActivity.AutoSkillItemKey);
-
-            PreferenceManager.SharedPreferencesName = autoskillItemKey;
-
-            SetPreferencesFromResource(Resource.Xml.autoskill_item_preferences, RootKey);
-
-            if (FindPreference(GetString(Resource.String.pref_support_pref_servant)) is MultiSelectListPreference pref)
+            if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_servant)) is MultiSelectListPreference pref)
             {
                 var entries = Directory
                     .EnumerateFileSystemEntries(ImageLocator.SupportServantImgFolder)
@@ -32,13 +26,13 @@ namespace FateGrandAutomata
                 pref.SetEntries(entries);
                 pref.SummaryProvider = new MultiSelectListSummaryProvider();
 
-                if (FindPreference(GetString(Resource.String.pref_support_pref_servant_clear)) is { } servClear)
+                if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_servant_clear)) is { } servClear)
                 {
                     servClear.PreferenceClick += (S, E) => pref.Values = new List<string>();
                 }
             }
 
-            if (FindPreference(GetString(Resource.String.pref_support_pref_ce)) is MultiSelectListPreference prefce)
+            if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_ce)) is MultiSelectListPreference prefce)
             {
                 var entries = Directory
                     .EnumerateFiles(ImageLocator.SupportCeImgFolder)
@@ -53,11 +47,22 @@ namespace FateGrandAutomata
                 prefce.SetEntries(entries);
                 prefce.SummaryProvider = new MultiSelectListSummaryProvider();
 
-                if (FindPreference(GetString(Resource.String.pref_support_pref_ce_clear)) is { } ceClear)
+                if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_ce_clear)) is { } ceClear)
                 {
                     ceClear.PreferenceClick += (S, E) => prefce.Values = new List<string>();
                 }
             }
+        }
+
+        public override void OnCreatePreferences(Bundle SavedInstanceState, string RootKey)
+        {
+            var autoskillItemKey = Arguments.GetString(AutoSkillItemActivity.AutoSkillItemKey);
+
+            PreferenceManager.SharedPreferencesName = autoskillItemKey;
+
+            SetPreferencesFromResource(Resource.Xml.autoskill_item_preferences, RootKey);
+
+            SetupServantAndCEPrefs(this);
 
             if (FindPreference(GetString(Resource.String.pref_autoskill_delete)) is { } deleteBtn)
             {

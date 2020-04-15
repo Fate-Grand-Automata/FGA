@@ -46,7 +46,7 @@
     <SwitchPreferenceCompat
       app:key="@string/pref_support_pref_ce_mlb"
       app:title="Max-limit broken"
-      app:icon="@drawable/ic_radio"
+      app:icon="@drawable/ic_star"
       app:defaultValue="false"/>
 
     <Preference

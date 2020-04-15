@@ -15,20 +15,6 @@
       app:icon="@drawable/ic_dots_vertical"
       app:useSimpleSummaryProvider="true"/>
 
-    <EditTextPreference
-      app:key="@string/pref_support_pref_servant"
-      app:title="Preferred Servants"
-      app:icon="@drawable/ic_crown"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue=""/>
-
-    <EditTextPreference
-      app:key="@string/pref_support_pref_ce"
-      app:title="Preferred CEs"
-      app:icon="@drawable/ic_card"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue=""/>
-
     <ListPreference
       app:defaultValue="Manual"
       app:entries="@array/support_selection_modes"
@@ -38,18 +24,56 @@
       app:icon="@drawable/ic_dots_vertical"
       app:useSimpleSummaryProvider="true"/>
 
-    <SwitchPreferenceCompat
-      app:key="@string/pref_support_friends_only"
-      app:title="Friends Only"
-      app:icon="@drawable/ic_friend"
-      app:defaultValue="false"/>
+    <PreferenceCategory
+      app:key="pref_servant_category"
+      app:title="Preferred Servants">
+      <MultiSelectListPreference
+        app:key="@string/pref_support_pref_servant"
+        app:title="Preferred Servants"
+        app:icon="@drawable/ic_crown"/>
 
-    <EditTextPreference
-      app:key="@string/pref_support_friend_names"
-      app:title="Friend names"
-      app:icon="@drawable/ic_friend"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue=""/>
+      <Preference
+        app:key="@string/pref_support_pref_servant_clear"
+        app:title="Clear Servant Preferences"
+        app:icon="@drawable/ic_clear"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+      app:key="pref_ce_category"
+      app:title="Preferred CEs">
+      <MultiSelectListPreference
+        app:key="@string/pref_support_pref_ce"
+        app:title="Preferred CEs"
+        app:icon="@drawable/ic_card"/>
+
+      <SwitchPreferenceCompat
+        app:key="@string/pref_support_pref_ce_mlb"
+        app:title="Max-limit broken"
+        app:icon="@drawable/ic_star"
+        app:defaultValue="false"/>
+
+      <Preference
+        app:key="@string/pref_support_pref_ce_clear"
+        app:title="Clear CE Preferences"
+        app:icon="@drawable/ic_clear"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="friend_support_category"
+        app:title="Friend">
+      <SwitchPreferenceCompat
+        app:key="@string/pref_support_friends_only"
+        app:title="Friends Only"
+        app:icon="@drawable/ic_friend"
+        app:defaultValue="false"/>
+
+      <EditTextPreference
+        app:key="@string/pref_support_friend_names"
+        app:title="Friend names"
+        app:icon="@drawable/ic_friend"
+        app:useSimpleSummaryProvider="true"
+        app:defaultValue=""/>
+    </PreferenceCategory>
 
     <EditTextPreference
       app:key="@string/pref_support_swipes_per_update"
