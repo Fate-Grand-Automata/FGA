@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <ListPreference
+    app:defaultValue="Battle"
+    app:entries="@array/script_mode_labels"
+    app:entryValues="@array/script_mode_values"
+    app:key="@string/pref_script_mode"
+    app:title="Script Mode"
+    app:icon="@drawable/ic_script"
+    app:useSimpleSummaryProvider="true"/>
+
+  <Preference
+    app:key="refill"
+    app:title="Refill"
+    app:icon="@drawable/ic_apple"
+    app:summary="Manage AP refill"
+    app:fragment="fgautomata.RefillSettingsFragment"/>
+
+  <Preference
+    app:key="support"
+    app:title="Support"
+    app:icon="@drawable/ic_friend"
+    app:summary="Manage Support Selection"
+    app:fragment="fgautomata.SupportSettingsFragment"/>
+
+  <Preference
+    app:key="autoskill"
+    app:title="Auto Skill"
+    app:icon="@drawable/ic_wand"
+    app:summary="Manage Auto Skill"
+    app:fragment="fgautomata.ManageAutoSkillSettingsFragment"/>
+</PreferenceScreen>

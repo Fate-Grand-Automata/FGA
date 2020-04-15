@@ -7,18 +7,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main"
     android:orientation="vertical"
-    android:gravity="center"
     android:paddingHorizontal="10dip">
-
-  <TextView
-      android:id="@+id/status_textview"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
 
   <Button
     android:id="@+id/service_toggle_btn"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dip"
     android:text="TOGGLE SERVICE"
     android:drawableLeft="@drawable/ic_launch"/>
 
@@ -28,5 +23,15 @@
     android:layout_height="wrap_content"
     android:text="@string/action_settings"
     android:drawableLeft="@drawable/ic_settings"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center">
+    <FrameLayout
+      android:id="@+id/main_pref_frame"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+  </LinearLayout>
 
 </LinearLayout>

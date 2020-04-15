@@ -3,15 +3,6 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <ListPreference
-    app:defaultValue="Battle"
-    app:entries="@array/script_mode_labels"
-    app:entryValues="@array/script_mode_values"
-    app:key="@string/pref_script_mode"
-    app:title="Script Mode"
-    app:icon="@drawable/ic_script"
-    app:useSimpleSummaryProvider="true"/>
-
-  <ListPreference
     app:defaultValue="En"
     app:entries="@array/game_server_labels"
     app:entryValues="@array/game_server_values"
@@ -20,84 +11,59 @@
     app:icon="@drawable/ic_earth"
     app:useSimpleSummaryProvider="true"/>
 
-  <Preference
-    app:key="refill"
-    app:title="Refill"
-    app:icon="@drawable/ic_apple"
-    app:summary="Manage AP refill"
-    app:fragment="fgautomata.RefillSettingsFragment"/>
+  <EditTextPreference
+    app:key="@string/pref_card_priority"
+    app:title="Card Priority"
+    app:icon="@drawable/ic_sort"
+    app:useSimpleSummaryProvider="true"
+    app:defaultValue="BAQ"/>
 
-  <Preference
-    app:key="support"
-    app:title="Support"
-    app:icon="@drawable/ic_friend"
-    app:summary="Manage Support Selection"
-    app:fragment="fgautomata.SupportSettingsFragment"/>
+  <ListPreference
+    app:defaultValue="None"
+    app:entries="@array/battle_np_types"
+    app:entryValues="@array/battle_np_types"
+    app:key="@string/pref_battle_np"
+    app:icon="@drawable/ic_star"
+    app:title="Cast Noble Phantasm"
+    app:useSimpleSummaryProvider="true"/>
 
-  <Preference
-    app:key="autoskill"
-    app:title="Auto Skill"
-    app:icon="@drawable/ic_wand"
-    app:summary="Manage Auto Skill"
-    app:fragment="fgautomata.ManageAutoSkillSettingsFragment"/>
+  <SwitchPreferenceCompat
+    app:key="@string/pref_auto_choose_target"
+    app:icon="@drawable/ic_target"
+    app:title="Auto choose target"
+    app:defaultValue="true"/>
 
-  <PreferenceCategory
-    app:key="category_other"
-    app:title="Other">
-    <EditTextPreference
-      app:key="@string/pref_card_priority"
-      app:title="Card Priority"
-      app:icon="@drawable/ic_sort"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue="BAQ"/>
+  <SwitchPreferenceCompat
+    app:key="@string/pref_story_skip"
+    app:title="Story Skip"
+    app:icon="@drawable/ic_fast_forward"
+    app:defaultValue="false"/>
 
-    <ListPreference
-      app:defaultValue="None"
-      app:entries="@array/battle_np_types"
-      app:entryValues="@array/battle_np_types"
-      app:key="@string/pref_battle_np"
-      app:icon="@drawable/ic_star"
-      app:title="Cast Noble Phantasm"
-      app:useSimpleSummaryProvider="true"/>
+  <SwitchPreferenceCompat
+    app:key="@string/pref_withdraw_enabled"
+    app:title="Enable Withdraw"
+    app:icon="@drawable/ic_exit_run"
+    app:defaultValue="false"/>
 
-    <SwitchPreferenceCompat
-      app:key="@string/pref_auto_choose_target"
-      app:icon="@drawable/ic_target"
-      app:title="Auto choose target"
-      app:defaultValue="true"/>
+  <SwitchPreferenceCompat
+    app:key="@string/pref_stop_bond10"
+    app:title="Stop on Bond 10"
+    app:icon="@drawable/ic_diamond"
+    app:defaultValue="false"/>
 
-    <SwitchPreferenceCompat
-      app:key="@string/pref_story_skip"
-      app:title="Story Skip"
-      app:icon="@drawable/ic_fast_forward"
-      app:defaultValue="false"/>
+  <ListPreference
+    app:defaultValue="0"
+    app:entries="@array/boost_item_labels"
+    app:entryValues="@array/boost_item_values"
+    app:key="@string/pref_boost_item"
+    app:title="Boost Item"
+    app:icon="@drawable/ic_boost"
+    app:useSimpleSummaryProvider="true"/>
 
-    <SwitchPreferenceCompat
-      app:key="@string/pref_withdraw_enabled"
-      app:title="Enable Withdraw"
-      app:icon="@drawable/ic_exit_run"
-      app:defaultValue="false"/>
-
-    <SwitchPreferenceCompat
-      app:key="@string/pref_stop_bond10"
-      app:title="Stop on Bond 10"
-      app:icon="@drawable/ic_diamond"
-      app:defaultValue="false"/>
-
-    <ListPreference
-      app:defaultValue="0"
-      app:entries="@array/boost_item_labels"
-      app:entryValues="@array/boost_item_values"
-      app:key="@string/pref_boost_item"
-      app:title="Boost Item"
-      app:icon="@drawable/ic_boost"
-      app:useSimpleSummaryProvider="true"/>
-
-    <SwitchPreferenceCompat
-      app:key="@string/pref_fast_skip_dead"
-      app:title="Fast Skip death animation"
-      app:icon="@drawable/ic_radio"
-      app:summary="Unstable feature"
-      app:defaultValue="false"/>
-  </PreferenceCategory>
+  <SwitchPreferenceCompat
+    app:key="@string/pref_fast_skip_dead"
+    app:title="Fast Skip death animation"
+    app:icon="@drawable/ic_radio"
+    app:summary="Unstable feature"
+    app:defaultValue="false"/>
 </PreferenceScreen>

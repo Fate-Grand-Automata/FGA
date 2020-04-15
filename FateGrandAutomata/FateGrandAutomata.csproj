@@ -75,6 +75,7 @@
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
     <Compile Include="CutoutManager.cs" />
     <Compile Include="DroidCvPattern.cs" />
+    <Compile Include="Preferences\MainSettingsFragment.cs" />
     <Compile Include="ScriptRunnerService.cs" />
     <Compile Include="ImgListener.cs" />
     <Compile Include="MainActivity.cs" />
@@ -375,6 +376,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_stop.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\xml\main_preferences.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
