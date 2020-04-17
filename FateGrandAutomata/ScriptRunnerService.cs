@@ -1,3 +1,4 @@
+using System;
 using Android;
 using Android.AccessibilityServices;
 using Android.App;
@@ -186,7 +187,9 @@ namespace FateGrandAutomata
                 Flags = WindowManagerFlags.NotFocusable,
                 Width = ViewGroup.LayoutParams.WrapContent,
                 Height = ViewGroup.LayoutParams.WrapContent,
-                Gravity = GravityFlags.Left | GravityFlags.Bottom
+                Gravity = GravityFlags.Left | GravityFlags.Top,
+                X = 0,
+                Y = 0
             };
 
             var inflator = LayoutInflater.From(this);
@@ -202,6 +205,8 @@ namespace FateGrandAutomata
                 }
                 else StartScript();
             };
+
+            _scriptCtrlBtn.Touch += ScriptCtrlBtnOnTouch;
 
             MediaProjectionManager = (MediaProjectionManager)GetSystemService(MediaProjectionService);
 
@@ -221,6 +226,47 @@ namespace FateGrandAutomata
             _imgListener = new ImgListener(_imageReader);
             _imageReader.SetOnImageAvailableListener(_imgListener, null);
         }
+
+        void ScriptCtrlBtnOnTouch(object S, View.TouchEventArgs E)
+        {
+            switch (E.Event.ActionMasked)
+            {
+                case MotionEventActions.Down:
+                    _dX = _layoutParams.X - E.Event.RawX;
+                    _dY = _layoutParams.Y - E.Event.RawY;
+                    _lastAction = MotionEventActions.Down;
+
+                    E.Handled = false;
+                    break;
+
+                case MotionEventActions.Move:
+                    var newX = E.Event.RawX + _dX;
+                    var newY = E.Event.RawY + _dY;
+
+                    var d = Math.Sqrt(Math.Pow(newX - _layoutParams.X, 2) + Math.Pow(newY - _layoutParams.Y, 2));
+
+                    if (d > DragThreshold)
+                    {
+                        _layoutParams.X = (int) Math.Round(newX);
+                        _layoutParams.Y = (int) Math.Round(newY);
+
+                        _windowManager.UpdateViewLayout(_layout, _layoutParams);
+
+                        _lastAction = MotionEventActions.Move;
+                    }
+
+                    E.Handled = true;
+                    break;
+
+                case MotionEventActions.Up:
+                    E.Handled = _lastAction == MotionEventActions.Move;
+                    break;
+            }
+        }
+
+        float _dX, _dY;
+        MotionEventActions _lastAction;
+        const int DragThreshold = 10;
 
         public IPattern AcquireLatestImage()
         {
