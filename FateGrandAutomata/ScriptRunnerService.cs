@@ -1,4 +1,4 @@
-﻿using Android;
+using Android;
 using Android.AccessibilityServices;
 using Android.App;
 using Android.Content;
@@ -88,6 +88,9 @@ namespace FateGrandAutomata
 
             _virtualDisplay?.Release();
             _virtualDisplay = null;
+
+            _mediaProjection?.Stop();
+            _mediaProjection = null;
 
             _windowManager.RemoveView(_layout);
             ServiceStarted = false;
