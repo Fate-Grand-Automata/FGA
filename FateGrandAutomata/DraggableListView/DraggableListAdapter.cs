@@ -50,30 +50,25 @@ namespace DraggableListView
         }
 
 		public override View GetView(int Position, View ConvertView, ViewGroup Parent)
-		{
-			var cell = ConvertView;
-			if (cell == null)
-			{
-				cell = _context.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem1, Parent, false);
-			}
+        {
+            var cell = ConvertView ?? _context.LayoutInflater.Inflate(Resource.Layout.autoskill_item, Parent, false);
+            cell.SetBackgroundColor(Color.White);
 
-            var colorInt = ResourcesCompat.GetColor(_context.Resources, GetCardColor(Items[Position]), null);
-            cell.SetBackgroundColor(new Color(colorInt));
-
-			var text = cell.FindViewById<TextView>(Android.Resource.Id.Text1);
-			if (text != null)
+            if (cell is TextView text)
             {
-				text.SetTextColor(Color.White);
+                var colorInt = ResourcesCompat.GetColor(_context.Resources, GetCardColor(Items[Position]), null);
+
+                text.SetTextColor(new Color(colorInt));
                 text.Text = Enum.GetName(typeof(CardScore), Items[Position]);
             }
 
-			cell.Visibility = MMobileCellPosition == Position ? ViewStates.Invisible : ViewStates.Visible;
-			cell.TranslationY = 0;
+            cell.Visibility = MMobileCellPosition == Position ? ViewStates.Invisible : ViewStates.Visible;
+            cell.TranslationY = 0;
 
-			return cell;
-		}
+            return cell;
+        }
 
-		public override int Count => Items.Count;
+        public override int Count => Items.Count;
 
         public void SwapItems(int IndexOne, int IndexTwo)
 		{

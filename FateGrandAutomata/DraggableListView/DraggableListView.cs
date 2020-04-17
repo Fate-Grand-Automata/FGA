@@ -33,26 +33,7 @@ namespace DraggableListView
 {
 	public class DraggableListView : ListView, ITypeEvaluator, GestureDetector.IOnGestureListener
 	{
-		bool _reorderingEnabled = true;
-
-		public bool ReorderingEnabled
-		{
-			get => _reorderingEnabled;
-            set
-			{
-				if (!value)
-				{
-					ItemLongClick -= HandleItemLongClick;
-				}
-				else
-				{
-					ItemLongClick += HandleItemLongClick;
-				}
-				_reorderingEnabled = value;
-			}
-		}
-
-		const int LineThickness = 15;
+        const int LineThickness = 5;
 		const int InvalidId = -1;
 		const int InvalidPointerId = -1;
 
@@ -95,7 +76,7 @@ namespace DraggableListView
 		public void Init(Context Context)
 		{
 			//	the detector handles all the gestures
-			_dectector = new GestureDetector(this);
+			_dectector = new GestureDetector(Context, this);
 			ItemLongClick += HandleItemLongClick;
 		}
 
@@ -218,26 +199,23 @@ namespace DraggableListView
 			return drawable;
 		}
 
-		/// <summary>
-		/// Draws a red border over the screenshot of the view passed in.
-		/// </summary>
-		static Bitmap GetBitmapWithBorder(View V)
-		{
-			var bitmap = GetBitmapFromView(V);
-			var can = new Canvas(bitmap);
+        static Bitmap GetBitmapWithBorder(View V)
+        {
+            var bitmap = GetBitmapFromView(V);
+            var can = new Canvas(bitmap);
 
-			var rect = new Rect(0, 0, bitmap.Width, bitmap.Height);
+            var rect = new Rect(0, 0, bitmap.Width, bitmap.Height);
 
-			var paint = new Paint();
-			paint.SetStyle(Paint.Style.Stroke);
-			paint.StrokeWidth = LineThickness;
-			paint.Color = Color.Red;
+            var paint = new Paint();
+            paint.SetStyle(Paint.Style.Stroke);
+            paint.StrokeWidth = LineThickness;
+            paint.Color = Color.Gray;
 
-			can.DrawBitmap(bitmap, 0, 0, null);
-			can.DrawRect(rect, paint);
+            can.DrawBitmap(bitmap, 0, 0, null);
+            can.DrawRect(rect, paint);
 
-			return bitmap;
-		}
+            return bitmap;
+        }
 
 		/// <summary>
 		/// Returns a bitmap showing a screenshot of the view passed in

@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#1B3147</color>
     <color name="colorAccent">#3498db</color>
 
-    <color name="colorBuster">#f44336</color>
-    <color name="colorArts">#2196f3</color>
-    <color name="colorQuick">#4caf50</color>
+    <color name="colorBuster">#c62828</color>
+    <color name="colorArts">#1565c0</color>
+    <color name="colorQuick">#2e7d32</color>
 </resources>
