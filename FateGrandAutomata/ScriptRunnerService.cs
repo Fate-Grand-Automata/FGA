@@ -167,19 +167,18 @@ namespace FateGrandAutomata
             ShowStatusNotification("Ready");
         }
 
-
-        public override void OnTaskRemoved(Intent rootIntent)
+        public override void OnTaskRemoved(Intent RootIntent)
         {
             // from https://stackoverflow.com/a/43310945/5971497
 
-            Intent restartServiceIntent = new Intent(this.ApplicationContext, this.Class);
-            restartServiceIntent.SetPackage(this.PackageName);
+            var restartServiceIntent = new Intent(ApplicationContext, Class);
+            restartServiceIntent.SetPackage(PackageName);
 
-            PendingIntent restartServicePendingIntent = PendingIntent.GetService(this.ApplicationContext, 1, restartServiceIntent, PendingIntentFlags.OneShot);
-            AlarmManager alarmService = (AlarmManager)ApplicationContext.GetSystemService(Context.AlarmService);
+            var restartServicePendingIntent = PendingIntent.GetService(ApplicationContext, 1, restartServiceIntent, PendingIntentFlags.OneShot);
+            var alarmService = (AlarmManager)ApplicationContext.GetSystemService(AlarmService);
             alarmService.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 1000, restartServicePendingIntent);
 
-            base.OnTaskRemoved(rootIntent);
+            base.OnTaskRemoved(RootIntent);
         }
 
         Button _scriptCtrlBtn;
