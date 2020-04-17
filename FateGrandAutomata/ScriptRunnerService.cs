@@ -18,7 +18,7 @@ using Java.Interop;
 namespace FateGrandAutomata
 {
     [Service(Permission = Manifest.Permission.BindAccessibilityService)]
-    [IntentFilter(new [] { "android.accessibilityservice.AccessibilityService" })]
+    [IntentFilter(new[] { "android.accessibilityservice.AccessibilityService" })]
     [MetaData("android.accessibilityservice", Resource = "@xml/script_runner_service")]
     public class ScriptRunnerService : AccessibilityService
     {
@@ -114,7 +114,7 @@ namespace FateGrandAutomata
             {
                 SetScriptControlBtnIcon(Resource.Drawable.ic_play);
             });
-            
+
             _entryPoint = null;
 
             _scriptStarted = false;
@@ -165,6 +165,21 @@ namespace FateGrandAutomata
             OnScriptExit();
 
             ShowStatusNotification("Ready");
+        }
+
+
+        public override void OnTaskRemoved(Intent rootIntent)
+        {
+            // from https://stackoverflow.com/a/43310945/5971497
+
+            Intent restartServiceIntent = new Intent(this.ApplicationContext, this.Class);
+            restartServiceIntent.SetPackage(this.PackageName);
+
+            PendingIntent restartServicePendingIntent = PendingIntent.GetService(this.ApplicationContext, 1, restartServiceIntent, PendingIntentFlags.OneShot);
+            AlarmManager alarmService = (AlarmManager)ApplicationContext.GetSystemService(Context.AlarmService);
+            alarmService.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 1000, restartServicePendingIntent);
+
+            base.OnTaskRemoved(rootIntent);
         }
 
         Button _scriptCtrlBtn;
