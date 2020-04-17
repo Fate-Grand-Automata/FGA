@@ -24,20 +24,21 @@ namespace FateGrandAutomata
             return itemViewHolder;
         }
 
-        static int GetCardColor(CardScore Card)
+        static int GetCardColor(CardScore Card) => Card switch
         {
-            if (Card.HasFlag(CardScore.Buster))
-            {
-                return Resource.Color.colorBuster;
-            }
+            CardScore.WeakBuster => Resource.Color.colorBusterWeak,
+            CardScore.Buster => Resource.Color.colorBuster,
+            CardScore.ResistBuster => Resource.Color.colorBusterResist,
 
-            if (Card.HasFlag(CardScore.Arts))
-            {
-                return Resource.Color.colorArts;
-            }
+            CardScore.WeakArts => Resource.Color.colorArtsWeak,
+            CardScore.Arts => Resource.Color.colorArts,
+            CardScore.ResistArts => Resource.Color.colorArtsResist,
 
-            return Resource.Color.colorQuick;
-        }
+            CardScore.WeakQuick => Resource.Color.colorQuickWeak,
+            CardScore.Quick => Resource.Color.colorQuick,
+            CardScore.ResistQuick => Resource.Color.colorQuickResist,
+            _ => 0
+        };
 
         static string SpaceAtCapitals<T>(T Obj)
         {
