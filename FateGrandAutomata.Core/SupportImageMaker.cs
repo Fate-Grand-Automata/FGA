@@ -51,7 +51,12 @@ namespace FateGrandAutomata
                 ++i;
             }
 
-            throw new ScriptExitException($"Support Images {(i == 0 ? "were NOT " : "")}Generated");
+            if (i == 0)
+            {
+                throw new ScriptExitException("No support images were found on the current screen. Are you on Support selection or Friend list screen?");
+            }
+            
+            throw new ScriptExitException($"Support Image(s) were generated.");
         }
     }
 }
