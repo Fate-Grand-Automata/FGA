@@ -8,7 +8,7 @@
         /// and if this is true, set the cell.Visibility to ViewState.Invisibile. Otherwise, set the visible to ViewState.Visible.
         /// </summary>
         /// <value>The m mobile cell position.</value>
-        int mMobileCellPosition { get; set; }
+        int MMobileCellPosition { get; set; }
 
         /// <summary>
         /// Responsible for updating the mMobileCellPosition variable, updaing the dataset, and calling NotifyDataSetChange on the Adapter
@@ -19,8 +19,8 @@
         ///	mMobileCellPosition = indexTwo;
         ///	NotifyDataSetChanged ();
         /// </summary>
-        /// <param name="from">From.</param>
-        /// <param name="to">To.</param>
-        void SwapItems(int from, int to);
+        /// <param name="From">From.</param>
+        /// <param name="To">To.</param>
+        void SwapItems(int From, int To);
     }
 }

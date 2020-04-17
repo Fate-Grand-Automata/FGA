@@ -13,7 +13,7 @@ namespace DraggableListView
 	{
 		public List<CardScore> Items { get; set; }
 
-		public int mMobileCellPosition { get; set; }
+		public int MMobileCellPosition { get; set; }
 
         readonly Activity _context;
 
@@ -21,7 +21,7 @@ namespace DraggableListView
         {
 			this.Items = Items;
 			_context = Context;
-			mMobileCellPosition = int.MinValue;
+			MMobileCellPosition = int.MinValue;
 		}
 
 		public override Java.Lang.Object GetItem(int Position)
@@ -67,7 +67,7 @@ namespace DraggableListView
                 text.Text = Enum.GetName(typeof(CardScore), Items[Position]);
             }
 
-			cell.Visibility = mMobileCellPosition == Position ? ViewStates.Invisible : ViewStates.Visible;
+			cell.Visibility = MMobileCellPosition == Position ? ViewStates.Invisible : ViewStates.Visible;
 			cell.TranslationY = 0;
 
 			return cell;
@@ -80,7 +80,7 @@ namespace DraggableListView
 			var oldValue = Items[IndexOne];
 			Items[IndexOne] = Items[IndexTwo];
 			Items[IndexTwo] = oldValue;
-			mMobileCellPosition = IndexTwo;
+			MMobileCellPosition = IndexTwo;
 			NotifyDataSetChanged();
 		}
 	}
