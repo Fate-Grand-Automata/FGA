@@ -5,17 +5,42 @@ using Android.App;
 using Android.OS;
 using AndroidX.AppCompat.App;
 using AndroidX.Preference;
-using DraggableListView;
+using AndroidX.RecyclerView.Widget;
 
 namespace FateGrandAutomata
 {
     [Activity(Label = "Card Priority")]
-    public class CardPriorityActivity : AppCompatActivity
+    public class CardPriorityActivity : AppCompatActivity, IOnStartDragListener
     {
+        ItemTouchHelper _itemTouchHelper;
+
         protected override void OnCreate(Bundle SavedInstanceState)
         {
             base.OnCreate(SavedInstanceState);
             SetContentView(Resource.Layout.card_priority);
+
+            var preferences = PreferenceManager.GetDefaultSharedPreferences(this);
+            var key = GetString(Resource.String.pref_card_priority);
+            var cardPriority = preferences.GetString(key, DefaultCardPriority);
+
+            // Handle simple mode and empty string
+            if (cardPriority.Length == 3 || string.IsNullOrWhiteSpace(cardPriority))
+            {
+                cardPriority = DefaultCardPriority;
+            }
+
+            _cardScores = Card.GetCardScores(cardPriority).ToList();
+
+            var adapter = new RecyclerListAdapter(_cardScores, this);
+
+            var recyclerView = FindViewById<RecyclerView>(Resource.Id.card_priority_lv);
+            recyclerView.HasFixedSize = true;
+            recyclerView.SetAdapter(adapter);
+            recyclerView.SetLayoutManager(new LinearLayoutManager(this));
+
+            var callback = new ItemTouchHelperCallback(adapter);
+            _itemTouchHelper = new ItemTouchHelper(callback);
+            _itemTouchHelper.AttachToRecyclerView(recyclerView);
         }
 
         static string FilterCapitals<T>(T Obj)
@@ -54,26 +79,9 @@ namespace FateGrandAutomata
         List<CardScore> _cardScores;
 
         const string DefaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ";
-
-        protected override void OnResume()
+        public void OnStartDrag(RecyclerView.ViewHolder ViewHolder)
         {
-            base.OnResume();
-
-            var list = FindViewById<DraggableListView.DraggableListView>(Resource.Id.card_priority_lv);
-
-            var preferences = PreferenceManager.GetDefaultSharedPreferences(this);
-            var key = GetString(Resource.String.pref_card_priority);
-            var cardPriority = preferences.GetString(key, DefaultCardPriority);
-
-            // Handle simple mode and empty string
-            if (cardPriority.Length == 3 || string.IsNullOrWhiteSpace(cardPriority))
-            {
-                cardPriority = DefaultCardPriority;
-            }
-
-            _cardScores = Card.GetCardScores(cardPriority).ToList();
-
-            list.Adapter = new DraggableListAdapter(this, _cardScores);
+            _itemTouchHelper?.StartDrag(ViewHolder);
         }
     }
 }

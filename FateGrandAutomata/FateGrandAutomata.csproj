@@ -75,9 +75,12 @@
     <Compile Include="AutoSkill\AutoSkillActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
     <Compile Include="CutoutManager.cs" />
-    <Compile Include="DraggableListView\DraggableListAdapter.cs" />
-    <Compile Include="DraggableListView\DraggableListView.cs" />
-    <Compile Include="DraggableListView\IDraggableListAdapter.cs" />
+    <Compile Include="DraggableRecyclerView\ItemViewHolder.cs" />
+    <Compile Include="DraggableRecyclerView\IItemTouchHelperAdapter.cs" />
+    <Compile Include="DraggableRecyclerView\IItemTouchHelperViewHolder.cs" />
+    <Compile Include="DraggableRecyclerView\IOnStartDragListener.cs" />
+    <Compile Include="DraggableRecyclerView\ItemTouchHelperCallback.cs" />
+    <Compile Include="DraggableRecyclerView\RecyclerListAdapter.cs" />
     <Compile Include="DroidCvPattern.cs" />
     <Compile Include="Preferences\MainSettingsFragment.cs" />
     <Compile Include="ScriptRunnerService.cs" />
@@ -392,6 +395,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\card_priority.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\card_priority_item.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_hamburger.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
