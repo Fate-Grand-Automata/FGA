@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidImpl.cs" />
+    <Compile Include="AutoSkill\CardPriorityActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
     <Compile Include="CutoutManager.cs" />
@@ -385,6 +386,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\main_preferences.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\card_priority.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

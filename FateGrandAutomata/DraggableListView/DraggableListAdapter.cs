@@ -1,8 +1,8 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Views;
 using Android.Widget;
 using System.Collections.Generic;
+using System.Text;
 using Android.Graphics;
 using AndroidX.Core.Content.Resources;
 using FateGrandAutomata;
@@ -49,7 +49,24 @@ namespace DraggableListView
             return Resource.Color.colorQuick;
         }
 
-		public override View GetView(int Position, View ConvertView, ViewGroup Parent)
+        static string SpaceAtCapitals<T>(T Obj)
+        {
+            var s = Obj.ToString();
+
+            var sb = new StringBuilder();
+
+            for (var i = 0; i < s.Length; ++i)
+            {
+                if (i != 0 && char.IsUpper(s[i]))
+                    sb.Append(" ");
+
+                sb.Append(s[i]);
+            }
+
+            return sb.ToString();
+        }
+
+        public override View GetView(int Position, View ConvertView, ViewGroup Parent)
         {
             var cell = ConvertView ?? _context.LayoutInflater.Inflate(Resource.Layout.autoskill_item, Parent, false);
             cell.SetBackgroundColor(Color.White);
@@ -59,7 +76,7 @@ namespace DraggableListView
                 var colorInt = ResourcesCompat.GetColor(_context.Resources, GetCardColor(Items[Position]), null);
 
                 text.SetTextColor(new Color(colorInt));
-                text.Text = Enum.GetName(typeof(CardScore), Items[Position]);
+                text.Text = SpaceAtCapitals(Items[Position]);
             }
 
             cell.Visibility = MMobileCellPosition == Position ? ViewStates.Invisible : ViewStates.Visible;
