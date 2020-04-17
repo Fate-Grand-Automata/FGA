@@ -90,6 +90,7 @@ namespace FateGrandAutomata
             _virtualDisplay = null;
 
             _mediaProjection?.Stop();
+            _mediaProjection = null;
 
             _windowManager.RemoveView(_layout);
             ServiceStarted = false;
