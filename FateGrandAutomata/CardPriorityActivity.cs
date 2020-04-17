@@ -65,7 +65,8 @@ namespace FateGrandAutomata
             var key = GetString(Resource.String.pref_card_priority);
             var cardPriority = preferences.GetString(key, DefaultCardPriority);
 
-            if (cardPriority.Length == 3)
+            // Handle simple mode and empty string
+            if (cardPriority.Length == 3 || string.IsNullOrWhiteSpace(cardPriority))
             {
                 cardPriority = DefaultCardPriority;
             }
