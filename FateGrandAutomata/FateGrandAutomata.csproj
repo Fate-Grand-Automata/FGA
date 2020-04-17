@@ -74,6 +74,9 @@
     <Compile Include="AutoSkill\AutoSkillActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
     <Compile Include="CutoutManager.cs" />
+    <Compile Include="DraggableListView\DraggableListAdapter.cs" />
+    <Compile Include="DraggableListView\DraggableListView.cs" />
+    <Compile Include="DraggableListView\IDraggableListAdapter.cs" />
     <Compile Include="DroidCvPattern.cs" />
     <Compile Include="Preferences\MainSettingsFragment.cs" />
     <Compile Include="ScriptRunnerService.cs" />

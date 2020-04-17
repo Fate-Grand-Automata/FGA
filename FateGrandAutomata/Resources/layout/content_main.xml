@@ -9,6 +9,11 @@
     android:orientation="vertical"
     android:paddingHorizontal="10dip">
 
+  <DraggableListView.DraggableListView
+    android:id="@+id/card_priority_lv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
   <Button
     android:id="@+id/service_toggle_btn"
     android:layout_width="match_parent"

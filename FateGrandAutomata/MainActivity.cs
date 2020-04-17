@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Android;
 using Android.App;
@@ -11,6 +12,7 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
+using DraggableListView;
 using AlertDialog = Android.App.AlertDialog;
 
 namespace FateGrandAutomata
@@ -44,6 +46,23 @@ namespace FateGrandAutomata
                     .Replace(Resource.Id.main_pref_frame, new MainSettingsFragment())
                     .Commit();
             }
+
+            var list = FindViewById<DraggableListView.DraggableListView>(Resource.Id.card_priority_lv);
+
+            var items = new List<CardScore>
+            {
+                CardScore.WeakBuster,
+                CardScore.WeakArts,
+                CardScore.WeakQuick,
+                CardScore.Buster,
+                CardScore.Arts,
+                CardScore.Quick,
+                CardScore.ResistBuster,
+                CardScore.ResistArts,
+                CardScore.ResistQuick
+            };
+
+            list.Adapter = new DraggableListAdapter(this, items);
         }
 
         public override void OnAttachedToWindow()
