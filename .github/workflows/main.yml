@@ -1,4 +1,4 @@
-name: CI on Push and Pull Request
+name: CI
 
 on:
   push:
