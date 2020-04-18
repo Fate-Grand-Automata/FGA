@@ -64,11 +64,11 @@ namespace FateGrandAutomata
             }
         }
 
-        void InitCardPriorityArrayDetailed(string ErrorString)
+        public static IEnumerable<CardScore> GetCardScores(string CardPriority, string ErrorString = "")
         {
             var cardCounter = 0;
 
-            foreach (var i in Preferences.Instance.BattleCardPriority.Split(','))
+            foreach (var i in CardPriority.Split(','))
             {
                 var card = i.ToUpper().Trim();
 
@@ -114,13 +114,21 @@ namespace FateGrandAutomata
                     }
                 }
 
-                _cardPriorityArray.Add(score);
+                yield return score;
                 ++cardCounter;
             }
 
             if (cardCounter != 9)
             {
                 throw new ScriptExitException($"{ErrorString}{Preferences.Instance.BattleCardPriority}': Expected 9 cards, but {cardCounter} found.");
+            }
+        }
+
+        void InitCardPriorityArrayDetailed(string ErrorString)
+        {
+            foreach (var cardScore in GetCardScores(Preferences.Instance.BattleCardPriority, ErrorString))
+            {
+                _cardPriorityArray.Add(cardScore);
             }
         }
 
