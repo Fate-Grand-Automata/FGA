@@ -17,8 +17,11 @@ namespace FateGrandAutomata
 
             if (!_preferences.GetBoolean(PreferenceManager.KeyHasSetDefaultValues, false))
             {
+                PreferenceManager.SetDefaultValues(Context, Resource.Xml.main_preferences, true);
                 PreferenceManager.SetDefaultValues(Context, Resource.Xml.app_preferences, true);
+                PreferenceManager.SetDefaultValues(Context, Resource.Xml.autoskill_preferences, true);
                 PreferenceManager.SetDefaultValues(Context, Resource.Xml.refill_preferences, true);
+                PreferenceManager.SetDefaultValues(Context, Resource.Xml.support_preferences, true);
             }
 
             Refill = new FgoRefillPreferences(this);

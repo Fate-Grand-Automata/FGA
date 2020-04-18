@@ -11,12 +11,10 @@
     app:icon="@drawable/ic_earth"
     app:useSimpleSummaryProvider="true"/>
 
-  <EditTextPreference
+  <Preference
     app:key="@string/pref_card_priority"
     app:title="Card Priority"
-    app:icon="@drawable/ic_sort"
-    app:useSimpleSummaryProvider="true"
-    app:defaultValue="BAQ"/>
+    app:icon="@drawable/ic_sort"/>
 
   <ListPreference
     app:defaultValue="None"

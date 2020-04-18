@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2c3e50</color>
-    <color name="colorPrimaryDark">#1B3147</color>
-    <color name="colorAccent">#3498db</color>
+  <color name="colorPrimary">#2c3e50</color>
+  <color name="colorPrimaryDark">#1B3147</color>
+  <color name="colorAccent">#3498db</color>
+
+  <color name="colorBusterWeak">#b71c1c</color>
+    <color name="colorBuster">#e64a19</color>
+    <color name="colorBusterResist">#f57c00</color>
+
+    <color name="colorArtsWeak">#0d47a1</color>
+    <color name="colorArts">#0277bd</color>
+    <color name="colorArtsResist">#3498db</color>
+  
+    <color name="colorQuickWeak">#004d40</color>
+    <color name="colorQuick">#2e7d32</color>
+    <color name="colorQuickResist">#7cb342</color>
 </resources>
