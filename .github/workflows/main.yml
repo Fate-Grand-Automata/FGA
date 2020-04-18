@@ -1,6 +1,6 @@
 name: CI on Push and Pull Request
 
-on: 
+on:
   push:
     tags:
     - '*'
