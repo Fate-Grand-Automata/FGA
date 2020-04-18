@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <PreferenceCategory
@@ -81,20 +82,29 @@
         app:defaultValue=""/>
     </PreferenceCategory>
 
-    <EditTextPreference
-      app:key="@string/pref_support_swipes_per_update"
-      app:title="Swipes per Update"
-      app:icon="@drawable/ic_swipe"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue="10"/>
+    <PreferenceCategory
+      app:key="friend_swipe_category"
+      app:title="Swipes and Updates">
+      <SeekBarPreference
+        app:key="@string/pref_support_swipes_per_update"
+        app:title="Swipes per Update"
+        app:icon="@drawable/ic_swipe"
+        app:defaultValue="10"
+        app:min="0"
+        app:showSeekBarValue="true"
+        android:max="30"
+        app:seekBarIncrement="1"/>
 
-    <EditTextPreference
-      app:key="@string/pref_support_max_updates"
-      app:title="Max Updates"
-      app:icon="@drawable/ic_swipe"
-      app:useSimpleSummaryProvider="true"
-      app:defaultValue="3"/>
-    
+      <SeekBarPreference
+        app:key="@string/pref_support_max_updates"
+        app:title="Max Updates"
+        app:icon="@drawable/ic_refresh"
+        app:defaultValue="3"
+        app:min="0"
+        app:showSeekBarValue="true"
+        android:max="30"
+        app:seekBarIncrement="1"/>
+    </PreferenceCategory>
   </PreferenceCategory>
 
 </PreferenceScreen>

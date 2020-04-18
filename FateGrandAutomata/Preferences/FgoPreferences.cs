@@ -39,7 +39,9 @@ namespace FateGrandAutomata
 
         public string GetString(int Key, string Default = "") => DefaultPrefs.GetString(K(Key), Default);
 
-        public int GetInt(int Key, int Default = 0)
+        public int GetInt(int Key, int Default = 0) => DefaultPrefs.GetInt(K(Key), Default);
+
+        public int GetStringAsInt(int Key, int Default = 0)
         {
             var s = DefaultPrefs.GetString(K(Key), "");
 
@@ -92,7 +94,7 @@ namespace FateGrandAutomata
 
         public bool StopAfterBond10 => GetBool(R.pref_stop_bond10);
 
-        public int BoostItemSelectionMode => GetInt(R.pref_boost_item);
+        public int BoostItemSelectionMode => GetStringAsInt(R.pref_boost_item);
 
         // TODO: Support debug mode
         public bool DebugMode => false;
