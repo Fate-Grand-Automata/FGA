@@ -17,9 +17,14 @@
     <string name="pref_refill_repetitions">refill_repetitions</string>
     <string name="pref_refill_resource">refill_resource</string>
   
+    <string name="pref_support_pref_servant">support_pref_servant_list</string>
+    <string name="pref_support_pref_servant_clear">support_pref_servant_clear</string>
+    
+    <string name="pref_support_pref_ce">support_pref_ce_list</string>
+    <string name="pref_support_pref_ce_mlb">support_pref_ce_mlb</string>
+    <string name="pref_support_pref_ce_clear">support_pref_ce_clear</string>
+
     <string name="pref_support_friend_names">support_friend_names</string>
-    <string name="pref_support_pref_servant">support_pref_servant</string>
-    <string name="pref_support_pref_ce">support_pref_ce</string>
     <string name="pref_support_friends_only">support_friends_only</string>
     <string name="pref_support_swipes_per_update">support_swipes_per_update</string>
     <string name="pref_support_max_updates">support_max_updates</string>
@@ -31,6 +36,4 @@
     <string name="pref_autoskill_list">autoskill_list</string>
     <string name="pref_autoskill_name">autoskill_name</string>
     <string name="pref_autoskill_cmd">autoskill_cmd</string>
-    <string name="pref_autoskill_servant">autoskill_servant</string>
-    <string name="pref_autoskill_ce">autoskill_ce</string>
 </resources>

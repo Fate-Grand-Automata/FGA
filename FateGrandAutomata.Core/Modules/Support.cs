@@ -9,7 +9,7 @@ namespace FateGrandAutomata
     {
         const int CraftEssenceHeight = 90;
 
-        const string LimitBrokenCharacter = "*";
+        public const string LimitBrokenCharacter = "*";
 
         readonly List<string> _preferredServantArray = new List<string>(),
             _friendNameArray = new List<string>();

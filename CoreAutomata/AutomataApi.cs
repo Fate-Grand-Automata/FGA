@@ -174,11 +174,18 @@ namespace CoreAutomata
             _platformImpl.MessageBox(Title, Message);
         }
 
+        public static void SetStorageRootDir(string Dir)
+        {
+            _storageRootDir = Dir;
+        }
+
+        static string _storageRootDir;
+
         public static string StorageDir
         {
             get
             {
-                var dir = Path.Combine(_platformImpl.StorageRootDir, "Fate-Grand-Automata");
+                var dir = Path.Combine(_storageRootDir, "Fate-Grand-Automata");
 
                 if (!Directory.Exists(dir))
                 {

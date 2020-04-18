@@ -74,6 +74,7 @@
     <Compile Include="CardPriorityActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
+    <Compile Include="AutoSkill\MultiSelectListSummaryProvider.cs" />
     <Compile Include="CutoutManager.cs" />
     <Compile Include="DraggableRecyclerView\ItemViewHolder.cs" />
     <Compile Include="DraggableRecyclerView\IItemTouchHelperAdapter.cs" />
@@ -301,7 +302,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Resources\menu\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_settings.xml">
@@ -394,12 +394,20 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_clear.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\card_priority.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\menu\menu_main.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\card_priority_item.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>

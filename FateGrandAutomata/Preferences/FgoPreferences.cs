@@ -8,14 +8,14 @@ namespace FateGrandAutomata
     public class FgoPreferences : IFgoPreferences
     {
         readonly Context _context;
-        readonly ISharedPreferences _preferences;
+        public ISharedPreferences DefaultPrefs { get; }
 
         public FgoPreferences(Context Context)
         {
             _context = Context;
-            _preferences = PreferenceManager.GetDefaultSharedPreferences(Context);
+            DefaultPrefs = PreferenceManager.GetDefaultSharedPreferences(Context);
 
-            if (!_preferences.GetBoolean(PreferenceManager.KeyHasSetDefaultValues, false))
+            if (!DefaultPrefs.GetBoolean(PreferenceManager.KeyHasSetDefaultValues, false))
             {
                 PreferenceManager.SetDefaultValues(Context, Resource.Xml.main_preferences, true);
                 PreferenceManager.SetDefaultValues(Context, Resource.Xml.app_preferences, true);
@@ -32,16 +32,16 @@ namespace FateGrandAutomata
 
         public T GetEnum<T>(int Key, T Default = default) where T: struct
         {
-            return Enum.Parse<T>(_preferences.GetString(K(Key), Enum.GetName(typeof(T), Default)));
+            return Enum.Parse<T>(DefaultPrefs.GetString(K(Key), Enum.GetName(typeof(T), Default)));
         }
 
-        public bool GetBool(int Key, bool Default = false) => _preferences.GetBoolean(K(Key), Default);
+        public bool GetBool(int Key, bool Default = false) => DefaultPrefs.GetBoolean(K(Key), Default);
 
-        public string GetString(int Key, string Default = "") => _preferences.GetString(K(Key), Default);
+        public string GetString(int Key, string Default = "") => DefaultPrefs.GetString(K(Key), Default);
 
         public int GetInt(int Key, int Default = 0)
         {
-            var s = _preferences.GetString(K(Key), "");
+            var s = DefaultPrefs.GetString(K(Key), "");
 
             return int.TryParse(s, out var value) ? value : Default;
         }
@@ -74,7 +74,7 @@ namespace FateGrandAutomata
             {
                 var prefs = GetPreferencesForSelectedAutoSkill();
 
-                return prefs?.GetString(_context.GetString(R.pref_autoskill_cmd), "");
+                return prefs?.GetString(_context.GetString(R.pref_autoskill_cmd), "") ?? "";
             }
         }
 

@@ -1,4 +1,7 @@
-﻿using Android.Content;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Android.Content;
 using R = FateGrandAutomata.Resource.String;
 
 namespace FateGrandAutomata
@@ -20,19 +23,36 @@ namespace FateGrandAutomata
         {
             get
             {
-                var prefs = _preferences.GetPreferencesForSelectedAutoSkill();
+                var prefs = _preferences.GetPreferencesForSelectedAutoSkill() ?? _preferences.DefaultPrefs;
 
-                if (prefs != null)
+                var servantSet =
+                    prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
+
+                var servants = new List<string>();
+
+                foreach (var servEntry in servantSet)
                 {
-                    var servants = prefs.GetString(_context.GetString(R.pref_autoskill_servant), "");
+                    var path = Path.Combine(ImageLocator.SupportServantImgFolder, servEntry);
 
-                    if (!string.IsNullOrWhiteSpace(servants))
+                    if (Directory.Exists(path))
                     {
-                        return servants;
+                        var fileNames = Directory
+                            .EnumerateFiles(path)
+                            .Select(M => Path.Combine(servEntry, Path.GetFileName(M)));
+
+                        servants.AddRange(fileNames);
                     }
+                    else servants.Add(servEntry);
                 }
 
-                return _preferences.GetString(R.pref_support_pref_servant);
+                var servantImgFolderName = Path.GetFileName(ImageLocator.SupportServantImgFolder);
+
+                if (servants.Count > 0)
+                {
+                    return string.Join(", ", servants.Select(M => Path.Combine(servantImgFolderName, M)));
+                }
+
+                return "";
             }
         }
 
@@ -40,19 +60,23 @@ namespace FateGrandAutomata
         {
             get
             {
-                var prefs = _preferences.GetPreferencesForSelectedAutoSkill();
+                var prefs = _preferences.GetPreferencesForSelectedAutoSkill() ?? _preferences.DefaultPrefs;
 
-                if (prefs != null)
+                var ceSet = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
+
+                var ceImgFolderName = Path.GetFileName(ImageLocator.SupportCeImgFolder);
+
+                var ces = ceSet.Select(M => Path.Combine(ceImgFolderName, M)).ToList();
+
+                if (ces.Count > 0)
                 {
-                    var ces = prefs.GetString(_context.GetString(R.pref_autoskill_ce), "");
+                    var isMlb = prefs.GetBoolean(_context.GetString(R.pref_support_pref_ce_mlb), false);
 
-                    if (!string.IsNullOrWhiteSpace(ces))
-                    {
-                        return ces;
-                    }
+                    return string.Join(", ", ces
+                        .Select(M => isMlb ? $"{Support.LimitBrokenCharacter}{M}" : M));
                 }
 
-                return _preferences.GetString(R.pref_support_pref_ce);
+                return "";
             }
         }
 
@@ -70,10 +94,10 @@ namespace FateGrandAutomata
 
                 if (prefs != null)
                 {
-                    var servants = prefs.GetString(_context.GetString(R.pref_autoskill_servant), "");
-                    var ces = prefs.GetString(_context.GetString(R.pref_autoskill_ce), "");
+                    var servants = prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
+                    var ces = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
 
-                    if (!string.IsNullOrWhiteSpace(servants) || !string.IsNullOrWhiteSpace(ces))
+                    if (servants.Count > 0 || ces.Count > 0)
                     {
                         return SupportSelectionMode.Preferred;
                     }
