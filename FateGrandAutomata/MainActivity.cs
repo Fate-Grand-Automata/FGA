@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Android;
 using Android.App;
 using Android.Content;
@@ -7,6 +8,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
+using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.App;
@@ -30,20 +32,19 @@ namespace FateGrandAutomata
             var serviceToggleBtn = FindViewById<Button>(Resource.Id.service_toggle_btn);
             serviceToggleBtn.Click += ServiceToggleBtnOnClick;
 
-            var settingsBtn = FindViewById<Button>(Resource.Id.configure_btn);
-            settingsBtn.Click += (S, E) => OpenSettings();
-
-            CheckPermissions();
-            IgnoreBatteryOptimizations();
-
-            // Add the fragment only on first launch
+            // Only on first launch
             if (SavedInstanceState == null)
             {
                 SupportFragmentManager
                     .BeginTransaction()
                     .Replace(Resource.Id.main_pref_frame, new MainSettingsFragment())
                     .Commit();
+
+                CheckPermissions();
+                IgnoreBatteryOptimizations();
             }
+
+            AndroidImpl.RegisterStorageRootDir();
         }
 
         public override void OnAttachedToWindow()
@@ -147,6 +148,36 @@ namespace FateGrandAutomata
                 else StartActivityForResult(instance.MediaProjectionManager.CreateScreenCaptureIntent(), RequestMediaProjection);
             }
         }
+
+        public override bool OnCreateOptionsMenu(IMenu Menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.menu_main, Menu);
+            return base.OnCreateOptionsMenu(Menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem Item)
+        {
+            switch (Item.ItemId)
+            {
+                case Resource.Id.action_settings:
+                    OpenSettings();
+                    return true;
+
+                case Resource.Id.action_extract_support_imgs:
+                    Toast.MakeText(this, "Extracting Images in background", ToastLength.Short).Show();
+
+                    Task.Run(ImageLocator.ExtractSupportImgs)
+                        .ContinueWith(M =>
+                        {
+                            RunOnUiThread(() => Toast.MakeText(this, "Support Images Extracted Successfully", ToastLength.Short).Show());
+                        });
+                    return true;
+
+                default:
+                    return base.OnOptionsItemSelected(Item);
+            }
+        }
+
         public override void OnRequestPermissionsResult(int RequestCode, string[] Permissions, [GeneratedEnum] Android.Content.PM.Permission[] GrantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(RequestCode, Permissions, GrantResults);

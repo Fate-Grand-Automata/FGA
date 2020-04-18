@@ -19,6 +19,8 @@ namespace FateGrandAutomata
         {
             SetPreferencesFromResource(Resource.Xml.support_preferences, RootKey);
 
+            AutoSkillSettingsFragment.SetupServantAndCEPrefs(this);
+
             MakeNumeric(Resource.String.pref_support_swipes_per_update);
             MakeNumeric(Resource.String.pref_support_max_updates);
         }
