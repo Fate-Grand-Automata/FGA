@@ -74,6 +74,8 @@ namespace FateGrandAutomata
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
+                    // Create a .nomedia file so the images won't be added to gallery apps
+                    File.Create(Path.Combine(dir, ".nomedia"));
                 }
 
                 return dir;
@@ -151,7 +153,7 @@ namespace FateGrandAutomata
             if (!RegionCachedPatterns.ContainsKey(Filename))
             {
                 var pattern = CreatePattern($"images.{Preferences.Instance.GameServer}.{Filename}");
-                
+
                 RegionCachedPatterns.Add(Filename, pattern);
             }
 
