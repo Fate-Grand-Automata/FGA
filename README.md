@@ -17,6 +17,8 @@ Battery optimizations can screw up the functionality of the app. App tries to di
 
 The icons are from https://materialdesignicons.com/
 
+The drag-sort logic on Card Priority screen is thanks to https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
+
 ## What to do about bugs?
 This is a lazy project (see how the commits are named :laughing:) and I'm a beginner in Android.
 I made it solely for the purpose of running on my phone.
