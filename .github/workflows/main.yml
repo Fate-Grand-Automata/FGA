@@ -1,0 +1,26 @@
+name: CI on Push and Pull Request
+
+on: 
+  push:
+    tags:
+    - '*'
+
+jobs:
+  Android:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Android
+      env:
+        GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
+        KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+      run: |
+        cd FateGrandAutomata/FateGrandAutomata
+        gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output
+fgautomata.keystore fgautomata.keystore.gpg
+        msbuild FateGrandAutomata.csproj /restore /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStrore=True /p:AndroidSigningKeyAlias=fgautomata /p:AndroidSigningKeyPass="$KEYSTORE_PASS" /p:AndriodSigningKeyStore=fgautomata.keystore
+    - name: Upload APK
+      uses: actions/upload-artifact@v1
+      with:
+        name: apk
+        path: FateGrandAutomata/FateGrandAutomata/bin/Release/com.mathewsachin.fategrandautomata-Signed.apk
