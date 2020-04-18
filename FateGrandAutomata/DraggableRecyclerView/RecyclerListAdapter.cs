@@ -68,7 +68,7 @@ namespace FateGrandAutomata
                 var colorInt = context.GetColor(colorRes);
                 itemViewHolder.TextView.SetTextColor(new Color(colorInt));
 
-                itemViewHolder.ItemView.Touch += (S, E) =>
+                itemViewHolder.ImageView.Touch += (S, E) =>
                 {
                     if (E.Event.ActionMasked == MotionEventActions.Down)
                     {

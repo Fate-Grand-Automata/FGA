@@ -10,13 +10,18 @@
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
     android:padding="10dip"
+    android:paddingLeft="20dip"
     android:textSize="16dip"/>
 
   <ImageView
+      android:id="@+id/card_priority_dragger"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_alignParentRight="true"
       android:foregroundGravity="center"
-      android:layout_margin="10dip"
+      android:paddingVertical="10dip"
+      android:paddingLeft="50dip"
+      android:paddingRight="20dip"
+      android:background="#01ffffff"
       android:src="@drawable/ic_hamburger"/>
 </RelativeLayout>

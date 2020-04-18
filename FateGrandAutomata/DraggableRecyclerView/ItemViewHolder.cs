@@ -9,9 +9,12 @@ namespace FateGrandAutomata
     {
         public TextView TextView { get; }
 
+        public ImageView ImageView { get; }
+
         public ItemViewHolder(View ItemView) : base(ItemView)
         {
             TextView = ItemView.FindViewById<TextView>(Resource.Id.card_priority_textview);
+            ImageView = ItemView.FindViewById<ImageView>(Resource.Id.card_priority_dragger);
         }
 
         public void OnItemSelected()
