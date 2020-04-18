@@ -13,6 +13,16 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Version Number
+      run: |
+        cd FateGrandAutomata/Properties
+        sed -i "s/android:versionCode=\"[^\"]*\"/android:versionCode=\"$GITHUB_RUN_NUMBER\"/g" AndroidManifest.xml
+        sed -i "s/android:versionName=\"[^\"]*\"/android:versionName=\"$GITHUB_RUN_NUMBER\"/g" AndroidManifest.xml
+    - name: Version Tag
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        cd FateGrandAutomata/Properties
+        sed -i "s/android:versionName=\"[^\"]*\"/android:versionName=\"${GITHUB_REF:10}\"/g" AndroidManifest.xml
     - name: Android
       env:
         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
