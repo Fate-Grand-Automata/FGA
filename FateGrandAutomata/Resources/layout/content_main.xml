@@ -17,14 +17,9 @@
     android:text="TOGGLE SERVICE"
     android:drawableLeft="@drawable/ic_launch"/>
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:gravity="center">
-    <FrameLayout
-      android:id="@+id/main_pref_frame"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
-  </LinearLayout>
+  <FrameLayout
+    android:id="@+id/main_pref_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 
 </LinearLayout>

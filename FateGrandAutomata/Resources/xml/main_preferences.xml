@@ -31,4 +31,10 @@
     app:icon="@drawable/ic_wand"
     app:summary="Manage Auto Skill"
     app:fragment="fgautomata.ManageAutoSkillSettingsFragment"/>
+
+  <Preference
+    app:key="more_options"
+    app:title="More options"
+    app:icon="@drawable/ic_dots_horizontal"
+    app:fragment="fgautomata.MoreSettingsFragment"/>
 </PreferenceScreen>

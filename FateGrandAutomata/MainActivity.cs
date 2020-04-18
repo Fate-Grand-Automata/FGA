@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Android;
 using Android.App;
 using Android.Content;
@@ -8,17 +7,17 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.App;
 using AndroidX.Core.Content;
+using AndroidX.Preference;
 using AlertDialog = Android.App.AlertDialog;
 
 namespace FateGrandAutomata
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity
+    public class MainActivity : AppCompatActivity, PreferenceFragmentCompat.IOnPreferenceStartFragmentCallback
     {
         protected override void OnCreate(Bundle SavedInstanceState)
         {
@@ -32,14 +31,13 @@ namespace FateGrandAutomata
             var serviceToggleBtn = FindViewById<Button>(Resource.Id.service_toggle_btn);
             serviceToggleBtn.Click += ServiceToggleBtnOnClick;
 
-            // Only on first launch
+            // Only once
             if (SavedInstanceState == null)
             {
                 SupportFragmentManager
                     .BeginTransaction()
                     .Replace(Resource.Id.main_pref_frame, new MainSettingsFragment())
                     .Commit();
-
                 CheckPermissions();
                 IgnoreBatteryOptimizations();
             }
@@ -79,11 +77,6 @@ namespace FateGrandAutomata
 
                 ScriptRunnerService.Instance.Start(Data);
             }
-        }
-
-        void OpenSettings()
-        {
-            StartActivity(typeof(SettingsActivity));
         }
 
         void CheckPermissions()
@@ -149,35 +142,6 @@ namespace FateGrandAutomata
             }
         }
 
-        public override bool OnCreateOptionsMenu(IMenu Menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.menu_main, Menu);
-            return base.OnCreateOptionsMenu(Menu);
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem Item)
-        {
-            switch (Item.ItemId)
-            {
-                case Resource.Id.action_settings:
-                    OpenSettings();
-                    return true;
-
-                case Resource.Id.action_extract_support_imgs:
-                    Toast.MakeText(this, "Extracting Images in background", ToastLength.Short).Show();
-
-                    Task.Run(ImageLocator.ExtractSupportImgs)
-                        .ContinueWith(M =>
-                        {
-                            RunOnUiThread(() => Toast.MakeText(this, "Support Images Extracted Successfully", ToastLength.Short).Show());
-                        });
-                    return true;
-
-                default:
-                    return base.OnOptionsItemSelected(Item);
-            }
-        }
-
         public override void OnRequestPermissionsResult(int RequestCode, string[] Permissions, [GeneratedEnum] Android.Content.PM.Permission[] GrantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(RequestCode, Permissions, GrantResults);
@@ -186,6 +150,28 @@ namespace FateGrandAutomata
         }
 
         const int RequestMediaProjection = 1;
+
+        public bool OnPreferenceStartFragment(PreferenceFragmentCompat Caller, Preference Pref)
+        {
+            var args = Pref.Extras;
+            var fragment = SupportFragmentManager
+                .FragmentFactory
+                .Instantiate(ClassLoader, Pref.Fragment);
+            fragment.Arguments = args;
+            fragment.SetTargetFragment(Caller, 0);
+
+            SupportFragmentManager
+                .BeginTransaction()
+                .SetCustomAnimations(Android.Resource.Animation.FadeIn,
+                    Android.Resource.Animation.FadeOut,
+                    Android.Resource.Animation.FadeIn,
+                    Android.Resource.Animation.FadeOut)
+                .Replace(Resource.Id.main_pref_frame, fragment)
+                .AddToBackStack(null)
+                .Commit();
+
+            return true;
+        }
     }
 }
 

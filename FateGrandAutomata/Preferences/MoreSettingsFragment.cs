@@ -1,10 +1,12 @@
 ﻿using Android.Content;
 using Android.OS;
+using Android.Runtime;
 using AndroidX.Preference;
 
 namespace FateGrandAutomata
 {
-    public class SettingsFragment : PreferenceFragmentCompat
+    [Register("fgautomata." + nameof(MoreSettingsFragment))]
+    public class MoreSettingsFragment : PreferenceFragmentCompat
     {
         public override void OnCreatePreferences(Bundle SavedInstanceState, string RootKey)
         {
