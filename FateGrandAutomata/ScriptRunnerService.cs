@@ -222,9 +222,22 @@ namespace FateGrandAutomata
                 (_screenWidth, _screenHeight) = (_screenHeight, _screenWidth);
             }
 
+            _layoutParams.Y = _screenWidth;
+
             _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
             _imgListener = new ImgListener(_imageReader);
             _imageReader.SetOnImageAvailableListener(_imgListener, null);
+        }
+
+        (int X, int Y) GetMaxBtnCoordinates()
+        {
+            var rotation = _windowManager.DefaultDisplay.Rotation;
+            var rotate = rotation == SurfaceOrientation.Rotation0 || rotation == SurfaceOrientation.Rotation180;
+
+            var x = (rotate ? _screenHeight : _screenWidth) - _layout.MeasuredWidth;
+            var y = (rotate ? _screenWidth : _screenHeight) - _layout.MeasuredHeight;
+
+            return (x, y);
         }
 
         void ScriptCtrlBtnOnTouch(object S, View.TouchEventArgs E)
@@ -232,8 +245,9 @@ namespace FateGrandAutomata
             switch (E.Event.ActionMasked)
             {
                 case MotionEventActions.Down:
-                    _dX = _layoutParams.X - E.Event.RawX;
-                    _dY = _layoutParams.Y - E.Event.RawY;
+                    var (maxX, maxY) = GetMaxBtnCoordinates();
+                    _dX = _layoutParams.X.Clip(0, maxX) - E.Event.RawX;
+                    _dY = _layoutParams.Y.Clip(0, maxY) - E.Event.RawY;
                     _lastAction = MotionEventActions.Down;
 
                     E.Handled = false;
@@ -247,8 +261,9 @@ namespace FateGrandAutomata
 
                     if (d > DragThreshold)
                     {
-                        _layoutParams.X = (int) Math.Round(newX);
-                        _layoutParams.Y = (int) Math.Round(newY);
+                        var (mX, mY) = GetMaxBtnCoordinates();
+                        _layoutParams.X = (int) Math.Round(newX).Clip(0, mX);
+                        _layoutParams.Y = (int) Math.Round(newY).Clip(0, mY);
 
                         _windowManager.UpdateViewLayout(_layout, _layoutParams);
 
