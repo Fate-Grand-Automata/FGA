@@ -1,3 +1,4 @@
+using System;
 using Android;
 using Android.AccessibilityServices;
 using Android.App;
@@ -200,7 +201,9 @@ namespace FateGrandAutomata
                 Flags = WindowManagerFlags.NotFocusable,
                 Width = ViewGroup.LayoutParams.WrapContent,
                 Height = ViewGroup.LayoutParams.WrapContent,
-                Gravity = GravityFlags.Left | GravityFlags.Bottom
+                Gravity = GravityFlags.Left | GravityFlags.Top,
+                X = 0,
+                Y = 0
             };
 
             var inflator = LayoutInflater.From(this);
@@ -217,6 +220,8 @@ namespace FateGrandAutomata
                 else StartScript();
             };
 
+            _scriptCtrlBtn.Touch += ScriptCtrlBtnOnTouch;
+
             MediaProjectionManager = (MediaProjectionManager)GetSystemService(MediaProjectionService);
 
             var metrics = new DisplayMetrics();
@@ -231,10 +236,66 @@ namespace FateGrandAutomata
                 (_screenWidth, _screenHeight) = (_screenHeight, _screenWidth);
             }
 
+            _layoutParams.Y = _screenWidth;
+
             _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
             _imgListener = new ImgListener(_imageReader);
             _imageReader.SetOnImageAvailableListener(_imgListener, null);
         }
+
+        (int X, int Y) GetMaxBtnCoordinates()
+        {
+            var rotation = _windowManager.DefaultDisplay.Rotation;
+            var rotate = rotation == SurfaceOrientation.Rotation0 || rotation == SurfaceOrientation.Rotation180;
+
+            var x = (rotate ? _screenHeight : _screenWidth) - _layout.MeasuredWidth;
+            var y = (rotate ? _screenWidth : _screenHeight) - _layout.MeasuredHeight;
+
+            return (x, y);
+        }
+
+        void ScriptCtrlBtnOnTouch(object S, View.TouchEventArgs E)
+        {
+            switch (E.Event.ActionMasked)
+            {
+                case MotionEventActions.Down:
+                    var (maxX, maxY) = GetMaxBtnCoordinates();
+                    _dX = _layoutParams.X.Clip(0, maxX) - E.Event.RawX;
+                    _dY = _layoutParams.Y.Clip(0, maxY) - E.Event.RawY;
+                    _lastAction = MotionEventActions.Down;
+
+                    E.Handled = false;
+                    break;
+
+                case MotionEventActions.Move:
+                    var newX = E.Event.RawX + _dX;
+                    var newY = E.Event.RawY + _dY;
+
+                    var d = Math.Sqrt(Math.Pow(newX - _layoutParams.X, 2) + Math.Pow(newY - _layoutParams.Y, 2));
+
+                    if (d > DragThreshold)
+                    {
+                        var (mX, mY) = GetMaxBtnCoordinates();
+                        _layoutParams.X = (int) Math.Round(newX).Clip(0, mX);
+                        _layoutParams.Y = (int) Math.Round(newY).Clip(0, mY);
+
+                        _windowManager.UpdateViewLayout(_layout, _layoutParams);
+
+                        _lastAction = MotionEventActions.Move;
+                    }
+
+                    E.Handled = true;
+                    break;
+
+                case MotionEventActions.Up:
+                    E.Handled = _lastAction == MotionEventActions.Move;
+                    break;
+            }
+        }
+
+        float _dX, _dY;
+        MotionEventActions _lastAction;
+        const int DragThreshold = 10;
 
         public IPattern AcquireLatestImage()
         {
