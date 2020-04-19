@@ -30,7 +30,7 @@ jobs:
       run: |
         cd FateGrandAutomata
         gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASS" --output fgautomata.keystore fgautomata.keystore.gpg
-        msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStrore=True /p:AndroidSigningKeyAlias=fgautomata /p:AndroidSigningKeyPass="$KEY_PASS" /p:AndriodSigningKeyStore=fgautomata.keystore
+        msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=True /p:AndroidSigningKeyAlias=fgautomata /p:AndroidSigningStorePass="$KEY_PASS" /p:AndroidSigningKeyPass="$KEY_PASS" /p:AndroidSigningKeyStore=fgautomata.keystore
     - name: Upload APK
       uses: actions/upload-artifact@v1
       with:
