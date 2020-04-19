@@ -25,12 +25,12 @@ jobs:
         sed -i -e "s/android:versionName=\"[^\"]*\"/android:versionName=\"${GITHUB_REF:10}\"/g" AndroidManifest.xml
     - name: Android
       env:
+        GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-        KEY_PASS: ${{ secrets.KEY_PASS }}
       run: |
         cd FateGrandAutomata
-        gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASS" --output fgautomata.keystore fgautomata.keystore.gpg
-        msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=True /p:AndroidSigningKeyAlias=fgautomata /p:AndroidSigningStorePass="$KEY_PASS" /p:AndroidSigningKeyPass="$KEY_PASS" /p:AndroidSigningKeyStore=fgautomata.keystore
+        gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
+        msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=True /p:AndroidSigningKeyAlias=fgautomata /p:AndroidSigningStorePass="$KEYSTORE_PASS" /p:AndroidSigningKeyPass="$KEYSTORE_PASS" /p:AndroidSigningKeyStore=fgautomata.keystore
     - name: Upload APK
       uses: actions/upload-artifact@v1
       with:
