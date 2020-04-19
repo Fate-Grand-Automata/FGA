@@ -77,7 +77,7 @@ namespace FateGrandAutomata
                     return SelectPreferred(searchmethod);
 
                 default:
-                    throw new ArgumentException("Invalid support selection mode");
+                    throw new ScriptExitException("Invalid support selection mode");
             }
 
             return false;
@@ -155,7 +155,7 @@ namespace FateGrandAutomata
                 return SelectPreferred(() => (FindFriendName(), null));
             }
 
-            throw new ArgumentException("When using 'friend' support selection mode, specify at least one friend name.");
+            throw new ScriptExitException("When using 'friend' support selection mode, specify at least one friend name.");
         }
 
         bool SelectPreferred(SearchFunction SearchMethod)
@@ -249,7 +249,7 @@ namespace FateGrandAutomata
                 return () => (FindCraftEssence(Game.SupportListRegion), null);
             }
 
-            throw new ArgumentException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.");
+            throw new ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.");
         }
 
         void ScrollList()
