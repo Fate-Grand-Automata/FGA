@@ -40,10 +40,10 @@ namespace FateGrandAutomata
                 list.SetEntryValues(entryValues);
                 list.SetEntries(entryLabels);
 
-                if (autoSkillItems.Count == 1)
-                {
-                    list.SetValueIndex(0);
-                }
+                key = GetString(Resource.String.pref_autoskill_selected);
+                var actual = prefManager.GetString(key, "");
+                list.Value = ""; // Force update
+                list.Value = actual;
             }
         }
 
@@ -55,8 +55,6 @@ namespace FateGrandAutomata
             {
                 manageAutoskill.PreferenceClick += (S, E) => StartActivity(new Intent(Activity, typeof(AutoSkillActivity)));
             }
-
-            Init();
         }
     }
 }
