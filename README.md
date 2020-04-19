@@ -5,6 +5,8 @@ Fate/Grand auto-battle app for Android.
 This is pretty much a C# port of [Fate-Grand-Order_Lua][FGOLua] but has an inbuilt Sikuli-like API.
 Also, includes a UI for configuring Settings.
 
+**Needs Android 7 or later**
+
 ## Why make another?
 Fate/Grand Order is all about farming.
 We already have an awesome auto battle script named [Fate-Grand-Order_Lua][FGOLua] which uses [AnkuLua](https://ankulua.boards.net/) (an implementation of [Sikuli](http://doc.sikuli.org/sikuli-script-index.html) using Lua language for scripting on Android).
@@ -22,11 +24,8 @@ The icons are from https://materialdesignicons.com/
 The drag-sort logic on Card Priority screen is thanks to https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
 
 ## What to do about bugs?
-This is a lazy project (see how the commits are named :laughing:) and I'm a beginner in Android.
-I made it solely for the purpose of running on my phone.
-You can use the code if you want, but I can't really help you to debug it on your phone if you face any problems.
 Debugging really is a pain due to FGO not allowing `Developer Mode` to be `ON` during execution.
-Though, I welcome contributions if you could figure out the cause of the problem.
+Use GitHub issues to report bugs and try to be specific about the problem. Also, list information like your phone's model number, screen size, Android version, whether you have a notch.
 
 **Note:** If your device has a notch, Don't rotate your screen when the script is running.
 
