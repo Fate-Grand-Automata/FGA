@@ -96,23 +96,21 @@ namespace FateGrandAutomata
                 .PutStringSet(autoskillItemsKeys, autoskillItems)
                 .Commit();
 
-            UnselectItem(AutoskillItemKey, prefs, autoskillItems);
+            UnselectItem(AutoskillItemKey, prefs);
 
             // We opened a separate activity for autoskill item
             Activity.Finish();
         }
 
-        void UnselectItem(string AutoskillItemKey, ISharedPreferences Prefs, IReadOnlyCollection<string> AutoskillItems)
+        void UnselectItem(string AutoskillItemKey, ISharedPreferences Prefs)
         {
             var selectedAutoskillKey = GetString(Resource.String.pref_autoskill_selected);
             var selectedAutoSkill = Prefs.GetString(selectedAutoskillKey, "");
 
             if (selectedAutoSkill == AutoskillItemKey)
             {
-                selectedAutoSkill = AutoskillItems.Count > 0 ? AutoskillItems.First() : "";
-
                 Prefs.Edit()
-                    .PutString(selectedAutoskillKey, selectedAutoSkill)
+                    .Remove(selectedAutoskillKey)
                     .Commit();
             }
         }

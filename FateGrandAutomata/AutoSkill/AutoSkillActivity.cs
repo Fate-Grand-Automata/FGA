@@ -88,17 +88,6 @@ namespace FateGrandAutomata
                 .PutStringSet(key, autoSkillItems)
                 .Commit();
 
-            // If first item, set as selected
-            key = GetString(Resource.String.pref_autoskill_selected);
-            var selectedAutoskill = prefs.GetString(key, "");
-            if (string.IsNullOrWhiteSpace(selectedAutoskill))
-            {
-                prefs
-                    .Edit()
-                    .PutString(key, guid)
-                    .Commit();
-            }
-
             EditItem(guid);
         }
     }
