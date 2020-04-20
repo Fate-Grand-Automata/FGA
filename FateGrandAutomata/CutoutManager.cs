@@ -61,7 +61,7 @@ namespace FateGrandAutomata
 
         static (int L, int T, int R, int B)? GetCutout(SurfaceOrientation Rotation)
         {
-            if (!GameAreaManager.AutoGameArea)
+            if (Preferences.Instance is { } pref && pref.IgnoreNotchCalculation)
                 return null;
 
             var cutout = _cutoutVal;

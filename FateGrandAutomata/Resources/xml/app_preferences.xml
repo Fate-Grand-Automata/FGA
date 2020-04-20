@@ -64,4 +64,10 @@
     app:icon="@drawable/ic_radio"
     app:summary="Unstable feature"
     app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_ignore_notch"
+    app:title="Ignore Notch calculation"
+    app:summary="Useful on Samsung phones"
+    app:defaultValue="false"/>
 </PreferenceScreen>

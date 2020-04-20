@@ -4,20 +4,9 @@
     {
         public static void Reset()
         {
-            ImmersiveMode = AutoGameArea = false;
             ScriptDimension = CompareDimension = null;
             _gameArea = null;
         }
-
-        /// <summary>
-        /// Set if we need to account for navbar above app.
-        /// </summary>
-        public static bool ImmersiveMode { get; set; }
-
-        /// <summary>
-        /// Automatically remove notch area from dimensions.
-        /// </summary>
-        public static bool AutoGameArea { get; set; }
 
         static Region _gameArea;
 
