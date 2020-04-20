@@ -36,5 +36,7 @@
         IFgoSupportPreferences Support { get; }
 
         IFgoRefillPreferences Refill { get; }
+
+        bool IgnoreNotchCalculation { get; }
     }
 }

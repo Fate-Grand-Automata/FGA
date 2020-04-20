@@ -19,7 +19,7 @@ namespace CoreAutomata
 
         public static Location operator *(Location Location, double Scale)
         {
-            return new Location((int)Math.Round(Location.X * Scale), (int)Math.Round(Location.Y * Scale));
+            return new Location((Location.X * Scale).Round(), (Location.Y * Scale).Round());
         }
 
         public override string ToString() => $"({X}, {Y})";

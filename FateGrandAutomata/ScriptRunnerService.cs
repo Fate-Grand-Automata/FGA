@@ -276,8 +276,8 @@ namespace FateGrandAutomata
                     if (d > DragThreshold)
                     {
                         var (mX, mY) = GetMaxBtnCoordinates();
-                        _layoutParams.X = (int) Math.Round(newX).Clip(0, mX);
-                        _layoutParams.Y = (int) Math.Round(newY).Clip(0, mY);
+                        _layoutParams.X = newX.Round().Clip(0, mX);
+                        _layoutParams.Y = newY.Round().Clip(0, mY);
 
                         _windowManager.UpdateViewLayout(_layout, _layoutParams);
 

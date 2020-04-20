@@ -102,5 +102,7 @@ namespace FateGrandAutomata
         public IFgoSupportPreferences Support { get; }
 
         public IFgoRefillPreferences Refill { get; }
+
+        public bool IgnoreNotchCalculation => GetBool(R.pref_ignore_notch);
     }
 }

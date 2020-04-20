@@ -47,10 +47,10 @@ namespace CoreAutomata
         public static Region operator *(Region Region, double Scale)
         {
             return new Region(
-                (int)Math.Round(Region.X * Scale),
-                (int)Math.Round(Region.Y * Scale),
-                (int)Math.Round(Region.W * Scale),
-                (int)Math.Round(Region.H * Scale));
+                (Region.X * Scale).Round(),
+                (Region.Y * Scale).Round(),
+                (Region.W * Scale).Round(),
+                (Region.H * Scale).Round());
         }
 
         public void Highlight(int Duration)

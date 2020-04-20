@@ -14,5 +14,9 @@ namespace CoreAutomata
 
             return Value;
         }
+
+        public static int Round(this double Value) => (int) Math.Round(Value);
+
+        public static int Round(this float Value) => (int) Math.Round(Value);
     }
 }
