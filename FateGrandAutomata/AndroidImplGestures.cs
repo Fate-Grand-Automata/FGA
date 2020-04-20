@@ -38,11 +38,11 @@ namespace FateGrandAutomata
             var holdPath = new Path();
             holdPath.MoveTo(End.X, End.Y);
 
-            swipeStroke.ContinueStroke(holdPath, 0, holdDuration, false);
+            var holdStroke = swipeStroke.ContinueStroke(holdPath, 0, holdDuration, false);
 
             var gestureBuilder = new GestureDescription.Builder();
             gestureBuilder.AddStroke(swipeStroke);
-
+            gestureBuilder.AddStroke(holdStroke);
             PerformGesture(gestureBuilder.Build());
         }
 
