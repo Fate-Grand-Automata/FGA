@@ -26,19 +26,19 @@ namespace FateGrandAutomata
 
         void ScrollAndroid8Plus(Location Start, Location End)
         {
-            const int duration = 300;
+            const int swipeDuration = 300;
             const int holdDuration = 300;
 
             var swipePath = new Path();
             swipePath.MoveTo(Start.X, Start.Y);
             swipePath.LineTo(End.X, End.Y);
 
-            var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, duration, true);
+            var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration, true);
 
             var holdPath = new Path();
             holdPath.MoveTo(End.X, End.Y);
 
-            var holdStroke = swipeStroke.ContinueStroke(holdPath, 0, holdDuration, false);
+            var holdStroke = swipeStroke.ContinueStroke(holdPath, swipeDuration, holdDuration, false);
 
             var gestureBuilder = new GestureDescription.Builder();
             gestureBuilder.AddStroke(swipeStroke);
