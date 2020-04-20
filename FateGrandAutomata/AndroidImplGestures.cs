@@ -1,13 +1,14 @@
 ﻿using System.Threading;
 using Android.AccessibilityServices;
 using Android.Graphics;
+using Android.OS;
 using CoreAutomata;
 
 namespace FateGrandAutomata
 {
     public partial class AndroidImpl
     {
-        public void Scroll(Location Start, Location End)
+        void ScrollAndroid7(Location Start, Location End)
         {
             const int duration = 300;
 
@@ -21,6 +22,37 @@ namespace FateGrandAutomata
             gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
 
             PerformGesture(gestureBuilder.Build());
+        }
+
+        void ScrollAndroid8Plus(Location Start, Location End)
+        {
+            const int duration = 300;
+            const int holdDuration = 300;
+
+            var swipePath = new Path();
+            swipePath.MoveTo(Start.X, Start.Y);
+            swipePath.LineTo(End.X, End.Y);
+
+            var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, duration, true);
+
+            var holdPath = new Path();
+            holdPath.MoveTo(End.X, End.Y);
+
+            swipeStroke.ContinueStroke(holdPath, 0, holdDuration, false);
+
+            var gestureBuilder = new GestureDescription.Builder();
+            gestureBuilder.AddStroke(swipeStroke);
+
+            PerformGesture(gestureBuilder.Build());
+        }
+
+        public void Scroll(Location Start, Location End)
+        {
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                ScrollAndroid8Plus(Start, End);
+            }
+            else ScrollAndroid7(Start, End);
         }
 
         public void Click(Location Location)
