@@ -46,7 +46,7 @@ namespace FateGrandAutomata
         {
             var result = new Mat();
 
-            Imgproc.Resize(Mat, result, new Org.Opencv.Core.Size(Size.Width, Size.Height));
+            Imgproc.Resize(Mat, result, new Org.Opencv.Core.Size(Size.Width, Size.Height), 0, 0, Imgproc.InterArea);
 
             return new DroidCvPattern(result);
         }
