@@ -8,51 +8,41 @@ namespace FateGrandAutomata
 {
     public partial class AndroidImpl
     {
-        void ScrollAndroid7(Location Start, Location End)
-        {
-            const int duration = 300;
-
-            var swipePath = new Path();
-            swipePath.MoveTo(Start.X, Start.Y);
-
-            var center = new Location((Start.X + End.X) / 2, (Start.Y + End.Y) / 2);
-            swipePath.LineTo(center.X, center.Y);
-
-            var gestureBuilder = new GestureDescription.Builder();
-            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
-
-            PerformGesture(gestureBuilder.Build());
-        }
-
-        void ScrollAndroid8Plus(Location Start, Location End)
+        public void Scroll(Location Start, Location End)
         {
             const int swipeDuration = 300;
             const int holdDuration = 300;
 
-            var swipePath = new Path();
-            swipePath.MoveTo(Start.X, Start.Y);
-            swipePath.LineTo(End.X, End.Y);
-
-            var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration, true);
-
-            var holdPath = new Path();
-            holdPath.MoveTo(End.X, End.Y);
-
-            var holdStroke = swipeStroke.ContinueStroke(holdPath, swipeDuration, holdDuration, false);
-
             var gestureBuilder = new GestureDescription.Builder();
-            gestureBuilder.AddStroke(swipeStroke);
-            gestureBuilder.AddStroke(holdStroke);
-            PerformGesture(gestureBuilder.Build());
-        }
 
-        public void Scroll(Location Start, Location End)
-        {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
-                ScrollAndroid8Plus(Start, End);
+                // Android 8+ detected, we can use ContinueStroke
+                var swipePath = new Path();
+                swipePath.MoveTo(Start.X, Start.Y);
+                swipePath.LineTo(End.X, End.Y);
+
+                var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration, true);
+                gestureBuilder.AddStroke(swipeStroke);
+
+                // keep the "finger" pressed on the end position for a while
+                var holdStroke = swipeStroke.ContinueStroke(new Path(), swipeDuration, holdDuration, false);
+                gestureBuilder.AddStroke(holdStroke);
             }
-            else ScrollAndroid7(Start, End);
+            else
+            {
+                // Android 7 does not support ContinueStroke, so the only solution is to swipe for half of the intended length
+                var center = new Location((Start.X + End.X) / 2, (Start.Y + End.Y) / 2);
+
+                var swipePath = new Path();
+                swipePath.MoveTo(Start.X, Start.Y);
+                swipePath.LineTo(center.X, center.Y);
+
+                var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration);
+                gestureBuilder.AddStroke(swipeStroke);
+            }
+
+            PerformGesture(gestureBuilder.Build());
         }
 
         public void Click(Location Location)
