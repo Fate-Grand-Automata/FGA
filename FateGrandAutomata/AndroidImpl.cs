@@ -32,11 +32,13 @@ namespace FateGrandAutomata
 
             var swipePath = new Path();
             swipePath.MoveTo(Start.X, Start.Y);
-            swipePath.LineTo(End.X, End.Y);
-            
+
+            var center = new Location((Start.X + End.X) / 2, (Start.Y + End.Y) / 2);
+            swipePath.LineTo(center.X, center.Y);
+
             var gestureBuilder = new GestureDescription.Builder();
             gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
-            
+
             PerformGesture(gestureBuilder.Build());
         }
 
@@ -59,28 +61,6 @@ namespace FateGrandAutomata
             gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
 
             PerformGesture(gestureBuilder.Build());
-        }
-
-        class GestureCompletedCallback : AccessibilityService.GestureResultCallback
-        {
-            readonly ManualResetEventSlim _event;
-
-            public GestureCompletedCallback(ManualResetEventSlim Event)
-            {
-                _event = Event;
-            }
-
-            public override void OnCompleted(GestureDescription GestureDescription)
-            {
-                _event.Set();
-                base.OnCompleted(GestureDescription);
-            }
-
-            public override void OnCancelled(GestureDescription GestureDescription)
-            {
-                _event.Set();
-                base.OnCancelled(GestureDescription);
-            }
         }
 
         readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();

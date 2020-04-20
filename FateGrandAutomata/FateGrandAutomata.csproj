@@ -83,6 +83,7 @@
     <Compile Include="DraggableRecyclerView\ItemTouchHelperCallback.cs" />
     <Compile Include="DraggableRecyclerView\RecyclerListAdapter.cs" />
     <Compile Include="DroidCvPattern.cs" />
+    <Compile Include="GestureCompletedCallback.cs" />
     <Compile Include="Preferences\MainSettingsFragment.cs" />
     <Compile Include="ScriptRunnerService.cs" />
     <Compile Include="ImgListener.cs" />
