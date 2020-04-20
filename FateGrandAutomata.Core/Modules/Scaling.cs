@@ -17,8 +17,8 @@ namespace FateGrandAutomata
 
         static (int Width, int Height) Scale(int OriginalWidth, int OriginalHeight, double Rate)
         {
-            var w = (int) Math.Round(OriginalWidth * Rate);
-            var h = (int) Math.Round(OriginalHeight * Rate);
+            var w = (OriginalWidth * Rate).Round();
+            var h = (OriginalHeight * Rate).Round();
 
             return (w, h);
         }
@@ -27,7 +27,7 @@ namespace FateGrandAutomata
         {
             var size = Math.Abs(Outer - Inner);
 
-            return (int) Math.Round(size / 2.0);
+            return (size / 2.0).Round();
         }
 
         static Region CalculateGameAreaWithoutBorders(int ScriptWidth,

@@ -16,7 +16,7 @@ namespace CoreAutomata
 
         public static Size operator *(Size Size, double Scale)
         {
-            return new Size((int)Math.Round(Size.Width * Scale), (int)Math.Round(Size.Height * Scale));
+            return new Size((Size.Width * Scale).Round(), (Size.Height * Scale).Round());
         }
 
         public override string ToString() => $"{Width}x{Height}";
