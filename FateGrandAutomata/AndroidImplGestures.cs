@@ -26,7 +26,9 @@ namespace FateGrandAutomata
                 gestureBuilder.AddStroke(swipeStroke);
 
                 // keep the "finger" pressed on the end position for a while
-                var holdStroke = swipeStroke.ContinueStroke(new Path(), swipeDuration, holdDuration, false);
+                var holdPath = new Path();
+                holdPath.MoveTo(End.X, End.Y);
+                var holdStroke = swipeStroke.ContinueStroke(holdPath, swipeDuration, holdDuration, false);
                 gestureBuilder.AddStroke(holdStroke);
             }
             else
