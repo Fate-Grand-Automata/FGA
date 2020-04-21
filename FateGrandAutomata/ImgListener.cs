@@ -94,6 +94,7 @@ namespace FateGrandAutomata
                 : _readBitmap;
 
             Org.Opencv.Android.Utils.BitmapToMat(correctedBitmap, _convertedMat);
+            correctedBitmap.Recycle();
 
             Imgproc.CvtColor(_convertedMat, _colorCorrectedMat, Imgproc.ColorRgba2gray);
 
