@@ -31,7 +31,7 @@ namespace FateGrandAutomata
 
             using var raw = new MatOfByte(buffer);
 
-            Mat = Imgcodecs.Imdecode(raw, Imgcodecs.CvLoadImageColor);
+            Mat = Imgcodecs.Imdecode(raw, Imgcodecs.CvLoadImageGrayscale);
         }
 
         public Mat Mat { get; }

@@ -95,7 +95,7 @@ namespace FateGrandAutomata
 
             Org.Opencv.Android.Utils.BitmapToMat(correctedBitmap, _convertedMat);
 
-            Imgproc.CvtColor(_convertedMat, _colorCorrectedMat, Imgproc.ColorRgba2bgr);
+            Imgproc.CvtColor(_convertedMat, _colorCorrectedMat, Imgproc.ColorRgba2gray);
 
             return new DroidCvPattern(_colorCorrectedMat, false);
         }
