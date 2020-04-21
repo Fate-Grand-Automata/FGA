@@ -178,7 +178,7 @@ namespace FateGrandAutomata
 
         public static IPattern Friend => GetRegionPattern("friend.png");
 
-        public static IPattern LimitBroken => GetRegionPattern("limitBroken.png");
+        public static IPattern LimitBroken => GetRegionPattern("limitbroken.png");
 
         public static IPattern SupportScreen => GetRegionPattern("support_screen.png");
 
