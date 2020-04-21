@@ -2,7 +2,7 @@
 {
     static class TransformationExtensions
     {
-        static double? ScreenToImageScale()
+        public static double? ScreenToImageScale()
         {
             var targetDimensions = GameAreaManager.CompareDimension ?? GameAreaManager.ScriptDimension;
 
@@ -29,15 +29,6 @@
             }
 
             return targetDimensions.Pixels / (double) gameArea.H;
-        }
-
-        public static IPattern Transform(this IPattern Pattern)
-        {
-            var scale = ScreenToImageScale();
-
-            return scale == null
-                ? Pattern
-                : Pattern.Resize(new Size(Pattern.Width, Pattern.Height) * scale.Value);
         }
 
         public static Location Transform(this Location Location)

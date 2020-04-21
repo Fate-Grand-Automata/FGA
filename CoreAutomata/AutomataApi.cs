@@ -162,6 +162,8 @@ namespace CoreAutomata
                 });
         }
 
+        public static IPattern GetResizableBlankPattern() => _platformImpl.GetResizableBlankPattern();
+
         public static void Toast(string Msg) => _platformImpl?.Toast(Msg);
 
         public static void ContinueClick(Location Location, int Times)

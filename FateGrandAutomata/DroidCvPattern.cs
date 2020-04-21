@@ -15,6 +15,8 @@ namespace FateGrandAutomata
     {
         readonly bool _ownsMat = true;
 
+        public DroidCvPattern() : this(new Mat()) { }
+
         public DroidCvPattern(Mat Mat, bool OwnsMat = true)
         {
             this.Mat = Mat;
@@ -46,9 +48,22 @@ namespace FateGrandAutomata
         {
             var result = new Mat();
 
-            Imgproc.Resize(Mat, result, new Org.Opencv.Core.Size(Size.Width, Size.Height), 0, 0, Imgproc.InterArea);
+            Resize(result, Size);
 
             return new DroidCvPattern(result);
+        }
+
+        void Resize(Mat Target, Size Size)
+        {
+            Imgproc.Resize(Mat, Target, new Org.Opencv.Core.Size(Size.Width, Size.Height), 0, 0, Imgproc.InterArea);
+        }
+
+        public void Resize(IPattern Target, Size Size)
+        {
+            if (Target is DroidCvPattern target)
+            {
+                Resize(target.Mat, Size);
+            }
         }
 
         public IPattern Crop(Region Region)

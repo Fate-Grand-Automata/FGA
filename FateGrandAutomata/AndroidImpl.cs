@@ -43,6 +43,11 @@ namespace FateGrandAutomata
             return new DroidCvPattern(Stream);
         }
 
+        public IPattern GetResizableBlankPattern()
+        {
+            return new DroidCvPattern();
+        }
+
         public void MessageBox(string Title, string Message)
         {
             _handler.Value.Post(() =>
