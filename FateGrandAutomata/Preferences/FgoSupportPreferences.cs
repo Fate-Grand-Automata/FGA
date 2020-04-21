@@ -19,11 +19,27 @@ namespace FateGrandAutomata
 
         public string FriendNames => _preferences.GetString(R.pref_support_friend_names);
 
+        int GetAutoskillPreferredServantCount()
+        {
+            var prefs = _preferences.GetPreferencesForSelectedAutoSkill();
+
+            if (prefs == null)
+            {
+                return 0;
+            }
+
+            var servants = prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
+
+            return servants.Count;
+        }
+
         public string PreferredServants
         {
             get
             {
-                var prefs = _preferences.GetPreferencesForSelectedAutoSkill() ?? _preferences.DefaultPrefs;
+                var prefs = GetAutoskillPreferredServantCount() > 0
+                    ? _preferences.GetPreferencesForSelectedAutoSkill()
+                    : _preferences.DefaultPrefs;
 
                 var servantSet =
                     prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
@@ -56,11 +72,27 @@ namespace FateGrandAutomata
             }
         }
 
+        int GetAutoskillPreferredCEsCount()
+        {
+            var prefs = _preferences.GetPreferencesForSelectedAutoSkill();
+
+            if (prefs == null)
+            {
+                return 0;
+            }
+
+            var ces = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
+
+            return ces.Count;
+        }
+
         public string PreferredCEs
         {
             get
             {
-                var prefs = _preferences.GetPreferencesForSelectedAutoSkill() ?? _preferences.DefaultPrefs;
+                var prefs = GetAutoskillPreferredCEsCount() > 0
+                    ? _preferences.GetPreferencesForSelectedAutoSkill()
+                    : _preferences.DefaultPrefs;
 
                 var ceSet = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
 
@@ -90,17 +122,12 @@ namespace FateGrandAutomata
         {
             get
             {
-                var prefs = _preferences.GetPreferencesForSelectedAutoSkill();
+                var servants = GetAutoskillPreferredServantCount();
+                var ces = GetAutoskillPreferredCEsCount();
 
-                if (prefs != null)
+                if (servants > 0 || ces > 0)
                 {
-                    var servants = prefs.GetStringSet(_context.GetString(R.pref_support_pref_servant), new List<string>());
-                    var ces = prefs.GetStringSet(_context.GetString(R.pref_support_pref_ce), new List<string>());
-
-                    if (servants.Count > 0 || ces.Count > 0)
-                    {
-                        return SupportSelectionMode.Preferred;
-                    }
+                    return SupportSelectionMode.Preferred;
                 }
 
                 return _preferences.GetEnum<SupportSelectionMode>(R.pref_support_mode);
