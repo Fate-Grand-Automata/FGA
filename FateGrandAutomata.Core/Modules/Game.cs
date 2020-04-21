@@ -49,13 +49,7 @@ namespace FateGrandAutomata
         public static Location SupportSwipeStartClick { get; } = new Location(35, 1190);
         public static Region SupportFriendsRegion { get; } = new Region(448, 332, 1210, 1091);
 
-        public static Location SupportSwipeEndClick => Preferences.Instance.GameServer switch
-        {
-            GameServer.En => new Location(35, 390),
-            GameServer.Jp => new Location(35, 350),
-            GameServer.Cn => new Location(35, 390),
-            GameServer.Tw => new Location(35, 390)
-        };
+        public static Location SupportSwipeEndClick { get; } = new Location(35, 390);
 
         public static Region[] SupportListItemRegionArray { get;  } =
         {
