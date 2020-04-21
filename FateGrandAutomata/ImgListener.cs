@@ -87,14 +87,16 @@ namespace FateGrandAutomata
                 _readBitmap = Bitmap.CreateBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.Argb8888);
             }
 
-            _readBitmap.CopyPixelsFromBuffer(buffer); 
+            _readBitmap.CopyPixelsFromBuffer(buffer);
 
-            var correctedBitmap = _cropRequired
-                ? Bitmap.CreateBitmap(_readBitmap, 0, 0, width, height)
-                : _readBitmap;
-
-            Org.Opencv.Android.Utils.BitmapToMat(correctedBitmap, _convertedMat);
-            correctedBitmap.Recycle();
+            if (_cropRequired)
+            {
+                var correctedBitmap = Bitmap.CreateBitmap(_readBitmap, 0, 0, width, height);
+                Org.Opencv.Android.Utils.BitmapToMat(correctedBitmap, _convertedMat);
+                // if a new Bitmap was created, we need to tell the Garbage Collector to delete it immediately
+                correctedBitmap.Recycle();
+            }
+            else Org.Opencv.Android.Utils.BitmapToMat(_readBitmap, _convertedMat);
 
             Imgproc.CvtColor(_convertedMat, _colorCorrectedMat, Imgproc.ColorRgba2gray);
 
