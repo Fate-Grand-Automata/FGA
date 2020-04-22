@@ -15,6 +15,8 @@ namespace FateGrandAutomata
     {
         readonly bool _ownsMat = true;
 
+        public DroidCvPattern() : this(new Mat()) { }
+
         public DroidCvPattern(Mat Mat, bool OwnsMat = true)
         {
             this.Mat = Mat;
@@ -29,7 +31,7 @@ namespace FateGrandAutomata
 
             using var raw = new MatOfByte(buffer);
 
-            Mat = Imgcodecs.Imdecode(raw, Imgcodecs.CvLoadImageColor);
+            Mat = Imgcodecs.Imdecode(raw, Imgcodecs.CvLoadImageGrayscale);
         }
 
         public Mat Mat { get; }
@@ -46,9 +48,22 @@ namespace FateGrandAutomata
         {
             var result = new Mat();
 
-            Imgproc.Resize(Mat, result, new Org.Opencv.Core.Size(Size.Width, Size.Height), 0, 0, Imgproc.InterArea);
+            Resize(result, Size);
 
             return new DroidCvPattern(result);
+        }
+
+        void Resize(Mat Target, Size Size)
+        {
+            Imgproc.Resize(Mat, Target, new Org.Opencv.Core.Size(Size.Width, Size.Height), 0, 0, Imgproc.InterArea);
+        }
+
+        public void Resize(IPattern Target, Size Size)
+        {
+            if (Target is DroidCvPattern target)
+            {
+                Resize(target.Mat, Size);
+            }
         }
 
         public IPattern Crop(Region Region)
@@ -77,11 +92,11 @@ namespace FateGrandAutomata
 
         public bool IsMatch(IPattern Template, double Similarity)
         {
-            using var result = new Mat();
+            using var result = new DisposableMat();
 
-            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmCcoeffNormed);
+            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result.Mat, Imgproc.TmCcoeffNormed);
 
-            using var minMaxLocResult = Core.MinMaxLoc(result);
+            using var minMaxLocResult = Core.MinMaxLoc(result.Mat);
 
             return minMaxLocResult.MaxVal >= Similarity;
         }
@@ -92,16 +107,16 @@ namespace FateGrandAutomata
 
         public IEnumerable<Match> FindMatches(IPattern Template, double Similarity)
         {
-            using var result = new Mat();
+            using var result = new DisposableMat();
 
             // max is used for tmccoeff
-            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result, Imgproc.TmCcoeffNormed);
+            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result.Mat, Imgproc.TmCcoeffNormed);
 
-            Imgproc.Threshold(result, result, 0.1, 1, Imgproc.ThreshTozero);
+            Imgproc.Threshold(result.Mat, result.Mat, 0.1, 1, Imgproc.ThreshTozero);
 
             while (true)
             {
-                using var minMaxLocResult = Core.MinMaxLoc(result);
+                using var minMaxLocResult = Core.MinMaxLoc(result.Mat);
                 var score = minMaxLocResult.MaxVal;
 
                 if (score >= Similarity)
@@ -111,10 +126,10 @@ namespace FateGrandAutomata
 
                     yield return new Match(region, score);
 
-                    using var mask = new Mat();
+                    using var mask = new DisposableMat();
                     // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
                     const double floodFillDiff = 0.05;
-                    Imgproc.FloodFill(result, mask, loc, new Scalar(0),
+                    Imgproc.FloodFill(result.Mat, mask.Mat, loc, new Scalar(0),
                         new Rect(),
                         new Scalar(floodFillDiff), new Scalar(floodFillDiff),
                         0);

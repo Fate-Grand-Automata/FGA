@@ -18,6 +18,8 @@ namespace CoreAutomata
 
         IPattern LoadPattern(Stream Stream);
 
+        IPattern GetResizableBlankPattern();
+
         void MessageBox(string Title, string Message);
     }
 }
