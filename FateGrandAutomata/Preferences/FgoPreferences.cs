@@ -80,7 +80,9 @@ namespace FateGrandAutomata
             }
         }
 
-        public string BattleCardPriority => GetString(R.pref_card_priority, "BAQ");
+        public string BattleCardPriority => GetString(R.pref_card_priority, DefaultCardPriority);
+
+        public const string DefaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ";
 
         public BattleNoblePhantasmType BattleNoblePhantasm => GetEnum<BattleNoblePhantasmType>(R.pref_battle_np);
 
