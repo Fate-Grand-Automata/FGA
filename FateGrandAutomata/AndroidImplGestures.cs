@@ -70,7 +70,7 @@ namespace FateGrandAutomata
 
             _accessibilityService.DispatchGesture(Gesture, new GestureCompletedCallback(_gestureWaitHandle), null);
 
-            if (WaitTime > 0.0)
+            if (WaitTime > 0)
             {
                 AutomataApi.Wait(WaitTime);
             }
@@ -93,7 +93,7 @@ namespace FateGrandAutomata
                 var gestureBuilder = new GestureDescription.Builder()
                     .AddStroke(stroke);
 
-                PerformGesture(gestureBuilder.Build(), 0.0);
+                PerformGesture(gestureBuilder.Build(), 0);
             }
         }
     }
