@@ -21,12 +21,12 @@ namespace FateGrandAutomata
 
             var preferences = PreferenceManager.GetDefaultSharedPreferences(this);
             var key = GetString(Resource.String.pref_card_priority);
-            var cardPriority = preferences.GetString(key, DefaultCardPriority);
+            var cardPriority = preferences.GetString(key, FgoPreferences.DefaultCardPriority);
 
             // Handle simple mode and empty string
             if (cardPriority.Length == 3 || string.IsNullOrWhiteSpace(cardPriority))
             {
-                cardPriority = DefaultCardPriority;
+                cardPriority = FgoPreferences.DefaultCardPriority;
             }
 
             _cardScores = Card.GetCardScores(cardPriority).ToList();
@@ -78,7 +78,6 @@ namespace FateGrandAutomata
 
         List<CardScore> _cardScores;
 
-        const string DefaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ";
         public void OnStartDrag(RecyclerView.ViewHolder ViewHolder)
         {
             _itemTouchHelper?.StartDrag(ViewHolder);

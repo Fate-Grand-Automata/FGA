@@ -26,7 +26,7 @@ namespace FateGrandAutomata
             {
                 var preferences = PreferenceManager.GetDefaultSharedPreferences(Activity);
                 var key = GetString(Resource.String.pref_card_priority);
-                pref.Summary = preferences.GetString(key, "");
+                pref.Summary = preferences.GetString(key, FgoPreferences.DefaultCardPriority);
             }
         }
     }
