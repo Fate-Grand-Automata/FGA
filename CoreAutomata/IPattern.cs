@@ -7,6 +7,8 @@ namespace CoreAutomata
     {
         IPattern Resize(Size Size);
 
+        void Resize(IPattern Target, Size Size);
+
         bool IsMatch(IPattern Template, double Similarity);
 
         IEnumerable<Match> FindMatches(IPattern Template, double Similarity);

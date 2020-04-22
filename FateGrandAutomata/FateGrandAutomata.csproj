@@ -77,6 +77,7 @@
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
     <Compile Include="AutoSkill\MultiSelectListSummaryProvider.cs" />
     <Compile Include="CutoutManager.cs" />
+    <Compile Include="DisposableMat.cs" />
     <Compile Include="DraggableRecyclerView\ItemViewHolder.cs" />
     <Compile Include="DraggableRecyclerView\IItemTouchHelperAdapter.cs" />
     <Compile Include="DraggableRecyclerView\IItemTouchHelperViewHolder.cs" />
