@@ -1,0 +1,2 @@
+# Running on Samsung devices
+
