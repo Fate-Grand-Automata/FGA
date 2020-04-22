@@ -44,7 +44,8 @@ namespace FateGrandAutomata
                 gestureBuilder.AddStroke(swipeStroke);
             }
 
-            PerformGesture(gestureBuilder.Build());
+            const double scrollWaitTime = 0.7;
+            PerformGesture(gestureBuilder.Build(), scrollWaitTime);
         }
 
         public void Click(Location Location)
@@ -57,26 +58,25 @@ namespace FateGrandAutomata
             var gestureBuilder = new GestureDescription.Builder();
             gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
 
-            PerformGesture(gestureBuilder.Build());
+            const double clickWaitTime = 0.4;
+            PerformGesture(gestureBuilder.Build(), clickWaitTime);
         }
 
         readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
 
-        void PerformGesture(GestureDescription Gesture, bool DoWait = true)
+        void PerformGesture(GestureDescription Gesture, double WaitTime)
         {
             _gestureWaitHandle.Reset();
 
             _accessibilityService.DispatchGesture(Gesture, new GestureCompletedCallback(_gestureWaitHandle), null);
 
-            if (DoWait)
+            if (WaitTime > 0.0)
             {
-                AutomataApi.Wait(GestureWait);
+                AutomataApi.Wait(WaitTime);
             }
 
             _gestureWaitHandle.Wait();
         }
-
-        const double GestureWait = 0.3;
 
         public void ContinueClick(Location Location, int Times)
         {
@@ -93,7 +93,7 @@ namespace FateGrandAutomata
                 var gestureBuilder = new GestureDescription.Builder()
                     .AddStroke(stroke);
 
-                PerformGesture(gestureBuilder.Build(), false);
+                PerformGesture(gestureBuilder.Build(), 0.0);
             }
         }
     }
