@@ -10346,19 +10346,22 @@ namespace FateGrandAutomata
 			public const int autoskill_preferences = 2131820546;
 			
 			// aapt resource value: 0x7F110003
-			public const int main_preferences = 2131820547;
+			public const int backup_rules = 2131820547;
 			
 			// aapt resource value: 0x7F110004
-			public const int refill_preferences = 2131820548;
+			public const int main_preferences = 2131820548;
 			
 			// aapt resource value: 0x7F110005
-			public const int script_runner_service = 2131820549;
+			public const int refill_preferences = 2131820549;
 			
 			// aapt resource value: 0x7F110006
-			public const int support_preferences = 2131820550;
+			public const int script_runner_service = 2131820550;
 			
 			// aapt resource value: 0x7F110007
-			public const int xamarin_essentials_fileprovider_file_paths = 2131820551;
+			public const int support_preferences = 2131820551;
+			
+			// aapt resource value: 0x7F110008
+			public const int xamarin_essentials_fileprovider_file_paths = 2131820552;
 			
 			static Xml()
 			{
