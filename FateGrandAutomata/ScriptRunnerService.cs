@@ -295,7 +295,7 @@ namespace FateGrandAutomata
 
         float _dX, _dY;
         MotionEventActions _lastAction;
-        const int DragThreshold = 30;
+        const int DragThreshold = 70;
 
         public IPattern AcquireLatestImage()
         {
