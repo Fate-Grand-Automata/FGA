@@ -80,7 +80,7 @@ namespace FateGrandAutomata
             GameServer.Tw => new Region(1710, 25, 55, 60)
         };
 
-        public static Location BattleExtrainfoWindowCloseClick { get; } = new Location(2550, 0);
+        public static Location BattleExtrainfoWindowCloseClick { get; } = new Location(2550, 10);
         public static Location BattleAttackClick { get; } = new Location(2300, 1200);
         public static Location BattleSkipDeathAnimationClick { get; } = new Location(1700, 100); // see docs/skip_death_animation_click.png
 
