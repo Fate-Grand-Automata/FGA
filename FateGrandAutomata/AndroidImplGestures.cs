@@ -44,36 +44,35 @@ namespace FateGrandAutomata
                 gestureBuilder.AddStroke(swipeStroke);
             }
 
+            PerformGesture(gestureBuilder.Build());
+
             const double scrollWaitTime = 0.7;
-            PerformGesture(gestureBuilder.Build(), scrollWaitTime);
+            AutomataApi.Wait(scrollWaitTime);
         }
 
         public void Click(Location Location)
         {
-            const int duration = 1;
+            const int duration = 50;
 
             var swipePath = new Path();
             swipePath.MoveTo(Location.X, Location.Y);
 
             var gestureBuilder = new GestureDescription.Builder();
             gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
-
-            const double clickWaitTime = 0.4;
-            PerformGesture(gestureBuilder.Build(), clickWaitTime);
+            
+            PerformGesture(gestureBuilder.Build());
+            
+            const double clickWaitTime = 0.3;
+            AutomataApi.Wait(clickWaitTime);
         }
 
         readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
 
-        void PerformGesture(GestureDescription Gesture, double WaitTime)
+        void PerformGesture(GestureDescription Gesture)
         {
             _gestureWaitHandle.Reset();
 
             _accessibilityService.DispatchGesture(Gesture, new GestureCompletedCallback(_gestureWaitHandle), null);
-
-            if (WaitTime > 0)
-            {
-                AutomataApi.Wait(WaitTime);
-            }
 
             _gestureWaitHandle.Wait();
         }
@@ -93,7 +92,7 @@ namespace FateGrandAutomata
                 var gestureBuilder = new GestureDescription.Builder()
                     .AddStroke(stroke);
 
-                PerformGesture(gestureBuilder.Build(), 0);
+                PerformGesture(gestureBuilder.Build());
             }
         }
     }
