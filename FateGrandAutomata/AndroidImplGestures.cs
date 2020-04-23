@@ -33,12 +33,14 @@ namespace FateGrandAutomata
             }
             else
             {
-                const double fraction = 1 / 1.5;
-
                 // Android 7 does not support ContinueStroke, so the only solution is to swipe for a fraction of the intended length
+                const double fraction = 1 / 1.5;
                 var x = Start.X + (End.X - Start.X) * fraction;
                 var y = Start.Y + (End.Y - Start.Y) * fraction;
                 var end = new Location(x.Round(), y.Round());
+
+                // Let's swipe a bit to the left so that any servant loses focus
+                end.X = 5;
 
                 var swipePath = new Path();
                 swipePath.MoveTo(Start.X, Start.Y);
