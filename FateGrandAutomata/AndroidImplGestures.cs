@@ -12,6 +12,7 @@ namespace FateGrandAutomata
         {
             const int swipeDuration = 300;
             const int holdDuration = 300;
+            const double scrollWaitTime = 0.7;
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
@@ -21,6 +22,8 @@ namespace FateGrandAutomata
                 swipePath.LineTo(End.X, End.Y);
                 var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration, true);
                 PerformGesture(swipeStroke);
+
+                AutomataApi.Wait(scrollWaitTime);
 
                 // keep the "finger" pressed on the end position for a while
                 var holdPath = new Path();
@@ -46,7 +49,6 @@ namespace FateGrandAutomata
                 PerformGesture(swipeStroke);
             }
 
-            const double scrollWaitTime = 0.7;
             AutomataApi.Wait(scrollWaitTime);
         }
 
