@@ -273,8 +273,10 @@ namespace FateGrandAutomata
 
                     var d = Math.Sqrt(Math.Pow(newX - _layoutParams.X, 2) + Math.Pow(newY - _layoutParams.Y, 2));
 
-                    if (d > DragThreshold)
+                    if (_dragging || d > DragThreshold)
                     {
+                        _dragging = true;
+
                         var (mX, mY) = GetMaxBtnCoordinates();
                         _layoutParams.X = newX.Round().Clip(0, mX);
                         _layoutParams.Y = newY.Round().Clip(0, mY);
@@ -289,13 +291,15 @@ namespace FateGrandAutomata
 
                 case MotionEventActions.Up:
                     E.Handled = _lastAction == MotionEventActions.Move;
+                    _dragging = false;
                     break;
             }
         }
 
         float _dX, _dY;
+        bool _dragging;
         MotionEventActions _lastAction;
-        const int DragThreshold = 70;
+        const int DragThreshold = 100;
 
         public IPattern AcquireLatestImage()
         {
