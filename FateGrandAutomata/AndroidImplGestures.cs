@@ -33,12 +33,16 @@ namespace FateGrandAutomata
             }
             else
             {
-                // Android 7 does not support ContinueStroke, so the only solution is to swipe for half of the intended length
-                var center = new Location((Start.X + End.X) / 2, (Start.Y + End.Y) / 2);
+                const double fraction = 1 / 1.5;
+
+                // Android 7 does not support ContinueStroke, so the only solution is to swipe for a fraction of the intended length
+                var x = Start.X + (End.X - Start.X) * fraction;
+                var y = Start.Y + (End.Y - Start.Y) * fraction;
+                var end = new Location(x.Round(), y.Round());
 
                 var swipePath = new Path();
                 swipePath.MoveTo(Start.X, Start.Y);
-                swipePath.LineTo(center.X, center.Y);
+                swipePath.LineTo(end.X, end.Y);
 
                 var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration);
                 gestureBuilder.AddStroke(swipeStroke);
