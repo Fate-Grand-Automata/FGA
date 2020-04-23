@@ -47,9 +47,8 @@ namespace FateGrandAutomata
         public static Region SupportScreenRegion { get; } = new Region(0, 0, 200, 400);
         public static Region SupportListRegion { get; } = new Region(70, 332, 378, 1091); // see docs/support_list_region.png
         public static Location SupportSwipeStartClick { get; } = new Location(35, 1190);
+        public static Location SupportSwipeEndClick { get; } = new Location(5, 660);
         public static Region SupportFriendsRegion { get; } = new Region(448, 332, 1210, 1091);
-
-        public static Location SupportSwipeEndClick { get; } = new Location(35, 390);
 
         public static Region[] SupportListItemRegionArray { get;  } =
         {

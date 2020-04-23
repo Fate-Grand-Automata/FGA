@@ -11,71 +11,28 @@ namespace FateGrandAutomata
         public void Scroll(Location Start, Location End)
         {
             const int swipeDuration = 300;
-            const int holdDuration = 300;
 
-            var gestureBuilder = new GestureDescription.Builder();
-
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                // Android 8+ detected, we can use ContinueStroke
-                var swipePath = new Path();
-                swipePath.MoveTo(Start.X, Start.Y);
-                swipePath.LineTo(End.X, End.Y);
-
-                var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration, true);
-                gestureBuilder.AddStroke(swipeStroke);
-
-                // keep the "finger" pressed on the end position for a while
-                var holdPath = new Path();
-                holdPath.MoveTo(End.X, End.Y);
-                var holdStroke = swipeStroke.ContinueStroke(holdPath, swipeDuration, holdDuration, false);
-                gestureBuilder.AddStroke(holdStroke);
-            }
-            else
-            {
-                // Android 7 does not support ContinueStroke, so the only solution is to swipe for half of the intended length
-                var center = new Location((Start.X + End.X) / 2, (Start.Y + End.Y) / 2);
-
-                var swipePath = new Path();
-                swipePath.MoveTo(Start.X, Start.Y);
-                swipePath.LineTo(center.X, center.Y);
-
-                var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration);
-                gestureBuilder.AddStroke(swipeStroke);
-            }
+            var swipePath = new Path();
+            swipePath.MoveTo(Start.X, Start.Y);
+            swipePath.LineTo(End.X, End.Y);
+            var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration);
+            PerformGesture(swipeStroke);
 
             const double scrollWaitTime = 0.7;
-            PerformGesture(gestureBuilder.Build(), scrollWaitTime);
+            AutomataApi.Wait(scrollWaitTime);
         }
+
+        const double clickWaitTime = 0.3;
 
         public void Click(Location Location)
         {
-            const int duration = 1;
+            const int duration = 50;
 
             var swipePath = new Path();
             swipePath.MoveTo(Location.X, Location.Y);
-
-            var gestureBuilder = new GestureDescription.Builder();
-            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
-
-            const double clickWaitTime = 0.4;
-            PerformGesture(gestureBuilder.Build(), clickWaitTime);
-        }
-
-        readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
-
-        void PerformGesture(GestureDescription Gesture, double WaitTime)
-        {
-            _gestureWaitHandle.Reset();
-
-            _accessibilityService.DispatchGesture(Gesture, new GestureCompletedCallback(_gestureWaitHandle), null);
-
-            if (WaitTime > 0)
-            {
-                AutomataApi.Wait(WaitTime);
-            }
-
-            _gestureWaitHandle.Wait();
+            PerformGesture(new GestureDescription.StrokeDescription(swipePath, 0, duration));
+            
+            AutomataApi.Wait(clickWaitTime);
         }
 
         public void ContinueClick(Location Location, int Times)
@@ -89,12 +46,24 @@ namespace FateGrandAutomata
                 swipePath.MoveTo(Location.X, Location.Y);
 
                 var stroke = new GestureDescription.StrokeDescription(swipePath, clickDelay, clickTime);
-
-                var gestureBuilder = new GestureDescription.Builder()
-                    .AddStroke(stroke);
-
-                PerformGesture(gestureBuilder.Build(), 0);
+                PerformGesture(stroke);
             }
+
+            AutomataApi.Wait(clickWaitTime);
+        }
+
+        readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
+
+        void PerformGesture(GestureDescription.StrokeDescription StrokeDescription)
+        {
+            _gestureWaitHandle.Reset();
+
+            var gestureBuilder = new GestureDescription.Builder();
+            gestureBuilder.AddStroke(StrokeDescription);
+
+            _accessibilityService.DispatchGesture(gestureBuilder.Build(), new GestureCompletedCallback(_gestureWaitHandle), null);
+
+            _gestureWaitHandle.Wait();
         }
     }
 }
