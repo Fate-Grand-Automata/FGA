@@ -29,7 +29,7 @@
     app:key="@string/pref_auto_choose_target"
     app:icon="@drawable/ic_target"
     app:title="Auto choose target"
-    app:defaultValue="true"/>
+    app:defaultValue="false"/>
 
   <SwitchPreferenceCompat
     app:key="@string/pref_story_skip"
