@@ -55,10 +55,23 @@ namespace FateGrandAutomata
             }
         }
 
+        void EnsureSupportListHasLoaded()
+        {
+            // If the support list has loaded, 'Confirm Support Setup' button should be present.
+            var regionAnchor = ImageLocator.SupportRegionTool;
+            var regionAnchorLocation = new Region(2140, 328, 260, 312);
+            
+            // Give at max 30s for support servant list to load
+            const int timeout = 30; 
+            AutomataApi.Exists(regionAnchorLocation, regionAnchor, timeout);
+        }
+
         public bool SelectSupport(SupportSelectionMode SelectionMode)
         {
             var pattern = ImageLocator.SupportScreen;
             while (!Game.SupportScreenRegion.Exists(pattern)) { }
+
+            EnsureSupportListHasLoaded();
 
             switch (SelectionMode)
             {
