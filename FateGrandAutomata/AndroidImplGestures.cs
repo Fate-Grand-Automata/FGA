@@ -13,23 +13,20 @@ namespace FateGrandAutomata
             const int swipeDuration = 300;
             const int holdDuration = 300;
 
-            var gestureBuilder = new GestureDescription.Builder();
-
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
             {
                 // Android 8+ detected, we can use ContinueStroke
                 var swipePath = new Path();
                 swipePath.MoveTo(Start.X, Start.Y);
                 swipePath.LineTo(End.X, End.Y);
-
                 var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration, true);
-                gestureBuilder.AddStroke(swipeStroke);
+                PerformGesture(swipeStroke);
 
                 // keep the "finger" pressed on the end position for a while
                 var holdPath = new Path();
                 holdPath.MoveTo(End.X, End.Y);
-                var holdStroke = swipeStroke.ContinueStroke(holdPath, swipeDuration, holdDuration, false);
-                gestureBuilder.AddStroke(holdStroke);
+                var holdStroke = swipeStroke.ContinueStroke(holdPath, 0, holdDuration, false);
+                PerformGesture(holdStroke);
             }
             else
             {
@@ -45,16 +42,15 @@ namespace FateGrandAutomata
                 var swipePath = new Path();
                 swipePath.MoveTo(Start.X, Start.Y);
                 swipePath.LineTo(end.X, end.Y);
-
                 var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration);
-                gestureBuilder.AddStroke(swipeStroke);
+                PerformGesture(swipeStroke);
             }
-
-            PerformGesture(gestureBuilder.Build());
 
             const double scrollWaitTime = 0.7;
             AutomataApi.Wait(scrollWaitTime);
         }
+
+        const double clickWaitTime = 0.3;
 
         public void Click(Location Location)
         {
@@ -62,25 +58,9 @@ namespace FateGrandAutomata
 
             var swipePath = new Path();
             swipePath.MoveTo(Location.X, Location.Y);
-
-            var gestureBuilder = new GestureDescription.Builder();
-            gestureBuilder.AddStroke(new GestureDescription.StrokeDescription(swipePath, 0, duration));
+            PerformGesture(new GestureDescription.StrokeDescription(swipePath, 0, duration));
             
-            PerformGesture(gestureBuilder.Build());
-            
-            const double clickWaitTime = 0.3;
             AutomataApi.Wait(clickWaitTime);
-        }
-
-        readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
-
-        void PerformGesture(GestureDescription Gesture)
-        {
-            _gestureWaitHandle.Reset();
-
-            _accessibilityService.DispatchGesture(Gesture, new GestureCompletedCallback(_gestureWaitHandle), null);
-
-            _gestureWaitHandle.Wait();
         }
 
         public void ContinueClick(Location Location, int Times)
@@ -94,12 +74,24 @@ namespace FateGrandAutomata
                 swipePath.MoveTo(Location.X, Location.Y);
 
                 var stroke = new GestureDescription.StrokeDescription(swipePath, clickDelay, clickTime);
-
-                var gestureBuilder = new GestureDescription.Builder()
-                    .AddStroke(stroke);
-
-                PerformGesture(gestureBuilder.Build());
+                PerformGesture(stroke);
             }
+
+            AutomataApi.Wait(clickWaitTime);
+        }
+
+        readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
+
+        void PerformGesture(GestureDescription.StrokeDescription StrokeDescription)
+        {
+            _gestureWaitHandle.Reset();
+
+            var gestureBuilder = new GestureDescription.Builder();
+            gestureBuilder.AddStroke(StrokeDescription);
+
+            _accessibilityService.DispatchGesture(gestureBuilder.Build(), new GestureCompletedCallback(_gestureWaitHandle), null);
+
+            _gestureWaitHandle.Wait();
         }
     }
 }
