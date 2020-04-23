@@ -29,8 +29,9 @@ namespace FateGrandAutomata
 
         public IPattern AcquirePattern()
         {
-            var createNewPattern = false;
+            var createNewPattern = true; //false;
 
+            /*
             lock (_syncLock)
             {
                 if (_newImgAvailable)
@@ -39,6 +40,7 @@ namespace FateGrandAutomata
                     _newImgAvailable = false;
                 }
             }
+            */
 
             if (createNewPattern)
             {
