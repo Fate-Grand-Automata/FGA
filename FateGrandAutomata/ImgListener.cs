@@ -12,11 +12,40 @@ namespace FateGrandAutomata
 
         IPattern _lastestPattern;
         bool _newImgAvailable;
-        readonly ImageReader _imageReader;
+        ImageReader _imageReader;
+
+        Mat _convertedMat,
+            _colorCorrectedMat;
+
+        Bitmap _readBitmap;
+        bool _cropRequired;
 
         public ImgListener(ImageReader ImageReader)
         {
             _imageReader = ImageReader;
+            _convertedMat = new Mat();
+            _colorCorrectedMat = new Mat();
+        }
+
+        protected override void Dispose(bool Disposing)
+        {
+            if (Disposing)
+            {
+                _convertedMat.Release();
+                _colorCorrectedMat.Release();
+
+                _convertedMat = _colorCorrectedMat = null;
+
+                _lastestPattern?.Dispose();
+                _lastestPattern = null;
+
+                _readBitmap?.Recycle();
+                _readBitmap = null;
+
+                _imageReader = null;
+            }
+
+            base.Dispose(Disposing);
         }
 
         public void OnImageAvailable(ImageReader Reader)
@@ -61,12 +90,6 @@ namespace FateGrandAutomata
 
             return _lastestPattern;
         }
-
-        readonly Mat _convertedMat = new Mat(),
-            _colorCorrectedMat = new Mat();
-
-        Bitmap _readBitmap;
-        bool _cropRequired;
 
         IPattern MatFromImage(Image Image)
         {

@@ -16,6 +16,16 @@ namespace FateGrandAutomata
                 : null;
         }
 
+        public static void ClearCache()
+        {
+            foreach (var pattern in RegionCachedPatterns.Values)
+            {
+                pattern.Dispose();
+            }
+
+            RegionCachedPatterns.Clear();
+        }
+
         static void SupportImgExtractor(string FolderName)
         {
             var resNamespace = $"{nameof(FateGrandAutomata)}.images.Support.{FolderName}";
@@ -140,12 +150,7 @@ namespace FateGrandAutomata
             // Reload Patterns on Server change
             if (_currentGameServer != server)
             {
-                foreach (var pattern in RegionCachedPatterns.Values)
-                {
-                    pattern.Dispose();
-                }
-
-                RegionCachedPatterns.Clear();
+                ClearCache();
 
                 _currentGameServer = server;
             }

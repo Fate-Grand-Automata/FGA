@@ -51,5 +51,14 @@
 
             return _previousPattern = GetScaledScreenshot();
         }
+
+        public static void ReleaseMemory()
+        {
+            _previousPattern?.Dispose();
+            _previousPattern = null;
+
+            _resizeTarget?.Dispose();
+            _resizeTarget = null;
+        }
     }
 }
