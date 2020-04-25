@@ -81,7 +81,7 @@ namespace FateGrandAutomata
         {
             Game.BattleMasterSkillOpenClick.Click();
             
-            AutomataApi.Wait(0.3);
+            AutomataApi.Wait(0.5);
         }
 
         void CastMasterSkill(Location Location)
