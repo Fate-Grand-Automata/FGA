@@ -113,10 +113,13 @@ namespace FateGrandAutomata
         {
             _battle.ResetState();
 
-            var refillRepetitions = Preferences.Instance.Refill.Repetitions;
-            if (refillRepetitions > 0)
+            if (Preferences.Instance.Refill.Enabled)
             {
-                AutomataApi.Toast($"{_stonesUsed} refills used out of {refillRepetitions}");
+                var refillRepetitions = Preferences.Instance.Refill.Repetitions;
+                if (refillRepetitions > 0)
+                {
+                    AutomataApi.Toast($"{_stonesUsed} refills used out of {refillRepetitions}");
+                }
             }
 
             // Click uppermost quest
