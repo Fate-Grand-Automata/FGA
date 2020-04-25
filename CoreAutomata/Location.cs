@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CoreAutomata
+﻿namespace CoreAutomata
 {
     public class Location
     {
