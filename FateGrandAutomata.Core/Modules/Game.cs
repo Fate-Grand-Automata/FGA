@@ -13,7 +13,7 @@ namespace FateGrandAutomata
         public static Region ContinueRegion { get; } = new Region(1400, 1000, 600, 200);
         public static Region MenuStorySkipRegion { get; } = new Region(2240, 20, 300, 120);
 
-        public static Location MenuSelectQuestClick { get; } = new Location(1900, 440);
+        public static Location MenuSelectQuestClick { get; } = new Location(2290, 440);
         public static Location MenuStartQuestClick { get; } = new Location(2400, 1350);
         public static Location ContinueClick { get; } = new Location(1650, 1120);
         public static Location MenuStorySkipClick { get; } = new Location(2360, 80);

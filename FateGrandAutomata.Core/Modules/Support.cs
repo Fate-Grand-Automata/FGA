@@ -261,7 +261,9 @@ namespace FateGrandAutomata
         {
             foreach (var friendName in _friendNameArray)
             {
-                foreach (var theFriend in AutomataApi.FindAll(Game.SupportFriendsRegion, ImageLocator.LoadSupportImagePattern(friendName)))
+                using var pattern = ImageLocator.LoadSupportImagePattern(friendName);
+
+                foreach (var theFriend in AutomataApi.FindAll(Game.SupportFriendsRegion, pattern))
                 {
                     return theFriend;
                 }
@@ -274,7 +276,9 @@ namespace FateGrandAutomata
         {
             foreach (var preferredServant in _preferredServantArray)
             {
-                foreach (var servant in AutomataApi.FindAll(Game.SupportListRegion, ImageLocator.LoadSupportImagePattern(preferredServant)))
+                using var pattern = ImageLocator.LoadSupportImagePattern(preferredServant);
+
+                foreach (var servant in AutomataApi.FindAll(Game.SupportListRegion, pattern))
                 {
                     yield return servant;
                 }
@@ -285,7 +289,9 @@ namespace FateGrandAutomata
         {
             foreach (var preferredCraftEssence in _preferredCraftEssenceTable)
             {
-                var craftEssences = AutomataApi.FindAll(SearchRegion, ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name));
+                using var pattern = ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name);
+
+                var craftEssences = AutomataApi.FindAll(SearchRegion, pattern);
 
                 foreach (var craftEssence in craftEssences)
                 {
