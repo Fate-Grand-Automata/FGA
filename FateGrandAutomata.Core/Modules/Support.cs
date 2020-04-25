@@ -261,7 +261,8 @@ namespace FateGrandAutomata
         {
             foreach (var friendName in _friendNameArray)
             {
-                using var pattern = ImageLocator.LoadSupportImagePattern(friendName);
+                // Cached pattern. Don't dipose here.
+                var pattern = ImageLocator.LoadSupportImagePattern(friendName);
 
                 foreach (var theFriend in AutomataApi.FindAll(Game.SupportFriendsRegion, pattern))
                 {
@@ -276,7 +277,8 @@ namespace FateGrandAutomata
         {
             foreach (var preferredServant in _preferredServantArray)
             {
-                using var pattern = ImageLocator.LoadSupportImagePattern(preferredServant);
+                // Cached pattern. Don't dipose here.
+                var pattern = ImageLocator.LoadSupportImagePattern(preferredServant);
 
                 foreach (var servant in AutomataApi.FindAll(Game.SupportListRegion, pattern))
                 {
@@ -289,7 +291,8 @@ namespace FateGrandAutomata
         {
             foreach (var preferredCraftEssence in _preferredCraftEssenceTable)
             {
-                using var pattern = ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name);
+                // Cached pattern. Don't dipose here.
+                var pattern = ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name);
 
                 var craftEssences = AutomataApi.FindAll(SearchRegion, pattern);
 

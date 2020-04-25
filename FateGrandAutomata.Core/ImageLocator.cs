@@ -24,6 +24,8 @@ namespace FateGrandAutomata
             }
 
             RegionCachedPatterns.Clear();
+
+            ClearSupportCache();
         }
 
         static void SupportImgExtractor(string FolderName)
@@ -215,19 +217,37 @@ namespace FateGrandAutomata
 
         public static IPattern PresentBoxFull => GetRegionPattern("StopGifts.png");
 
+        static readonly Dictionary<string, IPattern> SupportCachedPatterns = new Dictionary<string, IPattern>();
+
+        public static void ClearSupportCache()
+        {
+            foreach (var pattern in SupportCachedPatterns.Values)
+            {
+                pattern.Dispose();
+            }
+
+            SupportCachedPatterns.Clear();
+        }
+
         public static IPattern LoadSupportImagePattern(string FileName)
         {
-            var stream = FileLoader(FileName);
-
-            if (stream == null)
+            if (!SupportCachedPatterns.ContainsKey(FileName))
             {
-                throw new ScriptExitException($"Unable to load image: {FileName}. Put images in {SupportImgFolder} folder");
+                var stream = FileLoader(FileName);
+
+                if (stream == null)
+                {
+                    throw new ScriptExitException(
+                        $"Unable to load image: {FileName}. Put images in {SupportImgFolder} folder");
+                }
+
+                using (stream)
+                {
+                    SupportCachedPatterns.Add(FileName, AutomataApi.LoadPattern(stream));
+                }
             }
 
-            using (stream)
-            {
-                return AutomataApi.LoadPattern(stream);
-            }
+            return SupportCachedPatterns[FileName];
         }
     }
 }

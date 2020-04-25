@@ -129,6 +129,8 @@ namespace FateGrandAutomata
                 SetScriptControlBtnIcon(Resource.Drawable.ic_play);
             });
 
+            ImageLocator.ClearSupportCache();
+
             _entryPoint = null;
 
             _scriptStarted = false;
