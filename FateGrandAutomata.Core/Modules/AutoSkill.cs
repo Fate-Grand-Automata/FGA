@@ -50,6 +50,11 @@ namespace FateGrandAutomata
         {
             Location.Click();
 
+            AutomataApi.Wait(0.5);
+
+            // Exit any extra menu
+            Game.BattleExtrainfoWindowCloseClick.Click();
+
             WaitForAnimationToFinish();
         }
 
