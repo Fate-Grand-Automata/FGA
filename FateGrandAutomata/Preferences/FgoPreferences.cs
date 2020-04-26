@@ -96,7 +96,7 @@ namespace FateGrandAutomata
 
         public bool StopAfterBond10 => GetBool(R.pref_stop_bond10);
 
-        public int BoostItemSelectionMode => GetStringAsInt(R.pref_boost_item);
+        public int BoostItemSelectionMode => GetStringAsInt(R.pref_boost_item, -1);
 
         // TODO: Support debug mode
         public bool DebugMode => false;
