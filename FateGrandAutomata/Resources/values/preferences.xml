@@ -10,7 +10,7 @@
     <string name="pref_fast_skip_dead">fast_skip_dead</string>
     <string name="pref_story_skip">story_skip</string>
     <string name="pref_stop_bond10">stop_bond10</string>
-    <string name="pref_boost_item">boost_item</string>
+    <string name="pref_boost_item">selected_boost_item</string>
     <string name="pref_withdraw_enabled">withdraw_enabled</string>
 
     <string name="pref_extract_def_support_imgs">extract_def_support_imgs</string>

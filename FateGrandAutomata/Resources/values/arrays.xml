@@ -19,12 +19,14 @@
 
   <array name="boost_item_labels">
     <item>Disabled</item>
+    <item>Skip</item>
     <item>Item 1</item>
     <item>Item 2</item>
     <item>Item 3</item>
   </array>
 
   <string-array name="boost_item_values">
+    <item>-1</item>
     <item>0</item>
     <item>1</item>
     <item>2</item>
