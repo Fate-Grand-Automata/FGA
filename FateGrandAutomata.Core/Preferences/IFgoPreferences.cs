@@ -29,7 +29,7 @@
         bool DebugMode { get; }
 
         /// <summary>
-        /// 0 (skip) - 3
+        /// -ve = disabled, 0 = skip, 1-3 = items
         /// </summary>
         int BoostItemSelectionMode { get; }
 

@@ -50,7 +50,7 @@
     app:defaultValue="false"/>
 
   <ListPreference
-    app:defaultValue="0"
+    app:defaultValue="-1"
     app:entries="@array/boost_item_labels"
     app:entryValues="@array/boost_item_values"
     app:key="@string/pref_boost_item"
