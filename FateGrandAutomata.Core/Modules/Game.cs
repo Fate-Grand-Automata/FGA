@@ -109,9 +109,9 @@ namespace FateGrandAutomata
         public static Location BattleSkill9Click { get; } = new Location(1800, 1160);
         public static Location BattleSkillOkClick { get; } = new Location(1680, 850);
 
-        public static Location BattleServant1Click { get; } = new Location(700, 880);
-        public static Location BattleServant2Click { get; } = new Location(1280, 880);
-        public static Location BattleServant3Click { get; } = new Location(1940, 880);
+        public static Location BattleServant1Click { get; } = new Location(700, 690);
+        public static Location BattleServant2Click { get; } = new Location(1280, 690);
+        public static Location BattleServant3Click { get; } = new Location(1940, 690);
 
         public static Location BattleMasterSkillOpenClick { get; } = new Location(2380, 640);
         public static Location BattleMasterSkill1Click { get; } = new Location(1820, 620);
