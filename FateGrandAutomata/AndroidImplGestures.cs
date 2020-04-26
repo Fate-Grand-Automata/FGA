@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Android.AccessibilityServices;
 using Android.Graphics;
-using Android.OS;
 using CoreAutomata;
 
 namespace FateGrandAutomata

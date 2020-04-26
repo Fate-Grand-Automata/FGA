@@ -40,7 +40,7 @@ namespace FateGrandAutomata
                 if (!screenBounds.Contains(supportBound))
                     continue;
 
-                var pattern = supportBound.GetPattern();
+                using var pattern = supportBound.GetPattern();
 
                 var servant = pattern.Crop(new Region(0, 0, 125, 44));
                 servant.Save(Path.Combine(ImageLocator.SupportServantImgFolder, $"{timestamp}_servant{i}.png"));

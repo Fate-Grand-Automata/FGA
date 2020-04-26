@@ -29,9 +29,9 @@ namespace FateGrandAutomata
             using var ms = new MemoryStream(buffer);
             Stream.CopyTo(ms);
 
-            using var raw = new MatOfByte(buffer);
+            using var raw = new DisposableMat(new MatOfByte(buffer));
 
-            Mat = Imgcodecs.Imdecode(raw, Imgcodecs.CvLoadImageGrayscale);
+            Mat = Imgcodecs.Imdecode(raw.Mat, Imgcodecs.CvLoadImageGrayscale);
         }
 
         public Mat Mat { get; }

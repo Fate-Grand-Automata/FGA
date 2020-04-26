@@ -1,13 +1,9 @@
-﻿using System;
-
-namespace CoreAutomata
+﻿namespace CoreAutomata
 {
-    public class Location
+    public struct Location
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-
-        public Location() { }
+        public int X { get; }
+        public int Y { get; }
 
         public Location(int X, int Y)
         {

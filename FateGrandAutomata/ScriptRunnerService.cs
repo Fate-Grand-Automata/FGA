@@ -68,6 +68,10 @@ namespace FateGrandAutomata
                 _mediaProjection = MediaProjectionManager.GetMediaProjection((int)Result.Ok, MediaProjectionToken);
             }
 
+            _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
+            _imgListener = new ImgListener(_imageReader);
+            _imageReader.SetOnImageAvailableListener(_imgListener, null);
+
             SetupVirtualDisplay();
 
             _windowManager.AddView(_layout, _layoutParams);
@@ -90,8 +94,17 @@ namespace FateGrandAutomata
             _virtualDisplay?.Release();
             _virtualDisplay = null;
 
+            _imgListener?.Dispose();
+            _imgListener = null;
+
+            _imageReader?.Close();
+            _imageReader = null;
+
             _mediaProjection?.Stop();
             _mediaProjection = null;
+
+            ScreenshotManager.ReleaseMemory();
+            ImageLocator.ClearCache();
 
             _windowManager.RemoveView(_layout);
             ServiceStarted = false;
@@ -115,6 +128,8 @@ namespace FateGrandAutomata
             {
                 SetScriptControlBtnIcon(Resource.Drawable.ic_play);
             });
+
+            ImageLocator.ClearSupportCache();
 
             _entryPoint = null;
 
@@ -237,10 +252,6 @@ namespace FateGrandAutomata
             }
 
             _layoutParams.Y = _screenWidth;
-
-            _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
-            _imgListener = new ImgListener(_imageReader);
-            _imageReader.SetOnImageAvailableListener(_imgListener, null);
         }
 
         (int X, int Y) GetMaxBtnCoordinates()
