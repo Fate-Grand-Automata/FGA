@@ -129,6 +129,9 @@ namespace FateGrandAutomata
 
             WaitForAnimationToFinish(15);
 
+            // Extra wait for the lag introduced by Order change
+            AutomataApi.Wait(1);
+
             ChangeArray(_defaultFunctionArray);
         }
 
