@@ -36,30 +36,33 @@ namespace FateGrandAutomata
             InitView();
         }
 
+        (string Id, string Name)[] _autoSkillItems;
+
         void InitView()
         {
             var listView = FindViewById<ListView>(Resource.Id.autoskill_listview);
             var prefManager = PreferenceManager.GetDefaultSharedPreferences(this);
-            var autoSkillItems = prefManager.GetStringSet(GetString(Resource.String.pref_autoskill_list), new List<string>())
+            _autoSkillItems = prefManager.GetStringSet(GetString(Resource.String.pref_autoskill_list), new List<string>())
                 .Select(M =>
                 {
                     var sharedPrefs = GetSharedPreferences(M, FileCreationMode.Private);
 
-                    return sharedPrefs.GetString(GetString(Resource.String.pref_autoskill_name), "--");
+                    return (Id: M, Name: sharedPrefs.GetString(GetString(Resource.String.pref_autoskill_name), "--"));
                 })
+                .OrderBy(M => M.Name)
                 .ToArray();
 
-            var adapter = new ArrayAdapter<string>(this, Resource.Layout.autoskill_item, autoSkillItems);
+            var autoSkillNames = _autoSkillItems
+                .Select(M => M.Name)
+                .ToArray();
+
+            var adapter = new ArrayAdapter<string>(this, Resource.Layout.autoskill_item, autoSkillNames);
             listView.Adapter = adapter;
         }
 
         void ListViewOnItemClick(object Sender, AdapterView.ItemClickEventArgs E)
         {
-            var key = GetString(Resource.String.pref_autoskill_list);
-
-            var prefManager = PreferenceManager.GetDefaultSharedPreferences(this);
-            var guid = prefManager.GetStringSet(key, new List<string>())
-                .ElementAt(E.Position);
+            var guid = _autoSkillItems[E.Position].Id;
 
             EditItem(guid);
         }
