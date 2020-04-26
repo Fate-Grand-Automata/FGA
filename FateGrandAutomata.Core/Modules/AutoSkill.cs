@@ -127,6 +127,9 @@ namespace FateGrandAutomata
 
             Game.BattleOrderChangeOkClick.Click();
 
+            // Extra wait to allow order change dialog to close
+            AutomataApi.Wait(1);
+
             WaitForAnimationToFinish(15);
 
             // Extra wait for the lag introduced by Order change
