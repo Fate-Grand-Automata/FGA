@@ -13,6 +13,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Package Name
+      run: |
+        cd FateGrandAutomata/Properties
+        sed -i -e "s/package=\"[^\"]*\"/package=\"com.mathewsachin.fategrandautomata\"/g" AndroidManifest.xml
     - name: Version Number
       run: |
         cd FateGrandAutomata/Properties
