@@ -80,7 +80,7 @@ namespace FateGrandAutomata
         void OpenMasterSkillMenu()
         {
             Game.BattleMasterSkillOpenClick.Click();
-            
+
             AutomataApi.Wait(0.5);
         }
 
@@ -300,7 +300,7 @@ namespace FateGrandAutomata
                     return commandList[Turn];
                 }
             }
-            
+
             return null;
         }
 
@@ -325,7 +325,7 @@ namespace FateGrandAutomata
             {
                 ExecuteCommandList(commandList);
             }
-            else if (Battle.CurrentStage >= _commandTable.Count)
+            else if (Battle.CurrentStage + 1 >= _commandTable.Count)
             {
                 // this will allow NP spam after all commands have been executed
                 IsFinished = true;
