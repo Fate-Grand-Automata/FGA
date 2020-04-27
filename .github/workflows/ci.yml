@@ -21,7 +21,7 @@ jobs:
       shell: pwsh
       run: |
         $PACKAGE_NAME = "com.mathewsachin.fategrandautomata"
-        if ($env:FORK) {
+        if ($env:FORK -eq $True) {
             $PACKAGE_NAME += '.fork'
         }
         echo "::set-env name=PACKAGE_NAME::$PACKAGE_NAME"
@@ -69,7 +69,7 @@ jobs:
             )
             Wait = $True
         }
-        if ($env:NOT_FORK) {
+        if ($env:NOT_FORK -eq $True) {
             $BuildArgs.ArgumentList += @(
                 '/p:AndroidKeyStore=True',
                 '/p:AndroidSigningKeyAlias=fgautomata',
