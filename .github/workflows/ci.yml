@@ -22,7 +22,7 @@ jobs:
     - name: Package Name (Fork PR)
       run: sed -i -e "s/package=\"[^\"]*\"/package=\"com.mathewsachin.fategrandautomata.fork\"/g" AndroidManifest.xml
       working-directory: ./FateGrandAutomata/Properties
-      if: !secrets.NOT_FORK
+      if: secrets.NOT_FORK == false
 
     - name: Version Number
       working-directory: ./FateGrandAutomata/Properties
@@ -51,7 +51,7 @@ jobs:
 
     - name: Android (Fork PR)
       working-directory: ./FateGrandAutomata
-      if: !secrets.NOT_FORK
+      if: secrets.NOT_FORK == false
       run: msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release
     
     - name: Upload APK
@@ -63,7 +63,7 @@ jobs:
 
     - name: Upload APK (Fork PR)
       uses: actions/upload-artifact@v1
-      if: !secrets.NOT_FORK
+      if: secrets.NOT_FORK == false
       with:
         name: apk
         path: FateGrandAutomata/bin/Release/com.mathewsachin.fategrandautomata.fork-Signed.apk
