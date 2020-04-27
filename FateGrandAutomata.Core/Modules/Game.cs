@@ -173,6 +173,9 @@ namespace FateGrandAutomata
 
         public static Region ResultScreenRegion { get; } = new Region(100, 300, 700, 200);
         public static Region ResultBondRegion { get; } = new Region(2000, 750, 120, 190);
+        public static Region ResultMasterExpRegion { get; } = new Region(645, 180, 190, 45);
+        public static Region ResultMatRewardsRegion { get; } = new Region(1045, 650, 130, 55);
+        
         public static Region ResultCeRewardRegion { get; } = new Region(1050, 1216, 33, 28);
         public static Location ResultCeRewardCloseClick { get; } = new Location(80, 60);
         public static Region ResultFriendRequestRegion { get; } = new Region(660, 120, 140, 160);

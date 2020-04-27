@@ -141,7 +141,9 @@ namespace FateGrandAutomata
         bool IsInResult()
         {
             return Game.ResultScreenRegion.Exists(ImageLocator.Result)
-                || Game.ResultBondRegion.Exists(ImageLocator.Bond);
+                || Game.ResultBondRegion.Exists(ImageLocator.Bond)
+                || Game.ResultMasterExpRegion.Exists(ImageLocator.MasterExp)
+                || Game.ResultMatRewardsRegion.Exists(ImageLocator.MatRewards);
         }
 
         // Click through reward screen, continue if option presents itself, otherwise continue clicking through
