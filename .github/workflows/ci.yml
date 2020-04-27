@@ -78,7 +78,7 @@ jobs:
                 '/p:AndroidSigningKeyStore=fgautomata.keystore'
             )
         }
-        Start-Process @BuildArgs | Select-String 'EXEC : warning : Directory \S* contains \S* but no debug symbols file was found.' -NotMatch
+        Start-Process @BuildArgs
 
     - name: Upload APK
       uses: actions/upload-artifact@v1
