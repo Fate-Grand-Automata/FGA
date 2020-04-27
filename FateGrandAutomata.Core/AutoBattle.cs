@@ -88,10 +88,10 @@ namespace FateGrandAutomata
             if (boostItem >= 0)
             {
                 Game.MenuBoostItemClickArray[boostItem].Click();
-            }
 
-            // in case you run out of items
-            Game.MenuBoostItemSkipClick.Click();
+                // in case you run out of items
+                Game.MenuBoostItemSkipClick.Click();
+            }
 
             if (Preferences.Instance.StorySkip)
             {
