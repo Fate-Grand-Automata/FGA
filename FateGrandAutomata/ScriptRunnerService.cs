@@ -1,4 +1,4 @@
-using System;
+using System.Diagnostics;
 using Android;
 using Android.AccessibilityServices;
 using Android.App;
@@ -264,6 +264,8 @@ namespace FateGrandAutomata
             return (x, y);
         }
 
+        readonly Stopwatch _dragStopwatch = new Stopwatch();
+
         void ScriptCtrlBtnOnTouch(object S, View.TouchEventArgs E)
         {
             switch (E.Event.ActionMasked)
@@ -273,6 +275,7 @@ namespace FateGrandAutomata
                     _dX = _layoutParams.X.Clip(0, maxX) - E.Event.RawX;
                     _dY = _layoutParams.Y.Clip(0, maxY) - E.Event.RawY;
                     _lastAction = MotionEventActions.Down;
+                    _dragStopwatch.Restart();
 
                     E.Handled = false;
                     break;
@@ -281,14 +284,8 @@ namespace FateGrandAutomata
                     var newX = E.Event.RawX + _dX;
                     var newY = E.Event.RawY + _dY;
 
-                    var d = Math.Sqrt(Math.Pow(newX - _layoutParams.X, 2) + Math.Pow(newY - _layoutParams.Y, 2));
-
-                    var dragThreshold = _layout.MeasuredWidth;
-
-                    if (_dragging || d > dragThreshold)
+                    if (_dragStopwatch.ElapsedMilliseconds > ViewConfiguration.LongPressTimeout)
                     {
-                        _dragging = true;
-
                         var (mX, mY) = GetMaxBtnCoordinates();
                         _layoutParams.X = newX.Round().Clip(0, mX);
                         _layoutParams.Y = newY.Round().Clip(0, mY);
@@ -303,13 +300,12 @@ namespace FateGrandAutomata
 
                 case MotionEventActions.Up:
                     E.Handled = _lastAction == MotionEventActions.Move;
-                    _dragging = false;
+                    _dragStopwatch.Reset();
                     break;
             }
         }
 
         float _dX, _dY;
-        bool _dragging;
         MotionEventActions _lastAction;
 
         public IPattern AcquireLatestImage()
