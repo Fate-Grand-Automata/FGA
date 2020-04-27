@@ -70,12 +70,11 @@ jobs:
             Wait = $True
         }
         if ($env:FORK -eq $False) {
-            echo "Signing..."
             $BuildArgs.ArgumentList += @(
                 '/p:AndroidKeyStore=True',
                 '/p:AndroidSigningKeyAlias=fgautomata',
-                "/p:AndroidSigningStorePass=`"$KEYSTORE_PASS`"",
-                "/p:AndroidSigningKeyPass=`"$KEYSTORE_PASS`"",
+                "/p:AndroidSigningStorePass=`"$env:KEYSTORE_PASS`"",
+                "/p:AndroidSigningKeyPass=`"$env:KEYSTORE_PASS`"",
                 '/p:AndroidSigningKeyStore=fgautomata.keystore'
             )
         }
