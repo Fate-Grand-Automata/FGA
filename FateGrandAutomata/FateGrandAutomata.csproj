@@ -42,6 +42,11 @@
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
     <MandroidI18n />
+    <AndroidKeyStore>true</AndroidKeyStore>
+    <AndroidSigningKeyStore>fgadebug.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>123abc</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>fgadebug</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>123abc</AndroidSigningKeyPass>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
