@@ -69,7 +69,8 @@ jobs:
             )
             Wait = $True
         }
-        if ($env:NOT_FORK -eq $True) {
+        if ($env:FORK -eq $False) {
+            echo "Signing..."
             $BuildArgs.ArgumentList += @(
                 '/p:AndroidKeyStore=True',
                 '/p:AndroidSigningKeyAlias=fgautomata',
