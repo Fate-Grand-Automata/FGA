@@ -12,8 +12,8 @@ jobs:
   build:
     runs-on: macos-latest
     env: 
-      NOT_FORK: ${{secrets.NOT_FORK}} 
-      FORK: ${{!secrets.NOT_FORK}} 
+      NOT_FORK: ${{secrets.NOT_FORK == 'true'}} 
+      FORK: ${{secrets.NOT_FORK != 'true'}} 
     steps:
     - uses: actions/checkout@v1
     
