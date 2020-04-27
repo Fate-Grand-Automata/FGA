@@ -118,8 +118,7 @@ namespace FateGrandAutomata
 
         void SetScriptControlBtnIcon(int IconId)
         {
-            _scriptCtrlBtn.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(IconId),
-                null, null, null);
+            _scriptCtrlBtn.SetImageResource(IconId);
         }
 
         void OnScriptExit(string Message = null)
@@ -197,7 +196,7 @@ namespace FateGrandAutomata
             base.OnTaskRemoved(RootIntent);
         }
 
-        Button _scriptCtrlBtn;
+        ImageButton _scriptCtrlBtn;
 
         protected override void OnServiceConnected()
         {
@@ -224,7 +223,7 @@ namespace FateGrandAutomata
             var inflator = LayoutInflater.From(this);
             inflator.Inflate(Resource.Layout.script_runner, _layout);
 
-            _scriptCtrlBtn = _layout.FindViewById<Button>(Resource.Id.script_toggle_btn);
+            _scriptCtrlBtn = _layout.FindViewById<ImageButton>(Resource.Id.script_toggle_btn);
 
             _scriptCtrlBtn.Click += (S, E) =>
             {
@@ -284,7 +283,9 @@ namespace FateGrandAutomata
 
                     var d = Math.Sqrt(Math.Pow(newX - _layoutParams.X, 2) + Math.Pow(newY - _layoutParams.Y, 2));
 
-                    if (_dragging || d > DragThreshold)
+                    var dragThreshold = _layout.MeasuredWidth;
+
+                    if (_dragging || d > dragThreshold)
                     {
                         _dragging = true;
 
@@ -310,7 +311,6 @@ namespace FateGrandAutomata
         float _dX, _dY;
         bool _dragging;
         MotionEventActions _lastAction;
-        const int DragThreshold = 100;
 
         public IPattern AcquireLatestImage()
         {

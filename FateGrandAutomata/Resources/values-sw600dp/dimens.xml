@@ -1,0 +1,3 @@
+<resources>
+    <dimen name="script_runner_btn_size">80dp</dimen>
+</resources>
