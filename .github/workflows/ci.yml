@@ -11,18 +11,21 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    env: 
+      NOT_FORK: ${{secrets.NOT_FORK}} 
+      FORK: ${{!secrets.NOT_FORK}} 
     steps:
     - uses: actions/checkout@v1
     
     - name: Package Name
       run: sed -i -e "s/package=\"[^\"]*\"/package=\"com.mathewsachin.fategrandautomata\"/g" AndroidManifest.xml
       working-directory: ./FateGrandAutomata/Properties
-      if: secrets.NOT_FORK
+      if: env.NOT_FORK
 
     - name: Package Name (Fork PR)
       run: sed -i -e "s/package=\"[^\"]*\"/package=\"com.mathewsachin.fategrandautomata.fork\"/g" AndroidManifest.xml
       working-directory: ./FateGrandAutomata/Properties
-      if: secrets.NOT_FORK == false
+      if: env.FORK
 
     - name: Version Number
       working-directory: ./FateGrandAutomata/Properties
@@ -39,31 +42,31 @@ jobs:
       env:
         GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
       working-directory: ./FateGrandAutomata
-      if: secrets.NOT_FORK
+      if: env.NOT_FORK
       run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
     
     - name: Android
       env:
         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
       working-directory: ./FateGrandAutomata
-      if: secrets.NOT_FORK
+      if: env.NOT_FORK
       run: msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=True /p:AndroidSigningKeyAlias=fgautomata /p:AndroidSigningStorePass="$KEYSTORE_PASS" /p:AndroidSigningKeyPass="$KEYSTORE_PASS" /p:AndroidSigningKeyStore=fgautomata.keystore
 
     - name: Android (Fork PR)
       working-directory: ./FateGrandAutomata
-      if: secrets.NOT_FORK == false
+      if: env.FORK
       run: msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release
     
     - name: Upload APK
       uses: actions/upload-artifact@v1
-      if: secrets.NOT_FORK
+      if: env.NOT_FORK
       with:
         name: apk
         path: FateGrandAutomata/bin/Release/com.mathewsachin.fategrandautomata-Signed.apk
 
     - name: Upload APK (Fork PR)
       uses: actions/upload-artifact@v1
-      if: secrets.NOT_FORK == false
+      if: env.FORK
       with:
         name: apk
         path: FateGrandAutomata/bin/Release/com.mathewsachin.fategrandautomata.fork-Signed.apk
