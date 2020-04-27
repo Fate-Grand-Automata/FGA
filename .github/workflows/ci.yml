@@ -17,26 +17,33 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Package Name
-      run: sed -i -e "s/package=\"[^\"]*\"/package=\"com.mathewsachin.fategrandautomata\"/g" AndroidManifest.xml
-      working-directory: ./FateGrandAutomata/Properties
-      if: env.NOT_FORK == 'true'
+    - name: Determine Package Name
+      shell: pwsh
+      run: |
+        $PACKAGE_NAME = "com.mathewsachin.fategrandautomata"
+        if ($env:FORK) {
+            $PACKAGE_NAME += '.fork'
+        }
+        echo "::set-env name=PACKAGE_NAME::$PACKAGE_NAME"
 
-    - name: Package Name (Fork PR)
-      run: sed -i -e "s/package=\"[^\"]*\"/package=\"com.mathewsachin.fategrandautomata.fork\"/g" AndroidManifest.xml
+    - name: Apply Package Name
+      run: sed -i -e "s/package=\"[^\"]*\"/package=\"$PACKAGE_NAME\"/g" AndroidManifest.xml
       working-directory: ./FateGrandAutomata/Properties
-      if: env.FORK == 'true'
 
-    - name: Version Number
+    - name: Determine Version Name
+      shell: pwsh
+      run: |
+        $VERSION_NAME = $env:GITHUB_RUN_NUMBER
+        if ($env:GITHUB_REF.StartsWith('refs/tags/')) {
+            $VERSION_NAME = $env:GITHUB_REF.Substring(10)
+        }
+        echo "::set-env name=VERSION_NAME::$VERSION_NAME"
+
+    - name: Apply Version Number and Version Name
       working-directory: ./FateGrandAutomata/Properties
       run: |
         sed -i -e "s/android:versionCode=\"[^\"]*\"/android:versionCode=\"$GITHUB_RUN_NUMBER\"/g" AndroidManifest.xml
-        sed -i -e "s/android:versionName=\"[^\"]*\"/android:versionName=\"$GITHUB_RUN_NUMBER\"/g" AndroidManifest.xml
-
-    - name: Version Tag
-      if: startsWith(github.ref, 'refs/tags/')
-      run: sed -i -e "s/android:versionName=\"[^\"]*\"/android:versionName=\"${GITHUB_REF:10}\"/g" AndroidManifest.xml
-      working-directory: ./FateGrandAutomata/Properties
+        sed -i -e "s/android:versionName=\"[^\"]*\"/android:versionName=\"$VERSION_NAME\"/g" AndroidManifest.xml
 
     - name: Decrypt keystore (GPG)
       env:
@@ -45,31 +52,39 @@ jobs:
       if: env.NOT_FORK == 'true'
       run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
-    - name: Android
+    - name: Sign Android Package
       env:
         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
       working-directory: ./FateGrandAutomata
-      if: env.NOT_FORK == 'true'
-      run: msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=True /p:AndroidSigningKeyAlias=fgautomata /p:AndroidSigningStorePass="$KEYSTORE_PASS" /p:AndroidSigningKeyPass="$KEYSTORE_PASS" /p:AndroidSigningKeyStore=fgautomata.keystore
-
-    - name: Android (Fork PR)
-      working-directory: ./FateGrandAutomata
-      if: env.FORK == 'true'
-      run: msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release
+      shell: pwsh
+      run: |
+        $BuildArgs = @{
+            FilePath = 'msbuild'
+            ArgumentList = @(
+                'FateGrandAutomata.csproj',
+                '/restore',
+                '/verbosity:minimal',
+                '/t:SignAndroidPackage',
+                '/p:Configuration=Release'
+            )
+            Wait = $True
+        }
+        if ($env:NOT_FORK) {
+            $BuildArgs.ArgumentList += @(
+                '/p:AndroidKeyStore=True',
+                '/p:AndroidSigningKeyAlias=fgautomata',
+                "/p:AndroidSigningStorePass=`"$KEYSTORE_PASS`"",
+                "/p:AndroidSigningKeyPass=`"$KEYSTORE_PASS`"",
+                '/p:AndroidSigningKeyStore=fgautomata.keystore'
+            )
+        }
+        Start-Process @BuildArgs
 
     - name: Upload APK
       uses: actions/upload-artifact@v1
-      if: env.NOT_FORK == 'true'
       with:
         name: apk
-        path: FateGrandAutomata/bin/Release/com.mathewsachin.fategrandautomata-Signed.apk
-
-    - name: Upload APK (Fork PR)
-      uses: actions/upload-artifact@v1
-      if: env.FORK == 'true'
-      with:
-        name: apk
-        path: FateGrandAutomata/bin/Release/com.mathewsachin.fategrandautomata.fork-Signed.apk
+        path: FateGrandAutomata/bin/Release/${{ env.PACKAGE_NAME }}-Signed.apk
 
   deploy:
     needs: build
