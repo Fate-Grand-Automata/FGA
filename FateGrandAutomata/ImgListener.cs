@@ -1,8 +1,15 @@
-﻿using Android.Graphics;
+﻿using System.Diagnostics;
+using System.IO;
+using Android.Graphics;
 using Android.Media;
 using CoreAutomata;
+using Java.Lang;
 using Org.Opencv.Core;
+using Org.Opencv.Imgcodecs;
 using Org.Opencv.Imgproc;
+using Encoding = System.Text.Encoding;
+using Path = System.IO.Path;
+using Process = Java.Lang.Process;
 
 namespace FateGrandAutomata
 {
@@ -56,8 +63,47 @@ namespace FateGrandAutomata
             }
         }
 
+        Process _superUser;
+        StreamWriter _superUserStreamWriter;
+        DisposableMat _lastImage;
+
+        IPattern AcquirePatternRoot()
+        {
+            if (_superUser == null)
+            {
+                _superUser = Runtime.GetRuntime().Exec("su", null, null);;
+                _superUserStreamWriter = new StreamWriter(_superUser.OutputStream, Encoding.ASCII);
+            }
+
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            var imgPath = Path.Combine(AutomataApi.StorageDir, "sshot.jpg");
+
+            _superUserStreamWriter.WriteLine("/system/bin/screencap -p " + imgPath);
+            _superUserStreamWriter.Flush();
+
+            // Wait
+            // https://stackoverflow.com/a/16160785/5377194
+            {
+                _superUserStreamWriter.WriteLine("echo -n 0");
+                _superUserStreamWriter.Flush();
+
+                _superUser.InputStream.ReadByte();
+            }
+
+            sw.Stop();
+
+            _lastImage?.Dispose();
+            _lastImage = new DisposableMat(Imgcodecs.Imread(imgPath, Imgcodecs.CvLoadImageGrayscale));
+
+            return new DroidCvPattern(_lastImage.Mat, false);
+        }
+
         public IPattern AcquirePattern()
         {
+            return AcquirePatternRoot();
+
             var createNewPattern = false;
 
             lock (_syncLock)
