@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using Android.Graphics;
 using Android.Media;
+using Android.OS;
 using CoreAutomata;
 using Java.Lang;
 using Org.Opencv.Core;
-using Org.Opencv.Imgcodecs;
 using Org.Opencv.Imgproc;
 using Encoding = System.Text.Encoding;
 using Path = System.IO.Path;
@@ -65,7 +64,8 @@ namespace FateGrandAutomata
 
         Process _superUser;
         StreamWriter _superUserStreamWriter;
-        DisposableMat _lastImage;
+        byte[] _buffer;
+        Mat _rootLoadMat, _rootConvertMat = new Mat();
 
         IPattern AcquirePatternRoot()
         {
@@ -75,12 +75,9 @@ namespace FateGrandAutomata
                 _superUserStreamWriter = new StreamWriter(_superUser.OutputStream, Encoding.ASCII);
             }
 
-            var sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
+            var imgPath = Path.Combine(AutomataApi.StorageDir, "sshot.raw");
 
-            var imgPath = Path.Combine(AutomataApi.StorageDir, "sshot.jpg");
-
-            _superUserStreamWriter.WriteLine("/system/bin/screencap -p " + imgPath);
+            _superUserStreamWriter.WriteLine($"/system/bin/screencap {imgPath}");
             _superUserStreamWriter.Flush();
 
             // Wait
@@ -92,12 +89,36 @@ namespace FateGrandAutomata
                 _superUser.InputStream.ReadByte();
             }
 
-            sw.Stop();
+            using var f = File.OpenRead(imgPath);
+            using var reader = new BinaryReader(f, Encoding.ASCII);
+            var w = reader.ReadInt32();
+            var h = reader.ReadInt32();
+            var format = reader.ReadInt32();
 
-            _lastImage?.Dispose();
-            _lastImage = new DisposableMat(Imgcodecs.Imread(imgPath, Imgcodecs.CvLoadImageGrayscale));
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                reader.ReadInt32();
+            }
 
-            return new DroidCvPattern(_lastImage.Mat, false);
+            if (_buffer == null)
+            {
+                // If format is not RGBA, notify
+                if (format != 1)
+                {
+                    AutomataApi.Toast($"Unexpected raw image format: {format}");
+                }
+
+                _buffer = new byte[w * h * 4];
+                _rootLoadMat = new Mat(h, w, CvType.Cv8uc4);
+            }
+
+            reader.Read(_buffer, 0, _buffer.Length);
+
+            _rootLoadMat.Put(0, 0, _buffer);
+
+            Imgproc.CvtColor(_rootLoadMat, _rootConvertMat, Imgproc.ColorRgba2gray);
+
+            return new DroidCvPattern(_rootConvertMat, false);
         }
 
         public IPattern AcquirePattern()
