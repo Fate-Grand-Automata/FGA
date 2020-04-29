@@ -76,24 +76,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidImpl.cs" />
-    <Compile Include="AccessibilityGestureService.cs" />
+    <Compile Include="Gestures\AccessibilityGestureService.cs" />
     <Compile Include="CardPriorityActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
     <Compile Include="AutoSkill\MultiSelectListSummaryProvider.cs" />
     <Compile Include="CutoutManager.cs" />
-    <Compile Include="DisposableMat.cs" />
+    <Compile Include="Imaging\DisposableMat.cs" />
     <Compile Include="DraggableRecyclerView\ItemViewHolder.cs" />
     <Compile Include="DraggableRecyclerView\IItemTouchHelperAdapter.cs" />
     <Compile Include="DraggableRecyclerView\IItemTouchHelperViewHolder.cs" />
     <Compile Include="DraggableRecyclerView\IOnStartDragListener.cs" />
     <Compile Include="DraggableRecyclerView\ItemTouchHelperCallback.cs" />
     <Compile Include="DraggableRecyclerView\RecyclerListAdapter.cs" />
-    <Compile Include="DroidCvPattern.cs" />
-    <Compile Include="GestureCompletedCallback.cs" />
+    <Compile Include="Imaging\DroidCvPattern.cs" />
+    <Compile Include="Gestures\GestureCompletedCallback.cs" />
     <Compile Include="Preferences\MainSettingsFragment.cs" />
-    <Compile Include="Screenshot\MediaProjectionScreenshotService.cs" />
-    <Compile Include="Screenshot\RootScreenshotService.cs" />
+    <Compile Include="Imaging\MediaProjectionScreenshotService.cs" />
+    <Compile Include="Imaging\RootScreenshotService.cs" />
     <Compile Include="ScriptRunnerService.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Preferences\FgoPreferences.cs" />
