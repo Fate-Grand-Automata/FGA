@@ -1,4 +1,5 @@
-﻿using CoreAutomata;
+﻿using System;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -16,8 +17,6 @@ namespace FateGrandAutomata
         public void Swipe(Location Start, Location End)
         {
             _superUser.SendCommand($"{InputCommand} swipe {Start.X} {Start.Y} {End.X} {End.Y} {GestureTimings.SwipeDurationMs}");
-
-            AutomataApi.Wait(GestureTimings.SwipeWaitTimeSec);
         }
 
         public void Click(Location Location)
@@ -27,14 +26,14 @@ namespace FateGrandAutomata
 
         public void ContinueClick(Location Location, int Times)
         {
+            Times = Math.Max(1, Times / 5);
+            const int clickDuration = 1;
+
             while (Times-- > 0)
             {
-                AutomataApi.Wait(GestureTimings.ClickDelayMs);
-
-                _superUser.SendCommand($"{InputCommand} tap {Location.X} {Location.Y}");
+                //_superUser.SendCommand($"{InputCommand} tap {Location.X} {Location.Y}");
+                _superUser.SendCommand($"{InputCommand} swipe {Location.X} {Location.Y} {Location.X} {Location.Y} {clickDuration}");
             }
-
-            AutomataApi.Wait(GestureTimings.ClickWaitTimeSec);
         }
 
         public void Dispose() { }
