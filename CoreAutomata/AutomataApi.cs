@@ -10,6 +10,7 @@ namespace CoreAutomata
     public static class AutomataApi
     {
         static IPlatformImpl _platformImpl;
+        static IGestureService _gesture;
 
         static AutomataApi()
         {
@@ -28,6 +29,11 @@ namespace CoreAutomata
             _platformImpl = Impl;
         }
 
+        public static void RegisterGestures(IGestureService GestureService)
+        {
+            _gesture = GestureService;
+        }
+
         public static double MinSimilarity { get; set; } = 0.8;
 
         public static IPattern LoadPattern(Stream Stream)
@@ -42,7 +48,7 @@ namespace CoreAutomata
 
         public static Region WindowRegion => _platformImpl.WindowRegion;
 
-        public static void Click(Location Location) => _platformImpl.Click(Location.Transform());
+        public static void Click(Location Location) => _gesture.Click(Location.Transform());
 
         static bool ExistsNow(Region Region, IPattern Image, double? Similarity)
         {
@@ -133,7 +139,7 @@ namespace CoreAutomata
             }
         }
 
-        public static void Scroll(Location Start, Location End) => _platformImpl.Scroll(Start.Transform(), End.Transform());
+        public static void Scroll(Location Start, Location End) => _gesture.Scroll(Start.Transform(), End.Transform());
 
         public static IEnumerable<Match> FindAll(Region Region, IPattern Pattern, double? Similarity = null)
         {
@@ -166,7 +172,7 @@ namespace CoreAutomata
 
         public static void ContinueClick(Location Location, int Times)
         {
-            _platformImpl.ContinueClick(Location.Transform(), Times);
+            _gesture.ContinueClick(Location.Transform(), Times);
         }
 
         public static void ShowMessageBox(string Title, string Message)

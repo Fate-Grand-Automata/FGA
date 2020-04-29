@@ -5,8 +5,18 @@ using CoreAutomata;
 
 namespace FateGrandAutomata
 {
-    public partial class AndroidImpl
+    public class AccessibilityGestureService : IGestureService
     {
+        AccessibilityService _accessibilityService;
+        readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
+
+        const double ClickWaitTime = 0.3;
+
+        public AccessibilityGestureService(AccessibilityService AccessibilityService)
+        {
+            _accessibilityService = AccessibilityService;
+        }
+
         public void Scroll(Location Start, Location End)
         {
             const int swipeDuration = 300;
@@ -21,8 +31,6 @@ namespace FateGrandAutomata
             AutomataApi.Wait(scrollWaitTime);
         }
 
-        const double clickWaitTime = 0.3;
-
         public void Click(Location Location)
         {
             const int duration = 50;
@@ -31,7 +39,7 @@ namespace FateGrandAutomata
             swipePath.MoveTo(Location.X, Location.Y);
             PerformGesture(new GestureDescription.StrokeDescription(swipePath, 0, duration));
             
-            AutomataApi.Wait(clickWaitTime);
+            AutomataApi.Wait(ClickWaitTime);
         }
 
         public void ContinueClick(Location Location, int Times)
@@ -48,11 +56,9 @@ namespace FateGrandAutomata
                 PerformGesture(stroke);
             }
 
-            AutomataApi.Wait(clickWaitTime);
+            AutomataApi.Wait(ClickWaitTime);
         }
-
-        readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
-
+        
         void PerformGesture(GestureDescription.StrokeDescription StrokeDescription)
         {
             _gestureWaitHandle.Reset();
@@ -63,6 +69,11 @@ namespace FateGrandAutomata
             _accessibilityService.DispatchGesture(gestureBuilder.Build(), new GestureCompletedCallback(_gestureWaitHandle), null);
 
             _gestureWaitHandle.Wait();
+        }
+
+        public void Dispose()
+        {
+            _accessibilityService = null;
         }
     }
 }

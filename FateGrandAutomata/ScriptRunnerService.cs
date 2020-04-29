@@ -26,7 +26,10 @@ namespace FateGrandAutomata
         WindowManagerLayoutParams _layoutParams;
         readonly DisplayMetrics _metrics = new DisplayMetrics();
         IScreenshotService _sshotService;
+        IGestureService _gestureService;
         SuperUser _superUser;
+
+        SuperUser GetSuperUser() => _superUser ??= new SuperUser();
 
         public MediaProjectionManager MediaProjectionManager { get; private set; }
 
@@ -66,8 +69,7 @@ namespace FateGrandAutomata
                 }
                 else
                 {
-                    _superUser = new SuperUser();
-                    sshotService = new RootScreenshotService(_superUser);
+                    sshotService = new RootScreenshotService(GetSuperUser());
                 }
             }
             catch (Exception e)
@@ -77,8 +79,10 @@ namespace FateGrandAutomata
             }
             
             _sshotService = sshotService;
-
             ScreenshotManager.Register(_sshotService);
+
+            _gestureService = new AccessibilityGestureService(this);
+            AutomataApi.RegisterGestures(_gestureService);
             
             _windowManager.AddView(_layout, _layoutParams);
             ServiceStarted = true;
@@ -99,6 +103,9 @@ namespace FateGrandAutomata
 
             _sshotService.Dispose();
             _sshotService = null;
+
+            _gestureService.Dispose();
+            _gestureService = null;
 
             _superUser?.Dispose();
             _superUser = null;

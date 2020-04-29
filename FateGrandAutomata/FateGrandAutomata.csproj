@@ -76,7 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidImpl.cs" />
-    <Compile Include="AndroidImplGestures.cs" />
+    <Compile Include="AccessibilityGestureService.cs" />
     <Compile Include="CardPriorityActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillActivity.cs" />
     <Compile Include="AutoSkill\AutoSkillItemActivity.cs" />
