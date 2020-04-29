@@ -45,7 +45,7 @@ namespace FateGrandAutomata
             return base.OnUnbind(Intent);
         }
 
-        public bool WantsMediaProjectionToken => !Preferences.Instance.UseRoot;
+        public bool WantsMediaProjectionToken => !Preferences.Instance.UseRootForScreenshots;
 
         public bool ServiceStarted { get; private set; }
 
@@ -105,7 +105,7 @@ namespace FateGrandAutomata
 
             try
             {
-                if (Preferences.Instance.UseRoot)
+                if (Preferences.Instance.UseRootForGestures)
                 {
                     gestureService = new RootGestures(GetSuperUser());
                 }

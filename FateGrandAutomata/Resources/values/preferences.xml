@@ -40,5 +40,6 @@
     <string name="pref_autoskill_cmd">autoskill_cmd</string>
     
     <string name="pref_ignore_notch">ignore_notch</string>
-    <string name="pref_use_root">use_root</string>
+    <string name="pref_use_root_screenshot">use_root_screenshot</string>
+    <string name="pref_use_root_gestures">use_root_gestures</string>
 </resources>

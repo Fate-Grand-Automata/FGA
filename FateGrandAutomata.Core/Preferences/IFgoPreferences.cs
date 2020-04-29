@@ -39,6 +39,8 @@
 
         bool IgnoreNotchCalculation { get; }
 
-        bool UseRoot { get; }
+        bool UseRootForScreenshots { get; }
+
+        bool UseRootForGestures { get; }
     }
 }
