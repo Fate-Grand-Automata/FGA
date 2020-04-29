@@ -78,13 +78,13 @@
     <SwitchPreferenceCompat
       app:key="@string/pref_use_root_screenshot"
       app:title="Use Root for Screenshots"
-      app:summary="Useful on Nox Android 7"
+      app:summary="Useful on Nox Android 7 for FGO JP"
       app:defaultValue="false"/>
 
-    <SwitchPreferenceCompat
+    <!-- <SwitchPreferenceCompat
       app:key="@string/pref_use_root_gestures"
       app:title="Use Root for Gestures"
       app:summary="Slow - Not Recommended"
-      app:defaultValue="false"/>
+      app:defaultValue="false"/> -->
   </PreferenceCategory>
 </PreferenceScreen>
