@@ -4,7 +4,7 @@ namespace CoreAutomata
 {
     public interface IGestureService : IDisposable
     {
-        void Scroll(Location Start, Location End);
+        void Swipe(Location Start, Location End);
 
         void Click(Location Location);
 

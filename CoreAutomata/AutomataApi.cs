@@ -139,7 +139,7 @@ namespace CoreAutomata
             }
         }
 
-        public static void Scroll(Location Start, Location End) => _gesture.Scroll(Start.Transform(), End.Transform());
+        public static void Swipe(Location Start, Location End) => _gesture.Swipe(Start.Transform(), End.Transform());
 
         public static IEnumerable<Match> FindAll(Region Region, IPattern Pattern, double? Similarity = null)
         {

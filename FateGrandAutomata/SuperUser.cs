@@ -24,19 +24,21 @@ namespace FateGrandAutomata
             }
         }
 
+        void WaitForCommand()
+        {
+            // https://stackoverflow.com/a/16160785/5377194
+            _superUserStreamWriter.WriteLine("echo -n 0");
+            _superUserStreamWriter.Flush();
+
+            _superUser.InputStream.ReadByte();
+        }
+
         public void SendCommand(string Command)
         {
             _superUserStreamWriter.WriteLine(Command);
             _superUserStreamWriter.Flush();
 
-            // Wait
-            // https://stackoverflow.com/a/16160785/5377194
-            {
-                _superUserStreamWriter.WriteLine("echo -n 0");
-                _superUserStreamWriter.Flush();
-
-                _superUser.InputStream.ReadByte();
-            }
+            WaitForCommand();
         }
 
         public void Dispose()

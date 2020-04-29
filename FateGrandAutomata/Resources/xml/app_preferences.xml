@@ -73,7 +73,7 @@
 
   <SwitchPreferenceCompat
     app:key="@string/pref_use_root"
-    app:title="Use Root for Screenshots"
+    app:title="Use Root"
     app:summary="Toggle service after changing this"
     app:defaultValue="false"/>
 </PreferenceScreen>

@@ -10,53 +10,39 @@ namespace FateGrandAutomata
         AccessibilityService _accessibilityService;
         readonly ManualResetEventSlim _gestureWaitHandle = new ManualResetEventSlim();
 
-        const double ClickWaitTime = 0.3;
-
         public AccessibilityGestureService(AccessibilityService AccessibilityService)
         {
             _accessibilityService = AccessibilityService;
         }
 
-        public void Scroll(Location Start, Location End)
+        public void Swipe(Location Start, Location End)
         {
-            const int swipeDuration = 300;
-
             var swipePath = new Path();
             swipePath.MoveTo(Start.X, Start.Y);
             swipePath.LineTo(End.X, End.Y);
-            var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, swipeDuration);
+            var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, GestureTimings.SwipeDurationMs);
             PerformGesture(swipeStroke);
 
-            const double scrollWaitTime = 0.7;
-            AutomataApi.Wait(scrollWaitTime);
+            AutomataApi.Wait(GestureTimings.SwipeWaitTimeSec);
         }
 
         public void Click(Location Location)
         {
-            const int duration = 50;
-
-            var swipePath = new Path();
-            swipePath.MoveTo(Location.X, Location.Y);
-            PerformGesture(new GestureDescription.StrokeDescription(swipePath, 0, duration));
-            
-            AutomataApi.Wait(ClickWaitTime);
+            ContinueClick(Location, 1);
         }
 
         public void ContinueClick(Location Location, int Times)
         {
-            const int clickTime = 50;
-            const int clickDelay = 10;
-
             while (Times-- > 0)
             {
                 var swipePath = new Path();
                 swipePath.MoveTo(Location.X, Location.Y);
 
-                var stroke = new GestureDescription.StrokeDescription(swipePath, clickDelay, clickTime);
+                var stroke = new GestureDescription.StrokeDescription(swipePath, GestureTimings.ClickDelayMs, GestureTimings.ClickDurationMs);
                 PerformGesture(stroke);
             }
 
-            AutomataApi.Wait(ClickWaitTime);
+            AutomataApi.Wait(GestureTimings.ClickWaitTimeSec);
         }
         
         void PerformGesture(GestureDescription.StrokeDescription StrokeDescription)

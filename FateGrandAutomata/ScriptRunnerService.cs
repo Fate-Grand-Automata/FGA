@@ -58,6 +58,22 @@ namespace FateGrandAutomata
                 return false;
             }
 
+            if (!RegisterScreenshot(MediaProjectionToken))
+                return false;
+
+            if (!RegisterGestures())
+                return false;
+
+            _windowManager.AddView(_layout, _layoutParams);
+            ServiceStarted = true;
+
+            ShowForegroundNotification();
+
+            return true;
+        }
+
+        bool RegisterScreenshot(Intent MediaProjectionToken)
+        {
             IScreenshotService sshotService;
 
             try
@@ -77,18 +93,35 @@ namespace FateGrandAutomata
                 Toast.MakeText(this, e.Message, ToastLength.Short).Show();
                 return false;
             }
-            
+
             _sshotService = sshotService;
             ScreenshotManager.Register(_sshotService);
+            return true;
+        }
 
-            _gestureService = new AccessibilityGestureService(this);
+        bool RegisterGestures()
+        {
+            IGestureService gestureService;
+
+            try
+            {
+                if (Preferences.Instance.UseRoot)
+                {
+                    gestureService = new RootGestures(GetSuperUser());
+                }
+                else
+                {
+                    gestureService = new AccessibilityGestureService(this);
+                }
+            }
+            catch (Exception e)
+            {
+                Toast.MakeText(this, e.Message, ToastLength.Short).Show();
+                return false;
+            }
+
+            _gestureService = gestureService;
             AutomataApi.RegisterGestures(_gestureService);
-            
-            _windowManager.AddView(_layout, _layoutParams);
-            ServiceStarted = true;
-
-            ShowForegroundNotification();
-
             return true;
         }
 
