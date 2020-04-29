@@ -107,6 +107,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Preferences\RefillSettingsFragment.cs" />
     <Compile Include="Preferences\MoreSettingsFragment.cs" />
+    <Compile Include="SuperUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />

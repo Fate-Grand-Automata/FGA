@@ -26,6 +26,7 @@ namespace FateGrandAutomata
         WindowManagerLayoutParams _layoutParams;
         readonly DisplayMetrics _metrics = new DisplayMetrics();
         IScreenshotService _sshotService;
+        SuperUser _superUser;
 
         public MediaProjectionManager MediaProjectionManager { get; private set; }
 
@@ -63,7 +64,11 @@ namespace FateGrandAutomata
                     var mediaProjection = MediaProjectionManager.GetMediaProjection((int) Result.Ok, MediaProjectionToken);
                     sshotService = new MediaProjectionScreenshotService(mediaProjection, _metrics);
                 }
-                else sshotService = new RootScreenshotService();
+                else
+                {
+                    _superUser = new SuperUser();
+                    sshotService = new RootScreenshotService(_superUser);
+                }
             }
             catch (Exception e)
             {
@@ -94,6 +99,9 @@ namespace FateGrandAutomata
 
             _sshotService.Dispose();
             _sshotService = null;
+
+            _superUser?.Dispose();
+            _superUser = null;
 
             ScreenshotManager.ReleaseMemory();
             ImageLocator.ClearCache();
