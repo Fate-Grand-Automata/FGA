@@ -4,8 +4,6 @@ using Android.AccessibilityServices;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
-using Android.Hardware.Display;
-using Android.Media;
 using Android.Media.Projection;
 using Android.OS;
 using Android.Util;
@@ -26,14 +24,10 @@ namespace FateGrandAutomata
         FrameLayout _layout;
         IWindowManager _windowManager;
         WindowManagerLayoutParams _layoutParams;
-
-        int _screenDensity, _screenWidth, _screenHeight;
+        readonly DisplayMetrics _metrics = new DisplayMetrics();
+        IScreenshotService _sshotService;
 
         public MediaProjectionManager MediaProjectionManager { get; private set; }
-        MediaProjection _mediaProjection;
-        VirtualDisplay _virtualDisplay;
-        ImageReader _imageReader;
-        ImgListener _imgListener;
 
         public static ScriptRunnerService Instance { get; private set; }
 
@@ -44,13 +38,10 @@ namespace FateGrandAutomata
             Instance = null;
             ServiceStarted = false;
 
-            _imageReader?.Close();
-            _imageReader = null;
-
             return base.OnUnbind(Intent);
         }
 
-        public bool HasMediaProjectionToken => _mediaProjection != null;
+        public bool WantsMediaProjectionToken => !Preferences.Instance.UseRoot;
 
         public bool ServiceStarted { get; private set; }
 
@@ -63,17 +54,27 @@ namespace FateGrandAutomata
                 return false;
             }
 
-            if (MediaProjectionToken != null)
+            IScreenshotService sshotService;
+
+            try
             {
-                _mediaProjection = MediaProjectionManager.GetMediaProjection((int)Result.Ok, MediaProjectionToken);
+                if (MediaProjectionToken != null)
+                {
+                    var mediaProjection = MediaProjectionManager.GetMediaProjection((int) Result.Ok, MediaProjectionToken);
+                    sshotService = new MediaProjectionScreenshotService(mediaProjection, _metrics);
+                }
+                else sshotService = new RootScreenshotService();
             }
+            catch (Exception e)
+            {
+                Toast.MakeText(this, e.Message, ToastLength.Short).Show();
+                return false;
+            }
+            
+            _sshotService = sshotService;
 
-            _imageReader = ImageReader.NewInstance(_screenWidth, _screenHeight, (ImageFormatType)1, 2);
-            _imgListener = new ImgListener(_imageReader);
-            _imageReader.SetOnImageAvailableListener(_imgListener, null);
-
-            SetupVirtualDisplay();
-
+            ScreenshotManager.Register(_sshotService);
+            
             _windowManager.AddView(_layout, _layoutParams);
             ServiceStarted = true;
 
@@ -91,17 +92,8 @@ namespace FateGrandAutomata
                 return false;
             }
 
-            _virtualDisplay?.Release();
-            _virtualDisplay = null;
-
-            _imgListener?.Dispose();
-            _imgListener = null;
-
-            _imageReader?.Close();
-            _imageReader = null;
-
-            _mediaProjection?.Stop();
-            _mediaProjection = null;
+            _sshotService.Dispose();
+            _sshotService = null;
 
             ScreenshotManager.ReleaseMemory();
             ImageLocator.ClearCache();
@@ -239,19 +231,15 @@ namespace FateGrandAutomata
 
             MediaProjectionManager = (MediaProjectionManager)GetSystemService(MediaProjectionService);
 
-            var metrics = new DisplayMetrics();
-            _windowManager.DefaultDisplay.GetRealMetrics(metrics);
-            _screenDensity = (int)metrics.DensityDpi;
-            _screenWidth = metrics.WidthPixels;
-            _screenHeight = metrics.HeightPixels;
+            _windowManager.DefaultDisplay.GetRealMetrics(_metrics);
 
             // Retrieve images in Landscape
-            if (_screenHeight > _screenWidth)
+            if (_metrics.HeightPixels > _metrics.WidthPixels)
             {
-                (_screenWidth, _screenHeight) = (_screenHeight, _screenWidth);
+                (_metrics.WidthPixels, _metrics.HeightPixels) = (_metrics.HeightPixels, _metrics.WidthPixels);
             }
 
-            _layoutParams.Y = _screenWidth;
+            _layoutParams.Y = _metrics.WidthPixels;
         }
 
         (int X, int Y) GetMaxBtnCoordinates()
@@ -259,8 +247,8 @@ namespace FateGrandAutomata
             var rotation = _windowManager.DefaultDisplay.Rotation;
             var rotate = rotation == SurfaceOrientation.Rotation0 || rotation == SurfaceOrientation.Rotation180;
 
-            var x = (rotate ? _screenHeight : _screenWidth) - _layout.MeasuredWidth;
-            var y = (rotate ? _screenWidth : _screenHeight) - _layout.MeasuredHeight;
+            var x = (rotate ? _metrics.HeightPixels : _metrics.WidthPixels) - _layout.MeasuredWidth;
+            var y = (rotate ? _metrics.WidthPixels : _metrics.HeightPixels) - _layout.MeasuredHeight;
 
             return (x, y);
         }
@@ -311,18 +299,6 @@ namespace FateGrandAutomata
         bool _dragging;
         MotionEventActions _lastAction;
         const int DragThreshold = 100;
-
-        public IPattern AcquireLatestImage()
-        {
-            return _imgListener.AcquirePattern();
-        }
-
-        void SetupVirtualDisplay()
-        {
-            _virtualDisplay = _mediaProjection.CreateVirtualDisplay("ScreenCapture",
-                _screenWidth, _screenHeight, _screenDensity,
-                DisplayFlags.None, _imageReader.Surface, null, null);
-        }
 
         public override void OnAccessibilityEvent(AccessibilityEvent E) { }
 

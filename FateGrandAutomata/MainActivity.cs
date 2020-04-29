@@ -133,12 +133,12 @@ namespace FateGrandAutomata
             }
             else
             {
-                if (ScriptRunnerService.Instance.HasMediaProjectionToken)
+                if (ScriptRunnerService.Instance.WantsMediaProjectionToken)
                 {
-                    instance.Start();
+                    // This initiates a prompt dialog for the user to confirm screen projection.
+                    StartActivityForResult(instance.MediaProjectionManager.CreateScreenCaptureIntent(), RequestMediaProjection);
                 }
-                // This initiates a prompt dialog for the user to confirm screen projection.
-                else StartActivityForResult(instance.MediaProjectionManager.CreateScreenCaptureIntent(), RequestMediaProjection);
+                else instance.Start();
             }
         }
 

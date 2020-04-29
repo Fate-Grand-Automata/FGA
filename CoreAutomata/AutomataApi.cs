@@ -26,8 +26,6 @@ namespace CoreAutomata
         public static void RegisterPlatform(IPlatformImpl Impl)
         {
             _platformImpl = Impl;
-
-            ScreenshotManager.RegisterPlatform(Impl);
         }
 
         public static double MinSimilarity { get; set; } = 0.8;

@@ -38,5 +38,7 @@
         IFgoRefillPreferences Refill { get; }
 
         bool IgnoreNotchCalculation { get; }
+
+        bool UseRoot { get; }
     }
 }

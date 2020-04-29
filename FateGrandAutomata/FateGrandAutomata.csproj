@@ -92,8 +92,9 @@
     <Compile Include="DroidCvPattern.cs" />
     <Compile Include="GestureCompletedCallback.cs" />
     <Compile Include="Preferences\MainSettingsFragment.cs" />
+    <Compile Include="Screenshot\MediaProjectionScreenshotService.cs" />
+    <Compile Include="Screenshot\RootScreenshotService.cs" />
     <Compile Include="ScriptRunnerService.cs" />
-    <Compile Include="ImgListener.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Preferences\FgoPreferences.cs" />
     <Compile Include="Preferences\FgoRefillPreferences.cs" />

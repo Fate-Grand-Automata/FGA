@@ -70,4 +70,10 @@
     app:title="Ignore Notch calculation"
     app:summary="Useful on Samsung phones"
     app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_use_root"
+    app:title="Use Root for Screenshots"
+    app:summary="Toggle service after changing this"
+    app:defaultValue="false"/>
 </PreferenceScreen>

@@ -106,5 +106,7 @@ namespace FateGrandAutomata
         public IFgoRefillPreferences Refill { get; }
 
         public bool IgnoreNotchCalculation => GetBool(R.pref_ignore_notch);
+
+        public bool UseRoot => GetBool(R.pref_use_root);
     }
 }

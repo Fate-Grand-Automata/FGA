@@ -14,8 +14,6 @@ namespace CoreAutomata
 
         void ContinueClick(Location Location, int Times);
 
-        IPattern Screenshot();
-
         IPattern LoadPattern(Stream Stream);
 
         IPattern GetResizableBlankPattern();

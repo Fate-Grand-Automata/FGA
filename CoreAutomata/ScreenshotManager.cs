@@ -2,11 +2,11 @@
 {
     public static class ScreenshotManager
     {
-        static IPlatformImpl _platformImpl;
+        static IScreenshotService _impl;
 
-        public static void RegisterPlatform(IPlatformImpl Impl)
+        public static void Register(IScreenshotService Impl)
         {
-            _platformImpl = Impl;
+            _impl = Impl;
         }
 
         public static bool UsePreviousSnap { get; set; }
@@ -16,7 +16,7 @@
 
         static IPattern GetScaledScreenshot()
         {
-            var sshot = _platformImpl.Screenshot()
+            var sshot = _impl.TakeScreenshot()
                 .Crop(GameAreaManager.GameArea);
 
             var scale = TransformationExtensions.ScreenToImageScale();

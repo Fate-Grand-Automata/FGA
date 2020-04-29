@@ -5008,8 +5008,8 @@ namespace FateGrandAutomata
 			// aapt resource value: 0x7F0E002D
 			public const int path_password_strike_through = 2131623981;
 			
-			// aapt resource value: 0x7F0E0050
-			public const int preference_copied = 2131624016;
+			// aapt resource value: 0x7F0E0051
+			public const int preference_copied = 2131624017;
 			
 			// aapt resource value: 0x7F0E002F
 			public const int pref_autoskill_cmd = 2131623983;
@@ -5111,25 +5111,28 @@ namespace FateGrandAutomata
 			public const int pref_support_swipes_per_update = 2131624014;
 			
 			// aapt resource value: 0x7F0E004F
-			public const int pref_withdraw_enabled = 2131624015;
+			public const int pref_use_root = 2131624015;
 			
-			// aapt resource value: 0x7F0E0051
-			public const int search_menu_title = 2131624017;
+			// aapt resource value: 0x7F0E0050
+			public const int pref_withdraw_enabled = 2131624016;
 			
 			// aapt resource value: 0x7F0E0052
-			public const int service_runner_description = 2131624018;
+			public const int search_menu_title = 2131624018;
 			
 			// aapt resource value: 0x7F0E0053
-			public const int status_bar_notification_info_overflow = 2131624019;
+			public const int service_runner_description = 2131624019;
 			
 			// aapt resource value: 0x7F0E0054
-			public const int summary_collapsed_preference_list = 2131624020;
+			public const int status_bar_notification_info_overflow = 2131624020;
 			
 			// aapt resource value: 0x7F0E0055
-			public const int v7_preference_off = 2131624021;
+			public const int summary_collapsed_preference_list = 2131624021;
 			
 			// aapt resource value: 0x7F0E0056
-			public const int v7_preference_on = 2131624022;
+			public const int v7_preference_off = 2131624022;
+			
+			// aapt resource value: 0x7F0E0057
+			public const int v7_preference_on = 2131624023;
 			
 			static String()
 			{
