@@ -176,13 +176,22 @@ namespace FateGrandAutomata
             _scriptStarted = false;
         }
 
-        static EntryPoint GetEntryPoint() => Preferences.Instance.ScriptMode switch
+        EntryPoint GetEntryPoint() => Preferences.Instance.ScriptMode switch
         {
             ScriptMode.Lottery => new AutoLottery(),
             ScriptMode.FriendGacha => new AutoFriendGacha(),
-            ScriptMode.SupportImageMaker => new SupportImageMaker(),
+            ScriptMode.SupportImageMaker => new SupportImageMaker(SupportImgMakerCallback),
             _ => new AutoBattle()
         };
+
+        void SupportImgMakerCallback(string Id)
+        {
+            var i = new Intent(ApplicationContext, typeof(SupportImgNamerActivity));
+            i.AddFlags(ActivityFlags.NewTask);
+            i.PutExtra(SupportImgNamerActivity.SupportImageIdKey, Id);
+
+            ApplicationContext.StartActivity(i);
+        }
 
         void StartScript()
         {
