@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
+  <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/support_img_namer_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="?attr/colorPrimary"
+      app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+  </com.google.android.material.appbar.AppBarLayout>
+
   <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,13 +37,21 @@
             android:textSize="20sp"/>
 
         <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
+            tools:src="@android:drawable/ic_menu_gallery"
             android:layout_width="120dp"
             android:layout_height="60dp"
             android:id="@+id/image_servant_0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/servant_txt"
             android:layout_marginTop="16dp"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#fff"
+            android:id="@+id/del_servant_0"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image_servant_0"/>
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,17 +60,25 @@
             tools:text="Servant 0"
             app:layout_constraintTop_toTopOf="@+id/image_servant_0"
             app:layout_constraintStart_toEndOf="@+id/image_servant_0"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/del_servant_0"
             android:layout_marginLeft="16dp"/>
 
         <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
+            tools:src="@android:drawable/ic_menu_gallery"
             android:layout_width="120dp"
             android:layout_height="60dp"
             android:id="@+id/image_servant_1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_servant_0"
             android:layout_marginTop="16dp"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#fff"
+            android:id="@+id/del_servant_1"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image_servant_1"/>
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -57,7 +87,7 @@
             tools:text="Servant 1"
             app:layout_constraintTop_toTopOf="@+id/image_servant_1"
             app:layout_constraintStart_toEndOf="@+id/image_servant_1"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/del_servant_1"
             android:layout_marginLeft="16dp"/>
 
         <TextView
@@ -71,13 +101,21 @@
           android:textSize="20sp"/>
 
         <ImageView
-          android:src="@android:drawable/ic_menu_gallery"
+          tools:src="@android:drawable/ic_menu_gallery"
           android:layout_width="120dp"
           android:layout_height="60dp"
           android:id="@+id/image_ce_0"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/ce_txt"
           android:layout_marginTop="16dp"/>
+        <ImageButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:backgroundTint="#fff"
+          android:id="@+id/del_ce_0"
+          android:src="@drawable/ic_delete"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@+id/image_ce_0"/>
         <EditText
           android:layout_width="0dp"
           android:layout_height="wrap_content"
@@ -86,17 +124,25 @@
           tools:text="CE 0"
           app:layout_constraintTop_toTopOf="@+id/image_ce_0"
           app:layout_constraintStart_toEndOf="@+id/image_ce_0"
-          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintEnd_toStartOf="@+id/del_ce_0"
           android:layout_marginLeft="16dp"/>
 
         <ImageView
-          android:src="@android:drawable/ic_menu_gallery"
+          tools:src="@android:drawable/ic_menu_gallery"
           android:layout_width="120dp"
           android:layout_height="60dp"
           android:id="@+id/image_ce_1"
           app:layout_constraintLeft_toLeftOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/image_ce_0"
           android:layout_marginTop="16dp"/>
+        <ImageButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:backgroundTint="#fff"
+          android:id="@+id/del_ce_1"
+          android:src="@drawable/ic_delete"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="@+id/image_ce_1"/>
         <EditText
           android:layout_width="0dp"
           android:layout_height="wrap_content"
@@ -105,19 +151,9 @@
           tools:text="CE 1"
           app:layout_constraintTop_toTopOf="@+id/image_ce_1"
           app:layout_constraintStart_toEndOf="@+id/image_ce_1"
-          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintEnd_toStartOf="@+id/del_ce_1"
           android:layout_marginLeft="16dp"/>
-
          
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.core.widget.NestedScrollView>
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/btn_support_img_rename"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    android:layout_margin="@dimen/fab_margin"
-    app:srcCompat="@drawable/ic_check" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
