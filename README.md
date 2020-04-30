@@ -9,6 +9,8 @@ Also, includes a UI for configuring Settings.
 
 See [Running on Samsung devices](SAMSUNG.md) if you're facing problems running the script on your Samsung devices.
 
+See [Running on Emulators](EMULATORS.md) to know about emulator support.
+
 ## Why make another?
 Fate/Grand Order is all about farming.
 We already have an awesome auto battle script named [Fate-Grand-Order_Lua][FGOLua] which uses [AnkuLua](https://ankulua.boards.net/) (an implementation of [Sikuli](http://doc.sikuli.org/sikuli-script-index.html) using Lua language for scripting on Android).

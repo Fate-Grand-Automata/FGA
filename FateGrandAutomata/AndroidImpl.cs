@@ -31,13 +31,6 @@ namespace FateGrandAutomata
                 Android.Widget.Toast.MakeText(_accessibilityService, Msg, ToastLength.Short).Show());
         }
 
-        public IPattern Screenshot()
-        {
-            return ScriptRunnerService
-                .Instance
-                .AcquireLatestImage();
-        }
-
         public IPattern LoadPattern(Stream Stream)
         {
             return new DroidCvPattern(Stream);

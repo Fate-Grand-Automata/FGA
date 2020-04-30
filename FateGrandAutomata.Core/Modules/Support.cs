@@ -254,7 +254,7 @@ namespace FateGrandAutomata
 
         void ScrollList()
         {
-            AutomataApi.Scroll(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick);
+            AutomataApi.Swipe(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick);
         }
 
         Region FindFriendName()
