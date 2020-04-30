@@ -11,32 +11,81 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      NOT_FORK: ${{secrets.NOT_FORK == 'true'}}
+      FORK: ${{secrets.NOT_FORK != 'true'}}
     steps:
     - uses: actions/checkout@v1
-    - name: Version Number
+
+    - name: Determine Package Name
+      shell: pwsh
       run: |
-        cd FateGrandAutomata/Properties
+        $PACKAGE_NAME = "com.mathewsachin.fategrandautomata"
+        if ($env:FORK -eq $True) {
+            $PACKAGE_NAME += '.fork'
+        }
+        echo "::set-env name=PACKAGE_NAME::$PACKAGE_NAME"
+
+    - name: Apply Package Name
+      run: sed -i -e "s/package=\"[^\"]*\"/package=\"$PACKAGE_NAME\"/g" AndroidManifest.xml
+      working-directory: ./FateGrandAutomata/Properties
+
+    - name: Determine Version Name
+      shell: pwsh
+      run: |
+        $VERSION_NAME = $env:GITHUB_RUN_NUMBER
+        if ($env:GITHUB_REF.StartsWith('refs/tags/')) {
+            $VERSION_NAME = $env:GITHUB_REF.Substring(10)
+        }
+        echo "::set-env name=VERSION_NAME::$VERSION_NAME"
+
+    - name: Apply Version Number and Version Name
+      working-directory: ./FateGrandAutomata/Properties
+      run: |
         sed -i -e "s/android:versionCode=\"[^\"]*\"/android:versionCode=\"$GITHUB_RUN_NUMBER\"/g" AndroidManifest.xml
-        sed -i -e "s/android:versionName=\"[^\"]*\"/android:versionName=\"$GITHUB_RUN_NUMBER\"/g" AndroidManifest.xml
-    - name: Version Tag
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        cd FateGrandAutomata/Properties
-        sed -i -e "s/android:versionName=\"[^\"]*\"/android:versionName=\"${GITHUB_REF:10}\"/g" AndroidManifest.xml
-    - name: Android
+        sed -i -e "s/android:versionName=\"[^\"]*\"/android:versionName=\"$VERSION_NAME\"/g" AndroidManifest.xml
+
+    - name: Decrypt keystore (GPG)
       env:
         GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
+      working-directory: ./FateGrandAutomata
+      if: env.NOT_FORK == 'true'
+      run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
+
+    - name: Sign Android Package
+      env:
         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+      working-directory: ./FateGrandAutomata
+      shell: pwsh
       run: |
-        cd FateGrandAutomata
-        gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
-        msbuild FateGrandAutomata.csproj /restore /verbosity:minimal /t:SignAndroidPackage /p:Configuration=Release /p:AndroidKeyStore=True /p:AndroidSigningKeyAlias=fgautomata /p:AndroidSigningStorePass="$KEYSTORE_PASS" /p:AndroidSigningKeyPass="$KEYSTORE_PASS" /p:AndroidSigningKeyStore=fgautomata.keystore
+        $BuildArgs = @{
+            FilePath = 'msbuild'
+            ArgumentList = @(
+                'FateGrandAutomata.csproj',
+                '/restore',
+                '/verbosity:minimal',
+                '/t:SignAndroidPackage',
+                '/p:Configuration=Release'
+            )
+            Wait = $True
+        }
+        if ($env:FORK -eq $False) {
+            $BuildArgs.ArgumentList += @(
+                '/p:AndroidKeyStore=True',
+                '/p:AndroidSigningKeyAlias=fgautomata',
+                "/p:AndroidSigningStorePass=`"$env:KEYSTORE_PASS`"",
+                "/p:AndroidSigningKeyPass=`"$env:KEYSTORE_PASS`"",
+                '/p:AndroidSigningKeyStore=fgautomata.keystore'
+            )
+        }
+        Start-Process @BuildArgs
+
     - name: Upload APK
       uses: actions/upload-artifact@v1
       with:
         name: apk
-        path: FateGrandAutomata/bin/Release/com.mathewsachin.fategrandautomata-Signed.apk
-  
+        path: FateGrandAutomata/bin/Release/${{ env.PACKAGE_NAME }}-Signed.apk
+
   deploy:
     needs: build
     runs-on: macos-latest
@@ -44,6 +93,7 @@ jobs:
     steps:
     - name: Set tag env var
       run: echo ::set-env name=TAG_VERSION::${GITHUB_REF:10}
+
     - name: Draft Release
       id: create_release
       uses: actions/create-release@latest
@@ -54,10 +104,12 @@ jobs:
         release_name: 'Fate/Grand Automata ${{ env.TAG_VERSION }}'
         draft: true
         prerelease: true
+
     - name: Download Artifact
       uses: actions/download-artifact@v1
       with:
         name: apk
+
     - name: Upload APK to GitHub Releases
       uses: actions/upload-release-asset@v1
       env:

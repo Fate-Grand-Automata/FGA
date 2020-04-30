@@ -25,16 +25,22 @@ namespace FateGrandAutomata
                 var key = GetString(Resource.String.pref_autoskill_list);
 
                 var prefManager = PreferenceManager.GetDefaultSharedPreferences(Activity);
-                var autoSkillItems = prefManager.GetStringSet(key, new List<string>());
-
-                var entryValues = autoSkillItems.ToArray();
-                var entryLabels = autoSkillItems
+                var autoSkillItems = prefManager.GetStringSet(key, new List<string>())
                     .Select(M =>
                     {
                         var sharedPrefs = Activity.GetSharedPreferences(M, FileCreationMode.Private);
 
-                        return sharedPrefs.GetString(GetString(Resource.String.pref_autoskill_name), "--");
+                        return (Id: M, Name: sharedPrefs.GetString(GetString(Resource.String.pref_autoskill_name), "--"));
                     })
+                    .OrderBy(M => M.Name)
+                    .ToArray();
+
+                var entryValues = autoSkillItems
+                    .Select(M => M.Id)
+                    .ToArray();
+
+                var entryLabels = autoSkillItems
+                    .Select(M => M.Name)
                     .ToArray();
 
                 list.SetEntryValues(entryValues);

@@ -70,4 +70,21 @@
     app:title="Ignore Notch calculation"
     app:summary="Useful on Samsung phones"
     app:defaultValue="false"/>
+
+  <PreferenceCategory
+    app:key="root_category"
+    app:title="Root"
+    app:summary="Toggle service after changing these">
+    <SwitchPreferenceCompat
+      app:key="@string/pref_use_root_screenshot"
+      app:title="Use Root for Screenshots"
+      app:summary="Useful on Nox Android 7 for FGO JP"
+      app:defaultValue="false"/>
+
+    <!-- <SwitchPreferenceCompat
+      app:key="@string/pref_use_root_gestures"
+      app:title="Use Root for Gestures"
+      app:summary="Slow - Not Recommended"
+      app:defaultValue="false"/> -->
+  </PreferenceCategory>
 </PreferenceScreen>
