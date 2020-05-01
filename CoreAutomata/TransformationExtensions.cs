@@ -35,7 +35,7 @@
         {
             var scale = ScriptToScreenScale();
 
-            var scaledPoint = Location * scale ?? Location;
+            var scaledPoint = Location * (scale ?? 1);
 
             var gameArea = GameAreaManager.GameArea;
 
@@ -48,7 +48,7 @@
 
             var trLoc = Region.Location.Transform();
             var size = new Size(Region.W, Region.H);
-            var scaledSize = size * scale ?? size;
+            var scaledSize = size * (scale ?? 1);
 
             return new Region(trLoc.X, trLoc.Y, scaledSize.Width, scaledSize.Height);
         }
