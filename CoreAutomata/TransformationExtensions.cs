@@ -61,7 +61,7 @@
             // Screen -> Image
             var scale2 = ScreenToImageScale();
 
-            var scale = scale1 * (scale2 ?? 1);
+            var scale = scale1 * (scale2 ?? DontScale);
 
             return Region * scale;
         }
@@ -74,7 +74,7 @@
             // Screen -> Image
             var scale2 = ScreenToImageScale();
 
-            var scale = scale1 * (scale2 ?? 1);
+            var scale = scale1 * (scale2 ?? DontScale);
 
             return Region * (1 / scale);
         }
