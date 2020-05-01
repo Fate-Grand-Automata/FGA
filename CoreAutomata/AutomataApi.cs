@@ -36,7 +36,7 @@ namespace CoreAutomata
 
         public static double MinSimilarity { get; set; } = 0.8;
 
-        public static double DefaultHighlightTimeout { get; set; } = 0.3;
+        public static TimeSpan DefaultHighlightTimeout { get; set; } = TimeSpan.FromSeconds(0.3);
 
         public static IPattern LoadPattern(Stream Stream, bool Mask = false)
         {
@@ -192,7 +192,7 @@ namespace CoreAutomata
             _platformImpl.MessageBox(Title, Message);
         }
 
-        public static void Highlight(Region Region, double Timeout)
+        public static void Highlight(Region Region, TimeSpan Timeout)
         {
             _platformImpl.Highlight(Region.Transform(), Timeout);
         }

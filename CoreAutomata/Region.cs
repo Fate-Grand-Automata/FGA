@@ -53,7 +53,7 @@ namespace CoreAutomata
                 (Region.H * Scale).Round());
         }
 
-        public void Highlight(double Duration)
+        public void Highlight(TimeSpan Duration)
         {
             AutomataApi.Highlight(this, Duration);
         }

@@ -62,11 +62,11 @@ namespace FateGrandAutomata
             });
         }
 
-        public void Highlight(Region Region, double Timeout)
+        public void Highlight(Region Region, TimeSpan Timeout)
         {
             HighlightView.AddRegion(Region);
 
-            Task.Delay(TimeSpan.FromSeconds(Timeout))
+            Task.Delay(Timeout)
                 .ContinueWith(M => HighlightView.RemoveRegion(Region));
         }
 

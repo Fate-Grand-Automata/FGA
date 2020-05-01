@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace CoreAutomata
 {
@@ -16,6 +17,6 @@ namespace CoreAutomata
 
         void MessageBox(string Title, string Message);
 
-        void Highlight(Region Region, double Timeout);
+        void Highlight(Region Region, TimeSpan Timeout);
     }
 }
