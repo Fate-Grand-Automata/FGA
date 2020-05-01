@@ -3193,28 +3193,31 @@ namespace FateGrandAutomata
 			public const int preference_seekbar_value_minWidth = 2131165401;
 			
 			// aapt resource value: 0x7F0700DA
-			public const int tooltip_corner_radius = 2131165402;
+			public const int script_runner_btn_size = 2131165402;
 			
 			// aapt resource value: 0x7F0700DB
-			public const int tooltip_horizontal_padding = 2131165403;
+			public const int tooltip_corner_radius = 2131165403;
 			
 			// aapt resource value: 0x7F0700DC
-			public const int tooltip_margin = 2131165404;
+			public const int tooltip_horizontal_padding = 2131165404;
 			
 			// aapt resource value: 0x7F0700DD
-			public const int tooltip_precise_anchor_extra_offset = 2131165405;
+			public const int tooltip_margin = 2131165405;
 			
 			// aapt resource value: 0x7F0700DE
-			public const int tooltip_precise_anchor_threshold = 2131165406;
+			public const int tooltip_precise_anchor_extra_offset = 2131165406;
 			
 			// aapt resource value: 0x7F0700DF
-			public const int tooltip_vertical_padding = 2131165407;
+			public const int tooltip_precise_anchor_threshold = 2131165407;
 			
 			// aapt resource value: 0x7F0700E0
-			public const int tooltip_y_offset_non_touch = 2131165408;
+			public const int tooltip_vertical_padding = 2131165408;
 			
 			// aapt resource value: 0x7F0700E1
-			public const int tooltip_y_offset_touch = 2131165409;
+			public const int tooltip_y_offset_non_touch = 2131165409;
+			
+			// aapt resource value: 0x7F0700E2
+			public const int tooltip_y_offset_touch = 2131165410;
 			
 			static Dimension()
 			{
