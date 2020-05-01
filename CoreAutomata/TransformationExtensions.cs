@@ -35,13 +35,22 @@
         {
             var scale = ScriptToScreenScale();
 
-            var scaledPoint = scale == null
-                ? Location
-                : Location * scale.Value;
+            var scaledPoint = Location * scale ?? Location;
 
             var gameArea = GameAreaManager.GameArea;
 
             return new Location(scaledPoint.X + gameArea.X, scaledPoint.Y + gameArea.Y);
+        }
+
+        public static Region Transform(this Region Region)
+        {
+            var scale = ScriptToScreenScale();
+
+            var trLoc = Region.Location.Transform();
+            var size = new Size(Region.W, Region.H);
+            var scaledSize = size * scale ?? size;
+
+            return new Region(trLoc.X, trLoc.Y, scaledSize.Width, scaledSize.Height);
         }
 
         public static Region TransformToImage(this Region Region)

@@ -6,6 +6,8 @@ namespace CoreAutomata
     {
         Region WindowRegion { get; }
 
+        bool DebugMode { get; }
+
         void Toast(string Msg);
 
         IPattern LoadPattern(Stream Stream);
@@ -13,5 +15,7 @@ namespace CoreAutomata
         IPattern GetResizableBlankPattern();
 
         void MessageBox(string Title, string Message);
+
+        void Highlight(Region Region, double Timeout);
     }
 }

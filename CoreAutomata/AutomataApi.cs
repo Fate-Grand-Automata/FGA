@@ -36,6 +36,8 @@ namespace CoreAutomata
 
         public static double MinSimilarity { get; set; } = 0.8;
 
+        public static double DefaultHighlightTimeout { get; set; } = 0.3;
+
         public static IPattern LoadPattern(Stream Stream)
         {
             return _platformImpl.LoadPattern(Stream);
@@ -56,6 +58,11 @@ namespace CoreAutomata
 
             if (Region != null)
             {
+                if (_platformImpl.DebugMode)
+                {
+                    Region.Highlight(DefaultHighlightTimeout);
+                }
+
                 sshot = sshot.Crop(Region.TransformToImage());
             }
 
@@ -147,6 +154,11 @@ namespace CoreAutomata
 
             if (Region != null)
             {
+                if (_platformImpl.DebugMode)
+                {
+                    Region.Highlight(DefaultHighlightTimeout);
+                }
+
                 sshot = sshot.Crop(Region.TransformToImage());
             }
 
@@ -178,6 +190,11 @@ namespace CoreAutomata
         public static void ShowMessageBox(string Title, string Message)
         {
             _platformImpl.MessageBox(Title, Message);
+        }
+
+        public static void Highlight(Region Region, double Timeout)
+        {
+            _platformImpl.Highlight(Region.Transform(), Timeout);
         }
 
         public static void SetStorageRootDir(string Dir)
