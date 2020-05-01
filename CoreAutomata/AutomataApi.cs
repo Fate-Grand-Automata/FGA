@@ -38,9 +38,9 @@ namespace CoreAutomata
 
         public static double DefaultHighlightTimeout { get; set; } = 0.3;
 
-        public static IPattern LoadPattern(Stream Stream)
+        public static IPattern LoadPattern(Stream Stream, bool Mask = false)
         {
-            return _platformImpl.LoadPattern(Stream);
+            return _platformImpl.LoadPattern(Stream, Mask);
         }
 
         public static void Wait(double Seconds)

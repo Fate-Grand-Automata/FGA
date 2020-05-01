@@ -10,7 +10,7 @@ namespace CoreAutomata
 
         void Toast(string Msg);
 
-        IPattern LoadPattern(Stream Stream);
+        IPattern LoadPattern(Stream Stream, bool Mask);
 
         IPattern GetResizableBlankPattern();
 

@@ -124,7 +124,7 @@ namespace FateGrandAutomata
             }
         }
 
-        static IPattern CreatePattern(string FilePath)
+        static IPattern CreatePattern(string FilePath, bool Mask = false)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = $"{nameof(FateGrandAutomata)}.{FilePath}";
@@ -138,14 +138,14 @@ namespace FateGrandAutomata
 
             using (stream)
             {
-                return AutomataApi.LoadPattern(stream);
+                return AutomataApi.LoadPattern(stream, Mask);
             }
         }
 
         static GameServer _currentGameServer;
         static readonly Dictionary<string, IPattern> RegionCachedPatterns = new Dictionary<string, IPattern>();
 
-        static IPattern GetRegionPattern(string Filename)
+        static IPattern GetRegionPattern(string Filename, bool Mask = false)
         {
             var server = Preferences.Instance.GameServer;
 
@@ -159,7 +159,7 @@ namespace FateGrandAutomata
 
             if (!RegionCachedPatterns.ContainsKey(Filename))
             {
-                var pattern = CreatePattern($"images.{Preferences.Instance.GameServer}.{Filename}");
+                var pattern = CreatePattern($"images.{Preferences.Instance.GameServer}.{Filename}", Mask);
 
                 RegionCachedPatterns.Add(Filename, pattern);
             }
@@ -191,7 +191,7 @@ namespace FateGrandAutomata
 
         public static IPattern SupportRegionTool => GetRegionPattern("support_region_tool.png");
 
-        public static IPattern StorySkip => GetRegionPattern("storyskip.png");
+        public static IPattern StorySkip => GetRegionPattern("storyskip.png", true);
 
         public static IPattern Menu => GetRegionPattern("menu.png");
 
@@ -216,6 +216,12 @@ namespace FateGrandAutomata
         public static IPattern FinishedLotteryBox => GetRegionPattern("lottery.png");
 
         public static IPattern PresentBoxFull => GetRegionPattern("StopGifts.png");
+
+        public static IPattern MasterExp => GetRegionPattern("master_exp.png");
+
+        public static IPattern MasterLvlUp => GetRegionPattern("master_lvl_up.png");
+
+        public static IPattern MatRewards => GetRegionPattern("mat_rewards.png");
 
         static readonly Dictionary<string, IPattern> SupportCachedPatterns = new Dictionary<string, IPattern>();
 

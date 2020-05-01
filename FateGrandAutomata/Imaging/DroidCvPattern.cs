@@ -23,7 +23,7 @@ namespace FateGrandAutomata
             _ownsMat = OwnsMat;
         }
 
-        public DroidCvPattern(Stream Stream)
+        public DroidCvPattern(Stream Stream, bool MakeMask)
         {
             var buffer = new byte[Stream.Length];
             using var ms = new MemoryStream(buffer);
@@ -31,10 +31,28 @@ namespace FateGrandAutomata
 
             using var raw = new DisposableMat(new MatOfByte(buffer));
 
-            Mat = Imgcodecs.Imdecode(raw.Mat, Imgcodecs.CvLoadImageGrayscale);
+            if (MakeMask)
+            {
+                using var rgbaMat = new DisposableMat(Imgcodecs.Imdecode(raw.Mat, Imgcodecs.CvLoadImageUnchanged));
+
+                Mat = new Mat();
+                Imgproc.CvtColor(rgbaMat.Mat, Mat, Imgproc.ColorRgba2gray);
+
+                Mask = new Mat();
+                // Extract alpha channel
+                Core.ExtractChannel(rgbaMat.Mat, Mask, 3);
+                // Mask containing 0 or 255
+                Imgproc.Threshold(Mask, Mask, 0, 255, Imgproc.ThreshBinary);
+            }
+            else
+            {
+                Mat = Imgcodecs.Imdecode(raw.Mat, Imgcodecs.CvLoadImageGrayscale);
+            }
         }
 
         public Mat Mat { get; }
+
+        public Mat Mask { get; }
 
         public void Dispose()
         {
@@ -42,6 +60,8 @@ namespace FateGrandAutomata
             {
                 Mat.Release();
             }
+
+            Mask?.Release();
         }
 
         public IPattern Resize(Size Size)
@@ -90,29 +110,38 @@ namespace FateGrandAutomata
             Imgcodecs.Imwrite(Filename, Mat);
         }
 
+        public int Width => Mat.Width();
+
+        public int Height => Mat.Height();
+
+        DisposableMat Match(DroidCvPattern Template)
+        {
+            var result = new DisposableMat();
+
+            if (Template.Mask != null)
+            {
+                Imgproc.MatchTemplate(Mat, Template.Mat, result.Mat, Imgproc.TmCcorrNormed, Template.Mask);
+            }
+            else
+            {
+                Imgproc.MatchTemplate(Mat, Template.Mat, result.Mat, Imgproc.TmCcoeffNormed);
+            }
+
+            return result;
+        }
+
         public bool IsMatch(IPattern Template, double Similarity)
         {
-            using var result = new DisposableMat();
-
-            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result.Mat, Imgproc.TmCcoeffNormed);
+            using var result = Match(Template as DroidCvPattern);
 
             using var minMaxLocResult = Core.MinMaxLoc(result.Mat);
 
             return minMaxLocResult.MaxVal >= Similarity;
         }
 
-        public int Width => Mat.Width();
-
-        public int Height => Mat.Height();
-
         public IEnumerable<Match> FindMatches(IPattern Template, double Similarity)
         {
-            using var result = new DisposableMat();
-
-            // max is used for tmccoeff
-            Imgproc.MatchTemplate(Mat, (Template as DroidCvPattern)?.Mat, result.Mat, Imgproc.TmCcoeffNormed);
-
-            Imgproc.Threshold(result.Mat, result.Mat, 0.1, 1, Imgproc.ThreshTozero);
+            using var result = Match(Template as DroidCvPattern);
 
             while (true)
             {

@@ -38,9 +38,9 @@ namespace FateGrandAutomata
                 Android.Widget.Toast.MakeText(_accessibilityService, Msg, ToastLength.Short).Show());
         }
 
-        public IPattern LoadPattern(Stream Stream)
+        public IPattern LoadPattern(Stream Stream, bool Mask)
         {
-            return new DroidCvPattern(Stream);
+            return new DroidCvPattern(Stream, Mask);
         }
 
         public IPattern GetResizableBlankPattern()
