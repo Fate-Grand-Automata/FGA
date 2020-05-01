@@ -217,6 +217,12 @@ namespace FateGrandAutomata
 
         public static IPattern PresentBoxFull => GetRegionPattern("StopGifts.png");
 
+        public static IPattern MasterExp => GetRegionPattern("master_exp.png");
+
+        public static IPattern MasterLvlUp => GetRegionPattern("master_lvl_up.png");
+
+        public static IPattern MatRewards => GetRegionPattern("mat_rewards.png");
+
         static readonly Dictionary<string, IPattern> SupportCachedPatterns = new Dictionary<string, IPattern>();
 
         public static void ClearSupportCache()
