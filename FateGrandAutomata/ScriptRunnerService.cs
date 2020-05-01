@@ -66,8 +66,8 @@ namespace FateGrandAutomata
             if (!RegisterGestures())
                 return false;
 
-            _windowManager.AddView(_layout, _layoutParams);
             _windowManager.AddView(_highlightView, _highlightLayoutParams);
+            _windowManager.AddView(_layout, _layoutParams);
 
             ServiceStarted = true;
 
