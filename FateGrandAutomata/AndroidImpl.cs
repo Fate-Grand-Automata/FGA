@@ -66,6 +66,11 @@ namespace FateGrandAutomata
         {
             HighlightView.AddRegion(Region);
 
+            // We can't draw over the notch area
+            var cutoutAppliedRegion = CutoutManager.GetCutoutAppliedRegion(_accessibilityService);
+            Region.X -= cutoutAppliedRegion.X;
+            Region.Y -= cutoutAppliedRegion.Y;
+
             Task.Delay(Timeout)
                 .ContinueWith(M => HighlightView.RemoveRegion(Region));
         }
