@@ -35,13 +35,22 @@
         {
             var scale = ScriptToScreenScale();
 
-            var scaledPoint = scale == null
-                ? Location
-                : Location * scale.Value;
+            var scaledPoint = Location * scale;
 
             var gameArea = GameAreaManager.GameArea;
 
             return new Location(scaledPoint.X + gameArea.X, scaledPoint.Y + gameArea.Y);
+        }
+
+        public static Region Transform(this Region Region)
+        {
+            var scale = ScriptToScreenScale();
+
+            var trLoc = Region.Location.Transform();
+            var size = new Size(Region.W, Region.H);
+            var scaledSize = size * scale;
+
+            return new Region(trLoc.X, trLoc.Y, scaledSize.Width, scaledSize.Height);
         }
 
         public static Region TransformToImage(this Region Region)
@@ -52,12 +61,7 @@
             // Screen -> Image
             var scale2 = ScreenToImageScale();
 
-            if (scale1 == null && scale2 == null)
-            {
-                return Region;
-            }
-
-            var scale = (scale1 ?? 1) * (scale2 ?? 1);
+            var scale = scale1 * (scale2 ?? DontScale);
 
             return Region * scale;
         }
@@ -70,21 +74,18 @@
             // Screen -> Image
             var scale2 = ScreenToImageScale();
 
-            if (scale1 == null && scale2 == null)
-            {
-                return Region;
-            }
+            var scale = scale1 * (scale2 ?? DontScale);
 
-            var scale = (1 / (scale1 ?? 1)) * (1 / (scale2 ?? 1));
-
-            return Region * scale;
+            return Region * (1 / scale);
         }
 
-        static double? ScriptToScreenScale()
+        const double DontScale = 1;
+
+        static double ScriptToScreenScale()
         {
             if (GameAreaManager.ScriptDimension == null)
             {
-                return null;
+                return DontScale;
             }
 
             var sourceRegion = GameAreaManager.ScriptDimension;
@@ -96,7 +97,7 @@
             {
                 if (targetRegion.W == pixels)
                 {
-                    return null;
+                    return DontScale;
                 }
 
                 return targetRegion.W / (double) pixels;
@@ -104,7 +105,7 @@
 
             if (targetRegion.H == pixels)
             {
-                return null;
+                return DontScale;
             }
 
             return targetRegion.H / (double) pixels;

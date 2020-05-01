@@ -53,9 +53,9 @@ namespace CoreAutomata
                 (Region.H * Scale).Round());
         }
 
-        public void Highlight(int Duration)
+        public void Highlight(TimeSpan Duration)
         {
-            throw new NotImplementedException($"{nameof(Highlight)} is not implemented");
+            AutomataApi.Highlight(this, Duration);
         }
 
         public override string ToString() => $"({X}, {Y}) {W}x{H}";
