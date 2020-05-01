@@ -132,6 +132,13 @@ namespace FateGrandAutomata
 
                 try
                 {
+                    var newPathDir = Path.GetDirectoryName(newPath);
+
+                    if (!Directory.Exists(newPathDir))
+                    {
+                        Directory.CreateDirectory(newPathDir);
+                    }
+
                     File.Move(OldPath, newPath);
                 }
                 catch
