@@ -108,7 +108,7 @@ namespace FateGrandAutomata
             // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
             // that's why the table is iterated backwards.
 
-            var i = 0;
+            var i = 2;
 
             foreach (var target in Game.BattleTargetRegionArray.Reverse())
             {
@@ -118,7 +118,7 @@ namespace FateGrandAutomata
                     return;
                 }
 
-                ++i;
+                --i;
             }
         }
 
