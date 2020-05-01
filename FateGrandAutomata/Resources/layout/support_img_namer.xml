@@ -35,6 +35,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/folder_help_txt"
+            android:text="Specify folders like: 'Scathach=Skadi/asc1'"
+            app:layout_constraintTop_toBottomOf="@+id/servant_txt"/>
 
         <ImageView
             tools:src="@android:drawable/ic_menu_gallery"
@@ -42,7 +48,7 @@
             android:layout_height="60dp"
             android:id="@+id/image_servant_0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/servant_txt"
+            app:layout_constraintTop_toBottomOf="@+id/folder_help_txt"
             android:layout_marginTop="16dp"/>
         <ImageButton
             android:layout_width="wrap_content"
