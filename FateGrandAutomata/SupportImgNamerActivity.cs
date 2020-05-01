@@ -53,14 +53,14 @@ namespace FateGrandAutomata
             _ce0Path = SupportImageMaker.GetCeImgPath(supportImgId, 0);
             _ce1Path = SupportImageMaker.GetCeImgPath(supportImgId, 1);
 
-            InitBlock(_servant0Path, _imServant0, _txtServant0, _delServant0, HideServant0);
-            InitBlock(_servant1Path, _imServant1, _txtServant1, _delServant1, HideServant1);
+            InitBlock(_servant0Path, _imServant0, _delServant0, HideServant0);
+            InitBlock(_servant1Path, _imServant1, _delServant1, HideServant1);
 
-            InitBlock(_ce0Path, _imCe0, _txtCe0, _delCe0, HideCe0);
-            InitBlock(_ce1Path, _imCe1, _txtCe1, _delCe1, HideCe1);
+            InitBlock(_ce0Path, _imCe0, _delCe0, HideCe0);
+            InitBlock(_ce1Path, _imCe1, _delCe1, HideCe1);
         }
 
-        void InitBlock(string ImgPath, ImageView ImgView, EditText TextBox, ImageButton DeleteButton, Action Hider)
+        void InitBlock(string ImgPath, ImageView ImgView, ImageButton DeleteButton, Action Hider)
         {
             if (!File.Exists(ImgPath))
             {
@@ -69,7 +69,6 @@ namespace FateGrandAutomata
             else
             {
                 ImgView.SetImageURI(Uri.Parse(ImgPath));
-                TextBox.Hint = Path.GetFileNameWithoutExtension(ImgPath);
 
                 DeleteButton.Click += (S, E) => DeleteImg(ImgPath, Hider);
             }

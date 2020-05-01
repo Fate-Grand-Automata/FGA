@@ -35,11 +35,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="20sp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/folder_help_ic"
+            android:src="@drawable/ic_warning"
+            android:tint="#fdd835"
+            android:layout_marginRight="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/servant_txt"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/folder_help_txt"
-            android:text="Specify folders like: 'Scathach=Skadi/asc1'"
+            android:text="You can use folders like this: 'Merlin/asc1'"
+            app:layout_constraintStart_toEndOf="@+id/folder_help_ic"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/servant_txt"/>
 
         <ImageView
@@ -63,6 +74,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/text_servant_0"
             android:inputType="text"
+            android:hint="Name"
             tools:text="Servant 0"
             app:layout_constraintTop_toTopOf="@+id/image_servant_0"
             app:layout_constraintStart_toEndOf="@+id/image_servant_0"
@@ -90,6 +102,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/text_servant_1"
             android:inputType="text"
+            android:hint="Name"
             tools:text="Servant 1"
             app:layout_constraintTop_toTopOf="@+id/image_servant_1"
             app:layout_constraintStart_toEndOf="@+id/image_servant_1"
@@ -127,6 +140,7 @@
           android:layout_height="wrap_content"
           android:id="@+id/text_ce_0"
           android:inputType="text"
+          android:hint="Name"
           tools:text="CE 0"
           app:layout_constraintTop_toTopOf="@+id/image_ce_0"
           app:layout_constraintStart_toEndOf="@+id/image_ce_0"
@@ -154,6 +168,7 @@
           android:layout_height="wrap_content"
           android:id="@+id/text_ce_1"
           android:inputType="text"
+          android:hint="Name"
           tools:text="CE 1"
           app:layout_constraintTop_toTopOf="@+id/image_ce_1"
           app:layout_constraintStart_toEndOf="@+id/image_ce_1"
