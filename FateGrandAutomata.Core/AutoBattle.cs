@@ -141,7 +141,10 @@ namespace FateGrandAutomata
         bool IsInResult()
         {
             return Game.ResultScreenRegion.Exists(ImageLocator.Result)
-                || Game.ResultBondRegion.Exists(ImageLocator.Bond);
+                || Game.ResultBondRegion.Exists(ImageLocator.Bond)
+                || Game.ResultMasterExpRegion.Exists(ImageLocator.MasterExp)
+                || Game.ResultMatRewardsRegion.Exists(ImageLocator.MatRewards)
+                || Game.ResultMasterLvlUpRegion.Exists(ImageLocator.MasterLvlUp);
         }
 
         // Click through reward screen, continue if option presents itself, otherwise continue clicking through
@@ -266,11 +269,6 @@ namespace FateGrandAutomata
         protected override void Script()
         {
             Init();
-
-            while (Preferences.Instance.DebugMode)
-            {
-                Game.MenuScreenRegion.Highlight(5);
-            }
 
             // SCREENS represents list of Validators and Actors
             // When Validator returns true/1, perform the Actor

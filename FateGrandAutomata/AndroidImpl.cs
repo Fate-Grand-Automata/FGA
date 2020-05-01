@@ -1,25 +1,32 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
+using Android.Content;
 using Android.OS;
 using Android.Widget;
+using AndroidX.Preference;
 using CoreAutomata;
 using Org.Opencv.Android;
 using Environment = Android.OS.Environment;
 
 namespace FateGrandAutomata
 {
-    public partial class AndroidImpl : IPlatformImpl
+    public class AndroidImpl : IPlatformImpl
     {
         readonly ScriptRunnerService _accessibilityService;
+        readonly ISharedPreferences _prefs;
 
         public AndroidImpl(ScriptRunnerService AccessibilityService)
         {
             _accessibilityService = AccessibilityService;
+            _prefs = PreferenceManager.GetDefaultSharedPreferences(_accessibilityService);
 
             RegisterStorageRootDir();
 
             OpenCVLoader.InitDebug();
         }
+
+        public bool DebugMode => _prefs.GetBoolean(_accessibilityService.GetString(Resource.String.pref_debug_mode), false);
 
         public Region WindowRegion => CutoutManager.GetCutoutAppliedRegion(_accessibilityService);
 
@@ -53,6 +60,19 @@ namespace FateGrandAutomata
 
                 _accessibilityService.ShowStatusNotification(msg);
             });
+        }
+
+        public void Highlight(Region Region, TimeSpan Timeout)
+        {
+            // We can't draw over the notch area
+            var cutoutAppliedRegion = CutoutManager.GetCutoutAppliedRegion(_accessibilityService);
+            Region.X -= cutoutAppliedRegion.X;
+            Region.Y -= cutoutAppliedRegion.Y;
+
+            HighlightView.AddRegion(Region);
+
+            Task.Delay(Timeout)
+                .ContinueWith(M => HighlightView.RemoveRegion(Region));
         }
 
         public static void RegisterStorageRootDir()

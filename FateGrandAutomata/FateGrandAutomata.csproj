@@ -84,6 +84,7 @@
     <Compile Include="CutoutManager.cs" />
     <Compile Include="Gestures\GestureTimings.cs" />
     <Compile Include="Gestures\RootGestures.cs" />
+    <Compile Include="HighlightView.cs" />
     <Compile Include="Imaging\DisposableMat.cs" />
     <Compile Include="DraggableRecyclerView\ItemViewHolder.cs" />
     <Compile Include="DraggableRecyclerView\IItemTouchHelperAdapter.cs" />

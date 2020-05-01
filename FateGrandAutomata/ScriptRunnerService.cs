@@ -23,8 +23,9 @@ namespace FateGrandAutomata
     public class ScriptRunnerService : AccessibilityService
     {
         FrameLayout _layout;
+        HighlightView _highlightView;
         IWindowManager _windowManager;
-        WindowManagerLayoutParams _layoutParams;
+        WindowManagerLayoutParams _layoutParams, _highlightLayoutParams;
         readonly DisplayMetrics _metrics = new DisplayMetrics();
         IScreenshotService _sshotService;
         IGestureService _gestureService;
@@ -65,7 +66,9 @@ namespace FateGrandAutomata
             if (!RegisterGestures())
                 return false;
 
+            _windowManager.AddView(_highlightView, _highlightLayoutParams);
             _windowManager.AddView(_layout, _layoutParams);
+
             ServiceStarted = true;
 
             ShowForegroundNotification();
@@ -148,6 +151,7 @@ namespace FateGrandAutomata
             ImageLocator.ClearCache();
 
             _windowManager.RemoveView(_layout);
+            _windowManager.RemoveView(_highlightView);
             ServiceStarted = false;
 
             HideForegroundNotification();
@@ -272,6 +276,16 @@ namespace FateGrandAutomata
 
             var inflator = LayoutInflater.From(this);
             inflator.Inflate(Resource.Layout.script_runner, _layout);
+
+            _highlightView = new HighlightView(this);
+            _highlightLayoutParams = new WindowManagerLayoutParams
+            {
+                Type = WindowManagerTypes.AccessibilityOverlay,
+                Format = Format.Translucent,
+                Flags = WindowManagerFlags.NotFocusable | WindowManagerFlags.NotTouchable,
+                Width = ViewGroup.LayoutParams.MatchParent,
+                Height = ViewGroup.LayoutParams.MatchParent
+            };
 
             _scriptCtrlBtn = _layout.FindViewById<ImageButton>(Resource.Id.script_toggle_btn);
 

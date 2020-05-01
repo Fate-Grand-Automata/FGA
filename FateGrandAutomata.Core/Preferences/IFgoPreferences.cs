@@ -26,8 +26,6 @@
 
         bool WithdrawEnabled { get; }
 
-        bool DebugMode { get; }
-
         /// <summary>
         /// -ve = disabled, 0 = skip, 1-3 = items
         /// </summary>
