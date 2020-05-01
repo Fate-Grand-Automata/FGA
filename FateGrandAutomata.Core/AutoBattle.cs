@@ -267,11 +267,6 @@ namespace FateGrandAutomata
         {
             Init();
 
-            while (Preferences.Instance.DebugMode)
-            {
-                Game.MenuScreenRegion.Highlight(5);
-            }
-
             // SCREENS represents list of Validators and Actors
             // When Validator returns true/1, perform the Actor
             var screens = new (Func<bool> Validator, Action Actor)[]
