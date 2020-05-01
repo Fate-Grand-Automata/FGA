@@ -308,11 +308,17 @@ namespace FateGrandAutomata
             return null;
         }
 
+        public const double SupportRegionToolSimilarity = 0.75;
+
         Region FindSupportBounds(Region Support)
         {
             var supportBound = new Region(76, 0, 2356, 428);
             var regionAnchor = ImageLocator.SupportRegionTool;
-            var regionArray = AutomataApi.FindAll(new Region(2100, 0, 300, 1440), regionAnchor);
+            
+            var regionArray = AutomataApi.FindAll(new Region(2100, 0, 300, 1440),
+                regionAnchor,
+                SupportRegionToolSimilarity);
+
             var defaultRegion = supportBound;
 
             foreach (var testRegion in regionArray)
