@@ -12,7 +12,30 @@ namespace FateGrandAutomata
     [Register("fgautomata." + nameof(AutoSkillSettingsFragment))]
     public class AutoSkillSettingsFragment : PreferenceFragmentCompat
     {
-        public static void SetupServantAndCEPrefs(PreferenceFragmentCompat Pref)
+        public static void PreferredSupportOnCreate(PreferenceFragmentCompat Pref)
+        {
+            if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_servant)) is MultiSelectListPreference pref)
+            {
+                pref.SummaryProvider = new MultiSelectListSummaryProvider();
+
+                if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_servant_clear)) is { } servClear)
+                {
+                    servClear.PreferenceClick += (S, E) => pref.Values = new List<string>();
+                }
+            }
+
+            if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_ce)) is MultiSelectListPreference prefce)
+            {
+                prefce.SummaryProvider = new MultiSelectListSummaryProvider();
+
+                if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_ce_clear)) is { } ceClear)
+                {
+                    ceClear.PreferenceClick += (S, E) => prefce.Values = new List<string>();
+                }
+            }
+        }
+
+        public static void PreferredSupportOnResume(PreferenceFragmentCompat Pref)
         {
             if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_servant)) is MultiSelectListPreference pref)
             {
@@ -24,12 +47,6 @@ namespace FateGrandAutomata
 
                 pref.SetEntryValues(entries);
                 pref.SetEntries(entries);
-                pref.SummaryProvider = new MultiSelectListSummaryProvider();
-
-                if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_servant_clear)) is { } servClear)
-                {
-                    servClear.PreferenceClick += (S, E) => pref.Values = new List<string>();
-                }
             }
 
             if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_ce)) is MultiSelectListPreference prefce)
@@ -42,13 +59,14 @@ namespace FateGrandAutomata
 
                 prefce.SetEntryValues(entries);
                 prefce.SetEntries(entries);
-                prefce.SummaryProvider = new MultiSelectListSummaryProvider();
-
-                if (Pref.FindPreference(Pref.GetString(Resource.String.pref_support_pref_ce_clear)) is { } ceClear)
-                {
-                    ceClear.PreferenceClick += (S, E) => prefce.Values = new List<string>();
-                }
             }
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            PreferredSupportOnResume(this);
         }
 
         public override void OnCreatePreferences(Bundle SavedInstanceState, string RootKey)
@@ -59,7 +77,7 @@ namespace FateGrandAutomata
 
             SetPreferencesFromResource(Resource.Xml.autoskill_item_preferences, RootKey);
 
-            SetupServantAndCEPrefs(this);
+            PreferredSupportOnCreate(this);
 
             if (FindPreference(GetString(Resource.String.pref_autoskill_delete)) is { } deleteBtn)
             {

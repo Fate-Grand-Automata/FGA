@@ -5,7 +5,14 @@ using CoreAutomata;
 namespace FateGrandAutomata
 {
     public class SupportImageMaker : EntryPoint
-    {   
+    {
+        Action<string> _callback;
+
+        public SupportImageMaker(Action<string> Callback)
+        {
+            _callback = Callback;
+        }
+
         protected override void Script()
         {
             Scaling.Init();
@@ -14,7 +21,11 @@ namespace FateGrandAutomata
 
             var supportBound = new Region(53 * 2, 0, 143 * 2, 110 * 2);
             var regionAnchor = ImageLocator.SupportRegionTool;
-            var regionArray = AutomataApi.FindAll(new Region(2100, 0, 300, 1440), regionAnchor);
+
+            var regionArray = AutomataApi.FindAll(new Region(2100, 0, 300, 1440),
+                regionAnchor,
+                Support.SupportRegionToolSimilarity);
+            
             var screenBounds = new Region(0, 0, Game.ScriptWidth, Game.ScriptHeight);
 
             var timestamp = DateTime.Now.Ticks;
@@ -43,10 +54,10 @@ namespace FateGrandAutomata
                 using var pattern = supportBound.GetPattern();
 
                 var servant = pattern.Crop(new Region(0, 0, 125, 44));
-                servant.Save(Path.Combine(ImageLocator.SupportServantImgFolder, $"{timestamp}_servant{i}.png"));
+                servant.Save(GetServantImgPath(timestamp, i));
 
                 var ce = pattern.Crop(new Region(0, 80, pattern.Width, 25));
-                ce.Save(Path.Combine(ImageLocator.SupportCeImgFolder, $"{timestamp}_ce{i}.png"));
+                ce.Save(GetCeImgPath(timestamp, i));
 
                 ++i;
             }
@@ -55,8 +66,25 @@ namespace FateGrandAutomata
             {
                 throw new ScriptExitException("No support images were found on the current screen. Are you on Support selection or Friend list screen?");
             }
+
+            if (_callback != null)
+            {
+                _callback.Invoke(timestamp.ToString());
+
+                _callback = null;
+            }
             
             throw new ScriptExitException($"Support Image(s) were generated.");
+        }
+
+        public static string GetServantImgPath<T0, T1>(T0 Id, T1 Index)
+        {
+            return Path.Combine(ImageLocator.SupportServantImgFolder, $"{Id}_servant{Index}.png");
+        }
+
+        public static string GetCeImgPath<T0, T1>(T0 Id, T1 Index)
+        {
+            return Path.Combine(ImageLocator.SupportCeImgFolder, $"{Id}_ce{Index}.png");
         }
     }
 }
