@@ -65,17 +65,6 @@ namespace FateGrandAutomata
             Card.ReadCommandCards();
         }
 
-        void SkipDeathAnimation()
-        {
-            // https://github.com/29988122/Fate-Grand-Order_Lua/issues/55 Experimental
-            for (var i = 0; i < 3; ++i)
-            {
-                Game.BattleSkipDeathAnimationClick.Click();
-
-                AutomataApi.Wait(1);
-            }
-        }
-
         bool IsPriorityTarget(Region Target)
         {
             var isDanger = Target.Exists(ImageLocator.TargetDanger);
@@ -127,11 +116,11 @@ namespace FateGrandAutomata
             AutomataApi.UseSameSnapIn(OnTurnStarted);
             AutomataApi.Wait(2);
 
-            var NpsClicked = false;
+            var wereNpsClicked = false;
 
             if (Preferences.Instance.EnableAutoSkill)
             {
-                NpsClicked = AutoSkill.Execute();
+                wereNpsClicked = AutoSkill.Execute();
 
                 AutoSkill.ResetNpTimer();
             }
@@ -143,19 +132,17 @@ namespace FateGrandAutomata
 
             if (Card.CanClickNpCards)
             {
-                NpsClicked = Card.ClickNpCards();
+                // We shouldn't do the long wait due to NP spam/danger modes
+                // They click on NPs even when not charged
+                // So, don't assign wereNpsClicked here
+                Card.ClickNpCards();
             }
 
             Card.ClickCommandCards(5);
 
-            if (Preferences.Instance.UnstableFastSkipDeadAnimation)
-            {
-                SkipDeathAnimation();
-            }
-
             Card.ResetCommandCards();
-            
-            AutomataApi.Wait(NpsClicked ? 25 : 5);
+
+            AutomataApi.Wait(wereNpsClicked ? 25 : 5);
         }
 
         void OnTurnStarted()

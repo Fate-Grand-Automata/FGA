@@ -81,7 +81,6 @@ namespace FateGrandAutomata
 
         public static Location BattleExtrainfoWindowCloseClick { get; } = new Location(2550, 10);
         public static Location BattleAttackClick { get; } = new Location(2300, 1200);
-        public static Location BattleSkipDeathAnimationClick { get; } = new Location(1700, 100); // see docs/skip_death_animation_click.png
 
         // see docs/target_regions.png
         public static Region[] BattleTargetRegionArray { get; } =

@@ -88,8 +88,6 @@ namespace FateGrandAutomata
 
         public bool BattleAutoChooseTarget => GetBool(R.pref_auto_choose_target);
 
-        public bool UnstableFastSkipDeadAnimation => GetBool(R.pref_fast_skip_dead);
-
         public bool StorySkip => GetBool(R.pref_story_skip);
 
         public bool WithdrawEnabled => GetBool(R.pref_withdraw_enabled);
