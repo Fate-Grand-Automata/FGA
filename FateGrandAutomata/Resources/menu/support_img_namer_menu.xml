@@ -5,4 +5,8 @@
         android:icon="@drawable/ic_check_white"
         app:showAsAction="always"
         android:title="Rename"/>
+  <item android:id="@+id/action_rename_support_imgs_discard"
+        android:icon="@drawable/ic_close_white"
+        app:showAsAction="always"
+        android:title="Discard"/>
 </menu>

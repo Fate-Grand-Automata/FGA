@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
+using AlertDialog = AndroidX.AppCompat.App.AlertDialog;
 using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 using Uri = Android.Net.Uri;
 
@@ -76,7 +77,7 @@ namespace FateGrandAutomata
 
         void DeleteImg(string Path, Action Callback)
         {
-            new AndroidX.AppCompat.App.AlertDialog.Builder(this)
+            new AlertDialog.Builder(this)
                 .SetMessage("Are you sure you want to delete this image?")
                 .SetTitle("Confirm Deletion")
                 .SetPositiveButton("Delete", (S, E) =>
@@ -183,9 +184,49 @@ namespace FateGrandAutomata
                 case Resource.Id.action_rename_support_imgs:
                     RenameSupportImages();
                     return true;
+
+                case Resource.Id.action_rename_support_imgs_discard:
+                    Discard();
+                    return true;
             }
 
             return base.OnOptionsItemSelected(Item);
+        }
+
+        void Discard()
+        {
+            new AlertDialog.Builder(this)
+                .SetMessage("Do you want to delete all images and exit?")
+                .SetTitle("Confirm Deletion")
+                .SetPositiveButton("Yes", (S, E) =>
+                {
+                    var files = new[] { _servant0Path, _servant1Path, _ce0Path, _ce1Path };
+
+                    foreach (var file in files)
+                    {
+                        if (File.Exists(file))
+                        {
+                            File.Delete(file);
+                        }
+                    }
+                    
+                    Finish();
+                })
+                .SetNegativeButton("No", (S, E) => { })
+                .Show();
+        }
+
+        public override void OnBackPressed()
+        {
+            new AlertDialog.Builder(this)
+                .SetMessage("If you exit now, the images will not be renamed. Do you still want to exit?")
+                .SetTitle("Confirm Exit")
+                .SetPositiveButton("Yes", (S, E) =>
+                {
+                    base.OnBackPressed();
+                })
+                .SetNegativeButton("No", (S, E) => { })
+                .Show();
         }
     }
 }
