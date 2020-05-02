@@ -127,11 +127,11 @@ namespace FateGrandAutomata
             AutomataApi.UseSameSnapIn(OnTurnStarted);
             AutomataApi.Wait(2);
 
-            var NpsClicked = false;
+            var wereNpsClicked = false;
 
             if (Preferences.Instance.EnableAutoSkill)
             {
-                NpsClicked = AutoSkill.Execute();
+                wereNpsClicked = AutoSkill.Execute();
 
                 AutoSkill.ResetNpTimer();
             }
@@ -143,7 +143,7 @@ namespace FateGrandAutomata
 
             if (Card.CanClickNpCards)
             {
-                NpsClicked = Card.ClickNpCards();
+                wereNpsClicked = Card.ClickNpCards();
             }
 
             Card.ClickCommandCards(5);
@@ -154,8 +154,15 @@ namespace FateGrandAutomata
             }
 
             Card.ResetCommandCards();
-            
-            AutomataApi.Wait(NpsClicked ? 25 : 5);
+
+            // We shouldn't do the long wait in NP spam/danger modes
+            // They click on NPs even when not charged
+            if (Preferences.Instance.BattleNoblePhantasm != BattleNoblePhantasmType.None)
+            {
+                wereNpsClicked = false;
+            }
+
+            AutomataApi.Wait(wereNpsClicked ? 25 : 5);
         }
 
         void OnTurnStarted()
