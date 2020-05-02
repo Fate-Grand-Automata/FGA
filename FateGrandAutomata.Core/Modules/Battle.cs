@@ -132,19 +132,15 @@ namespace FateGrandAutomata
 
             if (Card.CanClickNpCards)
             {
-                wereNpsClicked = Card.ClickNpCards();
+                // We shouldn't do the long wait due to NP spam/danger modes
+                // They click on NPs even when not charged
+                // So, don't assign wereNpsClicked here
+                Card.ClickNpCards();
             }
 
             Card.ClickCommandCards(5);
 
             Card.ResetCommandCards();
-
-            // We shouldn't do the long wait in NP spam/danger modes
-            // They click on NPs even when not charged
-            if (Preferences.Instance.BattleNoblePhantasm != BattleNoblePhantasmType.None)
-            {
-                wereNpsClicked = false;
-            }
 
             AutomataApi.Wait(wereNpsClicked ? 25 : 5);
         }
