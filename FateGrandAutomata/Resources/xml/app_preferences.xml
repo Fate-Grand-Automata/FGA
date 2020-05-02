@@ -59,13 +59,6 @@
     app:useSimpleSummaryProvider="true"/>
 
   <SwitchPreferenceCompat
-    app:key="@string/pref_fast_skip_dead"
-    app:title="Fast Skip death animation"
-    app:icon="@drawable/ic_radio"
-    app:summary="Unstable feature"
-    app:defaultValue="false"/>
-
-  <SwitchPreferenceCompat
     app:key="@string/pref_debug_mode"
     app:title="Debug mode"
     app:summary="Highlight the regions being matched"

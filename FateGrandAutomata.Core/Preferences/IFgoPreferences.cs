@@ -18,8 +18,6 @@
 
         bool BattleAutoChooseTarget { get; }
 
-        bool UnstableFastSkipDeadAnimation { get; }
-
         bool StorySkip { get; }
 
         bool StopAfterBond10 { get; }

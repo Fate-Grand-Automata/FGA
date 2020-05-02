@@ -65,17 +65,6 @@ namespace FateGrandAutomata
             Card.ReadCommandCards();
         }
 
-        void SkipDeathAnimation()
-        {
-            // https://github.com/29988122/Fate-Grand-Order_Lua/issues/55 Experimental
-            for (var i = 0; i < 3; ++i)
-            {
-                Game.BattleSkipDeathAnimationClick.Click();
-
-                AutomataApi.Wait(1);
-            }
-        }
-
         bool IsPriorityTarget(Region Target)
         {
             var isDanger = Target.Exists(ImageLocator.TargetDanger);
@@ -147,11 +136,6 @@ namespace FateGrandAutomata
             }
 
             Card.ClickCommandCards(5);
-
-            if (Preferences.Instance.UnstableFastSkipDeadAnimation)
-            {
-                SkipDeathAnimation();
-            }
 
             Card.ResetCommandCards();
 
