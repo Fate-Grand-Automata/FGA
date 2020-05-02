@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using Android.App;
 using Android.OS;
 using Android.Views;
@@ -21,6 +22,14 @@ namespace FateGrandAutomata
         ImageButton _delServant0, _delServant1, _delCe0, _delCe1;
 
         string _servant0Path, _servant1Path, _ce0Path, _ce1Path;
+
+        // *, ?, \, |, / are special characters in Regex and need to be escaped using \
+        const char Quote = '"';
+        static readonly string InvalidChars = $@"{Quote}<>\|:\*\?\\\/";
+        static readonly string FileNameRegex = $@"[^\.\s{InvalidChars}][^{InvalidChars}]*";
+
+        static readonly Regex ServantRegex = new Regex($@"^{FileNameRegex}(/{FileNameRegex})?$");
+        static readonly Regex CeRegex = new Regex($"^{FileNameRegex}$");
 
         protected override void OnCreate(Bundle SavedInstanceState)
         {
@@ -85,7 +94,7 @@ namespace FateGrandAutomata
                     File.Delete(Path);
                     Callback.Invoke();
                 })
-                .SetNegativeButton("Cancel", (S, E) => { })
+                .SetNegativeButton(Android.Resource.String.Cancel, (S, E) => { })
                 .Show();
         }
 
@@ -113,59 +122,100 @@ namespace FateGrandAutomata
             _txtCe1.Text = "";
         }
 
-        void ShowToast(string Msg)
+        void ShowAlert(string Msg)
         {
-            Toast.MakeText(this, Msg, ToastLength.Short).Show();
+            new AlertDialog.Builder(this)
+                .SetTitle("Error")
+                .SetMessage(Msg)
+                .SetPositiveButton(Android.Resource.String.Ok, (S, E) => { })
+                .Show();
         }
 
         bool PerformRename(string OldPath, string NewFileName, Action Hider)
         {
-            if (File.Exists(OldPath) && !string.IsNullOrWhiteSpace(NewFileName))
+            if (!File.Exists(OldPath))
             {
-                var folder = Path.GetDirectoryName(OldPath);
-                var newPath = Path.Combine(folder, $"{NewFileName}.png");
+                // Either the file was deleted or not generated in the first place.
+                return true;
+            }
 
-                if (File.Exists(newPath))
+            var folder = Path.GetDirectoryName(OldPath);
+            var newPath = Path.Combine(folder, $"{NewFileName}.png");
+
+            try
+            {
+                var newPathDir = Path.GetDirectoryName(newPath);
+
+                if (!Directory.Exists(newPathDir))
                 {
-                    ShowToast($"'{NewFileName}' already exists");
-                    return false;
+                    Directory.CreateDirectory(newPathDir);
                 }
 
-                try
-                {
-                    var newPathDir = Path.GetDirectoryName(newPath);
+                File.Move(OldPath, newPath);
+            }
+            catch
+            {
+                ShowAlert($"Failed to rename to: '{NewFileName}'");
+                return false;
+            }
 
-                    if (!Directory.Exists(newPathDir))
-                    {
-                        Directory.CreateDirectory(newPathDir);
-                    }
+            Hider();
 
-                    File.Move(OldPath, newPath);
-                }
-                catch
-                {
-                    ShowToast($"Failed to rename to: '{NewFileName}'");
-                    return false;
-                }
+            return true;
+        }
 
-                Hider();
+        bool Validate(string OldPath, string NewFileName, Regex Regex, string InvalidMsg)
+        {
+            if (!File.Exists(OldPath))
+            {
+                // Either the file was deleted or not generated in the first place.
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(NewFileName))
+            {
+                ShowAlert("One of the names is still empty. Either delete the unnamed Servant/CE or specify a name.");
+                return false;
+            }
+
+            if (!Regex.IsMatch(NewFileName))
+            {
+                ShowAlert(InvalidMsg);
+                return false;
+            }
+
+            var folder = Path.GetDirectoryName(OldPath);
+            var newPath = Path.Combine(folder, $"{NewFileName}.png");
+
+            if (File.Exists(newPath))
+            {
+                ShowAlert($"'{NewFileName}' already exists. Specify another name.");
+                return false;
             }
 
             return true;
         }
 
+        const string InvalidCharsMsg = "'<, >, \", |, :, *, ?, \\, /'";
+
+        static readonly string ServantInvalidMsg =
+            $"Please check your Servant names again. \nYou're not allowed to specify more than 1 folder, files cannot start with a '.' and these symbols cannot be used: {InvalidCharsMsg}. \nAvoid unnecessary spaces.";
+
+        static readonly string CeInvalidMsg =
+            $"Please check your CE names again. \nYou're not allowed to specify folders, files cannot start with a '.' and these symbols cannot be used: {InvalidCharsMsg}. \nAvoid unnecessary spaces.";
+
         void RenameSupportImages()
         {
-            if (!PerformRename(_servant0Path, _txtServant0.Text, HideServant0))
+            if (!Validate(_servant0Path, _txtServant0.Text, ServantRegex, ServantInvalidMsg)
+                || !Validate(_servant1Path, _txtServant1.Text, ServantRegex, ServantInvalidMsg)
+                || !Validate(_ce0Path, _txtCe0.Text, CeRegex, CeInvalidMsg)
+                || !Validate(_ce1Path, _txtCe1.Text, CeRegex, CeInvalidMsg))
                 return;
 
-            if (!PerformRename(_servant1Path, _txtServant1.Text, HideServant1))
-                return;
-
-            if (!PerformRename(_ce0Path, _txtCe0.Text, HideCe0))
-                return;
-
-            if (!PerformRename(_ce1Path, _txtCe1.Text, HideCe1))
+            if (!PerformRename(_servant0Path, _txtServant0.Text, HideServant0)
+                || !PerformRename(_servant1Path, _txtServant1.Text, HideServant1)
+                || !PerformRename(_ce0Path, _txtCe0.Text, HideCe0)
+                || !PerformRename(_ce1Path, _txtCe1.Text, HideCe1))
                 return;
 
             Finish();
