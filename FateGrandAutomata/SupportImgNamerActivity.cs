@@ -196,13 +196,13 @@ namespace FateGrandAutomata
             return true;
         }
 
-        const string InvalidCharsMsg = "'<, >, \", |, :, *, ?, \\, /'";
+        const string InvalidCharsMsg = "<, >, \", |, :, *, ?, \\, /";
 
         static readonly string ServantInvalidMsg =
-            $"Please check your Servant names again. \n\nYou're not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: {InvalidCharsMsg}.";
+            $"Please check your Servant names again. \n\nYou're not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: {InvalidCharsMsg}";
 
         static readonly string CeInvalidMsg =
-            $"Please check your CE names again. \n\nYou're not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: {InvalidCharsMsg}.";
+            $"Please check your CE names again. \n\nYou're not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: {InvalidCharsMsg}";
 
         void RenameSupportImages()
         {
