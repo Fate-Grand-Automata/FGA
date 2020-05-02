@@ -9,22 +9,18 @@ namespace FateGrandAutomata
     [Register("fgautomata." + nameof(SupportSettingsFragment))]
     public class SupportSettingsFragment : PreferenceFragmentCompat
     {
-        void MakeNumeric(int PreferenceKey)
+        public override void OnResume()
         {
-            if (FindPreference(GetString(PreferenceKey)) is EditTextPreference preference)
-            {
-                preference.MakeNumeric();
-            }
+            base.OnResume();
+
+            AutoSkillSettingsFragment.PreferredSupportOnResume(this);
         }
 
         public override void OnCreatePreferences(Bundle SavedInstanceState, string RootKey)
         {
             SetPreferencesFromResource(Resource.Xml.support_preferences, RootKey);
 
-            AutoSkillSettingsFragment.SetupServantAndCEPrefs(this);
-
-            MakeNumeric(Resource.String.pref_support_swipes_per_update);
-            MakeNumeric(Resource.String.pref_support_max_updates);
+            AutoSkillSettingsFragment.PreferredSupportOnCreate(this);
 
             if (FindPreference(GetString(Resource.String.pref_extract_def_support_imgs)) is { } pref)
             {
