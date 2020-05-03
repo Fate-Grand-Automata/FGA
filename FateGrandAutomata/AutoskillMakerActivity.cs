@@ -18,7 +18,8 @@ namespace FateGrandAutomata
         {
             Main,
             Atk,
-            Target
+            Target,
+            OrderChange
         }
 
         string _skillCmd = "";
@@ -26,7 +27,7 @@ namespace FateGrandAutomata
         AutoskillMakerState _state;
         int _stage = 1, _turn = 1;
 
-        ConstraintLayout _viewMain, _viewAtk, _viewTarget;
+        ConstraintLayout _viewMain, _viewAtk, _viewTarget, _viewOrderChange;
         TextView _stageText, _turnText;
 
         protected override void OnCreate(Bundle SavedInstanceState)
@@ -40,6 +41,7 @@ namespace FateGrandAutomata
             _viewMain = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_main);
             _viewAtk = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_atk);
             _viewTarget = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_target);
+            _viewOrderChange = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_order_change);
 
             _stageText = FindViewById<TextView>(Resource.Id.battle_stage_txt);
             _turnText = FindViewById<TextView>(Resource.Id.battle_turn_txt);
@@ -220,12 +222,21 @@ namespace FateGrandAutomata
                         break;
                 }
             };
+
+            var orderChangeSkillBtn = FindViewById<Button>(Resource.Id.master_x_btn);
+            var orderChangeCancelBtn = FindViewById<Button>(Resource.Id.order_change_cancel);
+            var orderChangeOkBtn = FindViewById<Button>(Resource.Id.order_change_ok);
+
+            orderChangeSkillBtn.Click += (S, E) => ChangeState(AutoskillMakerState.OrderChange);
+            orderChangeCancelBtn.Click += (S, E) => ChangeState(AutoskillMakerState.Main);
+            orderChangeOkBtn.Click += (S, E) => ChangeState(AutoskillMakerState.Main);
         }
 
         View GetStateView(AutoskillMakerState State) => State switch
         {
             AutoskillMakerState.Atk => _viewAtk,
             AutoskillMakerState.Target => _viewTarget,
+            AutoskillMakerState.OrderChange => _viewOrderChange,
             _ => _viewMain
         };
 

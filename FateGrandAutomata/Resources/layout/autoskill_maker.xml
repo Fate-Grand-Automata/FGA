@@ -24,7 +24,8 @@
       android:layout_height="match_parent"
       android:id="@+id/autoskill_view_main"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      android:padding="16dp">
+      android:padding="16dp"
+      tools:visibility="gone">
     <RadioGroup
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -125,6 +126,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/master_x_btn"
         android:text="Order Change"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/master_l_btn"/>
@@ -358,5 +360,100 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/autoskill_view_order_change"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:padding="16dp"
+    android:visibility="gone"
+    tools:visibility="visible">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/order_change_ok"
+        android:text="@android:string/ok"
+        app:layout_constraintStart_toEndOf="@+id/order_change_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/order_change_cancel"
+      android:text="@android:string/cancel"
+      app:layout_constraintEnd_toStartOf="@+id/order_change_ok"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingVertical="25dp"
+      android:id="@+id/x_party_1"
+      android:backgroundTint="@color/accent_material_dark"
+      android:text="Servant\n\n1"
+      app:layout_constraintBottom_toTopOf="@+id/order_change_ok"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingVertical="25dp"
+      android:id="@+id/x_party_2"
+      android:text="Servant\n\n2"
+      app:layout_constraintTop_toTopOf="@+id/x_party_1"
+      app:layout_constraintStart_toEndOf="@+id/x_party_1"/>
+
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingVertical="25dp"
+      android:id="@+id/x_party_3"
+      android:text="Servant\n\n3"
+      app:layout_constraintTop_toTopOf="@+id/x_party_1"
+      app:layout_constraintStart_toEndOf="@+id/x_party_2"/>
+
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingVertical="25dp"
+      android:id="@+id/x_sub_3"
+      android:text="Servant\n\n3"
+      app:layout_constraintTop_toTopOf="@+id/x_party_1"
+      app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingVertical="25dp"
+      android:id="@+id/x_sub_2"
+      android:text="Servant\n\n2"
+      app:layout_constraintTop_toTopOf="@+id/x_party_1"
+      app:layout_constraintEnd_toStartOf="@+id/x_sub_3"/>
+
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingVertical="25dp"
+      android:id="@+id/x_sub_1"
+      android:text="Servant\n\n1"
+      app:layout_constraintTop_toTopOf="@+id/x_party_1"
+      app:layout_constraintEnd_toStartOf="@+id/x_sub_2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starting Member"
+        app:layout_constraintBottom_toTopOf="@+id/x_party_1"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Sub Member"
+      app:layout_constraintBottom_toTopOf="@+id/x_sub_1"
+      app:layout_constraintStart_toStartOf="@+id/x_sub_1"/>
   </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
