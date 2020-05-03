@@ -59,10 +59,16 @@ namespace FateGrandAutomata
             np5Btn.Click += (S, E) => OnNpClick("5");
             np6Btn.Click += (S, E) => OnNpClick("6");
 
+            var enemyTargetGroup = FindViewById<RadioGroup>(Resource.Id.enemy_target_radio);
+
             var btnAtk = FindViewById<Button>(Resource.Id.atk_btn);
             btnAtk.Click += (S, E) =>
             {
+                // Uncheck NP buttons
                 np4Btn.Checked = np5Btn.Checked = np6Btn.Checked = false;
+
+                // Uncheck selected targets
+                enemyTargetGroup.ClearCheck();
 
                 ChangeState(AutoskillMakerState.Atk);
             };
@@ -172,6 +178,34 @@ namespace FateGrandAutomata
                 ClipboardManager.FromContext(ApplicationContext).Text = _skillCmd;
 
                 Finish();
+            };
+
+            void SetEnemyTarget(int Target)
+            {
+                _skillCmd += $"t{Target}";
+            }
+
+            enemyTargetGroup.CheckedChange += (S, E) =>
+            {
+                var radioBtn = enemyTargetGroup.FindViewById<RadioButton>(E.CheckedId);
+
+                if (radioBtn == null || !radioBtn.Checked)
+                    return;
+
+                switch (E.CheckedId)
+                {
+                    case Resource.Id.enemy_target_1:
+                        SetEnemyTarget(1);
+                        break;
+
+                    case Resource.Id.enemy_target_2:
+                        SetEnemyTarget(2);
+                        break;
+
+                    case Resource.Id.enemy_target_3:
+                        SetEnemyTarget(3);
+                        break;
+                }
             };
         }
 

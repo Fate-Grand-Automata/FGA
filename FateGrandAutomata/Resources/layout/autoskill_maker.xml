@@ -25,6 +25,29 @@
       android:id="@+id/autoskill_view_main"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
       android:padding="16dp">
+    <RadioGroup
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/enemy_target_radio"
+      android:orientation="horizontal">
+      <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enemy_target_1"
+        android:text="Enemy 1"/>
+      <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enemy_target_2"
+        android:text="Enemy 2"
+        android:layout_marginHorizontal="10dp"/>
+      <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enemy_target_3"
+        android:text="Enemy 3"/>
+    </RadioGroup>
+
     <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
