@@ -24,8 +24,10 @@ namespace FateGrandAutomata
         string _skillCmd = "";
         string _npSequence = "";
         AutoskillMakerState _state;
+        int _stage = 1, _turn = 1;
 
         ConstraintLayout _viewMain, _viewAtk, _viewTarget;
+        TextView _stageText, _turnText;
 
         protected override void OnCreate(Bundle SavedInstanceState)
         {
@@ -38,6 +40,9 @@ namespace FateGrandAutomata
             _viewMain = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_main);
             _viewAtk = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_atk);
             _viewTarget = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_target);
+
+            _stageText = FindViewById<TextView>(Resource.Id.battle_stage_txt);
+            _turnText = FindViewById<TextView>(Resource.Id.battle_turn_txt);
 
             var np4Btn = FindViewById<ToggleButton>(Resource.Id.np_4);
             var np5Btn = FindViewById<ToggleButton>(Resource.Id.np_5);
@@ -159,13 +164,21 @@ namespace FateGrandAutomata
 
                 _skillCmd += Separator;
 
+                ++_turn;
+                UpdateStageAndTurn();
+
                 ChangeState(AutoskillMakerState.Main);
             }
 
             var nextBattleBtn = FindViewById<Button>(Resource.Id.autoskill_next_battle_btn);
             var nextTurnBtn = FindViewById<Button>(Resource.Id.autoskill_next_turn_btn);
 
-            nextBattleBtn.Click += (S, E) => OnGoToNext(",#,");
+            nextBattleBtn.Click += (S, E) =>
+            {
+                ++_stage;
+                OnGoToNext(",#,");
+            };
+
             nextTurnBtn.Click += (S, E) => OnGoToNext(",");
 
             var doneBtn = FindViewById<Button>(Resource.Id.autoskill_done_btn);
@@ -236,6 +249,8 @@ namespace FateGrandAutomata
             OutState.PutString(nameof(_skillCmd), _skillCmd);
             OutState.PutString(nameof(_npSequence), _npSequence);
             OutState.PutInt(nameof(_state), (int)_state);
+            OutState.PutInt(nameof(_stage), _stage);
+            OutState.PutInt(nameof(_turn), _turn);
         }
 
         protected override void OnRestoreInstanceState(Bundle SavedInstanceState)
@@ -245,6 +260,15 @@ namespace FateGrandAutomata
             _skillCmd = SavedInstanceState.GetString(nameof(_skillCmd), "");
             _npSequence = SavedInstanceState.GetString(nameof(_npSequence), "");
             ChangeState((AutoskillMakerState)SavedInstanceState.GetInt(nameof(_state), 0));
+
+            _stage = SavedInstanceState.GetInt(nameof(_stage), 1);
+            _turn = SavedInstanceState.GetInt(nameof(_turn), 1);
+        }
+
+        void UpdateStageAndTurn()
+        {
+            _stageText.Text = _stage.ToString();
+            _turnText.Text = _turn.ToString();
         }
 
         public override void OnBackPressed()

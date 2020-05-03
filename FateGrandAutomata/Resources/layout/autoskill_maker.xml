@@ -48,6 +48,41 @@
         android:text="Enemy 3"/>
     </RadioGroup>
 
+    <androidx.constraintlayout.widget.Barrier
+      android:id="@+id/battle_status_barrier"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:barrierDirection="start"
+      app:constraint_referenced_ids="battle_stage_txt,battle_turn_txt" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/battle_stage_txt"
+      android:text="1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Battle: "
+      app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
+      app:layout_constraintTop_toTopOf="@+id/battle_stage_txt"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/battle_turn_txt"
+      android:text="1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/battle_stage_txt"/>
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Turn: "
+      app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
+      app:layout_constraintTop_toTopOf="@+id/battle_turn_txt"/>
+
     <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
