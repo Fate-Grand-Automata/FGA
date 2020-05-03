@@ -61,6 +61,11 @@ namespace FateGrandAutomata
             {
                 manageAutoskill.PreferenceClick += (S, E) => StartActivity(new Intent(Activity, typeof(AutoSkillActivity)));
             }
+
+            if (FindPreference(GetString(Resource.String.pref_autoskill_maker)) is { } autoskillMaker)
+            {
+                autoskillMaker.PreferenceClick += (S, E) => StartActivity(new Intent(Activity, typeof(AutoskillMakerActivity)));
+            }
         }
     }
 }

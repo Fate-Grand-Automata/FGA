@@ -22,8 +22,8 @@ namespace FateGrandAutomata
             base.OnCreate(SavedInstanceState);
             SetContentView(Resource.Layout.autoskill_maker);
 
-            //var toolbar = FindViewById<Toolbar>(Resource.Id.autoskill_maker_toolbar);
-            //SetSupportActionBar(toolbar);
+            var toolbar = FindViewById<Toolbar>(Resource.Id.autoskill_maker_toolbar);
+            SetSupportActionBar(toolbar);
 
             var viewMain = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_main);
             var viewAtk = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_atk);
@@ -131,17 +131,17 @@ namespace FateGrandAutomata
 
                 _skillCmd += _npSequence;
 
+                if (_skillCmd.EndsWith(','))
+                {
+                    _skillCmd += '0';
+                }
+
                 _npSequence = "";
             }
 
             void OnGoToNext(string Separator)
             {
                 AddNpsToSkillCmd();
-
-                if (_skillCmd.EndsWith(','))
-                {
-                    _skillCmd += '0';
-                }
 
                 _skillCmd += Separator;
 
