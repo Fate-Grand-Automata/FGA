@@ -271,11 +271,11 @@ namespace FateGrandAutomata
             new AlertDialog.Builder(this)
                 .SetMessage("If you exit now, the images will not be renamed. Do you still want to exit?")
                 .SetTitle("Confirm Exit")
-                .SetPositiveButton("Yes", (S, E) =>
+                .SetPositiveButton(Android.Resource.String.Yes, (S, E) =>
                 {
                     base.OnBackPressed();
                 })
-                .SetNegativeButton("No", (S, E) => { })
+                .SetNegativeButton(Android.Resource.String.No, (S, E) => { })
                 .Show();
         }
     }

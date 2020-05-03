@@ -111,6 +111,7 @@
     <Compile Include="Preferences\RefillSettingsFragment.cs" />
     <Compile Include="Preferences\MoreSettingsFragment.cs" />
     <Compile Include="SuperUser.cs" />
+    <Compile Include="AutoskillMakerActivity.cs" />
     <Compile Include="SupportImgNamerActivity.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -479,6 +480,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_close_white.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\autoskill_maker.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

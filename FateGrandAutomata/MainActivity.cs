@@ -43,6 +43,8 @@ namespace FateGrandAutomata
             }
 
             AndroidImpl.RegisterStorageRootDir();
+
+            StartActivity(new Intent(this, typeof(AutoskillMakerActivity)));
         }
 
         public override void OnAttachedToWindow()
