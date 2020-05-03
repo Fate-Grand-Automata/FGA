@@ -14,8 +14,16 @@ namespace FateGrandAutomata
     [Activity(Label = "Autoskill Maker", Theme = "@style/AppTheme.NoActionBar", ScreenOrientation = ScreenOrientation.Landscape)]
     public class AutoskillMakerActivity : AppCompatActivity
     {
+        enum AutoskillMakerState
+        {
+            Main,
+            Atk,
+            Target
+        }
+
         string _skillCmd = "";
         string _npSequence = "";
+        AutoskillMakerState _state;
 
         protected override void OnCreate(Bundle SavedInstanceState)
         {
@@ -32,6 +40,26 @@ namespace FateGrandAutomata
             var np4Btn = FindViewById<ToggleButton>(Resource.Id.np_4);
             var np5Btn = FindViewById<ToggleButton>(Resource.Id.np_5);
             var np6Btn = FindViewById<ToggleButton>(Resource.Id.np_6);
+
+            View GetStateView(AutoskillMakerState State) => State switch 
+            {
+                AutoskillMakerState.Atk => viewAtk,
+                AutoskillMakerState.Target => viewTarget,
+                _ => viewMain
+            };
+
+            void ChangeState(AutoskillMakerState NewState)
+            {
+                // Hide current
+                GetStateView(_state).Visibility = ViewStates.Gone;
+
+                // Hide the default view just in case
+                GetStateView(0).Visibility = ViewStates.Gone;
+
+                // Show new state
+                _state = NewState;
+                GetStateView(NewState).Visibility = ViewStates.Visible;
+            }
 
             void OnNpClick(string NpCommand)
             {
@@ -54,15 +82,14 @@ namespace FateGrandAutomata
             {
                 np4Btn.Checked = np5Btn.Checked = np6Btn.Checked = false;
 
-                viewMain.Visibility = ViewStates.Gone;
-                viewAtk.Visibility = ViewStates.Visible;
+                ChangeState(AutoskillMakerState.Atk);
             };
 
             void OnSkill(char SkillCode)
             {
                 _skillCmd += SkillCode;
-                viewMain.Visibility = ViewStates.Gone;
-                viewTarget.Visibility = ViewStates.Visible;
+
+                ChangeState(AutoskillMakerState.Target);
             }
 
             var btnA = FindViewById<Button>(Resource.Id.skill_a_btn);
@@ -103,8 +130,7 @@ namespace FateGrandAutomata
                     _skillCmd += TargetCommand.Value;
                 }
 
-                viewTarget.Visibility = ViewStates.Gone;
-                viewMain.Visibility = ViewStates.Visible;
+                ChangeState(AutoskillMakerState.Main);
             }
 
             targetNoneBtn.Click += (S, E) => OnTarget(null);
@@ -145,8 +171,7 @@ namespace FateGrandAutomata
 
                 _skillCmd += Separator;
 
-                viewAtk.Visibility = ViewStates.Gone;
-                viewMain.Visibility = ViewStates.Visible;
+                ChangeState(AutoskillMakerState.Main);
             }
 
             var nextBattleBtn = FindViewById<Button>(Resource.Id.autoskill_next_battle_btn);
@@ -174,13 +199,16 @@ namespace FateGrandAutomata
 
             OutState.PutString(nameof(_skillCmd), _skillCmd);
             OutState.PutString(nameof(_npSequence), _npSequence);
+            OutState.PutInt(nameof(_state), (int)_state);
         }
 
         protected override void OnRestoreInstanceState(Bundle SavedInstanceState)
         {
             base.OnRestoreInstanceState(SavedInstanceState);
 
+            _skillCmd = SavedInstanceState.GetString(nameof(_skillCmd), "");
             _npSequence = SavedInstanceState.GetString(nameof(_npSequence), "");
+            _state = (AutoskillMakerState)SavedInstanceState.GetInt(nameof(_state), 0);
         }
 
         public override void OnBackPressed()
