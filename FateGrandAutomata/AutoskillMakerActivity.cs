@@ -25,6 +25,8 @@ namespace FateGrandAutomata
         string _npSequence = "";
         AutoskillMakerState _state;
 
+        ConstraintLayout _viewMain, _viewAtk, _viewTarget;
+
         protected override void OnCreate(Bundle SavedInstanceState)
         {
             base.OnCreate(SavedInstanceState);
@@ -33,33 +35,13 @@ namespace FateGrandAutomata
             var toolbar = FindViewById<Toolbar>(Resource.Id.autoskill_maker_toolbar);
             SetSupportActionBar(toolbar);
 
-            var viewMain = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_main);
-            var viewAtk = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_atk);
-            var viewTarget = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_target);
+            _viewMain = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_main);
+            _viewAtk = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_atk);
+            _viewTarget = FindViewById<ConstraintLayout>(Resource.Id.autoskill_view_target);
 
             var np4Btn = FindViewById<ToggleButton>(Resource.Id.np_4);
             var np5Btn = FindViewById<ToggleButton>(Resource.Id.np_5);
             var np6Btn = FindViewById<ToggleButton>(Resource.Id.np_6);
-
-            View GetStateView(AutoskillMakerState State) => State switch 
-            {
-                AutoskillMakerState.Atk => viewAtk,
-                AutoskillMakerState.Target => viewTarget,
-                _ => viewMain
-            };
-
-            void ChangeState(AutoskillMakerState NewState)
-            {
-                // Hide current
-                GetStateView(_state).Visibility = ViewStates.Gone;
-
-                // Hide the default view just in case
-                GetStateView(0).Visibility = ViewStates.Gone;
-
-                // Show new state
-                _state = NewState;
-                GetStateView(NewState).Visibility = ViewStates.Visible;
-            }
 
             void OnNpClick(string NpCommand)
             {
@@ -193,6 +175,26 @@ namespace FateGrandAutomata
             };
         }
 
+        View GetStateView(AutoskillMakerState State) => State switch
+        {
+            AutoskillMakerState.Atk => _viewAtk,
+            AutoskillMakerState.Target => _viewTarget,
+            _ => _viewMain
+        };
+
+        void ChangeState(AutoskillMakerState NewState)
+        {
+            // Hide current
+            GetStateView(_state).Visibility = ViewStates.Gone;
+
+            // Hide the default view just in case
+            GetStateView(0).Visibility = ViewStates.Gone;
+
+            // Show new state
+            _state = NewState;
+            GetStateView(NewState).Visibility = ViewStates.Visible;
+        }
+
         protected override void OnSaveInstanceState(Bundle OutState)
         {
             base.OnSaveInstanceState(OutState);
@@ -208,7 +210,7 @@ namespace FateGrandAutomata
 
             _skillCmd = SavedInstanceState.GetString(nameof(_skillCmd), "");
             _npSequence = SavedInstanceState.GetString(nameof(_npSequence), "");
-            _state = (AutoskillMakerState)SavedInstanceState.GetInt(nameof(_state), 0);
+            ChangeState((AutoskillMakerState)SavedInstanceState.GetInt(nameof(_state), 0));
         }
 
         public override void OnBackPressed()
