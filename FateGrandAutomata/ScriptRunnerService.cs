@@ -411,6 +411,7 @@ namespace FateGrandAutomata
                 .SetContentTitle(GetString(Resource.String.app_name))
                 .SetContentText("Accessibility Service Running")
                 .SetSmallIcon(Resource.Mipmap.ic_launcher_foreground)
+                .SetColor(Color.DarkRed)
                 .SetPriority(NotificationCompat.PriorityMax)
                 .SetContentIntent(activityIntent);
         }
