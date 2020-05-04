@@ -265,6 +265,11 @@ namespace FateGrandAutomata
         {
             AddNpsToSkillCmd();
 
+            if (_skillCmd.Length == 0)
+            {
+                _skillCmd.Append('0');
+            }
+
             _skillCmd.Append(Separator);
 
             ++_turn;
