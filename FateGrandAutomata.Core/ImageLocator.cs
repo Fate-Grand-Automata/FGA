@@ -223,6 +223,8 @@ namespace FateGrandAutomata
 
         public static IPattern MatRewards => GetRegionPattern("mat_rewards.png");
 
+        public static IPattern GudaFinalRewards => GetRegionPattern("guda_final_rewards.png");
+
         static readonly Dictionary<string, IPattern> SupportCachedPatterns = new Dictionary<string, IPattern>();
 
         public static void ClearSupportCache()
