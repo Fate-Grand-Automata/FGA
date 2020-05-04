@@ -279,7 +279,8 @@ namespace FateGrandAutomata
                 (IsInMenu, Menu),
                 (IsInResult, Result),
                 (IsInSupport, Support),
-                (NeedsToWithdraw, Withdraw)
+                (NeedsToWithdraw, Withdraw),
+                (IsGudaFinalRewardScreen, GudaFinalRewards)
             };
 
             // Loop through SCREENS until a Validator returns true/1
@@ -297,5 +298,15 @@ namespace FateGrandAutomata
                 AutomataApi.Wait(1);
             }
         }
+
+        bool IsGudaFinalRewardScreen()
+        {
+            if (!Preferences.Instance.GudaFinal || Preferences.Instance.GameServer != GameServer.Jp)
+                return false;
+
+            return Game.GudaFinalRewardsRegion.Exists(ImageLocator.GudaFinalRewards);
+        }
+
+        void GudaFinalRewards() => Game.GudaFinalRewardsRegion.Click();
     }
 }
