@@ -9,7 +9,9 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.ConstraintLayout.Widget;
 using AndroidX.Core.View;
+using Java.Lang;
 using AlertDialog = AndroidX.AppCompat.App.AlertDialog;
+using StringBuilder = System.Text.StringBuilder;
 using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 
 namespace FateGrandAutomata
@@ -25,7 +27,7 @@ namespace FateGrandAutomata
             OrderChange
         }
 
-        string _skillCmd = "";
+        StringBuilder _skillCmd = new StringBuilder();
         string _npSequence = "";
         AutoskillMakerState _state;
         int _stage = 1, _turn = 1, _xSelectedParty = 1, _xSelectedSub = 1;
@@ -86,7 +88,7 @@ namespace FateGrandAutomata
 
             void OnSkill(char SkillCode)
             {
-                _skillCmd += SkillCode;
+                _skillCmd.Append(SkillCode);
 
                 ChangeState(AutoskillMakerState.Target);
             }
@@ -126,7 +128,7 @@ namespace FateGrandAutomata
             {
                 if (TargetCommand != null)
                 {
-                    _skillCmd += TargetCommand.Value;
+                    _skillCmd.Append(TargetCommand.Value);
                 }
 
                 ChangeState(AutoskillMakerState.Main);
@@ -146,19 +148,19 @@ namespace FateGrandAutomata
                 {
                     if (n1Radio.Checked)
                     {
-                        _skillCmd += "n1";
+                        _skillCmd.Append("n1");
                     }
                     else if (n2Radio.Checked)
                     {
-                        _skillCmd += "n2";
+                        _skillCmd.Append("n2");
                     }
                 }
 
-                _skillCmd += _npSequence;
+                _skillCmd.Append(_npSequence);
 
-                if (_skillCmd.EndsWith(','))
+                if (_skillCmd.Length >= 1 && _skillCmd[_skillCmd.Length - 1] == ',')
                 {
-                    _skillCmd += '0';
+                    _skillCmd.Append('0');
                 }
 
                 _npSequence = "";
@@ -168,7 +170,7 @@ namespace FateGrandAutomata
             {
                 AddNpsToSkillCmd();
 
-                _skillCmd += Separator;
+                _skillCmd.Append(Separator);
 
                 ++_turn;
                 UpdateStageAndTurn();
@@ -194,14 +196,23 @@ namespace FateGrandAutomata
 
                 Toast.MakeText(ApplicationContext, "Autoskill command copied to clipboard", ToastLength.Short).Show();
 
-                ClipboardManager.FromContext(ApplicationContext).Text = _skillCmd;
+                ClipboardManager.FromContext(ApplicationContext).Text = _skillCmd.ToString();
 
                 Finish();
             };
 
             void SetEnemyTarget(int Target)
             {
-                _skillCmd += $"t{Target}";
+                // Merge consecutive target changes
+                if (_skillCmd.Length >= 2 && _skillCmd[_skillCmd.Length - 2] == 't')
+                {
+                    _skillCmd.Remove(_skillCmd.Length - 1, 1)
+                        .Append(Target);
+                }
+                else
+                {
+                    _skillCmd.Append($"t{Target}");
+                }
             }
 
             enemyTargetGroup.CheckedChange += (S, E) =>
@@ -271,7 +282,7 @@ namespace FateGrandAutomata
             orderChangeCancelBtn.Click += (S, E) => ChangeState(AutoskillMakerState.Main);
             orderChangeOkBtn.Click += (S, E) =>
             {
-                _skillCmd += $"x{_xSelectedParty}{_xSelectedSub}";
+                _skillCmd.Append($"x{_xSelectedParty}{_xSelectedSub}");
 
                 ChangeState(AutoskillMakerState.Main);
             };
@@ -332,7 +343,7 @@ namespace FateGrandAutomata
         {
             base.OnSaveInstanceState(OutState);
 
-            OutState.PutString(nameof(_skillCmd), _skillCmd);
+            OutState.PutString(nameof(_skillCmd), _skillCmd.ToString());
             OutState.PutString(nameof(_npSequence), _npSequence);
             OutState.PutInt(nameof(_state), (int)_state);
             OutState.PutInt(nameof(_stage), _stage);
@@ -345,7 +356,7 @@ namespace FateGrandAutomata
         {
             base.OnRestoreInstanceState(SavedInstanceState);
 
-            _skillCmd = SavedInstanceState.GetString(nameof(_skillCmd), "");
+            _skillCmd = new StringBuilder(SavedInstanceState.GetString(nameof(_skillCmd), ""));
             _npSequence = SavedInstanceState.GetString(nameof(_npSequence), "");
             ChangeState((AutoskillMakerState)SavedInstanceState.GetInt(nameof(_state), 0));
 
