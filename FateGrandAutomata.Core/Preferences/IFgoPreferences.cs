@@ -38,5 +38,7 @@
         bool UseRootForScreenshots { get; }
 
         bool UseRootForGestures { get; }
+
+        bool GudaFinal { get; }
     }
 }

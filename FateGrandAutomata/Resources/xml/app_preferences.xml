@@ -59,6 +59,12 @@
     app:useSimpleSummaryProvider="true"/>
 
   <SwitchPreferenceCompat
+    app:key="@string/pref_guda_final"
+    app:title="GudaGuda Final Rerun"
+    app:summary="Support for the new rewards screen on JP"
+    app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
     app:key="@string/pref_debug_mode"
     app:title="Debug mode"
     app:summary="Highlight the regions being matched"

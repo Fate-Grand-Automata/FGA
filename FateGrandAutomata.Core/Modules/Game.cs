@@ -194,5 +194,7 @@ namespace FateGrandAutomata
 
             AutomataApi.Wait(2);
         }
+
+        public static Region GudaFinalRewardsRegion { get; } = new Region(1160, 1040, 228, 76);
     }
 }
