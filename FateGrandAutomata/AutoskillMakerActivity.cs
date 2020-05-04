@@ -1,11 +1,14 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
+using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.ConstraintLayout.Widget;
+using AndroidX.Core.View;
 using AlertDialog = AndroidX.AppCompat.App.AlertDialog;
 using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 
@@ -25,10 +28,11 @@ namespace FateGrandAutomata
         string _skillCmd = "";
         string _npSequence = "";
         AutoskillMakerState _state;
-        int _stage = 1, _turn = 1;
+        int _stage = 1, _turn = 1, _xSelectedParty = 1, _xSelectedSub = 1;
 
         ConstraintLayout _viewMain, _viewAtk, _viewTarget, _viewOrderChange;
         TextView _stageText, _turnText;
+        Button[] _xParty, _xSub;
 
         protected override void OnCreate(Bundle SavedInstanceState)
         {
@@ -227,9 +231,50 @@ namespace FateGrandAutomata
             var orderChangeCancelBtn = FindViewById<Button>(Resource.Id.order_change_cancel);
             var orderChangeOkBtn = FindViewById<Button>(Resource.Id.order_change_ok);
 
-            orderChangeSkillBtn.Click += (S, E) => ChangeState(AutoskillMakerState.OrderChange);
+            _xParty = new[]
+            {
+                FindViewById<Button>(Resource.Id.x_party_1),
+                FindViewById<Button>(Resource.Id.x_party_2),
+                FindViewById<Button>(Resource.Id.x_party_3)
+            };
+
+            for (var i = 0; i < 3; ++i)
+            {
+                // Making a copy is important
+                var member = i + 1;
+
+                _xParty[i].Click += (S, E) => SetOrderChangePartyMember(member);
+            }
+
+            _xSub = new[]
+            {
+                FindViewById<Button>(Resource.Id.x_sub_1),
+                FindViewById<Button>(Resource.Id.x_sub_2),
+                FindViewById<Button>(Resource.Id.x_sub_3)
+            };
+
+            for (var i = 0; i < 3; ++i)
+            {
+                // Making a copy is important
+                var member = i + 1;
+
+                _xSub[i].Click += (S, E) => SetOrderChangeSubMember(member);
+            }
+
+            orderChangeSkillBtn.Click += (S, E) =>
+            {
+                ChangeState(AutoskillMakerState.OrderChange);
+
+                SetOrderChangePartyMember(1);
+                SetOrderChangeSubMember(1);
+            };
             orderChangeCancelBtn.Click += (S, E) => ChangeState(AutoskillMakerState.Main);
-            orderChangeOkBtn.Click += (S, E) => ChangeState(AutoskillMakerState.Main);
+            orderChangeOkBtn.Click += (S, E) =>
+            {
+                _skillCmd += $"x{_xSelectedParty}{_xSelectedSub}";
+
+                ChangeState(AutoskillMakerState.Main);
+            };
         }
 
         View GetStateView(AutoskillMakerState State) => State switch
@@ -253,6 +298,36 @@ namespace FateGrandAutomata
             GetStateView(NewState).Visibility = ViewStates.Visible;
         }
 
+        void SetOrderChangeMember(Button[] Members, int Member)
+        {
+            var i = 0;
+
+            foreach (var button in Members)
+            {
+                ++i;
+
+                ViewCompat.SetBackgroundTintList(
+                    button,
+                    i == Member
+                        ? ColorStateList.ValueOf(new Color(GetColor(Resource.Color.accent_material_dark)))
+                        : null);
+            }
+        }
+
+        void SetOrderChangePartyMember(int Member)
+        {
+            _xSelectedParty = Member;
+
+            SetOrderChangeMember(_xParty, Member);
+        }
+
+        void SetOrderChangeSubMember(int Member)
+        {
+            _xSelectedSub = Member;
+
+            SetOrderChangeMember(_xSub, Member);
+        }
+
         protected override void OnSaveInstanceState(Bundle OutState)
         {
             base.OnSaveInstanceState(OutState);
@@ -262,6 +337,8 @@ namespace FateGrandAutomata
             OutState.PutInt(nameof(_state), (int)_state);
             OutState.PutInt(nameof(_stage), _stage);
             OutState.PutInt(nameof(_turn), _turn);
+            OutState.PutInt(nameof(_xSelectedParty), _xSelectedParty);
+            OutState.PutInt(nameof(_xSelectedSub), _xSelectedSub);
         }
 
         protected override void OnRestoreInstanceState(Bundle SavedInstanceState)
@@ -274,6 +351,9 @@ namespace FateGrandAutomata
 
             _stage = SavedInstanceState.GetInt(nameof(_stage), 1);
             _turn = SavedInstanceState.GetInt(nameof(_turn), 1);
+
+            SetOrderChangePartyMember(SavedInstanceState.GetInt(nameof(_xSelectedParty), 1));
+            SetOrderChangeSubMember(SavedInstanceState.GetInt(nameof(_xSelectedSub), 1));
         }
 
         void UpdateStageAndTurn()

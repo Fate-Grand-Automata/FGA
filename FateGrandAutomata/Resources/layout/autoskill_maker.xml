@@ -392,7 +392,7 @@
       android:layout_height="wrap_content"
       android:paddingVertical="25dp"
       android:id="@+id/x_party_1"
-      android:backgroundTint="@color/accent_material_dark"
+      tools:backgroundTint="@color/accent_material_dark"
       android:text="Servant\n\n1"
       app:layout_constraintBottom_toTopOf="@+id/order_change_ok"
       app:layout_constraintTop_toTopOf="parent"
