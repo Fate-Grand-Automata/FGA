@@ -35,7 +35,7 @@ namespace FateGrandAutomata
         ConstraintLayout _viewMain, _viewAtk, _viewTarget, _viewOrderChange;
         TextView _stageText, _turnText;
         Button[] _xParty, _xSub;
-        RadioButton _n1Radio, _n2Radio;
+        RadioGroup _cardsBeforeNpGroup;
 
         protected override void OnCreate(Bundle SavedInstanceState)
         {
@@ -62,6 +62,7 @@ namespace FateGrandAutomata
             np6Btn.Click += (S, E) => OnNpClick("6");
 
             var enemyTargetGroup = FindViewById<RadioGroup>(Resource.Id.enemy_target_radio);
+            _cardsBeforeNpGroup = FindViewById<RadioGroup>(Resource.Id.cards_before_np_rad);
 
             var btnAtk = FindViewById<Button>(Resource.Id.atk_btn);
             btnAtk.Click += (S, E) =>
@@ -72,15 +73,15 @@ namespace FateGrandAutomata
                 // Uncheck selected targets
                 enemyTargetGroup.ClearCheck();
 
+                // Set cards before Np to 0
+                _cardsBeforeNpGroup.Check(Resource.Id.cards_before_np_0);
+
                 ChangeState(AutoskillMakerState.Atk);
             };
 
             SetupSkills();
 
             SetupTargets();
-
-            _n1Radio = FindViewById<RadioButton>(Resource.Id.cards_before_np_1);
-            _n2Radio = FindViewById<RadioButton>(Resource.Id.cards_before_np_2);
 
             var nextBattleBtn = FindViewById<Button>(Resource.Id.autoskill_next_battle_btn);
             var nextTurnBtn = FindViewById<Button>(Resource.Id.autoskill_next_turn_btn);
@@ -276,13 +277,15 @@ namespace FateGrandAutomata
         {
             if (_npSequence.Length > 0)
             {
-                if (_n1Radio.Checked)
+                switch (_cardsBeforeNpGroup.CheckedRadioButtonId)
                 {
-                    _skillCmd.Append("n1");
-                }
-                else if (_n2Radio.Checked)
-                {
-                    _skillCmd.Append("n2");
+                    case Resource.Id.cards_before_np_1:
+                        _skillCmd.Append("n1");
+                        break;
+
+                    case Resource.Id.cards_before_np_2:
+                        _skillCmd.Append("n2");
+                        break;
                 }
             }
 

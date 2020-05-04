@@ -131,12 +131,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/master_l_btn"/>
 
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/servant_1_name"
+      android:text="Servant 1"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="@+id/skill_a_btn"
+      app:layout_constraintEnd_toEndOf="@+id/skill_c_btn"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/servant_2_name"
+      android:text="Servant 2"
+      app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
+      app:layout_constraintStart_toStartOf="@+id/skill_d_btn"
+      app:layout_constraintEnd_toEndOf="@+id/skill_f_btn"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/servant_3_name"
+      android:text="Servant 3"
+      app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
+      app:layout_constraintStart_toStartOf="@+id/skill_g_btn"
+      app:layout_constraintEnd_toEndOf="@+id/skill_i_btn"/>
+
       <Button
           style="@style/autoskill_servant_skill_btn"
           android:id="@+id/skill_a_btn"
           android:text="a"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintBottom_toBottomOf="parent"/>
+          app:layout_constraintBottom_toTopOf="@+id/servant_1_name"/>
 
       <Button
           style="@style/autoskill_servant_skill_btn"
@@ -222,6 +249,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:padding="16dp"
     android:visibility="gone">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/atk_label"
+        android:text="Attack"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/next_btns_barrier"/>
+
     <View
       android:layout_width="0dp"
       android:layout_height="0dp"
@@ -231,31 +267,31 @@
       app:layout_constraintBottom_toBottomOf="@+id/np_4"/>
 
     <ToggleButton
-      android:layout_width="80dp"
+      android:layout_width="100dp"
       android:layout_height="120dp"
       android:id="@+id/np_4"
-      android:textOff="NP\n\n4"
-      android:textOn="NP\n\n4"
+      android:textOff="Servant\n1\n\nNP"
+      android:textOn="Servant\n1\n\nNP"
       app:layout_constraintStart_toEndOf="@+id/np_sep_left"
       app:layout_constraintEnd_toStartOf="@+id/np_5"
-      app:layout_constraintTop_toTopOf="parent"/>
+      app:layout_constraintTop_toBottomOf="@+id/atk_label"/>
 
     <ToggleButton
-      android:layout_width="80dp"
+      android:layout_width="100dp"
       android:layout_height="120dp"
       android:id="@+id/np_5"
-      android:textOff="NP\n\n5"
-      android:textOn="NP\n\n5"
+      android:textOff="Servant\n2\n\nNP"
+      android:textOn="Servant\n2\n\nNP"
       app:layout_constraintStart_toEndOf="@+id/np_4"
       app:layout_constraintEnd_toStartOf="@+id/np_6"
       app:layout_constraintTop_toTopOf="@+id/np_4"/>
 
     <ToggleButton
-      android:layout_width="80dp"
+      android:layout_width="100dp"
       android:layout_height="120dp"
       android:id="@+id/np_6"
-      android:textOff="NP\n\n6"
-      android:textOn="NP\n\n6"
+      android:textOff="Servant\n3\n\nNP"
+      android:textOn="Servant\n3\n\nNP"
       app:layout_constraintTop_toTopOf="@+id/np_4"
       app:layout_constraintStart_toEndOf="@+id/np_5"
       app:layout_constraintEnd_toStartOf="@+id/np_sep_right"/>
@@ -264,7 +300,7 @@
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:id="@+id/np_sep_right"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/next_btns_barrier"
       app:layout_constraintStart_toEndOf="@+id/np_6"
       app:layout_constraintBottom_toBottomOf="@+id/np_4"/>
 
@@ -279,7 +315,6 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:id="@+id/cards_before_np_0"
-          android:checked="true"
           android:text="No cards before NP"/>
       <RadioButton
         android:layout_width="wrap_content"
@@ -293,25 +328,38 @@
         android:text="2 face-cards before NP"/>
     </RadioGroup>
 
+    <androidx.constraintlayout.widget.Barrier
+      android:id="@+id/next_btns_barrier"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:barrierDirection="start"
+      app:constraint_referenced_ids="autoskill_done_btn,autoskill_next_battle_btn,autoskill_next_turn_btn" />
+
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/autoskill_done_btn"
+        android:drawableLeft="@drawable/ic_check"
         android:text="Done"
+        app:layout_constraintStart_toEndOf="@+id/next_btns_barrier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/autoskill_next_turn_btn"
+        android:drawableLeft="@drawable/ic_play"
         android:text="Next Turn"
+        app:layout_constraintStart_toEndOf="@+id/next_btns_barrier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/autoskill_done_btn"/>
     <Button
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:id="@+id/autoskill_next_battle_btn"
-      android:text="Next Battle"
+      android:drawableLeft="@drawable/ic_fast_forward"
+      android:text=" Next Battle"
+      app:layout_constraintStart_toEndOf="@+id/next_btns_barrier"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintBottom_toTopOf="@+id/autoskill_next_turn_btn"/>
   </androidx.constraintlayout.widget.ConstraintLayout>
@@ -323,6 +371,14 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:padding="16dp"
     android:visibility="gone">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/target_label"
+        android:text="Choose Target"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
       android:layout_width="120dp"
@@ -331,7 +387,7 @@
       android:text="Servant\n\n1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toStartOf="@+id/target_2"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/target_label"
       app:layout_constraintBottom_toTopOf="@+id/no_target_btn"/>
 
     <Button
@@ -369,7 +425,16 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:padding="16dp"
     android:visibility="gone"
-    tools:visibility="visible">
+    tools:visibility="visibility">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/order_change_label"
+        android:text="Order Change"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -395,7 +460,7 @@
       tools:backgroundTint="@color/accent_material_dark"
       android:text="Servant\n\n1"
       app:layout_constraintBottom_toTopOf="@+id/order_change_ok"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/order_change_label"
       app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
