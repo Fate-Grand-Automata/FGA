@@ -7,6 +7,13 @@ using System.Threading;
 
 namespace CoreAutomata
 {
+    /// <summary>
+    /// <see cref="AutomataApi"/> is the part that connects the Script project and the Android project.
+    /// The Script project works as if the dimensions of the screen are as set in <see cref="GameAreaManager.ScriptDimension"/>.
+    /// The Android project works in original screen pixel size.
+    /// It is the work of <see cref="AutomataApi"/> to Transform the values (<see cref="Region"/>, <see cref="Location"/>) between these coordinate spaces such that both the projects are unaware of any transformation happening.
+    /// Use the Extension method variation of the methods wherever possible.
+    /// </summary>
     public static class AutomataApi
     {
         static IPlatformImpl _platformImpl;
@@ -34,8 +41,14 @@ namespace CoreAutomata
             _gesture = GestureService;
         }
 
+        /// <summary>
+        /// The default matching similarity used unless explicitly specified in methods like <see cref="Exists"/> and <see cref="WaitVanish"/>.
+        /// </summary>
         public static double MinSimilarity { get; set; } = 0.8;
 
+        /// <summary>
+        /// The default duration for <see cref="Highlight"/> method.
+        /// </summary>
         public static TimeSpan DefaultHighlightTimeout { get; set; } = TimeSpan.FromSeconds(0.3);
 
         public static IPattern LoadPattern(Stream Stream, bool Mask = false)
@@ -60,7 +73,7 @@ namespace CoreAutomata
             {
                 if (_platformImpl.DebugMode)
                 {
-                    Region.Highlight(DefaultHighlightTimeout);
+                    Region.Highlight();
                 }
 
                 sshot = sshot.Crop(Region.TransformToImage());
@@ -120,6 +133,9 @@ namespace CoreAutomata
             return CheckConditionLoop(() => ExistsNow(Region, Image, Similarity), Timeout);
         }
 
+        /// <summary>
+        /// The number of times methods like <see cref="Exists"/> and <see cref="WaitVanish"/> check the screen in a second.
+        /// </summary>
         public static double ScanRate { get; set; } = 3;
 
         public static IPattern GetPattern(this Region Region) => ScreenshotManager.GetScreenshot()
@@ -156,7 +172,7 @@ namespace CoreAutomata
             {
                 if (_platformImpl.DebugMode)
                 {
-                    Region.Highlight(DefaultHighlightTimeout);
+                    Region.Highlight();
                 }
 
                 sshot = sshot.Crop(Region.TransformToImage());
@@ -192,9 +208,9 @@ namespace CoreAutomata
             _platformImpl.MessageBox(Title, Message);
         }
 
-        public static void Highlight(this Region Region, TimeSpan Timeout)
+        public static void Highlight(this Region Region, TimeSpan? Timeout = null)
         {
-            _platformImpl.Highlight(Region.Transform(), Timeout);
+            _platformImpl.Highlight(Region.Transform(), Timeout ?? DefaultHighlightTimeout);
         }
 
         public static void SetStorageRootDir(string Dir)
