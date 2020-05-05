@@ -24,14 +24,14 @@ namespace FateGrandAutomata
         public Battle Battle { get; private set; }
         public Card Card { get; private set; }
 
-        void WaitForAnimationToFinish(int? Timeout = null)
+        void WaitForAnimationToFinish(TimeSpan? Timeout = null)
         {
             var img = ImageLocator.Battle;
 
             // slow devices need this. do not remove.
-            Game.BattleScreenRegion.WaitVanish(img, 2);
+            Game.BattleScreenRegion.WaitVanish(img, TimeSpan.FromSeconds(2));
 
-            Game.BattleScreenRegion.Exists(img, Timeout ?? 5);
+            Game.BattleScreenRegion.Exists(img, Timeout ?? TimeSpan.FromSeconds(5));
         }
 
         void CastSkill(Location Location)
@@ -135,7 +135,7 @@ namespace FateGrandAutomata
             // Extra wait to allow order change dialog to close
             AutomataApi.Wait(1);
 
-            WaitForAnimationToFinish(15);
+            WaitForAnimationToFinish(TimeSpan.FromSeconds(15));
 
             // Extra wait for the lag introduced by Order change
             AutomataApi.Wait(1);

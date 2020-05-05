@@ -48,6 +48,11 @@ namespace CoreAutomata
             Thread.Sleep(TimeSpan.FromSeconds(Seconds));
         }
 
+        public static void Wait(this TimeSpan TimeSpan)
+        {
+            Wait(TimeSpan.TotalSeconds);
+        }
+
         public static Region WindowRegion => _platformImpl.WindowRegion;
 
         public static void Click(this Location Location) => _gesture.Click(Location.Transform());
@@ -72,7 +77,7 @@ namespace CoreAutomata
 
         static readonly Stopwatch Stopwatch = new Stopwatch();
 
-        static bool CheckConditionLoop(Func<bool> Condition, double? Timeout)
+        static bool CheckConditionLoop(Func<bool> Condition, TimeSpan? Timeout)
         {
             Stopwatch.Restart();
 
@@ -87,7 +92,7 @@ namespace CoreAutomata
                         return true;
                     }
 
-                    if (Timeout == null || Stopwatch.Elapsed.TotalSeconds > Timeout)
+                    if (Timeout == null || Stopwatch.Elapsed > Timeout)
                     {
                         break;
                     }
@@ -110,12 +115,12 @@ namespace CoreAutomata
             return false;
         }
 
-        public static bool WaitVanish(this Region Region, IPattern Image, int? Timeout = null, double? Similarity = null)
+        public static bool WaitVanish(this Region Region, IPattern Image, TimeSpan? Timeout = null, double? Similarity = null)
         {
             return CheckConditionLoop(() => !ExistsNow(Region, Image, Similarity), Timeout);
         }
 
-        public static bool Exists(this Region Region, IPattern Image, int? Timeout = null, double? Similarity = null)
+        public static bool Exists(this Region Region, IPattern Image, TimeSpan? Timeout = null, double? Similarity = null)
         {
             return CheckConditionLoop(() => ExistsNow(Region, Image, Similarity), Timeout);
         }
