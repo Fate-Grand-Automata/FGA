@@ -20,10 +20,14 @@ namespace FateGrandAutomata
             var swipePath = new Path();
             swipePath.MoveTo(Start.X, Start.Y);
             swipePath.LineTo(End.X, End.Y);
-            var swipeStroke = new GestureDescription.StrokeDescription(swipePath, 0, GestureTimings.SwipeDurationMs);
+            
+            var swipeStroke = new GestureDescription.StrokeDescription(swipePath,
+                0,
+                GestureTimings.SwipeDuration.TotalMilliseconds.Round());
+            
             PerformGesture(swipeStroke);
 
-            AutomataApi.Wait(GestureTimings.SwipeWaitTimeSec);
+            GestureTimings.SwipeWaitTime.Wait();
         }
 
         public void Click(Location Location)
@@ -38,11 +42,14 @@ namespace FateGrandAutomata
                 var swipePath = new Path();
                 swipePath.MoveTo(Location.X, Location.Y);
 
-                var stroke = new GestureDescription.StrokeDescription(swipePath, GestureTimings.ClickDelayMs, GestureTimings.ClickDurationMs);
+                var stroke = new GestureDescription.StrokeDescription(swipePath,
+                    GestureTimings.ClickDelay.TotalMilliseconds.Round(),
+                    GestureTimings.ClickDuration.TotalMilliseconds.Round());
+                
                 PerformGesture(stroke);
             }
 
-            AutomataApi.Wait(GestureTimings.ClickWaitTimeSec);
+            GestureTimings.ClickWaitTime.Wait();
         }
         
         void PerformGesture(GestureDescription.StrokeDescription StrokeDescription)

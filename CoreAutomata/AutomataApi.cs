@@ -43,14 +43,9 @@ namespace CoreAutomata
             return _platformImpl.LoadPattern(Stream, Mask);
         }
 
-        public static void Wait(double Seconds)
-        {
-            Thread.Sleep(TimeSpan.FromSeconds(Seconds));
-        }
-
         public static void Wait(this TimeSpan TimeSpan)
         {
-            Wait(TimeSpan.TotalSeconds);
+            Thread.Sleep(TimeSpan);
         }
 
         public static Region WindowRegion => _platformImpl.WindowRegion;
@@ -99,11 +94,11 @@ namespace CoreAutomata
 
                     var scanInterval = TimeSpan.FromMilliseconds(1000 / ScanRate);
                     var elapsed = Stopwatch.Elapsed - scanStartTimestamp;
-                    var timeToWaitSec = (scanInterval - elapsed).TotalSeconds;
+                    var timeToWait = scanInterval - elapsed;
 
-                    if (timeToWaitSec > 0)
+                    if (timeToWait > TimeSpan.Zero)
                     {
-                        Wait(timeToWaitSec);
+                        Wait(timeToWait);
                     }
                 }
             }

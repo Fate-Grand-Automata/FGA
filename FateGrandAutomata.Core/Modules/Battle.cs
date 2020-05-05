@@ -143,7 +143,7 @@ namespace FateGrandAutomata
 
             Card.ResetCommandCards();
 
-            AutomataApi.Wait(wereNpsClicked ? 25 : 5);
+            AutomataApi.Wait(TimeSpan.FromSeconds(wereNpsClicked ? 25 : 5));
         }
 
         void OnTurnStarted()

@@ -16,7 +16,7 @@ namespace FateGrandAutomata
 
         public void Swipe(Location Start, Location End)
         {
-            _superUser.SendCommand($"{InputCommand} swipe {Start.X} {Start.Y} {End.X} {End.Y} {GestureTimings.SwipeDurationMs}");
+            _superUser.SendCommand($"{InputCommand} swipe {Start.X} {Start.Y} {End.X} {End.Y} {GestureTimings.SwipeDuration.TotalMilliseconds.Round()}");
         }
 
         public void Click(Location Location)
