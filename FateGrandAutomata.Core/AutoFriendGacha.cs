@@ -1,4 +1,5 @@
-﻿using CoreAutomata;
+﻿using System;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -15,10 +16,10 @@ namespace FateGrandAutomata
             {
                 new Location(1600, 1420).Click();
                 new Location(1600, 1120).Click();
-                AutomataApi.Wait(3);
+                TimeSpan.FromSeconds(3).Wait();
 
                 new Location(1600, 1300).ContinueClick(15);
-                AutomataApi.Wait(0.5);
+                TimeSpan.FromSeconds(0.5).Wait();
             }
         }
     }

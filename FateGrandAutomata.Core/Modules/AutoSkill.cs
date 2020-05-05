@@ -50,7 +50,7 @@ namespace FateGrandAutomata
         {
             Location.Click();
 
-            AutomataApi.Wait(0.5);
+            TimeSpan.FromSeconds(0.5).Wait();
 
             // Exit any extra menu
             Game.BattleExtrainfoWindowCloseClick.Click();
@@ -65,7 +65,7 @@ namespace FateGrandAutomata
                 Battle.ClickAttack();
 
                 // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-                AutomataApi.Wait(2);
+                TimeSpan.FromSeconds(2).Wait();
             }
 
             /*
@@ -86,7 +86,7 @@ namespace FateGrandAutomata
         {
             Game.BattleMasterSkillOpenClick.Click();
 
-            AutomataApi.Wait(0.5);
+            TimeSpan.FromSeconds(0.5).Wait();
         }
 
         void CastMasterSkill(Location Location)
@@ -112,7 +112,7 @@ namespace FateGrandAutomata
                 Game.BattleSkillOkClick.Click();
             }
 
-            AutomataApi.Wait(0.3);
+            TimeSpan.FromSeconds(0.3).Wait();
 
             ChangeArray(_startingMemberFunctionArray);
         }
@@ -128,17 +128,17 @@ namespace FateGrandAutomata
         {
             Location.Click();
 
-            AutomataApi.Wait(0.3);
+            TimeSpan.FromSeconds(0.3).Wait();
 
             Game.BattleOrderChangeOkClick.Click();
 
             // Extra wait to allow order change dialog to close
-            AutomataApi.Wait(1);
+            TimeSpan.FromSeconds(1).Wait();
 
             WaitForAnimationToFinish(TimeSpan.FromSeconds(15));
 
             // Extra wait for the lag introduced by Order change
-            AutomataApi.Wait(1);
+            TimeSpan.FromSeconds(1).Wait();
 
             ChangeArray(_defaultFunctionArray);
         }
@@ -152,7 +152,7 @@ namespace FateGrandAutomata
         {
             Location.Click();
 
-            AutomataApi.Wait(0.5);
+            TimeSpan.FromSeconds(0.5).Wait();
 
             // Exit any extra menu
             Game.BattleExtrainfoWindowCloseClick.Click();
@@ -167,7 +167,7 @@ namespace FateGrandAutomata
                 Battle.ClickAttack();
 
                 // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-                AutomataApi.Wait(2);
+                TimeSpan.FromSeconds(2).Wait();
             }
 
             ChangeArray(_cardsPressed);

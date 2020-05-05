@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CoreAutomata;
 
 namespace FateGrandAutomata
@@ -58,7 +59,7 @@ namespace FateGrandAutomata
             Game.BattleAttackClick.Click();
 
             // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
-            AutomataApi.Wait(1.5);
+            TimeSpan.FromSeconds(1.5).Wait();
 
             HasClickedAttack = true;
 
@@ -77,7 +78,7 @@ namespace FateGrandAutomata
         {
             Game.BattleTargetClickArray[Index].Click();
 
-            AutomataApi.Wait(0.5);
+            TimeSpan.FromSeconds(0.5).Wait();
 
             Game.BattleExtrainfoWindowCloseClick.Click();
 
@@ -114,7 +115,7 @@ namespace FateGrandAutomata
         public void PerformBattle()
         {
             AutomataApi.UseSameSnapIn(OnTurnStarted);
-            AutomataApi.Wait(2);
+            TimeSpan.FromSeconds(2).Wait();
 
             var wereNpsClicked = false;
 

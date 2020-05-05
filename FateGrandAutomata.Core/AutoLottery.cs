@@ -1,4 +1,5 @@
-﻿using CoreAutomata;
+﻿using System;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -24,13 +25,13 @@ namespace FateGrandAutomata
         void Reset()
         {
             ResetClick.Click();
-            AutomataApi.Wait(0.5);
+            TimeSpan.FromSeconds(0.5).Wait();
 
             ResetConfirmationClick.Click();
-            AutomataApi.Wait(3);
+            TimeSpan.FromSeconds(3).Wait();
 
             ResetCloseClick.Click();
-            AutomataApi.Wait(2);
+            TimeSpan.FromSeconds(2).Wait();
         }
 
         protected override void Script()

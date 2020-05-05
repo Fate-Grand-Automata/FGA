@@ -90,7 +90,7 @@ namespace FateGrandAutomata
 
         bool SelectFirst()
         {
-            AutomataApi.Wait(1);
+            TimeSpan.FromSeconds(1).Wait();
             Game.SupportFirstSupportClick.Click();
 
             var pattern = ImageLocator.SupportScreen;
@@ -98,17 +98,17 @@ namespace FateGrandAutomata
             // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
             if (Game.SupportScreenRegion.Exists(pattern))
             {
-                AutomataApi.Wait(2);
+                TimeSpan.FromSeconds(2).Wait();
 
                 while (Game.SupportScreenRegion.Exists(pattern))
                 {
-                    AutomataApi.Wait(10);
+                    TimeSpan.FromSeconds(10).Wait();
                     Game.SupportUpdateClick.Click();
-                    AutomataApi.Wait(1);
+                    TimeSpan.FromSeconds(1).Wait();
                     Game.SupportUpdateYesClick.Click();
-                    AutomataApi.Wait(3);
+                    TimeSpan.FromSeconds(3).Wait();
                     Game.SupportFirstSupportClick.Click();
-                    AutomataApi.Wait(1);
+                    TimeSpan.FromSeconds(1).Wait();
                 }
             }
 
@@ -177,16 +177,16 @@ namespace FateGrandAutomata
                 {
                     ScrollList();
                     ++numberOfSwipes;
-                    AutomataApi.Wait(0.3);
+                    TimeSpan.FromSeconds(0.3).Wait();
                 }
 
                 else if (numberOfUpdates < Preferences.Instance.Support.MaxUpdates)
                 {
                     AutomataApi.Toast("Support list will be updated in 3 seconds.");
-                    AutomataApi.Wait(3);
+                    TimeSpan.FromSeconds(3).Wait();
 
                     Game.SupportUpdateClick.Click();
-                    AutomataApi.Wait(1);
+                    TimeSpan.FromSeconds(1).Wait();
                     Game.SupportUpdateYesClick.Click();
 
                     while (Game.NeedsToRetry())
@@ -194,7 +194,7 @@ namespace FateGrandAutomata
                         Game.Retry();
                     }
 
-                    AutomataApi.Wait(3);
+                    TimeSpan.FromSeconds(3).Wait();
 
                     ++numberOfUpdates;
                     numberOfSwipes = 0;

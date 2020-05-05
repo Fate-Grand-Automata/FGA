@@ -1,4 +1,5 @@
-﻿using CoreAutomata;
+﻿using System;
+using CoreAutomata;
 
 namespace FateGrandAutomata
 {
@@ -192,7 +193,7 @@ namespace FateGrandAutomata
         {
             RetryRegion.Click();
 
-            AutomataApi.Wait(2);
+            TimeSpan.FromSeconds(2).Wait();
         }
 
         public static Region GudaFinalRewardsRegion { get; } = new Region(1160, 1040, 228, 76);
