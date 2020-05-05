@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CoreAutomata
+﻿namespace CoreAutomata
 {
     public class Region
     {
@@ -31,12 +29,6 @@ namespace CoreAutomata
                    && B >= Region.B;
         }
 
-        public void WaitVanish(IPattern Image, int? Timeout = null) => AutomataApi.WaitVanish(this, Image, Timeout);
-
-        public bool Exists(IPattern Image, int? Timeout = null, double? Similarity = null) => AutomataApi.Exists(this, Image, Timeout, Similarity);
-
-        public IPattern GetPattern() => AutomataApi.GetCopy(this);
-
         public void Click()
         {
             var center = new Location(X + W / 2, Y + H / 2);
@@ -51,11 +43,6 @@ namespace CoreAutomata
                 (Region.Y * Scale).Round(),
                 (Region.W * Scale).Round(),
                 (Region.H * Scale).Round());
-        }
-
-        public void Highlight(TimeSpan Duration)
-        {
-            AutomataApi.Highlight(this, Duration);
         }
 
         public override string ToString() => $"({X}, {Y}) {W}x{H}";

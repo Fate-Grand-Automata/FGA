@@ -22,9 +22,8 @@ namespace FateGrandAutomata
             var supportBound = new Region(53 * 2, 0, 143 * 2, 110 * 2);
             var regionAnchor = ImageLocator.SupportRegionTool;
 
-            var regionArray = AutomataApi.FindAll(new Region(2100, 0, 300, 1440),
-                regionAnchor,
-                Support.SupportRegionToolSimilarity);
+            var searchRegion = new Region(2100, 0, 300, 1440);
+            var regionArray = searchRegion.FindAll(regionAnchor, Support.SupportRegionToolSimilarity);
             
             var screenBounds = new Region(0, 0, Game.ScriptWidth, Game.ScriptHeight);
 

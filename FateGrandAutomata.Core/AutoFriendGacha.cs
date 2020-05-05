@@ -17,7 +17,7 @@ namespace FateGrandAutomata
                 new Location(1600, 1120).Click();
                 AutomataApi.Wait(3);
 
-                AutomataApi.ContinueClick(new Location(1600, 1300), 15);
+                new Location(1600, 1300).ContinueClick(15);
                 AutomataApi.Wait(0.5);
             }
         }

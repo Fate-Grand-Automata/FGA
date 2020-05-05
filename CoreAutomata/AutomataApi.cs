@@ -50,7 +50,7 @@ namespace CoreAutomata
 
         public static Region WindowRegion => _platformImpl.WindowRegion;
 
-        public static void Click(Location Location) => _gesture.Click(Location.Transform());
+        public static void Click(this Location Location) => _gesture.Click(Location.Transform());
 
         static bool ExistsNow(Region Region, IPattern Image, double? Similarity)
         {
@@ -110,19 +110,19 @@ namespace CoreAutomata
             return false;
         }
 
-        public static bool WaitVanish(Region Region, IPattern Image, int? Timeout = null, double? Similarity = null)
+        public static bool WaitVanish(this Region Region, IPattern Image, int? Timeout = null, double? Similarity = null)
         {
             return CheckConditionLoop(() => !ExistsNow(Region, Image, Similarity), Timeout);
         }
 
-        public static bool Exists(Region Region, IPattern Image, int? Timeout = null, double? Similarity = null)
+        public static bool Exists(this Region Region, IPattern Image, int? Timeout = null, double? Similarity = null)
         {
             return CheckConditionLoop(() => ExistsNow(Region, Image, Similarity), Timeout);
         }
 
         public static double ScanRate { get; set; } = 3;
 
-        public static IPattern GetCopy(Region Region) => ScreenshotManager.GetScreenshot()
+        public static IPattern GetPattern(this Region Region) => ScreenshotManager.GetScreenshot()
             .Crop(Region.TransformToImage())
             .Copy();
 
@@ -148,7 +148,7 @@ namespace CoreAutomata
 
         public static void Swipe(Location Start, Location End) => _gesture.Swipe(Start.Transform(), End.Transform());
 
-        public static IEnumerable<Match> FindAll(Region Region, IPattern Pattern, double? Similarity = null)
+        public static IEnumerable<Match> FindAll(this Region Region, IPattern Pattern, double? Similarity = null)
         {
             var sshot = ScreenshotManager.GetScreenshot();
 
@@ -182,7 +182,7 @@ namespace CoreAutomata
 
         public static void Toast(string Msg) => _platformImpl?.Toast(Msg);
 
-        public static void ContinueClick(Location Location, int Times)
+        public static void ContinueClick(this Location Location, int Times)
         {
             _gesture.ContinueClick(Location.Transform(), Times);
         }
@@ -192,7 +192,7 @@ namespace CoreAutomata
             _platformImpl.MessageBox(Title, Message);
         }
 
-        public static void Highlight(Region Region, TimeSpan Timeout)
+        public static void Highlight(this Region Region, TimeSpan Timeout)
         {
             _platformImpl.Highlight(Region.Transform(), Timeout);
         }

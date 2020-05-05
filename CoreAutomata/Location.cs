@@ -11,8 +11,6 @@
             this.Y = Y;
         }
 
-        public void Click() => AutomataApi.Click(this);
-
         public static Location operator *(Location Location, double Scale)
         {
             return new Location((Location.X * Scale).Round(), (Location.Y * Scale).Round());

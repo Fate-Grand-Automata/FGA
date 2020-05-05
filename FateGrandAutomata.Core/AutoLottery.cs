@@ -18,7 +18,7 @@ namespace FateGrandAutomata
 
         void Spin()
         {
-            AutomataApi.ContinueClick(SpinClick, 480);
+            SpinClick.ContinueClick(480);
         }
 
         void Reset()

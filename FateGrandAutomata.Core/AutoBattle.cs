@@ -151,7 +151,7 @@ namespace FateGrandAutomata
         void Result()
         {
             // Validator document https://github.com/29988122/Fate-Grand-Order_Lua/wiki/In-Game-Result-Screen-Flow for detail.
-            AutomataApi.ContinueClick(Game.ResultNextClick, 55);
+            Game.ResultNextClick.ContinueClick(55);
 
             // Checking if there was a Bond CE reward
             if (Game.ResultCeRewardRegion.Exists(ImageLocator.Bond10Reward))
@@ -164,7 +164,7 @@ namespace FateGrandAutomata
                 Game.ResultCeRewardCloseClick.Click();
 
                 // Still need to proceed through reward screen.
-                AutomataApi.ContinueClick(Game.ResultNextClick, 35);
+                Game.ResultNextClick.ContinueClick(35);
             }
 
             AutomataApi.Wait(5);

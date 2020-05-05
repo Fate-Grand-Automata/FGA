@@ -264,7 +264,7 @@ namespace FateGrandAutomata
                 // Cached pattern. Don't dipose here.
                 var pattern = ImageLocator.LoadSupportImagePattern(friendName);
 
-                foreach (var theFriend in AutomataApi.FindAll(Game.SupportFriendsRegion, pattern))
+                foreach (var theFriend in Game.SupportFriendsRegion.FindAll(pattern))
                 {
                     return theFriend;
                 }
@@ -280,7 +280,7 @@ namespace FateGrandAutomata
                 // Cached pattern. Don't dipose here.
                 var pattern = ImageLocator.LoadSupportImagePattern(preferredServant);
 
-                foreach (var servant in AutomataApi.FindAll(Game.SupportListRegion, pattern))
+                foreach (var servant in Game.SupportListRegion.FindAll(pattern))
                 {
                     yield return servant;
                 }
@@ -294,7 +294,7 @@ namespace FateGrandAutomata
                 // Cached pattern. Don't dipose here.
                 var pattern = ImageLocator.LoadSupportImagePattern(preferredCraftEssence.Name);
 
-                var craftEssences = AutomataApi.FindAll(SearchRegion, pattern);
+                var craftEssences = SearchRegion.FindAll(pattern);
 
                 foreach (var craftEssence in craftEssences)
                 {
@@ -314,10 +314,9 @@ namespace FateGrandAutomata
         {
             var supportBound = new Region(76, 0, 2356, 428);
             var regionAnchor = ImageLocator.SupportRegionTool;
-            
-            var regionArray = AutomataApi.FindAll(new Region(2100, 0, 300, 1440),
-                regionAnchor,
-                SupportRegionToolSimilarity);
+
+            var searchRegion = new Region(2100, 0, 300, 1440);
+            var regionArray = searchRegion.FindAll(regionAnchor, SupportRegionToolSimilarity);
 
             var defaultRegion = supportBound;
 
