@@ -88,17 +88,10 @@ namespace FateGrandAutomata
 
         public IPattern Crop(Region Region)
         {
+            Region = new Region(0, 0, Width, Height)
+                .Clip(Region);
+
             var rect = new Rect(Region.X, Region.Y, Region.W, Region.H);
-
-            if (rect.X + rect.Width > Width)
-            {
-                rect.X = Width - rect.Width;
-            }
-
-            if (rect.Y + rect.Height > Height)
-            {
-                rect.Y = Height - rect.Height;
-            }
 
             var result = new Mat(Mat, rect);
 
@@ -117,6 +110,11 @@ namespace FateGrandAutomata
         DisposableMat Match(DroidCvPattern Template)
         {
             var result = new DisposableMat();
+
+            if (Template.Width > Width || Template.Height > Height)
+            {
+                return result;
+            }
 
             if (Template.Mask != null)
             {
