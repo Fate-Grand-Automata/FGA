@@ -2504,9 +2504,6 @@ namespace FateGrandAutomata
 			// aapt resource value: 0x7F060050
 			public const int highlighted_text_material_light = 2131099728;
 			
-			// aapt resource value: 0x7F060051
-			public const int ic_launcher_background = 2131099729;
-			
 			// aapt resource value: 0x7F060052
 			public const int material_blue_grey_800 = 2131099730;
 			
