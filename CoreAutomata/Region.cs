@@ -23,6 +23,19 @@ namespace CoreAutomata
             this.H = H;
         }
 
+        /// <summary>
+        /// Restrict another Region to be within the bounds of this Region.
+        /// </summary>
+        public Region Clip(Region Region)
+        {
+            var left = Region.X.Clip(X, R - 1);
+            var right = Region.R.Clip(X + 1, R);
+            var top = Region.Y.Clip(Y, B - 1);
+            var bottom = Region.B.Clip(Y + 1, B);
+
+            return new Region(left, top, right - left, bottom - top);
+        }
+
         public bool Contains(Region Region)
         {
             return X <= Region.X

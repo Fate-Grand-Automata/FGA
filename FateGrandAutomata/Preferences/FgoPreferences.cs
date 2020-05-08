@@ -105,5 +105,7 @@ namespace FateGrandAutomata
         public bool UseRootForScreenshots => GetBool(R.pref_use_root_screenshot);
 
         public bool UseRootForGestures => GetBool(R.pref_use_root_gestures);
+
+        public bool GudaFinal => GetBool(R.pref_guda_final);
     }
 }
