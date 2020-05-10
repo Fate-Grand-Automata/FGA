@@ -1,6 +1,10 @@
 # Fate/Grand Automata
 [![CI](https://github.com/MathewSachin/Fate-Grand-Automata/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/MathewSachin/Fate-Grand-Automata/actions)
 
+<div style="text-align:center">
+  <img src="FateGrandAutomata/Resources/mipmap-xxxhdpi/ic_launcher_round.png">
+</div>
+
 Fate/Grand auto-battle app for Android.
 This is pretty much a C# port of [Fate-Grand-Order_Lua][FGOLua] but has an inbuilt Sikuli-like API.
 Also, includes a UI for configuring Settings.
