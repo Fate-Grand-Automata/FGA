@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <ListPreference
+    app:defaultValue="En"
+    app:entries="@array/game_server_labels"
+    app:entryValues="@array/game_server_values"
+    app:key="@string/pref_gameserver"
+    app:title="Game Server"
+    app:icon="@drawable/ic_earth"
+    app:useSimpleSummaryProvider="true"/>
+
+  <Preference
+    app:key="@string/pref_card_priority"
+    app:title="Card Priority"
+    app:icon="@drawable/ic_sort"/>
+
+  <ListPreference
+    app:defaultValue="None"
+    app:entries="@array/battle_np_types"
+    app:entryValues="@array/battle_np_types"
+    app:key="@string/pref_battle_np"
+    app:icon="@drawable/ic_star"
+    app:title="Cast Noble Phantasm"
+    app:useSimpleSummaryProvider="true"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_auto_choose_target"
+    app:icon="@drawable/ic_target"
+    app:title="Auto choose target"
+    app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_story_skip"
+    app:title="Story Skip"
+    app:icon="@drawable/ic_fast_forward"
+    app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_withdraw_enabled"
+    app:title="Enable Withdraw"
+    app:icon="@drawable/ic_exit_run"
+    app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_stop_bond10"
+    app:title="Stop on Bond 10"
+    app:icon="@drawable/ic_diamond"
+    app:defaultValue="false"/>
+
+  <ListPreference
+    app:defaultValue="-1"
+    app:entries="@array/boost_item_labels"
+    app:entryValues="@array/boost_item_values"
+    app:key="@string/pref_boost_item"
+    app:title="Boost Item"
+    app:icon="@drawable/ic_boost"
+    app:useSimpleSummaryProvider="true"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_guda_final"
+    app:title="GudaGuda Final Rerun"
+    app:summary="Support for the new rewards screen on JP"
+    app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_debug_mode"
+    app:title="Debug mode"
+    app:summary="Highlight the regions being matched"
+    app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
+    app:key="@string/pref_ignore_notch"
+    app:title="Ignore Notch calculation"
+    app:summary="Useful on Samsung phones"
+    app:defaultValue="false"/>
+
+  <SwitchPreferenceCompat
+      app:key="@string/pref_record_screen"
+      app:title="Record Screen"
+      app:summary="Won't work with the root setting.\nA file named 'record.mp4' will be saved to 'Fate-Grand-Automata' folder.\nCopy or rename it if you want to keep it."
+      app:defaultValue="false"/>
+
+  <PreferenceCategory
+    app:key="root_category"
+    app:title="Root"
+    app:summary="Toggle service after changing these">
+    <SwitchPreferenceCompat
+      app:key="@string/pref_use_root_screenshot"
+      app:title="Use Root for Screenshots"
+      app:summary="Useful on Nox Android 7 for FGO JP"
+      app:defaultValue="false"/>
+
+    <!-- <SwitchPreferenceCompat
+      app:key="@string/pref_use_root_gestures"
+      app:title="Use Root for Gestures"
+      app:summary="Slow - Not Recommended"
+      app:defaultValue="false"/> -->
+  </PreferenceCategory>
+</PreferenceScreen>

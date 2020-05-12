@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <PreferenceCategory
+    app:key="support_category"
+    app:title="Support">
+
+    <Preference
+      app:key="@string/pref_extract_def_support_imgs"
+      app:title="Extract Default Support Images"
+      app:icon="@drawable/ic_zip"
+      app:summary="Extract common support images bundled with the app"/>
+
+    <ListPreference
+      app:defaultValue="First"
+      app:entries="@array/support_selection_modes"
+      app:entryValues="@array/support_selection_modes"
+      app:key="@string/pref_support_mode"
+      app:title="Selection Mode"
+      app:icon="@drawable/ic_dots_vertical"
+      app:useSimpleSummaryProvider="true"/>
+
+    <ListPreference
+      app:defaultValue="Manual"
+      app:entries="@array/support_selection_modes"
+      app:entryValues="@array/support_selection_modes"
+      app:key="@string/pref_support_fallback"
+      app:title="Fallback Selection Mode"
+      app:icon="@drawable/ic_dots_vertical"
+      app:useSimpleSummaryProvider="true"/>
+
+    <PreferenceCategory
+      app:key="pref_servant_category"
+      app:title="Preferred Servants">
+      <MultiSelectListPreference
+        app:key="@string/pref_support_pref_servant"
+        app:title="Preferred Servants"
+        app:icon="@drawable/ic_crown"/>
+
+      <Preference
+        app:key="@string/pref_support_pref_servant_clear"
+        app:title="Clear Servant Preferences"
+        app:icon="@drawable/ic_clear"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+      app:key="pref_ce_category"
+      app:title="Preferred CEs">
+      <MultiSelectListPreference
+        app:key="@string/pref_support_pref_ce"
+        app:title="Preferred CEs"
+        app:icon="@drawable/ic_card"/>
+
+      <SwitchPreferenceCompat
+        app:key="@string/pref_support_pref_ce_mlb"
+        app:title="Max-limit broken"
+        app:icon="@drawable/ic_star"
+        app:defaultValue="false"/>
+
+      <Preference
+        app:key="@string/pref_support_pref_ce_clear"
+        app:title="Clear CE Preferences"
+        app:icon="@drawable/ic_clear"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="friend_support_category"
+        app:title="Friend">
+      <SwitchPreferenceCompat
+        app:key="@string/pref_support_friends_only"
+        app:title="Friends Only"
+        app:icon="@drawable/ic_friend"
+        app:defaultValue="false"/>
+
+      <EditTextPreference
+        app:key="@string/pref_support_friend_names"
+        app:title="Friend names"
+        app:icon="@drawable/ic_friend"
+        app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+      app:key="friend_swipe_category"
+      app:title="Swipes and Updates">
+      <SeekBarPreference
+        app:key="@string/pref_support_swipes_per_update"
+        app:title="Swipes per Update"
+        app:icon="@drawable/ic_swipe"
+        app:defaultValue="10"
+        app:min="0"
+        app:showSeekBarValue="true"
+        android:max="30"
+        app:seekBarIncrement="1"/>
+
+      <SeekBarPreference
+        app:key="@string/pref_support_max_updates"
+        app:title="Max Updates"
+        app:icon="@drawable/ic_refresh"
+        app:defaultValue="3"
+        app:min="0"
+        app:showSeekBarValue="true"
+        android:max="30"
+        app:seekBarIncrement="1"/>
+    </PreferenceCategory>
+  </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.mathewsachin.fategrandautomata">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:name=".util.AutomataApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.AutoSkillMakerActivity"
+            android:label="Auto Skill Maker"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="userLandscape"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.support_img_namer.SupportImageNamerActivity"
+            android:label="Support Images"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.AutoSkillItemActivity"
+            android:label="Edit AutoSkill Item" />
+        <activity
+            android:name=".ui.ManageAutoSkillActivity"
+            android:label="AutoSkill List" />
+        <activity
+            android:name=".ui.card_priority.CardPriorityActivity"
+            android:label="Card Priority" />
+
+        <service
+            android:name=".accessibility.ScriptRunnerService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/script_runner_service" />
+        </service>
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

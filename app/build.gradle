@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "29.0.3"
+    ndkVersion "21.1.6352462"
+
+    defaultConfig {
+        applicationId "com.mathewsachin.fategrandautomata"
+        minSdkVersion 24
+        targetSdkVersion 28
+        versionCode Integer.valueOf(System.env.FGA_VERSION_CODE ?: 1)
+        versionName (System.env.FGA_VERSION_NAME ?: "v0.1.0")
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+           abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("fgadebug.keystore")
+            storePassword "123abc"
+            keyAlias "fgadebug"
+            keyPassword "123abc"
+        }
+        release {
+            storeFile file("fgautomata.keystore")
+            storePassword System.env.KEYSTORE_PASS
+            keyAlias "fgautomata"
+            keyPassword System.env.KEYSTORE_PASS
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            applicationIdSuffix '.debug'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        fork {
+            initWith release
+            applicationIdSuffix '.fork'
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+repositories {
+    maven { url "https://dl.bintray.com/blazei/maven" }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'org.opencv:opencv-android:3.+'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    def preference_version = "1.1.1"
+    implementation "androidx.preference:preference-ktx:$preference_version"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+    implementation 'com.google.android.material:material:1.0.0'
+}
