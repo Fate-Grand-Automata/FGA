@@ -331,6 +331,7 @@ class Support {
 
         val limitBreakPattern = ImageLocator.LimitBroken
 
-        return limitBreakRegion.exists(limitBreakPattern, Similarity = 0.8)
+        // 0.77 is a weird fix for MLB icon getting only 0.78 similarity sometimes
+        return limitBreakRegion.exists(limitBreakPattern, Similarity = 0.77)
     }
 }
