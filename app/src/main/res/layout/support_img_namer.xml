@@ -1,180 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-  <com.google.android.material.appbar.AppBarLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/AppTheme.AppBarOverlay">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-      android:id="@+id/support_img_namer_toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="?attr/actionBarSize"
-      android:background="?attr/colorPrimary"
-      app:popupTheme="@style/AppTheme.PopupOverlay" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-  </com.google.android.material.appbar.AppBarLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/support_img_namer_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-  <androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/servant_txt"
-            android:text="Servant(s)"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="20sp"/>
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/folder_help_ic"
-            android:src="@drawable/ic_warning"
-            android:tint="#fdd835"
-            android:layout_marginRight="1dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/servant_txt"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/folder_help_txt"
-            android:text="You can use folders like this: 'Merlin/asc1'"
-            app:layout_constraintStart_toEndOf="@+id/folder_help_ic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/servant_txt"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            tools:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:id="@+id/image_servant_0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/folder_help_txt"
-            android:layout_marginTop="16dp"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#fff"
-            android:id="@+id/del_servant_0"
-            android:src="@drawable/ic_delete"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/image_servant_0"/>
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_servant_0"
-            android:inputType="text"
-            android:hint="Name"
-            tools:text="Servant 0"
-            app:layout_constraintTop_toTopOf="@+id/image_servant_0"
-            app:layout_constraintStart_toEndOf="@+id/image_servant_0"
-            app:layout_constraintEnd_toStartOf="@+id/del_servant_0"
-            android:layout_marginLeft="16dp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
-        <ImageView
-            tools:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:id="@+id/image_servant_1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_servant_0"
-            android:layout_marginTop="16dp"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#fff"
-            android:id="@+id/del_servant_1"
-            android:src="@drawable/ic_delete"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/image_servant_1"/>
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_servant_1"
-            android:inputType="text"
-            android:hint="Name"
-            tools:text="Servant 1"
-            app:layout_constraintTop_toTopOf="@+id/image_servant_1"
-            app:layout_constraintStart_toEndOf="@+id/image_servant_1"
-            app:layout_constraintEnd_toStartOf="@+id/del_servant_1"
-            android:layout_marginLeft="16dp"/>
+            <TextView
+                android:id="@+id/servant_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Servant(s)"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:id="@+id/ce_txt"
-          android:text="Craft Essence(s)"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/text_servant_1"
-          android:layout_marginTop="32dp"
-          android:textSize="20sp"/>
+            <ImageView
+                android:id="@+id/folder_help_ic"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="1dp"
+                android:src="@drawable/ic_warning"
+                android:tint="#fdd835"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/servant_txt" />
 
-        <ImageView
-          tools:src="@android:drawable/ic_menu_gallery"
-          android:layout_width="120dp"
-          android:layout_height="60dp"
-          android:id="@+id/image_ce_0"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/ce_txt"
-          android:layout_marginTop="16dp"/>
-        <ImageButton
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:backgroundTint="#fff"
-          android:id="@+id/del_ce_0"
-          android:src="@drawable/ic_delete"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="@+id/image_ce_0"/>
-        <EditText
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:id="@+id/text_ce_0"
-          android:inputType="text"
-          android:hint="Name"
-          tools:text="CE 0"
-          app:layout_constraintTop_toTopOf="@+id/image_ce_0"
-          app:layout_constraintStart_toEndOf="@+id/image_ce_0"
-          app:layout_constraintEnd_toStartOf="@+id/del_ce_0"
-          android:layout_marginLeft="16dp"/>
+            <TextView
+                android:id="@+id/folder_help_txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="You can use folders like this: 'Merlin/asc1'"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/folder_help_ic"
+                app:layout_constraintTop_toBottomOf="@+id/servant_txt" />
 
-        <ImageView
-          tools:src="@android:drawable/ic_menu_gallery"
-          android:layout_width="120dp"
-          android:layout_height="60dp"
-          android:id="@+id/image_ce_1"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/image_ce_0"
-          android:layout_marginTop="16dp"/>
-        <ImageButton
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:backgroundTint="#fff"
-          android:id="@+id/del_ce_1"
-          android:src="@drawable/ic_delete"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="@+id/image_ce_1"/>
-        <EditText
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:id="@+id/text_ce_1"
-          android:inputType="text"
-          android:hint="Name"
-          tools:text="CE 1"
-          app:layout_constraintTop_toTopOf="@+id/image_ce_1"
-          app:layout_constraintStart_toEndOf="@+id/image_ce_1"
-          app:layout_constraintEnd_toStartOf="@+id/del_ce_1"
-          android:layout_marginLeft="16dp"/>
-         
-    </androidx.constraintlayout.widget.ConstraintLayout>
-  </androidx.core.widget.NestedScrollView>
+            <ImageView
+                android:id="@+id/image_servant_0"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/folder_help_txt"
+                tools:src="@android:drawable/ic_menu_gallery" />
+
+            <ImageButton
+                android:id="@+id/del_servant_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#fff"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/image_servant_0" />
+
+            <EditText
+                android:id="@+id/text_servant_0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:hint="Name"
+                android:inputType="text"
+                app:layout_constraintEnd_toStartOf="@+id/del_servant_0"
+                app:layout_constraintStart_toEndOf="@+id/image_servant_0"
+                app:layout_constraintTop_toTopOf="@+id/image_servant_0"
+                tools:text="Servant 0" />
+
+            <ImageView
+                android:id="@+id/image_servant_1"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_servant_0"
+                tools:src="@android:drawable/ic_menu_gallery" />
+
+            <ImageButton
+                android:id="@+id/del_servant_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#fff"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/image_servant_1" />
+
+            <EditText
+                android:id="@+id/text_servant_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:hint="Name"
+                android:inputType="text"
+                app:layout_constraintEnd_toStartOf="@+id/del_servant_1"
+                app:layout_constraintStart_toEndOf="@+id/image_servant_1"
+                app:layout_constraintTop_toTopOf="@+id/image_servant_1"
+                tools:text="Servant 1" />
+
+            <TextView
+                android:id="@+id/ce_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Craft Essence(s)"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_servant_1" />
+
+            <ImageView
+                android:id="@+id/image_ce_0"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ce_txt"
+                tools:src="@android:drawable/ic_menu_gallery" />
+
+            <ImageButton
+                android:id="@+id/del_ce_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#fff"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/image_ce_0" />
+
+            <EditText
+                android:id="@+id/text_ce_0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:hint="Name"
+                android:inputType="text"
+                app:layout_constraintEnd_toStartOf="@+id/del_ce_0"
+                app:layout_constraintStart_toEndOf="@+id/image_ce_0"
+                app:layout_constraintTop_toTopOf="@+id/image_ce_0"
+                tools:text="CE 0" />
+
+            <ImageView
+                android:id="@+id/image_ce_1"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_ce_0"
+                tools:src="@android:drawable/ic_menu_gallery" />
+
+            <ImageButton
+                android:id="@+id/del_ce_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#fff"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/image_ce_1" />
+
+            <EditText
+                android:id="@+id/text_ce_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:hint="Name"
+                android:inputType="text"
+                app:layout_constraintEnd_toStartOf="@+id/del_ce_1"
+                app:layout_constraintStart_toEndOf="@+id/image_ce_1"
+                app:layout_constraintTop_toTopOf="@+id/image_ce_1"
+                tools:text="CE 1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

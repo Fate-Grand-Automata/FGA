@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-  <item android:id="@+id/action_rename_support_imgs"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_rename_support_imgs"
         android:icon="@drawable/ic_check_white"
-        app:showAsAction="always"
-        android:title="Rename"/>
-  <item android:id="@+id/action_rename_support_imgs_discard"
+        android:title="Rename"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_rename_support_imgs_discard"
         android:icon="@drawable/ic_close_white"
-        app:showAsAction="always"
-        android:title="Discard"/>
+        android:title="Discard"
+        app:showAsAction="always" />
 </menu>
