@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import com.mathewsachin.fategrandautomata.R
 import kotlinx.android.synthetic.main.autoskill_maker.*
+import kotlinx.android.synthetic.main.autoskill_maker_atk.*
+import kotlinx.android.synthetic.main.autoskill_maker_main.*
+import kotlinx.android.synthetic.main.autoskill_maker_order_change.*
+import kotlinx.android.synthetic.main.autoskill_maker_target.*
 
 private enum class AutoSkillMakerState {
     Main, Atk, Target, OrderChange

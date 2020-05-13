@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/autoskill_view_atk"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:visibility="gone"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+        android:id="@+id/atk_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attack"
+        app:layout_constraintEnd_toEndOf="@+id/next_btns_barrier"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/np_sep_left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/np_4"
+        app:layout_constraintEnd_toStartOf="@+id/np_4"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/np_4"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:textOff="Servant\n1\n\nNP"
+        android:textOn="Servant\n1\n\nNP"
+        app:layout_constraintEnd_toStartOf="@+id/np_5"
+        app:layout_constraintStart_toEndOf="@+id/np_sep_left"
+        app:layout_constraintTop_toBottomOf="@+id/atk_label" />
+
+    <ToggleButton
+        android:id="@+id/np_5"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:textOff="Servant\n2\n\nNP"
+        android:textOn="Servant\n2\n\nNP"
+        app:layout_constraintEnd_toStartOf="@+id/np_6"
+        app:layout_constraintStart_toEndOf="@+id/np_4"
+        app:layout_constraintTop_toTopOf="@+id/np_4" />
+
+    <ToggleButton
+        android:id="@+id/np_6"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:textOff="Servant\n3\n\nNP"
+        android:textOn="Servant\n3\n\nNP"
+        app:layout_constraintEnd_toStartOf="@+id/np_sep_right"
+        app:layout_constraintStart_toEndOf="@+id/np_5"
+        app:layout_constraintTop_toTopOf="@+id/np_4" />
+
+    <View
+        android:id="@+id/np_sep_right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/np_4"
+        app:layout_constraintEnd_toEndOf="@+id/next_btns_barrier"
+        app:layout_constraintStart_toEndOf="@+id/np_6" />
+
+    <RadioGroup
+        android:id="@+id/cards_before_np_rad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/cards_before_np_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No cards before NP" />
+
+        <RadioButton
+            android:id="@+id/cards_before_np_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 face-card before NP" />
+
+        <RadioButton
+            android:id="@+id/cards_before_np_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 face-cards before NP" />
+    </RadioGroup>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/next_btns_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="autoskill_done_btn,autoskill_next_battle_btn,autoskill_next_turn_btn" />
+
+    <Button
+        android:id="@+id/autoskill_done_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_check"
+        android:text="Done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
+
+    <Button
+        android:id="@+id/autoskill_next_turn_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_play"
+        android:text="Next Turn"
+        app:layout_constraintBottom_toTopOf="@+id/autoskill_done_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
+
+    <Button
+        android:id="@+id/autoskill_next_battle_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_fast_forward"
+        android:text=" Next Battle"
+        app:layout_constraintBottom_toTopOf="@+id/autoskill_next_turn_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
+</androidx.constraintlayout.widget.ConstraintLayout>
