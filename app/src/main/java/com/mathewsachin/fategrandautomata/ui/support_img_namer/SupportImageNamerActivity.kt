@@ -40,24 +40,37 @@ class SupportImageNamerActivity : AppCompatActivity() {
         val supportImgId = extras?.getString(SupportImageIdKey)
             ?: return
 
-        servant0 = SupportServantEntry(
+        servant0 = SupportImgEntry(
             getServantImgPath(supportImgId, 0),
-            image_servant_0, del_servant_0, text_servant_0
+            image_servant_0, del_servant_0, text_servant_0,
+            this, ServantRegex, ServantInvalidMsg
         )
-        servant1 = SupportServantEntry(
+        servant1 = SupportImgEntry(
             getServantImgPath(supportImgId, 1),
-            image_servant_1, del_servant_1, text_servant_1
+            image_servant_1, del_servant_1, text_servant_1,
+            this, ServantRegex, ServantInvalidMsg
         )
-        ce0 = SupportCeEntry(
+        ce0 = SupportImgEntry(
             getCeImgPath(supportImgId, 0),
-            image_ce_0, del_ce_0, text_ce_0
+            image_ce_0, del_ce_0, text_ce_0,
+            this, CeRegex, CeInvalidMsg
         )
-        ce1 = SupportCeEntry(
+        ce1 = SupportImgEntry(
             getCeImgPath(supportImgId, 1),
-            image_ce_1, del_ce_1, text_ce_1
+            image_ce_1, del_ce_1, text_ce_1,
+            this, CeRegex, CeInvalidMsg
         )
 
         entryList = listOf(servant0, servant1, ce0, ce1)
+    }
+
+    override fun onDestroy() {
+        // these objects contain a reference to activity context
+        for (entry in entryList) {
+            entry.close()
+        }
+
+        super.onDestroy()
     }
 
     private fun renameSupportImages() {

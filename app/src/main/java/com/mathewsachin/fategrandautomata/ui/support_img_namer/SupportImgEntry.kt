@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.support_img_namer
 
+import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.EditText
@@ -9,12 +10,15 @@ import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import java.io.File
 
-abstract class SupportImgEntry(
+class SupportImgEntry(
     val ImgPath: File,
     val ImgView: ImageView,
     val DeleteBtn: ImageButton,
-    val TextBox: EditText
-) {
+    val TextBox: EditText,
+    private var Context: Context,
+    val regex: Regex,
+    val invalidMsg: String
+) : AutoCloseable {
     init {
         if (!ImgPath.exists()) {
             hide()
@@ -26,8 +30,13 @@ abstract class SupportImgEntry(
         }
     }
 
+    override fun close() {
+        // instead of setting null, set to application context
+        Context = AutomataApplication.Instance
+    }
+
     private fun delete() {
-        AlertDialog.Builder(AutomataApplication.Instance)
+        AlertDialog.Builder(Context)
             .setMessage("Are you sure you want to delete this image?")
             .setTitle("Confirm Deletion")
             .setPositiveButton("Delete") { _, _ ->
@@ -46,11 +55,8 @@ abstract class SupportImgEntry(
         TextBox.setText("")
     }
 
-    abstract val regex: Regex
-    abstract val invalidMsg: String
-
     private fun showAlert(Msg: String) {
-        AlertDialog.Builder(AutomataApplication.Instance)
+        AlertDialog.Builder(Context)
             .setTitle("Error")
             .setMessage(Msg)
             .setPositiveButton(android.R.string.ok, null)
