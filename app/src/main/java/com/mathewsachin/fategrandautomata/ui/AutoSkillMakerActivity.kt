@@ -84,7 +84,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         enemy_target_radio.setOnCheckedChangeListener { group, checkedId ->
             val radioButton = group.findViewById<RadioButton>(checkedId)
 
-            if (radioButton.isChecked) {
+            if (radioButton?.isChecked == true) {
                 when(checkedId) {
                     R.id.enemy_target_1 -> setEnemyTarget(1)
                     R.id.enemy_target_2 -> setEnemyTarget(2)
@@ -220,7 +220,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         getStateView(AutoSkillMakerState.Main).visibility = View.GONE
 
         // Show new state
-        currentView = NewState;
+        currentView = NewState
         getStateView(NewState).visibility = View.VISIBLE
     }
 
