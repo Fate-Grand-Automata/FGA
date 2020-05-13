@@ -155,7 +155,7 @@ class Battle {
         val snapshot = generatedStageCounterSnapshot
             ?: return true
 
-        return Game.BattleStageCountRegion.exists(snapshot, Similarity = 0.85)
+        return !Game.BattleStageCountRegion.exists(snapshot, Similarity = 0.85)
     }
 
     fun takeStageSnapshot() {
