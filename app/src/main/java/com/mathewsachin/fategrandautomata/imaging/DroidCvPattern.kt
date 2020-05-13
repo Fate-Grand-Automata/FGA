@@ -18,7 +18,7 @@ class DroidCvPattern(private var Mat: Mat?, private val OwnsMat: Boolean = true)
         fun makeMat(Stream: InputStream): Mat {
             val byteArray = Stream.readBytes()
             DisposableMat(MatOfByte(*byteArray)).use {
-                return Imgcodecs.imdecode(it.Mat, Imgcodecs.CV_LOAD_IMAGE_GRAYSCALE)
+                return Imgcodecs.imdecode(it.Mat, Imgcodecs.IMREAD_GRAYSCALE)
             }
         }
     }

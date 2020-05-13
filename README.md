@@ -28,6 +28,8 @@ This was a great learning experience and something different from your usual And
 ## How does it work?
 This is a native Android app written in Kotlin ~~(formerly [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/))~~ using [OpenCV](https://opencv.org/) for image recognition. It uses Android's [Accessibility](https://developer.android.com/guide/topics/ui/accessibility) and [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) APIs.
 
+We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
+
 Battery optimizations can screw up the functionality of the app. App tries to disable them automatically but you might also have to do that manually.
 
 The icons are from https://materialdesignicons.com/
