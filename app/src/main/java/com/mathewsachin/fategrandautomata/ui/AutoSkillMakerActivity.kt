@@ -2,15 +2,16 @@ package com.mathewsachin.fategrandautomata.ui
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.res.ColorStateList
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.ViewCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import com.mathewsachin.fategrandautomata.R
 import kotlinx.android.synthetic.main.autoskill_maker.*
 import kotlinx.android.synthetic.main.autoskill_maker_atk.*
@@ -239,8 +240,13 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         for ((i, button) in Members.withIndex()) {
             val selected = i + 1 == Member
 
-            ViewCompat.setBackgroundTintList(button,
-                if (selected) { ColorStateList.valueOf(getColor(R.color.colorAccent)) } else null)
+            if (selected) {
+                val color = ContextCompat.getColor(this, R.color.colorAccent)
+                button.background.colorFilter = BlendModeColorFilterCompat
+                    .createBlendModeColorFilterCompat(color, BlendModeCompat.SRC)
+            } else {
+                button.background.colorFilter = null
+            }
         }
     }
 

@@ -42,7 +42,7 @@
                 android:id="@+id/folder_help_ic"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginRight="1dp"
+                android:layout_marginEnd="1dp"
                 android:src="@drawable/ic_warning"
                 android:tint="#fdd835"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,8 +70,8 @@
                 android:id="@+id/del_servant_0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#fff"
                 android:src="@drawable/ic_delete"
+                style="@style/img_button_borderless"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_servant_0" />
 
@@ -79,7 +79,7 @@
                 android:id="@+id/text_servant_0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:hint="Name"
                 android:inputType="text"
                 app:layout_constraintEnd_toStartOf="@+id/del_servant_0"
@@ -100,8 +100,8 @@
                 android:id="@+id/del_servant_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#fff"
                 android:src="@drawable/ic_delete"
+                style="@style/img_button_borderless"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_servant_1" />
 
@@ -109,7 +109,7 @@
                 android:id="@+id/text_servant_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:hint="Name"
                 android:inputType="text"
                 app:layout_constraintEnd_toStartOf="@+id/del_servant_1"
@@ -140,8 +140,8 @@
                 android:id="@+id/del_ce_0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#fff"
                 android:src="@drawable/ic_delete"
+                style="@style/img_button_borderless"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_ce_0" />
 
@@ -149,7 +149,7 @@
                 android:id="@+id/text_ce_0"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:hint="Name"
                 android:inputType="text"
                 app:layout_constraintEnd_toStartOf="@+id/del_ce_0"
@@ -170,8 +170,8 @@
                 android:id="@+id/del_ce_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#fff"
                 android:src="@drawable/ic_delete"
+                style="@style/img_button_borderless"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_ce_1" />
 
@@ -179,7 +179,7 @@
                 android:id="@+id/text_ce_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:hint="Name"
                 android:inputType="text"
                 app:layout_constraintEnd_toStartOf="@+id/del_ce_1"
