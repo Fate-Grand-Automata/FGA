@@ -50,7 +50,7 @@ class AutoSkillSettingsFragment : PreferenceFragmentCompat() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
 
         val autoSkillItemsKey = getString(R.string.pref_autoskill_list)
-        val autoSkillItems = prefs.getStringSet(autoSkillItemsKey, mutableSetOf())
+        val autoSkillItems = prefs.getStringSet(autoSkillItemsKey, mutableSetOf())!!
             .toSortedSet()
         autoSkillItems.remove(AutoSkillItemKey)
 

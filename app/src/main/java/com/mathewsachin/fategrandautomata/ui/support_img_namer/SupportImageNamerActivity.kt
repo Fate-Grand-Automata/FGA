@@ -37,7 +37,8 @@ class SupportImageNamerActivity : AppCompatActivity() {
         setSupportActionBar(support_img_namer_toolbar)
 
         val extras = intent.extras
-        val supportImgId = extras!!.getString(SupportImageIdKey)
+        val supportImgId = extras?.getString(SupportImageIdKey)
+            ?: return
 
         servant0 = SupportServantEntry(
             getServantImgPath(supportImgId, 0),

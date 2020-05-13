@@ -146,11 +146,11 @@ private fun supportImgExtractor(FolderName: String) {
 
     val assets = AutomataApplication.Instance.assets
 
-    for (assetFileName in assets.list(assetFolder)) {
+    for (assetFileName in assets.list(assetFolder)!!) {
         var assetPath = "${assetFolder}/$assetFileName"
         val outPath = File(outDir, assetFileName)
 
-        var subFiles = assets.list(assetPath)
+        var subFiles = assets.list(assetPath) ?: emptyArray()
 
         // This is a folder
         if (subFiles.isNotEmpty()) {

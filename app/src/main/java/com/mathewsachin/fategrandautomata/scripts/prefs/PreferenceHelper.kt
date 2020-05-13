@@ -35,11 +35,11 @@ fun getBoolPref(Key: Int, Default: Boolean = false, Prefs: SharedPreferences = d
 }
 
 fun getStringPref(Key: Int, Default: String = "", Prefs: SharedPreferences = defaultPrefs): String {
-    return Prefs.getString(k(Key), Default)
+    return Prefs.getString(k(Key), Default) ?: Default
 }
 
 fun getStringSetPref(Key: Int, Prefs: SharedPreferences = defaultPrefs): Set<String> {
-    return Prefs.getStringSet(k(Key), emptySet())
+    return Prefs.getStringSet(k(Key), emptySet()) ?: emptySet()
 }
 
 fun getIntPref(Key: Int, Default: Int = 0, Prefs: SharedPreferences = defaultPrefs): Int {

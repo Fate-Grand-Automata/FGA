@@ -69,7 +69,7 @@ class MediaProjectionScreenshotService(
         readBitmap?.copyPixelsFromBuffer(buffer)
 
         if (cropRequired) {
-            val correctedBitmap = Bitmap.createBitmap(readBitmap, 0, 0, w, h)
+            val correctedBitmap = Bitmap.createBitmap(readBitmap!!, 0, 0, w, h)
             Utils.bitmapToMat(correctedBitmap, convertedMat)
             // if a new Bitmap was created, we need to tell the Garbage Collector to delete it immediately
             correctedBitmap.recycle()

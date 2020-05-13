@@ -76,7 +76,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
             val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("AutoSkill Command", skillCmd)
-            clipboardManager.primaryClip = clip
+            clipboardManager.setPrimaryClip(clip)
 
             finish()
         }
@@ -138,7 +138,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     private fun setupSkills() {
         fun onSkill(SkillCode: Char) {
-            skillCmd.append(skillCmd)
+            skillCmd.append(SkillCode)
 
             changeState(AutoSkillMakerState.Target)
         }
