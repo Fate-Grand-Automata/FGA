@@ -9,6 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/auto_skill_no_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No AutoSkill Items"
+        android:layout_gravity="center"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/autoskill_add_btn"
         android:layout_width="wrap_content"

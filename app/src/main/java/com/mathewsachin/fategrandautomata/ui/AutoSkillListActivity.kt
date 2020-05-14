@@ -57,6 +57,7 @@ class AutoSkillListActivity : AppCompatActivity() {
 
         val adapter = ArrayAdapter(this, R.layout.autoskill_item, autoSkillNames)
         autoskill_listview.adapter = adapter
+        autoskill_listview.emptyView = auto_skill_no_items
     }
 
     private fun addOnBtnClick() {
