@@ -9,18 +9,18 @@ import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.util.IItemTouchHelperAdapter
 import com.mathewsachin.fategrandautomata.util.IOnStartDragListener
 
-class RecyclerListAdapter(private val Items: MutableList<CardScore>, val DragStartListener: IOnStartDragListener)
-    : RecyclerView.Adapter<ItemViewHolder>(), IItemTouchHelperAdapter {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+class CardPriorityAdapter(private val Items: MutableList<CardScore>, val DragStartListener: IOnStartDragListener)
+    : RecyclerView.Adapter<CardPriorityViewHolder>(), IItemTouchHelperAdapter {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardPriorityViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_priority_item, parent, false)
 
-        return ItemViewHolder(view)
+        return CardPriorityViewHolder(view)
     }
 
     override fun getItemCount() = Items.size
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CardPriorityViewHolder, position: Int) {
         holder.textView.text = Items[position].toString()
 
         val context = holder.textView.context

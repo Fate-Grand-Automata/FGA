@@ -34,7 +34,7 @@ class CardPriorityActivity : AppCompatActivity(), IOnStartDragListener {
 
         cardScores = getCardScores(cardPriority).toMutableList()
 
-        val adapter = RecyclerListAdapter(cardScores, this)
+        val adapter = CardPriorityAdapter(cardScores, this)
 
         val recyclerView = card_priority_lv
         recyclerView.setHasFixedSize(true)
@@ -55,9 +55,6 @@ class CardPriorityActivity : AppCompatActivity(), IOnStartDragListener {
 
     override fun onPause() {
         super.onPause()
-
-        if (cardScores == null)
-            return
 
         val value = cardScores.joinToString { filterCapitals(it.toString()) }
 
