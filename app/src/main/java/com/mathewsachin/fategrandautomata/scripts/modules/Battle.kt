@@ -87,7 +87,7 @@ class Battle {
 
         var i = 2
 
-        for (target in Game.BattleTargetRegionArray) {
+        for (target in Game.BattleTargetRegionArray.reversed()) {
             if (isPriorityTarget(target)) {
                 chooseTarget(i)
                 return
