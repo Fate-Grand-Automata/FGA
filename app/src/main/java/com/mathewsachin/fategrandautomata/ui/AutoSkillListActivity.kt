@@ -13,7 +13,7 @@ import com.mathewsachin.fategrandautomata.util.AutoSkillEntry
 import kotlinx.android.synthetic.main.autoskill_list.*
 import java.util.*
 
-class ManageAutoSkillActivity : AppCompatActivity() {
+class AutoSkillListActivity : AppCompatActivity() {
     private lateinit var autoSkillItems: Array<AutoSkillEntry>
 
     override fun onCreate(savedInstanceState: Bundle?) {

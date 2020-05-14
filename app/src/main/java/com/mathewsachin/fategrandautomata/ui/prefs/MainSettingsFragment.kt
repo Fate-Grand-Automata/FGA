@@ -18,7 +18,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         }
 
         findPreference<Preference>(getString(R.string.pref_nav_auto_skill))?.let {
-            it.fragment = ManageAutoSkillSettingsFragment::class.java.name
+            it.fragment = AutoSkillSettingsFragment::class.java.name
         }
 
         findPreference<Preference>(getString(R.string.pref_nav_more))?.let {

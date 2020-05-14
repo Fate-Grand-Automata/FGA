@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillSettingsFragment
+import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment
 import kotlinx.android.synthetic.main.settings.*
 import java.lang.IllegalArgumentException
 
@@ -29,7 +29,7 @@ class AutoSkillItemActivity : AppCompatActivity() {
 
         // Add the fragment only on first launch
         if (savedInstanceState == null) {
-            val fragment = AutoSkillSettingsFragment()
+            val fragment = AutoSkillItemSettingsFragment()
             val args = Bundle()
             args.putString(::autoSkillItemKey.name, autoSkillItemKey)
 
