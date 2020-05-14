@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toTopOf="@+id/order_change_ok"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_change_label"
-        tools:backgroundTint="@color/accent_material_dark" />
+        tools:backgroundTint="@color/colorAccent" />
 
     <Button
         android:id="@+id/x_party_2"

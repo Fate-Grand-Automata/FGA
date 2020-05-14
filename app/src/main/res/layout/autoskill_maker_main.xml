@@ -226,7 +226,7 @@
     <Button
         android:id="@+id/skill_i_btn"
         style="@style/autoskill_servant_skill_btn"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
         android:text="i"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintEnd_toStartOf="@+id/atk_btn" />

@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
 import android.accessibilityservice.AccessibilityService
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlarmManager
 import android.app.NotificationChannel
@@ -78,6 +79,12 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = null
 
         return super.onUnbind(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Instance = null
     }
 
     val wantsMediaProjectionToken: Boolean get() = !Preferences.UseRootForScreenshots
@@ -259,6 +266,7 @@ class ScriptRunnerService : AccessibilityService() {
         super.onTaskRemoved(rootIntent)
     }
 
+    @SuppressLint("RtlHardcoded")
     override fun onServiceConnected() {
         Instance = this
         AutomataApi.registerPlatform(AndroidImpl(this))
@@ -272,6 +280,7 @@ class ScriptRunnerService : AccessibilityService() {
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             width = WindowManager.LayoutParams.WRAP_CONTENT
             height = WindowManager.LayoutParams.WRAP_CONTENT
+            @SuppressLint("RtlHardcoded")
             gravity = Gravity.LEFT or Gravity.TOP
             x = 0
             y = 0

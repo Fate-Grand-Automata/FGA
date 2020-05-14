@@ -5,10 +5,10 @@
         android:id="@+id/action_rename_support_imgs"
         android:icon="@drawable/ic_check"
         android:title="Rename"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_rename_support_imgs_discard"
         android:icon="@drawable/ic_close"
         android:title="Discard"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>
