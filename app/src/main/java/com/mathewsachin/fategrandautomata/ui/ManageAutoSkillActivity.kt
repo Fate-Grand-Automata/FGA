@@ -9,7 +9,6 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringSetPref
-import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemKey
 import com.mathewsachin.fategrandautomata.util.AutoSkillEntry
 import kotlinx.android.synthetic.main.autoskill_list.*
 import java.util.*
@@ -79,7 +78,7 @@ class ManageAutoSkillActivity : AppCompatActivity() {
 
     private fun editItem(Id: String) {
         val intent = Intent(this, AutoSkillItemActivity::class.java)
-        intent.putExtra(AutoSkillItemKey, Id)
+        intent.putExtra(AutoSkillItemActivity::autoSkillItemKey.name, Id)
 
         startActivity(intent)
     }

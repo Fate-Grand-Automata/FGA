@@ -68,10 +68,7 @@
 
             <ImageButton
                 android:id="@+id/del_servant_0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
-                style="@style/img_button_borderless"
+                style="@style/img_btn_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_servant_0" />
 
@@ -98,10 +95,7 @@
 
             <ImageButton
                 android:id="@+id/del_servant_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
-                style="@style/img_button_borderless"
+                style="@style/img_btn_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_servant_1" />
 
@@ -138,10 +132,7 @@
 
             <ImageButton
                 android:id="@+id/del_ce_0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
-                style="@style/img_button_borderless"
+                style="@style/img_btn_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_ce_0" />
 
@@ -168,10 +159,7 @@
 
             <ImageButton
                 android:id="@+id/del_ce_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
-                style="@style/img_button_borderless"
+                style="@style/img_btn_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_ce_1" />
 

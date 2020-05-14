@@ -14,11 +14,6 @@
         app:title="Skill Command"
         app:useSimpleSummaryProvider="true" />
 
-    <Preference
-        app:icon="@drawable/ic_delete"
-        app:key="@string/pref_autoskill_delete"
-        app:title="Delete Configuration" />
-
     <PreferenceCategory
         app:key="pref_servant_category"
         app:title="Preferred Servants">

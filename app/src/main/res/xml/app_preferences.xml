@@ -66,6 +66,7 @@
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:key="@string/pref_debug_mode"
+        app:icon="@drawable/ic_bug"
         app:summary="Highlight the regions being matched"
         app:title="Debug mode" />
 
@@ -78,6 +79,7 @@
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:key="@string/pref_record_screen"
+        app:icon="@drawable/ic_video"
         app:summary="Won't work with the root setting.\nA file named 'record.mp4' will be saved to 'Fate-Grand-Automata' folder.\nCopy or rename it if you want to keep it."
         app:title="Record Screen" />
 
@@ -87,6 +89,7 @@
         app:title="Root">
         <SwitchPreferenceCompat
             app:defaultValue="false"
+            app:icon="@drawable/ic_key"
             app:key="@string/pref_use_root_screenshot"
             app:summary="Useful on Nox Android 7 for FGO JP"
             app:title="Use Root for Screenshots" />
