@@ -5,13 +5,6 @@
     <PreferenceCategory
         app:key="support_category"
         app:title="Support">
-
-        <Preference
-            app:icon="@drawable/ic_zip"
-            app:key="@string/pref_extract_def_support_imgs"
-            app:summary="Extract common support images bundled with the app"
-            app:title="Extract Default Support Images" />
-
         <ListPreference
             app:defaultValue="First"
             app:entries="@array/support_selection_modes"

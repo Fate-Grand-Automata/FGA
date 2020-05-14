@@ -1,44 +1,31 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.preference.Preference
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
-import com.mathewsachin.fategrandautomata.util.preferredSupportOnResume
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 
 class SupportSettingsFragment : SupportSettingsBaseFragment() {
-    val scope = MainScope()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.support_extract_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
-    override fun onDestroy() {
-        scope.cancel()
-        super.onDestroy()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_support_extract_defaults -> {
+                performSupportImageExtraction()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.support_preferences, rootKey)
 
         preferredSupportOnCreate()
-
-        findPreference<Preference>(getString(R.string.pref_extract_def_support_imgs))?.let {
-            it.setOnPreferenceClickListener {
-                scope.launch {
-                    extractSupportImgs()
-                    Toast.makeText(activity, "Support Images Extracted Successfully", Toast.LENGTH_SHORT).show()
-                    preferredSupportOnResume()
-                }
-                true
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        preferredSupportOnResume()
     }
 }

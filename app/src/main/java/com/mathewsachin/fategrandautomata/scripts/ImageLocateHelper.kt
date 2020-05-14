@@ -25,8 +25,12 @@ val storageDir: File by lazy{
     dir
 }
 
+private val supportImgFolderPath: File by lazy { File(storageDir, "support") }
+
+val shouldExtractSupportImages get() = !supportImgFolderPath.exists()
+
 val supportImgFolder: File by lazy{
-    val dir = File(storageDir, "support")
+    val dir = supportImgFolderPath
 
     if (!dir.exists()) {
         dir.mkdirs()

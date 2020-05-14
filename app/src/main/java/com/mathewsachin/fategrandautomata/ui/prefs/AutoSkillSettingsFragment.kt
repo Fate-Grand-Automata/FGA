@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
-import com.mathewsachin.fategrandautomata.util.preferredSupportOnResume
 
 class AutoSkillSettingsFragment : SupportSettingsBaseFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -16,11 +15,5 @@ class AutoSkillSettingsFragment : SupportSettingsBaseFragment() {
         setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
 
         preferredSupportOnCreate()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        preferredSupportOnResume()
     }
 }
