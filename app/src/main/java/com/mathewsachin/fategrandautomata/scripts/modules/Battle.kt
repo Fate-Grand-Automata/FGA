@@ -85,15 +85,11 @@ class Battle {
         // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
         // that's why the table is iterated backwards.
 
-        var i = 2
-
-        for (target in Game.BattleTargetRegionArray.reversed()) {
+        for ((i, target) in Game.BattleTargetRegionArray.withIndex().reversed()) {
             if (isPriorityTarget(target)) {
                 chooseTarget(i)
                 return
             }
-
-            --i
         }
     }
 
