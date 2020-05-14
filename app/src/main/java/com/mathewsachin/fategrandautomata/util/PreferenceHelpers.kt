@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.util
 import android.text.InputType
 import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
@@ -15,34 +14,21 @@ fun EditTextPreference.makeNumeric() {
     }
 }
 
+fun PreferenceFragmentCompat.findServantList() = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_servant))
+fun PreferenceFragmentCompat.findCeList() = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_ce))
+
 fun PreferenceFragmentCompat.preferredSupportOnCreate() {
-    val servantList = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_servant))?.apply {
+    findServantList()?.apply {
         summaryProvider = MultiSelectListSummaryProvider()
     }
 
-    // clear servant list
-    findPreference<Preference>(getString(R.string.pref_support_pref_servant_clear))?.let {
-        it.setOnPreferenceClickListener {
-            servantList?.values = setOf()
-            true
-        }
-    }
-
-    val ceList = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_ce))?.apply {
+    findCeList()?.apply {
         summaryProvider = MultiSelectListSummaryProvider()
-    }
-
-    // clear CE list
-    findPreference<Preference>(getString(R.string.pref_support_pref_ce_clear))?.let {
-        it.setOnPreferenceClickListener {
-            ceList?.values = setOf()
-            true
-        }
     }
 }
 
 fun PreferenceFragmentCompat.preferredSupportOnResume() {
-    findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_servant))?.apply {
+    findServantList()?.apply {
         val entries = supportServantImgFolder.listFiles()
             .map { it.name }
             .sorted()
@@ -52,7 +38,7 @@ fun PreferenceFragmentCompat.preferredSupportOnResume() {
         this.entries = entries
     }
 
-    findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_ce))?.apply {
+    findCeList()?.apply {
         val entries = supportCeFolder.listFiles()
             .filter { it.isFile }
             .map { it.name }

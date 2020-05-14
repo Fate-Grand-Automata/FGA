@@ -37,11 +37,6 @@
                 app:icon="@drawable/ic_crown"
                 app:key="@string/pref_support_pref_servant"
                 app:title="Preferred Servants" />
-
-            <Preference
-                app:icon="@drawable/ic_clear"
-                app:key="@string/pref_support_pref_servant_clear"
-                app:title="Clear Servant Preferences" />
         </PreferenceCategory>
 
         <PreferenceCategory
@@ -57,11 +52,6 @@
                 app:icon="@drawable/ic_star"
                 app:key="@string/pref_support_pref_ce_mlb"
                 app:title="Max-limit broken" />
-
-            <Preference
-                app:icon="@drawable/ic_clear"
-                app:key="@string/pref_support_pref_ce_clear"
-                app:title="Clear CE Preferences" />
         </PreferenceCategory>
 
         <PreferenceCategory

@@ -3,14 +3,15 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.os.Bundle
 import android.widget.Toast
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnResume
-import kotlinx.coroutines.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
-class SupportSettingsFragment : PreferenceFragmentCompat() {
+class SupportSettingsFragment : SupportSettingsBaseFragment() {
     val scope = MainScope()
 
     override fun onDestroy() {
