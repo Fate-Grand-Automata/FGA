@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
         if (requestCode == requestMediaProjection) {
             if (resultCode != RESULT_OK) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+                ScriptRunnerService.Instance?.hideForegroundNotification()
                 return
             }
 
@@ -120,6 +121,8 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
         }
         else {
             if (instance.wantsMediaProjectionToken) {
+                instance.showForegroundNotification()
+
                 // This initiates a prompt dialog for the user to confirm screen projection.
                 startActivityForResult(instance.mediaProjectionManager.createScreenCaptureIntent(), requestMediaProjection)
             }
