@@ -126,7 +126,11 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
                 // This initiates a prompt dialog for the user to confirm screen projection.
                 startActivityForResult(instance.mediaProjectionManager.createScreenCaptureIntent(), requestMediaProjection)
             }
-            else instance.start()
+            else {
+                if (instance.start()) {
+                    instance.showForegroundNotification()
+                }
+            }
         }
     }
 
