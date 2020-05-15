@@ -112,8 +112,6 @@ class ScriptRunnerService : AccessibilityService() {
 
         serviceStarted = true
 
-        showForegroundNotification()
-
         return true
     }
 
