@@ -72,13 +72,24 @@
         app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
         app:layout_constraintTop_toTopOf="@+id/battle_turn_txt" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/atk_btn"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:text="Attack"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attack"
+        android:textAllCaps="true"
+        android:elevation="100dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="@id/atk_btn"
+        app:layout_constraintStart_toStartOf="@id/atk_btn"
+        app:layout_constraintEnd_toEndOf="@id/atk_btn"
+        app:layout_constraintBottom_toBottomOf="@id/atk_btn"/>
 
     <Button
         android:id="@+id/master_l_btn"
