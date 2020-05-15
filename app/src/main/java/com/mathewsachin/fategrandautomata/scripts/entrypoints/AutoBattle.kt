@@ -56,7 +56,12 @@ class AutoBattle : EntryPoint() {
             throw ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.")
         }
 
-        Game.WithdrawRegion.click()
+        // Withdraw Region can vary depending on if you have Command Spells/Quartz
+        val withdrawRegion = Game.WithdrawRegion
+            .findAll(ImageLocator.Withdraw)
+            .firstOrNull() ?: return
+
+        withdrawRegion.Region.click()
 
         AutomataApi.wait(0.5)
 
