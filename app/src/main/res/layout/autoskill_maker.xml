@@ -20,9 +20,12 @@
 
     <include layout="@layout/autoskill_maker_main"/>
 
-    <include layout="@layout/autoskill_maker_atk"/>
+    <include layout="@layout/autoskill_maker_atk"
+        android:visibility="gone"/>
 
-    <include layout="@layout/autoskill_maker_target"/>
+    <include layout="@layout/autoskill_maker_target"
+        android:visibility="gone"/>
 
-    <include layout="@layout/autoskill_maker_order_change"/>
+    <include layout="@layout/autoskill_maker_order_change"
+        android:visibility="gone"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

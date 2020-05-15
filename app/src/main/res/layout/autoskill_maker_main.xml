@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/autoskill_view_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:visibility="gone">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RadioGroup
         android:id="@+id/enemy_target_radio"
@@ -118,8 +116,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Order Change"
-        app:layout_constraintBottom_toTopOf="@+id/master_l_btn"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
+        app:layout_constraintBottom_toTopOf="@+id/skill_a_btn"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/servant_1_name"
@@ -169,45 +168,27 @@
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintStart_toEndOf="@+id/skill_b_btn" />
 
-    <View
-        android:id="@+id/skill_sep_left"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_d_btn"
-        app:layout_constraintStart_toEndOf="@+id/skill_c_btn" />
-
     <Button
         android:id="@+id/skill_d_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="d"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_e_btn"
-        app:layout_constraintStart_toEndOf="@+id/skill_sep_left" />
+        app:layout_constraintEnd_toStartOf="@+id/skill_e_btn" />
 
     <Button
         android:id="@+id/skill_e_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="e"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_f_btn"
-        app:layout_constraintStart_toEndOf="@+id/skill_d_btn" />
+        app:layout_constraintEnd_toStartOf="@+id/skill_g_btn"
+        app:layout_constraintStart_toEndOf="@+id/skill_c_btn" />
 
     <Button
         android:id="@+id/skill_f_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="f"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_sep_right"
         app:layout_constraintStart_toEndOf="@+id/skill_e_btn" />
-
-    <View
-        android:id="@+id/skill_sep_right"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_g_btn"
-        app:layout_constraintStart_toEndOf="@+id/skill_f_btn" />
 
     <Button
         android:id="@+id/skill_g_btn"
