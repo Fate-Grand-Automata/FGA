@@ -131,13 +131,17 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             setOrderChangeSubMember(1)
         }
 
-        order_change_cancel.setOnClickListener { changeState(AutoSkillMakerState.Main) }
+        order_change_cancel.setOnClickListener { cancelOrderChange() }
 
         order_change_ok.setOnClickListener {
             skillCmd.append("x${xSelectedParty}${xSelectedSub}")
 
             changeState(AutoSkillMakerState.Main)
         }
+    }
+
+    private fun cancelOrderChange() {
+        changeState(AutoSkillMakerState.Main)
     }
 
     private fun setupSkills() {
@@ -296,13 +300,16 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        AlertDialog.Builder(this)
-            .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
-            .setTitle("Confirm Exit")
-            .setPositiveButton(android.R.string.yes) { _, _ ->
-                super.onBackPressed()
+        when (currentView) {
+            AutoSkillMakerState.OrderChange -> cancelOrderChange()
+            else -> {
+                AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
+                    .setTitle("Confirm Exit")
+                    .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
+                    .setNegativeButton(android.R.string.no, null)
+                    .show()
             }
-            .setNegativeButton(android.R.string.no, null)
-            .show()
+        }
     }
 }
