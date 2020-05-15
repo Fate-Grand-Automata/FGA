@@ -413,7 +413,7 @@ class ScriptRunnerService : AccessibilityService() {
         channelCreated = true
     }
 
-    private fun hideForegroundNotification() = stopForeground(true)
+    fun hideForegroundNotification() = stopForeground(true)
 
     private fun startBuildNotification(): NotificationCompat.Builder {
         createNotificationChannel()
@@ -443,7 +443,7 @@ class ScriptRunnerService : AccessibilityService() {
             .notify(foregroundNotificationId, builder.build())
     }
 
-    private fun showForegroundNotification() {
+    fun showForegroundNotification() {
         val builder = startBuildNotification()
 
         startForeground(foregroundNotificationId, builder.build())
