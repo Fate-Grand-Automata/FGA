@@ -9,6 +9,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PixelFormat
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
@@ -22,6 +23,8 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.core.*
@@ -120,7 +123,7 @@ class ScriptRunnerService : AccessibilityService() {
     private fun registerScreenshot(MediaProjectionToken: Intent?): Boolean {
         sshotService = try {
             if (MediaProjectionToken != null) {
-                mediaProjection = mediaProjectionManager                    .getMediaProjection(RESULT_OK, MediaProjectionToken)
+                mediaProjection = mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
                 MediaProjectionScreenshotService(mediaProjection!!, metrics)
             }
             else RootScreenshotService(
@@ -229,6 +232,10 @@ class ScriptRunnerService : AccessibilityService() {
             scriptExitListener = ::onScriptExit
 
             scriptCtrlBtn.setImageResource(R.drawable.ic_stop)
+            if (recording != null) {
+                scriptCtrlBtn.drawable.colorFilter = BlendModeColorFilterCompat
+                    .createBlendModeColorFilterCompat(Color.RED, BlendModeCompat.SRC_ATOP)
+            }
 
             run()
         }

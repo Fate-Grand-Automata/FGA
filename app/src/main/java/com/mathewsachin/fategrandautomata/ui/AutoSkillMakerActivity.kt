@@ -245,7 +245,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
                 button.background.colorFilter = BlendModeColorFilterCompat
                     .createBlendModeColorFilterCompat(color, BlendModeCompat.SRC)
             } else {
-                button.background.colorFilter = null
+                button.background.clearColorFilter()
             }
         }
     }
