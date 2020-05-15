@@ -54,9 +54,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             np_5.isChecked = false
             np_6.isChecked = false
 
-            // Uncheck selected targets
-            enemy_target_radio.clearCheck()
-
             // Set cards before Np to 0
             cards_before_np_rad.check(R.id.cards_before_np_0)
 
@@ -131,16 +128,16 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             setOrderChangeSubMember(1)
         }
 
-        order_change_cancel.setOnClickListener { cancelOrderChange() }
+        order_change_cancel.setOnClickListener { gotToMain() }
 
         order_change_ok.setOnClickListener {
             skillCmd.append("x${xSelectedParty}${xSelectedSub}")
 
-            changeState(AutoSkillMakerState.Main)
+            gotToMain()
         }
     }
 
-    private fun cancelOrderChange() {
+    private fun gotToMain() {
         changeState(AutoSkillMakerState.Main)
     }
 
@@ -172,7 +169,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
                 skillCmd.append(TargetCommand)
             }
 
-            changeState(AutoSkillMakerState.Main)
+            gotToMain()
         }
 
         no_target_btn.setOnClickListener { onTarget(null) }
@@ -199,6 +196,9 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     private fun onGoToNext(Separator: String) {
+        // Uncheck selected targets
+        enemy_target_radio.clearCheck()
+
         addNpsToSkillCmd()
 
         if (skillCmd.isEmpty()) {
@@ -210,7 +210,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         ++turn
         updateStageAndTurn()
 
-        changeState(AutoSkillMakerState.Main)
+        gotToMain()
     }
 
     private fun getStateView(State: AutoSkillMakerState) = when(State) {
@@ -301,7 +301,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         when (currentView) {
-            AutoSkillMakerState.OrderChange -> cancelOrderChange()
+            AutoSkillMakerState.OrderChange -> gotToMain()
+            AutoSkillMakerState.Atk -> gotToMain()
             else -> {
                 AlertDialog.Builder(this)
                     .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
