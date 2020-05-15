@@ -3,7 +3,17 @@ package com.mathewsachin.fategrandautomata.core
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import java.io.InputStream
 import kotlin.math.min
+import kotlin.time.Duration
+import kotlin.time.TimeSource.Monotonic
+import kotlin.time.measureTime
+import kotlin.time.milliseconds
+import kotlin.time.seconds
 
+/**
+ * Checks if the stop button has been pressed.
+ *
+ * @throws ScriptAbortException if the button has been pressed
+ */
 fun checkExitRequested() {
     if (AutomataApi.exitRequested) {
         // Reset exit requested
@@ -13,42 +23,97 @@ fun checkExitRequested() {
     }
 }
 
-fun Location.click() {
+/**
+ * Clicks on the [Location].
+ *
+ * @param Times the amount of times to click
+ */
+fun Location.click(Times: Int = 1) {
     checkExitRequested()
-    AutomataApi.GestureService?.click(this.transform())
+    AutomataApi.GestureService?.click(this.transform(), Times)
 }
 
-fun Location.continueClick(Times: Int) {
+/**
+ * Checks if the [Region] contains the provided image.
+ *
+ * @param Image the image to look for
+ * @param Timeout how long to search for before giving up
+ * @param Similarity the minimum similarity for this search
+ */
+fun Region.exists(
+    Image: IPattern,
+    Timeout: Duration = Duration.ZERO,
+    Similarity: Double = AutomataApi.MinSimilarity
+): Boolean {
     checkExitRequested()
-    AutomataApi.GestureService?.continueClick(this.transform(), Times)
+    return AutomataApi.checkConditionLoop(
+        { AutomataApi.existsNow(this, Image, Similarity) },
+        Timeout
+    )
 }
 
-fun Region.exists(Image: IPattern, TimeoutSeconds: Double = 0.0, Similarity: Double = AutomataApi.MinSimilarity): Boolean {
+/**
+ * Waits until the given image cannot be found in the [Region] anymore.
+ *
+ * @param Image the image to search for
+ * @param Timeout how long to wait for before giving up
+ * @param Similarity the minimum similarity for this search
+ */
+fun Region.waitVanish(
+    Image: IPattern,
+    Timeout: Duration,
+    Similarity: Double = AutomataApi.MinSimilarity
+): Boolean {
     checkExitRequested()
-    return AutomataApi.checkConditionLoop({ AutomataApi.existsNow(this, Image, Similarity) }, TimeoutSeconds)
+    return AutomataApi.checkConditionLoop(
+        { !AutomataApi.existsNow(this, Image, Similarity) },
+        Timeout
+    )
 }
 
-fun Region.waitVanish(Image: IPattern, TimeoutSeconds: Double = 0.0, Similarity: Double = AutomataApi.MinSimilarity): Boolean {
-    checkExitRequested()
-    return AutomataApi.checkConditionLoop({ !AutomataApi.existsNow(this, Image, Similarity) }, TimeoutSeconds)
-}
-
+/**
+ * Clicks on the center of this Region.
+ */
 fun Region.click() = center.click()
 
+/**
+ * Gets the width and height in the form of a [Size] object.
+ */
 val IPattern.Size get() = Size(width, height)
 
-fun Region.highlight(Seconds: Double = AutomataApi.DefaultHighlightTimeoutSeconds) {
+/**
+ * Adds borders around the [Region].
+ *
+ * @param Duration how long the borders should be displayed
+ */
+fun Region.highlight(Duration: Duration = 0.3.seconds) {
     checkExitRequested()
-    AutomataApi.PlatformImpl?.highlight(this.transform(), Seconds)
+    AutomataApi.PlatformImpl?.highlight(this.transform(), Duration)
 }
 
+/**
+ * Gets the image content of this Region.
+ *
+ * @return an [IPattern] object with the image data
+ */
 fun Region.getPattern(): IPattern? {
     return ScreenshotManager.getScreenshot()
         ?.crop(this.transformToImage())
         ?.copy()
 }
 
-fun Region.findAll(Pattern: IPattern, Similarity: Double = AutomataApi.MinSimilarity): Sequence<Match> {
+/**
+ * Searches for all occurrences of a given image in the [Region].
+ *
+ * @param Pattern the image to search for
+ * @param Similarity the minimum similarity for this search
+ *
+ * @return a list of all matches in the form of [Match] objects
+ */
+fun Region.findAll(
+    Pattern: IPattern,
+    Similarity: Double = AutomataApi.MinSimilarity
+): Sequence<Match> {
     var sshot = ScreenshotManager.getScreenshot()
 
     if (Preferences.DebugMode) {
@@ -64,6 +129,7 @@ fun Region.findAll(Pattern: IPattern, Similarity: Double = AutomataApi.MinSimila
 
             var region = it.Region.transformFromImage()
 
+            // convert the relative position in the region to the absolute position on the screen
             region = region.copy(X = region.X + this.X, Y = region.Y + this.Y)
 
             Match(region, it.score)
@@ -83,9 +149,10 @@ class AutomataApi {
             GestureService = Impl
         }
 
-        var MinSimilarity = 0.8
-
-        var DefaultHighlightTimeoutSeconds = 0.3
+        /**
+         * The default minimum similarity used for image comparisons.
+         */
+        const val MinSimilarity = 0.8
 
         fun loadPattern(Stream: InputStream): IPattern {
             return PlatformImpl!!.loadPattern(Stream)
@@ -95,9 +162,13 @@ class AutomataApi {
             return PlatformImpl!!.getResizableBlankPattern()
         }
 
-        fun wait(Seconds: Double) {
+        /**
+         * Wait for a given [Duration]. The wait is paused regularly to check if the stop button has
+         * been pressed.
+         */
+        fun wait(Duration: Duration) {
             val epsilon = 1000L
-            var left = (Seconds * 1000).toLong()
+            var left = Duration.toLongMilliseconds()
 
             // Sleeping this way allows quick exit if demanded by user
             while (left > 0) {
@@ -109,23 +180,37 @@ class AutomataApi {
             }
         }
 
-        fun wait(Seconds: Int) {
-            wait(Seconds.toDouble())
-        }
-
-        @Volatile var exitRequested = false
+        @Volatile
+        var exitRequested = false
 
         val WindowRegion: Region get() = PlatformImpl!!.windowRegion
 
+        /**
+         * Shows a message box with the given title and message.
+         */
         fun showMessageBox(Title: String, Message: String) {
             PlatformImpl?.messageBox(Title, Message)
         }
 
+        /**
+         * Shows a toast with the given message.
+         */
         fun toast(Message: String) {
             PlatformImpl?.toast(Message)
         }
 
-        fun existsNow(Region: Region, Image: IPattern, Similarity: Double = MinSimilarity): Boolean {
+        /**
+         * Checks if the [Region] contains the provided image.
+         *
+         * @param Region the search region
+         * @param Image the image to look for
+         * @param Similarity the minimum similarity for this search
+         */
+        fun existsNow(
+            Region: Region,
+            Image: IPattern,
+            Similarity: Double = MinSimilarity
+        ): Boolean {
             checkExitRequested()
 
             var sshot = ScreenshotManager.getScreenshot()
@@ -139,47 +224,68 @@ class AutomataApi {
             return sshot?.isMatch(Image, Similarity) ?: false
         }
 
-        const val ScanRate: Int = 3
-
-        private val stopwatch = Stopwatch()
-
-        fun checkConditionLoop(Condition: () -> Boolean, TimeoutSeconds: Double = 0.0): Boolean {
-            stopwatch.start()
+        /**
+         * Repeats the invocation of the Condition until it returns `true` or until the timeout has
+         * been reached.
+         *
+         * @param Condition a function with a [Boolean] return value
+         * @param Timeout how long to wait for before giving up
+         * @return `true` if the function returned `true` at some point, `false` if the timeout was
+         * reached
+         */
+        fun checkConditionLoop(
+            Condition: () -> Boolean,
+            Timeout: Duration = Duration.ZERO
+        ): Boolean {
+            var endTimeMark = Monotonic.markNow() + Timeout
 
             while (true) {
-                val scanStartMs = stopwatch.elapsedMs
-
-                if (Condition.invoke()) {
-                    return true
+                var invocationDuration = Monotonic.measureTime {
+                    if (Condition.invoke()) {
+                        return true
+                    }
                 }
 
-                if (TimeoutSeconds == 0.0 || stopwatch.elapsedSec > TimeoutSeconds) {
+                // check if we need to cancel because of timeout
+                if (endTimeMark.hasPassedNow()) {
                     break
                 }
 
-                val scanIntervalMs = 1000.0 / ScanRate
-                val elapsedMs = stopwatch.elapsedMs - scanStartMs
-                val timeToWaitMs = scanIntervalMs - elapsedMs
+                /* Wait a bit before checking again.
+                   If invocationDuration is greater than the scanInterval, we don't wait. */
+                val scanInterval = 330.milliseconds
+                val timeToWait = scanInterval - invocationDuration
 
-                if (timeToWaitMs > 0) {
-                    wait(timeToWaitMs / 1000.0)
+                if (timeToWait.isPositive()) {
+                    wait(timeToWait)
                 }
             }
 
             return false
         }
 
+        /**
+         * Takes a screenshot and caches it for the duration of the function invocation. This is
+         * useful when you want to reuse the same screenshot for multiple image searches.
+         *
+         * @param Action a function to invoke which will use the cached screenshot
+         */
         fun <T> useSameSnapIn(Action: () -> T): T {
             ScreenshotManager.snapshot()
 
             try {
                 return Action()
-            }
-            finally {
+            } finally {
                 ScreenshotManager.usePreviousSnap = false
             }
         }
 
+        /**
+         * Swipes from one [Location] to another [Location].
+         *
+         * @param Start the [Location] where the swipe should start
+         * @param End the [Location] where the swipe should end
+         */
         fun swipe(Start: Location, End: Location) {
             GestureService?.swipe(Start.transform(), End.transform())
         }

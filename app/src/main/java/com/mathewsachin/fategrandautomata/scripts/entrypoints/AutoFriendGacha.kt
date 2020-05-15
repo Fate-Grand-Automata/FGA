@@ -1,7 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.core.*
+import com.mathewsachin.fategrandautomata.core.AutomataApi
+import com.mathewsachin.fategrandautomata.core.EntryPoint
+import com.mathewsachin.fategrandautomata.core.Location
+import com.mathewsachin.fategrandautomata.core.click
 import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
+import kotlin.time.seconds
 
 class AutoFriendGacha : EntryPoint() {
     private val first10SummonClick = Location(1400, 1120)
@@ -9,20 +13,19 @@ class AutoFriendGacha : EntryPoint() {
     private val continue10SummonClick = Location(1600, 1420)
     private val skipRapidClick = Location(1600, 1300)
 
-    override fun script() {
+    override fun script(): Nothing {
         initScaling()
 
         first10SummonClick.click()
         okClick.click()
 
-        while (true)
-        {
+        while (true) {
             continue10SummonClick.click()
             okClick.click()
-            AutomataApi.wait(3)
+            AutomataApi.wait(3.seconds)
 
-            skipRapidClick.continueClick(15)
-            AutomataApi.wait(0.5)
+            skipRapidClick.click(15)
+            AutomataApi.wait(0.5.seconds)
         }
     }
 }

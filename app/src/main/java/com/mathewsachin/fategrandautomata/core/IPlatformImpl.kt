@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.core
 
 import java.io.InputStream
+import kotlin.time.Duration
 
 interface IPlatformImpl {
     val windowRegion: Region
@@ -13,5 +14,5 @@ interface IPlatformImpl {
 
     fun messageBox(Title: String, Message: String)
 
-    fun highlight(Region: Region, Seconds: Double)
+    fun highlight(Region: Region, Duration: Duration)
 }

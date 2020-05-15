@@ -27,8 +27,8 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.core.*
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
-import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootGestures
+import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.clearImageCache
 import com.mathewsachin.fategrandautomata.scripts.clearSupportCache
@@ -120,14 +120,13 @@ class ScriptRunnerService : AccessibilityService() {
     private fun registerScreenshot(MediaProjectionToken: Intent?): Boolean {
         sshotService = try {
             if (MediaProjectionToken != null) {
-                mediaProjection = mediaProjectionManager                    .getMediaProjection(RESULT_OK, MediaProjectionToken)
+                mediaProjection =
+                    mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
                 MediaProjectionScreenshotService(mediaProjection!!, metrics)
-            }
-            else RootScreenshotService(
+            } else RootScreenshotService(
                 getSuperUser()
             )
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             return false
         }
@@ -140,10 +139,8 @@ class ScriptRunnerService : AccessibilityService() {
         gestureService = try {
             if (Preferences.UseRootForGestures) {
                 RootGestures(getSuperUser())
-            }
-            else AccessibilityGestures(this)
-        }
-        catch (e: java.lang.Exception) {
+            } else AccessibilityGestures(this)
+        } catch (e: java.lang.Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             return false
         }
@@ -201,7 +198,7 @@ class ScriptRunnerService : AccessibilityService() {
         recording = null
     }
 
-    private fun getEntryPoint(): EntryPoint = when(Preferences.ScriptMode) {
+    private fun getEntryPoint(): EntryPoint = when (Preferences.ScriptMode) {
         ScriptModeEnum.Lottery -> AutoLottery()
         ScriptModeEnum.FriendGacha -> AutoFriendGacha()
         ScriptModeEnum.SupportImageMaker -> SupportImageMaker(::supportImgMakerCallback)
@@ -259,9 +256,18 @@ class ScriptRunnerService : AccessibilityService() {
         val restartServiceIntent = Intent(applicationContext, javaClass)
         restartServiceIntent.setPackage(packageName)
 
-        val restartServicePendingIntent = PendingIntent.getService(applicationContext, 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT)
+        val restartServicePendingIntent = PendingIntent.getService(
+            applicationContext,
+            1,
+            restartServiceIntent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
         val alarmService = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
-        alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePendingIntent)
+        alarmService.set(
+            AlarmManager.ELAPSED_REALTIME,
+            SystemClock.elapsedRealtime() + 1000,
+            restartServicePendingIntent
+        )
 
         super.onTaskRemoved(rootIntent)
     }
@@ -292,7 +298,8 @@ class ScriptRunnerService : AccessibilityService() {
         highlightLayoutParams = WindowManager.LayoutParams().apply {
             type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
             format = PixelFormat.TRANSLUCENT
-            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            flags =
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             width = WindowManager.LayoutParams.MATCH_PARENT
             height = WindowManager.LayoutParams.MATCH_PARENT
         }
@@ -301,20 +308,19 @@ class ScriptRunnerService : AccessibilityService() {
             it.setOnClickListener {
                 if (scriptStarted) {
                     stopScript()
-                }
-                else startScript()
+                } else startScript()
             }
 
             it.setOnTouchListener(::scriptCtrlBtnOnTouch)
         }
 
-        mediaProjectionManager = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        mediaProjectionManager =
+            getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
         windowManager.defaultDisplay.getRealMetrics(metrics)
 
         // Retrieve images in Landscape
-        if (metrics.heightPixels > metrics.widthPixels)
-        {
+        if (metrics.heightPixels > metrics.widthPixels) {
             metrics.let {
                 val temp = it.widthPixels
                 it.widthPixels = it.heightPixels
@@ -331,8 +337,12 @@ class ScriptRunnerService : AccessibilityService() {
         val rotation = windowManager.defaultDisplay.rotation
         val rotate = rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180
 
-        val x = (if (rotate) { metrics.heightPixels } else metrics.widthPixels) - layout.measuredWidth
-        val y = (if (rotate) { metrics.widthPixels } else metrics.heightPixels) - layout.measuredHeight
+        val x = (if (rotate) {
+            metrics.heightPixels
+        } else metrics.widthPixels) - layout.measuredWidth
+        val y = (if (rotate) {
+            metrics.widthPixels
+        } else metrics.heightPixels) - layout.measuredHeight
 
         return Location(x, y)
     }
@@ -342,7 +352,7 @@ class ScriptRunnerService : AccessibilityService() {
     private var dY = 0f
     private var lastAction = 0
 
-    private fun scriptCtrlBtnOnTouch(View: View, Event: MotionEvent): Boolean {
+    private fun scriptCtrlBtnOnTouch(_View: View, Event: MotionEvent): Boolean {
         return when (Event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 val (maxX, maxY) = getMaxBtnCoordinates()
@@ -357,8 +367,7 @@ class ScriptRunnerService : AccessibilityService() {
                 val newX = Event.rawX + dX
                 val newY = Event.rawY + dY
 
-                if (dragStopwatch.elapsedMs > ViewConfiguration.getLongPressTimeout())
-                {
+                if (dragStopwatch.elapsedMs > ViewConfiguration.getLongPressTimeout()) {
                     val (mX, mY) = getMaxBtnCoordinates()
                     layoutParams.x = newX.roundToInt().coerceIn(0, mX)
                     layoutParams.y = newY.roundToInt().coerceIn(0, mY)
@@ -375,9 +384,9 @@ class ScriptRunnerService : AccessibilityService() {
         }
     }
 
-    override fun onInterrupt() { }
+    override fun onInterrupt() {}
 
-    override fun onAccessibilityEvent(event: AccessibilityEvent?) { }
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
 
     private val channelId = "fategrandautomata-notifications"
     private var channelCreated = false
@@ -388,7 +397,8 @@ class ScriptRunnerService : AccessibilityService() {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
+            val channel = NotificationChannel(
+                channelId,
                 channelId,
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {

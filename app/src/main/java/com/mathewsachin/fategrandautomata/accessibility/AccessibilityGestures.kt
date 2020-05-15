@@ -8,7 +8,8 @@ import com.mathewsachin.fategrandautomata.core.IGestureService
 import com.mathewsachin.fategrandautomata.core.Location
 import com.mathewsachin.fategrandautomata.util.*
 
-class AccessibilityGestures(private var AccessibilityService: AccessibilityService?) : IGestureService {
+class AccessibilityGestures(private var AccessibilityService: AccessibilityService?) :
+    IGestureService {
     override fun swipe(Start: Location, End: Location) {
         val swipePath = Path()
         swipePath.moveTo(Start.X.toFloat(), Start.Y.toFloat())
@@ -17,32 +18,28 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
             0,
-            swipeDurationMs
+            swipeDuration.toLongMilliseconds()
         )
         performGesture(swipeStroke)
 
-        AutomataApi.wait(swipeWaitTimeSec)
+        AutomataApi.wait(swipeWaitTime)
     }
 
-    override fun click(Location: Location) {
-        continueClick(Location, 1)
-    }
+    override fun click(Location: Location, Times: Int) {
+        val swipePath = Path()
+        swipePath.moveTo(Location.X.toFloat(), Location.Y.toFloat())
 
-    override fun continueClick(Location: Location, Times: Int) {
-        for (i in 1..Times)
-        {
-            val swipePath = Path()
-            swipePath.moveTo(Location.X.toFloat(), Location.Y.toFloat())
+        val stroke = GestureDescription.StrokeDescription(
+            swipePath,
+            clickDelay.toLongMilliseconds(),
+            clickDuration.toLongMilliseconds()
+        )
 
-            val stroke = GestureDescription.StrokeDescription(
-                swipePath,
-                clickDelayMs,
-                clickDurationMs
-            )
+        repeat(Times) {
             performGesture(stroke)
         }
 
-        AutomataApi.wait(clickWaitTimeSec)
+        AutomataApi.wait(clickWaitTime)
     }
 
     private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {

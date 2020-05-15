@@ -6,6 +6,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import kotlin.time.seconds
 
 // Checks if Support Selection menu is up
 fun isInSupport(): Boolean {
@@ -37,13 +38,12 @@ class AutoBattle : EntryPoint() {
                 RefillResourceEnum.Bronze -> Game.StaminaBronzeClick.click()
             }
 
-            AutomataApi.wait(1)
+            AutomataApi.wait(1.seconds)
             Game.StaminaOkClick.click()
             ++stonesUsed
 
-            AutomataApi.wait(3)
-        }
-        else throw ScriptExitException("AP ran out!")
+            AutomataApi.wait(3.seconds)
+        } else throw ScriptExitException("AP ran out!")
     }
 
     private fun needsToWithdraw(): Boolean {
@@ -51,19 +51,18 @@ class AutoBattle : EntryPoint() {
     }
 
     private fun withdraw() {
-        if (!Preferences.WithdrawEnabled)
-        {
+        if (!Preferences.WithdrawEnabled) {
             throw ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.")
         }
 
         Game.WithdrawRegion.click()
 
-        AutomataApi.wait(0.5)
+        AutomataApi.wait(0.5.seconds)
 
         // Click the "Accept" button after choosing to withdraw
         Game.WithdrawAcceptClick.click()
 
-        AutomataApi.wait(1)
+        AutomataApi.wait(1.seconds)
 
         // Click the "Close" button after accepting the withdrawal
         Game.StaminaBronzeClick.click()
@@ -79,25 +78,22 @@ class AutoBattle : EntryPoint() {
     private fun startQuest() {
         Game.MenuStartQuestClick.click()
 
-        AutomataApi.wait(2)
+        AutomataApi.wait(2.seconds)
 
         val boostItem = Preferences.BoostItemSelectionMode
-        if (boostItem >= 0)
-        {
+        if (boostItem >= 0) {
             Game.MenuBoostItemClickArray[boostItem].click()
 
             // in case you run out of items
             Game.MenuBoostItemSkipClick.click()
         }
 
-        if (Preferences.StorySkip)
-        {
-            AutomataApi.wait(10)
+        if (Preferences.StorySkip) {
+            AutomataApi.wait(10.seconds)
 
-            if (needsToStorySkip())
-            {
+            if (needsToStorySkip()) {
                 Game.MenuStorySkipClick.click()
-                AutomataApi.wait(0.5)
+                AutomataApi.wait(0.5.seconds)
                 Game.MenuStorySkipYesClick.click()
             }
         }
@@ -112,22 +108,19 @@ class AutoBattle : EntryPoint() {
     private fun menu() {
         battle.resetState()
 
-        if (Preferences.Refill.enabled)
-        {
+        if (Preferences.Refill.enabled) {
             val refillRepetitions = Preferences.Refill.repetitions
-            if (refillRepetitions > 0)
-            {
+            if (refillRepetitions > 0) {
                 AutomataApi.toast("$stonesUsed refills used out of $refillRepetitions")
             }
         }
 
         // Click uppermost quest
         Game.MenuSelectQuestClick.click()
-        AutomataApi.wait(1.5)
+        AutomataApi.wait(1.5.seconds)
 
         // Auto refill
-        while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina))
-        {
+        while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina)) {
             refillStamina()
         }
     }
@@ -142,45 +135,42 @@ class AutoBattle : EntryPoint() {
             Game.ResultMasterLvlUpRegion to ImageLocator.MasterLvlUp
         )
 
-        return resultScreenItems.any {
-            (Region, Pattern) -> Region.exists(Pattern)
+        return resultScreenItems.any { (Region, Pattern) ->
+            Region.exists(Pattern)
         }
     }
 
     // Click through reward screen, continue if option presents itself, otherwise continue clicking through
     private fun result() {
         // Validator document https://github.com/29988122/Fate-Grand-Order_Lua/wiki/In-Game-Result-Screen-Flow for detail.
-        Game.ResultNextClick.continueClick(55)
+        Game.ResultNextClick.click(55)
 
         // Checking if there was a Bond CE reward
-        if (Game.ResultCeRewardRegion.exists(ImageLocator.Bond10Reward))
-        {
-            if (Preferences.StopAfterBond10)
-            {
+        if (Game.ResultCeRewardRegion.exists(ImageLocator.Bond10Reward)) {
+            if (Preferences.StopAfterBond10) {
                 throw ScriptExitException("Bond 10 CE GET!")
             }
 
             Game.ResultCeRewardCloseClick.click()
 
             // Still need to proceed through reward screen.
-            Game.ResultNextClick.continueClick(35)
+            Game.ResultNextClick.click(35)
         }
 
-        AutomataApi.wait(5)
+        AutomataApi.wait(5.seconds)
 
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
-        if (Game.ResultFriendRequestRegion.exists(ImageLocator.FriendRequest))
-        {
+        if (Game.ResultFriendRequestRegion.exists(ImageLocator.FriendRequest)) {
             Game.ResultFriendRequestRejectClick.click()
         }
 
-        AutomataApi.wait(1)
+        AutomataApi.wait(1.seconds)
 
         // Only for JP currently. Searches for the Continue option after select Free Quests
         if (Preferences.GameServer == GameServerEnum.Jp && Game.ContinueRegion.exists(
                 ImageLocator.Confirm
-            ))
-        {
+            )
+        ) {
             // Needed to show we don't need to enter the "StartQuest" function
             isContinuing = true
 
@@ -188,11 +178,10 @@ class AutoBattle : EntryPoint() {
             Game.ContinueClick.click()
             battle.resetState()
 
-            AutomataApi.wait(1.5)
+            AutomataApi.wait(1.5.seconds)
 
             // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
-            while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina))
-            {
+            while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina)) {
                 refillStamina()
             }
 
@@ -200,32 +189,28 @@ class AutoBattle : EntryPoint() {
         }
 
         // Post-battle story is sometimes there.
-        if (Preferences.StorySkip)
-        {
-            if (Game.MenuStorySkipRegion.exists(ImageLocator.StorySkip))
-            {
+        if (Preferences.StorySkip) {
+            if (Game.MenuStorySkipRegion.exists(ImageLocator.StorySkip)) {
                 Game.MenuStorySkipClick.click()
-                AutomataApi.wait(0.5)
+                AutomataApi.wait(0.5.seconds)
                 Game.MenuStorySkipYesClick.click()
             }
         }
 
-        AutomataApi.wait(10)
+        AutomataApi.wait(10.seconds)
 
         // Quest Completion reward. Exits the screen when it is presented.
-        if (Game.ResultCeRewardRegion.exists(ImageLocator.Bond10Reward))
-        {
+        if (Game.ResultCeRewardRegion.exists(ImageLocator.Bond10Reward)) {
             Game.ResultCeRewardCloseClick.click()
-            AutomataApi.wait(1)
+            AutomataApi.wait(1.seconds)
             Game.ResultCeRewardCloseClick.click()
         }
 
-        AutomataApi.wait(5)
+        AutomataApi.wait(5.seconds)
 
         // 1st time quest reward screen, eg. Mana Prisms, Event CE, Materials, etc.
-        if (Game.ResultQuestRewardRegion.exists(ImageLocator.QuestReward))
-        {
-            AutomataApi.wait(1)
+        if (Game.ResultQuestRewardRegion.exists(ImageLocator.QuestReward)) {
+            AutomataApi.wait(1.seconds)
             Game.ResultNextClick.click()
         }
     }
@@ -235,15 +220,14 @@ class AutoBattle : EntryPoint() {
         // Friend selection
         val hasSelectedSupport = support.selectSupport(Preferences.Support.selectionMode)
 
-        if (hasSelectedSupport && !isContinuing)
-        {
-            AutomataApi.wait(4)
+        if (hasSelectedSupport && !isContinuing) {
+            AutomataApi.wait(4.seconds)
             startQuest()
 
             // Wait timer till battle starts.
             // Uses less battery to wait than to search for images for a few seconds.
             // Adjust according to device.
-            AutomataApi.wait(10)
+            AutomataApi.wait(10.seconds)
         }
     }
 
@@ -259,11 +243,11 @@ class AutoBattle : EntryPoint() {
         support.init()
     }
 
-    override fun script() {
+    override fun script(): Nothing {
         init()
 
-        // SCREENS represents list of Validators and Actors
-        // When Validator returns true/1, perform the Actor
+        // a map of validators and associated actions
+        // if the validator function evaluates to true, the associated action function is called
         val screens = mapOf(
             { Game.needsToRetry() } to { Game.retry() },
             { battle.isIdle() } to { battle.performBattle() },
@@ -285,10 +269,18 @@ class AutoBattle : EntryPoint() {
 
             actor?.invoke()
 
-            AutomataApi.wait(1)
+            AutomataApi.wait(1.seconds)
         }
     }
 
+    /**
+     * Special result screen check for GudaGuda Final Honnouji.
+     *
+     * The check only runs if `GudaFinal` is activated in the preferences and if the GameServer is
+     * set to Japanese.
+     *
+     * When this event comes to other regions, the GameServer condition needs to be extended.
+     */
     private fun isGudaFinalRewardsScreen(): Boolean {
         if (!Preferences.GudaFinal || Preferences.GameServer != GameServerEnum.Jp)
             return false

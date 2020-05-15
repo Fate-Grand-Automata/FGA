@@ -31,7 +31,7 @@
         <activity
             android:name=".ui.AutoSkillItemActivity"
             android:label="Edit AutoSkill Item"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.ManageAutoSkillActivity"
             android:label="AutoSkill List" />
@@ -41,7 +41,8 @@
 
         <service
             android:name=".accessibility.ScriptRunnerService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:foregroundServiceType="mediaProjection">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>

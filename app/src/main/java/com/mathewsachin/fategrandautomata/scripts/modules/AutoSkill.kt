@@ -3,6 +3,8 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.core.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import kotlin.time.Duration
+import kotlin.time.seconds
 
 typealias AutoSkillMap = Map<Char, () -> Unit>
 
@@ -24,7 +26,7 @@ class AutoSkill {
 
         'x' to { beginOrderChange() },
         't' to { selectTarget() },
-        'n' to { preloadNp() },
+        'n' to { useCommandCardsBeforeNp() },
 
         '0' to { },
 
@@ -71,13 +73,13 @@ class AutoSkill {
     var npsClicked = false
         private set
 
-    private fun waitForAnimationToFinish(TimeoutSeconds: Double = 5.0) {
+    private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
         val img = ImageLocator.Battle
 
         // slow devices need this. do not remove.
-        Game.BattleScreenRegion.waitVanish(img, 2.0)
+        Game.BattleScreenRegion.waitVanish(img, 2.seconds)
 
-        Game.BattleScreenRegion.exists(img, TimeoutSeconds)
+        Game.BattleScreenRegion.exists(img, Timeout)
     }
 
     private fun castSkill(Location: Location) {
@@ -93,7 +95,7 @@ class AutoSkill {
     private fun selectSkillTarget(Location: Location) {
         Location.click()
 
-        AutomataApi.wait(0.5)
+        AutomataApi.wait(0.5.seconds)
 
         // Exit any extra menu
         Game.BattleExtrainfoWindowCloseClick.click()
@@ -106,7 +108,7 @@ class AutoSkill {
             battle.clickAttack()
 
             // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-            AutomataApi.wait(2)
+            AutomataApi.wait(2.seconds)
         }
 
         Location.click()
@@ -117,7 +119,7 @@ class AutoSkill {
     private fun openMasterSkillMenu() {
         Game.BattleMasterSkillOpenClick.click()
 
-        AutomataApi.wait(0.5)
+        AutomataApi.wait(0.5.seconds)
     }
 
     private fun castMasterSkill(Location: Location) {
@@ -139,7 +141,7 @@ class AutoSkill {
             Game.BattleSkillOkClick.click()
         }
 
-        AutomataApi.wait(0.3)
+        AutomataApi.wait(0.3.seconds)
 
         changeArray(startingMemberFunctionArray)
     }
@@ -153,17 +155,17 @@ class AutoSkill {
     private fun selectSubMember(Location: Location) {
         Location.click()
 
-        AutomataApi.wait(0.3)
+        AutomataApi.wait(0.3.seconds)
 
         Game.BattleOrderChangeOkClick.click()
 
         // Extra wait to allow order change dialog to close
-        AutomataApi.wait(1)
+        AutomataApi.wait(1.seconds)
 
-        waitForAnimationToFinish(15.0)
+        waitForAnimationToFinish(15.seconds)
 
         // Extra wait for the lag introduced by Order change
-        AutomataApi.wait(1)
+        AutomataApi.wait(1.seconds)
 
         changeArray(defaultFunctionArray)
     }
@@ -173,7 +175,7 @@ class AutoSkill {
     private fun selectEnemyTarget(Location: Location) {
         Location.click()
 
-        AutomataApi.wait(0.5)
+        AutomataApi.wait(0.5.seconds)
 
         // Exit any extra menu
         Game.BattleExtrainfoWindowCloseClick.click()
@@ -181,13 +183,12 @@ class AutoSkill {
         changeArray(defaultFunctionArray)
     }
 
-    private fun preloadNp() {
-        if (!battle.hasClickedAttack)
-        {
+    private fun useCommandCardsBeforeNp() {
+        if (!battle.hasClickedAttack) {
             battle.clickAttack()
 
             // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-            AutomataApi.wait(2)
+            AutomataApi.wait(2.seconds)
         }
 
         changeArray(cardsPressedArray)
@@ -231,8 +232,7 @@ class AutoSkill {
 
             if (commandList == "#") {
                 ++stageCount
-            }
-            else commandTable[stageCount].add(commandList)
+            } else commandTable[stageCount].add(commandList)
         }
     }
 
@@ -248,12 +248,10 @@ class AutoSkill {
     }
 
     private fun getCommandListFor(Stage: Int, Turn: Int): String {
-        if (Stage < commandTable.size)
-        {
+        if (Stage < commandTable.size) {
             val commandList = commandTable[Stage]
 
-            if (Turn < commandList.size)
-            {
+            if (Turn < commandList.size) {
                 return commandList[Turn]
             }
         }
@@ -272,8 +270,7 @@ class AutoSkill {
 
         if (commandList.isNotEmpty()) {
             executeCommandList(commandList)
-        }
-        else if (battle.currentStage + 1 >= commandTable.size) {
+        } else if (battle.currentStage + 1 >= commandTable.size) {
             // this will allow NP spam after all commands have been executed
             isFinished = true
         }
