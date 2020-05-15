@@ -30,6 +30,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     private var currentView = AutoSkillMakerState.Main
     private var stage = 1
     private var turn = 1
+    private var currentSkill = '0'
 
     // Order Change selected members
     private var xSelectedParty = 1
@@ -143,7 +144,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     private fun setupSkills() {
         fun onSkill(SkillCode: Char) {
-            skillCmd.append(SkillCode)
+            currentSkill = SkillCode
 
             changeState(AutoSkillMakerState.Target)
         }
@@ -165,6 +166,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     private fun setupTargets() {
         fun onTarget(TargetCommand: Char?) {
+            skillCmd.append(currentSkill)
+
             if (TargetCommand != null) {
                 skillCmd.append(TargetCommand)
             }
@@ -276,6 +279,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         outState.putInt(::turn.name, turn)
         outState.putInt(::xSelectedParty.name, xSelectedParty)
         outState.putInt(::xSelectedSub.name, xSelectedSub)
+        outState.putChar(::currentSkill.name, currentSkill)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -292,6 +296,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
         setOrderChangePartyMember(b.getInt(::xSelectedParty.name, 1))
         setOrderChangeSubMember(b.getInt(::xSelectedSub.name, 1))
+
+        currentSkill = b.getChar(::currentSkill.name)
     }
 
     private fun updateStageAndTurn() {
@@ -301,9 +307,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         when (currentView) {
-            AutoSkillMakerState.OrderChange -> gotToMain()
-            AutoSkillMakerState.Atk -> gotToMain()
-            else -> {
+            AutoSkillMakerState.Main -> {
                 AlertDialog.Builder(this)
                     .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
                     .setTitle("Confirm Exit")
@@ -311,6 +315,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
                     .setNegativeButton(android.R.string.no, null)
                     .show()
             }
+            else -> gotToMain()
         }
     }
 }
