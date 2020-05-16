@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
+// import androidx.appcompat.app.AppCompatDelegate
 import org.opencv.android.OpenCVLoader
 
 class AutomataApplication : Application() {
@@ -16,6 +16,6 @@ class AutomataApplication : Application() {
         OpenCVLoader.initDebug()
 
         // Uncomment this to test Night Mode
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 }
