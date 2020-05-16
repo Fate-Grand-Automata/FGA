@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -26,7 +27,8 @@ class CardPriorityAdapter(private val Items: MutableList<CardScore>, val DragSta
         val context = holder.textView.context
         val colorRes = Items[position].getColorRes()
         val colorInt = context.getColor(colorRes)
-        holder.textView.setTextColor(colorInt)
+        holder.itemView.setBackgroundColor(colorInt)
+        holder.textView.setTextColor(Color.WHITE)
 
         holder.imageView.setOnTouchListener { _, event ->
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {

@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
-import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,11 +11,7 @@ class CardPriorityViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView)
     val textView: TextView = ItemView.findViewById(R.id.card_priority_textview)
     val imageView: ImageView = ItemView.findViewById(R.id.card_priority_dragger)
 
-    override fun onItemSelected() {
-        itemView.setBackgroundColor(Color.LTGRAY)
-    }
+    override fun onItemSelected() { }
 
-    override fun onItemClear() {
-        itemView.setBackgroundColor(Color.TRANSPARENT)
-    }
+    override fun onItemClear() { }
 }

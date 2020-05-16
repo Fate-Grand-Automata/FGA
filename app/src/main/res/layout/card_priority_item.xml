@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:background="#01ffffff"
+        android:tint="@android:color/white"
         android:foregroundGravity="center"
         android:paddingVertical="10dip"
         android:paddingStart="50dp"
