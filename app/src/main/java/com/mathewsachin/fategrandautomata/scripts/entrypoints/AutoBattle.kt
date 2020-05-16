@@ -128,7 +128,22 @@ class AutoBattle : EntryPoint() {
 
         // Click uppermost quest
         Game.MenuSelectQuestClick.click()
+
+        afterSelectingQuest()
+    }
+
+    private fun afterSelectingQuest() {
         AutomataApi.wait(1.5)
+
+        // Inventory full. Stop script.
+        when (Preferences.GameServer) {
+            // We only have images for JP and NA
+            GameServerEnum.En, GameServerEnum.Jp -> {
+                if (Game.InventoryFullRegion.exists(ImageLocator.InventoryFull)) {
+                    throw ScriptExitException("Inventory Full")
+                }
+            }
+        }
 
         // Auto refill
         while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina))
@@ -193,13 +208,8 @@ class AutoBattle : EntryPoint() {
             Game.ContinueClick.click()
             battle.resetState()
 
-            AutomataApi.wait(1.5)
-
             // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
-            while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina))
-            {
-                refillStamina()
-            }
+            afterSelectingQuest()
 
             return
         }

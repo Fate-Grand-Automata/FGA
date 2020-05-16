@@ -62,5 +62,7 @@ class ImageLocator {
         val MatRewards get() = load("mat_rewards.png")
 
         val GudaFinalRewards get() = load("guda_final_rewards.png")
+
+        val InventoryFull get() = load("inven_full.png")
     }
 }

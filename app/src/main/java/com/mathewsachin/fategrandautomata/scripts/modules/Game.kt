@@ -36,6 +36,8 @@ class Game {
             MenuBoostItem2Click,
             MenuBoostItem3Click)
 
+        val InventoryFullRegion = Region(1060, 910, 438, 70)
+
         val StaminaScreenRegion = Region(600, 200, 300, 300)
         val StaminaOkClick = Location(1650, 1120)
         val StaminaSqClick = Location(1270, 345)
