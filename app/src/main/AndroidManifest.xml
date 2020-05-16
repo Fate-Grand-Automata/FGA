@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mathewsachin.fategrandautomata"
-    android:requestLegacyExternalStorage="true"
-    android:foregroundServiceType="mediaProjection">
+    android:requestLegacyExternalStorage="true">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -22,8 +21,8 @@
         <activity
             android:name=".ui.AutoSkillMakerActivity"
             android:label="Auto Skill Maker"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="userLandscape"
+            android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.support_img_namer.SupportImageNamerActivity"
@@ -32,7 +31,7 @@
         <activity
             android:name=".ui.AutoSkillItemActivity"
             android:label="Edit AutoSkill Item"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.AutoSkillListActivity"
             android:label="AutoSkill List" />
@@ -42,7 +41,8 @@
 
         <service
             android:name=".accessibility.ScriptRunnerService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:foregroundServiceType="mediaProjection">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
