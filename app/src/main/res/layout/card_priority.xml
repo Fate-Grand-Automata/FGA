@@ -1,18 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:paddingVertical="16dp">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/card_priority_high"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/card_priority_description" />
+        android:layout_marginHorizontal="16dp"
+        android:text="HIGH"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/card_priority_low"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="LOW"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/card_priority_high"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/card_priority_lv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_priority_high"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/card_priority_wr"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="W: Weak (Effective)\nR: Resistive"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_priority_lv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/card_priority_baq"/>
+
+    <TextView
+        android:id="@+id/card_priority_baq"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="B: Buster\nA: Arts\nQ: Quick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_priority_lv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/card_priority_wr"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

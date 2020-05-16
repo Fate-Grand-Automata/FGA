@@ -16,6 +16,13 @@ import com.mathewsachin.fategrandautomata.util.IOnStartDragListener
 import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
 import kotlinx.android.synthetic.main.card_priority.*
 
+fun String.filterCapitals(): String {
+    return this
+        .asSequence()
+        .filter { it.isUpperCase() }
+        .joinToString(separator = "")
+}
+
 class CardPriorityActivity : AppCompatActivity(), IOnStartDragListener {
     private lateinit var itemTouchHelper: ItemTouchHelper
     private lateinit var cardScores: MutableList<CardScore>
@@ -39,24 +46,17 @@ class CardPriorityActivity : AppCompatActivity(), IOnStartDragListener {
         val recyclerView = card_priority_lv
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val callback = ItemTouchHelperCallback(adapter)
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-    private fun filterCapitals(Str: String): String {
-        return Str
-            .asSequence()
-            .filter { it.isUpperCase() }
-            .joinToString(separator = "")
-    }
-
     override fun onPause() {
         super.onPause()
 
-        val value = cardScores.joinToString { filterCapitals(it.toString()) }
+        val value = cardScores.joinToString { it.toString().filterCapitals() }
 
         val key = getString(R.string.pref_card_priority)
         defaultPrefs.edit(commit = true) { putString(key, value) }

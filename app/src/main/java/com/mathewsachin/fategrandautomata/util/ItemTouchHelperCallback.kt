@@ -3,11 +3,11 @@ package com.mathewsachin.fategrandautomata.util
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemTouchHelperCallback(private val Adapter: IItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+class ItemTouchHelperCallback(private val Adapter: IItemTouchHelperAdapter,
+    private val DragFlags: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) : ItemTouchHelper.Callback() {
 
-        return makeMovementFlags(dragFlags, 0)
+    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+        return makeMovementFlags(DragFlags, 0)
     }
 
     override fun isLongPressDragEnabled() = true

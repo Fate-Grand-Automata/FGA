@@ -9,7 +9,6 @@ import com.mathewsachin.fategrandautomata.util.IItemTouchHelperViewHolder
 
 class CardPriorityViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView), IItemTouchHelperViewHolder {
     val textView: TextView = ItemView.findViewById(R.id.card_priority_textview)
-    val imageView: ImageView = ItemView.findViewById(R.id.card_priority_dragger)
 
     override fun onItemSelected() { }
 

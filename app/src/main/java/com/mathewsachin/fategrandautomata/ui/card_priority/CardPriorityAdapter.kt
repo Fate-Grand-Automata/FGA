@@ -22,15 +22,14 @@ class CardPriorityAdapter(private val Items: MutableList<CardScore>, val DragSta
     override fun getItemCount() = Items.size
 
     override fun onBindViewHolder(holder: CardPriorityViewHolder, position: Int) {
-        holder.textView.text = Items[position].toString()
+        holder.textView.text = Items[position].toString().filterCapitals()
 
         val context = holder.textView.context
         val colorRes = Items[position].getColorRes()
         val colorInt = context.getColor(colorRes)
         holder.itemView.setBackgroundColor(colorInt)
         holder.textView.setTextColor(Color.WHITE)
-
-        holder.imageView.setOnTouchListener { _, event ->
+        holder.itemView.setOnTouchListener { _, event ->
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
                 DragStartListener.onStartDrag(holder)
             }
