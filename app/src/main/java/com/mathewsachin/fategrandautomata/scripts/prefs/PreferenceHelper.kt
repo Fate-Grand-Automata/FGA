@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.fategrandautomata.R
@@ -11,6 +13,8 @@ private val context get(): Context = AutomataApplication.Instance
 val defaultPrefs: SharedPreferences by lazy {
     PreferenceManager.getDefaultSharedPreferences(context)
 }
+
+private fun isSamsung() = Build.MANUFACTURER == "samsung"
 
 fun applyDefaults() {
     if (!defaultPrefs.getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false)) {
@@ -24,6 +28,13 @@ fun applyDefaults() {
 
         for (prefFile in prefFiles) {
             PreferenceManager.setDefaultValues(context, prefFile, true)
+        }
+
+        // Turn ON Ignore Notch Calculation for Samsung users
+        if (isSamsung()) {
+            defaultPrefs.edit(commit = true) {
+                putBoolean(k(R.string.pref_ignore_notch), true)
+            }
         }
     }
 }
