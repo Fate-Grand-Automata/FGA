@@ -19,6 +19,32 @@ import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
 
 class AutoSkillItemSettingsFragment : SupportSettingsBaseFragment() {
     private var autoSkillItemKey = ""
+    private var editTextVisibleKey = ""
+    private var restoredEditTextContent: String? = null
+
+    private var editText: EditText? = null
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        if (editText != null) {
+            outState.putString(::editText.name, editText?.text.toString())
+            outState.putBoolean(::editTextVisibleKey.name, true)
+        }
+    }
+
+    // We don't want the user to lose what they typed on a screen rotation
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(::editTextVisibleKey.name, false)) {
+                restoredEditTextContent = savedInstanceState.getString(::editText.name, "")
+
+                onSkillCmdClick()
+            }
+        }
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         autoSkillItemKey = arguments?.getString(AutoSkillItemActivity::autoSkillItemKey.name)
@@ -53,8 +79,9 @@ class AutoSkillItemSettingsFragment : SupportSettingsBaseFragment() {
     private fun onSkillCmdClick() {
         val layout = FrameLayout(requireActivity())
 
-        val editText = EditText(requireActivity()).apply {
-            setText(getSavedSkillCmd())
+        editText = EditText(requireActivity()).apply {
+            setText(restoredEditTextContent ?: getSavedSkillCmd())
+            setSelection(text.length)
 
             val lp = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
             val margin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
@@ -67,9 +94,14 @@ class AutoSkillItemSettingsFragment : SupportSettingsBaseFragment() {
         AlertDialog.Builder(requireActivity())
             .setTitle("Skill Command")
             .setView(layout)
-            .setPositiveButton(android.R.string.yes) { _, _ -> setAutoSkillCommand(editText.text.toString()) }
+            .setPositiveButton(android.R.string.yes) { _, _ -> setAutoSkillCommand(editText?.text.toString()) }
             .setNegativeButton(android.R.string.no, null)
             .setNeutralButton("Maker") { _, _ -> openAutoSkillMaker() }
+            .setOnDismissListener {
+                // Clear the persisted information
+                editText = null
+                restoredEditTextContent = null
+            }
             .show()
     }
 
