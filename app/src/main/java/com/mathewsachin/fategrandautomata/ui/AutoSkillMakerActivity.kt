@@ -100,13 +100,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     private fun setEnemyTarget(Target: Int) {
         // Merge consecutive target changes
-        if (skillCmd.length >= 2 && skillCmd[skillCmd.length - 2] == 't')
-        {
-            skillCmd.delete(skillCmd.length - 1, 1)
+        if (skillCmd.length >= 2 && skillCmd[skillCmd.length - 2] == 't') {
+            skillCmd.deleteCharAt(skillCmd.length - 1)
                 .append(Target)
-        }
-        else
-        {
+        } else {
             skillCmd.append("t${Target}")
         }
     }
@@ -224,11 +221,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     private fun changeState(NewState: AutoSkillMakerState) {
-        // Hide current
-        getStateView(currentView).visibility = View.GONE
-
-        // Hide the default view just in case
-        getStateView(AutoSkillMakerState.Main).visibility = View.GONE
+        // Hide current if not main
+        if (currentView != AutoSkillMakerState.Main) {
+            getStateView(currentView).visibility = View.GONE
+        }
 
         // Show new state
         currentView = NewState

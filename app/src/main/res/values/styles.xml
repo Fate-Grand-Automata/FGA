@@ -13,4 +13,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@drawable/ic_delete</item>
     </style>
+
+    <style name="auto_skill_view">
+        <item name="android:background">?android:colorBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">16dp</item>
+        <item name="layout_behavior">@string/appbar_scrolling_view_behavior</item>
+    </style>
 </resources>
