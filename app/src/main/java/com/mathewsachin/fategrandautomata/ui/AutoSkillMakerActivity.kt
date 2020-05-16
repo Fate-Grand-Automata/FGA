@@ -1,12 +1,11 @@
 package com.mathewsachin.fategrandautomata.ui
 
-import android.content.ClipData
-import android.content.ClipboardManager
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -22,6 +21,9 @@ import kotlinx.android.synthetic.main.autoskill_maker_target.*
 private enum class AutoSkillMakerState {
     Main, Atk, Target, OrderChange
 }
+
+const val RequestAutoSkillMaker = 1027
+const val AutoSkillCommandKey = "AutoSkillCommandKey"
 
 class AutoSkillMakerActivity : AppCompatActivity() {
     // These fields are used to Save/Restore state of the Activity
@@ -74,12 +76,9 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         autoskill_done_btn.setOnClickListener {
             addNpsToSkillCmd()
 
-            Toast.makeText(applicationContext, "AutoSkill command copied to clipboard", Toast.LENGTH_SHORT).show()
-
-            val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("AutoSkill Command", skillCmd)
-            clipboardManager.setPrimaryClip(clip)
-
+            var res = Intent()
+            res.putExtra(AutoSkillCommandKey, skillCmd.toString())
+            setResult(Activity.RESULT_OK, res)
             finish()
         }
 

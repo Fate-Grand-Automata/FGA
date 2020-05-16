@@ -28,11 +28,6 @@
             app:key="@string/pref_autoskill_manage"
             app:summary="Add/Edit/Delete configurations"
             app:title="Manage Autoskill Configurations" />
-
-        <Preference
-            app:key="@string/pref_autoskill_maker"
-            app:summary="Skill Commands made easy"
-            app:title="Autoskill Maker (Beta)" />
     </PreferenceCategory>
 
 </PreferenceScreen>

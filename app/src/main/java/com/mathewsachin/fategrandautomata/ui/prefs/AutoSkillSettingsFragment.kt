@@ -9,7 +9,6 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringSetPref
-import com.mathewsachin.fategrandautomata.ui.AutoSkillMakerActivity
 import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
 import com.mathewsachin.fategrandautomata.util.AutoSkillEntry
 
@@ -20,13 +19,6 @@ class AutoSkillSettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>(getString(R.string.pref_autoskill_manage))?.let {
             it.setOnPreferenceClickListener {
                 startActivity(Intent(activity, AutoSkillListActivity::class.java))
-                true
-            }
-        }
-
-        findPreference<Preference>(getString(R.string.pref_autoskill_maker))?.let {
-            it.setOnPreferenceClickListener {
-                startActivity(Intent(activity, AutoSkillMakerActivity::class.java))
                 true
             }
         }
