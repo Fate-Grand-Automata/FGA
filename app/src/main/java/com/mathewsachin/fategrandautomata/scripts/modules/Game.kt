@@ -1,9 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.core.*
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import kotlin.time.seconds
 
 class Game {
     companion object {
@@ -34,7 +35,8 @@ class Game {
             MenuBoostItemSkipClick,
             MenuBoostItem1Click,
             MenuBoostItem2Click,
-            MenuBoostItem3Click)
+            MenuBoostItem3Click
+        )
 
         val InventoryFullRegion = Region(1060, 910, 438, 70)
 
@@ -57,10 +59,16 @@ class Game {
             Region(76, 778, 2356, 390),
             // see docs/support_list_item_regions_bottom.png
             Region(76, 558, 2356, 390),
-            Region(76, 991, 2356, 428))
+            Region(76, 991, 2356, 428)
+        )
 
         val SupportLimitBreakRegion = Region(376, 0, 16, 90)
-        val SupportFriendRegion = Region(2234, SupportListRegion.Y, 120, SupportListRegion.Height) // see docs/friend_region.png
+        val SupportFriendRegion = Region(
+            2234,
+            SupportListRegion.Y,
+            120,
+            SupportListRegion.Height
+        ) // see docs/friend_region.png
 
         val SupportUpdateClick = Location(1670, 250)
         val SupportUpdateYesClick = Location(1480, 1110)
@@ -69,12 +77,13 @@ class Game {
 
         val BattleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
 
-        val BattleStageCountRegion get() = when(Preferences.GameServer) {
-            GameServerEnum.En -> Region(1722, 25, 46, 53)
-            GameServerEnum.Jp -> Region(1722, 25, 46, 53)
-            GameServerEnum.Cn -> Region(1722, 25, 46, 53)
-            GameServerEnum.Tw -> Region(1710, 25, 55, 60)
-        }
+        val BattleStageCountRegion
+            get() = when (Preferences.GameServer) {
+                GameServerEnum.En -> Region(1722, 25, 46, 53)
+                GameServerEnum.Jp -> Region(1722, 25, 46, 53)
+                GameServerEnum.Cn -> Region(1722, 25, 46, 53)
+                GameServerEnum.Tw -> Region(1710, 25, 55, 60)
+            }
 
         val BattleExtrainfoWindowCloseClick = Location(2550, 10)
         val BattleAttackClick = Location(2300, 1200)
@@ -182,7 +191,7 @@ class Game {
         fun retry() {
             RetryRegion.click()
 
-            AutomataApi.wait(2)
+            AutomataApi.wait(2.seconds)
         }
 
         val GudaFinalRewardsRegion = Region(1160, 1040, 228, 76)

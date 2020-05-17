@@ -1,11 +1,13 @@
 package com.mathewsachin.fategrandautomata.util
 
-const val clickWaitTimeSec = 0.3
+import kotlin.time.milliseconds
 
-const val clickDurationMs = 50L
+val clickWaitTime = 300.milliseconds
 
-const val clickDelayMs = 10L
+val clickDuration = 50.milliseconds
 
-const val swipeDurationMs = 300L
+val clickDelay = 10.milliseconds
 
-const val swipeWaitTimeSec = 0.7
+val swipeDuration = 300.milliseconds
+
+val swipeWaitTime = 700.milliseconds

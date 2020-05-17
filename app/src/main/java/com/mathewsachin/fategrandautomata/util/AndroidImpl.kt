@@ -14,8 +14,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.InputStream
+import kotlin.time.Duration
 
-class AndroidImpl(private val Service: ScriptRunnerService): IPlatformImpl {
+class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
     override val windowRegion: Region
         get() = getCutoutAppliedRegion()
 
@@ -51,7 +52,7 @@ class AndroidImpl(private val Service: ScriptRunnerService): IPlatformImpl {
         }
     }
 
-    override fun highlight(Region: Region, Seconds: Double) {
+    override fun highlight(Region: Region, Duration: Duration) {
         // We can't draw over the notch area
         val cutoutAppliedRegion = getCutoutAppliedRegion()
         val region = Region.copy(
@@ -61,7 +62,7 @@ class AndroidImpl(private val Service: ScriptRunnerService): IPlatformImpl {
 
         GlobalScope.launch {
             addRegionToHighlight(region)
-            delay((Seconds * 1000).toLong())
+            delay(Duration.toLongMilliseconds())
             removeRegionToHighlight(region)
         }
     }

@@ -7,17 +7,22 @@ android {
     buildToolsVersion "29.0.3"
     ndkVersion "21.1.6352462"
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "com.mathewsachin.fategrandautomata"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode Integer.valueOf(System.env.FGA_VERSION_CODE ?: 1)
-        versionName (System.env.FGA_VERSION_NAME ?: "v0.1.0")
+        versionName(System.env.FGA_VERSION_NAME ?: "v0.1.0")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-           abiFilters "armeabi-v7a", "arm64-v8a"
+            abiFilters "armeabi-v7a", "arm64-v8a"
         }
 
         kotlinOptions {
@@ -78,4 +83,8 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.1.1"
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation 'com.google.android.material:material:1.1.0'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
 }

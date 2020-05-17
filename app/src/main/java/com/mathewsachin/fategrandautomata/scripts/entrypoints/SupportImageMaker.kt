@@ -9,20 +9,18 @@ import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
 import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
 import java.io.File
 
-fun getServantImgPath(Id: String, Index: Int): File
-{
+fun getServantImgPath(Id: String, Index: Int): File {
     return File(supportServantImgFolder, "${Id}_servant${Index}.png")
 }
 
-fun getCeImgPath(Id: String, Index: Int): File
-{
+fun getCeImgPath(Id: String, Index: Int): File {
     return File(supportCeFolder, "${Id}_ce${Index}.png")
 }
 
 typealias SupportImageMakerCallback = (String) -> Unit
 
-class SupportImageMaker(private var Callback: SupportImageMakerCallback?): EntryPoint() {
-    override fun script() {
+class SupportImageMaker(private var Callback: SupportImageMakerCallback?) : EntryPoint() {
+    override fun script(): Nothing {
         initScaling()
 
         val isInSupport =
@@ -41,8 +39,7 @@ class SupportImageMaker(private var Callback: SupportImageMakerCallback?): Entry
 
         var i = 0
 
-        for (testRegion in regionArray.map { it.Region })
-        {
+        for (testRegion in regionArray.map { it.Region }) {
             // At max two Servant+CE are completely on screen
             if (i > 1)
                 break
@@ -61,25 +58,30 @@ class SupportImageMaker(private var Callback: SupportImageMakerCallback?): Entry
 
             pattern?.use {
                 val servant = it.crop(Region(0, 0, 125, 44))
-                servant.use { servant.save(
-                    getServantImgPath(
-                        timestamp,
-                        i
-                    ).absolutePath) }
+                servant.use {
+                    servant.save(
+                        getServantImgPath(
+                            timestamp,
+                            i
+                        ).absolutePath
+                    )
+                }
 
                 val ce = it.crop(Region(0, 80, pattern.width, 25))
-                ce.use { ce.save(
-                    getCeImgPath(
-                        timestamp,
-                        i
-                    ).absolutePath) }
+                ce.use {
+                    ce.save(
+                        getCeImgPath(
+                            timestamp,
+                            i
+                        ).absolutePath
+                    )
+                }
             }
 
             ++i
         }
 
-        if (i == 0)
-        {
+        if (i == 0) {
             throw ScriptExitException("No support images were found on the current screen. Are you on Support selection or Friend list screen?")
         }
 

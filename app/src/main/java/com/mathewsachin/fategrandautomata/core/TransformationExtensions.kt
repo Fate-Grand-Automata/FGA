@@ -1,5 +1,10 @@
 package com.mathewsachin.fategrandautomata.core
 
+/**
+ * Calculates the ratio between the screen resolution and the image resolution.
+ *
+ * @return the ratio or `null` if the resolution is the same
+ */
 fun screenToImageScale(): Double? {
     val targetDimensions = GameAreaManager.CompareDimension
         ?: GameAreaManager.ScriptDimension
@@ -24,6 +29,9 @@ fun screenToImageScale(): Double? {
 
 const val DontScale = 1.0
 
+/**
+ * Calculates the ratio between the script resolution and the screen resolution.
+ */
 fun scriptToScreenScale(): Double {
     if (GameAreaManager.ScriptDimension == null) {
         return DontScale
@@ -51,6 +59,11 @@ fun scriptToScreenScale(): Double {
     return targetRegion.Height / pixels.toDouble()
 }
 
+/**
+ * Transforms the current [Location] in script coordinates to a new one in screen coordinates.
+ *
+ * @return a new [Location] in screen coordinates
+ */
 fun Location.transform(): Location {
     val scale = scriptToScreenScale()
     val scaledPoint = this * scale
@@ -59,6 +72,11 @@ fun Location.transform(): Location {
     return Location(scaledPoint.X + gameArea.X, scaledPoint.Y + gameArea.Y)
 }
 
+/**
+ * Transforms the current [Region] in script coordinates to a new one in screen coordinates.
+ *
+ * @return a new [Region] in screen coordinates
+ */
 fun Region.transform(): Region {
     val scale = scriptToScreenScale()
 
@@ -68,6 +86,9 @@ fun Region.transform(): Region {
     return Region(scaledPoint.X, scaledPoint.Y, scaledSize.Width, scaledSize.Height)
 }
 
+/**
+ * Calculates the ratio between the script resolution and the image resolution.
+ */
 fun scriptToImageScale(): Double {
     // Script -> Screen
     val scale1 = scriptToScreenScale()
@@ -78,10 +99,24 @@ fun scriptToImageScale(): Double {
     return scale1 * scale2
 }
 
+/**
+ * Transforms the [Region] from script coordinates to image coordinates.
+ *
+ * Normally, the script coordinates are in 1440p while the image coordinates are in 720p.
+ *
+ * @return a new [Region] with the same position in screen coordinates.
+ */
 fun Region.transformToImage(): Region {
     return this * scriptToImageScale()
 }
 
+/**
+ * Transforms the [Region] from image coordinates to script coordinates.
+ *
+ * Normally, the script coordinates are in 1440p while the image coordinates are in 720p.
+ *
+ * @return a new [Region] with the same position in script coordinates.
+ */
 fun Region.transformFromImage(): Region {
     return this * (1 / scriptToImageScale())
 }

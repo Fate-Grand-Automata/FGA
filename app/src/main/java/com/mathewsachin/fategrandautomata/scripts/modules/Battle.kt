@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.core.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import kotlin.time.seconds
 
 class Battle {
     private var hasTakenFirstStageSnapshot = false
@@ -47,10 +48,10 @@ class Battle {
 
         // TODO: This was added extra in Kotlin impl
         // Wait for Attack button to disappear
-        Game.BattleScreenRegion.waitVanish(ImageLocator.Battle, 5.0)
+        Game.BattleScreenRegion.waitVanish(ImageLocator.Battle, 5.seconds)
 
         // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
-        AutomataApi.wait(1.5)
+        AutomataApi.wait(1.5.seconds)
 
         hasClickedAttack = true
 
@@ -67,7 +68,7 @@ class Battle {
     private fun chooseTarget(Index: Int) {
         Game.BattleTargetClickArray[Index].click()
 
-        AutomataApi.wait(0.5)
+        AutomataApi.wait(0.5.seconds)
 
         Game.BattleExtrainfoWindowCloseClick.click()
 
@@ -95,7 +96,7 @@ class Battle {
 
     fun performBattle() {
         AutomataApi.useSameSnapIn { onTurnStarted() }
-        AutomataApi.wait(2)
+        AutomataApi.wait(2.seconds)
 
         var wereNpsClicked = false
 
@@ -120,7 +121,7 @@ class Battle {
 
         card.resetCommandCards()
 
-        AutomataApi.wait(if (wereNpsClicked) 25 else 5)
+        AutomataApi.wait(if (wereNpsClicked) 25.seconds else 5.seconds)
     }
 
     private fun onTurnStarted() {

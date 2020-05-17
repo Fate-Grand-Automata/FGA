@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.core
 
-import kotlin.Exception
 import kotlin.concurrent.thread
 
 abstract class EntryPoint {
@@ -17,16 +16,13 @@ abstract class EntryPoint {
     private fun scriptRunner() {
         try {
             script()
-        }
-        catch (e: ScriptAbortException) {
+        } catch (e: ScriptAbortException) {
             // Script stopped by user
-        }
-        catch (e: ScriptExitException) {
+        } catch (e: ScriptExitException) {
             scriptExitListener?.invoke()
 
             AutomataApi.showMessageBox("Script Exited", e.message ?: "")
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             println(e.toString())
 
             scriptExitListener?.invoke()
@@ -35,7 +31,7 @@ abstract class EntryPoint {
         }
     }
 
-    protected abstract fun script()
+    protected abstract fun script(): Nothing
 
     var scriptExitListener: (() -> Unit)? = null
 }

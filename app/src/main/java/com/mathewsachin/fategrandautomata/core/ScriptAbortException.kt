@@ -1,3 +1,6 @@
 package com.mathewsachin.fategrandautomata.core
 
-class ScriptAbortException: Exception()
+/**
+ * An exception for when the user requested the app to stop.
+ */
+class ScriptAbortException : Exception()
