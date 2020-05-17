@@ -226,6 +226,9 @@ class ScriptRunnerService : AccessibilityService() {
             recording = MediaProjectionRecording(mediaProjection!!, metrics)
         }
 
+        // Reset the value just in case it wasn't already
+        AutomataApi.exitRequested = false
+
         entryPoint = getEntryPoint().apply {
             scriptExitListener = ::onScriptExit
 
