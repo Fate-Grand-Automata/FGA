@@ -12,6 +12,3 @@
 /captures
 .externalNativeBuild
 .cxx
-obj/
-bin/
-.vs/
