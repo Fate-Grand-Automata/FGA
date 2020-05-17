@@ -155,7 +155,9 @@ class AutoBattle : EntryPoint() {
     // Checking if Quest Completed screen is up, specifically if Bond point/reward is up.
     private fun isInResult(): Boolean {
         if (Game.ResultScreenRegion.exists(ImageLocator.Result)
-            || Game.ResultBondRegion.exists(ImageLocator.Bond)) {
+            || Game.ResultBondRegion.exists(ImageLocator.Bond)
+            // We're assuming CN and TW use the same Master/Mystic Code Level up image
+            || Game.ResultMasterLvlUpRegion.exists(ImageLocator.MasterLvlUp)) {
             return true
         }
 
@@ -163,18 +165,8 @@ class AutoBattle : EntryPoint() {
 
         // We don't have TW images for these
         if (gameServer != GameServerEnum.Tw) {
-            if (Game.ResultMasterExpRegion.exists(ImageLocator.MasterExp)
-                || Game.ResultMatRewardsRegion.exists(ImageLocator.MatRewards)) {
-                return true
-            }
-        }
-
-        // We don't have CN, TW images for these
-        when (gameServer) {
-            GameServerEnum.En, GameServerEnum.Jp -> {
-                // Last check, so return directly
-                return Game.ResultMasterLvlUpRegion.exists(ImageLocator.MasterLvlUp)
-            }
+            return Game.ResultMasterExpRegion.exists(ImageLocator.MasterExp)
+                    || Game.ResultMatRewardsRegion.exists(ImageLocator.MatRewards)
         }
 
         // Not in any result screen
