@@ -41,11 +41,16 @@ fun PreferenceFragmentCompat.preferredSupportOnResume() {
     findCeList()?.apply {
         val entries = supportCeFolder.listFiles()
             .filter { it.isFile }
+            .sortedBy { it.name }
+
+        // actual values
+        this.entryValues = entries
             .map { it.name }
-            .sorted()
             .toTypedArray()
 
-        this.entryValues = entries
+        // labels
         this.entries = entries
+            .map { it.nameWithoutExtension }
+            .toTypedArray()
     }
 }
