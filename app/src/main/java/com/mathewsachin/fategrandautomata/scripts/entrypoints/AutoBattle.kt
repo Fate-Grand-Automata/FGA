@@ -154,17 +154,31 @@ class AutoBattle : EntryPoint() {
 
     // Checking if Quest Completed screen is up, specifically if Bond point/reward is up.
     private fun isInResult(): Boolean {
-        val resultScreenItems = mapOf(
-            Game.ResultScreenRegion to ImageLocator.Result,
-            Game.ResultBondRegion to ImageLocator.Bond,
-            Game.ResultMasterExpRegion to ImageLocator.MasterExp,
-            Game.ResultMatRewardsRegion to ImageLocator.MatRewards,
-            Game.ResultMasterLvlUpRegion to ImageLocator.MasterLvlUp
-        )
-
-        return resultScreenItems.any {
-            (Region, Pattern) -> Region.exists(Pattern)
+        if (Game.ResultScreenRegion.exists(ImageLocator.Result)
+            || Game.ResultBondRegion.exists(ImageLocator.Bond)) {
+            return true
         }
+
+        val gameServer = Preferences.GameServer
+
+        // We don't have TW images for these
+        if (gameServer != GameServerEnum.Tw) {
+            if (Game.ResultMasterExpRegion.exists(ImageLocator.MasterExp)
+                || Game.ResultMatRewardsRegion.exists(ImageLocator.MatRewards)) {
+                return true
+            }
+        }
+
+        // We don't have CN, TW images for these
+        when (gameServer) {
+            GameServerEnum.En, GameServerEnum.Jp -> {
+                // Last check, so return directly
+                return Game.ResultMasterLvlUpRegion.exists(ImageLocator.MasterLvlUp)
+            }
+        }
+
+        // Not in any result screen
+        return false
     }
 
     // Click through reward screen, continue if option presents itself, otherwise continue clicking through

@@ -2,7 +2,9 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.core.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 
 class AutoLottery: EntryPoint() {
     private val spinClick = Location(834, 860)
@@ -28,6 +30,12 @@ class AutoLottery: EntryPoint() {
     }
 
     override fun script() {
+        when (Preferences.GameServer) {
+            GameServerEnum.Cn, GameServerEnum.Tw -> {
+                throw ScriptExitException("Lottery script doesn't support CN and TW servers right now.")
+            }
+        }
+
         initScaling()
 
         while (true)
