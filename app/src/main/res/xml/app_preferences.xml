@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
-        app:defaultValue="En"
-        app:entries="@array/game_server_labels"
-        app:entryValues="@array/game_server_values"
-        app:icon="@drawable/ic_earth"
-        app:key="@string/pref_gameserver"
-        app:title="Game Server"
-        app:useSimpleSummaryProvider="true" />
-
     <Preference
         app:icon="@drawable/ic_sort"
         app:key="@string/pref_card_priority"
