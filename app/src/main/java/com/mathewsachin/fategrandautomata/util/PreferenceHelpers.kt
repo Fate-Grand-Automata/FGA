@@ -31,7 +31,7 @@ fun PreferenceFragmentCompat.preferredSupportOnResume() {
     findServantList()?.apply {
         val entries = supportServantImgFolder.listFiles()
             .map { it.name }
-            .sorted()
+            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
             .toTypedArray()
 
         this.entryValues = entries
@@ -41,7 +41,7 @@ fun PreferenceFragmentCompat.preferredSupportOnResume() {
     findCeList()?.apply {
         val entries = supportCeFolder.listFiles()
             .filter { it.isFile }
-            .sortedBy { it.name }
+            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
 
         // actual values
         this.entryValues = entries

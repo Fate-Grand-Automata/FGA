@@ -37,7 +37,7 @@ class AutoSkillSettingsFragment : PreferenceFragmentCompat() {
                         getStringPref(R.string.pref_autoskill_name, "--", Prefs = sharedPrefs)
                     )
                 }
-                .sortedBy{ it.Name }
+                .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.Name })
 
             this.entryValues = autoSkillItems.map { it.Id }.toTypedArray()
             this.entries = autoSkillItems.map { it.Name }.toTypedArray()

@@ -49,7 +49,7 @@ class AutoSkillListActivity : AppCompatActivity() {
                     getStringPref(R.string.pref_autoskill_name, "--", Prefs = sharedPrefs)
                 )
             }
-            .sortedBy{ it.Name }
+            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.Name })
             .toTypedArray()
 
         val autoSkillNames = autoSkillItems
