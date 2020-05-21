@@ -237,10 +237,10 @@ class AutomataApi {
             Condition: () -> Boolean,
             Timeout: Duration = Duration.ZERO
         ): Boolean {
-            var endTimeMark = Monotonic.markNow() + Timeout
+            val endTimeMark = Monotonic.markNow() + Timeout
 
             while (true) {
-                var invocationDuration = Monotonic.measureTime {
+                val invocationDuration = Monotonic.measureTime {
                     if (Condition.invoke()) {
                         return true
                     }

@@ -76,7 +76,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         autoskill_done_btn.setOnClickListener {
             addNpsToSkillCmd()
 
-            var res = Intent()
+            val res = Intent()
             res.putExtra(AutoSkillCommandKey, skillCmd.toString())
             setResult(Activity.RESULT_OK, res)
             finish()

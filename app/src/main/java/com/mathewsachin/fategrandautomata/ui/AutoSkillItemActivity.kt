@@ -48,7 +48,7 @@ class AutoSkillItemActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item?.itemId) {
+        return when (item.itemId) {
             R.id.action_auto_skill_delete -> {
                 AlertDialog.Builder(this)
                     .setMessage("Are you sure you want to delete this configuration?")
