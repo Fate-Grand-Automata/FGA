@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.preference.ListPreference
@@ -8,9 +7,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
-import com.mathewsachin.fategrandautomata.scripts.prefs.getStringSetPref
 import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
-import com.mathewsachin.fategrandautomata.util.AutoSkillEntry
+import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 
 class AutoSkillSettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -28,16 +26,7 @@ class AutoSkillSettingsFragment : PreferenceFragmentCompat() {
         super.onResume()
 
         findPreference<ListPreference>(getString(R.string.pref_autoskill_selected))?.apply {
-            val autoSkillItems = getStringSetPref(R.string.pref_autoskill_list)
-                .map {
-                    val sharedPrefs = requireActivity().getSharedPreferences(it, Activity.MODE_PRIVATE)
-
-                    AutoSkillEntry(
-                        it,
-                        getStringPref(R.string.pref_autoskill_name, "--", Prefs = sharedPrefs)
-                    )
-                }
-                .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.Name })
+            val autoSkillItems = getAutoSkillEntries()
 
             this.entryValues = autoSkillItems.map { it.Id }.toTypedArray()
             this.entries = autoSkillItems.map { it.Name }.toTypedArray()

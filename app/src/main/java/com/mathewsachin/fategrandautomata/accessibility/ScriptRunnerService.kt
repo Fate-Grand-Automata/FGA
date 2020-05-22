@@ -16,9 +16,13 @@ import android.os.Build
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
+import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.core.*
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
@@ -34,10 +38,12 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
 import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageIdKey
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamerActivity
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
+import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 import kotlin.time.seconds
 
 class ScriptRunnerService : AccessibilityService() {
@@ -202,25 +208,83 @@ class ScriptRunnerService : AccessibilityService() {
             return
         }
 
+        // Reset the value just in case it wasn't already
+        AutomataApi.exitRequested = false
+
+        getEntryPoint().apply {
+            if (this is AutoBattle) {
+                autoSkillPicker(this)
+            }
+            else {
+                runEntryPoint(this)
+            }
+        }
+    }
+
+    private fun runEntryPoint(EntryPoint: EntryPoint) {
         if (Preferences.RecordScreen && mediaProjection != null) {
             recording = MediaProjectionRecording(mediaProjection!!, userInterface.metrics)
         }
 
-        // Reset the value just in case it wasn't already
-        AutomataApi.exitRequested = false
+        EntryPoint.scriptExitListener = ::onScriptExit
 
-        entryPoint = getEntryPoint().apply {
-            scriptExitListener = ::onScriptExit
-
-            userInterface.setStopIcon()
-            if (recording != null) {
-                userInterface.showAsRecording()
-            }
-
-            run()
+        userInterface.setStopIcon()
+        if (recording != null) {
+            userInterface.showAsRecording()
         }
 
+        EntryPoint.run()
+
+        entryPoint = EntryPoint
         scriptStarted = true
+    }
+
+    private fun autoSkillPicker(EntryPoint: EntryPoint) {
+        if (Preferences.EnableAutoSkill) {
+            var selected = Preferences.SelectedAutoSkillConfig
+
+            val autoSkillItems = getAutoSkillEntries()
+
+            val radioGroup = RadioGroup(this).apply {
+                orientation = RadioGroup.VERTICAL
+                setPadding(20)
+            }
+
+            for ((index, item) in autoSkillItems.withIndex()) {
+                val radioBtn = RadioButton(this).apply {
+                    text = item.Name
+                    id = index
+                }
+
+                radioGroup.addView(radioBtn)
+
+                if (selected == item.Id) {
+                    radioGroup.check(index)
+                }
+            }
+
+            ScriptRunnerDialog(userInterface).apply {
+                setTitle("Select AutoSkill Config")
+                setPositiveButton(getString(android.R.string.ok)) {
+                    val selectedIndex = radioGroup.checkedRadioButtonId
+                    if (selectedIndex in autoSkillItems.indices) {
+                        selected = autoSkillItems[selectedIndex].Id
+
+                        defaultPrefs.edit(commit = true) {
+                            putString(getString(R.string.pref_autoskill_selected), selected)
+                        }
+                    }
+
+                    runEntryPoint(EntryPoint)
+                }
+                setNegativeButton(getString(android.R.string.cancel)) { }
+                setView(radioGroup)
+                show()
+            }
+        }
+        else {
+            runEntryPoint(EntryPoint)
+        }
     }
 
     private fun stopScript() {

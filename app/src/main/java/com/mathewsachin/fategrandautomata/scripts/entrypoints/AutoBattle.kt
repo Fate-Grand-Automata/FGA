@@ -13,7 +13,7 @@ fun isInSupport(): Boolean {
     return Game.SupportScreenRegion.exists(ImageLocator.SupportScreen, Similarity = 0.85)
 }
 
-class AutoBattle : EntryPoint() {
+open class AutoBattle : EntryPoint() {
     private val support = Support()
     private val card = Card()
     private val battle = Battle()
