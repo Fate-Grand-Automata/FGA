@@ -222,6 +222,13 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     private fun runEntryPoint(EntryPoint: EntryPoint) {
+        if (scriptStarted) {
+            return
+        }
+
+        scriptStarted = true
+        entryPoint = EntryPoint
+
         if (Preferences.RecordScreen && mediaProjection != null) {
             recording = MediaProjectionRecording(mediaProjection!!, userInterface.metrics)
         }
@@ -234,9 +241,6 @@ class ScriptRunnerService : AccessibilityService() {
         }
 
         EntryPoint.run()
-
-        entryPoint = EntryPoint
-        scriptStarted = true
     }
 
     private fun autoSkillPicker(EntryPoint: EntryPoint) {

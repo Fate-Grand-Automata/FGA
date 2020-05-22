@@ -1,10 +1,9 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
 import android.graphics.PixelFormat
-import android.text.method.ScrollingMovementMethod
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.FrameLayout
@@ -29,7 +28,7 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
             height = WindowManager.LayoutParams.MATCH_PARENT
         }
 
-        val baseFrame = frame.findViewById<FrameLayout>(R.id.script_runner_dialog_base)
+        val baseFrame = frame.findViewById<ViewGroup>(R.id.script_runner_dialog_base)
         baseFrame.setOnClickListener { hide() }
     }
 
@@ -56,7 +55,6 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
     fun setMessage(Message: String) {
         val textView = frame.findViewById<TextView>(R.id.script_runner_dialog_message)
         textView.text = Message
-        textView.movementMethod = ScrollingMovementMethod()
     }
 
     private fun setButton(@IdRes ButtonId: Int, Message: String, OnClick: () -> Unit) {
@@ -85,9 +83,9 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
     }
 
     fun setView(View: View) {
-        val contentFrame = frame.findViewById<FrameLayout>(R.id.script_runner_dialog_content)
+        val content = frame.findViewById<ViewGroup>(R.id.script_runner_dialog_content)
 
-        contentFrame.removeAllViews()
-        contentFrame.addView(View)
+        content.removeAllViews()
+        content.addView(View)
     }
 }
