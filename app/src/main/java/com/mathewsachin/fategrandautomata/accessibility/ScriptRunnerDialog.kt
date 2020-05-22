@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.IdRes
 import com.mathewsachin.fategrandautomata.R
-import java.util.concurrent.CountDownLatch
 
 class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
     private val frame = FrameLayout(UI.Service)
@@ -32,19 +31,12 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
         baseFrame.setOnClickListener { hide() }
     }
 
-    private val latch = CountDownLatch(1)
-
-    fun waitForExit() {
-        latch.await()
-    }
-
     fun show() {
         UI.windowManager.addView(frame, layoutParams)
     }
 
     fun hide() {
         UI.windowManager.removeView(frame)
-        latch.countDown()
     }
 
     fun setTitle(Title: String) {
