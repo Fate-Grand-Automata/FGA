@@ -52,9 +52,9 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
         }
     }
 
-    override fun messageBox(Title: String, Message: String) {
+    override fun messageBox(Title: String, Message: String, Error: Exception?) {
         handler.post {
-            Service.showMessageBox(Title, Message)
+            Service.showMessageBox(Title, Message, Error)
         }
 
         vibrate(100.milliseconds)

@@ -26,7 +26,7 @@ interface IPlatformImpl {
     /**
      * Shows a message box with the given title and message.
      */
-    fun messageBox(Title: String, Message: String)
+    fun messageBox(Title: String, Message: String, Error: Exception? = null)
 
     /**
      * Adds borders around the given [Region].

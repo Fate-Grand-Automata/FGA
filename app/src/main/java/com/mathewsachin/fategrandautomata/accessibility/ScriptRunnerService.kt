@@ -6,6 +6,8 @@ import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjection
@@ -331,11 +333,21 @@ class ScriptRunnerService : AccessibilityService() {
         startForeground(foregroundNotificationId, builder.build())
     }
 
-    fun showMessageBox(Title: String, Message: String) {
+    fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
         ScriptRunnerDialog(userInterface).apply {
             setTitle(Title)
             setMessage(Message)
             setPositiveButton(getString(android.R.string.ok)) { }
+
+            if (Error != null) {
+                setNeutralButton("Copy") {
+                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clipData = ClipData.newPlainText("Error", Error.toString())
+
+                    clipboard.setPrimaryClip(clipData)
+                }
+            }
+
             show()
         }
     }
