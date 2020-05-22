@@ -1,73 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<FrameLayout
+    android:id="@+id/script_runner_dialog_base"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:background="?android:attr/colorBackground"
-    app:cardElevation="10dp">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_height="match_parent"
+    android:background="#01ffffff">
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
-        <TextView
-            android:id="@+id/script_runner_dialog_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        android:layout_margin="16dp"
+        android:layout_gravity="center"
+        android:background="?android:attr/colorBackground"
+        app:cardElevation="10dp"
+        android:clickable="true">
 
-        <FrameLayout
-            android:id="@+id/script_runner_dialog_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/script_runner_dialog_title"
-            app:layout_constraintBottom_toTopOf="@id/script_runner_dialog_btn_positive">
+            android:padding="16dp">
             <TextView
-                android:id="@+id/script_runner_dialog_message"
+                android:id="@+id/script_runner_dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+            <FrameLayout
+                android:id="@+id/script_runner_dialog_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Message"
-                android:layout_marginVertical="16dp"
-                android:scrollbars="vertical"/>
-        </FrameLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/script_runner_dialog_title"
+                app:layout_constraintBottom_toTopOf="@id/script_runner_dialog_btn_positive">
+                <TextView
+                    android:id="@+id/script_runner_dialog_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Message"
+                    android:layout_marginVertical="16dp"
+                    android:scrollbars="vertical"/>
+            </FrameLayout>
 
-        <Button
-            android:id="@+id/script_runner_dialog_btn_positive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="@android:string/ok"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            <Button
+                android:id="@+id/script_runner_dialog_btn_positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="@android:string/ok"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <Button
-            android:id="@+id/script_runner_dialog_btn_negative"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="@android:string/cancel"
-            app:layout_constraintEnd_toStartOf="@id/script_runner_dialog_btn_positive"
-            app:layout_constraintBottom_toBottomOf="@id/script_runner_dialog_btn_positive"/>
+            <Button
+                android:id="@+id/script_runner_dialog_btn_negative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="@android:string/cancel"
+                app:layout_constraintEnd_toStartOf="@id/script_runner_dialog_btn_positive"
+                app:layout_constraintBottom_toBottomOf="@id/script_runner_dialog_btn_positive"/>
 
-        <Button
-            android:id="@+id/script_runner_dialog_btn_neutral"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="Neutral"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/script_runner_dialog_btn_positive"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/script_runner_dialog_btn_neutral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Neutral"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/script_runner_dialog_btn_positive"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

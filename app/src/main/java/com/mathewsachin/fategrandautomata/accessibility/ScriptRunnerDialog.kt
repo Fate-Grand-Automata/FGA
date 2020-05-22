@@ -26,9 +26,11 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
             format = PixelFormat.TRANSLUCENT
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             width = WindowManager.LayoutParams.MATCH_PARENT
-            height = WindowManager.LayoutParams.WRAP_CONTENT
-            gravity = Gravity.CENTER
+            height = WindowManager.LayoutParams.MATCH_PARENT
         }
+
+        val baseFrame = frame.findViewById<FrameLayout>(R.id.script_runner_dialog_base)
+        baseFrame.setOnClickListener { hide() }
     }
 
     private val latch = CountDownLatch(1)
