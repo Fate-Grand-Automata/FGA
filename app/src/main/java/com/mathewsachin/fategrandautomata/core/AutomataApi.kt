@@ -16,9 +16,6 @@ import kotlin.time.seconds
  */
 fun checkExitRequested() {
     if (AutomataApi.exitRequested) {
-        // Reset exit requested
-        AutomataApi.exitRequested = false
-
         throw ScriptAbortException()
     }
 }

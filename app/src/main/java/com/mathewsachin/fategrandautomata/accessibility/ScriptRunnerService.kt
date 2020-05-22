@@ -12,6 +12,7 @@ import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.SystemClock
+import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
@@ -37,6 +38,25 @@ import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageIdKey
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamerActivity
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import kotlin.time.seconds
+
+fun View.setThrottledClickListener(Listener: () -> Unit) {
+    var isWorking = false
+
+    setOnClickListener {
+        if (isWorking) {
+            return@setOnClickListener
+        }
+
+        isWorking = true
+
+        try {
+            Listener()
+        }
+        finally {
+            isWorking = false
+        }
+    }
+}
 
 class ScriptRunnerService : AccessibilityService() {
     companion object {
@@ -204,9 +224,6 @@ class ScriptRunnerService : AccessibilityService() {
             recording = MediaProjectionRecording(mediaProjection!!, userInterface.metrics)
         }
 
-        // Reset the value just in case it wasn't already
-        AutomataApi.exitRequested = false
-
         entryPoint = getEntryPoint().apply {
             scriptExitListener = ::onScriptExit
 
@@ -261,7 +278,7 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
-        scriptCtrlBtn.setOnClickListener {
+        scriptCtrlBtn.setThrottledClickListener {
             if (scriptStarted) {
                 stopScript()
             } else startScript()

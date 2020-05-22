@@ -4,6 +4,8 @@ import kotlin.concurrent.thread
 
 abstract class EntryPoint {
     fun run() {
+        AutomataApi.exitRequested = false
+
         thread(start = true) {
             scriptRunner()
         }
