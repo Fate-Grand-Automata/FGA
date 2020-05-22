@@ -16,7 +16,9 @@ class AutoLottery : EntryPoint() {
     private val resetCloseClick = Location(1270, 1120)
 
     private fun spin() {
-        spinClick.click(480)
+        // Don't increase this too much or you'll regret when you're not able to stop the script
+        // And your phone won't let you press anything
+        spinClick.click(25)
     }
 
     private fun reset() {
@@ -40,17 +42,17 @@ class AutoLottery : EntryPoint() {
         initScaling()
 
         while (true) {
-            when {
-                finishedLotteryBoxRegion.exists(
-                    ImageLocator.FinishedLotteryBox,
-                    Similarity = 0.65
-                ) -> {
-                    reset()
+            AutomataApi.useSameSnapIn {
+                when {
+                    finishedLotteryBoxRegion.exists(
+                        ImageLocator.FinishedLotteryBox,
+                        Similarity = 0.65
+                    ) -> reset()
+                    fullPresentBoxRegion.exists(ImageLocator.PresentBoxFull) -> {
+                        throw ScriptExitException("Present Box Full")
+                    }
+                    else -> spin()
                 }
-                fullPresentBoxRegion.exists(ImageLocator.PresentBoxFull) -> {
-                    throw ScriptExitException("Present Box Full")
-                }
-                else -> spin()
             }
         }
     }
