@@ -14,6 +14,7 @@ import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.SystemClock
+import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.RadioButton
@@ -45,6 +46,25 @@ import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamer
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 import kotlin.time.seconds
+
+fun View.setThrottledClickListener(Listener: () -> Unit) {
+    var isWorking = false
+
+    setOnClickListener {
+        if (isWorking) {
+            return@setOnClickListener
+        }
+
+        isWorking = true
+
+        try {
+            Listener()
+        }
+        finally {
+            isWorking = false
+        }
+    }
+}
 
 class ScriptRunnerService : AccessibilityService() {
     companion object {
@@ -208,9 +228,6 @@ class ScriptRunnerService : AccessibilityService() {
             return
         }
 
-        // Reset the value just in case it wasn't already
-        AutomataApi.exitRequested = false
-
         getEntryPoint().apply {
             if (this is AutoBattle) {
                 autoSkillPicker(this)
@@ -327,7 +344,7 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
-        scriptCtrlBtn.setOnClickListener {
+        scriptCtrlBtn.setThrottledClickListener {
             if (scriptStarted) {
                 stopScript()
             } else startScript()
