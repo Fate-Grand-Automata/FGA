@@ -18,10 +18,10 @@ import com.mathewsachin.fategrandautomata.ui.highlightView
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 
-class ScriptRunnerUserInterface(Service: ScriptRunnerService) {
+class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     private val layout = FrameLayout(Service)
 
-    private val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
     private val layoutParams = WindowManager.LayoutParams().apply {
         type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY

@@ -344,4 +344,13 @@ class ScriptRunnerService : AccessibilityService() {
 
         startForeground(foregroundNotificationId, builder.build())
     }
+
+    fun showMessageBox(Title: String, Message: String) {
+        ScriptRunnerDialog(userInterface).apply {
+            setTitle(Title)
+            setMessage(Message)
+            setPositiveButton(getString(android.R.string.ok)) { }
+            show()
+        }
+    }
 }

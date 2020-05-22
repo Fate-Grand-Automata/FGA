@@ -42,13 +42,7 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
 
     override fun messageBox(Title: String, Message: String) {
         handler.post {
-            val msg = "${Title.toUpperCase()}: $Message"
-
-            Toast
-                .makeText(Service, msg, Toast.LENGTH_LONG)
-                .show()
-
-            Service.showStatusNotification(msg)
+            Service.showMessageBox(Title, Message)
         }
     }
 
