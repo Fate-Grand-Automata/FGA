@@ -219,8 +219,6 @@ class ScriptRunnerService : AccessibilityService() {
         }
 
         scriptStarted = true
-
-        showStatusNotification("Script Running")
     }
 
     private fun stopScript() {
@@ -234,8 +232,6 @@ class ScriptRunnerService : AccessibilityService() {
         }
 
         onScriptExit()
-
-        showStatusNotification("Ready")
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -328,16 +324,6 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     private val foregroundNotificationId = 1
-
-    fun showStatusNotification(Message: String) {
-        val builder = startBuildNotification()
-            .setContentText(Message)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(Message))
-
-        NotificationManagerCompat
-            .from(this)
-            .notify(foregroundNotificationId, builder.build())
-    }
 
     fun showForegroundNotification() {
         val builder = startBuildNotification()
