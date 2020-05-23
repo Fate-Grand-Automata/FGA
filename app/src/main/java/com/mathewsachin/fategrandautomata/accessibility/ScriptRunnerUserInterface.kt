@@ -33,6 +33,7 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
         gravity = Gravity.LEFT or Gravity.TOP
         x = 0
         y = 0
+        windowAnimations = android.R.style.Animation_Toast
     }
 
     private var highlightLayoutParams = WindowManager.LayoutParams().apply {

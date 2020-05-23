@@ -1,10 +1,7 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
 import android.graphics.PixelFormat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -12,7 +9,18 @@ import androidx.annotation.IdRes
 import com.mathewsachin.fategrandautomata.R
 
 class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
-    private val frame = FrameLayout(UI.Service)
+    private val frame = object : FrameLayout(UI.Service) {
+        override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+            return when (event?.keyCode) {
+                KeyEvent.KEYCODE_BACK -> {
+                    hide()
+                    true
+                }
+                else -> super.dispatchKeyEvent(event)
+            }
+        }
+    }
+
     private val layoutParams: WindowManager.LayoutParams
 
     init {
@@ -22,9 +30,9 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
         layoutParams = WindowManager.LayoutParams().apply {
             type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
             format = PixelFormat.TRANSLUCENT
-            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             width = WindowManager.LayoutParams.MATCH_PARENT
             height = WindowManager.LayoutParams.MATCH_PARENT
+            windowAnimations = android.R.style.Animation_Dialog
         }
 
         val baseFrame = frame.findViewById<ViewGroup>(R.id.script_runner_dialog_base)
