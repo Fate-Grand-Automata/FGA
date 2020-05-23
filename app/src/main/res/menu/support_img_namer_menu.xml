@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_rename_support_imgs"
+        android:icon="@drawable/ic_check"
+        android:title="Rename"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_rename_support_imgs_discard"
+        android:icon="@drawable/ic_close"
+        android:title="Discard"
+        app:showAsAction="ifRoom" />
+</menu>

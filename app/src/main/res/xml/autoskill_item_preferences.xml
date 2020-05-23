@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:defaultValue="--"
+        app:icon="@drawable/ic_text_short"
+        app:key="@string/pref_autoskill_name"
+        app:title="Name"
+        app:useSimpleSummaryProvider="true" />
+
+    <Preference
+        app:icon="@drawable/ic_terminal"
+        app:key="@string/pref_autoskill_cmd"
+        app:title="Skill Command" />
+
+    <PreferenceCategory
+        app:key="pref_servant_category"
+        app:title="Preferred Servants">
+        <MultiSelectListPreference
+            app:icon="@drawable/ic_crown"
+            app:key="@string/pref_support_pref_servant"
+            app:title="Preferred Servants" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="pref_ce_category"
+        app:title="Preferred CEs">
+        <MultiSelectListPreference
+            app:icon="@drawable/ic_card"
+            app:key="@string/pref_support_pref_ce"
+            app:title="Preferred CEs" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_star"
+            app:key="@string/pref_support_pref_ce_mlb"
+            app:title="Max-limit broken" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -17,74 +17,47 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Determine Package Name
-      shell: pwsh
-      run: |
-        $PACKAGE_NAME = "com.mathewsachin.fategrandautomata"
-        if ($env:FORK -eq $True) {
-            $PACKAGE_NAME += '.fork'
-        }
-        echo "::set-env name=PACKAGE_NAME::$PACKAGE_NAME"
-
-    - name: Apply Package Name
-      run: sed -i -e "s/package=\"[^\"]*\"/package=\"$PACKAGE_NAME\"/g" AndroidManifest.xml
-      working-directory: ./FateGrandAutomata/Properties
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
 
     - name: Determine Version Name
       shell: pwsh
       run: |
+        $VERSION_CODE = $env:GITHUB_RUN_NUMBER
         $VERSION_NAME = $env:GITHUB_RUN_NUMBER
         if ($env:GITHUB_REF.StartsWith('refs/tags/')) {
             $VERSION_NAME = $env:GITHUB_REF.Substring(10)
         }
-        echo "::set-env name=VERSION_NAME::$VERSION_NAME"
-
-    - name: Apply Version Number and Version Name
-      working-directory: ./FateGrandAutomata/Properties
-      run: |
-        sed -i -e "s/android:versionCode=\"[^\"]*\"/android:versionCode=\"$GITHUB_RUN_NUMBER\"/g" AndroidManifest.xml
-        sed -i -e "s/android:versionName=\"[^\"]*\"/android:versionName=\"$VERSION_NAME\"/g" AndroidManifest.xml
+        echo "::set-env name=FGA_VERSION_CODE::$VERSION_CODE"
+        echo "::set-env name=FGA_VERSION_NAME::$VERSION_NAME"
 
     - name: Decrypt keystore (GPG)
       env:
         GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
-      working-directory: ./FateGrandAutomata
+      working-directory: ./app
       if: env.NOT_FORK == 'true'
       run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
     - name: Sign Android Package
       env:
         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-      working-directory: ./FateGrandAutomata
-      shell: pwsh
       run: |
-        $BuildArgs = @{
-            FilePath = 'msbuild'
-            ArgumentList = @(
-                'FateGrandAutomata.csproj',
-                '/restore',
-                '/verbosity:minimal',
-                '/t:SignAndroidPackage',
-                '/p:Configuration=Release'
-            )
-            Wait = $True
-        }
-        if ($env:FORK -eq $False) {
-            $BuildArgs.ArgumentList += @(
-                '/p:AndroidKeyStore=True',
-                '/p:AndroidSigningKeyAlias=fgautomata',
-                "/p:AndroidSigningStorePass=`"$env:KEYSTORE_PASS`"",
-                "/p:AndroidSigningKeyPass=`"$env:KEYSTORE_PASS`"",
-                '/p:AndroidSigningKeyStore=fgautomata.keystore'
-            )
-        }
-        Start-Process @BuildArgs
+        if [ "$FORK" == "true" ]
+        then
+          echo "::set-env name=BUILD_CONFIG::fork"
+          ./gradlew assembleFork
+        else
+          echo "::set-env name=BUILD_CONFIG::release"
+          ./gradlew assembleRelease
+        fi       
 
     - name: Upload APK
       uses: actions/upload-artifact@v1
       with:
         name: apk
-        path: FateGrandAutomata/bin/Release/${{ env.PACKAGE_NAME }}-Signed.apk
+        path: app/build/outputs/apk/${{ env.BUILD_CONFIG }}/app-${{ env.BUILD_CONFIG }}.apk
 
   deploy:
     needs: build
@@ -116,6 +89,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./apk/com.mathewsachin.fategrandautomata-Signed.apk
+        asset_path: ./apk/app-release.apk
         asset_name: com.mathewsachin.fategrandautomata.apk
         asset_content_type: application/vnd.android.package-archive

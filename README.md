@@ -2,12 +2,14 @@
 [![CI](https://github.com/MathewSachin/Fate-Grand-Automata/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/MathewSachin/Fate-Grand-Automata/actions)
 
 <div style="text-align:center">
-  <img src="FateGrandAutomata/Resources/mipmap-xxxhdpi/ic_launcher_round.png">
+  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png">
 </div>
 
-Fate/Grand auto-battle app for Android.
-This is pretty much a C# port of [Fate-Grand-Order_Lua][FGOLua] but has an inbuilt Sikuli-like API.
-Also, includes a UI for configuring Settings.
+Auto-battle app for Fate/Grand Order Android.  
+
+This is pretty much a ~~C#~~ **Kotlin** port of [Fate-Grand-Order_Lua][FGOLua] with UI for configuring Settings and inbuilt Sikuli like API.
+
+So, there's no time limit on the use of the app unlike FGO-Lua.
 
 **Needs Android 7 or later**
 
@@ -24,7 +26,10 @@ So, being the salty F2P that I am, instead of buying an AnkuLua subscription, I 
 This was a great learning experience and something different from your usual Android projects.
 
 ## How does it work?
-It runs on [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/), uses [OpenCV](https://opencv.org/) for image recognition, uses Android's [Acessibility](https://developer.android.com/guide/topics/ui/accessibility) and [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) APIs.
+This is a native Android app written in Kotlin ~~(formerly [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/))~~ using [OpenCV](https://opencv.org/) for image recognition. It uses Android's [Accessibility](https://developer.android.com/guide/topics/ui/accessibility) and [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) APIs.
+
+We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
+
 Battery optimizations can screw up the functionality of the app. App tries to disable them automatically but you might also have to do that manually.
 
 The icons are from https://materialdesignicons.com/
@@ -32,7 +37,7 @@ The icons are from https://materialdesignicons.com/
 The drag-sort logic on Card Priority screen is thanks to https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
 
 ## What to do about bugs?
-Debugging really is a pain due to FGO not allowing `Developer Mode` to be `ON` during execution.
+Debugging really is a pain due to FGO NA not allowing `Developer Mode` to be `ON` during execution.
 Use GitHub issues to report bugs and try to be specific about the problem. Also, list information like your phone's model number, screen size, Android version, whether you have a notch.
 
 **Note:** If your device has a notch, Don't rotate your screen when the script is running.
@@ -104,9 +109,6 @@ You can also use it from the Friend List which is easier since you don't have to
 3. Open F/GO. Go to support selection screen and ensure that the Servant/CE you want is visible (It is important that the complete Servant + CE region is visible).
 4. Click on Play. The script should exit almost immediately. Images are saved to `Fate-Grand-Automata/support` folder.
 5. Rename the files to whatever you want and then use with Auto Support Selection.
-
-## Upcoming Features
-1. Auto-giftbox.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

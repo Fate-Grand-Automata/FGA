@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Label ordering must match values -->
+    <array name="refill_type_labels">
+        <item>All Apples (NO SQ)</item>
+        <item>Gold</item>
+        <item>Silver</item>
+        <item>Bronze</item>
+        <item>SQ (Rainbow)</item>
+    </array>
+
+    <array name="refill_type_values">
+        <item>AllApples</item>
+        <item>Gold</item>
+        <item>Silver</item>
+        <item>Bronze</item>
+        <item>SQ</item>
+    </array>
+
+    <array name="boost_item_labels">
+        <item>Disabled</item>
+        <item>Skip</item>
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+    </array>
+
+    <string-array name="boost_item_values">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <array name="battle_np_types">
+        <item>None</item>
+        <item>Spam</item>
+        <item>Danger</item>
+    </array>
+
+    <array name="game_server_labels">
+        <item>NA</item>
+        <item>JP</item>
+        <item>CN</item>
+        <item>TW</item>
+    </array>
+
+    <array name="game_server_values">
+        <item>En</item>
+        <item>Jp</item>
+        <item>Cn</item>
+        <item>Tw</item>
+    </array>
+
+    <array name="support_selection_modes">
+        <item>First</item>
+        <item>Manual</item>
+        <item>Preferred</item>
+        <item>Friend</item>
+    </array>
+
+    <array name="script_mode_labels">
+        <item>Battle</item>
+        <item>Lottery</item>
+        <item>Friend Gacha</item>
+        <item>Support Image Maker</item>
+    </array>
+
+    <array name="script_mode_values">
+        <item>Battle</item>
+        <item>Lottery</item>
+        <item>FriendGacha</item>
+        <item>SupportImageMaker</item>
+    </array>
+</resources>
