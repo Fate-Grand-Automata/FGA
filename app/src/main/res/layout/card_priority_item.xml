@@ -1,12 +1,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/card_priority_textview"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:padding="10dip"
@@ -14,20 +14,5 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Card Priority"
-        app:layout_constraintEnd_toStartOf="@id/card_priority_dragger"/>
-
-    <ImageView
-        android:id="@+id/card_priority_dragger"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:background="#01ffffff"
-        android:foregroundGravity="center"
-        android:paddingVertical="10dip"
-        android:paddingStart="50dp"
-        android:paddingEnd="20dp"
-        android:src="@drawable/ic_hamburger"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        tools:text="Card Priority"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@ class RootGestures(private val SuperUser: SuperUser) : IGestureService {
     }
 
     override fun click(Location: Location, Times: Int) {
-        var times = max(1, Times / 5)
+        val times = max(1, Times / 5)
         val clickDuration = 1
 
         repeat(times) {

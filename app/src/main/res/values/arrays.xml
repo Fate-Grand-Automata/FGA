@@ -2,11 +2,11 @@
 <resources>
     <!-- Label ordering must match values -->
     <array name="refill_type_labels">
-        <item>All Apples</item>
+        <item>All Apples (NO SQ)</item>
         <item>Gold</item>
         <item>Silver</item>
         <item>Bronze</item>
-        <item>SQ</item>
+        <item>SQ (Rainbow)</item>
     </array>
 
     <array name="refill_type_values">
@@ -40,21 +40,17 @@
     </array>
 
     <array name="game_server_labels">
-        <item>English</item>
-        <item>Japanese</item>
-        <!--
-        <item>Chinese</item>
-        <item>Taiwan</item>
-        -->
+        <item>NA</item>
+        <item>JP</item>
+        <item>CN</item>
+        <item>TW</item>
     </array>
 
     <array name="game_server_values">
         <item>En</item>
         <item>Jp</item>
-        <!--
         <item>Cn</item>
         <item>Tw</item>
-        -->
     </array>
 
     <array name="support_selection_modes">

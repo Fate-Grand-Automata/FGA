@@ -45,6 +45,8 @@ class SupportPreferences {
             {
                 val fileNames = dir.listFiles()
                     .filter { it.isFile }
+                    // Give priority to later ascensions
+                    .sortedWith(compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.name })
                     .map { "${servantEntry}/${it.name}" }
 
                 servants.addAll(fileNames)

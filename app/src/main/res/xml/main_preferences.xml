@@ -10,6 +10,15 @@
         app:title="Script Mode"
         app:useSimpleSummaryProvider="true" />
 
+    <ListPreference
+        app:defaultValue="En"
+        app:entries="@array/game_server_labels"
+        app:entryValues="@array/game_server_values"
+        app:icon="@drawable/ic_earth"
+        app:key="@string/pref_gameserver"
+        app:title="Game Server"
+        app:useSimpleSummaryProvider="true" />
+
     <Preference
         app:icon="@drawable/ic_apple"
         app:key="@string/pref_nav_refill"

@@ -10,6 +10,8 @@ abstract class EntryPoint {
      * Starts the logic of the script mode in a new thread.
      */
     fun run() {
+        AutomataApi.exitRequested = false
+
         thread(start = true) {
             scriptRunner()
         }
@@ -36,7 +38,7 @@ abstract class EntryPoint {
 
             scriptExitListener?.invoke()
 
-            AutomataApi.showMessageBox("Unexpected Error", e.toString())
+            AutomataApi.showMessageBox("Unexpected Error", e.toString(), e)
         }
     }
 

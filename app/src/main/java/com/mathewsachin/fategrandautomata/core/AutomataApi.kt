@@ -15,9 +15,6 @@ import kotlin.time.seconds
  */
 fun checkExitRequested() {
     if (AutomataApi.exitRequested) {
-        // Reset exit requested
-        AutomataApi.exitRequested = false
-
         throw ScriptAbortException()
     }
 }
@@ -190,8 +187,8 @@ class AutomataApi {
         /**
          * Shows a message box with the given title and message.
          */
-        fun showMessageBox(Title: String, Message: String) {
-            PlatformImpl?.messageBox(Title, Message)
+        fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
+            PlatformImpl?.messageBox(Title, Message, Error)
         }
 
         /**

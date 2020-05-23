@@ -1,12 +1,11 @@
 package com.mathewsachin.fategrandautomata.ui
 
-import android.content.ClipData
-import android.content.ClipboardManager
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,6 +22,9 @@ private enum class AutoSkillMakerState {
     Main, Atk, Target, OrderChange
 }
 
+const val RequestAutoSkillMaker = 1027
+const val AutoSkillCommandKey = "AutoSkillCommandKey"
+
 class AutoSkillMakerActivity : AppCompatActivity() {
     // These fields are used to Save/Restore state of the Activity
     private var skillCmd = StringBuilder()
@@ -30,6 +32,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     private var currentView = AutoSkillMakerState.Main
     private var stage = 1
     private var turn = 1
+    private var currentSkill = '0'
 
     // Order Change selected members
     private var xSelectedParty = 1
@@ -54,9 +57,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             np_5.isChecked = false
             np_6.isChecked = false
 
-            // Uncheck selected targets
-            enemy_target_radio.clearCheck()
-
             // Set cards before Np to 0
             cards_before_np_rad.check(R.id.cards_before_np_0)
 
@@ -76,12 +76,9 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         autoskill_done_btn.setOnClickListener {
             addNpsToSkillCmd()
 
-            Toast.makeText(applicationContext, "AutoSkill command copied to clipboard", Toast.LENGTH_SHORT).show()
-
-            val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("AutoSkill Command", skillCmd)
-            clipboardManager.setPrimaryClip(clip)
-
+            val res = Intent()
+            res.putExtra(AutoSkillCommandKey, skillCmd.toString())
+            setResult(Activity.RESULT_OK, res)
             finish()
         }
 
@@ -102,13 +99,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     private fun setEnemyTarget(Target: Int) {
         // Merge consecutive target changes
-        if (skillCmd.length >= 2 && skillCmd[skillCmd.length - 2] == 't')
-        {
-            skillCmd.delete(skillCmd.length - 1, 1)
+        if (skillCmd.length >= 2 && skillCmd[skillCmd.length - 2] == 't') {
+            skillCmd.deleteCharAt(skillCmd.length - 1)
                 .append(Target)
-        }
-        else
-        {
+        } else {
             skillCmd.append("t${Target}")
         }
     }
@@ -131,18 +125,22 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             setOrderChangeSubMember(1)
         }
 
-        order_change_cancel.setOnClickListener { changeState(AutoSkillMakerState.Main) }
+        order_change_cancel.setOnClickListener { gotToMain() }
 
         order_change_ok.setOnClickListener {
             skillCmd.append("x${xSelectedParty}${xSelectedSub}")
 
-            changeState(AutoSkillMakerState.Main)
+            gotToMain()
         }
+    }
+
+    private fun gotToMain() {
+        changeState(AutoSkillMakerState.Main)
     }
 
     private fun setupSkills() {
         fun onSkill(SkillCode: Char) {
-            skillCmd.append(SkillCode)
+            currentSkill = SkillCode
 
             changeState(AutoSkillMakerState.Target)
         }
@@ -164,11 +162,13 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     private fun setupTargets() {
         fun onTarget(TargetCommand: Char?) {
+            skillCmd.append(currentSkill)
+
             if (TargetCommand != null) {
                 skillCmd.append(TargetCommand)
             }
 
-            changeState(AutoSkillMakerState.Main)
+            gotToMain()
         }
 
         no_target_btn.setOnClickListener { onTarget(null) }
@@ -195,6 +195,9 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     private fun onGoToNext(Separator: String) {
+        // Uncheck selected targets
+        enemy_target_radio.clearCheck()
+
         addNpsToSkillCmd()
 
         if (skillCmd.isEmpty()) {
@@ -206,7 +209,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         ++turn
         updateStageAndTurn()
 
-        changeState(AutoSkillMakerState.Main)
+        gotToMain()
     }
 
     private fun getStateView(State: AutoSkillMakerState) = when(State) {
@@ -217,11 +220,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     private fun changeState(NewState: AutoSkillMakerState) {
-        // Hide current
-        getStateView(currentView).visibility = View.GONE
-
-        // Hide the default view just in case
-        getStateView(AutoSkillMakerState.Main).visibility = View.GONE
+        // Hide current if not main
+        if (currentView != AutoSkillMakerState.Main) {
+            getStateView(currentView).visibility = View.GONE
+        }
 
         // Show new state
         currentView = NewState
@@ -245,7 +247,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
                 button.background.colorFilter = BlendModeColorFilterCompat
                     .createBlendModeColorFilterCompat(color, BlendModeCompat.SRC)
             } else {
-                button.background.colorFilter = null
+                button.background.clearColorFilter()
             }
         }
     }
@@ -272,6 +274,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         outState.putInt(::turn.name, turn)
         outState.putInt(::xSelectedParty.name, xSelectedParty)
         outState.putInt(::xSelectedSub.name, xSelectedSub)
+        outState.putChar(::currentSkill.name, currentSkill)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -288,6 +291,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
         setOrderChangePartyMember(b.getInt(::xSelectedParty.name, 1))
         setOrderChangeSubMember(b.getInt(::xSelectedSub.name, 1))
+
+        currentSkill = b.getChar(::currentSkill.name)
     }
 
     private fun updateStageAndTurn() {
@@ -296,13 +301,16 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        AlertDialog.Builder(this)
-            .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
-            .setTitle("Confirm Exit")
-            .setPositiveButton(android.R.string.yes) { _, _ ->
-                super.onBackPressed()
+        when (currentView) {
+            AutoSkillMakerState.Main -> {
+                AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
+                    .setTitle("Confirm Exit")
+                    .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
+                    .setNegativeButton(android.R.string.no, null)
+                    .show()
             }
-            .setNegativeButton(android.R.string.no, null)
-            .show()
+            else -> gotToMain()
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.app.Application
-//import androidx.appcompat.app.AppCompatDelegate
+// import androidx.appcompat.app.AppCompatDelegate
 import org.opencv.android.OpenCVLoader
 
 class AutomataApplication : Application() {

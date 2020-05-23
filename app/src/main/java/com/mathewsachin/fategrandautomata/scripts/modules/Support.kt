@@ -30,7 +30,7 @@ class Support {
         return this
             .splitToSequence(',')
             .map { it.trim() }
-            .filter { it.toLowerCase() != "any" }
+            .filter { it.isNotBlank() && it.toLowerCase() != "any" }
     }
 
     fun init() {

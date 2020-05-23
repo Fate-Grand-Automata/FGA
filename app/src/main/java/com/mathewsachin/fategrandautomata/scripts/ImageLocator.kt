@@ -56,10 +56,13 @@ class ImageLocator {
 
         val MasterExp get() = load("master_exp.png")
 
+        // TODO: Verify the CN image
         val MasterLvlUp get() = load("master_lvl_up.png")
 
         val MatRewards get() = load("mat_rewards.png")
 
         val GudaFinalRewards get() = load("guda_final_rewards.png")
+
+        val InventoryFull get() = load("inven_full.png")
     }
 }

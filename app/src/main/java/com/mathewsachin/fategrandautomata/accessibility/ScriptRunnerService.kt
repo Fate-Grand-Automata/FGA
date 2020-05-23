@@ -1,28 +1,29 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
 import android.accessibilityservice.AccessibilityService
-import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.PixelFormat
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.SystemClock
-import android.util.DisplayMetrics
-import android.view.*
+import android.view.View
 import android.view.accessibility.AccessibilityEvent
-import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.view.postDelayed
+import androidx.core.content.edit
+import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.core.*
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
@@ -38,27 +39,39 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
 import com.mathewsachin.fategrandautomata.ui.MainActivity
-import com.mathewsachin.fategrandautomata.ui.highlightView
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageIdKey
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamerActivity
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
-import kotlin.math.roundToInt
-import kotlin.time.TimeMark
-import kotlin.time.TimeSource.Monotonic
-import kotlin.time.milliseconds
+import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
+import kotlin.time.seconds
+
+fun View.setThrottledClickListener(Listener: () -> Unit) {
+    var isWorking = false
+
+    setOnClickListener {
+        if (isWorking) {
+            return@setOnClickListener
+        }
+
+        isWorking = true
+
+        try {
+            Listener()
+        }
+        finally {
+            isWorking = false
+        }
+    }
+}
 
 class ScriptRunnerService : AccessibilityService() {
     companion object {
         var Instance: ScriptRunnerService? = null
     }
 
-    private lateinit var layout: FrameLayout
-    private lateinit var windowManager: WindowManager
-    private lateinit var layoutParams: WindowManager.LayoutParams
-    private lateinit var highlightLayoutParams: WindowManager.LayoutParams
-    private lateinit var scriptCtrlBtn: ImageButton
-    private val metrics = DisplayMetrics()
+    private lateinit var userInterface: ScriptRunnerUserInterface
     private var sshotService: IScreenshotService? = null
     private var gestureService: IGestureService? = null
     private var superUser: SuperUser? = null
@@ -110,8 +123,7 @@ class ScriptRunnerService : AccessibilityService() {
             return false
         }
 
-        windowManager.addView(highlightView, highlightLayoutParams)
-        windowManager.addView(layout, layoutParams)
+        userInterface.show()
 
         serviceStarted = true
 
@@ -123,7 +135,7 @@ class ScriptRunnerService : AccessibilityService() {
             if (MediaProjectionToken != null) {
                 mediaProjection =
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
-                MediaProjectionScreenshotService(mediaProjection!!, metrics)
+                MediaProjectionScreenshotService(mediaProjection!!, userInterface.metrics)
             } else RootScreenshotService(
                 getSuperUser()
             )
@@ -169,8 +181,7 @@ class ScriptRunnerService : AccessibilityService() {
         ScreenshotManager.releaseMemory()
         clearImageCache()
 
-        windowManager.removeView(layout)
-        windowManager.removeView(highlightView)
+        userInterface.hide()
         serviceStarted = false
 
         hideForegroundNotification()
@@ -181,9 +192,7 @@ class ScriptRunnerService : AccessibilityService() {
     private var entryPoint: EntryPoint? = null
 
     private fun onScriptExit() {
-        scriptCtrlBtn.post {
-            scriptCtrlBtn.setImageResource(R.drawable.ic_play)
-        }
+        userInterface.setPlayIcon()
 
         clearSupportCache()
 
@@ -193,7 +202,7 @@ class ScriptRunnerService : AccessibilityService() {
         val rec = recording
         if (rec != null) {
             // record for 2 seconds more to show things like error messages
-            scriptCtrlBtn.postDelayed(2000) { rec.close() }
+            userInterface.postDelayed(2.seconds) { rec.close() }
         }
 
         recording = null
@@ -219,21 +228,84 @@ class ScriptRunnerService : AccessibilityService() {
             return
         }
 
-        if (Preferences.RecordScreen && mediaProjection != null) {
-            recording = MediaProjectionRecording(mediaProjection!!, metrics)
+        getEntryPoint().apply {
+            if (this is AutoBattle) {
+                autoSkillPicker(this)
+            }
+            else {
+                runEntryPoint(this)
+            }
         }
+    }
 
-        entryPoint = getEntryPoint().apply {
-            scriptExitListener = ::onScriptExit
-
-            scriptCtrlBtn.setImageResource(R.drawable.ic_stop)
-
-            run()
+    private fun runEntryPoint(EntryPoint: EntryPoint) {
+        if (scriptStarted) {
+            return
         }
 
         scriptStarted = true
+        entryPoint = EntryPoint
 
-        showStatusNotification("Script Running")
+        if (Preferences.RecordScreen && mediaProjection != null) {
+            recording = MediaProjectionRecording(mediaProjection!!, userInterface.metrics)
+        }
+
+        EntryPoint.scriptExitListener = ::onScriptExit
+
+        userInterface.setStopIcon()
+        if (recording != null) {
+            userInterface.showAsRecording()
+        }
+
+        EntryPoint.run()
+    }
+
+    private fun autoSkillPicker(EntryPoint: EntryPoint) {
+        if (Preferences.EnableAutoSkill) {
+            var selected = Preferences.SelectedAutoSkillConfig
+
+            val autoSkillItems = getAutoSkillEntries()
+
+            val radioGroup = RadioGroup(this).apply {
+                orientation = RadioGroup.VERTICAL
+                setPadding(20)
+            }
+
+            for ((index, item) in autoSkillItems.withIndex()) {
+                val radioBtn = RadioButton(this).apply {
+                    text = item.Name
+                    id = index
+                }
+
+                radioGroup.addView(radioBtn)
+
+                if (selected == item.Id) {
+                    radioGroup.check(index)
+                }
+            }
+
+            ScriptRunnerDialog(userInterface).apply {
+                setTitle("Select AutoSkill Config")
+                setPositiveButton(getString(android.R.string.ok)) {
+                    val selectedIndex = radioGroup.checkedRadioButtonId
+                    if (selectedIndex in autoSkillItems.indices) {
+                        selected = autoSkillItems[selectedIndex].Id
+
+                        defaultPrefs.edit(commit = true) {
+                            putString(getString(R.string.pref_autoskill_selected), selected)
+                        }
+                    }
+
+                    runEntryPoint(EntryPoint)
+                }
+                setNegativeButton(getString(android.R.string.cancel)) { }
+                setView(radioGroup)
+                show()
+            }
+        }
+        else {
+            runEntryPoint(EntryPoint)
+        }
     }
 
     private fun stopScript() {
@@ -247,8 +319,6 @@ class ScriptRunnerService : AccessibilityService() {
         }
 
         onScriptExit()
-
-        showStatusNotification("Ready")
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -273,116 +343,24 @@ class ScriptRunnerService : AccessibilityService() {
         super.onTaskRemoved(rootIntent)
     }
 
-    @SuppressLint("RtlHardcoded")
+    fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
+        scriptCtrlBtn.setThrottledClickListener {
+            if (scriptStarted) {
+                stopScript()
+            } else startScript()
+        }
+    }
+
     override fun onServiceConnected() {
         Instance = this
         AutomataApi.registerPlatform(AndroidImpl(this))
 
-        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-        layout = FrameLayout(this)
-        layoutParams = WindowManager.LayoutParams().apply {
-            type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
-            format = PixelFormat.TRANSLUCENT
-            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-            width = WindowManager.LayoutParams.WRAP_CONTENT
-            height = WindowManager.LayoutParams.WRAP_CONTENT
-            @SuppressLint("RtlHardcoded")
-            gravity = Gravity.LEFT or Gravity.TOP
-            x = 0
-            y = 0
-        }
-
-        val inflater = LayoutInflater.from(this)
-        inflater.inflate(R.layout.script_runner, layout)
-
-        highlightLayoutParams = WindowManager.LayoutParams().apply {
-            type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
-            format = PixelFormat.TRANSLUCENT
-            flags =
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            width = WindowManager.LayoutParams.MATCH_PARENT
-            height = WindowManager.LayoutParams.MATCH_PARENT
-        }
-
-        scriptCtrlBtn = layout.findViewById<ImageButton>(R.id.script_toggle_btn).also {
-            it.setOnClickListener {
-                if (scriptStarted) {
-                    stopScript()
-                } else startScript()
-            }
-
-            it.setOnTouchListener(::scriptCtrlBtnOnTouch)
-        }
-
         mediaProjectionManager =
             getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
-        windowManager.defaultDisplay.getRealMetrics(metrics)
-
-        // Retrieve images in Landscape
-        if (metrics.heightPixels > metrics.widthPixels) {
-            metrics.let {
-                val temp = it.widthPixels
-                it.widthPixels = it.heightPixels
-                it.heightPixels = temp
-            }
-        }
-
-        layoutParams.y = metrics.widthPixels
+        userInterface = ScriptRunnerUserInterface(this)
 
         super.onServiceConnected()
-    }
-
-    private fun getMaxBtnCoordinates(): Location {
-        val rotation = windowManager.defaultDisplay.rotation
-        val rotate = rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180
-
-        val x = (if (rotate) {
-            metrics.heightPixels
-        } else metrics.widthPixels) - layout.measuredWidth
-        val y = (if (rotate) {
-            metrics.widthPixels
-        } else metrics.heightPixels) - layout.measuredHeight
-
-        return Location(x, y)
-    }
-
-    private var dX = 0f
-    private var dY = 0f
-    private var lastAction = 0
-    private var dragTimeMark: TimeMark? = null
-
-    private fun scriptCtrlBtnOnTouch(_View: View, Event: MotionEvent): Boolean {
-        return when (Event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> {
-                val (maxX, maxY) = getMaxBtnCoordinates()
-                dX = layoutParams.x.coerceIn(0, maxX) - Event.rawX
-                dY = layoutParams.y.coerceIn(0, maxY) - Event.rawY
-                lastAction = MotionEvent.ACTION_DOWN
-                dragTimeMark = Monotonic.markNow()
-
-                false
-            }
-            MotionEvent.ACTION_MOVE -> {
-                val newX = Event.rawX + dX
-                val newY = Event.rawY + dY
-
-                if (dragTimeMark!!.elapsedNow() > ViewConfiguration.getLongPressTimeout().milliseconds) {
-                    val (mX, mY) = getMaxBtnCoordinates()
-                    layoutParams.x = newX.roundToInt().coerceIn(0, mX)
-                    layoutParams.y = newY.roundToInt().coerceIn(0, mY)
-
-                    windowManager.updateViewLayout(layout, layoutParams)
-
-                    lastAction = MotionEvent.ACTION_MOVE
-                }
-
-                true
-            }
-            MotionEvent.ACTION_UP -> lastAction == MotionEvent.ACTION_MOVE
-            else -> false
-        }
     }
 
     override fun onInterrupt() {}
@@ -434,19 +412,28 @@ class ScriptRunnerService : AccessibilityService() {
 
     private val foregroundNotificationId = 1
 
-    fun showStatusNotification(Message: String) {
-        val builder = startBuildNotification()
-            .setContentText(Message)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(Message))
-
-        NotificationManagerCompat
-            .from(this)
-            .notify(foregroundNotificationId, builder.build())
-    }
-
     fun showForegroundNotification() {
         val builder = startBuildNotification()
 
         startForeground(foregroundNotificationId, builder.build())
+    }
+
+    fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
+        ScriptRunnerDialog(userInterface).apply {
+            setTitle(Title)
+            setMessage(Message)
+            setPositiveButton(getString(android.R.string.ok)) { }
+
+            if (Error != null) {
+                setNeutralButton("Copy") {
+                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clipData = ClipData.newPlainText("Error", Error.toString())
+
+                    clipboard.setPrimaryClip(clipData)
+                }
+            }
+
+            show()
+        }
     }
 }

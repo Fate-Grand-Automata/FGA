@@ -18,7 +18,7 @@ fun isInSupport(): Boolean {
 /**
  * Script for starting quests, selecting the support and doing battles.
  */
-class AutoBattle : EntryPoint() {
+open class AutoBattle : EntryPoint() {
     private val support = Support()
     private val card = Card()
     private val battle = Battle()
@@ -70,7 +70,12 @@ class AutoBattle : EntryPoint() {
             throw ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.")
         }
 
-        Game.WithdrawRegion.click()
+        // Withdraw Region can vary depending on if you have Command Spells/Quartz
+        val withdrawRegion = Game.WithdrawRegion
+            .findAll(ImageLocator.Withdraw)
+            .firstOrNull() ?: return
+
+        withdrawRegion.Region.click()
 
         AutomataApi.wait(0.5.seconds)
 
@@ -142,7 +147,22 @@ class AutoBattle : EntryPoint() {
 
         // Click uppermost quest
         Game.MenuSelectQuestClick.click()
+
+        afterSelectingQuest()
+    }
+
+    private fun afterSelectingQuest() {
         AutomataApi.wait(1.5.seconds)
+
+        // Inventory full. Stop script.
+        when (Preferences.GameServer) {
+            // We only have images for JP and NA
+            GameServerEnum.En, GameServerEnum.Jp -> {
+                if (Game.InventoryFullRegion.exists(ImageLocator.InventoryFull)) {
+                    throw ScriptExitException("Inventory Full")
+                }
+            }
+        }
 
         // Auto refill
         while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina)) {
@@ -162,17 +182,23 @@ class AutoBattle : EntryPoint() {
      * too few clicks.
      */
     private fun isInResult(): Boolean {
-        val resultScreenItems = mapOf(
-            Game.ResultScreenRegion to ImageLocator.Result,
-            Game.ResultBondRegion to ImageLocator.Bond,
-            Game.ResultMasterExpRegion to ImageLocator.MasterExp,
-            Game.ResultMatRewardsRegion to ImageLocator.MatRewards,
-            Game.ResultMasterLvlUpRegion to ImageLocator.MasterLvlUp
-        )
-
-        return resultScreenItems.any { (Region, Pattern) ->
-            Region.exists(Pattern)
+        if (Game.ResultScreenRegion.exists(ImageLocator.Result)
+            || Game.ResultBondRegion.exists(ImageLocator.Bond)
+            // We're assuming CN and TW use the same Master/Mystic Code Level up image
+            || Game.ResultMasterLvlUpRegion.exists(ImageLocator.MasterLvlUp)) {
+            return true
         }
+
+        val gameServer = Preferences.GameServer
+
+        // We don't have TW images for these
+        if (gameServer != GameServerEnum.Tw) {
+            return Game.ResultMasterExpRegion.exists(ImageLocator.MasterExp)
+                    || Game.ResultMatRewardsRegion.exists(ImageLocator.MatRewards)
+        }
+
+        // Not in any result screen
+        return false
     }
 
     /**
@@ -216,12 +242,8 @@ class AutoBattle : EntryPoint() {
             Game.ContinueClick.click()
             battle.resetState()
 
-            AutomataApi.wait(1.5.seconds)
-
             // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
-            while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina)) {
-                refillStamina()
-            }
+            afterSelectingQuest()
 
             return
         }
