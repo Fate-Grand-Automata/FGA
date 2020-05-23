@@ -11,8 +11,9 @@ import java.io.InputStream
 import kotlin.math.roundToInt
 import org.opencv.core.Size as CvSize
 
-class DroidCvPattern(private var Mat: Mat?, private val OwnsMat: Boolean = true) : IPattern {
-    constructor(): this(Mat())
+class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean = true) :
+    IPattern {
+    constructor() : this(Mat())
 
     private companion object {
         fun makeMat(Stream: InputStream): Mat {
@@ -23,10 +24,10 @@ class DroidCvPattern(private var Mat: Mat?, private val OwnsMat: Boolean = true)
         }
     }
 
-    constructor(Stream: InputStream): this(makeMat(Stream))
+    constructor(Stream: InputStream) : this(makeMat(Stream))
 
     init {
-        require(Mat != null){ "Mat should not be null" }
+        require(Mat != null) { "Mat should not be null" }
     }
 
     override fun close() {
@@ -38,9 +39,11 @@ class DroidCvPattern(private var Mat: Mat?, private val OwnsMat: Boolean = true)
     }
 
     private fun resize(Target: Mat, Size: Size) {
-        Imgproc.resize(Mat, Target,
+        Imgproc.resize(
+            Mat, Target,
             CvSize(Size.Width.toDouble(), Size.Height.toDouble()),
-            0.0, 0.0, Imgproc.INTER_AREA)
+            0.0, 0.0, Imgproc.INTER_AREA
+        )
     }
 
     override fun resize(Size: Size): IPattern {
@@ -87,10 +90,12 @@ class DroidCvPattern(private var Mat: Mat?, private val OwnsMat: Boolean = true)
 
                 if (score >= Similarity) {
                     val loc = minMaxLocResult.maxLoc
-                    val region = Region(loc.x.roundToInt(),
+                    val region = Region(
+                        loc.x.roundToInt(),
                         loc.y.roundToInt(),
                         Template.width,
-                        Template.height)
+                        Template.height
+                    )
 
                     yield(Match(region, score))
 
@@ -98,14 +103,14 @@ class DroidCvPattern(private var Mat: Mat?, private val OwnsMat: Boolean = true)
                     mask.use {
                         // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
                         val floodFillDiff = 0.05
-                        Imgproc.floodFill(result.Mat, mask.Mat, loc, Scalar(0.0),
+                        Imgproc.floodFill(
+                            result.Mat, mask.Mat, loc, Scalar(0.0),
                             Rect(),
                             Scalar(floodFillDiff), Scalar(floodFillDiff),
                             0
                         )
                     }
-                }
-                else break
+                } else break
             }
         }
     }

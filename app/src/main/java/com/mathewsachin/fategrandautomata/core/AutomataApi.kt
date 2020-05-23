@@ -5,7 +5,6 @@ import java.io.InputStream
 import kotlin.math.min
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
-import kotlin.time.measureTime
 import kotlin.time.milliseconds
 import kotlin.time.seconds
 
@@ -133,6 +132,9 @@ fun Region.findAll(
         }
 }
 
+/**
+ * Central class used for triggering gestures and image recognition.
+ */
 class AutomataApi {
     companion object {
         var PlatformImpl: IPlatformImpl? = null
@@ -237,10 +239,10 @@ class AutomataApi {
             val endTimeMark = Monotonic.markNow() + Timeout
 
             while (true) {
-                val invocationDuration = Monotonic.measureTime {
-                    if (Condition.invoke()) {
-                        return true
-                    }
+                val scanStart = Monotonic.markNow()
+
+                if (Condition.invoke()) {
+                    return true
                 }
 
                 // check if we need to cancel because of timeout
@@ -251,7 +253,7 @@ class AutomataApi {
                 /* Wait a bit before checking again.
                    If invocationDuration is greater than the scanInterval, we don't wait. */
                 val scanInterval = 330.milliseconds
-                val timeToWait = scanInterval - invocationDuration
+                val timeToWait = scanInterval - scanStart.elapsedNow()
 
                 if (timeToWait.isPositive()) {
                     wait(timeToWait)

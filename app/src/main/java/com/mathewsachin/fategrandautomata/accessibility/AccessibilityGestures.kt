@@ -8,6 +8,9 @@ import com.mathewsachin.fategrandautomata.core.IGestureService
 import com.mathewsachin.fategrandautomata.core.Location
 import com.mathewsachin.fategrandautomata.util.*
 
+/**
+ * Class to perform gestures using Android's [AccessibilityService].
+ */
 class AccessibilityGestures(private var AccessibilityService: AccessibilityService?) :
     IGestureService {
     override fun swipe(Start: Location, End: Location) {

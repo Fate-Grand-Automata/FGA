@@ -8,11 +8,16 @@ import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import kotlin.time.seconds
 
-// Checks if Support Selection menu is up
+/**
+ * Checks if Support Selection menu is up
+ */
 fun isInSupport(): Boolean {
     return Game.SupportScreenRegion.exists(ImageLocator.SupportScreen, Similarity = 0.85)
 }
 
+/**
+ * Script for starting quests, selecting the support and doing battles.
+ */
 open class AutoBattle : EntryPoint() {
     private val support = Support()
     private val card = Card()
@@ -22,6 +27,9 @@ open class AutoBattle : EntryPoint() {
     private var stonesUsed = 0
     private var isContinuing = false
 
+    /**
+     * Refills the AP with apples depending on [Preferences.Refill].
+     */
     private fun refillStamina() {
         val refillPrefs = Preferences.Refill
 
@@ -46,10 +54,17 @@ open class AutoBattle : EntryPoint() {
         } else throw ScriptExitException("AP ran out!")
     }
 
+    /**
+     * Checks if the window for withdrawing from the battle exists.
+     */
     private fun needsToWithdraw(): Boolean {
         return Game.WithdrawRegion.exists(ImageLocator.Withdraw)
     }
 
+    /**
+     * Handles withdrawing from battle. Depending on [Preferences.WithdrawEnabled], the script either
+     * withdraws automatically or stops completely.
+     */
     private fun withdraw() {
         if (!Preferences.WithdrawEnabled) {
             throw ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.")
@@ -73,13 +88,19 @@ open class AutoBattle : EntryPoint() {
         Game.StaminaBronzeClick.click()
     }
 
+    /**
+     * Checks if the SKIP button exists on the screen.
+     */
     private fun needsToStorySkip(): Boolean {
         // TODO: Story Skip doesn't work correctly
         //if (Game.MenuStorySkipRegion.exists(ImageLocator.StorySkip))
         return Preferences.StorySkip
     }
 
-    // Click begin quest in Formation selection, then select boost item, if applicable, then confirm selection.
+    /**
+     * Clicks on the button to start the quest in the Party selection, then selects the boost item
+     * if applicable and then skips the story if story skip is activated.
+     */
     private fun startQuest() {
         Game.MenuStartQuestClick.click()
 
@@ -104,12 +125,16 @@ open class AutoBattle : EntryPoint() {
         }
     }
 
-    // Checking if in menu.png is on screen, indicating you are in the screen to choose your quest
+    /**
+     *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
+     */
     private fun isInMenu(): Boolean {
         return Game.MenuScreenRegion.exists(ImageLocator.Menu)
     }
 
-    // Reset battle state, then click quest and refill stamina if needed.
+    /**
+     * Resets the battle state, clicks on the quest and refills the AP if needed.
+     */
     private fun menu() {
         battle.resetState()
 
@@ -145,7 +170,17 @@ open class AutoBattle : EntryPoint() {
         }
     }
 
-    // Checking if Quest Completed screen is up, specifically if Bond point/reward is up.
+    /**
+     * Checks if the Quest Completed screen is up. This can be one of many screens:
+     * - Bond point distribution
+     * - Bond level up
+     * - Master EXP gains
+     * - Dropped materials
+     * - Master Level or Mystic Codes level ups
+     *
+     * All screens need to be included in case of getting stuck in one of them because of lags or
+     * too few clicks.
+     */
     private fun isInResult(): Boolean {
         if (Game.ResultScreenRegion.exists(ImageLocator.Result)
             || Game.ResultBondRegion.exists(ImageLocator.Bond)
@@ -166,7 +201,10 @@ open class AutoBattle : EntryPoint() {
         return false
     }
 
-    // Click through reward screen, continue if option presents itself, otherwise continue clicking through
+    /**
+     * Clicks through the reward screen, continue if the option presents itself, otherwise continue
+     * clicking through the rest of the screens until the quest selection screen is reached.
+     */
     private fun result() {
         // Validator document https://github.com/29988122/Fate-Grand-Order_Lua/wiki/In-Game-Result-Screen-Flow for detail.
         Game.ResultNextClick.click(55)
@@ -310,5 +348,9 @@ open class AutoBattle : EntryPoint() {
         return Game.GudaFinalRewardsRegion.exists(ImageLocator.GudaFinalRewards)
     }
 
+    /**
+     * Clicks on the Close button for the special GudaGuda Final Honnouji reward window if it was
+     * detected.
+     */
     private fun gudaFinalReward() = Game.GudaFinalRewardsRegion.click()
 }

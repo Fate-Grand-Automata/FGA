@@ -1,5 +1,9 @@
 package com.mathewsachin.fategrandautomata.core
 
+/**
+ * A static class responsible for taking screenshots via a [IScreenshotService]. The screenshots are
+ * scaled and cropped and can be cached for a while using [snapshot].
+ */
 class ScreenshotManager {
     companion object {
         private var impl: IScreenshotService? = null

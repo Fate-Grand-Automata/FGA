@@ -1,5 +1,8 @@
 package com.mathewsachin.fategrandautomata.core
 
+/**
+ * Interface for image objects.
+ */
 interface IPattern : AutoCloseable {
     val width: Int
     val height: Int

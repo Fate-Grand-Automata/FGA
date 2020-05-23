@@ -13,10 +13,12 @@ import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.core.Location
-import com.mathewsachin.fategrandautomata.core.Stopwatch
 import com.mathewsachin.fategrandautomata.ui.highlightView
 import kotlin.math.roundToInt
 import kotlin.time.Duration
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource.Monotonic
+import kotlin.time.milliseconds
 
 class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     private val layout = FrameLayout(Service)
@@ -115,10 +117,10 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
         return Location(x, y)
     }
 
-    private val dragStopwatch = Stopwatch()
     private var dX = 0f
     private var dY = 0f
     private var lastAction = 0
+    private var dragTimeMark: TimeMark? = null
 
     private fun scriptCtrlBtnOnTouch(_View: View, Event: MotionEvent): Boolean {
         return when (Event.actionMasked) {
@@ -127,7 +129,7 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
                 dX = layoutParams.x.coerceIn(0, maxX) - Event.rawX
                 dY = layoutParams.y.coerceIn(0, maxY) - Event.rawY
                 lastAction = MotionEvent.ACTION_DOWN
-                dragStopwatch.start()
+                dragTimeMark = Monotonic.markNow()
 
                 false
             }
@@ -135,7 +137,7 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
                 val newX = Event.rawX + dX
                 val newY = Event.rawY + dY
 
-                if (dragStopwatch.elapsedMs > ViewConfiguration.getLongPressTimeout()) {
+                if (dragTimeMark!!.elapsedNow() > ViewConfiguration.getLongPressTimeout().milliseconds) {
                     val (mX, mY) = getMaxBtnCoordinates()
                     layoutParams.x = newX.roundToInt().coerceIn(0, mX)
                     layoutParams.y = newY.roundToInt().coerceIn(0, mY)
