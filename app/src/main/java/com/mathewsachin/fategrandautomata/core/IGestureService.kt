@@ -1,5 +1,8 @@
 package com.mathewsachin.fategrandautomata.core
 
+/**
+ * Interface for classes which can perform gestures.
+ */
 interface IGestureService : AutoCloseable {
     /**
      * Swipes from one [Location] to another [Location].

@@ -7,6 +7,9 @@ import com.mathewsachin.fategrandautomata.core.click
 import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
 import kotlin.time.seconds
 
+/**
+ * Continually triggers 10x Summon, intended for FP summons, but could also be used for SQ summons.
+ */
 class AutoFriendGacha : EntryPoint() {
     private val first10SummonClick = Location(1400, 1120)
     private val okClick = Location(1600, 1120)
