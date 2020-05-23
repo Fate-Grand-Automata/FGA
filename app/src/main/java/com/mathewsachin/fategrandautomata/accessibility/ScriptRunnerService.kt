@@ -37,11 +37,7 @@ import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageIdKey
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamerActivity
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
-import kotlin.math.roundToInt
 import kotlin.time.seconds
-import kotlin.time.TimeMark
-import kotlin.time.TimeSource.Monotonic
-import kotlin.time.milliseconds
 
 fun View.setThrottledClickListener(Listener: () -> Unit) {
     var isWorking = false
