@@ -12,10 +12,13 @@ import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 
+/**
+ * This class is responsible for creating screenshots using [MediaProjection].
+ */
 class MediaProjectionScreenshotService(
     private val MediaProjection: MediaProjection,
     DisplayMetrics: DisplayMetrics
-): IScreenshotService {
+) : IScreenshotService {
     private val colorCorrectedMat = Mat()
 
     private val pattern = DroidCvPattern(colorCorrectedMat, false)

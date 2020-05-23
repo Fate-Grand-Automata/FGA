@@ -24,7 +24,11 @@ private fun calculateBorderThickness(Outer: Int, Inner: Int): Int {
     return (size / 2.0).roundToInt()
 }
 
-private fun calculateGameAreaWithoutBorders(ScriptSize: Size, ScreenSize: Size, ScaleRate: Double): Region {
+private fun calculateGameAreaWithoutBorders(
+    ScriptSize: Size,
+    ScreenSize: Size,
+    ScaleRate: Double
+): Region {
     val scaledScriptSize = ScriptSize * ScaleRate
 
     return Region(
@@ -42,7 +46,8 @@ private fun applyNotchOffset(Region: Region, NotchOffset: Int): Region {
 private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
     val gameWithBorders = GameAreaManager.GameArea
     val (scaleByWidth, scaleRate) = decideScaleMethod(ScriptSize, gameWithBorders.size)
-    val gameWithoutBorders = calculateGameAreaWithoutBorders(ScriptSize, gameWithBorders.size, scaleRate)
+    val gameWithoutBorders =
+        calculateGameAreaWithoutBorders(ScriptSize, gameWithBorders.size, scaleRate)
     val gameWithoutBordersAndNotch = applyNotchOffset(gameWithoutBorders, gameWithBorders.X)
 
     GameAreaManager.GameArea = gameWithoutBordersAndNotch
@@ -50,8 +55,7 @@ private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
     if (scaleByWidth) {
         GameAreaManager.ScriptDimension = CompareSettings(true, ScriptSize.Width)
         GameAreaManager.CompareDimension = CompareSettings(true, ImageSize.Width)
-    }
-    else {
+    } else {
         GameAreaManager.ScriptDimension = CompareSettings(false, ScriptSize.Height)
         GameAreaManager.CompareDimension = CompareSettings(false, ImageSize.Height)
     }

@@ -8,9 +8,13 @@ import android.util.DisplayMetrics
 import com.mathewsachin.fategrandautomata.scripts.storageDir
 import java.io.File
 
+/**
+ * This class is responsible for creating video recordings of the screen using [MediaProjection].
+ */
 class MediaProjectionRecording(
     MediaProjection: MediaProjection,
-    DisplayMetrics: DisplayMetrics) : AutoCloseable {
+    DisplayMetrics: DisplayMetrics
+) : AutoCloseable {
 
     private val virtualDisplay: VirtualDisplay
     private val mediaRecorder: MediaRecorder

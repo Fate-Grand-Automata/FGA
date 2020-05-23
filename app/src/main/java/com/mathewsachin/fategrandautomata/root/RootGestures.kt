@@ -7,6 +7,9 @@ import kotlin.math.max
 
 private const val InputCommand = "/system/bin/input"
 
+/**
+ * Performs gestures using shell commands, which are only accessible as superusers (root).
+ */
 class RootGestures(private val SuperUser: SuperUser) : IGestureService {
     override fun swipe(Start: Location, End: Location) {
         SuperUser.sendCommand("$InputCommand swipe ${Start.X} ${Start.Y} ${End.X} ${End.Y} $swipeDuration")
