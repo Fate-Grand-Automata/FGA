@@ -6,6 +6,8 @@ import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjection
@@ -15,9 +17,13 @@ import android.os.SystemClock
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
+import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.core.*
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
@@ -33,10 +39,12 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
 import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageIdKey
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamerActivity
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
+import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 import kotlin.time.seconds
 
 fun View.setThrottledClickListener(Listener: () -> Unit) {
@@ -220,24 +228,84 @@ class ScriptRunnerService : AccessibilityService() {
             return
         }
 
+        getEntryPoint().apply {
+            if (this is AutoBattle) {
+                autoSkillPicker(this)
+            }
+            else {
+                runEntryPoint(this)
+            }
+        }
+    }
+
+    private fun runEntryPoint(EntryPoint: EntryPoint) {
+        if (scriptStarted) {
+            return
+        }
+
+        scriptStarted = true
+        entryPoint = EntryPoint
+
         if (Preferences.RecordScreen && mediaProjection != null) {
             recording = MediaProjectionRecording(mediaProjection!!, userInterface.metrics)
         }
 
-        entryPoint = getEntryPoint().apply {
-            scriptExitListener = ::onScriptExit
+        EntryPoint.scriptExitListener = ::onScriptExit
 
-            userInterface.setStopIcon()
-            if (recording != null) {
-                userInterface.showAsRecording()
-            }
-
-            run()
+        userInterface.setStopIcon()
+        if (recording != null) {
+            userInterface.showAsRecording()
         }
 
-        scriptStarted = true
+        EntryPoint.run()
+    }
 
-        showStatusNotification("Script Running")
+    private fun autoSkillPicker(EntryPoint: EntryPoint) {
+        if (Preferences.EnableAutoSkill) {
+            var selected = Preferences.SelectedAutoSkillConfig
+
+            val autoSkillItems = getAutoSkillEntries()
+
+            val radioGroup = RadioGroup(this).apply {
+                orientation = RadioGroup.VERTICAL
+                setPadding(20)
+            }
+
+            for ((index, item) in autoSkillItems.withIndex()) {
+                val radioBtn = RadioButton(this).apply {
+                    text = item.Name
+                    id = index
+                }
+
+                radioGroup.addView(radioBtn)
+
+                if (selected == item.Id) {
+                    radioGroup.check(index)
+                }
+            }
+
+            ScriptRunnerDialog(userInterface).apply {
+                setTitle("Select AutoSkill Config")
+                setPositiveButton(getString(android.R.string.ok)) {
+                    val selectedIndex = radioGroup.checkedRadioButtonId
+                    if (selectedIndex in autoSkillItems.indices) {
+                        selected = autoSkillItems[selectedIndex].Id
+
+                        defaultPrefs.edit(commit = true) {
+                            putString(getString(R.string.pref_autoskill_selected), selected)
+                        }
+                    }
+
+                    runEntryPoint(EntryPoint)
+                }
+                setNegativeButton(getString(android.R.string.cancel)) { }
+                setView(radioGroup)
+                show()
+            }
+        }
+        else {
+            runEntryPoint(EntryPoint)
+        }
     }
 
     private fun stopScript() {
@@ -251,8 +319,6 @@ class ScriptRunnerService : AccessibilityService() {
         }
 
         onScriptExit()
-
-        showStatusNotification("Ready")
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -346,19 +412,28 @@ class ScriptRunnerService : AccessibilityService() {
 
     private val foregroundNotificationId = 1
 
-    fun showStatusNotification(Message: String) {
-        val builder = startBuildNotification()
-            .setContentText(Message)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(Message))
-
-        NotificationManagerCompat
-            .from(this)
-            .notify(foregroundNotificationId, builder.build())
-    }
-
     fun showForegroundNotification() {
         val builder = startBuildNotification()
 
         startForeground(foregroundNotificationId, builder.build())
+    }
+
+    fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
+        ScriptRunnerDialog(userInterface).apply {
+            setTitle(Title)
+            setMessage(Message)
+            setPositiveButton(getString(android.R.string.ok)) { }
+
+            if (Error != null) {
+                setNeutralButton("Copy") {
+                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clipData = ClipData.newPlainText("Error", Error.toString())
+
+                    clipboard.setPrimaryClip(clipData)
+                }
+            }
+
+            show()
+        }
     }
 }

@@ -1,15 +1,15 @@
 package com.mathewsachin.fategrandautomata.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
-import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringSetPref
 import com.mathewsachin.fategrandautomata.util.AutoSkillEntry
+import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 import kotlinx.android.synthetic.main.autoskill_list.*
 import java.util.*
 
@@ -40,16 +40,7 @@ class AutoSkillListActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        autoSkillItems = getStringSetPref(R.string.pref_autoskill_list)
-            .map {
-                val sharedPrefs = getSharedPreferences(it, MODE_PRIVATE)
-
-                AutoSkillEntry(
-                    it,
-                    getStringPref(R.string.pref_autoskill_name, "--", Prefs = sharedPrefs)
-                )
-            }
-            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.Name })
+        autoSkillItems = getAutoSkillEntries()
             .toTypedArray()
 
         val autoSkillNames = autoSkillItems

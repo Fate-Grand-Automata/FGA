@@ -20,10 +20,10 @@ import kotlin.time.TimeMark
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 
-class ScriptRunnerUserInterface(Service: ScriptRunnerService) {
+class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     private val layout = FrameLayout(Service)
 
-    private val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
     private val layoutParams = WindowManager.LayoutParams().apply {
         type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
@@ -35,6 +35,7 @@ class ScriptRunnerUserInterface(Service: ScriptRunnerService) {
         gravity = Gravity.LEFT or Gravity.TOP
         x = 0
         y = 0
+        windowAnimations = android.R.style.Animation_Toast
     }
 
     private var highlightLayoutParams = WindowManager.LayoutParams().apply {

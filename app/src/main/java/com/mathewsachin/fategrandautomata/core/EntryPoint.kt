@@ -38,7 +38,7 @@ abstract class EntryPoint {
 
             scriptExitListener?.invoke()
 
-            AutomataApi.showMessageBox("Unexpected Error", e.toString())
+            AutomataApi.showMessageBox("Unexpected Error", e.toString(), e)
         }
     }
 
