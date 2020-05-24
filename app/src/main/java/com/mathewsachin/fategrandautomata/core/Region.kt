@@ -32,6 +32,22 @@ data class Region(val X: Int, val Y: Int, val Width: Int, val Height: Int) {
     }
 
     /**
+     * Creates a new [Region] width the same width and height, but X and Y are increased by the
+     * [Location]'s X and Y value.
+     */
+    operator fun plus(Location: Location): Region {
+        return Region(location + Location, size)
+    }
+
+    /**
+     * Creates a new [Region] width the same width and height, but X and Y are decreased by the
+     * [Location]'s X and Y value.
+     */
+    operator fun minus(Location: Location): Region {
+        return Region(location - Location, size)
+    }
+
+    /**
      * Returns the upper left corner position as [Location].
      */
     val location get() = Location(X, Y)

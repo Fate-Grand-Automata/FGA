@@ -126,7 +126,7 @@ fun Region.findAll(
             var region = it.Region.transformFromImage()
 
             // convert the relative position in the region to the absolute position on the screen
-            region = region.copy(X = region.X + this.X, Y = region.Y + this.Y)
+            region += this.location
 
             Match(region, it.score)
         }
