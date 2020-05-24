@@ -8,11 +8,12 @@
     android:layout_height="match_parent"
     android:background="#87000000">
     <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="250dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_max="300dp"
+        app:layout_constrainedHeight="true"
         android:layout_margin="16dp"
         android:layout_gravity="center"
-        android:maxHeight="300dp"
         android:background="?android:attr/colorBackground"
         android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,8 @@
             <ScrollView
                 android:id="@+id/script_runner_dialog_content"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constrainedHeight="true"
                 android:layout_marginHorizontal="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
