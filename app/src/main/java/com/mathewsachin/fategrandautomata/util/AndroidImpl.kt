@@ -45,9 +45,13 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
         val v = Service.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(Duration.toLongMilliseconds(), VibrationEffect.DEFAULT_AMPLITUDE))
-        }
-        else {
+            v.vibrate(
+                VibrationEffect.createOneShot(
+                    Duration.toLongMilliseconds(),
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
+            )
+        } else {
             v.vibrate(Duration.toLongMilliseconds())
         }
     }
@@ -62,11 +66,7 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
 
     override fun highlight(Region: Region, Duration: Duration) {
         // We can't draw over the notch area
-        val cutoutAppliedRegion = getCutoutAppliedRegion()
-        val region = Region.copy(
-            X = Region.X - cutoutAppliedRegion.X,
-            Y = Region.Y - cutoutAppliedRegion.Y
-        )
+        val region = Region - getCutoutAppliedRegion().location
 
         GlobalScope.launch {
             addRegionToHighlight(region)

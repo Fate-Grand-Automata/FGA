@@ -15,4 +15,18 @@ data class Location(val X: Int = 0, val Y: Int = 0) {
             (Y * scale).roundToInt()
         )
     }
+
+    /**
+     * Creates a new [Location] where `X == this.X + Other.X` and `Y == this.Y + Other.Y`.
+     */
+    operator fun plus(Other: Location): Location {
+        return Location(X + Other.X, Y + Other.Y)
+    }
+
+    /**
+     * Creates a new [Location] where `X == this.X - Other.X` and `Y == this.Y - Other.Y`.
+     */
+    operator fun minus(Other: Location): Location {
+        return Location(X - Other.X, Y - Other.Y)
+    }
 }

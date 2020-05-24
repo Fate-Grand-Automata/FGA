@@ -39,18 +39,13 @@ private fun calculateGameAreaWithoutBorders(
     )
 }
 
-private fun applyNotchOffset(Region: Region, NotchOffset: Int): Region {
-    return Region.copy(X = Region.X + NotchOffset)
-}
-
 private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
     val gameWithBorders = GameAreaManager.GameArea
     val (scaleByWidth, scaleRate) = decideScaleMethod(ScriptSize, gameWithBorders.size)
     val gameWithoutBorders =
         calculateGameAreaWithoutBorders(ScriptSize, gameWithBorders.size, scaleRate)
-    val gameWithoutBordersAndNotch = applyNotchOffset(gameWithoutBorders, gameWithBorders.X)
 
-    GameAreaManager.GameArea = gameWithoutBordersAndNotch
+    GameAreaManager.GameArea = gameWithoutBorders
 
     if (scaleByWidth) {
         GameAreaManager.ScriptDimension = CompareSettings(true, ScriptSize.Width)

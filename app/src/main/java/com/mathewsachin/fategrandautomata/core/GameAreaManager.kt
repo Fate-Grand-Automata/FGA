@@ -1,5 +1,8 @@
 package com.mathewsachin.fategrandautomata.core
 
+import com.mathewsachin.fategrandautomata.core.AutomataApi.Companion.WindowRegion
+import com.mathewsachin.fategrandautomata.core.GameAreaManager.Companion.GameArea
+
 /**
  * This class is used for storing the script and image dimensions and for storing the playable area
  * in [GameArea].
@@ -22,8 +25,12 @@ class GameAreaManager {
          * Stores the playable area as a [Region] in image coordinates, which is normally 720p.
          * Notches and the blue bars are excluded from this area by introducing X and Y offsets.
          */
-        var GameArea
-            get() = gameArea ?: AutomataApi.WindowRegion
+        var GameArea: Region
+            get() {
+                // store the WindowRegion so we don't calculate it twice
+                var windowRegion = WindowRegion;
+                return gameArea?.plus(windowRegion.location) ?: windowRegion
+            }
             set(value) {
                 gameArea = value
             }
