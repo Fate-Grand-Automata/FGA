@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
+import android.os.Build
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.FrameLayout
@@ -23,12 +24,19 @@ import kotlin.time.milliseconds
 class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     private val layout = FrameLayout(Service)
 
+    val overlayType: Int get() {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        }
+        else WindowManager.LayoutParams.TYPE_PHONE
+    }
+
     val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
     private val layoutParams = WindowManager.LayoutParams().apply {
-        type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        type = overlayType
         format = PixelFormat.TRANSLUCENT
-        flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         width = WindowManager.LayoutParams.WRAP_CONTENT
         height = WindowManager.LayoutParams.WRAP_CONTENT
         @SuppressLint("RtlHardcoded")
@@ -39,7 +47,7 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     }
 
     private var highlightLayoutParams = WindowManager.LayoutParams().apply {
-        type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+        type = overlayType
         format = PixelFormat.TRANSLUCENT
         flags =
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE

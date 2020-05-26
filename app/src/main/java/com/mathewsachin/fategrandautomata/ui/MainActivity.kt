@@ -109,8 +109,22 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
         return false
     }
 
+    private fun checkCanUseOverlays(): Boolean {
+        if (!Settings.canDrawOverlays(this)) {
+            val i = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName"))
+            startActivity(i)
+            return false
+        }
+
+        return true
+    }
+
     private fun serviceToggleBtnOnClick() {
         if (!checkAccessibilityService())
+            return
+
+        if (!checkCanUseOverlays())
             return
 
         val instance = ScriptRunnerService.Instance
