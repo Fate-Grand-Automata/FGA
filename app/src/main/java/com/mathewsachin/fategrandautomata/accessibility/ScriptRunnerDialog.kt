@@ -28,7 +28,7 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
         inflater.inflate(R.layout.script_runner_dialog, frame)
 
         layoutParams = WindowManager.LayoutParams().apply {
-            type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+            type = UI.overlayType
             format = PixelFormat.TRANSLUCENT
             width = WindowManager.LayoutParams.MATCH_PARENT
             height = WindowManager.LayoutParams.MATCH_PARENT
