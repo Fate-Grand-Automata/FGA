@@ -1,0 +1,40 @@
+---
+layout: default
+---
+
+<div class="jumbotron jumbotron-fluid peach-gradient text-white">
+  <div class="container text-center">
+    <h2>{{site.name}}</h2>
+
+    <small>{{site.description}}</small><br>
+
+    <i id="version-txt"></i><br>
+
+    <a class="btn peach" href="{{site.github}}"><i class="mdi mdi-github mr-1"></i> Source Code</a>
+    <a id="download-btn" target="_blank" class="btn aqua-gradient" href="{{site.github}}/releases"><i class="mdi mdi-download mr-1"></i> Download</a>
+  </div>
+</div>
+
+<script src="{{ '/scripts/download.js' | relative_url }}"></script>
+
+<div class="container text-center">
+  <div class="row">
+    <div class="col-md">
+      <i class="mdi mdi-auto-fix display-1 text-info"></i>
+      <br>
+      <div class="text-muted">Auto-skill maker makes it easy to automate your farming</div>
+    </div>
+    <div class="col-md">
+      <i class="mdi mdi-handshake display-1 text-success"></i>
+      <br>
+      <div class="text-muted">Support servant and CEs can be selected automatically</div>
+    </div>
+    <div class="col-md">
+      <i class="mdi mdi-food-apple-outline display-1 text-warning"></i>
+      <br>
+      <div class="text-muted">Can be set to automatically eat through your apples</div>
+    </div>
+  </div>
+</div>
+
+<br>

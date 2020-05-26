@@ -1,0 +1,5 @@
+_drafts/
+_site/
+*.swp
+Gemfile.lock
+debug.log
