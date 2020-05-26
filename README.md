@@ -7,6 +7,8 @@
 
 Auto-battle app for Fate/Grand Order Android.  
 
+Download from our [Website](https://MathewSachin.github.io/Fate-Grand-Automata).
+
 This is pretty much a ~~C#~~ **Kotlin** port of [Fate-Grand-Order_Lua][FGOLua] with UI for configuring Settings and inbuilt Sikuli like API.
 
 So, there's no time limit on the use of the app unlike FGO-Lua.
