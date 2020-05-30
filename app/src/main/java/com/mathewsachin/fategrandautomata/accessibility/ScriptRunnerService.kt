@@ -13,6 +13,8 @@ import android.content.Intent
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
@@ -41,8 +43,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
 import com.mathewsachin.fategrandautomata.ui.MainActivity
-import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageIdKey
-import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamerActivity
+import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 import kotlin.time.seconds
@@ -215,12 +216,8 @@ class ScriptRunnerService : AccessibilityService() {
         else -> AutoBattle()
     }
 
-    private fun supportImgMakerCallback(Id: String) {
-        val i = Intent(applicationContext, SupportImageNamerActivity::class.java)
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        i.putExtra(SupportImageIdKey, Id)
-
-        applicationContext.startActivity(i)
+    private fun supportImgMakerCallback() {
+        handler.post { showSupportImageNamer(userInterface) }
     }
 
     private fun startScript() {
@@ -418,6 +415,10 @@ class ScriptRunnerService : AccessibilityService() {
         startForeground(foregroundNotificationId, builder.build())
     }
 
+    private val handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
+
     fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
         ScriptRunnerDialog(userInterface).apply {
             setTitle(Title)
@@ -427,7 +428,7 @@ class ScriptRunnerService : AccessibilityService() {
             if (Error != null) {
                 setNeutralButton("Copy") {
                     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clipData = ClipData.newPlainText("Error", Error.toString())
+                    val clipData = ClipData.newPlainText("Error", Error.info)
 
                     clipboard.setPrimaryClip(clipData)
                 }

@@ -43,6 +43,8 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
         UI.windowManager.addView(frame, layoutParams)
     }
 
+    var autoDismiss = true
+
     fun hide() {
         UI.windowManager.removeView(frame)
     }
@@ -66,7 +68,9 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
         btn.setOnClickListener {
             OnClick()
 
-            hide()
+            if (autoDismiss) {
+                hide()
+            }
         }
     }
 

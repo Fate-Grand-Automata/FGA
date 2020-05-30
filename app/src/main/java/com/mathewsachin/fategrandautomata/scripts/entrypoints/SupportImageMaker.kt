@@ -7,21 +7,42 @@ import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
 import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import java.io.File
 
-fun getServantImgPath(Id: String, Index: Int): File {
-    return File(supportServantImgFolder, "${Id}_servant${Index}.png")
+private val supportImgTempDir: File by lazy {
+    val dir = File(AutomataApplication.Instance.cacheDir, "support")
+
+    if (!dir.exists()) {
+        dir.mkdirs()
+    }
+
+    dir
 }
 
-fun getCeImgPath(Id: String, Index: Int): File {
-    return File(supportCeFolder, "${Id}_ce${Index}.png")
+fun getServantImgPath(Index: Int): File {
+    return File(supportImgTempDir, "servant_${Index}.png")
 }
 
-typealias SupportImageMakerCallback = (String) -> Unit
+fun getCeImgPath(Index: Int): File {
+    return File(supportImgTempDir, "ce_${Index}.png")
+}
 
-class SupportImageMaker(private var Callback: SupportImageMakerCallback?) : EntryPoint() {
+fun getFriendImgPath(Index: Int): File {
+    return File(supportImgTempDir, "friend_${Index}.png")
+}
+
+private fun cleanExtractFolder() {
+    for (file in supportImgTempDir.listFiles()) {
+        file.delete()
+    }
+}
+
+class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
     override fun script(): Nothing {
         initScaling()
+
+        cleanExtractFolder()
 
         val isInSupport =
             isInSupport()
@@ -34,8 +55,6 @@ class SupportImageMaker(private var Callback: SupportImageMakerCallback?) : Entr
         val regionArray = searchRegion.findAll(regionAnchor, supportRegionToolSimilarity)
 
         val screenBounds = Region(0, 0, Game.ScriptSize.Width, Game.ScriptSize.Height)
-
-        val timestamp = System.currentTimeMillis().toString()
 
         var i = 0
 
@@ -60,20 +79,23 @@ class SupportImageMaker(private var Callback: SupportImageMakerCallback?) : Entr
                 val servant = it.crop(Region(0, 0, 125, 44))
                 servant.use {
                     servant.save(
-                        getServantImgPath(
-                            timestamp,
-                            i
-                        ).absolutePath
+                        getServantImgPath(i).absolutePath
                     )
                 }
 
                 val ce = it.crop(Region(0, 80, pattern.width, 25))
                 ce.use {
                     ce.save(
-                        getCeImgPath(
-                            timestamp,
-                            i
-                        ).absolutePath
+                        getCeImgPath(i).absolutePath
+                    )
+                }
+
+                val friendBound = Region(supportBound.X + pattern.width + 180, supportBound.Y - 95, 400, 110)
+                val friendPattern = friendBound.getPattern()
+
+                friendPattern?.use {
+                    friendPattern.save(
+                        getFriendImgPath(i).absolutePath
                     )
                 }
             }
@@ -85,10 +107,9 @@ class SupportImageMaker(private var Callback: SupportImageMakerCallback?) : Entr
             throw ScriptExitException("No support images were found on the current screen. Are you on Support selection or Friend list screen?")
         }
 
-        Callback?.invoke(timestamp)
-
+        Callback?.invoke()
         Callback = null
 
-        throw ScriptExitException("Support Image(s) were generated.")
+        throw ScriptExitException()
     }
 }

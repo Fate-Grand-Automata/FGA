@@ -1,16 +1,17 @@
 package com.mathewsachin.fategrandautomata.ui.support_img_namer
 
-import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.FrameLayout
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
-import kotlinx.android.synthetic.main.support_img_namer.*
-
-const val SupportImageIdKey = "SupportImageIdKey"
+import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
+import com.mathewsachin.fategrandautomata.scripts.supportImgFolder
+import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
 private const val InvalidChars = """<>"\|:\*\?\\\/"""
@@ -20,112 +21,76 @@ val ServantRegex = Regex("""$FileNameRegex(/$FileNameRegex)?""")
 val CeRegex = Regex(FileNameRegex)
 
 private const val InvalidCharsMsg = "<, >, \", |, :, *, ?, \\, /"
-const val ServantInvalidMsg = "Please check your Servant names again. \n\nYou're not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
-const val CeInvalidMsg = "Please check your CE names again. \n\nYou're not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
+const val ServantInvalidMsg = "You're not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
+const val CeInvalidMsg = "You're not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
 
-class SupportImageNamerActivity : AppCompatActivity() {
-    private lateinit var servant0: SupportImgEntry
-    private lateinit var servant1: SupportImgEntry
-    private lateinit var ce0: SupportImgEntry
-    private lateinit var ce1: SupportImgEntry
-    private lateinit var entryList: List<SupportImgEntry>
+private fun GetSupportEntries(Frame: View): List<SupportImgEntry> {
+    val servant0 = SupportImgEntry(
+        getServantImgPath(0),
+        supportServantImgFolder,
+        Frame.findViewById(R.id.support_img_servant_0),
+        ServantRegex, ServantInvalidMsg
+    )
+    val servant1 = SupportImgEntry(
+        getServantImgPath(1),
+        supportServantImgFolder,
+        Frame.findViewById(R.id.support_img_servant_1),
+        ServantRegex, ServantInvalidMsg
+    )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.support_img_namer)
+    val ce0 = SupportImgEntry(
+        getCeImgPath(0),
+        supportCeFolder,
+        Frame.findViewById(R.id.support_img_ce_0),
+        CeRegex, CeInvalidMsg
+    )
+    val ce1 = SupportImgEntry(
+        getCeImgPath(1),
+        supportCeFolder,
+        Frame.findViewById(R.id.support_img_ce_1),
+        CeRegex, CeInvalidMsg
+    )
 
-        setSupportActionBar(support_img_namer_toolbar)
+    val friend0 = SupportImgEntry(
+        getFriendImgPath(0),
+        supportImgFolder,
+        Frame.findViewById(R.id.support_img_friend_0),
+        CeRegex, CeInvalidMsg
+    )
+    val friend1 = SupportImgEntry(
+        getFriendImgPath(1),
+        supportImgFolder,
+        Frame.findViewById(R.id.support_img_friend_1),
+        CeRegex, CeInvalidMsg
+    )
 
-        val extras = intent.extras
-        val supportImgId = extras?.getString(SupportImageIdKey)
-            ?: return
+    return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
+}
 
-        servant0 = SupportImgEntry(
-            getServantImgPath(supportImgId, 0),
-            image_servant_0, del_servant_0, text_servant_0,
-            this, ServantRegex, ServantInvalidMsg
-        )
-        servant1 = SupportImgEntry(
-            getServantImgPath(supportImgId, 1),
-            image_servant_1, del_servant_1, text_servant_1,
-            this, ServantRegex, ServantInvalidMsg
-        )
-        ce0 = SupportImgEntry(
-            getCeImgPath(supportImgId, 0),
-            image_ce_0, del_ce_0, text_ce_0,
-            this, CeRegex, CeInvalidMsg
-        )
-        ce1 = SupportImgEntry(
-            getCeImgPath(supportImgId, 1),
-            image_ce_1, del_ce_1, text_ce_1,
-            this, CeRegex, CeInvalidMsg
-        )
+fun showSupportImageNamer(UI: ScriptRunnerUserInterface) {
+    val frame = FrameLayout(UI.Service)
 
-        entryList = listOf(servant0, servant1, ce0, ce1)
-    }
+    val inflater = LayoutInflater.from(UI.Service)
+    inflater.inflate(R.layout.support_img_namer, frame)
 
-    override fun onDestroy() {
-        // these objects contain a reference to activity context
-        for (entry in entryList) {
-            entry.close()
-        }
+    val entryList = GetSupportEntries(frame)
 
-        super.onDestroy()
-    }
+    ScriptRunnerDialog(UI).apply {
+        autoDismiss = false
 
-    private fun renameSupportImages() {
-        if (!entryList.all { it.isValid() })
-            return
+        setTitle("Pick what you want")
+        setView(frame)
 
-        if (!entryList.all { it.rename() })
-            return
-
-        finish()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.support_img_namer_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.action_rename_support_imgs -> {
-                renameSupportImages()
-                true
-            }
-            R.id.action_rename_support_imgs_discard -> {
-                discard()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun discard() {
-        AlertDialog.Builder(this)
-            .setMessage("Do you want to delete all images and exit?")
-            .setTitle("Confirm Deletion")
-            .setPositiveButton(android.R.string.yes) { _, _ ->
-                for (file in entryList.map { it.ImgPath })
-                {
-                    if (file.exists()) {
-                        file.delete()
-                    }
+        setPositiveButton("Done") {
+            if (entryList.all { it.isValid() }) {
+                if (entryList.all { it.rename() }) {
+                    hide()
                 }
-
-                finish()
             }
-            .setNegativeButton(android.R.string.no, null)
-            .show()
-    }
+        }
 
-    override fun onBackPressed() {
-        AlertDialog.Builder(this)
-            .setMessage("If you exit now, the images will not be renamed. Do you still want to exit?")
-            .setTitle("Confirm Exit")
-            .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
-            .setNegativeButton(android.R.string.no, null)
-            .show()
+        setNegativeButton(UI.Service.getString(android.R.string.cancel)) { hide() }
+
+        show()
     }
 }
