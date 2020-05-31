@@ -33,6 +33,29 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
 
     val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
+    private val metrics: DisplayMetrics get() {
+        val res = DisplayMetrics()
+
+        windowManager.defaultDisplay.getRealMetrics(res)
+
+        return res
+    }
+
+    val mediaProjectionMetrics: DisplayMetrics get() {
+        val res = metrics
+
+        // Retrieve images in Landscape
+        if (res.heightPixels > res.widthPixels) {
+            res.let {
+                val temp = it.widthPixels
+                it.widthPixels = it.heightPixels
+                it.heightPixels = temp
+            }
+        }
+
+        return res
+    }
+
     private val layoutParams = WindowManager.LayoutParams().apply {
         type = overlayType
         format = PixelFormat.TRANSLUCENT
@@ -56,7 +79,6 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     }
 
     private var scriptCtrlBtn: ImageButton
-    val metrics = DisplayMetrics()
 
     init {
         val inflater = LayoutInflater.from(Service)
@@ -68,18 +90,8 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
             it.setOnTouchListener(::scriptCtrlBtnOnTouch)
         }
 
-        windowManager.defaultDisplay.getRealMetrics(metrics)
-
-        // Retrieve images in Landscape
-        if (metrics.heightPixels > metrics.widthPixels) {
-            metrics.let {
-                val temp = it.widthPixels
-                it.widthPixels = it.heightPixels
-                it.heightPixels = temp
-            }
-        }
-
-        layoutParams.y = metrics.widthPixels
+        val m = metrics
+        layoutParams.y = maxOf(m.widthPixels, m.heightPixels)
     }
 
     fun show() {
@@ -112,15 +124,10 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     }
 
     private fun getMaxBtnCoordinates(): Location {
-        val rotation = windowManager.defaultDisplay.rotation
-        val rotate = rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180
+        val m = metrics
 
-        val x = (if (rotate) {
-            metrics.heightPixels
-        } else metrics.widthPixels) - layout.measuredWidth
-        val y = (if (rotate) {
-            metrics.widthPixels
-        } else metrics.heightPixels) - layout.measuredHeight
+        val x = m.widthPixels - layout.measuredWidth
+        val y = m.heightPixels - layout.measuredHeight
 
         return Location(x, y)
     }
@@ -128,14 +135,15 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     private var dX = 0f
     private var dY = 0f
     private var lastAction = 0
-    private var dragTimeMark: TimeMark? = null
+    private var dragTimeMark = Monotonic.markNow()
+    private var dragMaxLoc = Location()
 
     private fun scriptCtrlBtnOnTouch(_View: View, Event: MotionEvent): Boolean {
         return when (Event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                val (maxX, maxY) = getMaxBtnCoordinates()
-                dX = layoutParams.x.coerceIn(0, maxX) - Event.rawX
-                dY = layoutParams.y.coerceIn(0, maxY) - Event.rawY
+                dragMaxLoc = getMaxBtnCoordinates()
+                dX = layoutParams.x.coerceIn(0, dragMaxLoc.X) - Event.rawX
+                dY = layoutParams.y.coerceIn(0, dragMaxLoc.Y) - Event.rawY
                 lastAction = MotionEvent.ACTION_DOWN
                 dragTimeMark = Monotonic.markNow()
 
@@ -145,10 +153,9 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
                 val newX = Event.rawX + dX
                 val newY = Event.rawY + dY
 
-                if (dragTimeMark!!.elapsedNow() > ViewConfiguration.getLongPressTimeout().milliseconds) {
-                    val (mX, mY) = getMaxBtnCoordinates()
-                    layoutParams.x = newX.roundToInt().coerceIn(0, mX)
-                    layoutParams.y = newY.roundToInt().coerceIn(0, mY)
+                if (dragTimeMark.elapsedNow() > ViewConfiguration.getLongPressTimeout().milliseconds) {
+                    layoutParams.x = newX.roundToInt().coerceIn(0, dragMaxLoc.X)
+                    layoutParams.y = newY.roundToInt().coerceIn(0, dragMaxLoc.Y)
 
                     windowManager.updateViewLayout(layout, layoutParams)
 
