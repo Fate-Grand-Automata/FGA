@@ -45,8 +45,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.autoskill_maker)
 
-        setSupportActionBar(autoskill_maker_toolbar)
-
         np_4.setOnClickListener { onNpClick("4") }
         np_5.setOnClickListener { onNpClick("5") }
         np_6.setOnClickListener { onNpClick("6") }
