@@ -17,13 +17,10 @@ import com.mathewsachin.fategrandautomata.core.Location
 import com.mathewsachin.fategrandautomata.ui.highlightView
 import kotlin.math.roundToInt
 import kotlin.time.Duration
-import kotlin.time.TimeMark
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 
 class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
-    private val layout = FrameLayout(Service)
-
     val overlayType: Int get() {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -41,6 +38,10 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
         return res
     }
 
+    /**
+     * Used with MediaProjection so that we only get landscape images,
+     * since the frame size can't be changed during a projection.
+     */
     val mediaProjectionMetrics: DisplayMetrics get() {
         val res = metrics
 
@@ -56,7 +57,10 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
         return res
     }
 
-    private val layoutParams = WindowManager.LayoutParams().apply {
+    private val scriptCtrlBtnLayout = FrameLayout(Service)
+    private var scriptCtrlBtn: ImageButton
+
+    private val scriptCtrlBtnLayoutParams = WindowManager.LayoutParams().apply {
         type = overlayType
         format = PixelFormat.TRANSLUCENT
         flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -78,29 +82,28 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
         height = WindowManager.LayoutParams.MATCH_PARENT
     }
 
-    private var scriptCtrlBtn: ImageButton
-
     init {
         val inflater = LayoutInflater.from(Service)
-        inflater.inflate(R.layout.script_runner, layout)
+        inflater.inflate(R.layout.script_runner, scriptCtrlBtnLayout)
 
-        scriptCtrlBtn = layout.findViewById<ImageButton>(R.id.script_toggle_btn).also {
+        scriptCtrlBtn = scriptCtrlBtnLayout.findViewById<ImageButton>(R.id.script_toggle_btn).also {
             Service.registerScriptCtrlBtnListeners(it)
 
             it.setOnTouchListener(::scriptCtrlBtnOnTouch)
         }
 
+        // By default put the button on bottom-left corner
         val m = metrics
-        layoutParams.y = maxOf(m.widthPixels, m.heightPixels)
+        scriptCtrlBtnLayoutParams.y = maxOf(m.widthPixels, m.heightPixels)
     }
 
     fun show() {
         windowManager.addView(highlightView, highlightLayoutParams)
-        windowManager.addView(layout, layoutParams)
+        windowManager.addView(scriptCtrlBtnLayout, scriptCtrlBtnLayoutParams)
     }
 
     fun hide() {
-        windowManager.removeView(layout)
+        windowManager.removeView(scriptCtrlBtnLayout)
         windowManager.removeView(highlightView)
     }
 
@@ -123,11 +126,14 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
         scriptCtrlBtn.postDelayed(Delay.toLongMilliseconds(), Action)
     }
 
+    /**
+     * Returns the maximum values of (X, Y) coordinates the [scriptCtrlBtn] can take.
+     */
     private fun getMaxBtnCoordinates(): Location {
         val m = metrics
 
-        val x = m.widthPixels - layout.measuredWidth
-        val y = m.heightPixels - layout.measuredHeight
+        val x = m.widthPixels - scriptCtrlBtnLayout.measuredWidth
+        val y = m.heightPixels - scriptCtrlBtnLayout.measuredHeight
 
         return Location(x, y)
     }
@@ -142,8 +148,8 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
         return when (Event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 dragMaxLoc = getMaxBtnCoordinates()
-                dX = layoutParams.x.coerceIn(0, dragMaxLoc.X) - Event.rawX
-                dY = layoutParams.y.coerceIn(0, dragMaxLoc.Y) - Event.rawY
+                dX = scriptCtrlBtnLayoutParams.x.coerceIn(0, dragMaxLoc.X) - Event.rawX
+                dY = scriptCtrlBtnLayoutParams.y.coerceIn(0, dragMaxLoc.Y) - Event.rawY
                 lastAction = MotionEvent.ACTION_DOWN
                 dragTimeMark = Monotonic.markNow()
 
@@ -154,10 +160,10 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
                 val newY = Event.rawY + dY
 
                 if (dragTimeMark.elapsedNow() > ViewConfiguration.getLongPressTimeout().milliseconds) {
-                    layoutParams.x = newX.roundToInt().coerceIn(0, dragMaxLoc.X)
-                    layoutParams.y = newY.roundToInt().coerceIn(0, dragMaxLoc.Y)
+                    scriptCtrlBtnLayoutParams.x = newX.roundToInt().coerceIn(0, dragMaxLoc.X)
+                    scriptCtrlBtnLayoutParams.y = newY.roundToInt().coerceIn(0, dragMaxLoc.Y)
 
-                    windowManager.updateViewLayout(layout, layoutParams)
+                    windowManager.updateViewLayout(scriptCtrlBtnLayout, scriptCtrlBtnLayoutParams)
 
                     lastAction = MotionEvent.ACTION_MOVE
                 }
