@@ -1,4 +1,7 @@
-# Running on Samsung devices
+---
+layout: page
+title: Running on Samsung devices
+---
 
 If the script's not working correctly on your Samsung phone, like missing touches or not doing anything at all, follow these steps:
 

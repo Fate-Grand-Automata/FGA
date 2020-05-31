@@ -1,4 +1,7 @@
-# Running on Emulators
+---
+layout: page
+title: Running on Emulators
+---
 
 Even with many emulators available with Android 7+ support, `MediaProjection` doesn't work on the ones we've tried. So, you need to enable `Use Root for Screenshots` in `More options`.
 
@@ -12,4 +15,4 @@ We'll list the supported emulators we've confirmed here.
 FGO JP can be used on Nox (Android 7) with `Use Root for Screenshots` option.
 You also need to enable `Root` from Nox's settings.
 
-FGO NA doesn't work since it doesn't work with root.
+FGO NA doesn't work since it doesn't work with root. It might work after the engine update.

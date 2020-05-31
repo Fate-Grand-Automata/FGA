@@ -5,48 +5,37 @@
   <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png">
 </div>
 
-Auto-battle app for Fate/Grand Order Android.  
+Auto-battle app for Fate/Grand Order (Android 7 or later, no need for Root).  
 
 Download from our [Website](https://MathewSachin.github.io/Fate-Grand-Automata).
 
-This is pretty much a ~~C#~~ **Kotlin** port of [Fate-Grand-Order_Lua][FGOLua] with UI for configuring Settings and inbuilt Sikuli like API.
+This is pretty much a **Kotlin** port of [Fate-Grand-Order_Lua][FGOLua] with UI for configuring Settings and inbuilt Sikuli like API.
+And there's no time limit on the use of the app unlike FGO-Lua.
 
-So, there's no time limit on the use of the app unlike FGO-Lua.
-
-**Needs Android 7 or later**
-
-See [Running on Samsung devices](SAMSUNG.md) if you're facing problems running the script on your Samsung devices.
-
-See [Running on Emulators](EMULATORS.md) to know about emulator support.
+[Running on Samsung devices](https://MathewSachin.github.io/Fate-Grand-Automata/SAMSUNG.html) |
+[Running on Emulators](https://MathewSachin.github.io/Fate-Grand-Automata/EMULATORS.html)
 
 ## Why make another?
-Fate/Grand Order is all about farming.
-We already have an awesome auto battle script named [Fate-Grand-Order_Lua][FGOLua] which uses [AnkuLua](https://ankulua.boards.net/) (an implementation of [Sikuli](http://doc.sikuli.org/sikuli-script-index.html) using Lua language for scripting on Android).
-The only problem I had was that, in trial versions, AnkuLua limits scripts to run for a maximum of 30 min and after which there is a cooldown period.
-Any of the hardcore farmers out there know that this is not enough for the lottery events.
-So, being the salty F2P that I am, instead of buying an AnkuLua subscription, I thought why not make something similar.
-This was a great learning experience and something different from your usual Android projects.
+FGO-Lua is really great, but:
+1. Uses AnkuLua, so isn't free. Free version has 30min time-limit.
+2. Learning curve for configuring the scripts is steeper.
+3. Difficult to edit the script on your phone. You can do it using Text editor apps, but it's not fun, trust me.
+
+Making the app was a great learning experience and something different from your usual Android projects.
 
 ## How does it work?
-This is a native Android app written in Kotlin ~~(formerly [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/))~~ using [OpenCV](https://opencv.org/) for image recognition. It uses Android's [Accessibility](https://developer.android.com/guide/topics/ui/accessibility) and [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) APIs.
-
-We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
-
-Battery optimizations can screw up the functionality of the app. App tries to disable them automatically but you might also have to do that manually.
-
-The icons are from https://materialdesignicons.com/
-
-The drag-sort logic on Card Priority screen is thanks to https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
+This is a native Android app written in Kotlin.
+We use [OpenCV](https://opencv.org/) for image recognition,
+[Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) for taking screenshots
+and [Accessibility Service](https://developer.android.com/guide/topics/ui/accessibility) for clicking/swiping.
 
 ## What to do about bugs?
 Debugging really is a pain due to FGO NA not allowing `Developer Mode` to be `ON` during execution.
-Use GitHub issues to report bugs and try to be specific about the problem. Also, list information like your phone's model number, screen size, Android version, whether you have a notch.
-
-**Note:** If your device has a notch, Don't rotate your screen when the script is running.
+Use GitHub issues to report bugs and try to be specific about the problem.
+Also, list information like your phone's model number, screen size, Android version, whether you have a notch.
 
 ## How to Use?
-1. Download from [GitHub Releases](https://github.com/MathewSachin/FateGrandAutomata/releases/). I can't put this app on `Play Store` due to some restrictive features this app uses.
-   The APK available there might not always be the latest one. This README is written according to the latest commit of the code.
+1. Download from the [Website](https://MathewSachin.github.io/Fate-Grand-Automata). I can't put this app on `Play Store` due to some restrictive features this app uses.
 2. Install on your phone. You'll need to enable installing apps out of `Play Store`.
 3. Launch the app. Grant it permissions it asks for: `Read External Storage`, `Write External Storage`, `Ignore Battery Optimizations`.
 4. Click on `Toggle Service`. You would be prompted to turn on the `Accessibility Service` and taken to `Accessibility Settings` page.
@@ -60,15 +49,15 @@ Use GitHub issues to report bugs and try to be specific about the problem. Also,
 ## How to configure?
 For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] project.
 
-Autoskill configuration can be created at `Settings/AutoSkill/Manage Autoskill configurations`.  
-You won't be prompted at script start for the config to use. You need to set the `Settings/AutoSkill/Selected Autoskill Config` value.
-If you've set a Servant or CE in the currently selected Autoskill configuration and Autoskill is Enabled, then support selection mode is assumed to be preffered.
+AutoSkill configuration can be created at `Settings/AutoSkill/Manage AutoSkill configurations`.  
+If you've set a Servant or CE in the selected AutoSkill configuration and AutoSkill is Enabled, then support selection mode is assumed to be preferred.
 
 ## Where to put Servant/CE images?
 Put Servant images in `Fate-Grand-Automata/support/servant` folder and
 CE images in `Fate-Grand-Automata/support/ce` folder.
 
 The app has some common Servant/CEs inbuilt. You can extract them using the `Extract Default Support Images` option.
+The app should extract them automatically when you go to the Support settings screen.
 If you want to use any other preferred servant or ce, you have to create their images using `Support Image Maker` script.
 
 Instead of having to select multiple ascension images for a servant, you can put all the images of a servant in a folder and select the folder in settings.
@@ -114,5 +103,12 @@ You can also use it from the Friend List which is easier since you don't have to
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!
+Oh, and code/doc contributions are surely welcome!
+
+## Acknowledgements
+- [FGO-Lua][FGOLua] developers are the real deal. Without them this app won't exist.
+- We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
+- The icons are from https://materialdesignicons.com/
+- Drag-sort logic on Card Priority screen is thanks to https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
 
 [FGOLua]: https://github.com/29988122/Fate-Grand-Order_Lua
