@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui
+package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
 import android.app.Activity
 import android.content.Intent
@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
-import kotlinx.android.synthetic.main.autoskill_maker.*
 import kotlinx.android.synthetic.main.autoskill_maker_atk.*
 import kotlinx.android.synthetic.main.autoskill_maker_main.*
 import kotlinx.android.synthetic.main.autoskill_maker_order_change.*
@@ -27,9 +28,9 @@ const val AutoSkillCommandKey = "AutoSkillCommandKey"
 
 class AutoSkillMakerActivity : AppCompatActivity() {
     // These fields are used to Save/Restore state of the Activity
-    private var skillCmd = StringBuilder()
     private var npSequence = ""
-    private var currentView = AutoSkillMakerState.Main
+    private var currentView =
+        AutoSkillMakerState.Main
     private var stage = 1
     private var turn = 1
     private var currentSkill = '0'
@@ -41,9 +42,15 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     private var xParty: Array<Button> = arrayOf()
     private var xSub: Array<Button> = arrayOf()
 
+    val skillCmdVm: AutoSkillMakerHistoryViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.autoskill_maker)
+
+        val recyclerView = auto_skill_history
+        recyclerView.adapter = skillCmdVm.adapter
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         np_4.setOnClickListener { onNpClick("4") }
         np_5.setOnClickListener { onNpClick("5") }
@@ -75,7 +82,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             addNpsToSkillCmd()
 
             val res = Intent()
-            res.putExtra(AutoSkillCommandKey, skillCmd.toString())
+            res.putExtra(AutoSkillCommandKey, skillCmdVm.getSkillCmdString())
             setResult(Activity.RESULT_OK, res)
             finish()
         }
@@ -96,12 +103,16 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     private fun setEnemyTarget(Target: Int) {
-        // Merge consecutive target changes
-        if (skillCmd.length >= 2 && skillCmd[skillCmd.length - 2] == 't') {
-            skillCmd.deleteCharAt(skillCmd.length - 1)
-                .append(Target)
-        } else {
-            skillCmd.append("t${Target}")
+        val targetCmd = "t${Target}"
+
+        skillCmdVm.let {
+            // Merge consecutive target changes
+            if (!it.isEmpty() && it.last[0] == 't') {
+                it.last = targetCmd
+            }
+            else {
+                it.add(targetCmd)
+            }
         }
     }
 
@@ -126,7 +137,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         order_change_cancel.setOnClickListener { gotToMain() }
 
         order_change_ok.setOnClickListener {
-            skillCmd.append("x${xSelectedParty}${xSelectedSub}")
+            skillCmdVm.add("x${xSelectedParty}${xSelectedSub}")
 
             gotToMain()
         }
@@ -160,11 +171,13 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     private fun setupTargets() {
         fun onTarget(TargetCommand: Char?) {
-            skillCmd.append(currentSkill)
+            var cmd = currentSkill.toString()
 
             if (TargetCommand != null) {
-                skillCmd.append(TargetCommand)
+                cmd += TargetCommand
             }
+
+            skillCmdVm.add(cmd)
 
             gotToMain()
         }
@@ -176,17 +189,23 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     private fun addNpsToSkillCmd() {
-        if (npSequence.isNotEmpty()) {
-            when (cards_before_np_rad.checkedRadioButtonId) {
-                R.id.cards_before_np_1 -> skillCmd.append("n1")
-                R.id.cards_before_np_2 -> skillCmd.append("n2")
+        skillCmdVm.let {
+            if (npSequence.isNotEmpty()) {
+                when (cards_before_np_rad.checkedRadioButtonId) {
+                    R.id.cards_before_np_1 -> it.add("n1")
+                    R.id.cards_before_np_2 -> it.add("n2")
+                }
             }
-        }
 
-        skillCmd.append(npSequence)
+            // Show each NP as separate entry
+            for (np in npSequence) {
+                it.add(np.toString())
+            }
 
-        if (skillCmd.isNotEmpty() && skillCmd[skillCmd.length - 1] == ',') {
-            skillCmd.append('0')
+            // Add a '0' before consecutive turn/battle changes
+            if (!it.isEmpty() && it.last.last() == ',') {
+                it.add("0")
+            }
         }
 
         npSequence = ""
@@ -198,11 +217,11 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
         addNpsToSkillCmd()
 
-        if (skillCmd.isEmpty()) {
-            skillCmd.append('0')
+        if (skillCmdVm.isEmpty()) {
+            skillCmdVm.add("0")
         }
 
-        skillCmd.append(Separator)
+        skillCmdVm.add(Separator)
 
         ++turn
         updateStageAndTurn()
@@ -265,7 +284,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putString(::skillCmd.name, skillCmd.toString())
         outState.putString(::npSequence.name, npSequence)
         outState.putInt(::currentView.name, currentView.ordinal)
         outState.putInt(::stage.name, stage)
@@ -273,14 +291,15 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         outState.putInt(::xSelectedParty.name, xSelectedParty)
         outState.putInt(::xSelectedSub.name, xSelectedSub)
         outState.putChar(::currentSkill.name, currentSkill)
+
+        skillCmdVm.saveState()
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
         val b = savedInstanceState ?: return
 
-        skillCmd = StringBuilder(b.getString(::skillCmd.name, ""))
         npSequence = b.getString(::npSequence.name, "")
         changeState(AutoSkillMakerState.values()[b.getInt(::currentView.name, 0)])
 

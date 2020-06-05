@@ -11,10 +11,10 @@ import androidx.core.content.edit
 import androidx.preference.Preference
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
-import com.mathewsachin.fategrandautomata.ui.AutoSkillCommandKey
+import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
-import com.mathewsachin.fategrandautomata.ui.AutoSkillMakerActivity
-import com.mathewsachin.fategrandautomata.ui.RequestAutoSkillMaker
+import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
+import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.RequestAutoSkillMaker
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
 
 class AutoSkillItemSettingsFragment : SupportSettingsBaseFragment() {
@@ -116,7 +116,9 @@ class AutoSkillItemSettingsFragment : SupportSettingsBaseFragment() {
 
     private fun openAutoSkillMaker() {
         val intent = Intent(requireActivity(), AutoSkillMakerActivity::class.java)
-        startActivityForResult(intent, RequestAutoSkillMaker)
+        startActivityForResult(intent,
+            RequestAutoSkillMaker
+        )
     }
 
     private fun getSavedSkillCmd(): String {
