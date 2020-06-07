@@ -53,34 +53,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         auto_skill_undo_btn.setOnClickListener {
-            if (!skillCmdVm.isEmpty()) {
-                // Un-select target
-                if (skillCmdVm.last.startsWith('t')) {
-                    unSelectTargets()
-                }
-
-                // Battle/Turn change
-                if (skillCmdVm.last.contains(',')) {
-                    AlertDialog.Builder(this)
-                        .setTitle("Confirm NP deletion")
-                        .setMessage("If you delete Battle/Turn separator, NPs and cards before NP for that turn will also be deleted. Are you sure?")
-                        .setNegativeButton(android.R.string.no, null)
-                        .setPositiveButton(android.R.string.yes) { _, _ ->
-                            // Undo the Battle/Turn change
-                            skillCmdVm.undo()
-
-                            val itemsToRemove = setOf('4', '5', '6', 'n', '0')
-
-                            // Remove NPs and cards before NPs
-                            while (!skillCmdVm.isEmpty()
-                                && skillCmdVm.last[0] in itemsToRemove) {
-                                skillCmdVm.undo()
-                            }
-                        }
-                        .show()
-                }
-                else skillCmdVm.undo()
-            }
+            onUndo()
         }
 
         np_4.setOnClickListener { onNpClick("4") }
@@ -133,6 +106,45 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         }
 
         setupOrderChange()
+    }
+
+    private fun onUndo() {
+        if (!skillCmdVm.isEmpty()) {
+            // Un-select target
+            if (skillCmdVm.last.startsWith('t')) {
+                unSelectTargets()
+            }
+
+            // Battle/Turn change
+            if (skillCmdVm.last.contains(',')) {
+                AlertDialog.Builder(this)
+                    .setTitle("Confirm NP deletion")
+                    .setMessage("If you delete Battle/Turn separator, NPs and cards before NP for that turn will also be deleted. Are you sure?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes) { _, _ ->
+                        // Decrement Battle/Turn count
+                        if (skillCmdVm.last.contains('#')) {
+                            --stage
+                        }
+
+                        --turn
+                        updateStageAndTurn()
+
+                        // Undo the Battle/Turn change
+                        skillCmdVm.undo()
+
+                        val itemsToRemove = setOf('4', '5', '6', 'n', '0')
+
+                        // Remove NPs and cards before NPs
+                        while (!skillCmdVm.isEmpty()
+                            && skillCmdVm.last[0] in itemsToRemove) {
+                            skillCmdVm.undo()
+                        }
+                    }
+                    .show()
+            }
+            else skillCmdVm.undo()
+        }
     }
 
     private fun setEnemyTarget(Target: Int) {
