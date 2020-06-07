@@ -24,29 +24,26 @@ class AutoSkillMakerHistoryAdapter(private val Items: List<String>)
         val cmd = Items[position]
 
         holder.itemView.let {
-            @ColorInt
-            fun color(@ColorRes Res: Int): Int {
-                return it.context.getColor(Res)
-            }
-
             if (it is CardView) {
-                val color = when (cmd[0]) {
+                val colorRes = when (cmd[0]) {
                     // Turn/Battle change
-                    ',' -> color(R.color.colorStageChange)
+                    ',' -> R.color.colorStageChange
 
                     // Master Skill
-                    'j', 'k', 'l', 'x' -> color(R.color.colorMasterSkill)
+                    'j', 'k', 'l', 'x' -> R.color.colorMasterSkill
 
                     // Enemy Target
-                    't' -> color(R.color.colorEnemyTarget)
+                    't' -> R.color.colorEnemyTarget
 
                     // Servants
-                    '4', 'a', 'b', 'c' -> color(R.color.colorServant1)
-                    '5', 'd', 'e', 'f' -> color(R.color.colorServant2)
-                    '6', 'g', 'h', 'i' -> color(R.color.colorServant3)
+                    '4', 'a', 'b', 'c' -> R.color.colorServant1
+                    '5', 'd', 'e', 'f' -> R.color.colorServant2
+                    '6', 'g', 'h', 'i' -> R.color.colorServant3
 
-                    else -> color(R.color.colorAccent)
+                    else -> R.color.colorAccent
                 }
+
+                val color = it.context.getColor(colorRes)
 
                 it.setCardBackgroundColor(color)
             }
