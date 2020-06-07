@@ -59,7 +59,27 @@ class AutoSkillMakerActivity : AppCompatActivity() {
                     unSelectTargets()
                 }
 
-                skillCmdVm.undo()
+                // Battle/Turn change
+                if (skillCmdVm.last.contains(',')) {
+                    AlertDialog.Builder(this)
+                        .setTitle("Confirm NP deletion")
+                        .setMessage("If you delete Battle/Turn separator, NPs and cards before NP for that turn will also be deleted. Are you sure?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes) { _, _ ->
+                            // Undo the Battle/Turn change
+                            skillCmdVm.undo()
+
+                            val itemsToRemove = setOf('4', '5', '6', 'n', '0')
+
+                            // Remove NPs and cards before NPs
+                            while (!skillCmdVm.isEmpty()
+                                && skillCmdVm.last[0] in itemsToRemove) {
+                                skillCmdVm.undo()
+                            }
+                        }
+                        .show()
+                }
+                else skillCmdVm.undo()
             }
         }
 
