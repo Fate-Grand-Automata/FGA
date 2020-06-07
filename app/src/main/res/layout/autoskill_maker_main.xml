@@ -143,6 +143,14 @@
         app:layout_constraintBottom_toTopOf="@+id/skill_a_btn"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/auto_skill_undo_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Undo"
+        app:layout_constraintStart_toEndOf="@id/master_x_btn"
+        app:layout_constraintTop_toTopOf="@id/master_x_btn"/>
+
     <TextView
         android:id="@+id/servant_1_name"
         android:layout_width="wrap_content"

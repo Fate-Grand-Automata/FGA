@@ -30,6 +30,18 @@ class AutoSkillMakerHistoryViewModel(val SavedState: SavedStateHandle): ViewMode
         adapter.notifyItemInserted(skillCmd.lastIndex)
     }
 
+    fun undo() {
+        val pos = skillCmd.lastIndex
+
+        if (pos == -1) {
+            return
+        }
+
+        skillCmd.removeAt(pos)
+
+        adapter.notifyItemRemoved(pos)
+    }
+
     fun isEmpty() = skillCmd.isEmpty()
 
     var last get() = skillCmd.last()

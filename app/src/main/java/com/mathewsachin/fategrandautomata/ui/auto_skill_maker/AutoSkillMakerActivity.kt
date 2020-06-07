@@ -52,6 +52,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         recyclerView.adapter = skillCmdVm.adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
+        auto_skill_undo_btn.setOnClickListener {
+            skillCmdVm.undo()
+        }
+
         np_4.setOnClickListener { onNpClick("4") }
         np_5.setOnClickListener { onNpClick("5") }
         np_6.setOnClickListener { onNpClick("6") }
