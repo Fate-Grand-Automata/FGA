@@ -53,7 +53,14 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         auto_skill_undo_btn.setOnClickListener {
-            skillCmdVm.undo()
+            if (!skillCmdVm.isEmpty()) {
+                // Un-select target
+                if (skillCmdVm.last.startsWith('t')) {
+                    unSelectTargets()
+                }
+
+                skillCmdVm.undo()
+            }
         }
 
         np_4.setOnClickListener { onNpClick("4") }
@@ -215,9 +222,13 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         npSequence = ""
     }
 
+    private fun unSelectTargets() {
+        enemy_target_radio.clearCheck()
+    }
+
     private fun onGoToNext(Separator: String) {
         // Uncheck selected targets
-        enemy_target_radio.clearCheck()
+        unSelectTargets()
 
         addNpsToSkillCmd()
 

@@ -33,10 +33,6 @@ class AutoSkillMakerHistoryViewModel(val SavedState: SavedStateHandle): ViewMode
     fun undo() {
         val pos = skillCmd.lastIndex
 
-        if (pos == -1) {
-            return
-        }
-
         skillCmd.removeAt(pos)
 
         adapter.notifyItemRemoved(pos)
