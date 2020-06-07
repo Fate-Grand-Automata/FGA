@@ -30,20 +30,20 @@ class AutoSkillMakerHistoryAdapter(private val Items: List<String>)
             }
 
             if (it is CardView) {
-                val color = when {
+                val color = when (cmd[0]) {
                     // Turn/Battle change
-                    cmd.contains(',') -> color(R.color.colorStageChange)
+                    ',' -> color(R.color.colorStageChange)
 
                     // Master Skill
-                    cmd[0] in listOf('j', 'k', 'l', 'x') -> color(R.color.colorMasterSkill)
+                    'j', 'k', 'l', 'x' -> color(R.color.colorMasterSkill)
 
                     // Enemy Target
-                    cmd[0] == 't' -> color(R.color.colorEnemyTarget)
+                    't' -> color(R.color.colorEnemyTarget)
 
                     // Servants
-                    cmd[0] in listOf('4', 'a', 'b', 'c') -> color(R.color.colorServant1)
-                    cmd[0] in listOf('5', 'd', 'e', 'f') -> color(R.color.colorServant2)
-                    cmd[0] in listOf('6', 'g', 'h', 'i') -> color(R.color.colorServant3)
+                    '4', 'a', 'b', 'c' -> color(R.color.colorServant1)
+                    '5', 'd', 'e', 'f' -> color(R.color.colorServant2)
+                    '6', 'g', 'h', 'i' -> color(R.color.colorServant3)
 
                     else -> color(R.color.colorAccent)
                 }
