@@ -108,6 +108,8 @@
         style="@style/autoskill_servant_skill_btn"
         android:layout_marginBottom="20dp"
         android:text="l"
+        android:backgroundTint="@color/colorMasterSkill"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/atk_btn"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -115,6 +117,8 @@
         android:id="@+id/master_k_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="k"
+        android:backgroundTint="@color/colorMasterSkill"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/master_l_btn"
         app:layout_constraintEnd_toStartOf="@+id/master_l_btn" />
 
@@ -122,6 +126,8 @@
         android:id="@+id/master_j_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="j"
+        android:backgroundTint="@color/colorMasterSkill"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/master_l_btn"
         app:layout_constraintEnd_toStartOf="@+id/master_k_btn" />
 
@@ -139,6 +145,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Order Change"
+        android:backgroundTint="@color/colorMasterSkill"
+        android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
         app:layout_constraintBottom_toTopOf="@+id/skill_a_btn"
         app:layout_constraintStart_toStartOf="parent" />
@@ -182,6 +190,8 @@
         android:id="@+id/skill_a_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="a"
+        android:backgroundTint="@color/colorServant1"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/servant_1_name"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -189,6 +199,8 @@
         android:id="@+id/skill_b_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="b"
+        android:backgroundTint="@color/colorServant1"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintStart_toEndOf="@+id/skill_a_btn" />
 
@@ -196,6 +208,8 @@
         android:id="@+id/skill_c_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="c"
+        android:backgroundTint="@color/colorServant1"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintStart_toEndOf="@+id/skill_b_btn" />
 
@@ -203,6 +217,8 @@
         android:id="@+id/skill_d_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="d"
+        android:backgroundTint="@color/colorServant2"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintEnd_toStartOf="@+id/skill_e_btn" />
 
@@ -210,6 +226,8 @@
         android:id="@+id/skill_e_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="e"
+        android:backgroundTint="@color/colorServant2"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintEnd_toStartOf="@+id/skill_g_btn"
         app:layout_constraintStart_toEndOf="@+id/skill_c_btn" />
@@ -218,6 +236,8 @@
         android:id="@+id/skill_f_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="f"
+        android:backgroundTint="@color/colorServant2"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintStart_toEndOf="@+id/skill_e_btn" />
 
@@ -225,6 +245,8 @@
         android:id="@+id/skill_g_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="g"
+        android:backgroundTint="@color/colorServant3"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintEnd_toStartOf="@+id/skill_h_btn" />
 
@@ -232,6 +254,8 @@
         android:id="@+id/skill_h_btn"
         style="@style/autoskill_servant_skill_btn"
         android:text="h"
+        android:backgroundTint="@color/colorServant3"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintEnd_toStartOf="@+id/skill_i_btn" />
 
@@ -240,6 +264,8 @@
         style="@style/autoskill_servant_skill_btn"
         android:layout_marginEnd="20dp"
         android:text="i"
+        android:backgroundTint="@color/colorServant3"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
         app:layout_constraintEnd_toStartOf="@+id/atk_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
