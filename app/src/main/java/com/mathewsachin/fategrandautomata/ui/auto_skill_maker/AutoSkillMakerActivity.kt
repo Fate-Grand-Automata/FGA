@@ -73,6 +73,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             np_5.isChecked = false
             np_6.isChecked = false
 
+            npSequence = ""
+
             // Set cards before Np to 0
             cards_before_np_rad.check(R.id.cards_before_np_0)
 
