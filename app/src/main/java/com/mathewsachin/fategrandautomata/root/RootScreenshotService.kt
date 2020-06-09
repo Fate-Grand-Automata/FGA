@@ -38,7 +38,7 @@ class RootScreenshotService(private val SuperUser: SuperUser) : IScreenshotServi
                 if (buffer == null) {
                     // If format is not RGBA, notify
                     if (format != 1) {
-                        AutomataApi.toast("Unexpected raw image format: $format")
+                        AutomataApi.PlatformImpl.toast("Unexpected raw image format: $format")
                     }
 
                     buffer = ByteArray(w * h * 4)

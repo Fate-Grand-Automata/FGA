@@ -1,0 +1,4 @@
+- name: "Running on Samsung devices"
+  link: "/SAMSUNG.html"
+- name: "Running on Emulators"
+  link: "/EMULATORS.html"

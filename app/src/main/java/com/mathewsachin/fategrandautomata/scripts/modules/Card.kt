@@ -109,7 +109,7 @@ class Card {
             return CardTypeEnum.Quick
         }
 
-        AutomataApi.toast("Failed to determine Card type $Region")
+        AutomataApi.PlatformImpl.toast("Failed to determine Card type $Region")
 
         return CardTypeEnum.Buster
     }
@@ -117,7 +117,7 @@ class Card {
     fun readCommandCards() {
         commandCards.clear()
 
-        AutomataApi.useSameSnapIn {
+        ScreenshotManager.useSameSnapIn {
             for (cardSlot in 0..4) {
                 val affinity = getCardAffinity(Game.BattleCardAffinityRegionArray[cardSlot])
                 val type = getCardType(Game.BattleCardTypeRegionArray[cardSlot])

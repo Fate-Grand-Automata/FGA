@@ -70,7 +70,7 @@ private fun fileLoader(FileName: String): IPattern? {
         val inputStream = FileInputStream(filepath)
 
         inputStream.use {
-            return AutomataApi.loadPattern(it)
+            return AutomataApi.PlatformImpl.loadPattern(it)
         }
     }
 
@@ -83,7 +83,7 @@ private fun createPattern(FilePath: String): IPattern {
     val inputStream = assets.open(FilePath)
 
     inputStream.use {
-        return AutomataApi.loadPattern(it)
+        return AutomataApi.PlatformImpl.loadPattern(it)
     }
 }
 

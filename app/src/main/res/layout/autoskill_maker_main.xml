@@ -4,8 +4,7 @@
     android:id="@+id/autoskill_view_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:padding="16dp">
 
     <RadioGroup
         android:id="@+id/enemy_target_radio"

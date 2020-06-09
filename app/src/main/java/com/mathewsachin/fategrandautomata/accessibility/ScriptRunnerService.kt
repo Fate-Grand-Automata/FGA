@@ -136,7 +136,7 @@ class ScriptRunnerService : AccessibilityService() {
             if (MediaProjectionToken != null) {
                 mediaProjection =
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
-                MediaProjectionScreenshotService(mediaProjection!!, userInterface.metrics)
+                MediaProjectionScreenshotService(mediaProjection!!, userInterface.mediaProjectionMetrics)
             } else RootScreenshotService(
                 getSuperUser()
             )
@@ -159,7 +159,7 @@ class ScriptRunnerService : AccessibilityService() {
             return false
         }
 
-        AutomataApi.registerGestures(gestureService ?: return false)
+        registerGestures(gestureService ?: return false)
         return true
     }
 
@@ -244,7 +244,7 @@ class ScriptRunnerService : AccessibilityService() {
         entryPoint = EntryPoint
 
         if (Preferences.RecordScreen && mediaProjection != null) {
-            recording = MediaProjectionRecording(mediaProjection!!, userInterface.metrics)
+            recording = MediaProjectionRecording(mediaProjection!!, userInterface.mediaProjectionMetrics)
         }
 
         EntryPoint.scriptExitListener = ::onScriptExit
