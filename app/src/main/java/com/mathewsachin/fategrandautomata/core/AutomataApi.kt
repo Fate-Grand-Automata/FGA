@@ -135,158 +135,156 @@ fun Region.findAll(
 /**
  * Central class used for triggering gestures and image recognition.
  */
-class AutomataApi {
-    companion object {
-        var PlatformImpl: IPlatformImpl? = null
-        var GestureService: IGestureService? = null
+object AutomataApi {
+    var PlatformImpl: IPlatformImpl? = null
+    var GestureService: IGestureService? = null
 
-        fun registerPlatform(Impl: IPlatformImpl) {
-            PlatformImpl = Impl
-        }
+    fun registerPlatform(Impl: IPlatformImpl) {
+        PlatformImpl = Impl
+    }
 
-        fun registerGestures(Impl: IGestureService) {
-            GestureService = Impl
-        }
+    fun registerGestures(Impl: IGestureService) {
+        GestureService = Impl
+    }
 
-        /**
-         * The default minimum similarity used for image comparisons.
-         */
-        const val MinSimilarity = 0.8
+    /**
+     * The default minimum similarity used for image comparisons.
+     */
+    const val MinSimilarity = 0.8
 
-        fun loadPattern(Stream: InputStream): IPattern {
-            return PlatformImpl!!.loadPattern(Stream)
-        }
+    fun loadPattern(Stream: InputStream): IPattern {
+        return PlatformImpl!!.loadPattern(Stream)
+    }
 
-        fun getResizableBlankPattern(): IPattern {
-            return PlatformImpl!!.getResizableBlankPattern()
-        }
+    fun getResizableBlankPattern(): IPattern {
+        return PlatformImpl!!.getResizableBlankPattern()
+    }
 
-        /**
-         * Wait for a given [Duration]. The wait is paused regularly to check if the stop button has
-         * been pressed.
-         */
-        fun wait(Duration: Duration) {
-            val epsilon = 1000L
-            var left = Duration.toLongMilliseconds()
+    /**
+     * Wait for a given [Duration]. The wait is paused regularly to check if the stop button has
+     * been pressed.
+     */
+    fun wait(Duration: Duration) {
+        val epsilon = 1000L
+        var left = Duration.toLongMilliseconds()
 
-            // Sleeping this way allows quick exit if demanded by user
-            while (left > 0) {
-                checkExitRequested()
-
-                val toSleep = min(epsilon, left)
-                Thread.sleep(toSleep)
-                left -= toSleep
-            }
-        }
-
-        @Volatile
-        var exitRequested = false
-
-        val WindowRegion: Region get() = PlatformImpl!!.windowRegion
-
-        /**
-         * Shows a message box with the given title and message.
-         */
-        fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
-            PlatformImpl?.messageBox(Title, Message, Error)
-        }
-
-        /**
-         * Shows a toast with the given message.
-         */
-        fun toast(Message: String) {
-            PlatformImpl?.toast(Message)
-        }
-
-        /**
-         * Checks if the [Region] contains the provided image.
-         *
-         * @param Region the search region
-         * @param Image the image to look for
-         * @param Similarity the minimum similarity for this search
-         */
-        fun existsNow(
-            Region: Region,
-            Image: IPattern,
-            Similarity: Double = MinSimilarity
-        ): Boolean {
+        // Sleeping this way allows quick exit if demanded by user
+        while (left > 0) {
             checkExitRequested()
 
-            var sshot = ScreenshotManager.getScreenshot()
+            val toSleep = min(epsilon, left)
+            Thread.sleep(toSleep)
+            left -= toSleep
+        }
+    }
 
-            if (Preferences.DebugMode) {
-                Region.highlight()
+    @Volatile
+    var exitRequested = false
+
+    val WindowRegion: Region get() = PlatformImpl!!.windowRegion
+
+    /**
+     * Shows a message box with the given title and message.
+     */
+    fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
+        PlatformImpl?.messageBox(Title, Message, Error)
+    }
+
+    /**
+     * Shows a toast with the given message.
+     */
+    fun toast(Message: String) {
+        PlatformImpl?.toast(Message)
+    }
+
+    /**
+     * Checks if the [Region] contains the provided image.
+     *
+     * @param Region the search region
+     * @param Image the image to look for
+     * @param Similarity the minimum similarity for this search
+     */
+    fun existsNow(
+        Region: Region,
+        Image: IPattern,
+        Similarity: Double = MinSimilarity
+    ): Boolean {
+        checkExitRequested()
+
+        var sshot = ScreenshotManager.getScreenshot()
+
+        if (Preferences.DebugMode) {
+            Region.highlight()
+        }
+
+        sshot = sshot?.crop(Region.transformToImage())
+
+        return sshot?.isMatch(Image, Similarity) ?: false
+    }
+
+    /**
+     * Repeats the invocation of the Condition until it returns `true` or until the timeout has
+     * been reached.
+     *
+     * @param Condition a function with a [Boolean] return value
+     * @param Timeout how long to wait for before giving up
+     * @return `true` if the function returned `true` at some point, `false` if the timeout was
+     * reached
+     */
+    fun checkConditionLoop(
+        Condition: () -> Boolean,
+        Timeout: Duration = Duration.ZERO
+    ): Boolean {
+        val endTimeMark = Monotonic.markNow() + Timeout
+
+        while (true) {
+            val scanStart = Monotonic.markNow()
+
+            if (Condition.invoke()) {
+                return true
             }
 
-            sshot = sshot?.crop(Region.transformToImage())
-
-            return sshot?.isMatch(Image, Similarity) ?: false
-        }
-
-        /**
-         * Repeats the invocation of the Condition until it returns `true` or until the timeout has
-         * been reached.
-         *
-         * @param Condition a function with a [Boolean] return value
-         * @param Timeout how long to wait for before giving up
-         * @return `true` if the function returned `true` at some point, `false` if the timeout was
-         * reached
-         */
-        fun checkConditionLoop(
-            Condition: () -> Boolean,
-            Timeout: Duration = Duration.ZERO
-        ): Boolean {
-            val endTimeMark = Monotonic.markNow() + Timeout
-
-            while (true) {
-                val scanStart = Monotonic.markNow()
-
-                if (Condition.invoke()) {
-                    return true
-                }
-
-                // check if we need to cancel because of timeout
-                if (endTimeMark.hasPassedNow()) {
-                    break
-                }
-
-                /* Wait a bit before checking again.
-                   If invocationDuration is greater than the scanInterval, we don't wait. */
-                val scanInterval = 330.milliseconds
-                val timeToWait = scanInterval - scanStart.elapsedNow()
-
-                if (timeToWait.isPositive()) {
-                    wait(timeToWait)
-                }
+            // check if we need to cancel because of timeout
+            if (endTimeMark.hasPassedNow()) {
+                break
             }
 
-            return false
-        }
+            /* Wait a bit before checking again.
+               If invocationDuration is greater than the scanInterval, we don't wait. */
+            val scanInterval = 330.milliseconds
+            val timeToWait = scanInterval - scanStart.elapsedNow()
 
-        /**
-         * Takes a screenshot and caches it for the duration of the function invocation. This is
-         * useful when you want to reuse the same screenshot for multiple image searches.
-         *
-         * @param Action a function to invoke which will use the cached screenshot
-         */
-        fun <T> useSameSnapIn(Action: () -> T): T {
-            ScreenshotManager.snapshot()
-
-            try {
-                return Action()
-            } finally {
-                ScreenshotManager.usePreviousSnap = false
+            if (timeToWait.isPositive()) {
+                wait(timeToWait)
             }
         }
 
-        /**
-         * Swipes from one [Location] to another [Location].
-         *
-         * @param Start the [Location] where the swipe should start
-         * @param End the [Location] where the swipe should end
-         */
-        fun swipe(Start: Location, End: Location) {
-            GestureService?.swipe(Start.transform(), End.transform())
+        return false
+    }
+
+    /**
+     * Takes a screenshot and caches it for the duration of the function invocation. This is
+     * useful when you want to reuse the same screenshot for multiple image searches.
+     *
+     * @param Action a function to invoke which will use the cached screenshot
+     */
+    fun <T> useSameSnapIn(Action: () -> T): T {
+        ScreenshotManager.snapshot()
+
+        try {
+            return Action()
+        } finally {
+            ScreenshotManager.usePreviousSnap = false
         }
+    }
+
+    /**
+     * Swipes from one [Location] to another [Location].
+     *
+     * @param Start the [Location] where the swipe should start
+     * @param End the [Location] where the swipe should end
+     */
+    fun swipe(Start: Location, End: Location) {
+        GestureService?.swipe(Start.transform(), End.transform())
     }
 }
