@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.core
 
+import com.mathewsachin.fategrandautomata.core.ExitManager.checkExitRequested
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import java.io.InputStream
 import kotlin.math.min
@@ -7,17 +8,6 @@ import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 import kotlin.time.seconds
-
-/**
- * Checks if the stop button has been pressed.
- *
- * @throws ScriptAbortException if the button has been pressed
- */
-fun checkExitRequested() {
-    if (AutomataApi.exitRequested) {
-        throw ScriptAbortException()
-    }
-}
 
 /**
  * Clicks on the [Location].
@@ -177,9 +167,6 @@ object AutomataApi {
             left -= toSleep
         }
     }
-
-    @Volatile
-    var exitRequested = false
 
     val WindowRegion: Region get() = PlatformImpl!!.windowRegion
 
