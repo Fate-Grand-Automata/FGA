@@ -30,13 +30,13 @@ abstract class EntryPoint {
         } catch (e: ScriptExitException) {
             scriptExitListener?.invoke()
 
-            AutomataApi.showMessageBox("Script Exited", e.message ?: "")
+            AutomataApi.PlatformImpl.messageBox("Script Exited", e.message ?: "")
         } catch (e: Exception) {
             println(e.toString())
 
             scriptExitListener?.invoke()
 
-            AutomataApi.showMessageBox("Unexpected Error", e.toString(), e)
+            AutomataApi.PlatformImpl.messageBox("Unexpected Error", e.toString(), e)
         }
     }
 

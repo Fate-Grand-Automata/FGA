@@ -141,7 +141,7 @@ open class AutoBattle : EntryPoint() {
         if (Preferences.Refill.enabled) {
             val refillRepetitions = Preferences.Refill.repetitions
             if (refillRepetitions > 0) {
-                AutomataApi.toast("$stonesUsed refills used out of $refillRepetitions")
+                AutomataApi.PlatformImpl.toast("$stonesUsed refills used out of $refillRepetitions")
             }
         }
 

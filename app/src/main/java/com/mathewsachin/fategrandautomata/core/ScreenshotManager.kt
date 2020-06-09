@@ -28,7 +28,7 @@ object ScreenshotManager {
 
         if (scale != null) {
             if (resizeTarget == null) {
-                resizeTarget = AutomataApi.getResizableBlankPattern()
+                resizeTarget = AutomataApi.PlatformImpl.getResizableBlankPattern()
             }
 
             sshot.resize(resizeTarget!!, sshot.Size * scale)

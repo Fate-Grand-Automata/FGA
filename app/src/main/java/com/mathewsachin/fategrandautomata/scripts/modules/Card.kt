@@ -109,7 +109,7 @@ class Card {
             return CardTypeEnum.Quick
         }
 
-        AutomataApi.toast("Failed to determine Card type $Region")
+        AutomataApi.PlatformImpl.toast("Failed to determine Card type $Region")
 
         return CardTypeEnum.Buster
     }

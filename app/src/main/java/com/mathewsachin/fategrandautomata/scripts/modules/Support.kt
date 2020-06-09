@@ -166,7 +166,7 @@ class Support {
                 ++numberOfSwipes
                 0.3.seconds.wait()
             } else if (numberOfUpdates < Preferences.Support.maxUpdates) {
-                AutomataApi.toast("Support list will be updated in 3 seconds.")
+                AutomataApi.PlatformImpl.toast("Support list will be updated in 3 seconds.")
                 3.seconds.wait()
 
                 Game.SupportUpdateClick.click()

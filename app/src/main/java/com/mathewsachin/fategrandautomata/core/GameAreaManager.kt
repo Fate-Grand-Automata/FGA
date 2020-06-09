@@ -1,7 +1,5 @@
 package com.mathewsachin.fategrandautomata.core
 
-import com.mathewsachin.fategrandautomata.core.AutomataApi.WindowRegion
-
 /**
  * This class is used for storing the script and image dimensions and for storing the playable area
  * in [GameArea].
@@ -26,7 +24,7 @@ object GameAreaManager {
     var GameArea: Region
         get() {
             // store the WindowRegion so we don't calculate it twice
-            var windowRegion = WindowRegion;
+            val windowRegion = AutomataApi.PlatformImpl.windowRegion
             return gameArea?.plus(windowRegion.location) ?: windowRegion
         }
         set(value) {

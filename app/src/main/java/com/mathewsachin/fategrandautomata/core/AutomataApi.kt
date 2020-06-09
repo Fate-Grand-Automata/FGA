@@ -74,7 +74,7 @@ val IPattern.Size get() = Size(width, height)
  */
 fun Region.highlight(Duration: Duration = 0.3.seconds) {
     checkExitRequested()
-    AutomataApi.PlatformImpl?.highlight(this.transform(), Duration)
+    AutomataApi.PlatformImpl.highlight(this.transform(), Duration)
 }
 
 /**
@@ -144,7 +144,7 @@ fun Duration.wait() {
  * Central class used for triggering gestures and image recognition.
  */
 object AutomataApi {
-    var PlatformImpl: IPlatformImpl? = null
+    lateinit var PlatformImpl: IPlatformImpl
     var GestureService: IGestureService? = null
 
     fun registerPlatform(Impl: IPlatformImpl) {
@@ -159,30 +159,6 @@ object AutomataApi {
      * The default minimum similarity used for image comparisons.
      */
     const val MinSimilarity = 0.8
-
-    fun loadPattern(Stream: InputStream): IPattern {
-        return PlatformImpl!!.loadPattern(Stream)
-    }
-
-    fun getResizableBlankPattern(): IPattern {
-        return PlatformImpl!!.getResizableBlankPattern()
-    }
-
-    val WindowRegion: Region get() = PlatformImpl!!.windowRegion
-
-    /**
-     * Shows a message box with the given title and message.
-     */
-    fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
-        PlatformImpl?.messageBox(Title, Message, Error)
-    }
-
-    /**
-     * Shows a toast with the given message.
-     */
-    fun toast(Message: String) {
-        PlatformImpl?.toast(Message)
-    }
 
     /**
      * Checks if the [Region] contains the provided image.
