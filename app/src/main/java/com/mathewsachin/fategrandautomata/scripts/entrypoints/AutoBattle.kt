@@ -46,11 +46,11 @@ open class AutoBattle : EntryPoint() {
                 RefillResourceEnum.Bronze -> Game.StaminaBronzeClick.click()
             }
 
-            AutomataApi.wait(1.seconds)
+            1.seconds.wait()
             Game.StaminaOkClick.click()
             ++stonesUsed
 
-            AutomataApi.wait(3.seconds)
+            3.seconds.wait()
         } else throw ScriptExitException("AP ran out!")
     }
 
@@ -77,12 +77,12 @@ open class AutoBattle : EntryPoint() {
 
         withdrawRegion.Region.click()
 
-        AutomataApi.wait(0.5.seconds)
+        0.5.seconds.wait()
 
         // Click the "Accept" button after choosing to withdraw
         Game.WithdrawAcceptClick.click()
 
-        AutomataApi.wait(1.seconds)
+        1.seconds.wait()
 
         // Click the "Close" button after accepting the withdrawal
         Game.StaminaBronzeClick.click()
@@ -104,7 +104,7 @@ open class AutoBattle : EntryPoint() {
     private fun startQuest() {
         Game.MenuStartQuestClick.click()
 
-        AutomataApi.wait(2.seconds)
+        2.seconds.wait()
 
         val boostItem = Preferences.BoostItemSelectionMode
         if (boostItem >= 0) {
@@ -115,11 +115,11 @@ open class AutoBattle : EntryPoint() {
         }
 
         if (Preferences.StorySkip) {
-            AutomataApi.wait(10.seconds)
+            10.seconds.wait()
 
             if (needsToStorySkip()) {
                 Game.MenuStorySkipClick.click()
-                AutomataApi.wait(0.5.seconds)
+                0.5.seconds.wait()
                 Game.MenuStorySkipYesClick.click()
             }
         }
@@ -152,7 +152,7 @@ open class AutoBattle : EntryPoint() {
     }
 
     private fun afterSelectingQuest() {
-        AutomataApi.wait(1.5.seconds)
+        1.5.seconds.wait()
 
         // Inventory full. Stop script.
         when (Preferences.GameServer) {
@@ -221,14 +221,14 @@ open class AutoBattle : EntryPoint() {
             Game.ResultNextClick.click(35)
         }
 
-        AutomataApi.wait(5.seconds)
+        5.seconds.wait()
 
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
         if (Game.ResultFriendRequestRegion.exists(ImageLocator.FriendRequest)) {
             Game.ResultFriendRequestRejectClick.click()
         }
 
-        AutomataApi.wait(1.seconds)
+        1.seconds.wait()
 
         // Only for JP currently. Searches for the Continue option after select Free Quests
         if (Preferences.GameServer == GameServerEnum.Jp && Game.ContinueRegion.exists(
@@ -252,25 +252,25 @@ open class AutoBattle : EntryPoint() {
         if (Preferences.StorySkip) {
             if (Game.MenuStorySkipRegion.exists(ImageLocator.StorySkip)) {
                 Game.MenuStorySkipClick.click()
-                AutomataApi.wait(0.5.seconds)
+                0.5.seconds.wait()
                 Game.MenuStorySkipYesClick.click()
             }
         }
 
-        AutomataApi.wait(10.seconds)
+        10.seconds.wait()
 
         // Quest Completion reward. Exits the screen when it is presented.
         if (Game.ResultCeRewardRegion.exists(ImageLocator.Bond10Reward)) {
             Game.ResultCeRewardCloseClick.click()
-            AutomataApi.wait(1.seconds)
+            1.seconds.wait()
             Game.ResultCeRewardCloseClick.click()
         }
 
-        AutomataApi.wait(5.seconds)
+        5.seconds.wait()
 
         // 1st time quest reward screen, eg. Mana Prisms, Event CE, Materials, etc.
         if (Game.ResultQuestRewardRegion.exists(ImageLocator.QuestReward)) {
-            AutomataApi.wait(1.seconds)
+            1.seconds.wait()
             Game.ResultNextClick.click()
         }
     }
@@ -281,13 +281,13 @@ open class AutoBattle : EntryPoint() {
         val hasSelectedSupport = support.selectSupport(Preferences.Support.selectionMode)
 
         if (hasSelectedSupport && !isContinuing) {
-            AutomataApi.wait(4.seconds)
+            4.seconds.wait()
             startQuest()
 
             // Wait timer till battle starts.
             // Uses less battery to wait than to search for images for a few seconds.
             // Adjust according to device.
-            AutomataApi.wait(10.seconds)
+            10.seconds.wait()
         }
     }
 
@@ -329,7 +329,7 @@ open class AutoBattle : EntryPoint() {
 
             actor?.invoke()
 
-            AutomataApi.wait(1.seconds)
+            1.seconds.wait()
         }
     }
 

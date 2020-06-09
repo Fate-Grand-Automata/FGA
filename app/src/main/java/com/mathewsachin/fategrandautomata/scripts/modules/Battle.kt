@@ -51,7 +51,7 @@ class Battle {
         Game.BattleScreenRegion.waitVanish(ImageLocator.Battle, 5.seconds)
 
         // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
-        AutomataApi.wait(1.5.seconds)
+        1.5.seconds.wait()
 
         hasClickedAttack = true
 
@@ -68,7 +68,7 @@ class Battle {
     private fun chooseTarget(Index: Int) {
         Game.BattleTargetClickArray[Index].click()
 
-        AutomataApi.wait(0.5.seconds)
+        0.5.seconds.wait()
 
         Game.BattleExtrainfoWindowCloseClick.click()
 
@@ -96,7 +96,7 @@ class Battle {
 
     fun performBattle() {
         ScreenshotManager.useSameSnapIn { onTurnStarted() }
-        AutomataApi.wait(2.seconds)
+        2.seconds.wait()
 
         var wereNpsClicked = false
 
@@ -121,7 +121,7 @@ class Battle {
 
         card.resetCommandCards()
 
-        AutomataApi.wait(if (wereNpsClicked) 25.seconds else 5.seconds)
+        (if (wereNpsClicked) 25 else 5).seconds.wait()
     }
 
     private fun onTurnStarted() {

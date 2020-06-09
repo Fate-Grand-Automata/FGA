@@ -26,13 +26,13 @@ class AutoLottery : EntryPoint() {
 
     private fun reset() {
         resetClick.click()
-        AutomataApi.wait(0.5.seconds)
+        0.5.seconds.wait()
 
         resetConfirmationClick.click()
-        AutomataApi.wait(3.seconds)
+        3.seconds.wait()
 
         resetCloseClick.click()
-        AutomataApi.wait(2.seconds)
+        2.seconds.wait()
     }
 
     override fun script(): Nothing {

@@ -95,7 +95,7 @@ class AutoSkill {
     private fun selectSkillTarget(Location: Location) {
         Location.click()
 
-        AutomataApi.wait(0.5.seconds)
+        0.5.seconds.wait()
 
         // Exit any extra menu
         Game.BattleExtrainfoWindowCloseClick.click()
@@ -108,7 +108,7 @@ class AutoSkill {
             battle.clickAttack()
 
             // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-            AutomataApi.wait(2.seconds)
+            2.seconds.wait()
         }
 
         Location.click()
@@ -119,7 +119,7 @@ class AutoSkill {
     private fun openMasterSkillMenu() {
         Game.BattleMasterSkillOpenClick.click()
 
-        AutomataApi.wait(0.5.seconds)
+        0.5.seconds.wait()
     }
 
     private fun castMasterSkill(Location: Location) {
@@ -141,7 +141,7 @@ class AutoSkill {
             Game.BattleSkillOkClick.click()
         }
 
-        AutomataApi.wait(0.3.seconds)
+        0.3.seconds.wait()
 
         changeArray(startingMemberFunctionArray)
     }
@@ -155,17 +155,17 @@ class AutoSkill {
     private fun selectSubMember(Location: Location) {
         Location.click()
 
-        AutomataApi.wait(0.3.seconds)
+        0.3.seconds.wait()
 
         Game.BattleOrderChangeOkClick.click()
 
         // Extra wait to allow order change dialog to close
-        AutomataApi.wait(1.seconds)
+        1.seconds.wait()
 
         waitForAnimationToFinish(15.seconds)
 
         // Extra wait for the lag introduced by Order change
-        AutomataApi.wait(1.seconds)
+        1.seconds.wait()
 
         changeArray(defaultFunctionArray)
     }
@@ -175,7 +175,7 @@ class AutoSkill {
     private fun selectEnemyTarget(Location: Location) {
         Location.click()
 
-        AutomataApi.wait(0.5.seconds)
+        0.5.seconds.wait()
 
         // Exit any extra menu
         Game.BattleExtrainfoWindowCloseClick.click()
@@ -188,7 +188,7 @@ class AutoSkill {
             battle.clickAttack()
 
             // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-            AutomataApi.wait(2.seconds)
+            2.seconds.wait()
         }
 
         changeArray(cardsPressedArray)

@@ -6,6 +6,7 @@ import android.graphics.Path
 import com.mathewsachin.fategrandautomata.core.AutomataApi
 import com.mathewsachin.fategrandautomata.core.IGestureService
 import com.mathewsachin.fategrandautomata.core.Location
+import com.mathewsachin.fategrandautomata.core.wait
 import com.mathewsachin.fategrandautomata.util.*
 
 /**
@@ -25,7 +26,7 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
         )
         performGesture(swipeStroke)
 
-        AutomataApi.wait(swipeWaitTime)
+        swipeWaitTime.wait()
     }
 
     override fun click(Location: Location, Times: Int) {
@@ -42,7 +43,7 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
             performGesture(stroke)
         }
 
-        AutomataApi.wait(clickWaitTime)
+        clickWaitTime.wait()
     }
 
     private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {

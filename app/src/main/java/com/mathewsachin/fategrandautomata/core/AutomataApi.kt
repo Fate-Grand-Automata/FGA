@@ -123,6 +123,24 @@ fun Region.findAll(
 }
 
 /**
+ * Wait for a given [Duration]. The wait is paused regularly to check if the stop button has
+ * been pressed.
+ */
+fun Duration.wait() {
+    val epsilon = 1000L
+    var left = this.toLongMilliseconds()
+
+    // Sleeping this way allows quick exit if demanded by user
+    while (left > 0) {
+        checkExitRequested()
+
+        val toSleep = min(epsilon, left)
+        Thread.sleep(toSleep)
+        left -= toSleep
+    }
+}
+
+/**
  * Central class used for triggering gestures and image recognition.
  */
 object AutomataApi {
@@ -148,24 +166,6 @@ object AutomataApi {
 
     fun getResizableBlankPattern(): IPattern {
         return PlatformImpl!!.getResizableBlankPattern()
-    }
-
-    /**
-     * Wait for a given [Duration]. The wait is paused regularly to check if the stop button has
-     * been pressed.
-     */
-    fun wait(Duration: Duration) {
-        val epsilon = 1000L
-        var left = Duration.toLongMilliseconds()
-
-        // Sleeping this way allows quick exit if demanded by user
-        while (left > 0) {
-            checkExitRequested()
-
-            val toSleep = min(epsilon, left)
-            Thread.sleep(toSleep)
-            left -= toSleep
-        }
     }
 
     val WindowRegion: Region get() = PlatformImpl!!.windowRegion
@@ -242,7 +242,7 @@ object AutomataApi {
             val timeToWait = scanInterval - scanStart.elapsedNow()
 
             if (timeToWait.isPositive()) {
-                wait(timeToWait)
+                timeToWait.wait()
             }
         }
 
