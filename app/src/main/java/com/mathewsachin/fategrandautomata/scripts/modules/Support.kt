@@ -228,7 +228,7 @@ class Support {
     }
 
     private fun scrollList() {
-        AutomataApi.swipe(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick)
+        swipe(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick)
     }
 
     private fun findFriendName(): Region? {

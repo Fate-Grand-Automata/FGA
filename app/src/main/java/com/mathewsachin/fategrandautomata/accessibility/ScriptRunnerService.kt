@@ -158,7 +158,7 @@ class ScriptRunnerService : AccessibilityService() {
             return false
         }
 
-        AutomataApi.registerGestures(gestureService ?: return false)
+        registerGestures(gestureService ?: return false)
         return true
     }
 

@@ -2,22 +2,11 @@ package com.mathewsachin.fategrandautomata.core
 
 import com.mathewsachin.fategrandautomata.core.ExitManager.checkExitRequested
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import java.io.InputStream
 import kotlin.math.min
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 import kotlin.time.seconds
-
-/**
- * Clicks on the [Location].
- *
- * @param Times the amount of times to click
- */
-fun Location.click(Times: Int = 1) {
-    checkExitRequested()
-    AutomataApi.GestureService?.click(this.transform(), Times)
-}
 
 /**
  * Checks if the [Region] contains the provided image.
@@ -56,11 +45,6 @@ fun Region.waitVanish(
         Timeout
     )
 }
-
-/**
- * Clicks on the center of this Region.
- */
-fun Region.click() = center.click()
 
 /**
  * Gets the width and height in the form of a [Size] object.
@@ -145,14 +129,9 @@ fun Duration.wait() {
  */
 object AutomataApi {
     lateinit var PlatformImpl: IPlatformImpl
-    var GestureService: IGestureService? = null
 
     fun registerPlatform(Impl: IPlatformImpl) {
         PlatformImpl = Impl
-    }
-
-    fun registerGestures(Impl: IGestureService) {
-        GestureService = Impl
     }
 
     /**
@@ -223,15 +202,5 @@ object AutomataApi {
         }
 
         return false
-    }
-
-    /**
-     * Swipes from one [Location] to another [Location].
-     *
-     * @param Start the [Location] where the swipe should start
-     * @param End the [Location] where the swipe should end
-     */
-    fun swipe(Start: Location, End: Location) {
-        GestureService?.swipe(Start.transform(), End.transform())
     }
 }
