@@ -95,7 +95,7 @@ class Battle {
     }
 
     fun performBattle() {
-        AutomataApi.useSameSnapIn { onTurnStarted() }
+        ScreenshotManager.useSameSnapIn { onTurnStarted() }
         AutomataApi.wait(2.seconds)
 
         var wereNpsClicked = false

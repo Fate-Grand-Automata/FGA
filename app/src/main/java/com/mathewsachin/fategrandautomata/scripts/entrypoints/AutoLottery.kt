@@ -45,7 +45,7 @@ class AutoLottery : EntryPoint() {
         initScaling()
 
         while (true) {
-            AutomataApi.useSameSnapIn {
+            ScreenshotManager.useSameSnapIn {
                 when {
                     finishedLotteryBoxRegion.exists(
                         ImageLocator.FinishedLotteryBox,

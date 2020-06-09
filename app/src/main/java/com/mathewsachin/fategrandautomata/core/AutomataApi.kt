@@ -250,22 +250,6 @@ object AutomataApi {
     }
 
     /**
-     * Takes a screenshot and caches it for the duration of the function invocation. This is
-     * useful when you want to reuse the same screenshot for multiple image searches.
-     *
-     * @param Action a function to invoke which will use the cached screenshot
-     */
-    fun <T> useSameSnapIn(Action: () -> T): T {
-        ScreenshotManager.snapshot()
-
-        try {
-            return Action()
-        } finally {
-            ScreenshotManager.usePreviousSnap = false
-        }
-    }
-
-    /**
      * Swipes from one [Location] to another [Location].
      *
      * @param Start the [Location] where the swipe should start

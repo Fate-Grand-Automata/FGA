@@ -117,7 +117,7 @@ class Card {
     fun readCommandCards() {
         commandCards.clear()
 
-        AutomataApi.useSameSnapIn {
+        ScreenshotManager.useSameSnapIn {
             for (cardSlot in 0..4) {
                 val affinity = getCardAffinity(Game.BattleCardAffinityRegionArray[cardSlot])
                 val type = getCardType(Game.BattleCardTypeRegionArray[cardSlot])

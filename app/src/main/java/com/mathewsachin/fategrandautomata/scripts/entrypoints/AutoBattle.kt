@@ -320,7 +320,7 @@ open class AutoBattle : EntryPoint() {
 
         // Loop through SCREENS until a Validator returns true
         while (true) {
-            val actor = AutomataApi.useSameSnapIn {
+            val actor = ScreenshotManager.useSameSnapIn {
                 screens
                     .filter { (validator, _) -> validator() }
                     .map { (_, actor) -> actor }

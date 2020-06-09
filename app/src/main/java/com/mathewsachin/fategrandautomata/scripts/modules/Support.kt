@@ -114,7 +114,7 @@ class Support {
     }
 
     private fun searchVisible(SearchMethod: SearchFunction): SearchVisibleResult {
-        return AutomataApi.useSameSnapIn(fun(): SearchVisibleResult {
+        return ScreenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
             if (!isFriend(Game.SupportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SearchVisibleResult(SupportSearchResultEnum.NoFriendsFound, null)
