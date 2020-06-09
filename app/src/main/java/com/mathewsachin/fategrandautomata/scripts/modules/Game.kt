@@ -191,7 +191,7 @@ class Game {
         fun retry() {
             RetryRegion.click()
 
-            AutomataApi.wait(2.seconds)
+            2.seconds.wait()
         }
 
         val GudaFinalRewardsRegion = Region(1160, 1040, 228, 76)

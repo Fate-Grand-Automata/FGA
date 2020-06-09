@@ -90,23 +90,23 @@ class Support {
     }
 
     private fun selectFirst(): Boolean {
-        AutomataApi.wait(1.seconds)
+        1.seconds.wait()
         Game.SupportFirstSupportClick.click()
 
         val pattern = ImageLocator.SupportScreen
 
         // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
         if (Game.SupportScreenRegion.exists(pattern)) {
-            AutomataApi.wait(2.seconds)
+            2.seconds.wait()
 
             while (Game.SupportScreenRegion.exists(pattern)) {
-                AutomataApi.wait(10.seconds)
+                10.seconds.wait()
                 Game.SupportUpdateClick.click()
-                AutomataApi.wait(1.seconds)
+                1.seconds.wait()
                 Game.SupportUpdateYesClick.click()
-                AutomataApi.wait(3.seconds)
+                3.seconds.wait()
                 Game.SupportFirstSupportClick.click()
-                AutomataApi.wait(1.seconds)
+                1.seconds.wait()
             }
         }
 
@@ -114,7 +114,7 @@ class Support {
     }
 
     private fun searchVisible(SearchMethod: SearchFunction): SearchVisibleResult {
-        return AutomataApi.useSameSnapIn(fun(): SearchVisibleResult {
+        return ScreenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
             if (!isFriend(Game.SupportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SearchVisibleResult(SupportSearchResultEnum.NoFriendsFound, null)
@@ -164,20 +164,20 @@ class Support {
             ) {
                 scrollList()
                 ++numberOfSwipes
-                AutomataApi.wait(0.3.seconds)
+                0.3.seconds.wait()
             } else if (numberOfUpdates < Preferences.Support.maxUpdates) {
-                AutomataApi.toast("Support list will be updated in 3 seconds.")
-                AutomataApi.wait(3.seconds)
+                AutomataApi.PlatformImpl.toast("Support list will be updated in 3 seconds.")
+                3.seconds.wait()
 
                 Game.SupportUpdateClick.click()
-                AutomataApi.wait(1.seconds)
+                1.seconds.wait()
                 Game.SupportUpdateYesClick.click()
 
                 while (Game.needsToRetry()) {
                     Game.retry()
                 }
 
-                AutomataApi.wait(3.seconds)
+                3.seconds.wait()
 
                 ++numberOfUpdates
                 numberOfSwipes = 0
@@ -228,7 +228,7 @@ class Support {
     }
 
     private fun scrollList() {
-        AutomataApi.swipe(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick)
+        swipe(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick)
     }
 
     private fun findFriendName(): Region? {
