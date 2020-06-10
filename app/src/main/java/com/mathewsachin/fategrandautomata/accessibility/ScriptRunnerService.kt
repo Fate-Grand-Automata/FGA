@@ -46,6 +46,7 @@ import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
+import com.mathewsachin.fategrandautomata.util.messageAndStackTrace
 import kotlin.time.seconds
 
 fun View.setThrottledClickListener(Listener: () -> Unit) {
@@ -428,7 +429,7 @@ class ScriptRunnerService : AccessibilityService() {
             if (Error != null) {
                 setNeutralButton("Copy") {
                     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clipData = ClipData.newPlainText("Error", Error.info)
+                    val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
 
                     clipboard.setPrimaryClip(clipData)
                 }
