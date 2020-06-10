@@ -10,6 +10,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
 import com.mathewsachin.fategrandautomata.scripts.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.util.findCeList
+import com.mathewsachin.fategrandautomata.util.findFriendNamesList
 import com.mathewsachin.fategrandautomata.util.findServantList
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnResume
 import kotlinx.coroutines.MainScope
@@ -48,7 +49,7 @@ abstract class SupportSettingsBaseFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.support_clear_menu, menu)
+        inflater.inflate(R.menu.support_common_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -60,6 +61,10 @@ abstract class SupportSettingsBaseFragment : PreferenceFragmentCompat() {
             }
             R.id.action_clear_support_ces -> {
                 findCeList()?.values = emptySet()
+                true
+            }
+            R.id.action_clear_support_friends -> {
+                findFriendNamesList()?.values = emptySet()
                 true
             }
             else -> super.onOptionsItemSelected(item)

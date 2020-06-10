@@ -9,7 +9,7 @@ import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
 
 class SupportSettingsFragment : SupportSettingsBaseFragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.support_extract_menu, menu)
+        inflater.inflate(R.menu.support_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
