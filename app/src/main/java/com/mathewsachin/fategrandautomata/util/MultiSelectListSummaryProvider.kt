@@ -8,7 +8,13 @@ class MultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSelectLis
     override fun provideSummary(preference: MultiSelectListPreference): CharSequence {
         return if (preference.values.size > 0)  {
             val selectedLabels = preference.values.map {
-                preference.entries[preference.findIndexOfValue(it)]
+                val index = preference.findIndexOfValue(it)
+
+                // Index out of Bounds exception can happen if the selected images were deleted
+                if (index in preference.entries.indices) {
+                    preference.entries[index]
+                }
+                else it
             }
 
             selectedLabels.joinToString()
