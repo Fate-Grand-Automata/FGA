@@ -43,6 +43,11 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
         UI.windowManager.addView(frame, layoutParams)
     }
 
+    /**
+     * If `true` (default), then the dialog is closed automatically
+     * when the user clicks on positive, negative or neutral button,
+     * without needing an explicit call to [hide].
+     */
     var autoDismiss = true
 
     fun hide() {

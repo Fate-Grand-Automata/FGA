@@ -1,15 +1,7 @@
 package com.mathewsachin.fategrandautomata.core
 
-import java.io.PrintWriter
-import java.io.StringWriter
+import com.mathewsachin.fategrandautomata.util.messageAndStackTrace
 import kotlin.concurrent.thread
-
-val Exception.info get (): String {
-    val sw = StringWriter()
-    val pw = PrintWriter(sw)
-    printStackTrace(pw)
-    return "${message}\n\n${sw}"
-}
 
 /**
  * Basic class for all "script modes", such as Battle, Lottery and Summoning.
@@ -39,15 +31,16 @@ abstract class EntryPoint {
         } catch (e: ScriptExitException) {
             scriptExitListener?.invoke()
 
+            // Show the message box only if there is some message
             if (!e.message.isNullOrBlank()) {
                 AutomataApi.PlatformImpl.messageBox("Script Exited", e.message)
             }
         } catch (e: Exception) {
-             println(e.info)
+            println(e.messageAndStackTrace)
 
             scriptExitListener?.invoke()
 
-            AutomataApi.PlatformImpl.messageBox("Unexpected Error", e.info, e)
+            AutomataApi.PlatformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
         }
     }
 
