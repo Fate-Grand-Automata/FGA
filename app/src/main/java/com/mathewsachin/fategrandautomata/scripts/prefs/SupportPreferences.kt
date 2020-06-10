@@ -4,11 +4,21 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.limitBrokenCharacter
 import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
+import com.mathewsachin.fategrandautomata.scripts.supportFriendFolder
 import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
 import java.io.File
 
 class SupportPreferences {
-    val friendNames get() = getStringPref(R.string.pref_support_friend_names)
+    val friendNames: String get() {
+        val friendSet = getStringSetPref(R.string.pref_support_friend_names)
+
+        val friendImgFolderName = supportFriendFolder.name
+
+        val friendNames = friendSet
+            .map { "${friendImgFolderName}/$it" }
+
+        return friendNames.joinToString()
+    }
 
     val getAutoSkillPreferredServantCount: Int get() {
         val prefs = getPrefsForSelectedAutoSkill()

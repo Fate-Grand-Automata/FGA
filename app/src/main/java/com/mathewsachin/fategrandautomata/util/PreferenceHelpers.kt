@@ -6,7 +6,9 @@ import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
+import com.mathewsachin.fategrandautomata.scripts.supportFriendFolder
 import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
+import java.io.File
 
 fun EditTextPreference.makeNumeric() {
     setOnBindEditTextListener {
@@ -16,6 +18,7 @@ fun EditTextPreference.makeNumeric() {
 
 fun PreferenceFragmentCompat.findServantList() = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_servant))
 fun PreferenceFragmentCompat.findCeList() = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_ce))
+fun PreferenceFragmentCompat.findFriendNamesList() = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_friend_names))
 
 fun PreferenceFragmentCompat.preferredSupportOnCreate() {
     findServantList()?.apply {
@@ -25,6 +28,26 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
     findCeList()?.apply {
         summaryProvider = MultiSelectListSummaryProvider()
     }
+
+    findFriendNamesList()?.apply {
+        summaryProvider = MultiSelectListSummaryProvider()
+    }
+}
+
+private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
+    val entries = ImgFolder.listFiles()
+        .filter { it.isFile }
+        .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
+
+    // actual values
+    this.entryValues = entries
+        .map { it.name }
+        .toTypedArray()
+
+    // labels
+    this.entries = entries
+        .map { it.nameWithoutExtension }
+        .toTypedArray()
 }
 
 fun PreferenceFragmentCompat.preferredSupportOnResume() {
@@ -39,18 +62,10 @@ fun PreferenceFragmentCompat.preferredSupportOnResume() {
     }
 
     findCeList()?.apply {
-        val entries = supportCeFolder.listFiles()
-            .filter { it.isFile }
-            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
+        populateFriendOrCe(supportCeFolder)
+    }
 
-        // actual values
-        this.entryValues = entries
-            .map { it.name }
-            .toTypedArray()
-
-        // labels
-        this.entries = entries
-            .map { it.nameWithoutExtension }
-            .toTypedArray()
+    findFriendNamesList()?.apply {
+        populateFriendOrCe(supportFriendFolder)
     }
 }

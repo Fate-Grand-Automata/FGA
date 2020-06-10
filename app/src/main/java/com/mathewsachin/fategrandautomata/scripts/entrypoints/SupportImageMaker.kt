@@ -90,7 +90,7 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
                     )
                 }
 
-                val friendBound = Region(supportBound.X + pattern.width + 180, supportBound.Y - 95, 400, 110)
+                val friendBound = Region(supportBound.X + pattern.width + 220, supportBound.Y - 95, 400, 110)
                 val friendPattern = friendBound.getPattern()
 
                 friendPattern?.use {

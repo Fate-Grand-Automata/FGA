@@ -63,6 +63,16 @@ val supportCeFolder: File by lazy{
     dir
 }
 
+val supportFriendFolder: File by lazy{
+    val dir = File(supportImgFolder, "friend")
+
+    if (!dir.exists()) {
+        dir.mkdirs()
+    }
+
+    dir
+}
+
 private fun fileLoader(FileName: String): IPattern? {
     val filepath = File(supportImgFolder, FileName)
 

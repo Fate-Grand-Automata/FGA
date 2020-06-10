@@ -10,7 +10,7 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
 import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
-import com.mathewsachin.fategrandautomata.scripts.supportImgFolder
+import com.mathewsachin.fategrandautomata.scripts.supportFriendFolder
 import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
@@ -22,9 +22,9 @@ val CeRegex = Regex(FileNameRegex)
 
 private const val InvalidCharsMsg = "<, >, \", |, :, *, ?, \\, /"
 const val ServantInvalidMsg = "You're not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
-const val CeInvalidMsg = "You're not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
+const val CeOrFriendInvalidMsg = "You're not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
 
-private fun GetSupportEntries(Frame: View): List<SupportImgEntry> {
+private fun getSupportEntries(Frame: View): List<SupportImgEntry> {
     val servant0 = SupportImgEntry(
         getServantImgPath(0),
         supportServantImgFolder,
@@ -42,26 +42,26 @@ private fun GetSupportEntries(Frame: View): List<SupportImgEntry> {
         getCeImgPath(0),
         supportCeFolder,
         Frame.findViewById(R.id.support_img_ce_0),
-        CeRegex, CeInvalidMsg
+        CeRegex, CeOrFriendInvalidMsg
     )
     val ce1 = SupportImgEntry(
         getCeImgPath(1),
         supportCeFolder,
         Frame.findViewById(R.id.support_img_ce_1),
-        CeRegex, CeInvalidMsg
+        CeRegex, CeOrFriendInvalidMsg
     )
 
     val friend0 = SupportImgEntry(
         getFriendImgPath(0),
-        supportImgFolder,
+        supportFriendFolder,
         Frame.findViewById(R.id.support_img_friend_0),
-        CeRegex, CeInvalidMsg
+        CeRegex, CeOrFriendInvalidMsg
     )
     val friend1 = SupportImgEntry(
         getFriendImgPath(1),
-        supportImgFolder,
+        supportFriendFolder,
         Frame.findViewById(R.id.support_img_friend_1),
-        CeRegex, CeInvalidMsg
+        CeRegex, CeOrFriendInvalidMsg
     )
 
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
@@ -73,7 +73,7 @@ fun showSupportImageNamer(UI: ScriptRunnerUserInterface) {
     val inflater = LayoutInflater.from(UI.Service)
     inflater.inflate(R.layout.support_img_namer, frame)
 
-    val entryList = GetSupportEntries(frame)
+    val entryList = getSupportEntries(frame)
 
     ScriptRunnerDialog(UI).apply {
         autoDismiss = false

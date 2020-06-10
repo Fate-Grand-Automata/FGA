@@ -56,11 +56,10 @@
                 app:key="@string/pref_support_friends_only"
                 app:title="Friends Only" />
 
-            <EditTextPreference
+            <MultiSelectListPreference
                 app:icon="@drawable/ic_friend"
                 app:key="@string/pref_support_friend_names"
-                app:title="Friend names"
-                app:useSimpleSummaryProvider="true" />
+                app:title="Friend names" />
         </PreferenceCategory>
 
         <PreferenceCategory
