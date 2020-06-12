@@ -46,4 +46,6 @@ class AutoSkillMakerHistoryViewModel(val SavedState: SavedStateHandle): ViewMode
 
           adapter.notifyItemChanged(skillCmd.lastIndex)
       }
+
+    fun reverseIterate() = skillCmd.reversed()
 }

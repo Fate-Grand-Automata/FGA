@@ -44,6 +44,11 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     val skillCmdVm: AutoSkillMakerHistoryViewModel by viewModels()
 
+    /**
+     * Notifies that an enemy target was selected when undoing, so a new command should not be added
+     */
+    var wasEnemyTargetUndo = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.autoskill_maker)
@@ -96,7 +101,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         enemy_target_radio.setOnCheckedChangeListener { group, checkedId ->
             val radioButton = group.findViewById<RadioButton>(checkedId)
 
-            if (radioButton?.isChecked == true) {
+            if (radioButton?.isChecked == true && !wasEnemyTargetUndo) {
                 when(checkedId) {
                     R.id.enemy_target_1 -> setEnemyTarget(1)
                     R.id.enemy_target_2 -> setEnemyTarget(2)
@@ -111,39 +116,75 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     private fun onUndo() {
         if (!skillCmdVm.isEmpty()) {
             // Un-select target
-            if (skillCmdVm.last.startsWith('t')) {
-                unSelectTargets()
-            }
-
-            // Battle/Turn change
-            if (skillCmdVm.last.contains(',')) {
-                AlertDialog.Builder(this)
-                    .setTitle("Confirm NP deletion")
-                    .setMessage("If you delete Battle/Turn separator, NPs and cards before NP for that turn will also be deleted. Are you sure?")
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes) { _, _ ->
-                        // Decrement Battle/Turn count
-                        if (skillCmdVm.last.contains('#')) {
-                            --stage
+            when {
+                skillCmdVm.last.startsWith('t') -> {
+                    skillCmdVm.undo()
+                    revertToPreviousEnemyTarget()
+                }
+                // Battle/Turn change
+                skillCmdVm.last.contains(',') -> {
+                    AlertDialog.Builder(this)
+                        .setTitle("Confirm NP deletion")
+                        .setMessage("If you delete Battle/Turn separator, NPs and cards before NP for that turn will also be deleted. Are you sure?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes) { _, _ ->
+                            undoStageOrTurn()
                         }
-
-                        --turn
-                        updateStageAndTurn()
-
-                        // Undo the Battle/Turn change
-                        skillCmdVm.undo()
-
-                        val itemsToRemove = setOf('4', '5', '6', 'n', '0')
-
-                        // Remove NPs and cards before NPs
-                        while (!skillCmdVm.isEmpty()
-                            && skillCmdVm.last[0] in itemsToRemove) {
-                            skillCmdVm.undo()
-                        }
-                    }
-                    .show()
+                        .show()
+                }
+                else -> skillCmdVm.undo()
             }
-            else skillCmdVm.undo()
+        }
+    }
+
+    private fun undoStageOrTurn() {
+        // Decrement Battle/Turn count
+        if (skillCmdVm.last.contains('#')) {
+            --stage
+        }
+
+        --turn
+        updateStageAndTurn()
+
+        // Undo the Battle/Turn change
+        skillCmdVm.undo()
+
+        val itemsToRemove = setOf('4', '5', '6', 'n', '0')
+
+        // Remove NPs and cards before NPs
+        while (!skillCmdVm.isEmpty()
+            && skillCmdVm.last[0] in itemsToRemove) {
+            skillCmdVm.undo()
+        }
+
+        revertToPreviousEnemyTarget()
+    }
+
+    private fun revertToPreviousEnemyTarget() {
+        // Find the previous target, but within the same turn
+        val previousTarget = skillCmdVm
+            .reverseIterate()
+            .takeWhile { !it.contains(',') }
+            .firstOrNull { it.startsWith('t') }
+
+        if (previousTarget == null) {
+            unSelectTargets()
+            return
+        }
+
+        val targetRadio = when (previousTarget[1]) {
+            '1' -> enemy_target_1
+            '2' -> enemy_target_2
+            '3' -> enemy_target_3
+            else -> return
+        }
+
+        wasEnemyTargetUndo = true
+        try {
+            enemy_target_radio.check(targetRadio.id)
+        }
+        finally {
+            wasEnemyTargetUndo = false
         }
     }
 
