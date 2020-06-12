@@ -1,9 +1,9 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.core.CompareSettings
-import com.mathewsachin.fategrandautomata.core.GameAreaManager
-import com.mathewsachin.fategrandautomata.core.Region
-import com.mathewsachin.fategrandautomata.core.Size
+import com.mathewsachin.libautomata.CompareSettings
+import com.mathewsachin.libautomata.GameAreaManager
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.Size
 import kotlin.math.abs
 import kotlin.math.roundToInt
 

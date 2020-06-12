@@ -1,9 +1,9 @@
 package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
-import com.mathewsachin.fategrandautomata.core.AutomataApi
-import com.mathewsachin.fategrandautomata.core.IPattern
-import com.mathewsachin.fategrandautomata.core.IScreenshotService
+import com.mathewsachin.libautomata.AutomataApi
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.storageDir
 import com.mathewsachin.fategrandautomata.util.readIntLE

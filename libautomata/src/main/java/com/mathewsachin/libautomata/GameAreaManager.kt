@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
 /**
  * This class is used for storing the script and image dimensions and for storing the playable area

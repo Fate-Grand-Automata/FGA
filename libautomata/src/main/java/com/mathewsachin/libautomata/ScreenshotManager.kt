@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
 /**
  * A static class responsible for taking screenshots via a [IScreenshotService]. The screenshots are

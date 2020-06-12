@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.view.View
-import com.mathewsachin.fategrandautomata.core.Region
+import com.mathewsachin.libautomata.Region
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 
 private val regionsToHighlight = mutableSetOf<Region>()

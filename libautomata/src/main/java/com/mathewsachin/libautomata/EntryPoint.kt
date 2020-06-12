@@ -1,6 +1,5 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
-import com.mathewsachin.fategrandautomata.util.messageAndStackTrace
 import kotlin.concurrent.thread
 
 /**

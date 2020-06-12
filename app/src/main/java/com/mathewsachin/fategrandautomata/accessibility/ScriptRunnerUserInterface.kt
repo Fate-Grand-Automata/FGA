@@ -13,7 +13,7 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.core.Location
+import com.mathewsachin.libautomata.Location
 import com.mathewsachin.fategrandautomata.ui.highlightView
 import kotlin.math.roundToInt
 import kotlin.time.Duration

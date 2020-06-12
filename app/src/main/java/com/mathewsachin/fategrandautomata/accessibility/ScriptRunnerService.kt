@@ -25,7 +25,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
 import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.core.*
+import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootGestures
@@ -45,7 +45,7 @@ import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageIdKey
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamerActivity
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
-import com.mathewsachin.fategrandautomata.util.messageAndStackTrace
+import com.mathewsachin.libautomata.messageAndStackTrace
 import kotlin.time.seconds
 
 fun View.setThrottledClickListener(Listener: () -> Unit) {
