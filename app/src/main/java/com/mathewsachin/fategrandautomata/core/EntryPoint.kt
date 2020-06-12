@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.core
 
+import com.mathewsachin.fategrandautomata.util.messageAndStackTrace
 import kotlin.concurrent.thread
 
 /**
@@ -30,13 +31,16 @@ abstract class EntryPoint {
         } catch (e: ScriptExitException) {
             scriptExitListener?.invoke()
 
-            AutomataApi.PlatformImpl.messageBox("Script Exited", e.message ?: "")
+            // Show the message box only if there is some message
+            if (!e.message.isNullOrBlank()) {
+                AutomataApi.PlatformImpl.messageBox("Script Exited", e.message)
+            }
         } catch (e: Exception) {
-            println(e.toString())
+            println(e.messageAndStackTrace)
 
             scriptExitListener?.invoke()
 
-            AutomataApi.PlatformImpl.messageBox("Unexpected Error", e.toString(), e)
+            AutomataApi.PlatformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
         }
     }
 
