@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.root
 
-import com.mathewsachin.fategrandautomata.core.IGestureService
-import com.mathewsachin.fategrandautomata.core.Location
+import com.mathewsachin.libautomata.IGestureService
+import com.mathewsachin.libautomata.Location
 import com.mathewsachin.fategrandautomata.util.swipeDuration
 import kotlin.math.max
 

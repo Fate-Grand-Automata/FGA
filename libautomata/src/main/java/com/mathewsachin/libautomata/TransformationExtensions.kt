@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
 /**
  * Calculates the ratio between the screen resolution and the image resolution.

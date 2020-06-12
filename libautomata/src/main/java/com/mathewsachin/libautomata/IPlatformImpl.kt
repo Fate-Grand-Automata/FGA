@@ -1,10 +1,12 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
 import java.io.InputStream
 import kotlin.time.Duration
 
 interface IPlatformImpl {
     val windowRegion: Region
+
+    val debugMode: Boolean
 
     /**
      * Shows a toast with the given message.

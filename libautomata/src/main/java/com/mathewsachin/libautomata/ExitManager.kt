@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
 /**
  * Manages the termination of running scripts

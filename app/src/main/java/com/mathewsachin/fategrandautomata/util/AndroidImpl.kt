@@ -4,10 +4,11 @@ import android.content.Context
 import android.os.*
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
-import com.mathewsachin.fategrandautomata.core.IPattern
-import com.mathewsachin.fategrandautomata.core.IPlatformImpl
-import com.mathewsachin.fategrandautomata.core.Region
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.Region
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.addRegionToHighlight
 import com.mathewsachin.fategrandautomata.ui.removeRegionToHighlight
 import kotlinx.coroutines.GlobalScope
@@ -18,8 +19,9 @@ import kotlin.time.Duration
 import kotlin.time.milliseconds
 
 class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
-    override val windowRegion: Region
-        get() = getCutoutAppliedRegion()
+    override val windowRegion get() = getCutoutAppliedRegion()
+
+    override val debugMode get() = Preferences.DebugMode
 
     override fun toast(Message: String) {
         handler.post {
