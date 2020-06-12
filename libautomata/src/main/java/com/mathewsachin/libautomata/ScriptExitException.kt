@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
 /**
  * An exception for situations where the app itself determined that it cannot continue.

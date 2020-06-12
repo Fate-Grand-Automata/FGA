@@ -1,7 +1,6 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
-import com.mathewsachin.fategrandautomata.core.ExitManager.checkExitRequested
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.ExitManager.checkExitRequested
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
@@ -27,7 +26,7 @@ private fun existsNow(
 
     var sshot = ScreenshotManager.getScreenshot()
 
-    if (Preferences.DebugMode) {
+    if (AutomataApi.PlatformImpl.debugMode) {
         Region.highlight()
     }
 
@@ -129,7 +128,7 @@ fun Region.findAll(
 ): Sequence<Match> {
     var sshot = ScreenshotManager.getScreenshot()
 
-    if (Preferences.DebugMode) {
+    if (AutomataApi.PlatformImpl.debugMode) {
         this.highlight()
     }
 

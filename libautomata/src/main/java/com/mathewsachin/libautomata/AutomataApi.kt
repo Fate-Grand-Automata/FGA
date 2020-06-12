@@ -1,6 +1,6 @@
-package com.mathewsachin.fategrandautomata.core
+package com.mathewsachin.libautomata
 
-import com.mathewsachin.fategrandautomata.core.ExitManager.checkExitRequested
+import com.mathewsachin.libautomata.ExitManager.checkExitRequested
 import kotlin.math.min
 import kotlin.time.Duration
 import kotlin.time.seconds

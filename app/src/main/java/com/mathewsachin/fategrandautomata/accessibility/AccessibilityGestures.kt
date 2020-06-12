@@ -3,10 +3,9 @@ package com.mathewsachin.fategrandautomata.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
-import com.mathewsachin.fategrandautomata.core.AutomataApi
-import com.mathewsachin.fategrandautomata.core.IGestureService
-import com.mathewsachin.fategrandautomata.core.Location
-import com.mathewsachin.fategrandautomata.core.wait
+import com.mathewsachin.libautomata.IGestureService
+import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.wait
 import com.mathewsachin.fategrandautomata.util.*
 
 /**

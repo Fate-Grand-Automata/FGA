@@ -1,9 +1,9 @@
 package com.mathewsachin.fategrandautomata.imaging
 
-import com.mathewsachin.fategrandautomata.core.IPattern
-import com.mathewsachin.fategrandautomata.core.Match
-import com.mathewsachin.fategrandautomata.core.Region
-import com.mathewsachin.fategrandautomata.core.Size
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Match
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.Size
 import org.opencv.core.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc

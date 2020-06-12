@@ -3,9 +3,9 @@ package com.mathewsachin.fategrandautomata.scripts
 import android.content.res.AssetManager
 import android.os.Environment
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
-import com.mathewsachin.fategrandautomata.core.AutomataApi
-import com.mathewsachin.fategrandautomata.core.IPattern
-import com.mathewsachin.fategrandautomata.core.ScriptExitException
+import com.mathewsachin.libautomata.AutomataApi
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.ScriptExitException
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import kotlinx.coroutines.Dispatchers

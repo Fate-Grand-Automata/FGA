@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.core.*
+import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
 import kotlin.time.seconds
 

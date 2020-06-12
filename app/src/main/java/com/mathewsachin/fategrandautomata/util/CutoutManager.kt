@@ -6,7 +6,7 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Surface
 import android.view.WindowManager
-import com.mathewsachin.fategrandautomata.core.Region
+import com.mathewsachin.libautomata.Region
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 
 private data class Cutout(val L: Int = 0, val T : Int = 0, val R: Int = 0, val B: Int = 0) {
