@@ -9,6 +9,7 @@ import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.CardScore
+import com.mathewsachin.fategrandautomata.scripts.modules.cardPriorityStageSeparator
 import com.mathewsachin.fategrandautomata.scripts.modules.getCardScores
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
@@ -37,7 +38,8 @@ class CardPriorityActivity : AppCompatActivity() {
             cardPriority = defaultCardPriority
         }
 
-        cardScores = cardPriority.splitToSequence("\n")
+        cardScores = cardPriority
+            .splitToSequence(cardPriorityStageSeparator)
             .map { getCardScores(it).toMutableList() }
             .toMutableList()
 
@@ -67,7 +69,7 @@ class CardPriorityActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        val value = cardScores.joinToString("\n") {
+        val value = cardScores.joinToString(cardPriorityStageSeparator) {
             it.joinToString { m -> m.toString().filterCapitals() }
         }
 

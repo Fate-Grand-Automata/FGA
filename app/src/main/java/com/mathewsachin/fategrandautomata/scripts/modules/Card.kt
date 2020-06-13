@@ -11,6 +11,8 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 private const val dummyNormalAffinityChar = 'X'
 private const val cardPriorityErrorString = "Battle_CardPriority Error at '"
 
+const val cardPriorityStageSeparator = "\n"
+
 fun getCardScores(Priority: String): List<CardScore> {
     val scores = Priority
         .splitToSequence(',')
@@ -82,7 +84,8 @@ class Card {
     }
 
     private fun initCardPriorityArrayDetailed(Priority: String) {
-        cardPriorityArray = Priority.split("\n")
+        cardPriorityArray = Priority
+            .split(cardPriorityStageSeparator)
             .map { getCardScores(it) }
     }
 
