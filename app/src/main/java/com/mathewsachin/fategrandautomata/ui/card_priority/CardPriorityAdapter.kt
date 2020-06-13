@@ -4,14 +4,17 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.util.IItemTouchHelperAdapter
 import com.mathewsachin.fategrandautomata.util.IOnStartDragListener
 
-class CardPriorityAdapter(private val Items: MutableList<CardScore>, val DragStartListener: IOnStartDragListener)
+class CardPriorityAdapter(private val Items: MutableList<CardScore>)
     : RecyclerView.Adapter<CardPriorityViewHolder>(), IItemTouchHelperAdapter {
+    lateinit var itemTouchHelper: ItemTouchHelper
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardPriorityViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_priority_item, parent, false)
@@ -31,7 +34,7 @@ class CardPriorityAdapter(private val Items: MutableList<CardScore>, val DragSta
         holder.textView.setTextColor(Color.WHITE)
         holder.itemView.setOnTouchListener { _, event ->
             if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                DragStartListener.onStartDrag(holder)
+                itemTouchHelper.startDrag(holder)
             }
             true
         }
