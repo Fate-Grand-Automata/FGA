@@ -28,10 +28,21 @@ class SupportImgEntry(
         else {
             imgView.setImageURI(Uri.parse(ImgPath.absolutePath))
 
-            textBox.isEnabled = false
+            // Allow clicking the image to toggle the checkbox too for convenience
+            imgView.setOnClickListener {
+                checkBox.toggle()
+            }
+
+            textBox.visibility = View.GONE
 
             checkBox.setOnCheckedChangeListener { _, isChecked ->
-                textBox.isEnabled = isChecked
+                // Hide text field when not checked to prevent confusion for users
+                textBox.visibility = if (isChecked) View.VISIBLE else View.GONE
+
+                // Focus only, don't open soft keyboard
+                if (isChecked) {
+                    textBox.requestFocus()
+                }
             }
         }
     }
