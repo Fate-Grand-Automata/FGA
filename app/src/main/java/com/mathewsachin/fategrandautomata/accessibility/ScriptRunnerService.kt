@@ -44,6 +44,7 @@ import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageIdKey
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.SupportImageNamerActivity
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
+import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
 import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 import com.mathewsachin.libautomata.messageAndStackTrace
 import kotlin.time.seconds
@@ -76,6 +77,7 @@ class ScriptRunnerService : AccessibilityService() {
     private var sshotService: IScreenshotService? = null
     private var gestureService: IGestureService? = null
     private var superUser: SuperUser? = null
+    private val screenOffReceiver = ScreenOffReceiver()
 
     // stopping is handled by Screenshot service
     private var mediaProjection: MediaProjection? = null
@@ -93,6 +95,8 @@ class ScriptRunnerService : AccessibilityService() {
     override fun onUnbind(intent: Intent?): Boolean {
         stop()
 
+        unregisterReceiver(screenOffReceiver)
+        screenOffReceiver.screenOffListener = { }
         Instance = null
 
         return super.onUnbind(intent)
@@ -360,6 +364,9 @@ class ScriptRunnerService : AccessibilityService() {
             getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
         userInterface = ScriptRunnerUserInterface(this)
+
+        screenOffReceiver.register(this)
+        screenOffReceiver.screenOffListener = { stopScript() }
 
         super.onServiceConnected()
     }
