@@ -53,8 +53,10 @@ AutoSkill configuration can be created at `Settings/AutoSkill/Manage AutoSkill c
 If you've set a Servant or CE in the selected AutoSkill configuration and AutoSkill is Enabled, then support selection mode is assumed to be preferred.
 
 ## Where to put Servant/CE images?
-Put Servant images in `Fate-Grand-Automata/support/servant` folder and
-CE images in `Fate-Grand-Automata/support/ce` folder.
+Put:
+- Servant images in `Fate-Grand-Automata/support/servant` folder
+- CE images in `Fate-Grand-Automata/support/ce` folder
+- Friend name images in `Fate-Grand-Automata/support/friend` folder
 
 The app has some common Servant/CEs inbuilt. You can extract them using the `Extract Default Support Images` option.
 The app should extract them automatically when you go to the Support settings screen.
@@ -84,6 +86,9 @@ Fate-Grand-Automata/
 -- -- ce/
 -- -- -- kscope.png
 -- -- -- black_grail.png
+-- -- friend/
+-- -- -- mathew.png
+-- -- -- recon.png
 ```
 
 ## What about other scripts like Lottery and Friend Gacha?
@@ -97,9 +102,12 @@ You can also use it from the Friend List which is easier since you don't have to
 
 1. Set the `Script Mode` option in Settings to `Support Image Maker`.
 2. Now, click on `Toggle Service` button, the `Play` button shows itself.
-3. Open F/GO. Go to support selection screen and ensure that the Servant/CE you want is visible (It is important that the complete Servant + CE region is visible).
-4. Click on Play. The script should exit almost immediately. Images are saved to `Fate-Grand-Automata/support` folder.
-5. Rename the files to whatever you want and then use with Auto Support Selection.
+3. Open F/GO. Go to support selection or friend list screen and ensure that the Servant/CE you want is visible (It is important that the complete Servant + CE region is visible).
+4. Click on Play. Support Image Namer dialog should pop up.
+5. Check the images you want to keep. Type a name for the image (NO NEED for file-format like `.png`).
+   For servant images, you can use a folder like: `Nero/asc1`. This will save an image named `asc1.png` in `Fate-Grand-Automata/support/servant/Nero` folder. By grouping in a folder, you can pick a single entry in settings to match with all ascensions and costumes.
+6. Click on `Done`. The selected images are saved to the correct folders.
+5. Use the images with Auto Support Selection.
 
 ## Like the project? Want to support me?
 Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!

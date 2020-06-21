@@ -27,10 +27,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".ui.support_img_namer.SupportImageNamerActivity"
-            android:label="Support Images"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.AutoSkillItemActivity"
             android:label="Edit AutoSkill Item"
             android:theme="@style/AppTheme.NoActionBar" />

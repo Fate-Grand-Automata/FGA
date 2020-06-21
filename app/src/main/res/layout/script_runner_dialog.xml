@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintWidth_max="400dp"
         app:layout_constrainedHeight="true"
         android:layout_margin="16dp"
         android:layout_gravity="center"
