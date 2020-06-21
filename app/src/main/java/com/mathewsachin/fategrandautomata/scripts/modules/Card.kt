@@ -11,6 +11,8 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 private const val dummyNormalAffinityChar = 'X'
 private const val cardPriorityErrorString = "Battle_CardPriority Error at '"
 
+const val cardPriorityStageSeparator = "\n"
+
 fun getCardScores(Priority: String): List<CardScore> {
     val scores = Priority
         .splitToSequence(',')
@@ -52,7 +54,7 @@ class Card {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 
-    private lateinit var cardPriorityArray: List<CardScore>
+    private lateinit var cardPriorityArray: List<List<CardScore>>
 
     private val commandCards = mutableMapOf<CardScore, MutableList<Int>>()
     private var cardsClickedSoFar = 0
@@ -66,6 +68,7 @@ class Card {
 
     private fun initCardPriorityArray() {
         val priority = Preferences.BattleCardPriority
+
         if (priority.length == 3) {
             initCardPriorityArraySimple(priority)
         }
@@ -81,7 +84,9 @@ class Card {
     }
 
     private fun initCardPriorityArrayDetailed(Priority: String) {
-        cardPriorityArray = getCardScores(Priority)
+        cardPriorityArray = Priority
+            .split(cardPriorityStageSeparator)
+            .map { getCardScores(it) }
     }
 
     private fun getCardAffinity(Region: Region): CardAffinityEnum {
@@ -150,7 +155,9 @@ class Card {
     fun clickCommandCards(Clicks: Int) {
         var i = 1
 
-        for (cardPriority in cardPriorityArray) {
+        val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
+
+        for (cardPriority in cardPriorityArray[cardPriorityIndex]) {
             if (!commandCards.containsKey(cardPriority))
                 continue
 
