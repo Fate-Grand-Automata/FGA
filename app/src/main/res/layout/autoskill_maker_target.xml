@@ -18,6 +18,8 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:text="Servant\n\n1"
+        android:backgroundTint="@color/colorServant1"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/no_target_btn"
         app:layout_constraintEnd_toStartOf="@+id/target_2"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +30,8 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:text="Servant\n\n2"
+        android:backgroundTint="@color/colorServant2"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toStartOf="@+id/target_3"
         app:layout_constraintStart_toEndOf="@+id/target_1"
         app:layout_constraintTop_toTopOf="@+id/target_1" />
@@ -37,6 +41,8 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:text="Servant\n\n3"
+        android:backgroundTint="@color/colorServant3"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/target_2"
         app:layout_constraintTop_toTopOf="@+id/target_1" />
