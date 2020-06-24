@@ -29,11 +29,6 @@ We use [OpenCV](https://opencv.org/) for image recognition,
 [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) for taking screenshots
 and [Accessibility Service](https://developer.android.com/guide/topics/ui/accessibility) for clicking/swiping.
 
-## What to do about bugs?
-Debugging really is a pain due to FGO NA not allowing `Developer Mode` to be `ON` during execution.
-Use GitHub issues to report bugs and try to be specific about the problem.
-Also, list information like your phone's model number, screen size, Android version, whether you have a notch.
-
 ## How to Use?
 1. Download from the [Website](https://MathewSachin.github.io/Fate-Grand-Automata). I can't put this app on `Play Store` due to some restrictive features this app uses.
 2. Install on your phone. You'll need to enable installing apps out of `Play Store`.

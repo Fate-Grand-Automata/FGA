@@ -20,6 +20,9 @@ If applicable, add screenshots to help explain your problem.
 If an error occurred, you can find the message by expanding the app's notification.
 It is recommended that you atleast add one screenshot of FGO running on your device.
 
+**Video**
+If relevant, include a video of the script running on your device with `Debug mode` ON (recording functionality is available within the app in `More options`).
+
 **Device Info (please fill atleast 'Device model'):**
  - Device model: [e.g. Xiaomi Redmi 4]
  - Screen size: [e.g. 1280x720]
