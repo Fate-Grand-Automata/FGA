@@ -7,4 +7,4 @@ If the script's not working correctly on your Samsung phone, like missing touche
 
 - Make sure you're running F/GO with Full screen mode ON in Samsung's settings. Blue-bars should be shown in the space which is not used by FGO. If you did this wrong, that area would be black.
 - Go to `More options` in the app and turn ON `Ignore Notch calculation`. ~~The app should automatically turn this ON for Samsung devices.~~  
-  **THIS MIGHT NOT BE NEEDED AFTER THE ENGINE UPDATE**
+  **YOU MIGHT NEED TO TURN THIS OFF AFTER THE ENGINE UPDATE**
