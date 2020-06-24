@@ -15,6 +15,8 @@ And there's no time limit on the use of the app unlike FGO-Lua.
 [Running on Samsung devices](https://MathewSachin.github.io/Fate-Grand-Automata/SAMSUNG.html) |
 [Running on Emulators](https://MathewSachin.github.io/Fate-Grand-Automata/EMULATORS.html)
 
+Join us on our [GamePress thread](https://community.gamepress.gg/t/automatic-farming-app-fate-grand-automata/72155) for discussions.
+
 ## Why make another?
 FGO-Lua is really great, but:
 1. Uses AnkuLua, so isn't free. Free version has 30min time-limit.
