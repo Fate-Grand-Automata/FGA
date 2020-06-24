@@ -10,9 +10,7 @@ If nothing works, try using [FGO-Lua](https://github.com/29988122/Fate-Grand-Ord
 ## Supported Emulators
 We'll list the supported emulators we've confirmed here.
 
-### Nox (Android 7) for FGO JP
+### Nox (Android 7)
 
-FGO JP can be used on Nox (Android 7) with `Use Root for Screenshots` option.
+You can use the app on Nox (Android 7) by turning ON `Use Root for Screenshots` in `More options`.  
 You also need to enable `Root` from Nox's settings.
-
-FGO NA doesn't work since it doesn't work with root. It might work after the engine update.
