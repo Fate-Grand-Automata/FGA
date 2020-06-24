@@ -230,23 +230,25 @@ open class AutoBattle : EntryPoint() {
 
         1.seconds.wait()
 
-        // Only for JP currently. Searches for the Continue option after select Free Quests
-        if (Preferences.GameServer == GameServerEnum.Jp && Game.ContinueRegion.exists(
-                ImageLocator.Confirm
-            )
-        ) {
-            // Needed to show we don't need to enter the "StartQuest" function
-            isContinuing = true
+        // Searches for the Continue option after select Free Quests
+        when (Preferences.GameServer) {
+            // We only have images for JP and NA
+            GameServerEnum.En, GameServerEnum.Jp -> {
+                if (Game.ContinueRegion.exists(ImageLocator.Confirm)) {
+                    // Needed to show we don't need to enter the "StartQuest" function
+                    isContinuing = true
 
-            // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
-            Game.ContinueClick.click()
-            battle.resetState()
+                    // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
+                    Game.ContinueClick.click()
+                    battle.resetState()
 
-            // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
-            afterSelectingQuest()
+                    // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
+                    afterSelectingQuest()
 
-            return
-        }
+                    return
+                }
+            }
+        }        
 
         // Post-battle story is sometimes there.
         if (Preferences.StorySkip) {
