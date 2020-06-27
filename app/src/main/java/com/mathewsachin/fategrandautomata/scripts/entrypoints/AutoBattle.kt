@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 /**
@@ -27,102 +27,51 @@ open class AutoBattle : EntryPoint() {
     private var stonesUsed = 0
     private var isContinuing = false
 
-    /**
-     * Refills the AP with apples depending on [Preferences.Refill].
-     */
-    private fun refillStamina() {
-        val refillPrefs = Preferences.Refill
+    override fun script(): Nothing {
+        init()
 
-        if (refillPrefs.enabled && stonesUsed < refillPrefs.repetitions) {
-            when (refillPrefs.resource) {
-                RefillResourceEnum.SQ -> Game.StaminaSqClick.click()
-                RefillResourceEnum.AllApples -> {
-                    Game.StaminaBronzeClick.click()
-                    Game.StaminaSilverClick.click()
-                    Game.StaminaGoldClick.click()
-                }
-                RefillResourceEnum.Gold -> Game.StaminaGoldClick.click()
-                RefillResourceEnum.Silver -> Game.StaminaSilverClick.click()
-                RefillResourceEnum.Bronze -> Game.StaminaBronzeClick.click()
+        // a map of validators and associated actions
+        // if the validator function evaluates to true, the associated action function is called
+        val screens = mapOf(
+            { Game.needsToRetry() } to { Game.retry() },
+            { battle.isIdle() } to { battle.performBattle() },
+            { isInMenu() } to { menu() },
+            { isInResult() } to { result() },
+            { isInQuestRewardScreen() } to { questReward() },
+            { isInSupport() } to { support() },
+            { needsToWithdraw() } to { withdraw() },
+            { isGudaFinalRewardsScreen() } to { gudaFinalReward() }
+        )
+
+        // Loop through SCREENS until a Validator returns true
+        while (true) {
+            val actor = ScreenshotManager.useSameSnapIn {
+                screens
+                    .filter { (validator, _) -> validator() }
+                    .map { (_, actor) -> actor }
+                    .firstOrNull()
             }
+
+            actor?.invoke()
 
             1.seconds.wait()
-            Game.StaminaOkClick.click()
-            ++stonesUsed
-
-            3.seconds.wait()
-        } else throw ScriptExitException("AP ran out!")
-    }
-
-    /**
-     * Checks if the window for withdrawing from the battle exists.
-     */
-    private fun needsToWithdraw(): Boolean {
-        return Game.WithdrawRegion.exists(ImageLocator.Withdraw)
-    }
-
-    /**
-     * Handles withdrawing from battle. Depending on [Preferences.WithdrawEnabled], the script either
-     * withdraws automatically or stops completely.
-     */
-    private fun withdraw() {
-        if (!Preferences.WithdrawEnabled) {
-            throw ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.")
         }
-
-        // Withdraw Region can vary depending on if you have Command Spells/Quartz
-        val withdrawRegion = Game.WithdrawRegion
-            .findAll(ImageLocator.Withdraw)
-            .firstOrNull() ?: return
-
-        withdrawRegion.Region.click()
-
-        0.5.seconds.wait()
-
-        // Click the "Accept" button after choosing to withdraw
-        Game.WithdrawAcceptClick.click()
-
-        1.seconds.wait()
-
-        // Click the "Close" button after accepting the withdrawal
-        Game.StaminaBronzeClick.click()
     }
 
     /**
-     * Checks if the SKIP button exists on the screen.
+     * Initialize Aspect Ratio adjustment for different sized screens,ask for input from user for
+     * Autoskill plus confirming Apple/Stone usage.
+     *
+     * Then initialize the AutoSkill, Battle, and Card modules in modules.
      */
-    private fun needsToStorySkip(): Boolean {
-        // TODO: Story Skip doesn't work correctly
-        //if (Game.MenuStorySkipRegion.exists(ImageLocator.StorySkip))
-        return Preferences.StorySkip
-    }
+    private fun init() {
+        initScaling()
 
-    /**
-     * Clicks on the button to start the quest in the Party selection, then selects the boost item
-     * if applicable and then skips the story if story skip is activated.
-     */
-    private fun startQuest() {
-        Game.MenuStartQuestClick.click()
+        autoSkill.init(battle, card)
+        battle.init(autoSkill, card)
+        card.init(autoSkill, battle)
 
-        2.seconds.wait()
-
-        val boostItem = Preferences.BoostItemSelectionMode
-        if (boostItem >= 0) {
-            Game.MenuBoostItemClickArray[boostItem].click()
-
-            // in case you run out of items
-            Game.MenuBoostItemSkipClick.click()
-        }
-
-        if (Preferences.StorySkip) {
-            10.seconds.wait()
-
-            if (needsToStorySkip()) {
-                Game.MenuStorySkipClick.click()
-                0.5.seconds.wait()
-                Game.MenuStorySkipYesClick.click()
-            }
-        }
+        support.init()
     }
 
     /**
@@ -138,36 +87,12 @@ open class AutoBattle : EntryPoint() {
     private fun menu() {
         battle.resetState()
 
-        if (Preferences.Refill.enabled) {
-            val refillRepetitions = Preferences.Refill.repetitions
-            if (refillRepetitions > 0) {
-                AutomataApi.PlatformImpl.toast("$stonesUsed refills used out of $refillRepetitions")
-            }
-        }
+        showRefillsUsedMessage()
 
         // Click uppermost quest
         Game.MenuSelectQuestClick.click()
 
         afterSelectingQuest()
-    }
-
-    private fun afterSelectingQuest() {
-        1.5.seconds.wait()
-
-        // Inventory full. Stop script.
-        when (Preferences.GameServer) {
-            // We only have images for JP and NA
-            GameServerEnum.En, GameServerEnum.Jp -> {
-                if (Game.InventoryFullRegion.exists(ImageLocator.InventoryFull)) {
-                    throw ScriptExitException("Inventory Full")
-                }
-            }
-        }
-
-        // Auto refill
-        while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina)) {
-            refillStamina()
-        }
     }
 
     /**
@@ -185,7 +110,8 @@ open class AutoBattle : EntryPoint() {
         if (Game.ResultScreenRegion.exists(ImageLocator.Result)
             || Game.ResultBondRegion.exists(ImageLocator.Bond)
             // We're assuming CN and TW use the same Master/Mystic Code Level up image
-            || Game.ResultMasterLvlUpRegion.exists(ImageLocator.MasterLvlUp)) {
+            || Game.ResultMasterLvlUpRegion.exists(ImageLocator.MasterLvlUp)
+        ) {
             return true
         }
 
@@ -242,13 +168,15 @@ open class AutoBattle : EntryPoint() {
                     Game.ContinueClick.click()
                     battle.resetState()
 
+                    showRefillsUsedMessage()
+
                     // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
                     afterSelectingQuest()
 
                     return
                 }
             }
-        }        
+        }
 
         // Post-battle story is sometimes there.
         if (Preferences.StorySkip) {
@@ -267,15 +195,18 @@ open class AutoBattle : EntryPoint() {
             1.seconds.wait()
             Game.ResultCeRewardCloseClick.click()
         }
-
-        5.seconds.wait()
-
-        // 1st time quest reward screen, eg. Mana Prisms, Event CE, Materials, etc.
-        if (Game.ResultQuestRewardRegion.exists(ImageLocator.QuestReward)) {
-            1.seconds.wait()
-            Game.ResultNextClick.click()
-        }
     }
+
+    /**
+     * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
+     */
+    private fun isInQuestRewardScreen() =
+        Game.ResultQuestRewardRegion.exists(ImageLocator.QuestReward)
+
+    /**
+     * Handles the quest rewards screen.
+     */
+    private fun questReward() = Game.ResultNextClick.click()
 
     // Selections Support option
     private fun support() {
@@ -293,46 +224,37 @@ open class AutoBattle : EntryPoint() {
         }
     }
 
-    // Initialize Aspect Ratio adjustment for different sized screens,ask for input from user for Autoskill plus confirming Apple/Stone usage
-    // Then initialize the AutoSkill, Battle, and Card modules in modules.
-    private fun init() {
-        initScaling()
+    /**
+     * Checks if the window for withdrawing from the battle exists.
+     */
+    private fun needsToWithdraw() =
+        Game.WithdrawRegion.exists(ImageLocator.Withdraw)
 
-        autoSkill.init(battle, card)
-        battle.init(autoSkill, card)
-        card.init(autoSkill, battle)
-
-        support.init()
-    }
-
-    override fun script(): Nothing {
-        init()
-
-        // a map of validators and associated actions
-        // if the validator function evaluates to true, the associated action function is called
-        val screens = mapOf(
-            { Game.needsToRetry() } to { Game.retry() },
-            { battle.isIdle() } to { battle.performBattle() },
-            { isInMenu() } to { menu() },
-            { isInResult() } to { result() },
-            { isInSupport() } to { support() },
-            { needsToWithdraw() } to { withdraw() },
-            { isGudaFinalRewardsScreen() } to { gudaFinalReward() }
-        )
-
-        // Loop through SCREENS until a Validator returns true
-        while (true) {
-            val actor = ScreenshotManager.useSameSnapIn {
-                screens
-                    .filter { (validator, _) -> validator() }
-                    .map { (_, actor) -> actor }
-                    .firstOrNull()
-            }
-
-            actor?.invoke()
-
-            1.seconds.wait()
+    /**
+     * Handles withdrawing from battle. Depending on [Preferences.WithdrawEnabled], the script either
+     * withdraws automatically or stops completely.
+     */
+    private fun withdraw() {
+        if (!Preferences.WithdrawEnabled) {
+            throw ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.")
         }
+
+        // Withdraw Region can vary depending on if you have Command Spells/Quartz
+        val withdrawRegion = Game.WithdrawRegion
+            .findAll(ImageLocator.Withdraw)
+            .firstOrNull() ?: return
+
+        withdrawRegion.Region.click()
+
+        0.5.seconds.wait()
+
+        // Click the "Accept" button after choosing to withdraw
+        Game.WithdrawAcceptClick.click()
+
+        1.seconds.wait()
+
+        // Click the "Close" button after accepting the withdrawal
+        Game.StaminaBronzeClick.click()
     }
 
     /**
@@ -355,4 +277,99 @@ open class AutoBattle : EntryPoint() {
      * detected.
      */
     private fun gudaFinalReward() = Game.GudaFinalRewardsRegion.click()
+
+    /**
+     * Checks if the SKIP button exists on the screen.
+     */
+    private fun needsToStorySkip(): Boolean {
+        // TODO: Story Skip doesn't work correctly
+        //if (Game.MenuStorySkipRegion.exists(ImageLocator.StorySkip))
+        return Preferences.StorySkip
+    }
+
+    /**
+     * Refills the AP with apples depending on [Preferences.Refill].
+     */
+    private fun refillStamina() {
+        val refillPrefs = Preferences.Refill
+
+        if (refillPrefs.enabled && stonesUsed < refillPrefs.repetitions) {
+            when (refillPrefs.resource) {
+                RefillResourceEnum.SQ -> Game.StaminaSqClick.click()
+                RefillResourceEnum.AllApples -> {
+                    Game.StaminaBronzeClick.click()
+                    Game.StaminaSilverClick.click()
+                    Game.StaminaGoldClick.click()
+                }
+                RefillResourceEnum.Gold -> Game.StaminaGoldClick.click()
+                RefillResourceEnum.Silver -> Game.StaminaSilverClick.click()
+                RefillResourceEnum.Bronze -> Game.StaminaBronzeClick.click()
+            }
+
+            1.seconds.wait()
+            Game.StaminaOkClick.click()
+            ++stonesUsed
+
+            3.seconds.wait()
+        } else throw ScriptExitException("AP ran out!")
+    }
+
+    /**
+     * Clicks on the button to start the quest in the Party selection, then selects the boost item
+     * if applicable and then skips the story if story skip is activated.
+     */
+    private fun startQuest() {
+        Game.MenuStartQuestClick.click()
+
+        2.seconds.wait()
+
+        val boostItem = Preferences.BoostItemSelectionMode
+        if (boostItem >= 0) {
+            Game.MenuBoostItemClickArray[boostItem].click()
+
+            // in case you run out of items
+            Game.MenuBoostItemSkipClick.click()
+        }
+
+        if (Preferences.StorySkip) {
+            10.seconds.wait()
+
+            if (needsToStorySkip()) {
+                Game.MenuStorySkipClick.click()
+                0.5.seconds.wait()
+                Game.MenuStorySkipYesClick.click()
+            }
+        }
+    }
+
+    /**
+     * Will show a toast informing the user of how many apples have been used so far.
+     */
+    private fun showRefillsUsedMessage() {
+        if (Preferences.Refill.enabled) {
+            val refillRepetitions = Preferences.Refill.repetitions
+            if (refillRepetitions > 0) {
+                AutomataApi.PlatformImpl.toast("$stonesUsed refills used out of $refillRepetitions")
+            }
+        }
+    }
+
+    private fun afterSelectingQuest() {
+        1.5.seconds.wait()
+
+        // Inventory full. Stop script.
+        when (Preferences.GameServer) {
+            // We only have images for JP and NA
+            GameServerEnum.En, GameServerEnum.Jp -> {
+                if (Game.InventoryFullRegion.exists(ImageLocator.InventoryFull)) {
+                    throw ScriptExitException("Inventory Full")
+                }
+            }
+        }
+
+        // Auto refill
+        while (Game.StaminaScreenRegion.exists(ImageLocator.Stamina)) {
+            refillStamina()
+        }
+    }
 }
