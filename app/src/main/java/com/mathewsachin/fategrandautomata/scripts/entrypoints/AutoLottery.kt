@@ -38,7 +38,7 @@ class AutoLottery : EntryPoint() {
     override fun script(): Nothing {
         when (Preferences.GameServer) {
             GameServerEnum.Cn -> {
-                throw ScriptExitException("Lottery script doesn't support CN server right now.")
+                throw ScriptExitException("Lottery script doesn't support the CN server right now.")
             }
         }
 
