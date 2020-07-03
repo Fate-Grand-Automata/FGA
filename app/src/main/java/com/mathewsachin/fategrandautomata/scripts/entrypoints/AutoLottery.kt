@@ -12,7 +12,7 @@ import kotlin.time.seconds
  */
 class AutoLottery : EntryPoint() {
     private val spinClick = Location(834, 860)
-    private val finishedLotteryBoxRegion = Region(575, 860, 70, 100)
+    private val finishedLotteryBoxRegion = Region(540, 860, 140, 100)
     private val fullPresentBoxRegion = Region(1280, 720, 1280, 720)
     private val resetClick = Location(2200, 480)
     private val resetConfirmationClick = Location(1774, 1122)
@@ -37,8 +37,8 @@ class AutoLottery : EntryPoint() {
 
     override fun script(): Nothing {
         when (Preferences.GameServer) {
-            GameServerEnum.Cn, GameServerEnum.Tw -> {
-                throw ScriptExitException("Lottery script doesn't support CN and TW servers right now.")
+            GameServerEnum.Cn -> {
+                throw ScriptExitException("Lottery script doesn't support the CN server right now.")
             }
         }
 
