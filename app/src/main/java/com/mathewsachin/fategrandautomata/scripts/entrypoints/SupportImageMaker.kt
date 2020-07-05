@@ -44,8 +44,9 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
         val searchRegion = Region(2100, 0, 370, 1440)
 
         val regionAnchor = ImageLocator.SupportRegionTool
-        // At max two Servant+CE are completely on screen, so only those
-        val regionArray = searchRegion.findAll(regionAnchor, supportRegionToolSimilarity).take(2)
+        // At max two Servant+CE are completely on screen, so only use those
+        val regionArray = searchRegion.findAll(regionAnchor, supportRegionToolSimilarity)
+            .take(2).toList()
 
         val screenBounds = Region(0, 0, Game.ScriptSize.Width, Game.ScriptSize.Height)
 
@@ -64,7 +65,7 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
             }
         }
 
-        if (regionArray.count() == 0) {
+        if (regionArray.isEmpty()) {
             throw ScriptExitException("No support images were found on the current screen. Are you on Support selection or Friend list screen?")
         }
 
