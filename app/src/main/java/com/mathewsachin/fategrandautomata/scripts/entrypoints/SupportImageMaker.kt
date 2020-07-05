@@ -39,8 +39,8 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
         val isInSupport = isInSupport()
 
         // the servant and CE images are further to the right in the friend screen
-        val supportBoundX = if (isInSupport) 53 * 2 else 88 * 2
-        var supportBound = Region(supportBoundX, 0, 143 * 2, 110 * 2)
+        val supportBoundX = if (isInSupport) 106 else 176
+        var supportBound = Region(supportBoundX, 0, 286, 220)
         val searchRegion = Region(2100, 0, 370, 1440)
 
         val regionAnchor = ImageLocator.SupportRegionTool
