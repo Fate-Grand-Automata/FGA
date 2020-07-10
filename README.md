@@ -1,9 +1,8 @@
 # Fate/Grand Automata
 [![CI](https://github.com/MathewSachin/Fate-Grand-Automata/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/MathewSachin/Fate-Grand-Automata/actions)
+[![Downloads](https://img.shields.io/github/downloads/MathewSachin/Fate-Grand-Automata/total.svg?style=flat-square)](https://mathewsachin.github.io/Fate-Grand-Automata)
 
-<div style="text-align:center">
-  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png">
-</div>
+![Logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png)
 
 Auto-battle app for Fate/Grand Order (Android 7 or later, no need for Root).  
 
@@ -107,7 +106,7 @@ You can also use it from the Friend List which is easier since you don't have to
 5. Use the images with Auto Support Selection.
 
 ## Like the project? Want to support me?
-Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!
+~~Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!~~ `SUCCESS!`  
 Oh, and code/doc contributions are surely welcome!
 
 ## Acknowledgements
