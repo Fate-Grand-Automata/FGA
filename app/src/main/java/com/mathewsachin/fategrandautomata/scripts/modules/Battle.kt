@@ -5,7 +5,10 @@ import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import kotlin.time.seconds
 
-class Battle {
+class Battle(
+    automataExtensions: IAutomataExtensions,
+    val screenshotManager: ScreenshotManager
+): IAutomataExtensions by automataExtensions {
     private var hasTakenFirstStageSnapshot = false
 
     var hasClickedAttack = false
@@ -95,7 +98,7 @@ class Battle {
     }
 
     fun performBattle() {
-        ScreenshotManager.useSameSnapIn { onTurnStarted() }
+        screenshotManager.useSameSnapIn { onTurnStarted() }
         2.seconds.wait()
 
         var wereNpsClicked = false

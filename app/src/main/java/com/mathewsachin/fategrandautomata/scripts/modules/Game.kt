@@ -186,14 +186,6 @@ class Game {
         val ResultQuestRewardRegion = Region(1630, 140, 370, 250)
         val ResultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
 
-        fun needsToRetry() = RetryRegion.exists(ImageLocator.Retry)
-
-        fun retry() {
-            RetryRegion.click()
-
-            2.seconds.wait()
-        }
-
         val GudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
     }
 }

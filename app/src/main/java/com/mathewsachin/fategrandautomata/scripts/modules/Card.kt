@@ -50,7 +50,11 @@ fun getCardScores(Priority: String): List<CardScore> {
     return scores
 }
 
-class Card {
+class Card(
+    automataExtensions: IAutomataExtensions,
+    val platformImpl: IPlatformImpl,
+    val screenshotManager: ScreenshotManager
+) : IAutomataExtensions by automataExtensions {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 
@@ -114,7 +118,7 @@ class Card {
             return CardTypeEnum.Quick
         }
 
-        AutomataApi.PlatformImpl.toast("Failed to determine Card type $Region")
+        platformImpl.toast("Failed to determine Card type $Region")
 
         return CardTypeEnum.Buster
     }
@@ -122,7 +126,7 @@ class Card {
     fun readCommandCards() {
         commandCards.clear()
 
-        ScreenshotManager.useSameSnapIn {
+        screenshotManager.useSameSnapIn {
             for (cardSlot in 0..4) {
                 val affinity = getCardAffinity(Game.BattleCardAffinityRegionArray[cardSlot])
                 val type = getCardType(Game.BattleCardTypeRegionArray[cardSlot])

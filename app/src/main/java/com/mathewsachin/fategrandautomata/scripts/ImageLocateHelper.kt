@@ -2,8 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts
 
 import android.content.res.AssetManager
 import android.os.Environment
+import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
-import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.ScriptExitException
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -80,7 +80,8 @@ private fun fileLoader(FileName: String): IPattern? {
         val inputStream = FileInputStream(filepath)
 
         inputStream.use {
-            return AutomataApi.PlatformImpl.loadPattern(it)
+            // TODO: Can we make this Android independent?
+            return DroidCvPattern(it)
         }
     }
 
@@ -93,7 +94,8 @@ private fun createPattern(FilePath: String): IPattern {
     val inputStream = assets.open(FilePath)
 
     inputStream.use {
-        return AutomataApi.PlatformImpl.loadPattern(it)
+        // TODO: Can we make this Android independent?
+        return DroidCvPattern(it)
     }
 }
 

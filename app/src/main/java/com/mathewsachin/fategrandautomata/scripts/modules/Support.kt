@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.needsToRetry
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.retry
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.loadSupportImagePattern
@@ -20,7 +22,11 @@ const val supportRegionToolSimilarity = 0.75
 
 const val limitBrokenCharacter = '*'
 
-class Support {
+class Support(
+    automataExtensions: IAutomataExtensions,
+    val screenshotManager: ScreenshotManager,
+    val platformImpl: IPlatformImpl
+): IAutomataExtensions by automataExtensions {
     private val preferredServantArray = mutableListOf<String>()
     private val friendNameArray = mutableListOf<String>()
 
@@ -114,7 +120,7 @@ class Support {
     }
 
     private fun searchVisible(SearchMethod: SearchFunction): SearchVisibleResult {
-        return ScreenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
+        return screenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
             if (!isFriend(Game.SupportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SearchVisibleResult(SupportSearchResultEnum.NoFriendsFound, null)
@@ -166,15 +172,15 @@ class Support {
                 ++numberOfSwipes
                 0.3.seconds.wait()
             } else if (numberOfUpdates < Preferences.Support.maxUpdates) {
-                AutomataApi.PlatformImpl.toast("Support list will be updated in 3 seconds.")
+                platformImpl.toast("Support list will be updated in 3 seconds.")
                 3.seconds.wait()
 
                 Game.SupportUpdateClick.click()
                 1.seconds.wait()
                 Game.SupportUpdateYesClick.click()
 
-                while (Game.needsToRetry()) {
-                    Game.retry()
+                while (needsToRetry()) {
+                    retry()
                 }
 
                 3.seconds.wait()

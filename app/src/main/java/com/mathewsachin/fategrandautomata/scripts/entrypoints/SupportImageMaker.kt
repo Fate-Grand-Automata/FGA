@@ -2,7 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
-import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
+import com.mathewsachin.fategrandautomata.scripts.modules.Scaling
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.*
@@ -30,9 +30,15 @@ fun getFriendImgPath(Index: Int): File {
     return File(supportImgTempDir, "friend_${Index}.png")
 }
 
-class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
+class SupportImageMaker(
+    private var Callback: (() -> Unit)?,
+    exitManager: ExitManager,
+    platformImpl: IPlatformImpl,
+    automataExtensions: IAutomataExtensions,
+    val scaling: Scaling
+) : EntryPoint(exitManager, platformImpl, automataExtensions) {
     override fun script(): Nothing {
-        initScaling()
+        scaling.init()
 
         cleanExtractFolder()
 

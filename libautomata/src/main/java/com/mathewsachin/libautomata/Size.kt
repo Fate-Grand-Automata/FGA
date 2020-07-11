@@ -21,3 +21,8 @@ data class Size(val Width: Int, val Height: Int) {
         )
     }
 }
+
+/**
+ * Gets the width and height in the form of a [Size] object.
+ */
+val IPattern.Size get() = Size(width, height)

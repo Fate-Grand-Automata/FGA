@@ -8,7 +8,8 @@ import kotlin.time.seconds
 
 typealias AutoSkillMap = Map<Char, () -> Unit>
 
-class AutoSkill {
+class AutoSkill(automataExtensions: IAutomataExtensions)
+    : IAutomataExtensions by automataExtensions {
     private val defaultFunctionArray: AutoSkillMap = mapOf(
         'a' to { castSkill(Game.BattleSkill1Click) },
         'b' to { castSkill(Game.BattleSkill2Click) },

@@ -39,25 +39,27 @@ private fun calculateGameAreaWithoutBorders(
     )
 }
 
-private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
-    val gameWithBorders = GameAreaManager.GameArea
-    val (scaleByWidth, scaleRate) = decideScaleMethod(ScriptSize, gameWithBorders.size)
-    val gameWithoutBorders =
-        calculateGameAreaWithoutBorders(ScriptSize, gameWithBorders.size, scaleRate)
+class Scaling(val gameAreaManager: GameAreaManager) {
+    private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
+        val gameWithBorders = gameAreaManager.gameArea
+        val (scaleByWidth, scaleRate) = decideScaleMethod(ScriptSize, gameWithBorders.size)
+        val gameWithoutBorders =
+            calculateGameAreaWithoutBorders(ScriptSize, gameWithBorders.size, scaleRate)
 
-    GameAreaManager.GameArea = gameWithoutBorders
+        gameAreaManager.gameArea = gameWithoutBorders
 
-    if (scaleByWidth) {
-        GameAreaManager.ScriptDimension = CompareSettings(true, ScriptSize.Width)
-        GameAreaManager.CompareDimension = CompareSettings(true, ImageSize.Width)
-    } else {
-        GameAreaManager.ScriptDimension = CompareSettings(false, ScriptSize.Height)
-        GameAreaManager.CompareDimension = CompareSettings(false, ImageSize.Height)
+        if (scaleByWidth) {
+            gameAreaManager.scriptDimension = CompareSettings(true, ScriptSize.Width)
+            gameAreaManager.compareDimension = CompareSettings(true, ImageSize.Width)
+        } else {
+            gameAreaManager.scriptDimension = CompareSettings(false, ScriptSize.Height)
+            gameAreaManager.compareDimension = CompareSettings(false, ImageSize.Height)
+        }
     }
-}
 
-fun initScaling() {
-    GameAreaManager.reset()
+    fun init() {
+        gameAreaManager.reset()
 
-    applyAspectRatioFix(Game.ScriptSize, Game.ImageSize)
+        applyAspectRatioFix(Game.ScriptSize, Game.ImageSize)
+    }
 }

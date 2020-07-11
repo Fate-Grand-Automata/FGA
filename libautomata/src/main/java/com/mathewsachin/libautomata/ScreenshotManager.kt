@@ -4,13 +4,12 @@ package com.mathewsachin.libautomata
  * A static class responsible for taking screenshots via a [IScreenshotService]. The screenshots are
  * scaled and cropped and can be cached for a while using [snapshot].
  */
-object ScreenshotManager {
-    private var impl: IScreenshotService? = null
-
-    fun register(Impl: IScreenshotService) {
-        impl = Impl
-    }
-
+class ScreenshotManager(
+    val screenshotService: IScreenshotService,
+    val gameAreaManager: GameAreaManager,
+    val platformImpl: IPlatformImpl,
+    transformationExtensions: ITransformationExtensions
+): ITransformationExtensions by transformationExtensions {
     var usePreviousSnap = false
 
     private var previousPattern: IPattern? = null
@@ -21,14 +20,14 @@ object ScreenshotManager {
      * it can be used for image comparisons.
      */
     private fun getScaledScreenshot(): IPattern {
-        val sshot = impl!!.takeScreenshot()
-            .crop(GameAreaManager.GameArea)
+        val sshot = screenshotService.takeScreenshot()
+            .crop(gameAreaManager.gameArea)
 
         val scale = screenToImageScale()
 
         if (scale != null) {
             if (resizeTarget == null) {
-                resizeTarget = AutomataApi.PlatformImpl.getResizableBlankPattern()
+                resizeTarget = platformImpl.getResizableBlankPattern()
             }
 
             sshot.resize(resizeTarget!!, sshot.Size * scale)

@@ -5,14 +5,16 @@ import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.wait
 import com.mathewsachin.fategrandautomata.util.*
+import com.mathewsachin.libautomata.IDurationExtensions
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
  */
-class AccessibilityGestures(private var AccessibilityService: AccessibilityService?) :
-    IGestureService {
+class AccessibilityGestures(
+    private var AccessibilityService: AccessibilityService?,
+    durationExtensions: IDurationExtensions
+) : IGestureService, IDurationExtensions by durationExtensions {
     override fun swipe(Start: Location, End: Location) {
         val swipePath = Path()
         swipePath.moveTo(Start.X.toFloat(), Start.Y.toFloat())

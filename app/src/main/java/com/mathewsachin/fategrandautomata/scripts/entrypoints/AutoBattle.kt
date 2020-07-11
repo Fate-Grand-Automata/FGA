@@ -11,19 +11,32 @@ import kotlin.time.seconds
 /**
  * Checks if Support Selection menu is up
  */
-fun isInSupport(): Boolean {
+fun EntryPoint.isInSupport(): Boolean {
     return Game.SupportScreenRegion.exists(ImageLocator.SupportScreen, Similarity = 0.85)
+}
+
+fun IAutomataExtensions.needsToRetry() = Game.RetryRegion.exists(ImageLocator.Retry)
+
+fun IAutomataExtensions.retry() {
+    Game.RetryRegion.click()
+
+    2.seconds.wait()
 }
 
 /**
  * Script for starting quests, selecting the support and doing battles.
  */
-open class AutoBattle : EntryPoint() {
-    private val support = Support()
-    private val card = Card()
-    private val battle = Battle()
-    private val autoSkill = AutoSkill()
-
+open class AutoBattle(
+    exitManager: ExitManager,
+    platformImpl: IPlatformImpl,
+    automataExtensions: IAutomataExtensions,
+    val screenshotManager: ScreenshotManager,
+    val battle: Battle,
+    val support: Support,
+    val card: Card,
+    val autoSkill: AutoSkill,
+    val scaling: Scaling
+) : EntryPoint(exitManager, platformImpl, automataExtensions) {
     private var stonesUsed = 0
     private var isContinuing = false
 
@@ -33,7 +46,7 @@ open class AutoBattle : EntryPoint() {
         // a map of validators and associated actions
         // if the validator function evaluates to true, the associated action function is called
         val screens = mapOf(
-            { Game.needsToRetry() } to { Game.retry() },
+            { needsToRetry() } to { retry() },
             { battle.isIdle() } to { battle.performBattle() },
             { isInMenu() } to { menu() },
             { isInResult() } to { result() },
@@ -45,7 +58,7 @@ open class AutoBattle : EntryPoint() {
 
         // Loop through SCREENS until a Validator returns true
         while (true) {
-            val actor = ScreenshotManager.useSameSnapIn {
+            val actor = screenshotManager.useSameSnapIn {
                 screens
                     .filter { (validator, _) -> validator() }
                     .map { (_, actor) -> actor }
@@ -65,7 +78,7 @@ open class AutoBattle : EntryPoint() {
      * Then initialize the AutoSkill, Battle, and Card modules in modules.
      */
     private fun init() {
-        initScaling()
+        scaling.init()
 
         autoSkill.init(battle, card)
         battle.init(autoSkill, card)
@@ -349,7 +362,7 @@ open class AutoBattle : EntryPoint() {
         if (Preferences.Refill.enabled) {
             val refillRepetitions = Preferences.Refill.repetitions
             if (refillRepetitions > 0) {
-                AutomataApi.PlatformImpl.toast("$stonesUsed refills used out of $refillRepetitions")
+                platformImpl.toast("$stonesUsed refills used out of $refillRepetitions")
             }
         }
     }
