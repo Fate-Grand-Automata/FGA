@@ -9,7 +9,7 @@ class ScreenshotManager(
     val gameAreaManager: GameAreaManager,
     val platformImpl: IPlatformImpl,
     transformationExtensions: ITransformationExtensions
-): ITransformationExtensions by transformationExtensions {
+): AutoCloseable, ITransformationExtensions by transformationExtensions {
     var usePreviousSnap = false
 
     private var previousPattern: IPattern? = null
@@ -85,7 +85,7 @@ class ScreenshotManager(
     /**
      * Releases the memory reserved for the cached screenshot and helper images.
      */
-    fun releaseMemory() {
+    override fun close() {
         previousPattern?.close()
         previousPattern = null
 

@@ -1,10 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R

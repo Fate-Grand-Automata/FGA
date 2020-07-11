@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.util.IItemTouchHelperAdapter
-import com.mathewsachin.fategrandautomata.util.IOnStartDragListener
 
 class CardPriorityAdapter(private val Items: MutableList<CardScore>)
     : RecyclerView.Adapter<CardPriorityViewHolder>(), IItemTouchHelperAdapter {

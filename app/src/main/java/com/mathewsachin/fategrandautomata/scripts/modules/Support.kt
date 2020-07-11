@@ -76,6 +76,7 @@ class Support(
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
         val pattern = ImageLocator.SupportScreen
         while (!Game.SupportScreenRegion.exists(pattern)) {
+            0.1.seconds.wait()
         }
 
         return when (SelectionMode) {

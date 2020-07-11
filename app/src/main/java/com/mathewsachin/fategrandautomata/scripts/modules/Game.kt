@@ -1,10 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.libautomata.*
-import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import kotlin.time.seconds
+import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.Size
 
 class Game {
     companion object {

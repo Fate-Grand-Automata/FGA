@@ -2,7 +2,7 @@ package com.mathewsachin.libautomata
 
 /**
  * This class is used for storing the script and image dimensions and for storing the playable area
- * in [GameArea].
+ * in [gameArea].
  */
 class GameAreaManager(val platformImpl: IPlatformImpl) {
     /**

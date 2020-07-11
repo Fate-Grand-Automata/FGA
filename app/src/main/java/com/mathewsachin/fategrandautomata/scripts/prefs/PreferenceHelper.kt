@@ -2,10 +2,9 @@ package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
 
 private val context get(): Context = AutomataApplication.Instance
 
