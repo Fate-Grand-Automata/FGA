@@ -57,5 +57,14 @@ class Preferences {
         val GudaFinal get() = getBoolPref(R.string.pref_guda_final)
 
         val RecordScreen get() = getBoolPref(R.string.pref_record_screen)
+
+        val Party: Int get() {
+            val notSet = -1
+
+            val pref = getPrefsForSelectedAutoSkill()
+                ?: return notSet
+
+            return getStringAsIntPref(R.string.pref_autoskill_party, notSet, pref)
+        }
     }
 }
