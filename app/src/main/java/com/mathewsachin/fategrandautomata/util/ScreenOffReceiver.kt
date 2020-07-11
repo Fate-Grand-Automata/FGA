@@ -7,10 +7,12 @@ import android.content.IntentFilter
 
 class ScreenOffReceiver : BroadcastReceiver() {
 
-    fun register(Context: Context) {
+    fun register(Context: Context, listener: () -> Unit) {
         val filter = IntentFilter(Intent.ACTION_SCREEN_OFF)
 
         Context.registerReceiver(this, filter)
+
+        screenOffListener = listener
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -19,5 +21,11 @@ class ScreenOffReceiver : BroadcastReceiver() {
         }
     }
 
-    var screenOffListener: () -> Unit = { }
+    fun unregister(Context: Context) {
+        Context.unregisterReceiver(this)
+
+        screenOffListener = { }
+    }
+
+    private var screenOffListener: () -> Unit = { }
 }

@@ -30,7 +30,6 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
-import com.mathewsachin.fategrandautomata.root.RootGestures
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.clearImageCache
@@ -47,7 +46,10 @@ import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageN
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
 import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
+import com.mathewsachin.fategrandautomata.util.makeKoinModule
 import com.mathewsachin.libautomata.messageAndStackTrace
+import org.koin.core.parameter.parametersOf
+import org.koin.dsl.koinApplication
 import kotlin.time.seconds
 
 fun View.setThrottledClickListener(Listener: () -> Unit) {
@@ -75,6 +77,7 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     private lateinit var userInterface: ScriptRunnerUserInterface
+    private lateinit var platformImpl: IPlatformImpl
     private var sshotService: IScreenshotService? = null
     private var gestureService: IGestureService? = null
     private var superUser: SuperUser? = null
@@ -96,8 +99,7 @@ class ScriptRunnerService : AccessibilityService() {
     override fun onUnbind(intent: Intent?): Boolean {
         stop()
 
-        unregisterReceiver(screenOffReceiver)
-        screenOffReceiver.screenOffListener = { }
+        screenOffReceiver.unregister(this)
         Instance = null
 
         return super.onUnbind(intent)
@@ -125,10 +127,6 @@ class ScriptRunnerService : AccessibilityService() {
             return false
         }
 
-        if (!registerGestures()) {
-            return false
-        }
-
         userInterface.show()
 
         serviceStarted = true
@@ -142,29 +140,12 @@ class ScriptRunnerService : AccessibilityService() {
                 mediaProjection =
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
                 MediaProjectionScreenshotService(mediaProjection!!, userInterface.mediaProjectionMetrics)
-            } else RootScreenshotService(
-                getSuperUser()
-            )
+            } else RootScreenshotService(getSuperUser(), platformImpl)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             return false
         }
 
-        ScreenshotManager.register(sshotService ?: return false)
-        return true
-    }
-
-    private fun registerGestures(): Boolean {
-        gestureService = try {
-            if (Preferences.UseRootForGestures) {
-                RootGestures(getSuperUser())
-            } else AccessibilityGestures(this)
-        } catch (e: java.lang.Exception) {
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        registerGestures(gestureService ?: return false)
         return true
     }
 
@@ -184,7 +165,6 @@ class ScriptRunnerService : AccessibilityService() {
         superUser?.close()
         superUser = null
 
-        ScreenshotManager.releaseMemory()
         clearImageCache()
 
         userInterface.hide()
@@ -214,11 +194,29 @@ class ScriptRunnerService : AccessibilityService() {
         recording = null
     }
 
-    private fun getEntryPoint(): EntryPoint = when (Preferences.ScriptMode) {
-        ScriptModeEnum.Lottery -> AutoLottery()
-        ScriptModeEnum.FriendGacha -> AutoFriendGacha()
-        ScriptModeEnum.SupportImageMaker -> SupportImageMaker(::supportImgMakerCallback)
-        else -> AutoBattle()
+    private fun getEntryPoint(): EntryPoint {
+        val module = makeKoinModule(
+            platformImpl,
+            sshotService!!,
+            this
+        )
+        val koin = koinApplication {
+            modules(module)
+        }.koin
+
+        try {
+            return when (Preferences.ScriptMode) {
+                ScriptModeEnum.Lottery -> koin.get<AutoLottery>()
+                ScriptModeEnum.FriendGacha -> koin.get<AutoFriendGacha>()
+                ScriptModeEnum.SupportImageMaker -> koin.get<SupportImageMaker> {
+                    parametersOf(::supportImgMakerCallback)
+                }
+                else -> koin.get<AutoBattle>()
+            }
+        }
+        finally {
+            koin.close()
+        }
     }
 
     private fun supportImgMakerCallback() {
@@ -355,15 +353,14 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onServiceConnected() {
         Instance = this
-        AutomataApi.registerPlatform(AndroidImpl(this))
+        platformImpl = AndroidImpl(this)
 
         mediaProjectionManager =
             getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
         userInterface = ScriptRunnerUserInterface(this)
 
-        screenOffReceiver.register(this)
-        screenOffReceiver.screenOffListener = { stopScript() }
+        screenOffReceiver.register(this) { stopScript() }
 
         super.onServiceConnected()
     }
