@@ -38,7 +38,7 @@ class Game {
             MenuBoostItem3Click
         )
 
-        val InventoryFullRegion = Region(1060, 910, 438, 70)
+        val InventoryFullRegion = Region(1050, 900, 458, 90)
 
         val StaminaScreenRegion = Region(600, 200, 300, 300)
         val StaminaOkClick = Location(1650, 1120)
@@ -188,9 +188,9 @@ class Game {
 
         val ResultScreenRegion = Region(100, 300, 700, 200)
         val ResultBondRegion = Region(2000, 750, 120, 190)
-        val ResultMasterExpRegion = Region(1290, 360, 380, 90)
-        val ResultMatRewardsRegion = Region(2090, 1300, 260, 110)
-        val ResultMasterLvlUpRegion = Region(2000, 170, 230, 250)
+        val ResultMasterExpRegion = Region(1280, 350, 400, 110)
+        val ResultMatRewardsRegion = Region(2080, 1290, 280, 130)
+        val ResultMasterLvlUpRegion = Region(1990, 160, 250, 270)
 
         val ResultCeRewardRegion = Region(1050, 1216, 33, 28)
         val ResultCeRewardCloseClick = Location(80, 60)
