@@ -31,8 +31,8 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
         }
     }
 
-    override fun loadPattern(Stream: InputStream): IPattern {
-        return DroidCvPattern(Stream)
+    override fun loadPattern(Stream: InputStream, tag: String): IPattern {
+        return DroidCvPattern(Stream, tag)
     }
 
     override fun getResizableBlankPattern(): IPattern {

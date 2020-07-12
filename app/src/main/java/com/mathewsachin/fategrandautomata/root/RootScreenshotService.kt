@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
+import android.util.Log
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IScreenshotService
@@ -40,6 +41,8 @@ class RootScreenshotService(private val SuperUser: SuperUser) : IScreenshotServi
                     if (format != 1) {
                         AutomataApi.PlatformImpl.toast("Unexpected raw image format: $format")
                     }
+
+                    Log.d(RootScreenshotService::class.simpleName, "${w}x${h} format=$format")
 
                     buffer = ByteArray(w * h * 4)
                     rootLoadMat = Mat(h, w, CvType.CV_8UC4)

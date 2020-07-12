@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.imaging
 
+import android.util.Log
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Match
 import com.mathewsachin.libautomata.Region
@@ -24,10 +25,21 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
         }
     }
 
-    constructor(Stream: InputStream) : this(makeMat(Stream))
+    constructor(Stream: InputStream, tag: String) : this(makeMat(Stream)) {
+        this.tag = tag
+    }
 
     init {
         require(Mat != null) { "Mat should not be null" }
+    }
+
+    private var tag = ""
+
+    override fun toString(): String {
+        return if (tag.isBlank()) {
+            "${width}x${height}"
+        }
+        else tag
     }
 
     override fun close() {
@@ -36,6 +48,10 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
         }
 
         Mat = null
+    }
+
+    private fun logd(msg: String) {
+        Log.d(DroidCvPattern::class.simpleName, msg)
     }
 
     private fun resize(Target: Mat, Size: Size) {
@@ -65,6 +81,7 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
             if (Template.width <= width && Template.height <= height) {
                 Imgproc.matchTemplate(Mat, Template.Mat, result.Mat, Imgproc.TM_CCOEFF_NORMED)
             }
+            else logd("skipped matching ($Template on $this): region out of bounds")
 
             return result
         }
@@ -76,7 +93,11 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
         match(Template).use {
             val minMaxLocResult = Core.minMaxLoc(it.Mat)
 
-            return minMaxLocResult.maxVal >= Similarity
+            val score = minMaxLocResult.maxVal
+
+            logd("match ($Template on $this): $score")
+
+            return score >= Similarity
         }
     }
 
@@ -97,7 +118,10 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
                         Template.height
                     )
 
-                    yield(Match(region, score))
+                    val match = Match(region, score)
+
+                    logd("match ($Template on ${this@DroidCvPattern}): $match")
+                    yield(match)
 
                     val mask = DisposableMat()
                     mask.use {
