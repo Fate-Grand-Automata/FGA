@@ -9,8 +9,7 @@ import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.ui.addRegionToHighlight
-import com.mathewsachin.fategrandautomata.ui.removeRegionToHighlight
+import com.mathewsachin.fategrandautomata.ui.HighlightManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,7 +17,10 @@ import java.io.InputStream
 import kotlin.time.Duration
 import kotlin.time.milliseconds
 
-class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
+class AndroidImpl(
+    private val Service: ScriptRunnerService,
+    val highlightManager: HighlightManager
+) : IPlatformImpl {
     override val windowRegion get() = getCutoutAppliedRegion()
 
     override val debugMode get() = Preferences.DebugMode
@@ -71,9 +73,9 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
         val region = Region - getCutoutAppliedRegion().location
 
         GlobalScope.launch {
-            addRegionToHighlight(region)
+            highlightManager.add(region)
             delay(Duration.toLongMilliseconds())
-            removeRegionToHighlight(region)
+            highlightManager.remove(region)
         }
     }
 }

@@ -6,29 +6,33 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.view.View
 import com.mathewsachin.libautomata.Region
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 
-private val regionsToHighlight = mutableSetOf<Region>()
+class HighlightManager(val context: Context) {
+    private val regionsToHighlight = mutableSetOf<Region>()
 
-val highlightView: View by lazy { HighlightView(AutomataApplication.Instance) }
+    val highlightView: View by lazy { HighlightView(context, regionsToHighlight) }
 
-fun addRegionToHighlight(Region: Region) {
-    highlightView.post {
-        regionsToHighlight.add(Region)
+    fun add(Region: Region) {
+        highlightView.post {
+            regionsToHighlight.add(Region)
 
-        highlightView.invalidate()
+            highlightView.invalidate()
+        }
+    }
+
+    fun remove(Region: Region) {
+        highlightView.post {
+            regionsToHighlight.remove(Region)
+
+            highlightView.invalidate()
+        }
     }
 }
 
-fun removeRegionToHighlight(Region: Region) {
-    highlightView.post {
-        regionsToHighlight.remove(Region)
-
-        highlightView.invalidate()
-    }
-}
-
-private class HighlightView(Context: Context): View(Context) {
+private class HighlightView(
+    context: Context,
+    val regionsToHighlight: Set<Region>
+): View(context) {
     private val paint = Paint().apply {
         color = Color.RED
         strokeWidth = 5f

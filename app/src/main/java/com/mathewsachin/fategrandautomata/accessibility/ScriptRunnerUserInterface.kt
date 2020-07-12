@@ -14,13 +14,15 @@ import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.libautomata.Location
-import com.mathewsachin.fategrandautomata.ui.highlightView
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 
-class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
+class ScriptRunnerUserInterface(
+    val Service: ScriptRunnerService,
+    val highlightView: View
+) {
     val overlayType: Int get() {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY

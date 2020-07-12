@@ -41,12 +41,10 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
+import com.mathewsachin.fategrandautomata.ui.HighlightManager
 import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
-import com.mathewsachin.fategrandautomata.util.AndroidImpl
-import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
-import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
-import com.mathewsachin.fategrandautomata.util.makeKoinModule
+import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.messageAndStackTrace
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.koinApplication
@@ -353,12 +351,13 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onServiceConnected() {
         Instance = this
-        platformImpl = AndroidImpl(this)
+        val highlightManager = HighlightManager(AutomataApplication.Instance)
+        platformImpl = AndroidImpl(this, highlightManager)
 
         mediaProjectionManager =
             getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
-        userInterface = ScriptRunnerUserInterface(this)
+        userInterface = ScriptRunnerUserInterface(this, highlightManager.highlightView)
 
         screenOffReceiver.register(this) { stopScript() }
 
