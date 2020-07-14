@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.libautomata.IPlatformPrefs
+import kotlin.time.milliseconds
 
 object Preferences {
     init {
@@ -60,5 +61,17 @@ object Preferences {
         override val debugMode get() = getBoolPref(R.string.pref_debug_mode)
 
         override val minSimilarity get() = getIntPref(R.string.pref_min_similarity, 80) / 100.0
+    }
+
+    object Gestures {
+        val clickWaitTime get() = getIntPref(R.string.pref_click_wait_time).milliseconds
+
+        val clickDuration get() = getIntPref(R.string.pref_click_duration).milliseconds
+
+        val clickDelay get() = getIntPref(R.string.pref_click_delay).milliseconds
+
+        val swipeWaitTime get() = getIntPref(R.string.pref_swipe_wait_time).milliseconds
+
+        val swipeDuration get() = getIntPref(R.string.pref_swipe_duration).milliseconds
     }
 }

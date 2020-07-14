@@ -100,6 +100,7 @@
             android:max="100"
             app:defaultValue="80"
             app:key="@string/pref_min_similarity"
+            app:icon="@drawable/ic_image_search"
             app:min="50"
             app:seekBarIncrement="5"
             app:showSeekBarValue="true"
@@ -109,9 +110,60 @@
             android:max="100"
             app:defaultValue="77"
             app:key="@string/pref_mlb_similarity"
+            app:icon="@drawable/ic_star"
             app:min="50"
             app:seekBarIncrement="5"
             app:showSeekBarValue="true"
             app:title="MLB Similarity" />
+
+        <SeekBarPreference
+            android:max="2000"
+            app:defaultValue="300"
+            app:key="@string/pref_click_wait_time"
+            app:icon="@drawable/ic_click"
+            app:min="50"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:title="Wait after clicking (ms)" />
+
+        <SeekBarPreference
+            android:max="200"
+            app:defaultValue="50"
+            app:key="@string/pref_click_duration"
+            app:icon="@drawable/ic_click"
+            app:min="1"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:title="Click duration (ms)" />
+
+        <SeekBarPreference
+            android:max="50"
+            app:defaultValue="10"
+            app:key="@string/pref_click_delay"
+            app:icon="@drawable/ic_click"
+            app:min="1"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:title="Delay b/w repeated clicks (ms)" />
+
+        <SeekBarPreference
+            android:max="3000"
+            app:defaultValue="700"
+            app:key="@string/pref_swipe_wait_time"
+            app:icon="@drawable/ic_swipe"
+            app:min="50"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:title="Wait after swiping (ms)" />
+
+        <SeekBarPreference
+            android:max="1000"
+            app:defaultValue="300"
+            app:key="@string/pref_swipe_duration"
+            app:icon="@drawable/ic_swipe"
+            app:min="50"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:title="Swipe duration (ms)" />
     </PreferenceCategory>
 </PreferenceScreen>

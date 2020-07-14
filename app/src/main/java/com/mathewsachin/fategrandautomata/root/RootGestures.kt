@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.root
 
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
-import com.mathewsachin.fategrandautomata.util.swipeDuration
 import kotlin.math.max
 
 private const val InputCommand = "/system/bin/input"
@@ -12,6 +12,7 @@ private const val InputCommand = "/system/bin/input"
  */
 class RootGestures(private val SuperUser: SuperUser) : IGestureService {
     override fun swipe(Start: Location, End: Location) {
+        val swipeDuration = Preferences.Gestures.swipeDuration
         SuperUser.sendCommand("$InputCommand swipe ${Start.X} ${Start.Y} ${End.X} ${End.Y} $swipeDuration")
     }
 
