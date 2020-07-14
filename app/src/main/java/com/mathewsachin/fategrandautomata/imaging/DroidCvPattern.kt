@@ -35,12 +35,8 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
 
     private var tag = ""
 
-    override fun toString(): String {
-        return if (tag.isBlank()) {
-            "${width}x${height}"
-        }
-        else tag
-    }
+    override fun toString() =
+        if (tag.isBlank()) super.toString() else tag
 
     override fun close() {
         if (OwnsMat) {
@@ -81,7 +77,7 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
             if (Template.width <= width && Template.height <= height) {
                 Imgproc.matchTemplate(Mat, Template.Mat, result.Mat, Imgproc.TM_CCOEFF_NORMED)
             }
-            else logd("skipped matching ($Template on $this): region out of bounds")
+            else logd("Skipped matching $Template: Region out of bounds")
 
             return result
         }
@@ -95,7 +91,7 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
 
             val score = minMaxLocResult.maxVal
 
-            logd("match ($Template on $this): $score")
+            logd("Matched $Template with a score of $score")
 
             return score >= Similarity
         }
@@ -120,7 +116,7 @@ class DroidCvPattern(private var Mat: Mat? = Mat(), private val OwnsMat: Boolean
 
                     val match = Match(region, score)
 
-                    logd("match ($Template on ${this@DroidCvPattern}): $match")
+                    logd("Matched $Template with a score of ${match.score}")
                     yield(match)
 
                     val mask = DisposableMat()
