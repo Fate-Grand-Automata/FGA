@@ -104,5 +104,14 @@
             app:seekBarIncrement="5"
             app:showSeekBarValue="true"
             app:title="Min Similarity" />
+
+        <SeekBarPreference
+            android:max="100"
+            app:defaultValue="77"
+            app:key="@string/pref_mlb_similarity"
+            app:min="50"
+            app:seekBarIncrement="5"
+            app:showSeekBarValue="true"
+            app:title="MLB Similarity" />
     </PreferenceCategory>
 </PreferenceScreen>

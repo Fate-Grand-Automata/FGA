@@ -45,6 +45,7 @@
     <string name="pref_guda_final">guda_final</string>
     <string name="pref_record_screen">record_screen</string>
     <string name="pref_min_similarity">min_similarity</string>
+    <string name="pref_mlb_similarity">mlb_similarity</string>
 
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_support">nav_support</string>

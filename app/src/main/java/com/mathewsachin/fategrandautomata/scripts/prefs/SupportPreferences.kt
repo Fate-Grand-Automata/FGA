@@ -108,4 +108,7 @@ class SupportPreferences {
     }
 
     val fallbackTo get() = getEnumPref(R.string.pref_support_fallback, SupportSelectionModeEnum.Manual)
+
+    // 0.77 is a weird fix for MLB icon getting only 0.78 similarity sometimes
+    val mlbSimilarity get() = getIntPref(R.string.pref_mlb_similarity, 77) / 100.0
 }
