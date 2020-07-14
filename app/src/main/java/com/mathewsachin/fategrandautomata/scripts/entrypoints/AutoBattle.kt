@@ -263,13 +263,14 @@ open class AutoBattle : EntryPoint() {
      * The check only runs if `GudaFinal` is activated in the preferences and if the GameServer is
      * set to Japanese.
      *
-     * When this event comes to other regions, the GameServer condition needs to be extended.
+     * When this event comes to other regions, the GameServer condition needs to be extended and image should be added.
      */
     private fun isGudaFinalRewardsScreen(): Boolean {
-        if (!Preferences.GudaFinal || Preferences.GameServer != GameServerEnum.Jp)
-            return false
-
-        return Game.GudaFinalRewardsRegion.exists(ImageLocator.GudaFinalRewards)
+        return false
+//        if (!Preferences.GudaFinal || Preferences.GameServer != GameServerEnum.Jp)
+//            return false
+//
+//        return Game.GudaFinalRewardsRegion.exists(ImageLocator.GudaFinalRewards)
     }
 
     /**

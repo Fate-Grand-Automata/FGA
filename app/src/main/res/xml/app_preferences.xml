@@ -48,11 +48,11 @@
         app:title="Boost Item"
         app:useSimpleSummaryProvider="true" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:key="@string/pref_guda_final"
-        app:summary="Support for the new rewards screen on JP"
-        app:title="GudaGuda Final Rerun" />
+<!--    <SwitchPreferenceCompat-->
+<!--        app:defaultValue="false"-->
+<!--        app:key="@string/pref_guda_final"-->
+<!--        app:summary="Support for the new rewards screen on JP"-->
+<!--        app:title="GudaGuda Final Rerun" />-->
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
@@ -82,7 +82,7 @@
             app:defaultValue="false"
             app:icon="@drawable/ic_key"
             app:key="@string/pref_use_root_screenshot"
-            app:summary="Useful on Nox Android 7 for FGO JP"
+            app:summary="Useful on Nox (Android 7)"
             app:title="Use Root for Screenshots" />
 
         <!-- <SwitchPreferenceCompat
