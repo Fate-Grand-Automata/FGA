@@ -26,6 +26,7 @@ open class AutoBattle : EntryPoint() {
 
     private var stonesUsed = 0
     private var isContinuing = false
+    private var partySelected = false
 
     override fun script(): Nothing {
         init()
@@ -315,7 +316,7 @@ open class AutoBattle : EntryPoint() {
     }
 
     fun selectParty() {
-        if (Preferences.Party in Game.PartySelectionArray.indices) {
+        if (!partySelected && Preferences.Party in Game.PartySelectionArray.indices) {
             // Start Quest Button becomes unresponsive if the same party is clicked.
             // So we switch to one party and then to the user-specified one.
             val tempParty = if (Preferences.Party == 0) 1 else 0
@@ -326,6 +327,10 @@ open class AutoBattle : EntryPoint() {
             Game.PartySelectionArray[Preferences.Party].click()
 
             1.2.seconds.wait()
+
+            // If we select the party once, the same party will be used by the game for next fight
+            // So, we don't have to select it again
+            partySelected = true
         }
     }
 
