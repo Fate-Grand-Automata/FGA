@@ -88,6 +88,8 @@ class ScriptRunnerService : AccessibilityService() {
         }
     }
 
+    val notification = ScriptRunnerNotification(this)
+
     lateinit var mediaProjectionManager: MediaProjectionManager
         private set
 
@@ -169,7 +171,7 @@ class ScriptRunnerService : AccessibilityService() {
         userInterface.hide()
         serviceStarted = false
 
-        hideForegroundNotification()
+        notification.hide()
 
         return true
     }
@@ -353,57 +355,6 @@ class ScriptRunnerService : AccessibilityService() {
     override fun onInterrupt() {}
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
-
-    private val channelId = "fategrandautomata-notifications"
-    private var channelCreated = false
-
-    private fun createNotificationChannel() {
-        if (channelCreated) {
-            return
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                channelId,
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = channelId
-            }
-
-            val notifyManager = NotificationManagerCompat.from(this)
-
-            notifyManager.createNotificationChannel(channel)
-        }
-
-        channelCreated = true
-    }
-
-    fun hideForegroundNotification() = stopForeground(true)
-
-    private fun startBuildNotification(): NotificationCompat.Builder {
-        createNotificationChannel()
-
-        val activityIntent = PendingIntent
-            .getActivity(this, 0, Intent(this, MainActivity::class.java), 0)
-
-        return NotificationCompat.Builder(this, channelId)
-            .setOngoing(true)
-            .setContentTitle(getString(R.string.app_name))
-            .setContentText("Accessibility Service Running")
-            .setSmallIcon(R.mipmap.notification_icon)
-            .setColor(getColor(R.color.colorBusterWeak))
-            .setPriority(NotificationManager.IMPORTANCE_HIGH)
-            .setContentIntent(activityIntent)
-    }
-
-    private val foregroundNotificationId = 1
-
-    fun showForegroundNotification() {
-        val builder = startBuildNotification()
-
-        startForeground(foregroundNotificationId, builder.build())
-    }
 
     private val handler by lazy {
         Handler(Looper.getMainLooper())
