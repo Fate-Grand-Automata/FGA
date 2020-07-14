@@ -19,6 +19,10 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         }
+
+        findPreference<Preference>(getString(R.string.pref_nav_fine_tune))?.let {
+            it.fragment = FineTuneSettingsFragment::class.java.name
+        }
     }
 
     override fun onResume() {
