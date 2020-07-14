@@ -30,7 +30,6 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
-import com.mathewsachin.fategrandautomata.root.RootGestures
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.clearImageCache
@@ -76,7 +75,6 @@ class ScriptRunnerService : AccessibilityService() {
 
     private lateinit var userInterface: ScriptRunnerUserInterface
     private var sshotService: IScreenshotService? = null
-    private var gestureService: IGestureService? = null
     private var superUser: SuperUser? = null
     private val screenOffReceiver = ScreenOffReceiver()
 
@@ -95,6 +93,8 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         stop()
+
+        unregisterGestures()
 
         unregisterReceiver(screenOffReceiver)
         screenOffReceiver.screenOffListener = { }
@@ -125,10 +125,6 @@ class ScriptRunnerService : AccessibilityService() {
             return false
         }
 
-        if (!registerGestures()) {
-            return false
-        }
-
         userInterface.show()
 
         serviceStarted = true
@@ -154,20 +150,6 @@ class ScriptRunnerService : AccessibilityService() {
         return true
     }
 
-    private fun registerGestures(): Boolean {
-        gestureService = try {
-            if (Preferences.UseRootForGestures) {
-                RootGestures(getSuperUser())
-            } else AccessibilityGestures(this)
-        } catch (e: java.lang.Exception) {
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        registerGestures(gestureService ?: return false)
-        return true
-    }
-
     fun stop(): Boolean {
         stopScript()
 
@@ -177,9 +159,6 @@ class ScriptRunnerService : AccessibilityService() {
 
         sshotService?.close()
         sshotService = null
-
-        gestureService?.close()
-        gestureService = null
 
         superUser?.close()
         superUser = null
@@ -356,6 +335,9 @@ class ScriptRunnerService : AccessibilityService() {
     override fun onServiceConnected() {
         Instance = this
         AutomataApi.registerPlatform(AndroidImpl(this))
+
+        val gestureService = AccessibilityGestures(this)
+        registerGestures(gestureService)
 
         mediaProjectionManager =
             getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager

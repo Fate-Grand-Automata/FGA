@@ -50,8 +50,6 @@ class Preferences {
 
         val UseRootForScreenshots get() = getBoolPref(R.string.pref_use_root_screenshot)
 
-        val UseRootForGestures get() = getBoolPref(R.string.pref_use_root_gestures)
-
         val DebugMode get() = getBoolPref(R.string.pref_debug_mode)
 
         val GudaFinal get() = getBoolPref(R.string.pref_guda_final)
