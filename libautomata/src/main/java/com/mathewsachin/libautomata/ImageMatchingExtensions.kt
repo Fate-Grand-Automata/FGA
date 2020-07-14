@@ -6,11 +6,6 @@ import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 
 /**
- * The default minimum similarity used for image comparisons.
- */
-private const val MinSimilarity = 0.8
-
-/**
  * Checks if the [Region] contains the provided image.
  *
  * @param Region the search region
@@ -20,13 +15,13 @@ private const val MinSimilarity = 0.8
 private fun existsNow(
     Region: Region,
     Image: IPattern,
-    Similarity: Double = MinSimilarity
+    Similarity: Double = AutomataApi.PlatformImpl.prefs.minSimilarity
 ): Boolean {
     checkExitRequested()
 
     var sshot = ScreenshotManager.getScreenshot()
 
-    if (AutomataApi.PlatformImpl.debugMode) {
+    if (AutomataApi.PlatformImpl.prefs.debugMode) {
         Region.highlight()
     }
 
@@ -86,7 +81,7 @@ private fun checkConditionLoop(
 fun Region.exists(
     Image: IPattern,
     Timeout: Duration = Duration.ZERO,
-    Similarity: Double = MinSimilarity
+    Similarity: Double = AutomataApi.PlatformImpl.prefs.minSimilarity
 ): Boolean {
     checkExitRequested()
     return checkConditionLoop(
@@ -105,7 +100,7 @@ fun Region.exists(
 fun Region.waitVanish(
     Image: IPattern,
     Timeout: Duration,
-    Similarity: Double = MinSimilarity
+    Similarity: Double = AutomataApi.PlatformImpl.prefs.minSimilarity
 ): Boolean {
     checkExitRequested()
     return checkConditionLoop(
@@ -124,11 +119,11 @@ fun Region.waitVanish(
  */
 fun Region.findAll(
     Pattern: IPattern,
-    Similarity: Double = MinSimilarity
+    Similarity: Double = AutomataApi.PlatformImpl.prefs.minSimilarity
 ): Sequence<Match> {
     var sshot = ScreenshotManager.getScreenshot()
 
-    if (AutomataApi.PlatformImpl.debugMode) {
+    if (AutomataApi.PlatformImpl.prefs.debugMode) {
         this.highlight()
     }
 

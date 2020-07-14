@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
         app:icon="@drawable/ic_sort"
@@ -90,5 +91,18 @@
           app:title="Use Root for Gestures"
           app:summary="Slow - Not Recommended"
           app:defaultValue="false"/> -->
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="fine_tine_category"
+        app:title="Fine-tune">
+        <SeekBarPreference
+            android:max="100"
+            app:defaultValue="80"
+            app:key="@string/pref_min_similarity"
+            app:min="50"
+            app:seekBarIncrement="5"
+            app:showSeekBarValue="true"
+            app:title="Min Similarity" />
     </PreferenceCategory>
 </PreferenceScreen>

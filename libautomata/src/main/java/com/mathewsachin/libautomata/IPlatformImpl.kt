@@ -6,7 +6,7 @@ import kotlin.time.Duration
 interface IPlatformImpl {
     val windowRegion: Region
 
-    val debugMode: Boolean
+    val prefs: IPlatformPrefs
 
     /**
      * Shows a toast with the given message.
