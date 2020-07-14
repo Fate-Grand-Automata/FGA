@@ -10,37 +10,20 @@ import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
-import android.os.Handler
-import android.os.Looper
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.core.content.edit
-import androidx.core.view.setPadding
-import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.clearImageCache
-import com.mathewsachin.fategrandautomata.scripts.clearSupportCache
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
-import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
-import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
-import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
+import com.mathewsachin.fategrandautomata.util.ScriptManager
 import com.mathewsachin.fategrandautomata.util.setThrottledClickListener
 import com.mathewsachin.libautomata.*
-import kotlin.time.seconds
 
 class ScriptRunnerService : AccessibilityService() {
     companion object {
@@ -48,13 +31,13 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     private lateinit var userInterface: ScriptRunnerUserInterface
+    private lateinit var scriptManager: ScriptManager
     private var sshotService: IScreenshotService? = null
     private var superUser: SuperUser? = null
     private val screenOffReceiver = ScreenOffReceiver()
 
     // stopping is handled by Screenshot service
     private var mediaProjection: MediaProjection? = null
-    private var recording: MediaProjectionRecording? = null
 
     private fun getSuperUser(): SuperUser {
         return (superUser ?: SuperUser()).also {
@@ -88,8 +71,6 @@ class ScriptRunnerService : AccessibilityService() {
 
     var serviceStarted = false
         private set
-
-    private var scriptStarted = false
 
     fun start(MediaProjectionToken: Intent? = null): Boolean {
         if (serviceStarted) {
@@ -126,7 +107,7 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun stop(): Boolean {
-        stopScript()
+        scriptManager.stopScript()
 
         if (!serviceStarted) {
             return false
@@ -147,134 +128,6 @@ class ScriptRunnerService : AccessibilityService() {
         notification.hide()
 
         return true
-    }
-
-    private var entryPoint: EntryPoint? = null
-
-    private fun onScriptExit() {
-        userInterface.setPlayIcon()
-
-        clearSupportCache()
-
-        entryPoint = null
-        scriptStarted = false
-
-        val rec = recording
-        if (rec != null) {
-            // record for 2 seconds more to show things like error messages
-            userInterface.postDelayed(2.seconds) { rec.close() }
-        }
-
-        recording = null
-    }
-
-    private fun getEntryPoint(): EntryPoint = when (Preferences.ScriptMode) {
-        ScriptModeEnum.Lottery -> AutoLottery()
-        ScriptModeEnum.FriendGacha -> AutoFriendGacha()
-        ScriptModeEnum.SupportImageMaker -> SupportImageMaker(::supportImgMakerCallback)
-        else -> AutoBattle()
-    }
-
-    private fun supportImgMakerCallback() {
-        handler.post { showSupportImageNamer(userInterface) }
-    }
-
-    private fun startScript() {
-        if (!serviceStarted || scriptStarted) {
-            return
-        }
-
-        getEntryPoint().apply {
-            if (this is AutoBattle) {
-                autoSkillPicker(this)
-            }
-            else {
-                runEntryPoint(this)
-            }
-        }
-    }
-
-    private fun runEntryPoint(EntryPoint: EntryPoint) {
-        if (scriptStarted) {
-            return
-        }
-
-        scriptStarted = true
-        entryPoint = EntryPoint
-
-        if (Preferences.RecordScreen && mediaProjection != null) {
-            recording = MediaProjectionRecording(mediaProjection!!, userInterface.mediaProjectionMetrics)
-        }
-
-        EntryPoint.scriptExitListener = ::onScriptExit
-
-        userInterface.setStopIcon()
-        if (recording != null) {
-            userInterface.showAsRecording()
-        }
-
-        EntryPoint.run()
-    }
-
-    private fun autoSkillPicker(EntryPoint: EntryPoint) {
-        if (Preferences.EnableAutoSkill) {
-            var selected = Preferences.SelectedAutoSkillConfig
-
-            val autoSkillItems = getAutoSkillEntries()
-
-            val radioGroup = RadioGroup(this).apply {
-                orientation = RadioGroup.VERTICAL
-                setPadding(20)
-            }
-
-            for ((index, item) in autoSkillItems.withIndex()) {
-                val radioBtn = RadioButton(this).apply {
-                    text = item.Name
-                    id = index
-                }
-
-                radioGroup.addView(radioBtn)
-
-                if (selected == item.Id) {
-                    radioGroup.check(index)
-                }
-            }
-
-            ScriptRunnerDialog(userInterface).apply {
-                setTitle("Select AutoSkill Config")
-                setPositiveButton(getString(android.R.string.ok)) {
-                    val selectedIndex = radioGroup.checkedRadioButtonId
-                    if (selectedIndex in autoSkillItems.indices) {
-                        selected = autoSkillItems[selectedIndex].Id
-
-                        defaultPrefs.edit(commit = true) {
-                            putString(getString(R.string.pref_autoskill_selected), selected)
-                        }
-                    }
-
-                    runEntryPoint(EntryPoint)
-                }
-                setNegativeButton(getString(android.R.string.cancel)) { }
-                setView(radioGroup)
-                show()
-            }
-        }
-        else {
-            runEntryPoint(EntryPoint)
-        }
-    }
-
-    private fun stopScript() {
-        if (!scriptStarted) {
-            return
-        }
-
-        entryPoint?.let {
-            it.scriptExitListener = null
-            it.stop()
-        }
-
-        onScriptExit()
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -301,9 +154,9 @@ class ScriptRunnerService : AccessibilityService() {
 
     fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
         scriptCtrlBtn.setThrottledClickListener {
-            if (scriptStarted) {
-                stopScript()
-            } else startScript()
+            if (scriptManager.scriptStarted) {
+                scriptManager.stopScript()
+            } else scriptManager.startScript(this, mediaProjection)
         }
     }
 
@@ -318,8 +171,11 @@ class ScriptRunnerService : AccessibilityService() {
             getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
         userInterface = ScriptRunnerUserInterface(this)
+        scriptManager = ScriptManager(userInterface)
 
-        screenOffReceiver.register(this) { stopScript() }
+        screenOffReceiver.register(this) {
+            scriptManager.stopScript()
+        }
 
         super.onServiceConnected()
     }
@@ -327,10 +183,6 @@ class ScriptRunnerService : AccessibilityService() {
     override fun onInterrupt() {}
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
-
-    private val handler by lazy {
-        Handler(Looper.getMainLooper())
-    }
 
     fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
         ScriptRunnerDialog(userInterface).apply {
