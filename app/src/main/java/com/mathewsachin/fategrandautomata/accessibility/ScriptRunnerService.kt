@@ -3,8 +3,6 @@ package com.mathewsachin.fategrandautomata.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity.RESULT_OK
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -12,22 +10,17 @@ import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
 import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
@@ -41,13 +34,12 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
-import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
 import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 import com.mathewsachin.fategrandautomata.util.setThrottledClickListener
-import com.mathewsachin.libautomata.messageAndStackTrace
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 class ScriptRunnerService : AccessibilityService() {
@@ -80,8 +72,7 @@ class ScriptRunnerService : AccessibilityService() {
 
         unregisterGestures()
 
-        unregisterReceiver(screenOffReceiver)
-        screenOffReceiver.screenOffListener = { }
+        screenOffReceiver.unregister(this)
         Instance = null
 
         return super.onUnbind(intent)
@@ -328,8 +319,7 @@ class ScriptRunnerService : AccessibilityService() {
 
         userInterface = ScriptRunnerUserInterface(this)
 
-        screenOffReceiver.register(this)
-        screenOffReceiver.screenOffListener = { stopScript() }
+        screenOffReceiver.register(this) { stopScript() }
 
         super.onServiceConnected()
     }
