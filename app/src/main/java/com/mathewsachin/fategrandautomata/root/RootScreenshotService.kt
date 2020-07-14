@@ -1,12 +1,12 @@
 package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
-import com.mathewsachin.libautomata.AutomataApi
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.storageDir
 import com.mathewsachin.fategrandautomata.util.readIntLE
+import com.mathewsachin.libautomata.AutomataApi
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.IScreenshotService
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
@@ -59,6 +59,8 @@ class RootScreenshotService(private val SuperUser: SuperUser) : IScreenshotServi
     override fun close() {
         rootLoadMat?.release()
         rootConvertMat.release()
+
+        SuperUser.close()
 
         pattern.close()
 

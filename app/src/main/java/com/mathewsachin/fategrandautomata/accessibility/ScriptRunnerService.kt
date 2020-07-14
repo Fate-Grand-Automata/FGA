@@ -33,17 +33,10 @@ class ScriptRunnerService : AccessibilityService() {
     private lateinit var userInterface: ScriptRunnerUserInterface
     private lateinit var scriptManager: ScriptManager
     private var sshotService: IScreenshotService? = null
-    private var superUser: SuperUser? = null
     private val screenOffReceiver = ScreenOffReceiver()
 
     // stopping is handled by Screenshot service
     private var mediaProjection: MediaProjection? = null
-
-    private fun getSuperUser(): SuperUser {
-        return (superUser ?: SuperUser()).also {
-            superUser = it
-        }
-    }
 
     val notification = ScriptRunnerNotification(this)
 
@@ -94,9 +87,7 @@ class ScriptRunnerService : AccessibilityService() {
                 mediaProjection =
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
                 MediaProjectionScreenshotService(mediaProjection!!, userInterface.mediaProjectionMetrics)
-            } else RootScreenshotService(
-                getSuperUser()
-            )
+            } else RootScreenshotService(SuperUser())
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             return false
@@ -115,9 +106,6 @@ class ScriptRunnerService : AccessibilityService() {
 
         sshotService?.close()
         sshotService = null
-
-        superUser?.close()
-        superUser = null
 
         ScreenshotManager.releaseMemory()
         clearImageCache()
