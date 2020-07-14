@@ -46,27 +46,9 @@ import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageN
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
 import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
+import com.mathewsachin.fategrandautomata.util.setThrottledClickListener
 import com.mathewsachin.libautomata.messageAndStackTrace
 import kotlin.time.seconds
-
-fun View.setThrottledClickListener(Listener: () -> Unit) {
-    var isWorking = false
-
-    setOnClickListener {
-        if (isWorking) {
-            return@setOnClickListener
-        }
-
-        isWorking = true
-
-        try {
-            Listener()
-        }
-        finally {
-            isWorking = false
-        }
-    }
-}
 
 class ScriptRunnerService : AccessibilityService() {
     companion object {
