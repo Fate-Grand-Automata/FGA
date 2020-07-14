@@ -17,7 +17,7 @@ import org.opencv.imgproc.Imgproc
  */
 class MediaProjectionScreenshotService(
     private val MediaProjection: MediaProjection,
-    DisplayMetrics: DisplayMetrics
+    private val DisplayMetrics: DisplayMetrics
 ) : IScreenshotService {
     private val colorCorrectedMat = Mat()
 
@@ -74,4 +74,7 @@ class MediaProjectionScreenshotService(
 
         MediaProjection.stop()
     }
+
+    override fun startRecording() =
+        MediaProjectionRecording(MediaProjection, DisplayMetrics)
 }

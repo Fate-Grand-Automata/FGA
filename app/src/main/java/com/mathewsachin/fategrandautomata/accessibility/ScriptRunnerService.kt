@@ -144,7 +144,10 @@ class ScriptRunnerService : AccessibilityService() {
         scriptCtrlBtn.setThrottledClickListener {
             if (scriptManager.scriptStarted) {
                 scriptManager.stopScript()
-            } else scriptManager.startScript(this, mediaProjection)
+            }
+            else sshotService?.let {
+                scriptManager.startScript(this, it)
+            }
         }
     }
 

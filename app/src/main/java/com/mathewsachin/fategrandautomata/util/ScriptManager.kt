@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
-import android.media.projection.MediaProjection
 import android.os.Handler
 import android.os.Looper
 import android.widget.RadioButton
@@ -11,7 +10,6 @@ import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
-import com.mathewsachin.fategrandautomata.imaging.MediaProjectionRecording
 import com.mathewsachin.fategrandautomata.scripts.clearSupportCache
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
@@ -22,6 +20,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.IScreenshotService
 import kotlin.time.seconds
 
 class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
@@ -29,7 +28,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         private set
 
     private var entryPoint: EntryPoint? = null
-    private var recording: MediaProjectionRecording? = null
+    private var recording: AutoCloseable? = null
 
     private fun onScriptExit() {
         userInterface.setPlayIcon()
@@ -63,7 +62,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         handler.post { showSupportImageNamer(userInterface) }
     }
 
-    fun startScript(context: Context, mediaProjection: MediaProjection?) {
+    fun startScript(context: Context, screenshotService: IScreenshotService) {
         if (scriptStarted) {
             return
         }
@@ -71,11 +70,11 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         getEntryPoint().apply {
             if (this is AutoBattle) {
                 autoSkillPicker(context) {
-                    runEntryPoint(this, mediaProjection)
+                    runEntryPoint(this, screenshotService)
                 }
             }
             else {
-                runEntryPoint(this, mediaProjection)
+                runEntryPoint(this, screenshotService)
             }
         }
     }
@@ -93,7 +92,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         onScriptExit()
     }
 
-    private fun runEntryPoint(EntryPoint: EntryPoint, mediaProjection: MediaProjection?) {
+    private fun runEntryPoint(EntryPoint: EntryPoint, screenshotService: IScreenshotService) {
         if (scriptStarted) {
             return
         }
@@ -101,11 +100,8 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         scriptStarted = true
         entryPoint = EntryPoint
 
-        if (Preferences.RecordScreen && mediaProjection != null) {
-            recording = MediaProjectionRecording(
-                mediaProjection,
-                userInterface.mediaProjectionMetrics
-            )
+        if (Preferences.RecordScreen) {
+            recording = screenshotService.startRecording()
         }
 
         EntryPoint.scriptExitListener = ::onScriptExit

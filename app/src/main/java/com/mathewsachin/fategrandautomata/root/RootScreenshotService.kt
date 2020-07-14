@@ -66,4 +66,6 @@ class RootScreenshotService(private val SuperUser: SuperUser) : IScreenshotServi
 
         buffer = null
     }
+
+    override fun startRecording(): AutoCloseable? = null
 }
