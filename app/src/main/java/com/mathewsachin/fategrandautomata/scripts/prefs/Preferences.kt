@@ -64,14 +64,14 @@ object Preferences {
     }
 
     object Gestures {
-        val clickWaitTime get() = getIntPref(R.string.pref_click_wait_time).milliseconds
+        val clickWaitTime get() = getIntPref(R.string.pref_click_wait_time, 300).milliseconds
 
-        val clickDuration get() = getIntPref(R.string.pref_click_duration).milliseconds
+        val clickDuration get() = getIntPref(R.string.pref_click_duration, 50).milliseconds
 
-        val clickDelay get() = getIntPref(R.string.pref_click_delay).milliseconds
+        val clickDelay get() = getIntPref(R.string.pref_click_delay, 10).milliseconds
 
-        val swipeWaitTime get() = getIntPref(R.string.pref_swipe_wait_time).milliseconds
+        val swipeWaitTime get() = getIntPref(R.string.pref_swipe_wait_time, 700).milliseconds
 
-        val swipeDuration get() = getIntPref(R.string.pref_swipe_duration).milliseconds
+        val swipeDuration get() = getIntPref(R.string.pref_swipe_duration, 300).milliseconds
     }
 }
