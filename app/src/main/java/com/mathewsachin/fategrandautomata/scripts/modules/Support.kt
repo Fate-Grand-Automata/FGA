@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.loadSupportImagePattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -307,7 +307,6 @@ class Support {
 
         val limitBreakPattern = ImageLocator.LimitBroken
 
-        // 0.77 is a weird fix for MLB icon getting only 0.78 similarity sometimes
-        return limitBreakRegion.exists(limitBreakPattern, Similarity = 0.77)
+        return limitBreakRegion.exists(limitBreakPattern, Similarity = 0.8)
     }
 }
