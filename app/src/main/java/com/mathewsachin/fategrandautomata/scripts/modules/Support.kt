@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.loadSupportImagePattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -227,9 +227,27 @@ class Support {
         throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
     }
 
+    /**
+     * Scroll support list considering [Preferences.supportSwipeMultiplier].
+     */
     private fun scrollList() {
-        swipe(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick)
+        val endY = lerp(
+            Game.SupportSwipeStartClick.Y,
+            Game.SupportSwipeEndClick.Y,
+            Preferences.supportSwipeMultiplier
+        )
+
+        swipe(
+            Game.SupportSwipeStartClick,
+            Game.SupportSwipeEndClick.copy(Y = endY)
+        )
     }
+
+    /**
+     * linear interpolation
+     */
+    private fun lerp(start: Int, end: Int, fraction: Double) =
+        (start + (end - start) * fraction).toInt()
 
     private fun findFriendName(): Region? {
         for (friendName in friendNameArray) {

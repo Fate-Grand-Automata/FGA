@@ -66,6 +66,8 @@ object Preferences {
         return getStringAsIntPref(R.string.pref_autoskill_party, notSet, pref)
     }
 
+    val supportSwipeMultiplier get() = getIntPref(R.string.pref_support_swipe_multiplier, 100) / 100.0
+
     object PlatformPrefs: IPlatformPrefs {
         override val debugMode get() = getBoolPref(R.string.pref_debug_mode)
 

@@ -81,6 +81,16 @@
             app:seekBarIncrement="10"
             app:showSeekBarValue="true"
             app:title="Swipe duration (ms)" />
+
+        <SeekBarPreference
+            android:max="200"
+            app:defaultValue="100"
+            app:key="@string/pref_support_swipe_multiplier"
+            app:icon="@drawable/ic_swipe"
+            app:min="50"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:title="Support Swipe Multiplier (%)" />
     </PreferenceCategory>
 
     <PreferenceCategory
