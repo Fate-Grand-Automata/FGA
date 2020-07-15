@@ -1,12 +1,13 @@
 package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
-import com.mathewsachin.libautomata.AutomataApi
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.IScreenshotService
+import android.util.Log
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.storageDir
 import com.mathewsachin.fategrandautomata.util.readIntLE
+import com.mathewsachin.libautomata.AutomataApi
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.IScreenshotService
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
@@ -41,6 +42,8 @@ class RootScreenshotService(private val SuperUser: SuperUser) : IScreenshotServi
                         AutomataApi.PlatformImpl.toast("Unexpected raw image format: $format")
                     }
 
+                    Log.d(RootScreenshotService::class.simpleName, "${w}x${h} format=$format")
+
                     buffer = ByteArray(w * h * 4)
                     rootLoadMat = Mat(h, w, CvType.CV_8UC4)
                 }
@@ -60,8 +63,12 @@ class RootScreenshotService(private val SuperUser: SuperUser) : IScreenshotServi
         rootLoadMat?.release()
         rootConvertMat.release()
 
+        SuperUser.close()
+
         pattern.close()
 
         buffer = null
     }
+
+    override fun startRecording(): AutoCloseable? = null
 }

@@ -26,6 +26,7 @@ open class AutoBattle : EntryPoint() {
 
     private var stonesUsed = 0
     private var isContinuing = false
+    private var partySelected = false
 
     override fun script(): Nothing {
         init()
@@ -263,13 +264,14 @@ open class AutoBattle : EntryPoint() {
      * The check only runs if `GudaFinal` is activated in the preferences and if the GameServer is
      * set to Japanese.
      *
-     * When this event comes to other regions, the GameServer condition needs to be extended.
+     * When this event comes to other regions, the GameServer condition needs to be extended and image should be added.
      */
     private fun isGudaFinalRewardsScreen(): Boolean {
-        if (!Preferences.GudaFinal || Preferences.GameServer != GameServerEnum.Jp)
-            return false
-
-        return Game.GudaFinalRewardsRegion.exists(ImageLocator.GudaFinalRewards)
+        return false
+//        if (!Preferences.GudaFinal || Preferences.GameServer != GameServerEnum.Jp)
+//            return false
+//
+//        return Game.GudaFinalRewardsRegion.exists(ImageLocator.GudaFinalRewards)
     }
 
     /**
@@ -314,11 +316,34 @@ open class AutoBattle : EntryPoint() {
         } else throw ScriptExitException("AP ran out!")
     }
 
+    fun selectParty() {
+        if (!partySelected && Preferences.Party in Game.PartySelectionArray.indices) {
+            // Start Quest Button becomes unresponsive if the same party is clicked.
+            // So we switch to one party and then to the user-specified one.
+            val tempParty = if (Preferences.Party == 0) 1 else 0
+            Game.PartySelectionArray[tempParty].click()
+
+            1.seconds.wait()
+
+            Game.PartySelectionArray[Preferences.Party].click()
+
+            1.2.seconds.wait()
+
+            // If we select the party once, the same party will be used by the game for next fight
+            // So, we don't have to select it again
+            partySelected = true
+        }
+    }
+
     /**
-     * Clicks on the button to start the quest in the Party selection, then selects the boost item
-     * if applicable and then skips the story if story skip is activated.
+     * Starts the quest after the support has already been selected. The following features are done optionally:
+     * 1. The configured party is selected if [Preferences.Party] is set
+     * 2. A boost item is selected if [Preferences.BoostItemSelectionMode] is set (needed in some events)
+     * 3. The story is skipped if [Preferences.StorySkip] is activated
      */
     private fun startQuest() {
+        selectParty()
+
         Game.MenuStartQuestClick.click()
 
         2.seconds.wait()

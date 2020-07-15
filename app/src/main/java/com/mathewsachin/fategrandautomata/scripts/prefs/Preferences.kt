@@ -57,6 +57,15 @@ object Preferences {
 
     val RecordScreen get() = getBoolPref(R.string.pref_record_screen)
 
+    val Party: Int get() {
+        val notSet = -1
+
+        val pref = getPrefsForSelectedAutoSkill()
+            ?: return notSet
+
+        return getStringAsIntPref(R.string.pref_autoskill_party, notSet, pref)
+    }
+
     object PlatformPrefs: IPlatformPrefs {
         override val debugMode get() = getBoolPref(R.string.pref_debug_mode)
 

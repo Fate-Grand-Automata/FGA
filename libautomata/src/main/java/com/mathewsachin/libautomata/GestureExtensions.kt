@@ -8,6 +8,11 @@ fun registerGestures(Impl: IGestureService) {
     GestureService = Impl
 }
 
+fun unregisterGestures() {
+    GestureService?.close()
+    GestureService = null
+}
+
 /**
  * Clicks on the [Location].
  *

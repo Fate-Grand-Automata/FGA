@@ -21,8 +21,15 @@ class MediaProjectionRecording(
 
     init {
         val screenDensity = DisplayMetrics.densityDpi
-        val screenWidth = DisplayMetrics.widthPixels
-        val screenHeight = DisplayMetrics.heightPixels
+        var screenWidth = DisplayMetrics.widthPixels
+        var screenHeight = DisplayMetrics.heightPixels
+
+        // we only want landscape images, since the frame size can't be changed during a projection
+        if (screenHeight > screenWidth) {
+            val temp = screenHeight
+            screenHeight = screenWidth
+            screenWidth = temp
+        }
 
         mediaRecorder = MediaRecorder()
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)

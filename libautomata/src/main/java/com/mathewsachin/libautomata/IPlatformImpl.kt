@@ -18,7 +18,7 @@ interface IPlatformImpl {
      *
      * @return an [IPattern] with the image data
      */
-    fun loadPattern(Stream: InputStream): IPattern
+    fun loadPattern(Stream: InputStream, tag: String): IPattern
 
     /**
      * Creates a new [IPattern] without any image data.
