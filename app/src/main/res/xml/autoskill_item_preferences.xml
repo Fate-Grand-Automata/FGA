@@ -13,6 +13,15 @@
         app:key="@string/pref_autoskill_cmd"
         app:title="Skill Command" />
 
+    <ListPreference
+        app:defaultValue="-1"
+        app:entries="@array/party_labels"
+        app:entryValues="@array/party_values"
+        app:icon="@drawable/ic_flag"
+        app:key="@string/pref_autoskill_party"
+        app:title="Party"
+        app:useSimpleSummaryProvider="true" />
+
     <PreferenceCategory
         app:key="pref_servant_category"
         app:title="Preferred Servants">

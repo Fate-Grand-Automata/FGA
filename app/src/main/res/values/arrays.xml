@@ -73,4 +73,32 @@
         <item>FriendGacha</item>
         <item>SupportImageMaker</item>
     </array>
+
+    <array name="party_labels">
+        <item>Not Set</item>
+        <item>Party 1</item>
+        <item>Party 2</item>
+        <item>Party 3</item>
+        <item>Party 4</item>
+        <item>Party 5</item>
+        <item>Party 6</item>
+        <item>Party 7</item>
+        <item>Party 8</item>
+        <item>Party 9</item>
+        <item>Party 10</item>
+    </array>
+
+    <string-array name="party_values">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
 </resources>

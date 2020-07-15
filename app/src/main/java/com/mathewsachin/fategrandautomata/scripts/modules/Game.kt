@@ -75,6 +75,19 @@ class Game {
         val SupportListTopClick = Location(2480, 360)
         val SupportFirstSupportClick = Location(1900, 500)
 
+        val PartySelectionArray = listOf(
+            Location(1055,100),
+            Location(1105,100),
+            Location(1155,100),
+            Location(1205,100),
+            Location(1255,100),
+            Location(1305,100),
+            Location(1355,100),
+            Location(1405,100),
+            Location(1455,100),
+            Location(1505,100)
+        )
+
         val BattleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
 
         val BattleStageCountRegion
