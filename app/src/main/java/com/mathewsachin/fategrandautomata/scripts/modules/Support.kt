@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.loadSupportImagePattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -248,11 +248,25 @@ class Support {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
             val pattern = loadSupportImagePattern(preferredServant)
+                .cropFriendLock()
 
             for (servant in Game.SupportListRegion.findAll(pattern)) {
                 yield(servant.Region)
             }
         }
+    }
+
+    /**
+     * If you lock your friends, a lock icon shows on the left of servant image,
+     * which can cause matching to fail.
+     * Instead of modifying in-built images and Support Image Maker,
+     * which would need everyone to regenerate their images,
+     * crop out the part which can potentially have the lock.
+     */
+    private fun IPattern.cropFriendLock(): IPattern {
+        val lockCropLeft = 15
+        val lockCropRegion = Region(lockCropLeft, 0, width - lockCropLeft, height)
+        return crop(lockCropRegion)
     }
 
     private fun findCraftEssence(SearchRegion: Region): Region? {
