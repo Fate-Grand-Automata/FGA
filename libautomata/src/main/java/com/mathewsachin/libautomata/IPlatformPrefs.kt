@@ -7,4 +7,6 @@ interface IPlatformPrefs {
      * The default minimum similarity used for image comparisons.
      */
     val minSimilarity: Double
+
+    val waitMultiplier: Double
 }

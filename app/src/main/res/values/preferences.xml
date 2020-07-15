@@ -54,6 +54,7 @@
     <string name="pref_click_delay">click_delay</string>
     <string name="pref_swipe_wait_time">swipe_wait_time</string>
     <string name="pref_swipe_duration">swipe_duration</string>
+    <string name="pref_wait_multiplier">wait_multiplier</string>
 
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_support">nav_support</string>

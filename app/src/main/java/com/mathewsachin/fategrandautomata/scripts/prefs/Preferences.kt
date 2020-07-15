@@ -70,6 +70,8 @@ object Preferences {
         override val debugMode get() = getBoolPref(R.string.pref_debug_mode)
 
         override val minSimilarity get() = getIntPref(R.string.pref_min_similarity, 80) / 100.0
+
+        override val waitMultiplier get() = getIntPref(R.string.pref_wait_multiplier, 100) / 100.0
     }
 
     object Gestures {

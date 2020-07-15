@@ -37,7 +37,8 @@ fun Region.getPattern(): IPattern? {
  */
 fun Duration.wait() {
     val epsilon = 1000L
-    var left = this.toLongMilliseconds()
+    val multiplier = AutomataApi.PlatformImpl.prefs.waitMultiplier
+    var left = (this * multiplier).toLongMilliseconds()
 
     // Sleeping this way allows quick exit if demanded by user
     while (left > 0) {

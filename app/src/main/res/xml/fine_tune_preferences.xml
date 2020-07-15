@@ -82,4 +82,18 @@
             app:showSeekBarValue="true"
             app:title="Swipe duration (ms)" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="wait_category"
+        app:title="Wait">
+        <SeekBarPreference
+            android:max="200"
+            app:defaultValue="100"
+            app:key="@string/pref_wait_multiplier"
+            app:icon="@drawable/ic_time"
+            app:min="50"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:title="Wait Multiplier (%)" />
+    </PreferenceCategory>
 </PreferenceScreen>
