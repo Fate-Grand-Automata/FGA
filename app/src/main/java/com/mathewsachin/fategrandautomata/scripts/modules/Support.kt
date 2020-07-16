@@ -247,8 +247,9 @@ class Support {
     private fun findServants(): Sequence<Region> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = loadSupportImagePattern(preferredServant)
-                .cropFriendLock()
+            val pattern = cropFriendLock(
+                loadSupportImagePattern(preferredServant)
+            )
 
             for (servant in Game.SupportListRegion.findAll(pattern)) {
                 yield(servant.Region)
@@ -263,10 +264,13 @@ class Support {
      * which would need everyone to regenerate their images,
      * crop out the part which can potentially have the lock.
      */
-    private fun IPattern.cropFriendLock(): IPattern {
+    private fun cropFriendLock(servant: IPattern): IPattern {
         val lockCropLeft = 15
-        val lockCropRegion = Region(lockCropLeft, 0, width - lockCropLeft, height)
-        return crop(lockCropRegion)
+        val lockCropRegion = Region(
+            lockCropLeft, 0,
+            servant.width - lockCropLeft, servant.height
+        )
+        return servant.crop(lockCropRegion)
     }
 
     private fun findCraftEssence(SearchRegion: Region): Region? {
