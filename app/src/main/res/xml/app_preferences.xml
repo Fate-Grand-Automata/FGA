@@ -29,6 +29,12 @@
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
+        app:icon="@drawable/ic_radio"
+        app:key="@string/pref_skill_conf"
+        app:title="Skill Confirmation" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
         app:icon="@drawable/ic_exit_run"
         app:key="@string/pref_withdraw_enabled"
         app:title="Enable Withdraw" />

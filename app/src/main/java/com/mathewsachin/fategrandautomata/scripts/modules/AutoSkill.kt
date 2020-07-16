@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.*
 import kotlin.time.Duration
 import kotlin.time.seconds
 
@@ -201,7 +201,7 @@ class AutoSkill {
     }
 
     fun resetState() {
-        isFinished = !Preferences.EnableAutoSkill
+        isFinished = false
 
         changeArray(defaultFunctionArray)
     }
@@ -240,9 +240,7 @@ class AutoSkill {
         battle = BattleModule
         card = CardModule
 
-        if (Preferences.EnableAutoSkill) {
-            initCommands()
-        }
+        initCommands()
 
         resetState()
     }
