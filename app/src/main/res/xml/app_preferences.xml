@@ -1,11 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        app:icon="@drawable/ic_sort"
-        app:key="@string/pref_card_priority"
-        app:title="Card Priority" />
-
     <ListPreference
         app:defaultValue="None"
         app:entries="@array/battle_np_types"
