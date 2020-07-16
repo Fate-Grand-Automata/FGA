@@ -2,10 +2,9 @@ package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
 
 private val context get(): Context = AutomataApplication.Instance
 
@@ -19,8 +18,7 @@ fun applyDefaults() {
             R.xml.main_preferences,
             R.xml.app_preferences,
             R.xml.autoskill_preferences,
-            R.xml.refill_preferences,
-            R.xml.support_preferences
+            R.xml.refill_preferences
         )
 
         for (prefFile in prefFiles) {

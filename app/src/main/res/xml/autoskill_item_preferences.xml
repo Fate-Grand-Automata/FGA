@@ -23,17 +23,38 @@
         app:useSimpleSummaryProvider="true" />
 
     <PreferenceCategory
-        app:key="pref_servant_category"
-        app:title="Preferred Servants">
+        app:key="support_category"
+        app:title="Support">
+        <ListPreference
+            app:defaultValue="Preferred"
+            app:entries="@array/support_selection_modes"
+            app:entryValues="@array/support_selection_modes"
+            app:icon="@drawable/ic_dots_vertical"
+            app:key="@string/pref_support_mode"
+            app:title="Selection Mode"
+            app:useSimpleSummaryProvider="true"/>
+
+        <ListPreference
+            app:defaultValue="Manual"
+            app:entries="@array/support_selection_modes_fallback"
+            app:entryValues="@array/support_selection_modes_fallback"
+            app:icon="@drawable/ic_dots_vertical"
+            app:key="@string/pref_support_fallback"
+            app:title="Fallback Selection Mode"
+            app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_friend"
+            app:key="@string/pref_support_friends_only"
+            app:title="Friends Only" />
+
         <MultiSelectListPreference
             app:icon="@drawable/ic_crown"
             app:key="@string/pref_support_pref_servant"
-            app:title="Preferred Servants" />
-    </PreferenceCategory>
+            app:title="Preferred Servants"
+            app:allowDividerAbove="true"/>
 
-    <PreferenceCategory
-        app:key="pref_ce_category"
-        app:title="Preferred CEs">
         <MultiSelectListPreference
             app:icon="@drawable/ic_card"
             app:key="@string/pref_support_pref_ce"
@@ -44,6 +65,11 @@
             app:icon="@drawable/ic_star"
             app:key="@string/pref_support_pref_ce_mlb"
             app:title="Max-limit broken" />
-    </PreferenceCategory>
 
+        <MultiSelectListPreference
+            app:icon="@drawable/ic_friend"
+            app:key="@string/pref_support_friend_names"
+            app:title="Friend names"
+            app:allowDividerAbove="true"/>
+    </PreferenceCategory>
 </PreferenceScreen>

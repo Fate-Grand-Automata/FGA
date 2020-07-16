@@ -47,7 +47,6 @@
     <string name="pref_record_screen">record_screen</string>
 
     <string name="pref_nav_refill">nav_refill</string>
-    <string name="pref_nav_support">nav_support</string>
     <string name="pref_nav_auto_skill">nav_auto_skill</string>
     <string name="pref_nav_more">nav_more</string>
 </resources>

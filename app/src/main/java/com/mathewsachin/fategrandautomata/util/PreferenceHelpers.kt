@@ -1,10 +1,9 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.text.InputType
-import androidx.preference.EditTextPreference
-import androidx.preference.MultiSelectListPreference
-import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.*
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
 import com.mathewsachin.fategrandautomata.scripts.supportFriendFolder
 import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
@@ -32,6 +31,21 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
     findFriendNamesList()?.apply {
         summaryProvider = MultiSelectListSummaryProvider()
     }
+
+    fun adjust(selectionMode: String) {
+        adjustVisibility(enumValueOf(selectionMode))
+    }
+
+    findPreference<ListPreference>(getString(R.string.pref_support_mode))?.let {
+        it.setOnPreferenceChangeListener { _, newValue ->
+            if (newValue is String) {
+                adjust(newValue)
+            }
+            true
+        }
+
+        adjust(it.value)
+    }
 }
 
 private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
@@ -50,8 +64,27 @@ private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
         .toTypedArray()
 }
 
+fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionModeEnum) {
+    val servants = findServantList() ?: return
+    val ces = findCeList() ?: return
+    val ceMlb = findPreference<SwitchPreferenceCompat>(
+        getString(R.string.pref_support_pref_ce_mlb)) ?: return
+    val friendNames = findFriendNamesList() ?: return
+
+    val modePreferred = selectionMode == SupportSelectionModeEnum.Preferred
+
+    servants.isVisible = modePreferred
+    ces.isVisible = modePreferred
+    ceMlb.isVisible = modePreferred
+    friendNames.isVisible = selectionMode == SupportSelectionModeEnum.Friend
+}
+
 fun PreferenceFragmentCompat.preferredSupportOnResume() {
-    findServantList()?.apply {
+    val servants = findServantList() ?: return
+    val ces = findCeList() ?: return
+    val friendNames = findFriendNamesList() ?: return
+
+    servants.apply {
         val entries = supportServantImgFolder.listFiles()
             .map { it.name }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
@@ -61,11 +94,11 @@ fun PreferenceFragmentCompat.preferredSupportOnResume() {
         this.entries = entries
     }
 
-    findCeList()?.apply {
+    ces.apply {
         populateFriendOrCe(supportCeFolder)
     }
 
-    findFriendNamesList()?.apply {
+    friendNames.apply {
         populateFriendOrCe(supportFriendFolder)
     }
 }
