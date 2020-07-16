@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_plus"
-        android:text="Add Battle"
+        android:text="Add Wave"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/card_priority_rm_btn"
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_close"
-        android:text="Remove Last Battle"
+        android:text="Remove Last Wave"
         app:layout_constraintBottom_toBottomOf="@id/card_priority_add_btn"
         app:layout_constraintEnd_toStartOf="@id/card_priority_add_btn"
         app:layout_constraintStart_toStartOf="parent"/>

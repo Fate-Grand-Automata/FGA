@@ -118,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_fast_forward"
-        android:text=" Next Battle"
+        android:text=" Next Wave"
         app:layout_constraintBottom_toTopOf="@+id/autoskill_next_turn_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />

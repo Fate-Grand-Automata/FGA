@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Battle N"/>
+        tools:text="Wave N"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/card_priority_items"
