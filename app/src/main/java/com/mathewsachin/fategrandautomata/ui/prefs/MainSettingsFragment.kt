@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
@@ -36,6 +37,12 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                 true -> "${prefs.resource} x${prefs.repetitions}"
                 false -> "OFF"
             }
+        }
+
+        // Since GameServer can be updated from other parts of code,
+        // we need to trigger a forced UI update here
+        findPreference<ListPreference>(getString(R.string.pref_gameserver))?.let {
+            it.value = Preferences.GameServer.toString()
         }
     }
 }
