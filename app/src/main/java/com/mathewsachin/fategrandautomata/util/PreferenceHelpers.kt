@@ -67,16 +67,20 @@ private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
 fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionModeEnum) {
     val servants = findServantList() ?: return
     val ces = findCeList() ?: return
-    val ceMlb = findPreference<SwitchPreferenceCompat>(
-        getString(R.string.pref_support_pref_ce_mlb)) ?: return
+    val ceMlb = findPreference<Preference>(getString(R.string.pref_support_pref_ce_mlb)) ?: return
     val friendNames = findFriendNamesList() ?: return
+    val fallback = findPreference<Preference>(getString(R.string.pref_support_fallback)) ?: return
+    val friendsOnly = findPreference<Preference>(getString(R.string.pref_support_friends_only)) ?: return
 
     val modePreferred = selectionMode == SupportSelectionModeEnum.Preferred
+    val modeFriend = selectionMode == SupportSelectionModeEnum.Friend
 
     servants.isVisible = modePreferred
     ces.isVisible = modePreferred
     ceMlb.isVisible = modePreferred
-    friendNames.isVisible = selectionMode == SupportSelectionModeEnum.Friend
+    friendNames.isVisible = modeFriend
+    fallback.isVisible = modePreferred || modeFriend
+    friendsOnly.isVisible = modePreferred || modeFriend
 }
 
 fun PreferenceFragmentCompat.preferredSupportOnResume() {
