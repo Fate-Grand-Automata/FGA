@@ -17,20 +17,18 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
-import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
-import com.mathewsachin.fategrandautomata.scripts.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
+import com.mathewsachin.fategrandautomata.scripts.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.RequestAutoSkillMaker
+import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
 import com.mathewsachin.fategrandautomata.util.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
-import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
 
 class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     private val scope = MainScope()
