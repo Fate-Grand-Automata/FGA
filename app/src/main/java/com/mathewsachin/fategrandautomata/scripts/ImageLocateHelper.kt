@@ -2,19 +2,19 @@ package com.mathewsachin.fategrandautomata.scripts
 
 import android.content.res.AssetManager
 import android.os.Environment
+import com.mathewsachin.fategrandautomata.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.ScriptExitException
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-val storageDir: File by lazy{
+val storageDir: File by lazy {
     var dir = Environment.getExternalStorageDirectory()
     dir = File(dir, "Fate-Grand-Automata")
 
@@ -29,7 +29,7 @@ private val supportImgFolderPath: File by lazy { File(storageDir, "support") }
 
 val shouldExtractSupportImages get() = !supportImgFolderPath.exists()
 
-val supportImgFolder: File by lazy{
+val supportImgFolder: File by lazy {
     val dir = supportImgFolderPath
 
     if (!dir.exists()) {
@@ -43,7 +43,7 @@ val supportImgFolder: File by lazy{
     dir
 }
 
-val supportServantImgFolder: File by lazy{
+val supportServantImgFolder: File by lazy {
     val dir = File(supportImgFolder, "servant")
 
     if (!dir.exists()) {
@@ -53,7 +53,7 @@ val supportServantImgFolder: File by lazy{
     dir
 }
 
-val supportCeFolder: File by lazy{
+val supportCeFolder: File by lazy {
     val dir = File(supportImgFolder, "ce")
 
     if (!dir.exists()) {
@@ -63,7 +63,7 @@ val supportCeFolder: File by lazy{
     dir
 }
 
-val supportFriendFolder: File by lazy{
+val supportFriendFolder: File by lazy {
     val dir = File(supportImgFolder, "friend")
 
     if (!dir.exists()) {
@@ -101,7 +101,7 @@ private var currentGameServer: GameServerEnum = GameServerEnum.En
 private var regionCachedPatterns = mutableMapOf<String, IPattern>()
 
 fun getRegionPattern(FileName: String): IPattern {
-    val server = Preferences.GameServer
+    val server = Preferences.gameServer
 
     // Reload Patterns on Server change
     if (currentGameServer != server) {
@@ -119,7 +119,7 @@ fun getRegionPattern(FileName: String): IPattern {
     return regionCachedPatterns[FileName]!!
 }
 
-fun clearImageCache(){
+fun clearImageCache() {
     for (pattern in regionCachedPatterns.values) {
         pattern.close()
     }
@@ -178,8 +178,7 @@ private fun supportImgExtractor(FolderName: String) {
 
                 copyAssetToFile(assets, subAssetPath, subOutPath)
             }
-        }
-        else {
+        } else {
             copyAssetToFile(assets, assetPath, outPath)
         }
     }

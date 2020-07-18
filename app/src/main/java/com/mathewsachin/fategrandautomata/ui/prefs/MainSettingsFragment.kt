@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
 
 class MainSettingsFragment : PreferenceFragmentCompat() {
@@ -32,7 +32,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         super.onResume()
 
         findPreference<Preference>(getString(R.string.pref_nav_refill))?.let {
-            val prefs = Preferences.Refill
+            val prefs = Preferences.refill
             it.summary = when (prefs.enabled) {
                 true -> "${prefs.resource} x${prefs.repetitions}"
                 false -> "OFF"

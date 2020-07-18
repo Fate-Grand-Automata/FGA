@@ -5,19 +5,16 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import androidx.core.content.edit
 import androidx.core.view.setPadding
-import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.clearSupportCache
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
@@ -47,7 +44,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         recording = null
     }
 
-    private fun getEntryPoint(): EntryPoint = when (Preferences.ScriptMode) {
+    private fun getEntryPoint(): EntryPoint = when (Preferences.scriptMode) {
         ScriptModeEnum.Lottery -> AutoLottery()
         ScriptModeEnum.FriendGacha -> AutoFriendGacha()
         ScriptModeEnum.SupportImageMaker -> SupportImageMaker(::supportImgMakerCallback)
@@ -72,8 +69,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
                 autoSkillPicker(context) {
                     runEntryPoint(this, screenshotService)
                 }
-            }
-            else {
+            } else {
                 runEntryPoint(this, screenshotService)
             }
         }
@@ -100,7 +96,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         scriptStarted = true
         entryPoint = EntryPoint
 
-        if (Preferences.RecordScreen) {
+        if (Preferences.recordScreen) {
             recording = screenshotService.startRecording()
         }
 
@@ -115,7 +111,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
     }
 
     private fun autoSkillPicker(context: Context, EntryPointRunner: () -> Unit) {
-        var selected = Preferences.SelectedAutoSkillConfig
+        var selected = Preferences.selectedAutoSkillConfig
 
         val autoSkillItems = getAutoSkillEntries()
 
@@ -126,13 +122,13 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
 
         for ((index, item) in autoSkillItems.withIndex()) {
             val radioBtn = RadioButton(context).apply {
-                text = item.Name
+                text = item.name
                 id = index
             }
 
             radioGroup.addView(radioBtn)
 
-            if (selected == item.Id) {
+            if (selected.id == item.id) {
                 radioGroup.check(index)
             }
         }
@@ -142,11 +138,9 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
             setPositiveButton(context.getString(android.R.string.ok)) {
                 val selectedIndex = radioGroup.checkedRadioButtonId
                 if (selectedIndex in autoSkillItems.indices) {
-                    selected = autoSkillItems[selectedIndex].Id
+                    selected = autoSkillItems[selectedIndex]
 
-                    defaultPrefs.edit(commit = true) {
-                        putString(context.getString(R.string.pref_autoskill_selected), selected)
-                    }
+                    Preferences.selectedAutoSkillConfig = selected
                 }
 
                 EntryPointRunner()
@@ -155,8 +149,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
 
             if (autoSkillItems.isEmpty()) {
                 setMessage("No AutoSkill Configs")
-            }
-            else setView(radioGroup)
+            } else setView(radioGroup)
 
             show()
         }

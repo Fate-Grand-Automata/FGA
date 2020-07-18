@@ -6,10 +6,10 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Surface
 import android.view.WindowManager
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.libautomata.Region
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 
-private data class Cutout(val L: Int = 0, val T : Int = 0, val R: Int = 0, val B: Int = 0) {
+private data class Cutout(val L: Int = 0, val T: Int = 0, val R: Int = 0, val B: Int = 0) {
     companion object {
         val NoCutouts = Cutout()
     }
@@ -61,14 +61,14 @@ fun applyCutout(Activity: Activity) {
 }
 
 private fun getCutout(Rotation: Int): Cutout {
-    if (Preferences.IgnoreNotchCalculation || cutoutValue == Cutout.NoCutouts) {
+    if (Preferences.ignoreNotchCalculation || cutoutValue == Cutout.NoCutouts) {
         return Cutout.NoCutouts
     }
 
     val (l, t, r, b) = cutoutValue
 
     // Consider current orientation of screen
-    return when(Rotation) {
+    return when (Rotation) {
         Surface.ROTATION_90 -> Cutout(t, r, b, l)
         Surface.ROTATION_180 -> Cutout(r, b, l, t)
         Surface.ROTATION_270 -> Cutout(b, l, t, r)

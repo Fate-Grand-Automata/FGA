@@ -1,20 +1,17 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.AutoSkillPreferences
+import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.modules.cardPriorityStageSeparator
 import com.mathewsachin.fategrandautomata.scripts.modules.getCardScores
-import com.mathewsachin.fategrandautomata.scripts.prefs.defaultCardPriority
-import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import kotlinx.android.synthetic.main.card_priority.*
 
@@ -28,7 +25,7 @@ fun String.filterCapitals(): String {
 class CardPriorityActivity : AppCompatActivity() {
     private lateinit var cardScores: MutableList<MutableList<CardScore>>
 
-    private lateinit var autoSkillPref: SharedPreferences
+    private lateinit var autoSkillPref: AutoSkillPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +33,16 @@ class CardPriorityActivity : AppCompatActivity() {
 
         val autoSkillKey = intent.getStringExtra(AutoSkillItemActivity::autoSkillItemKey.name)
             ?: throw IllegalArgumentException("Missing AutoSkill item key in intent")
-        autoSkillPref = getSharedPreferences(autoSkillKey, Context.MODE_PRIVATE)
+        autoSkillPref =
+            AutoSkillPreferences(
+                autoSkillKey,
+                applicationContext
+            )
 
-        var cardPriority = getStringPref(R.string.pref_card_priority, Prefs = autoSkillPref)
+        var cardPriority = autoSkillPref.cardPriority
 
         // Handle simple mode and empty string
-        if (cardPriority.length == 3 || cardPriority.isBlank())
-        {
+        if (cardPriority.length == 3 || cardPriority.isBlank()) {
             cardPriority = defaultCardPriority
         }
 
@@ -81,8 +81,7 @@ class CardPriorityActivity : AppCompatActivity() {
             it.joinToString { m -> m.toString().filterCapitals() }
         }
 
-        val key = getString(R.string.pref_card_priority)
-        autoSkillPref.edit(commit = true) { putString(key, value) }
+        autoSkillPref.cardPriority = value
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -1,7 +1,6 @@
-package com.mathewsachin.fategrandautomata.scripts.prefs
+package com.mathewsachin.fategrandautomata.prefs
 
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 
 class RefillPreferences(val prefs: SharedPreferenceDelegation) {

@@ -1,42 +1,14 @@
-package com.mathewsachin.fategrandautomata.scripts.prefs
+package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.Context
 import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.IPlatformPrefs
-import kotlin.properties.ReadOnlyProperty
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
 import kotlin.time.milliseconds
-
-const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
-
-fun <T, V> ReadWriteProperty<Any, T>.map(func: (T) -> V): ReadOnlyProperty<Any, V> =
-    object : ReadOnlyProperty<Any, V> {
-        override fun getValue(thisRef: Any, property: KProperty<*>): V =
-            func(this@map.getValue(thisRef, property))
-    }
-
-class AutoSkillPreferences(
-    val id: String,
-    val context: Context
-) {
-    private val prefs = SharedPreferenceDelegation(
-        context.getSharedPreferences(id, Context.MODE_PRIVATE),
-        context
-    )
-
-    val skillCommand by prefs.string(R.string.pref_autoskill_cmd)
-
-    val cardPriority by prefs.string(R.string.pref_card_priority, defaultCardPriority)
-
-    val party by prefs.int(R.string.pref_autoskill_party, -1)
-}
 
 object Preferences {
     private val context: Context = AutomataApplication.Instance
@@ -65,26 +37,36 @@ object Preferences {
 
     val scriptMode by prefs.enum(R.string.pref_script_mode, ScriptModeEnum.Battle)
 
-    val gameServer by prefs.enum(R.string.pref_gameserver, GameServerEnum.En)
+    var gameServer by prefs.enum(R.string.pref_gameserver, GameServerEnum.En)
 
     val skillConfirmation by prefs.bool(R.string.pref_skill_conf)
 
-    private val selectedAutoSkillConfigKey by prefs.string(R.string.pref_autoskill_selected)
+    var autoSkillList by prefs.stringSet(R.string.pref_autoskill_list)
+
+    private var selectedAutoSkillConfigKey by prefs.string(R.string.pref_autoskill_selected)
 
     private var lastConfig: AutoSkillPreferences? = null
 
-    val selectedAutoSkillConfig: AutoSkillPreferences
+    var selectedAutoSkillConfig: AutoSkillPreferences
         get() {
             val config = lastConfig.let {
-                val currentSelectedKey = selectedAutoSkillConfigKey
+                val currentSelectedKey =
+                    selectedAutoSkillConfigKey
 
                 if (it != null && it.id == currentSelectedKey) {
                     it
-                } else AutoSkillPreferences(currentSelectedKey, context)
+                } else AutoSkillPreferences(
+                    currentSelectedKey,
+                    context
+                )
             }
 
             lastConfig = config
             return config
+        }
+        set(value) {
+            lastConfig = value
+            selectedAutoSkillConfigKey = value.id
         }
 
     val castNoblePhantasm by prefs.enum(R.string.pref_battle_np, BattleNoblePhantasmEnum.None)
@@ -99,9 +81,8 @@ object Preferences {
 
     val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
 
-    val Support = SupportPreferences()
-
-    val Refill = RefillPreferences()
+    val refill =
+        RefillPreferences(prefs)
 
     val ignoreNotchCalculation by prefs.bool(R.string.pref_ignore_notch)
 
@@ -111,7 +92,7 @@ object Preferences {
 
     val recordScreen by prefs.bool(R.string.pref_record_screen)
 
-    object support {
+    object Support {
         val mlbSimilarity by prefs.int(R.string.pref_mlb_similarity, 70).map { it / 100.0 }
 
         val supportSwipeMultiplier by prefs.int(R.string.pref_support_swipe_multiplier, 100)

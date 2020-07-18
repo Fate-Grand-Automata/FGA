@@ -3,23 +3,7 @@ package com.mathewsachin.fategrandautomata.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.StringRes
-import androidx.core.content.edit
 import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
-
-class DelegatedPref<T>(
-    val prefs: SharedPreferences,
-    val key: String,
-    val default: T,
-    val getter: SharedPreferences.(String, T) -> T,
-    val setter: SharedPreferences.Editor.(String, T) -> Unit
-) : ReadWriteProperty<Any, T> {
-    override fun getValue(thisRef: Any, property: KProperty<*>) =
-        prefs.getter(key, default)
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) =
-        prefs.edit(commit = true) { setter(key, value) }
-}
 
 class SharedPreferenceDelegation(
     val prefs: SharedPreferences,
@@ -79,5 +63,14 @@ class SharedPreferenceDelegation(
                 }
             },
             { k, v -> putString(k, v.toString()) }
+        )
+
+    fun stringSet(@StringRes key: Int): ReadWriteProperty<Any, Set<String>> =
+        DelegatedPref<Set<String>>(
+            prefs,
+            context.getString(key),
+            emptySet(),
+            { k, d -> getStringSet(k, d) ?: d },
+            SharedPreferences.Editor::putStringSet
         )
 }

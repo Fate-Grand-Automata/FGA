@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.*
 
 private const val dummyNormalAffinityChar = 'X'
@@ -25,14 +25,14 @@ fun getCardScores(Priority: String): List<CardScore> {
             }
         }
         .map {
-            val cardType = when(it[1]) {
+            val cardType = when (it[1]) {
                 'B' -> CardTypeEnum.Buster
                 'A' -> CardTypeEnum.Arts
                 'Q' -> CardTypeEnum.Quick
                 else -> throw ScriptExitException("${cardPriorityErrorString}${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
             }
 
-            val cardAffinity = when(it[0]) {
+            val cardAffinity = when (it[0]) {
                 'W' -> CardAffinityEnum.Weak
                 'R' -> CardAffinityEnum.Resist
                 dummyNormalAffinityChar -> CardAffinityEnum.Normal
@@ -67,12 +67,11 @@ class Card {
     }
 
     private fun initCardPriorityArray() {
-        val priority = Preferences.CardPriority
+        val priority = Preferences.selectedAutoSkillConfig.cardPriority
 
         if (priority.length == 3) {
             initCardPriorityArraySimple(priority)
-        }
-        else initCardPriorityArrayDetailed(priority)
+        } else initCardPriorityArrayDetailed(priority)
     }
 
     private fun initCardPriorityArraySimple(Priority: String) {
@@ -138,13 +137,14 @@ class Card {
         }
     }
 
-    val canClickNpCards: Boolean get() {
-        val weCanSpam = Preferences.BattleNoblePhantasm == BattleNoblePhantasmEnum.Spam
-        val weAreInDanger = Preferences.BattleNoblePhantasm == BattleNoblePhantasmEnum.Danger
-                && battle.hasChosenTarget
+    val canClickNpCards: Boolean
+        get() {
+            val weCanSpam = Preferences.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
+            val weAreInDanger = Preferences.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
+                    && battle.hasChosenTarget
 
-        return (weCanSpam || weAreInDanger) && autoSkill.isFinished
-    }
+            return (weCanSpam || weAreInDanger) && autoSkill.isFinished
+        }
 
     fun clickNpCards() {
         for (npCard in Game.BattleNpCardClickArray) {

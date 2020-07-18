@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.*
 import kotlin.time.Duration
 import kotlin.time.seconds
@@ -85,7 +85,7 @@ class AutoSkill {
     private fun castSkill(Location: Location) {
         Location.click()
 
-        if (Preferences.SkillConfirmation) {
+        if (Preferences.skillConfirmation) {
             Game.BattleSkillOkClick.click()
         }
 
@@ -137,7 +137,7 @@ class AutoSkill {
 
         Game.BattleMasterSkill3Click.click()
 
-        if (Preferences.SkillConfirmation) {
+        if (Preferences.skillConfirmation) {
             Game.BattleSkillOkClick.click()
         }
 
@@ -211,7 +211,7 @@ class AutoSkill {
     private fun initCommands() {
         var stageCount = 0
 
-        for (commandList in Preferences.SkillCommand.splitToSequence(',')) {
+        for (commandList in Preferences.selectedAutoSkillConfig.skillCommand.splitToSequence(',')) {
             if (commandList != "0") {
                 if (Regex("""^[1-3]""").containsMatchIn(commandList)) {
                     throw ScriptExitException("Error at '${commandList}': Skill Command cannot start with number '1', '2' and '3'!")

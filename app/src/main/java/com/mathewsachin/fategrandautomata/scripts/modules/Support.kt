@@ -1,10 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.loadSupportImagePattern
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
@@ -33,22 +33,24 @@ class Support {
             .filter { it.isNotBlank() && it.toLowerCase() != "any" }
     }
 
+    private val autoSkillPrefs = Preferences.selectedAutoSkillConfig.support
+
     fun init() {
         preferredServantArray.clear()
         friendNameArray.clear()
         preferredCEArray.clear()
 
         // Friend names
-        for (friend in Preferences.Support.friendNames.process()) {
+        for (friend in autoSkillPrefs.friendNames.process()) {
             friendNameArray.add(friend)
         }
 
         // Servants
-        for (servant in Preferences.Support.preferredServants.process()) {
+        for (servant in autoSkillPrefs.preferredServants.process()) {
             preferredServantArray.add(servant)
         }
 
-        val ceEntries = Preferences.Support.preferredCEs
+        val ceEntries = autoSkillPrefs.preferredCEs
             .process()
             .map {
                 val mlb = it.startsWith(limitBrokenCharacter)
@@ -70,6 +72,7 @@ class Support {
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
         val pattern = ImageLocator.SupportScreen
         while (!Game.SupportScreenRegion.exists(pattern)) {
+            0.3.seconds.wait()
         }
 
         return when (SelectionMode) {
@@ -80,8 +83,6 @@ class Support {
                 val searchMethod = decideSearchMethod()
                 selectPreferred(searchMethod)
             }
-
-            else -> throw ScriptExitException("Invalid support selection mode")
         }
     }
 
@@ -184,7 +185,7 @@ class Support {
             } else {
                 // -- okay, we have run out of options, let's give up
                 Game.SupportListTopClick.click()
-                return selectSupport(Preferences.Support.fallbackTo)
+                return selectSupport(autoSkillPrefs.fallbackTo)
             }
         }
     }
@@ -234,7 +235,7 @@ class Support {
         val endY = lerp(
             Game.SupportSwipeStartClick.Y,
             Game.SupportSwipeEndClick.Y,
-            Preferences.supportSwipeMultiplier
+            Preferences.Support.supportSwipeMultiplier
         )
 
         swipe(
@@ -334,7 +335,7 @@ class Support {
     private fun isFriend(Region: Region): Boolean {
         val friendPattern = ImageLocator.Friend
 
-        return !Preferences.Support.friendsOnly
+        return !autoSkillPrefs.friendsOnly
                 || Region.exists(friendPattern)
     }
 

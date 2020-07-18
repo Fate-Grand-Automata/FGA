@@ -1,9 +1,9 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 object Game {
@@ -75,22 +75,22 @@ object Game {
     val SupportFirstSupportClick = Location(1900, 500)
 
     val PartySelectionArray = listOf(
-        Location(1055,100),
-        Location(1105,100),
-        Location(1155,100),
-        Location(1205,100),
-        Location(1255,100),
-        Location(1305,100),
-        Location(1355,100),
-        Location(1405,100),
-        Location(1455,100),
-        Location(1505,100)
+        Location(1055, 100),
+        Location(1105, 100),
+        Location(1155, 100),
+        Location(1205, 100),
+        Location(1255, 100),
+        Location(1305, 100),
+        Location(1355, 100),
+        Location(1405, 100),
+        Location(1455, 100),
+        Location(1505, 100)
     )
 
     val BattleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
 
     val BattleStageCountRegion
-        get() = when (Preferences.GameServer) {
+        get() = when (Preferences.gameServer) {
             GameServerEnum.En -> Region(1722, 25, 46, 53)
             GameServerEnum.Jp -> Region(1722, 25, 46, 53)
             GameServerEnum.Cn -> Region(1722, 25, 46, 53)
