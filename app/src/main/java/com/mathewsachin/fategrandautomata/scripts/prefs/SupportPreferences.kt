@@ -9,98 +9,95 @@ import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
 import java.io.File
 
 class SupportPreferences {
-    val friendNames: String get() {
-        val prefs = getPrefsForSelectedAutoSkill()
-            ?: return ""
+    val friendNames: String
+        get() {
+            val prefs = getPrefsForSelectedAutoSkill()
+                ?: return ""
 
-        val friendSet = getStringSetPref(R.string.pref_support_friend_names, Prefs = prefs)
+            val friendSet = getStringSetPref(R.string.pref_support_friend_names, Prefs = prefs)
 
-        val friendImgFolderName = supportFriendFolder.name
+            val friendImgFolderName = supportFriendFolder.name
 
-        val friendNames = friendSet
-            .map { "${friendImgFolderName}/$it" }
+            val friendNames = friendSet
+                .map { "${friendImgFolderName}/$it" }
 
-        return friendNames.joinToString()
-    }
+            return friendNames.joinToString()
+        }
 
-    val preferredServants: String get() {
-        val prefs = getPrefsForSelectedAutoSkill()
-            ?: return ""
+    val preferredServants: String
+        get() {
+            val prefs = getPrefsForSelectedAutoSkill()
+                ?: return ""
 
-        val servantSet = getStringSetPref(R.string.pref_support_pref_servant, Prefs = prefs)
+            val servantSet = getStringSetPref(R.string.pref_support_pref_servant, Prefs = prefs)
 
-        val servants = mutableListOf<String>()
+            val servants = mutableListOf<String>()
 
-        for (servantEntry in servantSet)
-        {
-            val dir = File(supportServantImgFolder, servantEntry)
+            for (servantEntry in servantSet) {
+                val dir = File(supportServantImgFolder, servantEntry)
 
-            if (dir.isDirectory && dir.exists())
-            {
-                val fileNames = dir.listFiles()
-                    .filter { it.isFile }
-                    // Give priority to later ascensions
-                    .sortedWith(compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.name })
-                    .map { "${servantEntry}/${it.name}" }
+                if (dir.isDirectory && dir.exists()) {
+                    val fileNames = dir.listFiles()
+                        .filter { it.isFile }
+                        // Give priority to later ascensions
+                        .sortedWith(compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.name })
+                        .map { "${servantEntry}/${it.name}" }
 
-                servants.addAll(fileNames)
+                    servants.addAll(fileNames)
+                } else servants.add(servantEntry)
             }
-            else servants.add(servantEntry)
+
+            val servantImgFolderName = supportServantImgFolder.name
+
+            return servants.joinToString { "${servantImgFolderName}/$it" }
         }
 
-        val servantImgFolderName = supportServantImgFolder.name
+    val preferredCEs: String
+        get() {
+            val prefs = getPrefsForSelectedAutoSkill()
+                ?: return ""
 
-        return servants.joinToString { "${servantImgFolderName}/$it" }
-    }
+            val ceSet = getStringSetPref(R.string.pref_support_pref_ce, Prefs = prefs)
 
-    val preferredCEs: String get() {
-        val prefs = getPrefsForSelectedAutoSkill()
-            ?: return ""
+            val ceImgFolderName = supportCeFolder.name
 
-        val ceSet = getStringSetPref(R.string.pref_support_pref_ce, Prefs = prefs)
+            var ces = ceSet
+                .map { "${ceImgFolderName}/$it" }
 
-        val ceImgFolderName = supportCeFolder.name
+            val mlb = getBoolPref(R.string.pref_support_pref_ce_mlb, Prefs = prefs)
 
-        var ces = ceSet
-            .map { "${ceImgFolderName}/$it" }
+            if (mlb) {
+                ces = ces.map { "${limitBrokenCharacter}${it}" }
+            }
 
-        val mlb = getBoolPref(R.string.pref_support_pref_ce_mlb, Prefs = prefs)
-
-        if (mlb) {
-            ces = ces.map { "${limitBrokenCharacter}${it}" }
+            return ces.joinToString()
         }
 
-        return ces.joinToString()
-    }
+    val friendsOnly: Boolean
+        get() {
+            val prefs = getPrefsForSelectedAutoSkill()
+                ?: return false
 
-    val friendsOnly: Boolean get() {
-        val prefs = getPrefsForSelectedAutoSkill()
-            ?: return false
+            return getBoolPref(R.string.pref_support_friends_only, Prefs = prefs)
+        }
 
-        return getBoolPref(R.string.pref_support_friends_only, Prefs = prefs)
-    }
+    val selectionMode: SupportSelectionModeEnum
+        get() {
+            val default = SupportSelectionModeEnum.Preferred
 
-    val swipesPerUpdate get() = getIntPref(R.string.pref_support_swipes_per_update)
+            val pref = getPrefsForSelectedAutoSkill()
+                ?: return default
 
-    val maxUpdates get() = getIntPref(R.string.pref_support_max_updates)
+            return getEnumPref(R.string.pref_support_mode, default, Prefs = pref)
+        }
 
-    val selectionMode: SupportSelectionModeEnum get() {
-        val default = SupportSelectionModeEnum.Preferred
+    val fallbackTo: SupportSelectionModeEnum
+        get() {
+            val default = SupportSelectionModeEnum.Manual
 
-        val pref = getPrefsForSelectedAutoSkill()
-            ?: return default
+            val pref = getPrefsForSelectedAutoSkill()
+                ?: return default
 
-        return getEnumPref(R.string.pref_support_mode, default, Prefs = pref)
-    }
-
-    val fallbackTo: SupportSelectionModeEnum get() {
-        val default = SupportSelectionModeEnum.Manual
-
-        val pref = getPrefsForSelectedAutoSkill()
-            ?: return default
-
-        return getEnumPref(R.string.pref_support_fallback, default, Prefs = pref)
-    }
-
-    val mlbSimilarity get() = getIntPref(R.string.pref_mlb_similarity, 70) / 100.0
+            return getEnumPref(R.string.pref_support_fallback, default, Prefs = pref)
+        }
 }

@@ -1,100 +1,145 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
-import androidx.core.content.edit
+import android.content.Context
+import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.IPlatformPrefs
+import kotlin.properties.ReadOnlyProperty
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 import kotlin.time.milliseconds
 
+const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
+
+fun <T, V> ReadWriteProperty<Any, T>.map(func: (T) -> V): ReadOnlyProperty<Any, V> =
+    object : ReadOnlyProperty<Any, V> {
+        override fun getValue(thisRef: Any, property: KProperty<*>): V =
+            func(this@map.getValue(thisRef, property))
+    }
+
+class AutoSkillPreferences(
+    val id: String,
+    val context: Context
+) {
+    private val prefs = SharedPreferenceDelegation(
+        context.getSharedPreferences(id, Context.MODE_PRIVATE),
+        context
+    )
+
+    val skillCommand by prefs.string(R.string.pref_autoskill_cmd)
+
+    val cardPriority by prefs.string(R.string.pref_card_priority, defaultCardPriority)
+
+    val party by prefs.int(R.string.pref_autoskill_party, -1)
+}
+
 object Preferences {
+    private val context: Context = AutomataApplication.Instance
+    private val prefs = SharedPreferenceDelegation(
+        PreferenceManager.getDefaultSharedPreferences(context),
+        context
+    )
+
     init {
         applyDefaults()
     }
 
-    val ScriptMode get() = getEnumPref(R.string.pref_script_mode, ScriptModeEnum.Battle)
+    private fun applyDefaults() {
+        if (!prefs.prefs.getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false)) {
+            val prefFiles = arrayOf(
+                R.xml.main_preferences,
+                R.xml.app_preferences,
+                R.xml.refill_preferences
+            )
 
-    var GameServer get() = getEnumPref(R.string.pref_gameserver, GameServerEnum.En)
-        set(value) {
-            defaultPrefs.edit(commit = true) {
-                putString(AutomataApplication.Instance.getString(R.string.pref_gameserver), value.toString())
+            for (prefFile in prefFiles) {
+                PreferenceManager.setDefaultValues(context, prefFile, true)
             }
         }
-
-    val SkillConfirmation get() = getBoolPref(R.string.pref_skill_conf)
-
-    val SelectedAutoSkillConfig get() = getStringPref(R.string.pref_autoskill_selected)
-
-    val SkillCommand: String get() {
-        val prefs = getPrefsForSelectedAutoSkill()
-            ?: return ""
-
-        return getStringPref(R.string.pref_autoskill_cmd, "", prefs)
     }
 
-    val CardPriority: String get() {
-        val prefs = getPrefsForSelectedAutoSkill()
-            ?: return defaultCardPriority
+    val scriptMode by prefs.enum(R.string.pref_script_mode, ScriptModeEnum.Battle)
 
-        return getStringPref(R.string.pref_card_priority, defaultCardPriority, prefs)
-    }
+    val gameServer by prefs.enum(R.string.pref_gameserver, GameServerEnum.En)
 
-    val BattleNoblePhantasm get() = getEnumPref(R.string.pref_battle_np, BattleNoblePhantasmEnum.None)
+    val skillConfirmation by prefs.bool(R.string.pref_skill_conf)
 
-    val BattleAutoChooseTarget get() = getBoolPref(R.string.pref_auto_choose_target)
+    private val selectedAutoSkillConfigKey by prefs.string(R.string.pref_autoskill_selected)
 
-    val StorySkip get() = getBoolPref(R.string.pref_story_skip)
+    private var lastConfig: AutoSkillPreferences? = null
 
-    val WithdrawEnabled get() = getBoolPref(R.string.pref_withdraw_enabled)
+    val selectedAutoSkillConfig: AutoSkillPreferences
+        get() {
+            val config = lastConfig.let {
+                val currentSelectedKey = selectedAutoSkillConfigKey
 
-    val StopAfterBond10 get() = getBoolPref(R.string.pref_stop_bond10)
-    
-    val BoostItemSelectionMode get() = getStringAsIntPref(R.string.pref_boost_item, -1)
+                if (it != null && it.id == currentSelectedKey) {
+                    it
+                } else AutoSkillPreferences(currentSelectedKey, context)
+            }
+
+            lastConfig = config
+            return config
+        }
+
+    val castNoblePhantasm by prefs.enum(R.string.pref_battle_np, BattleNoblePhantasmEnum.None)
+
+    val autoChooseTarget by prefs.bool(R.string.pref_auto_choose_target)
+
+    val storySkip by prefs.bool(R.string.pref_story_skip)
+
+    val withdrawEnabled by prefs.bool(R.string.pref_withdraw_enabled)
+
+    val stopAfterBond10 by prefs.bool(R.string.pref_stop_bond10)
+
+    val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
 
     val Support = SupportPreferences()
 
     val Refill = RefillPreferences()
 
-    val IgnoreNotchCalculation get() = getBoolPref(R.string.pref_ignore_notch)
+    val ignoreNotchCalculation by prefs.bool(R.string.pref_ignore_notch)
 
-    val UseRootForScreenshots get() = getBoolPref(R.string.pref_use_root_screenshot)
+    val useRootForScreenshots by prefs.bool(R.string.pref_use_root_screenshot)
 
-    val UseRootForGestures get() = getBoolPref(R.string.pref_use_root_gestures)
+    val gudaFinal by prefs.bool(R.string.pref_guda_final)
 
-    val GudaFinal get() = getBoolPref(R.string.pref_guda_final)
+    val recordScreen by prefs.bool(R.string.pref_record_screen)
 
-    val RecordScreen get() = getBoolPref(R.string.pref_record_screen)
+    object support {
+        val mlbSimilarity by prefs.int(R.string.pref_mlb_similarity, 70).map { it / 100.0 }
 
-    val Party: Int get() {
-        val notSet = -1
+        val supportSwipeMultiplier by prefs.int(R.string.pref_support_swipe_multiplier, 100)
+            .map { it / 100.0 }
 
-        val pref = getPrefsForSelectedAutoSkill()
-            ?: return notSet
+        val swipesPerUpdate by prefs.int(R.string.pref_support_swipes_per_update, 10)
 
-        return getStringAsIntPref(R.string.pref_autoskill_party, notSet, pref)
+        val maxUpdates by prefs.int(R.string.pref_support_max_updates, 3)
     }
 
-    val supportSwipeMultiplier get() = getIntPref(R.string.pref_support_swipe_multiplier, 100) / 100.0
+    object PlatformPrefs : IPlatformPrefs {
+        override val debugMode by prefs.bool(R.string.pref_debug_mode)
 
-    object PlatformPrefs: IPlatformPrefs {
-        override val debugMode get() = getBoolPref(R.string.pref_debug_mode)
+        override val minSimilarity by prefs.int(R.string.pref_min_similarity, 80).map { it / 100.0 }
 
-        override val minSimilarity get() = getIntPref(R.string.pref_min_similarity, 80) / 100.0
-
-        override val waitMultiplier get() = getIntPref(R.string.pref_wait_multiplier, 100) / 100.0
+        override val waitMultiplier by prefs.int(R.string.pref_wait_multiplier, 100)
+            .map { it / 100.0 }
     }
 
     object Gestures {
-        val clickWaitTime get() = getIntPref(R.string.pref_click_wait_time, 300).milliseconds
+        val clickWaitTime by prefs.int(R.string.pref_click_wait_time, 300).map { it.milliseconds }
 
-        val clickDuration get() = getIntPref(R.string.pref_click_duration, 50).milliseconds
+        val clickDuration by prefs.int(R.string.pref_click_duration, 50).map { it.milliseconds }
 
-        val clickDelay get() = getIntPref(R.string.pref_click_delay, 10).milliseconds
+        val clickDelay by prefs.int(R.string.pref_click_delay, 10).map { it.milliseconds }
 
-        val swipeWaitTime get() = getIntPref(R.string.pref_swipe_wait_time, 700).milliseconds
+        val swipeWaitTime by prefs.int(R.string.pref_swipe_wait_time, 700).map { it.milliseconds }
 
-        val swipeDuration get() = getIntPref(R.string.pref_swipe_duration, 300).milliseconds
+        val swipeDuration by prefs.int(R.string.pref_swipe_duration, 300).map { it.milliseconds }
     }
 }

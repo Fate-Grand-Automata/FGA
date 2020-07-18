@@ -1,12 +1,13 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 
-class RefillPreferences {
-    val enabled get() = getBoolPref(R.string.pref_refill_enabled)
+class RefillPreferences(val prefs: SharedPreferenceDelegation) {
+    val enabled by prefs.bool(R.string.pref_refill_enabled)
 
-    val repetitions get() = getStringAsIntPref(R.string.pref_refill_repetitions)
+    val repetitions by prefs.stringAsInt(R.string.pref_refill_repetitions)
 
-    val resource get() = getEnumPref(R.string.pref_refill_resource, RefillResourceEnum.AllApples)
+    val resource by prefs.enum(R.string.pref_refill_resource, RefillResourceEnum.AllApples)
 }
