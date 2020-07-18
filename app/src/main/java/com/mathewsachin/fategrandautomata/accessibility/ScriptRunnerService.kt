@@ -20,7 +20,10 @@ import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.clearImageCache
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.util.*
+import com.mathewsachin.fategrandautomata.util.AndroidImpl
+import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
+import com.mathewsachin.fategrandautomata.util.ScriptManager
+import com.mathewsachin.fategrandautomata.util.setThrottledClickListener
 import com.mathewsachin.libautomata.*
 
 class ScriptRunnerService : AccessibilityService() {
@@ -84,7 +87,10 @@ class ScriptRunnerService : AccessibilityService() {
             if (MediaProjectionToken != null) {
                 mediaProjection =
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
-                MediaProjectionScreenshotService(mediaProjection!!, userInterface.mediaProjectionMetrics)
+                MediaProjectionScreenshotService(
+                    mediaProjection!!,
+                    userInterface.mediaProjectionMetrics
+                )
             } else RootScreenshotService(SuperUser())
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -142,10 +148,9 @@ class ScriptRunnerService : AccessibilityService() {
         scriptCtrlBtn.setThrottledClickListener {
             if (scriptManager.scriptStarted) {
                 scriptManager.stopScript()
-            }
-            else sshotService?.let {
-                // Auto-detect Server
-                currentFgoServer?.let { m -> Preferences.GameServer = m }
+            } else sshotService?.let {
+                // Overwrite the server in the preferences with the detected one, if possible
+                currentFgoServer?.let { server -> Preferences.GameServer = server }
 
                 scriptManager.startScript(this, it)
             }
@@ -176,14 +181,19 @@ class ScriptRunnerService : AccessibilityService() {
 
     private var currentFgoServer: GameServerEnum? = null
 
+    /**
+     * This method is called on any [AccessibilityEvent].
+     *
+     * When the app in the foreground changes, this method will check if the foreground app is one
+     * of the FGO APKs and will store that information into [currentFgoServer].
+     */
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         when (event?.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 val foregroundAppName = event.packageName.toString()
 
-                fgoPackageNames
-                    .firstOrNull { it.pkgName == foregroundAppName }
-                    ?.let { currentFgoServer = it.server }
+                GameServerEnum.fromPackageName(foregroundAppName)
+                    ?.let { currentFgoServer = it }
             }
         }
     }
