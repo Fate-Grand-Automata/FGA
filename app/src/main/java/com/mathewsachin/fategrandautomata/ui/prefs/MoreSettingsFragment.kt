@@ -1,13 +1,10 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.preference.Preference
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.prefs.defaultCardPriority
-import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
-import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 
 class MoreSettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -28,8 +25,10 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        findPreference<Preference>(getString(R.string.pref_card_priority))?.let {
-            it.summary = getStringPref(R.string.pref_card_priority, defaultCardPriority)
+        // Since GameServer can be updated from other parts of code,
+        // we need to trigger a forced UI update here
+        findPreference<ListPreference>(getString(R.string.pref_gameserver))?.let {
+            it.value = Preferences.GameServer.toString()
         }
     }
 }

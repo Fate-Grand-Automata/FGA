@@ -267,10 +267,29 @@ class Support {
             // Cached pattern. Don't dispose here.
             val pattern = loadSupportImagePattern(preferredServant)
 
-            for (servant in Game.SupportListRegion.findAll(pattern)) {
-                yield(servant.Region)
+            cropFriendLock(pattern).use {
+                for (servant in Game.SupportListRegion.findAll(it)) {
+                    yield(servant.Region)
+                }
             }
         }
+    }
+
+    /**
+     * If you lock your friends, a lock icon shows on the left of servant image,
+     * which can cause matching to fail.
+     *
+     * Instead of modifying in-built images and Support Image Maker,
+     * which would need everyone to regenerate their images,
+     * crop out the part which can potentially have the lock.
+     */
+    private fun cropFriendLock(servant: IPattern): IPattern {
+        val lockCropLeft = 15
+        val lockCropRegion = Region(
+            lockCropLeft, 0,
+            servant.width - lockCropLeft, servant.height
+        )
+        return servant.crop(lockCropRegion)
     }
 
     private fun findCraftEssence(SearchRegion: Region): Region? {

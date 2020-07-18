@@ -2,7 +2,6 @@
     <string name="pref_script_mode">script_mode</string>
     <string name="pref_gameserver">gameserver</string>
     <string name="pref_skill_conf">skill_conf</string>
-    <string name="pref_autoskill_enable">autoskill_enable</string>
     <string name="pref_autoskill_selected">autoskill_selected</string>
     <string name="pref_card_priority">card_priority</string>
     <string name="pref_battle_np">battle_np</string>
@@ -58,7 +57,6 @@
     <string name="pref_support_swipe_multiplier">support_swipe_multiplier</string>
 
     <string name="pref_nav_refill">nav_refill</string>
-    <string name="pref_nav_support">nav_support</string>
     <string name="pref_nav_auto_skill">nav_auto_skill</string>
     <string name="pref_nav_more">nav_more</string>
     <string name="pref_nav_fine_tune">nav_fine_tune</string>

@@ -21,7 +21,7 @@ class CardPriorityListAdapter(private val Items: List<MutableList<CardScore>>)
     override fun getItemCount() = Items.size
 
     override fun onBindViewHolder(holder: CardPriorityListViewHolder, position: Int) {
-        holder.battleStageTextView.text = "BATTLE ${position + 1}"
+        holder.battleStageTextView.text = "WAVE ${position + 1}"
 
         val adapter = CardPriorityAdapter(Items[position])
 

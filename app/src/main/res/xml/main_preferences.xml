@@ -10,15 +10,6 @@
         app:title="Script Mode"
         app:useSimpleSummaryProvider="true" />
 
-    <ListPreference
-        app:defaultValue="En"
-        app:entries="@array/game_server_labels"
-        app:entryValues="@array/game_server_values"
-        app:icon="@drawable/ic_earth"
-        app:key="@string/pref_gameserver"
-        app:title="Game Server"
-        app:useSimpleSummaryProvider="true" />
-
     <Preference
         app:icon="@drawable/ic_apple"
         app:key="@string/pref_nav_refill"
@@ -26,15 +17,9 @@
         app:title="Refill" />
 
     <Preference
-        app:icon="@drawable/ic_friend"
-        app:key="@string/pref_nav_support"
-        app:summary="Manage Support Selection"
-        app:title="Support" />
-
-    <Preference
         app:icon="@drawable/ic_wand"
         app:key="@string/pref_nav_auto_skill"
-        app:summary="Manage Auto Skill"
+        app:summary="Manage Auto Skill configs"
         app:title="Auto Skill" />
 
     <Preference

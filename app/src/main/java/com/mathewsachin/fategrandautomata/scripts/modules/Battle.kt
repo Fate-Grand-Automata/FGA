@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 class Battle {
@@ -98,13 +98,9 @@ class Battle {
         ScreenshotManager.useSameSnapIn { onTurnStarted() }
         2.seconds.wait()
 
-        var wereNpsClicked = false
+        val wereNpsClicked = autoSkill.execute()
 
-        if (Preferences.EnableAutoSkill) {
-            wereNpsClicked = autoSkill.execute()
-
-            autoSkill.resetNpTimer()
-        }
+        autoSkill.resetNpTimer()
 
         if (!hasClickedAttack) {
             clickAttack()
@@ -121,7 +117,7 @@ class Battle {
 
         card.resetCommandCards()
 
-        (if (wereNpsClicked) 25 else 5).seconds.wait()
+        (if (wereNpsClicked) 15 else 5).seconds.wait()
     }
 
     private fun onTurnStarted() {

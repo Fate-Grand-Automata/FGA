@@ -10,7 +10,10 @@ import java.io.File
 
 class SupportPreferences {
     val friendNames: String get() {
-        val friendSet = getStringSetPref(R.string.pref_support_friend_names)
+        val prefs = getPrefsForSelectedAutoSkill()
+            ?: return ""
+
+        val friendSet = getStringSetPref(R.string.pref_support_friend_names, Prefs = prefs)
 
         val friendImgFolderName = supportFriendFolder.name
 
@@ -20,28 +23,9 @@ class SupportPreferences {
         return friendNames.joinToString()
     }
 
-    val getAutoSkillPreferredServantCount: Int get() {
-        val prefs = getPrefsForSelectedAutoSkill()
-            ?: return 0
-
-        val servants = getStringSetPref(R.string.pref_support_pref_servant, prefs)
-
-        return servants.size
-    }
-
-    val getAutoSkillPreferredCEsCount: Int get() {
-        val prefs = getPrefsForSelectedAutoSkill()
-            ?: return 0
-
-        val ces = getStringSetPref(R.string.pref_support_pref_ce, prefs)
-
-        return ces.size
-    }
-
     val preferredServants: String get() {
-        val prefs = (if (getAutoSkillPreferredServantCount > 0) {
-            getPrefsForSelectedAutoSkill()
-        } else defaultPrefs) ?: return ""
+        val prefs = getPrefsForSelectedAutoSkill()
+            ?: return ""
 
         val servantSet = getStringSetPref(R.string.pref_support_pref_servant, Prefs = prefs)
 
@@ -70,9 +54,8 @@ class SupportPreferences {
     }
 
     val preferredCEs: String get() {
-        val prefs = (if (getAutoSkillPreferredCEsCount > 0) {
-            getPrefsForSelectedAutoSkill()
-        } else defaultPrefs) ?: return ""
+        val prefs = getPrefsForSelectedAutoSkill()
+            ?: return ""
 
         val ceSet = getStringSetPref(R.string.pref_support_pref_ce, Prefs = prefs)
 
@@ -90,25 +73,35 @@ class SupportPreferences {
         return ces.joinToString()
     }
 
-    val friendsOnly get() = getBoolPref(R.string.pref_support_friends_only)
+    val friendsOnly: Boolean get() {
+        val prefs = getPrefsForSelectedAutoSkill()
+            ?: return false
+
+        return getBoolPref(R.string.pref_support_friends_only, Prefs = prefs)
+    }
 
     val swipesPerUpdate get() = getIntPref(R.string.pref_support_swipes_per_update)
 
     val maxUpdates get() = getIntPref(R.string.pref_support_max_updates)
 
     val selectionMode: SupportSelectionModeEnum get() {
-        val servants = getAutoSkillPreferredServantCount
-        val ces = getAutoSkillPreferredCEsCount
+        val default = SupportSelectionModeEnum.Preferred
 
-        if (servants > 0 || ces > 0) {
-            return SupportSelectionModeEnum.Preferred
-        }
+        val pref = getPrefsForSelectedAutoSkill()
+            ?: return default
 
-        return getEnumPref(R.string.pref_support_mode, SupportSelectionModeEnum.First)
+        return getEnumPref(R.string.pref_support_mode, default, Prefs = pref)
     }
 
-    val fallbackTo get() = getEnumPref(R.string.pref_support_fallback, SupportSelectionModeEnum.Manual)
+    val fallbackTo: SupportSelectionModeEnum get() {
+        val default = SupportSelectionModeEnum.Manual
+
+        val pref = getPrefsForSelectedAutoSkill()
+            ?: return default
+
+        return getEnumPref(R.string.pref_support_fallback, default, Prefs = pref)
+    }
 
     // 0.77 is a weird fix for MLB icon getting only 0.78 similarity sometimes
-    val mlbSimilarity get() = getIntPref(R.string.pref_mlb_similarity, 77) / 100.0
+    val mlbSimilarity get() = getIntPref(R.string.pref_mlb_similarity, 77) / 100.0    
 }
