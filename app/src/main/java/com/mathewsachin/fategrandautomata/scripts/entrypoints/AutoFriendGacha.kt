@@ -1,7 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 /**
@@ -10,22 +11,28 @@ import kotlin.time.seconds
 class AutoFriendGacha : EntryPoint() {
     private val first10SummonClick = Location(1400, 1120)
     private val okClick = Location(1600, 1120)
-    private val continue10SummonClick = Location(1600, 1420)
-    private val skipRapidClick = Location(1600, 1300)
+    private val continueSummonClick = Location(1600, 1420)
+    private val skipRapidClick = Location(2520, 1400)
+
+    private val continueSummonRegion = Region(1244, 1264, 580, 170)
 
     override fun script(): Nothing {
         initScaling()
 
         first10SummonClick.click()
+        0.3.seconds.wait()
         okClick.click()
 
         while (true) {
-            continue10SummonClick.click()
-            okClick.click()
-            3.seconds.wait()
-
-            skipRapidClick.click(15)
-            0.5.seconds.wait()
+            when {
+                continueSummonRegion.exists(ImageLocator.FpSummonContinue) -> {
+                    continueSummonClick.click()
+                    0.3.seconds.wait()
+                    okClick.click()
+                    3.seconds.wait()
+                }
+                else -> skipRapidClick.click(15)
+            }
         }
     }
 }

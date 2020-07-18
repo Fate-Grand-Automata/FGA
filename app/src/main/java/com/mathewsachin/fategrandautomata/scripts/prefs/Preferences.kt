@@ -1,9 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
+import androidx.core.content.edit
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
 
 class Preferences {
     companion object {
@@ -13,11 +15,14 @@ class Preferences {
 
         val ScriptMode get() = getEnumPref(R.string.pref_script_mode, ScriptModeEnum.Battle)
 
-        val GameServer get() = getEnumPref(R.string.pref_gameserver, GameServerEnum.En)
+        var GameServer get() = getEnumPref(R.string.pref_gameserver, GameServerEnum.En)
+            set(value) {
+                defaultPrefs.edit(commit = true) {
+                    putString(AutomataApplication.Instance.getString(R.string.pref_gameserver), value.toString())
+                }
+            }
 
         val SkillConfirmation get() = getBoolPref(R.string.pref_skill_conf)
-
-        val EnableAutoSkill get() = getBoolPref(R.string.pref_autoskill_enable)
 
         val SelectedAutoSkillConfig get() = getStringPref(R.string.pref_autoskill_selected)
 
@@ -28,7 +33,12 @@ class Preferences {
             return getStringPref(R.string.pref_autoskill_cmd, "", prefs)
         }
 
-        val BattleCardPriority get() = getStringPref(R.string.pref_card_priority, defaultCardPriority)
+        val CardPriority: String get() {
+            val prefs = getPrefsForSelectedAutoSkill()
+                ?: return defaultCardPriority
+
+            return getStringPref(R.string.pref_card_priority, defaultCardPriority, prefs)
+        }
 
         val BattleNoblePhantasm get() = getEnumPref(R.string.pref_battle_np, BattleNoblePhantasmEnum.None)
 

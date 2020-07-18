@@ -17,7 +17,6 @@ fun applyDefaults() {
         val prefFiles = arrayOf(
             R.xml.main_preferences,
             R.xml.app_preferences,
-            R.xml.autoskill_preferences,
             R.xml.refill_preferences
         )
 
@@ -59,13 +58,9 @@ inline fun <reified T: Enum<T>> getEnumPref(Key: Int, Default: T, Prefs: SharedP
 }
 
 fun getPrefsForSelectedAutoSkill(): SharedPreferences? {
-    if (!Preferences.EnableAutoSkill) {
-        return null
-    }
-
     val selectedConfig = Preferences.SelectedAutoSkillConfig
 
-    return if (!selectedConfig.isBlank()) {
+    return if (selectedConfig.isNotBlank()) {
         context.getSharedPreferences(selectedConfig, Context.MODE_PRIVATE)
     }
     else null

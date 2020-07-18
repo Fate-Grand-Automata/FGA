@@ -115,50 +115,50 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
     }
 
     private fun autoSkillPicker(context: Context, EntryPointRunner: () -> Unit) {
-        if (Preferences.EnableAutoSkill) {
-            var selected = Preferences.SelectedAutoSkillConfig
+        var selected = Preferences.SelectedAutoSkillConfig
 
-            val autoSkillItems = getAutoSkillEntries()
+        val autoSkillItems = getAutoSkillEntries()
 
-            val radioGroup = RadioGroup(context).apply {
-                orientation = RadioGroup.VERTICAL
-                setPadding(20)
+        val radioGroup = RadioGroup(context).apply {
+            orientation = RadioGroup.VERTICAL
+            setPadding(20)
+        }
+
+        for ((index, item) in autoSkillItems.withIndex()) {
+            val radioBtn = RadioButton(context).apply {
+                text = item.Name
+                id = index
             }
 
-            for ((index, item) in autoSkillItems.withIndex()) {
-                val radioBtn = RadioButton(context).apply {
-                    text = item.Name
-                    id = index
-                }
+            radioGroup.addView(radioBtn)
 
-                radioGroup.addView(radioBtn)
-
-                if (selected == item.Id) {
-                    radioGroup.check(index)
-                }
-            }
-
-            ScriptRunnerDialog(userInterface).apply {
-                setTitle("Select AutoSkill Config")
-                setPositiveButton(context.getString(android.R.string.ok)) {
-                    val selectedIndex = radioGroup.checkedRadioButtonId
-                    if (selectedIndex in autoSkillItems.indices) {
-                        selected = autoSkillItems[selectedIndex].Id
-
-                        defaultPrefs.edit(commit = true) {
-                            putString(context.getString(R.string.pref_autoskill_selected), selected)
-                        }
-                    }
-
-                    EntryPointRunner()
-                }
-                setNegativeButton(context.getString(android.R.string.cancel)) { }
-                setView(radioGroup)
-                show()
+            if (selected == item.Id) {
+                radioGroup.check(index)
             }
         }
-        else {
-            EntryPointRunner()
+
+        ScriptRunnerDialog(userInterface).apply {
+            setTitle("Select AutoSkill Config")
+            setPositiveButton(context.getString(android.R.string.ok)) {
+                val selectedIndex = radioGroup.checkedRadioButtonId
+                if (selectedIndex in autoSkillItems.indices) {
+                    selected = autoSkillItems[selectedIndex].Id
+
+                    defaultPrefs.edit(commit = true) {
+                        putString(context.getString(R.string.pref_autoskill_selected), selected)
+                    }
+                }
+
+                EntryPointRunner()
+            }
+            setNegativeButton(context.getString(android.R.string.cancel)) { }
+
+            if (autoSkillItems.isEmpty()) {
+                setMessage("No AutoSkill Configs")
+            }
+            else setView(radioGroup)
+
+            show()
         }
     }
 }

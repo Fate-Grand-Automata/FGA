@@ -1,5 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,8 +14,8 @@ import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.modules.cardPriorityStageSeparator
 import com.mathewsachin.fategrandautomata.scripts.modules.getCardScores
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultCardPriority
-import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
+import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import kotlinx.android.synthetic.main.card_priority.*
 
 fun String.filterCapitals(): String {
@@ -26,11 +28,17 @@ fun String.filterCapitals(): String {
 class CardPriorityActivity : AppCompatActivity() {
     private lateinit var cardScores: MutableList<MutableList<CardScore>>
 
+    private lateinit var autoSkillPref: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.card_priority)
 
-        var cardPriority = getStringPref(R.string.pref_card_priority)
+        val autoSkillKey = intent.getStringExtra(AutoSkillItemActivity::autoSkillItemKey.name)
+            ?: throw IllegalArgumentException("Missing AutoSkill item key in intent")
+        autoSkillPref = getSharedPreferences(autoSkillKey, Context.MODE_PRIVATE)
+
+        var cardPriority = getStringPref(R.string.pref_card_priority, Prefs = autoSkillPref)
 
         // Handle simple mode and empty string
         if (cardPriority.length == 3 || cardPriority.isBlank())
@@ -74,7 +82,7 @@ class CardPriorityActivity : AppCompatActivity() {
         }
 
         val key = getString(R.string.pref_card_priority)
-        defaultPrefs.edit(commit = true) { putString(key, value) }
+        autoSkillPref.edit(commit = true) { putString(key, value) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

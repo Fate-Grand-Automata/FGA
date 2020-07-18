@@ -2,10 +2,14 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        app:icon="@drawable/ic_sort"
-        app:key="@string/pref_card_priority"
-        app:title="Card Priority" />
+    <ListPreference
+        app:defaultValue="En"
+        app:entries="@array/game_server_labels"
+        app:entryValues="@array/game_server_values"
+        app:icon="@drawable/ic_earth"
+        app:key="@string/pref_gameserver"
+        app:title="Game Server"
+        app:useSimpleSummaryProvider="true" />
 
     <ListPreference
         app:defaultValue="None"
@@ -27,6 +31,12 @@
         app:icon="@drawable/ic_fast_forward"
         app:key="@string/pref_story_skip"
         app:title="Story Skip" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:icon="@drawable/ic_radio"
+        app:key="@string/pref_skill_conf"
+        app:title="Skill Confirmation" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
