@@ -18,6 +18,7 @@ import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotServi
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.clearImageCache
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.*
@@ -144,9 +145,7 @@ class ScriptRunnerService : AccessibilityService() {
             }
             else sshotService?.let {
                 // Auto-detect Server
-                fgoPackageNames
-                    .firstOrNull { m -> m.pkgName == foregroundAppName }
-                    ?.let { m -> Preferences.GameServer = m.server }
+                currentFgoServer?.let { m -> Preferences.GameServer = m }
 
                 scriptManager.startScript(this, it)
             }
@@ -175,12 +174,16 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
-    private var foregroundAppName = ""
+    private var currentFgoServer: GameServerEnum? = null
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         when (event?.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                foregroundAppName = event.packageName.toString()
+                val foregroundAppName = event.packageName.toString()
+
+                fgoPackageNames
+                    .firstOrNull { it.pkgName == foregroundAppName }
+                    ?.let { currentFgoServer = it.server }
             }
         }
     }
