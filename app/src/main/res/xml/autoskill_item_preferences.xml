@@ -22,6 +22,11 @@
         app:title="Party"
         app:useSimpleSummaryProvider="true" />
 
+    <Preference
+        app:icon="@drawable/ic_sort"
+        app:key="@string/pref_card_priority"
+        app:title="Card Priority" />
+
     <PreferenceCategory
         app:key="pref_servant_category"
         app:title="Preferred Servants">

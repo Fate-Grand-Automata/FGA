@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
 
 class MainSettingsFragment : PreferenceFragmentCompat() {
@@ -28,6 +29,18 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(R.string.pref_nav_more))?.let {
             it.fragment = MoreSettingsFragment::class.java.name
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        findPreference<Preference>(getString(R.string.pref_nav_refill))?.let {
+            val prefs = Preferences.Refill
+            it.summary = when (prefs.enabled) {
+                true -> "${prefs.resource} x${prefs.repetitions}"
+                false -> "OFF"
+            }
         }
     }
 }

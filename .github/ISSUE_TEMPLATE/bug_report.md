@@ -9,7 +9,7 @@ assignees: ''
 
 > MAKE SURE YOU TESTED THE LATEST RELEASE.
 
-> See 'SAMSUNG.md' first, if you're a Samsung user.
+> Samsung user? See https://mathewsachin.github.io/Fate-Grand-Automata/SAMSUNG.html
 
 **Describe the bug**
 A clear and concise description of what the bug is.

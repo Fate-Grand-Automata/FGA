@@ -247,12 +247,12 @@ class Support {
     private fun findServants(): Sequence<Region> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = cropFriendLock(
-                loadSupportImagePattern(preferredServant)
-            )
+            val pattern = loadSupportImagePattern(preferredServant)
 
-            for (servant in Game.SupportListRegion.findAll(pattern)) {
-                yield(servant.Region)
+            cropFriendLock(pattern).use {
+                for (servant in Game.SupportListRegion.findAll(it)) {
+                    yield(servant.Region)
+                }
             }
         }
     }
