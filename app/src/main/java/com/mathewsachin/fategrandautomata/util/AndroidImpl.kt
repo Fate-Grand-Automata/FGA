@@ -11,6 +11,7 @@ import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.addRegionToHighlight
 import com.mathewsachin.fategrandautomata.ui.removeRegionToHighlight
+import com.mathewsachin.libautomata.IPlatformPrefs
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,7 +22,8 @@ import kotlin.time.milliseconds
 class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
     override val windowRegion get() = getCutoutAppliedRegion()
 
-    override val debugMode get() = Preferences.DebugMode
+    override val prefs: IPlatformPrefs
+        get() = Preferences.PlatformPrefs
 
     override fun toast(Message: String) {
         handler.post {

@@ -6,73 +6,95 @@ import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
+import com.mathewsachin.libautomata.IPlatformPrefs
+import kotlin.time.milliseconds
 
-class Preferences {
-    companion object {
-        init {
-            applyDefaults()
-        }
+object Preferences {
+    init {
+        applyDefaults()
+    }
 
-        val ScriptMode get() = getEnumPref(R.string.pref_script_mode, ScriptModeEnum.Battle)
+    val ScriptMode get() = getEnumPref(R.string.pref_script_mode, ScriptModeEnum.Battle)
 
-        var GameServer get() = getEnumPref(R.string.pref_gameserver, GameServerEnum.En)
-            set(value) {
-                defaultPrefs.edit(commit = true) {
-                    putString(AutomataApplication.Instance.getString(R.string.pref_gameserver), value.toString())
-                }
+    var GameServer get() = getEnumPref(R.string.pref_gameserver, GameServerEnum.En)
+        set(value) {
+            defaultPrefs.edit(commit = true) {
+                putString(AutomataApplication.Instance.getString(R.string.pref_gameserver), value.toString())
             }
-
-        val SkillConfirmation get() = getBoolPref(R.string.pref_skill_conf)
-
-        val SelectedAutoSkillConfig get() = getStringPref(R.string.pref_autoskill_selected)
-
-        val SkillCommand: String get() {
-            val prefs = getPrefsForSelectedAutoSkill()
-                ?: return ""
-
-            return getStringPref(R.string.pref_autoskill_cmd, "", prefs)
         }
 
-        val CardPriority: String get() {
-            val prefs = getPrefsForSelectedAutoSkill()
-                ?: return defaultCardPriority
+    val SkillConfirmation get() = getBoolPref(R.string.pref_skill_conf)
 
-            return getStringPref(R.string.pref_card_priority, defaultCardPriority, prefs)
-        }
+    val SelectedAutoSkillConfig get() = getStringPref(R.string.pref_autoskill_selected)
 
-        val BattleNoblePhantasm get() = getEnumPref(R.string.pref_battle_np, BattleNoblePhantasmEnum.None)
+    val SkillCommand: String get() {
+        val prefs = getPrefsForSelectedAutoSkill()
+            ?: return ""
 
-        val BattleAutoChooseTarget get() = getBoolPref(R.string.pref_auto_choose_target)
+        return getStringPref(R.string.pref_autoskill_cmd, "", prefs)
+    }
 
-        val StorySkip get() = getBoolPref(R.string.pref_story_skip)
+    val CardPriority: String get() {
+        val prefs = getPrefsForSelectedAutoSkill()
+            ?: return defaultCardPriority
 
-        val WithdrawEnabled get() = getBoolPref(R.string.pref_withdraw_enabled)
+        return getStringPref(R.string.pref_card_priority, defaultCardPriority, prefs)
+    }
 
-        val StopAfterBond10 get() = getBoolPref(R.string.pref_stop_bond10)
+    val BattleNoblePhantasm get() = getEnumPref(R.string.pref_battle_np, BattleNoblePhantasmEnum.None)
 
-        val BoostItemSelectionMode get() = getStringAsIntPref(R.string.pref_boost_item, -1)
+    val BattleAutoChooseTarget get() = getBoolPref(R.string.pref_auto_choose_target)
 
-        val Support = SupportPreferences()
+    val StorySkip get() = getBoolPref(R.string.pref_story_skip)
 
-        val Refill = RefillPreferences()
+    val WithdrawEnabled get() = getBoolPref(R.string.pref_withdraw_enabled)
 
-        val IgnoreNotchCalculation get() = getBoolPref(R.string.pref_ignore_notch)
+    val StopAfterBond10 get() = getBoolPref(R.string.pref_stop_bond10)
+    
+    val BoostItemSelectionMode get() = getStringAsIntPref(R.string.pref_boost_item, -1)
 
-        val UseRootForScreenshots get() = getBoolPref(R.string.pref_use_root_screenshot)
+    val Support = SupportPreferences()
 
-        val DebugMode get() = getBoolPref(R.string.pref_debug_mode)
+    val Refill = RefillPreferences()
 
-        val GudaFinal get() = getBoolPref(R.string.pref_guda_final)
+    val IgnoreNotchCalculation get() = getBoolPref(R.string.pref_ignore_notch)
 
-        val RecordScreen get() = getBoolPref(R.string.pref_record_screen)
+    val UseRootForScreenshots get() = getBoolPref(R.string.pref_use_root_screenshot)
 
-        val Party: Int get() {
-            val notSet = -1
+    val UseRootForGestures get() = getBoolPref(R.string.pref_use_root_gestures)
 
-            val pref = getPrefsForSelectedAutoSkill()
-                ?: return notSet
+    val GudaFinal get() = getBoolPref(R.string.pref_guda_final)
 
-            return getStringAsIntPref(R.string.pref_autoskill_party, notSet, pref)
-        }
+    val RecordScreen get() = getBoolPref(R.string.pref_record_screen)
+
+    val Party: Int get() {
+        val notSet = -1
+
+        val pref = getPrefsForSelectedAutoSkill()
+            ?: return notSet
+
+        return getStringAsIntPref(R.string.pref_autoskill_party, notSet, pref)
+    }
+
+    val supportSwipeMultiplier get() = getIntPref(R.string.pref_support_swipe_multiplier, 100) / 100.0
+
+    object PlatformPrefs: IPlatformPrefs {
+        override val debugMode get() = getBoolPref(R.string.pref_debug_mode)
+
+        override val minSimilarity get() = getIntPref(R.string.pref_min_similarity, 80) / 100.0
+
+        override val waitMultiplier get() = getIntPref(R.string.pref_wait_multiplier, 100) / 100.0
+    }
+
+    object Gestures {
+        val clickWaitTime get() = getIntPref(R.string.pref_click_wait_time, 300).milliseconds
+
+        val clickDuration get() = getIntPref(R.string.pref_click_duration, 50).milliseconds
+
+        val clickDelay get() = getIntPref(R.string.pref_click_delay, 10).milliseconds
+
+        val swipeWaitTime get() = getIntPref(R.string.pref_swipe_wait_time, 700).milliseconds
+
+        val swipeDuration get() = getIntPref(R.string.pref_swipe_duration, 300).milliseconds
     }
 }

@@ -101,4 +101,6 @@ class SupportPreferences {
 
         return getEnumPref(R.string.pref_support_fallback, default, Prefs = pref)
     }
+
+    val mlbSimilarity get() = getIntPref(R.string.pref_mlb_similarity, 70) / 100.0
 }

@@ -66,32 +66,13 @@
 <!--        app:title="GudaGuda Final Rerun" />-->
 
     <PreferenceCategory
-        app:key="support_swipe_category"
-        app:title="Support">
-        <SeekBarPreference
-            android:max="30"
-            app:defaultValue="10"
-            app:icon="@drawable/ic_swipe"
-            app:key="@string/pref_support_swipes_per_update"
-            app:min="0"
-            app:seekBarIncrement="1"
-            app:showSeekBarValue="true"
-            app:title="Swipes per Update" />
-
-        <SeekBarPreference
-            android:max="30"
-            app:defaultValue="3"
-            app:icon="@drawable/ic_refresh"
-            app:key="@string/pref_support_max_updates"
-            app:min="0"
-            app:seekBarIncrement="1"
-            app:showSeekBarValue="true"
-            app:title="Max Updates" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         app:key="app_category"
         app:title="Advanced">
+        <Preference
+            app:key="@string/pref_nav_fine_tune"
+            app:title="Fine-tune"
+            app:icon="@drawable/ic_tune"/>
+
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="@string/pref_debug_mode"
@@ -103,7 +84,8 @@
             app:defaultValue="false"
             app:key="@string/pref_ignore_notch"
             app:summary="Useful on Samsung phones"
-            app:title="Ignore Notch calculation" />
+            app:title="Ignore Notch calculation"
+            app:icon="@drawable/ic_notch"/>
 
         <SwitchPreferenceCompat
             app:defaultValue="false"

@@ -227,9 +227,27 @@ class Support {
         throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
     }
 
+    /**
+     * Scroll support list considering [Preferences.supportSwipeMultiplier].
+     */
     private fun scrollList() {
-        swipe(Game.SupportSwipeStartClick, Game.SupportSwipeEndClick)
+        val endY = lerp(
+            Game.SupportSwipeStartClick.Y,
+            Game.SupportSwipeEndClick.Y,
+            Preferences.supportSwipeMultiplier
+        )
+
+        swipe(
+            Game.SupportSwipeStartClick,
+            Game.SupportSwipeEndClick.copy(Y = endY)
+        )
     }
+
+    /**
+     * linear interpolation
+     */
+    private fun lerp(start: Int, end: Int, fraction: Double) =
+        (start + (end - start) * fraction).toInt()
 
     private fun findFriendName(): Region? {
         for (friendName in friendNameArray) {
@@ -326,7 +344,7 @@ class Support {
 
         val limitBreakPattern = ImageLocator.LimitBroken
 
-        // 0.77 is a weird fix for MLB icon getting only 0.78 similarity sometimes
-        return limitBreakRegion.exists(limitBreakPattern, Similarity = 0.77)
+        val mlbSimilarity = Preferences.Support.mlbSimilarity
+        return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
     }
 }
