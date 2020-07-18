@@ -35,7 +35,12 @@ class Preferences {
             return getStringPref(R.string.pref_autoskill_cmd, "", prefs)
         }
 
-        val BattleCardPriority get() = getStringPref(R.string.pref_card_priority, defaultCardPriority)
+        val CardPriority: String get() {
+            val prefs = getPrefsForSelectedAutoSkill()
+                ?: return defaultCardPriority
+
+            return getStringPref(R.string.pref_card_priority, defaultCardPriority, prefs)
+        }
 
         val BattleNoblePhantasm get() = getEnumPref(R.string.pref_battle_np, BattleNoblePhantasmEnum.None)
 

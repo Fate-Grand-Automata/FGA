@@ -10,11 +10,6 @@
         app:title="Game Server"
         app:useSimpleSummaryProvider="true" />
 
-    <Preference
-        app:icon="@drawable/ic_sort"
-        app:key="@string/pref_card_priority"
-        app:title="Card Priority" />
-
     <ListPreference
         app:defaultValue="None"
         app:entries="@array/battle_np_types"
