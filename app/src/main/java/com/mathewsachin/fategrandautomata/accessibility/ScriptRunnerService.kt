@@ -19,10 +19,7 @@ import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.clearImageCache
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.util.AndroidImpl
-import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
-import com.mathewsachin.fategrandautomata.util.ScriptManager
-import com.mathewsachin.fategrandautomata.util.setThrottledClickListener
+import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.*
 
 class ScriptRunnerService : AccessibilityService() {
@@ -146,6 +143,11 @@ class ScriptRunnerService : AccessibilityService() {
                 scriptManager.stopScript()
             }
             else sshotService?.let {
+                // Auto-detect Server
+                fgoPackageNames
+                    .firstOrNull { m -> m.pkgName == foregroundAppName }
+                    ?.let { m -> Preferences.GameServer = m.server }
+
                 scriptManager.startScript(this, it)
             }
         }
@@ -173,7 +175,15 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
-    override fun onAccessibilityEvent(event: AccessibilityEvent?) {}
+    private var foregroundAppName = ""
+
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        when (event?.eventType) {
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
+                foregroundAppName = event.packageName.toString()
+            }
+        }
+    }
 
     fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
         ScriptRunnerDialog(userInterface).apply {
