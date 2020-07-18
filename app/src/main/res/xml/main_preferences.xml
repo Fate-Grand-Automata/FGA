@@ -25,7 +25,7 @@
     <Preference
         app:icon="@drawable/ic_wand"
         app:key="@string/pref_nav_auto_skill"
-        app:summary="Manage Auto Skill"
+        app:summary="Manage Auto Skill configs"
         app:title="Auto Skill" />
 
     <Preference

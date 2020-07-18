@@ -24,8 +24,6 @@ class Preferences {
 
         val SkillConfirmation get() = getBoolPref(R.string.pref_skill_conf)
 
-        val EnableAutoSkill get() = getBoolPref(R.string.pref_autoskill_enable)
-
         val SelectedAutoSkillConfig get() = getStringPref(R.string.pref_autoskill_selected)
 
         val SkillCommand: String get() {
