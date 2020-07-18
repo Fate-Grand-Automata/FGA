@@ -5,9 +5,9 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.IPlatformPrefs
 import kotlin.time.milliseconds
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 
 object Preferences {
     init {
@@ -24,8 +24,6 @@ object Preferences {
         }
 
     val SkillConfirmation get() = getBoolPref(R.string.pref_skill_conf)
-
-    val EnableAutoSkill get() = getBoolPref(R.string.pref_autoskill_enable)
 
     val SelectedAutoSkillConfig get() = getStringPref(R.string.pref_autoskill_selected)
 
