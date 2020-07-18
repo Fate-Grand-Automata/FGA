@@ -5,5 +5,4 @@
     android:accessibilityFlags="flagDefault"
     android:canPerformGestures="true"
     android:canRetrieveWindowContent="true"
-    android:description="@string/service_runner_description"
-    android:settingsActivity="fgautomata.SettingsActivity" />
+    android:description="@string/service_runner_description" />
