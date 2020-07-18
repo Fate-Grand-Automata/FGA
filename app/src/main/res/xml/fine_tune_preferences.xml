@@ -2,6 +2,30 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+        app:key="support_swipe_category"
+        app:title="Support">
+        <SeekBarPreference
+            android:max="30"
+            app:defaultValue="10"
+            app:icon="@drawable/ic_swipe"
+            app:key="@string/pref_support_swipes_per_update"
+            app:min="0"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:title="Swipes per Update" />
+
+        <SeekBarPreference
+            android:max="30"
+            app:defaultValue="3"
+            app:icon="@drawable/ic_refresh"
+            app:key="@string/pref_support_max_updates"
+            app:min="0"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:title="Max Updates" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="similarity_category"
         app:title="Similarity">
         <SeekBarPreference
@@ -16,7 +40,7 @@
 
         <SeekBarPreference
             android:max="100"
-            app:defaultValue="77"
+            app:defaultValue="70"
             app:key="@string/pref_mlb_similarity"
             app:icon="@drawable/ic_star"
             app:min="50"
