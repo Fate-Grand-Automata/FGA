@@ -5,22 +5,39 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.edit
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
 import com.mathewsachin.fategrandautomata.scripts.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
+import com.mathewsachin.fategrandautomata.scripts.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.RequestAutoSkillMaker
 import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
-import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
+import com.mathewsachin.fategrandautomata.util.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
-class AutoSkillItemSettingsFragment : SupportSettingsBaseFragment() {
+class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
+    private val scope = MainScope()
+
+    override fun onDestroy() {
+        scope.cancel()
+        super.onDestroy()
+    }
+
     private lateinit var autoSkillPrefs: SharedPreferences
     private var editTextVisibleKey = ""
     private var restoredEditTextContent: String? = null
@@ -148,8 +165,56 @@ class AutoSkillItemSettingsFragment : SupportSettingsBaseFragment() {
 
         updateSkillCmdSummary()
 
+        if (shouldExtractSupportImages) {
+            performSupportImageExtraction()
+        }
+        else preferredSupportOnResume()
+
+        // Update Card Priority
         findPreference<Preference>(getString(R.string.pref_card_priority))?.let {
             it.summary = getStringPref(R.string.pref_card_priority, defaultCardPriority, Prefs = autoSkillPrefs)
+        }
+    }
+
+    private fun performSupportImageExtraction() {
+        scope.launch {
+            extractSupportImgs()
+            Toast.makeText(activity, "Support Images Extracted Successfully", Toast.LENGTH_SHORT).show()
+            preferredSupportOnResume()
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.support_menu, menu)
+        inflater.inflate(R.menu.support_common_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_support_extract_defaults -> {
+                performSupportImageExtraction()
+                true
+            }
+            R.id.action_clear_support_servants -> {
+                findServantList()?.values = emptySet()
+                true
+            }
+            R.id.action_clear_support_ces -> {
+                findCeList()?.values = emptySet()
+                true
+            }
+            R.id.action_clear_support_friends -> {
+                findFriendNamesList()?.values = emptySet()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

@@ -16,10 +16,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             it.fragment = RefillSettingsFragment::class.java.name
         }
 
-        findPreference<Preference>(getString(R.string.pref_nav_support))?.let {
-            it.fragment = SupportSettingsFragment::class.java.name
-        }
-
         findPreference<Preference>(getString(R.string.pref_nav_auto_skill))?.let {
             it.setOnPreferenceClickListener {
                 startActivity(Intent(activity, AutoSkillListActivity::class.java))

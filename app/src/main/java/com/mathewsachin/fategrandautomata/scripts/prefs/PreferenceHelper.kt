@@ -17,8 +17,7 @@ fun applyDefaults() {
         val prefFiles = arrayOf(
             R.xml.main_preferences,
             R.xml.app_preferences,
-            R.xml.refill_preferences,
-            R.xml.support_preferences
+            R.xml.refill_preferences
         )
 
         for (prefFile in prefFiles) {

@@ -60,6 +60,11 @@
         <item>Friend</item>
     </array>
 
+    <array name="support_selection_modes_fallback">
+        <item>First</item>
+        <item>Manual</item>
+    </array>
+
     <array name="script_mode_labels">
         <item>Battle</item>
         <item>Lottery</item>
