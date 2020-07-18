@@ -80,9 +80,9 @@ class SupportPreferences {
         return getBoolPref(R.string.pref_support_friends_only, Prefs = prefs)
     }
 
-    val swipesPerUpdate get() = getIntPref(R.string.pref_support_swipes_per_update)
+    val swipesPerUpdate get() = getIntPref(R.string.pref_support_swipes_per_update, 10)
 
-    val maxUpdates get() = getIntPref(R.string.pref_support_max_updates)
+    val maxUpdates get() = getIntPref(R.string.pref_support_max_updates, 3)
 
     val selectionMode: SupportSelectionModeEnum get() {
         val default = SupportSelectionModeEnum.Preferred

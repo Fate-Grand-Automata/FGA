@@ -17,7 +17,8 @@ fun applyDefaults() {
         val prefFiles = arrayOf(
             R.xml.main_preferences,
             R.xml.app_preferences,
-            R.xml.refill_preferences
+            R.xml.refill_preferences,
+            R.xml.fine_tune_preferences
         )
 
         for (prefFile in prefFiles) {
@@ -28,7 +29,11 @@ fun applyDefaults() {
 
 private fun k(KeyId: Int) = context.getString(KeyId)
 
-fun getBoolPref(Key: Int, Default: Boolean = false, Prefs: SharedPreferences = defaultPrefs): Boolean {
+fun getBoolPref(
+    Key: Int,
+    Default: Boolean = false,
+    Prefs: SharedPreferences = defaultPrefs
+): Boolean {
     return Prefs.getBoolean(k(Key), Default)
 }
 
@@ -50,11 +55,18 @@ fun getStringAsIntPref(Key: Int, Default: Int = 0, Prefs: SharedPreferences = de
     return s.toIntOrNull() ?: Default
 }
 
-inline fun <reified T: Enum<T>> getEnumPref(Key: Int, Default: T, Prefs: SharedPreferences = defaultPrefs): T {
+inline fun <reified T : Enum<T>> getEnumPref(
+    Key: Int,
+    Default: T,
+    Prefs: SharedPreferences = defaultPrefs
+): T {
     val s = getStringPref(Key, Prefs = Prefs)
 
-    return try { enumValueOf(s) }
-    catch (e: IllegalArgumentException) { Default }
+    return try {
+        enumValueOf(s)
+    } catch (e: IllegalArgumentException) {
+        Default
+    }
 }
 
 fun getPrefsForSelectedAutoSkill(): SharedPreferences? {
@@ -62,8 +74,7 @@ fun getPrefsForSelectedAutoSkill(): SharedPreferences? {
 
     return if (selectedConfig.isNotBlank()) {
         context.getSharedPreferences(selectedConfig, Context.MODE_PRIVATE)
-    }
-    else null
+    } else null
 }
 
 const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
