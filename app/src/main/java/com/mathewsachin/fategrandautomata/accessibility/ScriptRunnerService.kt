@@ -182,7 +182,7 @@ class ScriptRunnerService : AccessibilityService() {
     private var currentFgoServer: GameServerEnum? = null
 
     /**
-     * This method is called on any [AccessibilityEvent].
+     * This method is called on any subscribed [AccessibilityEvent] in script_runner_service.xml.
      *
      * When the app in the foreground changes, this method will check if the foreground app is one
      * of the FGO APKs and will store that information into [currentFgoServer].
