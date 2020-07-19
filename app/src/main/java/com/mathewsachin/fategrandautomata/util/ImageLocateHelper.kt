@@ -1,17 +1,13 @@
 package com.mathewsachin.fategrandautomata.util
 
-import android.content.res.AssetManager
 import android.os.Environment
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.ScriptExitException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
-import java.io.FileOutputStream
 
 val storageDir: File by lazy {
     var dir = Environment.getExternalStorageDirectory()
@@ -148,61 +144,4 @@ fun loadSupportImagePattern(FileName: String): IPattern {
     }
 
     return supportCachedPatterns[FileName]!!
-}
-
-private fun supportImgExtractor(FolderName: String) {
-    val assetFolder = "Support/$FolderName"
-    val outDir = File(supportImgFolder, FolderName)
-
-    if (!outDir.exists()) {
-        outDir.mkdirs()
-    }
-
-    val assets = AutomataApplication.Instance.assets
-
-    for (assetFileName in assets.list(assetFolder)!!) {
-        val assetPath = "${assetFolder}/$assetFileName"
-        val outPath = File(outDir, assetFileName)
-
-        val subFiles = assets.list(assetPath) ?: emptyArray()
-
-        // This is a folder
-        if (subFiles.isNotEmpty()) {
-            if (!outPath.exists()) {
-                outPath.mkdirs()
-            }
-
-            for (subFileName in subFiles) {
-                val subAssetPath = "${assetPath}/$subFileName"
-                val subOutPath = File(outPath, subFileName)
-
-                copyAssetToFile(
-                    assets,
-                    subAssetPath,
-                    subOutPath
-                )
-            }
-        } else {
-            copyAssetToFile(
-                assets,
-                assetPath,
-                outPath
-            )
-        }
-    }
-}
-
-private fun copyAssetToFile(Assets: AssetManager, AssetPath: String, OutPath: File) {
-    val assetStream = Assets.open(AssetPath)
-    assetStream.use {
-        val outStream = FileOutputStream(OutPath)
-        outStream.use {
-            assetStream.copyTo(outStream)
-        }
-    }
-}
-
-suspend fun extractSupportImgs() = withContext(Dispatchers.IO) {
-    supportImgExtractor("servant")
-    supportImgExtractor("ce")
 }

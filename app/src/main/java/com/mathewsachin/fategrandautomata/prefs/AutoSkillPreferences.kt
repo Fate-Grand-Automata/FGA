@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.Context
-import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 
 const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"

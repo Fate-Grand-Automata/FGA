@@ -2,9 +2,9 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.text.InputType
 import androidx.preference.*
-import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import java.io.File
+import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 fun EditTextPreference.makeNumeric() {
     setOnBindEditTextListener {
@@ -13,13 +13,13 @@ fun EditTextPreference.makeNumeric() {
 }
 
 fun PreferenceFragmentCompat.findServantList() =
-    findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_servant))
+    findPreference<MultiSelectListPreference>(getString(prefKeys.pref_support_pref_servant))
 
 fun PreferenceFragmentCompat.findCeList() =
-    findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_ce))
+    findPreference<MultiSelectListPreference>(getString(prefKeys.pref_support_pref_ce))
 
 fun PreferenceFragmentCompat.findFriendNamesList() =
-    findPreference<MultiSelectListPreference>(getString(R.string.pref_support_friend_names))
+    findPreference<MultiSelectListPreference>(getString(prefKeys.pref_support_friend_names))
 
 fun PreferenceFragmentCompat.preferredSupportOnCreate() {
     findServantList()?.apply {
@@ -38,7 +38,7 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
         adjustVisibility(enumValueOf(selectionMode))
     }
 
-    findPreference<ListPreference>(getString(R.string.pref_support_mode))?.let {
+    findPreference<ListPreference>(getString(prefKeys.pref_support_mode))?.let {
         it.setOnPreferenceChangeListener { _, newValue ->
             if (newValue is String) {
                 adjust(newValue)
@@ -69,11 +69,11 @@ private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
 fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionModeEnum) {
     val servants = findServantList() ?: return
     val ces = findCeList() ?: return
-    val ceMlb = findPreference<Preference>(getString(R.string.pref_support_pref_ce_mlb)) ?: return
+    val ceMlb = findPreference<Preference>(getString(prefKeys.pref_support_pref_ce_mlb)) ?: return
     val friendNames = findFriendNamesList() ?: return
-    val fallback = findPreference<Preference>(getString(R.string.pref_support_fallback)) ?: return
+    val fallback = findPreference<Preference>(getString(prefKeys.pref_support_fallback)) ?: return
     val friendsOnly =
-        findPreference<Preference>(getString(R.string.pref_support_friends_only)) ?: return
+        findPreference<Preference>(getString(prefKeys.pref_support_friends_only)) ?: return
 
     val modePreferred = selectionMode == SupportSelectionModeEnum.Preferred
     val modeFriend = selectionMode == SupportSelectionModeEnum.Friend

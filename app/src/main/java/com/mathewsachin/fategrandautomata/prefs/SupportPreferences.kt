@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.prefs
 
-import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.limitBrokenCharacter
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences

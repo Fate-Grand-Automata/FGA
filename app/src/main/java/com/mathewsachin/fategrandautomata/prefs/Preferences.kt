@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
@@ -19,24 +18,6 @@ class PreferencesImpl(private val context: Context) : IPreferences {
             PreferenceManager.getDefaultSharedPreferences(context),
             context
         )
-
-    init {
-        applyDefaults()
-    }
-
-    private fun applyDefaults() {
-        if (!prefs.prefs.getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false)) {
-            val prefFiles = arrayOf(
-                R.xml.main_preferences,
-                R.xml.app_preferences,
-                R.xml.refill_preferences
-            )
-
-            for (prefFile in prefFiles) {
-                PreferenceManager.setDefaultValues(context, prefFile, true)
-            }
-        }
-    }
 
     override val scriptMode by prefs.enum(R.string.pref_script_mode, ScriptModeEnum.Battle)
 

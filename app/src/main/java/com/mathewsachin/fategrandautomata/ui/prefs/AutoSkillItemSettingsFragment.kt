@@ -13,10 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.util.extractSupportImgs
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.util.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
@@ -26,6 +24,7 @@ import com.mathewsachin.fategrandautomata.util.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     private val scope = MainScope()
@@ -74,14 +73,14 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         preferredSupportOnCreate()
 
-        findPreference<Preference>(getString(R.string.pref_autoskill_cmd))?.let {
+        findPreference<Preference>(getString(prefKeys.pref_autoskill_cmd))?.let {
             it.setOnPreferenceClickListener {
                 onSkillCmdClick()
                 true
             }
         }
 
-        findPreference<Preference>(getString(R.string.pref_card_priority))?.let {
+        findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.setOnPreferenceClickListener {
                 val intent = Intent(activity, CardPriorityActivity::class.java)
                 intent.putExtra(AutoSkillItemActivity::autoSkillItemKey.name, autoSkillItemKey)
@@ -150,7 +149,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateSkillCmdSummary() {
-        findPreference<Preference>(getString(R.string.pref_autoskill_cmd))?.let {
+        findPreference<Preference>(getString(prefKeys.pref_autoskill_cmd))?.let {
             it.summary = autoSkillPrefs.skillCommand
         }
     }
@@ -165,14 +164,14 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         } else preferredSupportOnResume()
 
         // Update Card Priority
-        findPreference<Preference>(getString(R.string.pref_card_priority))?.let {
+        findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.summary = autoSkillPrefs.cardPriority
         }
     }
 
     private fun performSupportImageExtraction() {
         scope.launch {
-            extractSupportImgs()
+            SupportImageExtractor(requireContext(), supportImgFolder).extract()
             Toast.makeText(activity, "Support Images Extracted Successfully", Toast.LENGTH_SHORT)
                 .show()
             preferredSupportOnResume()
