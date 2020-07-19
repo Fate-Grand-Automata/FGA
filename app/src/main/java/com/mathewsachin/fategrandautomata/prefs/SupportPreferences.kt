@@ -3,16 +3,16 @@ package com.mathewsachin.fategrandautomata.prefs
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.limitBrokenCharacter
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
-import com.mathewsachin.fategrandautomata.util.supportCeFolder
-import com.mathewsachin.fategrandautomata.util.supportFriendFolder
-import com.mathewsachin.fategrandautomata.util.supportServantImgFolder
+import com.mathewsachin.fategrandautomata.util.StorageDirs
 import java.io.File
 
-class SupportPreferences(val prefs: SharedPreferenceDelegation) :
-    ISupportPreferences {
+class SupportPreferences(
+    val prefs: SharedPreferenceDelegation,
+    val storageDirs: StorageDirs
+) : ISupportPreferences {
     override val friendNames by prefs.stringSet(R.string.pref_support_friend_names)
         .map { friendSet ->
-            val friendImgFolderName = supportFriendFolder.name
+            val friendImgFolderName = storageDirs.supportFriendFolder.name
 
             val friendNames = friendSet
                 .map { "${friendImgFolderName}/$it" }
@@ -25,7 +25,7 @@ class SupportPreferences(val prefs: SharedPreferenceDelegation) :
             val servants = mutableListOf<String>()
 
             for (servantEntry in servantSet) {
-                val dir = File(supportServantImgFolder, servantEntry)
+                val dir = File(storageDirs.supportServantImgFolder, servantEntry)
 
                 if (dir.isDirectory && dir.exists()) {
                     val fileNames = dir.listFiles()
@@ -38,7 +38,7 @@ class SupportPreferences(val prefs: SharedPreferenceDelegation) :
                 } else servants.add(servantEntry)
             }
 
-            val servantImgFolderName = supportServantImgFolder.name
+            val servantImgFolderName = storageDirs.supportServantImgFolder.name
 
             servants.joinToString { "${servantImgFolderName}/$it" }
         }
@@ -46,7 +46,7 @@ class SupportPreferences(val prefs: SharedPreferenceDelegation) :
     override val mlb by prefs.bool(R.string.pref_support_pref_ce_mlb)
 
     override val preferredCEs by prefs.stringSet(R.string.pref_support_pref_ce).map { ceSet ->
-        val ceImgFolderName = supportCeFolder.name
+        val ceImgFolderName = storageDirs.supportCeFolder.name
 
         var ces = ceSet
             .map { "${ceImgFolderName}/$it" }

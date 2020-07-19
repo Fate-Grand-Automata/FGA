@@ -159,9 +159,9 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         updateSkillCmdSummary()
 
-        if (shouldExtractSupportImages) {
+        if (storageDirs.shouldExtractSupportImages) {
             performSupportImageExtraction()
-        } else preferredSupportOnResume()
+        } else preferredSupportOnResume(storageDirs)
 
         // Update Card Priority
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
@@ -171,10 +171,10 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
     private fun performSupportImageExtraction() {
         scope.launch {
-            SupportImageExtractor(requireContext(), supportImgFolder).extract()
+            SupportImageExtractor(requireContext(), storageDirs).extract()
             Toast.makeText(activity, "Support Images Extracted Successfully", Toast.LENGTH_SHORT)
                 .show()
-            preferredSupportOnResume()
+            preferredSupportOnResume(storageDirs)
         }
     }
 

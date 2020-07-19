@@ -9,10 +9,14 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferencesCommon
+import com.mathewsachin.fategrandautomata.util.StorageDirs
 import com.mathewsachin.libautomata.IPlatformPrefs
 import kotlin.time.milliseconds
 
-class PreferencesImpl(private val context: Context) : IPreferences {
+class PreferencesImpl(
+    private val context: Context,
+    val storageDirs: StorageDirs
+) : IPreferences {
     private val prefs =
         SharedPreferenceDelegation(
             PreferenceManager.getDefaultSharedPreferences(context),
@@ -82,7 +86,8 @@ class PreferencesImpl(private val context: Context) : IPreferences {
 
     override fun forAutoSkillConfig(id: String) = AutoSkillPreferences(
         id,
-        context
+        context,
+        storageDirs
     )
 
     override val support = object :

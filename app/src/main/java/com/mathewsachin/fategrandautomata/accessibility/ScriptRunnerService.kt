@@ -17,13 +17,10 @@ import android.widget.Toast
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
-import com.mathewsachin.fategrandautomata.util.clearImageCache
+import com.mathewsachin.fategrandautomata.scripts.ImgLoader
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.util.AndroidImpl
-import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
-import com.mathewsachin.fategrandautomata.util.ScriptManager
-import com.mathewsachin.fategrandautomata.util.setThrottledClickListener
+import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.*
 
 class ScriptRunnerService : AccessibilityService() {
@@ -71,7 +68,7 @@ class ScriptRunnerService : AccessibilityService() {
             return false
         }
 
-        if (!registerScreenshot(MediaProjectionToken)) {
+        if (!registerScreenshot(MediaProjectionToken, storageDirs)) {
             return false
         }
 
@@ -82,16 +79,20 @@ class ScriptRunnerService : AccessibilityService() {
         return true
     }
 
-    private fun registerScreenshot(MediaProjectionToken: Intent?): Boolean {
+    private fun registerScreenshot(
+        MediaProjectionToken: Intent?,
+        storageDirs: StorageDirs
+    ): Boolean {
         sshotService = try {
             if (MediaProjectionToken != null) {
                 mediaProjection =
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
-                    userInterface.mediaProjectionMetrics
+                    userInterface.mediaProjectionMetrics,
+                    storageDirs
                 )
-            } else RootScreenshotService(SuperUser())
+            } else RootScreenshotService(SuperUser(), storageDirs)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             return false
@@ -112,7 +113,7 @@ class ScriptRunnerService : AccessibilityService() {
         sshotService = null
 
         ScreenshotManager.releaseMemory()
-        clearImageCache()
+        ImgLoader.clearImageCache()
 
         userInterface.hide()
         serviceStarted = false

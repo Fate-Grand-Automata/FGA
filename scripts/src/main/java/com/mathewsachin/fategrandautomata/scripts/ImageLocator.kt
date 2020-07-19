@@ -1,14 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts
 
-import com.mathewsachin.libautomata.IPattern
-
-interface IImageLoader {
-    fun loadRegionPattern(path: String): IPattern
-
-    fun loadSupportPattern(path: String): IPattern
-}
-
-private lateinit var ImgLoader: IImageLoader
+lateinit var ImgLoader: IImageLoader
 
 fun initImageLoader(imgLoader: IImageLoader) {
     ImgLoader = imgLoader

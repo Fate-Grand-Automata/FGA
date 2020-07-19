@@ -86,13 +86,13 @@ fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionMod
     friendsOnly.isVisible = modePreferred || modeFriend
 }
 
-fun PreferenceFragmentCompat.preferredSupportOnResume() {
+fun PreferenceFragmentCompat.preferredSupportOnResume(storageDirs: StorageDirs) {
     val servants = findServantList() ?: return
     val ces = findCeList() ?: return
     val friendNames = findFriendNamesList() ?: return
 
     servants.apply {
-        val entries = supportServantImgFolder.listFiles()
+        val entries = storageDirs.supportServantImgFolder.listFiles()
             .map { it.name }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
             .toTypedArray()
@@ -102,10 +102,10 @@ fun PreferenceFragmentCompat.preferredSupportOnResume() {
     }
 
     ces.apply {
-        populateFriendOrCe(supportCeFolder)
+        populateFriendOrCe(storageDirs.supportCeFolder)
     }
 
     friendNames.apply {
-        populateFriendOrCe(supportFriendFolder)
+        populateFriendOrCe(storageDirs.supportFriendFolder)
     }
 }

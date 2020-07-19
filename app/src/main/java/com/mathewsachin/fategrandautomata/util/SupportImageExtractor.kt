@@ -9,11 +9,11 @@ import java.io.FileOutputStream
 
 class SupportImageExtractor(
     val context: Context,
-    val supportImgFolder: File
+    val storageDirs: StorageDirs
 ) {
     private fun extract(FolderName: String) {
         val assetFolder = "Support/$FolderName"
-        val outDir = File(supportImgFolder, FolderName)
+        val outDir = File(storageDirs.supportImgFolder, FolderName)
 
         if (!outDir.exists()) {
             outDir.mkdirs()
