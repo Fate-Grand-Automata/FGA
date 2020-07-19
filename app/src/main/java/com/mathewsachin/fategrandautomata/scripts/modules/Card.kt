@@ -39,7 +39,10 @@ fun getCardScores(Priority: String): List<CardScore> {
                 else -> throw ScriptExitException("${cardPriorityErrorString}${it[0]}': Only 'W', and 'R' are valid card affinities.")
             }
 
-            CardScore(cardType, cardAffinity)
+            CardScore(
+                cardType,
+                cardAffinity
+            )
         }
         .toList()
 
@@ -126,7 +129,10 @@ class Card {
                 val affinity = getCardAffinity(Game.BattleCardAffinityRegionArray[cardSlot])
                 val type = getCardType(Game.BattleCardTypeRegionArray[cardSlot])
 
-                val score = CardScore(type, affinity)
+                val score = CardScore(
+                    type,
+                    affinity
+                )
 
                 if (!commandCards.containsKey(score)) {
                     commandCards[score] = mutableListOf()

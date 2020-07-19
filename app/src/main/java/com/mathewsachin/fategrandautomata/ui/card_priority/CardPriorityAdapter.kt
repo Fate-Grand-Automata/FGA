@@ -8,11 +8,32 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.CardScore
+import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.util.IItemTouchHelperAdapter
-import com.mathewsachin.fategrandautomata.util.IOnStartDragListener
 
-class CardPriorityAdapter(private val Items: MutableList<CardScore>)
-    : RecyclerView.Adapter<CardPriorityViewHolder>(), IItemTouchHelperAdapter {
+fun CardScore.getColorRes(): Int {
+    return when (CardType) {
+        CardTypeEnum.Buster -> when (CardAffinity) {
+            CardAffinityEnum.Weak -> R.color.colorBusterWeak
+            CardAffinityEnum.Normal -> R.color.colorBuster
+            CardAffinityEnum.Resist -> R.color.colorBusterResist
+        }
+        CardTypeEnum.Arts -> when (CardAffinity) {
+            CardAffinityEnum.Weak -> R.color.colorArtsWeak
+            CardAffinityEnum.Normal -> R.color.colorArts
+            CardAffinityEnum.Resist -> R.color.colorArtsResist
+        }
+        CardTypeEnum.Quick -> when (CardAffinity) {
+            CardAffinityEnum.Weak -> R.color.colorQuickWeak
+            CardAffinityEnum.Normal -> R.color.colorQuick
+            CardAffinityEnum.Resist -> R.color.colorQuickResist
+        }
+    }
+}
+
+class CardPriorityAdapter(private val Items: MutableList<CardScore>) :
+    RecyclerView.Adapter<CardPriorityViewHolder>(), IItemTouchHelperAdapter {
     lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardPriorityViewHolder {

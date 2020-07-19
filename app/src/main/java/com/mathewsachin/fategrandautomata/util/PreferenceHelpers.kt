@@ -15,9 +15,14 @@ fun EditTextPreference.makeNumeric() {
     }
 }
 
-fun PreferenceFragmentCompat.findServantList() = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_servant))
-fun PreferenceFragmentCompat.findCeList() = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_ce))
-fun PreferenceFragmentCompat.findFriendNamesList() = findPreference<MultiSelectListPreference>(getString(R.string.pref_support_friend_names))
+fun PreferenceFragmentCompat.findServantList() =
+    findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_servant))
+
+fun PreferenceFragmentCompat.findCeList() =
+    findPreference<MultiSelectListPreference>(getString(R.string.pref_support_pref_ce))
+
+fun PreferenceFragmentCompat.findFriendNamesList() =
+    findPreference<MultiSelectListPreference>(getString(R.string.pref_support_friend_names))
 
 fun PreferenceFragmentCompat.preferredSupportOnCreate() {
     findServantList()?.apply {
@@ -70,7 +75,8 @@ fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionMod
     val ceMlb = findPreference<Preference>(getString(R.string.pref_support_pref_ce_mlb)) ?: return
     val friendNames = findFriendNamesList() ?: return
     val fallback = findPreference<Preference>(getString(R.string.pref_support_fallback)) ?: return
-    val friendsOnly = findPreference<Preference>(getString(R.string.pref_support_friends_only)) ?: return
+    val friendsOnly =
+        findPreference<Preference>(getString(R.string.pref_support_friends_only)) ?: return
 
     val modePreferred = selectionMode == SupportSelectionModeEnum.Preferred
     val modeFriend = selectionMode == SupportSelectionModeEnum.Friend

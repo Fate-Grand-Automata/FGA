@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="libautomata" target="1.7" />
+      <module name="scripts" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

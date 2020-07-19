@@ -9,8 +9,8 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
 
-class CardPriorityListAdapter(private val Items: List<MutableList<CardScore>>)
-    : RecyclerView.Adapter<CardPriorityListViewHolder>() {
+class CardPriorityListAdapter(private val Items: List<MutableList<CardScore>>) :
+    RecyclerView.Adapter<CardPriorityListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardPriorityListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_priority_list_item, parent, false)
@@ -28,7 +28,8 @@ class CardPriorityListAdapter(private val Items: List<MutableList<CardScore>>)
         val recyclerView = holder.itemsRecyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
         val callback = ItemTouchHelperCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(callback)

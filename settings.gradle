@@ -1,3 +1,4 @@
+include ':scripts'
 include ':libautomata'
 rootProject.name='Fate Grand Automata'
 include ':app'

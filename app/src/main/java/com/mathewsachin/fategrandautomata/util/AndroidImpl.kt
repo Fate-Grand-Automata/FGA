@@ -23,7 +23,7 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
     override val windowRegion get() = getCutoutAppliedRegion()
 
     override val prefs: IPlatformPrefs
-        get() = Preferences.PlatformPrefs
+        get() = Preferences.platformPrefs
 
     override fun toast(Message: String) {
         handler.post {

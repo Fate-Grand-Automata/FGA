@@ -161,12 +161,12 @@ class Support {
             }
 
             if (result == SupportSearchResultEnum.NotFound
-                && numberOfSwipes < Preferences.Support.swipesPerUpdate
+                && numberOfSwipes < Preferences.support.swipesPerUpdate
             ) {
                 scrollList()
                 ++numberOfSwipes
                 0.3.seconds.wait()
-            } else if (numberOfUpdates < Preferences.Support.maxUpdates) {
+            } else if (numberOfUpdates < Preferences.support.maxUpdates) {
                 AutomataApi.PlatformImpl.toast("Support list will be updated in 3 seconds.")
                 3.seconds.wait()
 
@@ -235,7 +235,7 @@ class Support {
         val endY = lerp(
             Game.SupportSwipeStartClick.Y,
             Game.SupportSwipeEndClick.Y,
-            Preferences.Support.supportSwipeMultiplier
+            Preferences.support.supportSwipeMultiplier
         )
 
         swipe(
@@ -345,7 +345,7 @@ class Support {
 
         val limitBreakPattern = ImageLocator.LimitBroken
 
-        val mlbSimilarity = Preferences.Support.mlbSimilarity
+        val mlbSimilarity = Preferences.support.mlbSimilarity
         return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
     }
 }

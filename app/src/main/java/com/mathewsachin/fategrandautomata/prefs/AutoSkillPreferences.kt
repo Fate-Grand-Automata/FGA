@@ -2,13 +2,14 @@ package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.Context
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 
 const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
 
 class AutoSkillPreferences(
-    val id: String,
+    override val id: String,
     val context: Context
-) {
+) : IAutoSkillPreferences {
     private val prefs =
         SharedPreferenceDelegation(
             context.getSharedPreferences(
@@ -18,16 +19,16 @@ class AutoSkillPreferences(
             context
         )
 
-    val name by prefs.string(R.string.pref_autoskill_name, "--")
+    override val name by prefs.string(R.string.pref_autoskill_name, "--")
 
-    var skillCommand by prefs.string(R.string.pref_autoskill_cmd)
+    override var skillCommand by prefs.string(R.string.pref_autoskill_cmd)
 
-    var cardPriority by prefs.string(
+    override var cardPriority by prefs.string(
         R.string.pref_card_priority,
         defaultCardPriority
     )
 
-    val party by prefs.int(R.string.pref_autoskill_party, -1)
+    override val party by prefs.int(R.string.pref_autoskill_party, -1)
 
-    val support = SupportPreferences(prefs)
+    override val support = SupportPreferences(prefs)
 }
