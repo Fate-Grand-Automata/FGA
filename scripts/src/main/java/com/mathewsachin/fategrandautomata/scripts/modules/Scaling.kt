@@ -14,8 +14,14 @@ private fun decideScaleMethod(OriginalSize: Size, DesiredSize: Size): ScalingMet
     val rateToScaleByHeight = DesiredSize.Height / OriginalSize.Height.toDouble()
 
     return if (rateToScaleByWidth <= rateToScaleByHeight)
-        ScalingMethod(true, rateToScaleByWidth)
-    else ScalingMethod(false, rateToScaleByHeight)
+        ScalingMethod(
+            true,
+            rateToScaleByWidth
+        )
+    else ScalingMethod(
+        false,
+        rateToScaleByHeight
+    )
 }
 
 private fun calculateBorderThickness(Outer: Int, Inner: Int): Int {
@@ -32,8 +38,14 @@ private fun calculateGameAreaWithoutBorders(
     val scaledScriptSize = ScriptSize * ScaleRate
 
     return Region(
-        calculateBorderThickness(ScreenSize.Width, scaledScriptSize.Width), // Offset(X)
-        calculateBorderThickness(ScreenSize.Height, scaledScriptSize.Height), // Offset(Y)
+        calculateBorderThickness(
+            ScreenSize.Width,
+            scaledScriptSize.Width
+        ), // Offset(X)
+        calculateBorderThickness(
+            ScreenSize.Height,
+            scaledScriptSize.Height
+        ), // Offset(Y)
         scaledScriptSize.Width, // Game Width (without borders)
         scaledScriptSize.Height // Game Height (without borders)
     )
@@ -41,9 +53,16 @@ private fun calculateGameAreaWithoutBorders(
 
 private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
     val gameWithBorders = GameAreaManager.GameArea
-    val (scaleByWidth, scaleRate) = decideScaleMethod(ScriptSize, gameWithBorders.size)
+    val (scaleByWidth, scaleRate) = decideScaleMethod(
+        ScriptSize,
+        gameWithBorders.size
+    )
     val gameWithoutBorders =
-        calculateGameAreaWithoutBorders(ScriptSize, gameWithBorders.size, scaleRate)
+        calculateGameAreaWithoutBorders(
+            ScriptSize,
+            gameWithBorders.size,
+            scaleRate
+        )
 
     GameAreaManager.GameArea = gameWithoutBorders
 
@@ -59,5 +78,8 @@ private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
 fun initScaling() {
     GameAreaManager.reset()
 
-    applyAspectRatioFix(Game.ScriptSize, Game.ImageSize)
+    applyAspectRatioFix(
+        Game.ScriptSize,
+        Game.ImageSize
+    )
 }

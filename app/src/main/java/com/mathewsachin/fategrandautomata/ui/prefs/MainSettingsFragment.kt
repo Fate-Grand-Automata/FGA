@@ -32,7 +32,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         super.onResume()
 
         findPreference<Preference>(getString(R.string.pref_nav_refill))?.let {
-            val prefs = Preferences.Refill
+            val prefs = Preferences.refill
             it.summary = when (prefs.enabled) {
                 true -> "${prefs.resource} x${prefs.repetitions}"
                 false -> "OFF"

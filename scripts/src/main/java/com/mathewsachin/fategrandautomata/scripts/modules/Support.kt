@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
-import com.mathewsachin.fategrandautomata.scripts.loadSupportImagePattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
@@ -33,22 +32,24 @@ class Support {
             .filter { it.isNotBlank() && it.toLowerCase() != "any" }
     }
 
+    private val autoSkillPrefs = Preferences.selectedAutoSkillConfig.support
+
     fun init() {
         preferredServantArray.clear()
         friendNameArray.clear()
         preferredCEArray.clear()
 
         // Friend names
-        for (friend in Preferences.Support.friendNames.process()) {
+        for (friend in autoSkillPrefs.friendNames.process()) {
             friendNameArray.add(friend)
         }
 
         // Servants
-        for (servant in Preferences.Support.preferredServants.process()) {
+        for (servant in autoSkillPrefs.preferredServants.process()) {
             preferredServantArray.add(servant)
         }
 
-        val ceEntries = Preferences.Support.preferredCEs
+        val ceEntries = autoSkillPrefs.preferredCEs
             .process()
             .map {
                 val mlb = it.startsWith(limitBrokenCharacter)
@@ -58,7 +59,10 @@ class Support {
                     name = name.substring(1)
                 }
 
-                PreferredCEEntry(name, mlb)
+                PreferredCEEntry(
+                    name,
+                    mlb
+                )
             }
 
         // Craft essences
@@ -68,8 +72,9 @@ class Support {
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
-        val pattern = ImageLocator.SupportScreen
+        val pattern = ImageLocator.supportScreen
         while (!Game.SupportScreenRegion.exists(pattern)) {
+            0.3.seconds.wait()
         }
 
         return when (SelectionMode) {
@@ -80,8 +85,6 @@ class Support {
                 val searchMethod = decideSearchMethod()
                 selectPreferred(searchMethod)
             }
-
-            else -> throw ScriptExitException("Invalid support selection mode")
         }
     }
 
@@ -93,7 +96,7 @@ class Support {
         1.seconds.wait()
         Game.SupportFirstSupportClick.click()
 
-        val pattern = ImageLocator.SupportScreen
+        val pattern = ImageLocator.supportScreen
 
         // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
         if (Game.SupportScreenRegion.exists(pattern)) {
@@ -117,14 +120,20 @@ class Support {
         return ScreenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
             if (!isFriend(Game.SupportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
-                return SearchVisibleResult(SupportSearchResultEnum.NoFriendsFound, null)
+                return SearchVisibleResult(
+                    SupportSearchResultEnum.NoFriendsFound,
+                    null
+                )
             }
 
             var (support, bounds) = SearchMethod()
 
             if (support == null) {
                 // nope, not found this time. keep scrolling
-                return SearchVisibleResult(SupportSearchResultEnum.NotFound, null)
+                return SearchVisibleResult(
+                    SupportSearchResultEnum.NotFound,
+                    null
+                )
             }
 
             // bounds are already returned by searchMethod.byServantAndCraftEssence, but not by the other methods
@@ -132,16 +141,27 @@ class Support {
 
             if (!isFriend(bounds)) {
                 // found something, but it doesn't belong to a friend. keep scrolling
-                return SearchVisibleResult(SupportSearchResultEnum.NotFound, null)
+                return SearchVisibleResult(
+                    SupportSearchResultEnum.NotFound,
+                    null
+                )
             }
 
-            return SearchVisibleResult(SupportSearchResultEnum.Found, support)
+            return SearchVisibleResult(
+                SupportSearchResultEnum.Found,
+                support
+            )
         })
     }
 
     private fun selectFriend(): Boolean {
         if (friendNameArray.size > 0) {
-            return selectPreferred { SearchFunctionResult(findFriendName(), null) }
+            return selectPreferred {
+                SearchFunctionResult(
+                    findFriendName(),
+                    null
+                )
+            }
         }
 
         throw ScriptExitException("When using 'friend' support selection mode, specify at least one friend name.")
@@ -160,12 +180,12 @@ class Support {
             }
 
             if (result == SupportSearchResultEnum.NotFound
-                && numberOfSwipes < Preferences.Support.swipesPerUpdate
+                && numberOfSwipes < Preferences.support.swipesPerUpdate
             ) {
                 scrollList()
                 ++numberOfSwipes
                 0.3.seconds.wait()
-            } else if (numberOfUpdates < Preferences.Support.maxUpdates) {
+            } else if (numberOfUpdates < Preferences.support.maxUpdates) {
                 AutomataApi.PlatformImpl.toast("Support list will be updated in 3 seconds.")
                 3.seconds.wait()
 
@@ -184,7 +204,7 @@ class Support {
             } else {
                 // -- okay, we have run out of options, let's give up
                 Game.SupportListTopClick.click()
-                return selectSupport(Preferences.Support.fallbackTo)
+                return selectSupport(autoSkillPrefs.fallbackTo)
             }
         }
     }
@@ -200,12 +220,18 @@ class Support {
             // see docs/support_list_edge_case_fix.png to understand why this conditional exists
             if (craftEssence != null && craftEssence.Y > servant.Y) {
                 // only return if found. if not, try the other servants before scrolling
-                return SearchFunctionResult(craftEssence, supportBounds)
+                return SearchFunctionResult(
+                    craftEssence,
+                    supportBounds
+                )
             }
         }
 
         // not found, continue scrolling
-        return SearchFunctionResult(null, null)
+        return SearchFunctionResult(
+            null,
+            null
+        )
     }
 
     private fun decideSearchMethod(): SearchFunction {
@@ -217,11 +243,21 @@ class Support {
         }
 
         if (hasServants) {
-            return { SearchFunctionResult(findServants().firstOrNull(), null) }
+            return {
+                SearchFunctionResult(
+                    findServants().firstOrNull(),
+                    null
+                )
+            }
         }
 
         if (hasCraftEssences) {
-            return { SearchFunctionResult(findCraftEssence(Game.SupportListRegion), null) }
+            return {
+                SearchFunctionResult(
+                    findCraftEssence(Game.SupportListRegion),
+                    null
+                )
+            }
         }
 
         throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
@@ -234,7 +270,7 @@ class Support {
         val endY = lerp(
             Game.SupportSwipeStartClick.Y,
             Game.SupportSwipeEndClick.Y,
-            Preferences.supportSwipeMultiplier
+            Preferences.support.supportSwipeMultiplier
         )
 
         swipe(
@@ -252,7 +288,10 @@ class Support {
     private fun findFriendName(): Region? {
         for (friendName in friendNameArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = loadSupportImagePattern(friendName)
+            val pattern =
+                ImageLocator.loadSupportPattern(
+                    friendName
+                )
 
             for (theFriend in Game.SupportFriendsRegion.findAll(pattern)) {
                 return theFriend.Region
@@ -265,7 +304,10 @@ class Support {
     private fun findServants(): Sequence<Region> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = loadSupportImagePattern(preferredServant)
+            val pattern =
+                ImageLocator.loadSupportPattern(
+                    preferredServant
+                )
 
             cropFriendLock(pattern).use {
                 for (servant in Game.SupportListRegion.findAll(it)) {
@@ -295,7 +337,10 @@ class Support {
     private fun findCraftEssence(SearchRegion: Region): Region? {
         for (preferredCraftEssence in preferredCEArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = loadSupportImagePattern(preferredCraftEssence.Name)
+            val pattern =
+                ImageLocator.loadSupportPattern(
+                    preferredCraftEssence.Name
+                )
 
             val craftEssences = SearchRegion.findAll(pattern)
 
@@ -311,7 +356,7 @@ class Support {
 
     private fun findSupportBounds(Support: Region): Region {
         var supportBound = Region(76, 0, 2356, 428)
-        val regionAnchor = ImageLocator.SupportRegionTool
+        val regionAnchor = ImageLocator.supportRegionTool
 
         val searchRegion = Region(2100, 0, 300, 1440)
         val regionArray =
@@ -332,9 +377,9 @@ class Support {
     }
 
     private fun isFriend(Region: Region): Boolean {
-        val friendPattern = ImageLocator.Friend
+        val friendPattern = ImageLocator.friend
 
-        return !Preferences.Support.friendsOnly
+        return !autoSkillPrefs.friendsOnly
                 || Region.exists(friendPattern)
     }
 
@@ -342,9 +387,9 @@ class Support {
         val limitBreakRegion = Game.SupportLimitBreakRegion
             .copy(Y = CraftEssence.Y)
 
-        val limitBreakPattern = ImageLocator.LimitBroken
+        val limitBreakPattern = ImageLocator.limitBroken
 
-        val mlbSimilarity = Preferences.Support.mlbSimilarity
+        val mlbSimilarity = Preferences.support.mlbSimilarity
         return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
     }
 }

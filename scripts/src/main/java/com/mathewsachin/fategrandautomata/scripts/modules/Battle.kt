@@ -41,14 +41,14 @@ class Battle {
         hasClickedAttack = false
     }
 
-    fun isIdle() = Game.BattleScreenRegion.exists(ImageLocator.Battle)
+    fun isIdle() = Game.BattleScreenRegion.exists(ImageLocator.battle)
 
     fun clickAttack() {
         Game.BattleAttackClick.click()
 
         // TODO: This was added extra in Kotlin impl
         // Wait for Attack button to disappear
-        Game.BattleScreenRegion.waitVanish(ImageLocator.Battle, 5.seconds)
+        Game.BattleScreenRegion.waitVanish(ImageLocator.battle, 5.seconds)
 
         // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
         1.5.seconds.wait()
@@ -59,8 +59,8 @@ class Battle {
     }
 
     private fun isPriorityTarget(Target: Region): Boolean {
-        val isDanger = Target.exists(ImageLocator.TargetDanger)
-        val isServant = Target.exists(ImageLocator.TargetServant)
+        val isDanger = Target.exists(ImageLocator.targetDanger)
+        val isServant = Target.exists(ImageLocator.targetServant)
 
         return isDanger || isServant
     }
@@ -127,7 +127,7 @@ class Battle {
 
         hasClickedAttack = false
 
-        if (!hasChosenTarget && Preferences.BattleAutoChooseTarget) {
+        if (!hasChosenTarget && Preferences.autoChooseTarget) {
             autoChooseTarget()
         }
     }

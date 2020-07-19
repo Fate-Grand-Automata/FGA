@@ -1,10 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.libautomata.*
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 /**
@@ -36,7 +36,7 @@ class AutoLottery : EntryPoint() {
     }
 
     override fun script(): Nothing {
-        when (Preferences.GameServer) {
+        when (Preferences.gameServer) {
             GameServerEnum.Cn -> {
                 throw ScriptExitException("Lottery script doesn't support the CN server right now.")
             }
@@ -48,10 +48,10 @@ class AutoLottery : EntryPoint() {
             ScreenshotManager.useSameSnapIn {
                 when {
                     finishedLotteryBoxRegion.exists(
-                        ImageLocator.FinishedLotteryBox,
+                        ImageLocator.finishedLotteryBox,
                         Similarity = 0.65
                     ) -> reset()
-                    fullPresentBoxRegion.exists(ImageLocator.PresentBoxFull) -> {
+                    fullPresentBoxRegion.exists(ImageLocator.presentBoxFull) -> {
                         throw ScriptExitException("Present Box Full")
                     }
                     else -> spin()

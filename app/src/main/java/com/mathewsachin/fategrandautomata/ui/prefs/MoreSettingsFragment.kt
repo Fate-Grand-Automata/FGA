@@ -31,7 +31,7 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
         // Since GameServer can be updated from other parts of code,
         // we need to trigger a forced UI update here
         findPreference<ListPreference>(getString(R.string.pref_gameserver))?.let {
-            it.value = Preferences.GameServer.toString()
+            it.value = Preferences.gameServer.toString()
         }
     }
 }

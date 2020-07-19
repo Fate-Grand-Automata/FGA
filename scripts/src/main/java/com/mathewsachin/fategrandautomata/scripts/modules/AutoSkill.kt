@@ -74,7 +74,7 @@ class AutoSkill {
         private set
 
     private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
-        val img = ImageLocator.Battle
+        val img = ImageLocator.battle
 
         // slow devices need this. do not remove.
         Game.BattleScreenRegion.waitVanish(img, 2.seconds)
@@ -85,7 +85,7 @@ class AutoSkill {
     private fun castSkill(Location: Location) {
         Location.click()
 
-        if (Preferences.SkillConfirmation) {
+        if (Preferences.skillConfirmation) {
             Game.BattleSkillOkClick.click()
         }
 
@@ -137,7 +137,7 @@ class AutoSkill {
 
         Game.BattleMasterSkill3Click.click()
 
-        if (Preferences.SkillConfirmation) {
+        if (Preferences.skillConfirmation) {
             Game.BattleSkillOkClick.click()
         }
 
@@ -211,7 +211,7 @@ class AutoSkill {
     private fun initCommands() {
         var stageCount = 0
 
-        for (commandList in Preferences.SkillCommand.splitToSequence(',')) {
+        for (commandList in Preferences.selectedAutoSkillConfig.skillCommand.splitToSequence(',')) {
             if (commandList != "0") {
                 if (Regex("""^[1-3]""").containsMatchIn(commandList)) {
                     throw ScriptExitException("Error at '${commandList}': Skill Command cannot start with number '1', '2' and '3'!")

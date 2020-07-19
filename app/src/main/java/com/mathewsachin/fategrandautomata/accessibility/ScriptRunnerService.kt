@@ -17,7 +17,7 @@ import android.widget.Toast
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
-import com.mathewsachin.fategrandautomata.scripts.clearImageCache
+import com.mathewsachin.fategrandautomata.util.clearImageCache
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
@@ -61,7 +61,7 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = null
     }
 
-    val wantsMediaProjectionToken: Boolean get() = !Preferences.UseRootForScreenshots
+    val wantsMediaProjectionToken: Boolean get() = !Preferences.useRootForScreenshots
 
     var serviceStarted = false
         private set
@@ -150,7 +150,7 @@ class ScriptRunnerService : AccessibilityService() {
                 scriptManager.stopScript()
             } else sshotService?.let {
                 // Overwrite the server in the preferences with the detected one, if possible
-                currentFgoServer?.let { server -> Preferences.GameServer = server }
+                currentFgoServer?.let { server -> Preferences.gameServer = server }
 
                 scriptManager.startScript(this, it)
             }

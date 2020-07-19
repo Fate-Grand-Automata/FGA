@@ -4,17 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.prefs.defaultPrefs
-import com.mathewsachin.fategrandautomata.scripts.prefs.getStringSetPref
-import com.mathewsachin.fategrandautomata.util.AutoSkillEntry
-import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
+import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import kotlinx.android.synthetic.main.autoskill_list.*
 import java.util.*
 
 class AutoSkillListActivity : AppCompatActivity() {
-    private lateinit var autoSkillItems: Array<AutoSkillEntry>
+    private lateinit var autoSkillItems: Array<IAutoSkillPreferences>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +22,7 @@ class AutoSkillListActivity : AppCompatActivity() {
         }
 
         autoskill_listview.setOnItemClickListener { _, _, position, _ ->
-            val guid = autoSkillItems[position].Id
+            val guid = autoSkillItems[position].id
 
             editItem(guid)
         }
@@ -40,11 +37,11 @@ class AutoSkillListActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        autoSkillItems = getAutoSkillEntries()
+        autoSkillItems = Preferences.autoSkillPreferences
             .toTypedArray()
 
         val autoSkillNames = autoSkillItems
-            .map { it.Name }
+            .map { it.name }
 
         val adapter = ArrayAdapter(this, R.layout.autoskill_item, autoSkillNames)
         autoskill_listview.adapter = adapter
@@ -54,16 +51,11 @@ class AutoSkillListActivity : AppCompatActivity() {
     private fun addOnBtnClick() {
         val guid = UUID.randomUUID().toString()
 
-        val autoSkillItems = getStringSetPref(R.string.pref_autoskill_list)
+        val autoSkillItems = Preferences.autoSkillList
             .toMutableSet()
+            .apply { add(guid) }
 
-        autoSkillItems.add(guid)
-
-        val key = getString(R.string.pref_autoskill_list)
-
-        defaultPrefs.edit(commit = true) {
-            putStringSet(key, autoSkillItems)
-        }
+        Preferences.autoSkillList = autoSkillItems
 
         editItem(guid)
     }

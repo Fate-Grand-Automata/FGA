@@ -19,32 +19,35 @@ fun getCardScores(Priority: String): List<CardScore> {
         .map { it.trim().toUpperCase() }
         .map {
             when (it.length) {
-                1 -> "${dummyNormalAffinityChar}$it"
+                1 -> "$dummyNormalAffinityChar$it"
                 2 -> it
-                else -> throw ScriptExitException("${cardPriorityErrorString}${it}': Invalid card length.")
+                else -> throw ScriptExitException("$cardPriorityErrorString${it}': Invalid card length.")
             }
         }
         .map {
-            val cardType = when(it[1]) {
+            val cardType = when (it[1]) {
                 'B' -> CardTypeEnum.Buster
                 'A' -> CardTypeEnum.Arts
                 'Q' -> CardTypeEnum.Quick
-                else -> throw ScriptExitException("${cardPriorityErrorString}${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
+                else -> throw ScriptExitException("$cardPriorityErrorString${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
             }
 
-            val cardAffinity = when(it[0]) {
+            val cardAffinity = when (it[0]) {
                 'W' -> CardAffinityEnum.Weak
                 'R' -> CardAffinityEnum.Resist
                 dummyNormalAffinityChar -> CardAffinityEnum.Normal
-                else -> throw ScriptExitException("${cardPriorityErrorString}${it[0]}': Only 'W', and 'R' are valid card affinities.")
+                else -> throw ScriptExitException("$cardPriorityErrorString${it[0]}': Only 'W', and 'R' are valid card affinities.")
             }
 
-            CardScore(cardType, cardAffinity)
+            CardScore(
+                cardType,
+                cardAffinity
+            )
         }
         .toList()
 
     if (scores.size != 9) {
-        throw ScriptExitException("${cardPriorityErrorString}': Expected 9 cards, but ${scores.size} found.")
+        throw ScriptExitException("$cardPriorityErrorString': Expected 9 cards, but ${scores.size} found.")
     }
 
     return scores
@@ -67,17 +70,16 @@ class Card {
     }
 
     private fun initCardPriorityArray() {
-        val priority = Preferences.CardPriority
+        val priority = Preferences.selectedAutoSkillConfig.cardPriority
 
         if (priority.length == 3) {
             initCardPriorityArraySimple(priority)
-        }
-        else initCardPriorityArrayDetailed(priority)
+        } else initCardPriorityArrayDetailed(priority)
     }
 
     private fun initCardPriorityArraySimple(Priority: String) {
         val detailedPriority = Priority
-            .map { "W$it, ${dummyNormalAffinityChar}$it, R$it" }
+            .map { "W$it, $dummyNormalAffinityChar$it, R$it" }
             .joinToString()
 
         initCardPriorityArrayDetailed(detailedPriority)
@@ -86,15 +88,19 @@ class Card {
     private fun initCardPriorityArrayDetailed(Priority: String) {
         cardPriorityArray = Priority
             .split(cardPriorityStageSeparator)
-            .map { getCardScores(it) }
+            .map {
+                getCardScores(
+                    it
+                )
+            }
     }
 
     private fun getCardAffinity(Region: Region): CardAffinityEnum {
-        if (Region.exists(ImageLocator.Weak)) {
+        if (Region.exists(ImageLocator.weak)) {
             return CardAffinityEnum.Weak
         }
 
-        if (Region.exists(ImageLocator.Resist)) {
+        if (Region.exists(ImageLocator.resist)) {
             return CardAffinityEnum.Resist
         }
 
@@ -102,15 +108,15 @@ class Card {
     }
 
     private fun getCardType(Region: Region): CardTypeEnum {
-        if (Region.exists(ImageLocator.Buster)) {
+        if (Region.exists(ImageLocator.buster)) {
             return CardTypeEnum.Buster
         }
 
-        if (Region.exists(ImageLocator.Art)) {
+        if (Region.exists(ImageLocator.art)) {
             return CardTypeEnum.Arts
         }
 
-        if (Region.exists(ImageLocator.Quick)) {
+        if (Region.exists(ImageLocator.quick)) {
             return CardTypeEnum.Quick
         }
 
@@ -127,7 +133,10 @@ class Card {
                 val affinity = getCardAffinity(Game.BattleCardAffinityRegionArray[cardSlot])
                 val type = getCardType(Game.BattleCardTypeRegionArray[cardSlot])
 
-                val score = CardScore(type, affinity)
+                val score = CardScore(
+                    type,
+                    affinity
+                )
 
                 if (!commandCards.containsKey(score)) {
                     commandCards[score] = mutableListOf()
@@ -138,13 +147,14 @@ class Card {
         }
     }
 
-    val canClickNpCards: Boolean get() {
-        val weCanSpam = Preferences.BattleNoblePhantasm == BattleNoblePhantasmEnum.Spam
-        val weAreInDanger = Preferences.BattleNoblePhantasm == BattleNoblePhantasmEnum.Danger
-                && battle.hasChosenTarget
+    val canClickNpCards: Boolean
+        get() {
+            val weCanSpam = Preferences.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
+            val weAreInDanger = Preferences.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
+                    && battle.hasChosenTarget
 
-        return (weCanSpam || weAreInDanger) && autoSkill.isFinished
-    }
+            return (weCanSpam || weAreInDanger) && autoSkill.isFinished
+        }
 
     fun clickNpCards() {
         for (npCard in Game.BattleNpCardClickArray) {

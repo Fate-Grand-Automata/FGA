@@ -4,48 +4,44 @@ import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.*
 import java.io.File
 
-private val supportImgTempDir: File by lazy {
-    val dir = File(AutomataApplication.Instance.cacheDir, "support")
-
-    if (!dir.exists()) {
-        dir.mkdirs()
-    }
-
-    dir
+fun getServantImgPath(dir: File, Index: Int): File {
+    return File(dir, "servant_${Index}.png")
 }
 
-fun getServantImgPath(Index: Int): File {
-    return File(supportImgTempDir, "servant_${Index}.png")
+fun getCeImgPath(dir: File, Index: Int): File {
+    return File(dir, "ce_${Index}.png")
 }
 
-fun getCeImgPath(Index: Int): File {
-    return File(supportImgTempDir, "ce_${Index}.png")
+fun getFriendImgPath(dir: File, Index: Int): File {
+    return File(dir, "friend_${Index}.png")
 }
 
-fun getFriendImgPath(Index: Int): File {
-    return File(supportImgTempDir, "friend_${Index}.png")
-}
-
-class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
+class SupportImageMaker(
+    private val dir: File,
+    private var Callback: (() -> Unit)?
+) : EntryPoint() {
     override fun script(): Nothing {
         initScaling()
 
         cleanExtractFolder()
 
-        val isInSupport = isInSupport()
+        val isInSupport =
+            isInSupport()
 
         // the servant and CE images are further to the right in the friend screen
         val supportBoundX = if (isInSupport) 106 else 176
         var supportBound = Region(supportBoundX, 0, 286, 220)
         val searchRegion = Region(2100, 0, 370, 1440)
 
-        val regionAnchor = ImageLocator.SupportRegionTool
+        val regionAnchor = ImageLocator.supportRegionTool
         // At max two Servant+CE are completely on screen, so only use those
-        val regionArray = searchRegion.findAll(regionAnchor, supportRegionToolSimilarity)
+        val regionArray = searchRegion.findAll(
+            regionAnchor,
+            supportRegionToolSimilarity
+        )
             .take(2).toList()
 
         val screenBounds = Region(0, 0, Game.ScriptSize.Width, Game.ScriptSize.Height)
@@ -76,8 +72,8 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
     }
 
     private fun cleanExtractFolder() {
-        for (file in supportImgTempDir.listFiles()) {
-            file.delete()
+        dir.listFiles()?.forEach {
+            it.delete()
         }
     }
 
@@ -85,7 +81,10 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
         val servant = supportBoundImage.crop(Region(0, 0, 125, 44))
         servant.use {
             servant.save(
-                getServantImgPath(i).absolutePath
+                getServantImgPath(
+                    dir,
+                    i
+                ).absolutePath
             )
         }
     }
@@ -94,7 +93,10 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
         val ce = supportRegionImage.crop(Region(0, 80, supportRegionImage.width, 25))
         ce.use {
             ce.save(
-                getCeImgPath(i).absolutePath
+                getCeImgPath(
+                    dir,
+                    i
+                ).absolutePath
             )
         }
     }
@@ -107,7 +109,10 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
         val friendPattern = friendBound.getPattern()
         friendPattern?.use {
             friendPattern.save(
-                getFriendImgPath(i).absolutePath
+                getFriendImgPath(
+                    dir,
+                    i
+                ).absolutePath
             )
         }
     }

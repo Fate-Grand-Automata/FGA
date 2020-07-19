@@ -24,11 +24,11 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
             0,
-            Preferences.Gestures.swipeDuration.toLongMilliseconds()
+            Preferences.gestures.swipeDuration.toLongMilliseconds()
         )
         performGesture(swipeStroke)
 
-        Preferences.Gestures.swipeWaitTime.wait()
+        Preferences.gestures.swipeWaitTime.wait()
     }
 
     override fun click(Location: Location, Times: Int) {
@@ -37,8 +37,8 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
 
         val stroke = GestureDescription.StrokeDescription(
             swipePath,
-            Preferences.Gestures.clickDelay.toLongMilliseconds(),
-            Preferences.Gestures.clickDuration.toLongMilliseconds()
+            Preferences.gestures.clickDelay.toLongMilliseconds(),
+            Preferences.gestures.clickDuration.toLongMilliseconds()
         )
 
         Log.d(AccessibilityGestures::class.simpleName, "click $Location x$Times")
@@ -47,7 +47,7 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
             performGesture(stroke)
         }
 
-        Preferences.Gestures.clickWaitTime.wait()
+        Preferences.gestures.clickWaitTime.wait()
     }
 
     private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {

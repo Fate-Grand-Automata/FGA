@@ -1,9 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,14 +10,13 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.edit
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
-import com.mathewsachin.fategrandautomata.scripts.prefs.defaultCardPriority
-import com.mathewsachin.fategrandautomata.scripts.prefs.getStringPref
-import com.mathewsachin.fategrandautomata.scripts.shouldExtractSupportImages
+import com.mathewsachin.fategrandautomata.util.extractSupportImgs
+import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.util.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
@@ -38,7 +35,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         super.onDestroy()
     }
 
-    private lateinit var autoSkillPrefs: SharedPreferences
+    private lateinit var autoSkillPrefs: IAutoSkillPreferences
     private var editTextVisibleKey = ""
     private var restoredEditTextContent: String? = null
 
@@ -71,7 +68,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             ?: throw IllegalArgumentException("Arguments should not be null")
 
         preferenceManager.sharedPreferencesName = autoSkillItemKey
-        autoSkillPrefs = requireContext().getSharedPreferences(autoSkillItemKey, Context.MODE_PRIVATE)
+        autoSkillPrefs = Preferences.forAutoSkillConfig(autoSkillItemKey)
 
         setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
 
@@ -110,10 +107,13 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         val layout = FrameLayout(requireActivity())
 
         editText = EditText(requireActivity()).apply {
-            setText(restoredEditTextContent ?: getSavedSkillCmd())
+            setText(restoredEditTextContent ?: autoSkillPrefs.skillCommand)
             setSelection(text.length)
 
-            val lp = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+            val lp = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
             val margin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
             lp.setMargins(margin, 0, margin, 0)
             layoutParams = lp
@@ -136,27 +136,22 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun setAutoSkillCommand(Cmd: String) {
-        autoSkillPrefs.edit(commit = true) {
-            putString(getString(R.string.pref_autoskill_cmd), Cmd)
-        }
+        autoSkillPrefs.skillCommand = Cmd
 
         updateSkillCmdSummary()
     }
 
     private fun openAutoSkillMaker() {
         val intent = Intent(requireActivity(), AutoSkillMakerActivity::class.java)
-        startActivityForResult(intent,
+        startActivityForResult(
+            intent,
             RequestAutoSkillMaker
         )
     }
 
-    private fun getSavedSkillCmd(): String {
-        return getStringPref(R.string.pref_autoskill_cmd, Prefs = autoSkillPrefs)
-    }
-
     private fun updateSkillCmdSummary() {
         findPreference<Preference>(getString(R.string.pref_autoskill_cmd))?.let {
-            it.summary = getSavedSkillCmd()
+            it.summary = autoSkillPrefs.skillCommand
         }
     }
 
@@ -167,19 +162,19 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         if (shouldExtractSupportImages) {
             performSupportImageExtraction()
-        }
-        else preferredSupportOnResume()
+        } else preferredSupportOnResume()
 
         // Update Card Priority
         findPreference<Preference>(getString(R.string.pref_card_priority))?.let {
-            it.summary = getStringPref(R.string.pref_card_priority, defaultCardPriority, Prefs = autoSkillPrefs)
+            it.summary = autoSkillPrefs.cardPriority
         }
     }
 
     private fun performSupportImageExtraction() {
         scope.launch {
             extractSupportImgs()
-            Toast.makeText(activity, "Support Images Extracted Successfully", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Support Images Extracted Successfully", Toast.LENGTH_SHORT)
+                .show()
             preferredSupportOnResume()
         }
     }

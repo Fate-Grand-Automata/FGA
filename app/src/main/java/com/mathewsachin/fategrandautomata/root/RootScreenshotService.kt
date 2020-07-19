@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.root
 import android.os.Build
 import android.util.Log
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
-import com.mathewsachin.fategrandautomata.scripts.storageDir
+import com.mathewsachin.fategrandautomata.util.storageDir
 import com.mathewsachin.fategrandautomata.util.readIntLE
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern

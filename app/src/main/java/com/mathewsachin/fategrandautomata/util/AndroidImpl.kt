@@ -4,14 +4,14 @@ import android.content.Context
 import android.os.*
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.IPlatformImpl
-import com.mathewsachin.libautomata.Region
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.addRegionToHighlight
 import com.mathewsachin.fategrandautomata.ui.removeRegionToHighlight
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IPlatformPrefs
+import com.mathewsachin.libautomata.Region
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
     override val windowRegion get() = getCutoutAppliedRegion()
 
     override val prefs: IPlatformPrefs
-        get() = Preferences.PlatformPrefs
+        get() = Preferences.platformPrefs
 
     override fun toast(Message: String) {
         handler.post {

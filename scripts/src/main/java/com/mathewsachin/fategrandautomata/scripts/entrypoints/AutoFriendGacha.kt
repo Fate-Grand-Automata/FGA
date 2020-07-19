@@ -25,7 +25,7 @@ class AutoFriendGacha : EntryPoint() {
 
         while (true) {
             when {
-                continueSummonRegion.exists(ImageLocator.FpSummonContinue) -> {
+                continueSummonRegion.exists(ImageLocator.fpSummonContinue) -> {
                     continueSummonClick.click()
                     0.3.seconds.wait()
                     okClick.click()
