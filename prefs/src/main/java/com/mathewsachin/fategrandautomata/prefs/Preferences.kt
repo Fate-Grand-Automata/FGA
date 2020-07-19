@@ -2,14 +2,13 @@ package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.Context
 import androidx.preference.PreferenceManager
+import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
+import com.mathewsachin.fategrandautomata.prefs.helpers.map
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferencesCommon
-import com.mathewsachin.fategrandautomata.util.StorageDirs
+import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.IPlatformPrefs
 import kotlin.time.milliseconds
 
@@ -73,7 +72,7 @@ class PreferencesImpl(
 
     override val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
 
-    override val refill =
+    override val refill: IRefillPreferences =
         RefillPreferences(prefs)
 
     override val ignoreNotchCalculation by prefs.bool(R.string.pref_ignore_notch)
@@ -84,11 +83,12 @@ class PreferencesImpl(
 
     override val recordScreen by prefs.bool(R.string.pref_record_screen)
 
-    override fun forAutoSkillConfig(id: String) = AutoSkillPreferences(
-        id,
-        context,
-        storageDirs
-    )
+    override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
+        AutoSkillPreferences(
+            id,
+            context,
+            storageDirs
+        )
 
     override val support = object :
         ISupportPreferencesCommon {

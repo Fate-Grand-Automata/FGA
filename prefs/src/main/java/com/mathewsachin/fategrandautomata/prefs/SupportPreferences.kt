@@ -1,12 +1,14 @@
 package com.mathewsachin.fategrandautomata.prefs
 
+import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
+import com.mathewsachin.fategrandautomata.prefs.helpers.map
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.limitBrokenCharacter
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
-import com.mathewsachin.fategrandautomata.util.StorageDirs
 import java.io.File
 
-class SupportPreferences(
+internal class SupportPreferences(
     val prefs: SharedPreferenceDelegation,
     val storageDirs: StorageDirs
 ) : ISupportPreferences {

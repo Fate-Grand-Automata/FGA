@@ -6,7 +6,7 @@ import android.media.Image
 import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.util.DisplayMetrics
-import com.mathewsachin.fategrandautomata.util.StorageDirs
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IScreenshotService
 import org.opencv.core.CvType

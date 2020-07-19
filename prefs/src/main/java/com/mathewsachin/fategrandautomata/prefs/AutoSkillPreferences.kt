@@ -1,12 +1,13 @@
 package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.Context
+import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.util.StorageDirs
 
 const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
 
-class AutoSkillPreferences(
+internal class AutoSkillPreferences(
     override val id: String,
     val context: Context,
     val storageDirs: StorageDirs
@@ -31,5 +32,9 @@ class AutoSkillPreferences(
 
     override val party by prefs.int(R.string.pref_autoskill_party, -1)
 
-    override val support = SupportPreferences(prefs, storageDirs)
+    override val support =
+        SupportPreferences(
+            prefs,
+            storageDirs
+        )
 }

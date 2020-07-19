@@ -1,11 +1,11 @@
-package com.mathewsachin.fategrandautomata.prefs
+package com.mathewsachin.fategrandautomata.prefs.helpers
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.StringRes
 import kotlin.properties.ReadWriteProperty
 
-class SharedPreferenceDelegation(
+internal class SharedPreferenceDelegation(
     val prefs: SharedPreferences,
     val context: Context
 ) {

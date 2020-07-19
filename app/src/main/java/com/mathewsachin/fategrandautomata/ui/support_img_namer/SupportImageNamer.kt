@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
-import com.mathewsachin.fategrandautomata.util.StorageDirs
 import java.io.File
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \

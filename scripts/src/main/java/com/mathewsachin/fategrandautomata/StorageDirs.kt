@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.util
+package com.mathewsachin.fategrandautomata
 
 import java.io.File
 

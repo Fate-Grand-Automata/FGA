@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.text.InputType
 import androidx.preference.*
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import java.io.File
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys

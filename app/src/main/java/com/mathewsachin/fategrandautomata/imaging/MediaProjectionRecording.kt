@@ -5,7 +5,7 @@ import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import android.util.DisplayMetrics
-import com.mathewsachin.fategrandautomata.util.StorageDirs
+import com.mathewsachin.fategrandautomata.StorageDirs
 import java.io.File
 
 /**
