@@ -113,7 +113,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
     private fun autoSkillPicker(context: Context, EntryPointRunner: () -> Unit) {
         var selected = Preferences.selectedAutoSkillConfig
 
-        val autoSkillItems = getAutoSkillEntries()
+        val autoSkillItems = Preferences.autoSkillPreferences
 
         val radioGroup = RadioGroup(context).apply {
             orientation = RadioGroup.VERTICAL

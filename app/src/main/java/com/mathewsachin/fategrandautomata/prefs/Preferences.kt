@@ -43,6 +43,15 @@ object Preferences {
 
     var autoSkillList by prefs.stringSet(R.string.pref_autoskill_list)
 
+    val autoSkillPreferences
+        get() = autoSkillList.map {
+            AutoSkillPreferences(
+                it,
+                AutomataApplication.Instance
+            )
+        }
+            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
+
     private var selectedAutoSkillConfigKey by prefs.string(R.string.pref_autoskill_selected)
 
     private var lastConfig: AutoSkillPreferences? = null

@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.AutoSkillPreferences
 import com.mathewsachin.fategrandautomata.prefs.Preferences
-import com.mathewsachin.fategrandautomata.util.getAutoSkillEntries
 import kotlinx.android.synthetic.main.autoskill_list.*
 import java.util.*
 
@@ -38,7 +37,7 @@ class AutoSkillListActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        autoSkillItems = getAutoSkillEntries()
+        autoSkillItems = Preferences.autoSkillPreferences
             .toTypedArray()
 
         val autoSkillNames = autoSkillItems
