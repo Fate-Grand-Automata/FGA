@@ -14,6 +14,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.AutoSkillPreferences
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
 import com.mathewsachin.fategrandautomata.scripts.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
@@ -67,11 +68,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             ?: throw IllegalArgumentException("Arguments should not be null")
 
         preferenceManager.sharedPreferencesName = autoSkillItemKey
-        autoSkillPrefs =
-            AutoSkillPreferences(
-                autoSkillItemKey,
-                requireContext()
-            )
+        autoSkillPrefs = Preferences.forAutoSkillConfig(autoSkillItemKey)
 
         setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
 

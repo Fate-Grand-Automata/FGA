@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.AutoSkillPreferences
+import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.modules.cardPriorityStageSeparator
@@ -33,11 +34,7 @@ class CardPriorityActivity : AppCompatActivity() {
 
         val autoSkillKey = intent.getStringExtra(AutoSkillItemActivity::autoSkillItemKey.name)
             ?: throw IllegalArgumentException("Missing AutoSkill item key in intent")
-        autoSkillPref =
-            AutoSkillPreferences(
-                autoSkillKey,
-                applicationContext
-            )
+        autoSkillPref = Preferences.forAutoSkillConfig(autoSkillKey)
 
         var cardPriority = autoSkillPref.cardPriority
 

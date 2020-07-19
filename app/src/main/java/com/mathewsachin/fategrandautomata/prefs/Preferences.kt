@@ -44,12 +44,7 @@ object Preferences {
     var autoSkillList by prefs.stringSet(R.string.pref_autoskill_list)
 
     val autoSkillPreferences
-        get() = autoSkillList.map {
-            AutoSkillPreferences(
-                it,
-                AutomataApplication.Instance
-            )
-        }
+        get() = autoSkillList.map { forAutoSkillConfig(it) }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
 
     private var selectedAutoSkillConfigKey by prefs.string(R.string.pref_autoskill_selected)
@@ -64,10 +59,7 @@ object Preferences {
 
                 if (it != null && it.id == currentSelectedKey) {
                     it
-                } else AutoSkillPreferences(
-                    currentSelectedKey,
-                    context
-                )
+                } else forAutoSkillConfig(currentSelectedKey)
             }
 
             lastConfig = config
@@ -132,4 +124,9 @@ object Preferences {
 
         val swipeDuration by prefs.int(R.string.pref_swipe_duration, 300).map { it.milliseconds }
     }
+
+    fun forAutoSkillConfig(id: String) = AutoSkillPreferences(
+        id,
+        context
+    )
 }
