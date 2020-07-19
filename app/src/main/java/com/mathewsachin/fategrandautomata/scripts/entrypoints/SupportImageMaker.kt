@@ -43,7 +43,7 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
         var supportBound = Region(supportBoundX, 0, 286, 220)
         val searchRegion = Region(2100, 0, 370, 1440)
 
-        val regionAnchor = ImageLocator.SupportRegionTool
+        val regionAnchor = ImageLocator.supportRegionTool
         // At max two Servant+CE are completely on screen, so only use those
         val regionArray = searchRegion.findAll(regionAnchor, supportRegionToolSimilarity)
             .take(2).toList()

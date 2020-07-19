@@ -74,7 +74,7 @@ class AutoSkill {
         private set
 
     private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
-        val img = ImageLocator.Battle
+        val img = ImageLocator.battle
 
         // slow devices need this. do not remove.
         Game.BattleScreenRegion.waitVanish(img, 2.seconds)

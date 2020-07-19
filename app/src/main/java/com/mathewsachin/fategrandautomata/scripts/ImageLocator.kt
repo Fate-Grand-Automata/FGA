@@ -3,66 +3,66 @@ package com.mathewsachin.fategrandautomata.scripts
 import com.mathewsachin.fategrandautomata.scripts.getRegionPattern as load
 
 object ImageLocator {
-    val Battle get() = load("battle.png")
+    val battle get() = load("battle.png")
 
-    val TargetDanger get() = load("target_danger.png")
+    val targetDanger get() = load("target_danger.png")
 
-    val TargetServant get() = load("target_servant.png")
+    val targetServant get() = load("target_servant.png")
 
-    val Buster get() = load("buster.png")
+    val buster get() = load("buster.png")
 
-    val Art get() = load("art.png")
+    val art get() = load("art.png")
 
-    val Quick get() = load("quick.png")
+    val quick get() = load("quick.png")
 
-    val Weak get() = load("weak.png")
+    val weak get() = load("weak.png")
 
-    val Resist get() = load("resist.png")
+    val resist get() = load("resist.png")
 
-    val Friend get() = load("friend.png")
+    val friend get() = load("friend.png")
 
-    val LimitBroken get() = load("limitbroken.png")
+    val limitBroken get() = load("limitbroken.png")
 
-    val SupportScreen get() = load("support_screen.png")
+    val supportScreen get() = load("support_screen.png")
 
-    val SupportRegionTool get() = load("support_region_tool.png")
+    val supportRegionTool get() = load("support_region_tool.png")
 
-    val StorySkip get() = load("storyskip.png")
+    val storySkip get() = load("storyskip.png")
 
-    val Menu get() = load("menu.png")
+    val menu get() = load("menu.png")
 
-    val Stamina get() = load("stamina.png")
+    val stamina get() = load("stamina.png")
 
-    val Result get() = load("result.png")
+    val result get() = load("result.png")
 
-    val Bond get() = load("bond.png")
+    val bond get() = load("bond.png")
 
-    val Bond10Reward get() = load("ce_reward.png")
+    val bond10Reward get() = load("ce_reward.png")
 
-    val FriendRequest get() = load("friendrequest.png")
+    val friendRequest get() = load("friendrequest.png")
 
-    val Confirm get() = load("confirm.png")
+    val confirm get() = load("confirm.png")
 
-    val QuestReward get() = load("questreward.png")
+    val questReward get() = load("questreward.png")
 
-    val Retry get() = load("retry.png")
+    val retry get() = load("retry.png")
 
-    val Withdraw get() = load("withdraw.png")
+    val withdraw get() = load("withdraw.png")
 
-    val FinishedLotteryBox get() = load("lottery.png")
+    val finishedLotteryBox get() = load("lottery.png")
 
-    val PresentBoxFull get() = load("StopGifts.png")
+    val presentBoxFull get() = load("StopGifts.png")
 
-    val MasterExp get() = load("master_exp.png")
+    val masterExp get() = load("master_exp.png")
 
     // TODO: Verify the CN image
-    val MasterLvlUp get() = load("master_lvl_up.png")
+    val masterLvlUp get() = load("master_lvl_up.png")
 
-    val MatRewards get() = load("mat_rewards.png")
+    val matRewards get() = load("mat_rewards.png")
 
-    val GudaFinalRewards get() = load("guda_final_rewards.png")
+    val gudaFinalRewards get() = load("guda_final_rewards.png")
 
-    val InventoryFull get() = load("inven_full.png")
+    val inventoryFull get() = load("inven_full.png")
 
-    val FpSummonContinue get() = load("fp_continue.png")
+    val fpSummonContinue get() = load("fp_continue.png")
 }

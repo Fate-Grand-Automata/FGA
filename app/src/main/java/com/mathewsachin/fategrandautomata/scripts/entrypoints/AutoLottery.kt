@@ -48,10 +48,10 @@ class AutoLottery : EntryPoint() {
             ScreenshotManager.useSameSnapIn {
                 when {
                     finishedLotteryBoxRegion.exists(
-                        ImageLocator.FinishedLotteryBox,
+                        ImageLocator.finishedLotteryBox,
                         Similarity = 0.65
                     ) -> reset()
-                    fullPresentBoxRegion.exists(ImageLocator.PresentBoxFull) -> {
+                    fullPresentBoxRegion.exists(ImageLocator.presentBoxFull) -> {
                         throw ScriptExitException("Present Box Full")
                     }
                     else -> spin()

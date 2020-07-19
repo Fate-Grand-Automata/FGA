@@ -70,7 +70,7 @@ class Support {
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
-        val pattern = ImageLocator.SupportScreen
+        val pattern = ImageLocator.supportScreen
         while (!Game.SupportScreenRegion.exists(pattern)) {
             0.3.seconds.wait()
         }
@@ -94,7 +94,7 @@ class Support {
         1.seconds.wait()
         Game.SupportFirstSupportClick.click()
 
-        val pattern = ImageLocator.SupportScreen
+        val pattern = ImageLocator.supportScreen
 
         // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
         if (Game.SupportScreenRegion.exists(pattern)) {
@@ -312,7 +312,7 @@ class Support {
 
     private fun findSupportBounds(Support: Region): Region {
         var supportBound = Region(76, 0, 2356, 428)
-        val regionAnchor = ImageLocator.SupportRegionTool
+        val regionAnchor = ImageLocator.supportRegionTool
 
         val searchRegion = Region(2100, 0, 300, 1440)
         val regionArray =
@@ -333,7 +333,7 @@ class Support {
     }
 
     private fun isFriend(Region: Region): Boolean {
-        val friendPattern = ImageLocator.Friend
+        val friendPattern = ImageLocator.friend
 
         return !autoSkillPrefs.friendsOnly
                 || Region.exists(friendPattern)
@@ -343,7 +343,7 @@ class Support {
         val limitBreakRegion = Game.SupportLimitBreakRegion
             .copy(Y = CraftEssence.Y)
 
-        val limitBreakPattern = ImageLocator.LimitBroken
+        val limitBreakPattern = ImageLocator.limitBroken
 
         val mlbSimilarity = Preferences.support.mlbSimilarity
         return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)

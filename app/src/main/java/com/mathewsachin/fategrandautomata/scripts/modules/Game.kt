@@ -198,7 +198,7 @@ object Game {
     val ResultQuestRewardRegion = Region(1630, 140, 370, 250)
     val ResultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
 
-    fun needsToRetry() = RetryRegion.exists(ImageLocator.Retry)
+    fun needsToRetry() = RetryRegion.exists(ImageLocator.retry)
 
     fun retry() {
         RetryRegion.click()

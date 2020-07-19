@@ -92,11 +92,11 @@ class Card {
     }
 
     private fun getCardAffinity(Region: Region): CardAffinityEnum {
-        if (Region.exists(ImageLocator.Weak)) {
+        if (Region.exists(ImageLocator.weak)) {
             return CardAffinityEnum.Weak
         }
 
-        if (Region.exists(ImageLocator.Resist)) {
+        if (Region.exists(ImageLocator.resist)) {
             return CardAffinityEnum.Resist
         }
 
@@ -104,15 +104,15 @@ class Card {
     }
 
     private fun getCardType(Region: Region): CardTypeEnum {
-        if (Region.exists(ImageLocator.Buster)) {
+        if (Region.exists(ImageLocator.buster)) {
             return CardTypeEnum.Buster
         }
 
-        if (Region.exists(ImageLocator.Art)) {
+        if (Region.exists(ImageLocator.art)) {
             return CardTypeEnum.Arts
         }
 
-        if (Region.exists(ImageLocator.Quick)) {
+        if (Region.exists(ImageLocator.quick)) {
             return CardTypeEnum.Quick
         }
 
