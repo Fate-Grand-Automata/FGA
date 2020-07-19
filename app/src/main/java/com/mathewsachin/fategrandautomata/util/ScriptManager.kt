@@ -15,6 +15,7 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
+import com.mathewsachin.fategrandautomata.ui.support_img_namer.supportImgTempDir
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
 import kotlin.time.seconds
@@ -46,7 +47,10 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
     private fun getEntryPoint(): EntryPoint = when (Preferences.scriptMode) {
         ScriptModeEnum.Lottery -> AutoLottery()
         ScriptModeEnum.FriendGacha -> AutoFriendGacha()
-        ScriptModeEnum.SupportImageMaker -> SupportImageMaker(::supportImgMakerCallback)
+        ScriptModeEnum.SupportImageMaker -> SupportImageMaker(
+            supportImgTempDir,
+            ::supportImgMakerCallback
+        )
         else -> AutoBattle()
     }
 
