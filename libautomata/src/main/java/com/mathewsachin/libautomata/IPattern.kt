@@ -62,3 +62,8 @@ interface IPattern : AutoCloseable {
      */
     fun copy(): IPattern
 }
+
+/**
+ * Gets the width and height in the form of a [Size] object.
+ */
+val IPattern.Size get() = Size(width, height)

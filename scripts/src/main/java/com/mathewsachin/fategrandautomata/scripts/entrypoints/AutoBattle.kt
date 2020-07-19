@@ -1,24 +1,30 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.scripts.ImageLocator
+import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.*
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.seconds
 
 /**
  * Checks if Support Selection menu is up
  */
 fun isInSupport(): Boolean {
-    return Game.SupportScreenRegion.exists(ImageLocator.supportScreen, Similarity = 0.85)
+    return Game.SupportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
 }
 
 /**
  * Script for starting quests, selecting the support and doing battles.
  */
-open class AutoBattle : EntryPoint() {
+open class AutoBattle(
+    exitManager: ExitManager,
+    platformImpl: IPlatformImpl,
+    fgAutomataApi: IFGAutomataApi
+) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
     private val support =
         Support()
     private val card = Card()
@@ -49,7 +55,7 @@ open class AutoBattle : EntryPoint() {
 
         // Loop through SCREENS until a Validator returns true
         while (true) {
-            val actor = ScreenshotManager.useSameSnapIn {
+            val actor = screenshotManager.useSameSnapIn {
                 screens
                     .filter { (validator, _) -> validator() }
                     .map { (_, actor) -> actor }
@@ -82,7 +88,7 @@ open class AutoBattle : EntryPoint() {
      *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
      */
     private fun isInMenu(): Boolean {
-        return Game.MenuScreenRegion.exists(ImageLocator.menu)
+        return Game.MenuScreenRegion.exists(images.menu)
     }
 
     /**
@@ -111,20 +117,20 @@ open class AutoBattle : EntryPoint() {
      * too few clicks.
      */
     private fun isInResult(): Boolean {
-        if (Game.ResultScreenRegion.exists(ImageLocator.result)
-            || Game.ResultBondRegion.exists(ImageLocator.bond)
+        if (Game.ResultScreenRegion.exists(images.result)
+            || Game.ResultBondRegion.exists(images.bond)
             // We're assuming CN and TW use the same Master/Mystic Code Level up image
-            || Game.ResultMasterLvlUpRegion.exists(ImageLocator.masterLvlUp)
+            || Game.ResultMasterLvlUpRegion.exists(images.masterLvlUp)
         ) {
             return true
         }
 
-        val gameServer = Preferences.gameServer
+        val gameServer = prefs.gameServer
 
         // We don't have TW images for these
         if (gameServer != GameServerEnum.Tw) {
-            return Game.ResultMasterExpRegion.exists(ImageLocator.masterExp)
-                    || Game.ResultMatRewardsRegion.exists(ImageLocator.matRewards)
+            return Game.ResultMasterExpRegion.exists(images.masterExp)
+                    || Game.ResultMatRewardsRegion.exists(images.matRewards)
         }
 
         // Not in any result screen
@@ -140,8 +146,8 @@ open class AutoBattle : EntryPoint() {
         Game.ResultNextClick.click(55)
 
         // Checking if there was a Bond CE reward
-        if (Game.ResultCeRewardRegion.exists(ImageLocator.bond10Reward)) {
-            if (Preferences.stopAfterBond10) {
+        if (Game.ResultCeRewardRegion.exists(images.bond10Reward)) {
+            if (prefs.stopAfterBond10) {
                 throw ScriptExitException("Bond 10 CE GET!")
             }
 
@@ -154,17 +160,17 @@ open class AutoBattle : EntryPoint() {
         5.seconds.wait()
 
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
-        if (Game.ResultFriendRequestRegion.exists(ImageLocator.friendRequest)) {
+        if (Game.ResultFriendRequestRegion.exists(images.friendRequest)) {
             Game.ResultFriendRequestRejectClick.click()
         }
 
         1.seconds.wait()
 
         // Searches for the Continue option after select Free Quests
-        when (Preferences.gameServer) {
+        when (prefs.gameServer) {
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
-                if (Game.ContinueRegion.exists(ImageLocator.confirm)) {
+                if (Game.ContinueRegion.exists(images.confirm)) {
                     // Needed to show we don't need to enter the "StartQuest" function
                     isContinuing = true
 
@@ -183,8 +189,8 @@ open class AutoBattle : EntryPoint() {
         }
 
         // Post-battle story is sometimes there.
-        if (Preferences.storySkip) {
-            if (Game.MenuStorySkipRegion.exists(ImageLocator.storySkip)) {
+        if (prefs.storySkip) {
+            if (Game.MenuStorySkipRegion.exists(images.storySkip)) {
                 Game.MenuStorySkipClick.click()
                 0.5.seconds.wait()
                 Game.MenuStorySkipYesClick.click()
@@ -194,7 +200,7 @@ open class AutoBattle : EntryPoint() {
         10.seconds.wait()
 
         // Quest Completion reward. Exits the screen when it is presented.
-        if (Game.ResultCeRewardRegion.exists(ImageLocator.bond10Reward)) {
+        if (Game.ResultCeRewardRegion.exists(images.bond10Reward)) {
             Game.ResultCeRewardCloseClick.click()
             1.seconds.wait()
             Game.ResultCeRewardCloseClick.click()
@@ -205,7 +211,7 @@ open class AutoBattle : EntryPoint() {
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
     private fun isInQuestRewardScreen() =
-        Game.ResultQuestRewardRegion.exists(ImageLocator.questReward)
+        Game.ResultQuestRewardRegion.exists(images.questReward)
 
     /**
      * Handles the quest rewards screen.
@@ -216,7 +222,7 @@ open class AutoBattle : EntryPoint() {
     private fun support() {
         // Friend selection
         val hasSelectedSupport =
-            support.selectSupport(Preferences.selectedAutoSkillConfig.support.selectionMode)
+            support.selectSupport(prefs.selectedAutoSkillConfig.support.selectionMode)
 
         if (hasSelectedSupport && !isContinuing) {
             4.seconds.wait()
@@ -233,20 +239,20 @@ open class AutoBattle : EntryPoint() {
      * Checks if the window for withdrawing from the battle exists.
      */
     private fun needsToWithdraw() =
-        Game.WithdrawRegion.exists(ImageLocator.withdraw)
+        Game.WithdrawRegion.exists(images.withdraw)
 
     /**
-     * Handles withdrawing from battle. Depending on [Preferences.withdrawEnabled], the script either
+     * Handles withdrawing from battle. Depending on [prefs.withdrawEnabled], the script either
      * withdraws automatically or stops completely.
      */
     private fun withdraw() {
-        if (!Preferences.withdrawEnabled) {
+        if (!prefs.withdrawEnabled) {
             throw ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.")
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
         val withdrawRegion = Game.WithdrawRegion
-            .findAll(ImageLocator.withdraw)
+            .findAll(images.withdraw)
             .firstOrNull() ?: return
 
         withdrawRegion.Region.click()
@@ -272,10 +278,10 @@ open class AutoBattle : EntryPoint() {
      */
     private fun isGudaFinalRewardsScreen(): Boolean {
         return false
-//        if (!Preferences.GudaFinal || Preferences.GameServer != GameServerEnum.Jp)
+//        if (!prefs.GudaFinal || prefs.GameServer != GameServerEnum.Jp)
 //            return false
 //
-//        return Game.GudaFinalRewardsRegion.exists(ImageLocator.GudaFinalRewards)
+//        return Game.GudaFinalRewardsRegion.exists(images.GudaFinalRewards)
     }
 
     /**
@@ -289,15 +295,15 @@ open class AutoBattle : EntryPoint() {
      */
     private fun needsToStorySkip(): Boolean {
         // TODO: Story Skip doesn't work correctly
-        //if (Game.MenuStorySkipRegion.exists(ImageLocator.StorySkip))
-        return Preferences.storySkip
+        //if (Game.MenuStorySkipRegion.exists(images.StorySkip))
+        return prefs.storySkip
     }
 
     /**
-     * Refills the AP with apples depending on [Preferences.refill].
+     * Refills the AP with apples depending on [prefs.refill].
      */
     private fun refillStamina() {
-        val refillPrefs = Preferences.refill
+        val refillPrefs = prefs.refill
 
         if (refillPrefs.enabled && stonesUsed < refillPrefs.repetitions) {
             when (refillPrefs.resource) {
@@ -321,7 +327,7 @@ open class AutoBattle : EntryPoint() {
     }
 
     fun selectParty() {
-        val party = Preferences.selectedAutoSkillConfig.party
+        val party = prefs.selectedAutoSkillConfig.party
 
         if (!partySelected && party in Game.PartySelectionArray.indices) {
             // Start Quest Button becomes unresponsive if the same party is clicked.
@@ -344,8 +350,8 @@ open class AutoBattle : EntryPoint() {
     /**
      * Starts the quest after the support has already been selected. The following features are done optionally:
      * 1. The configured party is selected if it is set in the selected AutoSkill config
-     * 2. A boost item is selected if [Preferences.boostItemSelectionMode] is set (needed in some events)
-     * 3. The story is skipped if [Preferences.storySkip] is activated
+     * 2. A boost item is selected if [prefs.boostItemSelectionMode] is set (needed in some events)
+     * 3. The story is skipped if [prefs.storySkip] is activated
      */
     private fun startQuest() {
         selectParty()
@@ -354,7 +360,7 @@ open class AutoBattle : EntryPoint() {
 
         2.seconds.wait()
 
-        val boostItem = Preferences.boostItemSelectionMode
+        val boostItem = prefs.boostItemSelectionMode
         if (boostItem >= 0) {
             Game.MenuBoostItemClickArray[boostItem].click()
 
@@ -362,7 +368,7 @@ open class AutoBattle : EntryPoint() {
             Game.MenuBoostItemSkipClick.click()
         }
 
-        if (Preferences.storySkip) {
+        if (prefs.storySkip) {
             10.seconds.wait()
 
             if (needsToStorySkip()) {
@@ -377,10 +383,10 @@ open class AutoBattle : EntryPoint() {
      * Will show a toast informing the user of how many apples have been used so far.
      */
     private fun showRefillsUsedMessage() {
-        if (Preferences.refill.enabled) {
-            val refillRepetitions = Preferences.refill.repetitions
+        if (prefs.refill.enabled) {
+            val refillRepetitions = prefs.refill.repetitions
             if (refillRepetitions > 0) {
-                AutomataApi.PlatformImpl.toast("$stonesUsed refills used out of $refillRepetitions")
+                platformImpl.toast("$stonesUsed refills used out of $refillRepetitions")
             }
         }
     }
@@ -389,17 +395,17 @@ open class AutoBattle : EntryPoint() {
         1.5.seconds.wait()
 
         // Inventory full. Stop script.
-        when (Preferences.gameServer) {
+        when (prefs.gameServer) {
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
-                if (Game.InventoryFullRegion.exists(ImageLocator.inventoryFull)) {
+                if (Game.InventoryFullRegion.exists(images.inventoryFull)) {
                     throw ScriptExitException("Inventory Full")
                 }
             }
         }
 
         // Auto refill
-        while (Game.StaminaScreenRegion.exists(ImageLocator.stamina)) {
+        while (Game.StaminaScreenRegion.exists(images.stamina)) {
             refillStamina()
         }
     }

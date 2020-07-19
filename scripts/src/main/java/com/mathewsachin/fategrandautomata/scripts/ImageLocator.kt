@@ -1,15 +1,9 @@
 package com.mathewsachin.fategrandautomata.scripts
 
-lateinit var ImgLoader: IImageLoader
+class ImageLocator(val imgLoader: IImageLoader) {
+    private fun load(path: String) = imgLoader.loadRegionPattern(path)
 
-fun initImageLoader(imgLoader: IImageLoader) {
-    ImgLoader = imgLoader
-}
-
-object ImageLocator {
-    private fun load(path: String) = ImgLoader.loadRegionPattern(path)
-
-    fun loadSupportPattern(path: String) = ImgLoader.loadSupportPattern(path)
+    fun loadSupportPattern(path: String) = imgLoader.loadSupportPattern(path)
 
     val battle get() = load("battle.png")
 
