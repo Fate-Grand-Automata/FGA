@@ -4,7 +4,7 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.util.Log
-import com.mathewsachin.fategrandautomata.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.wait

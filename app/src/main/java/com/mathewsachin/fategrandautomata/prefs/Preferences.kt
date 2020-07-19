@@ -10,13 +10,10 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferencesCommon
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.IPlatformPrefs
 import kotlin.time.milliseconds
 
-object Preferences :
-    IPreferences {
-    private val context: Context = AutomataApplication.Instance
+class PreferencesImpl(private val context: Context) : IPreferences {
     private val prefs = SharedPreferenceDelegation(
         PreferenceManager.getDefaultSharedPreferences(context),
         context

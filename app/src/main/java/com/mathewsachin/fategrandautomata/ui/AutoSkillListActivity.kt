@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.AutoSkillPreferences
-import com.mathewsachin.fategrandautomata.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import kotlinx.android.synthetic.main.autoskill_list.*
 import java.util.*
 
 class AutoSkillListActivity : AppCompatActivity() {
-    private lateinit var autoSkillItems: Array<AutoSkillPreferences>
+    private lateinit var autoSkillItems: Array<IAutoSkillPreferences>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,13 +8,13 @@ import android.widget.RadioGroup
 import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
-import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.clearSupportCache
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService

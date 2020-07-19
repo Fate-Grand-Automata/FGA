@@ -2,8 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts
 
 import android.content.res.AssetManager
 import android.os.Environment
-import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern

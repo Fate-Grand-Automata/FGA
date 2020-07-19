@@ -15,11 +15,11 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
-import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.clearImageCache
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
 import com.mathewsachin.fategrandautomata.util.ScriptManager

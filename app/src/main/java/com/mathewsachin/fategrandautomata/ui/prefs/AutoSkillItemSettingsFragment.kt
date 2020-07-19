@@ -13,9 +13,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.AutoSkillPreferences
-import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
+import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
@@ -35,7 +35,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         super.onDestroy()
     }
 
-    private lateinit var autoSkillPrefs: AutoSkillPreferences
+    private lateinit var autoSkillPrefs: IAutoSkillPreferences
     private var editTextVisibleKey = ""
     private var restoredEditTextContent: String? = null
 

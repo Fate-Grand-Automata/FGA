@@ -5,7 +5,7 @@ import android.os.*
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
-import com.mathewsachin.fategrandautomata.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.addRegionToHighlight
 import com.mathewsachin.fategrandautomata.ui.removeRegionToHighlight
 import com.mathewsachin.libautomata.IPattern

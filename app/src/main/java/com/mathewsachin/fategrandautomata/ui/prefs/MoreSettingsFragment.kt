@@ -6,7 +6,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
 
 class MoreSettingsFragment : PreferenceFragmentCompat() {

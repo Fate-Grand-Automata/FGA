@@ -1,10 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.*
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 

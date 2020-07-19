@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.*
 
 private const val dummyNormalAffinityChar = 'X'

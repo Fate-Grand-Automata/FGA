@@ -7,12 +7,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.AutoSkillPreferences
-import com.mathewsachin.fategrandautomata.prefs.Preferences
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.modules.cardPriorityStageSeparator
 import com.mathewsachin.fategrandautomata.scripts.modules.getCardScores
+import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import kotlinx.android.synthetic.main.card_priority.*
 
@@ -26,7 +26,7 @@ fun String.filterCapitals(): String {
 class CardPriorityActivity : AppCompatActivity() {
     private lateinit var cardScores: MutableList<MutableList<CardScore>>
 
-    private lateinit var autoSkillPref: AutoSkillPreferences
+    private lateinit var autoSkillPref: IAutoSkillPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
