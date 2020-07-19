@@ -4,9 +4,9 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.limitBrokenCharacter
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
-import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
-import com.mathewsachin.fategrandautomata.scripts.supportFriendFolder
-import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
+import com.mathewsachin.fategrandautomata.util.supportCeFolder
+import com.mathewsachin.fategrandautomata.util.supportFriendFolder
+import com.mathewsachin.fategrandautomata.util.supportServantImgFolder
 import java.io.File
 
 class SupportPreferences(val prefs: SharedPreferenceDelegation) :
@@ -53,7 +53,7 @@ class SupportPreferences(val prefs: SharedPreferenceDelegation) :
             .map { "${ceImgFolderName}/$it" }
 
         if (mlb) {
-            ces = ces.map { "${limitBrokenCharacter}${it}" }
+            ces = ces.map { "$limitBrokenCharacter${it}" }
         }
 
         ces.joinToString()

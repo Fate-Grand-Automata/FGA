@@ -19,10 +19,13 @@ fun isInSupport(): Boolean {
  * Script for starting quests, selecting the support and doing battles.
  */
 open class AutoBattle : EntryPoint() {
-    private val support = Support()
+    private val support =
+        Support()
     private val card = Card()
-    private val battle = Battle()
-    private val autoSkill = AutoSkill()
+    private val battle =
+        Battle()
+    private val autoSkill =
+        AutoSkill()
 
     private var stonesUsed = 0
     private var isContinuing = false

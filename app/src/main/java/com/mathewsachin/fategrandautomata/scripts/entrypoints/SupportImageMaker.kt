@@ -36,7 +36,8 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
 
         cleanExtractFolder()
 
-        val isInSupport = isInSupport()
+        val isInSupport =
+            isInSupport()
 
         // the servant and CE images are further to the right in the friend screen
         val supportBoundX = if (isInSupport) 106 else 176
@@ -45,7 +46,10 @@ class SupportImageMaker(private var Callback: (() -> Unit)?) : EntryPoint() {
 
         val regionAnchor = ImageLocator.supportRegionTool
         // At max two Servant+CE are completely on screen, so only use those
-        val regionArray = searchRegion.findAll(regionAnchor, supportRegionToolSimilarity)
+        val regionArray = searchRegion.findAll(
+            regionAnchor,
+            supportRegionToolSimilarity
+        )
             .take(2).toList()
 
         val screenBounds = Region(0, 0, Game.ScriptSize.Width, Game.ScriptSize.Height)

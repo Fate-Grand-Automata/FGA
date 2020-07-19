@@ -19,9 +19,9 @@ fun getCardScores(Priority: String): List<CardScore> {
         .map { it.trim().toUpperCase() }
         .map {
             when (it.length) {
-                1 -> "${dummyNormalAffinityChar}$it"
+                1 -> "$dummyNormalAffinityChar$it"
                 2 -> it
-                else -> throw ScriptExitException("${cardPriorityErrorString}${it}': Invalid card length.")
+                else -> throw ScriptExitException("$cardPriorityErrorString${it}': Invalid card length.")
             }
         }
         .map {
@@ -29,14 +29,14 @@ fun getCardScores(Priority: String): List<CardScore> {
                 'B' -> CardTypeEnum.Buster
                 'A' -> CardTypeEnum.Arts
                 'Q' -> CardTypeEnum.Quick
-                else -> throw ScriptExitException("${cardPriorityErrorString}${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
+                else -> throw ScriptExitException("$cardPriorityErrorString${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
             }
 
             val cardAffinity = when (it[0]) {
                 'W' -> CardAffinityEnum.Weak
                 'R' -> CardAffinityEnum.Resist
                 dummyNormalAffinityChar -> CardAffinityEnum.Normal
-                else -> throw ScriptExitException("${cardPriorityErrorString}${it[0]}': Only 'W', and 'R' are valid card affinities.")
+                else -> throw ScriptExitException("$cardPriorityErrorString${it[0]}': Only 'W', and 'R' are valid card affinities.")
             }
 
             CardScore(
@@ -47,7 +47,7 @@ fun getCardScores(Priority: String): List<CardScore> {
         .toList()
 
     if (scores.size != 9) {
-        throw ScriptExitException("${cardPriorityErrorString}': Expected 9 cards, but ${scores.size} found.")
+        throw ScriptExitException("$cardPriorityErrorString': Expected 9 cards, but ${scores.size} found.")
     }
 
     return scores
@@ -79,7 +79,7 @@ class Card {
 
     private fun initCardPriorityArraySimple(Priority: String) {
         val detailedPriority = Priority
-            .map { "W$it, ${dummyNormalAffinityChar}$it, R$it" }
+            .map { "W$it, $dummyNormalAffinityChar$it, R$it" }
             .joinToString()
 
         initCardPriorityArrayDetailed(detailedPriority)
@@ -88,7 +88,11 @@ class Card {
     private fun initCardPriorityArrayDetailed(Priority: String) {
         cardPriorityArray = Priority
             .split(cardPriorityStageSeparator)
-            .map { getCardScores(it) }
+            .map {
+                getCardScores(
+                    it
+                )
+            }
     }
 
     private fun getCardAffinity(Region: Region): CardAffinityEnum {

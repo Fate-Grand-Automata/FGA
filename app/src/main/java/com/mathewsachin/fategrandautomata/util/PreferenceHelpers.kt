@@ -4,9 +4,6 @@ import android.text.InputType
 import androidx.preference.*
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
-import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
-import com.mathewsachin.fategrandautomata.scripts.supportFriendFolder
-import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
 import java.io.File
 
 fun EditTextPreference.makeNumeric() {

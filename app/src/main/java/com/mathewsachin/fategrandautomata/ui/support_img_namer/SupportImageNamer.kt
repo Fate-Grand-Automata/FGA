@@ -9,9 +9,9 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterfac
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
-import com.mathewsachin.fategrandautomata.scripts.supportCeFolder
-import com.mathewsachin.fategrandautomata.scripts.supportFriendFolder
-import com.mathewsachin.fategrandautomata.scripts.supportServantImgFolder
+import com.mathewsachin.fategrandautomata.util.supportCeFolder
+import com.mathewsachin.fategrandautomata.util.supportFriendFolder
+import com.mathewsachin.fategrandautomata.util.supportServantImgFolder
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
 private const val InvalidChars = """<>"\|:\*\?\\\/"""

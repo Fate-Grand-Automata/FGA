@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
-import com.mathewsachin.fategrandautomata.scripts.loadSupportImagePattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
 import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
@@ -60,7 +59,10 @@ class Support {
                     name = name.substring(1)
                 }
 
-                PreferredCEEntry(name, mlb)
+                PreferredCEEntry(
+                    name,
+                    mlb
+                )
             }
 
         // Craft essences
@@ -118,14 +120,20 @@ class Support {
         return ScreenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
             if (!isFriend(Game.SupportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
-                return SearchVisibleResult(SupportSearchResultEnum.NoFriendsFound, null)
+                return SearchVisibleResult(
+                    SupportSearchResultEnum.NoFriendsFound,
+                    null
+                )
             }
 
             var (support, bounds) = SearchMethod()
 
             if (support == null) {
                 // nope, not found this time. keep scrolling
-                return SearchVisibleResult(SupportSearchResultEnum.NotFound, null)
+                return SearchVisibleResult(
+                    SupportSearchResultEnum.NotFound,
+                    null
+                )
             }
 
             // bounds are already returned by searchMethod.byServantAndCraftEssence, but not by the other methods
@@ -133,16 +141,27 @@ class Support {
 
             if (!isFriend(bounds)) {
                 // found something, but it doesn't belong to a friend. keep scrolling
-                return SearchVisibleResult(SupportSearchResultEnum.NotFound, null)
+                return SearchVisibleResult(
+                    SupportSearchResultEnum.NotFound,
+                    null
+                )
             }
 
-            return SearchVisibleResult(SupportSearchResultEnum.Found, support)
+            return SearchVisibleResult(
+                SupportSearchResultEnum.Found,
+                support
+            )
         })
     }
 
     private fun selectFriend(): Boolean {
         if (friendNameArray.size > 0) {
-            return selectPreferred { SearchFunctionResult(findFriendName(), null) }
+            return selectPreferred {
+                SearchFunctionResult(
+                    findFriendName(),
+                    null
+                )
+            }
         }
 
         throw ScriptExitException("When using 'friend' support selection mode, specify at least one friend name.")
@@ -201,12 +220,18 @@ class Support {
             // see docs/support_list_edge_case_fix.png to understand why this conditional exists
             if (craftEssence != null && craftEssence.Y > servant.Y) {
                 // only return if found. if not, try the other servants before scrolling
-                return SearchFunctionResult(craftEssence, supportBounds)
+                return SearchFunctionResult(
+                    craftEssence,
+                    supportBounds
+                )
             }
         }
 
         // not found, continue scrolling
-        return SearchFunctionResult(null, null)
+        return SearchFunctionResult(
+            null,
+            null
+        )
     }
 
     private fun decideSearchMethod(): SearchFunction {
@@ -218,11 +243,21 @@ class Support {
         }
 
         if (hasServants) {
-            return { SearchFunctionResult(findServants().firstOrNull(), null) }
+            return {
+                SearchFunctionResult(
+                    findServants().firstOrNull(),
+                    null
+                )
+            }
         }
 
         if (hasCraftEssences) {
-            return { SearchFunctionResult(findCraftEssence(Game.SupportListRegion), null) }
+            return {
+                SearchFunctionResult(
+                    findCraftEssence(Game.SupportListRegion),
+                    null
+                )
+            }
         }
 
         throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
@@ -253,7 +288,10 @@ class Support {
     private fun findFriendName(): Region? {
         for (friendName in friendNameArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = loadSupportImagePattern(friendName)
+            val pattern =
+                ImageLocator.loadSupportPattern(
+                    friendName
+                )
 
             for (theFriend in Game.SupportFriendsRegion.findAll(pattern)) {
                 return theFriend.Region
@@ -266,7 +304,10 @@ class Support {
     private fun findServants(): Sequence<Region> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = loadSupportImagePattern(preferredServant)
+            val pattern =
+                ImageLocator.loadSupportPattern(
+                    preferredServant
+                )
 
             cropFriendLock(pattern).use {
                 for (servant in Game.SupportListRegion.findAll(it)) {
@@ -296,7 +337,10 @@ class Support {
     private fun findCraftEssence(SearchRegion: Region): Region? {
         for (preferredCraftEssence in preferredCEArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = loadSupportImagePattern(preferredCraftEssence.Name)
+            val pattern =
+                ImageLocator.loadSupportPattern(
+                    preferredCraftEssence.Name
+                )
 
             val craftEssences = SearchRegion.findAll(pattern)
 

@@ -1,10 +1,9 @@
-package com.mathewsachin.fategrandautomata.scripts
+package com.mathewsachin.fategrandautomata.util
 
 import android.content.res.AssetManager
 import android.os.Environment
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.ScriptExitException
@@ -111,7 +110,8 @@ fun getRegionPattern(FileName: String): IPattern {
     }
 
     if (!regionCachedPatterns.containsKey(FileName)) {
-        val pattern = createPattern("${currentGameServer}/${FileName}")
+        val pattern =
+            createPattern("$currentGameServer/${FileName}")
 
         regionCachedPatterns[FileName] = pattern
     }
@@ -176,10 +176,18 @@ private fun supportImgExtractor(FolderName: String) {
                 val subAssetPath = "${assetPath}/$subFileName"
                 val subOutPath = File(outPath, subFileName)
 
-                copyAssetToFile(assets, subAssetPath, subOutPath)
+                copyAssetToFile(
+                    assets,
+                    subAssetPath,
+                    subOutPath
+                )
             }
         } else {
-            copyAssetToFile(assets, assetPath, outPath)
+            copyAssetToFile(
+                assets,
+                assetPath,
+                outPath
+            )
         }
     }
 }

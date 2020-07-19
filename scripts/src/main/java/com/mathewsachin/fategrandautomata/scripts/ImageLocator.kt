@@ -1,8 +1,24 @@
 package com.mathewsachin.fategrandautomata.scripts
 
-import com.mathewsachin.fategrandautomata.scripts.getRegionPattern as load
+import com.mathewsachin.libautomata.IPattern
+
+interface IImageLoader {
+    fun loadRegionPattern(path: String): IPattern
+
+    fun loadSupportPattern(path: String): IPattern
+}
+
+private lateinit var ImgLoader: IImageLoader
+
+fun initImageLoader(imgLoader: IImageLoader) {
+    ImgLoader = imgLoader
+}
 
 object ImageLocator {
+    private fun load(path: String) = ImgLoader.loadRegionPattern(path)
+
+    fun loadSupportPattern(path: String) = ImgLoader.loadSupportPattern(path)
+
     val battle get() = load("battle.png")
 
     val targetDanger get() = load("target_danger.png")
@@ -25,7 +41,10 @@ object ImageLocator {
 
     val supportScreen get() = load("support_screen.png")
 
-    val supportRegionTool get() = load("support_region_tool.png")
+    val supportRegionTool
+        get() = load(
+            "support_region_tool.png"
+        )
 
     val storySkip get() = load("storyskip.png")
 
@@ -49,7 +68,10 @@ object ImageLocator {
 
     val withdraw get() = load("withdraw.png")
 
-    val finishedLotteryBox get() = load("lottery.png")
+    val finishedLotteryBox
+        get() = load(
+            "lottery.png"
+        )
 
     val presentBoxFull get() = load("StopGifts.png")
 
@@ -60,9 +82,15 @@ object ImageLocator {
 
     val matRewards get() = load("mat_rewards.png")
 
-    val gudaFinalRewards get() = load("guda_final_rewards.png")
+    val gudaFinalRewards
+        get() = load(
+            "guda_final_rewards.png"
+        )
 
     val inventoryFull get() = load("inven_full.png")
 
-    val fpSummonContinue get() = load("fp_continue.png")
+    val fpSummonContinue
+        get() = load(
+            "fp_continue.png"
+        )
 }

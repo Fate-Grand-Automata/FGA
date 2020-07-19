@@ -13,10 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.extractSupportImgs
+import com.mathewsachin.fategrandautomata.util.extractSupportImgs
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.scripts.shouldExtractSupportImages
+import com.mathewsachin.fategrandautomata.util.shouldExtractSupportImages
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity

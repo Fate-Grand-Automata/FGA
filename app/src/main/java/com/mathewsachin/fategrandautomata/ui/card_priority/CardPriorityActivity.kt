@@ -45,7 +45,11 @@ class CardPriorityActivity : AppCompatActivity() {
 
         cardScores = cardPriority
             .splitToSequence(cardPriorityStageSeparator)
-            .map { getCardScores(it).toMutableList() }
+            .map {
+                getCardScores(
+                    it
+                ).toMutableList()
+            }
             .toMutableList()
 
         val adapter = CardPriorityListAdapter(cardScores)
