@@ -14,10 +14,11 @@ import com.mathewsachin.libautomata.IPlatformPrefs
 import kotlin.time.milliseconds
 
 class PreferencesImpl(private val context: Context) : IPreferences {
-    private val prefs = SharedPreferenceDelegation(
-        PreferenceManager.getDefaultSharedPreferences(context),
-        context
-    )
+    private val prefs =
+        SharedPreferenceDelegation(
+            PreferenceManager.getDefaultSharedPreferences(context),
+            context
+        )
 
     init {
         applyDefaults()
