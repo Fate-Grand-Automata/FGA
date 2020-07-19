@@ -8,6 +8,7 @@ import android.widget.RadioGroup
 import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
+import com.mathewsachin.fategrandautomata.scripts.ImgLoader
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
@@ -30,7 +31,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
     private fun onScriptExit() {
         userInterface.setPlayIcon()
 
-        clearSupportCache()
+        ImgLoader.clearSupportCache()
 
         entryPoint = null
         scriptStarted = false
@@ -59,7 +60,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
     }
 
     private fun supportImgMakerCallback() {
-        handler.post { showSupportImageNamer(userInterface) }
+        handler.post { showSupportImageNamer(userInterface, storageDirs) }
     }
 
     fun startScript(context: Context, screenshotService: IScreenshotService) {

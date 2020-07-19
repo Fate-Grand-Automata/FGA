@@ -40,7 +40,8 @@ class CardPriorityActivity : AppCompatActivity() {
 
         // Handle simple mode and empty string
         if (cardPriority.length == 3 || cardPriority.isBlank()) {
-            cardPriority = defaultCardPriority
+            cardPriority =
+                defaultCardPriority
         }
 
         cardScores = cardPriority

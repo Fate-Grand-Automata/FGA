@@ -2,40 +2,25 @@ package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
+import com.mathewsachin.fategrandautomata.prefs.helpers.map
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferencesCommon
+import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.IPlatformPrefs
 import kotlin.time.milliseconds
 
-class PreferencesImpl(private val context: Context) : IPreferences {
-    private val prefs = SharedPreferenceDelegation(
-        PreferenceManager.getDefaultSharedPreferences(context),
-        context
-    )
-
-    init {
-        applyDefaults()
-    }
-
-    private fun applyDefaults() {
-        if (!prefs.prefs.getBoolean(PreferenceManager.KEY_HAS_SET_DEFAULT_VALUES, false)) {
-            val prefFiles = arrayOf(
-                R.xml.main_preferences,
-                R.xml.app_preferences,
-                R.xml.refill_preferences
-            )
-
-            for (prefFile in prefFiles) {
-                PreferenceManager.setDefaultValues(context, prefFile, true)
-            }
-        }
-    }
+class PreferencesImpl(
+    private val context: Context,
+    val storageDirs: StorageDirs
+) : IPreferences {
+    private val prefs =
+        SharedPreferenceDelegation(
+            PreferenceManager.getDefaultSharedPreferences(context),
+            context
+        )
 
     override val scriptMode by prefs.enum(R.string.pref_script_mode, ScriptModeEnum.Battle)
 
@@ -87,7 +72,7 @@ class PreferencesImpl(private val context: Context) : IPreferences {
 
     override val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
 
-    override val refill =
+    override val refill: IRefillPreferences =
         RefillPreferences(prefs)
 
     override val ignoreNotchCalculation by prefs.bool(R.string.pref_ignore_notch)
@@ -98,10 +83,12 @@ class PreferencesImpl(private val context: Context) : IPreferences {
 
     override val recordScreen by prefs.bool(R.string.pref_record_screen)
 
-    override fun forAutoSkillConfig(id: String) = AutoSkillPreferences(
-        id,
-        context
-    )
+    override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
+        AutoSkillPreferences(
+            id,
+            context,
+            storageDirs
+        )
 
     override val support = object :
         ISupportPreferencesCommon {

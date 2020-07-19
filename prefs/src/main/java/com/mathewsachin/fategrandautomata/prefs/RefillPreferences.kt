@@ -1,10 +1,10 @@
 package com.mathewsachin.fategrandautomata.prefs
 
-import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IRefillPreferences
 
-class RefillPreferences(val prefs: SharedPreferenceDelegation) :
+internal class RefillPreferences(val prefs: SharedPreferenceDelegation) :
     IRefillPreferences {
     override val enabled by prefs.bool(R.string.pref_refill_enabled)
 

@@ -2,8 +2,8 @@ package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
 import android.util.Log
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
-import com.mathewsachin.fategrandautomata.util.storageDir
 import com.mathewsachin.fategrandautomata.util.readIntLE
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern
@@ -15,13 +15,16 @@ import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
 
-class RootScreenshotService(private val SuperUser: SuperUser) : IScreenshotService {
+class RootScreenshotService(
+    private val SuperUser: SuperUser,
+    private val storageDirs: StorageDirs
+) : IScreenshotService {
     private var buffer: ByteArray? = null
-    private val imgPath = File(storageDir, "sshot.raw").absolutePath
+    private val imgPath = File(storageDirs.storageRoot, "sshot.raw").absolutePath
 
     private var rootLoadMat: Mat? = null
     private val rootConvertMat = Mat()
-    private val pattern = DroidCvPattern(rootConvertMat,false)
+    private val pattern = DroidCvPattern(rootConvertMat, false)
 
     override fun takeScreenshot(): IPattern {
         SuperUser.sendCommand("/system/bin/screencap $imgPath")

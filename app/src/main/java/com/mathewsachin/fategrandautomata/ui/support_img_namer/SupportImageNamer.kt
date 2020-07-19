@@ -4,15 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
-import com.mathewsachin.fategrandautomata.util.supportCeFolder
-import com.mathewsachin.fategrandautomata.util.supportFriendFolder
-import com.mathewsachin.fategrandautomata.util.supportServantImgFolder
 import java.io.File
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
@@ -38,13 +36,17 @@ val supportImgTempDir: File by lazy {
     dir
 }
 
-private fun getSupportEntries(Frame: View, tempDir: File): List<SupportImgEntry> {
+private fun getSupportEntries(
+    Frame: View,
+    tempDir: File,
+    storageDirs: StorageDirs
+): List<SupportImgEntry> {
     val servant0 = SupportImgEntry(
         getServantImgPath(
             tempDir,
             0
         ),
-        supportServantImgFolder,
+        storageDirs.supportServantImgFolder,
         Frame.findViewById(R.id.support_img_servant_0),
         ServantRegex, ServantInvalidMsg
     )
@@ -53,7 +55,7 @@ private fun getSupportEntries(Frame: View, tempDir: File): List<SupportImgEntry>
             tempDir,
             1
         ),
-        supportServantImgFolder,
+        storageDirs.supportServantImgFolder,
         Frame.findViewById(R.id.support_img_servant_1),
         ServantRegex, ServantInvalidMsg
     )
@@ -63,7 +65,7 @@ private fun getSupportEntries(Frame: View, tempDir: File): List<SupportImgEntry>
             tempDir,
             0
         ),
-        supportCeFolder,
+        storageDirs.supportCeFolder,
         Frame.findViewById(R.id.support_img_ce_0),
         CeRegex, CeOrFriendInvalidMsg
     )
@@ -72,7 +74,7 @@ private fun getSupportEntries(Frame: View, tempDir: File): List<SupportImgEntry>
             tempDir,
             1
         ),
-        supportCeFolder,
+        storageDirs.supportCeFolder,
         Frame.findViewById(R.id.support_img_ce_1),
         CeRegex, CeOrFriendInvalidMsg
     )
@@ -82,7 +84,7 @@ private fun getSupportEntries(Frame: View, tempDir: File): List<SupportImgEntry>
             tempDir,
             0
         ),
-        supportFriendFolder,
+        storageDirs.supportFriendFolder,
         Frame.findViewById(R.id.support_img_friend_0),
         CeRegex, CeOrFriendInvalidMsg
     )
@@ -91,7 +93,7 @@ private fun getSupportEntries(Frame: View, tempDir: File): List<SupportImgEntry>
             tempDir,
             1
         ),
-        supportFriendFolder,
+        storageDirs.supportFriendFolder,
         Frame.findViewById(R.id.support_img_friend_1),
         CeRegex, CeOrFriendInvalidMsg
     )
@@ -99,13 +101,13 @@ private fun getSupportEntries(Frame: View, tempDir: File): List<SupportImgEntry>
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
 }
 
-fun showSupportImageNamer(UI: ScriptRunnerUserInterface) {
+fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs) {
     val frame = FrameLayout(UI.Service)
 
     val inflater = LayoutInflater.from(UI.Service)
     inflater.inflate(R.layout.support_img_namer, frame)
 
-    val entryList = getSupportEntries(frame, supportImgTempDir)
+    val entryList = getSupportEntries(frame, supportImgTempDir, storageDirs)
 
     ScriptRunnerDialog(UI).apply {
         autoDismiss = false

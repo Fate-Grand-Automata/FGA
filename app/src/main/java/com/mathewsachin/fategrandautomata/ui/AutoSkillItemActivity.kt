@@ -1,17 +1,17 @@
 package com.mathewsachin.fategrandautomata.ui
 
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment
 import kotlinx.android.synthetic.main.settings.*
-import java.lang.IllegalArgumentException
+import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 class AutoSkillItemActivity : AppCompatActivity() {
 
@@ -67,7 +67,7 @@ class AutoSkillItemActivity : AppCompatActivity() {
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
-        val autoSkillItemsKey = getString(R.string.pref_autoskill_list)
+        val autoSkillItemsKey = getString(prefKeys.pref_autoskill_list)
         val autoSkillItems = prefs.getStringSet(autoSkillItemsKey, mutableSetOf())!!
             .toSortedSet()
         autoSkillItems.remove(AutoSkillItemKey)
@@ -83,7 +83,7 @@ class AutoSkillItemActivity : AppCompatActivity() {
     }
 
     private fun unselectItem(AutoSkillItemKey: String, Prefs: SharedPreferences) {
-        val selectedAutoSkillKey = getString(R.string.pref_autoskill_selected)
+        val selectedAutoSkillKey = getString(prefKeys.pref_autoskill_selected)
         val selectedAutoSkill = Prefs.getString(selectedAutoSkillKey, "")
 
         if (selectedAutoSkill == AutoSkillItemKey) {
