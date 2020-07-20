@@ -30,7 +30,7 @@ internal class AutoSkillPreferences(
         defaultCardPriority
     )
 
-    override val party by prefs.int(R.string.pref_autoskill_party, -1)
+    override val party by prefs.stringAsInt(R.string.pref_autoskill_party, -1)
 
     override val support =
         SupportPreferences(
