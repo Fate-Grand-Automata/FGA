@@ -11,6 +11,7 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.dagger.ScreenshotModule
 import com.mathewsachin.fategrandautomata.dagger.ScriptRunnerServiceComponent
+import com.mathewsachin.fategrandautomata.dagger.ServiceScope
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
@@ -32,6 +33,7 @@ data class ScriptLaunchParams @Inject constructor(
     val fgAutomataApi: IFGAutomataApi
 )
 
+@ServiceScope
 class ScriptManager @Inject constructor(
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
