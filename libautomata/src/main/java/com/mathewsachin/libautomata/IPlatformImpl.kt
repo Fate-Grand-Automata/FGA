@@ -1,6 +1,5 @@
 package com.mathewsachin.libautomata
 
-import java.io.InputStream
 import kotlin.time.Duration
 
 interface IPlatformImpl {
@@ -12,13 +11,6 @@ interface IPlatformImpl {
      * Shows a toast with the given message.
      */
     fun toast(Message: String)
-
-    /**
-     * Loads an image from the given [InputStream].
-     *
-     * @return an [IPattern] with the image data
-     */
-    fun loadPattern(Stream: InputStream, tag: String): IPattern
 
     /**
      * Creates a new [IPattern] without any image data.

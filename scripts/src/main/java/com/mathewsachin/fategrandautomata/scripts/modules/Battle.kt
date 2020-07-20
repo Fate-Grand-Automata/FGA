@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.ImageLocator
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Region
 import kotlin.time.seconds
 
-class Battle {
+class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private var hasTakenFirstStageSnapshot = false
 
     var hasClickedAttack = false
@@ -41,14 +41,14 @@ class Battle {
         hasClickedAttack = false
     }
 
-    fun isIdle() = Game.BattleScreenRegion.exists(ImageLocator.battle)
+    fun isIdle() = game.BattleScreenRegion.exists(images.battle)
 
     fun clickAttack() {
-        Game.BattleAttackClick.click()
+        game.BattleAttackClick.click()
 
         // TODO: This was added extra in Kotlin impl
         // Wait for Attack button to disappear
-        Game.BattleScreenRegion.waitVanish(ImageLocator.battle, 5.seconds)
+        game.BattleScreenRegion.waitVanish(images.battle, 5.seconds)
 
         // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
         1.5.seconds.wait()
@@ -59,18 +59,18 @@ class Battle {
     }
 
     private fun isPriorityTarget(Target: Region): Boolean {
-        val isDanger = Target.exists(ImageLocator.targetDanger)
-        val isServant = Target.exists(ImageLocator.targetServant)
+        val isDanger = Target.exists(images.targetDanger)
+        val isServant = Target.exists(images.targetServant)
 
         return isDanger || isServant
     }
 
     private fun chooseTarget(Index: Int) {
-        Game.BattleTargetClickArray[Index].click()
+        game.BattleTargetClickArray[Index].click()
 
         0.5.seconds.wait()
 
-        Game.BattleExtrainfoWindowCloseClick.click()
+        game.BattleExtrainfoWindowCloseClick.click()
 
         hasChosenTarget = true
     }
@@ -86,7 +86,7 @@ class Battle {
         // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
         // that's why the table is iterated backwards.
 
-        for ((i, target) in Game.BattleTargetRegionArray.withIndex().reversed()) {
+        for ((i, target) in game.BattleTargetRegionArray.withIndex().reversed()) {
             if (isPriorityTarget(target)) {
                 chooseTarget(i)
                 return
@@ -95,7 +95,7 @@ class Battle {
     }
 
     fun performBattle() {
-        ScreenshotManager.useSameSnapIn { onTurnStarted() }
+        screenshotManager.useSameSnapIn { onTurnStarted() }
         2.seconds.wait()
 
         val wereNpsClicked = autoSkill.execute()
@@ -127,7 +127,7 @@ class Battle {
 
         hasClickedAttack = false
 
-        if (!hasChosenTarget && Preferences.autoChooseTarget) {
+        if (!hasChosenTarget && prefs.autoChooseTarget) {
             autoChooseTarget()
         }
     }
@@ -148,14 +148,14 @@ class Battle {
         val snapshot = generatedStageCounterSnapshot
             ?: return true
 
-        return !Game.BattleStageCountRegion.exists(snapshot, Similarity = 0.85)
+        return !game.BattleStageCountRegion.exists(snapshot, Similarity = 0.85)
     }
 
     fun takeStageSnapshot() {
         generatedStageCounterSnapshot?.close()
 
         // It is important that the image gets cloned here.
-        generatedStageCounterSnapshot = Game.BattleStageCountRegion.getPattern()
+        generatedStageCounterSnapshot = game.BattleStageCountRegion.getPattern()
 
         hasTakenFirstStageSnapshot = true
     }

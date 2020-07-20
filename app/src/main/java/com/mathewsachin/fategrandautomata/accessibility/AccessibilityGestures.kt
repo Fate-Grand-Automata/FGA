@@ -4,16 +4,20 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.util.Log
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.wait
+import com.mathewsachin.libautomata.extensions.IDurationExtensions
+import javax.inject.Inject
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
  */
-class AccessibilityGestures(private var AccessibilityService: AccessibilityService?) :
-    IGestureService {
+class AccessibilityGestures @Inject constructor(
+    private var AccessibilityService: AccessibilityService?,
+    val gesturePrefs: IGesturesPreferences,
+    durationExtensions: IDurationExtensions
+) : IGestureService, IDurationExtensions by durationExtensions {
     override fun swipe(Start: Location, End: Location) {
         val swipePath = Path()
         swipePath.moveTo(Start.X.toFloat(), Start.Y.toFloat())
@@ -24,11 +28,11 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
             0,
-            Preferences.gestures.swipeDuration.toLongMilliseconds()
+            gesturePrefs.swipeDuration.toLongMilliseconds()
         )
         performGesture(swipeStroke)
 
-        Preferences.gestures.swipeWaitTime.wait()
+        gesturePrefs.swipeWaitTime.wait()
     }
 
     override fun click(Location: Location, Times: Int) {
@@ -37,8 +41,8 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
 
         val stroke = GestureDescription.StrokeDescription(
             swipePath,
-            Preferences.gestures.clickDelay.toLongMilliseconds(),
-            Preferences.gestures.clickDuration.toLongMilliseconds()
+            gesturePrefs.clickDelay.toLongMilliseconds(),
+            gesturePrefs.clickDuration.toLongMilliseconds()
         )
 
         Log.d(AccessibilityGestures::class.simpleName, "click $Location x$Times")
@@ -47,7 +51,7 @@ class AccessibilityGestures(private var AccessibilityService: AccessibilityServi
             performGesture(stroke)
         }
 
-        Preferences.gestures.clickWaitTime.wait()
+        gesturePrefs.clickWaitTime.wait()
     }
 
     private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {

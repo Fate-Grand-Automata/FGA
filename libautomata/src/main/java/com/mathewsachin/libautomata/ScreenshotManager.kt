@@ -1,16 +1,20 @@
 package com.mathewsachin.libautomata
 
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import com.mathewsachin.libautomata.extensions.ITransformationExtensions
+import javax.inject.Inject
+
 /**
  * A static class responsible for taking screenshots via a [IScreenshotService]. The screenshots are
  * scaled and cropped and can be cached for a while using [snapshot].
  */
-object ScreenshotManager {
-    private var impl: IScreenshotService? = null
-
-    fun register(Impl: IScreenshotService) {
-        impl = Impl
-    }
-
+@ScriptScope
+class ScreenshotManager @Inject constructor(
+    val gameAreaManager: GameAreaManager,
+    val screenshotService: IScreenshotService,
+    val platformImpl: IPlatformImpl,
+    val transformationExtensions: ITransformationExtensions
+) : AutoCloseable {
     var usePreviousSnap = false
 
     private var previousPattern: IPattern? = null
@@ -21,14 +25,14 @@ object ScreenshotManager {
      * it can be used for image comparisons.
      */
     private fun getScaledScreenshot(): IPattern {
-        val sshot = impl!!.takeScreenshot()
-            .crop(GameAreaManager.GameArea)
+        val sshot = screenshotService.takeScreenshot()
+            .crop(gameAreaManager.gameArea)
 
-        val scale = screenToImageScale()
+        val scale = transformationExtensions.screenToImageScale()
 
         if (scale != null) {
             if (resizeTarget == null) {
-                resizeTarget = AutomataApi.PlatformImpl.getResizableBlankPattern()
+                resizeTarget = platformImpl.getResizableBlankPattern()
             }
 
             sshot.resize(resizeTarget!!, sshot.Size * scale)
@@ -86,7 +90,7 @@ object ScreenshotManager {
     /**
      * Releases the memory reserved for the cached screenshot and helper images.
      */
-    fun releaseMemory() {
+    override fun close() {
         previousPattern?.close()
         previousPattern = null
 

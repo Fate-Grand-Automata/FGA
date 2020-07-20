@@ -3,7 +3,7 @@ package com.mathewsachin.libautomata
 /**
  * Manages the termination of running scripts
  */
-object ExitManager {
+class ExitManager {
     @Volatile
     private var exitRequested = false
 

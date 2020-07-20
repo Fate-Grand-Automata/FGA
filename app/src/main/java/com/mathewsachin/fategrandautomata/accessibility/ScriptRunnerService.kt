@@ -15,37 +15,56 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.dagger.ScriptRunnerServiceComponent
+import com.mathewsachin.fategrandautomata.dagger.ScriptRunnerServiceModule
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
-import com.mathewsachin.fategrandautomata.scripts.ImgLoader
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.messageAndStackTrace
+import javax.inject.Inject
 
 class ScriptRunnerService : AccessibilityService() {
     companion object {
         var Instance: ScriptRunnerService? = null
     }
 
-    private lateinit var userInterface: ScriptRunnerUserInterface
-    private lateinit var scriptManager: ScriptManager
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
+    @Inject
+    lateinit var prefs: IPreferences
+
+    @Inject
+    lateinit var mediaProjectionManager: MediaProjectionManager
+
+    @Inject
+    lateinit var storageDirs: StorageDirs
+
+    @Inject
+    lateinit var userInterface: ScriptRunnerUserInterface
+
+    @Inject
+    lateinit var scriptManager: ScriptManager
+
+    @Inject
+    lateinit var notification: ScriptRunnerNotification
+
+    @Inject
+    lateinit var platformImpl: IPlatformImpl
+
     private var sshotService: IScreenshotService? = null
     private val screenOffReceiver = ScreenOffReceiver()
 
     // stopping is handled by Screenshot service
     private var mediaProjection: MediaProjection? = null
 
-    val notification = ScriptRunnerNotification(this)
-
-    lateinit var mediaProjectionManager: MediaProjectionManager
-        private set
-
     override fun onUnbind(intent: Intent?): Boolean {
         stop()
-
-        unregisterGestures()
 
         screenOffReceiver.unregister(this)
         Instance = null
@@ -59,7 +78,7 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = null
     }
 
-    val wantsMediaProjectionToken: Boolean get() = !Preferences.useRootForScreenshots
+    val wantsMediaProjectionToken: Boolean get() = !prefs.useRootForScreenshots
 
     var serviceStarted = false
         private set
@@ -69,7 +88,7 @@ class ScriptRunnerService : AccessibilityService() {
             return false
         }
 
-        if (!registerScreenshot(MediaProjectionToken, storageDirs)) {
+        if (!registerScreenshot(MediaProjectionToken)) {
             return false
         }
 
@@ -80,10 +99,7 @@ class ScriptRunnerService : AccessibilityService() {
         return true
     }
 
-    private fun registerScreenshot(
-        MediaProjectionToken: Intent?,
-        storageDirs: StorageDirs
-    ): Boolean {
+    private fun registerScreenshot(MediaProjectionToken: Intent?): Boolean {
         sshotService = try {
             if (MediaProjectionToken != null) {
                 mediaProjection =
@@ -93,13 +109,12 @@ class ScriptRunnerService : AccessibilityService() {
                     userInterface.mediaProjectionMetrics,
                     storageDirs
                 )
-            } else RootScreenshotService(SuperUser(), storageDirs)
+            } else RootScreenshotService(SuperUser(), storageDirs, platformImpl)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             return false
         }
 
-        ScreenshotManager.register(sshotService ?: return false)
         return true
     }
 
@@ -113,8 +128,7 @@ class ScriptRunnerService : AccessibilityService() {
         sshotService?.close()
         sshotService = null
 
-        ScreenshotManager.releaseMemory()
-        ImgLoader.clearImageCache()
+        imageLoader.clearImageCache()
 
         userInterface.hide()
         serviceStarted = false
@@ -152,25 +166,23 @@ class ScriptRunnerService : AccessibilityService() {
                 scriptManager.stopScript()
             } else sshotService?.let {
                 // Overwrite the server in the preferences with the detected one, if possible
-                currentFgoServer?.let { server -> Preferences.gameServer = server }
+                currentFgoServer?.let { server -> prefs.gameServer = server }
 
-                scriptManager.startScript(this, it)
+                scriptManager.startScript(this, it, component)
             }
         }
     }
 
+    private lateinit var component: ScriptRunnerServiceComponent
+
     override fun onServiceConnected() {
         Instance = this
-        AutomataApi.registerPlatform(AndroidImpl(this))
+        component =
+            (applicationContext as AutomataApplication).appComponent.scriptRunnerServiceComponent()
+                .scriptRunnerServiceModule(ScriptRunnerServiceModule(this))
+                .build()
 
-        val gestureService = AccessibilityGestures(this)
-        registerGestures(gestureService)
-
-        mediaProjectionManager =
-            getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-
-        userInterface = ScriptRunnerUserInterface(this)
-        scriptManager = ScriptManager(userInterface)
+        component.inject(this)
 
         screenOffReceiver.register(this) {
             scriptManager.stopScript()

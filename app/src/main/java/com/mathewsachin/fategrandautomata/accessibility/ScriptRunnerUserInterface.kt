@@ -13,49 +13,57 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.dagger.ServiceScope
+import com.mathewsachin.fategrandautomata.ui.HighlightManager
 import com.mathewsachin.libautomata.Location
-import com.mathewsachin.fategrandautomata.ui.highlightView
+import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 
-class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
-    val overlayType: Int get() {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+@ServiceScope
+class ScriptRunnerUserInterface @Inject constructor(
+    val Service: ScriptRunnerService,
+    val highlightManager: HighlightManager
+) {
+    val overlayType: Int
+        get() {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            } else WindowManager.LayoutParams.TYPE_PHONE
         }
-        else WindowManager.LayoutParams.TYPE_PHONE
-    }
 
     val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-    private val metrics: DisplayMetrics get() {
-        val res = DisplayMetrics()
+    private val metrics: DisplayMetrics
+        get() {
+            val res = DisplayMetrics()
 
-        windowManager.defaultDisplay.getRealMetrics(res)
+            windowManager.defaultDisplay.getRealMetrics(res)
 
-        return res
-    }
+            return res
+        }
 
     /**
      * Used with MediaProjection so that we only get landscape images,
      * since the frame size can't be changed during a projection.
      */
-    val mediaProjectionMetrics: DisplayMetrics get() {
-        val res = metrics
+    val mediaProjectionMetrics: DisplayMetrics
+        get() {
+            val res = metrics
 
-        // Retrieve images in Landscape
-        if (res.heightPixels > res.widthPixels) {
-            res.let {
-                val temp = it.widthPixels
-                it.widthPixels = it.heightPixels
-                it.heightPixels = temp
+            // Retrieve images in Landscape
+            if (res.heightPixels > res.widthPixels) {
+                res.let {
+                    val temp = it.widthPixels
+                    it.widthPixels = it.heightPixels
+                    it.heightPixels = temp
+                }
             }
-        }
 
-        return res
-    }
+            return res
+        }
 
     private val scriptCtrlBtnLayout = FrameLayout(Service)
     private var scriptCtrlBtn: ImageButton
@@ -63,7 +71,8 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     private val scriptCtrlBtnLayoutParams = WindowManager.LayoutParams().apply {
         type = overlayType
         format = PixelFormat.TRANSLUCENT
-        flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        flags =
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         width = WindowManager.LayoutParams.WRAP_CONTENT
         height = WindowManager.LayoutParams.WRAP_CONTENT
         @SuppressLint("RtlHardcoded")
@@ -98,13 +107,13 @@ class ScriptRunnerUserInterface(val Service: ScriptRunnerService) {
     }
 
     fun show() {
-        windowManager.addView(highlightView, highlightLayoutParams)
+        windowManager.addView(highlightManager.highlightView, highlightLayoutParams)
         windowManager.addView(scriptCtrlBtnLayout, scriptCtrlBtnLayoutParams)
     }
 
     fun hide() {
         windowManager.removeView(scriptCtrlBtnLayout)
-        windowManager.removeView(highlightView)
+        windowManager.removeView(highlightManager.highlightView)
     }
 
     fun setPlayIcon() {

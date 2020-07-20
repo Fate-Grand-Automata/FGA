@@ -5,12 +5,15 @@ import kotlin.concurrent.thread
 /**
  * Basic class for all "script modes", such as Battle, Lottery and Summoning.
  */
-abstract class EntryPoint {
+abstract class EntryPoint(
+    val exitManager: ExitManager,
+    val platformImpl: IPlatformImpl
+) {
     /**
      * Starts the logic of the script mode in a new thread.
      */
     fun run() {
-        ExitManager.cancel()
+        exitManager.cancel()
 
         thread(start = true) {
             scriptRunner()
@@ -20,7 +23,7 @@ abstract class EntryPoint {
     /**
      * Notifies the script that the user requested it to stop.
      */
-    fun stop() = ExitManager.request()
+    fun stop() = exitManager.request()
 
     private fun scriptRunner() {
         try {
@@ -32,14 +35,14 @@ abstract class EntryPoint {
 
             // Show the message box only if there is some message
             if (!e.message.isNullOrBlank()) {
-                AutomataApi.PlatformImpl.messageBox("Script Exited", e.message)
+                platformImpl.messageBox("Script Exited", e.message)
             }
         } catch (e: Exception) {
             println(e.messageAndStackTrace)
 
             scriptExitListener?.invoke()
 
-            AutomataApi.PlatformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
+            platformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
         }
     }
 

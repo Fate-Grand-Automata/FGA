@@ -5,9 +5,8 @@ import android.os.*
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.fategrandautomata.ui.addRegionToHighlight
-import com.mathewsachin.fategrandautomata.ui.removeRegionToHighlight
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.HighlightManager
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IPlatformPrefs
@@ -15,15 +14,20 @@ import com.mathewsachin.libautomata.Region
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.InputStream
+import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.milliseconds
 
-class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
-    override val windowRegion get() = getCutoutAppliedRegion()
+class AndroidImpl @Inject constructor(
+    private val Service: ScriptRunnerService,
+    val preferences: IPreferences,
+    val cutoutManager: CutoutManager,
+    val highlightManager: HighlightManager
+) : IPlatformImpl {
+    override val windowRegion get() = cutoutManager.getCutoutAppliedRegion()
 
     override val prefs: IPlatformPrefs
-        get() = Preferences.platformPrefs
+        get() = preferences.platformPrefs
 
     override fun toast(Message: String) {
         handler.post {
@@ -31,10 +35,6 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
                 .makeText(Service, Message, Toast.LENGTH_SHORT)
                 .show()
         }
-    }
-
-    override fun loadPattern(Stream: InputStream, tag: String): IPattern {
-        return DroidCvPattern(Stream, tag)
     }
 
     override fun getResizableBlankPattern(): IPattern {
@@ -70,12 +70,12 @@ class AndroidImpl(private val Service: ScriptRunnerService) : IPlatformImpl {
 
     override fun highlight(Region: Region, Duration: Duration) {
         // We can't draw over the notch area
-        val region = Region - getCutoutAppliedRegion().location
+        val region = Region - cutoutManager.getCutoutAppliedRegion().location
 
         GlobalScope.launch {
-            addRegionToHighlight(region)
+            highlightManager.add(region)
             delay(Duration.toLongMilliseconds())
-            removeRegionToHighlight(region)
+            highlightManager.remove(region)
         }
     }
 }

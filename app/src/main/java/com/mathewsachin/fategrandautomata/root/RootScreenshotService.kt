@@ -5,8 +5,8 @@ import android.util.Log
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.util.readIntLE
-import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import org.opencv.core.CvType
 import org.opencv.core.Mat
@@ -17,7 +17,8 @@ import java.io.FileInputStream
 
 class RootScreenshotService(
     private val SuperUser: SuperUser,
-    private val storageDirs: StorageDirs
+    storageDirs: StorageDirs,
+    val platformImpl: IPlatformImpl
 ) : IScreenshotService {
     private var buffer: ByteArray? = null
     private val imgPath = File(storageDirs.storageRoot, "sshot.raw").absolutePath
@@ -42,7 +43,7 @@ class RootScreenshotService(
                 if (buffer == null) {
                     // If format is not RGBA, notify
                     if (format != 1) {
-                        AutomataApi.PlatformImpl.toast("Unexpected raw image format: $format")
+                        platformImpl.toast("Unexpected raw image format: $format")
                     }
 
                     Log.d(RootScreenshotService::class.simpleName, "${w}x${h} format=$format")
