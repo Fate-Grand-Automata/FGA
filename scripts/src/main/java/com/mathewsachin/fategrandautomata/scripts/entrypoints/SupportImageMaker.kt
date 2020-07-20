@@ -19,10 +19,10 @@ fun getFriendImgPath(dir: File, Index: Int): File {
 
 class SupportImageMaker(
     private val dir: File,
-    private var Callback: (() -> Unit)?,
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi
+    fgAutomataApi: IFGAutomataApi,
+    private var Callback: (() -> Unit)?
 ) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
     override fun script(): Nothing {
         scaling.init()

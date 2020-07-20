@@ -10,7 +10,6 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterfac
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import java.io.File
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
@@ -25,16 +24,6 @@ const val ServantInvalidMsg =
     "You're not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
 const val CeOrFriendInvalidMsg =
     "You're not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
-
-val supportImgTempDir: File by lazy {
-    val dir = File(AutomataApplication.Instance.cacheDir, "support")
-
-    if (!dir.exists()) {
-        dir.mkdirs()
-    }
-
-    dir
-}
 
 private fun getSupportEntries(
     Frame: View,
@@ -101,13 +90,13 @@ private fun getSupportEntries(
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
 }
 
-fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs) {
+fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs, tempDir: File) {
     val frame = FrameLayout(UI.Service)
 
     val inflater = LayoutInflater.from(UI.Service)
     inflater.inflate(R.layout.support_img_namer, frame)
 
-    val entryList = getSupportEntries(frame, supportImgTempDir, storageDirs)
+    val entryList = getSupportEntries(frame, tempDir, storageDirs)
 
     ScriptRunnerDialog(UI).apply {
         autoDismiss = false

@@ -19,11 +19,11 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
-import com.mathewsachin.fategrandautomata.ui.support_img_namer.supportImgTempDir
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
+import java.io.File
 import javax.inject.Inject
 import kotlin.time.seconds
 
@@ -62,19 +62,35 @@ class ScriptManager @Inject constructor(
         recording = null
     }
 
+    private fun getSupportImagTempDir(context: Context): File {
+        val dir = File(context.cacheDir, "support")
+
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+
+        return dir
+    }
+
     private fun getEntryPoint(
         exitManager: ExitManager,
-        fgAutomataApi: IFGAutomataApi
+        fgAutomataApi: IFGAutomataApi,
+        context: Context
     ): EntryPoint = when (preferences.scriptMode) {
         ScriptModeEnum.Lottery -> AutoLottery(exitManager, platformImpl, fgAutomataApi)
         ScriptModeEnum.FriendGacha -> AutoFriendGacha(exitManager, platformImpl, fgAutomataApi)
-        ScriptModeEnum.SupportImageMaker -> SupportImageMaker(
-            supportImgTempDir,
-            ::supportImgMakerCallback,
-            exitManager,
-            platformImpl,
-            fgAutomataApi
-        )
+        ScriptModeEnum.SupportImageMaker -> {
+            val tempDir = getSupportImagTempDir(context)
+
+            SupportImageMaker(
+                tempDir,
+                exitManager,
+                platformImpl,
+                fgAutomataApi
+            ) {
+                supportImgMakerCallback(tempDir)
+            }
+        }
         else -> AutoBattle(exitManager, platformImpl, fgAutomataApi)
     }
 
@@ -82,8 +98,8 @@ class ScriptManager @Inject constructor(
         Handler(Looper.getMainLooper())
     }
 
-    private fun supportImgMakerCallback() {
-        handler.post { showSupportImageNamer(userInterface, storageDirs) }
+    private fun supportImgMakerCallback(tempDir: File) {
+        handler.post { showSupportImageNamer(userInterface, storageDirs, tempDir) }
     }
 
     fun startScript(
@@ -101,7 +117,7 @@ class ScriptManager @Inject constructor(
             .build()
             .getScriptLaunchParams()
 
-        getEntryPoint(exitManager, fgAutomataApi).apply {
+        getEntryPoint(exitManager, fgAutomataApi, context).apply {
             if (this is AutoBattle) {
                 autoSkillPicker(context) {
                     runEntryPoint(this, screenshotService)
