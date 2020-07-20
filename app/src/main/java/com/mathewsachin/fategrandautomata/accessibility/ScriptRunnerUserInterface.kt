@@ -13,7 +13,7 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.ui.highlightView
+import com.mathewsachin.fategrandautomata.ui.HighlightManager
 import com.mathewsachin.libautomata.Location
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -21,7 +21,10 @@ import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 
-class ScriptRunnerUserInterface @Inject constructor(val Service: ScriptRunnerService) {
+class ScriptRunnerUserInterface @Inject constructor(
+    val Service: ScriptRunnerService,
+    val highlightManager: HighlightManager
+) {
     val overlayType: Int
         get() {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -102,13 +105,13 @@ class ScriptRunnerUserInterface @Inject constructor(val Service: ScriptRunnerSer
     }
 
     fun show() {
-        windowManager.addView(highlightView, highlightLayoutParams)
+        windowManager.addView(highlightManager.highlightView, highlightLayoutParams)
         windowManager.addView(scriptCtrlBtnLayout, scriptCtrlBtnLayoutParams)
     }
 
     fun hide() {
         windowManager.removeView(scriptCtrlBtnLayout)
-        windowManager.removeView(highlightView)
+        windowManager.removeView(highlightManager.highlightView)
     }
 
     fun setPlayIcon() {
