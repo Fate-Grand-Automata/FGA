@@ -3,8 +3,9 @@ package com.mathewsachin.libautomata.extensions
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
+import javax.inject.Inject
 
-class TransformationExtensions(
+class TransformationExtensions @Inject constructor(
     val gameAreaManager: GameAreaManager
 ) : ITransformationExtensions {
     val noScaling = 1.0

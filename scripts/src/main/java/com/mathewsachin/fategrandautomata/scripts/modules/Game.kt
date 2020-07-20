@@ -2,12 +2,24 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.time.seconds
 
-class Game(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
+fun IFGAutomataApi.needsToRetry() = game.RetryRegion.exists(images.retry)
+
+fun IFGAutomataApi.retry() {
+    game.RetryRegion.click()
+
+    2.seconds.wait()
+}
+
+@ScriptScope
+class Game @Inject constructor(val prefs: IPreferences) {
     val ImageSize = Size(1280, 720)
     val ScriptSize = Size(2560, 1440)
 
@@ -198,14 +210,6 @@ class Game(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     val ResultFriendRequestRejectClick = Location(600, 1200)
     val ResultQuestRewardRegion = Region(1630, 140, 370, 250)
     val ResultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
-
-    fun needsToRetry() = RetryRegion.exists(images.retry)
-
-    fun retry() {
-        RetryRegion.click()
-
-        2.seconds.wait()
-    }
 
     val GudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
 }

@@ -12,9 +12,11 @@ import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.modules.cardPriorityStageSeparator
 import com.mathewsachin.fategrandautomata.scripts.modules.getCardScores
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import kotlinx.android.synthetic.main.card_priority.*
+import javax.inject.Inject
 
 fun String.filterCapitals(): String {
     return this
@@ -25,16 +27,22 @@ fun String.filterCapitals(): String {
 
 class CardPriorityActivity : AppCompatActivity() {
     private lateinit var cardScores: MutableList<MutableList<CardScore>>
-
     private lateinit var autoSkillPref: IAutoSkillPreferences
+
+    @Inject
+    lateinit var preferences: IPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.card_priority)
 
+        (applicationContext as AutomataApplication)
+            .appComponent
+            .inject(this)
+
         val autoSkillKey = intent.getStringExtra(AutoSkillItemActivity::autoSkillItemKey.name)
             ?: throw IllegalArgumentException("Missing AutoSkill item key in intent")
-        autoSkillPref = Preferences.forAutoSkillConfig(autoSkillKey)
+        autoSkillPref = preferences.forAutoSkillConfig(autoSkillKey)
 
         var cardPriority = autoSkillPref.cardPriority
 

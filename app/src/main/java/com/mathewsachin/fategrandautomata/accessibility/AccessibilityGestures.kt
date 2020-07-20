@@ -8,11 +8,12 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.extensions.IDurationExtensions
+import javax.inject.Inject
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
  */
-class AccessibilityGestures(
+class AccessibilityGestures @Inject constructor(
     private var AccessibilityService: AccessibilityService?,
     val gesturePrefs: IGesturesPreferences,
     durationExtensions: IDurationExtensions

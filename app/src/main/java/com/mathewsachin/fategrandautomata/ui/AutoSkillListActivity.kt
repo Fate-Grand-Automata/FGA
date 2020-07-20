@@ -6,16 +6,25 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import kotlinx.android.synthetic.main.autoskill_list.*
 import java.util.*
+import javax.inject.Inject
 
 class AutoSkillListActivity : AppCompatActivity() {
     private lateinit var autoSkillItems: Array<IAutoSkillPreferences>
 
+    @Inject
+    lateinit var preferences: IPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.autoskill_list)
+
+        (applicationContext as AutomataApplication)
+            .appComponent
+            .inject(this)
 
         autoskill_add_btn.setOnClickListener {
             addOnBtnClick()
@@ -37,7 +46,7 @@ class AutoSkillListActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        autoSkillItems = Preferences.autoSkillPreferences
+        autoSkillItems = preferences.autoSkillPreferences
             .toTypedArray()
 
         val autoSkillNames = autoSkillItems
@@ -51,11 +60,11 @@ class AutoSkillListActivity : AppCompatActivity() {
     private fun addOnBtnClick() {
         val guid = UUID.randomUUID().toString()
 
-        val autoSkillItems = Preferences.autoSkillList
+        val autoSkillItems = preferences.autoSkillList
             .toMutableSet()
             .apply { add(guid) }
 
-        Preferences.autoSkillList = autoSkillItems
+        preferences.autoSkillList = autoSkillItems
 
         editItem(guid)
     }

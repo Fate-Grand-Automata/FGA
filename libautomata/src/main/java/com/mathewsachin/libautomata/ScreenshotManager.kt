@@ -1,12 +1,15 @@
 package com.mathewsachin.libautomata
 
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
+import javax.inject.Inject
 
 /**
  * A static class responsible for taking screenshots via a [IScreenshotService]. The screenshots are
  * scaled and cropped and can be cached for a while using [snapshot].
  */
-class ScreenshotManager(
+@ScriptScope
+class ScreenshotManager @Inject constructor(
     val gameAreaManager: GameAreaManager,
     val screenshotService: IScreenshotService,
     val platformImpl: IPlatformImpl,

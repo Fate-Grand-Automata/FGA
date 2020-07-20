@@ -4,6 +4,8 @@ import com.mathewsachin.libautomata.CompareSettings
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -51,7 +53,8 @@ private fun calculateGameAreaWithoutBorders(
     )
 }
 
-class Scaling(val gameAreaManager: GameAreaManager, val game: Game) {
+@ScriptScope
+class Scaling @Inject constructor(val gameAreaManager: GameAreaManager, val game: Game) {
     private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
         val gameWithBorders = gameAreaManager.gameArea
         val (scaleByWidth, scaleRate) = decideScaleMethod(

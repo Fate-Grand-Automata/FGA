@@ -10,9 +10,10 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.IPlatformPrefs
+import javax.inject.Inject
 import kotlin.time.milliseconds
 
-class PreferencesImpl(
+class PreferencesImpl @Inject constructor(
     private val context: Context,
     val storageDirs: StorageDirs
 ) : IPreferences {

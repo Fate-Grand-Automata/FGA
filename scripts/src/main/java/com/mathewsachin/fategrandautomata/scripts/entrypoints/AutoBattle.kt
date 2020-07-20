@@ -3,10 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
-import com.mathewsachin.fategrandautomata.scripts.modules.AutoSkill
-import com.mathewsachin.fategrandautomata.scripts.modules.Battle
-import com.mathewsachin.fategrandautomata.scripts.modules.Card
-import com.mathewsachin.fategrandautomata.scripts.modules.Support
+import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IPlatformImpl
@@ -46,7 +43,7 @@ open class AutoBattle(
         // a map of validators and associated actions
         // if the validator function evaluates to true, the associated action function is called
         val screens = mapOf(
-            { game.needsToRetry() } to { game.retry() },
+            { battle.needsToRetry() } to { battle.retry() },
             { battle.isIdle() } to { battle.performBattle() },
             { isInMenu() } to { menu() },
             { isInResult() } to { result() },

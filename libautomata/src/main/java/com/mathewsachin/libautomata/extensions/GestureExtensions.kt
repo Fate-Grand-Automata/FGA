@@ -4,8 +4,9 @@ import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
+import javax.inject.Inject
 
-class GestureExtensions(
+class GestureExtensions @Inject constructor(
     val gestureService: IGestureService,
     val exitManager: ExitManager,
     transformationExtensions: ITransformationExtensions

@@ -194,8 +194,8 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 1.seconds.wait()
                 game.SupportUpdateYesClick.click()
 
-                while (game.needsToRetry()) {
-                    game.retry()
+                while (needsToRetry()) {
+                    retry()
                 }
 
                 3.seconds.wait()

@@ -1,10 +1,14 @@
 package com.mathewsachin.libautomata
 
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
+
 /**
  * This class is used for storing the script and image dimensions and for storing the playable area
  * in [gameArea].
  */
-class GameAreaManager(val platformImpl: IPlatformImpl) {
+@ScriptScope
+class GameAreaManager @Inject constructor(val platformImpl: IPlatformImpl) {
     /**
      * Stores either the width or height of the script dimensions. Normally, this is 1440p.
      */

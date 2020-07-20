@@ -10,8 +10,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.MainActivity
+import javax.inject.Inject
 
-class ScriptRunnerNotification(val service: Service) {
+class ScriptRunnerNotification @Inject constructor(val service: Service) {
 
     private val channelId = "fategrandautomata-notifications"
     private var channelCreated = false

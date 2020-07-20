@@ -2,17 +2,19 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
 import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.IImageLoader
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.libautomata.AutomataApi
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.ScriptExitException
 import java.io.File
 import java.io.FileInputStream
+import javax.inject.Inject
 
-class ImageLoader(
+class ImageLoader @Inject constructor(
     val storageDirs: StorageDirs,
+    val prefs: IPreferences,
     val context: Context
 ) : IImageLoader {
     private fun fileLoader(FileName: String): IPattern? {
@@ -22,7 +24,7 @@ class ImageLoader(
             val inputStream = FileInputStream(filepath)
 
             inputStream.use {
-                return AutomataApi.PlatformImpl.loadPattern(it, FileName)
+                return DroidCvPattern(it, FileName)
             }
         }
 
@@ -35,7 +37,7 @@ class ImageLoader(
         val inputStream = assets.open(FilePath)
 
         inputStream.use {
-            return AutomataApi.PlatformImpl.loadPattern(it, FilePath)
+            return DroidCvPattern(it, FilePath)
         }
     }
 
@@ -44,7 +46,7 @@ class ImageLoader(
     private var regionCachedPatterns = mutableMapOf<String, IPattern>()
 
     override fun loadRegionPattern(path: String): IPattern {
-        val server = Preferences.gameServer
+        val server = prefs.gameServer
 
         // Reload Patterns on Server change
         if (currentGameServer != server) {

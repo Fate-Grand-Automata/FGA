@@ -1,11 +1,12 @@
 package com.mathewsachin.libautomata.extensions
 
 import com.mathewsachin.libautomata.*
+import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 
-class ImageMatchingExtensions(
+class ImageMatchingExtensions @Inject constructor(
     val exitManager: ExitManager,
     val screenshotManager: ScreenshotManager,
     val platformImpl: IPlatformImpl,

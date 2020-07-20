@@ -6,22 +6,39 @@ import android.os.Looper
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.core.view.setPadding
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
-import com.mathewsachin.fategrandautomata.scripts.ImgLoader
+import com.mathewsachin.fategrandautomata.dagger.ScreenshotModule
+import com.mathewsachin.fategrandautomata.dagger.ScriptRunnerServiceComponent
+import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.supportImgTempDir
 import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
+import javax.inject.Inject
 import kotlin.time.seconds
 
-class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
+data class ScriptLaunchParams @Inject constructor(
+    val exitManager: ExitManager,
+    val fgAutomataApi: IFGAutomataApi
+)
+
+class ScriptManager @Inject constructor(
+    val userInterface: ScriptRunnerUserInterface,
+    val imageLoader: ImageLoader,
+    val preferences: IPreferences,
+    val storageDirs: StorageDirs,
+    val platformImpl: IPlatformImpl
+) {
     var scriptStarted = false
         private set
 
@@ -31,7 +48,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
     private fun onScriptExit() {
         userInterface.setPlayIcon()
 
-        ImgLoader.clearSupportCache()
+        imageLoader.clearSupportCache()
 
         entryPoint = null
         scriptStarted = false
@@ -45,14 +62,20 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         recording = null
     }
 
-    private fun getEntryPoint(): EntryPoint = when (Preferences.scriptMode) {
-        ScriptModeEnum.Lottery -> AutoLottery()
-        ScriptModeEnum.FriendGacha -> AutoFriendGacha()
+    private fun getEntryPoint(
+        exitManager: ExitManager,
+        fgAutomataApi: IFGAutomataApi
+    ): EntryPoint = when (preferences.scriptMode) {
+        ScriptModeEnum.Lottery -> AutoLottery(exitManager, platformImpl, fgAutomataApi)
+        ScriptModeEnum.FriendGacha -> AutoFriendGacha(exitManager, platformImpl, fgAutomataApi)
         ScriptModeEnum.SupportImageMaker -> SupportImageMaker(
             supportImgTempDir,
-            ::supportImgMakerCallback
+            ::supportImgMakerCallback,
+            exitManager,
+            platformImpl,
+            fgAutomataApi
         )
-        else -> AutoBattle()
+        else -> AutoBattle(exitManager, platformImpl, fgAutomataApi)
     }
 
     private val handler by lazy {
@@ -63,12 +86,22 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         handler.post { showSupportImageNamer(userInterface, storageDirs) }
     }
 
-    fun startScript(context: Context, screenshotService: IScreenshotService) {
+    fun startScript(
+        context: Context,
+        screenshotService: IScreenshotService,
+        component: ScriptRunnerServiceComponent
+    ) {
         if (scriptStarted) {
             return
         }
 
-        getEntryPoint().apply {
+        val (exitManager, fgAutomataApi) = component
+            .scriptComponent()
+            .screenshotModule(ScreenshotModule(screenshotService))
+            .build()
+            .getScriptLaunchParams()
+
+        getEntryPoint(exitManager, fgAutomataApi).apply {
             if (this is AutoBattle) {
                 autoSkillPicker(context) {
                     runEntryPoint(this, screenshotService)
@@ -100,7 +133,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
         scriptStarted = true
         entryPoint = EntryPoint
 
-        if (Preferences.recordScreen) {
+        if (preferences.recordScreen) {
             recording = screenshotService.startRecording()
         }
 
@@ -115,9 +148,9 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
     }
 
     private fun autoSkillPicker(context: Context, EntryPointRunner: () -> Unit) {
-        var selected = Preferences.selectedAutoSkillConfig
+        var selected = preferences.selectedAutoSkillConfig
 
-        val autoSkillItems = Preferences.autoSkillPreferences
+        val autoSkillItems = preferences.autoSkillPreferences
 
         val radioGroup = RadioGroup(context).apply {
             orientation = RadioGroup.VERTICAL
@@ -144,7 +177,7 @@ class ScriptManager(val userInterface: ScriptRunnerUserInterface) {
                 if (selectedIndex in autoSkillItems.indices) {
                     selected = autoSkillItems[selectedIndex]
 
-                    Preferences.selectedAutoSkillConfig = selected
+                    preferences.selectedAutoSkillConfig = selected
                 }
 
                 EntryPointRunner()

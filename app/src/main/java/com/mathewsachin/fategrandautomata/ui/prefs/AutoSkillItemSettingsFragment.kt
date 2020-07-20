@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -13,8 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
@@ -24,9 +26,30 @@ import com.mathewsachin.fategrandautomata.util.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
+    @Inject
+    lateinit var preferences: IPreferences
+
+    @Inject
+    lateinit var storageDirs: StorageDirs
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (context.applicationContext as AutomataApplication)
+            .appComponent
+            .inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
+
     private val scope = MainScope()
 
     override fun onDestroy() {
@@ -67,7 +90,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             ?: throw IllegalArgumentException("Arguments should not be null")
 
         preferenceManager.sharedPreferencesName = autoSkillItemKey
-        autoSkillPrefs = Preferences.forAutoSkillConfig(autoSkillItemKey)
+        autoSkillPrefs = preferences.forAutoSkillConfig(autoSkillItemKey)
 
         setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
 
@@ -176,12 +199,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 .show()
             preferredSupportOnResume(storageDirs)
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
