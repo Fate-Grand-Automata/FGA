@@ -21,9 +21,10 @@ import kotlin.time.milliseconds
 
 class AndroidImpl @Inject constructor(
     private val Service: ScriptRunnerService,
-    val preferences: IPreferences
+    val preferences: IPreferences,
+    val cutoutManager: CutoutManager
 ) : IPlatformImpl {
-    override val windowRegion get() = getCutoutAppliedRegion()
+    override val windowRegion get() = cutoutManager.getCutoutAppliedRegion()
 
     override val prefs: IPlatformPrefs
         get() = preferences.platformPrefs
@@ -69,7 +70,7 @@ class AndroidImpl @Inject constructor(
 
     override fun highlight(Region: Region, Duration: Duration) {
         // We can't draw over the notch area
-        val region = Region - getCutoutAppliedRegion().location
+        val region = Region - cutoutManager.getCutoutAppliedRegion().location
 
         GlobalScope.launch {
             addRegionToHighlight(region)

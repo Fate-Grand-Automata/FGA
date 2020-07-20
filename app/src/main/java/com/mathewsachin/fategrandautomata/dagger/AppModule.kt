@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.dagger
 import android.content.Context
 import android.media.projection.MediaProjectionManager
 import android.os.Environment
+import android.view.WindowManager
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.PreferencesImpl
 import com.mathewsachin.fategrandautomata.scripts.IImageLoader
@@ -33,6 +34,11 @@ abstract class AppModule {
         @Provides
         fun provideMediaProjectionManager(context: Context) =
             context.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+
+        @Singleton
+        @Provides
+        fun provideWindowManager(context: Context) =
+            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         @Singleton
         @Provides

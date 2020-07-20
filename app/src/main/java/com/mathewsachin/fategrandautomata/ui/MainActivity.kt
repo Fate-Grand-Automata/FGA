@@ -17,17 +17,27 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsFragment
-import com.mathewsachin.fategrandautomata.util.applyCutout
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
+import com.mathewsachin.fategrandautomata.util.CutoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+class MainActivity : AppCompatActivity(),
+    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+
+    @Inject
+    lateinit var cutoutManager: CutoutManager
 
     private val requestMediaProjection = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        (applicationContext as AutomataApplication)
+            .appComponent
+            .inject(this)
 
         setSupportActionBar(toolbar)
 
@@ -48,7 +58,7 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        applyCutout(this)
+        cutoutManager.applyCutout(this)
     }
 
     private fun ignoreBatteryOptimizations() {
@@ -58,8 +68,12 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
             return
         }
 
-        startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-            Uri.parse("package:$packageName")))
+        startActivity(
+            Intent(
+                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                Uri.parse("package:$packageName")
+            )
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -83,7 +97,12 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
         )
 
         val permissionsToRequest = permissionsToCheck
-            .filter { ContextCompat.checkSelfPermission(this, it) != PermissionChecker.PERMISSION_GRANTED }
+            .filter {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    it
+                ) != PermissionChecker.PERMISSION_GRANTED
+            }
             .toTypedArray()
 
         if (permissionsToRequest.isNotEmpty()) {
@@ -111,8 +130,10 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
 
     private fun checkCanUseOverlays(): Boolean {
         if (!Settings.canDrawOverlays(this)) {
-            val i = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:$packageName"))
+            val i = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName")
+            )
             startActivity(i)
             return false
         }
@@ -132,15 +153,16 @@ class MainActivity : AppCompatActivity(), PreferenceFragmentCompat.OnPreferenceS
 
         if (instance.serviceStarted) {
             instance.stop()
-        }
-        else {
+        } else {
             if (instance.wantsMediaProjectionToken) {
                 instance.notification.show()
 
                 // This initiates a prompt dialog for the user to confirm screen projection.
-                startActivityForResult(instance.mediaProjectionManager.createScreenCaptureIntent(), requestMediaProjection)
-            }
-            else if (instance.start()) {
+                startActivityForResult(
+                    instance.mediaProjectionManager.createScreenCaptureIntent(),
+                    requestMediaProjection
+                )
+            } else if (instance.start()) {
                 instance.notification.show()
             }
         }
