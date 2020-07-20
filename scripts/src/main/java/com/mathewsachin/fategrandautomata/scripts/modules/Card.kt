@@ -1,12 +1,12 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.CardScore
-import com.mathewsachin.fategrandautomata.scripts.ImageLocator
+import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.ScriptExitException
 
 private const val dummyNormalAffinityChar = 'X'
 private const val cardPriorityErrorString = "Battle_CardPriority Error at '"
@@ -53,7 +53,7 @@ fun getCardScores(Priority: String): List<CardScore> {
     return scores
 }
 
-class Card {
+class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 
@@ -70,7 +70,7 @@ class Card {
     }
 
     private fun initCardPriorityArray() {
-        val priority = Preferences.selectedAutoSkillConfig.cardPriority
+        val priority = prefs.selectedAutoSkillConfig.cardPriority
 
         if (priority.length == 3) {
             initCardPriorityArraySimple(priority)
@@ -96,11 +96,11 @@ class Card {
     }
 
     private fun getCardAffinity(Region: Region): CardAffinityEnum {
-        if (Region.exists(ImageLocator.weak)) {
+        if (Region.exists(images.weak)) {
             return CardAffinityEnum.Weak
         }
 
-        if (Region.exists(ImageLocator.resist)) {
+        if (Region.exists(images.resist)) {
             return CardAffinityEnum.Resist
         }
 
@@ -108,19 +108,19 @@ class Card {
     }
 
     private fun getCardType(Region: Region): CardTypeEnum {
-        if (Region.exists(ImageLocator.buster)) {
+        if (Region.exists(images.buster)) {
             return CardTypeEnum.Buster
         }
 
-        if (Region.exists(ImageLocator.art)) {
+        if (Region.exists(images.art)) {
             return CardTypeEnum.Arts
         }
 
-        if (Region.exists(ImageLocator.quick)) {
+        if (Region.exists(images.quick)) {
             return CardTypeEnum.Quick
         }
 
-        AutomataApi.PlatformImpl.toast("Failed to determine Card type $Region")
+        toast("Failed to determine Card type $Region")
 
         return CardTypeEnum.Buster
     }
@@ -128,10 +128,10 @@ class Card {
     fun readCommandCards() {
         commandCards.clear()
 
-        ScreenshotManager.useSameSnapIn {
+        screenshotManager.useSameSnapIn {
             for (cardSlot in 0..4) {
-                val affinity = getCardAffinity(Game.BattleCardAffinityRegionArray[cardSlot])
-                val type = getCardType(Game.BattleCardTypeRegionArray[cardSlot])
+                val affinity = getCardAffinity(game.BattleCardAffinityRegionArray[cardSlot])
+                val type = getCardType(game.BattleCardTypeRegionArray[cardSlot])
 
                 val score = CardScore(
                     type,
@@ -149,15 +149,15 @@ class Card {
 
     val canClickNpCards: Boolean
         get() {
-            val weCanSpam = Preferences.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
-            val weAreInDanger = Preferences.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
+            val weCanSpam = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
+            val weAreInDanger = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
                     && battle.hasChosenTarget
 
             return (weCanSpam || weAreInDanger) && autoSkill.isFinished
         }
 
     fun clickNpCards() {
-        for (npCard in Game.BattleNpCardClickArray) {
+        for (npCard in game.BattleNpCardClickArray) {
             npCard.click()
         }
     }
@@ -181,7 +181,7 @@ class Card {
                 }
 
                 if (i > cardsClickedSoFar) {
-                    Game.BattleCommandCardClickArray[cardSlot].click()
+                    game.BattleCommandCardClickArray[cardSlot].click()
                 }
 
                 ++i

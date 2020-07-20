@@ -1,14 +1,17 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.scripts.ImageLocator
-import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
+import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 /**
  * Continually triggers 10x Summon, intended for FP summons, but could also be used for SQ summons.
  */
-class AutoFriendGacha : EntryPoint() {
+class AutoFriendGacha(
+    exitManager: ExitManager,
+    platformImpl: IPlatformImpl,
+    fgAutomataApi: IFGAutomataApi
+) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
     private val first10SummonClick = Location(1400, 1120)
     private val okClick = Location(1600, 1120)
     private val continueSummonClick = Location(1600, 1420)
@@ -17,7 +20,7 @@ class AutoFriendGacha : EntryPoint() {
     private val continueSummonRegion = Region(1244, 1264, 580, 170)
 
     override fun script(): Nothing {
-        initScaling()
+        scaling.init()
 
         first10SummonClick.click()
         0.3.seconds.wait()
@@ -25,7 +28,7 @@ class AutoFriendGacha : EntryPoint() {
 
         while (true) {
             when {
-                continueSummonRegion.exists(ImageLocator.fpSummonContinue) -> {
+                continueSummonRegion.exists(images.fpSummonContinue) -> {
                     continueSummonClick.click()
                     0.3.seconds.wait()
                     okClick.click()

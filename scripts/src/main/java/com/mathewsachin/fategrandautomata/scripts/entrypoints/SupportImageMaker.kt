@@ -1,8 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.scripts.ImageLocator
-import com.mathewsachin.fategrandautomata.scripts.modules.Game
-import com.mathewsachin.fategrandautomata.scripts.modules.initScaling
+import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.libautomata.*
 import java.io.File
@@ -21,10 +19,13 @@ fun getFriendImgPath(dir: File, Index: Int): File {
 
 class SupportImageMaker(
     private val dir: File,
-    private var Callback: (() -> Unit)?
-) : EntryPoint() {
+    private var Callback: (() -> Unit)?,
+    exitManager: ExitManager,
+    platformImpl: IPlatformImpl,
+    fgAutomataApi: IFGAutomataApi
+) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
     override fun script(): Nothing {
-        initScaling()
+        scaling.init()
 
         cleanExtractFolder()
 
@@ -36,7 +37,7 @@ class SupportImageMaker(
         var supportBound = Region(supportBoundX, 0, 286, 220)
         val searchRegion = Region(2100, 0, 370, 1440)
 
-        val regionAnchor = ImageLocator.supportRegionTool
+        val regionAnchor = images.supportRegionTool
         // At max two Servant+CE are completely on screen, so only use those
         val regionArray = searchRegion.findAll(
             regionAnchor,
@@ -44,7 +45,7 @@ class SupportImageMaker(
         )
             .take(2).toList()
 
-        val screenBounds = Region(0, 0, Game.ScriptSize.Width, Game.ScriptSize.Height)
+        val screenBounds = Region(0, 0, game.ScriptSize.Width, game.ScriptSize.Height)
 
         for ((i, testRegion) in regionArray.map { it.Region }.withIndex()) {
             // in the friend screen, the "Confirm Support Setup" button is higher

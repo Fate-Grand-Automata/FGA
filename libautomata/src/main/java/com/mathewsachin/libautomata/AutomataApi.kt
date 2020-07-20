@@ -12,10 +12,13 @@ interface IAutomataExtensions : IDurationExtensions, IGestureExtensions, IHighli
     fun Region.getPattern(): IPattern?
 
     val screenshotManager: ScreenshotManager
+
+    fun toast(msg: String)
 }
 
 class AutomataApi(
     override val screenshotManager: ScreenshotManager,
+    val platformImpl: IPlatformImpl,
     durationExtensions: IDurationExtensions,
     gestureExtensions: IGestureExtensions,
     highlightExtensions: IHighlightExtensions,
@@ -32,5 +35,7 @@ class AutomataApi(
         screenshotManager.getScreenshot()
             ?.crop(this.transformToImage())
             ?.copy()
+
+    override fun toast(msg: String) = platformImpl.toast(msg)
 }
 

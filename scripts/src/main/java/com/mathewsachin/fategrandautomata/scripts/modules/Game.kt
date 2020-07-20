@@ -1,12 +1,13 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.ImageLocator
+import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.Preferences
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.Size
 import kotlin.time.seconds
 
-object Game {
+class Game(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     val ImageSize = Size(1280, 720)
     val ScriptSize = Size(2560, 1440)
 
@@ -90,7 +91,7 @@ object Game {
     val BattleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
 
     val BattleStageCountRegion
-        get() = when (Preferences.gameServer) {
+        get() = when (prefs.gameServer) {
             GameServerEnum.En -> Region(1722, 25, 46, 53)
             GameServerEnum.Jp -> Region(1722, 25, 46, 53)
             GameServerEnum.Cn -> Region(1722, 25, 46, 53)
@@ -198,7 +199,7 @@ object Game {
     val ResultQuestRewardRegion = Region(1630, 140, 370, 250)
     val ResultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
 
-    fun needsToRetry() = RetryRegion.exists(ImageLocator.retry)
+    fun needsToRetry() = RetryRegion.exists(images.retry)
 
     fun retry() {
         RetryRegion.click()
