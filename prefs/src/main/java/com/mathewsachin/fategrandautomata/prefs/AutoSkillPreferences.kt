@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.Context
+import androidx.core.content.edit
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
@@ -37,4 +38,12 @@ internal class AutoSkillPreferences(
             prefs,
             storageDirs
         )
+
+    override fun export(): Map<String, *> =
+        prefs.prefs.export()
+
+    override fun import(map: Map<String, *>) =
+        prefs.prefs.edit(commit = true) {
+            import(map)
+        }
 }

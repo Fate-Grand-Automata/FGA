@@ -8,9 +8,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment
+import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import kotlinx.android.synthetic.main.settings.*
+import java.io.File
+import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 class AutoSkillItemActivity : AppCompatActivity() {
@@ -18,9 +23,16 @@ class AutoSkillItemActivity : AppCompatActivity() {
     var autoSkillItemKey = ""
         private set
 
+    @Inject
+    lateinit var preferences: IPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings)
+
+        (applicationContext as AutomataApplication)
+            .appComponent
+            .inject(this)
 
         setSupportActionBar(toolbar_settings)
 
@@ -58,10 +70,18 @@ class AutoSkillItemActivity : AppCompatActivity() {
                     .show()
                 true
             }
+            R.id.action_auto_skill_export -> {
+                val values = preferences.forAutoSkillConfig(autoSkillItemKey).export()
+                val gson = Gson()
+                val json = gson.toJson(values)
+                File(exportPath).writeText(json)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    // TODO: Don't use SharedPreferences directly
     private fun deleteItem(AutoSkillItemKey: String) {
         deleteSharedPreferences(AutoSkillItemKey)
 
@@ -91,3 +111,5 @@ class AutoSkillItemActivity : AppCompatActivity() {
         }
     }
 }
+
+const val exportPath = "/storage/emulated/0/export.json"

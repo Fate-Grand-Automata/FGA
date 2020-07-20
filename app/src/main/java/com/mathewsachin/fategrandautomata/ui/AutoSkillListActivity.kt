@@ -2,13 +2,17 @@ package com.mathewsachin.fategrandautomata.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import kotlinx.android.synthetic.main.autoskill_list.*
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -57,7 +61,7 @@ class AutoSkillListActivity : AppCompatActivity() {
         autoskill_listview.emptyView = auto_skill_no_items
     }
 
-    private fun addOnBtnClick() {
+    private fun newConfig(): String {
         val guid = UUID.randomUUID().toString()
 
         val autoSkillItems = preferences.autoSkillList
@@ -66,7 +70,13 @@ class AutoSkillListActivity : AppCompatActivity() {
 
         preferences.autoSkillList = autoSkillItems
 
-        editItem(guid)
+        return guid
+    }
+
+    private fun addOnBtnClick() {
+        val id = newConfig()
+
+        editItem(id)
     }
 
     private fun editItem(Id: String) {
@@ -74,5 +84,26 @@ class AutoSkillListActivity : AppCompatActivity() {
         intent.putExtra(AutoSkillItemActivity::autoSkillItemKey.name, Id)
 
         startActivity(intent)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.autoskill_list_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_auto_skill_import -> {
+                val id = newConfig()
+                val json = File(exportPath).readText()
+                val gson = Gson()
+                val map = gson.fromJson(json, Map::class.java)
+                    .map { (k, v) -> k.toString() to v }
+                    .toMap()
+                preferences.forAutoSkillConfig(id).import(map)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
