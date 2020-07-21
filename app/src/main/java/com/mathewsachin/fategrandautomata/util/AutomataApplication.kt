@@ -3,9 +3,9 @@ package com.mathewsachin.fategrandautomata.util
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.mathewsachin.fategrandautomata.dagger.AppContextModule
-import com.mathewsachin.fategrandautomata.dagger.ApplicationComponent
-import com.mathewsachin.fategrandautomata.dagger.DaggerApplicationComponent
+import com.mathewsachin.fategrandautomata.dagger.app.AppContextModule
+import com.mathewsachin.fategrandautomata.dagger.app.ApplicationComponent
+import com.mathewsachin.fategrandautomata.dagger.app.DaggerApplicationComponent
 import org.opencv.android.OpenCVLoader
 
 interface AppComponentProvider {

@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.dagger
+package com.mathewsachin.fategrandautomata.dagger.script
 
 import com.mathewsachin.fategrandautomata.scripts.FGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi

@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.dagger
+package com.mathewsachin.fategrandautomata.dagger.app
 
 import android.app.Application
 import android.content.Context

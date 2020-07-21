@@ -1,5 +1,6 @@
-package com.mathewsachin.fategrandautomata.dagger
+package com.mathewsachin.fategrandautomata.dagger.app
 
+import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
 import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
 import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity

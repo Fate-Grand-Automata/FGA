@@ -15,8 +15,8 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.dagger.ScriptRunnerServiceComponent
-import com.mathewsachin.fategrandautomata.dagger.ScriptRunnerServiceModule
+import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
+import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceModule
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
@@ -178,7 +178,11 @@ class ScriptRunnerService : AccessibilityService() {
     override fun onServiceConnected() {
         Instance = this
         component = appComponent.scriptRunnerServiceComponent()
-            .scriptRunnerServiceModule(ScriptRunnerServiceModule(this))
+            .scriptRunnerServiceModule(
+                ScriptRunnerServiceModule(
+                    this
+                )
+            )
             .build()
 
         component.inject(this)

@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.dagger
+package com.mathewsachin.fategrandautomata.dagger.service
 
 import javax.inject.Scope
 
