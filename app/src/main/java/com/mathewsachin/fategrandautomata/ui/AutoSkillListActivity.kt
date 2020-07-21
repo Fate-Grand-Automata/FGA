@@ -3,9 +3,11 @@ package com.mathewsachin.fategrandautomata.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
@@ -96,12 +98,20 @@ class AutoSkillListActivity : AppCompatActivity() {
                 }
             }
 
-            val id = newConfig()
-            val gson = Gson()
-            val map = gson.fromJson(json, Map::class.java)
-                .map { (k, v) -> k.toString() to v }
-                .toMap()
-            preferences.forAutoSkillConfig(id).import(map)
+            if (json != null) {
+                try {
+                    val gson = Gson()
+                    val map = gson.fromJson(json, Map::class.java)
+                        .map { (k, v) -> k.toString() to v }
+                        .toMap()
+
+                    val id = newConfig()
+                    preferences.forAutoSkillConfig(id).import(map)
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Import Failed", Toast.LENGTH_SHORT).show()
+                    Log.e(::AUTO_SKILL_IMPORT.name, "Import Failed", e)
+                }
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data)
