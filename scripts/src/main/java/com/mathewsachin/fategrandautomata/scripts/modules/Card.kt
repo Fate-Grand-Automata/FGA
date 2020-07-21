@@ -130,8 +130,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         screenshotManager.useSameSnapIn {
             for (cardSlot in 0..4) {
-                val affinity = getCardAffinity(game.BattleCardAffinityRegionArray[cardSlot])
-                val type = getCardType(game.BattleCardTypeRegionArray[cardSlot])
+                val affinity = getCardAffinity(game.battleCardAffinityRegionArray[cardSlot])
+                val type = getCardType(game.battleCardTypeRegionArray[cardSlot])
 
                 val score = CardScore(
                     type,
@@ -157,7 +157,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
     fun clickNpCards() {
-        for (npCard in game.BattleNpCardClickArray) {
+        for (npCard in game.battleNpCardClickArray) {
             npCard.click()
         }
     }
@@ -181,7 +181,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 }
 
                 if (i > cardsClickedSoFar) {
-                    game.BattleCommandCardClickArray[cardSlot].click()
+                    game.battleCommandCardClickArray[cardSlot].click()
                 }
 
                 ++i

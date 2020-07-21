@@ -10,62 +10,62 @@ import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.seconds
 
-fun IFGAutomataApi.needsToRetry() = game.RetryRegion.exists(images.retry)
+fun IFGAutomataApi.needsToRetry() = game.retryRegion.exists(images.retry)
 
 fun IFGAutomataApi.retry() {
-    game.RetryRegion.click()
+    game.retryRegion.click()
 
     2.seconds.wait()
 }
 
 @ScriptScope
 class Game @Inject constructor(val prefs: IPreferences) {
-    val ImageSize = Size(1280, 720)
-    val ScriptSize = Size(2560, 1440)
+    val imageSize = Size(1280, 720)
+    val scriptSize = Size(2560, 1440)
 
-    val MenuScreenRegion = Region(2100, 1200, 1000, 1000)
-    val ContinueRegion = Region(1400, 1000, 600, 200)
-    val MenuStorySkipRegion = Region(2240, 20, 300, 120)
+    val menuScreenRegion = Region(2100, 1200, 1000, 1000)
+    val continueRegion = Region(1400, 1000, 600, 200)
+    val menuStorySkipRegion = Region(2240, 20, 300, 120)
 
-    val MenuSelectQuestClick = Location(2290, 440)
-    val MenuStartQuestClick = Location(2400, 1350)
-    val ContinueClick = Location(1650, 1120)
-    val MenuStorySkipClick = Location(2360, 80)
-    val MenuStorySkipYesClick = Location(1600, 1100)
+    val menuSelectQuestClick = Location(2290, 440)
+    val menuStartQuestClick = Location(2400, 1350)
+    val continueClick = Location(1650, 1120)
+    val menuStorySkipClick = Location(2360, 80)
+    val menuStorySkipYesClick = Location(1600, 1100)
 
-    val RetryRegion = Region(1300, 1000, 700, 300)
-    val WithdrawRegion = Region(400, 540, 1800, 190)
-    val WithdrawAcceptClick = Location(1765, 720)
+    val retryRegion = Region(1300, 1000, 700, 300)
+    val withdrawRegion = Region(400, 540, 1800, 190)
+    val withdrawAcceptClick = Location(1765, 720)
 
     // see docs/menu_boost_item_click_array.png
-    val MenuBoostItem1Click = Location(1280, 418)
-    val MenuBoostItem2Click = Location(1280, 726)
-    val MenuBoostItem3Click = Location(1280, 1000)
-    val MenuBoostItemSkipClick = Location(1652, 1304)
+    val menuBoostItem1Click = Location(1280, 418)
+    val menuBoostItem2Click = Location(1280, 726)
+    val menuBoostItem3Click = Location(1280, 1000)
+    val menuBoostItemSkipClick = Location(1652, 1304)
 
-    val MenuBoostItemClickArray = listOf(
-        MenuBoostItemSkipClick,
-        MenuBoostItem1Click,
-        MenuBoostItem2Click,
-        MenuBoostItem3Click
+    val menuBoostItemClickArray = listOf(
+        menuBoostItemSkipClick,
+        menuBoostItem1Click,
+        menuBoostItem2Click,
+        menuBoostItem3Click
     )
 
-    val InventoryFullRegion = Region(1050, 900, 458, 90)
+    val inventoryFullRegion = Region(1050, 900, 458, 90)
 
-    val StaminaScreenRegion = Region(600, 200, 300, 300)
-    val StaminaOkClick = Location(1650, 1120)
-    val StaminaSqClick = Location(1270, 345)
-    val StaminaGoldClick = Location(1270, 634)
-    val StaminaSilverClick = Location(1270, 922)
-    val StaminaBronzeClick = Location(1270, 1140)
+    val staminaScreenRegion = Region(600, 200, 300, 300)
+    val staminaOkClick = Location(1650, 1120)
+    val staminaSqClick = Location(1270, 345)
+    val staminaGoldClick = Location(1270, 634)
+    val staminaSilverClick = Location(1270, 922)
+    val staminaBronzeClick = Location(1270, 1140)
 
-    val SupportScreenRegion = Region(0, 0, 200, 400)
-    val SupportListRegion = Region(70, 332, 378, 1091) // see docs/support_list_region.png
-    val SupportSwipeStartClick = Location(35, 1190)
-    val SupportSwipeEndClick = Location(5, 660)
-    val SupportFriendsRegion = Region(448, 332, 1210, 1091)
+    val supportScreenRegion = Region(0, 0, 200, 400)
+    val supportListRegion = Region(70, 332, 378, 1091) // see docs/support_list_region.png
+    val supportSwipeStartClick = Location(35, 1190)
+    val supportSwipeEndClick = Location(5, 660)
+    val supportFriendsRegion = Region(448, 332, 1210, 1091)
 
-    val SupportListItemRegionArray = listOf(
+    val supportListItemRegionArray = listOf(
         // see docs/support_list_item_regions_top.png
         Region(76, 338, 2356, 428),
         Region(76, 778, 2356, 390),
@@ -74,20 +74,20 @@ class Game @Inject constructor(val prefs: IPreferences) {
         Region(76, 991, 2356, 428)
     )
 
-    val SupportLimitBreakRegion = Region(376, 0, 16, 90)
-    val SupportFriendRegion = Region(
+    val supportLimitBreakRegion = Region(376, 0, 16, 90)
+    val supportFriendRegion = Region(
         2234,
-        SupportListRegion.Y,
+        supportListRegion.Y,
         120,
-        SupportListRegion.Height
+        supportListRegion.Height
     ) // see docs/friend_region.png
 
-    val SupportUpdateClick = Location(1670, 250)
-    val SupportUpdateYesClick = Location(1480, 1110)
-    val SupportListTopClick = Location(2480, 360)
-    val SupportFirstSupportClick = Location(1900, 500)
+    val supportUpdateClick = Location(1670, 250)
+    val supportUpdateYesClick = Location(1480, 1110)
+    val supportListTopClick = Location(2480, 360)
+    val supportFirstSupportClick = Location(1900, 500)
 
-    val PartySelectionArray = listOf(
+    val partySelectionArray = listOf(
         Location(1055, 100),
         Location(1105, 100),
         Location(1155, 100),
@@ -100,9 +100,9 @@ class Game @Inject constructor(val prefs: IPreferences) {
         Location(1505, 100)
     )
 
-    val BattleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
+    val battleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
 
-    val BattleStageCountRegion
+    val battleStageCountRegion
         get() = when (prefs.gameServer) {
             GameServerEnum.En -> Region(1722, 25, 46, 53)
             GameServerEnum.Jp -> Region(1722, 25, 46, 53)
@@ -110,51 +110,51 @@ class Game @Inject constructor(val prefs: IPreferences) {
             GameServerEnum.Tw -> Region(1710, 25, 55, 60)
         }
 
-    val BattleExtrainfoWindowCloseClick = Location(2550, 10)
-    val BattleAttackClick = Location(2300, 1200)
+    val battleExtraInfoWindowCloseClick = Location(2550, 10)
+    val battleAttackClick = Location(2300, 1200)
 
     // see docs/target_regions.png
-    val BattleTargetRegionArray = listOf(
+    val battleTargetRegionArray = listOf(
         Region(0, 0, 485, 220),
         Region(485, 0, 482, 220),
         Region(967, 0, 476, 220)
     )
 
-    val BattleTargetClickArray = listOf(
+    val battleTargetClickArray = listOf(
         Location(90, 80),
         Location(570, 80),
         Location(1050, 80)
     )
 
-    val BattleSkill1Click = Location(140, 1160)
-    val BattleSkill2Click = Location(340, 1160)
-    val BattleSkill3Click = Location(540, 1160)
-    val BattleSkill4Click = Location(770, 1160)
-    val BattleSkill5Click = Location(970, 1160)
-    val BattleSkill6Click = Location(1140, 1160)
-    val BattleSkill7Click = Location(1400, 1160)
-    val BattleSkill8Click = Location(1600, 1160)
-    val BattleSkill9Click = Location(1800, 1160)
-    val BattleSkillOkClick = Location(1680, 850)
+    val battleSkill1Click = Location(140, 1160)
+    val battleSkill2Click = Location(340, 1160)
+    val battleSkill3Click = Location(540, 1160)
+    val battleSkill4Click = Location(770, 1160)
+    val battleSkill5Click = Location(970, 1160)
+    val battleSkill6Click = Location(1140, 1160)
+    val battleSkill7Click = Location(1400, 1160)
+    val battleSkill8Click = Location(1600, 1160)
+    val battleSkill9Click = Location(1800, 1160)
+    val battleSkillOkClick = Location(1680, 850)
 
-    val BattleServant1Click = Location(700, 880)
-    val BattleServant2Click = Location(1280, 880)
-    val BattleServant3Click = Location(1940, 880)
+    val battleServant1Click = Location(700, 880)
+    val battleServant2Click = Location(1280, 880)
+    val battleServant3Click = Location(1940, 880)
 
-    val BattleMasterSkillOpenClick = Location(2380, 640)
-    val BattleMasterSkill1Click = Location(1820, 620)
-    val BattleMasterSkill2Click = Location(2000, 620)
-    val BattleMasterSkill3Click = Location(2160, 620)
+    val battleMasterSkillOpenClick = Location(2380, 640)
+    val battleMasterSkill1Click = Location(1820, 620)
+    val battleMasterSkill2Click = Location(2000, 620)
+    val battleMasterSkill3Click = Location(2160, 620)
 
-    val BattleStartingMember1Click = Location(280, 700)
-    val BattleStartingMember2Click = Location(680, 700)
-    val BattleStartingMember3Click = Location(1080, 700)
-    val BattleSubMember1Click = Location(1480, 700)
-    val BattleSubMember2Click = Location(1880, 700)
-    val BattleSubMember3Click = Location(2280, 700)
-    val BattleOrderChangeOkClick = Location(1280, 1260)
+    val battleStartingMember1Click = Location(280, 700)
+    val battleStartingMember2Click = Location(680, 700)
+    val battleStartingMember3Click = Location(1080, 700)
+    val battleSubMember1Click = Location(1480, 700)
+    val battleSubMember2Click = Location(1880, 700)
+    val battleSubMember3Click = Location(2280, 700)
+    val battleOrderChangeOkClick = Location(1280, 1260)
 
-    val BattleCardAffinityRegionArray = listOf(
+    val battleCardAffinityRegionArray = listOf(
         // see docs/card_affinity_regions.png
         Region(295, 650, 250, 200),
         Region(810, 650, 250, 200),
@@ -163,7 +163,7 @@ class Game @Inject constructor(val prefs: IPreferences) {
         Region(2348, 650, 250, 200)
     )
 
-    val BattleCardTypeRegionArray = listOf(
+    val battleCardTypeRegionArray = listOf(
         // see docs/card_type_regions.png
         Region(0, 1060, 512, 200),
         Region(512, 1060, 512, 200),
@@ -172,7 +172,7 @@ class Game @Inject constructor(val prefs: IPreferences) {
         Region(2048, 1060, 512, 200)
     )
 
-    val BattleCommandCardClickArray = listOf(
+    val battleCommandCardClickArray = listOf(
         Location(300, 1000),
         Location(750, 1000),
         Location(1300, 1000),
@@ -180,13 +180,13 @@ class Game @Inject constructor(val prefs: IPreferences) {
         Location(2350, 1000)
     )
 
-    val BattleNpCardClickArray = listOf(
+    val battleNpCardClickArray = listOf(
         Location(1000, 220),
         Location(1300, 400),
         Location(1740, 400)
     )
 
-    val BattleServantFaceRegionArray = listOf(
+    val battleServantFaceRegionArray = listOf(
         Region(106, 800, 300, 200),
         Region(620, 800, 300, 200),
         Region(1130, 800, 300, 200),
@@ -198,18 +198,18 @@ class Game @Inject constructor(val prefs: IPreferences) {
         Region(1606, 190, 300, 200)
     )
 
-    val ResultScreenRegion = Region(100, 300, 700, 200)
-    val ResultBondRegion = Region(2000, 750, 120, 190)
-    val ResultMasterExpRegion = Region(1280, 350, 400, 110)
-    val ResultMatRewardsRegion = Region(2080, 1290, 280, 130)
-    val ResultMasterLvlUpRegion = Region(1990, 160, 250, 270)
+    val resultScreenRegion = Region(100, 300, 700, 200)
+    val resultBondRegion = Region(2000, 750, 120, 190)
+    val resultMasterExpRegion = Region(1280, 350, 400, 110)
+    val resultMatRewardsRegion = Region(2080, 1290, 280, 130)
+    val resultMasterLvlUpRegion = Region(1990, 160, 250, 270)
 
-    val ResultCeRewardRegion = Region(1050, 1216, 33, 28)
-    val ResultCeRewardCloseClick = Location(80, 60)
-    val ResultFriendRequestRegion = Region(660, 120, 140, 160)
-    val ResultFriendRequestRejectClick = Location(600, 1200)
-    val ResultQuestRewardRegion = Region(1630, 140, 370, 250)
-    val ResultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
+    val resultCeRewardRegion = Region(1050, 1216, 33, 28)
+    val resultCeRewardCloseClick = Location(80, 60)
+    val resultFriendRequestRegion = Region(660, 120, 140, 160)
+    val resultFriendRequestRejectClick = Location(600, 1200)
+    val resultQuestRewardRegion = Region(1630, 140, 370, 250)
+    val resultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
 
-    val GudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
+    val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
 }

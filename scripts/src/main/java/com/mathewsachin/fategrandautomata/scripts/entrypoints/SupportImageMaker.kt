@@ -45,7 +45,7 @@ class SupportImageMaker(
         )
             .take(2).toList()
 
-        val screenBounds = Region(0, 0, game.ScriptSize.Width, game.ScriptSize.Height)
+        val screenBounds = Region(0, 0, game.scriptSize.Width, game.scriptSize.Height)
 
         for ((i, testRegion) in regionArray.map { it.Region }.withIndex()) {
             // in the friend screen, the "Confirm Support Setup" button is higher
