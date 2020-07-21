@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -12,9 +13,10 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.autoskill_list.*
-import java.io.File
 import java.util.*
 import javax.inject.Inject
+
+const val AUTO_SKILL_IMPORT = 2047
 
 class AutoSkillListActivity : AppCompatActivity() {
     private lateinit var autoSkillItems: Array<IAutoSkillPreferences>
@@ -84,6 +86,27 @@ class AutoSkillListActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AUTO_SKILL_IMPORT && resultCode == Activity.RESULT_OK) {
+            val json = data?.data?.let { uri ->
+                contentResolver.openInputStream(uri)?.use { inStream ->
+                    inStream.use {
+                        it.reader().readText()
+                    }
+                }
+            }
+
+            val id = newConfig()
+            val gson = Gson()
+            val map = gson.fromJson(json, Map::class.java)
+                .map { (k, v) -> k.toString() to v }
+                .toMap()
+            preferences.forAutoSkillConfig(id).import(map)
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.autoskill_list_menu, menu)
         return true
@@ -92,13 +115,11 @@ class AutoSkillListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_auto_skill_import -> {
-                val id = newConfig()
-                val json = File(exportPath).readText()
-                val gson = Gson()
-                val map = gson.fromJson(json, Map::class.java)
-                    .map { (k, v) -> k.toString() to v }
-                    .toMap()
-                preferences.forAutoSkillConfig(id).import(map)
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "*/*"
+                }
+                startActivityForResult(intent, AUTO_SKILL_IMPORT)
                 true
             }
             else -> super.onOptionsItemSelected(item)
