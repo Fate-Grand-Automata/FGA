@@ -2,24 +2,19 @@ package com.mathewsachin.fategrandautomata.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
-import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.settings.*
 import javax.inject.Inject
-import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 const val AUTO_SKILL_EXPORT = 2303
 

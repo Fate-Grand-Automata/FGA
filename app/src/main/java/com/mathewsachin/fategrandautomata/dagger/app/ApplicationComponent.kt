@@ -17,7 +17,6 @@ interface ApplicationComponent {
     fun scriptRunnerServiceComponent(): ScriptRunnerServiceComponent.Builder
 
     fun inject(into: MainActivity)
-    fun inject(into: AutoSkillItemActivity)
     fun inject(into: AutoSkillListActivity)
     fun inject(into: AutoSkillItemActivity)
     fun inject(into: CardPriorityActivity)
