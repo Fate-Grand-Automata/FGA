@@ -90,26 +90,42 @@ class AutoSkillListActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == AUTO_SKILL_IMPORT && resultCode == Activity.RESULT_OK) {
-            val json = data?.data?.let { uri ->
-                contentResolver.openInputStream(uri)?.use { inStream ->
-                    inStream.use {
-                        it.reader().readText()
+            if (data != null) {
+                val clipData = data.clipData
+
+                val uris = if (clipData != null) {
+                    (0 until clipData.itemCount)
+                        .map { clipData.getItemAt(it).uri }
+                } else listOf(data.data)
+
+                var failed = 0
+
+                uris.forEach { uri ->
+                    val json = contentResolver.openInputStream(uri)?.use { inStream ->
+                        inStream.use {
+                            it.reader().readText()
+                        }
+                    }
+
+                    if (json != null) {
+                        try {
+                            val gson = Gson()
+                            val map = gson.fromJson(json, Map::class.java)
+                                .map { (k, v) -> k.toString() to v }
+                                .toMap()
+
+                            val id = newConfig()
+                            preferences.forAutoSkillConfig(id).import(map)
+                        } catch (e: Exception) {
+                            ++failed
+                            Log.e(::AUTO_SKILL_IMPORT.name, "Import Failed", e)
+                        }
                     }
                 }
-            }
 
-            if (json != null) {
-                try {
-                    val gson = Gson()
-                    val map = gson.fromJson(json, Map::class.java)
-                        .map { (k, v) -> k.toString() to v }
-                        .toMap()
-
-                    val id = newConfig()
-                    preferences.forAutoSkillConfig(id).import(map)
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Import Failed", Toast.LENGTH_SHORT).show()
-                    Log.e(::AUTO_SKILL_IMPORT.name, "Import Failed", e)
+                if (failed > 0) {
+                    Toast.makeText(this, "Import Failed for $failed item(s)", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -128,6 +144,7 @@ class AutoSkillListActivity : AppCompatActivity() {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                     addCategory(Intent.CATEGORY_OPENABLE)
                     type = "*/*"
+                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
                 }
                 startActivityForResult(intent, AUTO_SKILL_IMPORT)
                 true
