@@ -57,13 +57,7 @@ class AutoSkillListActivity : AppCompatActivity() {
 
     private fun addOnBtnClick() {
         val guid = UUID.randomUUID().toString()
-
-        val autoSkillItems = preferences.autoSkillList
-            .toMutableSet()
-            .apply { add(guid) }
-
-        preferences.autoSkillList = autoSkillItems
-
+        preferences.addAutoSkillConfig(guid)
         editItem(guid)
     }
 

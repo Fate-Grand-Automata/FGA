@@ -30,6 +30,7 @@ class PreferencesImpl @Inject constructor(
     override val skillConfirmation by prefs.bool(R.string.pref_skill_conf)
 
     override var autoSkillList by prefs.stringSet(R.string.pref_autoskill_list)
+        private set
 
     override val autoSkillPreferences
         get() = autoSkillList.map { forAutoSkillConfig(it) }
@@ -90,6 +91,24 @@ class PreferencesImpl @Inject constructor(
             context,
             storageDirs
         )
+
+    override fun addAutoSkillConfig(id: String) {
+        autoSkillList = autoSkillList
+            .toMutableSet()
+            .apply { add(id) }
+    }
+
+    override fun removeAutoSkillConfig(id: String) {
+        context.deleteSharedPreferences(id)
+
+        autoSkillList = autoSkillList
+            .toMutableSet()
+            .apply { remove(id) }
+
+        if (selectedAutoSkillConfigKey == id) {
+            selectedAutoSkillConfigKey = ""
+        }
+    }
 
     override val support = object :
         ISupportPreferencesCommon {

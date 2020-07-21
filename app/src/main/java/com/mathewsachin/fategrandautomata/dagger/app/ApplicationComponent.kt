@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.dagger.app
 
 import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
+import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
 import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
@@ -17,6 +18,7 @@ interface ApplicationComponent {
 
     fun inject(into: MainActivity)
     fun inject(into: AutoSkillListActivity)
+    fun inject(into: AutoSkillItemActivity)
     fun inject(into: CardPriorityActivity)
     fun inject(into: AutoSkillItemSettingsFragment)
     fun inject(into: MainSettingsFragment)

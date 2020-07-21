@@ -9,7 +9,7 @@ interface IPreferences {
     val scriptMode: ScriptModeEnum
     var gameServer: GameServerEnum
     val skillConfirmation: Boolean
-    var autoSkillList: Set<String>
+    val autoSkillList: Set<String>
     val autoSkillPreferences: List<IAutoSkillPreferences>
     var selectedAutoSkillConfig: IAutoSkillPreferences
     val castNoblePhantasm: BattleNoblePhantasmEnum
@@ -29,4 +29,6 @@ interface IPreferences {
     val gestures: IGesturesPreferences
 
     fun forAutoSkillConfig(id: String): IAutoSkillPreferences
+    fun addAutoSkillConfig(id: String)
+    fun removeAutoSkillConfig(id: String)
 }
