@@ -17,8 +17,8 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsFragment
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
 import com.mathewsachin.fategrandautomata.util.CutoutManager
+import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
@@ -35,9 +35,7 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        (applicationContext as AutomataApplication)
-            .appComponent
-            .inject(this)
+        appComponent.inject(this)
 
         setSupportActionBar(toolbar)
 

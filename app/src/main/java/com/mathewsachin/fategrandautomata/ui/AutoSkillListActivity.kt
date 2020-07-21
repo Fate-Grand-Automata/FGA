@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
+import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.autoskill_list.*
 import java.io.File
 import java.util.*
@@ -26,9 +26,7 @@ class AutoSkillListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.autoskill_list)
 
-        (applicationContext as AutomataApplication)
-            .appComponent
-            .inject(this)
+        appComponent.inject(this)
 
         autoskill_add_btn.setOnClickListener {
             addOnBtnClick()

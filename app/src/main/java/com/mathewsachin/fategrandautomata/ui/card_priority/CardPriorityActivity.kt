@@ -14,7 +14,7 @@ import com.mathewsachin.fategrandautomata.scripts.modules.getCardScores
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
+import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.card_priority.*
 import javax.inject.Inject
 
@@ -36,9 +36,7 @@ class CardPriorityActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.card_priority)
 
-        (applicationContext as AutomataApplication)
-            .appComponent
-            .inject(this)
+        appComponent.inject(this)
 
         val autoSkillKey = intent.getStringExtra(AutoSkillItemActivity::autoSkillItemKey.name)
             ?: throw IllegalArgumentException("Missing AutoSkill item key in intent")

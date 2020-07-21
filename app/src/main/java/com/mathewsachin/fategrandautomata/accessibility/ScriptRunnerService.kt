@@ -177,10 +177,9 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onServiceConnected() {
         Instance = this
-        component =
-            (applicationContext as AutomataApplication).appComponent.scriptRunnerServiceComponent()
-                .scriptRunnerServiceModule(ScriptRunnerServiceModule(this))
-                .build()
+        component = appComponent.scriptRunnerServiceComponent()
+            .scriptRunnerServiceModule(ScriptRunnerServiceModule(this))
+            .build()
 
         component.inject(this)
 

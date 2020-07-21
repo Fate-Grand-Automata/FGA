@@ -8,7 +8,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
-import com.mathewsachin.fategrandautomata.util.AutomataApplication
+import com.mathewsachin.fategrandautomata.util.appComponent
 import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
@@ -19,9 +19,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (context.applicationContext as AutomataApplication)
-            .appComponent
-            .inject(this)
+        context.appComponent.inject(this)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

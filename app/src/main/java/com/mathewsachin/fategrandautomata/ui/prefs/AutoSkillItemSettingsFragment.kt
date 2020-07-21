@@ -39,9 +39,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (context.applicationContext as AutomataApplication)
-            .appComponent
-            .inject(this)
+        context.appComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
