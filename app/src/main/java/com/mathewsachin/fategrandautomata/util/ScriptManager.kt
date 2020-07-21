@@ -9,9 +9,9 @@ import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
-import com.mathewsachin.fategrandautomata.dagger.ScreenshotModule
-import com.mathewsachin.fategrandautomata.dagger.ScriptRunnerServiceComponent
-import com.mathewsachin.fategrandautomata.dagger.ServiceScope
+import com.mathewsachin.fategrandautomata.dagger.script.ScreenshotModule
+import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
+import com.mathewsachin.fategrandautomata.dagger.service.ServiceScope
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
@@ -115,7 +115,11 @@ class ScriptManager @Inject constructor(
 
         val (exitManager, fgAutomataApi) = component
             .scriptComponent()
-            .screenshotModule(ScreenshotModule(screenshotService))
+            .screenshotModule(
+                ScreenshotModule(
+                    screenshotService
+                )
+            )
             .build()
             .getScriptLaunchParams()
 

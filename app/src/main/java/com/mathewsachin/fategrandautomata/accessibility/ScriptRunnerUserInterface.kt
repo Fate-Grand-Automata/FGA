@@ -13,7 +13,7 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.dagger.ServiceScope
+import com.mathewsachin.fategrandautomata.dagger.service.ServiceScope
 import com.mathewsachin.fategrandautomata.ui.HighlightManager
 import com.mathewsachin.libautomata.Location
 import javax.inject.Inject

@@ -41,14 +41,14 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         hasClickedAttack = false
     }
 
-    fun isIdle() = game.BattleScreenRegion.exists(images.battle)
+    fun isIdle() = game.battleScreenRegion.exists(images.battle)
 
     fun clickAttack() {
-        game.BattleAttackClick.click()
+        game.battleAttackClick.click()
 
         // TODO: This was added extra in Kotlin impl
         // Wait for Attack button to disappear
-        game.BattleScreenRegion.waitVanish(images.battle, 5.seconds)
+        game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
 
         // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
         1.5.seconds.wait()
@@ -66,11 +66,11 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun chooseTarget(Index: Int) {
-        game.BattleTargetClickArray[Index].click()
+        game.battleTargetClickArray[Index].click()
 
         0.5.seconds.wait()
 
-        game.BattleExtrainfoWindowCloseClick.click()
+        game.battleExtraInfoWindowCloseClick.click()
 
         hasChosenTarget = true
     }
@@ -86,7 +86,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
         // that's why the table is iterated backwards.
 
-        for ((i, target) in game.BattleTargetRegionArray.withIndex().reversed()) {
+        for ((i, target) in game.battleTargetRegionArray.withIndex().reversed()) {
             if (isPriorityTarget(target)) {
                 chooseTarget(i)
                 return
@@ -148,14 +148,14 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         val snapshot = generatedStageCounterSnapshot
             ?: return true
 
-        return !game.BattleStageCountRegion.exists(snapshot, Similarity = 0.85)
+        return !game.battleStageCountRegion.exists(snapshot, Similarity = 0.85)
     }
 
     fun takeStageSnapshot() {
         generatedStageCounterSnapshot?.close()
 
         // It is important that the image gets cloned here.
-        generatedStageCounterSnapshot = game.BattleStageCountRegion.getPattern()
+        generatedStageCounterSnapshot = game.battleStageCountRegion.getPattern()
 
         hasTakenFirstStageSnapshot = true
     }

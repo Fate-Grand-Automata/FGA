@@ -66,11 +66,7 @@ class AutoSkillListActivity : AppCompatActivity() {
     private fun newConfig(): String {
         val guid = UUID.randomUUID().toString()
 
-        val autoSkillItems = preferences.autoSkillList
-            .toMutableSet()
-            .apply { add(guid) }
-
-        preferences.autoSkillList = autoSkillItems
+        preferences.addAutoSkillConfig(guid)
 
         return guid
     }

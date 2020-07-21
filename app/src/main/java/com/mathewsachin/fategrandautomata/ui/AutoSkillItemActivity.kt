@@ -13,6 +13,7 @@ import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment
 import com.mathewsachin.fategrandautomata.util.appComponent
@@ -28,7 +29,7 @@ class AutoSkillItemActivity : AppCompatActivity() {
         private set
 
     @Inject
-    lateinit var preferences: IPreferences
+    lateinit var prefs: IPreferences
 
     lateinit var autoSkillPrefs: IAutoSkillPreferences
 
@@ -43,7 +44,7 @@ class AutoSkillItemActivity : AppCompatActivity() {
         autoSkillItemKey = intent.getStringExtra(::autoSkillItemKey.name)
             ?: throw IllegalArgumentException("Missing AutoSkill item key in intent")
 
-        autoSkillPrefs = preferences.forAutoSkillConfig(autoSkillItemKey)
+        autoSkillPrefs = prefs.forAutoSkillConfig(autoSkillItemKey)
 
         // Add the fragment only on first launch
         if (savedInstanceState == null) {
@@ -62,7 +63,7 @@ class AutoSkillItemActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == AUTO_SKILL_EXPORT && resultCode == Activity.RESULT_OK) {
-            val values = preferences.forAutoSkillConfig(autoSkillItemKey).export()
+            val values = prefs.forAutoSkillConfig(autoSkillItemKey).export()
             val gson = Gson()
             val json = gson.toJson(values)
 
@@ -105,34 +106,11 @@ class AutoSkillItemActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: Don't use SharedPreferences directly
     private fun deleteItem(AutoSkillItemKey: String) {
-        deleteSharedPreferences(AutoSkillItemKey)
-
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-
-        val autoSkillItemsKey = getString(prefKeys.pref_autoskill_list)
-        val autoSkillItems = prefs.getStringSet(autoSkillItemsKey, mutableSetOf())!!
-            .toSortedSet()
-        autoSkillItems.remove(AutoSkillItemKey)
-
-        prefs.edit(commit = true) {
-            putStringSet(autoSkillItemsKey, autoSkillItems)
-        }
-
-        unselectItem(AutoSkillItemKey, prefs)
+        prefs.removeAutoSkillConfig(AutoSkillItemKey)
 
         // We opened a separate activity for AutoSkill item
         finish()
-    }
-
-    private fun unselectItem(AutoSkillItemKey: String, Prefs: SharedPreferences) {
-        val selectedAutoSkillKey = getString(prefKeys.pref_autoskill_selected)
-        val selectedAutoSkill = Prefs.getString(selectedAutoSkillKey, "")
-
-        if (selectedAutoSkill == AutoSkillItemKey) {
-            Prefs.edit(commit = true) { remove(selectedAutoSkillKey) }
-        }
     }
 }
 

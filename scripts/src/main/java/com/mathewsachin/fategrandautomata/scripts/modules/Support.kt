@@ -74,7 +74,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
         val pattern = images.supportScreen
-        while (!game.SupportScreenRegion.exists(pattern)) {
+        while (!game.supportScreenRegion.exists(pattern)) {
             0.3.seconds.wait()
         }
 
@@ -95,21 +95,21 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private fun selectFirst(): Boolean {
         1.seconds.wait()
-        game.SupportFirstSupportClick.click()
+        game.supportFirstSupportClick.click()
 
         val pattern = images.supportScreen
 
         // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
-        if (game.SupportScreenRegion.exists(pattern)) {
+        if (game.supportScreenRegion.exists(pattern)) {
             2.seconds.wait()
 
-            while (game.SupportScreenRegion.exists(pattern)) {
+            while (game.supportScreenRegion.exists(pattern)) {
                 10.seconds.wait()
-                game.SupportUpdateClick.click()
+                game.supportUpdateClick.click()
                 1.seconds.wait()
-                game.SupportUpdateYesClick.click()
+                game.supportUpdateYesClick.click()
                 3.seconds.wait()
-                game.SupportFirstSupportClick.click()
+                game.supportFirstSupportClick.click()
                 1.seconds.wait()
             }
         }
@@ -119,7 +119,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private fun searchVisible(SearchMethod: SearchFunction): SearchVisibleResult {
         return screenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
-            if (!isFriend(game.SupportFriendRegion)) {
+            if (!isFriend(game.supportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SearchVisibleResult(
                     SupportSearchResultEnum.NoFriendsFound,
@@ -190,9 +190,9 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 toast("Support list will be updated in 3 seconds.")
                 3.seconds.wait()
 
-                game.SupportUpdateClick.click()
+                game.supportUpdateClick.click()
                 1.seconds.wait()
-                game.SupportUpdateYesClick.click()
+                game.supportUpdateYesClick.click()
 
                 while (needsToRetry()) {
                     retry()
@@ -204,7 +204,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 numberOfSwipes = 0
             } else {
                 // -- okay, we have run out of options, let's give up
-                game.SupportListTopClick.click()
+                game.supportListTopClick.click()
                 return selectSupport(autoSkillPrefs.fallbackTo)
             }
         }
@@ -255,7 +255,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         if (hasCraftEssences) {
             return {
                 SearchFunctionResult(
-                    findCraftEssence(game.SupportListRegion),
+                    findCraftEssence(game.supportListRegion),
                     null
                 )
             }
@@ -269,14 +269,14 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
      */
     private fun scrollList() {
         val endY = lerp(
-            game.SupportSwipeStartClick.Y,
-            game.SupportSwipeEndClick.Y,
+            game.supportSwipeStartClick.Y,
+            game.supportSwipeEndClick.Y,
             prefs.support.supportSwipeMultiplier
         )
 
         swipe(
-            game.SupportSwipeStartClick,
-            game.SupportSwipeEndClick.copy(Y = endY)
+            game.supportSwipeStartClick,
+            game.supportSwipeEndClick.copy(Y = endY)
         )
     }
 
@@ -294,7 +294,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     friendName
                 )
 
-            for (theFriend in game.SupportFriendsRegion.findAll(pattern)) {
+            for (theFriend in game.supportFriendsRegion.findAll(pattern)) {
                 return theFriend.Region
             }
         }
@@ -311,7 +311,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 )
 
             cropFriendLock(pattern).use {
-                for (servant in game.SupportListRegion.findAll(it)) {
+                for (servant in game.supportListRegion.findAll(it)) {
                     yield(servant.Region)
                 }
             }
@@ -385,7 +385,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
-        val limitBreakRegion = game.SupportLimitBreakRegion
+        val limitBreakRegion = game.supportLimitBreakRegion
             .copy(Y = CraftEssence.Y)
 
         val limitBreakPattern = images.limitBroken

@@ -1,6 +1,7 @@
-package com.mathewsachin.fategrandautomata.dagger
+package com.mathewsachin.fategrandautomata.dagger.script
 
 import com.mathewsachin.fategrandautomata.accessibility.AccessibilityGestures
+import com.mathewsachin.fategrandautomata.dagger.service.ServiceScope
 import com.mathewsachin.fategrandautomata.util.AndroidImpl
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.IPlatformImpl

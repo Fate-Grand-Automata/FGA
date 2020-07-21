@@ -1,8 +1,9 @@
-package com.mathewsachin.fategrandautomata.dagger
+package com.mathewsachin.fategrandautomata.dagger.service
 
 import android.accessibilityservice.AccessibilityService
 import android.app.Service
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
+import com.mathewsachin.fategrandautomata.dagger.script.ScriptComponent
 import dagger.Module
 import dagger.Provides
 

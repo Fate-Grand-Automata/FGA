@@ -14,7 +14,7 @@ import kotlin.time.seconds
  * Checks if Support Selection menu is up
  */
 fun IFGAutomataApi.isInSupport(): Boolean {
-    return game.SupportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
+    return game.supportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
 }
 
 /**
@@ -88,7 +88,7 @@ open class AutoBattle(
      *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
      */
     private fun isInMenu(): Boolean {
-        return game.MenuScreenRegion.exists(images.menu)
+        return game.menuScreenRegion.exists(images.menu)
     }
 
     /**
@@ -100,7 +100,7 @@ open class AutoBattle(
         showRefillsUsedMessage()
 
         // Click uppermost quest
-        game.MenuSelectQuestClick.click()
+        game.menuSelectQuestClick.click()
 
         afterSelectingQuest()
     }
@@ -117,10 +117,10 @@ open class AutoBattle(
      * too few clicks.
      */
     private fun isInResult(): Boolean {
-        if (game.ResultScreenRegion.exists(images.result)
-            || game.ResultBondRegion.exists(images.bond)
+        if (game.resultScreenRegion.exists(images.result)
+            || game.resultBondRegion.exists(images.bond)
             // We're assuming CN and TW use the same Master/Mystic Code Level up image
-            || game.ResultMasterLvlUpRegion.exists(images.masterLvlUp)
+            || game.resultMasterLvlUpRegion.exists(images.masterLvlUp)
         ) {
             return true
         }
@@ -129,8 +129,8 @@ open class AutoBattle(
 
         // We don't have TW images for these
         if (gameServer != GameServerEnum.Tw) {
-            return game.ResultMasterExpRegion.exists(images.masterExp)
-                    || game.ResultMatRewardsRegion.exists(images.matRewards)
+            return game.resultMasterExpRegion.exists(images.masterExp)
+                    || game.resultMatRewardsRegion.exists(images.matRewards)
         }
 
         // Not in any result screen
@@ -143,25 +143,25 @@ open class AutoBattle(
      */
     private fun result() {
         // Validator document https://github.com/29988122/Fate-Grand-Order_Lua/wiki/In-Game-Result-Screen-Flow for detail.
-        game.ResultNextClick.click(55)
+        game.resultNextClick.click(55)
 
         // Checking if there was a Bond CE reward
-        if (game.ResultCeRewardRegion.exists(images.bond10Reward)) {
+        if (game.resultCeRewardRegion.exists(images.bond10Reward)) {
             if (prefs.stopAfterBond10) {
                 throw ScriptExitException("Bond 10 CE GET!")
             }
 
-            game.ResultCeRewardCloseClick.click()
+            game.resultCeRewardCloseClick.click()
 
             // Still need to proceed through reward screen.
-            game.ResultNextClick.click(35)
+            game.resultNextClick.click(35)
         }
 
         5.seconds.wait()
 
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
-        if (game.ResultFriendRequestRegion.exists(images.friendRequest)) {
-            game.ResultFriendRequestRejectClick.click()
+        if (game.resultFriendRequestRegion.exists(images.friendRequest)) {
+            game.resultFriendRequestRejectClick.click()
         }
 
         1.seconds.wait()
@@ -170,12 +170,12 @@ open class AutoBattle(
         when (prefs.gameServer) {
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
-                if (game.ContinueRegion.exists(images.confirm)) {
+                if (game.continueRegion.exists(images.confirm)) {
                     // Needed to show we don't need to enter the "StartQuest" function
                     isContinuing = true
 
                     // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
-                    game.ContinueClick.click()
+                    game.continueClick.click()
                     battle.resetState()
 
                     showRefillsUsedMessage()
@@ -190,20 +190,20 @@ open class AutoBattle(
 
         // Post-battle story is sometimes there.
         if (prefs.storySkip) {
-            if (game.MenuStorySkipRegion.exists(images.storySkip)) {
-                game.MenuStorySkipClick.click()
+            if (game.menuStorySkipRegion.exists(images.storySkip)) {
+                game.menuStorySkipClick.click()
                 0.5.seconds.wait()
-                game.MenuStorySkipYesClick.click()
+                game.menuStorySkipYesClick.click()
             }
         }
 
         10.seconds.wait()
 
         // Quest Completion reward. Exits the screen when it is presented.
-        if (game.ResultCeRewardRegion.exists(images.bond10Reward)) {
-            game.ResultCeRewardCloseClick.click()
+        if (game.resultCeRewardRegion.exists(images.bond10Reward)) {
+            game.resultCeRewardCloseClick.click()
             1.seconds.wait()
-            game.ResultCeRewardCloseClick.click()
+            game.resultCeRewardCloseClick.click()
         }
     }
 
@@ -211,12 +211,12 @@ open class AutoBattle(
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
     private fun isInQuestRewardScreen() =
-        game.ResultQuestRewardRegion.exists(images.questReward)
+        game.resultQuestRewardRegion.exists(images.questReward)
 
     /**
      * Handles the quest rewards screen.
      */
-    private fun questReward() = game.ResultNextClick.click()
+    private fun questReward() = game.resultNextClick.click()
 
     // Selections Support option
     private fun support() {
@@ -239,7 +239,7 @@ open class AutoBattle(
      * Checks if the window for withdrawing from the battle exists.
      */
     private fun needsToWithdraw() =
-        game.WithdrawRegion.exists(images.withdraw)
+        game.withdrawRegion.exists(images.withdraw)
 
     /**
      * Handles withdrawing from battle. Depending on [prefs.withdrawEnabled], the script either
@@ -251,7 +251,7 @@ open class AutoBattle(
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
-        val withdrawRegion = game.WithdrawRegion
+        val withdrawRegion = game.withdrawRegion
             .findAll(images.withdraw)
             .firstOrNull() ?: return
 
@@ -260,12 +260,12 @@ open class AutoBattle(
         0.5.seconds.wait()
 
         // Click the "Accept" button after choosing to withdraw
-        game.WithdrawAcceptClick.click()
+        game.withdrawAcceptClick.click()
 
         1.seconds.wait()
 
         // Click the "Close" button after accepting the withdrawal
-        game.StaminaBronzeClick.click()
+        game.staminaBronzeClick.click()
     }
 
     /**
@@ -288,7 +288,7 @@ open class AutoBattle(
      * Clicks on the Close button for the special GudaGuda Final Honnouji reward window if it was
      * detected.
      */
-    private fun gudaFinalReward() = game.GudaFinalRewardsRegion.click()
+    private fun gudaFinalReward() = game.gudaFinalRewardsRegion.click()
 
     /**
      * Checks if the SKIP button exists on the screen.
@@ -307,19 +307,19 @@ open class AutoBattle(
 
         if (refillPrefs.enabled && stonesUsed < refillPrefs.repetitions) {
             when (refillPrefs.resource) {
-                RefillResourceEnum.SQ -> game.StaminaSqClick.click()
+                RefillResourceEnum.SQ -> game.staminaSqClick.click()
                 RefillResourceEnum.AllApples -> {
-                    game.StaminaBronzeClick.click()
-                    game.StaminaSilverClick.click()
-                    game.StaminaGoldClick.click()
+                    game.staminaBronzeClick.click()
+                    game.staminaSilverClick.click()
+                    game.staminaGoldClick.click()
                 }
-                RefillResourceEnum.Gold -> game.StaminaGoldClick.click()
-                RefillResourceEnum.Silver -> game.StaminaSilverClick.click()
-                RefillResourceEnum.Bronze -> game.StaminaBronzeClick.click()
+                RefillResourceEnum.Gold -> game.staminaGoldClick.click()
+                RefillResourceEnum.Silver -> game.staminaSilverClick.click()
+                RefillResourceEnum.Bronze -> game.staminaBronzeClick.click()
             }
 
             1.seconds.wait()
-            game.StaminaOkClick.click()
+            game.staminaOkClick.click()
             ++stonesUsed
 
             3.seconds.wait()
@@ -329,15 +329,15 @@ open class AutoBattle(
     fun selectParty() {
         val party = prefs.selectedAutoSkillConfig.party
 
-        if (!partySelected && party in game.PartySelectionArray.indices) {
+        if (!partySelected && party in game.partySelectionArray.indices) {
             // Start Quest Button becomes unresponsive if the same party is clicked.
             // So we switch to one party and then to the user-specified one.
             val tempParty = if (party == 0) 1 else 0
-            game.PartySelectionArray[tempParty].click()
+            game.partySelectionArray[tempParty].click()
 
             1.seconds.wait()
 
-            game.PartySelectionArray[party].click()
+            game.partySelectionArray[party].click()
 
             1.2.seconds.wait()
 
@@ -356,25 +356,25 @@ open class AutoBattle(
     private fun startQuest() {
         selectParty()
 
-        game.MenuStartQuestClick.click()
+        game.menuStartQuestClick.click()
 
         2.seconds.wait()
 
         val boostItem = prefs.boostItemSelectionMode
         if (boostItem >= 0) {
-            game.MenuBoostItemClickArray[boostItem].click()
+            game.menuBoostItemClickArray[boostItem].click()
 
             // in case you run out of items
-            game.MenuBoostItemSkipClick.click()
+            game.menuBoostItemSkipClick.click()
         }
 
         if (prefs.storySkip) {
             10.seconds.wait()
 
             if (needsToStorySkip()) {
-                game.MenuStorySkipClick.click()
+                game.menuStorySkipClick.click()
                 0.5.seconds.wait()
-                game.MenuStorySkipYesClick.click()
+                game.menuStorySkipYesClick.click()
             }
         }
     }
@@ -398,14 +398,14 @@ open class AutoBattle(
         when (prefs.gameServer) {
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
-                if (game.InventoryFullRegion.exists(images.inventoryFull)) {
+                if (game.inventoryFullRegion.exists(images.inventoryFull)) {
                     throw ScriptExitException("Inventory Full")
                 }
             }
         }
 
         // Auto refill
-        while (game.StaminaScreenRegion.exists(images.stamina)) {
+        while (game.staminaScreenRegion.exists(images.stamina)) {
             refillStamina()
         }
     }

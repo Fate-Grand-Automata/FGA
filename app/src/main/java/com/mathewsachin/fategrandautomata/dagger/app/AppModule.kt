@@ -1,10 +1,11 @@
-package com.mathewsachin.fategrandautomata.dagger
+package com.mathewsachin.fategrandautomata.dagger.app
 
 import android.content.Context
 import android.media.projection.MediaProjectionManager
 import android.os.Environment
 import android.view.WindowManager
 import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
 import com.mathewsachin.fategrandautomata.prefs.PreferencesImpl
 import com.mathewsachin.fategrandautomata.scripts.IImageLoader
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
