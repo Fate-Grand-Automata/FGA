@@ -7,4 +7,7 @@ interface IAutoSkillPreferences {
     var cardPriority: String
     val party: Int
     val support: ISupportPreferences
+
+    fun export(): Map<String, *>
+    fun import(map: Map<String, *>)
 }
