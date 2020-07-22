@@ -121,6 +121,16 @@
         app:key="wait_category"
         app:title="Wait">
         <SeekBarPreference
+            android:max="2000"
+            app:defaultValue="500"
+            app:key="@string/pref_skill_delay"
+            app:icon="@drawable/ic_wand"
+            app:min="100"
+            app:seekBarIncrement="10"
+            app:showSeekBarValue="true"
+            app:title="Skill Delay (ms)" />
+
+        <SeekBarPreference
             android:max="200"
             app:defaultValue="100"
             app:key="@string/pref_wait_multiplier"

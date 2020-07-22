@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.libautomata.IPlatformPrefs
+import kotlin.time.Duration
 
 interface IPreferences {
     val scriptMode: ScriptModeEnum
@@ -23,6 +24,7 @@ interface IPreferences {
     val useRootForScreenshots: Boolean
     val gudaFinal: Boolean
     val recordScreen: Boolean
+    val skillDelay: Duration
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

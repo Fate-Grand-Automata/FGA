@@ -56,6 +56,8 @@
     <string name="pref_wait_multiplier">wait_multiplier</string>
     <string name="pref_support_swipe_multiplier">support_swipe_multiplier</string>
 
+    <string name="pref_skill_delay">skill_delay</string>
+
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_auto_skill">nav_auto_skill</string>
     <string name="pref_nav_more">nav_more</string>
