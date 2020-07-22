@@ -77,7 +77,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         val img = images.battle
 
         // slow devices need this. do not remove.
-        game.battleScreenRegion.waitVanish(img, 2.seconds)
+        game.battleScreenRegion.waitVanish(img, prefs.skillDelay)
 
         game.battleScreenRegion.exists(img, Timeout)
     }

@@ -85,6 +85,8 @@ class PreferencesImpl @Inject constructor(
 
     override val recordScreen by prefs.bool(R.string.pref_record_screen)
 
+    override val skillDelay by prefs.int(R.string.pref_skill_delay, 500).map { it.milliseconds }
+
     override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
         AutoSkillPreferences(
             id,
