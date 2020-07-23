@@ -7,6 +7,7 @@
         <SeekBarPreference
             android:max="30"
             app:defaultValue="10"
+            app:summary="Default: 10"
             app:icon="@drawable/ic_swipe"
             app:key="@string/pref_support_swipes_per_update"
             app:min="0"
@@ -17,6 +18,7 @@
         <SeekBarPreference
             android:max="30"
             app:defaultValue="3"
+            app:summary="Default: 3"
             app:icon="@drawable/ic_refresh"
             app:key="@string/pref_support_max_updates"
             app:min="0"
@@ -31,22 +33,24 @@
         <SeekBarPreference
             android:max="100"
             app:defaultValue="80"
+            app:summary="Default: 80%"
             app:key="@string/pref_min_similarity"
             app:icon="@drawable/ic_image_search"
             app:min="50"
             app:seekBarIncrement="5"
             app:showSeekBarValue="true"
-            app:title="Min Similarity" />
+            app:title="Min Similarity (%)" />
 
         <SeekBarPreference
             android:max="100"
             app:defaultValue="70"
+            app:summary="Default: 70%"
             app:key="@string/pref_mlb_similarity"
             app:icon="@drawable/ic_star"
             app:min="50"
             app:seekBarIncrement="5"
             app:showSeekBarValue="true"
-            app:title="MLB Similarity" />
+            app:title="MLB Similarity (%)" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -55,6 +59,7 @@
         <SeekBarPreference
             android:max="2000"
             app:defaultValue="300"
+            app:summary="Default: 300ms"
             app:key="@string/pref_click_wait_time"
             app:icon="@drawable/ic_click"
             app:min="50"
@@ -65,6 +70,7 @@
         <SeekBarPreference
             android:max="200"
             app:defaultValue="50"
+            app:summary="Default: 50ms"
             app:key="@string/pref_click_duration"
             app:icon="@drawable/ic_click"
             app:min="1"
@@ -75,6 +81,7 @@
         <SeekBarPreference
             android:max="50"
             app:defaultValue="10"
+            app:summary="Default: 10ms"
             app:key="@string/pref_click_delay"
             app:icon="@drawable/ic_click"
             app:min="1"
@@ -89,6 +96,7 @@
         <SeekBarPreference
             android:max="3000"
             app:defaultValue="700"
+            app:summary="Default: 700ms"
             app:key="@string/pref_swipe_wait_time"
             app:icon="@drawable/ic_swipe"
             app:min="50"
@@ -99,6 +107,7 @@
         <SeekBarPreference
             android:max="1000"
             app:defaultValue="300"
+            app:summary="Default: 300ms"
             app:key="@string/pref_swipe_duration"
             app:icon="@drawable/ic_swipe"
             app:min="50"
@@ -109,6 +118,7 @@
         <SeekBarPreference
             android:max="200"
             app:defaultValue="100"
+            app:summary="Default: 100%"
             app:key="@string/pref_support_swipe_multiplier"
             app:icon="@drawable/ic_swipe"
             app:min="50"
@@ -123,6 +133,7 @@
         <SeekBarPreference
             android:max="2000"
             app:defaultValue="500"
+            app:summary="Default: 500ms"
             app:key="@string/pref_skill_delay"
             app:icon="@drawable/ic_wand"
             app:min="100"
@@ -133,6 +144,7 @@
         <SeekBarPreference
             android:max="200"
             app:defaultValue="100"
+            app:summary="Default: 100%"
             app:key="@string/pref_wait_multiplier"
             app:icon="@drawable/ic_time"
             app:min="50"
