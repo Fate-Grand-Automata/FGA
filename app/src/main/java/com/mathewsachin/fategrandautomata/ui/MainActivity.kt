@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui
 
 import android.Manifest
 import android.content.Intent
-import android.icu.util.VersionInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
@@ -10,21 +9,24 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.snackbar.Snackbar
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsFragment
-import com.mathewsachin.fategrandautomata.util.*
+import com.mathewsachin.fategrandautomata.util.CutoutManager
+import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
+import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -57,38 +59,43 @@ class MainActivity : AppCompatActivity(),
             ignoreBatteryOptimizations()
         }
 
-        GlobalScope.launch {
-            try {
-                checkForUpdates()
-            } catch (e: Exception) {
-                Log.e(::checkForUpdates.name, "Update check failed", e)
-            }
+        val updateCheckViewModel: UpdateCheckViewModel by viewModels()
+
+        lifecycleScope.launch {
+            checkForUpdates(updateCheckViewModel)
         }
     }
 
-    suspend fun checkForUpdates() {
-        if (isDevelopmentBuild) {
-            return
-        }
+    suspend fun checkForUpdates(updateCheckViewModel: UpdateCheckViewModel) {
+        when (val result = updateCheckViewModel.check()) {
+            is UpdateCheckResult.Available -> {
+                val parentView = findViewById<View>(android.R.id.content)
 
-        val latestTag = getLatestReleaseTag()
-
-        val latestVersion = VersionInfo
-            .getInstance(latestTag.substring(1))
-
-        if (latestVersion > currentVersion) {
-            val parentView = findViewById<View>(android.R.id.content)
-
-            Snackbar
-                .make(parentView, "Update available: $latestTag", Snackbar.LENGTH_INDEFINITE)
-                .setAction("WEBSITE") { _ ->
-                    val intent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(websiteLink)
+                Snackbar
+                    .make(
+                        parentView,
+                        "Update available: ${result.version}",
+                        Snackbar.LENGTH_INDEFINITE
                     )
-                    startActivity(intent)
-                }
-                .show()
+                    .setAction("WEBSITE") { _ ->
+                        val websiteLink =
+                            "https://mathewsachin.github.io/Fate-Grand-Automata"
+
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(websiteLink)
+                        )
+                        startActivity(intent)
+                    }
+                    .show()
+            }
+            is UpdateCheckResult.Failed -> {
+                Log.e(
+                    UpdateCheckViewModel::class.simpleName,
+                    "Update check failed",
+                    result.e
+                )
+            }
         }
     }
 
