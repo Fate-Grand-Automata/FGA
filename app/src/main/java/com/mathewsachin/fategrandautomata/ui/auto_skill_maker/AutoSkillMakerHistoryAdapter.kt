@@ -1,26 +1,29 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
-import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
 
-class AutoSkillMakerHistoryAdapter(private val Items: List<String>)
-    : RecyclerView.Adapter<AutoSkillMakerHistoryViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AutoSkillMakerHistoryViewHolder {
+class AutoSkillMakerHistoryAdapter(private val Items: List<String>) :
+    RecyclerView.Adapter<AutoSkillMakerHistoryAdapter.ViewHolder>() {
+    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+        val textView: TextView = ItemView.findViewById(R.id.autoskill_maker_history_textview)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.autoskill_maker_history_item, parent, false)
 
-        return AutoSkillMakerHistoryViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun getItemCount() = Items.size
 
-    override fun onBindViewHolder(holder: AutoSkillMakerHistoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cmd = Items[position]
 
         holder.itemView.let {

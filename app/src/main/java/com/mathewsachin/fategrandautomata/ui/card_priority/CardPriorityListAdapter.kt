@@ -1,7 +1,9 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,17 +12,23 @@ import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
 
 class CardPriorityListAdapter(private val Items: List<MutableList<CardScore>>) :
-    RecyclerView.Adapter<CardPriorityListViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardPriorityListViewHolder {
+    RecyclerView.Adapter<CardPriorityListAdapter.ViewHolder>() {
+    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+        val battleStageTextView: TextView = ItemView.findViewById(R.id.card_priority_battle_stage)
+
+        val itemsRecyclerView: RecyclerView = ItemView.findViewById(R.id.card_priority_items)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_priority_list_item, parent, false)
 
-        return CardPriorityListViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun getItemCount() = Items.size
 
-    override fun onBindViewHolder(holder: CardPriorityListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.battleStageTextView.text = "WAVE ${position + 1}"
 
         val adapter = CardPriorityAdapter(Items[position])
