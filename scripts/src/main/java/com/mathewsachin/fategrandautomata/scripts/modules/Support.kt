@@ -3,9 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.ScriptExitException
+import com.mathewsachin.libautomata.*
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -215,6 +213,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         for (servant in servants) {
             val supportBounds = findSupportBounds(servant)
+            skillLevels(supportBounds)
             val craftEssence = findCraftEssence(supportBounds)
 
             // CEs are always below Servants in the support list
@@ -392,5 +391,23 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         val mlbSimilarity = prefs.support.mlbSimilarity
         return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
+    }
+
+    private fun skillLevels(bounds: Region) {
+        val y = bounds.Y + 325
+        val x = bounds.X + 1600
+
+        val skillLoc = listOf(
+            Location(x + 2 + 25, y),
+            Location(x + 158 + 25, y),
+            Location(x + 312 + 25, y)
+        )
+
+        val is10 = skillLoc.map {
+            val skillRegion = Region(it, Size(35, 45))
+            skillRegion.exists(images.skillTen, Similarity = 0.68)
+        }
+
+        println(is10.joinToString("/") { if (it) "10" else "x" })
     }
 }

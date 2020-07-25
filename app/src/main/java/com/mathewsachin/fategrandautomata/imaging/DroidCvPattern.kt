@@ -84,6 +84,7 @@ class DroidCvPattern(
     override fun resize(Target: IPattern, Size: Size) {
         if (Target is DroidCvPattern) {
             resize(Target.Mat!!, Size)
+            Target.tag = tag
         }
     }
 
@@ -153,15 +154,18 @@ class DroidCvPattern(
                     val mask = DisposableMat()
                     mask.use {
                         // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
-                        val floodFillDiff = 0.05
+                        val floodFillDiff = 0.3
                         Imgproc.floodFill(
                             result.Mat, mask.Mat, loc, Scalar(0.0),
                             Rect(),
                             Scalar(floodFillDiff), Scalar(floodFillDiff),
-                            0
+                            Imgproc.FLOODFILL_FIXED_RANGE
                         )
                     }
-                } else break
+                } else {
+                    logd("Stopped matching $Template at score ($score) < similarity ($Similarity)")
+                    break
+                }
             }
         }
     }
@@ -177,7 +181,7 @@ class DroidCvPattern(
 
         val result = Mat(Mat, rect)
 
-        return DroidCvPattern(result)
+        return DroidCvPattern(result).also { it.tag = tag }
     }
 
     override fun save(FileName: String) {
@@ -185,6 +189,8 @@ class DroidCvPattern(
     }
 
     override fun copy(): IPattern {
-        return DroidCvPattern(Mat?.clone())
+        return DroidCvPattern(Mat?.clone()).also {
+            it.tag = tag
+        }
     }
 }
