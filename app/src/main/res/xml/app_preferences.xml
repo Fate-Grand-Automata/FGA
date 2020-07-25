@@ -98,7 +98,7 @@
             app:defaultValue="false"
             app:icon="@drawable/ic_key"
             app:key="@string/pref_use_root_screenshot"
-            app:summary="Useful on Nox (Android 7). Toggle service after change this."
+            app:summary="Useful on Nox (Android 7). Toggle service after changing this."
             app:title="Use Root for Screenshots" />
     </PreferenceCategory>
 </PreferenceScreen>
