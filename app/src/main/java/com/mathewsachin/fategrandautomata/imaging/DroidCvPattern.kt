@@ -92,16 +92,16 @@ class DroidCvPattern(
             val result = DisposableMat()
 
             if (Template.width <= width && Template.height <= height) {
-                alpha.let { mask ->
-                    if (mask != null) {
-                        Imgproc.matchTemplate(
-                            Mat,
-                            Template.Mat,
-                            result.Mat,
-                            Imgproc.TM_CCOEFF_NORMED,
-                            mask
-                        )
-                    } else Imgproc.matchTemplate(
+                if (alpha != null) {
+                    Imgproc.matchTemplate(
+                        Mat,
+                        Template.Mat,
+                        result.Mat,
+                        Imgproc.TM_CCOEFF_NORMED,
+                        alpha
+                    )
+                } else {
+                    Imgproc.matchTemplate(
                         Mat,
                         Template.Mat,
                         result.Mat,
