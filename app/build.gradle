@@ -98,6 +98,8 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.6'
     testImplementation "io.mockk:mockk:1.10.0"
+
+    implementation 'dev.ahamed.mva3:adapter:3.0.0'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
