@@ -50,7 +50,8 @@ open class AutoBattle(
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { needsToWithdraw() } to { withdraw() },
-            { isGudaFinalRewardsScreen() } to { gudaFinalReward() }
+            { needsToStorySkip() } to { skipStory() }
+            //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -188,17 +189,7 @@ open class AutoBattle(
             }
         }
 
-        // Post-battle story is sometimes there.
-        if (prefs.storySkip) {
-            if (game.menuStorySkipRegion.exists(images.storySkip)) {
-                game.menuStorySkipClick.click()
-                0.5.seconds.wait()
-                game.menuStorySkipYesClick.click()
-            }
-        }
-
-        10.seconds.wait()
-
+        // TODO: Move to outer loop
         // Quest Completion reward. Exits the screen when it is presented.
         if (game.resultCeRewardRegion.exists(images.bond10Reward)) {
             game.resultCeRewardCloseClick.click()
@@ -293,10 +284,13 @@ open class AutoBattle(
     /**
      * Checks if the SKIP button exists on the screen.
      */
-    private fun needsToStorySkip(): Boolean {
-        // TODO: Story Skip doesn't work correctly
-        //if (game.MenuStorySkipRegion.exists(images.StorySkip))
-        return prefs.storySkip
+    private fun needsToStorySkip() =
+        prefs.storySkip && game.menuStorySkipRegion.exists(images.storySkip, Similarity = 0.7)
+
+    private fun skipStory() {
+        game.menuStorySkipClick.click()
+        0.5.seconds.wait()
+        game.menuStorySkipYesClick.click()
     }
 
     /**
@@ -366,16 +360,6 @@ open class AutoBattle(
 
             // in case you run out of items
             game.menuBoostItemSkipClick.click()
-        }
-
-        if (prefs.storySkip) {
-            10.seconds.wait()
-
-            if (needsToStorySkip()) {
-                game.menuStorySkipClick.click()
-                0.5.seconds.wait()
-                game.menuStorySkipYesClick.click()
-            }
         }
     }
 
