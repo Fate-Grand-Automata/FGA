@@ -62,4 +62,5 @@
     <string name="pref_nav_auto_skill">nav_auto_skill</string>
     <string name="pref_nav_more">nav_more</string>
     <string name="pref_nav_fine_tune">nav_fine_tune</string>
+    <string name="pref_nav_update">nav_update</string>
 </resources>

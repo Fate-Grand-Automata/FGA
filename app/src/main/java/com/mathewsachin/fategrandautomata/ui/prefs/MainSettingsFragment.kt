@@ -3,12 +3,18 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
+import com.mathewsachin.fategrandautomata.ui.UpdateCheckViewModel
+import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
 import com.mathewsachin.fategrandautomata.util.appComponent
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
@@ -44,11 +50,36 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
+        val updateCheckViewModel: UpdateCheckViewModel by activityViewModels()
+
+        lifecycleScope.launch {
+            checkForUpdates(updateCheckViewModel)
+        }
+
         findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
             val prefs = preferences.refill
             it.summary = when (prefs.enabled) {
                 true -> "${prefs.resource} x${prefs.repetitions}"
                 false -> "OFF"
+            }
+        }
+    }
+
+
+    suspend fun checkForUpdates(updateCheckViewModel: UpdateCheckViewModel) {
+        when (val result = updateCheckViewModel.check()) {
+            is UpdateCheckResult.Available -> {
+                findPreference<Preference>(getString(R.string.pref_nav_update))?.let {
+                    it.isVisible = true
+                    it.summary = result.version
+                }
+            }
+            is UpdateCheckResult.Failed -> {
+                Log.e(
+                    UpdateCheckViewModel::class.simpleName,
+                    "Update check failed",
+                    result.e
+                )
             }
         }
     }
