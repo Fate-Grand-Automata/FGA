@@ -212,13 +212,17 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         val servants = findServants()
 
         for (servant in servants) {
-            val supportBounds = findSupportBounds(servant)
-            skillLevels(supportBounds)
+            if (servant.Support == null)
+                continue
+
+            val supportBounds = servant.Bounds
+                ?: findSupportBounds(servant.Support)
+
             val craftEssence = findCraftEssence(supportBounds)
 
             // CEs are always below Servants in the support list
             // see docs/support_list_edge_case_fix.png to understand why this conditional exists
-            if (craftEssence != null && craftEssence.Y > servant.Y) {
+            if (craftEssence != null && craftEssence.Y > servant.Support.Y) {
                 // only return if found. if not, try the other servants before scrolling
                 return SearchFunctionResult(
                     craftEssence,
@@ -244,10 +248,8 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         if (hasServants) {
             return {
-                SearchFunctionResult(
-                    findServants().firstOrNull(),
-                    null
-                )
+                findServants().firstOrNull()
+                    ?: SearchFunctionResult(null, null)
             }
         }
 
@@ -301,7 +303,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return null
     }
 
-    private fun findServants(): Sequence<Region> = sequence {
+    private fun findServants(): Sequence<SearchFunctionResult> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
             val pattern =
@@ -311,7 +313,22 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             cropFriendLock(pattern).use {
                 for (servant in game.supportListRegion.findAll(it)) {
-                    yield(servant.Region)
+                    val skillLevels = listOf(
+                        prefs.selectedAutoSkillConfig.skill1Max,
+                        prefs.selectedAutoSkillConfig.skill2Max,
+                        prefs.selectedAutoSkillConfig.skill3Max
+                    )
+                    val skillCheckNeeded = skillLevels.any()
+
+                    val bounds =
+                        if (skillCheckNeeded) findSupportBounds(servant.Region)
+                        else null
+
+                    if (bounds != null && !skillLevels(bounds, skillLevels)) {
+                        continue
+                    }
+
+                    yield(SearchFunctionResult(servant.Region, bounds))
                 }
             }
         }
@@ -393,7 +410,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
     }
 
-    private fun skillLevels(bounds: Region) {
+    private fun skillLevels(bounds: Region, skillLevels: List<Boolean>): Boolean {
         val y = bounds.Y + 325
         val x = bounds.X + 1600
 
@@ -403,11 +420,25 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             Location(x + 312 + 25, y)
         )
 
-        val is10 = skillLoc.map {
-            val skillRegion = Region(it, Size(35, 45))
-            skillRegion.exists(images.skillTen, Similarity = 0.68)
+        val result = skillLoc.withIndex().map {
+            if (!skillLevels[it.index])
+                true
+            else {
+                val skillRegion = Region(it.value, Size(35, 45))
+                skillRegion.exists(images.skillTen, Similarity = 0.68)
+            }
         }
 
-        println(is10.joinToString("/") { if (it) "10" else "x" })
+        val skillString = result.withIndex().joinToString("/") {
+            val maxReq = skillLevels[it.index]
+            when {
+                !maxReq -> "x"
+                it.value -> "10"
+                else -> "f"
+            }
+        }
+        println(skillString)
+
+        return result.all { it }
     }
 }
