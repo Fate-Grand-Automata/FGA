@@ -433,7 +433,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
         logger.debug {
-            // Skill command as string
+            // Detected skill levels as string for debugging
             result.withIndex().joinToString("/") {
                 val maxReq = skillLevels[it.index]
                 when {
