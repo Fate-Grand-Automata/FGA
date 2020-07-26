@@ -207,7 +207,8 @@ class ScriptRunnerService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         when (event?.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                val foregroundAppName = event.packageName.toString()
+                val foregroundAppName = event.packageName?.toString()
+                    ?: return
 
                 GameServerEnum.fromPackageName(foregroundAppName)
                     ?.let { currentFgoServer = it }
