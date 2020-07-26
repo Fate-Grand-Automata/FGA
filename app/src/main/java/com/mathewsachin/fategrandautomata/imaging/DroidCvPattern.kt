@@ -84,6 +84,7 @@ class DroidCvPattern(
     override fun resize(Target: IPattern, Size: Size) {
         if (Target is DroidCvPattern) {
             resize(Target.Mat!!, Size)
+            Target.tag = tag
         }
     }
 
@@ -177,14 +178,14 @@ class DroidCvPattern(
 
         val result = Mat(Mat, rect)
 
-        return DroidCvPattern(result)
+        return DroidCvPattern(result).also { it.tag = tag }
     }
 
     override fun save(FileName: String) {
         Imgcodecs.imwrite(FileName, Mat)
     }
 
-    override fun copy(): IPattern {
-        return DroidCvPattern(Mat?.clone())
+    override fun copy() = DroidCvPattern(Mat?.clone()).also {
+        it.tag = tag
     }
 }
