@@ -3,12 +3,14 @@ package com.mathewsachin.fategrandautomata.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
-import android.util.Log
 import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.extensions.IDurationExtensions
+import mu.KotlinLogging
 import javax.inject.Inject
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
@@ -23,7 +25,7 @@ class AccessibilityGestures @Inject constructor(
         swipePath.moveTo(Start.X.toFloat(), Start.Y.toFloat())
         swipePath.lineTo(End.X.toFloat(), End.Y.toFloat())
 
-        Log.d(AccessibilityGestures::class.simpleName, "swipe $Start, $End")
+        logger.debug { "swipe $Start, $End" }
 
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
@@ -45,7 +47,7 @@ class AccessibilityGestures @Inject constructor(
             gesturePrefs.clickDuration.toLongMilliseconds()
         )
 
-        Log.d(AccessibilityGestures::class.simpleName, "click $Location x$Times")
+        logger.debug { "click $Location x$Times" }
 
         repeat(Times) {
             performGesture(stroke)

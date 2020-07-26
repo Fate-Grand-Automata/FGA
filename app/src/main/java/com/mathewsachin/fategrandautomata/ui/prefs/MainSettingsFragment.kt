@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
@@ -15,8 +14,11 @@ import com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListActivi
 import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.coroutines.launch
+import mu.KotlinLogging
 import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
+
+private val logger = KotlinLogging.logger {}
 
 class MainSettingsFragment : PreferenceFragmentCompat() {
     @Inject
@@ -75,8 +77,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                 }
             }
             is UpdateCheckResult.Failed -> {
-                Log.e(
-                    UpdateCheckViewModel::class.simpleName,
+                logger.error(
                     "Update check failed",
                     result.e
                 )

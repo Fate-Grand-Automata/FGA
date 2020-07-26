@@ -1,19 +1,21 @@
 package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
-import android.util.Log
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.util.readIntLE
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
+import mu.KotlinLogging
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
+
+private val logger = KotlinLogging.logger {}
 
 class RootScreenshotService(
     private val SuperUser: SuperUser,
@@ -46,13 +48,13 @@ class RootScreenshotService(
                         platformImpl.toast("Unexpected raw image format: $format")
                     }
 
-                    Log.d(RootScreenshotService::class.simpleName, "${w}x${h} format=$format")
+                    logger.debug { "${w}x${h} format=$format" }
 
                     buffer = ByteArray(w * h * 4)
                     rootLoadMat = Mat(h, w, CvType.CV_8UC4)
                 }
 
-                reader.read(buffer, 0, buffer!!.size)
+                buffer?.let { b -> reader.read(b, 0, b.size) }
             }
         }
 

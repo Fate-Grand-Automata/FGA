@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.ui.auto_skill_list
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
@@ -20,6 +19,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.autoskill_list.*
+import mu.KotlinLogging
 import mva3.adapter.ListSection
 import mva3.adapter.MultiViewAdapter
 import mva3.adapter.util.Mode
@@ -27,6 +27,8 @@ import java.util.*
 import javax.inject.Inject
 
 const val AUTO_SKILL_IMPORT = 2047
+
+private val logger = KotlinLogging.logger {}
 
 class AutoSkillListActivity : AppCompatActivity() {
     @Inject
@@ -143,7 +145,7 @@ class AutoSkillListActivity : AppCompatActivity() {
                             preferences.forAutoSkillConfig(id).import(map)
                         } catch (e: Exception) {
                             ++failed
-                            Log.e(::AUTO_SKILL_IMPORT.name, "Import Failed", e)
+                            logger.error("Import Failed", e)
                         }
                     }
                 }

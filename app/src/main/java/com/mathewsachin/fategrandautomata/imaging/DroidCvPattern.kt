@@ -1,16 +1,18 @@
 package com.mathewsachin.fategrandautomata.imaging
 
-import android.util.Log
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Match
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
+import mu.KotlinLogging
 import org.opencv.core.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
 import java.io.InputStream
 import kotlin.math.roundToInt
 import org.opencv.core.Size as CvSize
+
+private val logger = KotlinLogging.logger {}
 
 class DroidCvPattern(
     private var Mat: Mat? = Mat(),
@@ -63,10 +65,6 @@ class DroidCvPattern(
         Mat = null
     }
 
-    private fun logd(msg: String) {
-        Log.d(DroidCvPattern::class.simpleName, msg)
-    }
-
     private fun resize(Target: Mat, Size: Size) {
         Imgproc.resize(
             Mat, Target,
@@ -109,7 +107,9 @@ class DroidCvPattern(
                         Imgproc.TM_CCOEFF_NORMED
                     )
                 }
-            } else logd("Skipped matching $Template: Region out of bounds")
+            } else {
+                logger.debug { "Skipped matching $Template: Region out of bounds" }
+            }
 
             return result
         }
@@ -123,7 +123,7 @@ class DroidCvPattern(
 
             val score = minMaxLocResult.maxVal
 
-            logd("Matched $Template with a score of $score")
+            logger.debug { "Matched $Template with a score of $score" }
 
             return score >= Similarity
         }
@@ -148,7 +148,7 @@ class DroidCvPattern(
 
                     val match = Match(region, score)
 
-                    logd("Matched $Template with a score of ${match.score}")
+                    logger.debug { "Matched $Template with a score of ${match.score}" }
                     yield(match)
 
                     val mask = DisposableMat()
@@ -163,7 +163,7 @@ class DroidCvPattern(
                         )
                     }
                 } else {
-                    logd("Stopped matching $Template at score ($score) < similarity ($Similarity)")
+                    logger.debug { "Stopped matching $Template at score ($score) < similarity ($Similarity)" }
                     break
                 }
             }
