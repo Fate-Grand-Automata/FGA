@@ -188,9 +188,7 @@ class DroidCvPattern(
         Imgcodecs.imwrite(FileName, Mat)
     }
 
-    override fun copy(): IPattern {
-        return DroidCvPattern(Mat?.clone()).also {
-            it.tag = tag
-        }
+    override fun copy() = DroidCvPattern(Mat?.clone()).also {
+        it.tag = tag
     }
 }
