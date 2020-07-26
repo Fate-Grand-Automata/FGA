@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:icon="@drawable/ic_wand"
+        app:key="@string/pref_support_skill_max_1"
+        app:title="Max Skill 1" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:icon="@drawable/ic_wand"
+        app:key="@string/pref_support_skill_max_2"
+        app:title="Max Skill 2" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:icon="@drawable/ic_wand"
+        app:key="@string/pref_support_skill_max_3"
+        app:title="Max Skill 3" />
+</PreferenceScreen>

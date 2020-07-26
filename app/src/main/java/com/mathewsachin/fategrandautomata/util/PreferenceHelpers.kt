@@ -4,6 +4,9 @@ import android.text.InputType
 import androidx.preference.*
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
@@ -23,23 +26,23 @@ fun PreferenceFragmentCompat.findFriendNamesList() =
     findPreference<MultiSelectListPreference>(getString(prefKeys.pref_support_friend_names))
 
 fun PreferenceFragmentCompat.preferredSupportOnCreate() {
-    findServantList()?.apply {
-        summaryProvider = MultiSelectListSummaryProvider()
-    }
+    val servants = findServantList() ?: return
+    servants.summaryProvider = MultiSelectListSummaryProvider()
 
-    findCeList()?.apply {
-        summaryProvider = MultiSelectListSummaryProvider()
-    }
+    val ces = findCeList() ?: return
+    ces.summaryProvider = MultiSelectListSummaryProvider()
 
     findFriendNamesList()?.apply {
         summaryProvider = MultiSelectListSummaryProvider()
     }
 
-    fun adjust(selectionMode: String) {
+    fun adjust(selectionMode: String) =
         adjustVisibility(enumValueOf(selectionMode))
-    }
 
-    findPreference<ListPreference>(getString(prefKeys.pref_support_mode))?.let {
+    val supportMode = findPreference<ListPreference>(getString(prefKeys.pref_support_mode))
+        ?: return
+
+    supportMode.let {
         it.setOnPreferenceChangeListener { _, newValue ->
             if (newValue is String) {
                 adjust(newValue)
@@ -49,6 +52,21 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
 
         adjust(it.value)
     }
+
+    val preferenceChangeListener = { _: Any, _: Any ->
+        if (supportMode.value.isNotBlank()) {
+            GlobalScope.launch {
+                // we want this to run only after preference has updated
+                // So, we add a delay here
+                delay(100)
+                adjust(supportMode.value)
+            }
+        }
+        true
+    }
+
+    servants.setOnPreferenceChangeListener(preferenceChangeListener)
+    ces.setOnPreferenceChangeListener(preferenceChangeListener)
 }
 
 private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
@@ -75,16 +93,19 @@ fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionMod
     val fallback = findPreference<Preference>(getString(prefKeys.pref_support_fallback)) ?: return
     val friendsOnly =
         findPreference<Preference>(getString(prefKeys.pref_support_friends_only)) ?: return
+    val skillLevels =
+        findPreference<Preference>(getString(prefKeys.pref_nav_skill_lvl)) ?: return
 
     val modePreferred = selectionMode == SupportSelectionModeEnum.Preferred
     val modeFriend = selectionMode == SupportSelectionModeEnum.Friend
 
     servants.isVisible = modePreferred
     ces.isVisible = modePreferred
-    ceMlb.isVisible = modePreferred
+    ceMlb.isVisible = modePreferred && ces.values.isNotEmpty()
     friendNames.isVisible = modeFriend
     fallback.isVisible = modePreferred || modeFriend
-    friendsOnly.isVisible = modePreferred || modeFriend
+    friendsOnly.isVisible = modePreferred
+    skillLevels.isVisible = modePreferred && servants.values.isNotEmpty()
 }
 
 fun PreferenceFragmentCompat.preferredSupportOnResume(storageDirs: StorageDirs) {

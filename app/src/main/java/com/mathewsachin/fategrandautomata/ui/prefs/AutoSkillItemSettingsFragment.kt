@@ -18,6 +18,7 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
+import com.mathewsachin.fategrandautomata.ui.SkillLevelActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.RequestAutoSkillMaker
@@ -109,6 +110,15 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         }
+
+        findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
+            it.setOnPreferenceClickListener {
+                val intent = Intent(activity, SkillLevelActivity::class.java)
+                intent.putExtra(AutoSkillItemActivity::autoSkillItemKey.name, autoSkillItemKey)
+                startActivity(intent)
+                true
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -187,6 +197,14 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         // Update Card Priority
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.summary = autoSkillPrefs.cardPriority
+        }
+
+        findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
+            it.summary = listOf(
+                autoSkillPrefs.skill1Max,
+                autoSkillPrefs.skill2Max,
+                autoSkillPrefs.skill3Max
+            ).joinToString("/") { m -> if (m) "10" else "x" }
         }
     }
 

@@ -3,9 +3,8 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.ScriptExitException
+import com.mathewsachin.libautomata.*
+import mu.KotlinLogging
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -19,6 +18,8 @@ private typealias SearchFunction = () -> SearchFunctionResult
 const val supportRegionToolSimilarity = 0.75
 
 const val limitBrokenCharacter = '*'
+
+private val logger = KotlinLogging.logger {}
 
 class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private val preferredServantArray = mutableListOf<String>()
@@ -214,12 +215,17 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         val servants = findServants()
 
         for (servant in servants) {
-            val supportBounds = findSupportBounds(servant)
+            if (servant.Support == null)
+                continue
+
+            val supportBounds = servant.Bounds
+                ?: findSupportBounds(servant.Support)
+
             val craftEssence = findCraftEssence(supportBounds)
 
             // CEs are always below Servants in the support list
             // see docs/support_list_edge_case_fix.png to understand why this conditional exists
-            if (craftEssence != null && craftEssence.Y > servant.Y) {
+            if (craftEssence != null && craftEssence.Y > servant.Support.Y) {
                 // only return if found. if not, try the other servants before scrolling
                 return SearchFunctionResult(
                     craftEssence,
@@ -245,10 +251,8 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         if (hasServants) {
             return {
-                SearchFunctionResult(
-                    findServants().firstOrNull(),
-                    null
-                )
+                findServants().firstOrNull()
+                    ?: SearchFunctionResult(null, null)
             }
         }
 
@@ -302,7 +306,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return null
     }
 
-    private fun findServants(): Sequence<Region> = sequence {
+    private fun findServants(): Sequence<SearchFunctionResult> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
             val pattern =
@@ -312,7 +316,22 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             cropFriendLock(pattern).use {
                 for (servant in game.supportListRegion.findAll(it)) {
-                    yield(servant.Region)
+                    val skillLevels = listOf(
+                        prefs.selectedAutoSkillConfig.skill1Max,
+                        prefs.selectedAutoSkillConfig.skill2Max,
+                        prefs.selectedAutoSkillConfig.skill3Max
+                    )
+                    val skillCheckNeeded = skillLevels.any()
+
+                    val bounds =
+                        if (skillCheckNeeded) findSupportBounds(servant.Region)
+                        else null
+
+                    if (bounds != null && !skillLevels(bounds, skillLevels)) {
+                        continue
+                    }
+
+                    yield(SearchFunctionResult(servant.Region, bounds))
                 }
             }
         }
@@ -373,15 +392,15 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             }
         }
 
-        // AutomataApi.Toast("Default Region being returned; file an issue on the github for this issue");
+        logger.debug("Default Region being returned")
         return defaultRegion
     }
 
     private fun isFriend(Region: Region): Boolean {
-        val friendPattern = images.friend
+        val onlySelectFriends = autoSkillPrefs.friendsOnly
+                || autoSkillPrefs.selectionMode == SupportSelectionModeEnum.Friend
 
-        return !autoSkillPrefs.friendsOnly
-                || Region.exists(friendPattern)
+        return !onlySelectFriends || Region.exists(images.friend)
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
@@ -392,5 +411,39 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         val mlbSimilarity = prefs.support.mlbSimilarity
         return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
+    }
+
+    private fun skillLevels(bounds: Region, skillLevels: List<Boolean>): Boolean {
+        val y = bounds.Y + 325
+        val x = bounds.X + 1627
+
+        val skillLoc = listOf(
+            Location(x, y),
+            Location(x + 156, y),
+            Location(x + 310, y)
+        )
+
+        val result = skillLoc.withIndex().map {
+            if (!skillLevels[it.index])
+                true
+            else {
+                val skillRegion = Region(it.value, Size(35, 45))
+                skillRegion.exists(images.skillTen, Similarity = 0.68)
+            }
+        }
+
+        logger.debug {
+            // Detected skill levels as string for debugging
+            result.withIndex().joinToString("/") {
+                val maxReq = skillLevels[it.index]
+                when {
+                    !maxReq -> "x"
+                    it.value -> "10"
+                    else -> "f"
+                }
+            }
+        }
+
+        return result.all { it }
     }
 }

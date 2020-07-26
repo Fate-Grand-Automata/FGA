@@ -48,22 +48,22 @@
             app:title="Fallback Selection Mode"
             app:useSimpleSummaryProvider="true"/>
 
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_friend"
-            app:key="@string/pref_support_friends_only"
-            app:title="Friends Only" />
-
         <MultiSelectListPreference
             app:icon="@drawable/ic_crown"
             app:key="@string/pref_support_pref_servant"
             app:title="Preferred Servants"
             app:allowDividerAbove="true"/>
 
+        <Preference
+            app:icon="@drawable/ic_wand"
+            app:key="@string/pref_nav_skill_lvl"
+            app:title="Skill Levels" />
+
         <MultiSelectListPreference
             app:icon="@drawable/ic_card"
             app:key="@string/pref_support_pref_ce"
-            app:title="Preferred CEs" />
+            app:title="Preferred CEs"
+            app:allowDividerAbove="true" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
@@ -76,5 +76,12 @@
             app:key="@string/pref_support_friend_names"
             app:title="Friend names"
             app:allowDividerAbove="true"/>
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_friend"
+            app:key="@string/pref_support_friends_only"
+            app:title="Friends Only"
+            app:allowDividerAbove="true" />
     </PreferenceCategory>
 </PreferenceScreen>

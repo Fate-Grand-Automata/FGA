@@ -24,6 +24,10 @@
     <string name="pref_support_pref_ce_mlb">support_pref_ce_mlb</string>
     <string name="pref_support_pref_ce_clear">support_pref_ce_clear</string>
 
+    <string name="pref_support_skill_max_1">support_skill_max_1</string>
+    <string name="pref_support_skill_max_2">support_skill_max_2</string>
+    <string name="pref_support_skill_max_3">support_skill_max_3</string>
+
     <string name="pref_support_friend_names">support_friend_names_list</string>
     <string name="pref_support_friends_only">support_friends_only</string>
     <string name="pref_support_swipes_per_update">support_swipes_per_update_x</string>
@@ -63,4 +67,5 @@
     <string name="pref_nav_more">nav_more</string>
     <string name="pref_nav_fine_tune">nav_fine_tune</string>
     <string name="pref_nav_update">nav_update</string>
+    <string name="pref_nav_skill_lvl">nav_skill_lvl</string>
 </resources>
