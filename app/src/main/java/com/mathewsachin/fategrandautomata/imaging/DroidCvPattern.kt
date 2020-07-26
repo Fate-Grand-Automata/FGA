@@ -154,12 +154,12 @@ class DroidCvPattern(
                     val mask = DisposableMat()
                     mask.use {
                         // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
-                        val floodFillDiff = 0.05
+                        val floodFillDiff = 0.3
                         Imgproc.floodFill(
                             result.Mat, mask.Mat, loc, Scalar(0.0),
                             Rect(),
                             Scalar(floodFillDiff), Scalar(floodFillDiff),
-                            0
+                            Imgproc.FLOODFILL_FIXED_RANGE
                         )
                     }
                 } else {
