@@ -60,6 +60,11 @@
             app:title="Preferred Servants"
             app:allowDividerAbove="true"/>
 
+        <Preference
+            app:icon="@drawable/ic_wand"
+            app:key="@string/pref_nav_skill_lvl"
+            app:title="Skill Levels" />
+
         <MultiSelectListPreference
             app:icon="@drawable/ic_card"
             app:key="@string/pref_support_pref_ce"

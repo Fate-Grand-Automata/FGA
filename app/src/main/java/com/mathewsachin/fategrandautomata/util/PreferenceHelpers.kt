@@ -75,6 +75,8 @@ fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionMod
     val fallback = findPreference<Preference>(getString(prefKeys.pref_support_fallback)) ?: return
     val friendsOnly =
         findPreference<Preference>(getString(prefKeys.pref_support_friends_only)) ?: return
+    val skillLevels =
+        findPreference<Preference>(getString(prefKeys.pref_nav_skill_lvl)) ?: return
 
     val modePreferred = selectionMode == SupportSelectionModeEnum.Preferred
     val modeFriend = selectionMode == SupportSelectionModeEnum.Friend
@@ -85,6 +87,7 @@ fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionMod
     friendNames.isVisible = modeFriend
     fallback.isVisible = modePreferred || modeFriend
     friendsOnly.isVisible = modePreferred || modeFriend
+    skillLevels.isVisible = modePreferred
 }
 
 fun PreferenceFragmentCompat.preferredSupportOnResume(storageDirs: StorageDirs) {

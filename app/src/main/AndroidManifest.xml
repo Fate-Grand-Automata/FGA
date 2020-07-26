@@ -37,6 +37,10 @@
         <activity
             android:name=".ui.card_priority.CardPriorityActivity"
             android:label="Card Priority" />
+        <activity
+            android:name=".ui.SkillLevelActivity"
+            android:label="Skill Levels"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".accessibility.ScriptRunnerService"

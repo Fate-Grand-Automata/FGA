@@ -39,6 +39,10 @@ internal class AutoSkillPreferences(
             storageDirs
         )
 
+    override val skill1Max by prefs.bool(R.string.pref_support_skill_max_1)
+    override val skill2Max by prefs.bool(R.string.pref_support_skill_max_2)
+    override val skill3Max by prefs.bool(R.string.pref_support_skill_max_3)
+
     override fun export(): Map<String, *> =
         prefs.prefs.export()
 

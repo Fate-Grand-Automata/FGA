@@ -108,5 +108,3 @@ class AutoSkillItemActivity : AppCompatActivity() {
         finish()
     }
 }
-
-const val exportPath = "/storage/emulated/0/export.json"
