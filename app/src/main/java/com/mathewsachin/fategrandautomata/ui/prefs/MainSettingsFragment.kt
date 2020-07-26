@@ -10,8 +10,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.AutoSkillListActivity
 import com.mathewsachin.fategrandautomata.ui.UpdateCheckViewModel
+import com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListActivity
 import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.coroutines.launch

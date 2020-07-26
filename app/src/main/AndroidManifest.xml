@@ -32,7 +32,7 @@
             android:label="Edit AutoSkill Item"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.AutoSkillListActivity"
+            android:name=".ui.auto_skill_list.AutoSkillListActivity"
             android:label="AutoSkill List" />
         <activity
             android:name=".ui.card_priority.CardPriorityActivity"

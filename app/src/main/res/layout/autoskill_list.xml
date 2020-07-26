@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/autoskill_listview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/auto_skill_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No AutoSkill Items"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/autoskill_add_btn"
@@ -23,6 +23,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_plus"
-        android:tint="@android:color/white"/>
+        android:tint="@android:color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -50,4 +50,12 @@ internal class AutoSkillPreferences(
         prefs.prefs.edit(commit = true) {
             import(map)
         }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is IAutoSkillPreferences) {
+            return other.id == id
+        }
+
+        return super.equals(other)
+    }
 }

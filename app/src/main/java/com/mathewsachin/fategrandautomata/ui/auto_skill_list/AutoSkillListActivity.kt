@@ -1,28 +1,34 @@
-package com.mathewsachin.fategrandautomata.ui
+package com.mathewsachin.fategrandautomata.ui.auto_skill_list
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.autoskill_list.*
+import mva3.adapter.ListSection
+import mva3.adapter.MultiViewAdapter
+import mva3.adapter.util.Mode
 import java.util.*
 import javax.inject.Inject
 
 const val AUTO_SKILL_IMPORT = 2047
 
 class AutoSkillListActivity : AppCompatActivity() {
-    private lateinit var autoSkillItems: Array<IAutoSkillPreferences>
-
     @Inject
     lateinit var preferences: IPreferences
 
@@ -36,31 +42,54 @@ class AutoSkillListActivity : AppCompatActivity() {
             addOnBtnClick()
         }
 
-        autoskill_listview.setOnItemClickListener { _, _, position, _ ->
-            val guid = autoSkillItems[position].id
-
-            editItem(guid)
-        }
-
         initView()
     }
 
     override fun onRestart() {
         super.onRestart()
 
-        initView()
+        refresh()
     }
 
+    lateinit var adapter: MultiViewAdapter
+    lateinit var listSection: ListSection<IAutoSkillPreferences>
+
     private fun initView() {
-        autoSkillItems = preferences.autoSkillPreferences
-            .toTypedArray()
+        adapter = MultiViewAdapter()
 
-        val autoSkillNames = autoSkillItems
-            .map { it.name }
+        adapter.registerItemBinders(AutoSkillListBinder({
+            editItem(it.id)
+        }) { enterActionMode() })
 
-        val adapter = ArrayAdapter(this, R.layout.autoskill_item, autoSkillNames)
-        autoskill_listview.adapter = adapter
-        autoskill_listview.emptyView = auto_skill_no_items
+        listSection = ListSection<IAutoSkillPreferences>()
+        listSection.setOnSelectionChangedListener { _, _, selectedItems ->
+            val count = selectedItems.size
+            if (count == 0) {
+                actionMode?.finish()
+            } else actionMode?.let {
+                it.title = title
+                it.subtitle = "$count selected"
+            }
+        }
+
+        adapter.addSection(listSection)
+
+        auto_skill_list_view.adapter = adapter
+        auto_skill_list_view.layoutManager = LinearLayoutManager(this)
+        auto_skill_list_view.addItemDecoration(
+            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        )
+
+        refresh()
+    }
+
+    private fun refresh() {
+        val autoSkillItems = preferences.autoSkillPreferences
+        listSection.set(autoSkillItems)
+
+        auto_skill_no_items.visibility =
+            if (autoSkillItems.isEmpty()) View.VISIBLE
+            else View.GONE
     }
 
     private fun newConfig(): String {
@@ -142,10 +171,61 @@ class AutoSkillListActivity : AppCompatActivity() {
                     type = "*/*"
                     putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
                 }
-                startActivityForResult(intent, AUTO_SKILL_IMPORT)
+                startActivityForResult(
+                    intent,
+                    AUTO_SKILL_IMPORT
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    var actionMode: ActionMode? = null
+
+    fun enterActionMode() {
+        adapter.startActionMode()
+        adapter.setSelectionMode(Mode.MULTIPLE)
+        actionMode = startActionMode(actionModeCallback)
+    }
+
+    val actionModeCallback = object : ActionMode.Callback {
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
+            when (item.itemId) {
+                R.id.action_auto_skill_delete -> {
+                    val toDelete = listSection.selectedItems
+
+                    AlertDialog.Builder(this@AutoSkillListActivity)
+                        .setMessage("Are you sure you want to delete ${toDelete.size} configuration(s)?")
+                        .setTitle("Confirm Deletion")
+                        .setPositiveButton("Delete") { _, _ ->
+                            toDelete.forEach {
+                                preferences.removeAutoSkillConfig(it.id)
+                            }
+
+                            mode.finish()
+                            refresh()
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .show()
+                    true
+                }
+                else -> false
+            }
+
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+            val inflater = mode.menuInflater
+            inflater.inflate(R.menu.autoskill_list_multi_menu, menu)
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
+
+        override fun onDestroyActionMode(mode: ActionMode) {
+            listSection.clearSelections()
+            adapter.stopActionMode()
+            adapter.setSelectionMode(Mode.NONE)
+            actionMode = null
         }
     }
 }
