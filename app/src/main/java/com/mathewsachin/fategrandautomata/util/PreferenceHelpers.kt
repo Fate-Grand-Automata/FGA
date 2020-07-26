@@ -29,17 +29,15 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
     val servants = findServantList() ?: return
     servants.summaryProvider = MultiSelectListSummaryProvider()
 
-    findCeList()?.apply {
-        summaryProvider = MultiSelectListSummaryProvider()
-    }
+    val ces = findCeList() ?: return
+    ces.summaryProvider = MultiSelectListSummaryProvider()
 
     findFriendNamesList()?.apply {
         summaryProvider = MultiSelectListSummaryProvider()
     }
 
-    fun adjust(selectionMode: String) {
+    fun adjust(selectionMode: String) =
         adjustVisibility(enumValueOf(selectionMode))
-    }
 
     val supportMode = findPreference<ListPreference>(getString(prefKeys.pref_support_mode))
         ?: return
@@ -55,7 +53,7 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
         adjust(it.value)
     }
 
-    servants.setOnPreferenceChangeListener { _, _ ->
+    val preferenceChangeListener = { _: Any, _: Any ->
         if (supportMode.value.isNotBlank()) {
             GlobalScope.launch {
                 // we want this to run only after preference has updated
@@ -66,6 +64,9 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
         }
         true
     }
+
+    servants.setOnPreferenceChangeListener(preferenceChangeListener)
+    ces.setOnPreferenceChangeListener(preferenceChangeListener)
 }
 
 private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
@@ -92,28 +93,18 @@ fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionMod
     val fallback = findPreference<Preference>(getString(prefKeys.pref_support_fallback)) ?: return
     val friendsOnly =
         findPreference<Preference>(getString(prefKeys.pref_support_friends_only)) ?: return
+    val skillLevels =
+        findPreference<Preference>(getString(prefKeys.pref_nav_skill_lvl)) ?: return
 
     val modePreferred = selectionMode == SupportSelectionModeEnum.Preferred
     val modeFriend = selectionMode == SupportSelectionModeEnum.Friend
 
     servants.isVisible = modePreferred
     ces.isVisible = modePreferred
-    ceMlb.isVisible = modePreferred
+    ceMlb.isVisible = modePreferred && ces.values.isNotEmpty()
     friendNames.isVisible = modeFriend
     fallback.isVisible = modePreferred || modeFriend
     friendsOnly.isVisible = modePreferred || modeFriend
-
-    updateSkillLevelsVisibility(selectionMode)
-}
-
-fun PreferenceFragmentCompat.updateSkillLevelsVisibility(selectionMode: SupportSelectionModeEnum) {
-    val servants = findServantList() ?: return
-
-    val skillLevels =
-        findPreference<Preference>(getString(prefKeys.pref_nav_skill_lvl)) ?: return
-
-    val modePreferred = selectionMode == SupportSelectionModeEnum.Preferred
-
     skillLevels.isVisible = modePreferred && servants.values.isNotEmpty()
 }
 
