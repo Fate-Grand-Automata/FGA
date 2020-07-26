@@ -162,7 +162,10 @@ class DroidCvPattern(
                             0
                         )
                     }
-                } else break
+                } else {
+                    logd("Stopped matching $Template at score ($score) < similarity ($Similarity)")
+                    break
+                }
             }
         }
     }
