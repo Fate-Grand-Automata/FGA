@@ -104,7 +104,7 @@ fun PreferenceFragmentCompat.adjustVisibility(selectionMode: SupportSelectionMod
     ceMlb.isVisible = modePreferred && ces.values.isNotEmpty()
     friendNames.isVisible = modeFriend
     fallback.isVisible = modePreferred || modeFriend
-    friendsOnly.isVisible = modePreferred || modeFriend
+    friendsOnly.isVisible = modePreferred
     skillLevels.isVisible = modePreferred && servants.values.isNotEmpty()
 }
 
