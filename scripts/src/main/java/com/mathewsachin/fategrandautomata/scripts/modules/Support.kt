@@ -4,7 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.libautomata.*
-import org.slf4j.LoggerFactory
+import mu.KotlinLogging
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -19,11 +19,9 @@ const val supportRegionToolSimilarity = 0.75
 
 const val limitBrokenCharacter = '*'
 
-class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
-    companion object {
-        private val logger = LoggerFactory.getLogger(Support::class.java)
-    }
+private val logger = KotlinLogging.logger {}
 
+class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private val preferredServantArray = mutableListOf<String>()
     private val friendNameArray = mutableListOf<String>()
 
@@ -434,15 +432,17 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             }
         }
 
-        val skillString = result.withIndex().joinToString("/") {
-            val maxReq = skillLevels[it.index]
-            when {
-                !maxReq -> "x"
-                it.value -> "10"
-                else -> "f"
+        logger.debug {
+            // Skill command as string
+            result.withIndex().joinToString("/") {
+                val maxReq = skillLevels[it.index]
+                when {
+                    !maxReq -> "x"
+                    it.value -> "10"
+                    else -> "f"
+                }
             }
         }
-        logger.debug(skillString)
 
         return result.all { it }
     }
