@@ -412,12 +412,12 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private fun skillLevels(bounds: Region, skillLevels: List<Boolean>): Boolean {
         val y = bounds.Y + 325
-        val x = bounds.X + 1600
+        val x = bounds.X + 1627
 
         val skillLoc = listOf(
-            Location(x + 2 + 25, y),
-            Location(x + 158 + 25, y),
-            Location(x + 312 + 25, y)
+            Location(x, y),
+            Location(x + 156, y),
+            Location(x + 310, y)
         )
 
         val result = skillLoc.withIndex().map {
