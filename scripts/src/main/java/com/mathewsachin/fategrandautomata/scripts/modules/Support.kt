@@ -1,15 +1,13 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.enums.SupportSearchResultEnum
+import com.mathewsachin.fategrandautomata.scripts.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
-
-private data class SearchVisibleResult(val Result: SupportSearchResultEnum, val Support: Region?)
 
 private data class SearchFunctionResult(val Support: Region?, val Bounds: Region?)
 
@@ -118,24 +116,18 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return true
     }
 
-    private fun searchVisible(SearchMethod: SearchFunction): SearchVisibleResult {
-        return screenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
+    private fun searchVisible(SearchMethod: SearchFunction) =
+        screenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
             if (!isFriend(game.supportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
-                return SearchVisibleResult(
-                    SupportSearchResultEnum.NoFriendsFound,
-                    null
-                )
+                return SearchVisibleResult.NoFriendsFound
             }
 
             var (support, bounds) = SearchMethod()
 
             if (support == null) {
                 // nope, not found this time. keep scrolling
-                return SearchVisibleResult(
-                    SupportSearchResultEnum.NotFound,
-                    null
-                )
+                return SearchVisibleResult.NotFound
             }
 
             // bounds are already returned by searchMethod.byServantAndCraftEssence, but not by the other methods
@@ -143,18 +135,11 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             if (!isFriend(bounds)) {
                 // found something, but it doesn't belong to a friend. keep scrolling
-                return SearchVisibleResult(
-                    SupportSearchResultEnum.NotFound,
-                    null
-                )
+                return SearchVisibleResult.NotFound
             }
 
-            return SearchVisibleResult(
-                SupportSearchResultEnum.Found,
-                support
-            )
+            return SearchVisibleResult.Found(support)
         })
-    }
 
     private fun selectFriend(): Boolean {
         if (friendNameArray.size > 0) {
@@ -174,39 +159,40 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         var numberOfUpdates = 0
 
         while (true) {
-            val (result, support) = searchVisible(SearchMethod)
-
-            if (result == SupportSearchResultEnum.Found) {
-                support?.click()
-                return true
-            }
-
-            if (result == SupportSearchResultEnum.NotFound
-                && numberOfSwipes < prefs.support.swipesPerUpdate
-            ) {
-                scrollList()
-                ++numberOfSwipes
-                0.3.seconds.wait()
-            } else if (numberOfUpdates < prefs.support.maxUpdates) {
-                toast("Support list will be updated in 3 seconds.")
-                3.seconds.wait()
-
-                game.supportUpdateClick.click()
-                1.seconds.wait()
-                game.supportUpdateYesClick.click()
-
-                while (needsToRetry()) {
-                    retry()
+            when (val result = searchVisible(SearchMethod)) {
+                is SearchVisibleResult.Found -> {
+                    result.support.click()
+                    return true
                 }
+                else -> {
+                    if (result == SearchVisibleResult.NotFound
+                        && numberOfSwipes < prefs.support.swipesPerUpdate
+                    ) {
+                        scrollList()
+                        ++numberOfSwipes
+                        0.3.seconds.wait()
+                    } else if (numberOfUpdates < prefs.support.maxUpdates) {
+                        toast("Support list will be updated in 3 seconds.")
+                        3.seconds.wait()
 
-                3.seconds.wait()
+                        game.supportUpdateClick.click()
+                        1.seconds.wait()
+                        game.supportUpdateYesClick.click()
 
-                ++numberOfUpdates
-                numberOfSwipes = 0
-            } else {
-                // -- okay, we have run out of options, let's give up
-                game.supportListTopClick.click()
-                return selectSupport(autoSkillPrefs.fallbackTo)
+                        while (needsToRetry()) {
+                            retry()
+                        }
+
+                        3.seconds.wait()
+
+                        ++numberOfUpdates
+                        numberOfSwipes = 0
+                    } else {
+                        // -- okay, we have run out of options, let's give up
+                        game.supportListTopClick.click()
+                        return selectSupport(autoSkillPrefs.fallbackTo)
+                    }
+                }
             }
         }
     }
