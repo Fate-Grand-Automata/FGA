@@ -27,13 +27,18 @@ class DroidCvPattern(
             val byteArray = Stream.readBytes()
             DisposableMat(MatOfByte(*byteArray)).use {
                 val decoded = Imgcodecs.imdecode(it.Mat, Imgcodecs.IMREAD_UNCHANGED)
+                var alphaChannel: Mat? = null
 
-                // If there are 4 channels (RGBA), last one is alpha
-                val alphaChannel = if (decoded.channels() == 4) {
-                    Mat().apply { Core.extractChannel(decoded, this, 3) }
-                } else null
-
-                Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGBA2GRAY)
+                // Change color images to grayscale and extract alpha if present
+                when (decoded.channels()) {
+                    4 -> {
+                        // RGBA
+                        alphaChannel =
+                            Mat().apply { Core.extractChannel(decoded, this, 3) }
+                        Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGBA2GRAY)
+                    }
+                    3 -> Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGB2GRAY)
+                }
 
                 return MatWithAlpha(decoded, alphaChannel)
             }
