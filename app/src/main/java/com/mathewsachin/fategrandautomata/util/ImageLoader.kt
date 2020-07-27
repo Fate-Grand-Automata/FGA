@@ -10,6 +10,7 @@ import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.ScriptExitException
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import javax.inject.Inject
 
 class ImageLoader @Inject constructor(
@@ -31,13 +32,15 @@ class ImageLoader @Inject constructor(
         return null
     }
 
-    private fun createPattern(FilePath: String): IPattern {
+    private fun createPattern(gameServer: GameServerEnum, FileName: String): IPattern {
+        val filePath = "$gameServer/${FileName}"
+
         val assets = context.assets
 
-        val inputStream = assets.open(FilePath)
+        val inputStream = assets.open(filePath)
 
         inputStream.use {
-            return DroidCvPattern(it, FilePath)
+            return DroidCvPattern(it, filePath)
         }
     }
 
@@ -57,12 +60,27 @@ class ImageLoader @Inject constructor(
 
         if (!regionCachedPatterns.containsKey(path)) {
             val pattern =
-                createPattern("$currentGameServer/${path}")
+                loadPatternWithFallback(path)
 
             regionCachedPatterns[path] = pattern
         }
 
         return regionCachedPatterns[path]!!
+    }
+
+    /**
+     * When image is not available for the current server, use the image from NA server.
+     */
+    private fun loadPatternWithFallback(path: String): IPattern {
+        if (currentGameServer != GameServerEnum.En) {
+            return try {
+                createPattern(currentGameServer, path)
+            } catch (e: FileNotFoundException) {
+                createPattern(GameServerEnum.En, path)
+            }
+        }
+
+        return createPattern(currentGameServer, path)
     }
 
     override fun clearImageCache() {
