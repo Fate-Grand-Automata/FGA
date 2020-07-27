@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.libautomata.*
@@ -8,8 +9,6 @@ import mu.KotlinLogging
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
-
-private data class SearchFunctionResult(val Support: Region?, val Bounds: Region?)
 
 private typealias SearchFunction = () -> SearchFunctionResult
 
@@ -123,32 +122,30 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 return SearchVisibleResult.NoFriendsFound
             }
 
-            var (support, bounds) = SearchMethod()
+            val result = SearchMethod()
 
-            if (support == null) {
-                // nope, not found this time. keep scrolling
-                return SearchVisibleResult.NotFound
+            if (result is SearchFunctionResult.Found) {
+                val bounds = when (result) {
+                    is SearchFunctionResult.FoundWithBounds -> result.Bounds
+                    // bounds are not returned by all methods
+                    else -> findSupportBounds(result.Support)
+                }
+
+                if (!isFriend(bounds)) {
+                    // found something, but it doesn't belong to a friend. keep scrolling
+                    return SearchVisibleResult.NotFound
+                }
+
+                return SearchVisibleResult.Found(result.Support)
             }
 
-            // bounds are already returned by searchMethod.byServantAndCraftEssence, but not by the other methods
-            bounds = bounds ?: findSupportBounds(support)
-
-            if (!isFriend(bounds)) {
-                // found something, but it doesn't belong to a friend. keep scrolling
-                return SearchVisibleResult.NotFound
-            }
-
-            return SearchVisibleResult.Found(support)
+            // nope, not found this time. keep scrolling
+            return SearchVisibleResult.NotFound
         })
 
     private fun selectFriend(): Boolean {
         if (friendNameArray.size > 0) {
-            return selectPreferred {
-                SearchFunctionResult(
-                    findFriendName(),
-                    null
-                )
-            }
+            return selectPreferred { findFriendName() }
         }
 
         throw ScriptExitException("When using 'friend' support selection mode, specify at least one friend name.")
@@ -201,30 +198,30 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         val servants = findServants()
 
         for (servant in servants) {
-            if (servant.Support == null)
-                continue
+            if (servant is SearchFunctionResult.Found) {
+                val supportBounds = when (servant) {
+                    is SearchFunctionResult.FoundWithBounds -> servant.Bounds
+                    else -> findSupportBounds(servant.Support)
+                }
 
-            val supportBounds = servant.Bounds
-                ?: findSupportBounds(servant.Support)
+                val craftEssence = findCraftEssence(supportBounds)
 
-            val craftEssence = findCraftEssence(supportBounds)
-
-            // CEs are always below Servants in the support list
-            // see docs/support_list_edge_case_fix.png to understand why this conditional exists
-            if (craftEssence != null && craftEssence.Y > servant.Support.Y) {
-                // only return if found. if not, try the other servants before scrolling
-                return SearchFunctionResult(
-                    craftEssence,
-                    supportBounds
-                )
+                // CEs are always below Servants in the support list
+                // see docs/support_list_edge_case_fix.png to understand why this conditional exists
+                if (craftEssence is SearchFunctionResult.Found
+                    && craftEssence.Support.Y > servant.Support.Y
+                ) {
+                    // only return if found. if not, try the other servants before scrolling
+                    return SearchFunctionResult.FoundWithBounds(
+                        craftEssence.Support,
+                        supportBounds
+                    )
+                }
             }
         }
 
         // not found, continue scrolling
-        return SearchFunctionResult(
-            null,
-            null
-        )
+        return SearchFunctionResult.NotFound
     }
 
     private fun decideSearchMethod(): SearchFunction {
@@ -238,17 +235,12 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         if (hasServants) {
             return {
                 findServants().firstOrNull()
-                    ?: SearchFunctionResult(null, null)
+                    ?: SearchFunctionResult.NotFound
             }
         }
 
         if (hasCraftEssences) {
-            return {
-                SearchFunctionResult(
-                    findCraftEssence(game.supportListRegion),
-                    null
-                )
-            }
+            return { findCraftEssence(game.supportListRegion) }
         }
 
         throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
@@ -276,7 +268,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private fun lerp(start: Int, end: Int, fraction: Double) =
         (start + (end - start) * fraction).toInt()
 
-    private fun findFriendName(): Region? {
+    private fun findFriendName(): SearchFunctionResult {
         for (friendName in friendNameArray) {
             // Cached pattern. Don't dispose here.
             val pattern =
@@ -285,11 +277,11 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 )
 
             for (theFriend in game.supportFriendsRegion.findAll(pattern)) {
-                return theFriend.Region
+                return SearchFunctionResult.Found(theFriend.Region)
             }
         }
 
-        return null
+        return SearchFunctionResult.NotFound
     }
 
     private fun findServants(): Sequence<SearchFunctionResult> = sequence {
@@ -317,7 +309,11 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                         continue
                     }
 
-                    yield(SearchFunctionResult(servant.Region, bounds))
+                    val result = if (bounds != null)
+                        SearchFunctionResult.FoundWithBounds(servant.Region, bounds)
+                    else SearchFunctionResult.Found(servant.Region)
+
+                    yield(result)
                 }
             }
         }
@@ -340,7 +336,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return servant.crop(lockCropRegion)
     }
 
-    private fun findCraftEssence(SearchRegion: Region): Region? {
+    private fun findCraftEssence(SearchRegion: Region): SearchFunctionResult {
         for (preferredCraftEssence in preferredCEArray) {
             // Cached pattern. Don't dispose here.
             val pattern =
@@ -352,12 +348,12 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             for (craftEssence in craftEssences.map { it.Region }) {
                 if (!preferredCraftEssence.PreferMlb || isLimitBroken(craftEssence)) {
-                    return craftEssence
+                    return SearchFunctionResult.Found(craftEssence)
                 }
             }
         }
 
-        return null
+        return SearchFunctionResult.NotFound
     }
 
     private fun findSupportBounds(Support: Region): Region {
