@@ -400,7 +400,14 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         val onlySelectFriends = autoSkillPrefs.friendsOnly
                 || autoSkillPrefs.selectionMode == SupportSelectionModeEnum.Friend
 
-        return !onlySelectFriends || Region.exists(images.friend)
+        if (!onlySelectFriends)
+            return true
+
+        return sequenceOf(
+            images.friend,
+            images.guest,
+            images.follow
+        ).any { Region.exists(it) }
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
