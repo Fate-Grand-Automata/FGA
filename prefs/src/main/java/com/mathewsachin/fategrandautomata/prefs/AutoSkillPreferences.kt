@@ -58,4 +58,6 @@ internal class AutoSkillPreferences(
 
         return super.equals(other)
     }
+
+    override fun hashCode() = id.hashCode()
 }

@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
 import kotlin.time.seconds
@@ -247,7 +248,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     /**
-     * Scroll support list considering [Preferences.supportSwipeMultiplier].
+     * Scroll support list considering [IPreferences.supportSwipeMultiplier].
      */
     private fun scrollList() {
         val endY = lerp(

@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.*
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IPlatformImpl
@@ -233,7 +234,7 @@ open class AutoBattle(
         game.withdrawRegion.exists(images.withdraw)
 
     /**
-     * Handles withdrawing from battle. Depending on [prefs.withdrawEnabled], the script either
+     * Handles withdrawing from battle. Depending on [IPreferences.withdrawEnabled], the script either
      * withdraws automatically or stops completely.
      */
     private fun withdraw() {
@@ -294,7 +295,7 @@ open class AutoBattle(
     }
 
     /**
-     * Refills the AP with apples depending on [prefs.refill].
+     * Refills the AP with apples depending on [IPreferences.refill].
      */
     private fun refillStamina() {
         val refillPrefs = prefs.refill
@@ -344,8 +345,8 @@ open class AutoBattle(
     /**
      * Starts the quest after the support has already been selected. The following features are done optionally:
      * 1. The configured party is selected if it is set in the selected AutoSkill config
-     * 2. A boost item is selected if [prefs.boostItemSelectionMode] is set (needed in some events)
-     * 3. The story is skipped if [prefs.storySkip] is activated
+     * 2. A boost item is selected if [IPreferences.boostItemSelectionMode] is set (needed in some events)
+     * 3. The story is skipped if [IPreferences.storySkip] is activated
      */
     private fun startQuest() {
         selectParty()

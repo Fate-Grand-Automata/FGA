@@ -17,8 +17,8 @@ class AutoSkillListBinder(
 ) :
     ItemBinder<IAutoSkillPreferences, AutoSkillListBinder.ViewHolder>() {
     inner class ViewHolder(itemView: View) : ItemViewHolder<IAutoSkillPreferences>(itemView) {
-        val textView = itemView.findViewById<TextView>(R.id.auto_skill_item_name)
-        val checkImg = itemView.findViewById<ImageView>(R.id.auto_skill_item_check)
+        val textView: TextView = itemView.findViewById(R.id.auto_skill_item_name)
+        val checkImg: ImageView = itemView.findViewById(R.id.auto_skill_item_check)
 
         init {
             itemView.setOnLongClickListener {

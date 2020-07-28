@@ -55,7 +55,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
         val recyclerView = auto_skill_history
         recyclerView.adapter = skillCmdVm.adapter
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         auto_skill_undo_btn.setOnClickListener {
             onUndo()
@@ -102,7 +103,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             val radioButton = group.findViewById<RadioButton>(checkedId)
 
             if (radioButton?.isChecked == true && !wasEnemyTargetUndo) {
-                when(checkedId) {
+                when (checkedId) {
                     R.id.enemy_target_1 -> setEnemyTarget(1)
                     R.id.enemy_target_2 -> setEnemyTarget(2)
                     R.id.enemy_target_3 -> setEnemyTarget(3)
@@ -153,7 +154,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
         // Remove NPs and cards before NPs
         while (!skillCmdVm.isEmpty()
-            && skillCmdVm.last[0] in itemsToRemove) {
+            && skillCmdVm.last[0] in itemsToRemove
+        ) {
             skillCmdVm.undo()
         }
 
@@ -182,8 +184,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         wasEnemyTargetUndo = true
         try {
             enemy_target_radio.check(targetRadio.id)
-        }
-        finally {
+        } finally {
             wasEnemyTargetUndo = false
         }
     }
@@ -195,8 +196,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             // Merge consecutive target changes
             if (!it.isEmpty() && it.last[0] == 't') {
                 it.last = targetCmd
-            }
-            else {
+            } else {
                 it.add(targetCmd)
             }
         }
@@ -319,7 +319,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         gotToMain()
     }
 
-    private fun getStateView(State: AutoSkillMakerState) = when(State) {
+    private fun getStateView(State: AutoSkillMakerState) = when (State) {
         AutoSkillMakerState.Atk -> autoskill_view_atk
         AutoSkillMakerState.Target -> autoskill_view_target
         AutoSkillMakerState.OrderChange -> autoskill_view_order_change
@@ -340,8 +340,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     private fun onNpClick(NpCommand: String) {
         if (npSequence.contains(NpCommand)) {
             npSequence = npSequence.replace(NpCommand, "")
-        }
-        else npSequence += NpCommand
+        } else npSequence += NpCommand
     }
 
     private fun setOrderChangeMember(Members: Array<Button>, Member: Int) {
@@ -388,7 +387,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        val b = savedInstanceState ?: return
+        val b = savedInstanceState
 
         npSequence = b.getString(::npSequence.name, "")
         changeState(AutoSkillMakerState.values()[b.getInt(::currentView.name, 0)])

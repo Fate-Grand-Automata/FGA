@@ -12,6 +12,4 @@ class FGAutomataApi @Inject constructor(
     override val images: ImageLocator,
     override val game: Game,
     override val scaling: Scaling
-) : IFGAutomataApi, IAutomataExtensions by automataApi {
-
-}
+) : IFGAutomataApi, IAutomataExtensions by automataApi
