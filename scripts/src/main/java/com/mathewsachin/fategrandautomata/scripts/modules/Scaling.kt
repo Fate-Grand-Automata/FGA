@@ -9,21 +9,18 @@ import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-private data class ScalingMethod(val ByWidth: Boolean, val Rate: Double)
+private sealed class ScaleBy(val rate: Double) {
+    class Width(rate: Double) : ScaleBy(rate)
+    class Height(rate: Double) : ScaleBy(rate)
+}
 
-private fun decideScaleMethod(OriginalSize: Size, DesiredSize: Size): ScalingMethod {
+private fun decideScaleMethod(OriginalSize: Size, DesiredSize: Size): ScaleBy {
     val rateToScaleByWidth = DesiredSize.Width / OriginalSize.Width.toDouble()
     val rateToScaleByHeight = DesiredSize.Height / OriginalSize.Height.toDouble()
 
     return if (rateToScaleByWidth <= rateToScaleByHeight)
-        ScalingMethod(
-            true,
-            rateToScaleByWidth
-        )
-    else ScalingMethod(
-        false,
-        rateToScaleByHeight
-    )
+        ScaleBy.Width(rateToScaleByWidth)
+    else ScaleBy.Height(rateToScaleByHeight)
 }
 
 private fun calculateBorderThickness(Outer: Int, Inner: Int): Int {
@@ -57,7 +54,7 @@ private fun calculateGameAreaWithoutBorders(
 class Scaling @Inject constructor(val gameAreaManager: GameAreaManager, val game: Game) {
     private fun applyAspectRatioFix(ScriptSize: Size, ImageSize: Size) {
         val gameWithBorders = gameAreaManager.gameArea
-        val (scaleByWidth, scaleRate) = decideScaleMethod(
+        val scaleBy = decideScaleMethod(
             ScriptSize,
             gameWithBorders.size
         )
@@ -65,17 +62,19 @@ class Scaling @Inject constructor(val gameAreaManager: GameAreaManager, val game
             calculateGameAreaWithoutBorders(
                 ScriptSize,
                 gameWithBorders.size,
-                scaleRate
+                scaleBy.rate
             )
 
         gameAreaManager.gameArea = gameWithoutBorders
 
-        if (scaleByWidth) {
-            gameAreaManager.scriptDimension = CompareSettings(true, ScriptSize.Width)
-            gameAreaManager.compareDimension = CompareSettings(true, ImageSize.Width)
-        } else {
-            gameAreaManager.scriptDimension = CompareSettings(false, ScriptSize.Height)
-            gameAreaManager.compareDimension = CompareSettings(false, ImageSize.Height)
+        gameAreaManager.scriptDimension = when (scaleBy) {
+            is ScaleBy.Width -> CompareSettings(true, ScriptSize.Width)
+            is ScaleBy.Height -> CompareSettings(false, ScriptSize.Height)
+        }
+
+        gameAreaManager.compareDimension = when (scaleBy) {
+            is ScaleBy.Width -> CompareSettings(true, ImageSize.Width)
+            is ScaleBy.Height -> CompareSettings(false, ImageSize.Height)
         }
     }
 
