@@ -1,5 +1,6 @@
 package com.mathewsachin.libautomata.extensions
 
+import com.mathewsachin.libautomata.CompareBy
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
@@ -11,52 +12,46 @@ class TransformationExtensions @Inject constructor(
     val noScaling = 1.0
 
     override fun screenToImageScale(): Double? {
-        val targetDimensions = gameAreaManager.compareDimension
-            ?: gameAreaManager.scriptDimension
-            ?: return null
+        val targetDimensions =
+            if (gameAreaManager.compareDimension !is CompareBy.None) {
+                gameAreaManager.compareDimension
+            } else gameAreaManager.scriptDimension
 
         val gameArea = gameAreaManager.gameArea
 
-        if (targetDimensions.CompareByWidth) {
-            if (targetDimensions.Pixels == gameArea.Width) {
-                return null
+        return when (targetDimensions) {
+            is CompareBy.Width -> {
+                if (targetDimensions.width == gameArea.Width) {
+                    null
+                } else targetDimensions.width / gameArea.Width.toDouble()
             }
-
-            return targetDimensions.Pixels / gameArea.Width.toDouble()
+            is CompareBy.Height -> {
+                if (targetDimensions.height == gameArea.Height) {
+                    null
+                } else targetDimensions.height / gameArea.Height.toDouble()
+            }
+            CompareBy.None -> null
         }
-
-        if (targetDimensions.Pixels == gameArea.Height) {
-            return null
-        }
-
-        return targetDimensions.Pixels / gameArea.Height.toDouble()
     }
 
     override fun scriptToScreenScale(): Double {
-        if (gameAreaManager.scriptDimension == null) {
-            return noScaling
-        }
-
         val sourceRegion = gameAreaManager.scriptDimension
-            ?: return noScaling
 
         val targetRegion = gameAreaManager.gameArea
 
-        val pixels = sourceRegion.Pixels
-
-        if (sourceRegion.CompareByWidth) {
-            if (targetRegion.Width == pixels) {
-                return noScaling
+        return when (sourceRegion) {
+            is CompareBy.Width -> {
+                if (targetRegion.Width == sourceRegion.width) {
+                    noScaling
+                } else targetRegion.Width / sourceRegion.width.toDouble()
             }
-
-            return targetRegion.Width / pixels.toDouble()
+            is CompareBy.Height -> {
+                if (targetRegion.Height == sourceRegion.height) {
+                    noScaling
+                } else targetRegion.Height / sourceRegion.height.toDouble()
+            }
+            CompareBy.None -> noScaling
         }
-
-        if (targetRegion.Height == pixels) {
-            return noScaling
-        }
-
-        return targetRegion.Height / pixels.toDouble()
     }
 
     override fun Location.transform(): Location {
@@ -64,10 +59,7 @@ class TransformationExtensions @Inject constructor(
         val scaledPoint = this * scale
         val gameArea = gameAreaManager.gameArea
 
-        return Location(
-            scaledPoint.X + gameArea.X,
-            scaledPoint.Y + gameArea.Y
-        )
+        return scaledPoint + gameArea.location
     }
 
     override fun Region.transform(): Region {
@@ -76,12 +68,7 @@ class TransformationExtensions @Inject constructor(
         val scaledPoint = location.transform()
         val scaledSize = size * scale
 
-        return Region(
-            scaledPoint.X,
-            scaledPoint.Y,
-            scaledSize.Width,
-            scaledSize.Height
-        )
+        return Region(scaledPoint, scaledSize)
     }
 
     override fun scriptToImageScale(): Double {

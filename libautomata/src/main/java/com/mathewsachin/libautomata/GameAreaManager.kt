@@ -12,12 +12,12 @@ class GameAreaManager @Inject constructor(val platformImpl: IPlatformImpl) {
     /**
      * Stores either the width or height of the script dimensions. Normally, this is 1440p.
      */
-    var scriptDimension: CompareSettings? = null
+    var scriptDimension: CompareBy = CompareBy.None
 
     /**
      * Stores either the width or height of the image dimensions. Normally, this is 720p.
      */
-    var compareDimension: CompareSettings? = null
+    var compareDimension: CompareBy = CompareBy.None
 
     private var _gameArea: Region? = null
 

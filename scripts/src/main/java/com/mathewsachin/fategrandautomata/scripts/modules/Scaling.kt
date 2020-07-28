@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.libautomata.CompareSettings
+import com.mathewsachin.libautomata.CompareBy
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
@@ -68,13 +68,13 @@ class Scaling @Inject constructor(val gameAreaManager: GameAreaManager, val game
         gameAreaManager.gameArea = gameWithoutBorders
 
         gameAreaManager.scriptDimension = when (scaleBy) {
-            is ScaleBy.Width -> CompareSettings(true, ScriptSize.Width)
-            is ScaleBy.Height -> CompareSettings(false, ScriptSize.Height)
+            is ScaleBy.Width -> CompareBy.Width(ScriptSize.Width)
+            is ScaleBy.Height -> CompareBy.Height(ScriptSize.Height)
         }
 
         gameAreaManager.compareDimension = when (scaleBy) {
-            is ScaleBy.Width -> CompareSettings(true, ImageSize.Width)
-            is ScaleBy.Height -> CompareSettings(false, ImageSize.Height)
+            is ScaleBy.Width -> CompareBy.Width(ImageSize.Width)
+            is ScaleBy.Height -> CompareBy.Height(ImageSize.Height)
         }
     }
 
