@@ -66,7 +66,7 @@ internal class SharedPreferenceDelegation(
         )
 
     fun stringSet(@StringRes key: Int): ReadWriteProperty<Any, Set<String>> =
-        DelegatedPref(
+        DelegatedPref<Set<String>>(
             prefs,
             context.getString(key),
             emptySet(),
