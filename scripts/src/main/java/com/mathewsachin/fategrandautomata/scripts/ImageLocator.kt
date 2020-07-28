@@ -25,6 +25,10 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val friend get() = load("friend.png")
 
+    val guest get() = load("guest.png")
+
+    val follow get() = load("follow.png")
+
     val limitBroken get() = load("limitbroken.png")
 
     val supportScreen get() = load("support_screen.png")
