@@ -295,18 +295,18 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             cropFriendLock(pattern).use {
                 for (servant in game.supportListRegion.findAll(it)) {
-                    val skillLevels = listOf(
+                    val needMaxedSkills = listOf(
                         prefs.selectedAutoSkillConfig.skill1Max,
                         prefs.selectedAutoSkillConfig.skill2Max,
                         prefs.selectedAutoSkillConfig.skill3Max
                     )
-                    val skillCheckNeeded = skillLevels.any()
+                    val skillCheckNeeded = needMaxedSkills.any()
 
                     val bounds =
                         if (skillCheckNeeded) findSupportBounds(servant.Region)
                         else null
 
-                    if (bounds != null && !skillLevels(bounds, skillLevels)) {
+                    if (bounds != null && !checkMaxedSkills(bounds, needMaxedSkills)) {
                         continue
                     }
 
@@ -403,7 +403,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
     }
 
-    private fun skillLevels(bounds: Region, skillLevels: List<Boolean>): Boolean {
+    private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {
         val y = bounds.Y + 325
         val x = bounds.X + 1627
 
@@ -413,25 +413,28 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             Location(x + 310, y)
         )
 
-        val result = skillLoc.withIndex().map {
-            if (!skillLevels[it.index])
-                true
-            else {
-                val skillRegion = Region(it.value, Size(35, 45))
-                skillRegion.exists(images.skillTen, Similarity = 0.68)
+        val result = skillLoc
+            .zip(needMaxedSkills)
+            .map { (location, shouldBeMaxed) ->
+                if (!shouldBeMaxed)
+                    true
+                else {
+                    val skillRegion = Region(location, Size(35, 45))
+                    skillRegion.exists(images.skillTen, Similarity = 0.68)
+                }
             }
-        }
 
         logger.debug {
             // Detected skill levels as string for debugging
-            result.withIndex().joinToString("/") {
-                val maxReq = skillLevels[it.index]
-                when {
-                    !maxReq -> "x"
-                    it.value -> "10"
-                    else -> "f"
+            result
+                .zip(needMaxedSkills)
+                .joinToString("/") { (success, shouldBeMaxed) ->
+                    when {
+                        !shouldBeMaxed -> "x"
+                        success -> "10"
+                        else -> "f"
+                    }
                 }
-            }
         }
 
         return result.all { it }
