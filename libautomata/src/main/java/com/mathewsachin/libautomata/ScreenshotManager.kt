@@ -62,13 +62,14 @@ class ScreenshotManager @Inject constructor(
      *
      * @return an [IPattern] with the screenshot image data
      */
-    fun getScreenshot(): IPattern? {
+    fun getScreenshot(): IPattern {
         if (usePreviousSnap) {
-            return previousPattern
+            previousPattern?.let { return it }
         }
 
-        previousPattern = getScaledScreenshot()
-        return previousPattern
+        return getScaledScreenshot().also {
+            previousPattern = it
+        }
     }
 
     /**

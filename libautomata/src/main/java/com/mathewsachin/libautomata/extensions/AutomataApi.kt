@@ -22,8 +22,8 @@ class AutomataApi @Inject constructor(
 
     override fun Region.getPattern() =
         screenshotManager.getScreenshot()
-            ?.crop(this.transformToImage())
-            ?.copy()
+            .crop(this.transformToImage())
+            .copy() // It is important that the image gets cloned here.
 
     override fun toast(msg: String) = platformImpl.toast(msg)
 }

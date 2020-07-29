@@ -55,7 +55,7 @@ class SupportImageMaker(
             if (!screenBounds.contains(supportBound))
                 continue
 
-            supportBound.getPattern()?.use {
+            supportBound.getPattern().use {
                 extractServantImage(it, i)
                 extractCeImage(it, i)
                 extractFriendNameImage(supportBound, isInSupport, i)
@@ -108,7 +108,7 @@ class SupportImageMaker(
         val friendBound = Region(friendNameX, supportBound.Y - 95, 400, 110)
 
         val friendPattern = friendBound.getPattern()
-        friendPattern?.use {
+        friendPattern.use {
             friendPattern.save(
                 getFriendImgPath(
                     dir,
