@@ -172,43 +172,31 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     fun clickCommandCards(Clicks: Int) {
         val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
-        var clicked = 0
+        var clicksLeft = Clicks
 
-        for (cardPriority in cardPriorityArray[cardPriorityIndex]) {
-            val currentCardTypeStorage = commandCards[cardPriority]
-                ?: continue
-
-            if (firstNp in commandCardGroupedWithNp.indices) {
-                for (cardSlot in currentCardTypeStorage) {
-                    if (cardSlot in commandCardGroupedWithNp[firstNp] && cardSlot in remainingCards) {
-                        game.battleCommandCardClickArray[cardSlot].click()
-                        remainingCards.remove(cardSlot)
-
-                        if (++clicked >= Clicks) {
-                            return
-                        }
-                    }
-                }
-            }
+        fun List<Int>.clickAll() {
+            this.forEach { game.battleCommandCardClickArray[it].click() }
+            remainingCards.removeAll(this)
+            clicksLeft -= this.size
         }
 
-        firstNp = -1
+        fun clickCardsOrderedByPriority(filter: (Int) -> Boolean = { true }) =
+            cardPriorityArray[cardPriorityIndex]
+                .mapNotNull { commandCards[it] }
+                .flatten()
+                .filter { it in remainingCards && filter(it) }
+                .take(clicksLeft)
+                .clickAll()
 
-        for (cardPriority in cardPriorityArray[cardPriorityIndex]) {
-            val currentCardTypeStorage = commandCards[cardPriority]
-                ?: continue
-
-            for (cardSlot in currentCardTypeStorage) {
-                if (cardSlot in remainingCards) {
-                    game.battleCommandCardClickArray[cardSlot].click()
-                    remainingCards.remove(cardSlot)
-
-                    if (++clicked >= Clicks) {
-                        return
-                    }
-                }
+        if (firstNp in commandCardGroupedWithNp.indices) {
+            clickCardsOrderedByPriority {
+                it in commandCardGroupedWithNp[firstNp]
             }
+
+            firstNp = -1
         }
+
+        clickCardsOrderedByPriority()
     }
 
     fun resetCommandCards() {
