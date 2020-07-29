@@ -223,7 +223,7 @@ open class AutoBattle(
             // Wait timer till battle starts.
             // Uses less battery to wait than to search for images for a few seconds.
             // Adjust according to device.
-            10.seconds.wait()
+            5.seconds.wait()
         }
     }
 
