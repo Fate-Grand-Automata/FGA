@@ -232,11 +232,18 @@ object BattleServantCards {
     )
 }
 
-fun IFGAutomataApi.preferBraveChain() =
-    groupByFaceCard()
-        .sortedBy { it.size }
-        .flatten()
-        .forEach { game.battleCommandCardClickArray[it].click() }
+fun IFGAutomataApi.groupNpsWithFaceCards(groups: List<List<Int>>): List<List<Int>> {
+    return BattleServantCards.npCropRegions
+        .map { region ->
+            region.getPattern().use { npCropped ->
+                groups.maxBy {
+                    BattleServantCards.faceCardRegions[it[0]]
+                        .findAll(npCropped, 0.4)
+                        .firstOrNull()?.score ?: 0.0
+                } ?: emptyList()
+            }
+        }
+}
 
 fun IFGAutomataApi.groupByFaceCard(): List<List<Int>> {
     val remaining = BattleServantCards.faceCardRegions.indices.toMutableSet()

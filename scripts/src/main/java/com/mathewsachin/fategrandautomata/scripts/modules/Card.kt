@@ -60,12 +60,13 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private lateinit var cardPriorityArray: List<List<CardScore>>
 
     private val commandCards = mutableMapOf<CardScore, MutableList<Int>>()
-    private var cardsClickedSoFar = 0
+    private var remainingCards = mutableSetOf<Int>()
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
         battle = BattleModule
 
+        resetCommandCards()
         initCardPriorityArray()
     }
 
@@ -125,11 +126,15 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return CardTypeEnum.Buster
     }
 
+    private var commandCardGroups: List<List<Int>> = emptyList()
+    private var commandCardGroupedWithNp: List<List<Int>> = emptyList()
+    var firstNp = -1
+
     fun readCommandCards() {
         commandCards.clear()
 
         screenshotManager.useSameSnapIn {
-            for (cardSlot in 0..4) {
+            for (cardSlot in game.battleCardAffinityRegionArray.indices) {
                 val affinity = getCardAffinity(game.battleCardAffinityRegionArray[cardSlot])
                 val type = getCardType(game.battleCardTypeRegionArray[cardSlot])
 
@@ -144,6 +149,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
                 commandCards[score]?.add(cardSlot)
             }
+
+            commandCardGroups = groupByFaceCard()
+            commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups)
         }
     }
 
@@ -163,34 +171,49 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun clickCommandCards(Clicks: Int) {
-        var i = 1
-
         val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
+        var clicked = 0
 
         for (cardPriority in cardPriorityArray[cardPriorityIndex]) {
-            if (!commandCards.containsKey(cardPriority))
-                continue
+            val currentCardTypeStorage = commandCards[cardPriority]
+                ?: continue
 
+            if (firstNp in commandCardGroupedWithNp.indices) {
+                for (cardSlot in currentCardTypeStorage) {
+                    if (cardSlot in commandCardGroupedWithNp[firstNp] && cardSlot in remainingCards) {
+                        game.battleCommandCardClickArray[cardSlot].click()
+                        remainingCards.remove(cardSlot)
+
+                        if (++clicked >= Clicks) {
+                            return
+                        }
+                    }
+                }
+            }
+        }
+
+        firstNp = -1
+
+        for (cardPriority in cardPriorityArray[cardPriorityIndex]) {
             val currentCardTypeStorage = commandCards[cardPriority]
                 ?: continue
 
             for (cardSlot in currentCardTypeStorage) {
-                if (Clicks < i) {
-                    cardsClickedSoFar = i - 1
-                    return
-                }
-
-                if (i > cardsClickedSoFar) {
+                if (cardSlot in remainingCards) {
                     game.battleCommandCardClickArray[cardSlot].click()
-                }
+                    remainingCards.remove(cardSlot)
 
-                ++i
+                    if (++clicked >= Clicks) {
+                        return
+                    }
+                }
             }
         }
     }
 
     fun resetCommandCards() {
         commandCards.clear()
-        cardsClickedSoFar = 0
+
+        remainingCards = game.battleCardAffinityRegionArray.indices.toMutableSet()
     }
 }

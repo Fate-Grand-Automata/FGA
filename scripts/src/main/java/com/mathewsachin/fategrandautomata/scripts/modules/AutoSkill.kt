@@ -34,9 +34,9 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         '2' to { selectSkillTarget(game.battleServant2Click) },
         '3' to { selectSkillTarget(game.battleServant3Click) },
 
-        '4' to { castNoblePhantasm(game.battleNpCardClickArray[0]) },
-        '5' to { castNoblePhantasm(game.battleNpCardClickArray[1]) },
-        '6' to { castNoblePhantasm(game.battleNpCardClickArray[2]) }
+        '4' to { castNoblePhantasm(0) },
+        '5' to { castNoblePhantasm(1) },
+        '6' to { castNoblePhantasm(2) }
     )
 
     private val startingMemberFunctionArray: AutoSkillMap = mapOf(
@@ -103,7 +103,11 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         waitForAnimationToFinish()
     }
 
-    private fun castNoblePhantasm(Location: Location) {
+    private fun castNoblePhantasm(index: Int) {
+        if (card.firstNp == -1) {
+            card.firstNp = index
+        }
+
         if (!battle.hasClickedAttack) {
             battle.clickAttack()
 
@@ -111,7 +115,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
             2.seconds.wait()
         }
 
-        Location.click()
+        game.battleNpCardClickArray[index].click()
 
         npsClicked = true
     }
