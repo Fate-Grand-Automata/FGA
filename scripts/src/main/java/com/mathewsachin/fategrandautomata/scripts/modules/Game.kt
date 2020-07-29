@@ -186,36 +186,6 @@ class Game @Inject constructor(val prefs: IPreferences) {
         Location(1740, 400)
     )
 
-    object battleServantCards {
-        val faceCardRegions = listOf(
-            Region(106, 800, 300, 200),
-            Region(620, 800, 300, 200),
-            Region(1130, 800, 300, 200),
-            Region(1644, 800, 300, 200),
-            Region(2160, 800, 300, 200)
-        )
-
-        val npRegions = listOf(
-            Region(678, 190, 300, 200),
-            Region(1138, 190, 300, 200),
-            Region(1606, 190, 300, 200)
-        )
-
-        val faceCardCropRegions = listOf(
-            Region(200, 890, 115, 85),
-            Region(714, 890, 115, 85),
-            Region(1224, 890, 115, 85),
-            Region(1738, 890, 115, 85),
-            Region(2254, 890, 115, 85)
-        )
-
-        val npCropRegions = listOf(
-            Region(762, 290, 115, 65),
-            Region(1230, 290, 115, 65),
-            Region(1694, 290, 115, 65)
-        )
-    }
-
     val resultScreenRegion = Region(100, 300, 700, 200)
     val resultBondRegion = Region(2000, 750, 120, 190)
     val resultMasterExpRegion = Region(1280, 350, 400, 110)
@@ -232,27 +202,44 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
 }
 
-fun IFGAutomataApi.braveChain() {
-    val groups = groupByFaceCard()
+object BattleServantCards {
+    val faceCardRegions = listOf(
+        Region(106, 800, 300, 200),
+        Region(620, 800, 300, 200),
+        Region(1130, 800, 300, 200),
+        Region(1644, 800, 300, 200),
+        Region(2160, 800, 300, 200)
+    )
 
-    val maxGroup = groups.maxBy { it.size } ?: return
+    val npRegions = listOf(
+        Region(678, 190, 300, 200),
+        Region(1138, 190, 300, 200),
+        Region(1606, 190, 300, 200)
+    )
 
-    // Max group has at least 2
-    for (item in maxGroup) {
-        game.battleCommandCardClickArray[item].click()
-    }
+    val faceCardCropRegions = listOf(
+        Region(200, 890, 115, 85),
+        Region(714, 890, 115, 85),
+        Region(1224, 890, 115, 85),
+        Region(1738, 890, 115, 85),
+        Region(2254, 890, 115, 85)
+    )
 
-    // Not brave chain
-    if (maxGroup.size == 2) {
-        val otherGroup = groups.first { it != maxGroup }
-        for (item in otherGroup) {
-            game.battleCommandCardClickArray[item].click()
-        }
-    }
+    val npCropRegions = listOf(
+        Region(762, 290, 115, 65),
+        Region(1230, 290, 115, 65),
+        Region(1694, 290, 115, 65)
+    )
 }
 
+fun IFGAutomataApi.preferBraveChain() =
+    groupByFaceCard()
+        .sortedBy { it.size }
+        .flatten()
+        .forEach { game.battleCommandCardClickArray[it].click() }
+
 fun IFGAutomataApi.groupByFaceCard(): List<List<Int>> {
-    val remaining = Game.battleServantCards.faceCardRegions.indices.toMutableSet()
+    val remaining = BattleServantCards.faceCardRegions.indices.toMutableSet()
     val groups = mutableListOf<List<Int>>()
 
     while (remaining.isNotEmpty()) {
@@ -263,11 +250,11 @@ fun IFGAutomataApi.groupByFaceCard(): List<List<Int>> {
         group.add(u)
 
         if (remaining.isNotEmpty()) {
-            val me = Game.battleServantCards.faceCardCropRegions[u].getPattern()
+            val me = BattleServantCards.faceCardCropRegions[u].getPattern()
 
-            me?.use {
+            me.use {
                 val matched = remaining.filter {
-                    val region = Game.battleServantCards.faceCardRegions[it]
+                    val region = BattleServantCards.faceCardRegions[it]
                     region.exists(me)
                 }
 
