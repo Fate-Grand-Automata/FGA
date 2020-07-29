@@ -25,6 +25,7 @@ interface IPreferences {
     val gudaFinal: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
+    val sameServant: Boolean
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

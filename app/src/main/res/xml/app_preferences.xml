@@ -59,6 +59,13 @@
         app:title="Boost Item"
         app:useSimpleSummaryProvider="true" />
 
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:key="@string/pref_same_servant"
+        app:icon="@drawable/ic_crown"
+        app:summary="Prefer face-cards of the first servant whose NP was used this turn through AutoSkill (Experimental)"
+        app:title="Prefer same servant" />
+
 <!--    <SwitchPreferenceCompat-->
 <!--        app:defaultValue="false"-->
 <!--        app:key="@string/pref_guda_final"-->

@@ -188,7 +188,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 .take(clicksLeft)
                 .clickAll()
 
-        if (firstNp in commandCardGroupedWithNp.indices) {
+        if (prefs.sameServant && firstNp in commandCardGroupedWithNp.indices) {
             clickCardsOrderedByPriority {
                 it in commandCardGroupedWithNp[firstNp]
             }
