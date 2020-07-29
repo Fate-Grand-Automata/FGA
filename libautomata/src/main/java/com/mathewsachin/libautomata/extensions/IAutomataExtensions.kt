@@ -14,7 +14,7 @@ interface IAutomataExtensions : IDurationExtensions,
      *
      * @return an [IPattern] object with the image data
      */
-    fun Region.getPattern(): IPattern?
+    fun Region.getPattern(): IPattern
 
     val screenshotManager: ScreenshotManager
 

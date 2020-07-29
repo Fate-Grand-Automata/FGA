@@ -36,11 +36,11 @@ class ImageMatchingExtensions @Inject constructor(
             Region.highlight()
         }
 
-        sshot = sshot?.crop(Region.transformToImage())
+        sshot = sshot.crop(Region.transformToImage())
 
         val similarity = Similarity ?: platformImpl.prefs.minSimilarity
 
-        return sshot?.isMatch(Image, similarity) ?: false
+        return sshot.isMatch(Image, similarity)
     }
 
     /**
@@ -117,7 +117,7 @@ class ImageMatchingExtensions @Inject constructor(
             this.highlight()
         }
 
-        sshot = sshot!!.crop(this.transformToImage())
+        sshot = sshot.crop(this.transformToImage())
 
         val similarity = Similarity ?: platformImpl.prefs.minSimilarity
 

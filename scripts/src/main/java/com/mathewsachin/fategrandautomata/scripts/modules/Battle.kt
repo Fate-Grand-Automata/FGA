@@ -6,8 +6,6 @@ import com.mathewsachin.libautomata.Region
 import kotlin.time.seconds
 
 class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
-    private var hasTakenFirstStageSnapshot = false
-
     var hasClickedAttack = false
         private set
 
@@ -36,7 +34,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         currentStage = -1
         currentTurn = -1
 
-        hasTakenFirstStageSnapshot = false
+        generatedStageCounterSnapshot = null
         hasChosenTarget = false
         hasClickedAttack = false
     }
@@ -133,7 +131,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun checkCurrentStage() {
-        if (!hasTakenFirstStageSnapshot || didStageChange()) {
+        if (didStageChange()) {
             onStageChanged()
 
             takeStageSnapshot()
@@ -154,9 +152,6 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     fun takeStageSnapshot() {
         generatedStageCounterSnapshot?.close()
 
-        // It is important that the image gets cloned here.
         generatedStageCounterSnapshot = game.battleStageCountRegion.getPattern()
-
-        hasTakenFirstStageSnapshot = true
     }
 }
