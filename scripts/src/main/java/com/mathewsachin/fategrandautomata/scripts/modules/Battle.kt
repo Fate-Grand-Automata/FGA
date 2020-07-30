@@ -96,26 +96,21 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         screenshotManager.useSameSnapIn { onTurnStarted() }
         2.seconds.wait()
 
-        val wereNpsClicked = autoSkill.execute()
-
-        autoSkill.resetNpTimer()
+        autoSkill.execute()
 
         if (!hasClickedAttack) {
             clickAttack()
         }
 
         if (card.canClickNpCards) {
-            // We shouldn't do the long wait due to NP spam/danger modes
-            // They click on NPs even when not charged
-            // So, don't assign wereNpsClicked here
             card.clickNpCards()
         }
 
-        card.clickCommandCards(3 - card.alreadyClicked)
+        card.clickCommandCards()
 
         card.resetCommandCards()
 
-        (if (wereNpsClicked) 15 else 5).seconds.wait()
+        5.seconds.wait()
     }
 
     private fun onTurnStarted() {

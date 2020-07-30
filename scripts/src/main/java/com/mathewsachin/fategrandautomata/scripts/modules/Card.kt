@@ -65,7 +65,10 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private val commandCards = mutableMapOf<CardScore, MutableList<Int>>()
     private val remainingCards = mutableSetOf<Int>()
-    val alreadyClicked get() = 5 - remainingCards.size
+    private val remainingNps = mutableSetOf<Int>()
+    private val noOfCardsToClick
+        get() = (3 - (5 - remainingCards.size) + (3 - remainingNps.size))
+            .coerceAtLeast(0)
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
@@ -145,7 +148,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private var commandCardGroups: List<List<Int>> = emptyList()
     private var commandCardGroupedWithNp: List<List<Int>> = emptyList()
-    var firstNp = -1
+    private var firstNp = -1
 
     fun readCommandCards() {
         commandCards.clear()
@@ -190,7 +193,18 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
     }
 
-    fun clickCommandCards(Clicks: Int) {
+    fun clickNp(index: Int) {
+        if (index in remainingNps) {
+            game.battleNpCardClickArray[index].click()
+            remainingNps.remove(index)
+
+            if (firstNp == -1) {
+                firstNp = index
+            }
+        }
+    }
+
+    fun clickCommandCards(Clicks: Int = noOfCardsToClick) {
         if (Clicks <= 0) {
             return
         }
@@ -269,5 +283,6 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         commandCards.clear()
 
         remainingCards.addAll(game.battleCardAffinityRegionArray.indices)
+        remainingNps.addAll(game.battleNpCardClickArray.indices)
     }
 }
