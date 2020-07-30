@@ -8,6 +8,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.ScriptExitException
+import mu.KotlinLogging
 
 private const val dummyNormalAffinityChar = 'X'
 private const val cardPriorityErrorString = "Battle_CardPriority Error at '"
@@ -54,6 +55,8 @@ fun getCardScores(Priority: String): List<CardScore> {
     return scores
 }
 
+private val logger = KotlinLogging.logger {}
+
 class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
@@ -91,9 +94,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         cardPriorityArray = Priority
             .split(cardPriorityStageSeparator)
             .map {
-                getCardScores(
-                    it
-                )
+                getCardScores(it)
+                    // Give minimum priority to unknown
+                    .plus(CardScore(CardTypeEnum.Unknown, CardAffinityEnum.Normal))
             }
     }
 
@@ -110,6 +113,16 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun getCardType(Region: Region): CardTypeEnum {
+        val stunRegion = Region.copy(
+            Y = 930,
+            Width = 248,
+            Height = 188
+        )
+
+        if (stunRegion.exists(images.stun)) {
+            return CardTypeEnum.Unknown
+        }
+
         if (Region.exists(images.buster)) {
             return CardTypeEnum.Buster
         }
@@ -122,9 +135,11 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             return CardTypeEnum.Quick
         }
 
-        toast("Failed to determine Card type $Region")
+        val msg = "Failed to determine Card type $Region"
+        toast(msg)
+        logger.debug(msg)
 
-        return CardTypeEnum.Buster
+        return CardTypeEnum.Unknown
     }
 
     private var commandCardGroups: List<List<Int>> = emptyList()
@@ -136,8 +151,11 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         screenshotManager.useSameSnapIn {
             for (cardSlot in game.battleCardAffinityRegionArray.indices) {
-                val affinity = getCardAffinity(game.battleCardAffinityRegionArray[cardSlot])
                 val type = getCardType(game.battleCardTypeRegionArray[cardSlot])
+                val affinity =
+                    if (type == CardTypeEnum.Unknown)
+                        CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
+                    else getCardAffinity(game.battleCardAffinityRegionArray[cardSlot])
 
                 val score = CardScore(
                     type,

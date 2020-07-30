@@ -35,15 +35,15 @@ class SupportImageMaker(
         // the servant and CE images are further to the right in the friend screen
         val supportBoundX = if (isInSupport) 106 else 176
         var supportBound = Region(supportBoundX, 0, 286, 220)
-        val searchRegion = Region(2100, 0, 370, 1440)
 
-        val regionAnchor = images.supportRegionTool
         // At max two Servant+CE are completely on screen, so only use those
-        val regionArray = searchRegion.findAll(
-            regionAnchor,
-            supportRegionToolSimilarity
-        )
-            .take(2).toList()
+        val regionArray = game.supportRegionToolSearchRegion
+            .findAll(
+                images.supportRegionTool,
+                supportRegionToolSimilarity
+            )
+            .take(2)
+            .toList()
 
         val screenBounds = Region(0, 0, game.scriptSize.Width, game.scriptSize.Height)
 

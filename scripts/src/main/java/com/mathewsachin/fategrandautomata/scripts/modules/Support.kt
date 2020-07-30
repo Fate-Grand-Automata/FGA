@@ -72,8 +72,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
-        val pattern = images.supportScreen
-        while (!game.supportScreenRegion.exists(pattern)) {
+        while (!game.supportScreenRegion.exists(images.supportScreen)) {
             0.3.seconds.wait()
         }
 
@@ -358,17 +357,15 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun findSupportBounds(Support: Region): Region {
-        var supportBound = Region(76, 0, 2356, 428)
-        val regionAnchor = images.supportRegionTool
-
-        val searchRegion = Region(2100, 0, 300, 1440)
-        val regionArray =
-            searchRegion.findAll(regionAnchor, Similarity = supportRegionToolSimilarity)
-
-        val defaultRegion = supportBound
+        val regionArray = game.supportRegionToolSearchRegion
+            .findAll(
+                images.supportRegionTool,
+                supportRegionToolSimilarity
+            )
 
         for (testRegion in regionArray) {
-            supportBound = supportBound.copy(Y = testRegion.Region.Y - 70)
+            val supportBound = game.supportDefaultBounds
+                .copy(Y = testRegion.Region.Y - 70)
 
             if (supportBound.contains(Support)) {
                 return supportBound
@@ -376,7 +373,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
         logger.debug("Default Region being returned")
-        return defaultRegion
+        return game.supportDefaultBounds
     }
 
     private fun isFriend(Region: Region): Boolean {
