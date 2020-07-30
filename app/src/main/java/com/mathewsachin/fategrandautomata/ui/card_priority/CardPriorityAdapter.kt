@@ -32,6 +32,7 @@ fun CardScore.getColorRes(): Int {
             CardAffinityEnum.Normal -> R.color.colorQuick
             CardAffinityEnum.Resist -> R.color.colorQuickResist
         }
+        CardTypeEnum.Unknown -> R.color.colorPrimaryDark
     }
 }
 
