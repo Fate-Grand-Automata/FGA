@@ -66,6 +66,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private val commandCards = mutableMapOf<CardScore, MutableList<Int>>()
     private var remainingCards = mutableSetOf<Int>()
 
+    val alreadyClicked get() = 5 - remainingCards.size
+
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
         battle = BattleModule
@@ -190,6 +192,10 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun clickCommandCards(Clicks: Int) {
+        if (Clicks <= 0) {
+            return
+        }
+
         val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
         var clicksLeft = Clicks
 
