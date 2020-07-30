@@ -281,9 +281,13 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         clickCardsOrderedByPriority()
 
         // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
+        // Do the same when clicking 2 cards unless they're used before NPs.
         // Skip if NP spamming because we don't know how many NPs might've been used
-        if (toClick.size == 3 && !canClickNpCards) {
-            Collections.swap(toClick, 1, 2)
+        if (prefs.braveChains != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
+            && (toClick.size == 3 || (toClick.size == 2 && firstNp != -1))
+            && !canClickNpCards
+        ) {
+            Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
         }
 
         toClick.forEach { game.battleCommandCardClickArray[it].click() }
