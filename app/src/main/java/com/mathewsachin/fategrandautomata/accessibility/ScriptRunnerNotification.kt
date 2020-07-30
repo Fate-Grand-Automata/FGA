@@ -4,6 +4,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
@@ -49,6 +51,21 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
         val activityIntent = PendingIntent
             .getActivity(service, 0, Intent(service, MainActivity::class.java), 0)
 
+        val stopIntent = PendingIntent.getBroadcast(
+            service,
+            1,
+            Intent(service, NotificationReceiver::class.java).apply {
+                putExtra(NotificationReceiver.keyAction, NotificationReceiver.actionStop)
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val stopAction = NotificationCompat.Action.Builder(
+            R.drawable.ic_close,
+            "Stop",
+            stopIntent
+        ).build()
+
         return NotificationCompat.Builder(service, channelId)
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
@@ -57,6 +74,7 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             .setColor(service.getColor(R.color.colorBusterWeak))
             .setPriority(NotificationManager.IMPORTANCE_HIGH)
             .setContentIntent(activityIntent)
+            .addAction(stopAction)
     }
 
     private val foregroundNotificationId = 1
@@ -65,5 +83,18 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
         val builder = startBuildNotification()
 
         service.startForeground(foregroundNotificationId, builder.build())
+    }
+
+    class NotificationReceiver : BroadcastReceiver() {
+        companion object {
+            const val actionStop = "ACTION_STOP"
+            const val keyAction = "action"
+        }
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.getStringExtra(keyAction)) {
+                actionStop -> ScriptRunnerService.Instance?.stop()
+            }
+        }
     }
 }
