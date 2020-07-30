@@ -6,6 +6,7 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.prefs.helpers.map
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
@@ -85,8 +86,10 @@ class PreferencesImpl @Inject constructor(
 
     override val recordScreen by prefs.bool(R.string.pref_record_screen)
 
-    override val sameServant by prefs.bool(R.string.pref_same_servant)
-    override val avoidBraveChains by prefs.bool(R.string.pref_avoid_brave_chains)
+    override val braveChains by prefs.enum(
+        R.string.pref_brave_chains,
+        BraveChainEnum.None
+    )
 
     override val skillDelay by prefs.int(R.string.pref_skill_delay, 500).map { it.milliseconds }
 

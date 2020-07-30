@@ -42,8 +42,7 @@
     <string name="pref_autoskill_cmd">autoskill_cmd</string>
     <string name="pref_autoskill_party">autoskill_party</string>
 
-    <string name="pref_same_servant">same_servant</string>
-    <string name="pref_avoid_brave_chains">avoid_brave_chains</string>
+    <string name="pref_brave_chains">brave_chains</string>
 
     <string name="pref_ignore_notch">ignore_notch</string>
     <string name="pref_use_root_screenshot">use_root_screenshot</string>

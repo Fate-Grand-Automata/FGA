@@ -59,19 +59,14 @@
         app:title="Boost Item"
         app:useSimpleSummaryProvider="true" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:key="@string/pref_same_servant"
+    <ListPreference
+        app:defaultValue="None"
+        app:entries="@array/brave_chain_labels"
+        app:entryValues="@array/brave_chain_values"
         app:icon="@drawable/ic_crown"
-        app:summary="Prefer face-cards of the first servant whose NP was used this turn through AutoSkill (Experimental)"
-        app:title="Prefer same servant" />
-
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:key="@string/pref_avoid_brave_chains"
-        app:icon="@drawable/ic_crown"
-        app:summary="(Experimental)"
-        app:title="Avoid Brave chains" />
+        app:key="@string/pref_brave_chains"
+        app:title="Brave Chains (Experimental)"
+        app:useSimpleSummaryProvider="true" />
 
 <!--    <SwitchPreferenceCompat-->
 <!--        app:defaultValue="false"-->

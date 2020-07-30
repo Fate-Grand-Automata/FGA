@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.libautomata.Region
@@ -190,42 +191,47 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 .take(clicksLeft)
                 .clickAll()
 
-        if (prefs.sameServant && firstNp in commandCardGroupedWithNp.indices) {
-            clickCardsOrderedByPriority {
-                it in commandCardGroupedWithNp[firstNp]
+        when (prefs.braveChains) {
+            BraveChainEnum.AfterNP -> {
+                if (firstNp in commandCardGroupedWithNp.indices) {
+                    clickCardsOrderedByPriority {
+                        it in commandCardGroupedWithNp[firstNp]
+                    }
+                }
             }
-        } else if (
-            prefs.avoidBraveChains
-            && commandCardGroups.size > 1
-            && remainingCards.isNotEmpty()
-            && clicksLeft > 1
-        ) {
-            var lastGroup = if (firstNp in commandCardGroupedWithNp.indices) {
-                commandCardGroupedWithNp[firstNp]
-            } else {
-                cardPriorityArray[cardPriorityIndex]
-                    .mapNotNull { commandCards[it] }
-                    .flatten()
-                    .filter { it in remainingCards }
-                    .take(1)
-                    .clickAll()
-                    .map { m -> commandCardGroups.firstOrNull { m in it } }
-                    .firstOrNull() ?: emptyList()
-            }
-
-            if (lastGroup.isNotEmpty()) {
-                while (clicksLeft > 0) {
-                    val picked = cardPriorityArray[cardPriorityIndex]
-                        .mapNotNull { commandCards[it] }
-                        .flatten()
-                        .filter { it in remainingCards && it !in lastGroup }
-                        .take(1)
-                        .clickAll()
-
-                    if (picked.isEmpty()) {
-                        break
+            BraveChainEnum.Avoid -> {
+                if (commandCardGroups.size > 1
+                    && remainingCards.isNotEmpty()
+                    && clicksLeft > 1
+                ) {
+                    var lastGroup = if (firstNp in commandCardGroupedWithNp.indices) {
+                        commandCardGroupedWithNp[firstNp]
                     } else {
-                        lastGroup = commandCardGroups.first { picked[0] in it }
+                        cardPriorityArray[cardPriorityIndex]
+                            .mapNotNull { commandCards[it] }
+                            .flatten()
+                            .filter { it in remainingCards }
+                            .take(1)
+                            .clickAll()
+                            .map { m -> commandCardGroups.firstOrNull { m in it } }
+                            .firstOrNull() ?: emptyList()
+                    }
+
+                    if (lastGroup.isNotEmpty()) {
+                        while (clicksLeft > 0) {
+                            val picked = cardPriorityArray[cardPriorityIndex]
+                                .mapNotNull { commandCards[it] }
+                                .flatten()
+                                .filter { it in remainingCards && it !in lastGroup }
+                                .take(1)
+                                .clickAll()
+
+                            if (picked.isEmpty()) {
+                                break
+                            } else {
+                                lastGroup = commandCardGroups.first { picked[0] in it }
+                            }
+                        }
                     }
                 }
             }
