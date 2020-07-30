@@ -194,8 +194,6 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             clickCardsOrderedByPriority {
                 it in commandCardGroupedWithNp[firstNp]
             }
-
-            firstNp = -1
         } else if (
             prefs.avoidBraveChains
             && commandCardGroups.size > 1
@@ -232,6 +230,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 }
             }
         }
+
+        firstNp = -1
 
         clickCardsOrderedByPriority()
     }
