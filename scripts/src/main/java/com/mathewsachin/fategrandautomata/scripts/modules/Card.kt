@@ -9,6 +9,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.ScriptExitException
 import mu.KotlinLogging
+import java.util.*
 
 private const val dummyNormalAffinityChar = 'X'
 private const val cardPriorityErrorString = "Battle_CardPriority Error at '"
@@ -211,9 +212,10 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
         var clicksLeft = Clicks
+        val toClick = mutableListOf<Int>()
 
         fun List<Int>.clickAll(): List<Int> {
-            this.forEach { game.battleCommandCardClickArray[it].click() }
+            toClick.addAll(this)
             remainingCards.removeAll(this)
             clicksLeft -= this.size
 
@@ -277,6 +279,14 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         firstNp = -1
 
         clickCardsOrderedByPriority()
+
+        // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
+        // Skip if NP spamming because we don't know how many NPs might've been used
+        if (toClick.size == 3 && !canClickNpCards) {
+            Collections.swap(toClick, 1, 2)
+        }
+
+        toClick.forEach { game.battleCommandCardClickArray[it].click() }
     }
 
     fun resetCommandCards() {
