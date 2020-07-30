@@ -66,6 +66,13 @@
         app:summary="Prefer face-cards of the first servant whose NP was used this turn through AutoSkill (Experimental)"
         app:title="Prefer same servant" />
 
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:key="@string/pref_avoid_brave_chains"
+        app:icon="@drawable/ic_crown"
+        app:summary="(Experimental)"
+        app:title="Avoid Brave chains" />
+
 <!--    <SwitchPreferenceCompat-->
 <!--        app:defaultValue="false"-->
 <!--        app:key="@string/pref_guda_final"-->

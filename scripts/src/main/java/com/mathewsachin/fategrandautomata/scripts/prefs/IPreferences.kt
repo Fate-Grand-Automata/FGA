@@ -26,6 +26,7 @@ interface IPreferences {
     val recordScreen: Boolean
     val skillDelay: Duration
     val sameServant: Boolean
+    val avoidBraveChains: Boolean
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

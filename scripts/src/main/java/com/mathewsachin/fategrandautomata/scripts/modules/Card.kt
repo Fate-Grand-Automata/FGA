@@ -174,10 +174,12 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
         var clicksLeft = Clicks
 
-        fun List<Int>.clickAll() {
+        fun List<Int>.clickAll(): List<Int> {
             this.forEach { game.battleCommandCardClickArray[it].click() }
             remainingCards.removeAll(this)
             clicksLeft -= this.size
+
+            return this
         }
 
         fun clickCardsOrderedByPriority(filter: (Int) -> Boolean = { true }) =
@@ -194,6 +196,41 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             }
 
             firstNp = -1
+        } else if (
+            prefs.avoidBraveChains
+            && commandCardGroups.size > 1
+            && remainingCards.isNotEmpty()
+            && clicksLeft > 1
+        ) {
+            var lastGroup = if (firstNp in commandCardGroupedWithNp.indices) {
+                commandCardGroupedWithNp[firstNp]
+            } else {
+                cardPriorityArray[cardPriorityIndex]
+                    .mapNotNull { commandCards[it] }
+                    .flatten()
+                    .filter { it in remainingCards }
+                    .take(1)
+                    .clickAll()
+                    .map { m -> commandCardGroups.firstOrNull { m in it } }
+                    .firstOrNull() ?: emptyList()
+            }
+
+            if (lastGroup.isNotEmpty()) {
+                while (clicksLeft > 0) {
+                    val picked = cardPriorityArray[cardPriorityIndex]
+                        .mapNotNull { commandCards[it] }
+                        .flatten()
+                        .filter { it in remainingCards && it !in lastGroup }
+                        .take(1)
+                        .clickAll()
+
+                    if (picked.isEmpty()) {
+                        break
+                    } else {
+                        lastGroup = commandCardGroups.first { picked[0] in it }
+                    }
+                }
+            }
         }
 
         clickCardsOrderedByPriority()
