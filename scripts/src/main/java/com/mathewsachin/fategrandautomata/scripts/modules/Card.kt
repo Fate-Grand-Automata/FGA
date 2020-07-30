@@ -65,7 +65,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private lateinit var cardPriorityArray: List<List<CardScore>>
 
     private val commandCards = mutableMapOf<CardScore, MutableList<Int>>()
-    private var remainingCards = mutableSetOf<Int>()
+    private val remainingCards = mutableSetOf<Int>()
     val alreadyClicked get() = 5 - remainingCards.size
 
     lateinit var isNpLoaded: List<Boolean>
@@ -285,6 +285,6 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     fun resetCommandCards() {
         commandCards.clear()
 
-        remainingCards = game.battleCardAffinityRegionArray.indices.toMutableSet()
+        remainingCards.addAll(game.battleCardAffinityRegionArray.indices)
     }
 }
