@@ -87,4 +87,6 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
         )
 
     val skillTen get() = load("skill_ten.png")
+
+    val stun get() = load("stun.png")
 }

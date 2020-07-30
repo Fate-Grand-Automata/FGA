@@ -111,6 +111,16 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun getCardType(Region: Region): CardTypeEnum {
+        val stunRegion = Region.copy(
+            Y = 930,
+            Width = 248,
+            Height = 188
+        )
+
+        if (stunRegion.exists(images.stun)) {
+            return CardTypeEnum.Unknown
+        }
+
         if (Region.exists(images.buster)) {
             return CardTypeEnum.Buster
         }
