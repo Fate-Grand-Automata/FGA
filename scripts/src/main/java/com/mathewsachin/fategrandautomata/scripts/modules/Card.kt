@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
+import com.mathewsachin.fategrandautomata.EdgePixelsCountable
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
@@ -65,8 +66,10 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private val commandCards = mutableMapOf<CardScore, MutableList<Int>>()
     private var remainingCards = mutableSetOf<Int>()
-
     val alreadyClicked get() = 5 - remainingCards.size
+
+    lateinit var isNpLoaded: List<Boolean>
+        private set
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
@@ -173,6 +176,15 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             commandCardGroups = groupByFaceCard()
             commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups)
+
+            isNpLoaded = listOf(678, 1138, 1606)
+                .map { x ->
+                    val region = Region(x, 190, 300, 60)
+
+                    region.getPattern().use {
+                        (it as EdgePixelsCountable).countEdgePixels() > 500
+                    }
+                }
         }
     }
 
@@ -186,8 +198,12 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
     fun clickNpCards() {
-        for (npCard in game.battleNpCardClickArray) {
-            npCard.click()
+        for ((index, npCard) in game.battleNpCardClickArray.withIndex()) {
+            if (firstNp == -1 && isNpLoaded[index]) {
+                firstNp = index
+
+                npCard.click()
+            }
         }
     }
 

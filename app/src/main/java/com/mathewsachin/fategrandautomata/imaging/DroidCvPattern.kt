@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.imaging
 
+import com.mathewsachin.fategrandautomata.EdgePixelsCountable
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Match
 import com.mathewsachin.libautomata.Region
@@ -17,7 +18,7 @@ private val logger = KotlinLogging.logger {}
 class DroidCvPattern(
     private var Mat: Mat? = Mat(),
     private val OwnsMat: Boolean = true
-) : IPattern {
+) : IPattern, EdgePixelsCountable {
     private data class MatWithAlpha(val mat: Mat, val alpha: Mat?)
 
     var alpha: Mat? = null
@@ -195,5 +196,12 @@ class DroidCvPattern(
 
     override fun copy() = DroidCvPattern(Mat?.clone()).also {
         it.tag = tag
+    }
+
+    override fun countEdgePixels(): Int {
+        DisposableMat().use { edges ->
+            Imgproc.Canny(Mat, edges.Mat, 150.0, 150.0)
+            return Core.countNonZero(edges.Mat)
+        }
     }
 }
