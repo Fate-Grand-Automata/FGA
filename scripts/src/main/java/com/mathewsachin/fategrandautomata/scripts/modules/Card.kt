@@ -206,39 +206,39 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun clickCommandCards(Clicks: Int = noOfCardsToClick) {
-        if (Clicks <= 0) {
-            return
-        }
-
         val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
-        var clicksLeft = Clicks
+        var clicksLeft = Clicks.coerceAtLeast(0)
         val toClick = mutableListOf<Int>()
-
-        fun List<Int>.clickAll(): List<Int> {
-            toClick.addAll(this)
-            remainingCards.removeAll(this)
-            clicksLeft -= this.size
-
-            return this
-        }
 
         val cardsOrderedByPriority = cardPriorityArray[cardPriorityIndex]
             .mapNotNull { commandCards[it] }
             .flatten()
 
-        fun clickCardsOrderedByPriority(
+        fun pickCardsOrderedByPriority(
             clicks: Int = clicksLeft,
             filter: (Int) -> Boolean = { true }
-        ) =
-            cardsOrderedByPriority
+        ): Sequence<Int> {
+            fun Sequence<Int>.addToClickList(): Sequence<Int> {
+                val asList = toList()
+
+                toClick.addAll(asList)
+                remainingCards.removeAll(asList)
+                clicksLeft -= asList.size
+
+                return this
+            }
+
+            return cardsOrderedByPriority
+                .asSequence()
                 .filter { it in remainingCards && filter(it) }
                 .take(clicks)
-                .clickAll()
+                .addToClickList()
+        }
 
         when (prefs.braveChains) {
             BraveChainEnum.AfterNP -> {
                 if (firstNp in commandCardGroupedWithNp.indices) {
-                    clickCardsOrderedByPriority {
+                    pickCardsOrderedByPriority {
                         it in commandCardGroupedWithNp[firstNp]
                     }
                 }
@@ -251,7 +251,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     var lastGroup = emptyList<Int>()
 
                     do {
-                        lastGroup = clickCardsOrderedByPriority(1) { it !in lastGroup }
+                        lastGroup = pickCardsOrderedByPriority(1) { it !in lastGroup }
                             .map { m -> commandCardGroups.firstOrNull { m in it } }
                             .firstOrNull() ?: emptyList()
                     } while (clicksLeft > 0 && lastGroup.isNotEmpty())
@@ -261,7 +261,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         firstNp = -1
 
-        clickCardsOrderedByPriority()
+        pickCardsOrderedByPriority()
 
         // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
         // Do the same when clicking 2 cards unless they're used before NPs.
@@ -275,7 +275,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         // Also click on remaining cards,
         // since some people may put NPs in AutoSkill which aren't charged yet
-        clickCardsOrderedByPriority(5)
+        pickCardsOrderedByPriority(3)
 
         toClick.forEach { game.battleCommandCardClickArray[it].click() }
     }
