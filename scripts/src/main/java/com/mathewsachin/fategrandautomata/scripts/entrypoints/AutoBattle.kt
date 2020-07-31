@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
+import com.mathewsachin.fategrandautomata.scripts.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
@@ -355,12 +356,14 @@ open class AutoBattle(
 
         2.seconds.wait()
 
-        val boostItem = prefs.boostItemSelectionMode
-        if (boostItem >= 0) {
-            game.menuBoostItemClickArray[boostItem].click()
+        val boostItem = BoostItem.of(prefs.boostItemSelectionMode)
+        if (boostItem is BoostItem.Enabled) {
+            boostItem.clickLocation.click()
 
             // in case you run out of items
-            game.menuBoostItemSkipClick.click()
+            if (boostItem !is BoostItem.Enabled.Skip) {
+                BoostItem.Enabled.Skip.clickLocation.click()
+            }
         }
     }
 

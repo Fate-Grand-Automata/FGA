@@ -37,19 +37,6 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val withdrawRegion = Region(400, 540, 1800, 190)
     val withdrawAcceptClick = Location(1765, 720)
 
-    // see docs/menu_boost_item_click_array.png
-    val menuBoostItem1Click = Location(1280, 418)
-    val menuBoostItem2Click = Location(1280, 726)
-    val menuBoostItem3Click = Location(1280, 1000)
-    val menuBoostItemSkipClick = Location(1652, 1304)
-
-    val menuBoostItemClickArray = listOf(
-        menuBoostItemSkipClick,
-        menuBoostItem1Click,
-        menuBoostItem2Click,
-        menuBoostItem3Click
-    )
-
     val inventoryFullRegion = Region(1050, 900, 458, 90)
 
     val staminaScreenRegion = Region(600, 200, 300, 300)
