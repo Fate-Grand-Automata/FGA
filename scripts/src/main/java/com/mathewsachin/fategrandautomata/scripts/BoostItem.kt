@@ -9,17 +9,9 @@ sealed class BoostItem {
     sealed class Enabled(val clickLocation: Location) : BoostItem() {
         object Skip : Enabled(Location(1652, 1304))
 
-        object BoostItem1 : Enabled(
-            Location(1280, 418)
-        )
-
-        object BoostItem2 : Enabled(
-            Location(1280, 726)
-        )
-
-        object BoostItem3 : Enabled(
-            Location(1280, 1000)
-        )
+        object BoostItem1 : Enabled(Location(1280, 418))
+        object BoostItem2 : Enabled(Location(1280, 726))
+        object BoostItem3 : Enabled(Location(1280, 1000))
     }
 
     companion object {
