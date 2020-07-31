@@ -2,8 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.EntryPoint
@@ -258,7 +258,7 @@ open class AutoBattle(
         1.seconds.wait()
 
         // Click the "Close" button after accepting the withdrawal
-        game.staminaBronzeClick.click()
+        game.withdrawCloseClick.click()
     }
 
     /**
@@ -302,16 +302,11 @@ open class AutoBattle(
         val refillPrefs = prefs.refill
 
         if (refillPrefs.enabled && stonesUsed < refillPrefs.repetitions) {
-            when (refillPrefs.resource) {
-                RefillResourceEnum.SQ -> game.staminaSqClick.click()
-                RefillResourceEnum.AllApples -> {
-                    game.staminaBronzeClick.click()
-                    game.staminaSilverClick.click()
-                    game.staminaGoldClick.click()
+            when (val resource = RefillResource.of(refillPrefs.resource)) {
+                is RefillResource.Single -> resource.clickLocation.click()
+                is RefillResource.Multiple -> resource.items.forEach {
+                    it.clickLocation.click()
                 }
-                RefillResourceEnum.Gold -> game.staminaGoldClick.click()
-                RefillResourceEnum.Silver -> game.staminaSilverClick.click()
-                RefillResourceEnum.Bronze -> game.staminaBronzeClick.click()
             }
 
             1.seconds.wait()

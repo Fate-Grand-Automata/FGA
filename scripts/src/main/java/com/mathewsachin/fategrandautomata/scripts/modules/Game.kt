@@ -36,15 +36,12 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val retryRegion = Region(1300, 1000, 700, 300)
     val withdrawRegion = Region(400, 540, 1800, 190)
     val withdrawAcceptClick = Location(1765, 720)
+    val withdrawCloseClick = Location(1270, 1140)
 
     val inventoryFullRegion = Region(1050, 900, 458, 90)
 
     val staminaScreenRegion = Region(600, 200, 300, 300)
     val staminaOkClick = Location(1650, 1120)
-    val staminaSqClick = Location(1270, 345)
-    val staminaGoldClick = Location(1270, 634)
-    val staminaSilverClick = Location(1270, 922)
-    val staminaBronzeClick = Location(1270, 1140)
 
     val supportScreenRegion = Region(0, 0, 200, 400)
     val supportListRegion = Region(70, 332, 378, 1091) // see docs/support_list_region.png
