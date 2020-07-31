@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.CardScore
+import com.mathewsachin.fategrandautomata.scripts.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
-import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.ScriptExitException
 import mu.KotlinLogging
 
@@ -62,7 +62,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private lateinit var cardPriorityArray: List<List<CardScore>>
 
-    private val commandCards = mutableMapOf<CardScore, MutableList<Int>>()
+    private val commandCards = mutableMapOf<CardScore, MutableList<CommandCard>>()
     private var cardsClickedSoFar = 0
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
@@ -98,20 +98,24 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             }
     }
 
-    private fun getCardAffinity(Region: Region): CardAffinityEnum {
-        if (Region.exists(images.weak)) {
+    private fun getCardAffinity(commandCard: CommandCard): CardAffinityEnum {
+        val region = commandCard.affinityRegion
+
+        if (region.exists(images.weak)) {
             return CardAffinityEnum.Weak
         }
 
-        if (Region.exists(images.resist)) {
+        if (region.exists(images.resist)) {
             return CardAffinityEnum.Resist
         }
 
         return CardAffinityEnum.Normal
     }
 
-    private fun getCardType(Region: Region): CardTypeEnum {
-        val stunRegion = Region.copy(
+    private fun getCardType(commandCard: CommandCard): CardTypeEnum {
+        val region = commandCard.typeRegion
+
+        val stunRegion = region.copy(
             Y = 930,
             Width = 248,
             Height = 188
@@ -121,19 +125,19 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             return CardTypeEnum.Unknown
         }
 
-        if (Region.exists(images.buster)) {
+        if (region.exists(images.buster)) {
             return CardTypeEnum.Buster
         }
 
-        if (Region.exists(images.art)) {
+        if (region.exists(images.art)) {
             return CardTypeEnum.Arts
         }
 
-        if (Region.exists(images.quick)) {
+        if (region.exists(images.quick)) {
             return CardTypeEnum.Quick
         }
 
-        val msg = "Failed to determine Card type $Region"
+        val msg = "Failed to determine Card type $region"
         toast(msg)
         logger.debug(msg)
 
@@ -144,12 +148,12 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         commandCards.clear()
 
         screenshotManager.useSameSnapIn {
-            for (cardSlot in 0..4) {
-                val type = getCardType(game.battleCardTypeRegionArray[cardSlot])
+            for (cardSlot in CommandCard.list) {
+                val type = getCardType(cardSlot)
                 val affinity =
                     if (type == CardTypeEnum.Unknown)
                         CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
-                    else getCardAffinity(game.battleCardAffinityRegionArray[cardSlot])
+                    else getCardAffinity(cardSlot)
 
                 val score = CardScore(
                     type,
@@ -199,7 +203,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 }
 
                 if (i > cardsClickedSoFar) {
-                    game.battleCommandCardClickArray[cardSlot].click()
+                    cardSlot.clickLocation.click()
                 }
 
                 ++i

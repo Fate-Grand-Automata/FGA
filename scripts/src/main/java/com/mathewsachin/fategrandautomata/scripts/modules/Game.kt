@@ -49,15 +49,6 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val supportSwipeEndClick = Location(5, 660)
     val supportFriendsRegion = Region(448, 332, 1210, 1091)
 
-    val supportListItemRegionArray = listOf(
-        // see docs/support_list_item_regions_top.png
-        Region(76, 338, 2356, 428),
-        Region(76, 778, 2356, 390),
-        // see docs/support_list_item_regions_bottom.png
-        Region(76, 558, 2356, 390),
-        Region(76, 991, 2356, 428)
-    )
-
     val supportLimitBreakRegion = Region(376, 0, 16, 90)
     val supportFriendRegion = Region(
         2234,
@@ -128,48 +119,10 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val battleSubMember3Click = Location(2280, 700)
     val battleOrderChangeOkClick = Location(1280, 1260)
 
-    val battleCardAffinityRegionArray = listOf(
-        // see docs/card_affinity_regions.png
-        Region(295, 650, 250, 200),
-        Region(810, 650, 250, 200),
-        Region(1321, 650, 250, 200),
-        Region(1834, 650, 250, 200),
-        Region(2348, 650, 250, 200)
-    )
-
-    val battleCardTypeRegionArray = listOf(
-        // see docs/card_type_regions.png
-        Region(0, 1060, 512, 200),
-        Region(512, 1060, 512, 200),
-        Region(1024, 1060, 512, 200),
-        Region(1536, 1060, 512, 200),
-        Region(2048, 1060, 512, 200)
-    )
-
-    val battleCommandCardClickArray = listOf(
-        Location(300, 1000),
-        Location(750, 1000),
-        Location(1300, 1000),
-        Location(1800, 1000),
-        Location(2350, 1000)
-    )
-
     val battleNpCardClickArray = listOf(
         Location(1000, 220),
         Location(1300, 400),
         Location(1740, 400)
-    )
-
-    val battleServantFaceRegionArray = listOf(
-        Region(106, 800, 300, 200),
-        Region(620, 800, 300, 200),
-        Region(1130, 800, 300, 200),
-        Region(1644, 800, 300, 200),
-        Region(2160, 800, 300, 200),
-
-        Region(678, 190, 300, 200),
-        Region(1138, 190, 300, 200),
-        Region(1606, 190, 300, 200)
     )
 
     val resultScreenRegion = Region(100, 300, 700, 200)
