@@ -275,7 +275,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         // Also click on remaining cards,
         // since some people may put NPs in AutoSkill which aren't charged yet
-        toClick.plus(remainingCards).forEach { game.battleCommandCardClickArray[it].click() }
+        clickCardsOrderedByPriority(5)
+
+        toClick.forEach { game.battleCommandCardClickArray[it].click() }
     }
 
     fun resetCommandCards() {
