@@ -243,9 +243,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     && remainingCards.isNotEmpty()
                     && clicksLeft > 1
                 ) {
-                    var lastGroup = if (firstNp in commandCardGroupedWithNp.indices) {
-                        commandCardGroupedWithNp[firstNp]
-                    } else {
+                    var lastGroup =
                         cardPriorityArray[cardPriorityIndex]
                             .mapNotNull { commandCards[it] }
                             .flatten()
@@ -254,7 +252,6 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                             .clickAll()
                             .map { m -> commandCardGroups.firstOrNull { m in it } }
                             .firstOrNull() ?: emptyList()
-                    }
 
                     if (lastGroup.isNotEmpty()) {
                         while (clicksLeft > 0) {
@@ -284,8 +281,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // Do the same when clicking 2 cards unless they're used before NPs.
         // Skip if NP spamming because we don't know how many NPs might've been used
         if (prefs.braveChains != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
-            && (toClick.size == 3 || (toClick.size == 2 && firstNp != -1))
             && !canClickNpCards
+            && (toClick.size == 3 || (toClick.size == 2 && firstNp != -1))
         ) {
             Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
         }
