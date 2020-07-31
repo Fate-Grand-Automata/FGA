@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.*
-import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.Duration
 import kotlin.time.seconds
@@ -19,15 +18,14 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         NoblePhantasm.list.map {
             it.autoSkillCode to { castNoblePhantasm(it) }
         },
+        ServantTarget.list.map {
+            it.autoSkillCode to { selectSkillTarget(it) }
+        },
         listOf(
             'x' to { beginOrderChange() },
             't' to { selectTarget() },
             'n' to { useCommandCardsBeforeNp() },
-            '0' to { },
-
-            '1' to { selectSkillTarget(game.battleServant1Click) },
-            '2' to { selectSkillTarget(game.battleServant2Click) },
-            '3' to { selectSkillTarget(game.battleServant3Click) }
+            '0' to { }
         )
     ).flatten().toMap()
 
@@ -78,8 +76,8 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         waitForAnimationToFinish()
     }
 
-    private fun selectSkillTarget(Location: Location) {
-        Location.click()
+    private fun selectSkillTarget(target: ServantTarget) {
+        target.clickLocation.click()
 
         0.5.seconds.wait()
 
