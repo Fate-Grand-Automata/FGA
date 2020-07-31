@@ -63,13 +63,14 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private lateinit var cardPriorityArray: List<List<CardScore>>
 
     private val commandCards = mutableMapOf<CardScore, MutableList<CommandCard>>()
-    private var cardsClickedSoFar = 0
+    private val remainingCards = mutableSetOf<CommandCard>()
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
         battle = BattleModule
 
         initCardPriorityArray()
+        resetCommandCards()
     }
 
     private fun initCardPriorityArray() {
@@ -185,34 +186,23 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun clickCommandCards(Clicks: Int) {
-        var i = 1
-
         val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
 
-        for (cardPriority in cardPriorityArray[cardPriorityIndex]) {
-            if (!commandCards.containsKey(cardPriority))
-                continue
+        cardPriorityArray[cardPriorityIndex]
+            .mapNotNull { commandCards[it] }
+            .flatten()
+            .filter { it in remainingCards }
+            .take(Clicks)
+            .forEach {
+                it.clickLocation.click()
 
-            val currentCardTypeStorage = commandCards[cardPriority]
-                ?: continue
-
-            for (cardSlot in currentCardTypeStorage) {
-                if (Clicks < i) {
-                    cardsClickedSoFar = i - 1
-                    return
-                }
-
-                if (i > cardsClickedSoFar) {
-                    cardSlot.clickLocation.click()
-                }
-
-                ++i
+                remainingCards.remove(it)
             }
-        }
     }
 
     fun resetCommandCards() {
         commandCards.clear()
-        cardsClickedSoFar = 0
+
+        remainingCards.addAll(CommandCard.list)
     }
 }
