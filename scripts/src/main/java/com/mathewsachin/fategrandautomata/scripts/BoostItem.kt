@@ -10,24 +10,15 @@ sealed class BoostItem {
         object Skip : Enabled(Location(1652, 1304))
 
         object BoostItem1 : Enabled(
-            Location(
-                1280,
-                418
-            )
+            Location(1280, 418)
         )
 
         object BoostItem2 : Enabled(
-            Location(
-                1280,
-                726
-            )
+            Location(1280, 726)
         )
 
         object BoostItem3 : Enabled(
-            Location(
-                1280,
-                1000
-            )
+            Location(1280, 1000)
         )
     }
 
