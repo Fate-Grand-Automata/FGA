@@ -1,9 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.EnemyTarget
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.NoblePhantasm
-import com.mathewsachin.fategrandautomata.scripts.OrderChangeMember
+import com.mathewsachin.fategrandautomata.scripts.*
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.Duration
@@ -12,33 +9,28 @@ import kotlin.time.seconds
 typealias AutoSkillMap = Map<Char, () -> Unit>
 
 class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
-    private val defaultFunctionArray: AutoSkillMap = mapOf(
-        'a' to { castSkill(game.battleSkill1Click) },
-        'b' to { castSkill(game.battleSkill2Click) },
-        'c' to { castSkill(game.battleSkill3Click) },
-        'd' to { castSkill(game.battleSkill4Click) },
-        'e' to { castSkill(game.battleSkill5Click) },
-        'f' to { castSkill(game.battleSkill6Click) },
-        'g' to { castSkill(game.battleSkill7Click) },
-        'h' to { castSkill(game.battleSkill8Click) },
-        'i' to { castSkill(game.battleSkill9Click) },
+    private val defaultFunctionArray: AutoSkillMap = listOf(
+        Skill.Servant.list.map {
+            it.autoSkillCode to { castSkill(it) }
+        },
+        Skill.Master.list.map {
+            it.autoSkillCode to { castMasterSkill(it) }
+        },
+        NoblePhantasm.list.map {
+            it.autoSkillCode to { castNoblePhantasm(it) }
+        },
+        listOf(
+            'x' to { beginOrderChange() },
+            't' to { selectTarget() },
+            'n' to { useCommandCardsBeforeNp() },
+            '0' to { },
 
-        'j' to { castMasterSkill(game.battleMasterSkill1Click) },
-        'k' to { castMasterSkill(game.battleMasterSkill2Click) },
-        'l' to { castMasterSkill(game.battleMasterSkill3Click) },
+            '1' to { selectSkillTarget(game.battleServant1Click) },
+            '2' to { selectSkillTarget(game.battleServant2Click) },
+            '3' to { selectSkillTarget(game.battleServant3Click) }
+        )
+    ).flatten().toMap()
 
-        'x' to { beginOrderChange() },
-        't' to { selectTarget() },
-        'n' to { useCommandCardsBeforeNp() },
-
-        '0' to { },
-
-        '1' to { selectSkillTarget(game.battleServant1Click) },
-        '2' to { selectSkillTarget(game.battleServant2Click) },
-        '3' to { selectSkillTarget(game.battleServant3Click) }
-    ) + NoblePhantasm.list.associate {
-        it.autoSkillCode to { castNoblePhantasm(it) }
-    }
 
     private val startingMemberFunctionArray: AutoSkillMap =
         OrderChangeMember.Starting.list
@@ -76,8 +68,8 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         game.battleScreenRegion.exists(img, Timeout)
     }
 
-    private fun castSkill(Location: Location) {
-        Location.click()
+    private fun castSkill(skill: Skill) {
+        skill.clickLocation.click()
 
         if (prefs.skillConfirmation) {
             game.battleSkillOkClick.click()
@@ -116,10 +108,10 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         0.5.seconds.wait()
     }
 
-    private fun castMasterSkill(Location: Location) {
+    private fun castMasterSkill(skill: Skill.Master) {
         openMasterSkillMenu()
 
-        castSkill(Location)
+        castSkill(skill)
     }
 
     private fun changeArray(NewArray: AutoSkillMap) {
@@ -129,7 +121,9 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
     private fun beginOrderChange() {
         openMasterSkillMenu()
 
-        game.battleMasterSkill3Click.click()
+        // Click on order change skill
+        Skill.Master.list.last()
+            .clickLocation.click()
 
         if (prefs.skillConfirmation) {
             game.battleSkillOkClick.click()

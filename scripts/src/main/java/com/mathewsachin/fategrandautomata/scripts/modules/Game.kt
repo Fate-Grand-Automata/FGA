@@ -90,16 +90,6 @@ class Game @Inject constructor(val prefs: IPreferences) {
 
     val battleExtraInfoWindowCloseClick = Location(2550, 10)
     val battleAttackClick = Location(2300, 1200)
-
-    val battleSkill1Click = Location(140, 1160)
-    val battleSkill2Click = Location(340, 1160)
-    val battleSkill3Click = Location(540, 1160)
-    val battleSkill4Click = Location(770, 1160)
-    val battleSkill5Click = Location(970, 1160)
-    val battleSkill6Click = Location(1140, 1160)
-    val battleSkill7Click = Location(1400, 1160)
-    val battleSkill8Click = Location(1600, 1160)
-    val battleSkill9Click = Location(1800, 1160)
     val battleSkillOkClick = Location(1680, 850)
 
     val battleServant1Click = Location(700, 880)
@@ -107,10 +97,6 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val battleServant3Click = Location(1940, 880)
 
     val battleMasterSkillOpenClick = Location(2380, 640)
-    val battleMasterSkill1Click = Location(1820, 620)
-    val battleMasterSkill2Click = Location(2000, 620)
-    val battleMasterSkill3Click = Location(2160, 620)
-
     val battleOrderChangeOkClick = Location(1280, 1260)
 
     val resultScreenRegion = Region(100, 300, 700, 200)
