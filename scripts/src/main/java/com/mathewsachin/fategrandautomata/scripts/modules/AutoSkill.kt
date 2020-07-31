@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.NoblePhantasm
+import com.mathewsachin.fategrandautomata.scripts.OrderChangeMember
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.Duration
@@ -39,17 +40,13 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         it.autoSkillCode to { castNoblePhantasm(it) }
     }
 
-    private val startingMemberFunctionArray: AutoSkillMap = mapOf(
-        '1' to { selectStartingMember(game.battleStartingMember1Click) },
-        '2' to { selectStartingMember(game.battleStartingMember2Click) },
-        '3' to { selectStartingMember(game.battleStartingMember3Click) }
-    )
+    private val startingMemberFunctionArray: AutoSkillMap =
+        OrderChangeMember.Starting.list
+            .associate { it.autoSkillCode to { selectStartingMember(it) } }
 
-    private val subMemberFunctionArray: AutoSkillMap = mapOf(
-        '1' to { selectSubMember(game.battleSubMember1Click) },
-        '2' to { selectSubMember(game.battleSubMember2Click) },
-        '3' to { selectSubMember(game.battleSubMember3Click) }
-    )
+    private val subMemberFunctionArray: AutoSkillMap =
+        OrderChangeMember.Sub.list
+            .associate { it.autoSkillCode to { selectSubMember(it) } }
 
     private val enemyTargetArray: AutoSkillMap = EnemyTarget.list
         .associate { it.autoSkillCode to { selectEnemyTarget(it) } }
@@ -143,14 +140,14 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         changeArray(startingMemberFunctionArray)
     }
 
-    private fun selectStartingMember(Location: Location) {
-        Location.click()
+    private fun selectStartingMember(member: OrderChangeMember.Starting) {
+        member.clickLocation.click()
 
         changeArray(subMemberFunctionArray)
     }
 
-    private fun selectSubMember(Location: Location) {
-        Location.click()
+    private fun selectSubMember(member: OrderChangeMember.Sub) {
+        member.clickLocation.click()
 
         0.3.seconds.wait()
 
