@@ -222,13 +222,15 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             return this
         }
 
+        val cardsOrderedByPriority = cardPriorityArray[cardPriorityIndex]
+            .mapNotNull { commandCards[it] }
+            .flatten()
+
         fun clickCardsOrderedByPriority(
             clicks: Int = clicksLeft,
             filter: (Int) -> Boolean = { true }
         ) =
-            cardPriorityArray[cardPriorityIndex]
-                .mapNotNull { commandCards[it] }
-                .flatten()
+            cardsOrderedByPriority
                 .filter { it in remainingCards && filter(it) }
                 .take(clicks)
                 .clickAll()
