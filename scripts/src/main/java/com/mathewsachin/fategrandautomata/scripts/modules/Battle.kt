@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
+import com.mathewsachin.fategrandautomata.scripts.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.Region
 import kotlin.time.seconds
 
 class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
@@ -56,15 +56,15 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         card.readCommandCards()
     }
 
-    private fun isPriorityTarget(Target: Region): Boolean {
-        val isDanger = Target.exists(images.targetDanger)
-        val isServant = Target.exists(images.targetServant)
+    private fun isPriorityTarget(enemyTarget: EnemyTarget): Boolean {
+        val isDanger = enemyTarget.region.exists(images.targetDanger)
+        val isServant = enemyTarget.region.exists(images.targetServant)
 
         return isDanger || isServant
     }
 
-    private fun chooseTarget(Index: Int) {
-        game.battleTargetClickArray[Index].click()
+    private fun chooseTarget(enemyTarget: EnemyTarget) {
+        enemyTarget.clickLocation.click()
 
         0.5.seconds.wait()
 
@@ -84,12 +84,9 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
         // that's why the table is iterated backwards.
 
-        for ((i, target) in game.battleTargetRegionArray.withIndex().reversed()) {
-            if (isPriorityTarget(target)) {
-                chooseTarget(i)
-                return
-            }
-        }
+        EnemyTarget.list
+            .lastOrNull { isPriorityTarget(it) }
+            ?.let { chooseTarget(it) }
     }
 
     fun performBattle() {

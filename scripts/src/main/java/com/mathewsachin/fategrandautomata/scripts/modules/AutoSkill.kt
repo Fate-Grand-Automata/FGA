@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
+import com.mathewsachin.fategrandautomata.scripts.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.ScriptExitException
@@ -51,11 +52,8 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         '3' to { selectSubMember(game.battleSubMember3Click) }
     )
 
-    private val enemyTargetArray: AutoSkillMap = mapOf(
-        '1' to { selectEnemyTarget(game.battleTargetClickArray[0]) },
-        '2' to { selectEnemyTarget(game.battleTargetClickArray[1]) },
-        '3' to { selectEnemyTarget(game.battleTargetClickArray[2]) }
-    )
+    private val enemyTargetArray: AutoSkillMap = EnemyTarget.list
+        .associate { it.autoSkillCode to { selectEnemyTarget(it) } }
 
     private val cardsPressedArray: AutoSkillMap = mapOf(
         '1' to { pressCards(1) },
@@ -172,8 +170,8 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
     private fun selectTarget() = changeArray(enemyTargetArray)
 
-    private fun selectEnemyTarget(Location: Location) {
-        Location.click()
+    private fun selectEnemyTarget(enemyTarget: EnemyTarget) {
+        enemyTarget.clickLocation.click()
 
         0.5.seconds.wait()
 
