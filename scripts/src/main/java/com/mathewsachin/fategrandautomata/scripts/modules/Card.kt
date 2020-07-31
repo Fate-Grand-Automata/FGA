@@ -222,12 +222,15 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             return this
         }
 
-        fun clickCardsOrderedByPriority(filter: (Int) -> Boolean = { true }) =
+        fun clickCardsOrderedByPriority(
+            clicks: Int = clicksLeft,
+            filter: (Int) -> Boolean = { true }
+        ) =
             cardPriorityArray[cardPriorityIndex]
                 .mapNotNull { commandCards[it] }
                 .flatten()
                 .filter { it in remainingCards && filter(it) }
-                .take(clicksLeft)
+                .take(clicks)
                 .clickAll()
 
         when (prefs.braveChains) {
@@ -243,32 +246,13 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     && remainingCards.isNotEmpty()
                     && clicksLeft > 1
                 ) {
-                    var lastGroup =
-                        cardPriorityArray[cardPriorityIndex]
-                            .mapNotNull { commandCards[it] }
-                            .flatten()
-                            .filter { it in remainingCards }
-                            .take(1)
-                            .clickAll()
+                    var lastGroup = emptyList<Int>()
+
+                    do {
+                        lastGroup = clickCardsOrderedByPriority(1) { it !in lastGroup }
                             .map { m -> commandCardGroups.firstOrNull { m in it } }
                             .firstOrNull() ?: emptyList()
-
-                    if (lastGroup.isNotEmpty()) {
-                        while (clicksLeft > 0) {
-                            val picked = cardPriorityArray[cardPriorityIndex]
-                                .mapNotNull { commandCards[it] }
-                                .flatten()
-                                .filter { it in remainingCards && it !in lastGroup }
-                                .take(1)
-                                .clickAll()
-
-                            if (picked.isEmpty()) {
-                                break
-                            } else {
-                                lastGroup = commandCardGroups.first { picked[0] in it }
-                            }
-                        }
-                    }
+                    } while (clicksLeft > 0 && lastGroup.isNotEmpty())
                 }
             }
         }
