@@ -119,12 +119,6 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val battleSubMember3Click = Location(2280, 700)
     val battleOrderChangeOkClick = Location(1280, 1260)
 
-    val battleNpCardClickArray = listOf(
-        Location(1000, 220),
-        Location(1300, 400),
-        Location(1740, 400)
-    )
-
     val resultScreenRegion = Region(100, 300, 700, 200)
     val resultBondRegion = Region(2000, 750, 120, 190)
     val resultMasterExpRegion = Region(1280, 350, 400, 110)

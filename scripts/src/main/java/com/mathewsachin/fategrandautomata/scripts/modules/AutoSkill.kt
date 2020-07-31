@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.NoblePhantasm
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.Duration
@@ -33,12 +34,10 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
         '1' to { selectSkillTarget(game.battleServant1Click) },
         '2' to { selectSkillTarget(game.battleServant2Click) },
-        '3' to { selectSkillTarget(game.battleServant3Click) },
-
-        '4' to { castNoblePhantasm(game.battleNpCardClickArray[0]) },
-        '5' to { castNoblePhantasm(game.battleNpCardClickArray[1]) },
-        '6' to { castNoblePhantasm(game.battleNpCardClickArray[2]) }
-    )
+        '3' to { selectSkillTarget(game.battleServant3Click) }
+    ) + NoblePhantasm.list.associate {
+        it.autoSkillCode to { castNoblePhantasm(it) }
+    }
 
     private val startingMemberFunctionArray: AutoSkillMap = mapOf(
         '1' to { selectStartingMember(game.battleStartingMember1Click) },
@@ -101,7 +100,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         waitForAnimationToFinish()
     }
 
-    private fun castNoblePhantasm(Location: Location) {
+    private fun castNoblePhantasm(noblePhantasm: NoblePhantasm) {
         if (!battle.hasClickedAttack) {
             battle.clickAttack()
 
@@ -109,7 +108,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
             2.seconds.wait()
         }
 
-        Location.click()
+        noblePhantasm.clickLocation.click()
 
         npsClicked = true
     }

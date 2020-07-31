@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.NoblePhantasm
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
@@ -180,8 +181,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
     fun clickNpCards() {
-        for (npCard in game.battleNpCardClickArray) {
-            npCard.click()
+        for (npCard in NoblePhantasm.list) {
+            npCard.clickLocation.click()
         }
     }
 
