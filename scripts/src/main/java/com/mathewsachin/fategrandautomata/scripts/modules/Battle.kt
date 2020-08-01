@@ -104,7 +104,6 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
         card.clickCommandCards()
-        card.resetCommandCards()
 
         5.seconds.wait()
     }

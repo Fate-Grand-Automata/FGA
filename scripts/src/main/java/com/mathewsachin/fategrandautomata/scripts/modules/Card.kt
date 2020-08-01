@@ -25,14 +25,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         autoSkill = AutoSkillModule
         battle = BattleModule
 
-        initCardPriorityArray()
-        resetCommandCards()
-    }
-
-    private fun initCardPriorityArray() {
-        val priority = prefs.selectedAutoSkillConfig.cardPriority
-
-        cardPriority = CardPriorityPerWave.of(priority)
+        cardPriority = CardPriorityPerWave.of(
+            prefs.selectedAutoSkillConfig.cardPriority
+        )
     }
 
     private fun getCardAffinity(commandCard: CommandCard): CardAffinityEnum {
@@ -83,6 +78,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     fun readCommandCards() {
         commandCards.clear()
+        remainingCards.addAll(CommandCard.list)
 
         screenshotManager.useSameSnapIn {
             for (cardSlot in CommandCard.list) {
@@ -132,11 +128,5 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
                 remainingCards.remove(it)
             }
-    }
-
-    fun resetCommandCards() {
-        commandCards.clear()
-
-        remainingCards.addAll(CommandCard.list)
     }
 }
