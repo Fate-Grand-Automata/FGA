@@ -16,5 +16,5 @@ internal class DelegatedPref<T>(
         prefs.getter(key, default)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) =
-        prefs.edit(commit = true) { setter(key, value) }
+        prefs.edit { setter(key, value) }
 }

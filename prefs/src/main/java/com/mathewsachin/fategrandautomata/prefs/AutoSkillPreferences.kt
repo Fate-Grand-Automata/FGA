@@ -47,7 +47,7 @@ internal class AutoSkillPreferences(
         prefs.prefs.export()
 
     override fun import(map: Map<String, *>) =
-        prefs.prefs.edit(commit = true) {
+        prefs.prefs.edit {
             import(map)
         }
 
