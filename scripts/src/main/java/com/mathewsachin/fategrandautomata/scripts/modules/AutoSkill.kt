@@ -30,7 +30,6 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         )
     ).flatten().toMap()
 
-
     private val startingMemberFunctionArray: AutoSkillMap =
         OrderChangeMember.Starting.list
             .associate { it.autoSkillCode to { selectStartingMember(it) } }
@@ -188,34 +187,35 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         changeArray(defaultFunctionArray)
     }
 
-    private val commandTable = mutableListOf<MutableList<String>>()
+    private var commandTable = emptyList<List<String>>()
+
+    private fun validate(cmd: String) {
+        if (cmd != "0") {
+            when {
+                """^[1-3]""".toRegex().containsMatchIn(cmd) -> {
+                    throw ScriptExitException("Error at '${cmd}': Skill Command cannot start with number '1', '2' and '3'!")
+                }
+                cmd.contains('#') -> {
+                    throw ScriptExitException("Error at '${cmd}': '#' must be preceded and followed by ','! Correct: ',#,'")
+                }
+                """[^a-l1-6#ntx]""".toRegex().containsMatchIn(cmd) -> {
+                    throw ScriptExitException("Error at '${cmd}': Skill Command exceeded alphanumeric range! Expected 'x', 'n', 't' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.")
+                }
+            }
+        }
+    }
 
     private fun initCommands() {
-        var stageCount = 0
+        val waves = prefs.selectedAutoSkillConfig.skillCommand
+            .split(",#,")
 
-        for (commandList in prefs.selectedAutoSkillConfig.skillCommand.splitToSequence(',')) {
-            if (commandList != "0") {
-                if (Regex("""^[1-3]""").containsMatchIn(commandList)) {
-                    throw ScriptExitException("Error at '${commandList}': Skill Command cannot start with number '1', '2' and '3'!")
-                }
+        commandTable = waves
+            .map {
+                val turns = it.split(',')
+                turns.forEach { cmd -> validate(cmd) }
 
-                if (Regex("""([^,]#)|(#[^,])""").containsMatchIn(commandList)) {
-                    throw ScriptExitException("Error at '${commandList}': '#' must be preceded and followed by ','! Correct: ',#,'")
-                }
-
-                if (Regex("""[^a-l1-6#ntx]""").containsMatchIn(commandList)) {
-                    throw ScriptExitException("Error at '${commandList}': Skill Command exceeded alphanumeric range! Expected 'x', 'n', 't' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.")
-                }
+                turns
             }
-
-            if (stageCount >= commandTable.size) {
-                commandTable.add(mutableListOf())
-            }
-
-            if (commandList == "#") {
-                ++stageCount
-            } else commandTable[stageCount].add(commandList)
-        }
     }
 
     fun init(BattleModule: Battle, CardModule: Card) {
@@ -250,7 +250,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
         if (commandList.isNotEmpty()) {
             executeCommandList(commandList)
-        } else if (battle.currentStage + 1 >= commandTable.size) {
+        } else if (battle.currentStage >= commandTable.lastIndex) {
             // this will allow NP spam after all commands have been executed
             isFinished = true
         }
