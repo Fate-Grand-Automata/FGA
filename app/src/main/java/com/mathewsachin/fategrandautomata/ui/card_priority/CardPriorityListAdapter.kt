@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.CardScore
+import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
 
 class CardPriorityListAdapter(private val Items: List<MutableList<CardScore>>) :

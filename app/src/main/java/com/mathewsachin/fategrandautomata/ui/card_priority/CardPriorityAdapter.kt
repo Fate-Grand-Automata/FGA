@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
+import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.util.IItemTouchHelperAdapter
 import com.mathewsachin.fategrandautomata.util.IItemTouchHelperViewHolder
 
@@ -59,7 +59,7 @@ class CardPriorityAdapter(private val Items: MutableList<CardScore>) :
     override fun getItemCount() = Items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.text = Items[position].toString().filterCapitals()
+        holder.textView.text = Items[position].toString()
 
         val context = holder.textView.context
         val colorRes = Items[position].getColorRes()
