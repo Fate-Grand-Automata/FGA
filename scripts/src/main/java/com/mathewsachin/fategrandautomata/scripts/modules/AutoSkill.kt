@@ -54,9 +54,6 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
     var isFinished = false
         private set
 
-    var npsClicked = false
-        private set
-
     private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
         val img = images.battle
 
@@ -96,8 +93,6 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         }
 
         noblePhantasm.clickLocation.click()
-
-        npsClicked = true
     }
 
     private fun openMasterSkillMenu() {
@@ -249,7 +244,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         }
     }
 
-    fun execute(): Boolean {
+    fun execute() {
         val commandList = getCommandListFor(battle.currentStage, battle.currentTurn)
 
         if (commandList.isNotEmpty()) {
@@ -258,11 +253,5 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
             // this will allow NP spam after all commands have been executed
             isFinished = true
         }
-
-        return npsClicked
-    }
-
-    fun resetNpTimer() {
-        npsClicked = false
     }
 }
