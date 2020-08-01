@@ -1,58 +1,14 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.CardScore
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
-import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.ScriptExitException
+import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.CardScore
+import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
+import com.mathewsachin.fategrandautomata.scripts.models.NoblePhantasm
 import mu.KotlinLogging
-
-private const val dummyNormalAffinityChar = 'X'
-private const val cardPriorityErrorString = "Battle_CardPriority Error at '"
-
-const val cardPriorityStageSeparator = "\n"
-
-fun getCardScores(Priority: String): List<CardScore> {
-    val scores = Priority
-        .splitToSequence(',')
-        .map { it.trim().toUpperCase() }
-        .map {
-            when (it.length) {
-                1 -> "$dummyNormalAffinityChar$it"
-                2 -> it
-                else -> throw ScriptExitException("$cardPriorityErrorString${it}': Invalid card length.")
-            }
-        }
-        .map {
-            val cardType = when (it[1]) {
-                'B' -> CardTypeEnum.Buster
-                'A' -> CardTypeEnum.Arts
-                'Q' -> CardTypeEnum.Quick
-                else -> throw ScriptExitException("$cardPriorityErrorString${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
-            }
-
-            val cardAffinity = when (it[0]) {
-                'W' -> CardAffinityEnum.Weak
-                'R' -> CardAffinityEnum.Resist
-                dummyNormalAffinityChar -> CardAffinityEnum.Normal
-                else -> throw ScriptExitException("$cardPriorityErrorString${it[0]}': Only 'W', and 'R' are valid card affinities.")
-            }
-
-            CardScore(
-                cardType,
-                cardAffinity
-            )
-        }
-        .toList()
-
-    if (scores.size != 9) {
-        throw ScriptExitException("$cardPriorityErrorString': Expected 9 cards, but ${scores.size} found.")
-    }
-
-    return scores
-}
 
 private val logger = KotlinLogging.logger {}
 
@@ -60,58 +16,38 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 
-    private lateinit var cardPriorityArray: List<List<CardScore>>
+    private lateinit var cardPriority: CardPriorityPerWave
 
-    private val commandCards = mutableMapOf<CardScore, MutableList<Int>>()
-    private var cardsClickedSoFar = 0
+    private var commandCards = emptyMap<CardScore, List<CommandCard>>()
+    private val remainingCards = mutableSetOf<CommandCard>()
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
         battle = BattleModule
 
-        initCardPriorityArray()
+        cardPriority = CardPriorityPerWave.of(
+            prefs.selectedAutoSkillConfig.cardPriority
+        )
     }
 
-    private fun initCardPriorityArray() {
-        val priority = prefs.selectedAutoSkillConfig.cardPriority
+    private fun getCardAffinity(commandCard: CommandCard): CardAffinityEnum {
+        val region = commandCard.affinityRegion
 
-        if (priority.length == 3) {
-            initCardPriorityArraySimple(priority)
-        } else initCardPriorityArrayDetailed(priority)
-    }
-
-    private fun initCardPriorityArraySimple(Priority: String) {
-        val detailedPriority = Priority
-            .map { "W$it, $dummyNormalAffinityChar$it, R$it" }
-            .joinToString()
-
-        initCardPriorityArrayDetailed(detailedPriority)
-    }
-
-    private fun initCardPriorityArrayDetailed(Priority: String) {
-        cardPriorityArray = Priority
-            .split(cardPriorityStageSeparator)
-            .map {
-                getCardScores(it)
-                    // Give minimum priority to unknown
-                    .plus(CardScore(CardTypeEnum.Unknown, CardAffinityEnum.Normal))
-            }
-    }
-
-    private fun getCardAffinity(Region: Region): CardAffinityEnum {
-        if (Region.exists(images.weak)) {
+        if (region.exists(images.weak)) {
             return CardAffinityEnum.Weak
         }
 
-        if (Region.exists(images.resist)) {
+        if (region.exists(images.resist)) {
             return CardAffinityEnum.Resist
         }
 
         return CardAffinityEnum.Normal
     }
 
-    private fun getCardType(Region: Region): CardTypeEnum {
-        val stunRegion = Region.copy(
+    private fun getCardType(commandCard: CommandCard): CardTypeEnum {
+        val region = commandCard.typeRegion
+
+        val stunRegion = region.copy(
             Y = 930,
             Width = 248,
             Height = 188
@@ -121,19 +57,19 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             return CardTypeEnum.Unknown
         }
 
-        if (Region.exists(images.buster)) {
+        if (region.exists(images.buster)) {
             return CardTypeEnum.Buster
         }
 
-        if (Region.exists(images.art)) {
+        if (region.exists(images.art)) {
             return CardTypeEnum.Arts
         }
 
-        if (Region.exists(images.quick)) {
+        if (region.exists(images.quick)) {
             return CardTypeEnum.Quick
         }
 
-        val msg = "Failed to determine Card type $Region"
+        val msg = "Failed to determine Card type $region"
         toast(msg)
         logger.debug(msg)
 
@@ -141,27 +77,19 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun readCommandCards() {
-        commandCards.clear()
+        remainingCards.addAll(CommandCard.list)
 
         screenshotManager.useSameSnapIn {
-            for (cardSlot in 0..4) {
-                val type = getCardType(game.battleCardTypeRegionArray[cardSlot])
-                val affinity =
-                    if (type == CardTypeEnum.Unknown)
-                        CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
-                    else getCardAffinity(game.battleCardAffinityRegionArray[cardSlot])
+            commandCards = CommandCard.list
+                .groupBy {
+                    val type = getCardType(it)
+                    val affinity =
+                        if (type == CardTypeEnum.Unknown)
+                            CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
+                        else getCardAffinity(it)
 
-                val score = CardScore(
-                    type,
-                    affinity
-                )
-
-                if (!commandCards.containsKey(score)) {
-                    commandCards[score] = mutableListOf()
+                    CardScore(type, affinity)
                 }
-
-                commandCards[score]?.add(cardSlot)
-            }
         }
     }
 
@@ -175,40 +103,21 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
     fun clickNpCards() {
-        for (npCard in game.battleNpCardClickArray) {
-            npCard.click()
+        for (npCard in NoblePhantasm.list) {
+            npCard.clickLocation.click()
         }
     }
 
-    fun clickCommandCards(Clicks: Int) {
-        var i = 1
+    fun clickCommandCards(Clicks: Int = remainingCards.size) {
+        cardPriority.atWave(battle.currentStage)
+            .mapNotNull { commandCards[it] }
+            .flatten()
+            .filter { it in remainingCards }
+            .take(Clicks)
+            .forEach {
+                it.clickLocation.click()
 
-        val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
-
-        for (cardPriority in cardPriorityArray[cardPriorityIndex]) {
-            if (!commandCards.containsKey(cardPriority))
-                continue
-
-            val currentCardTypeStorage = commandCards[cardPriority]
-                ?: continue
-
-            for (cardSlot in currentCardTypeStorage) {
-                if (Clicks < i) {
-                    cardsClickedSoFar = i - 1
-                    return
-                }
-
-                if (i > cardsClickedSoFar) {
-                    game.battleCommandCardClickArray[cardSlot].click()
-                }
-
-                ++i
+                remainingCards.remove(it)
             }
-        }
-    }
-
-    fun resetCommandCards() {
-        commandCards.clear()
-        cardsClickedSoFar = 0
     }
 }

@@ -1,9 +1,9 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.SearchFunctionResult
-import com.mathewsachin.fategrandautomata.scripts.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
+import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
+import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging

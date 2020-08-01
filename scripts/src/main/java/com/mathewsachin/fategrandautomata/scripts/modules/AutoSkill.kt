@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
-import com.mathewsachin.libautomata.Location
+import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.Duration
 import kotlin.time.seconds
@@ -9,53 +9,37 @@ import kotlin.time.seconds
 typealias AutoSkillMap = Map<Char, () -> Unit>
 
 class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
-    private val defaultFunctionArray: AutoSkillMap = mapOf(
-        'a' to { castSkill(game.battleSkill1Click) },
-        'b' to { castSkill(game.battleSkill2Click) },
-        'c' to { castSkill(game.battleSkill3Click) },
-        'd' to { castSkill(game.battleSkill4Click) },
-        'e' to { castSkill(game.battleSkill5Click) },
-        'f' to { castSkill(game.battleSkill6Click) },
-        'g' to { castSkill(game.battleSkill7Click) },
-        'h' to { castSkill(game.battleSkill8Click) },
-        'i' to { castSkill(game.battleSkill9Click) },
+    private val defaultFunctionArray: AutoSkillMap = listOf(
+        Skill.Servant.list.map {
+            it.autoSkillCode to { castSkill(it) }
+        },
+        Skill.Master.list.map {
+            it.autoSkillCode to { castMasterSkill(it) }
+        },
+        NoblePhantasm.list.map {
+            it.autoSkillCode to { castNoblePhantasm(it) }
+        },
+        ServantTarget.list.map {
+            it.autoSkillCode to { selectSkillTarget(it) }
+        },
+        listOf(
+            'x' to { beginOrderChange() },
+            't' to { selectTarget() },
+            'n' to { useCommandCardsBeforeNp() },
+            '0' to { }
+        )
+    ).flatten().toMap()
 
-        'j' to { castMasterSkill(game.battleMasterSkill1Click) },
-        'k' to { castMasterSkill(game.battleMasterSkill2Click) },
-        'l' to { castMasterSkill(game.battleMasterSkill3Click) },
+    private val startingMemberFunctionArray: AutoSkillMap =
+        OrderChangeMember.Starting.list
+            .associate { it.autoSkillCode to { selectStartingMember(it) } }
 
-        'x' to { beginOrderChange() },
-        't' to { selectTarget() },
-        'n' to { useCommandCardsBeforeNp() },
+    private val subMemberFunctionArray: AutoSkillMap =
+        OrderChangeMember.Sub.list
+            .associate { it.autoSkillCode to { selectSubMember(it) } }
 
-        '0' to { },
-
-        '1' to { selectSkillTarget(game.battleServant1Click) },
-        '2' to { selectSkillTarget(game.battleServant2Click) },
-        '3' to { selectSkillTarget(game.battleServant3Click) },
-
-        '4' to { castNoblePhantasm(game.battleNpCardClickArray[0]) },
-        '5' to { castNoblePhantasm(game.battleNpCardClickArray[1]) },
-        '6' to { castNoblePhantasm(game.battleNpCardClickArray[2]) }
-    )
-
-    private val startingMemberFunctionArray: AutoSkillMap = mapOf(
-        '1' to { selectStartingMember(game.battleStartingMember1Click) },
-        '2' to { selectStartingMember(game.battleStartingMember2Click) },
-        '3' to { selectStartingMember(game.battleStartingMember3Click) }
-    )
-
-    private val subMemberFunctionArray: AutoSkillMap = mapOf(
-        '1' to { selectSubMember(game.battleSubMember1Click) },
-        '2' to { selectSubMember(game.battleSubMember2Click) },
-        '3' to { selectSubMember(game.battleSubMember3Click) }
-    )
-
-    private val enemyTargetArray: AutoSkillMap = mapOf(
-        '1' to { selectEnemyTarget(game.battleTargetClickArray[0]) },
-        '2' to { selectEnemyTarget(game.battleTargetClickArray[1]) },
-        '3' to { selectEnemyTarget(game.battleTargetClickArray[2]) }
-    )
+    private val enemyTargetArray: AutoSkillMap = EnemyTarget.list
+        .associate { it.autoSkillCode to { selectEnemyTarget(it) } }
 
     private val cardsPressedArray: AutoSkillMap = mapOf(
         '1' to { pressCards(1) },
@@ -70,9 +54,6 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
     var isFinished = false
         private set
 
-    var npsClicked = false
-        private set
-
     private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
         val img = images.battle
 
@@ -82,8 +63,8 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         game.battleScreenRegion.exists(img, Timeout)
     }
 
-    private fun castSkill(Location: Location) {
-        Location.click()
+    private fun castSkill(skill: Skill) {
+        skill.clickLocation.click()
 
         if (prefs.skillConfirmation) {
             game.battleSkillOkClick.click()
@@ -92,8 +73,8 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         waitForAnimationToFinish()
     }
 
-    private fun selectSkillTarget(Location: Location) {
-        Location.click()
+    private fun selectSkillTarget(target: ServantTarget) {
+        target.clickLocation.click()
 
         0.5.seconds.wait()
 
@@ -103,7 +84,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         waitForAnimationToFinish()
     }
 
-    private fun castNoblePhantasm(Location: Location) {
+    private fun castNoblePhantasm(noblePhantasm: NoblePhantasm) {
         if (!battle.hasClickedAttack) {
             battle.clickAttack()
 
@@ -111,9 +92,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
             2.seconds.wait()
         }
 
-        Location.click()
-
-        npsClicked = true
+        noblePhantasm.clickLocation.click()
     }
 
     private fun openMasterSkillMenu() {
@@ -122,10 +101,10 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         0.5.seconds.wait()
     }
 
-    private fun castMasterSkill(Location: Location) {
+    private fun castMasterSkill(skill: Skill.Master) {
         openMasterSkillMenu()
 
-        castSkill(Location)
+        castSkill(skill)
     }
 
     private fun changeArray(NewArray: AutoSkillMap) {
@@ -135,7 +114,9 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
     private fun beginOrderChange() {
         openMasterSkillMenu()
 
-        game.battleMasterSkill3Click.click()
+        // Click on order change skill
+        Skill.Master.list.last()
+            .clickLocation.click()
 
         if (prefs.skillConfirmation) {
             game.battleSkillOkClick.click()
@@ -146,14 +127,14 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         changeArray(startingMemberFunctionArray)
     }
 
-    private fun selectStartingMember(Location: Location) {
-        Location.click()
+    private fun selectStartingMember(member: OrderChangeMember.Starting) {
+        member.clickLocation.click()
 
         changeArray(subMemberFunctionArray)
     }
 
-    private fun selectSubMember(Location: Location) {
-        Location.click()
+    private fun selectSubMember(member: OrderChangeMember.Sub) {
+        member.clickLocation.click()
 
         0.3.seconds.wait()
 
@@ -172,8 +153,8 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
     private fun selectTarget() = changeArray(enemyTargetArray)
 
-    private fun selectEnemyTarget(Location: Location) {
-        Location.click()
+    private fun selectEnemyTarget(enemyTarget: EnemyTarget) {
+        enemyTarget.clickLocation.click()
 
         0.5.seconds.wait()
 
@@ -206,34 +187,35 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         changeArray(defaultFunctionArray)
     }
 
-    private val commandTable = mutableListOf<MutableList<String>>()
+    private var commandTable = emptyList<List<String>>()
+
+    private fun validate(cmd: String) {
+        if (cmd != "0") {
+            when {
+                """^[1-3]""".toRegex().containsMatchIn(cmd) -> {
+                    throw ScriptExitException("Error at '${cmd}': Skill Command cannot start with number '1', '2' and '3'!")
+                }
+                cmd.contains('#') -> {
+                    throw ScriptExitException("Error at '${cmd}': '#' must be preceded and followed by ','! Correct: ',#,'")
+                }
+                """[^a-l1-6#ntx]""".toRegex().containsMatchIn(cmd) -> {
+                    throw ScriptExitException("Error at '${cmd}': Skill Command exceeded alphanumeric range! Expected 'x', 'n', 't' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.")
+                }
+            }
+        }
+    }
 
     private fun initCommands() {
-        var stageCount = 0
+        val waves = prefs.selectedAutoSkillConfig.skillCommand
+            .split(",#,")
 
-        for (commandList in prefs.selectedAutoSkillConfig.skillCommand.splitToSequence(',')) {
-            if (commandList != "0") {
-                if (Regex("""^[1-3]""").containsMatchIn(commandList)) {
-                    throw ScriptExitException("Error at '${commandList}': Skill Command cannot start with number '1', '2' and '3'!")
-                }
+        commandTable = waves
+            .map {
+                val turns = it.split(',')
+                turns.forEach { cmd -> validate(cmd) }
 
-                if (Regex("""([^,]#)|(#[^,])""").containsMatchIn(commandList)) {
-                    throw ScriptExitException("Error at '${commandList}': '#' must be preceded and followed by ','! Correct: ',#,'")
-                }
-
-                if (Regex("""[^a-l1-6#ntx]""").containsMatchIn(commandList)) {
-                    throw ScriptExitException("Error at '${commandList}': Skill Command exceeded alphanumeric range! Expected 'x', 'n', 't' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.")
-                }
+                turns
             }
-
-            if (stageCount >= commandTable.size) {
-                commandTable.add(mutableListOf())
-            }
-
-            if (commandList == "#") {
-                ++stageCount
-            } else commandTable[stageCount].add(commandList)
-        }
     }
 
     fun init(BattleModule: Battle, CardModule: Card) {
@@ -263,20 +245,14 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         }
     }
 
-    fun execute(): Boolean {
+    fun execute() {
         val commandList = getCommandListFor(battle.currentStage, battle.currentTurn)
 
         if (commandList.isNotEmpty()) {
             executeCommandList(commandList)
-        } else if (battle.currentStage + 1 >= commandTable.size) {
+        } else if (battle.currentStage >= commandTable.lastIndex) {
             // this will allow NP spam after all commands have been executed
             isFinished = true
         }
-
-        return npsClicked
-    }
-
-    fun resetNpTimer() {
-        npsClicked = false
     }
 }
