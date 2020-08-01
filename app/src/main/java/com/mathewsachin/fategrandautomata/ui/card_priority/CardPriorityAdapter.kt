@@ -59,7 +59,7 @@ class CardPriorityAdapter(private val Items: MutableList<CardScore>) :
     override fun getItemCount() = Items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.text = Items[position].toString().filterCapitals()
+        holder.textView.text = Items[position].toString()
 
         val context = holder.textView.context
         val colorRes = Items[position].getColorRes()

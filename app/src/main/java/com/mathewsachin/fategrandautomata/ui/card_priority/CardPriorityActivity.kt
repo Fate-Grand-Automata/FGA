@@ -8,22 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
+import com.mathewsachin.fategrandautomata.scripts.CardPriority
+import com.mathewsachin.fategrandautomata.scripts.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.CardScore
-import com.mathewsachin.fategrandautomata.scripts.modules.cardPriorityStageSeparator
-import com.mathewsachin.fategrandautomata.scripts.modules.getCardScores
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.card_priority.*
 import javax.inject.Inject
-
-fun String.filterCapitals(): String {
-    return this
-        .asSequence()
-        .filter { it.isUpperCase() }
-        .joinToString(separator = "")
-}
 
 class CardPriorityActivity : AppCompatActivity() {
     private lateinit var cardScores: MutableList<MutableList<CardScore>>
@@ -50,13 +43,8 @@ class CardPriorityActivity : AppCompatActivity() {
                 defaultCardPriority
         }
 
-        cardScores = cardPriority
-            .splitToSequence(cardPriorityStageSeparator)
-            .map {
-                getCardScores(
-                    it
-                ).toMutableList()
-            }
+        cardScores = CardPriorityPerWave.of(cardPriority)
+            .map { it.toMutableList() }
             .toMutableList()
 
         val adapter = CardPriorityListAdapter(cardScores)
@@ -85,9 +73,11 @@ class CardPriorityActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        val value = cardScores.joinToString(cardPriorityStageSeparator) {
-            it.joinToString { m -> m.toString().filterCapitals() }
-        }
+        val value = CardPriorityPerWave.from(
+            cardScores.map {
+                CardPriority.from(it)
+            }
+        ).toString()
 
         autoSkillPref.cardPriority = value
     }
