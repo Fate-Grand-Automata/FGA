@@ -24,7 +24,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private val remainingCards = mutableSetOf<CommandCard>()
     private val remainingNps = mutableSetOf<NoblePhantasm>()
     private val noOfCardsToClick
-        get() = (3 - (5 - remainingCards.size) + (3 - remainingNps.size))
+        get() = (3 - (5 - remainingCards.size) - (3 - remainingNps.size))
             .coerceAtLeast(0)
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
@@ -82,13 +82,14 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return CardTypeEnum.Unknown
     }
 
-    private var commandCardGroups: List<List<Int>> = emptyList()
-    private var commandCardGroupedWithNp: List<List<Int>> = emptyList()
+    private var commandCardGroups: List<List<CommandCard>> = emptyList()
+    private var commandCardGroupedWithNp: Map<NoblePhantasm, List<CommandCard>> = emptyMap()
     private var firstNp: NoblePhantasm? = null
 
     fun readCommandCards() {
         remainingCards.addAll(CommandCard.list)
         remainingNps.addAll(NoblePhantasm.list)
+        firstNp = null
 
         screenshotManager.useSameSnapIn {
             commandCards = CommandCard.list
@@ -134,30 +135,18 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun clickCommandCards(Clicks: Int = noOfCardsToClick) {
-        cardPriority.atWave(battle.currentStage)
-            .mapNotNull { commandCards[it] }
-            .flatten()
-            .filter { it in remainingCards }
-            .take(Clicks)
-            .forEach {
-                it.clickLocation.click()
-
-                remainingCards.remove(it)
-            }
-
-        val cardPriorityIndex = battle.currentStage.coerceIn(cardPriorityArray.indices)
         var clicksLeft = Clicks.coerceAtLeast(0)
-        val toClick = mutableListOf<Int>()
+        val toClick = mutableListOf<CommandCard>()
 
-        val cardsOrderedByPriority = cardPriorityArray[cardPriorityIndex]
+        val cardsOrderedByPriority = cardPriority.atWave(battle.currentStage)
             .mapNotNull { commandCards[it] }
             .flatten()
 
         fun pickCardsOrderedByPriority(
             clicks: Int = clicksLeft,
-            filter: (Int) -> Boolean = { true }
-        ): Sequence<Int> {
-            fun Sequence<Int>.addToClickList(): Sequence<Int> {
+            filter: (CommandCard) -> Boolean = { true }
+        ): Sequence<CommandCard> {
+            fun Sequence<CommandCard>.addToClickList(): Sequence<CommandCard> {
                 val asList = toList()
 
                 toClick.addAll(asList)
@@ -176,9 +165,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         when (prefs.braveChains) {
             BraveChainEnum.AfterNP -> {
-                if (firstNp in commandCardGroupedWithNp.indices) {
+                commandCardGroupedWithNp[firstNp]?.let { npGroup ->
                     pickCardsOrderedByPriority {
-                        it in commandCardGroupedWithNp[firstNp]
+                        it in npGroup
                     }
                 }
             }
@@ -187,7 +176,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     && remainingCards.isNotEmpty()
                     && clicksLeft > 1
                 ) {
-                    var lastGroup = emptyList<Int>()
+                    var lastGroup = emptyList<CommandCard>()
 
                     do {
                         lastGroup = pickCardsOrderedByPriority(1) { it !in lastGroup }
@@ -198,8 +187,6 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             }
         }
 
-        firstNp = -1
-
         pickCardsOrderedByPriority()
 
         // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
@@ -207,7 +194,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // Skip if NP spamming because we don't know how many NPs might've been used
         if (prefs.braveChains != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
             && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
-            && (toClick.size == 3 || (toClick.size == 2 && firstNp != -1))
+            && (toClick.size == 3 || (toClick.size == 2 && firstNp != null))
         ) {
             Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
         }
@@ -216,6 +203,50 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // since some people may put NPs in AutoSkill which aren't charged yet
         pickCardsOrderedByPriority(3)
 
-        toClick.forEach { game.battleCommandCardClickArray[it].click() }
+        toClick.forEach { it.clickLocation.click() }
+    }
+
+    private fun groupNpsWithFaceCards(groups: List<List<CommandCard>>): Map<NoblePhantasm, List<CommandCard>> {
+        return NoblePhantasm.list.associateWith {
+            it.servantCropRegion.getPattern().use { npCropped ->
+                groups.maxBy { group ->
+                    group.first()
+                        .servantMatchRegion
+                        .findAll(npCropped, 0.4)
+                        .firstOrNull()?.score ?: 0.0
+                } ?: emptyList()
+            }
+        }
+    }
+
+    private fun groupByFaceCard(): List<List<CommandCard>> {
+        val remaining = CommandCard.list.toMutableSet()
+        val groups = mutableListOf<List<CommandCard>>()
+
+        while (remaining.isNotEmpty()) {
+            val u = remaining.first()
+            remaining.remove(u)
+
+            val group = mutableListOf<CommandCard>()
+            group.add(u)
+
+            if (remaining.isNotEmpty()) {
+                val me = u.servantCropRegion.getPattern()
+
+                me.use {
+                    val matched = remaining.filter {
+                        val region = it.servantMatchRegion
+                        region.exists(me)
+                    }
+
+                    remaining.removeAll(matched)
+                    group.addAll(matched)
+                }
+            }
+
+            groups.add(group)
+        }
+
+        return groups
     }
 }
