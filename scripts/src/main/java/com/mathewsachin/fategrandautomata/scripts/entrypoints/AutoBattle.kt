@@ -318,6 +318,16 @@ open class AutoBattle(
         } else throw ScriptExitException("AP ran out!")
     }
 
+    /**
+     * Selects the party for the quest based on the AutoSkill configuration.
+     *
+     * The possible behaviors of this method are:
+     * 1. If no value is specified, the currently selected party is used.
+     * 2. If a value is specified and is the same as the currently selected party, the party is not
+     * changed.
+     * 3. If a value is specified and is different than the currently selected party, the party is
+     * changed to the configured one by clicking on the little dots above the party names.
+     */
     fun selectParty() {
         val party = prefs.selectedAutoSkillConfig.party
 
@@ -332,23 +342,25 @@ open class AutoBattle(
                 }
                 .firstOrNull()
 
+            /* If the currently selected party cannot be detected, we need to switch to a party
+               which was not configured. The reason is that the "Start Quest" button becomes
+               unresponsive if you switch from a party to the same one. */
             if (currentParty == null) {
-                // Start Quest Button becomes unresponsive if the same party is clicked.
-                // So we switch to one party and then to the user-specified one.
                 val tempParty = if (party == 0) 1 else 0
                 game.partySelectionArray[tempParty].click()
 
                 1.seconds.wait()
             }
 
+            // Switch to the configured party
             if (currentParty != party) {
                 game.partySelectionArray[party].click()
 
                 1.2.seconds.wait()
             }
 
-            // If we select the party once, the same party will be used by the game for next fight
-            // So, we don't have to select it again
+            /* If we select the party once, the same party will be used by the game for next fight.
+               So, we don't have to select it again. */
             partySelected = true
         }
     }
