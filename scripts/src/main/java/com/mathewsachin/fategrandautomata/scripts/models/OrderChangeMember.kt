@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.scripts
+package com.mathewsachin.fategrandautomata.scripts.models
 
 import com.mathewsachin.libautomata.Location
 

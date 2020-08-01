@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
-import com.mathewsachin.fategrandautomata.scripts.CardPriority
-import com.mathewsachin.fategrandautomata.scripts.CardPriorityPerWave
-import com.mathewsachin.fategrandautomata.scripts.CardScore
+import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
+import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity

@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.scripts
+package com.mathewsachin.fategrandautomata.scripts.models
 
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
@@ -20,9 +20,9 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
                 .map { it.trim().toUpperCase() }
                 .map {
                     when (it.length) {
-                        1 -> "${dummyNormalAffinityChar}$it"
+                        1 -> "$dummyNormalAffinityChar$it"
                         2 -> it
-                        else -> throw ScriptExitException("${cardPriorityErrorString}${it}': Invalid card length.")
+                        else -> throw ScriptExitException("$cardPriorityErrorString${it}': Invalid card length.")
                     }
                 }
                 .map {
@@ -30,14 +30,14 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
                         'B' -> CardTypeEnum.Buster
                         'A' -> CardTypeEnum.Arts
                         'Q' -> CardTypeEnum.Quick
-                        else -> throw ScriptExitException("${cardPriorityErrorString}${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
+                        else -> throw ScriptExitException("$cardPriorityErrorString${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
                     }
 
                     val cardAffinity = when (it[0]) {
                         'W' -> CardAffinityEnum.Weak
                         'R' -> CardAffinityEnum.Resist
                         dummyNormalAffinityChar -> CardAffinityEnum.Normal
-                        else -> throw ScriptExitException("${cardPriorityErrorString}${it[0]}': Only 'W', and 'R' are valid card affinities.")
+                        else -> throw ScriptExitException("$cardPriorityErrorString${it[0]}': Only 'W', and 'R' are valid card affinities.")
                     }
 
                     CardScore(
@@ -48,7 +48,7 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
                 .toList()
 
             if (scores.size != 9) {
-                throw ScriptExitException("${cardPriorityErrorString}': Expected 9 cards, but ${scores.size} found.")
+                throw ScriptExitException("$cardPriorityErrorString': Expected 9 cards, but ${scores.size} found.")
             }
 
             return CardPriority(scores)

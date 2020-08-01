@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.libautomata.IPattern
 import kotlin.time.seconds
 
