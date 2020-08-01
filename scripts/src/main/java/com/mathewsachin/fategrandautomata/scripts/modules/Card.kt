@@ -187,21 +187,26 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             }
         }
 
+        // Pick more cards if needed
         pickCardsOrderedByPriority()
+
+        val isBeforeNP = firstNp == null
 
         // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
         // Do the same when clicking 2 cards unless they're used before NPs.
         // Skip if NP spamming because we don't know how many NPs might've been used
         if (prefs.braveChains != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
             && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
-            && (toClick.size == 3 || (toClick.size == 2 && firstNp != null))
+            && (toClick.size == 3 || (toClick.size == 2 && !isBeforeNP))
         ) {
             Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
         }
 
-        // Also click on remaining cards,
-        // since some people may put NPs in AutoSkill which aren't charged yet
-        pickCardsOrderedByPriority(3)
+        if (!isBeforeNP && Clicks < 3) {
+            // Also click on remaining cards,
+            // since some people may put NPs in AutoSkill which aren't charged yet
+            pickCardsOrderedByPriority(3 - Clicks)
+        }
 
         toClick.forEach { it.clickLocation.click() }
     }
