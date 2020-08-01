@@ -6,7 +6,10 @@ import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.math.absoluteValue
 import kotlin.time.seconds
 
@@ -319,9 +322,8 @@ open class AutoBattle(
         val party = prefs.selectedAutoSkillConfig.party
 
         if (!partySelected && party in game.partySelectionArray.indices) {
-            val selectedPartyRegion = Region(1010, 62, 550, 72)
-
-            val currentParty = selectedPartyRegion.findAll(images.selectedParty)
+            val currentParty = game.selectedPartyRegion
+                .findAll(images.selectedParty)
                 .map { match ->
                     // Find party with min distance from center of matched region
                     game.partySelectionArray.withIndex().minBy {
