@@ -6,10 +6,8 @@ import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.EntryPoint
-import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.IPlatformImpl
-import com.mathewsachin.libautomata.ScriptExitException
+import com.mathewsachin.libautomata.*
+import kotlin.math.absoluteValue
 import kotlin.time.seconds
 
 /**
@@ -321,16 +319,31 @@ open class AutoBattle(
         val party = prefs.selectedAutoSkillConfig.party
 
         if (!partySelected && party in game.partySelectionArray.indices) {
-            // Start Quest Button becomes unresponsive if the same party is clicked.
-            // So we switch to one party and then to the user-specified one.
-            val tempParty = if (party == 0) 1 else 0
-            game.partySelectionArray[tempParty].click()
+            val selectedPartyRegion = Region(1010, 62, 550, 72)
 
-            1.seconds.wait()
+            val currentParty = selectedPartyRegion.findAll(images.selectedParty)
+                .map { match ->
+                    // Find party with min distance from center of matched region
+                    game.partySelectionArray.withIndex().minBy {
+                        (it.value.X - match.Region.center.X).absoluteValue
+                    }?.index
+                }
+                .firstOrNull()
 
-            game.partySelectionArray[party].click()
+            if (currentParty == null) {
+                // Start Quest Button becomes unresponsive if the same party is clicked.
+                // So we switch to one party and then to the user-specified one.
+                val tempParty = if (party == 0) 1 else 0
+                game.partySelectionArray[tempParty].click()
 
-            1.2.seconds.wait()
+                1.seconds.wait()
+            }
+
+            if (currentParty != party) {
+                game.partySelectionArray[party].click()
+
+                1.2.seconds.wait()
+            }
 
             // If we select the party once, the same party will be used by the game for next fight
             // So, we don't have to select it again
