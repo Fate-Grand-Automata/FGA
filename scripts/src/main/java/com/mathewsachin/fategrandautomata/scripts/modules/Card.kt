@@ -121,7 +121,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
     }
 
-    fun clickCommandCards(Clicks: Int) {
+    fun clickCommandCards(Clicks: Int = remainingCards.size) {
         cardPriority.atWave(battle.currentStage)
             .mapNotNull { commandCards[it] }
             .flatten()
