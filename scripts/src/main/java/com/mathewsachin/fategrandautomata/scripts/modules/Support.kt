@@ -32,7 +32,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             .filter { it.isNotBlank() && it.toLowerCase() != "any" }
     }
 
-    private val autoSkillPrefs = prefs.selectedAutoSkillConfig.support
+    private val autoSkillPrefs get() = prefs.selectedAutoSkillConfig.support
 
     fun init() {
         preferredServantArray.clear()
