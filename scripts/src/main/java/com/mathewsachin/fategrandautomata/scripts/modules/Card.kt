@@ -18,7 +18,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private lateinit var cardPriority: CardPriorityPerWave
 
-    private val commandCards = mutableMapOf<CardScore, MutableList<CommandCard>>()
+    private var commandCards = emptyMap<CardScore, List<CommandCard>>()
     private val remainingCards = mutableSetOf<CommandCard>()
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
@@ -77,28 +77,19 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun readCommandCards() {
-        commandCards.clear()
         remainingCards.addAll(CommandCard.list)
 
         screenshotManager.useSameSnapIn {
-            for (cardSlot in CommandCard.list) {
-                val type = getCardType(cardSlot)
-                val affinity =
-                    if (type == CardTypeEnum.Unknown)
-                        CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
-                    else getCardAffinity(cardSlot)
+            commandCards = CommandCard.list
+                .groupBy {
+                    val type = getCardType(it)
+                    val affinity =
+                        if (type == CardTypeEnum.Unknown)
+                            CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
+                        else getCardAffinity(it)
 
-                val score = CardScore(
-                    type,
-                    affinity
-                )
-
-                if (!commandCards.containsKey(score)) {
-                    commandCards[score] = mutableListOf()
+                    CardScore(type, affinity)
                 }
-
-                commandCards[score]?.add(cardSlot)
-            }
         }
     }
 
