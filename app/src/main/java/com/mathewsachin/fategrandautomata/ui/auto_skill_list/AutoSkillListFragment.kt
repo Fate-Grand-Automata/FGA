@@ -1,20 +1,19 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_list
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.autoskill_list.*
 import mu.KotlinLogging
@@ -115,10 +114,10 @@ class AutoSkillListFragment : Fragment() {
     }
 
     private fun editItem(Id: String) {
-        val intent = Intent(requireContext(), AutoSkillItemActivity::class.java)
-        intent.putExtra(AutoSkillItemActivity::autoSkillItemKey.name, Id)
+        val action = AutoSkillListFragmentDirections
+            .actionAutoSkillListFragmentToAutoSkillItemSettingsFragment(Id)
 
-        startActivity(intent)
+        findNavController().navigate(action)
     }
 
     val autoSkillImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->

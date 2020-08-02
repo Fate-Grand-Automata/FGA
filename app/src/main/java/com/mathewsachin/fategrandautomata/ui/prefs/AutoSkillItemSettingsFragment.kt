@@ -9,16 +9,18 @@ import android.view.MenuItem
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
-import com.mathewsachin.fategrandautomata.ui.SkillLevelActivity
 import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
 import com.mathewsachin.fategrandautomata.util.*
 import kotlinx.coroutines.MainScope
@@ -33,6 +35,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var storageDirs: StorageDirs
+
+    val args: AutoSkillItemSettingsFragmentArgs by navArgs()
 
     val startAutoSkillMaker = registerForActivityResult(StartAutoSkillMaker()) { cmd ->
         if (cmd != null) {
@@ -50,6 +54,18 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
+    }
+
+    val autoSkillExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+        if (uri != null) {
+            val values = preferences.forAutoSkillConfig(args.key).export()
+            val gson = Gson()
+            val json = gson.toJson(values)
+
+            requireContext().contentResolver.openOutputStream(uri)?.use { outStream ->
+                outStream.writer().use { it.write(json) }
+            }
+        }
     }
 
     private val scope = MainScope()
@@ -88,11 +104,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        val autoSkillItemKey = arguments?.getString(AutoSkillItemActivity::autoSkillItemKey.name)
-            ?: throw IllegalArgumentException("Arguments should not be null")
-
-        preferenceManager.sharedPreferencesName = autoSkillItemKey
-        autoSkillPrefs = preferences.forAutoSkillConfig(autoSkillItemKey)
+        preferenceManager.sharedPreferencesName = args.key
+        autoSkillPrefs = preferences.forAutoSkillConfig(args.key)
 
         setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
 
@@ -108,7 +121,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.setOnPreferenceClickListener {
                 val intent = Intent(activity, CardPriorityActivity::class.java)
-                intent.putExtra(AutoSkillItemActivity::autoSkillItemKey.name, autoSkillItemKey)
+                intent.putExtra("k", args.key)
                 startActivity(intent)
                 true
             }
@@ -116,9 +129,11 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
             it.setOnPreferenceClickListener {
-                val intent = Intent(activity, SkillLevelActivity::class.java)
-                intent.putExtra(AutoSkillItemActivity::autoSkillItemKey.name, autoSkillItemKey)
-                startActivity(intent)
+                val action = AutoSkillItemSettingsFragmentDirections
+                    .actionAutoSkillItemSettingsFragmentToSkillLevelSettingsFragment(args.key)
+
+                findNavController().navigate(action)
+
                 true
             }
         }
@@ -203,6 +218,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.autoskill_item_menu, menu)
         inflater.inflate(R.menu.support_menu, menu)
         inflater.inflate(R.menu.support_common_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -226,7 +242,26 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 findFriendNamesList()?.values = emptySet()
                 true
             }
+            R.id.action_auto_skill_delete -> {
+                AlertDialog.Builder(requireContext())
+                    .setMessage("Are you sure you want to delete this configuration?")
+                    .setTitle("Confirm Deletion")
+                    .setPositiveButton("Delete") { _, _ -> deleteItem(args.key) }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+                true
+            }
+            R.id.action_auto_skill_export -> {
+                autoSkillExport.launch("auto_skill_${autoSkillPrefs.name}.json")
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun deleteItem(AutoSkillItemKey: String) {
+        preferences.removeAutoSkillConfig(AutoSkillItemKey)
+
+        findNavController().popBackStack()
     }
 }

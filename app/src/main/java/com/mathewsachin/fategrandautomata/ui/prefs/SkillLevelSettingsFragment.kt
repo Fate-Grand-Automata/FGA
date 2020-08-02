@@ -1,16 +1,15 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
+import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 
 class SkillLevelSettingsFragment : PreferenceFragmentCompat() {
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        val autoSkillItemKey = arguments?.getString(AutoSkillItemActivity::autoSkillItemKey.name)
-            ?: throw IllegalArgumentException("Arguments should not be null")
+    val args: SkillLevelSettingsFragmentArgs by navArgs()
 
-        preferenceManager.sharedPreferencesName = autoSkillItemKey
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        preferenceManager.sharedPreferencesName = args.key
 
         setPreferencesFromResource(R.xml.skill_level_preferences, rootKey)
     }
