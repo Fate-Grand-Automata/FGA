@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment"
+    tools:ignore="PrivateResource">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.MainFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/content_main">
+        <action
+            android:id="@+id/action_mainFragment_to_refillSettingsFragment"
+            app:destination="@id/refillSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_mainFragment_to_moreSettingsFragment"
+            app:destination="@id/moreSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_mainFragment_to_autoSkillListFragment"
+            app:destination="@id/autoSkillListFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/refillSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.RefillSettingsFragment"
+        android:label="Refill" />
+    <fragment
+        android:id="@+id/moreSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.MoreSettingsFragment"
+        android:label="More options">
+        <action
+            android:id="@+id/action_moreSettingsFragment_to_fineTuneSettingsFragment"
+            app:destination="@id/fineTuneSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/fineTuneSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.FineTuneSettingsFragment"
+        android:label="Fine-tune" />
+    <fragment
+        android:id="@+id/autoSkillListFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListFragment"
+        android:label="AutoSkill List"
+        tools:layout="@layout/autoskill_list">
+        <action
+            android:id="@+id/action_autoSkillListFragment_to_autoSkillItemSettingsFragment"
+            app:destination="@id/autoSkillItemSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/autoSkillItemSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment"
+        android:label="Edit AutoSkill Item">
+        <argument
+            android:name="key"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_autoSkillItemSettingsFragment_to_skillLevelSettingsFragment"
+            app:destination="@id/skillLevelSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_autoSkillItemSettingsFragment_to_cardPriorityFragment"
+            app:destination="@id/cardPriorityFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/skillLevelSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.SkillLevelSettingsFragment"
+        android:label="Skill Levels">
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardPriorityFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityFragment"
+        android:label="Card Priority">
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </fragment>
+</navigation>
