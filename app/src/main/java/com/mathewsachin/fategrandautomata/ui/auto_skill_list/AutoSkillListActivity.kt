@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_list
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ActionMode
@@ -8,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -25,8 +25,6 @@ import mva3.adapter.MultiViewAdapter
 import mva3.adapter.util.Mode
 import java.util.*
 import javax.inject.Inject
-
-const val AUTO_SKILL_IMPORT = 2047
 
 private val logger = KotlinLogging.logger {}
 
@@ -115,49 +113,36 @@ class AutoSkillListActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTO_SKILL_IMPORT && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                val clipData = data.clipData
+    val autoSkillImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+        var failed = 0
 
-                val uris = if (clipData != null) {
-                    (0 until clipData.itemCount)
-                        .map { clipData.getItemAt(it).uri }
-                } else listOf(data.data)
-
-                var failed = 0
-
-                uris.forEach { uri ->
-                    val json = contentResolver.openInputStream(uri)?.use { inStream ->
-                        inStream.use {
-                            it.reader().readText()
-                        }
-                    }
-
-                    if (json != null) {
-                        try {
-                            val gson = Gson()
-                            val map = gson.fromJson(json, Map::class.java)
-                                .map { (k, v) -> k.toString() to v }
-                                .toMap()
-
-                            val id = newConfig()
-                            preferences.forAutoSkillConfig(id).import(map)
-                        } catch (e: Exception) {
-                            ++failed
-                            logger.error("Import Failed", e)
-                        }
-                    }
+        uris.forEach { uri ->
+            val json = contentResolver.openInputStream(uri)?.use { inStream ->
+                inStream.use {
+                    it.reader().readText()
                 }
+            }
 
-                if (failed > 0) {
-                    Toast.makeText(this, "Import Failed for $failed item(s)", Toast.LENGTH_SHORT)
-                        .show()
+            if (json != null) {
+                try {
+                    val gson = Gson()
+                    val map = gson.fromJson(json, Map::class.java)
+                        .map { (k, v) -> k.toString() to v }
+                        .toMap()
+
+                    val id = newConfig()
+                    preferences.forAutoSkillConfig(id).import(map)
+                } catch (e: Exception) {
+                    ++failed
+                    logger.error("Import Failed", e)
                 }
             }
         }
 
-        super.onActivityResult(requestCode, resultCode, data)
+        if (failed > 0) {
+            Toast.makeText(this, "Import Failed for $failed item(s)", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -168,15 +153,7 @@ class AutoSkillListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_auto_skill_import -> {
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "*/*"
-                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                }
-                startActivityForResult(
-                    intent,
-                    AUTO_SKILL_IMPORT
-                )
+                autoSkillImport.launch("*/*")
                 true
             }
             else -> super.onOptionsItemSelected(item)

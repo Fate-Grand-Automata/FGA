@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -28,8 +29,6 @@ class MainActivity : AppCompatActivity(),
 
     @Inject
     lateinit var cutoutManager: CutoutManager
-
-    private val requestMediaProjection = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,18 +73,11 @@ class MainActivity : AppCompatActivity(),
         )
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == requestMediaProjection) {
-            if (resultCode != RESULT_OK) {
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
-                ScriptRunnerService.Instance?.notification?.hide()
-                return
-            }
-
-            ScriptRunnerService.Instance?.start(data)
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
+    val startMediaProjection = registerForActivityResult(StartMediaProjection()) { intent ->
+        if (intent == null) {
+            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+            ScriptRunnerService.Instance?.notification?.hide()
+        } else ScriptRunnerService.Instance?.start(intent)
     }
 
     private fun checkPermissions() {
@@ -156,10 +148,7 @@ class MainActivity : AppCompatActivity(),
                 instance.notification.show()
 
                 // This initiates a prompt dialog for the user to confirm screen projection.
-                startActivityForResult(
-                    instance.mediaProjectionManager.createScreenCaptureIntent(),
-                    requestMediaProjection
-                )
+                startMediaProjection.launch()
             } else if (instance.start()) {
                 instance.notification.show()
             }

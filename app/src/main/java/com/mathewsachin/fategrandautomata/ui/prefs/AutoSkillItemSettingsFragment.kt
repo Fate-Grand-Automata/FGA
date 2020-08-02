@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +9,7 @@ import android.view.MenuItem
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -19,9 +19,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.ui.SkillLevelActivity
-import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillCommandKey
-import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
-import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.RequestAutoSkillMaker
 import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
 import com.mathewsachin.fategrandautomata.util.*
 import kotlinx.coroutines.MainScope
@@ -36,6 +33,12 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var storageDirs: StorageDirs
+
+    val startAutoSkillMaker = registerForActivityResult(StartAutoSkillMaker()) { cmd ->
+        if (cmd != null) {
+            setAutoSkillCommand(cmd)
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -121,18 +124,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            RequestAutoSkillMaker -> {
-                if (resultCode == RESULT_OK) {
-                    setAutoSkillCommand(data?.getStringExtra(AutoSkillCommandKey) ?: "")
-                }
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     private fun onSkillCmdClick() {
         val layout = FrameLayout(requireActivity())
 
@@ -156,7 +147,9 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             .setView(layout)
             .setPositiveButton(android.R.string.yes) { _, _ -> setAutoSkillCommand(editText?.text.toString()) }
             .setNegativeButton(android.R.string.no, null)
-            .setNeutralButton("Maker") { _, _ -> openAutoSkillMaker() }
+            .setNeutralButton("Maker") { _, _ ->
+                startAutoSkillMaker.launch()
+            }
             .setOnDismissListener {
                 // Clear the persisted information
                 editText = null
@@ -169,14 +162,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         autoSkillPrefs.skillCommand = Cmd
 
         updateSkillCmdSummary()
-    }
-
-    private fun openAutoSkillMaker() {
-        val intent = Intent(requireActivity(), AutoSkillMakerActivity::class.java)
-        startActivityForResult(
-            intent,
-            RequestAutoSkillMaker
-        )
     }
 
     private fun updateSkillCmdSummary() {
