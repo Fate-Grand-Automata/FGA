@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/mainFragment"
+    tools:ignore="PrivateResource">
 
     <fragment
         android:id="@+id/mainFragment"
@@ -12,13 +13,25 @@
         tools:layout="@layout/content_main">
         <action
             android:id="@+id/action_mainFragment_to_refillSettingsFragment"
-            app:destination="@id/refillSettingsFragment" />
+            app:destination="@id/refillSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_mainFragment_to_moreSettingsFragment"
-            app:destination="@id/moreSettingsFragment" />
+            app:destination="@id/moreSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_mainFragment_to_autoSkillListFragment"
-            app:destination="@id/autoSkillListFragment" />
+            app:destination="@id/autoSkillListFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/refillSettingsFragment"
@@ -30,7 +43,11 @@
         android:label="More options">
         <action
             android:id="@+id/action_moreSettingsFragment_to_fineTuneSettingsFragment"
-            app:destination="@id/fineTuneSettingsFragment" />
+            app:destination="@id/fineTuneSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/fineTuneSettingsFragment"
@@ -39,5 +56,6 @@
     <fragment
         android:id="@+id/autoSkillListFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListFragment"
-        android:label="AutoSkill List" />
+        android:label="AutoSkill List"
+        tools:layout="@layout/autoskill_list" />
 </navigation>

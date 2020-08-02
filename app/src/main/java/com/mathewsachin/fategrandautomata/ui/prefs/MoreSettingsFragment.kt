@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -34,7 +35,14 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
         }
 
         findPreference<Preference>(getString(prefKeys.pref_nav_fine_tune))?.let {
-            it.fragment = FineTuneSettingsFragment::class.java.name
+            it.setOnPreferenceClickListener {
+                val action = MoreSettingsFragmentDirections
+                    .actionMoreSettingsFragmentToFineTuneSettingsFragment()
+
+                findNavController().navigate(action)
+
+                true
+            }
         }
     }
 
