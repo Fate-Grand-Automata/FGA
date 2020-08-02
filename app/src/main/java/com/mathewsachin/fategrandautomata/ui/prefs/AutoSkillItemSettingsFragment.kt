@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.Preference
@@ -21,10 +21,10 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
 import com.mathewsachin.fategrandautomata.util.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
@@ -120,9 +120,11 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.setOnPreferenceClickListener {
-                val intent = Intent(activity, CardPriorityActivity::class.java)
-                intent.putExtra("k", args.key)
-                startActivity(intent)
+                val action = AutoSkillItemSettingsFragmentDirections
+                    .actionAutoSkillItemSettingsFragmentToCardPriorityFragment(args.key)
+
+                findNavController().navigate(action)
+
                 true
             }
         }
@@ -196,7 +198,11 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         // Update Card Priority
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
-            it.summary = autoSkillPrefs.cardPriority
+            lifecycleScope.launch {
+                // If not using a delay, this code runs before CardPriorityFragment's onPause
+                delay(300)
+                it.summary = autoSkillPrefs.cardPriority
+            }
         }
 
         findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {

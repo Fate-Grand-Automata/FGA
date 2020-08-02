@@ -80,11 +80,26 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_autoSkillItemSettingsFragment_to_cardPriorityFragment"
+            app:destination="@id/cardPriorityFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/skillLevelSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.SkillLevelSettingsFragment"
         android:label="Skill Levels">
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardPriorityFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityFragment"
+        android:label="Card Priority">
         <argument
             android:name="key"
             app:argType="string" />

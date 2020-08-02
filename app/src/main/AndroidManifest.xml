@@ -27,17 +27,6 @@
             android:screenOrientation="userLandscape"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".ui.AutoSkillItemActivity"
-            android:label="Edit AutoSkill Item"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.card_priority.CardPriorityActivity"
-            android:label="Card Priority" />
-        <activity
-            android:name=".ui.SkillLevelActivity"
-            android:label="Skill Levels"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".accessibility.ScriptRunnerService"
