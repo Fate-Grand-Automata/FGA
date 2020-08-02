@@ -10,6 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.util.CutoutManager
 import com.mathewsachin.fategrandautomata.util.appComponent
@@ -20,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var cutoutManager: CutoutManager
 
+    private lateinit var appBarConfiguration: AppBarConfiguration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,11 +35,21 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        val navController: NavController = findNavController(R.id.nav_host_fragment)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
         // Only once
         if (savedInstanceState == null) {
             checkPermissions()
             ignoreBatteryOptimizations()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration)
+                || super.onSupportNavigateUp()
     }
 
     override fun onAttachedToWindow() {
