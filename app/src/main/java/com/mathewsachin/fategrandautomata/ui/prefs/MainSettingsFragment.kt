@@ -1,16 +1,16 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
 import com.mathewsachin.fategrandautomata.ui.UpdateCheckViewModel
-import com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListActivity
 import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.coroutines.launch
@@ -34,18 +34,36 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.main_preferences, rootKey)
 
         findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
-            it.fragment = RefillSettingsFragment::class.java.name
+            it.setOnPreferenceClickListener {
+                val action = MainFragmentDirections
+                    .actionMainFragmentToRefillSettingsFragment()
+
+                findNavController().navigate(action)
+
+                true
+            }
         }
 
         findPreference<Preference>(getString(prefKeys.pref_nav_auto_skill))?.let {
             it.setOnPreferenceClickListener {
-                startActivity(Intent(activity, AutoSkillListActivity::class.java))
+                val action = MainFragmentDirections
+                    .actionMainFragmentToAutoSkillListFragment()
+
+                findNavController().navigate(action)
+
                 true
             }
         }
 
         findPreference<Preference>(getString(prefKeys.pref_nav_more))?.let {
-            it.fragment = MoreSettingsFragment::class.java.name
+            it.setOnPreferenceClickListener {
+                val action = MainFragmentDirections
+                    .actionMainFragmentToMoreSettingsFragment()
+
+                findNavController().navigate(action)
+
+                true
+            }
         }
     }
 
