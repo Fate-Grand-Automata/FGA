@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/autoSkillItemSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment"
-        android:label="Edit AutoSkill Item">
+        android:label="Edit config">
         <argument
             android:name="key"
             app:argType="string" />
@@ -87,6 +87,14 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_autoSkillItemSettingsFragment_self"
+            app:destination="@id/autoSkillItemSettingsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/autoSkillListFragment" />
     </fragment>
     <fragment
         android:id="@+id/skillLevelSettingsFragment"
