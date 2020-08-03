@@ -1,14 +1,13 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityActivity
 import com.mathewsachin.fategrandautomata.util.appComponent
 import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
@@ -26,15 +25,15 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.app_preferences, rootKey)
 
-        findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
+        findPreference<Preference>(getString(prefKeys.pref_nav_fine_tune))?.let {
             it.setOnPreferenceClickListener {
-                startActivity(Intent(activity, CardPriorityActivity::class.java))
+                val action = MoreSettingsFragmentDirections
+                    .actionMoreSettingsFragmentToFineTuneSettingsFragment()
+
+                findNavController().navigate(action)
+
                 true
             }
-        }
-
-        findPreference<Preference>(getString(prefKeys.pref_nav_fine_tune))?.let {
-            it.fragment = FineTuneSettingsFragment::class.java.name
         }
     }
 

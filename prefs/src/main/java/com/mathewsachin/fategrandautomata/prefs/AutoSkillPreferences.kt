@@ -22,7 +22,7 @@ internal class AutoSkillPreferences(
             context
         )
 
-    override val name by prefs.string(R.string.pref_autoskill_name, "--")
+    override var name by prefs.string(R.string.pref_autoskill_name, "--")
 
     override var skillCommand by prefs.string(R.string.pref_autoskill_cmd)
 
@@ -47,7 +47,7 @@ internal class AutoSkillPreferences(
         prefs.prefs.export()
 
     override fun import(map: Map<String, *>) =
-        prefs.prefs.edit(commit = true) {
+        prefs.prefs.edit {
             import(map)
         }
 

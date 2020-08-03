@@ -1,22 +1,19 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_list
 
-import android.app.Activity
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
-import android.view.ActionMode
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.AutoSkillItemActivity
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.autoskill_list.*
 import mu.KotlinLogging
@@ -26,19 +23,29 @@ import mva3.adapter.util.Mode
 import java.util.*
 import javax.inject.Inject
 
-const val AUTO_SKILL_IMPORT = 2047
-
 private val logger = KotlinLogging.logger {}
 
-class AutoSkillListActivity : AppCompatActivity() {
+class AutoSkillListFragment : Fragment() {
     @Inject
     lateinit var preferences: IPreferences
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        context.appComponent.inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.autoskill_list)
 
-        appComponent.inject(this)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        inflater.inflate(R.layout.autoskill_list, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         autoskill_add_btn.setOnClickListener {
             addOnBtnClick()
@@ -47,8 +54,8 @@ class AutoSkillListActivity : AppCompatActivity() {
         initView()
     }
 
-    override fun onRestart() {
-        super.onRestart()
+    override fun onResume() {
+        super.onResume()
 
         refresh()
     }
@@ -69,7 +76,7 @@ class AutoSkillListActivity : AppCompatActivity() {
             if (count == 0) {
                 actionMode?.finish()
             } else actionMode?.let {
-                it.title = title
+                it.title = requireActivity().title
                 it.subtitle = "$count selected"
             }
         }
@@ -77,12 +84,10 @@ class AutoSkillListActivity : AppCompatActivity() {
         adapter.addSection(listSection)
 
         auto_skill_list_view.adapter = adapter
-        auto_skill_list_view.layoutManager = LinearLayoutManager(this)
+        auto_skill_list_view.layoutManager = LinearLayoutManager(requireContext())
         auto_skill_list_view.addItemDecoration(
-            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
-
-        refresh()
     }
 
     private fun refresh() {
@@ -109,74 +114,53 @@ class AutoSkillListActivity : AppCompatActivity() {
     }
 
     private fun editItem(Id: String) {
-        val intent = Intent(this, AutoSkillItemActivity::class.java)
-        intent.putExtra(AutoSkillItemActivity::autoSkillItemKey.name, Id)
+        val action = AutoSkillListFragmentDirections
+            .actionAutoSkillListFragmentToAutoSkillItemSettingsFragment(Id)
 
-        startActivity(intent)
+        findNavController().navigate(action)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTO_SKILL_IMPORT && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                val clipData = data.clipData
+    val autoSkillImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+        var failed = 0
 
-                val uris = if (clipData != null) {
-                    (0 until clipData.itemCount)
-                        .map { clipData.getItemAt(it).uri }
-                } else listOf(data.data)
-
-                var failed = 0
-
-                uris.forEach { uri ->
-                    val json = contentResolver.openInputStream(uri)?.use { inStream ->
-                        inStream.use {
-                            it.reader().readText()
-                        }
-                    }
-
-                    if (json != null) {
-                        try {
-                            val gson = Gson()
-                            val map = gson.fromJson(json, Map::class.java)
-                                .map { (k, v) -> k.toString() to v }
-                                .toMap()
-
-                            val id = newConfig()
-                            preferences.forAutoSkillConfig(id).import(map)
-                        } catch (e: Exception) {
-                            ++failed
-                            logger.error("Import Failed", e)
-                        }
-                    }
+        uris.forEach { uri ->
+            val json = requireContext().contentResolver.openInputStream(uri)?.use { inStream ->
+                inStream.use {
+                    it.reader().readText()
                 }
+            }
 
-                if (failed > 0) {
-                    Toast.makeText(this, "Import Failed for $failed item(s)", Toast.LENGTH_SHORT)
-                        .show()
+            if (json != null) {
+                try {
+                    val gson = Gson()
+                    val map = gson.fromJson(json, Map::class.java)
+                        .map { (k, v) -> k.toString() to v }
+                        .toMap()
+
+                    val id = newConfig()
+                    preferences.forAutoSkillConfig(id).import(map)
+                } catch (e: Exception) {
+                    ++failed
+                    logger.error("Import Failed", e)
                 }
             }
         }
 
-        super.onActivityResult(requestCode, resultCode, data)
+        if (failed > 0) {
+            Toast.makeText(requireContext(), "Import Failed for $failed item(s)", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.autoskill_list_menu, menu)
-        return true
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.autoskill_list_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_auto_skill_import -> {
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    type = "*/*"
-                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                }
-                startActivityForResult(
-                    intent,
-                    AUTO_SKILL_IMPORT
-                )
+                autoSkillImport.launch("*/*")
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -188,7 +172,7 @@ class AutoSkillListActivity : AppCompatActivity() {
     fun enterActionMode() {
         adapter.startActionMode()
         adapter.setSelectionMode(Mode.MULTIPLE)
-        actionMode = startActionMode(actionModeCallback)
+        actionMode = requireActivity().startActionMode(actionModeCallback)
     }
 
     val actionModeCallback = object : ActionMode.Callback {
@@ -197,7 +181,7 @@ class AutoSkillListActivity : AppCompatActivity() {
                 R.id.action_auto_skill_delete -> {
                     val toDelete = listSection.selectedItems
 
-                    AlertDialog.Builder(this@AutoSkillListActivity)
+                    AlertDialog.Builder(requireContext())
                         .setMessage("Are you sure you want to delete ${toDelete.size} configuration(s)?")
                         .setTitle("Confirm Deletion")
                         .setPositiveButton("Delete") { _, _ ->
