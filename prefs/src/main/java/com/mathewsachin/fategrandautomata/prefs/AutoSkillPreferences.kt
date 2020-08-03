@@ -22,7 +22,7 @@ internal class AutoSkillPreferences(
             context
         )
 
-    override val name by prefs.string(R.string.pref_autoskill_name, "--")
+    override var name by prefs.string(R.string.pref_autoskill_name, "--")
 
     override var skillCommand by prefs.string(R.string.pref_autoskill_cmd)
 

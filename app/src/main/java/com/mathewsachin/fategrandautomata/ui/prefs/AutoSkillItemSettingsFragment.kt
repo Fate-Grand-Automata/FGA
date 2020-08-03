@@ -26,6 +26,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
@@ -259,6 +260,22 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             }
             R.id.action_auto_skill_export -> {
                 autoSkillExport.launch("auto_skill_${autoSkillPrefs.name}.json")
+                true
+            }
+            R.id.action_auto_skill_copy -> {
+                val guid = UUID.randomUUID().toString()
+                preferences.addAutoSkillConfig(guid)
+                val newConfig = preferences.forAutoSkillConfig(guid)
+
+                val map = autoSkillPrefs.export()
+                newConfig.import(map)
+                newConfig.name += " (Copy)"
+
+                val action = AutoSkillItemSettingsFragmentDirections
+                    .actionAutoSkillItemSettingsFragmentSelf(guid)
+
+                findNavController().navigate(action)
+
                 true
             }
             else -> super.onOptionsItemSelected(item)
