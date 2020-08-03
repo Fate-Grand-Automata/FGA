@@ -46,6 +46,12 @@
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
+        app:icon="@drawable/ic_card"
+        app:key="@string/pref_stop_on_ce_drop"
+        app:title="Stop on CE drop" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
         app:icon="@drawable/ic_diamond"
         app:key="@string/pref_stop_bond10"
         app:title="Stop on Bond 10" />

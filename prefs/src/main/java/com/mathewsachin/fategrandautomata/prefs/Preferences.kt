@@ -72,6 +72,8 @@ class PreferencesImpl @Inject constructor(
 
     override val stopAfterBond10 by prefs.bool(R.string.pref_stop_bond10)
 
+    override val stopOnCEDrop by prefs.bool(R.string.pref_stop_on_ce_drop)
+
     override val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
 
     override val refill: IRefillPreferences =
