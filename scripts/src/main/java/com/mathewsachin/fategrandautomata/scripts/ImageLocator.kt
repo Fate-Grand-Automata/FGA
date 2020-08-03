@@ -91,4 +91,10 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
     val stun get() = load("stun.png")
 
     val selectedParty get() = load("selected_party.png")
+
+    val silverXP get() = load("SilverXP.png")
+
+    val goldXP get() = load("GoldXP.png")
+
+    val giftBoxCheck get() = load("gift_box_check.png")
 }

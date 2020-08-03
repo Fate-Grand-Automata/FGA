@@ -70,6 +70,7 @@
         <item>Lottery</item>
         <item>Friend Gacha</item>
         <item>Support Image Maker</item>
+        <item>Gift Box</item>
     </array>
 
     <array name="script_mode_values">
@@ -77,6 +78,7 @@
         <item>Lottery</item>
         <item>FriendGacha</item>
         <item>SupportImageMaker</item>
+        <item>GiftBox</item>
     </array>
 
     <array name="party_labels">

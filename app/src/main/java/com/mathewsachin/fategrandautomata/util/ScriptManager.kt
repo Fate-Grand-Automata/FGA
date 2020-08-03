@@ -13,10 +13,7 @@ import com.mathewsachin.fategrandautomata.dagger.script.ScreenshotModule
 import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
 import com.mathewsachin.fategrandautomata.dagger.service.ServiceScope
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
@@ -93,6 +90,7 @@ class ScriptManager @Inject constructor(
                 supportImgMakerCallback(tempDir)
             }
         }
+        ScriptModeEnum.GiftBox -> AutoGiftBox(exitManager, platformImpl, fgAutomataApi)
         else -> AutoBattle(exitManager, platformImpl, fgAutomataApi)
     }
 

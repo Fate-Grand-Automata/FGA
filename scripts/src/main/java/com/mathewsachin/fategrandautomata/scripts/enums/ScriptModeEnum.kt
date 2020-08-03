@@ -4,5 +4,6 @@ enum class ScriptModeEnum {
     Battle,
     Lottery,
     FriendGacha,
-    SupportImageMaker
+    SupportImageMaker,
+    GiftBox
 }
