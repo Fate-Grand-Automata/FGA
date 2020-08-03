@@ -70,8 +70,6 @@ class PreferencesImpl @Inject constructor(
 
     override val withdrawEnabled by prefs.bool(R.string.pref_withdraw_enabled)
 
-    override val stopAfterBond10 by prefs.bool(R.string.pref_stop_bond10)
-
     override val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
 
     override val refill: IRefillPreferences =

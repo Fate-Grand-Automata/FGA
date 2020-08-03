@@ -52,8 +52,11 @@ open class AutoBattle(
             { isInResult() } to { result() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
+            { isRepeatScreen() } to { repeatQuest() },
             { needsToWithdraw() } to { withdraw() },
-            { needsToStorySkip() } to { skipStory() }
+            { needsToStorySkip() } to { skipStory() },
+            { isFriendRequestScreen() } to { skipFriendRequestScreen() },
+            { isCeReward() } to { ceReward() }
             //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
 
@@ -147,58 +150,47 @@ open class AutoBattle(
      */
     private fun result() {
         // Validator document https://github.com/29988122/Fate-Grand-Order_Lua/wiki/In-Game-Result-Screen-Flow for detail.
-        game.resultNextClick.click(55)
+        game.resultNextClick.click(20)
+    }
 
-        // Checking if there was a Bond CE reward
-        if (game.resultCeRewardRegion.exists(images.bond10Reward)) {
-            if (prefs.stopAfterBond10) {
-                throw ScriptExitException("Bond 10 CE GET!")
-            }
-
-            game.resultCeRewardCloseClick.click()
-
-            // Still need to proceed through reward screen.
-            game.resultNextClick.click(35)
-        }
-
-        5.seconds.wait()
-
-        // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
-        if (game.resultFriendRequestRegion.exists(images.friendRequest)) {
-            game.resultFriendRequestRejectClick.click()
-        }
-
-        1.seconds.wait()
-
-        // Searches for the Continue option after select Free Quests
+    private fun isRepeatScreen() =
         when (prefs.gameServer) {
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
-                if (game.continueRegion.exists(images.confirm)) {
-                    // Needed to show we don't need to enter the "StartQuest" function
-                    isContinuing = true
-
-                    // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
-                    game.continueClick.click()
-                    battle.resetState()
-
-                    showRefillsUsedMessage()
-
-                    // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
-                    afterSelectingQuest()
-
-                    return
-                }
+                game.continueRegion.exists(images.confirm)
             }
+            else -> false
         }
 
-        // TODO: Move to outer loop
-        // Quest Completion reward. Exits the screen when it is presented.
-        if (game.resultCeRewardRegion.exists(images.bond10Reward)) {
-            game.resultCeRewardCloseClick.click()
-            1.seconds.wait()
-            game.resultCeRewardCloseClick.click()
-        }
+    private fun repeatQuest() {
+        // Needed to show we don't need to enter the "StartQuest" function
+        isContinuing = true
+
+        // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
+        game.continueClick.click()
+        battle.resetState()
+
+        showRefillsUsedMessage()
+
+        // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
+        afterSelectingQuest()
+    }
+
+    private fun isFriendRequestScreen() =
+        game.resultFriendRequestRegion.exists(images.friendRequest)
+
+    private fun skipFriendRequestScreen() {
+        // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
+        game.resultFriendRequestRejectClick.click()
+    }
+
+    private fun isCeReward() =
+        game.resultCeRewardRegion.exists(images.bond10Reward)
+
+    private fun ceReward() {
+        game.resultCeRewardCloseClick.click()
+        1.seconds.wait()
+        game.resultCeRewardCloseClick.click()
     }
 
     /**
