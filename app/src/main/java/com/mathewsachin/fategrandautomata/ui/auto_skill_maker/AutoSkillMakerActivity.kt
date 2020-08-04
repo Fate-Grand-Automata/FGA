@@ -1,7 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -12,19 +10,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
+import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.autoskill_maker_atk.*
 import kotlinx.android.synthetic.main.autoskill_maker_main.*
 import kotlinx.android.synthetic.main.autoskill_maker_order_change.*
 import kotlinx.android.synthetic.main.autoskill_maker_target.*
+import javax.inject.Inject
 
 private enum class AutoSkillMakerState {
     Main, Atk, Target, OrderChange
 }
-
-const val RequestAutoSkillMaker = 1027
-const val AutoSkillCommandKey = "AutoSkillCommandKey"
 
 class AutoSkillMakerActivity : AppCompatActivity() {
     // These fields are used to Save/Restore state of the Activity
@@ -43,6 +42,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     private var xSub: Array<Button> = arrayOf()
 
     val skillCmdVm: AutoSkillMakerHistoryViewModel by viewModels()
+    val args: AutoSkillMakerActivityArgs by navArgs()
+
+    @Inject
+    lateinit var prefs: IPreferences
 
     /**
      * Notifies that an enemy target was selected when undoing, so a new command should not be added
@@ -52,6 +55,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.autoskill_maker)
+
+        appComponent.inject(this)
 
         val recyclerView = auto_skill_history
         recyclerView.adapter = skillCmdVm.adapter
@@ -93,9 +98,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         autoskill_done_btn.setOnClickListener {
             addNpsToSkillCmd()
 
-            val res = Intent()
-            res.putExtra(AutoSkillCommandKey, skillCmdVm.getSkillCmdString())
-            setResult(Activity.RESULT_OK, res)
+            val autoSkillPrefs = prefs.forAutoSkillConfig(args.key)
+            autoSkillPrefs.skillCommand = skillCmdVm.getSkillCmdString()
             finish()
         }
 

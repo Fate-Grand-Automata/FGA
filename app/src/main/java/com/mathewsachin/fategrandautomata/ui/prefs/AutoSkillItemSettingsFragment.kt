@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.gson.Gson
@@ -22,8 +20,6 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
@@ -38,12 +34,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     lateinit var storageDirs: StorageDirs
 
     val args: AutoSkillItemSettingsFragmentArgs by navArgs()
-
-    val startAutoSkillMaker = registerForActivityResult(StartAutoSkillMaker()) { cmd ->
-        if (cmd != null) {
-            setAutoSkillCommand(cmd)
-        }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -69,40 +59,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private val scope = MainScope()
-
-    override fun onDestroy() {
-        scope.cancel()
-        super.onDestroy()
-    }
-
     private lateinit var autoSkillPrefs: IAutoSkillPreferences
-    private var editTextVisibleKey = ""
-    private var restoredEditTextContent: String? = null
-
-    private var editText: EditText? = null
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        if (editText != null) {
-            outState.putString(::editText.name, editText?.text.toString())
-            outState.putBoolean(::editTextVisibleKey.name, true)
-        }
-    }
-
-    // We don't want the user to lose what they typed on a screen rotation
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        if (savedInstanceState != null) {
-            if (savedInstanceState.getBoolean(::editTextVisibleKey.name, false)) {
-                restoredEditTextContent = savedInstanceState.getString(::editText.name, "")
-
-                onSkillCmdClick()
-            }
-        }
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = args.key
@@ -111,13 +68,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
 
         preferredSupportOnCreate()
-
-        findPreference<Preference>(getString(prefKeys.pref_autoskill_cmd))?.let {
-            it.setOnPreferenceClickListener {
-                onSkillCmdClick()
-                true
-            }
-        }
 
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.setOnPreferenceClickListener {
@@ -142,56 +92,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun onSkillCmdClick() {
-        val layout = FrameLayout(requireActivity())
-
-        editText = EditText(requireActivity()).apply {
-            setText(restoredEditTextContent ?: autoSkillPrefs.skillCommand)
-            setSelection(text.length)
-
-            val lp = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
-            val margin = resources.getDimensionPixelSize(R.dimen.dialog_margin)
-            lp.setMargins(margin, 0, margin, 0)
-            layoutParams = lp
-        }
-
-        layout.addView(editText)
-
-        AlertDialog.Builder(requireActivity())
-            .setTitle("Skill Command")
-            .setView(layout)
-            .setPositiveButton(android.R.string.yes) { _, _ -> setAutoSkillCommand(editText?.text.toString()) }
-            .setNegativeButton(android.R.string.no, null)
-            .setNeutralButton("Maker") { _, _ ->
-                startAutoSkillMaker.launch()
-            }
-            .setOnDismissListener {
-                // Clear the persisted information
-                editText = null
-                restoredEditTextContent = null
-            }
-            .show()
-    }
-
-    private fun setAutoSkillCommand(Cmd: String) {
-        autoSkillPrefs.skillCommand = Cmd
-
-        updateSkillCmdSummary()
-    }
-
-    private fun updateSkillCmdSummary() {
-        findPreference<Preference>(getString(prefKeys.pref_autoskill_cmd))?.let {
-            it.summary = autoSkillPrefs.skillCommand
-        }
-    }
-
     override fun onResume() {
         super.onResume()
-
-        updateSkillCmdSummary()
 
         if (storageDirs.shouldExtractSupportImages) {
             performSupportImageExtraction()
@@ -206,6 +108,10 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        findPreference<EditTextPreference>(getString(R.string.pref_autoskill_cmd))?.let {
+            it.text = autoSkillPrefs.skillCommand
+        }
+
         findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
             it.summary = listOf(
                 autoSkillPrefs.skill1Max,
@@ -216,7 +122,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun performSupportImageExtraction() {
-        scope.launch {
+        lifecycleScope.launch {
             SupportImageExtractor(requireContext(), storageDirs).extract()
             Toast.makeText(activity, "Support Images Extracted Successfully", Toast.LENGTH_SHORT)
                 .show()
@@ -286,5 +192,15 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         preferences.removeAutoSkillConfig(AutoSkillItemKey)
 
         findNavController().popBackStack()
+    }
+
+    override fun onDisplayPreferenceDialog(preference: Preference) {
+        if (preference.key == getString(R.string.pref_autoskill_cmd)) {
+            val dialogFragment = SkillCmdPreferenceDialogFragment().apply {
+                autoSkillKey = args.key
+            }
+            dialogFragment.setTargetFragment(this, 0)
+            dialogFragment.show(parentFragmentManager, null)
+        } else super.onDisplayPreferenceDialog(preference)
     }
 }

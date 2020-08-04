@@ -95,6 +95,9 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/autoSkillListFragment" />
+        <action
+            android:id="@+id/action_autoSkillItemSettingsFragment_to_autoSkillMakerActivity"
+            app:destination="@id/autoSkillMakerActivity" />
     </fragment>
     <fragment
         android:id="@+id/skillLevelSettingsFragment"
@@ -112,4 +115,12 @@
             android:name="key"
             app:argType="string" />
     </fragment>
+    <activity
+        android:id="@+id/autoSkillMakerActivity"
+        android:name="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity"
+        android:label="AutoSkillMakerActivity">
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </activity>
 </navigation>
