@@ -13,13 +13,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
+import androidx.preference.PreferenceDialogFragmentCompat
 import androidx.preference.PreferenceFragmentCompat
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.util.*
+import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
+import com.mathewsachin.fategrandautomata.util.appComponent
+import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
+import com.mathewsachin.fategrandautomata.util.preferredSupportOnResume
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
@@ -133,7 +137,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.autoskill_item_menu, menu)
         inflater.inflate(R.menu.support_menu, menu)
-        inflater.inflate(R.menu.support_common_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -141,18 +144,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         return when (item.itemId) {
             R.id.action_support_extract_defaults -> {
                 performSupportImageExtraction()
-                true
-            }
-            R.id.action_clear_support_servants -> {
-                findServantList()?.values = emptySet()
-                true
-            }
-            R.id.action_clear_support_ces -> {
-                findCeList()?.values = emptySet()
-                true
-            }
-            R.id.action_clear_support_friends -> {
-                findFriendNamesList()?.values = emptySet()
                 true
             }
             R.id.action_auto_skill_delete -> {
@@ -195,12 +186,27 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
-        if (preference.key == getString(R.string.pref_autoskill_cmd)) {
-            val dialogFragment = SkillCmdPreferenceDialogFragment().apply {
-                autoSkillKey = args.key
-            }
+        fun prepare(dialogFragment: PreferenceDialogFragmentCompat) {
             dialogFragment.setTargetFragment(this, 0)
             dialogFragment.show(parentFragmentManager, null)
-        } else super.onDisplayPreferenceDialog(preference)
+        }
+
+        when (preference.key) {
+            getString(R.string.pref_support_pref_ce),
+            getString(R.string.pref_support_pref_servant),
+            getString(R.string.pref_support_friend_names) -> {
+                ClearMultiSelectListPreferenceDialog().apply {
+                    setKey(preference.key)
+                    prepare(this)
+                }
+            }
+            getString(R.string.pref_autoskill_cmd) -> {
+                SkillCmdPreferenceDialogFragment().apply {
+                    autoSkillKey = args.key
+                    prepare(this)
+                }
+            }
+            else -> super.onDisplayPreferenceDialog(preference)
+        }
     }
 }

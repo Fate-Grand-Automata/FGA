@@ -19,11 +19,9 @@
     <string name="pref_refill_resource">refill_resource</string>
 
     <string name="pref_support_pref_servant">support_pref_servant_list</string>
-    <string name="pref_support_pref_servant_clear">support_pref_servant_clear</string>
 
     <string name="pref_support_pref_ce">support_pref_ce_list</string>
     <string name="pref_support_pref_ce_mlb">support_pref_ce_mlb</string>
-    <string name="pref_support_pref_ce_clear">support_pref_ce_clear</string>
 
     <string name="pref_support_skill_max_1">support_skill_max_1</string>
     <string name="pref_support_skill_max_2">support_skill_max_2</string>
