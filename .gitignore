@@ -13,3 +13,6 @@
 /captures
 .externalNativeBuild
 .cxx
+*.apk
+app/debug/output-metadata.json
+app/release/output-metadata.json
