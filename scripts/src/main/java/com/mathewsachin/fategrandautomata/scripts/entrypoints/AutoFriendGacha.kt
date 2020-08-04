@@ -22,6 +22,10 @@ class AutoFriendGacha(
     override fun script(): Nothing {
         scaling.init()
 
+        if (prefs.friendPtsOnly) {
+            isInFriendPtsSummon()
+        }
+
         first10SummonClick.click()
         0.3.seconds.wait()
         okClick.click()
@@ -36,6 +40,16 @@ class AutoFriendGacha(
                 }
                 else -> skipRapidClick.click(15)
             }
+        }
+    }
+
+    private fun isInFriendPtsSummon() {
+        val startRightSwipeLoc = Location(300, 500)
+        val endRightSwipeLoc = Location(2000, 500)
+
+        while (!game.friendPtSummonCheck.exists(images.friendSummon)) {
+            swipe(startRightSwipeLoc, endRightSwipeLoc)
+            1.0.seconds.wait()
         }
     }
 }
