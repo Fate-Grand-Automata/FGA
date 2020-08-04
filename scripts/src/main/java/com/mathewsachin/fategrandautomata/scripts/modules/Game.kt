@@ -111,4 +111,5 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val resultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
 
     val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
+    val friendPtSummonCheck = Region(1380, 1220, 75, 75)
 }

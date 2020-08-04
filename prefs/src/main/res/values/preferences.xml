@@ -9,6 +9,7 @@
     <string name="pref_story_skip">story_skip</string>
     <string name="pref_stop_bond10">stop_bond10</string>
     <string name="pref_stop_on_ce_drop">stop_on_ce_drop</string>
+    <string name="pref_friend_pts">friend_pts_summons_only</string>
     <string name="pref_boost_item">selected_boost_item</string>
     <string name="pref_withdraw_enabled">withdraw_enabled</string>
 
