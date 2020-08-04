@@ -31,16 +31,16 @@ abstract class EntryPoint(
         } catch (e: ScriptAbortException) {
             // Script stopped by user
         } catch (e: ScriptExitException) {
-            scriptExitListener?.invoke()
+            scriptExitListener.invoke(e)
 
             // Show the message box only if there is some message
-            if (!e.message.isNullOrBlank()) {
+            if (!e.message.isBlank()) {
                 platformImpl.messageBox("Script Exited", e.message)
             }
         } catch (e: Exception) {
             println(e.messageAndStackTrace)
 
-            scriptExitListener?.invoke()
+            scriptExitListener.invoke(e)
 
             platformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
         }
@@ -61,5 +61,5 @@ abstract class EntryPoint(
      * A listener function, which is called when the script detected an exit condition or when an
      * unexpected error occurred.
      */
-    var scriptExitListener: (() -> Unit)? = null
+    var scriptExitListener: (Exception?) -> Unit = { }
 }

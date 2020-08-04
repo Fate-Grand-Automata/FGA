@@ -1,6 +1,9 @@
 package com.mathewsachin.fategrandautomata.dagger.script
 
-import com.mathewsachin.fategrandautomata.util.ScriptLaunchParams
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import dagger.Subcomponent
 
@@ -14,6 +17,11 @@ interface ScriptComponent {
         fun build(): ScriptComponent
     }
 
-    @ScriptScope
-    fun getScriptLaunchParams(): ScriptLaunchParams
+    fun battle(): AutoBattle
+
+    fun friendGacha(): AutoFriendGacha
+
+    fun lottery(): AutoLottery
+
+    fun supportImageMaker(): SupportImageMaker
 }

@@ -10,6 +10,7 @@ import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.ScriptExitException
+import javax.inject.Inject
 import kotlin.math.absoluteValue
 import kotlin.time.seconds
 
@@ -23,7 +24,7 @@ fun IFGAutomataApi.isInSupport(): Boolean {
 /**
  * Script for starting quests, selecting the support and doing battles.
  */
-open class AutoBattle(
+open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi

@@ -3,12 +3,13 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.*
+import javax.inject.Inject
 import kotlin.time.seconds
 
 /**
  * Continually opens lottery boxes until either the present box is full or there is no currency left.
  */
-class AutoLottery(
+class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi

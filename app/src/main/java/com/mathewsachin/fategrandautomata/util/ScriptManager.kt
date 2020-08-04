@@ -10,28 +10,19 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.dagger.script.ScreenshotModule
+import com.mathewsachin.fategrandautomata.dagger.script.ScriptComponent
 import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
 import com.mathewsachin.fategrandautomata.dagger.service.ServiceScope
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
-import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
-import java.io.File
 import javax.inject.Inject
 import kotlin.time.seconds
-
-data class ScriptLaunchParams @Inject constructor(
-    val exitManager: ExitManager,
-    val fgAutomataApi: IFGAutomataApi
-)
 
 @ServiceScope
 class ScriptManager @Inject constructor(
@@ -47,7 +38,7 @@ class ScriptManager @Inject constructor(
     private var entryPoint: EntryPoint? = null
     private var recording: AutoCloseable? = null
 
-    private fun onScriptExit() {
+    private fun onScriptExit(e: Exception?) {
         userInterface.setPlayIcon()
 
         imageLoader.clearSupportCache()
@@ -62,46 +53,22 @@ class ScriptManager @Inject constructor(
         }
 
         recording = null
-    }
 
-    private fun getSupportImagTempDir(context: Context): File {
-        val dir = File(context.cacheDir, "support")
-
-        if (!dir.exists()) {
-            dir.mkdirs()
+        if (e is SupportImageMakerExitException) {
+            handler.post { showSupportImageNamer(userInterface, storageDirs) }
         }
-
-        return dir
     }
 
-    private fun getEntryPoint(
-        exitManager: ExitManager,
-        fgAutomataApi: IFGAutomataApi,
-        context: Context
-    ): EntryPoint = when (preferences.scriptMode) {
-        ScriptModeEnum.Lottery -> AutoLottery(exitManager, platformImpl, fgAutomataApi)
-        ScriptModeEnum.FriendGacha -> AutoFriendGacha(exitManager, platformImpl, fgAutomataApi)
-        ScriptModeEnum.SupportImageMaker -> {
-            val tempDir = getSupportImagTempDir(context)
-
-            SupportImageMaker(
-                tempDir,
-                exitManager,
-                platformImpl,
-                fgAutomataApi
-            ) {
-                supportImgMakerCallback(tempDir)
-            }
+    private fun getEntryPoint(component: ScriptComponent): EntryPoint =
+        when (preferences.scriptMode) {
+            ScriptModeEnum.Lottery -> component.lottery()
+            ScriptModeEnum.FriendGacha -> component.friendGacha()
+            ScriptModeEnum.SupportImageMaker -> component.supportImageMaker()
+            else -> component.battle()
         }
-        else -> AutoBattle(exitManager, platformImpl, fgAutomataApi)
-    }
 
     private val handler by lazy {
         Handler(Looper.getMainLooper())
-    }
-
-    private fun supportImgMakerCallback(tempDir: File) {
-        handler.post { showSupportImageNamer(userInterface, storageDirs, tempDir) }
     }
 
     fun startScript(
@@ -113,7 +80,7 @@ class ScriptManager @Inject constructor(
             return
         }
 
-        val (exitManager, fgAutomataApi) = component
+        val scriptComponent = component
             .scriptComponent()
             .screenshotModule(
                 ScreenshotModule(
@@ -121,9 +88,8 @@ class ScriptManager @Inject constructor(
                 )
             )
             .build()
-            .getScriptLaunchParams()
 
-        getEntryPoint(exitManager, fgAutomataApi, context).apply {
+        getEntryPoint(scriptComponent).apply {
             if (this is AutoBattle) {
                 autoSkillPicker(context) {
                     runEntryPoint(this, screenshotService)
@@ -140,11 +106,11 @@ class ScriptManager @Inject constructor(
         }
 
         entryPoint?.let {
-            it.scriptExitListener = null
+            it.scriptExitListener = { }
             it.stop()
         }
 
-        onScriptExit()
+        onScriptExit(null)
     }
 
     private fun runEntryPoint(EntryPoint: EntryPoint, screenshotService: IScreenshotService) {
