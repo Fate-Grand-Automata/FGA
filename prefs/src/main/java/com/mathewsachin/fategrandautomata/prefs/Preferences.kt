@@ -72,7 +72,7 @@ class PreferencesImpl @Inject constructor(
 
     override val stopAfterBond10 by prefs.bool(R.string.pref_stop_bond10)
 
-    override val friendPtsOnly by prefs.bool(R.string.pref_friend_pts)
+    override val friendPtsOnly by prefs.bool(R.string.pref_friend_pts, true)
 
     override val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
 
