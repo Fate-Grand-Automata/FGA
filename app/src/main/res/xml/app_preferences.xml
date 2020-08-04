@@ -43,6 +43,12 @@
         app:key="@string/pref_withdraw_enabled"
         app:title="Enable Withdraw" />
 
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:icon="@drawable/ic_friend"
+        app:key="@string/pref_friend_pts"
+        app:title="Friend Points Summons Only" />
+
     <ListPreference
         app:defaultValue="-1"
         app:entries="@array/boost_item_labels"
