@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
         app:defaultValue="En"
@@ -50,7 +49,6 @@
         app:key="@string/pref_stop_bond10"
         app:title="Stop on Bond 10" />
 
-
     <SwitchPreferenceCompat
         app:defaultValue="true"
         app:icon="@drawable/ic_friend"
@@ -66,11 +64,11 @@
         app:title="Boost Item"
         app:useSimpleSummaryProvider="true" />
 
-<!--    <SwitchPreferenceCompat-->
-<!--        app:defaultValue="false"-->
-<!--        app:key="@string/pref_guda_final"-->
-<!--        app:summary="Support for the new rewards screen on JP"-->
-<!--        app:title="GudaGuda Final Rerun" />-->
+    <!--    <SwitchPreferenceCompat-->
+    <!--        app:defaultValue="false"-->
+    <!--        app:key="@string/pref_guda_final"-->
+    <!--        app:summary="Support for the new rewards screen on JP"-->
+    <!--        app:title="GudaGuda Final Rerun" />-->
 
     <PreferenceCategory
         app:key="app_category"
@@ -78,7 +76,7 @@
         <Preference
             app:key="@string/pref_nav_fine_tune"
             app:title="Fine-tune"
-            app:icon="@drawable/ic_tune"/>
+            app:icon="@drawable/ic_tune" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
@@ -92,7 +90,7 @@
             app:key="@string/pref_ignore_notch"
             app:summary="Useful on Samsung phones"
             app:title="Ignore Notch calculation"
-            app:icon="@drawable/ic_notch"/>
+            app:icon="@drawable/ic_notch" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
