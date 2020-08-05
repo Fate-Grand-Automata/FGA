@@ -91,11 +91,11 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 !game.supportExtraRegion.exists(images.supportExtra) -> 1.seconds.wait()
                 game.supportNotFoundRegion.exists(images.supportNotFound) ->
                     refreshSupportList()
-                game.supportFriendRegion.exists(images.guest) -> return
                 game.supportRegionToolSearchRegion.exists(
                     images.supportRegionTool,
                     Similarity = supportRegionToolSimilarity
                 ) -> return
+                game.supportFriendRegion.exists(images.guest) -> return
             }
         }
     }
