@@ -103,8 +103,10 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     CardScore(type, affinity)
                 }
 
-            commandCardGroups = groupByFaceCard()
-            commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups)
+            if (prefs.braveChains != BraveChainEnum.None) {
+                commandCardGroups = groupByFaceCard()
+                commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups)
+            }
         }
     }
 
