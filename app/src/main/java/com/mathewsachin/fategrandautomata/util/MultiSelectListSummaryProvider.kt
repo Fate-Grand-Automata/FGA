@@ -6,7 +6,7 @@ import androidx.preference.Preference
 class MultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSelectListPreference>
 {
     override fun provideSummary(preference: MultiSelectListPreference): CharSequence {
-        return if (preference.values.size > 0)  {
+        return if (preference.values.isNotEmpty())  {
             val selectedLabels = preference.values.map {
                 val index = preference.findIndexOfValue(it)
 
