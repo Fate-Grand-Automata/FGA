@@ -7,7 +7,7 @@
     <string name="pref_battle_np">battle_np</string>
     <string name="pref_auto_choose_target">auto_choose_target</string>
     <string name="pref_story_skip">story_skip</string>
-    <string name="pref_stop_bond10">stop_bond10</string>
+    <string name="pref_stop_on_ce_drop">stop_on_ce_drop</string>
     <string name="pref_friend_pts">friend_pts_summons_only</string>
     <string name="pref_boost_item">selected_boost_item</string>
     <string name="pref_withdraw_enabled">withdraw_enabled</string>
@@ -41,6 +41,8 @@
     <string name="pref_autoskill_cmd">autoskill_cmd</string>
     <string name="pref_autoskill_party">autoskill_party</string>
 
+    <string name="pref_brave_chains">brave_chains</string>
+
     <string name="pref_ignore_notch">ignore_notch</string>
     <string name="pref_use_root_screenshot">use_root_screenshot</string>
     <string name="pref_use_root_gestures">use_root_gestures</string>
@@ -60,6 +62,7 @@
     <string name="pref_support_swipe_multiplier">support_swipe_multiplier</string>
 
     <string name="pref_skill_delay">skill_delay</string>
+    <string name="pref_rearrange_cards">rearrange_cards</string>
 
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_auto_skill">nav_auto_skill</string>

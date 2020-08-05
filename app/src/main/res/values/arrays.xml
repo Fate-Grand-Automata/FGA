@@ -17,6 +17,18 @@
         <item>SQ</item>
     </array>
 
+    <array name="brave_chain_labels">
+        <item>Don\'t care</item>
+        <item>After NP</item>
+        <item>Avoid</item>
+    </array>
+
+    <array name="brave_chain_values">
+        <item>None</item>
+        <item>AfterNP</item>
+        <item>Avoid</item>
+    </array>
+
     <array name="boost_item_labels">
         <item>Disabled</item>
         <item>Skip</item>

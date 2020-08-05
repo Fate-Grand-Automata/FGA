@@ -92,6 +92,8 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val selectedParty get() = load("selected_party.png")
 
+    val ceDrop get() = load("ce_drop.png")
+
     val friendSummon get() = load("friend_summon.png")
 
     val supportExtra get() = load("support_extra.png")

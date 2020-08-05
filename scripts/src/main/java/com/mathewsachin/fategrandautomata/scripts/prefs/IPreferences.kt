@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.libautomata.IPlatformPrefs
@@ -17,7 +18,7 @@ interface IPreferences {
     val autoChooseTarget: Boolean
     val storySkip: Boolean
     val withdrawEnabled: Boolean
-    val stopAfterBond10: Boolean
+    val stopOnCEDrop: Boolean
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
     val ignoreNotchCalculation: Boolean
@@ -25,7 +26,9 @@ interface IPreferences {
     val gudaFinal: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
+    val braveChains: BraveChainEnum
     val friendPtsOnly: Boolean
+    val rearrangeCards: Boolean
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs
