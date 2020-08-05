@@ -62,6 +62,8 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         if (autoSkillPrefs.supportClass != SupportClass.None) {
             game.supportClassClick(autoSkillPrefs.supportClass).click()
+
+            0.3.seconds.wait()
         }
 
         return when (SelectionMode) {
