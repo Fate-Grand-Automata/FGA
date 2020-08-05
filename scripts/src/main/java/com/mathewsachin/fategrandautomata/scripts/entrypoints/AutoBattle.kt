@@ -220,7 +220,6 @@ open class AutoBattle @Inject constructor(
             support.selectSupport(prefs.selectedAutoSkillConfig.support.selectionMode)
 
         if (hasSelectedSupport && !isContinuing) {
-            throw ScriptExitException()
             4.seconds.wait()
             startQuest()
 
