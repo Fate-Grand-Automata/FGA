@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.isInSupport
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
@@ -20,14 +21,13 @@ const val limitBrokenCharacter = '*'
 private val logger = KotlinLogging.logger {}
 
 class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
-    private val preferredServantArray = mutableListOf<String>()
-    private val friendNameArray = mutableListOf<String>()
+    private var preferredServantArray = listOf<String>()
+    private var friendNameArray = listOf<String>()
+    private var preferredCEArray = listOf<PreferredCEEntry>()
 
-    private val preferredCEArray = mutableListOf<PreferredCEEntry>()
-
-    private fun String.process(): Sequence<String> {
+    private fun String.process(): List<String> {
         return this
-            .splitToSequence(',')
+            .split(',')
             .map { it.trim() }
             .filter { it.isNotBlank() && it.toLowerCase() != "any" }
     }
@@ -35,21 +35,10 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private val autoSkillPrefs get() = prefs.selectedAutoSkillConfig.support
 
     fun init() {
-        preferredServantArray.clear()
-        friendNameArray.clear()
-        preferredCEArray.clear()
+        friendNameArray = autoSkillPrefs.friendNames.process()
+        preferredServantArray = autoSkillPrefs.preferredServants.process()
 
-        // Friend names
-        for (friend in autoSkillPrefs.friendNames.process()) {
-            friendNameArray.add(friend)
-        }
-
-        // Servants
-        for (servant in autoSkillPrefs.preferredServants.process()) {
-            preferredServantArray.add(servant)
-        }
-
-        val ceEntries = autoSkillPrefs.preferredCEs
+        preferredCEArray = autoSkillPrefs.preferredCEs
             .process()
             .map {
                 val mlb = it.startsWith(limitBrokenCharacter)
@@ -59,20 +48,12 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     name = name.substring(1)
                 }
 
-                PreferredCEEntry(
-                    name,
-                    mlb
-                )
+                PreferredCEEntry(name, mlb)
             }
-
-        // Craft essences
-        for (craftEssence in ceEntries) {
-            preferredCEArray.add(craftEssence)
-        }
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
-        while (!game.supportScreenRegion.exists(images.supportScreen)) {
+        while (!isInSupport()) {
             0.3.seconds.wait()
         }
 
@@ -95,13 +76,11 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         1.seconds.wait()
         game.supportFirstSupportClick.click()
 
-        val pattern = images.supportScreen
-
         // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
-        if (game.supportScreenRegion.exists(pattern)) {
+        if (isInSupport()) {
             2.seconds.wait()
 
-            while (game.supportScreenRegion.exists(pattern)) {
+            while (isInSupport()) {
                 10.seconds.wait()
                 game.supportUpdateClick.click()
                 1.seconds.wait()
@@ -144,7 +123,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         })
 
     private fun selectFriend(): Boolean {
-        if (friendNameArray.size > 0) {
+        if (friendNameArray.isNotEmpty()) {
             return selectPreferred { findFriendName() }
         }
 
@@ -156,39 +135,40 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         var numberOfUpdates = 0
 
         while (true) {
-            when (val result = searchVisible(SearchMethod)) {
-                is SearchVisibleResult.Found -> {
+            val result = searchVisible(SearchMethod)
+
+            when {
+                result is SearchVisibleResult.Found -> {
                     result.support.click()
                     return true
                 }
-                else -> {
-                    if (result == SearchVisibleResult.NotFound
-                        && numberOfSwipes < prefs.support.swipesPerUpdate
-                    ) {
-                        scrollList()
-                        ++numberOfSwipes
-                        0.3.seconds.wait()
-                    } else if (numberOfUpdates < prefs.support.maxUpdates) {
-                        toast("Support list will be updated in 3 seconds.")
-                        3.seconds.wait()
+                result is SearchVisibleResult.NotFound
+                        && numberOfSwipes < prefs.support.swipesPerUpdate -> {
+                    scrollList()
+                    ++numberOfSwipes
+                    0.3.seconds.wait()
+                }
+                numberOfUpdates < prefs.support.maxUpdates -> {
+                    toast("Support list will be updated in 3 seconds.")
+                    3.seconds.wait()
 
-                        game.supportUpdateClick.click()
-                        1.seconds.wait()
-                        game.supportUpdateYesClick.click()
+                    game.supportUpdateClick.click()
+                    1.seconds.wait()
+                    game.supportUpdateYesClick.click()
 
-                        while (needsToRetry()) {
-                            retry()
-                        }
-
-                        3.seconds.wait()
-
-                        ++numberOfUpdates
-                        numberOfSwipes = 0
-                    } else {
-                        // -- okay, we have run out of options, let's give up
-                        game.supportListTopClick.click()
-                        return selectSupport(autoSkillPrefs.fallbackTo)
+                    while (needsToRetry()) {
+                        retry()
                     }
+
+                    3.seconds.wait()
+
+                    ++numberOfUpdates
+                    numberOfSwipes = 0
+                }
+                else -> {
+                    // -- okay, we have run out of options, let's give up
+                    game.supportListTopClick.click()
+                    return selectSupport(autoSkillPrefs.fallbackTo)
                 }
             }
         }
@@ -225,25 +205,15 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun decideSearchMethod(): SearchFunction {
-        val hasServants = preferredServantArray.size > 0
-        val hasCraftEssences = preferredCEArray.size > 0
+        val hasServants = preferredServantArray.isNotEmpty()
+        val hasCraftEssences = preferredCEArray.isNotEmpty()
 
-        if (hasServants && hasCraftEssences) {
-            return { searchServantAndCE() }
+        return when {
+            hasServants && hasCraftEssences -> { -> searchServantAndCE() }
+            hasServants -> { -> findServants().firstOrNull() ?: SearchFunctionResult.NotFound }
+            hasCraftEssences -> { -> findCraftEssence(game.supportListRegion) }
+            else -> throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
         }
-
-        if (hasServants) {
-            return {
-                findServants().firstOrNull()
-                    ?: SearchFunctionResult.NotFound
-            }
-        }
-
-        if (hasCraftEssences) {
-            return { findCraftEssence(game.supportListRegion) }
-        }
-
-        throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
     }
 
     /**
@@ -287,10 +257,9 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private fun findServants(): Sequence<SearchFunctionResult> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
-            val pattern =
-                images.loadSupportPattern(
-                    preferredServant
-                )
+            val pattern = images.loadSupportPattern(
+                preferredServant
+            )
 
             cropFriendLock(pattern).use {
                 for (servant in game.supportListRegion.findAll(it)) {
@@ -339,10 +308,9 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private fun findCraftEssence(SearchRegion: Region): SearchFunctionResult {
         for (preferredCraftEssence in preferredCEArray) {
             // Cached pattern. Don't dispose here.
-            val pattern =
-                images.loadSupportPattern(
-                    preferredCraftEssence.Name
-                )
+            val pattern = images.loadSupportPattern(
+                preferredCraftEssence.Name
+            )
 
             val craftEssences = SearchRegion.findAll(pattern)
 

@@ -18,7 +18,6 @@ interface IPreferences {
     val autoChooseTarget: Boolean
     val storySkip: Boolean
     val withdrawEnabled: Boolean
-    val stopAfterBond10: Boolean
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
     val ignoreNotchCalculation: Boolean
@@ -27,6 +26,7 @@ interface IPreferences {
     val recordScreen: Boolean
     val skillDelay: Duration
     val braveChains: BraveChainEnum
+    val friendPtsOnly: Boolean
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

@@ -8,10 +8,11 @@
         app:title="Name"
         app:useSimpleSummaryProvider="true" />
 
-    <Preference
+    <EditTextPreference
         app:icon="@drawable/ic_terminal"
         app:key="@string/pref_autoskill_cmd"
-        app:title="Skill Command" />
+        app:title="Skill Command"
+        app:useSimpleSummaryProvider="true" />
 
     <ListPreference
         app:defaultValue="-1"

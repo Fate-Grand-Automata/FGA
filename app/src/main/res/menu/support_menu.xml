@@ -6,9 +6,4 @@
         android:icon="@drawable/ic_zip"
         android:title="Extract Default Support Images"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_clear_support_friends"
-        android:icon="@drawable/ic_clear"
-        android:title="Clear Friend Preferences"
-        app:showAsAction="never" />
 </menu>

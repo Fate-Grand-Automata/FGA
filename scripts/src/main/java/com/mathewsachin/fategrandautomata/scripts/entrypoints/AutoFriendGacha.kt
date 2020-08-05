@@ -2,12 +2,13 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.libautomata.*
+import javax.inject.Inject
 import kotlin.time.seconds
 
 /**
  * Continually triggers 10x Summon, intended for FP summons, but could also be used for SQ summons.
  */
-class AutoFriendGacha(
+class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi
@@ -21,6 +22,10 @@ class AutoFriendGacha(
 
     override fun script(): Nothing {
         scaling.init()
+
+        if (prefs.friendPtsOnly) {
+            isInFriendPtsSummon()
+        }
 
         first10SummonClick.click()
         0.3.seconds.wait()
@@ -36,6 +41,16 @@ class AutoFriendGacha(
                 }
                 else -> skipRapidClick.click(15)
             }
+        }
+    }
+
+    private fun isInFriendPtsSummon() {
+        val startRightSwipeLoc = Location(300, 500)
+        val endRightSwipeLoc = Location(2000, 500)
+
+        while (!game.friendPtSummonCheck.exists(images.friendSummon)) {
+            swipe(startRightSwipeLoc, endRightSwipeLoc)
+            1.0.seconds.wait()
         }
     }
 }
