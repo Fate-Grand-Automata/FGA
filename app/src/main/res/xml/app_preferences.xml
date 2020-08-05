@@ -47,7 +47,7 @@
         app:defaultValue="false"
         app:icon="@drawable/ic_card"
         app:key="@string/pref_stop_on_ce_drop"
-        app:title="Stop on CE drop" />
+        app:title="Stop on CE drop (Experimental)" />
 
     <SwitchPreferenceCompat
         app:defaultValue="true"
