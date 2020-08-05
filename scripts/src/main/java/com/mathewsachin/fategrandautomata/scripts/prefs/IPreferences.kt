@@ -17,6 +17,7 @@ interface IPreferences {
     val autoChooseTarget: Boolean
     val storySkip: Boolean
     val withdrawEnabled: Boolean
+    val stopOnCEDrop: Boolean
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
     val ignoreNotchCalculation: Boolean

@@ -149,6 +149,10 @@ open class AutoBattle @Inject constructor(
      * Clicks through the reward screens.
      */
     private fun result() {
+        if (prefs.stopOnCEDrop && game.resultCeDropRegion.exists(images.ceDrop)) {
+            throw ScriptExitException("CE Dropped!")
+        }
+
         game.resultNextClick.click(20)
     }
 
