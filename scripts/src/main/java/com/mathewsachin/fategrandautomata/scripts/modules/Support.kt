@@ -57,6 +57,8 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             0.3.seconds.wait()
         }
 
+        waitForSupportScreenToLoad()
+
         return when (SelectionMode) {
             SupportSelectionModeEnum.First -> selectFirst()
             SupportSelectionModeEnum.Manual -> selectManual()
@@ -72,25 +74,34 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         throw ScriptExitException("Support selection set to Manual")
     }
 
-    private fun selectFirst(): Boolean {
+    private fun refreshSupportList() {
+        game.supportUpdateClick.click()
         1.seconds.wait()
-        game.supportFirstSupportClick.click()
 
-        // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
-        if (isInSupport()) {
-            2.seconds.wait()
+        game.supportUpdateYesClick.click()
 
-            while (isInSupport()) {
-                10.seconds.wait()
-                game.supportUpdateClick.click()
-                1.seconds.wait()
-                game.supportUpdateYesClick.click()
-                3.seconds.wait()
-                game.supportFirstSupportClick.click()
-                1.seconds.wait()
+        waitForSupportScreenToLoad()
+    }
+
+    private fun waitForSupportScreenToLoad() {
+        while (true) {
+            when {
+                needsToRetry() -> retry()
+                // wait for dialogs to close
+                !game.supportExtraRegion.exists(images.supportExtra) -> 1.seconds.wait()
+                game.supportNotFoundRegion.exists(images.supportNotFound) ->
+                    refreshSupportList()
+                game.supportFriendRegion.exists(images.guest) -> return
+                game.supportRegionToolSearchRegion.exists(
+                    images.supportRegionTool,
+                    Similarity = supportRegionToolSimilarity
+                ) -> return
             }
         }
+    }
 
+    private fun selectFirst(): Boolean {
+        game.supportFirstSupportClick.click()
         return true
     }
 
@@ -149,18 +160,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     0.3.seconds.wait()
                 }
                 numberOfUpdates < prefs.support.maxUpdates -> {
-                    toast("Support list will be updated in 3 seconds.")
-                    3.seconds.wait()
-
-                    game.supportUpdateClick.click()
-                    1.seconds.wait()
-                    game.supportUpdateYesClick.click()
-
-                    while (needsToRetry()) {
-                        retry()
-                    }
-
-                    3.seconds.wait()
+                    refreshSupportList()
 
                     ++numberOfUpdates
                     numberOfSwipes = 0
