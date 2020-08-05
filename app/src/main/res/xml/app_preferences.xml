@@ -67,6 +67,11 @@
         app:title="Brave Chains (Experimental)"
         app:useSimpleSummaryProvider="true" />
 
+    <SwitchPreferenceCompat
+        app:icon="@drawable/ic_card"
+        app:key="@string/pref_rearrange_cards"
+        app:title="Rearrange Cards (Experimental)" />
+
     <!--    <SwitchPreferenceCompat-->
     <!--        app:defaultValue="false"-->
     <!--        app:key="@string/pref_guda_final"-->

@@ -27,6 +27,7 @@ interface IPreferences {
     val skillDelay: Duration
     val braveChains: BraveChainEnum
     val friendPtsOnly: Boolean
+    val rearrangeCards: Boolean
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

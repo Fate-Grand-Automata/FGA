@@ -93,6 +93,8 @@ class PreferencesImpl @Inject constructor(
 
     override val skillDelay by prefs.int(R.string.pref_skill_delay, 500).map { it.milliseconds }
 
+    override val rearrangeCards by prefs.bool(R.string.pref_rearrange_cards)
+
     override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
         AutoSkillPreferences(
             id,
