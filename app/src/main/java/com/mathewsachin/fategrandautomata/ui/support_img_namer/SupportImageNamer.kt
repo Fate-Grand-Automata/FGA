@@ -10,7 +10,6 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterfac
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
-import java.io.File
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
 private const val InvalidChars = """<>"\|:\*\?\\\/"""
@@ -27,9 +26,10 @@ const val CeOrFriendInvalidMsg =
 
 private fun getSupportEntries(
     Frame: View,
-    tempDir: File,
     storageDirs: StorageDirs
 ): List<SupportImgEntry> {
+    val tempDir = storageDirs.supportImgTempDir
+
     val servant0 = SupportImgEntry(
         getServantImgPath(
             tempDir,
@@ -90,13 +90,13 @@ private fun getSupportEntries(
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
 }
 
-fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs, tempDir: File) {
+fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs) {
     val frame = FrameLayout(UI.Service)
 
     val inflater = LayoutInflater.from(UI.Service)
     inflater.inflate(R.layout.support_img_namer, frame)
 
-    val entryList = getSupportEntries(frame, tempDir, storageDirs)
+    val entryList = getSupportEntries(frame, storageDirs)
 
     ScriptRunnerDialog(UI).apply {
         autoDismiss = false

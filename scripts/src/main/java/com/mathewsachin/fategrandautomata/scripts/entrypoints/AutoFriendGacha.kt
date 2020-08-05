@@ -2,12 +2,13 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.libautomata.*
+import javax.inject.Inject
 import kotlin.time.seconds
 
 /**
  * Continually triggers 10x Summon, intended for FP summons, but could also be used for SQ summons.
  */
-class AutoFriendGacha(
+class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi

@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.dagger.app
 import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
 import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListFragment
+import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
 import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityFragment
 import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsFragment
@@ -21,4 +22,5 @@ interface ApplicationComponent {
     fun inject(into: AutoSkillItemSettingsFragment)
     fun inject(into: MainSettingsFragment)
     fun inject(into: MoreSettingsFragment)
+    fun inject(into: AutoSkillMakerActivity)
 }

@@ -1,9 +1,12 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.libautomata.*
 import java.io.File
+import javax.inject.Inject
 
 fun getServantImgPath(dir: File, Index: Int): File {
     return File(dir, "servant_${Index}.png")
@@ -17,20 +20,20 @@ fun getFriendImgPath(dir: File, Index: Int): File {
     return File(dir, "friend_${Index}.png")
 }
 
-class SupportImageMaker(
-    private val dir: File,
+class SupportImageMaker @Inject constructor(
+    storageDirs: StorageDirs,
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi,
-    private var Callback: (() -> Unit)?
+    fgAutomataApi: IFGAutomataApi
 ) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
+    private val dir = storageDirs.supportImgTempDir
+
     override fun script(): Nothing {
         scaling.init()
 
         cleanExtractFolder()
 
-        val isInSupport =
-            isInSupport()
+        val isInSupport = isInSupport()
 
         // the servant and CE images are further to the right in the friend screen
         val supportBoundX = if (isInSupport) 106 else 176
@@ -66,10 +69,7 @@ class SupportImageMaker(
             throw ScriptExitException("No support images were found on the current screen. Are you on Support selection or Friend list screen?")
         }
 
-        Callback?.invoke()
-        Callback = null
-
-        throw ScriptExitException()
+        throw SupportImageMakerExitException()
     }
 
     private fun cleanExtractFolder() {
@@ -82,10 +82,7 @@ class SupportImageMaker(
         val servant = supportBoundImage.crop(Region(0, 0, 125, 44))
         servant.use {
             servant.save(
-                getServantImgPath(
-                    dir,
-                    i
-                ).absolutePath
+                getServantImgPath(dir, i).absolutePath
             )
         }
     }
@@ -94,10 +91,7 @@ class SupportImageMaker(
         val ce = supportRegionImage.crop(Region(0, 80, supportRegionImage.width, 25))
         ce.use {
             ce.save(
-                getCeImgPath(
-                    dir,
-                    i
-                ).absolutePath
+                getCeImgPath(dir, i).absolutePath
             )
         }
     }
@@ -110,10 +104,7 @@ class SupportImageMaker(
         val friendPattern = friendBound.getPattern()
         friendPattern.use {
             friendPattern.save(
-                getFriendImgPath(
-                    dir,
-                    i
-                ).absolutePath
+                getFriendImgPath(dir, i).absolutePath
             )
         }
     }

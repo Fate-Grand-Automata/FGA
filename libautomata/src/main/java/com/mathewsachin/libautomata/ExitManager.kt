@@ -1,9 +1,13 @@
 package com.mathewsachin.libautomata
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 /**
  * Manages the termination of running scripts
  */
-class ExitManager {
+@Singleton
+class ExitManager @Inject constructor() {
     @Volatile
     private var exitRequested = false
 
