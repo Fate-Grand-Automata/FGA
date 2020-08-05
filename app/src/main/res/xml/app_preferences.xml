@@ -47,7 +47,8 @@
         app:defaultValue="false"
         app:icon="@drawable/ic_card"
         app:key="@string/pref_stop_on_ce_drop"
-        app:title="Stop on CE drop (Experimental)" />
+        app:title="Stop on CE drop"
+        app:summary="Experimental" />
 
     <SwitchPreferenceCompat
         app:defaultValue="true"
@@ -76,7 +77,8 @@
     <SwitchPreferenceCompat
         app:icon="@drawable/ic_card"
         app:key="@string/pref_rearrange_cards"
-        app:title="Rearrange Cards (Experimental)" />
+        app:title="Rearrange Cards"
+        app:summary="Experimental" />
 
     <!--    <SwitchPreferenceCompat-->
     <!--        app:defaultValue="false"-->
