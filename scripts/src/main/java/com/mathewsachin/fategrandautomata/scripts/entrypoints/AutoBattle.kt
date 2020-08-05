@@ -145,11 +145,9 @@ open class AutoBattle(
     }
 
     /**
-     * Clicks through the reward screen, continue if the option presents itself, otherwise continue
-     * clicking through the rest of the screens until the quest selection screen is reached.
+     * Clicks through the reward screens.
      */
     private fun result() {
-        // Validator document https://github.com/29988122/Fate-Grand-Order_Lua/wiki/In-Game-Result-Screen-Flow for detail.
         game.resultNextClick.click(20)
     }
 
