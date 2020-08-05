@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.isInSupport
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
@@ -52,7 +53,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
-        while (!game.supportScreenRegion.exists(images.supportScreen)) {
+        while (!isInSupport()) {
             0.3.seconds.wait()
         }
 
@@ -72,24 +73,29 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun selectFirst(): Boolean {
-        1.seconds.wait()
-        game.supportFirstSupportClick.click()
-
-        val pattern = images.supportScreen
-
-        // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
-        if (game.supportScreenRegion.exists(pattern)) {
-            2.seconds.wait()
-
-            while (game.supportScreenRegion.exists(pattern)) {
-                10.seconds.wait()
-                game.supportUpdateClick.click()
+        loop@
+        while (isInSupport()) {
+            for (i in 1..10) {
                 1.seconds.wait()
-                game.supportUpdateYesClick.click()
-                3.seconds.wait()
-                game.supportFirstSupportClick.click()
-                1.seconds.wait()
+
+                val realSupport = game.supportRegionToolSearchRegion.exists(
+                    images.supportRegionTool,
+                    Similarity = supportRegionToolSimilarity
+                )
+
+                if (realSupport || game.supportFriendRegion.exists(images.guest)) {
+                    game.supportFirstSupportClick.click()
+                    1.seconds.wait()
+                    continue@loop
+                } else if (!isInSupport()) {
+                    break@loop
+                }
             }
+
+            game.supportUpdateClick.click()
+            1.seconds.wait()
+            game.supportUpdateYesClick.click()
+            3.seconds.wait()
         }
 
         return true
