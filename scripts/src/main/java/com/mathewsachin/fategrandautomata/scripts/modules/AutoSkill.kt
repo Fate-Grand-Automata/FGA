@@ -92,7 +92,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
             2.seconds.wait()
         }
 
-        noblePhantasm.clickLocation.click()
+        card.clickNp(noblePhantasm)
     }
 
     private fun openMasterSkillMenu() {

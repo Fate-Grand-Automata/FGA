@@ -64,6 +64,20 @@
         app:title="Boost Item"
         app:useSimpleSummaryProvider="true" />
 
+    <ListPreference
+        app:defaultValue="None"
+        app:entries="@array/brave_chain_labels"
+        app:entryValues="@array/brave_chain_values"
+        app:icon="@drawable/ic_crown"
+        app:key="@string/pref_brave_chains"
+        app:title="Brave Chains (Experimental)"
+        app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreferenceCompat
+        app:icon="@drawable/ic_card"
+        app:key="@string/pref_rearrange_cards"
+        app:title="Rearrange Cards (Experimental)" />
+
     <!--    <SwitchPreferenceCompat-->
     <!--        app:defaultValue="false"-->
     <!--        app:key="@string/pref_guda_final"-->
