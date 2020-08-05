@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.isInSupport
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
@@ -58,6 +59,10 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
         waitForSupportScreenToLoad()
+
+        if (autoSkillPrefs.supportClass != SupportClass.None) {
+            game.supportClassClick(autoSkillPrefs.supportClass).click()
+        }
 
         return when (SelectionMode) {
             SupportSelectionModeEnum.First -> selectFirst()

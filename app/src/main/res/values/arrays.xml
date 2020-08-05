@@ -118,4 +118,18 @@
         <item>8</item>
         <item>9</item>
     </string-array>
+
+    <array name="support_class">
+        <item>None</item>,
+        <item>All</item>,
+        <item>Saber</item>,
+        <item>Archer</item>,
+        <item>Lancer</item>,
+        <item>Rider</item>,
+        <item>Caster</item>,
+        <item>Assassin</item>,
+        <item>Berserker</item>,
+        <item>Extra</item>,
+        <item>Mix</item>
+    </array>
 </resources>
