@@ -31,4 +31,6 @@ class NoblePhantasm private constructor(
             )
         )
     }
+
+    override fun toString() = "[${autoSkillCode}]"
 }
