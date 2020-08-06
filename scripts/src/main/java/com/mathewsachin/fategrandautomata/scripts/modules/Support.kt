@@ -96,6 +96,10 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         game.supportUpdateYesClick.click()
 
         waitForSupportScreenToLoad()
+        updateLastSupportRefreshTimestamp()
+    }
+
+    private fun updateLastSupportRefreshTimestamp() {
         lastSupportRefreshTimestamp = TimeSource.Monotonic.markNow()
     }
 
@@ -105,8 +109,11 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 needsToRetry() -> retry()
                 // wait for dialogs to close
                 !game.supportExtraRegion.exists(images.supportExtra) -> 1.seconds.wait()
-                game.supportNotFoundRegion.exists(images.supportNotFound) ->
+                game.supportNotFoundRegion.exists(images.supportNotFound) -> {
+                    updateLastSupportRefreshTimestamp()
                     refreshSupportList()
+                    return
+                }
                 game.supportRegionToolSearchRegion.exists(
                     images.supportRegionTool,
                     Similarity = supportRegionToolSimilarity
