@@ -8,6 +8,8 @@ import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -74,13 +76,27 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         throw ScriptExitException("Support selection set to Manual")
     }
 
+    private var lastSupportRefreshTimestamp: TimeMark? = null
+    private val supportRefreshThreshold = 10.seconds
+
     private fun refreshSupportList() {
+        lastSupportRefreshTimestamp?.elapsedNow()?.let { elapsed ->
+            val toWait = supportRefreshThreshold - elapsed
+
+            if (toWait.isPositive()) {
+                toast("Support list will be updated in $toWait")
+
+                toWait.wait()
+            }
+        }
+
         game.supportUpdateClick.click()
         1.seconds.wait()
 
         game.supportUpdateYesClick.click()
 
         waitForSupportScreenToLoad()
+        lastSupportRefreshTimestamp = TimeSource.Monotonic.markNow()
     }
 
     private fun waitForSupportScreenToLoad() {

@@ -68,7 +68,7 @@ internal class SupportPreferences(
     )
 
     override val fallbackTo by prefs.enum(
-        R.string.pref_support_mode,
+        R.string.pref_support_fallback,
         SupportSelectionModeEnum.Manual
     )
 }
