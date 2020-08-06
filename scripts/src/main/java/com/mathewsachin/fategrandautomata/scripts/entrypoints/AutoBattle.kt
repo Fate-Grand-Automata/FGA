@@ -1,15 +1,16 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.EntryPoint
-import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.IPlatformImpl
-import com.mathewsachin.libautomata.ScriptExitException
+import com.mathewsachin.libautomata.*
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 import kotlin.time.seconds
@@ -27,7 +28,8 @@ fun IFGAutomataApi.isInSupport(): Boolean {
 open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi
+    fgAutomataApi: IFGAutomataApi,
+    val storageDirs: StorageDirs
 ) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
     private val support =
         Support(fgAutomataApi)
@@ -153,7 +155,61 @@ open class AutoBattle @Inject constructor(
             throw ScriptExitException("CE Dropped!")
         }
 
-        game.resultNextClick.click(20)
+        if (prefs.screenshotDrops) {
+            resultForDrops()
+        } else game.resultNextClick.click(20)
+    }
+
+    private fun resultForDrops() {
+        while (true) {
+            var dropScreen = false
+
+            screenshotManager.useSameSnapIn {
+                when {
+                    isCeReward() -> ceReward()
+                    game.resultMatRewardsRegion.exists(images.matRewards) -> dropScreen = true
+                    else -> {
+                        game.resultNextClick.click()
+                        0.1.seconds.wait()
+                    }
+                }
+            }
+
+            if (dropScreen) {
+                screenshotDrops()
+                game.resultNextClick.click()
+                return
+            }
+        }
+    }
+
+    private fun screenshotDrops() {
+        0.5.seconds.wait()
+
+        val dropsFolder = File(
+            storageDirs.storageRoot,
+            "drops"
+        )
+
+        if (!dropsFolder.exists()) {
+            dropsFolder.mkdirs()
+        }
+
+        val sdf = SimpleDateFormat("dd-M-yyyy-hh-mm-ss", Locale.US)
+        val timeString = sdf.format(Date())
+
+        repeat(2) { i ->
+            val dropFileName = "${timeString}.${i}.png"
+
+            screenshotManager.getScreenshot().save(
+                File(dropsFolder, dropFileName).absolutePath
+            )
+
+            swipe(
+                Location(2200, 950),
+                Location(2200, 50)
+            )
+        }
     }
 
     private fun isRepeatScreen() =

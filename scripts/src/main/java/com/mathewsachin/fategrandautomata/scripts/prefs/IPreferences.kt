@@ -29,6 +29,7 @@ interface IPreferences {
     val braveChains: BraveChainEnum
     val friendPtsOnly: Boolean
     val rearrangeCards: Boolean
+    val screenshotDrops: Boolean
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

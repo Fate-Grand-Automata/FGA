@@ -51,6 +51,13 @@
         app:summary="Experimental" />
 
     <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:icon="@drawable/ic_screenshot"
+        app:key="@string/pref_screenshot_drops"
+        app:title="Screenshot Drops"
+        app:summary="Experimental" />
+
+    <SwitchPreferenceCompat
         app:defaultValue="true"
         app:icon="@drawable/ic_friend"
         app:key="@string/pref_friend_pts"
