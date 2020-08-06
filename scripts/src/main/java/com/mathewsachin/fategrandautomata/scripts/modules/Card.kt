@@ -147,15 +147,15 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         fun pickCardsOrderedByPriority(
             clicks: Int = clicksLeft,
             filter: (CommandCard) -> Boolean = { true }
-        ): Sequence<CommandCard> {
-            fun Sequence<CommandCard>.addToClickList(): Sequence<CommandCard> {
+        ): List<CommandCard> {
+            fun Sequence<CommandCard>.addToClickList(): List<CommandCard> {
                 val asList = toList()
 
                 toClick.addAll(asList)
                 remainingCards.removeAll(asList)
                 clicksLeft -= asList.size
 
-                return this
+                return asList
             }
 
             return cardsOrderedByPriority
