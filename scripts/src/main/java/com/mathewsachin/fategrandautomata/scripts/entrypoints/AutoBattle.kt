@@ -206,12 +206,7 @@ open class AutoBattle @Inject constructor(
             )
 
             if (i == 0) {
-                repeat(2) {
-                    swipe(
-                        Location(2200, 950),
-                        Location(2200, 50)
-                    )
-                }
+                Location(2306, 1032).click()
             }
         }
     }
