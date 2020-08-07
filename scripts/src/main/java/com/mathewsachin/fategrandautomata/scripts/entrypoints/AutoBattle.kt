@@ -205,10 +205,14 @@ open class AutoBattle @Inject constructor(
                 File(dropsFolder, dropFileName).absolutePath
             )
 
-            swipe(
-                Location(2200, 950),
-                Location(2200, 50)
-            )
+            if (i == 0) {
+                repeat(2) {
+                    swipe(
+                        Location(2200, 950),
+                        Location(2200, 50)
+                    )
+                }
+            }
         }
     }
 
