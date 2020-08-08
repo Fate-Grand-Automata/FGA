@@ -18,6 +18,9 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     var currentTurn = -1
         private set
 
+    var runs = 0
+        private set
+
     private lateinit var autoSkill: AutoSkill
     private lateinit var card: Card
 
@@ -30,6 +33,12 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     fun resetState() {
         autoSkill.resetState()
+
+        // Don't increment no. of runs if we're just clicking on quest again and again
+        // This can happen due to lags introduced during some events
+        if (currentStage != -1) {
+            ++runs
+        }
 
         currentStage = -1
         currentTurn = -1

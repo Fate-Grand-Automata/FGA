@@ -29,13 +29,10 @@ open class AutoBattle @Inject constructor(
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi
 ) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
-    private val support =
-        Support(fgAutomataApi)
+    private val support = Support(fgAutomataApi)
     private val card = Card(fgAutomataApi)
-    private val battle =
-        Battle(fgAutomataApi)
-    private val autoSkill =
-        AutoSkill(fgAutomataApi)
+    private val battle = Battle(fgAutomataApi)
+    private val autoSkill = AutoSkill(fgAutomataApi)
 
     private var stonesUsed = 0
     private var isContinuing = false
@@ -105,7 +102,7 @@ open class AutoBattle @Inject constructor(
     private fun menu() {
         battle.resetState()
 
-        showRefillsUsedMessage()
+        showRefillsAndRunsMessage()
 
         // Click uppermost quest
         game.menuSelectQuestClick.click()
@@ -170,10 +167,10 @@ open class AutoBattle @Inject constructor(
         isContinuing = true
 
         // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
-        game.continueClick.click()
         battle.resetState()
+        game.continueClick.click()
 
-        showRefillsUsedMessage()
+        showRefillsAndRunsMessage()
 
         // If Stamina is empty, follow same protocol as is in "Menu" function Auto refill.
         afterSelectingQuest()
@@ -385,14 +382,24 @@ open class AutoBattle @Inject constructor(
     }
 
     /**
-     * Will show a toast informing the user of how many apples have been used so far.
+     * Will show a toast informing the user of number of runs and how many apples have been used so far.
      */
-    private fun showRefillsUsedMessage() {
-        if (prefs.refill.enabled) {
-            val refillRepetitions = prefs.refill.repetitions
-            if (refillRepetitions > 0) {
-                platformImpl.toast("$stonesUsed refills used out of $refillRepetitions")
+    private fun showRefillsAndRunsMessage() {
+        val message = StringBuilder().apply {
+            if (battle.runs > 0) {
+                appendln("Ran ${battle.runs} time(s)")
             }
+
+            if (prefs.refill.enabled) {
+                val refillRepetitions = prefs.refill.repetitions
+                if (refillRepetitions > 0) {
+                    appendln("$stonesUsed refills used out of $refillRepetitions")
+                }
+            }
+        }.toString().trimEnd()
+
+        if (message.isNotBlank()) {
+            platformImpl.toast(message)
         }
     }
 
