@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.seconds
 
 class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
@@ -18,6 +19,9 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     var currentTurn = -1
         private set
 
+    var runs = 0
+        private set
+
     private lateinit var autoSkill: AutoSkill
     private lateinit var card: Card
 
@@ -30,6 +34,16 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     fun resetState() {
         autoSkill.resetState()
+
+        // Don't increment no. of runs if we're just clicking on quest again and again
+        // This can happen due to lags introduced during some events
+        if (currentStage != -1) {
+            ++runs
+
+            if (prefs.refill.shouldLimitRuns && runs >= prefs.refill.limitRuns) {
+                throw ScriptExitException("Ran $runs time(s)")
+            }
+        }
 
         currentStage = -1
         currentTurn = -1
