@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.seconds
 
 class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
@@ -38,6 +39,10 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // This can happen due to lags introduced during some events
         if (currentStage != -1) {
             ++runs
+
+            if (prefs.refill.shouldLimitRuns && runs >= prefs.refill.limitRuns) {
+                throw ScriptExitException("Ran $runs times")
+            }
         }
 
         currentStage = -1
