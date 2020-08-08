@@ -104,7 +104,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 }
 
             if (prefs.braveChains != BraveChainEnum.None) {
-                commandCardGroups = groupByFaceCard()
+                val isSupportServantsCard = CommandCard.list
+                    .filter { it.supportCheckRegion.exists(images.support) }
+                commandCardGroups = groupByFaceCard(isSupportServantsCard)
                 commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups)
             }
         }
@@ -202,6 +204,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
             && (toClick.size == 3 || (toClick.size == 2 && !isBeforeNP))
         ) {
+            logger.info("Rearranging cards")
+
             Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
         }
 
@@ -211,6 +215,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             pickCardsOrderedByPriority(3 - Clicks)
         }
 
+        logger.info("Clicking cards: $toClick")
         toClick.forEach { it.clickLocation.click() }
     }
 
@@ -224,12 +229,21 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                         .firstOrNull()?.score ?: 0.0
                 } ?: emptyList()
             }
+        }.also {
+            logger.info("NPs grouped with Face-cards: $it")
         }
     }
 
-    private fun groupByFaceCard(): List<List<CommandCard>> {
+    private fun groupByFaceCard(supportGroup: List<CommandCard>): List<List<CommandCard>> {
         val remaining = CommandCard.list.toMutableSet()
         val groups = mutableListOf<List<CommandCard>>()
+
+        if (supportGroup.isNotEmpty()) {
+            groups.add(supportGroup)
+            remaining.removeAll(supportGroup)
+
+            logger.info("Support group: $supportGroup")
+        }
 
         while (remaining.isNotEmpty()) {
             val u = remaining.first()
@@ -254,6 +268,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             groups.add(group)
         }
+
+        logger.info("Face-card groups: $groups")
 
         return groups
     }

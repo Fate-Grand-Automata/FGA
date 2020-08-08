@@ -58,5 +58,7 @@ class CommandCard private constructor(
         )
     }
 
+    val supportCheckRegion = affinityRegion + Location(-50, 100)
+
     override fun toString() = "[${index}]"
 }

@@ -99,4 +99,6 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
     val supportExtra get() = load("support_extra.png")
 
     val supportNotFound get() = load("support_not_found.png")
+
+    val support get() = load("support.png")
 }
