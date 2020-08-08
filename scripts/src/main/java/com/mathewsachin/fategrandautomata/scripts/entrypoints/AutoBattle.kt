@@ -396,9 +396,11 @@ open class AutoBattle @Inject constructor(
                     appendln("$stonesUsed refills used out of $refillRepetitions")
                 }
             }
-        }.toString()
+        }.toString().trimEnd()
 
-        platformImpl.toast(message)
+        if (message.isNotBlank()) {
+            platformImpl.toast(message)
+        }
     }
 
     private fun afterSelectingQuest() {
