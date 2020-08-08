@@ -14,5 +14,5 @@ internal class RefillPreferences(val prefs: SharedPreferenceDelegation) :
 
     override val shouldLimitRuns by prefs.bool(R.string.pref_should_limit_runs)
 
-    override val limitRuns by prefs.int(R.string.pref_limit_runs, 1)
+    override val limitRuns by prefs.stringAsInt(R.string.pref_limit_runs, 1)
 }

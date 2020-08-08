@@ -41,7 +41,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             ++runs
 
             if (prefs.refill.shouldLimitRuns && runs >= prefs.refill.limitRuns) {
-                throw ScriptExitException("Ran $runs times")
+                throw ScriptExitException("Ran $runs time(s)")
             }
         }
 

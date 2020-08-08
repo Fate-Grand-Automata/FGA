@@ -386,12 +386,16 @@ open class AutoBattle @Inject constructor(
      */
     private fun showRefillsAndRunsMessage() {
         val message = StringBuilder().apply {
-            if (battle.runs > 0) {
+            val refill = prefs.refill
+
+            if (refill.shouldLimitRuns && refill.limitRuns > 0) {
+                appendln("Ran ${battle.runs} out of ${refill.limitRuns} time(s)")
+            } else if (battle.runs > 0) {
                 appendln("Ran ${battle.runs} time(s)")
             }
 
-            if (prefs.refill.enabled) {
-                val refillRepetitions = prefs.refill.repetitions
+            if (refill.enabled) {
+                val refillRepetitions = refill.repetitions
                 if (refillRepetitions > 0) {
                     appendln("$stonesUsed refills used out of $refillRepetitions")
                 }
