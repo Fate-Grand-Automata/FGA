@@ -198,10 +198,18 @@ open class AutoBattle @Inject constructor(
         repeat(2) { i ->
             val dropFileName = "${timeString}.${i}.png"
 
-            screenshotManager.getScreenshot().save(
-                File(dropsFolder, dropFileName).absolutePath
-            )
+            val shotService = screenshotManager.screenshotService
+            val shot = if (shotService is IColorScreenshotProvider) {
+                shotService.takeColorScreenshot()
+            } else screenshotManager.getScreenshot()
 
+            shot.use {
+                it.save(
+                    File(dropsFolder, dropFileName).absolutePath
+                )
+            }
+
+            // scroll to end
             if (i == 0) {
                 Location(2306, 1032).click()
             }
