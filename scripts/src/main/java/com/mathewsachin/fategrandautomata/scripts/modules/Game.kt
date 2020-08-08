@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
@@ -114,4 +115,18 @@ class Game @Inject constructor(val prefs: IPreferences) {
 
     val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
     val friendPtSummonCheck = Region(1380, 1220, 75, 75)
+
+    fun supportClassClick(supportClass: SupportClass) = when (supportClass) {
+        SupportClass.None -> Location()
+        SupportClass.All -> Location(184, 256)
+        SupportClass.Saber -> Location(320, 256)
+        SupportClass.Archer -> Location(454, 256)
+        SupportClass.Lancer -> Location(568, 256)
+        SupportClass.Rider -> Location(724, 256)
+        SupportClass.Caster -> Location(858, 256)
+        SupportClass.Assassin -> Location(994, 256)
+        SupportClass.Berserker -> Location(1130, 256)
+        SupportClass.Extra -> Location(1264, 256)
+        SupportClass.Mix -> Location(1402, 256)
+    }
 }

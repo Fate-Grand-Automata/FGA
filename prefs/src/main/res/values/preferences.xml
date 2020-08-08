@@ -40,6 +40,7 @@
     <string name="pref_autoskill_name">autoskill_name</string>
     <string name="pref_autoskill_cmd">autoskill_cmd</string>
     <string name="pref_autoskill_party">autoskill_party</string>
+    <string name="pref_autoskill_support_class">autoskill_support_class</string>
 
     <string name="pref_brave_chains">brave_chains</string>
     <string name="pref_should_limit_runs">should_limit_runs</string>

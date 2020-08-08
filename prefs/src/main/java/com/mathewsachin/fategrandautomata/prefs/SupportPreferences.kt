@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.prefs
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
 import com.mathewsachin.fategrandautomata.prefs.helpers.map
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.limitBrokenCharacter
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
@@ -71,4 +72,6 @@ internal class SupportPreferences(
         R.string.pref_support_fallback,
         SupportSelectionModeEnum.Manual
     )
+
+    override val supportClass by prefs.enum(R.string.pref_autoskill_support_class, SupportClass.None)
 }
