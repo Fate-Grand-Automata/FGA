@@ -15,7 +15,7 @@ class AutoFriendGacha @Inject constructor(
 ) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
     private val first10SummonClick = Location(1400, 1120)
     private val okClick = Location(1600, 1120)
-    private val continueSummonClick = Location(1600, 1420)
+    private val continueSummonClick = Location(1600, 1325)
     private val skipRapidClick = Location(2520, 1400)
 
     private val continueSummonRegion = Region(1244, 1264, 580, 170)
