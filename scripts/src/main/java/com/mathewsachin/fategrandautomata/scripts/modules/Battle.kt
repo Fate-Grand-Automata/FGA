@@ -18,7 +18,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     var currentTurn = -1
         private set
 
-    var runs = 1
+    var runs = 0
         private set
 
     private lateinit var autoSkill: AutoSkill

@@ -385,14 +385,18 @@ open class AutoBattle @Inject constructor(
      * Will show a toast informing the user of number of runs and how many apples have been used so far.
      */
     private fun showRefillsAndRunsMessage() {
-        var message = "Run: ${battle.runs}"
-
-        if (prefs.refill.enabled) {
-            val refillRepetitions = prefs.refill.repetitions
-            if (refillRepetitions > 0) {
-                message += "\n$stonesUsed refills used out of $refillRepetitions"
+        val message = StringBuilder().apply {
+            if (battle.runs > 0) {
+                appendln("Ran ${battle.runs} time(s)")
             }
-        }
+
+            if (prefs.refill.enabled) {
+                val refillRepetitions = prefs.refill.repetitions
+                if (refillRepetitions > 0) {
+                    appendln("$stonesUsed refills used out of $refillRepetitions")
+                }
+            }
+        }.toString()
 
         platformImpl.toast(message)
     }
