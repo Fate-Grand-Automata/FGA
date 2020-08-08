@@ -131,8 +131,21 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun selectFirst(): Boolean {
-        game.supportFirstSupportClick.click()
-        return true
+        while (true) {
+            game.supportFirstSupportClick.click()
+
+            // Handle the case of a friend not having set a support servant
+            if (game.supportScreenRegion.waitVanish(
+                    images.supportScreen,
+                    Similarity = 0.85,
+                    Timeout = 10.seconds
+                )
+            ) {
+                return true
+            }
+
+            refreshSupportList()
+        }
     }
 
     private fun searchVisible(SearchMethod: SearchFunction) =

@@ -6,4 +6,7 @@ interface IRefillPreferences {
     val enabled: Boolean
     val repetitions: Int
     val resource: RefillResourceEnum
+
+    val shouldLimitRuns: Boolean
+    val limitRuns: Int
 }
