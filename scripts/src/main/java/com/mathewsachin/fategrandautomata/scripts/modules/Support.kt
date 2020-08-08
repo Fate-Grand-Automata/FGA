@@ -8,6 +8,8 @@ import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -57,6 +59,8 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             0.3.seconds.wait()
         }
 
+        waitForSupportScreenToLoad()
+
         return when (SelectionMode) {
             SupportSelectionModeEnum.First -> selectFirst()
             SupportSelectionModeEnum.Manual -> selectManual()
@@ -72,26 +76,69 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         throw ScriptExitException("Support selection set to Manual")
     }
 
-    private fun selectFirst(): Boolean {
-        1.seconds.wait()
-        game.supportFirstSupportClick.click()
+    private var lastSupportRefreshTimestamp: TimeMark? = null
+    private val supportRefreshThreshold = 10.seconds
 
-        // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
-        if (isInSupport()) {
-            2.seconds.wait()
+    private fun refreshSupportList() {
+        lastSupportRefreshTimestamp?.elapsedNow()?.let { elapsed ->
+            val toWait = supportRefreshThreshold - elapsed
 
-            while (isInSupport()) {
-                10.seconds.wait()
-                game.supportUpdateClick.click()
-                1.seconds.wait()
-                game.supportUpdateYesClick.click()
-                3.seconds.wait()
-                game.supportFirstSupportClick.click()
-                1.seconds.wait()
+            if (toWait.isPositive()) {
+                toast("Support list will be updated in $toWait")
+
+                toWait.wait()
             }
         }
 
-        return true
+        game.supportUpdateClick.click()
+        1.seconds.wait()
+
+        game.supportUpdateYesClick.click()
+
+        waitForSupportScreenToLoad()
+        updateLastSupportRefreshTimestamp()
+    }
+
+    private fun updateLastSupportRefreshTimestamp() {
+        lastSupportRefreshTimestamp = TimeSource.Monotonic.markNow()
+    }
+
+    private fun waitForSupportScreenToLoad() {
+        while (true) {
+            when {
+                needsToRetry() -> retry()
+                // wait for dialogs to close
+                !game.supportExtraRegion.exists(images.supportExtra) -> 1.seconds.wait()
+                game.supportNotFoundRegion.exists(images.supportNotFound) -> {
+                    updateLastSupportRefreshTimestamp()
+                    refreshSupportList()
+                    return
+                }
+                game.supportRegionToolSearchRegion.exists(
+                    images.supportRegionTool,
+                    Similarity = supportRegionToolSimilarity
+                ) -> return
+                game.supportFriendRegion.exists(images.guest) -> return
+            }
+        }
+    }
+
+    private fun selectFirst(): Boolean {
+        while (true) {
+            game.supportFirstSupportClick.click()
+
+            // Handle the case of a friend not having set a support servant
+            if (game.supportScreenRegion.waitVanish(
+                    images.supportScreen,
+                    Similarity = 0.85,
+                    Timeout = 10.seconds
+                )
+            ) {
+                return true
+            }
+
+            refreshSupportList()
+        }
     }
 
     private fun searchVisible(SearchMethod: SearchFunction) =
@@ -149,18 +196,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     0.3.seconds.wait()
                 }
                 numberOfUpdates < prefs.support.maxUpdates -> {
-                    toast("Support list will be updated in 3 seconds.")
-                    3.seconds.wait()
-
-                    game.supportUpdateClick.click()
-                    1.seconds.wait()
-                    game.supportUpdateYesClick.click()
-
-                    while (needsToRetry()) {
-                        retry()
-                    }
-
-                    3.seconds.wait()
+                    refreshSupportList()
 
                     ++numberOfUpdates
                     numberOfSwipes = 0
