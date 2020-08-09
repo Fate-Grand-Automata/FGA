@@ -195,7 +195,7 @@ open class AutoBattle @Inject constructor(
         val sdf = SimpleDateFormat("dd-M-yyyy-hh-mm-ss", Locale.US)
         val timeString = sdf.format(Date())
 
-        repeat(2) { i ->
+        for (i in 0..1) {
             val dropFileName = "${timeString}.${i}.png"
 
             val shotService = screenshotManager.screenshotService
@@ -209,10 +209,11 @@ open class AutoBattle @Inject constructor(
                 )
             }
 
-            // scroll to end
-            if (i == 0) {
+            // check if we need to scroll to see more drops
+            if (game.resultDropScrollbarRegion.exists(images.dropScrollbar)) {
+                // scroll to end
                 Location(2306, 1032).click()
-            }
+            } else break
         }
     }
 
