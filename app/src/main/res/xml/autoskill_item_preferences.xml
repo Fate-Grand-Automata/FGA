@@ -23,6 +23,15 @@
         app:title="Party"
         app:useSimpleSummaryProvider="true" />
 
+    <ListPreference
+        app:defaultValue="None"
+        app:entries="@array/support_class"
+        app:entryValues="@array/support_class"
+        app:icon="@drawable/ic_diamond"
+        app:key="@string/pref_autoskill_support_class"
+        app:title="Support Class"
+        app:useSimpleSummaryProvider="true" />
+
     <Preference
         app:icon="@drawable/ic_sort"
         app:key="@string/pref_card_priority"
