@@ -112,6 +112,7 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val resultFriendRequestRejectClick = Location(600, 1200)
     val resultQuestRewardRegion = Region(1630, 140, 370, 250)
     val resultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
+    val resultDropScrollbarRegion = Region(2260, 230, 100, 88)
 
     val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
     val friendPtSummonCheck = Region(1380, 1220, 75, 75)
