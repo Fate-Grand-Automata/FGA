@@ -97,6 +97,8 @@ class PreferencesImpl @Inject constructor(
 
     override val rearrangeCards by prefs.bool(R.string.pref_rearrange_cards)
 
+    override val screenshotDrops by prefs.bool(R.string.pref_screenshot_drops)
+
     override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
         AutoSkillPreferences(
             id,

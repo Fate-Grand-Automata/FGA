@@ -7,6 +7,7 @@ import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.util.DisplayMetrics
 import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.libautomata.IColorScreenshotProvider
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IScreenshotService
 import org.opencv.core.CvType
@@ -20,7 +21,7 @@ class MediaProjectionScreenshotService(
     private val MediaProjection: MediaProjection,
     private val DisplayMetrics: DisplayMetrics,
     private val storageDirs: StorageDirs
-) : IScreenshotService {
+) : IScreenshotService, IColorScreenshotProvider {
     private val colorCorrectedMat = Mat()
 
     private val pattern = DroidCvPattern(colorCorrectedMat, false)
@@ -43,27 +44,34 @@ class MediaProjectionScreenshotService(
     }
 
     override fun takeScreenshot(): IPattern {
-        imageReader.acquireLatestImage()?.use {
-            matFromImg(it)
+        imageReader.acquireLatestImage()?.use { img ->
+            DisposableMat(img.toMat()).use {
+                Imgproc.cvtColor(it.Mat, colorCorrectedMat, Imgproc.COLOR_BGRA2GRAY)
+            }
         }
 
         return pattern
     }
 
-    private fun matFromImg(Image: Image) {
-        val w = Image.width
-        val h = Image.height
-
-        val plane = Image.planes[0]
+    private fun Image.toMat(): Mat {
+        val plane = planes[0]
         val buffer = plane.buffer
 
         val rowStride = plane.rowStride.toLong()
 
         // Buffer memory isn't copied by OpenCV
-        DisposableMat(Mat(h, w, CvType.CV_8UC4, buffer, rowStride)).use {
-            Imgproc.cvtColor(it.Mat, colorCorrectedMat, Imgproc.COLOR_BGRA2GRAY)
-        }
+        return Mat(height, width, CvType.CV_8UC4, buffer, rowStride)
     }
+
+    override fun takeColorScreenshot(): IPattern =
+        imageReader.acquireLatestImage()?.use { img ->
+            DisposableMat(img.toMat()).use {
+                val mat = Mat()
+                Imgproc.cvtColor(it.Mat, mat, Imgproc.COLOR_RGBA2BGR)
+
+                DroidCvPattern(mat)
+            }
+        } ?: pattern
 
     override fun close() {
         colorCorrectedMat.release()
