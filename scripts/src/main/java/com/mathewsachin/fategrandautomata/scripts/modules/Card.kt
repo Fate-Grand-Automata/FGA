@@ -104,10 +104,10 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 }
 
             if (prefs.braveChains != BraveChainEnum.None) {
-                val isSupportServantsCard = CommandCard.list
+                val supportGroup = CommandCard.list
                     .filter { it.supportCheckRegion.exists(images.support) }
-                commandCardGroups = groupByFaceCard(isSupportServantsCard)
-                commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups)
+                commandCardGroups = groupByFaceCard(supportGroup)
+                commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
             }
         }
     }
@@ -219,19 +219,41 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         toClick.forEach { it.clickLocation.click() }
     }
 
-    private fun groupNpsWithFaceCards(groups: List<List<CommandCard>>): Map<NoblePhantasm, List<CommandCard>> {
-        return NoblePhantasm.list.associateWith {
+    private fun groupNpsWithFaceCards(
+        groups: List<List<CommandCard>>,
+        supportGroup: List<CommandCard>
+    ): Map<NoblePhantasm, List<CommandCard>> {
+        val npGroups = mutableMapOf<NoblePhantasm, List<CommandCard>>()
+
+        val supportNp = NoblePhantasm.list.firstOrNull {
+            it.supportCheckRegion.exists(images.support)
+        }
+
+        if (supportNp != null) {
+            npGroups[supportNp] = supportGroup
+        }
+
+        val otherNps = if (supportNp != null) {
+            NoblePhantasm.list - supportNp
+        } else NoblePhantasm.list
+
+        val otherGroups = if (supportNp != null) {
+            groups.minusElement(supportGroup)
+        } else groups
+
+        otherNps.associateWithTo(npGroups) {
             it.servantCropRegion.getPattern().use { npCropped ->
-                groups.maxBy { group ->
+                otherGroups.maxBy { group ->
                     group.first()
                         .servantMatchRegion
                         .findAll(npCropped, 0.4)
                         .firstOrNull()?.score ?: 0.0
                 } ?: emptyList()
             }
-        }.also {
-            logger.info("NPs grouped with Face-cards: $it")
         }
+
+        logger.info("NPs grouped with Face-cards: $npGroups")
+        return npGroups
     }
 
     private fun groupByFaceCard(supportGroup: List<CommandCard>): List<List<CommandCard>> {
