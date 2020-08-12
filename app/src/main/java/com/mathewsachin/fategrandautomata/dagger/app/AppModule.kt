@@ -10,12 +10,12 @@ import dagger.Module
 import javax.inject.Singleton
 
 @Module(subcomponents = [ScriptRunnerServiceComponent::class])
-abstract class AppModule {
+interface AppModule {
     @Singleton
     @Binds
-    abstract fun bindImageLoader(imageLoader: ImageLoader): IImageLoader
+    fun bindImageLoader(imageLoader: ImageLoader): IImageLoader
 
     @Singleton
     @Binds
-    abstract fun bindPrefs(prefs: PreferencesImpl): IPreferences
+    fun bindPrefs(prefs: PreferencesImpl): IPreferences
 }

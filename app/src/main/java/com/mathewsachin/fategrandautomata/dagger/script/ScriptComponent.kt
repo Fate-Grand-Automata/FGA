@@ -8,7 +8,13 @@ import com.mathewsachin.libautomata.dagger.ScriptScope
 import dagger.Subcomponent
 
 @ScriptScope
-@Subcomponent(modules = [ScriptModule::class, ScreenshotModule::class])
+@Subcomponent(
+    modules = [
+        ScriptModule::class,
+        ScreenshotModule::class,
+        ScriptProviderModule::class
+    ]
+)
 interface ScriptComponent {
     @Subcomponent.Builder
     interface Builder {

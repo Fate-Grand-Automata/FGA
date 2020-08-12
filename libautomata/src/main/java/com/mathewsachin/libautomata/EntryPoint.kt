@@ -13,8 +13,6 @@ abstract class EntryPoint(
      * Starts the logic of the script mode in a new thread.
      */
     fun run() {
-        exitManager.cancel()
-
         thread(start = true) {
             scriptRunner()
         }
@@ -23,7 +21,7 @@ abstract class EntryPoint(
     /**
      * Notifies the script that the user requested it to stop.
      */
-    fun stop() = exitManager.request()
+    fun stop() = exitManager.exit()
 
     private fun scriptRunner() {
         try {

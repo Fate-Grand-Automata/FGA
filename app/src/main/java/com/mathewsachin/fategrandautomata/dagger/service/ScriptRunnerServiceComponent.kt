@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.dagger.service
 
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.dagger.script.ScriptComponent
-import com.mathewsachin.fategrandautomata.dagger.script.ScriptRunnerModule
 import dagger.Subcomponent
 
 @ServiceScope
