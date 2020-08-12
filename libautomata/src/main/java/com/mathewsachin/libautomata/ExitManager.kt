@@ -14,9 +14,9 @@ class ExitManager {
 
         runBlocking {
             try {
-                scope.launch {
+                withContext(scope.coroutineContext) {
                     delay(duration)
-                }.join()
+                }
             } catch (e: CancellationException) {
                 throw ScriptAbortException()
             }
