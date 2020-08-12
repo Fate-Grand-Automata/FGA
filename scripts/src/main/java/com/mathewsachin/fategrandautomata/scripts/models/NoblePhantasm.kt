@@ -32,5 +32,8 @@ class NoblePhantasm private constructor(
         )
     }
 
+    val supportCheckRegion = (servantMatchRegion + Location(110, 0))
+        .copy(Height = 110)
+
     override fun toString() = "[${autoSkillCode}]"
 }

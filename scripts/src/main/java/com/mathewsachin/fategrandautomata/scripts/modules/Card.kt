@@ -104,8 +104,10 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 }
 
             if (prefs.braveChains != BraveChainEnum.None) {
-                commandCardGroups = groupByFaceCard()
-                commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups)
+                val supportGroup = CommandCard.list
+                    .filter { it.supportCheckRegion.exists(images.support) }
+                commandCardGroups = groupByFaceCard(supportGroup)
+                commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
             }
         }
     }
@@ -202,6 +204,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
             && (toClick.size == 3 || (toClick.size == 2 && !isBeforeNP))
         ) {
+            logger.info("Rearranging cards")
+
             Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
         }
 
@@ -211,13 +215,35 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             pickCardsOrderedByPriority(3 - Clicks)
         }
 
+        logger.info("Clicking cards: $toClick")
         toClick.forEach { it.clickLocation.click() }
     }
 
-    private fun groupNpsWithFaceCards(groups: List<List<CommandCard>>): Map<NoblePhantasm, List<CommandCard>> {
-        return NoblePhantasm.list.associateWith {
+    private fun groupNpsWithFaceCards(
+        groups: List<List<CommandCard>>,
+        supportGroup: List<CommandCard>
+    ): Map<NoblePhantasm, List<CommandCard>> {
+        val npGroups = mutableMapOf<NoblePhantasm, List<CommandCard>>()
+
+        val supportNp = NoblePhantasm.list.firstOrNull {
+            it.supportCheckRegion.exists(images.support)
+        }
+
+        if (supportNp != null) {
+            npGroups[supportNp] = supportGroup
+        }
+
+        val otherNps = if (supportNp != null) {
+            NoblePhantasm.list - supportNp
+        } else NoblePhantasm.list
+
+        val otherGroups = if (supportNp != null) {
+            groups.minusElement(supportGroup)
+        } else groups
+
+        otherNps.associateWithTo(npGroups) {
             it.servantCropRegion.getPattern().use { npCropped ->
-                groups.maxBy { group ->
+                otherGroups.maxBy { group ->
                     group.first()
                         .servantMatchRegion
                         .findAll(npCropped, 0.4)
@@ -225,11 +251,21 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 } ?: emptyList()
             }
         }
+
+        logger.info("NPs grouped with Face-cards: $npGroups")
+        return npGroups
     }
 
-    private fun groupByFaceCard(): List<List<CommandCard>> {
+    private fun groupByFaceCard(supportGroup: List<CommandCard>): List<List<CommandCard>> {
         val remaining = CommandCard.list.toMutableSet()
         val groups = mutableListOf<List<CommandCard>>()
+
+        if (supportGroup.isNotEmpty()) {
+            groups.add(supportGroup)
+            remaining.removeAll(supportGroup)
+
+            logger.info("Support group: $supportGroup")
+        }
 
         while (remaining.isNotEmpty()) {
             val u = remaining.first()
@@ -254,6 +290,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             groups.add(group)
         }
+
+        logger.info("Face-card groups: $groups")
 
         return groups
     }
