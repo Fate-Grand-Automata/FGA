@@ -45,7 +45,7 @@ open class AutoBattle @Inject constructor(
 
         // a map of validators and associated actions
         // if the validator function evaluates to true, the associated action function is called
-        val screens = mapOf(
+        val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { battle.needsToRetry() } to { battle.retry() },
             { battle.isIdle() } to { battle.performBattle() },
             { isInMenu() } to { menu() },
@@ -64,14 +64,15 @@ open class AutoBattle @Inject constructor(
         while (true) {
             val actor = screenshotManager.useSameSnapIn {
                 screens
+                    .asSequence()
                     .filter { (validator, _) -> validator() }
                     .map { (_, actor) -> actor }
                     .firstOrNull()
             }
 
-            actor?.invoke()
-
-            1.seconds.wait()
+            if (actor != null) {
+                actor.invoke()
+            } else 1.seconds.wait()
         }
     }
 
