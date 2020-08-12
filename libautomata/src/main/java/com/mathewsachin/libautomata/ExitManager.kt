@@ -1,15 +1,27 @@
 package com.mathewsachin.libautomata
 
-import javax.inject.Inject
-import javax.inject.Singleton
+import kotlinx.coroutines.*
+import kotlin.time.Duration
 
 /**
  * Manages the termination of running scripts
  */
-@Singleton
-class ExitManager @Inject constructor() {
-    @Volatile
-    private var exitRequested = false
+class ExitManager {
+    private val scope = CoroutineScope(Dispatchers.IO)
+
+    fun wait(duration: Duration) {
+        checkExitRequested()
+
+        runBlocking {
+            try {
+                withContext(scope.coroutineContext) {
+                    delay(duration)
+                }
+            } catch (e: CancellationException) {
+                throw ScriptAbortException()
+            }
+        }
+    }
 
     /**
      * Checks if the stop button has been pressed.
@@ -17,7 +29,7 @@ class ExitManager @Inject constructor() {
      * @throws ScriptAbortException if the button has been pressed
      */
     fun checkExitRequested() {
-        if (exitRequested) {
+        if (!scope.isActive) {
             throw ScriptAbortException()
         }
     }
@@ -25,14 +37,5 @@ class ExitManager @Inject constructor() {
     /**
      * Requests exit
      */
-    fun request() {
-        exitRequested = true
-    }
-
-    /**
-     * Cancels exit request
-     */
-    fun cancel() {
-        exitRequested = false
-    }
+    fun exit() = scope.cancel()
 }
