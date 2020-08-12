@@ -8,7 +8,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import com.mathewsachin.fategrandautomata.scripts.models.NoblePhantasm
 import mu.KotlinLogging
 import java.util.*
 
@@ -20,9 +19,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     private lateinit var cardPriority: CardPriorityPerWave
 
-    private var commandCards = emptyMap<CardScore, List<CommandCard>>()
-    private val remainingCards = mutableSetOf<CommandCard>()
-    private val remainingNps = mutableSetOf<NoblePhantasm>()
+    private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
+    private val remainingCards = mutableSetOf<CommandCard.Face>()
+    private val remainingNps = mutableSetOf<CommandCard.NP>()
     private val noOfCardsToClick
         get() = (3 - (5 - remainingCards.size) - (3 - remainingNps.size))
             .coerceAtLeast(0)
@@ -36,7 +35,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         )
     }
 
-    private fun getCardAffinity(commandCard: CommandCard): CardAffinityEnum {
+    private fun getCardAffinity(commandCard: CommandCard.Face): CardAffinityEnum {
         val region = commandCard.affinityRegion
 
         if (region.exists(images.weak)) {
@@ -50,7 +49,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return CardAffinityEnum.Normal
     }
 
-    private fun getCardType(commandCard: CommandCard): CardTypeEnum {
+    private fun getCardType(commandCard: CommandCard.Face): CardTypeEnum {
         val region = commandCard.typeRegion
 
         val stunRegion = region.copy(
@@ -82,17 +81,17 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return CardTypeEnum.Unknown
     }
 
-    private var commandCardGroups: List<List<CommandCard>> = emptyList()
-    private var commandCardGroupedWithNp: Map<NoblePhantasm, List<CommandCard>> = emptyMap()
-    private var firstNp: NoblePhantasm? = null
+    private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
+    private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
+    private var firstNp: CommandCard.NP? = null
 
     fun readCommandCards() {
-        remainingCards.addAll(CommandCard.list)
-        remainingNps.addAll(NoblePhantasm.list)
+        remainingCards.addAll(CommandCard.Face.list)
+        remainingNps.addAll(CommandCard.NP.list)
         firstNp = null
 
         screenshotManager.useSameSnapIn {
-            commandCards = CommandCard.list
+            commandCards = CommandCard.Face.list
                 .groupBy {
                     val type = getCardType(it)
                     val affinity =
@@ -104,7 +103,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                 }
 
             if (prefs.braveChains != BraveChainEnum.None) {
-                val supportGroup = CommandCard.list
+                val supportGroup = CommandCard.Face.list
                     .filter { it.supportCheckRegion.exists(images.support) }
                 commandCardGroups = groupByFaceCard(supportGroup)
                 commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
@@ -122,12 +121,12 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
     fun clickNpCards() {
-        for (npCard in NoblePhantasm.list) {
+        for (npCard in CommandCard.NP.list) {
             npCard.clickLocation.click()
         }
     }
 
-    fun clickNp(np: NoblePhantasm) {
+    fun clickNp(np: CommandCard.NP) {
         if (np in remainingNps) {
             np.clickLocation.click()
             remainingNps.remove(np)
@@ -140,7 +139,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
     fun clickCommandCards(Clicks: Int = noOfCardsToClick) {
         var clicksLeft = Clicks.coerceAtLeast(0)
-        val toClick = mutableListOf<CommandCard>()
+        val toClick = mutableListOf<CommandCard.Face>()
 
         val cardsOrderedByPriority = cardPriority.atWave(battle.currentStage)
             .mapNotNull { commandCards[it] }
@@ -148,9 +147,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         fun pickCardsOrderedByPriority(
             clicks: Int = clicksLeft,
-            filter: (CommandCard) -> Boolean = { true }
-        ): List<CommandCard> {
-            fun Sequence<CommandCard>.addToClickList(): List<CommandCard> {
+            filter: (CommandCard.Face) -> Boolean = { true }
+        ): List<CommandCard.Face> {
+            fun Sequence<CommandCard.Face>.addToClickList(): List<CommandCard.Face> {
                 val asList = toList()
 
                 toClick.addAll(asList)
@@ -180,7 +179,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     && remainingCards.isNotEmpty()
                     && clicksLeft > 1
                 ) {
-                    var lastGroup = emptyList<CommandCard>()
+                    var lastGroup = emptyList<CommandCard.Face>()
 
                     do {
                         lastGroup = pickCardsOrderedByPriority(1) { it !in lastGroup }
@@ -220,12 +219,12 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun groupNpsWithFaceCards(
-        groups: List<List<CommandCard>>,
-        supportGroup: List<CommandCard>
-    ): Map<NoblePhantasm, List<CommandCard>> {
-        val npGroups = mutableMapOf<NoblePhantasm, List<CommandCard>>()
+        groups: List<List<CommandCard.Face>>,
+        supportGroup: List<CommandCard.Face>
+    ): Map<CommandCard.NP, List<CommandCard.Face>> {
+        val npGroups = mutableMapOf<CommandCard.NP, List<CommandCard.Face>>()
 
-        val supportNp = NoblePhantasm.list.firstOrNull {
+        val supportNp = CommandCard.NP.list.firstOrNull {
             it.supportCheckRegion.exists(images.support)
         }
 
@@ -234,8 +233,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         }
 
         val otherNps = if (supportNp != null) {
-            NoblePhantasm.list - supportNp
-        } else NoblePhantasm.list
+            CommandCard.NP.list - supportNp
+        } else CommandCard.NP.list
 
         val otherGroups = if (supportNp != null) {
             groups.minusElement(supportGroup)
@@ -256,9 +255,9 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return npGroups
     }
 
-    private fun groupByFaceCard(supportGroup: List<CommandCard>): List<List<CommandCard>> {
-        val remaining = CommandCard.list.toMutableSet()
-        val groups = mutableListOf<List<CommandCard>>()
+    private fun groupByFaceCard(supportGroup: List<CommandCard.Face>): List<List<CommandCard.Face>> {
+        val remaining = CommandCard.Face.list.toMutableSet()
+        val groups = mutableListOf<List<CommandCard.Face>>()
 
         if (supportGroup.isNotEmpty()) {
             groups.add(supportGroup)
@@ -271,7 +270,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             val u = remaining.first()
             remaining.remove(u)
 
-            val group = mutableListOf<CommandCard>()
+            val group = mutableListOf<CommandCard.Face>()
             group.add(u)
 
             if (remaining.isNotEmpty()) {

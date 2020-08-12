@@ -16,7 +16,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         Skill.Master.list.map {
             it.autoSkillCode to { castMasterSkill(it) }
         },
-        NoblePhantasm.list.map {
+        CommandCard.NP.list.map {
             it.autoSkillCode to { castNoblePhantasm(it) }
         },
         ServantTarget.list.map {
@@ -84,7 +84,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         waitForAnimationToFinish()
     }
 
-    private fun castNoblePhantasm(noblePhantasm: NoblePhantasm) {
+    private fun castNoblePhantasm(noblePhantasm: CommandCard.NP) {
         if (!battle.hasClickedAttack) {
             battle.clickAttack()
 
