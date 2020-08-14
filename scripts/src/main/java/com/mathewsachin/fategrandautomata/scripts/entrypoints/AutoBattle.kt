@@ -76,6 +76,12 @@ open class AutoBattle @Inject constructor(
         }
     }
 
+    override fun postActions() {
+        if (prefs.refill.autoDecrement) {
+            prefs.refill.repetitions -= stonesUsed
+        }
+    }
+
     /**
      * Initialize Aspect Ratio adjustment for different sized screens,ask for input from user for
      * Autoskill plus confirming Apple/Stone usage.

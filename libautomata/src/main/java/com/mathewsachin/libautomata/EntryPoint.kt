@@ -42,6 +42,12 @@ abstract class EntryPoint(
 
             platformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
         }
+
+        try {
+            postActions()
+        } catch (e: Exception) {
+            platformImpl.messageBox("Error", e.messageAndStackTrace, e)
+        }
     }
 
     /**
@@ -54,6 +60,8 @@ abstract class EntryPoint(
      * @throws ScriptExitException when an exit condition was reached
      */
     protected abstract fun script(): Nothing
+
+    protected open fun postActions() {}
 
     /**
      * A listener function, which is called when the script detected an exit condition or when an
