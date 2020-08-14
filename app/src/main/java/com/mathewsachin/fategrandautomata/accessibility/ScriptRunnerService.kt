@@ -8,7 +8,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
@@ -57,11 +56,7 @@ class ScriptRunnerService : AccessibilityService() {
     @Inject
     lateinit var platformImpl: IPlatformImpl
 
-    private var sshotService: IScreenshotService? = null
     private val screenOffReceiver = ScreenOffReceiver()
-
-    // stopping is handled by Screenshot service
-    private var mediaProjection: MediaProjection? = null
 
     override fun onUnbind(intent: Intent?): Boolean {
         stop()
@@ -80,29 +75,28 @@ class ScriptRunnerService : AccessibilityService() {
 
     val wantsMediaProjectionToken: Boolean get() = !prefs.useRootForScreenshots
 
-    var serviceStarted = false
+    var serviceState: ServiceState = ServiceState.Stopped
         private set
 
     fun start(MediaProjectionToken: Intent? = null): Boolean {
-        if (serviceStarted) {
+        if (serviceState is ServiceState.Started) {
             return false
         }
 
-        if (!registerScreenshot(MediaProjectionToken)) {
-            return false
-        }
+        val screenshotService = registerScreenshot(MediaProjectionToken)
+            ?: return false
 
         userInterface.show()
 
-        serviceStarted = true
+        serviceState = ServiceState.Started(screenshotService)
 
         return true
     }
 
-    private fun registerScreenshot(MediaProjectionToken: Intent?): Boolean {
-        sshotService = try {
+    private fun registerScreenshot(MediaProjectionToken: Intent?): IScreenshotService? {
+        return try {
             if (MediaProjectionToken != null) {
-                mediaProjection =
+                val mediaProjection =
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
@@ -112,26 +106,23 @@ class ScriptRunnerService : AccessibilityService() {
             } else RootScreenshotService(SuperUser(), storageDirs, platformImpl)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-            return false
+            null
         }
-
-        return true
     }
 
     fun stop(): Boolean {
         scriptManager.stopScript()
 
-        if (!serviceStarted) {
-            return false
+        serviceState.let {
+            if (it is ServiceState.Started) {
+                it.screenshotService.close()
+            } else return false
         }
-
-        sshotService?.close()
-        sshotService = null
 
         imageLoader.clearImageCache()
 
         userInterface.hide()
-        serviceStarted = false
+        serviceState = ServiceState.Stopped
 
         notification.hide()
 
@@ -162,13 +153,17 @@ class ScriptRunnerService : AccessibilityService() {
 
     fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
         scriptCtrlBtn.setThrottledClickListener {
-            when (scriptManager.scriptState) {
-                is ScriptState.Started -> scriptManager.stopScript()
-                is ScriptState.Stopped -> sshotService?.let {
-                    // Overwrite the server in the preferences with the detected one, if possible
-                    currentFgoServer?.let { server -> prefs.gameServer = server }
+            val state = serviceState
 
-                    scriptManager.startScript(this, it, component)
+            if (state is ServiceState.Started) {
+                when (scriptManager.scriptState) {
+                    is ScriptState.Started -> scriptManager.stopScript()
+                    is ScriptState.Stopped -> {
+                        // Overwrite the server in the preferences with the detected one, if possible
+                        currentFgoServer?.let { server -> prefs.gameServer = server }
+
+                        scriptManager.startScript(this, state.screenshotService, component)
+                    }
                 }
             }
         }

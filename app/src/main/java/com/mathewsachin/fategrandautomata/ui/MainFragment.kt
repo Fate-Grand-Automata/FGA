@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
+import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainFragment : Fragment() {
@@ -75,16 +76,17 @@ class MainFragment : Fragment() {
         val instance = ScriptRunnerService.Instance
             ?: return
 
-        if (instance.serviceStarted) {
-            instance.stop()
-        } else {
-            if (instance.wantsMediaProjectionToken) {
-                instance.notification.show()
+        when (instance.serviceState) {
+            is ServiceState.Started -> instance.stop()
+            is ServiceState.Stopped -> {
+                if (instance.wantsMediaProjectionToken) {
+                    instance.notification.show()
 
-                // This initiates a prompt dialog for the user to confirm screen projection.
-                startMediaProjection.launch()
-            } else if (instance.start()) {
-                instance.notification.show()
+                    // This initiates a prompt dialog for the user to confirm screen projection.
+                    startMediaProjection.launch()
+                } else if (instance.start()) {
+                    instance.notification.show()
+                }
             }
         }
     }
