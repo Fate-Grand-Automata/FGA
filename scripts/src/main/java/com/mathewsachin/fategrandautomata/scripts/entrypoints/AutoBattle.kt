@@ -70,9 +70,9 @@ open class AutoBattle @Inject constructor(
                     .firstOrNull()
             }
 
-            if (actor != null) {
-                actor.invoke()
-            } else 1.seconds.wait()
+            actor?.invoke()
+
+            1.seconds.wait()
         }
     }
 
