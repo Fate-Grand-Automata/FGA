@@ -4,8 +4,9 @@ import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 
 interface IRefillPreferences {
     val enabled: Boolean
-    val repetitions: Int
+    var repetitions: Int
     val resource: RefillResourceEnum
+    val autoDecrement: Boolean
 
     val shouldLimitRuns: Boolean
     val limitRuns: Int

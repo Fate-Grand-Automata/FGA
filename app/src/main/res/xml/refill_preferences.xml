@@ -18,6 +18,13 @@
             app:title="Repetitions"
             app:useSimpleSummaryProvider="true" />
 
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_minus"
+            app:key="@string/pref_refill_decrement"
+            app:dependency="@string/pref_refill_enabled"
+            app:title="Automatically decrease Refills" />
+
         <ListPreference
             app:defaultValue="AllApples"
             app:dependency="@string/pref_refill_enabled"
