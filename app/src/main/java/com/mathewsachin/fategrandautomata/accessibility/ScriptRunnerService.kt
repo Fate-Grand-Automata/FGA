@@ -162,13 +162,14 @@ class ScriptRunnerService : AccessibilityService() {
 
     fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
         scriptCtrlBtn.setThrottledClickListener {
-            if (scriptManager.scriptStarted) {
-                scriptManager.stopScript()
-            } else sshotService?.let {
-                // Overwrite the server in the preferences with the detected one, if possible
-                currentFgoServer?.let { server -> prefs.gameServer = server }
+            when (scriptManager.scriptState) {
+                is ScriptState.Started -> scriptManager.stopScript()
+                is ScriptState.Stopped -> sshotService?.let {
+                    // Overwrite the server in the preferences with the detected one, if possible
+                    currentFgoServer?.let { server -> prefs.gameServer = server }
 
-                scriptManager.startScript(this, it, component)
+                    scriptManager.startScript(this, it, component)
+                }
             }
         }
     }

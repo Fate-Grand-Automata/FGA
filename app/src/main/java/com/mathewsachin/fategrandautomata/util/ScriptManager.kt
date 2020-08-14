@@ -19,7 +19,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
-import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import javax.inject.Inject
 import kotlin.time.seconds
@@ -29,30 +28,26 @@ class ScriptManager @Inject constructor(
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
-    val storageDirs: StorageDirs,
-    val platformImpl: IPlatformImpl
+    val storageDirs: StorageDirs
 ) {
-    var scriptStarted = false
+    var scriptState: ScriptState = ScriptState.Stopped
         private set
-
-    private var entryPoint: EntryPoint? = null
-    private var recording: AutoCloseable? = null
 
     private fun onScriptExit(e: Exception?) {
         userInterface.setPlayIcon()
 
         imageLoader.clearSupportCache()
 
-        entryPoint = null
-        scriptStarted = false
-
-        val rec = recording
-        if (rec != null) {
-            // record for 2 seconds more to show things like error messages
-            userInterface.postDelayed(2.seconds) { rec.close() }
+        scriptState.let { prevState ->
+            if (prevState is ScriptState.Started && prevState.recording != null) {
+                // record for 2 seconds more to show things like error messages
+                userInterface.postDelayed(2.seconds) {
+                    prevState.recording.close()
+                }
+            }
         }
 
-        recording = null
+        scriptState = ScriptState.Stopped
 
         if (e is SupportImageMakerExitException) {
             handler.post { showSupportImageNamer(userInterface, storageDirs) }
@@ -76,7 +71,7 @@ class ScriptManager @Inject constructor(
         screenshotService: IScreenshotService,
         component: ScriptRunnerServiceComponent
     ) {
-        if (scriptStarted) {
+        if (scriptState is ScriptState.Started) {
             return
         }
 
@@ -101,29 +96,26 @@ class ScriptManager @Inject constructor(
     }
 
     fun stopScript() {
-        if (!scriptStarted) {
-            return
-        }
+        scriptState.let { state ->
+            if (state is ScriptState.Started) {
+                state.entryPoint.scriptExitListener = { }
+                state.entryPoint.stop()
 
-        entryPoint?.let {
-            it.scriptExitListener = { }
-            it.stop()
+                onScriptExit(null)
+            }
         }
-
-        onScriptExit(null)
     }
 
     private fun runEntryPoint(EntryPoint: EntryPoint, screenshotService: IScreenshotService) {
-        if (scriptStarted) {
+        if (scriptState is ScriptState.Started) {
             return
         }
 
-        scriptStarted = true
-        entryPoint = EntryPoint
+        val recording = if (preferences.recordScreen) {
+            screenshotService.startRecording()
+        } else null
 
-        if (preferences.recordScreen) {
-            recording = screenshotService.startRecording()
-        }
+        scriptState = ScriptState.Started(EntryPoint, recording)
 
         EntryPoint.scriptExitListener = ::onScriptExit
 
