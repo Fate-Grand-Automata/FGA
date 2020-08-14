@@ -99,6 +99,8 @@ class PreferencesImpl @Inject constructor(
 
     override val screenshotDrops by prefs.bool(R.string.pref_screenshot_drops)
 
+    override val canPauseScript by prefs.bool(R.string.pref_can_pause_script)
+
     override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
         AutoSkillPreferences(
             id,

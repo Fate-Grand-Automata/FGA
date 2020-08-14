@@ -169,6 +169,20 @@ class ScriptRunnerService : AccessibilityService() {
         }
     }
 
+    fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) {
+        scriptPauseBtn.setThrottledClickListener {
+            if (serviceState is ServiceState.Started) {
+                val scriptState = scriptManager.scriptState
+
+                if (scriptState is ScriptState.Started) {
+                    if (scriptState.paused) {
+                        scriptManager.resumeScript()
+                    } else scriptManager.pauseScript()
+                }
+            }
+        }
+    }
+
     private lateinit var component: ScriptRunnerServiceComponent
 
     override fun onServiceConnected() {

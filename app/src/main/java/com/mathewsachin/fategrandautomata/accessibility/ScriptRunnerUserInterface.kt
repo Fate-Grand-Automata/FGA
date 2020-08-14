@@ -67,6 +67,7 @@ class ScriptRunnerUserInterface @Inject constructor(
 
     private val scriptCtrlBtnLayout = FrameLayout(Service)
     private var scriptCtrlBtn: ImageButton
+    private var scriptPauseBtn: ImageButton
 
     private val scriptCtrlBtnLayoutParams = WindowManager.LayoutParams().apply {
         type = overlayType
@@ -101,6 +102,12 @@ class ScriptRunnerUserInterface @Inject constructor(
             it.setOnTouchListener(::scriptCtrlBtnOnTouch)
         }
 
+        scriptPauseBtn = scriptCtrlBtnLayout.findViewById<ImageButton>(R.id.script_pause_btn).apply {
+            visibility = View.GONE
+
+            Service.registerScriptPauseBtnListeners(this)
+        }
+
         // By default put the button on bottom-left corner
         val m = metrics
         scriptCtrlBtnLayoutParams.y = maxOf(m.widthPixels, m.heightPixels)
@@ -116,6 +123,13 @@ class ScriptRunnerUserInterface @Inject constructor(
         windowManager.removeView(highlightManager.highlightView)
     }
 
+    var isPauseButtonVisibile
+        get() = scriptPauseBtn.visibility == View.VISIBLE
+        set(value) {
+            scriptPauseBtn.visibility = if (value) View.VISIBLE else View.GONE
+        }
+
+
     fun setPlayIcon() {
         scriptCtrlBtn.post {
             scriptCtrlBtn.setImageResource(R.drawable.ic_play)
@@ -124,6 +138,14 @@ class ScriptRunnerUserInterface @Inject constructor(
 
     fun setStopIcon() {
         scriptCtrlBtn.setImageResource(R.drawable.ic_stop)
+    }
+
+    fun setPauseIcon() {
+        scriptPauseBtn.setImageResource(R.drawable.ic_pause)
+    }
+
+    fun setResumeIcon() {
+        scriptPauseBtn.setImageResource(R.drawable.ic_play)
     }
 
     fun showAsRecording() {

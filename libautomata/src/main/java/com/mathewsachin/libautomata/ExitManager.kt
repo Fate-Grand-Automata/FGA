@@ -1,6 +1,8 @@
 package com.mathewsachin.libautomata
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.time.Duration
 
 /**
@@ -8,14 +10,21 @@ import kotlin.time.Duration
  */
 class ExitManager {
     private val scope = CoroutineScope(Dispatchers.IO)
+    private val pauseMutex = Mutex()
 
     fun wait(duration: Duration) {
         checkExitRequested()
 
+        runBlockingOnScope {
+            delay(duration)
+        }
+    }
+
+    private fun runBlockingOnScope(block: suspend CoroutineScope.() -> Unit) {
         runBlocking {
             try {
                 withContext(scope.coroutineContext) {
-                    delay(duration)
+                    block()
                 }
             } catch (e: CancellationException) {
                 throw ScriptAbortException()
@@ -29,10 +38,18 @@ class ExitManager {
      * @throws ScriptAbortException if the button has been pressed
      */
     fun checkExitRequested() {
+        runBlockingOnScope {
+            pauseMutex.withLock { }
+        }
+
         if (!scope.isActive) {
             throw ScriptAbortException()
         }
     }
+
+    fun pause() = runBlocking { pauseMutex.lock() }
+
+    fun resume() = runBlocking { pauseMutex.unlock() }
 
     /**
      * Requests exit

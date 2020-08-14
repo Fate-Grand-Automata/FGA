@@ -30,6 +30,7 @@ interface IPreferences {
     val friendPtsOnly: Boolean
     val rearrangeCards: Boolean
     val screenshotDrops: Boolean
+    val canPauseScript: Boolean
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

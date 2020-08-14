@@ -35,6 +35,7 @@ class ScriptManager @Inject constructor(
 
     private fun onScriptExit(e: Exception?) {
         userInterface.setPlayIcon()
+        userInterface.isPauseButtonVisibile = false
 
         imageLoader.clearSupportCache()
 
@@ -64,6 +65,32 @@ class ScriptManager @Inject constructor(
 
     private val handler by lazy {
         Handler(Looper.getMainLooper())
+    }
+
+    fun pauseScript() {
+        scriptState.let { state ->
+            if (state is ScriptState.Started) {
+                if (!state.paused) {
+                    userInterface.setResumeIcon()
+                    state.entryPoint.exitManager.pause()
+
+                    state.paused = true
+                }
+            }
+        }
+    }
+
+    fun resumeScript() {
+        scriptState.let { state ->
+            if (state is ScriptState.Started) {
+                if (state.paused) {
+                    userInterface.setPauseIcon()
+                    state.entryPoint.exitManager.resume()
+
+                    state.paused = false
+                }
+            }
+        }
     }
 
     fun startScript(
@@ -120,6 +147,11 @@ class ScriptManager @Inject constructor(
         EntryPoint.scriptExitListener = ::onScriptExit
 
         userInterface.setStopIcon()
+        if (preferences.canPauseScript) {
+            userInterface.setPauseIcon()
+            userInterface.isPauseButtonVisibile = true
+        }
+
         if (recording != null) {
             userInterface.showAsRecording()
         }
