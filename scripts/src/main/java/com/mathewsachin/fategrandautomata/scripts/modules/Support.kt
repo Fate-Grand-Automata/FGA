@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.isInSupport
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
@@ -56,10 +55,6 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
-        while (!isInSupport()) {
-            0.3.seconds.wait()
-        }
-
         waitForSupportScreenToLoad()
 
         if (autoSkillPrefs.supportClass != SupportClass.None) {
