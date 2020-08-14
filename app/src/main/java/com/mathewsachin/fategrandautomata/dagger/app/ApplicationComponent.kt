@@ -8,6 +8,7 @@ import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityFragment
 import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsFragment
 import com.mathewsachin.fategrandautomata.ui.prefs.MoreSettingsFragment
+import com.mathewsachin.fategrandautomata.ui.prefs.RefillSettingsFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -22,5 +23,6 @@ interface ApplicationComponent {
     fun inject(into: AutoSkillItemSettingsFragment)
     fun inject(into: MainSettingsFragment)
     fun inject(into: MoreSettingsFragment)
+    fun inject(into: RefillSettingsFragment)
     fun inject(into: AutoSkillMakerActivity)
 }

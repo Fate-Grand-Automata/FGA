@@ -23,7 +23,8 @@
             app:icon="@drawable/ic_minus"
             app:key="@string/pref_refill_decrement"
             app:dependency="@string/pref_refill_enabled"
-            app:title="Automatically decrease Refills" />
+            app:title="Auto-decrement"
+            app:summary="Automatically decrease the refill amount by number of apples used" />
 
         <ListPreference
             app:defaultValue="AllApples"
