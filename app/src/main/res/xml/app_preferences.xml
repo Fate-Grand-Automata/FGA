@@ -52,6 +52,13 @@
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
+        app:icon="@drawable/ic_card"
+        app:key="@string/pref_stop_on_ce_get"
+        app:title="Stop on CE GET"
+        app:summary="First-time quest completion rewards and Bond CEs (Experimental)" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
         app:icon="@drawable/ic_screenshot"
         app:key="@string/pref_screenshot_drops"
         app:title="Screenshot Drops"

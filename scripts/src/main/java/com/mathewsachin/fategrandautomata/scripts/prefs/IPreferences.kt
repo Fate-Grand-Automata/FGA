@@ -19,6 +19,7 @@ interface IPreferences {
     val storySkip: Boolean
     val withdrawEnabled: Boolean
     val stopOnCEDrop: Boolean
+    val stopOnCEGet: Boolean
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
     val ignoreNotchCalculation: Boolean

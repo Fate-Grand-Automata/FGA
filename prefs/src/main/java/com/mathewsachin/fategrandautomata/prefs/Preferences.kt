@@ -73,6 +73,8 @@ class PreferencesImpl @Inject constructor(
 
     override val stopOnCEDrop by prefs.bool(R.string.pref_stop_on_ce_drop)
 
+    override val stopOnCEGet by prefs.bool(R.string.pref_stop_on_ce_get)
+
     override val friendPtsOnly by prefs.bool(R.string.pref_friend_pts, true)
 
     override val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
