@@ -259,6 +259,10 @@ open class AutoBattle @Inject constructor(
         game.resultCeRewardRegion.exists(images.bond10Reward)
 
     private fun ceReward() {
+        if (prefs.stopOnCEGet) {
+            throw ScriptExitException("CE GET!")
+        }
+
         game.resultCeRewardCloseClick.click()
         1.seconds.wait()
         game.resultCeRewardCloseClick.click()
