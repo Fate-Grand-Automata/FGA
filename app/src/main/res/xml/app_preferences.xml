@@ -128,5 +128,12 @@
             app:key="@string/pref_use_root_screenshot"
             app:summary="Useful on Nox (Android 7). Toggle service after changing this."
             app:title="Use Root for Screenshots" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_pause"
+            app:key="@string/pref_can_pause_script"
+            app:summary="Experimental"
+            app:title="Allow pausing scripts" />
     </PreferenceCategory>
 </PreferenceScreen>
