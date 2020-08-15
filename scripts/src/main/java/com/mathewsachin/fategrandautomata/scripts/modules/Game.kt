@@ -66,7 +66,7 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val supportRegionToolSearchRegion = Region(2100, 0, 370, 1440)
     val supportDefaultBounds = Region(76, 0, 2356, 428)
     val supportExtraRegion = Region(1200, 200, 130, 130)
-    val supportNotFoundRegion = Region(600, 780, 324, 126)
+    val supportNotFoundRegion = Region(468, 708, 100, 90)
 
     val selectedPartyRegion = Region(1010, 62, 550, 72)
     val partySelectionArray = listOf(

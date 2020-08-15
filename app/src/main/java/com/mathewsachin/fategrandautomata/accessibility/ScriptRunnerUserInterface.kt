@@ -126,7 +126,9 @@ class ScriptRunnerUserInterface @Inject constructor(
     var isPauseButtonVisibile
         get() = scriptPauseBtn.visibility == View.VISIBLE
         set(value) {
-            scriptPauseBtn.visibility = if (value) View.VISIBLE else View.GONE
+            scriptPauseBtn.post {
+                scriptPauseBtn.visibility = if (value) View.VISIBLE else View.GONE
+            }
         }
 
 
