@@ -86,10 +86,8 @@ class Game @Inject constructor(val prefs: IPreferences) {
 
     val battleStageCountRegion
         get() = when (prefs.gameServer) {
-            GameServerEnum.En -> Region(1722, 25, 46, 53)
-            GameServerEnum.Jp -> Region(1722, 25, 46, 53)
-            GameServerEnum.Cn -> Region(1722, 25, 46, 53)
             GameServerEnum.Tw -> Region(1710, 25, 55, 60)
+            else -> Region(1722, 25, 46, 53)
         }
 
     val battleExtraInfoWindowCloseClick = Location(2550, 10)
