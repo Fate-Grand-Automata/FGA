@@ -54,7 +54,7 @@ class AutoLottery @Inject constructor(
                         images.finishedLotteryBox,
                         Similarity = 0.65
                     ) -> reset()
-                    fullPresentBoxRegion.exists(images.presentBoxFull) -> {
+                    images.presentBoxFull in fullPresentBoxRegion -> {
                         throw ScriptExitException("Present Box Full")
                     }
                     else -> spin()

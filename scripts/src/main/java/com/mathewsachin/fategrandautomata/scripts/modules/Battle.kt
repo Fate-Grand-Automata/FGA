@@ -53,7 +53,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         hasClickedAttack = false
     }
 
-    fun isIdle() = game.battleScreenRegion.exists(images.battle)
+    fun isIdle() = images.battle in game.battleScreenRegion
 
     fun clickAttack() {
         game.battleAttackClick.click()
@@ -71,8 +71,8 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun isPriorityTarget(enemyTarget: EnemyTarget): Boolean {
-        val isDanger = enemyTarget.region.exists(images.targetDanger)
-        val isServant = enemyTarget.region.exists(images.targetServant)
+        val isDanger = images.targetDanger in enemyTarget.region
+        val isServant = images.targetServant in enemyTarget.region
 
         return isDanger || isServant
     }

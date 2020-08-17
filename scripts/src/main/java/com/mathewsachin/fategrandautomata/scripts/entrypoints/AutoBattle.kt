@@ -101,9 +101,7 @@ open class AutoBattle @Inject constructor(
     /**
      *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
      */
-    private fun isInMenu(): Boolean {
-        return game.menuScreenRegion.exists(images.menu)
-    }
+    private fun isInMenu() = images.menu in game.menuScreenRegion
 
     /**
      * Resets the battle state, clicks on the quest and refills the AP if needed.
@@ -131,10 +129,10 @@ open class AutoBattle @Inject constructor(
      * too few clicks.
      */
     private fun isInResult(): Boolean {
-        if (game.resultScreenRegion.exists(images.result)
-            || game.resultBondRegion.exists(images.bond)
+        if (images.result in game.resultScreenRegion
+            || images.bond in game.resultBondRegion
             // We're assuming CN and TW use the same Master/Mystic Code Level up image
-            || game.resultMasterLvlUpRegion.exists(images.masterLvlUp)
+            || images.masterLvlUp in game.resultMasterLvlUpRegion
         ) {
             return true
         }
@@ -143,8 +141,8 @@ open class AutoBattle @Inject constructor(
 
         // We don't have TW images for these
         if (gameServer != GameServerEnum.Tw) {
-            return game.resultMasterExpRegion.exists(images.masterExp)
-                    || game.resultMatRewardsRegion.exists(images.matRewards)
+            return images.masterExp in game.resultMasterExpRegion
+                    || images.matRewards in game.resultMatRewardsRegion
         }
 
         // Not in any result screen
@@ -155,7 +153,7 @@ open class AutoBattle @Inject constructor(
      * Clicks through the reward screens.
      */
     private fun result() {
-        if (prefs.stopOnCEDrop && game.resultCeDropRegion.exists(images.ceDrop)) {
+        if (prefs.stopOnCEDrop && images.ceDrop in game.resultCeDropRegion) {
             throw ScriptExitException("CE Dropped!")
         }
 
@@ -171,7 +169,7 @@ open class AutoBattle @Inject constructor(
             screenshotManager.useSameSnapIn {
                 when {
                     isCeReward() -> ceReward()
-                    game.resultMatRewardsRegion.exists(images.matRewards) -> dropScreen = true
+                    images.matRewards in game.resultMatRewardsRegion -> dropScreen = true
                     else -> {
                         game.resultNextClick.click()
                         0.1.seconds.wait()
@@ -217,7 +215,7 @@ open class AutoBattle @Inject constructor(
             }
 
             // check if we need to scroll to see more drops
-            if (game.resultDropScrollbarRegion.exists(images.dropScrollbar)) {
+            if (images.dropScrollbar in game.resultDropScrollbarRegion) {
                 // scroll to end
                 Location(2306, 1032).click()
             } else break
@@ -228,7 +226,7 @@ open class AutoBattle @Inject constructor(
         when (prefs.gameServer) {
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
-                game.continueRegion.exists(images.confirm)
+                images.confirm in game.continueRegion
             }
             else -> false
         }
@@ -248,7 +246,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isFriendRequestScreen() =
-        game.resultFriendRequestRegion.exists(images.friendRequest)
+        images.friendRequest in game.resultFriendRequestRegion
 
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
@@ -256,7 +254,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isCeReward() =
-        game.resultCeRewardRegion.exists(images.bond10Reward)
+        images.bond10Reward in game.resultCeRewardRegion
 
     private fun ceReward() {
         if (prefs.stopOnCEGet) {
@@ -272,7 +270,7 @@ open class AutoBattle @Inject constructor(
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
     private fun isInQuestRewardScreen() =
-        game.resultQuestRewardRegion.exists(images.questReward)
+        images.questReward in game.resultQuestRewardRegion
 
     /**
      * Handles the quest rewards screen.
@@ -300,7 +298,7 @@ open class AutoBattle @Inject constructor(
      * Checks if the window for withdrawing from the battle exists.
      */
     private fun needsToWithdraw() =
-        game.withdrawRegion.exists(images.withdraw)
+        images.withdraw in game.withdrawRegion
 
     /**
      * Handles withdrawing from battle. Depending on [IPreferences.withdrawEnabled], the script either
@@ -489,14 +487,14 @@ open class AutoBattle @Inject constructor(
         when (prefs.gameServer) {
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
-                if (game.inventoryFullRegion.exists(images.inventoryFull)) {
+                if (images.inventoryFull in game.inventoryFullRegion) {
                     throw ScriptExitException("Inventory Full")
                 }
             }
         }
 
         // Auto refill
-        while (game.staminaScreenRegion.exists(images.stamina)) {
+        while (images.stamina in game.staminaScreenRegion) {
             refillStamina()
         }
     }

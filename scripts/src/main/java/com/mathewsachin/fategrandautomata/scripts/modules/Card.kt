@@ -38,11 +38,11 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private fun getCardAffinity(commandCard: CommandCard.Face): CardAffinityEnum {
         val region = commandCard.affinityRegion
 
-        if (region.exists(images.weak)) {
+        if (images.weak in region) {
             return CardAffinityEnum.Weak
         }
 
-        if (region.exists(images.resist)) {
+        if (images.resist in region) {
             return CardAffinityEnum.Resist
         }
 
@@ -58,19 +58,19 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             Height = 188
         )
 
-        if (stunRegion.exists(images.stun)) {
+        if (images.stun in stunRegion) {
             return CardTypeEnum.Unknown
         }
 
-        if (region.exists(images.buster)) {
+        if (images.buster in region) {
             return CardTypeEnum.Buster
         }
 
-        if (region.exists(images.art)) {
+        if (images.art in region) {
             return CardTypeEnum.Arts
         }
 
-        if (region.exists(images.quick)) {
+        if (images.quick in region) {
             return CardTypeEnum.Quick
         }
 
@@ -104,7 +104,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             if (prefs.braveChains != BraveChainEnum.None) {
                 val supportGroup = CommandCard.Face.list
-                    .filter { it.supportCheckRegion.exists(images.support) }
+                    .filter { images.support in it.supportCheckRegion }
                 commandCardGroups = groupByFaceCard(supportGroup)
                 commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
             }
@@ -225,7 +225,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         val npGroups = mutableMapOf<CommandCard.NP, List<CommandCard.Face>>()
 
         val supportNp = CommandCard.NP.list.firstOrNull {
-            it.supportCheckRegion.exists(images.support)
+            images.support in it.supportCheckRegion
         }
 
         if (supportNp != null) {
@@ -278,8 +278,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
                 me.use {
                     val matched = remaining.filter {
-                        val region = it.servantMatchRegion
-                        region.exists(me)
+                        me in it.servantMatchRegion
                     }
 
                     remaining.removeAll(matched)

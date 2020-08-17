@@ -33,7 +33,7 @@ class AutoFriendGacha @Inject constructor(
 
         while (true) {
             when {
-                continueSummonRegion.exists(images.fpSummonContinue) -> {
+                images.fpSummonContinue in continueSummonRegion -> {
                     continueSummonClick.click()
                     0.3.seconds.wait()
                     okClick.click()
@@ -48,7 +48,7 @@ class AutoFriendGacha @Inject constructor(
         val startRightSwipeLoc = Location(300, 500)
         val endRightSwipeLoc = Location(2000, 500)
 
-        while (!game.friendPtSummonCheck.exists(images.friendSummon)) {
+        while (images.friendSummon !in game.friendPtSummonCheck) {
             swipe(startRightSwipeLoc, endRightSwipeLoc)
             1.0.seconds.wait()
         }

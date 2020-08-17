@@ -11,7 +11,7 @@ import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.seconds
 
-fun IFGAutomataApi.needsToRetry() = game.retryRegion.exists(images.retry)
+fun IFGAutomataApi.needsToRetry() = images.retry in game.retryRegion
 
 fun IFGAutomataApi.retry() {
     game.retryRegion.click()

@@ -110,8 +110,8 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             when {
                 needsToRetry() -> retry()
                 // wait for dialogs to close
-                !game.supportExtraRegion.exists(images.supportExtra) -> 1.seconds.wait()
-                game.supportNotFoundRegion.exists(images.supportNotFound) -> {
+                images.supportExtra !in game.supportExtraRegion -> 1.seconds.wait()
+                images.supportNotFound in game.supportNotFoundRegion -> {
                     updateLastSupportRefreshTimestamp()
                     refreshSupportList()
                     return
@@ -120,7 +120,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     images.supportRegionTool,
                     Similarity = supportRegionToolSimilarity
                 ) -> return
-                game.supportFriendRegion.exists(images.guest) -> return
+                images.guest in game.supportFriendRegion -> return
             }
         }
     }
@@ -388,7 +388,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             images.friend,
             images.guest,
             images.follow
-        ).any { Region.exists(it) }
+        ).any { it in Region }
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
