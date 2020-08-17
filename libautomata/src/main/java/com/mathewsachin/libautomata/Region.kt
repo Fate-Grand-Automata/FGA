@@ -89,7 +89,7 @@ data class Region(val X: Int, val Y: Int, val Width: Int, val Height: Int) {
     /**
      * Checks if the given [Region] is fully contained in this [Region].
      */
-    fun contains(Region: Region): Boolean {
+    operator fun contains(Region: Region): Boolean {
         return X <= Region.X
                 && Y <= Region.Y
                 && right >= Region.right

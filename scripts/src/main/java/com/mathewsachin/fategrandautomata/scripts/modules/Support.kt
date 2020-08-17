@@ -362,25 +362,20 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return SearchFunctionResult.NotFound
     }
 
-    private fun findSupportBounds(Support: Region): Region {
-        val regionArray = game.supportRegionToolSearchRegion
+    private fun findSupportBounds(Support: Region) =
+        game.supportRegionToolSearchRegion
             .findAll(
                 images.supportRegionTool,
                 supportRegionToolSimilarity
             )
-
-        for (testRegion in regionArray) {
-            val supportBound = game.supportDefaultBounds
-                .copy(Y = testRegion.Region.Y - 70)
-
-            if (supportBound.contains(Support)) {
-                return supportBound
+            .map {
+                game.supportDefaultBounds
+                    .copy(Y = it.Region.Y - 70)
             }
-        }
-
-        logger.debug("Default Region being returned")
-        return game.supportDefaultBounds
-    }
+            .firstOrNull { Support in it }
+            ?: game.supportDefaultBounds.also {
+                logger.debug("Default Region being returned")
+            }
 
     private fun isFriend(Region: Region): Boolean {
         val onlySelectFriends = autoSkillPrefs.friendsOnly

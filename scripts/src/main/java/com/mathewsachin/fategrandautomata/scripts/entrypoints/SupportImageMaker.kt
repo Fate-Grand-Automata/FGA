@@ -55,7 +55,7 @@ class SupportImageMaker @Inject constructor(
             val newSupportBoundY = testRegion.Y + (if (isInSupport) 66 else 82)
             supportBound = supportBound.copy(Y = newSupportBoundY)
 
-            if (!screenBounds.contains(supportBound))
+            if (supportBound !in screenBounds)
                 continue
 
             supportBound.getPattern().use {
