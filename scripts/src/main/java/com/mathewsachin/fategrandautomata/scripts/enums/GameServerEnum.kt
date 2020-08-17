@@ -4,7 +4,8 @@ enum class GameServerEnum constructor(val packageName: String) {
     En("com.aniplex.fategrandorder.en"),
     Jp("com.aniplex.fategrandorder"),
     Cn("com.bilibili.fatego.sharejoy"),
-    Tw("com.komoe.fgomycard");
+    Tw("com.komoe.fgomycard"),
+    Kr("com.netmarble.fgok");
 
     companion object {
         /**

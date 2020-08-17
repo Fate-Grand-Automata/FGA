@@ -55,7 +55,7 @@
         <item>NA</item>
         <item>JP</item>
         <item>CN</item>
-        <item>TW</item>
+        <item>KR</item>
     </array>
 
     <array name="game_server_values">
@@ -63,6 +63,7 @@
         <item>Jp</item>
         <item>Cn</item>
         <item>Tw</item>
+        <item>Kr</item>
     </array>
 
     <array name="support_selection_modes">
