@@ -91,7 +91,7 @@ class PreferencesImpl @Inject constructor(
         autoSkillMap.getOrPut(id) {
             AutoSkillPreferences(
                 id,
-                prefs.maker.context,
+                prefs,
                 storageDirs
             )
         }
@@ -105,6 +105,7 @@ class PreferencesImpl @Inject constructor(
     override fun removeAutoSkillConfig(id: String) {
         prefs.maker.context.deleteSharedPreferences(id)
         autoSkillMap.remove(id)
+        prefs.removeAutoSkillConfig(id)
 
         autoSkillList = autoSkillList
             .toMutableSet()

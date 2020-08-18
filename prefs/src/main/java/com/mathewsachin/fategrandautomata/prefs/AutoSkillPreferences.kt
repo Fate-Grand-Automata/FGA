@@ -1,19 +1,18 @@
 package com.mathewsachin.fategrandautomata.prefs
 
-import android.content.Context
 import androidx.core.content.edit
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.prefs.core.AutoSkillPrefsCore
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 
 const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
 
 internal class AutoSkillPreferences(
     override val id: String,
-    val context: Context,
+    prefsCore: PrefsCore,
     val storageDirs: StorageDirs
 ) : IAutoSkillPreferences {
-    private val prefs = AutoSkillPrefsCore(id, context, storageDirs)
+    val prefs = prefsCore.forAutoSkillConfig(id)
 
     override var name by prefs.name
 

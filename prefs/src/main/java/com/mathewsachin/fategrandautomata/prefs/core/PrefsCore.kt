@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
+import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
@@ -9,7 +10,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PrefsCore @Inject constructor(val maker: PrefMaker) {
+class PrefsCore @Inject constructor(
+    val maker: PrefMaker,
+    val storageDirs: StorageDirs
+) {
     val scriptMode = maker.enum(
         R.string.pref_script_mode,
         ScriptModeEnum.Battle
@@ -94,4 +98,17 @@ class PrefsCore @Inject constructor(val maker: PrefMaker) {
     val swipeWaitTime = maker.int(R.string.pref_swipe_wait_time, 700)
 
     val swipeDuration = maker.int(R.string.pref_swipe_duration, 300)
+
+    private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
+
+    fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =
+        autoSkillMap.getOrPut(id) {
+            AutoSkillPrefsCore(
+                id,
+                maker.context,
+                storageDirs
+            )
+        }
+
+    fun removeAutoSkillConfig(id: String) = autoSkillMap.remove(id)
 }

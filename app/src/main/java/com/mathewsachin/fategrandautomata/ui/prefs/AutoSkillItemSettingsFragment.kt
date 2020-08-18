@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.EditTextPreference
@@ -24,7 +28,6 @@ import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
 import com.mathewsachin.fategrandautomata.util.appComponent
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnResume
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -37,18 +40,15 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var storageDirs: StorageDirs
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     val args: AutoSkillItemSettingsFragmentArgs by navArgs()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         context.appComponent.inject(this)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
     }
 
     val autoSkillExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
@@ -68,6 +68,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = args.key
         autoSkillPrefs = preferences.forAutoSkillConfig(args.key)
+
+        setHasOptionsMenu(true)
 
         setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
 
@@ -96,33 +98,37 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val vm: AutoSkillItemViewModel by viewModels { viewModelFactory }
+        vm.key = args.key
+
+        findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
+            vm.cardPriority.observe(viewLifecycleOwner) { priority ->
+                it.summary = priority
+            }
+        }
+
+        findPreference<EditTextPreference>(getString(R.string.pref_autoskill_cmd))?.let {
+            vm.skillCommand.observe(viewLifecycleOwner) { cmd ->
+                it.text = cmd
+            }
+        }
+
+        findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
+            vm.skillLevels.observe(viewLifecycleOwner) { levels ->
+                it.summary = levels
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
         if (storageDirs.shouldExtractSupportImages) {
             performSupportImageExtraction()
         } else preferredSupportOnResume(storageDirs)
-
-        // Update Card Priority
-        findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
-            lifecycleScope.launch {
-                // If not using a delay, this code runs before CardPriorityFragment's onPause
-                delay(300)
-                it.summary = autoSkillPrefs.cardPriority
-            }
-        }
-
-        findPreference<EditTextPreference>(getString(R.string.pref_autoskill_cmd))?.let {
-            it.text = autoSkillPrefs.skillCommand
-        }
-
-        findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
-            it.summary = listOf(
-                autoSkillPrefs.skill1Max,
-                autoSkillPrefs.skill2Max,
-                autoSkillPrefs.skill3Max
-            ).joinToString("/") { m -> if (m) "10" else "x" }
-        }
     }
 
     private fun performSupportImageExtraction() {

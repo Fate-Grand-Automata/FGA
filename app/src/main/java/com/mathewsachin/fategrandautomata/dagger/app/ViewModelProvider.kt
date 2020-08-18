@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.dagger.app
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListViewModel
+import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -33,5 +34,10 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(AutoSkillListViewModel::class)
-    abstract fun bindViewModel(viewModel: AutoSkillListViewModel): ViewModel
+    abstract fun bindAutoSkillListViewModel(viewModel: AutoSkillListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AutoSkillItemViewModel::class)
+    abstract fun bindAutoSkillItemViewModel(viewModel: AutoSkillItemViewModel): ViewModel
 }
