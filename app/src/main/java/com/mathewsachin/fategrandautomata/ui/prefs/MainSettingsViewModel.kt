@@ -14,6 +14,12 @@ class MainSettingsViewModel @Inject constructor(
         .asFlow()
         .asLiveData()
 
+    val refillRepetitions = prefs
+        .refill
+        .repetitions
+        .asFlow()
+        .asLiveData()
+
     val refillMessage = combine(
         prefs.refill.enabled.asFlow(),
         prefs.refill.resource.asFlow(),

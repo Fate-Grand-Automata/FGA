@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
 import com.mathewsachin.fategrandautomata.ui.UpdateCheckViewModel
 import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
@@ -24,9 +23,6 @@ import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 private val logger = KotlinLogging.logger {}
 
 class MainSettingsFragment : PreferenceFragmentCompat() {
-    @Inject
-    lateinit var preferences: IPreferences
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
