@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.prefs.helpers
+package com.mathewsachin.fategrandautomata.prefs.core
 
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
