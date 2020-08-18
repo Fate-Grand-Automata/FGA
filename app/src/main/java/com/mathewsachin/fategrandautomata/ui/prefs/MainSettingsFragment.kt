@@ -2,8 +2,11 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -23,6 +26,9 @@ private val logger = KotlinLogging.logger {}
 class MainSettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var preferences: IPreferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -67,6 +73,18 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val vm: MainSettingsViewModel by activityViewModels { viewModelFactory }
+
+        findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
+            vm.refillMessage.observe(viewLifecycleOwner) { msg ->
+                it.summary = msg
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -74,14 +92,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         lifecycleScope.launch {
             checkForUpdates(updateCheckViewModel)
-        }
-
-        findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
-            val prefs = preferences.refill
-            it.summary = when (prefs.enabled) {
-                true -> "${prefs.resource} x${prefs.repetitions}"
-                false -> "OFF"
-            }
         }
     }
 

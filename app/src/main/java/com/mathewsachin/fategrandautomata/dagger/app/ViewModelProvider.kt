@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemViewModel
+import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -40,4 +41,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AutoSkillItemViewModel::class)
     abstract fun bindAutoSkillItemViewModel(viewModel: AutoSkillItemViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainSettingsViewModel::class)
+    abstract fun bindMainSettingsViewModel(viewModel: MainSettingsViewModel): ViewModel
 }
