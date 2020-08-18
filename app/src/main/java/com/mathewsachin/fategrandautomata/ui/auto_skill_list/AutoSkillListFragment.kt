@@ -7,6 +7,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +20,9 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.autoskill_list.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import mva3.adapter.ListSection
 import mva3.adapter.MultiViewAdapter
@@ -28,6 +35,9 @@ private val logger = KotlinLogging.logger {}
 class AutoSkillListFragment : Fragment() {
     @Inject
     lateinit var preferences: IPreferences
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,12 +62,16 @@ class AutoSkillListFragment : Fragment() {
         }
 
         initView()
-    }
 
-    override fun onResume() {
-        super.onResume()
+        val vm: AutoSkillListViewModel by activityViewModels { viewModelFactory }
 
-        refresh()
+        vm.autoSkillItems.observe(viewLifecycleOwner) { items ->
+            listSection.set(items)
+
+            auto_skill_no_items.visibility =
+                if (items.isEmpty()) View.VISIBLE
+                else View.GONE
+        }
     }
 
     lateinit var adapter: MultiViewAdapter
@@ -90,15 +104,6 @@ class AutoSkillListFragment : Fragment() {
         )
     }
 
-    private fun refresh() {
-        val autoSkillItems = preferences.autoSkillPreferences
-        listSection.set(autoSkillItems)
-
-        auto_skill_no_items.visibility =
-            if (autoSkillItems.isEmpty()) View.VISIBLE
-            else View.GONE
-    }
-
     private fun newConfig(): String {
         val guid = UUID.randomUUID().toString()
 
@@ -123,32 +128,38 @@ class AutoSkillListFragment : Fragment() {
     val autoSkillImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         var failed = 0
 
-        uris.forEach { uri ->
-            val json = requireContext().contentResolver.openInputStream(uri)?.use { inStream ->
-                inStream.use {
-                    it.reader().readText()
+        Toast.makeText(context, "Importing ...", Toast.LENGTH_SHORT).show()
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                uris.forEach { uri ->
+                    try {
+                        val json = requireContext().contentResolver.openInputStream(uri)?.use { inStream ->
+                            inStream.use {
+                                it.reader().readText()
+                            }
+                        }
+
+                        if (json != null) {
+                            val gson = Gson()
+                            val map = gson.fromJson(json, Map::class.java)
+                                .map { (k, v) -> k.toString() to v }
+                                .toMap()
+
+                            val id = newConfig()
+                            preferences.forAutoSkillConfig(id).import(map)
+                        }
+                    } catch (e: Exception) {
+                        ++failed
+                        logger.error("Import Failed", e)
+                    }
                 }
             }
 
-            if (json != null) {
-                try {
-                    val gson = Gson()
-                    val map = gson.fromJson(json, Map::class.java)
-                        .map { (k, v) -> k.toString() to v }
-                        .toMap()
-
-                    val id = newConfig()
-                    preferences.forAutoSkillConfig(id).import(map)
-                } catch (e: Exception) {
-                    ++failed
-                    logger.error("Import Failed", e)
-                }
+            if (failed > 0) {
+                Toast.makeText(requireContext(), "Import Failed for $failed item(s)", Toast.LENGTH_SHORT)
+                    .show()
             }
-        }
-
-        if (failed > 0) {
-            Toast.makeText(requireContext(), "Import Failed for $failed item(s)", Toast.LENGTH_SHORT)
-                .show()
         }
     }
 
@@ -190,7 +201,6 @@ class AutoSkillListFragment : Fragment() {
                             }
 
                             mode.finish()
-                            refresh()
                         }
                         .setNegativeButton("Cancel", null)
                         .show()

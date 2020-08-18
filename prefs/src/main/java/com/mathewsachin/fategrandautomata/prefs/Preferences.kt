@@ -85,12 +85,16 @@ class PreferencesImpl @Inject constructor(
 
     override val canPauseScript by prefs.canPauseScript
 
+    private val autoSkillMap = mutableMapOf<String, IAutoSkillPreferences>()
+
     override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
-        AutoSkillPreferences(
-            id,
-            prefs.maker.context,
-            storageDirs
-        )
+        autoSkillMap.getOrPut(id) {
+            AutoSkillPreferences(
+                id,
+                prefs.maker.context,
+                storageDirs
+            )
+        }
 
     override fun addAutoSkillConfig(id: String) {
         autoSkillList = autoSkillList
@@ -100,6 +104,7 @@ class PreferencesImpl @Inject constructor(
 
     override fun removeAutoSkillConfig(id: String) {
         prefs.maker.context.deleteSharedPreferences(id)
+        autoSkillMap.remove(id)
 
         autoSkillList = autoSkillList
             .toMutableSet()

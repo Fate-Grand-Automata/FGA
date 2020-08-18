@@ -13,7 +13,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, AppContextModule::class])
+@Component(modules = [AppModule::class, AppContextModule::class, ViewModelModule::class])
 interface ApplicationComponent {
     fun scriptRunnerServiceComponent(): ScriptRunnerServiceComponent.Builder
 
