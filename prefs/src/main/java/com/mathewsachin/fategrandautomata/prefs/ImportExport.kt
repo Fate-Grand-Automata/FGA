@@ -2,8 +2,6 @@ package com.mathewsachin.fategrandautomata.prefs
 
 import android.content.SharedPreferences
 
-fun SharedPreferences.export(): Map<String, *> = all
-
 fun SharedPreferences.Editor.import(map: Map<String, *>) {
     for ((key, value) in map) {
         when (value) {

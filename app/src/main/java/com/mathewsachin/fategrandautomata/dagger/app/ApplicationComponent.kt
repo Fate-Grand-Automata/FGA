@@ -5,15 +5,12 @@ import com.mathewsachin.fategrandautomata.ui.MainActivity
 import com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListFragment
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity
 import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityFragment
-import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment
-import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsFragment
-import com.mathewsachin.fategrandautomata.ui.prefs.MoreSettingsFragment
-import com.mathewsachin.fategrandautomata.ui.prefs.RefillSettingsFragment
+import com.mathewsachin.fategrandautomata.ui.prefs.*
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, AppContextModule::class])
+@Component(modules = [AppModule::class, AppContextModule::class, ViewModelModule::class])
 interface ApplicationComponent {
     fun scriptRunnerServiceComponent(): ScriptRunnerServiceComponent.Builder
 
@@ -24,5 +21,6 @@ interface ApplicationComponent {
     fun inject(into: MainSettingsFragment)
     fun inject(into: MoreSettingsFragment)
     fun inject(into: RefillSettingsFragment)
+    fun inject(into: FineTuneSettingsFragment)
     fun inject(into: AutoSkillMakerActivity)
 }

@@ -1,43 +1,31 @@
 package com.mathewsachin.fategrandautomata.prefs
 
-import android.content.Context
-import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.prefs.helpers.SharedPreferenceDelegation
-import com.mathewsachin.fategrandautomata.prefs.helpers.map
-import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.prefs.core.map
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.IPlatformPrefs
 import javax.inject.Inject
 import kotlin.time.milliseconds
 
 class PreferencesImpl @Inject constructor(
-    private val context: Context,
+    val prefs: PrefsCore,
     val storageDirs: StorageDirs
 ) : IPreferences {
-    private val prefs =
-        SharedPreferenceDelegation(
-            PreferenceManager.getDefaultSharedPreferences(context),
-            context
-        )
+    override val scriptMode by prefs.scriptMode
 
-    override val scriptMode by prefs.enum(R.string.pref_script_mode, ScriptModeEnum.Battle)
+    override var gameServer by prefs.gameServer
 
-    override var gameServer by prefs.enum(R.string.pref_gameserver, GameServerEnum.En)
+    override val skillConfirmation by prefs.skillConfirmation
 
-    override val skillConfirmation by prefs.bool(R.string.pref_skill_conf)
-
-    override var autoSkillList by prefs.stringSet(R.string.pref_autoskill_list)
+    override var autoSkillList by prefs.autoSkillList
         private set
 
     override val autoSkillPreferences
         get() = autoSkillList.map { forAutoSkillConfig(it) }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
 
-    private var selectedAutoSkillConfigKey by prefs.string(R.string.pref_autoskill_selected)
+    private var selectedAutoSkillConfigKey by prefs.selectedAutoSkillConfig
 
     private var lastConfig: IAutoSkillPreferences? = null
 
@@ -60,55 +48,53 @@ class PreferencesImpl @Inject constructor(
             selectedAutoSkillConfigKey = value.id
         }
 
-    override val castNoblePhantasm by prefs.enum(
-        R.string.pref_battle_np,
-        BattleNoblePhantasmEnum.None
-    )
+    override val castNoblePhantasm by prefs.castNoblePhantasm
 
-    override val autoChooseTarget by prefs.bool(R.string.pref_auto_choose_target)
+    override val autoChooseTarget by prefs.autoChooseTarget
 
-    override val storySkip by prefs.bool(R.string.pref_story_skip)
+    override val storySkip by prefs.storySkip
 
-    override val withdrawEnabled by prefs.bool(R.string.pref_withdraw_enabled)
+    override val withdrawEnabled by prefs.withdrawEnabled
 
-    override val stopOnCEDrop by prefs.bool(R.string.pref_stop_on_ce_drop)
+    override val stopOnCEDrop by prefs.stopOnCEDrop
 
-    override val stopOnCEGet by prefs.bool(R.string.pref_stop_on_ce_get)
+    override val stopOnCEGet by prefs.stopOnCEGet
 
-    override val friendPtsOnly by prefs.bool(R.string.pref_friend_pts, true)
+    override val friendPtsOnly by prefs.friendPtsOnly
 
-    override val boostItemSelectionMode by prefs.stringAsInt(R.string.pref_boost_item, -1)
+    override val boostItemSelectionMode by prefs.boostItemSelectionMode
 
     override val refill: IRefillPreferences =
-        RefillPreferences(prefs)
+        RefillPreferences(prefs.refill)
 
-    override val ignoreNotchCalculation by prefs.bool(R.string.pref_ignore_notch)
+    override val ignoreNotchCalculation by prefs.ignoreNotchCalculation
 
-    override val useRootForScreenshots by prefs.bool(R.string.pref_use_root_screenshot)
+    override val useRootForScreenshots by prefs.useRootForScreenshots
 
-    override val gudaFinal by prefs.bool(R.string.pref_guda_final)
+    override val gudaFinal by prefs.gudaFinal
 
-    override val recordScreen by prefs.bool(R.string.pref_record_screen)
+    override val recordScreen by prefs.recordScreen
 
-    override val braveChains by prefs.enum(
-        R.string.pref_brave_chains,
-        BraveChainEnum.None
-    )
+    override val braveChains by prefs.braveChains
 
-    override val skillDelay by prefs.int(R.string.pref_skill_delay, 500).map { it.milliseconds }
+    override val skillDelay by prefs.skillDelay.map { it.milliseconds }
 
-    override val rearrangeCards by prefs.bool(R.string.pref_rearrange_cards)
+    override val rearrangeCards by prefs.rearrangeCards
 
-    override val screenshotDrops by prefs.bool(R.string.pref_screenshot_drops)
+    override val screenshotDrops by prefs.screenshotDrops
 
-    override val canPauseScript by prefs.bool(R.string.pref_can_pause_script)
+    override val canPauseScript by prefs.canPauseScript
+
+    private val autoSkillMap = mutableMapOf<String, IAutoSkillPreferences>()
 
     override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
-        AutoSkillPreferences(
-            id,
-            context,
-            storageDirs
-        )
+        autoSkillMap.getOrPut(id) {
+            AutoSkillPreferences(
+                id,
+                prefs,
+                storageDirs
+            )
+        }
 
     override fun addAutoSkillConfig(id: String) {
         autoSkillList = autoSkillList
@@ -117,7 +103,9 @@ class PreferencesImpl @Inject constructor(
     }
 
     override fun removeAutoSkillConfig(id: String) {
-        context.deleteSharedPreferences(id)
+        prefs.maker.context.deleteSharedPreferences(id)
+        autoSkillMap.remove(id)
+        prefs.removeAutoSkillConfig(id)
 
         autoSkillList = autoSkillList
             .toMutableSet()
@@ -130,42 +118,39 @@ class PreferencesImpl @Inject constructor(
 
     override val support = object :
         ISupportPreferencesCommon {
-        override val mlbSimilarity by prefs.int(R.string.pref_mlb_similarity, 70).map { it / 100.0 }
+        override val mlbSimilarity by prefs.mlbSimilarity.map { it / 100.0 }
 
-        override val supportSwipeMultiplier by prefs.int(
-            R.string.pref_support_swipe_multiplier,
-            100
-        )
+        override val supportSwipeMultiplier by prefs.supportSwipeMultiplier
             .map { it / 100.0 }
 
-        override val swipesPerUpdate by prefs.int(R.string.pref_support_swipes_per_update, 10)
+        override val swipesPerUpdate by prefs.supportSwipesPerUpdate
 
-        override val maxUpdates by prefs.int(R.string.pref_support_max_updates, 3)
+        override val maxUpdates by prefs.supportMaxUpdates
     }
 
     override val platformPrefs = object : IPlatformPrefs {
-        override val debugMode by prefs.bool(R.string.pref_debug_mode)
+        override val debugMode by prefs.debugMode
 
-        override val minSimilarity by prefs.int(R.string.pref_min_similarity, 80).map { it / 100.0 }
+        override val minSimilarity by prefs.minSimilarity.map { it / 100.0 }
 
-        override val waitMultiplier by prefs.int(R.string.pref_wait_multiplier, 100)
+        override val waitMultiplier by prefs.waitMultiplier
             .map { it / 100.0 }
     }
 
     override val gestures = object :
         IGesturesPreferences {
-        override val clickWaitTime by prefs.int(R.string.pref_click_wait_time, 300)
+        override val clickWaitTime by prefs.clickWaitTime
             .map { it.milliseconds }
 
-        override val clickDuration by prefs.int(R.string.pref_click_duration, 50)
+        override val clickDuration by prefs.clickDuration
             .map { it.milliseconds }
 
-        override val clickDelay by prefs.int(R.string.pref_click_delay, 10).map { it.milliseconds }
+        override val clickDelay by prefs.clickDelay.map { it.milliseconds }
 
-        override val swipeWaitTime by prefs.int(R.string.pref_swipe_wait_time, 700)
+        override val swipeWaitTime by prefs.swipeWaitTime
             .map { it.milliseconds }
 
-        override val swipeDuration by prefs.int(R.string.pref_swipe_duration, 300)
+        override val swipeDuration by prefs.swipeDuration
             .map { it.milliseconds }
     }
 }

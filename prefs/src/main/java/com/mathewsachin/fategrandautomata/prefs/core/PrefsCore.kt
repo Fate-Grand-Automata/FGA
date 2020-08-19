@@ -1,0 +1,114 @@
+package com.mathewsachin.fategrandautomata.prefs.core
+
+import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.prefs.R
+import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class PrefsCore @Inject constructor(
+    val maker: PrefMaker,
+    val storageDirs: StorageDirs
+) {
+    val scriptMode = maker.enum(
+        R.string.pref_script_mode,
+        ScriptModeEnum.Battle
+    )
+
+    val gameServer = maker.enum(
+        R.string.pref_gameserver,
+        GameServerEnum.En
+    )
+
+    val skillConfirmation = maker.bool(R.string.pref_skill_conf)
+
+    val autoSkillList = maker.stringSet(R.string.pref_autoskill_list)
+
+    val selectedAutoSkillConfig = maker.string(R.string.pref_autoskill_selected)
+
+    val castNoblePhantasm = maker.enum(
+        R.string.pref_battle_np,
+        BattleNoblePhantasmEnum.None
+    )
+
+    val autoChooseTarget = maker.bool(R.string.pref_auto_choose_target)
+
+    val storySkip = maker.bool(R.string.pref_story_skip)
+
+    val withdrawEnabled = maker.bool(R.string.pref_withdraw_enabled)
+
+    val stopOnCEDrop = maker.bool(R.string.pref_stop_on_ce_drop)
+
+    val stopOnCEGet = maker.bool(R.string.pref_stop_on_ce_get)
+
+    val friendPtsOnly = maker.bool(R.string.pref_friend_pts, true)
+
+    val boostItemSelectionMode = maker.stringAsInt(R.string.pref_boost_item, -1)
+
+    val refill = RefillPrefsCore(maker)
+
+    val ignoreNotchCalculation = maker.bool(R.string.pref_ignore_notch)
+
+    val useRootForScreenshots = maker.bool(R.string.pref_use_root_screenshot)
+
+    val gudaFinal = maker.bool(R.string.pref_guda_final)
+
+    val recordScreen = maker.bool(R.string.pref_record_screen)
+
+    val braveChains = maker.enum(
+        R.string.pref_brave_chains,
+        BraveChainEnum.None
+    )
+
+    val skillDelay = maker.int(R.string.pref_skill_delay, 500)
+
+    val rearrangeCards = maker.bool(R.string.pref_rearrange_cards)
+
+    val screenshotDrops = maker.bool(R.string.pref_screenshot_drops)
+
+    val canPauseScript = maker.bool(R.string.pref_can_pause_script)
+
+    val mlbSimilarity = maker.int(R.string.pref_mlb_similarity, 70)
+
+    val supportSwipeMultiplier = maker.int(
+        R.string.pref_support_swipe_multiplier,
+        100
+    )
+
+    val supportSwipesPerUpdate = maker.int(R.string.pref_support_swipes_per_update, 10)
+
+    val supportMaxUpdates = maker.int(R.string.pref_support_max_updates, 3)
+
+    val debugMode = maker.bool(R.string.pref_debug_mode)
+
+    val minSimilarity = maker.int(R.string.pref_min_similarity, 80)
+
+    val waitMultiplier = maker.int(R.string.pref_wait_multiplier, 100)
+
+    val clickWaitTime = maker.int(R.string.pref_click_wait_time, 300)
+
+    val clickDuration = maker.int(R.string.pref_click_duration, 50)
+
+    val clickDelay = maker.int(R.string.pref_click_delay, 10)
+
+    val swipeWaitTime = maker.int(R.string.pref_swipe_wait_time, 700)
+
+    val swipeDuration = maker.int(R.string.pref_swipe_duration, 300)
+
+    private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
+
+    fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =
+        autoSkillMap.getOrPut(id) {
+            AutoSkillPrefsCore(
+                id,
+                maker.context,
+                storageDirs
+            )
+        }
+
+    fun removeAutoSkillConfig(id: String) = autoSkillMap.remove(id)
+}

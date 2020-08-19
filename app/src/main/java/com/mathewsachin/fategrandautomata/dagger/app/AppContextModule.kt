@@ -5,7 +5,9 @@ import android.content.Context
 import android.media.projection.MediaProjectionManager
 import android.os.Environment
 import android.view.WindowManager
+import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.prefs.core.PrefMaker
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.Module
 import dagger.Provides
@@ -42,4 +44,12 @@ class AppContextModule(val app: Application) {
     @Singleton
     @Provides
     fun provideGesturePrefs(prefs: IPreferences) = prefs.gestures
+
+    @Singleton
+    @Provides
+    fun providePrefMaker(context: Context) =
+        PrefMaker(
+            PreferenceManager.getDefaultSharedPreferences(context),
+            context
+        )
 }

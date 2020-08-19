@@ -13,5 +13,6 @@ interface IAutoSkillPreferences {
     val skill3Max: Boolean
 
     fun export(): Map<String, *>
+
     fun import(map: Map<String, *>)
 }
