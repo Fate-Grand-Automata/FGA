@@ -85,6 +85,8 @@ class PreferencesImpl @Inject constructor(
 
     override val canPauseScript by prefs.canPauseScript
 
+    override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
+
     private val autoSkillMap = mutableMapOf<String, IAutoSkillPreferences>()
 
     override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =

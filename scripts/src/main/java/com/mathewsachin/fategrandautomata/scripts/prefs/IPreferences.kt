@@ -33,6 +33,8 @@ interface IPreferences {
     val screenshotDrops: Boolean
     val canPauseScript: Boolean
 
+    val stageCounterSimilarity: Double
+
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs
     val gestures: IGesturesPreferences

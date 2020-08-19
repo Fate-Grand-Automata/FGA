@@ -150,7 +150,10 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         val snapshot = generatedStageCounterSnapshot
             ?: return true
 
-        return !game.battleStageCountRegion.exists(snapshot, Similarity = 0.85)
+        return !game.battleStageCountRegion.exists(
+            snapshot,
+            Similarity = prefs.stageCounterSimilarity
+        )
     }
 
     fun takeStageSnapshot() {

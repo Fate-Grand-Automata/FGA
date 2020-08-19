@@ -99,6 +99,8 @@ class PrefsCore @Inject constructor(
 
     val swipeDuration = maker.int(R.string.pref_swipe_duration, 300)
 
+    val stageCounterSimilarity = maker.int(R.string.pref_stage_counter_similarity, 85)
+
     private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
 
     fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =
