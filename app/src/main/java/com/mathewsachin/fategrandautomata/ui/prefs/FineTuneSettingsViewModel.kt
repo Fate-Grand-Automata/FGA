@@ -13,6 +13,7 @@ class FineTuneSettingsViewModel @Inject constructor(
         prefs.supportMaxUpdates,
         prefs.minSimilarity,
         prefs.mlbSimilarity,
+        prefs.stageCounterSimilarity,
         prefs.clickWaitTime,
         prefs.clickDuration,
         prefs.clickDelay,

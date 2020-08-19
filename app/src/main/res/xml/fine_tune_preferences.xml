@@ -43,6 +43,15 @@
             app:seekBarIncrement="5"
             app:showSeekBarValue="true"
             app:title="MLB Similarity (%)" />
+
+        <SeekBarPreference
+            android:max="100"
+            app:key="@string/pref_stage_counter_similarity"
+            app:icon="@drawable/ic_counter"
+            app:min="50"
+            app:seekBarIncrement="5"
+            app:showSeekBarValue="true"
+            app:title="Stage Counter Similarity (%)" />
     </PreferenceCategory>
 
     <PreferenceCategory
