@@ -163,26 +163,11 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun resultForDrops() {
-        while (true) {
-            var dropScreen = false
-
-            screenshotManager.useSameSnapIn {
-                when {
-                    isCeReward() -> ceReward()
-                    images.matRewards in game.resultMatRewardsRegion -> dropScreen = true
-                    else -> {
-                        game.resultNextClick.click()
-                        0.1.seconds.wait()
-                    }
-                }
-            }
-
-            if (dropScreen) {
-                screenshotDrops()
-                game.resultNextClick.click()
-                return
-            }
+        if (images.matRewards in game.resultMatRewardsRegion) {
+            screenshotDrops()
         }
+
+        game.resultNextClick.click()
     }
 
     private fun screenshotDrops() {
