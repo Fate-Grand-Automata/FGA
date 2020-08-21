@@ -186,6 +186,14 @@ class ScriptRunnerService : AccessibilityService() {
     private lateinit var component: ScriptRunnerServiceComponent
 
     override fun onServiceConnected() {
+        // We only want events from FGO
+        serviceInfo = serviceInfo.apply {
+            packageNames = GameServerEnum
+                .values()
+                .map { it.packageName }
+                .toTypedArray()
+        }
+
         Instance = this
         component = appComponent.scriptRunnerServiceComponent()
             .scriptRunnerServiceModule(
