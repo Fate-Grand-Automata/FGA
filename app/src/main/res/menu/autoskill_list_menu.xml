@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_zip"
         android:title="Import"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_auto_skill_export_all"
+        android:icon="@drawable/ic_zip"
+        android:title="Export all"
+        app:showAsAction="never" />
 </menu>

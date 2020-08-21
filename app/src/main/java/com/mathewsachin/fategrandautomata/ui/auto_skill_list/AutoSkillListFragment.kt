@@ -1,11 +1,13 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_list
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -54,6 +56,8 @@ class AutoSkillListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.autoskill_list, container, false)
 
+    val vm: AutoSkillListViewModel by activityViewModels { viewModelFactory }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -62,8 +66,6 @@ class AutoSkillListFragment : Fragment() {
         }
 
         initView()
-
-        val vm: AutoSkillListViewModel by activityViewModels { viewModelFactory }
 
         vm.autoSkillItems.observe(viewLifecycleOwner) { items ->
             listSection.set(items)
@@ -125,10 +127,40 @@ class AutoSkillListFragment : Fragment() {
         findNavController().navigate(action)
     }
 
+    val autoSkillExportAll = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUri ->
+        if (dirUri != null) {
+            val gson = Gson()
+            val resolver = requireContext().contentResolver
+            val dir = DocumentFile.fromTreeUri(requireContext(), dirUri)
+
+            var failed = 0
+
+            vm.autoSkillItems.value?.forEach { autoSkillItem ->
+                val values = autoSkillItem.export()
+                val json = gson.toJson(values)
+
+                try {
+                    dir?.createFile("*/*", "auto_skill_${autoSkillItem.name}.json")
+                        ?.uri
+                        ?.let { uri ->
+                            resolver.openOutputStream(uri)?.use { outStream ->
+                                outStream.writer().use { it.write(json) }
+                            }
+                        }
+                } catch (e: Exception) {
+                    logger.error("Failed to export", e)
+                    ++failed
+                }
+            }
+
+            if (failed > 0) {
+                Toast.makeText(context, "Failed to export $failed item(s)", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     val autoSkillImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         var failed = 0
-
-        Toast.makeText(context, "Importing ...", Toast.LENGTH_SHORT).show()
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
@@ -172,6 +204,10 @@ class AutoSkillListFragment : Fragment() {
         return when (item.itemId) {
             R.id.action_auto_skill_import -> {
                 autoSkillImport.launch("*/*")
+                true
+            }
+            R.id.action_auto_skill_export_all -> {
+                autoSkillExportAll.launch(Uri.EMPTY)
                 true
             }
             else -> super.onOptionsItemSelected(item)
