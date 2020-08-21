@@ -29,9 +29,12 @@ import com.mathewsachin.fategrandautomata.util.appComponent
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
 import com.mathewsachin.fategrandautomata.util.preferredSupportOnResume
 import kotlinx.coroutines.launch
+import mu.KotlinLogging
 import java.util.*
 import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
+
+private val logger = KotlinLogging.logger {}
 
 class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     @Inject
@@ -53,12 +56,18 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
     val autoSkillExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
         if (uri != null) {
-            val values = preferences.forAutoSkillConfig(args.key).export()
-            val gson = Gson()
-            val json = gson.toJson(values)
+            try {
+                val values = preferences.forAutoSkillConfig(args.key).export()
+                val gson = Gson()
+                val json = gson.toJson(values)
 
-            requireContext().contentResolver.openOutputStream(uri)?.use { outStream ->
-                outStream.writer().use { it.write(json) }
+                requireContext().contentResolver.openOutputStream(uri)?.use { outStream ->
+                    outStream.writer().use { it.write(json) }
+                }
+            } catch (e: Exception) {
+                logger.error("Failed to export", e)
+
+                Toast.makeText(context, "Failed to Export", Toast.LENGTH_SHORT).show()
             }
         }
     }
