@@ -18,36 +18,36 @@ import javax.inject.Inject
 @ServiceScope
 class ScriptRunnerNotification @Inject constructor(val service: Service) {
 
-    private val channelId = "fategrandautomata-notifications"
-    private var channelCreated = false
+    private val channelId = "service"
 
-    private fun createNotificationChannel() {
-        if (channelCreated) {
-            return
-        }
-
+    init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                channelId,
-                NotificationManager.IMPORTANCE_HIGH
+                "Service Running",
+                NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = channelId
+                description = "Ongoing notification that the service is running in the background"
+
+                setShowBadge(false)
             }
 
             val notifyManager = NotificationManagerCompat.from(service)
-
             notifyManager.createNotificationChannel(channel)
-        }
 
-        channelCreated = true
+            try {
+                // Delete the old channel
+                notifyManager.deleteNotificationChannel(
+                    "fategrandautomata-notifications"
+                )
+            } catch (e: Exception) {
+            }
+        }
     }
 
     fun hide() = service.stopForeground(true)
 
     private fun startBuildNotification(): NotificationCompat.Builder {
-        createNotificationChannel()
-
         val activityIntent = PendingIntent
             .getActivity(service, 0, Intent(service, MainActivity::class.java), 0)
 
@@ -72,7 +72,7 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             .setContentText("Accessibility Service Running")
             .setSmallIcon(R.mipmap.notification_icon)
             .setColor(service.getColor(R.color.colorBusterWeak))
-            .setPriority(NotificationManager.IMPORTANCE_HIGH)
+            .setPriority(NotificationManager.IMPORTANCE_LOW)
             .setContentIntent(activityIntent)
             .addAction(stopAction)
     }
