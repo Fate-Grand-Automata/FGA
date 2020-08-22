@@ -66,8 +66,6 @@ class PrefsCore @Inject constructor(
 
     val skillDelay = maker.int(R.string.pref_skill_delay, 500)
 
-    val rearrangeCards = maker.bool(R.string.pref_rearrange_cards)
-
     val screenshotDrops = maker.bool(R.string.pref_screenshot_drops)
 
     val canPauseScript = maker.bool(R.string.pref_can_pause_script)

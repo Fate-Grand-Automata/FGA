@@ -71,7 +71,6 @@
     <string name="pref_support_swipe_multiplier">support_swipe_multiplier</string>
 
     <string name="pref_skill_delay">skill_delay</string>
-    <string name="pref_rearrange_cards">rearrange_cards</string>
 
     <string name="pref_can_pause_script">can_pause_script</string>
 
