@@ -9,7 +9,7 @@ import kotlin.time.Duration
  * Manages the termination of running scripts
  */
 class ExitManager {
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val scope = CoroutineScope(Dispatchers.Default)
     private val pauseMutex = Mutex()
 
     fun wait(duration: Duration) {
@@ -20,15 +20,13 @@ class ExitManager {
         }
     }
 
-    private fun runBlockingOnScope(block: suspend CoroutineScope.() -> Unit) {
-        runBlocking {
-            try {
-                withContext(scope.coroutineContext) {
-                    block()
-                }
-            } catch (e: CancellationException) {
-                throw ScriptAbortException()
+    private fun runBlockingOnScope(block: suspend () -> Unit) = runBlocking {
+        try {
+            withContext(scope.coroutineContext) {
+                block()
             }
+        } catch (e: CancellationException) {
+            throw ScriptAbortException()
         }
     }
 
@@ -37,14 +35,8 @@ class ExitManager {
      *
      * @throws ScriptAbortException if the button has been pressed
      */
-    fun checkExitRequested() {
-        runBlockingOnScope {
-            pauseMutex.withLock { }
-        }
-
-        if (!scope.isActive) {
-            throw ScriptAbortException()
-        }
+    fun checkExitRequested() = runBlockingOnScope {
+        pauseMutex.withLock { }
     }
 
     fun pause() = runBlocking { pauseMutex.lock() }
