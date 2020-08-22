@@ -5,27 +5,21 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
-import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.appComponent
 import kotlinx.android.synthetic.main.card_priority.*
 import javax.inject.Inject
 
 class CardPriorityFragment : Fragment() {
-    private lateinit var cardScores: MutableList<MutableList<CardScore>>
-    private lateinit var autoSkillPref: IAutoSkillPreferences
-
     val args: CardPriorityFragmentArgs by navArgs()
 
     @Inject
-    lateinit var preferences: IPreferences
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,47 +30,52 @@ class CardPriorityFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.card_priority, container, false)
 
+    val vm: CardPriorityViewModel by viewModels { viewModelFactory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        autoSkillPref = preferences.forAutoSkillConfig(args.key)
-
-        var cardPriority = autoSkillPref.cardPriority
-
-        // Handle simple mode and empty string
-        if (cardPriority.length == 3 || cardPriority.isBlank()) {
-            cardPriority =
-                defaultCardPriority
-        }
-
-        cardScores = CardPriorityPerWave.of(cardPriority)
-            .map { it.toMutableList() }
-            .toMutableList()
+        vm.key = args.key
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = CardPriorityListAdapter(cardScores)
+        val adapter = CardPriorityListAdapter(
+            vm.cardPriorityItems,
+            vm.experimental,
+            viewLifecycleOwner
+        )
+
+        vm.experimental.observe(viewLifecycleOwner) {
+            experimental_switch.isChecked = it
+        }
+
+        experimental_switch.setOnCheckedChangeListener { _, isChecked ->
+            vm.setExperimental(isChecked)
+        }
 
         val recyclerView = card_priority_list
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         card_priority_add_btn.setOnClickListener {
-            cardScores.add(mutableListOf<CardScore>().apply {
-                addAll(cardScores[0])
-            })
+            vm.cardPriorityItems.add(
+                CardPriorityListItem(
+                    vm.cardPriorityItems[0].scores.toMutableList(),
+                    false
+                )
+            )
 
-            adapter.notifyItemInserted(cardScores.lastIndex)
+            adapter.notifyItemInserted(vm.cardPriorityItems.lastIndex)
         }
 
         card_priority_rm_btn.setOnClickListener {
-            if (cardScores.size > 1) {
-                cardScores.removeAt(cardScores.lastIndex)
+            if (vm.cardPriorityItems.size > 1) {
+                vm.cardPriorityItems.removeAt(vm.cardPriorityItems.lastIndex)
 
-                adapter.notifyItemRemoved(cardScores.lastIndex + 1)
+                adapter.notifyItemRemoved(vm.cardPriorityItems.lastIndex + 1)
             }
         }
     }
@@ -84,13 +83,7 @@ class CardPriorityFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        val value = CardPriorityPerWave.from(
-            cardScores.map {
-                CardPriority.from(it)
-            }
-        ).toString()
-
-        autoSkillPref.cardPriority = value
+        vm.save()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

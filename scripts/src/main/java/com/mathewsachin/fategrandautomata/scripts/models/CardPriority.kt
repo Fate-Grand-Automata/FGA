@@ -11,8 +11,7 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
         private const val dummyNormalAffinityChar = 'X'
         private const val cardPriorityErrorString = "Battle_CardPriority Error at '"
 
-        fun from(scores: List<CardScore>) =
-            CardPriority(scores)
+        fun from(scores: List<CardScore>) = CardPriority(scores)
 
         fun of(priority: String): CardPriority {
             val scores = priority

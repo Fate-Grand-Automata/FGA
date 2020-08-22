@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.dagger.app
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListViewModel
+import com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.FineTuneSettingsViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
@@ -34,4 +35,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FineTuneSettingsViewModel::class)
     abstract fun bindFineTuneSettingsViewModel(viewModel: FineTuneSettingsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CardPriorityViewModel::class)
+    abstract fun bindCardPriorityViewModel(viewModel: CardPriorityViewModel): ViewModel
 }

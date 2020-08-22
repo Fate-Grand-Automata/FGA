@@ -26,6 +26,8 @@ class AutoSkillPrefsCore(
         defaultCardPriority
     )
 
+    val experimental = maker.bool(R.string.pref_auto_skill_experimental)
+
     val party = maker.stringAsInt(R.string.pref_autoskill_party, -1)
 
     val support = SupportPrefsCore(maker, storageDirs)
