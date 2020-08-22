@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
@@ -20,8 +21,11 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
+import mu.KotlinLogging
 import javax.inject.Inject
 import kotlin.time.seconds
+
+private val logger = KotlinLogging.logger {}
 
 @ServiceScope
 class ScriptManager @Inject constructor(
@@ -138,9 +142,17 @@ class ScriptManager @Inject constructor(
             return
         }
 
-        val recording = if (preferences.recordScreen) {
-            screenshotService.startRecording()
-        } else null
+        val recording = try {
+            if (preferences.recordScreen) {
+                screenshotService.startRecording()
+            } else null
+        } catch (e: Exception) {
+            val msg = "Couldn't start recording"
+            logger.error(msg, e)
+            Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
+
+            null
+        }
 
         scriptState = ScriptState.Started(EntryPoint, recording)
 
