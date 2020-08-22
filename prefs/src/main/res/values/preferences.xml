@@ -13,6 +13,7 @@
     <string name="pref_boost_item">selected_boost_item</string>
     <string name="pref_withdraw_enabled">withdraw_enabled</string>
     <string name="pref_auto_skill_experimental">auto_skill_experimental</string>
+    <string name="pref_auto_skill_rearrange_cards">auto_skill_rearrange_cards</string>
 
     <string name="pref_extract_def_support_imgs">extract_def_support_imgs</string>
     <string name="pref_stage_counter_similarity">stage_counter_similarity</string>

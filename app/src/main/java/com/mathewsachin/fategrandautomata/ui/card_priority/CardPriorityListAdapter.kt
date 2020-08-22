@@ -12,13 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
-
-data class CardPriorityListItem(
-    val scores: MutableList<CardScore>,
-    var rearrangeCards: Boolean
-)
 
 class CardPriorityListAdapter(
     private val Items: List<CardPriorityListItem>,
@@ -49,6 +43,11 @@ class CardPriorityListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.battleStageTextView.text = "WAVE ${position + 1}"
+
+        holder.rearrangeCardsSwitchView.setOnCheckedChangeListener { _, isChecked ->
+            Items[position].rearrangeCards = isChecked
+        }
+        holder.rearrangeCardsSwitchView.isChecked = Items[position].rearrangeCards
 
         val adapter = CardPriorityAdapter(Items[position].scores)
 

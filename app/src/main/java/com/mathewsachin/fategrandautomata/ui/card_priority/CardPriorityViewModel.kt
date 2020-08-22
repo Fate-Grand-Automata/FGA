@@ -18,13 +18,20 @@ class CardPriorityViewModel @Inject constructor(
 
         // Handle simple mode and empty string
         if (cardPriority.length == 3 || cardPriority.isBlank()) {
-            cardPriority =
-                defaultCardPriority
+            cardPriority = defaultCardPriority
         }
+
+        val rearrangeCards = autoSkillPref.rearrangeCards
 
         CardPriorityPerWave.of(cardPriority)
             .map { it.toMutableList() }
-            .map { CardPriorityListItem(it, false) }
+            .withIndex()
+            .map {
+                CardPriorityListItem(
+                    it.value,
+                    rearrangeCards.getOrElse(it.index) { false }
+                )
+            }
             .toMutableList()
     }
 
@@ -46,5 +53,8 @@ class CardPriorityViewModel @Inject constructor(
         ).toString()
 
         autoSkillPref.cardPriority.set(value)
+        autoSkillPref.rearrangeCards = if (experimental.value == true)
+            cardPriorityItems.map { it.rearrangeCards }
+        else emptyList()
     }
 }
