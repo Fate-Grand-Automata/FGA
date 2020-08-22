@@ -209,8 +209,7 @@ open class AutoBattle @Inject constructor(
 
     private fun isRepeatScreen() =
         when (prefs.gameServer) {
-            // We only have images for JP and NA
-            GameServerEnum.En, GameServerEnum.Jp -> {
+            GameServerEnum.En, GameServerEnum.Jp, GameServerEnum.Cn -> {
                 images.confirm in game.continueRegion
             }
             else -> false
