@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -39,6 +40,33 @@ class AutoSkillItemViewModel @Inject constructor(
                 .joinToString("/") {
                     if (it) "10" else "x"
                 }
+        }
+            .asLiveData()
+    }
+
+    val supportSelectionMode by lazy {
+        prefs.support.selectionMode.asFlow()
+            .asLiveData()
+    }
+
+    val areServantsSelected by lazy {
+        combine(
+            prefs.support.selectionMode.asFlow(),
+            prefs.support.preferredServants.asFlow()
+        ) { mode, servants ->
+            mode == SupportSelectionModeEnum.Preferred
+                    && servants.isNotEmpty()
+        }
+            .asLiveData()
+    }
+
+    val areCEsSelected by lazy {
+        combine(
+            prefs.support.selectionMode.asFlow(),
+            prefs.support.preferredCEs.asFlow()
+        ) { mode, ces ->
+            mode == SupportSelectionModeEnum.Preferred
+                    && ces.isNotEmpty()
         }
             .asLiveData()
     }

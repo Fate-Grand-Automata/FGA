@@ -22,12 +22,10 @@ import androidx.preference.PreferenceFragmentCompat
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
-import com.mathewsachin.fategrandautomata.util.appComponent
-import com.mathewsachin.fategrandautomata.util.preferredSupportOnCreate
-import com.mathewsachin.fategrandautomata.util.preferredSupportOnResume
+import com.mathewsachin.fategrandautomata.util.*
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import java.util.*
@@ -128,6 +126,36 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
             vm.skillLevels.observe(viewLifecycleOwner) { levels ->
                 it.summary = levels
+            }
+
+            vm.areServantsSelected.observe(viewLifecycleOwner) { visible ->
+                it.isVisible = visible
+            }
+        } ?: return
+
+        val servants = findServantList() ?: return
+        val ces = findCeList() ?: return
+        val friendNames = findFriendNamesList() ?: return
+        val friendsOnly =
+            findPreference<Preference>(getString(prefKeys.pref_support_friends_only)) ?: return
+        val fallback = findPreference<Preference>(getString(prefKeys.pref_support_fallback)) ?: return
+
+        vm.supportSelectionMode.observe(viewLifecycleOwner) {
+            val preferred = it == SupportSelectionModeEnum.Preferred
+            val friend = it == SupportSelectionModeEnum.Friend
+
+            servants.isVisible = preferred
+            ces.isVisible = preferred
+            friendsOnly.isVisible = preferred
+
+            friendNames.isVisible = friend
+
+            fallback.isVisible = preferred || friend
+        }
+
+        findPreference<Preference>(getString(prefKeys.pref_support_pref_ce_mlb))?.let {
+            vm.areCEsSelected.observe(viewLifecycleOwner) { visible ->
+                it.isVisible = visible
             }
         }
     }
