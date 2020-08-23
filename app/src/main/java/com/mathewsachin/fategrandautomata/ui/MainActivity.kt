@@ -1,15 +1,11 @@
 package com.mathewsachin.fategrandautomata.ui
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -41,7 +37,6 @@ class MainActivity : AppCompatActivity() {
 
         // Only once
         if (savedInstanceState == null) {
-            checkPermissions()
             ignoreBatteryOptimizations()
         }
     }
@@ -71,25 +66,5 @@ class MainActivity : AppCompatActivity() {
                 Uri.parse("package:$packageName")
             )
         )
-    }
-
-    private fun checkPermissions() {
-        val permissionsToCheck = listOf(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-
-        val permissionsToRequest = permissionsToCheck
-            .filter {
-                ContextCompat.checkSelfPermission(
-                    this,
-                    it
-                ) != PermissionChecker.PERMISSION_GRANTED
-            }
-            .toTypedArray()
-
-        if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, permissionsToRequest, 0)
-        }
     }
 }
