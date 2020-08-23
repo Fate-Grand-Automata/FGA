@@ -302,9 +302,9 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             cropFriendLock(pattern).use {
                 for (servant in game.supportListRegion.findAll(it)) {
                     val needMaxedSkills = listOf(
-                        prefs.selectedAutoSkillConfig.skill1Max,
-                        prefs.selectedAutoSkillConfig.skill2Max,
-                        prefs.selectedAutoSkillConfig.skill3Max
+                        autoSkillPrefs.skill1Max,
+                        autoSkillPrefs.skill2Max,
+                        autoSkillPrefs.skill3Max
                     )
                     val skillCheckNeeded = needMaxedSkills.any()
 

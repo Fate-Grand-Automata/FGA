@@ -32,9 +32,9 @@ class AutoSkillItemViewModel @Inject constructor(
 
     val skillLevels by lazy {
         combine(
-            prefs.skill1Max.asFlow(),
-            prefs.skill2Max.asFlow(),
-            prefs.skill3Max.asFlow()
+            prefs.support.skill1Max.asFlow(),
+            prefs.support.skill2Max.asFlow(),
+            prefs.support.skill3Max.asFlow()
         ) { s1, s2, s3 ->
             listOf(s1, s2, s3)
                 .joinToString("/") {

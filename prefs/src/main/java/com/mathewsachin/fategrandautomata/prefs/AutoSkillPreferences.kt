@@ -24,10 +24,6 @@ internal class AutoSkillPreferences(
 
     override val support = SupportPreferences(prefs.support, storageDirs)
 
-    override val skill1Max by prefs.skill1Max
-    override val skill2Max by prefs.skill2Max
-    override val skill3Max by prefs.skill3Max
-
     override fun export(): Map<String, *> = prefs.sharedPrefs.all
 
     override fun import(map: Map<String, *>) =

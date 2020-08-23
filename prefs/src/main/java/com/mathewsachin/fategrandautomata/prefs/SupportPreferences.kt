@@ -83,4 +83,8 @@ internal class SupportPreferences(
     override val fallbackTo by prefs.fallbackTo
 
     override val supportClass by prefs.supportClass
+
+    override val skill1Max by prefs.skill1Max
+    override val skill2Max by prefs.skill2Max
+    override val skill3Max by prefs.skill3Max
 }

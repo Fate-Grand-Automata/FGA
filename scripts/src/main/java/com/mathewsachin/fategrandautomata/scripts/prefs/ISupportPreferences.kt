@@ -12,4 +12,8 @@ interface ISupportPreferences {
     val selectionMode: SupportSelectionModeEnum
     val fallbackTo: SupportSelectionModeEnum
     val supportClass: SupportClass
+
+    val skill1Max: Boolean
+    val skill2Max: Boolean
+    val skill3Max: Boolean
 }
