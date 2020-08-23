@@ -34,6 +34,8 @@ class SupportPrefsCore(
         SupportClass.None
     )
 
+    val maxAscended = maker.bool(R.string.pref_support_max_ascended)
+
     val skill1Max = maker.bool(R.string.pref_support_skill_max_1)
     val skill2Max = maker.bool(R.string.pref_support_skill_max_2)
     val skill3Max = maker.bool(R.string.pref_support_skill_max_3)
