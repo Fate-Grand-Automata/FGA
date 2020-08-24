@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.enums
 enum class GameServerEnum constructor(val packageName: String) {
     En("com.aniplex.fategrandorder.en"),
     Jp("com.aniplex.fategrandorder"),
-    Cn("com.bilibili.fatego.sharejoy"),
+    Cn("com.bilibili.fatego"),
     Tw("com.komoe.fgomycard"),
     Kr("com.netmarble.fgok");
 
