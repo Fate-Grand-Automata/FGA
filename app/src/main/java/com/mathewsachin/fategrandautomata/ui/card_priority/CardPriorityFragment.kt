@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
@@ -14,10 +13,11 @@ import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.util.appComponent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.card_priority.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class CardPriorityFragment : Fragment() {
     private lateinit var cardScores: MutableList<MutableList<CardScore>>
     private lateinit var autoSkillPref: IAutoSkillPreferences
@@ -26,12 +26,6 @@ class CardPriorityFragment : Fragment() {
 
     @Inject
     lateinit var preferences: IPreferences
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        context.appComponent.inject(this)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.card_priority, container, false)

@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.dagger.script
+package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.fategrandautomata.accessibility.AccessibilityGestures
 import com.mathewsachin.fategrandautomata.scripts.FGAutomataApi
@@ -8,9 +8,11 @@ import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.*
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
 
 @Module
-interface ScriptModule {
+@InstallIn(ScriptComponent::class)
+interface ScriptBindsModule {
     @ScriptScope
     @Binds
     fun bindFgAutomataApi(fgAutomataApi: FGAutomataApi): IFGAutomataApi

@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
+import android.app.Service
 import android.graphics.Path
 import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.libautomata.IGestureService
@@ -16,10 +17,12 @@ private val logger = KotlinLogging.logger {}
  * Class to perform gestures using Android's [AccessibilityService].
  */
 class AccessibilityGestures @Inject constructor(
-    private var AccessibilityService: AccessibilityService?,
+    service: Service,
     val gesturePrefs: IGesturesPreferences,
     durationExtensions: IDurationExtensions
 ) : IGestureService, IDurationExtensions by durationExtensions {
+    val service = service as AccessibilityService
+
     override fun swipe(Start: Location, End: Location) {
         val swipePath = Path()
         swipePath.moveTo(Start.X.toFloat(), Start.Y.toFloat())
@@ -57,20 +60,16 @@ class AccessibilityGestures @Inject constructor(
     }
 
     private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {
-        val acc = AccessibilityService ?: return
-
         val gestureDesc = GestureDescription.Builder()
             .addStroke(StrokeDesc)
             .build()
 
         val callback = GestureCompletedCallback()
 
-        acc.dispatchGesture(gestureDesc, callback, null)
+        service.dispatchGesture(gestureDesc, callback, null)
 
         callback.waitTillFinish()
     }
 
-    override fun close() {
-        AccessibilityService = null
-    }
+    override fun close() {}
 }

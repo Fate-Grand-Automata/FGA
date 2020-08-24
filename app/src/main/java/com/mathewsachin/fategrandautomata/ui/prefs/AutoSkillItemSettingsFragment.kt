@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,7 +9,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -26,6 +24,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import java.util.*
@@ -34,6 +33,7 @@ import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 private val logger = KotlinLogging.logger {}
 
+@AndroidEntryPoint
 class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var preferences: IPreferences
@@ -41,16 +41,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var storageDirs: StorageDirs
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
     val args: AutoSkillItemSettingsFragmentArgs by navArgs()
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        context.appComponent.inject(this)
-    }
 
     val autoSkillExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
         if (uri != null) {
@@ -108,7 +99,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vm: AutoSkillItemViewModel by viewModels { viewModelFactory }
+        val vm: AutoSkillItemViewModel by viewModels()
         vm.key = args.key
 
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {

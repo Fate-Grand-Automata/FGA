@@ -14,8 +14,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
-import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceModule
+import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
@@ -25,8 +24,10 @@ import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.messageAndStackTrace
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
     companion object {
         var Instance: ScriptRunnerService? = null
@@ -55,6 +56,9 @@ class ScriptRunnerService : AccessibilityService() {
 
     @Inject
     lateinit var platformImpl: IPlatformImpl
+
+    @Inject
+    lateinit var scriptComponentBuilder: ScriptComponentBuilder
 
     private val screenOffReceiver = ScreenOffReceiver()
 
@@ -162,7 +166,7 @@ class ScriptRunnerService : AccessibilityService() {
                         // Overwrite the server in the preferences with the detected one, if possible
                         currentFgoServer?.let { server -> prefs.gameServer = server }
 
-                        scriptManager.startScript(this, state.screenshotService, component)
+                        scriptManager.startScript(this, state.screenshotService, scriptComponentBuilder)
                     }
                 }
             }
@@ -183,8 +187,6 @@ class ScriptRunnerService : AccessibilityService() {
         }
     }
 
-    private lateinit var component: ScriptRunnerServiceComponent
-
     override fun onServiceConnected() {
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {
@@ -195,15 +197,6 @@ class ScriptRunnerService : AccessibilityService() {
         }
 
         Instance = this
-        component = appComponent.scriptRunnerServiceComponent()
-            .scriptRunnerServiceModule(
-                ScriptRunnerServiceModule(
-                    this
-                )
-            )
-            .build()
-
-        component.inject(this)
 
         screenOffReceiver.register(this) {
             scriptManager.stopScript()

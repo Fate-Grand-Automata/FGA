@@ -14,7 +14,7 @@ import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.util.appComponent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.autoskill_maker_atk.*
 import kotlinx.android.synthetic.main.autoskill_maker_main.*
 import kotlinx.android.synthetic.main.autoskill_maker_order_change.*
@@ -25,6 +25,7 @@ private enum class AutoSkillMakerState {
     Main, Atk, Target, OrderChange
 }
 
+@AndroidEntryPoint
 class AutoSkillMakerActivity : AppCompatActivity() {
     // These fields are used to Save/Restore state of the Activity
     private var npSequence = ""
@@ -55,8 +56,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.autoskill_maker)
-
-        appComponent.inject(this)
 
         val recyclerView = auto_skill_history
         recyclerView.adapter = skillCmdVm.adapter

@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.util
 
+import android.app.Service
 import android.content.Context
 import android.os.*
 import android.widget.Toast
@@ -19,11 +20,13 @@ import kotlin.time.Duration
 import kotlin.time.milliseconds
 
 class AndroidImpl @Inject constructor(
-    private val Service: ScriptRunnerService,
+    service: Service,
     val preferences: IPreferences,
     val cutoutManager: CutoutManager,
     val highlightManager: HighlightManager
 ) : IPlatformImpl {
+    val service = service as ScriptRunnerService
+
     override val windowRegion get() = cutoutManager.getCutoutAppliedRegion()
 
     override val prefs: IPlatformPrefs
@@ -32,7 +35,7 @@ class AndroidImpl @Inject constructor(
     override fun toast(Message: String) {
         handler.post {
             Toast
-                .makeText(Service, Message, Toast.LENGTH_SHORT)
+                .makeText(service, Message, Toast.LENGTH_SHORT)
                 .show()
         }
     }
@@ -46,7 +49,7 @@ class AndroidImpl @Inject constructor(
     }
 
     private fun vibrate(Duration: Duration) {
-        val v = Service.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val v = service.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(
@@ -62,7 +65,7 @@ class AndroidImpl @Inject constructor(
 
     override fun messageBox(Title: String, Message: String, Error: Exception?) {
         handler.post {
-            Service.showMessageBox(Title, Message, Error)
+            service.showMessageBox(Title, Message, Error)
         }
 
         vibrate(100.milliseconds)
