@@ -301,6 +301,10 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
             cropFriendLock(pattern).use {
                 for (servant in game.supportListRegion.findAll(it)) {
+                    if (autoSkillPrefs.maxAscended && !isMaxAscended(servant.Region)) {
+                        continue
+                    }
+
                     val needMaxedSkills = listOf(
                         autoSkillPrefs.skill1Max,
                         autoSkillPrefs.skill2Max,
@@ -391,14 +395,23 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         ).any { it in Region }
     }
 
+    private fun isStarPresent(region: Region): Boolean {
+        val mlbSimilarity = prefs.support.mlbSimilarity
+        return region.exists(images.limitBroken, Similarity = mlbSimilarity)
+    }
+
+    private fun isMaxAscended(servant: Region): Boolean {
+        val maxAscendedRegion = game.supportMaxAscendedRegion
+            .copy(Y = servant.Y)
+
+        return isStarPresent(maxAscendedRegion)
+    }
+
     private fun isLimitBroken(CraftEssence: Region): Boolean {
         val limitBreakRegion = game.supportLimitBreakRegion
             .copy(Y = CraftEssence.Y)
 
-        val limitBreakPattern = images.limitBroken
-
-        val mlbSimilarity = prefs.support.mlbSimilarity
-        return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
+        return isStarPresent(limitBreakRegion)
     }
 
     private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {

@@ -128,8 +128,12 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 it.summary = levels
             }
 
+            val maxAscended = findPreference<Preference>(getString(R.string.pref_support_max_ascended))
+                ?: return
+
             vm.areServantsSelected.observe(viewLifecycleOwner) { visible ->
                 it.isVisible = visible
+                maxAscended.isVisible = visible
             }
         } ?: return
 
