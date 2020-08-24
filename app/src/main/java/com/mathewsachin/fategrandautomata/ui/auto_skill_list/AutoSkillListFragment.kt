@@ -33,7 +33,7 @@ import javax.inject.Inject
 private val logger = KotlinLogging.logger {}
 
 @AndroidEntryPoint
-class AutoSkillListFragment : Fragment() {
+class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
     @Inject
     lateinit var preferences: IPreferences
 
@@ -42,9 +42,6 @@ class AutoSkillListFragment : Fragment() {
 
         setHasOptionsMenu(true)
     }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.autoskill_list, container, false)
 
     val vm: AutoSkillListViewModel by activityViewModels()
 
