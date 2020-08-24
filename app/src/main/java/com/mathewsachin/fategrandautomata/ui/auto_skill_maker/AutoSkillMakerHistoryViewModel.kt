@@ -1,9 +1,13 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-class AutoSkillMakerHistoryViewModel(val SavedState: SavedStateHandle): ViewModel() {
+class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
+    @Assisted val SavedState: SavedStateHandle
+) : ViewModel() {
 
     private val separator = ";"
     private val skillCmd = mutableListOf<String>()
@@ -40,12 +44,13 @@ class AutoSkillMakerHistoryViewModel(val SavedState: SavedStateHandle): ViewMode
 
     fun isEmpty() = skillCmd.isEmpty()
 
-    var last get() = skillCmd.last()
-      set(value) {
-          skillCmd[skillCmd.lastIndex] = value
+    var last
+        get() = skillCmd.last()
+        set(value) {
+            skillCmd[skillCmd.lastIndex] = value
 
-          adapter.notifyItemChanged(skillCmd.lastIndex)
-      }
+            adapter.notifyItemChanged(skillCmd.lastIndex)
+        }
 
     fun reverseIterate() = skillCmd.reversed()
 }

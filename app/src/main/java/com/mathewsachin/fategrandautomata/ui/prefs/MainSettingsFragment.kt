@@ -1,10 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -14,24 +12,15 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
 import com.mathewsachin.fategrandautomata.ui.UpdateCheckViewModel
 import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
-import com.mathewsachin.fategrandautomata.util.appComponent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
-import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 private val logger = KotlinLogging.logger {}
 
+@AndroidEntryPoint
 class MainSettingsFragment : PreferenceFragmentCompat() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        context.appComponent.inject(this)
-    }
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main_preferences, rootKey)
 
@@ -72,7 +61,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vm: MainSettingsViewModel by activityViewModels { viewModelFactory }
+        val vm: MainSettingsViewModel by activityViewModels()
 
         findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
             vm.refillMessage.observe(viewLifecycleOwner) { msg ->

@@ -1,12 +1,12 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import kotlinx.coroutines.flow.combine
-import javax.inject.Inject
 
-class MainSettingsViewModel @Inject constructor(
+class MainSettingsViewModel @ViewModelInject constructor(
     prefs: PrefsCore
 ) : ViewModel() {
     val gameServer = prefs

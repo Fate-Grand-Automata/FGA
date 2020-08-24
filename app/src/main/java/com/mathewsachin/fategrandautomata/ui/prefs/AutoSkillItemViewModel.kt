@@ -1,14 +1,14 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import kotlinx.coroutines.flow.combine
-import javax.inject.Inject
 
-class AutoSkillItemViewModel @Inject constructor(
+class AutoSkillItemViewModel @ViewModelInject constructor(
     val preferences: IPreferences,
     val prefsCore: PrefsCore
 ) : ViewModel() {

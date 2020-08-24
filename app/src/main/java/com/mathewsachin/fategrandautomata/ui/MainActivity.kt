@@ -13,10 +13,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.util.CutoutManager
-import com.mathewsachin.fategrandautomata.util.appComponent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var cutoutManager: CutoutManager
@@ -26,8 +27,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        appComponent.inject(this)
 
         setSupportActionBar(toolbar)
 
