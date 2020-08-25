@@ -102,6 +102,7 @@
             android:id="@+id/atk_btn"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:onClick="@{(v) -> vm.goToAtk()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

@@ -6,6 +6,10 @@
         <variable
             name="vm"
             type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerHistoryViewModel" />
+
+        <variable
+            name="activity"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -113,6 +117,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_check"
             android:text="Done"
+            android:onClick="@{(v) -> activity.onDone()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />

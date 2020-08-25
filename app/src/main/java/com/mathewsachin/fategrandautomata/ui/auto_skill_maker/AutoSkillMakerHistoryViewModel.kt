@@ -24,7 +24,7 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         val turn: Int = 1,
         val currentView: AutoSkillMakerState = AutoSkillMakerState.Main,
         val currentSkill: Char = '0',
-        val npSequence: String = "",
+        val npSequence: List<Char> = emptyList(),
         val cardsBeforeNp: Int = 0,
         val xSelectedParty: Int = 1,
         val xSelectedSub: Int = 1
@@ -34,7 +34,6 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         ?: AutoSkillMakerViewModelState()
 
     private var currentSkill = state.currentSkill
-    private var npSequence = state.npSequence
 
     override fun onCleared() {
         super.onCleared()
@@ -46,7 +45,7 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
             turn.value ?: 1,
             currentView.value ?: AutoSkillMakerState.Main,
             currentSkill,
-            npSequence,
+            npSequence.value ?: emptyList(),
             cardsBeforeNp.value ?: 0,
             xSelectedParty.value ?: 1,
             xSelectedSub.value ?: 1
@@ -166,34 +165,38 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
     }
 
     fun onNpClick(command: Char) {
-        if (npSequence.contains(command)) {
-            npSequence = npSequence.filterNot { it == command }
-        } else npSequence += command
+        npSequence.value?.let { nps ->
+            if (nps.contains(command)) {
+                _npSequence.value = nps.filterNot { it == command }
+            } else _npSequence.value = nps + command
+        }
     }
 
     fun clearNpSequence() {
-        npSequence = ""
+        _npSequence.value = emptyList()
     }
 
     fun addNpsToSkillCmd() {
-        if (npSequence.isNotEmpty()) {
-            when (cardsBeforeNp.value) {
-                1 -> add("n1")
-                2 -> add("n2")
+        npSequence.value?.let { nps ->
+            if (nps.isNotEmpty()) {
+                when (cardsBeforeNp.value) {
+                    1 -> add("n1")
+                    2 -> add("n2")
+                }
             }
-        }
 
-        // Show each NP as separate entry
-        for (np in npSequence) {
-            add(np.toString())
-        }
+            // Show each NP as separate entry
+            for (np in nps) {
+                add(np.toString())
+            }
 
-        // Add a '0' before consecutive turn/battle changes
-        if (!isEmpty() && last.last() == ',') {
-            add("0")
-        }
+            // Add a '0' before consecutive turn/battle changes
+            if (!isEmpty() && last.last() == ',') {
+                add("0")
+            }
 
-        clearNpSequence()
+            clearNpSequence()
+        }
     }
 
     fun onGoToNext(Separator: String) {
@@ -312,5 +315,17 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
                 else -> undo()
             }
         }
+    }
+
+    private val _npSequence = MutableLiveData<List<Char>>(state.npSequence)
+
+    val npSequence: LiveData<List<Char>> = _npSequence
+
+    fun goToAtk() {
+        clearNpSequence()
+
+        setCardsBeforeNp(0)
+
+        currentView.value = AutoSkillMakerState.Atk
     }
 }

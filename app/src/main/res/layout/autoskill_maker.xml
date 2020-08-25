@@ -28,7 +28,8 @@
             layout="@layout/autoskill_maker_atk"
             android:visibility="gone"
             android:id="@+id/auto_skill_atk"
-            app:vm="@{vm}" />
+            app:vm="@{vm}"
+            app:activity="@{activity}" />
 
         <include
             layout="@layout/autoskill_maker_target"

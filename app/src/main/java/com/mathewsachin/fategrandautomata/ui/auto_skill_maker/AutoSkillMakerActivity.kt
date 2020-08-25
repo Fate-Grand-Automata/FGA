@@ -45,26 +45,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        binding.autoSkillMain.atkBtn.setOnClickListener {
-            // Uncheck NP buttons
-            binding.autoSkillAtk.np4.isChecked = false
-            binding.autoSkillAtk.np5.isChecked = false
-            binding.autoSkillAtk.np6.isChecked = false
-
-            skillCmdVm.clearNpSequence()
-
-            // Set cards before Np to 0
-            skillCmdVm.setCardsBeforeNp(0)
-
-            skillCmdVm.currentView.value = AutoSkillMakerState.Atk
-        }
-
-        binding.autoSkillAtk.autoskillDoneBtn.setOnClickListener {
-            skillCmdVm.addNpsToSkillCmd()
-
-            val autoSkillPrefs = prefs.forAutoSkillConfig(args.key)
-            autoSkillPrefs.skillCommand = skillCmdVm.getSkillCmdString()
-            finish()
+        skillCmdVm.npSequence.observe(this) {
+            binding.autoSkillAtk.np4.isChecked = it.contains('4')
+            binding.autoSkillAtk.np5.isChecked = it.contains('5')
+            binding.autoSkillAtk.np6.isChecked = it.contains('6')
         }
 
         skillCmdVm.enemyTarget.observe(this) {
@@ -157,6 +141,14 @@ class AutoSkillMakerActivity : AppCompatActivity() {
                 .setPositiveButton(android.R.string.yes) { _, _ -> it() }
                 .show()
         }
+    }
+
+    fun onDone() {
+        skillCmdVm.addNpsToSkillCmd()
+
+        val autoSkillPrefs = prefs.forAutoSkillConfig(args.key)
+        autoSkillPrefs.skillCommand = skillCmdVm.getSkillCmdString()
+        finish()
     }
 
     override fun onBackPressed() {
