@@ -58,7 +58,6 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     fun clickAttack() {
         game.battleAttackClick.click()
 
-        // TODO: This was added extra in Kotlin impl
         // Wait for Attack button to disappear
         game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
 

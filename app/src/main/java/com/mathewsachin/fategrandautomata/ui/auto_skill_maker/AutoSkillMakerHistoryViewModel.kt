@@ -269,7 +269,6 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
             else -> return
         }
 
-        // TODO: Check if extra target gets added, if so maybe undo once?
         setEnemyTarget(target)
     }
 

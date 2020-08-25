@@ -69,7 +69,6 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val masterExp get() = load("master_exp.png")
 
-    // TODO: Verify the CN image
     val masterLvlUp get() = load("master_lvl_up.png")
 
     val matRewards get() = load("mat_rewards.png")
