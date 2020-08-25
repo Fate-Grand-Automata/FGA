@@ -25,9 +25,6 @@ enum class AutoSkillMakerState {
 
 @AndroidEntryPoint
 class AutoSkillMakerActivity : AppCompatActivity() {
-    // These fields are used to Save/Restore state of the Activity
-    private var npSequence = ""
-
     // Order Change selected members
     private var xSelectedParty = 1
     private var xSelectedSub = 1
@@ -62,20 +59,16 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        binding.autoSkillAtk.np4.setOnClickListener { onNpClick("4") }
-        binding.autoSkillAtk.np5.setOnClickListener { onNpClick("5") }
-        binding.autoSkillAtk.np6.setOnClickListener { onNpClick("6") }
-
         binding.autoSkillMain.atkBtn.setOnClickListener {
             // Uncheck NP buttons
             binding.autoSkillAtk.np4.isChecked = false
             binding.autoSkillAtk.np5.isChecked = false
             binding.autoSkillAtk.np6.isChecked = false
 
-            npSequence = ""
+            skillCmdVm.clearNpSequence()
 
             // Set cards before Np to 0
-            binding.autoSkillAtk.cardsBeforeNpRad.check(R.id.cards_before_np_0)
+            skillCmdVm.setCardsBeforeNp(0)
 
             skillCmdVm.currentView.value = AutoSkillMakerState.Atk
         }
@@ -88,7 +81,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         binding.autoSkillAtk.autoskillNextTurnBtn.setOnClickListener { onGoToNext(",") }
 
         binding.autoSkillAtk.autoskillDoneBtn.setOnClickListener {
-            addNpsToSkillCmd()
+            skillCmdVm.addNpsToSkillCmd()
 
             val autoSkillPrefs = prefs.forAutoSkillConfig(args.key)
             autoSkillPrefs.skillCommand = skillCmdVm.getSkillCmdString()
@@ -121,6 +114,30 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             if (targetId != null) {
                 binding.autoSkillMain.enemyTargetRadio.check(targetId)
             } else binding.autoSkillMain.enemyTargetRadio.clearCheck()
+        }
+
+        binding.autoSkillAtk.cardsBeforeNpRad.setOnCheckedChangeListener { group, checkedId ->
+            val radioButton = group.findViewById<RadioButton>(checkedId)
+
+            if (radioButton?.isChecked == true) {
+                val cards = when (checkedId) {
+                    R.id.cards_before_np_1 -> 1
+                    R.id.cards_before_np_2 -> 2
+                    else -> 0
+                }
+
+                skillCmdVm.setCardsBeforeNp(cards)
+            }
+        }
+
+        skillCmdVm.cardsBeforeNp.observe(this) {
+            val targetId = when (it) {
+                1 -> R.id.cards_before_np_1
+                2 -> R.id.cards_before_np_2
+                else -> R.id.cards_before_np_0
+            }
+
+            binding.autoSkillAtk.cardsBeforeNpRad.check(targetId)
         }
 
         var lastView = AutoSkillMakerState.Main
@@ -250,34 +267,11 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         }
     }
 
-    private fun addNpsToSkillCmd() {
-        skillCmdVm.let {
-            if (npSequence.isNotEmpty()) {
-                when (binding.autoSkillAtk.cardsBeforeNpRad.checkedRadioButtonId) {
-                    R.id.cards_before_np_1 -> it.add("n1")
-                    R.id.cards_before_np_2 -> it.add("n2")
-                }
-            }
-
-            // Show each NP as separate entry
-            for (np in npSequence) {
-                it.add(np.toString())
-            }
-
-            // Add a '0' before consecutive turn/battle changes
-            if (!it.isEmpty() && it.last.last() == ',') {
-                it.add("0")
-            }
-        }
-
-        npSequence = ""
-    }
-
     private fun onGoToNext(Separator: String) {
         // Uncheck selected targets
         skillCmdVm.unSelectTargets()
 
-        addNpsToSkillCmd()
+        skillCmdVm.addNpsToSkillCmd()
 
         if (skillCmdVm.isEmpty()) {
             skillCmdVm.add("0")
@@ -296,12 +290,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         AutoSkillMakerState.OrderChange -> binding.autoSkillOrderChange
         else -> binding.autoSkillMain
     }.root
-
-    private fun onNpClick(NpCommand: String) {
-        if (npSequence.contains(NpCommand)) {
-            npSequence = npSequence.replace(NpCommand, "")
-        } else npSequence += NpCommand
-    }
 
     private fun setOrderChangeMember(Members: Array<Button>, Member: Int) {
 
@@ -333,7 +321,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putString(::npSequence.name, npSequence)
         outState.putInt(::xSelectedParty.name, xSelectedParty)
         outState.putInt(::xSelectedSub.name, xSelectedSub)
     }
@@ -342,8 +329,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
 
         val b = savedInstanceState
-
-        npSequence = b.getString(::npSequence.name, "")
 
         setOrderChangePartyMember(b.getInt(::xSelectedParty.name, 1))
         setOrderChangeSubMember(b.getInt(::xSelectedSub.name, 1))

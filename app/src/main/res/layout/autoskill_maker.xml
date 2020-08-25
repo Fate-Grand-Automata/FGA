@@ -22,7 +22,8 @@
         <include
             layout="@layout/autoskill_maker_atk"
             android:visibility="gone"
-            android:id="@+id/auto_skill_atk" />
+            android:id="@+id/auto_skill_atk"
+            app:vm="@{vm}" />
 
         <include
             layout="@layout/autoskill_maker_target"
@@ -33,6 +34,7 @@
         <include
             layout="@layout/autoskill_maker_order_change"
             android:visibility="gone"
-            android:id="@+id/auto_skill_order_change" />
+            android:id="@+id/auto_skill_order_change"
+            app:vm="@{vm}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

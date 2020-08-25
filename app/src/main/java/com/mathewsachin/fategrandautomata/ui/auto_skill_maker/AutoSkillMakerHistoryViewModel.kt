@@ -26,13 +26,16 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         val stage: Int = 1,
         val turn: Int = 1,
         val currentView: AutoSkillMakerState = AutoSkillMakerState.Main,
-        val currentSkill: Char = '0'
+        val currentSkill: Char = '0',
+        val npSequence: String = "",
+        val cardsBeforeNp: Int = 0
     ) : Parcelable
 
     val state = savedState.get(::savedState.name)
         ?: AutoSkillMakerViewModelState()
 
     private var currentSkill = state.currentSkill
+    private var npSequence = state.npSequence
 
     override fun onCleared() {
         super.onCleared()
@@ -43,7 +46,9 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
             stage.value ?: 1,
             turn.value ?: 1,
             currentView.value ?: AutoSkillMakerState.Main,
-            currentSkill
+            currentSkill,
+            npSequence,
+            cardsBeforeNp.value ?: 0
         )
 
         savedState.set(::savedState.name, saveState)
@@ -104,6 +109,14 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         setEnemyTarget(AutoSkillMakerHistoryViewModel.NoEnemy)
     }
 
+    private val _cardsBeforeNp = MutableLiveData<Int>(state.cardsBeforeNp)
+
+    val cardsBeforeNp: LiveData<Int> = _cardsBeforeNp
+
+    fun setCardsBeforeNp(cards: Int) {
+        _cardsBeforeNp.value = cards
+    }
+
     private val _stage = MutableLiveData<Int>(state.stage)
     private val _turn = MutableLiveData<Int>(state.turn)
 
@@ -149,5 +162,36 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         add(cmd)
 
         gotToMain()
+    }
+
+    fun onNpClick(command: Char) {
+        if (npSequence.contains(command)) {
+            npSequence = npSequence.filterNot { it == command }
+        } else npSequence += command
+    }
+
+    fun clearNpSequence() {
+        npSequence = ""
+    }
+
+    fun addNpsToSkillCmd() {
+        if (npSequence.isNotEmpty()) {
+            when (cardsBeforeNp.value) {
+                1 -> add("n1")
+                2 -> add("n2")
+            }
+        }
+
+        // Show each NP as separate entry
+        for (np in npSequence) {
+            add(np.toString())
+        }
+
+        // Add a '0' before consecutive turn/battle changes
+        if (!isEmpty() && last.last() == ',') {
+            add("0")
+        }
+
+        clearNpSequence()
     }
 }
