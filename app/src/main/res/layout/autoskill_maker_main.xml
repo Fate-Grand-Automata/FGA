@@ -6,6 +6,10 @@
         <variable
             name="vm"
             type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerHistoryViewModel" />
+
+        <variable
+            name="activity"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -37,6 +41,7 @@
                 android:id="@+id/enemy_target_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setEnemyTarget(1)}"
                 android:text="Enemy 1" />
 
             <RadioButton
@@ -44,12 +49,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:onClick="@{(v) -> vm.setEnemyTarget(2)}"
                 android:text="Enemy 2" />
 
             <RadioButton
                 android:id="@+id/enemy_target_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setEnemyTarget(3)}"
                 android:text="Enemy 3" />
         </RadioGroup>
 
@@ -167,7 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Undo"
-            android:onClick="@{(v) -> vm.undo()}"
+            android:onClick="@{(v) -> activity.onUndo()}"
             app:layout_constraintStart_toEndOf="@id/master_x_btn"
             app:layout_constraintTop_toTopOf="@id/master_x_btn" />
 

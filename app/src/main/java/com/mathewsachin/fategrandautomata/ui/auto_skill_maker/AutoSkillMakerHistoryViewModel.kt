@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
-import android.content.Context
 import android.os.Parcelable
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
@@ -8,12 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.android.parcel.Parcelize
 
 class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
-    @Assisted val savedState: SavedStateHandle,
-    @ApplicationContext val context: Context
+    @Assisted val savedState: SavedStateHandle
 ) : ViewModel() {
     companion object {
         const val NoEnemy = -1
@@ -253,4 +250,68 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
     fun canGoBack() = currentView.value != AutoSkillMakerState.Main
 
     fun goBack() = gotToMain()
+
+    private fun revertToPreviousEnemyTarget() {
+        // Find the previous target, but within the same turn
+        val previousTarget = reverseIterate()
+            .takeWhile { !it.contains(',') }
+            .firstOrNull { it.startsWith('t') }
+
+        if (previousTarget == null) {
+            unSelectTargets()
+            return
+        }
+
+        val target = when (previousTarget[1]) {
+            '1' -> 1
+            '2' -> 2
+            '3' -> 3
+            else -> return
+        }
+
+        // TODO: Check if extra target gets added, if so maybe undo once?
+        setEnemyTarget(target)
+    }
+
+    private fun undoStageOrTurn() {
+        // Decrement Battle/Turn count
+        if (last.contains('#')) {
+            prevStage()
+        }
+
+        prevTurn()
+
+        // Undo the Battle/Turn change
+        undo()
+
+        val itemsToRemove = setOf('4', '5', '6', 'n', '0')
+
+        // Remove NPs and cards before NPs
+        while (!isEmpty()
+            && last[0] in itemsToRemove
+        ) {
+            undo()
+        }
+
+        revertToPreviousEnemyTarget()
+    }
+
+    fun onUndo(alertDialog: (onPositiveClick: () -> Unit) -> Unit) {
+        if (!isEmpty()) {
+            // Un-select target
+            when {
+                last.startsWith('t') -> {
+                    undo()
+                    revertToPreviousEnemyTarget()
+                }
+                // Battle/Turn change
+                last.contains(',') -> {
+                    alertDialog {
+                        undoStageOrTurn()
+                    }
+                }
+                else -> undo()
+            }
+        }
+    }
 }

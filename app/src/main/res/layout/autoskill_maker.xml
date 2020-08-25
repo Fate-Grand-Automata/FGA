@@ -7,6 +7,10 @@
         <variable
             name="vm"
             type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerHistoryViewModel" />
+
+        <variable
+            name="activity"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,7 +21,8 @@
         <include
             layout="@layout/autoskill_maker_main"
             android:id="@+id/auto_skill_main"
-            app:vm="@{vm}" />
+            app:vm="@{vm}"
+            app:activity="@{activity}" />
 
         <include
             layout="@layout/autoskill_maker_atk"

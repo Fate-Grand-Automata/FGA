@@ -82,18 +82,21 @@
                 android:id="@+id/cards_before_np_0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setCardsBeforeNp(0)}"
                 android:text="No cards before NP" />
 
             <RadioButton
                 android:id="@+id/cards_before_np_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setCardsBeforeNp(1)}"
                 android:text="1 face-card before NP" />
 
             <RadioButton
                 android:id="@+id/cards_before_np_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setCardsBeforeNp(2)}"
                 android:text="2 face-cards before NP" />
         </RadioGroup>
 
