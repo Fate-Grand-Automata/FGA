@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -45,42 +44,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        skillCmdVm.enemyTarget.observe(this) {
-            val targetId = when (it) {
-                1 -> R.id.enemy_target_1
-                2 -> R.id.enemy_target_2
-                3 -> R.id.enemy_target_3
-                else -> null
-            }
-
-            if (targetId != null) {
-                binding.autoSkillMain.enemyTargetRadio.check(targetId)
-            } else binding.autoSkillMain.enemyTargetRadio.clearCheck()
-        }
-
-        skillCmdVm.cardsBeforeNp.observe(this) {
-            val targetId = when (it) {
-                1 -> R.id.cards_before_np_1
-                2 -> R.id.cards_before_np_2
-                else -> R.id.cards_before_np_0
-            }
-
-            binding.autoSkillAtk.cardsBeforeNpRad.check(targetId)
-        }
-
-        var lastView = AutoSkillMakerState.Main
-        skillCmdVm.currentView.observe(this) {
-            // Hide current if not main
-            if (lastView != AutoSkillMakerState.Main) {
-                getStateView(lastView, binding).visibility = View.GONE
-            }
-
-            lastView = it
-
-            // Show new state
-            getStateView(it, binding).visibility = View.VISIBLE
-        }
-
         setupOrderChange(binding)
     }
 
@@ -104,13 +67,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             setOrderChangeMember(xSub, it)
         }
     }
-
-    private fun getStateView(State: AutoSkillMakerState, binding: AutoskillMakerBinding) = when (State) {
-        AutoSkillMakerState.Atk -> binding.autoSkillAtk
-        AutoSkillMakerState.Target -> binding.autoSkillTarget
-        AutoSkillMakerState.OrderChange -> binding.autoSkillOrderChange
-        else -> binding.autoSkillMain
-    }.root
 
     private fun setOrderChangeMember(Members: Array<Button>, Member: Int) {
         for ((i, button) in Members.withIndex()) {
