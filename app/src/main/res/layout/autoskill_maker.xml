@@ -1,16 +1,50 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/autoskill_maker_main"/>
+    <data>
 
-    <include layout="@layout/autoskill_maker_atk"
-        android:visibility="gone"/>
+        <import type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewState" />
 
-    <include layout="@layout/autoskill_maker_target"
-        android:visibility="gone"/>
+        <import type="android.view.View" />
 
-    <include layout="@layout/autoskill_maker_order_change"
-        android:visibility="gone"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <variable
+            name="vm"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel" />
+
+        <variable
+            name="activity"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+        <include
+            layout="@layout/autoskill_maker_main"
+            android:id="@+id/auto_skill_main"
+            app:vm="@{vm}"
+            app:activity="@{activity}" />
+
+        <include
+            layout="@layout/autoskill_maker_atk"
+            android:visibility="@{vm.currentView == AutoSkillMakerViewState.Atk ? View.VISIBLE : View.GONE}"
+            android:id="@+id/auto_skill_atk"
+            app:vm="@{vm}"
+            app:activity="@{activity}" />
+
+        <include
+            layout="@layout/autoskill_maker_target"
+            android:visibility="@{vm.currentView == AutoSkillMakerViewState.Target ? View.VISIBLE : View.GONE}"
+            android:id="@+id/auto_skill_target"
+            app:vm="@{vm}" />
+
+        <include
+            layout="@layout/autoskill_maker_order_change"
+            android:visibility="@{vm.currentView == AutoSkillMakerViewState.OrderChange ? View.VISIBLE : View.GONE}"
+            android:id="@+id/auto_skill_order_change"
+            app:vm="@{vm}" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
