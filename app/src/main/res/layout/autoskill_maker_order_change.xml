@@ -49,6 +49,7 @@
             android:paddingVertical="25dp"
             android:text="Servant\n\n1"
             android:onClick="@{(v) -> vm.setOrderChangePartyMember(1)}"
+            android:backgroundTint="@{vm.XSelectedParty == 1 ? @color/colorAccent : @color/button_material}"
             app:layout_constraintBottom_toTopOf="@+id/order_change_ok"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/order_change_label"
@@ -61,6 +62,7 @@
             android:paddingVertical="25dp"
             android:text="Servant\n\n2"
             android:onClick="@{(v) -> vm.setOrderChangePartyMember(2)}"
+            android:backgroundTint="@{vm.XSelectedParty == 2 ? @color/colorAccent : @color/button_material}"
             app:layout_constraintStart_toEndOf="@+id/x_party_1"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
@@ -71,6 +73,7 @@
             android:paddingVertical="25dp"
             android:text="Servant\n\n3"
             android:onClick="@{(v) -> vm.setOrderChangePartyMember(3)}"
+            android:backgroundTint="@{vm.XSelectedParty == 3 ? @color/colorAccent : @color/button_material}"
             app:layout_constraintStart_toEndOf="@+id/x_party_2"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
@@ -81,6 +84,7 @@
             android:paddingVertical="25dp"
             android:text="Servant\n\n3"
             android:onClick="@{(v) -> vm.setOrderChangeSubMember(3)}"
+            android:backgroundTint="@{vm.XSelectedSub == 3 ? @color/colorAccent : @color/button_material}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
@@ -91,6 +95,7 @@
             android:paddingVertical="25dp"
             android:text="Servant\n\n2"
             android:onClick="@{(v) -> vm.setOrderChangeSubMember(2)}"
+            android:backgroundTint="@{vm.XSelectedSub == 2 ? @color/colorAccent : @color/button_material}"
             app:layout_constraintEnd_toStartOf="@+id/x_sub_3"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
@@ -101,6 +106,7 @@
             android:paddingVertical="25dp"
             android:text="Servant\n\n1"
             android:onClick="@{(v) -> vm.setOrderChangeSubMember(1)}"
+            android:backgroundTint="@{vm.XSelectedSub == 1 ? @color/colorAccent : @color/button_material}"
             app:layout_constraintEnd_toStartOf="@+id/x_sub_2"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
