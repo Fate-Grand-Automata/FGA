@@ -45,12 +45,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        skillCmdVm.npSequence.observe(this) {
-            binding.autoSkillAtk.np4.isChecked = it.contains('4')
-            binding.autoSkillAtk.np5.isChecked = it.contains('5')
-            binding.autoSkillAtk.np6.isChecked = it.contains('6')
-        }
-
         skillCmdVm.enemyTarget.observe(this) {
             val targetId = when (it) {
                 1 -> R.id.enemy_target_1

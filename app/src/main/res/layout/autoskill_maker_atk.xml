@@ -40,6 +40,7 @@
             android:textOff="Servant\n1\n\nNP"
             android:textOn="Servant\n1\n\nNP"
             android:onClick="@{(v) -> vm.onNpClick('4')}"
+            android:checked="@{vm.npSequence.contains('4')}"
             app:layout_constraintEnd_toStartOf="@+id/np_5"
             app:layout_constraintStart_toEndOf="@+id/np_sep_left"
             app:layout_constraintTop_toBottomOf="@+id/atk_label" />
@@ -51,6 +52,7 @@
             android:textOff="Servant\n2\n\nNP"
             android:textOn="Servant\n2\n\nNP"
             android:onClick="@{(v) -> vm.onNpClick('5')}"
+            android:checked="@{vm.npSequence.contains('5')}"
             app:layout_constraintEnd_toStartOf="@+id/np_6"
             app:layout_constraintStart_toEndOf="@+id/np_4"
             app:layout_constraintTop_toTopOf="@+id/np_4" />
@@ -62,6 +64,7 @@
             android:textOff="Servant\n3\n\nNP"
             android:textOn="Servant\n3\n\nNP"
             android:onClick="@{(v) -> vm.onNpClick('6')}"
+            android:checked="@{vm.npSequence.contains('6')}"
             app:layout_constraintEnd_toStartOf="@+id/np_sep_right"
             app:layout_constraintStart_toEndOf="@+id/np_5"
             app:layout_constraintTop_toTopOf="@+id/np_4" />
