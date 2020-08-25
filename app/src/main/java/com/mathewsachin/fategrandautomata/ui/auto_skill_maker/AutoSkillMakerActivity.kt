@@ -19,7 +19,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-private enum class AutoSkillMakerState {
+enum class AutoSkillMakerState {
     Main, Atk, Target, OrderChange
 }
 
@@ -27,9 +27,6 @@ private enum class AutoSkillMakerState {
 class AutoSkillMakerActivity : AppCompatActivity() {
     // These fields are used to Save/Restore state of the Activity
     private var npSequence = ""
-    private var currentView =
-        AutoSkillMakerState.Main
-    private var currentSkill = '0'
 
     // Order Change selected members
     private var xSelectedParty = 1
@@ -80,11 +77,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             // Set cards before Np to 0
             binding.autoSkillAtk.cardsBeforeNpRad.check(R.id.cards_before_np_0)
 
-            changeState(AutoSkillMakerState.Atk)
+            skillCmdVm.currentView.value = AutoSkillMakerState.Atk
         }
-
-        setupSkills()
-        setupTargets()
 
         binding.autoSkillAtk.autoskillNextBattleBtn.setOnClickListener {
             skillCmdVm.nextStage()
@@ -127,6 +121,19 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             if (targetId != null) {
                 binding.autoSkillMain.enemyTargetRadio.check(targetId)
             } else binding.autoSkillMain.enemyTargetRadio.clearCheck()
+        }
+
+        var lastView = AutoSkillMakerState.Main
+        skillCmdVm.currentView.observe(this) {
+            // Hide current if not main
+            if (lastView != AutoSkillMakerState.Main) {
+                getStateView(lastView).visibility = View.GONE
+            }
+
+            lastView = it
+
+            // Show new state
+            getStateView(it).visibility = View.VISIBLE
         }
 
         setupOrderChange()
@@ -192,15 +199,15 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         }
 
         val targetRadio = when (previousTarget[1]) {
-            '1' -> binding.autoSkillMain.enemyTarget1
-            '2' -> binding.autoSkillMain.enemyTarget2
-            '3' -> binding.autoSkillMain.enemyTarget3
+            '1' -> 1
+            '2' -> 2
+            '3' -> 3
             else -> return
         }
 
         wasEnemyTargetUndo = true
         try {
-            binding.autoSkillMain.enemyTargetRadio.check(targetRadio.id)
+            skillCmdVm.setEnemyTarget(targetRadio)
         } finally {
             wasEnemyTargetUndo = false
         }
@@ -226,64 +233,21 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         }
 
         binding.autoSkillMain.masterXBtn.setOnClickListener {
-            changeState(AutoSkillMakerState.OrderChange)
+            skillCmdVm.currentView.value = AutoSkillMakerState.OrderChange
 
             setOrderChangePartyMember(1)
             setOrderChangeSubMember(1)
         }
 
-        binding.autoSkillOrderChange.orderChangeCancel.setOnClickListener { gotToMain() }
+        binding.autoSkillOrderChange.orderChangeCancel.setOnClickListener {
+            skillCmdVm.gotToMain()
+        }
 
         binding.autoSkillOrderChange.orderChangeOk.setOnClickListener {
             skillCmdVm.add("x${xSelectedParty}${xSelectedSub}")
 
-            gotToMain()
+            skillCmdVm.gotToMain()
         }
-    }
-
-    private fun gotToMain() {
-        changeState(AutoSkillMakerState.Main)
-    }
-
-    private fun setupSkills() {
-        fun onSkill(SkillCode: Char) {
-            currentSkill = SkillCode
-
-            changeState(AutoSkillMakerState.Target)
-        }
-
-        binding.autoSkillMain.skillABtn.setOnClickListener { onSkill('a') }
-        binding.autoSkillMain.skillBBtn.setOnClickListener { onSkill('b') }
-        binding.autoSkillMain.skillCBtn.setOnClickListener { onSkill('c') }
-        binding.autoSkillMain.skillDBtn.setOnClickListener { onSkill('d') }
-        binding.autoSkillMain.skillEBtn.setOnClickListener { onSkill('e') }
-        binding.autoSkillMain.skillFBtn.setOnClickListener { onSkill('f') }
-        binding.autoSkillMain.skillGBtn.setOnClickListener { onSkill('g') }
-        binding.autoSkillMain.skillHBtn.setOnClickListener { onSkill('h') }
-        binding.autoSkillMain.skillIBtn.setOnClickListener { onSkill('i') }
-
-        binding.autoSkillMain.masterJBtn.setOnClickListener { onSkill('j') }
-        binding.autoSkillMain.masterKBtn.setOnClickListener { onSkill('k') }
-        binding.autoSkillMain.masterLBtn.setOnClickListener { onSkill('l') }
-    }
-
-    private fun setupTargets() {
-        fun onTarget(TargetCommand: Char?) {
-            var cmd = currentSkill.toString()
-
-            if (TargetCommand != null) {
-                cmd += TargetCommand
-            }
-
-            skillCmdVm.add(cmd)
-
-            gotToMain()
-        }
-
-        binding.autoSkillTarget.noTargetBtn.setOnClickListener { onTarget(null) }
-        binding.autoSkillTarget.target1.setOnClickListener { onTarget('1') }
-        binding.autoSkillTarget.target2.setOnClickListener { onTarget('2') }
-        binding.autoSkillTarget.target3.setOnClickListener { onTarget('3') }
     }
 
     private fun addNpsToSkillCmd() {
@@ -323,7 +287,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
         skillCmdVm.nextTurn()
 
-        gotToMain()
+        skillCmdVm.gotToMain()
     }
 
     private fun getStateView(State: AutoSkillMakerState) = when (State) {
@@ -332,17 +296,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         AutoSkillMakerState.OrderChange -> binding.autoSkillOrderChange
         else -> binding.autoSkillMain
     }.root
-
-    private fun changeState(NewState: AutoSkillMakerState) {
-        // Hide current if not main
-        if (currentView != AutoSkillMakerState.Main) {
-            getStateView(currentView).visibility = View.GONE
-        }
-
-        // Show new state
-        currentView = NewState
-        getStateView(NewState).visibility = View.VISIBLE
-    }
 
     private fun onNpClick(NpCommand: String) {
         if (npSequence.contains(NpCommand)) {
@@ -381,10 +334,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
 
         outState.putString(::npSequence.name, npSequence)
-        outState.putInt(::currentView.name, currentView.ordinal)
         outState.putInt(::xSelectedParty.name, xSelectedParty)
         outState.putInt(::xSelectedSub.name, xSelectedSub)
-        outState.putChar(::currentSkill.name, currentSkill)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -393,16 +344,13 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         val b = savedInstanceState
 
         npSequence = b.getString(::npSequence.name, "")
-        changeState(AutoSkillMakerState.values()[b.getInt(::currentView.name, 0)])
 
         setOrderChangePartyMember(b.getInt(::xSelectedParty.name, 1))
         setOrderChangeSubMember(b.getInt(::xSelectedSub.name, 1))
-
-        currentSkill = b.getChar(::currentSkill.name)
     }
 
     override fun onBackPressed() {
-        when (currentView) {
+        when (skillCmdVm.currentView.value) {
             AutoSkillMakerState.Main -> {
                 AlertDialog.Builder(this)
                     .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
@@ -411,7 +359,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
                     .setNegativeButton(android.R.string.no, null)
                     .show()
             }
-            else -> gotToMain()
+            else -> skillCmdVm.gotToMain()
         }
     }
 }

@@ -22,21 +22,31 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
     @Parcelize
     data class AutoSkillMakerViewModelState(
         val skillCommand: MutableList<String> = mutableListOf(),
-        var enemyTarget: Int = -1,
-        var stage: Int = 1,
-        var turn: Int = 1
+        val enemyTarget: Int = -1,
+        val stage: Int = 1,
+        val turn: Int = 1,
+        val currentView: AutoSkillMakerState = AutoSkillMakerState.Main,
+        val currentSkill: Char = '0'
     ) : Parcelable
 
     val state = savedState.get(::savedState.name)
         ?: AutoSkillMakerViewModelState()
 
+    private var currentSkill = state.currentSkill
+
     override fun onCleared() {
         super.onCleared()
 
-        state.enemyTarget = enemyTarget.value ?: NoEnemy
-        state.stage = stage.value ?: 1
-        state.turn = turn.value ?: 1
-        savedState.set(::savedState.name, state)
+        val saveState = AutoSkillMakerViewModelState(
+            state.skillCommand,
+            enemyTarget.value ?: NoEnemy,
+            stage.value ?: 1,
+            turn.value ?: 1,
+            currentView.value ?: AutoSkillMakerState.Main,
+            currentSkill
+        )
+
+        savedState.set(::savedState.name, saveState)
     }
 
     val adapter = AutoSkillMakerHistoryAdapter(state.skillCommand)
@@ -113,4 +123,31 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
 
     fun prevStage() = _stage.prev()
     fun prevTurn() = _turn.prev()
+
+    val currentView = MutableLiveData<AutoSkillMakerState>(state.currentView)
+
+    fun gotToMain() {
+        currentView.value = AutoSkillMakerState.Main
+    }
+
+    fun onSkill(SkillCode: Char) {
+        currentSkill = SkillCode
+
+        currentView.value = AutoSkillMakerState.Target
+    }
+
+    // Data Binding doesn't seem to work with default parameters or null
+    fun onSkillTarget() = onSkillTarget(null)
+
+    fun onSkillTarget(TargetCommand: Char?) {
+        var cmd = currentSkill.toString()
+
+        if (TargetCommand != null) {
+            cmd += TargetCommand
+        }
+
+        add(cmd)
+
+        gotToMain()
+    }
 }

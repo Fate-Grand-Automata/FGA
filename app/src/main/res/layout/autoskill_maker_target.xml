@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerHistoryViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/autoskill_view_target"
         style="@style/auto_skill_view">
@@ -19,6 +26,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:text="Servant\n\n1"
+            android:onClick="@{(v) -> vm.onSkillTarget('1')}"
             android:backgroundTint="@color/colorServant1"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toTopOf="@+id/no_target_btn"
@@ -31,6 +39,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:text="Servant\n\n2"
+            android:onClick="@{(v) -> vm.onSkillTarget('2')}"
             android:backgroundTint="@color/colorServant2"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@+id/target_3"
@@ -42,6 +51,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:text="Servant\n\n3"
+            android:onClick="@{(v) -> vm.onSkillTarget('3')}"
             android:backgroundTint="@color/colorServant3"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No target"
+            android:onClick="@{(v) -> vm.onSkillTarget()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

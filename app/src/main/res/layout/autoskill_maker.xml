@@ -27,7 +27,8 @@
         <include
             layout="@layout/autoskill_maker_target"
             android:visibility="gone"
-            android:id="@+id/auto_skill_target" />
+            android:id="@+id/auto_skill_target"
+            app:vm="@{vm}" />
 
         <include
             layout="@layout/autoskill_maker_order_change"
