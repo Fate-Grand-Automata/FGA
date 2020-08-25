@@ -79,4 +79,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         2 -> R.id.cards_before_np_2
         else -> R.id.cards_before_np_0
     }
+
+    override fun onPause() {
+        vm.saveState()
+        
+        super.onPause()
+    }
 }

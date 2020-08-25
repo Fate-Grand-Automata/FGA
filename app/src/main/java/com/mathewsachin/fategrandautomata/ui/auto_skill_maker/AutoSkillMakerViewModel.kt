@@ -19,9 +19,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     private var currentSkill = state.currentSkill
 
-    override fun onCleared() {
-        super.onCleared()
-
+    fun saveState() {
         val saveState = AutoSkillMakerSavedState(
             state.skillCommand,
             enemyTarget.value ?: NoEnemy,
@@ -36,6 +34,12 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         )
 
         savedState.set(::savedState.name, saveState)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        saveState()
     }
 
     val adapter = AutoSkillMakerHistoryAdapter(state.skillCommand)
