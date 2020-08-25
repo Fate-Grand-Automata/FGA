@@ -73,13 +73,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             skillCmdVm.currentView.value = AutoSkillMakerState.Atk
         }
 
-        binding.autoSkillAtk.autoskillNextBattleBtn.setOnClickListener {
-            skillCmdVm.nextStage()
-            onGoToNext(",#,")
-        }
-
-        binding.autoSkillAtk.autoskillNextTurnBtn.setOnClickListener { onGoToNext(",") }
-
         binding.autoSkillAtk.autoskillDoneBtn.setOnClickListener {
             skillCmdVm.addNpsToSkillCmd()
 
@@ -265,23 +258,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
             skillCmdVm.gotToMain()
         }
-    }
-
-    private fun onGoToNext(Separator: String) {
-        // Uncheck selected targets
-        skillCmdVm.unSelectTargets()
-
-        skillCmdVm.addNpsToSkillCmd()
-
-        if (skillCmdVm.isEmpty()) {
-            skillCmdVm.add("0")
-        }
-
-        skillCmdVm.add(Separator)
-
-        skillCmdVm.nextTurn()
-
-        skillCmdVm.gotToMain()
     }
 
     private fun getStateView(State: AutoSkillMakerState) = when (State) {

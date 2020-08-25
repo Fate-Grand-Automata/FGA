@@ -120,6 +120,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_play"
             android:text="Next Turn"
+            android:onClick="@{(v) -> vm.goToNextTurn()}"
             app:layout_constraintBottom_toTopOf="@+id/autoskill_done_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
@@ -130,6 +131,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_fast_forward"
             android:text=" Next Wave"
+            android:onClick="@{(v) -> vm.goToNextStage()}"
             app:layout_constraintBottom_toTopOf="@+id/autoskill_next_turn_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />

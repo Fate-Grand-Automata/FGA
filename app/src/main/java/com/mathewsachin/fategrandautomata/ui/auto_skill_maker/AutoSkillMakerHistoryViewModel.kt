@@ -194,4 +194,28 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
 
         clearNpSequence()
     }
+
+    fun onGoToNext(Separator: String) {
+        // Uncheck selected targets
+        unSelectTargets()
+
+        addNpsToSkillCmd()
+
+        if (isEmpty()) {
+            add("0")
+        }
+
+        add(Separator)
+
+        nextTurn()
+
+        gotToMain()
+    }
+
+    fun goToNextTurn() = onGoToNext(",")
+
+    fun goToNextStage() {
+        nextStage()
+        onGoToNext(",#,")
+    }
 }
