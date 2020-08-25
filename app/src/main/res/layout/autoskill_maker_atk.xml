@@ -83,14 +83,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:checkedButton="@{activity.cardsBeforeNpRadio(vm.cardsBeforeNp)}">
 
             <RadioButton
                 android:id="@+id/cards_before_np_0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setCardsBeforeNp(0)}"
-                android:checked="@{vm.cardsBeforeNp == 0}"
                 android:text="No cards before NP" />
 
             <RadioButton
@@ -98,7 +98,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setCardsBeforeNp(1)}"
-                android:checked="@{vm.cardsBeforeNp == 1}"
                 android:text="1 face-card before NP" />
 
             <RadioButton
@@ -106,7 +105,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setCardsBeforeNp(2)}"
-                android:checked="@{vm.cardsBeforeNp == 2}"
                 android:text="2 face-cards before NP" />
         </RadioGroup>
 

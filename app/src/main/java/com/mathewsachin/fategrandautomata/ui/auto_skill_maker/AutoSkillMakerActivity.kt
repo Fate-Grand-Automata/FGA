@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerBinding
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,5 +65,18 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
             .setNegativeButton(android.R.string.no, null)
             .show()
+    }
+
+    fun enemyTargetRadio(target: Int) = when (target) {
+        1 -> R.id.enemy_target_1
+        2 -> R.id.enemy_target_2
+        3 -> R.id.enemy_target_3
+        else -> -1
+    }
+
+    fun cardsBeforeNpRadio(cards: Int) = when (cards) {
+        1 -> R.id.cards_before_np_1
+        2 -> R.id.cards_before_np_2
+        else -> R.id.cards_before_np_0
     }
 }

@@ -35,14 +35,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:checkedButton="@{activity.enemyTargetRadio(vm.enemyTarget)}">
 
             <RadioButton
                 android:id="@+id/enemy_target_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setEnemyTarget(1)}"
-                android:checked="@{vm.enemyTarget == 1}"
                 android:text="Enemy 1" />
 
             <RadioButton
@@ -51,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:onClick="@{(v) -> vm.setEnemyTarget(2)}"
-                android:checked="@{vm.enemyTarget == 2}"
                 android:text="Enemy 2" />
 
             <RadioButton
@@ -59,7 +58,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setEnemyTarget(3)}"
-                android:checked="@{vm.enemyTarget == 3}"
                 android:text="Enemy 3" />
         </RadioGroup>
 
