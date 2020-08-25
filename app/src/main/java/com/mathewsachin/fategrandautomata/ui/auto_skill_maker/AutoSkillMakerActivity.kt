@@ -259,16 +259,16 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        when (skillCmdVm.currentView.value) {
-            AutoSkillMakerState.Main -> {
-                AlertDialog.Builder(this)
-                    .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
-                    .setTitle("Confirm Exit")
-                    .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
-                    .setNegativeButton(android.R.string.no, null)
-                    .show()
-            }
-            else -> skillCmdVm.gotToMain()
+        if (skillCmdVm.canGoBack()) {
+            skillCmdVm.goBack()
+            return
         }
+
+        AlertDialog.Builder(this)
+            .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
+            .setTitle("Confirm Exit")
+            .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
+            .setNegativeButton(android.R.string.no, null)
+            .show()
     }
 }

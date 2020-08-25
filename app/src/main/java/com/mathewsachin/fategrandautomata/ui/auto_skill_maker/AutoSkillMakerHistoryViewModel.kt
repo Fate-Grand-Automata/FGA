@@ -249,4 +249,8 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
 
         gotToMain()
     }
+
+    fun canGoBack() = currentView.value != AutoSkillMakerState.Main
+
+    fun goBack() = gotToMain()
 }
