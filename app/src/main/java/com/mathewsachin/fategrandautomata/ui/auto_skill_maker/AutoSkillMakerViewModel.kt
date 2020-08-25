@@ -1,49 +1,33 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
-import android.os.Parcelable
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import kotlinx.android.parcel.Parcelize
 
-class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
+class AutoSkillMakerViewModel @ViewModelInject constructor(
     @Assisted val savedState: SavedStateHandle
 ) : ViewModel() {
     companion object {
         const val NoEnemy = -1
     }
 
-    @Parcelize
-    data class AutoSkillMakerViewModelState(
-        val skillCommand: MutableList<String> = mutableListOf(),
-        val enemyTarget: Int = -1,
-        val stage: Int = 1,
-        val turn: Int = 1,
-        val currentView: AutoSkillMakerState = AutoSkillMakerState.Main,
-        val currentSkill: Char = '0',
-        val npSequence: List<Char> = emptyList(),
-        val cardsBeforeNp: Int = 0,
-        val xSelectedParty: Int = 1,
-        val xSelectedSub: Int = 1
-    ) : Parcelable
-
     val state = savedState.get(::savedState.name)
-        ?: AutoSkillMakerViewModelState()
+        ?: AutoSkillMakerSavedState()
 
     private var currentSkill = state.currentSkill
 
     override fun onCleared() {
         super.onCleared()
 
-        val saveState = AutoSkillMakerViewModelState(
+        val saveState = AutoSkillMakerSavedState(
             state.skillCommand,
             enemyTarget.value ?: NoEnemy,
             stage.value ?: 1,
             turn.value ?: 1,
-            currentView.value ?: AutoSkillMakerState.Main,
+            currentView.value ?: AutoSkillMakerViewState.Main,
             currentSkill,
             npSequence.value ?: emptyList(),
             cardsBeforeNp.value ?: 0,
@@ -56,15 +40,15 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
 
     val adapter = AutoSkillMakerHistoryAdapter(state.skillCommand)
 
-    fun getSkillCmdString() = state.skillCommand.joinToString("")
+    private fun getSkillCmdString() = state.skillCommand.joinToString("")
 
-    fun add(Cmd: String) {
+    private fun add(Cmd: String) {
         state.skillCommand.add(Cmd)
 
         adapter.notifyItemInserted(state.skillCommand.lastIndex)
     }
 
-    fun undo() {
+    private fun undo() {
         val pos = state.skillCommand.lastIndex
 
         state.skillCommand.removeAt(pos)
@@ -72,9 +56,9 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         adapter.notifyItemRemoved(pos)
     }
 
-    fun isEmpty() = state.skillCommand.isEmpty()
+    private fun isEmpty() = state.skillCommand.isEmpty()
 
-    var last
+    private var last
         get() = state.skillCommand.last()
         set(value) {
             state.skillCommand[state.skillCommand.lastIndex] = value
@@ -82,7 +66,7 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
             adapter.notifyItemChanged(state.skillCommand.lastIndex)
         }
 
-    fun reverseIterate() = state.skillCommand.reversed()
+    private fun reverseIterate() = state.skillCommand.reversed()
 
     private val _enemyTarget = MutableLiveData<Int>(state.enemyTarget)
 
@@ -105,9 +89,7 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         }
     }
 
-    fun unSelectTargets() {
-        setEnemyTarget(AutoSkillMakerHistoryViewModel.NoEnemy)
-    }
+    fun unSelectTargets() = setEnemyTarget(NoEnemy)
 
     private val _cardsBeforeNp = MutableLiveData<Int>(state.cardsBeforeNp)
 
@@ -131,22 +113,22 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
     val stage: LiveData<Int> = _stage
     val turn: LiveData<Int> = _turn
 
-    fun nextStage() = _stage.next()
-    fun nextTurn() = _turn.next()
+    private fun nextStage() = _stage.next()
+    private fun nextTurn() = _turn.next()
 
-    fun prevStage() = _stage.prev()
-    fun prevTurn() = _turn.prev()
+    private fun prevStage() = _stage.prev()
+    private fun prevTurn() = _turn.prev()
 
-    val currentView = MutableLiveData<AutoSkillMakerState>(state.currentView)
+    val currentView = MutableLiveData<AutoSkillMakerViewState>(state.currentView)
 
     fun gotToMain() {
-        currentView.value = AutoSkillMakerState.Main
+        currentView.value = AutoSkillMakerViewState.Main
     }
 
     fun onSkill(SkillCode: Char) {
         currentSkill = SkillCode
 
-        currentView.value = AutoSkillMakerState.Target
+        currentView.value = AutoSkillMakerViewState.Target
     }
 
     // Data Binding doesn't seem to work with default parameters or null
@@ -172,11 +154,17 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         }
     }
 
-    fun clearNpSequence() {
+    private fun clearNpSequence() {
         _npSequence.value = emptyList()
     }
 
-    fun addNpsToSkillCmd() {
+    fun finish(): String {
+        addNpsToSkillCmd()
+
+        return getSkillCmdString()
+    }
+
+    private fun addNpsToSkillCmd() {
         npSequence.value?.let { nps ->
             if (nps.isNotEmpty()) {
                 when (cardsBeforeNp.value) {
@@ -238,7 +226,7 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
     }
 
     fun goToOrderChange() {
-        currentView.value = AutoSkillMakerState.OrderChange
+        currentView.value = AutoSkillMakerViewState.OrderChange
 
         setOrderChangePartyMember(1)
         setOrderChangeSubMember(1)
@@ -250,7 +238,7 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         gotToMain()
     }
 
-    fun canGoBack() = currentView.value != AutoSkillMakerState.Main
+    fun canGoBack() = currentView.value != AutoSkillMakerViewState.Main
 
     fun goBack() = gotToMain()
 
@@ -272,7 +260,7 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
             else -> return
         }
 
-        setEnemyTarget(target)
+        _enemyTarget.value = target
     }
 
     private fun undoStageOrTurn() {
@@ -326,6 +314,6 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
 
         setCardsBeforeNp(0)
 
-        currentView.value = AutoSkillMakerState.Atk
+        currentView.value = AutoSkillMakerViewState.Atk
     }
 }

@@ -11,13 +11,9 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-enum class AutoSkillMakerState {
-    Main, Atk, Target, OrderChange
-}
-
 @AndroidEntryPoint
 class AutoSkillMakerActivity : AppCompatActivity() {
-    val skillCmdVm: AutoSkillMakerHistoryViewModel by viewModels()
+    val vm: AutoSkillMakerViewModel by viewModels()
     val args: AutoSkillMakerActivityArgs by navArgs()
 
     @Inject
@@ -29,18 +25,18 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         val binding = AutoskillMakerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.vm = skillCmdVm
+        binding.vm = vm
         binding.activity = this
         binding.lifecycleOwner = this
 
         val recyclerView = binding.autoSkillMain.autoSkillHistory
-        recyclerView.adapter = skillCmdVm.adapter
+        recyclerView.adapter = vm.adapter
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     fun onUndo() {
-        skillCmdVm.onUndo {
+        vm.onUndo {
             AlertDialog.Builder(this)
                 .setTitle("Confirm NP deletion")
                 .setMessage("If you delete Battle/Turn separator, NPs and cards before NP for that turn will also be deleted. Are you sure?")
@@ -51,16 +47,14 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     fun onDone() {
-        skillCmdVm.addNpsToSkillCmd()
-
         val autoSkillPrefs = prefs.forAutoSkillConfig(args.key)
-        autoSkillPrefs.skillCommand = skillCmdVm.getSkillCmdString()
+        autoSkillPrefs.skillCommand = vm.finish()
         finish()
     }
 
     override fun onBackPressed() {
-        if (skillCmdVm.canGoBack()) {
-            skillCmdVm.goBack()
+        if (vm.canGoBack()) {
+            vm.goBack()
             return
         }
 

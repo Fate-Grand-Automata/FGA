@@ -5,7 +5,7 @@
 
         <variable
             name="vm"
-            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerHistoryViewModel" />
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel" />
 
         <variable
             name="activity"
