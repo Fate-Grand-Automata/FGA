@@ -28,7 +28,9 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
         val currentView: AutoSkillMakerState = AutoSkillMakerState.Main,
         val currentSkill: Char = '0',
         val npSequence: String = "",
-        val cardsBeforeNp: Int = 0
+        val cardsBeforeNp: Int = 0,
+        val xSelectedParty: Int = 1,
+        val xSelectedSub: Int = 1
     ) : Parcelable
 
     val state = savedState.get(::savedState.name)
@@ -48,7 +50,9 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
             currentView.value ?: AutoSkillMakerState.Main,
             currentSkill,
             npSequence,
-            cardsBeforeNp.value ?: 0
+            cardsBeforeNp.value ?: 0,
+            xSelectedParty.value ?: 1,
+            xSelectedSub.value ?: 1
         )
 
         savedState.set(::savedState.name, saveState)
@@ -217,5 +221,32 @@ class AutoSkillMakerHistoryViewModel @ViewModelInject constructor(
     fun goToNextStage() {
         nextStage()
         onGoToNext(",#,")
+    }
+
+    private val _xSelectedParty = MutableLiveData<Int>(state.xSelectedParty)
+    private val _xSelectedSub = MutableLiveData<Int>(state.xSelectedSub)
+
+    val xSelectedParty: LiveData<Int> = _xSelectedParty
+    val xSelectedSub: LiveData<Int> = _xSelectedSub
+
+    fun setOrderChangePartyMember(member: Int) {
+        _xSelectedParty.value = member
+    }
+
+    fun setOrderChangeSubMember(member: Int) {
+        _xSelectedSub.value = member
+    }
+
+    fun goToOrderChange() {
+        currentView.value = AutoSkillMakerState.OrderChange
+
+        setOrderChangePartyMember(1)
+        setOrderChangeSubMember(1)
+    }
+
+    fun orderChangeOk() {
+        add("x${xSelectedParty.value}${xSelectedSub.value}")
+
+        gotToMain()
     }
 }

@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@android:string/ok"
+            android:onClick="@{(v) -> vm.orderChangeOk()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/order_change_cancel" />
@@ -36,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@android:string/cancel"
+            android:onClick="@{(v) -> vm.gotToMain()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/order_change_ok"
             app:layout_constraintStart_toStartOf="parent" />
@@ -46,6 +48,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="25dp"
             android:text="Servant\n\n1"
+            android:onClick="@{(v) -> vm.setOrderChangePartyMember(1)}"
             app:layout_constraintBottom_toTopOf="@+id/order_change_ok"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/order_change_label"
@@ -57,6 +60,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="25dp"
             android:text="Servant\n\n2"
+            android:onClick="@{(v) -> vm.setOrderChangePartyMember(2)}"
             app:layout_constraintStart_toEndOf="@+id/x_party_1"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
@@ -66,6 +70,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="25dp"
             android:text="Servant\n\n3"
+            android:onClick="@{(v) -> vm.setOrderChangePartyMember(3)}"
             app:layout_constraintStart_toEndOf="@+id/x_party_2"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
@@ -75,6 +80,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="25dp"
             android:text="Servant\n\n3"
+            android:onClick="@{(v) -> vm.setOrderChangeSubMember(3)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
@@ -84,6 +90,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="25dp"
             android:text="Servant\n\n2"
+            android:onClick="@{(v) -> vm.setOrderChangeSubMember(2)}"
             app:layout_constraintEnd_toStartOf="@+id/x_sub_3"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 
@@ -93,6 +100,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="25dp"
             android:text="Servant\n\n1"
+            android:onClick="@{(v) -> vm.setOrderChangeSubMember(1)}"
             app:layout_constraintEnd_toStartOf="@+id/x_sub_2"
             app:layout_constraintTop_toTopOf="@+id/x_party_1" />
 

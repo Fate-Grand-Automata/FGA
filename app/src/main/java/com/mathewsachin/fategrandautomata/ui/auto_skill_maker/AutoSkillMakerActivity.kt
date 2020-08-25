@@ -25,13 +25,6 @@ enum class AutoSkillMakerState {
 
 @AndroidEntryPoint
 class AutoSkillMakerActivity : AppCompatActivity() {
-    // Order Change selected members
-    private var xSelectedParty = 1
-    private var xSelectedSub = 1
-
-    private var xParty: Array<Button> = arrayOf()
-    private var xSub: Array<Button> = arrayOf()
-
     val skillCmdVm: AutoSkillMakerHistoryViewModel by viewModels()
     val args: AutoSkillMakerActivityArgs by navArgs()
 
@@ -224,39 +217,23 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }
 
     private fun setupOrderChange() {
-        xParty = arrayOf(
+        val xParty = arrayOf(
             binding.autoSkillOrderChange.xParty1,
             binding.autoSkillOrderChange.xParty2,
             binding.autoSkillOrderChange.xParty3
         )
-        xSub = arrayOf(
+        val xSub = arrayOf(
             binding.autoSkillOrderChange.xSub1,
             binding.autoSkillOrderChange.xSub2,
             binding.autoSkillOrderChange.xSub3
         )
 
-        for (i in 0 until 3) {
-            val member = i + 1
-
-            xParty[i].setOnClickListener { setOrderChangePartyMember(member) }
-            xSub[i].setOnClickListener { setOrderChangeSubMember(member) }
+        skillCmdVm.xSelectedParty.observe(this) {
+            setOrderChangeMember(xParty, it)
         }
 
-        binding.autoSkillMain.masterXBtn.setOnClickListener {
-            skillCmdVm.currentView.value = AutoSkillMakerState.OrderChange
-
-            setOrderChangePartyMember(1)
-            setOrderChangeSubMember(1)
-        }
-
-        binding.autoSkillOrderChange.orderChangeCancel.setOnClickListener {
-            skillCmdVm.gotToMain()
-        }
-
-        binding.autoSkillOrderChange.orderChangeOk.setOnClickListener {
-            skillCmdVm.add("x${xSelectedParty}${xSelectedSub}")
-
-            skillCmdVm.gotToMain()
+        skillCmdVm.xSelectedSub.observe(this) {
+            setOrderChangeMember(xSub, it)
         }
     }
 
@@ -268,7 +245,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     }.root
 
     private fun setOrderChangeMember(Members: Array<Button>, Member: Int) {
-
         for ((i, button) in Members.withIndex()) {
             val selected = i + 1 == Member
 
@@ -280,34 +256,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
                 button.background.clearColorFilter()
             }
         }
-    }
-
-    private fun setOrderChangePartyMember(Member: Int) {
-        xSelectedParty = Member
-
-        setOrderChangeMember(xParty, Member)
-    }
-
-    private fun setOrderChangeSubMember(Member: Int) {
-        xSelectedSub = Member
-
-        setOrderChangeMember(xSub, Member)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putInt(::xSelectedParty.name, xSelectedParty)
-        outState.putInt(::xSelectedSub.name, xSelectedSub)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-        val b = savedInstanceState
-
-        setOrderChangePartyMember(b.getInt(::xSelectedParty.name, 1))
-        setOrderChangeSubMember(b.getInt(::xSelectedSub.name, 1))
     }
 
     override fun onBackPressed() {
