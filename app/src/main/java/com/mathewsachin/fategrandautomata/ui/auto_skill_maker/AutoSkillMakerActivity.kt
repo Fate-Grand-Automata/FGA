@@ -10,15 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
+import androidx.lifecycle.observe
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerBinding
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.autoskill_maker_atk.*
-import kotlinx.android.synthetic.main.autoskill_maker_main.*
-import kotlinx.android.synthetic.main.autoskill_maker_order_change.*
-import kotlinx.android.synthetic.main.autoskill_maker_target.*
 import javax.inject.Inject
 
 private enum class AutoSkillMakerState {
@@ -31,8 +29,6 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     private var npSequence = ""
     private var currentView =
         AutoSkillMakerState.Main
-    private var stage = 1
-    private var turn = 1
     private var currentSkill = '0'
 
     // Order Change selected members
@@ -48,6 +44,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     @Inject
     lateinit var prefs: IPreferences
 
+    lateinit var binding: AutoskillMakerBinding
+
     /**
      * Notifies that an enemy target was selected when undoing, so a new command should not be added
      */
@@ -55,31 +53,32 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.autoskill_maker)
 
-        val recyclerView = auto_skill_history
+        binding = AutoskillMakerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.vm = skillCmdVm
+        binding.lifecycleOwner = this
+
+        val recyclerView = binding.autoSkillMain.autoSkillHistory
         recyclerView.adapter = skillCmdVm.adapter
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        auto_skill_undo_btn.setOnClickListener {
-            onUndo()
-        }
+        binding.autoSkillAtk.np4.setOnClickListener { onNpClick("4") }
+        binding.autoSkillAtk.np5.setOnClickListener { onNpClick("5") }
+        binding.autoSkillAtk.np6.setOnClickListener { onNpClick("6") }
 
-        np_4.setOnClickListener { onNpClick("4") }
-        np_5.setOnClickListener { onNpClick("5") }
-        np_6.setOnClickListener { onNpClick("6") }
-
-        atk_btn.setOnClickListener {
+        binding.autoSkillMain.atkBtn.setOnClickListener {
             // Uncheck NP buttons
-            np_4.isChecked = false
-            np_5.isChecked = false
-            np_6.isChecked = false
+            binding.autoSkillAtk.np4.isChecked = false
+            binding.autoSkillAtk.np5.isChecked = false
+            binding.autoSkillAtk.np6.isChecked = false
 
             npSequence = ""
 
             // Set cards before Np to 0
-            cards_before_np_rad.check(R.id.cards_before_np_0)
+            binding.autoSkillAtk.cardsBeforeNpRad.check(R.id.cards_before_np_0)
 
             changeState(AutoSkillMakerState.Atk)
         }
@@ -87,14 +86,14 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         setupSkills()
         setupTargets()
 
-        autoskill_next_battle_btn.setOnClickListener {
-            ++stage
+        binding.autoSkillAtk.autoskillNextBattleBtn.setOnClickListener {
+            skillCmdVm.nextStage()
             onGoToNext(",#,")
         }
 
-        autoskill_next_turn_btn.setOnClickListener { onGoToNext(",") }
+        binding.autoSkillAtk.autoskillNextTurnBtn.setOnClickListener { onGoToNext(",") }
 
-        autoskill_done_btn.setOnClickListener {
+        binding.autoSkillAtk.autoskillDoneBtn.setOnClickListener {
             addNpsToSkillCmd()
 
             val autoSkillPrefs = prefs.forAutoSkillConfig(args.key)
@@ -102,16 +101,32 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             finish()
         }
 
-        enemy_target_radio.setOnCheckedChangeListener { group, checkedId ->
+        binding.autoSkillMain.enemyTargetRadio.setOnCheckedChangeListener { group, checkedId ->
             val radioButton = group.findViewById<RadioButton>(checkedId)
 
             if (radioButton?.isChecked == true && !wasEnemyTargetUndo) {
-                when (checkedId) {
-                    R.id.enemy_target_1 -> setEnemyTarget(1)
-                    R.id.enemy_target_2 -> setEnemyTarget(2)
-                    R.id.enemy_target_3 -> setEnemyTarget(3)
+                val target = when (checkedId) {
+                    R.id.enemy_target_1 -> 1
+                    R.id.enemy_target_2 -> 2
+                    R.id.enemy_target_3 -> 3
+                    else -> AutoSkillMakerHistoryViewModel.NoEnemy
                 }
+
+                skillCmdVm.setEnemyTarget(target)
             }
+        }
+
+        skillCmdVm.enemyTarget.observe(this) {
+            val targetId = when (it) {
+                1 -> R.id.enemy_target_1
+                2 -> R.id.enemy_target_2
+                3 -> R.id.enemy_target_3
+                else -> null
+            }
+
+            if (targetId != null) {
+                binding.autoSkillMain.enemyTargetRadio.check(targetId)
+            } else binding.autoSkillMain.enemyTargetRadio.clearCheck()
         }
 
         setupOrderChange()
@@ -144,11 +159,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     private fun undoStageOrTurn() {
         // Decrement Battle/Turn count
         if (skillCmdVm.last.contains('#')) {
-            --stage
+            skillCmdVm.prevStage()
         }
 
-        --turn
-        updateStageAndTurn()
+        skillCmdVm.prevTurn()
 
         // Undo the Battle/Turn change
         skillCmdVm.undo()
@@ -173,41 +187,36 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             .firstOrNull { it.startsWith('t') }
 
         if (previousTarget == null) {
-            unSelectTargets()
+            skillCmdVm.unSelectTargets()
             return
         }
 
         val targetRadio = when (previousTarget[1]) {
-            '1' -> enemy_target_1
-            '2' -> enemy_target_2
-            '3' -> enemy_target_3
+            '1' -> binding.autoSkillMain.enemyTarget1
+            '2' -> binding.autoSkillMain.enemyTarget2
+            '3' -> binding.autoSkillMain.enemyTarget3
             else -> return
         }
 
         wasEnemyTargetUndo = true
         try {
-            enemy_target_radio.check(targetRadio.id)
+            binding.autoSkillMain.enemyTargetRadio.check(targetRadio.id)
         } finally {
             wasEnemyTargetUndo = false
         }
     }
 
-    private fun setEnemyTarget(Target: Int) {
-        val targetCmd = "t${Target}"
-
-        skillCmdVm.let {
-            // Merge consecutive target changes
-            if (!it.isEmpty() && it.last[0] == 't') {
-                it.last = targetCmd
-            } else {
-                it.add(targetCmd)
-            }
-        }
-    }
-
     private fun setupOrderChange() {
-        xParty = arrayOf(x_party_1, x_party_2, x_party_3)
-        xSub = arrayOf(x_sub_1, x_sub_2, x_sub_3)
+        xParty = arrayOf(
+            binding.autoSkillOrderChange.xParty1,
+            binding.autoSkillOrderChange.xParty2,
+            binding.autoSkillOrderChange.xParty3
+        )
+        xSub = arrayOf(
+            binding.autoSkillOrderChange.xSub1,
+            binding.autoSkillOrderChange.xSub2,
+            binding.autoSkillOrderChange.xSub3
+        )
 
         for (i in 0 until 3) {
             val member = i + 1
@@ -216,16 +225,16 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             xSub[i].setOnClickListener { setOrderChangeSubMember(member) }
         }
 
-        master_x_btn.setOnClickListener {
+        binding.autoSkillMain.masterXBtn.setOnClickListener {
             changeState(AutoSkillMakerState.OrderChange)
 
             setOrderChangePartyMember(1)
             setOrderChangeSubMember(1)
         }
 
-        order_change_cancel.setOnClickListener { gotToMain() }
+        binding.autoSkillOrderChange.orderChangeCancel.setOnClickListener { gotToMain() }
 
-        order_change_ok.setOnClickListener {
+        binding.autoSkillOrderChange.orderChangeOk.setOnClickListener {
             skillCmdVm.add("x${xSelectedParty}${xSelectedSub}")
 
             gotToMain()
@@ -243,19 +252,19 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             changeState(AutoSkillMakerState.Target)
         }
 
-        skill_a_btn.setOnClickListener { onSkill('a') }
-        skill_b_btn.setOnClickListener { onSkill('b') }
-        skill_c_btn.setOnClickListener { onSkill('c') }
-        skill_d_btn.setOnClickListener { onSkill('d') }
-        skill_e_btn.setOnClickListener { onSkill('e') }
-        skill_f_btn.setOnClickListener { onSkill('f') }
-        skill_g_btn.setOnClickListener { onSkill('g') }
-        skill_h_btn.setOnClickListener { onSkill('h') }
-        skill_i_btn.setOnClickListener { onSkill('i') }
+        binding.autoSkillMain.skillABtn.setOnClickListener { onSkill('a') }
+        binding.autoSkillMain.skillBBtn.setOnClickListener { onSkill('b') }
+        binding.autoSkillMain.skillCBtn.setOnClickListener { onSkill('c') }
+        binding.autoSkillMain.skillDBtn.setOnClickListener { onSkill('d') }
+        binding.autoSkillMain.skillEBtn.setOnClickListener { onSkill('e') }
+        binding.autoSkillMain.skillFBtn.setOnClickListener { onSkill('f') }
+        binding.autoSkillMain.skillGBtn.setOnClickListener { onSkill('g') }
+        binding.autoSkillMain.skillHBtn.setOnClickListener { onSkill('h') }
+        binding.autoSkillMain.skillIBtn.setOnClickListener { onSkill('i') }
 
-        master_j_btn.setOnClickListener { onSkill('j') }
-        master_k_btn.setOnClickListener { onSkill('k') }
-        master_l_btn.setOnClickListener { onSkill('l') }
+        binding.autoSkillMain.masterJBtn.setOnClickListener { onSkill('j') }
+        binding.autoSkillMain.masterKBtn.setOnClickListener { onSkill('k') }
+        binding.autoSkillMain.masterLBtn.setOnClickListener { onSkill('l') }
     }
 
     private fun setupTargets() {
@@ -271,16 +280,16 @@ class AutoSkillMakerActivity : AppCompatActivity() {
             gotToMain()
         }
 
-        no_target_btn.setOnClickListener { onTarget(null) }
-        target_1.setOnClickListener { onTarget('1') }
-        target_2.setOnClickListener { onTarget('2') }
-        target_3.setOnClickListener { onTarget('3') }
+        binding.autoSkillTarget.noTargetBtn.setOnClickListener { onTarget(null) }
+        binding.autoSkillTarget.target1.setOnClickListener { onTarget('1') }
+        binding.autoSkillTarget.target2.setOnClickListener { onTarget('2') }
+        binding.autoSkillTarget.target3.setOnClickListener { onTarget('3') }
     }
 
     private fun addNpsToSkillCmd() {
         skillCmdVm.let {
             if (npSequence.isNotEmpty()) {
-                when (cards_before_np_rad.checkedRadioButtonId) {
+                when (binding.autoSkillAtk.cardsBeforeNpRad.checkedRadioButtonId) {
                     R.id.cards_before_np_1 -> it.add("n1")
                     R.id.cards_before_np_2 -> it.add("n2")
                 }
@@ -300,13 +309,9 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         npSequence = ""
     }
 
-    private fun unSelectTargets() {
-        enemy_target_radio.clearCheck()
-    }
-
     private fun onGoToNext(Separator: String) {
         // Uncheck selected targets
-        unSelectTargets()
+        skillCmdVm.unSelectTargets()
 
         addNpsToSkillCmd()
 
@@ -316,18 +321,17 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
         skillCmdVm.add(Separator)
 
-        ++turn
-        updateStageAndTurn()
+        skillCmdVm.nextTurn()
 
         gotToMain()
     }
 
     private fun getStateView(State: AutoSkillMakerState) = when (State) {
-        AutoSkillMakerState.Atk -> autoskill_view_atk
-        AutoSkillMakerState.Target -> autoskill_view_target
-        AutoSkillMakerState.OrderChange -> autoskill_view_order_change
-        else -> autoskill_view_main
-    }
+        AutoSkillMakerState.Atk -> binding.autoSkillAtk
+        AutoSkillMakerState.Target -> binding.autoSkillTarget
+        AutoSkillMakerState.OrderChange -> binding.autoSkillOrderChange
+        else -> binding.autoSkillMain
+    }.root
 
     private fun changeState(NewState: AutoSkillMakerState) {
         // Hide current if not main
@@ -378,13 +382,9 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
         outState.putString(::npSequence.name, npSequence)
         outState.putInt(::currentView.name, currentView.ordinal)
-        outState.putInt(::stage.name, stage)
-        outState.putInt(::turn.name, turn)
         outState.putInt(::xSelectedParty.name, xSelectedParty)
         outState.putInt(::xSelectedSub.name, xSelectedSub)
         outState.putChar(::currentSkill.name, currentSkill)
-
-        skillCmdVm.saveState()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -395,18 +395,10 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         npSequence = b.getString(::npSequence.name, "")
         changeState(AutoSkillMakerState.values()[b.getInt(::currentView.name, 0)])
 
-        stage = b.getInt(::stage.name, 1)
-        turn = b.getInt(::turn.name, 1)
-
         setOrderChangePartyMember(b.getInt(::xSelectedParty.name, 1))
         setOrderChangeSubMember(b.getInt(::xSelectedSub.name, 1))
 
         currentSkill = b.getChar(::currentSkill.name)
-    }
-
-    private fun updateStageAndTurn() {
-        battle_stage_txt.text = stage.toString()
-        battle_turn_txt.text = turn.toString()
     }
 
     override fun onBackPressed() {
