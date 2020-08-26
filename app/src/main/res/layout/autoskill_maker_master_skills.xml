@@ -29,12 +29,13 @@
             android:id="@+id/master_x_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Order Change"
+            android:text="Order Change / Plug-suit"
             android:onClick="@{(v) -> ui.goToOrderChange()}"
-            android:backgroundTint="@color/colorMasterSkill"
+            android:backgroundTint="@color/colorServant3"
             android:textColor="@android:color/white"
             app:layout_constraintTop_toTopOf="@id/master_j_btn"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/master_j_btn" />
 
         <Button
             android:id="@+id/master_l_btn"

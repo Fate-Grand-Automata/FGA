@@ -24,6 +24,7 @@ class AutoSkillMakerAtkFragment : Fragment() {
             .also {
                 it.vm = viewModel
                 it.ui = this
+                it.lifecycleOwner = viewLifecycleOwner
             }
             .root
 

@@ -26,6 +26,7 @@ class AutoSkillMakerMainFragment : Fragment() {
                 it.vm = viewModel
                 it.ui = this
                 binding = it
+                it.lifecycleOwner = viewLifecycleOwner
             }
             .root
 

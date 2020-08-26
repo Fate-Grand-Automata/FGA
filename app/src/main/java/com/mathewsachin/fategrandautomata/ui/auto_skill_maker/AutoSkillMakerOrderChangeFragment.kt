@@ -17,6 +17,8 @@ class AutoSkillMakerOrderChangeFragment : Fragment() {
         AutoskillMakerOrderChangeBinding.inflate(inflater, container, false)
             .also {
                 it.vm = viewModel
+                it.ui = this
+                it.lifecycleOwner = viewLifecycleOwner
             }
             .root
 
