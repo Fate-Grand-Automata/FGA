@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel" />
@@ -177,6 +179,7 @@
             android:layout_height="wrap_content"
             android:text="Undo"
             android:onClick="@{(v) -> activity.onUndo()}"
+            android:visibility="@{vm.skillCommand.empty ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toEndOf="@id/master_x_btn"
             app:layout_constraintTop_toTopOf="@id/master_x_btn" />
 
