@@ -99,12 +99,10 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     fun unSelectTargets() = setEnemyTarget(NoEnemy)
 
-    private val _cardsBeforeNp = MutableLiveData<Int>(state.cardsBeforeNp)
-
-    val cardsBeforeNp: LiveData<Int> = _cardsBeforeNp
+    val cardsBeforeNp = MutableLiveData<Int>(state.cardsBeforeNp)
 
     fun setCardsBeforeNp(cards: Int) {
-        _cardsBeforeNp.value = cards
+        cardsBeforeNp.value = cards
     }
 
     private val _stage = MutableLiveData<Int>(state.stage)
@@ -294,6 +292,6 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     fun initAtk() {
         clearNpSequence()
 
-        setCardsBeforeNp(0)
+        cardsBeforeNp.value = 0
     }
 }

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerAtkBinding
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,12 +26,6 @@ class AutoSkillMakerAtkFragment : Fragment() {
                 it.lifecycleOwner = viewLifecycleOwner
             }
             .root
-
-    fun cardsBeforeNpRadio(cards: Int) = when (cards) {
-        1 -> R.id.cards_before_np_1
-        2 -> R.id.cards_before_np_2
-        else -> R.id.cards_before_np_0
-    }
 
     fun onDone() {
         val autoSkillPrefs = prefs.forAutoSkillConfig(viewModel.autoSkillItemKey)

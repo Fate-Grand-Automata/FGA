@@ -74,43 +74,53 @@
             app:layout_constraintEnd_toEndOf="@+id/next_btns_barrier"
             app:layout_constraintStart_toEndOf="@+id/np_6" />
 
-        <RadioGroup
-            android:id="@+id/cards_before_np_rad"
+        <TextView
+            android:id="@+id/cards_before_np_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Cards before NP"
             app:layout_constraintStart_toStartOf="parent"
-            android:checkedButton="@{ui.cardsBeforeNpRadio(vm.cardsBeforeNp)}">
+            app:layout_constraintBottom_toTopOf="@id/cards_before_np_0" />
 
-            <RadioButton
-                android:id="@+id/cards_before_np_0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{(v) -> vm.setCardsBeforeNp(0)}"
-                android:text="No cards before NP" />
+        <Button
+            android:id="@+id/cards_before_np_0"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:onClick="@{(v) -> vm.setCardsBeforeNp(0)}"
+            android:backgroundTint="@{vm.cardsBeforeNp == 0 ? @color/colorAccent : @color/button_material}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-            <RadioButton
-                android:id="@+id/cards_before_np_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{(v) -> vm.setCardsBeforeNp(1)}"
-                android:text="1 face-card before NP" />
+        <Button
+            android:id="@+id/cards_before_np_1"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:onClick="@{(v) -> vm.setCardsBeforeNp(1)}"
+            android:backgroundTint="@{vm.cardsBeforeNp == 1 ? @color/colorAccent : @color/button_material}"
+            app:layout_constraintStart_toEndOf="@id/cards_before_np_0"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-            <RadioButton
-                android:id="@+id/cards_before_np_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{(v) -> vm.setCardsBeforeNp(2)}"
-                android:text="2 face-cards before NP" />
-        </RadioGroup>
+        <Button
+            android:id="@+id/cards_before_np_2"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:onClick="@{(v) -> vm.setCardsBeforeNp(2)}"
+            android:backgroundTint="@{vm.cardsBeforeNp == 2 ? @color/colorAccent : @color/button_material}"
+            app:layout_constraintStart_toEndOf="@id/cards_before_np_1"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/next_btns_barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="start"
-            app:constraint_referenced_ids="autoskill_done_btn,autoskill_next_battle_btn,autoskill_next_turn_btn" />
+            app:constraint_referenced_ids="autoskill_done_btn,autoskill_next_battle_btn" />
 
         <Button
             android:id="@+id/autoskill_done_btn"
@@ -124,25 +134,25 @@
             app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
 
         <Button
-            android:id="@+id/autoskill_next_turn_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_play"
-            android:text="Next Turn"
-            android:onClick="@{(v) -> ui.goToNextTurn()}"
-            app:layout_constraintBottom_toTopOf="@+id/autoskill_done_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
-
-        <Button
             android:id="@+id/autoskill_next_battle_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_fast_forward"
             android:text=" Next Wave"
             android:onClick="@{(v) -> ui.goToNextStage()}"
-            app:layout_constraintBottom_toTopOf="@+id/autoskill_next_turn_btn"
+            app:layout_constraintBottom_toTopOf="@+id/autoskill_done_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
+
+        <Button
+            android:id="@+id/autoskill_next_turn_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Next Turn \nin same wave"
+            android:alpha="0.8"
+            android:layout_marginEnd="16dp"
+            android:onClick="@{(v) -> ui.goToNextTurn()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/autoskill_done_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
