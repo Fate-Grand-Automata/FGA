@@ -40,12 +40,12 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         saveState()
     }
 
-    private val _skillCommand = MutableLiveData(state.skillCommand.toList())
+    private val _skillCommand = MutableLiveData(state.skillCommand)
 
     val skillCommand: LiveData<List<String>> = Transformations.map(_skillCommand) { it }
 
     private fun notifySkillCommandUpdate() {
-        _skillCommand.value = state.skillCommand.toList()
+        _skillCommand.value = state.skillCommand
     }
 
     private fun getSkillCmdString() = state.skillCommand.joinToString("")
