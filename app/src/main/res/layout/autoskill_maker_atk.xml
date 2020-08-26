@@ -8,8 +8,8 @@
             type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel" />
 
         <variable
-            name="activity"
-            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity" />
+            name="ui"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerAtkFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -84,7 +84,7 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:checkedButton="@{activity.cardsBeforeNpRadio(vm.cardsBeforeNp)}">
+            android:checkedButton="@{ui.cardsBeforeNpRadio(vm.cardsBeforeNp)}">
 
             <RadioButton
                 android:id="@+id/cards_before_np_0"
@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_check"
             android:text="Done"
-            android:onClick="@{(v) -> activity.onDone()}"
+            android:onClick="@{(v) -> ui.onDone()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_play"
             android:text="Next Turn"
-            android:onClick="@{(v) -> vm.goToNextTurn()}"
+            android:onClick="@{(v) -> ui.goToNextTurn()}"
             app:layout_constraintBottom_toTopOf="@+id/autoskill_done_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />
@@ -143,7 +143,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_fast_forward"
             android:text=" Next Wave"
-            android:onClick="@{(v) -> vm.goToNextStage()}"
+            android:onClick="@{(v) -> ui.goToNextStage()}"
             app:layout_constraintBottom_toTopOf="@+id/autoskill_next_turn_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/next_btns_barrier" />

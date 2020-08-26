@@ -10,8 +10,8 @@
             type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel" />
 
         <variable
-            name="activity"
-            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity" />
+            name="ui"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerMainFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -38,7 +38,7 @@
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:checkedButton="@{activity.enemyTargetRadio(vm.enemyTarget)}">
+            android:checkedButton="@{ui.enemyTargetRadio(vm.enemyTarget)}">
 
             <RadioButton
                 android:id="@+id/enemy_target_1"
@@ -105,7 +105,7 @@
             android:id="@+id/atk_btn"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:onClick="@{(v) -> vm.goToAtk()}"
+            android:onClick="@{(v) -> ui.goToAtk()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -122,66 +122,26 @@
             app:layout_constraintBottom_toBottomOf="@id/atk_btn" />
 
         <Button
-            android:id="@+id/master_l_btn"
-            style="@style/autoskill_servant_skill_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="l"
-            android:onClick="@{(v) -> vm.onSkill('l')}"
+            android:text="Master\n  Skills"
             android:backgroundTint="@color/colorMasterSkill"
             android:textColor="@android:color/white"
+            android:onClick="@{(v) -> ui.goToMasterSkills()}"
             app:layout_constraintBottom_toTopOf="@+id/atk_btn"
             app:layout_constraintEnd_toEndOf="parent" />
-
-        <Button
-            android:id="@+id/master_k_btn"
-            style="@style/autoskill_servant_skill_btn"
-            android:text="k"
-            android:onClick="@{(v) -> vm.onSkill('k')}"
-            android:backgroundTint="@color/colorMasterSkill"
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/master_l_btn"
-            app:layout_constraintEnd_toStartOf="@+id/master_l_btn" />
-
-        <Button
-            android:id="@+id/master_j_btn"
-            style="@style/autoskill_servant_skill_btn"
-            android:text="j"
-            android:onClick="@{(v) -> vm.onSkill('j')}"
-            android:backgroundTint="@color/colorMasterSkill"
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/master_l_btn"
-            app:layout_constraintEnd_toStartOf="@+id/master_k_btn" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="5dp"
-            android:text="Master\n  Skills"
-            app:layout_constraintEnd_toStartOf="@+id/master_j_btn"
-            app:layout_constraintTop_toTopOf="@+id/master_l_btn" />
-
-        <Button
-            android:id="@+id/master_x_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Order Change"
-            android:onClick="@{(v) -> vm.goToOrderChange()}"
-            android:backgroundTint="@color/colorMasterSkill"
-            android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
-            app:layout_constraintBottom_toTopOf="@+id/skill_a_btn"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/auto_skill_undo_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Undo"
-            android:onClick="@{(v) -> activity.onUndo()}"
+            android:onClick="@{(v) -> ui.onUndo()}"
             android:visibility="@{vm.skillCommand.empty ? View.GONE : View.VISIBLE}"
-            app:layout_constraintStart_toEndOf="@id/master_x_btn"
-            app:layout_constraintTop_toTopOf="@id/master_x_btn" />
+            app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/skill_a_btn" />
 
         <TextView
             android:id="@+id/servant_1_name"
@@ -214,7 +174,7 @@
             android:id="@+id/skill_a_btn"
             style="@style/autoskill_servant_skill_btn"
             android:text="a"
-            android:onClick="@{(v) -> vm.onSkill('a')}"
+            android:onClick="@{(v) -> ui.onSkill('a')}"
             android:backgroundTint="@color/colorServant1"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toTopOf="@+id/servant_1_name"
@@ -224,7 +184,7 @@
             android:id="@+id/skill_b_btn"
             style="@style/autoskill_servant_skill_btn"
             android:text="b"
-            android:onClick="@{(v) -> vm.onSkill('b')}"
+            android:onClick="@{(v) -> ui.onSkill('b')}"
             android:backgroundTint="@color/colorServant1"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
@@ -234,7 +194,7 @@
             android:id="@+id/skill_c_btn"
             style="@style/autoskill_servant_skill_btn"
             android:text="c"
-            android:onClick="@{(v) -> vm.onSkill('c')}"
+            android:onClick="@{(v) -> ui.onSkill('c')}"
             android:backgroundTint="@color/colorServant1"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
@@ -244,7 +204,7 @@
             android:id="@+id/skill_d_btn"
             style="@style/autoskill_servant_skill_btn"
             android:text="d"
-            android:onClick="@{(v) -> vm.onSkill('d')}"
+            android:onClick="@{(v) -> ui.onSkill('d')}"
             android:backgroundTint="@color/colorServant2"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
@@ -254,7 +214,7 @@
             android:id="@+id/skill_e_btn"
             style="@style/autoskill_servant_skill_btn"
             android:text="e"
-            android:onClick="@{(v) -> vm.onSkill('e')}"
+            android:onClick="@{(v) -> ui.onSkill('e')}"
             android:backgroundTint="@color/colorServant2"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
@@ -265,7 +225,7 @@
             android:id="@+id/skill_f_btn"
             style="@style/autoskill_servant_skill_btn"
             android:text="f"
-            android:onClick="@{(v) -> vm.onSkill('f')}"
+            android:onClick="@{(v) -> ui.onSkill('f')}"
             android:backgroundTint="@color/colorServant2"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
@@ -275,7 +235,7 @@
             android:id="@+id/skill_g_btn"
             style="@style/autoskill_servant_skill_btn"
             android:text="g"
-            android:onClick="@{(v) -> vm.onSkill('g')}"
+            android:onClick="@{(v) -> ui.onSkill('g')}"
             android:backgroundTint="@color/colorServant3"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
@@ -285,7 +245,7 @@
             android:id="@+id/skill_h_btn"
             style="@style/autoskill_servant_skill_btn"
             android:text="h"
-            android:onClick="@{(v) -> vm.onSkill('h')}"
+            android:onClick="@{(v) -> ui.onSkill('h')}"
             android:backgroundTint="@color/colorServant3"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
@@ -296,7 +256,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:layout_marginEnd="20dp"
             android:text="i"
-            android:onClick="@{(v) -> vm.onSkill('i')}"
+            android:onClick="@{(v) -> ui.onSkill('i')}"
             android:backgroundTint="@color/colorServant3"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"

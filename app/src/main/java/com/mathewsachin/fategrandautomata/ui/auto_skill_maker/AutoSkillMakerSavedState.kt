@@ -9,7 +9,6 @@ data class AutoSkillMakerSavedState(
     val enemyTarget: Int = -1,
     val stage: Int = 1,
     val turn: Int = 1,
-    val currentView: AutoSkillMakerViewState = AutoSkillMakerViewState.Main,
     val currentSkill: Char = '0',
     val npSequence: List<Char> = emptyList(),
     val cardsBeforeNp: Int = 0,
