@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.observe
 import androidx.navigation.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
@@ -20,6 +21,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     @Inject
     lateinit var prefs: IPreferences
 
+    val adapter = AutoSkillMakerHistoryAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,9 +34,13 @@ class AutoSkillMakerActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         val recyclerView = binding.autoSkillMain.autoSkillHistory
-        recyclerView.adapter = vm.adapter
+        recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        vm.skillCommand.observe(this) {
+            adapter.update(it)
+        }
     }
 
     fun onUndo() {
@@ -82,7 +89,7 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     override fun onPause() {
         vm.saveState()
-        
+
         super.onPause()
     }
 }

@@ -19,6 +19,11 @@ android {
         dataBinding true
     }
 
+    testOptions {
+        // This is not a good idea
+        unitTests.returnDefaultValues = true
+    }
+
     defaultConfig {
         applicationId "com.mathewsachin.fategrandautomata"
         minSdkVersion 24
@@ -80,9 +85,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.core:core-ktx:1.3.1'
-    implementation "androidx.activity:activity-ktx:1.2.0-alpha07"
-    implementation "androidx.fragment:fragment-ktx:1.3.0-alpha07"
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation "androidx.activity:activity-ktx:1.2.0-alpha08"
+    implementation "androidx.fragment:fragment-ktx:1.3.0-alpha08"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
     implementation 'com.github.iamareebjamal:opencv-android:4.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13'
@@ -90,6 +95,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation 'com.google.android.material:material:1.2.0'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 
     // ViewModel, LiveData
     def lifecycle_version = "2.2.0"

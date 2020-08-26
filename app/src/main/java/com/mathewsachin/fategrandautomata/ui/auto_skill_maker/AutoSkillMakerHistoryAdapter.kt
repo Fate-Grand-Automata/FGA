@@ -8,10 +8,18 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
 
-class AutoSkillMakerHistoryAdapter(private val Items: List<String>) :
+class AutoSkillMakerHistoryAdapter :
     RecyclerView.Adapter<AutoSkillMakerHistoryAdapter.ViewHolder>() {
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val textView: TextView = ItemView.findViewById(R.id.autoskill_maker_history_textview)
+    }
+
+    private var items: List<String> = emptyList()
+
+    fun update(items: List<String>) {
+        this.items = items
+
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,10 +29,10 @@ class AutoSkillMakerHistoryAdapter(private val Items: List<String>) :
         return ViewHolder(view)
     }
 
-    override fun getItemCount() = Items.size
+    override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val cmd = Items[position]
+        val cmd = items[position]
 
         holder.itemView.let {
             if (it is CardView) {

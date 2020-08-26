@@ -2,10 +2,7 @@ package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 
 class AutoSkillMakerViewModel @ViewModelInject constructor(
     @Assisted val savedState: SavedStateHandle
@@ -42,14 +39,20 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         saveState()
     }
 
-    val adapter = AutoSkillMakerHistoryAdapter(state.skillCommand)
+    private val _skillCommand = MutableLiveData(state.skillCommand)
+
+    val skillCommand: LiveData<List<String>> = Transformations.map(_skillCommand) { it }
+
+    private fun notifySkillCommandUpdate() {
+        _skillCommand.value = state.skillCommand
+    }
 
     private fun getSkillCmdString() = state.skillCommand.joinToString("")
 
     private fun add(Cmd: String) {
         state.skillCommand.add(Cmd)
 
-        adapter.notifyItemInserted(state.skillCommand.lastIndex)
+        notifySkillCommandUpdate()
     }
 
     private fun undo() {
@@ -57,7 +60,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
         state.skillCommand.removeAt(pos)
 
-        adapter.notifyItemRemoved(pos)
+        notifySkillCommandUpdate()
     }
 
     private fun isEmpty() = state.skillCommand.isEmpty()
@@ -67,7 +70,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         set(value) {
             state.skillCommand[state.skillCommand.lastIndex] = value
 
-            adapter.notifyItemChanged(state.skillCommand.lastIndex)
+            notifySkillCommandUpdate()
         }
 
     private fun reverseIterate() = state.skillCommand.reversed()
