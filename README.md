@@ -141,3 +141,4 @@ Thanks for the rainbow apples.
 | Ji Hoon Kim              | $ 10.00 USD  |
 | Nathan Farrar            | $ 5.00 USD   |
 | Federico Rapetti         | € 3.00 EUR   |
+| William Lu               | $ 20.00 USD  |
