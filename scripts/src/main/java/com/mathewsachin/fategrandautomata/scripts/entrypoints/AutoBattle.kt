@@ -129,24 +129,18 @@ open class AutoBattle @Inject constructor(
      * too few clicks.
      */
     private fun isInResult(): Boolean {
-        if (images.result in Game.resultScreenRegion
-            || images.bond in Game.resultBondRegion
-            // We're assuming CN and TW use the same Master/Mystic Code Level up image
-            || images.masterLvlUp in Game.resultMasterLvlUpRegion
-        ) {
-            return true
+        val cases = sequenceOf(
+            images.result to Game.resultScreenRegion,
+            images.bond to Game.resultBondRegion,
+            images.masterLvlUp to Game.resultMasterLvlUpRegion,
+            images.masterExp to Game.resultMasterExpRegion,
+            images.matRewards to Game.resultMatRewardsRegion,
+            images.bond10Reward to Game.resultCeRewardRegion
+        )
+
+        return cases.any { (image, region) ->
+            image in region
         }
-
-        val gameServer = prefs.gameServer
-
-        // We don't have TW images for these
-        if (gameServer != GameServerEnum.Tw) {
-            return images.masterExp in Game.resultMasterExpRegion
-                    || images.matRewards in Game.resultMatRewardsRegion
-        }
-
-        // Not in any result screen
-        return false
     }
 
     /**
@@ -238,15 +232,13 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isCeReward() =
-        images.bond10Reward in Game.resultCeRewardRegion
+        images.bond10Reward in Game.resultCeRewardDetailsRegion
 
     private fun ceReward() {
         if (prefs.stopOnCEGet) {
             throw ScriptExitException("CE GET!")
         }
 
-        Game.resultCeRewardCloseClick.click()
-        1.seconds.wait()
         Game.resultCeRewardCloseClick.click()
     }
 
