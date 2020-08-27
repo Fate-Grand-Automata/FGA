@@ -1,32 +1,21 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.util.appComponent
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FineTuneSettingsFragment : PreferenceFragmentCompat() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        context.appComponent.inject(this)
-    }
-
-    val vm: FineTuneSettingsViewModel by viewModels { viewModelFactory }
+    val vm: FineTuneSettingsViewModel by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.fine_tune_preferences, rootKey)

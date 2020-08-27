@@ -10,10 +10,8 @@ import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
-import com.mathewsachin.fategrandautomata.dagger.script.ScreenshotModule
-import com.mathewsachin.fategrandautomata.dagger.script.ScriptComponent
-import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
-import com.mathewsachin.fategrandautomata.dagger.service.ServiceScope
+import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
+import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
@@ -21,13 +19,15 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
+import dagger.hilt.EntryPoints
+import dagger.hilt.android.scopes.ServiceScoped
 import mu.KotlinLogging
 import javax.inject.Inject
 import kotlin.time.seconds
 
 private val logger = KotlinLogging.logger {}
 
-@ServiceScope
+@ServiceScoped
 class ScriptManager @Inject constructor(
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
@@ -59,12 +59,12 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private fun getEntryPoint(component: ScriptComponent): EntryPoint =
+    private fun getEntryPoint(entryPoint: ScriptEntryPoint): EntryPoint =
         when (preferences.scriptMode) {
-            ScriptModeEnum.Lottery -> component.lottery()
-            ScriptModeEnum.FriendGacha -> component.friendGacha()
-            ScriptModeEnum.SupportImageMaker -> component.supportImageMaker()
-            else -> component.battle()
+            ScriptModeEnum.Lottery -> entryPoint.lottery()
+            ScriptModeEnum.FriendGacha -> entryPoint.friendGacha()
+            ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
+            else -> entryPoint.battle()
         }
 
     private val handler by lazy {
@@ -100,22 +100,19 @@ class ScriptManager @Inject constructor(
     fun startScript(
         context: Context,
         screenshotService: IScreenshotService,
-        component: ScriptRunnerServiceComponent
+        componentBuilder: ScriptComponentBuilder
     ) {
         if (scriptState is ScriptState.Started) {
             return
         }
 
-        val scriptComponent = component
-            .scriptComponent()
-            .screenshotModule(
-                ScreenshotModule(
-                    screenshotService
-                )
-            )
+        val scriptComponent = componentBuilder
+            .screenshotService(screenshotService)
             .build()
 
-        getEntryPoint(scriptComponent).apply {
+        val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
+
+        getEntryPoint(hiltEntryPoint).apply {
             if (this is AutoBattle) {
                 autoSkillPicker(context) {
                     runEntryPoint(this, screenshotService)

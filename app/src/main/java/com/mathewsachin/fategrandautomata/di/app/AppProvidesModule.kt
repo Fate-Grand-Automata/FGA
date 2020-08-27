@@ -1,6 +1,5 @@
-package com.mathewsachin.fategrandautomata.dagger.app
+package com.mathewsachin.fategrandautomata.di.app
 
-import android.app.Application
 import android.content.Context
 import android.media.projection.MediaProjectionManager
 import android.os.Environment
@@ -11,18 +10,18 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefMaker
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Singleton
 
 @Module
-class AppContextModule(val app: Application) {
+@InstallIn(ApplicationComponent::class)
+class AppProvidesModule {
     @Singleton
     @Provides
-    fun provideContext(): Context = app
-
-    @Singleton
-    @Provides
-    fun provideStorageDirs(context: Context): StorageDirs =
+    fun provideStorageDirs(@ApplicationContext context: Context): StorageDirs =
         StorageDirs(
             File(
                 Environment.getExternalStorageDirectory(),
@@ -33,12 +32,12 @@ class AppContextModule(val app: Application) {
 
     @Singleton
     @Provides
-    fun provideMediaProjectionManager(context: Context) =
+    fun provideMediaProjectionManager(@ApplicationContext context: Context) =
         context.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
     @Singleton
     @Provides
-    fun provideWindowManager(context: Context) =
+    fun provideWindowManager(@ApplicationContext context: Context) =
         context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
     @Singleton
@@ -47,7 +46,7 @@ class AppContextModule(val app: Application) {
 
     @Singleton
     @Provides
-    fun providePrefMaker(context: Context) =
+    fun providePrefMaker(@ApplicationContext context: Context) =
         PrefMaker(
             PreferenceManager.getDefaultSharedPreferences(context),
             context

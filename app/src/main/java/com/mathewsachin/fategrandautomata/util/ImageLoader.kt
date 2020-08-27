@@ -8,6 +8,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.ScriptExitException
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class ImageLoader @Inject constructor(
     val storageDirs: StorageDirs,
     val prefs: IPreferences,
-    val context: Context
+    @ApplicationContext val context: Context
 ) : IImageLoader {
     private fun fileLoader(FileName: String): IPattern? {
         val filepath = File(storageDirs.supportImgFolder, FileName)

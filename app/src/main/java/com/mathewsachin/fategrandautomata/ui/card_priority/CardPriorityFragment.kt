@@ -1,8 +1,10 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
-import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -11,26 +13,24 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.util.appComponent
+import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
+import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
+import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.CardScore
+import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.card_priority.*
 import javax.inject.Inject
 
-class CardPriorityFragment : Fragment() {
+@AndroidEntryPoint
+class CardPriorityFragment : Fragment(R.layout.card_priority) {
+    private lateinit var cardScores: MutableList<MutableList<CardScore>>
+    private lateinit var autoSkillPref: IAutoSkillPreferences
+
     val args: CardPriorityFragmentArgs by navArgs()
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        context.appComponent.inject(this)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.card_priority, container, false)
-
-    val vm: CardPriorityViewModel by viewModels { viewModelFactory }
+    val vm: CardPriorityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

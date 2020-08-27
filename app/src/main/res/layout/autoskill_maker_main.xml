@@ -1,271 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/autoskill_view_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/auto_skill_history"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/battle_stage_label"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"/>
+    <data>
 
-    <RadioGroup
-        android:id="@+id/enemy_target_radio"
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel" />
+
+        <variable
+            name="ui"
+            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerMainFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/autoskill_view_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-        <RadioButton
-            android:id="@+id/enemy_target_1"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/auto_skill_history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/battle_stage_label"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal" />
+
+        <RadioGroup
+            android:id="@+id/enemy_target_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:checkedButton="@{ui.enemyTargetRadio(vm.enemyTarget)}">
+
+            <RadioButton
+                android:id="@+id/enemy_target_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setEnemyTarget(1)}"
+                android:text="Enemy 1" />
+
+            <RadioButton
+                android:id="@+id/enemy_target_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:onClick="@{(v) -> vm.setEnemyTarget(2)}"
+                android:text="Enemy 2" />
+
+            <RadioButton
+                android:id="@+id/enemy_target_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setEnemyTarget(3)}"
+                android:text="Enemy 3" />
+        </RadioGroup>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/battle_status_barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enemy 1" />
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="battle_stage_txt,battle_turn_txt" />
 
-        <RadioButton
-            android:id="@+id/enemy_target_2"
+        <TextView
+            android:id="@+id/battle_stage_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:text="Enemy 2" />
+            android:text="@{vm.stage.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/enemy_target_3"
+        <TextView
+            android:id="@+id/battle_stage_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enemy 3" />
-    </RadioGroup>
+            android:text="Battle: "
+            app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
+            app:layout_constraintTop_toTopOf="@+id/battle_stage_txt" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/battle_status_barrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="start"
-        app:constraint_referenced_ids="battle_stage_txt,battle_turn_txt" />
+        <TextView
+            android:id="@+id/battle_turn_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{vm.turn.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/battle_stage_txt" />
 
-    <TextView
-        android:id="@+id/battle_stage_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turn: "
+            app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
+            app:layout_constraintTop_toTopOf="@+id/battle_turn_txt" />
 
-    <TextView
-        android:id="@+id/battle_stage_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Battle: "
-        app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
-        app:layout_constraintTop_toTopOf="@+id/battle_stage_txt" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/atk_btn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="@{(v) -> ui.goToAtk()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/battle_turn_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/battle_stage_txt" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attack"
+            android:textAllCaps="true"
+            android:elevation="100dp"
+            android:textColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="@id/atk_btn"
+            app:layout_constraintStart_toStartOf="@id/atk_btn"
+            app:layout_constraintEnd_toEndOf="@id/atk_btn"
+            app:layout_constraintBottom_toBottomOf="@id/atk_btn" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Turn: "
-        app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
-        app:layout_constraintTop_toTopOf="@+id/battle_turn_txt" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Master\n  Skills"
+            android:backgroundTint="@color/colorMasterSkill"
+            android:textColor="@android:color/white"
+            android:onClick="@{(v) -> ui.goToMasterSkills()}"
+            app:layout_constraintBottom_toTopOf="@+id/atk_btn"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/atk_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <Button
+            android:id="@+id/auto_skill_undo_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Undo"
+            android:onClick="@{(v) -> ui.onUndo()}"
+            android:visibility="@{vm.skillCommand.empty ? View.GONE : View.VISIBLE}"
+            app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/skill_a_btn" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Attack"
-        android:textAllCaps="true"
-        android:elevation="100dp"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toTopOf="@id/atk_btn"
-        app:layout_constraintStart_toStartOf="@id/atk_btn"
-        app:layout_constraintEnd_toEndOf="@id/atk_btn"
-        app:layout_constraintBottom_toBottomOf="@id/atk_btn"/>
+        <TextView
+            android:id="@+id/servant_1_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Servant 1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/skill_c_btn"
+            app:layout_constraintStart_toStartOf="@+id/skill_a_btn" />
 
-    <Button
-        android:id="@+id/master_l_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:layout_marginBottom="20dp"
-        android:text="l"
-        android:backgroundTint="@color/colorMasterSkill"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/atk_btn"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/servant_2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Servant 2"
+            app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
+            app:layout_constraintEnd_toEndOf="@+id/skill_f_btn"
+            app:layout_constraintStart_toStartOf="@+id/skill_d_btn" />
 
-    <Button
-        android:id="@+id/master_k_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="k"
-        android:backgroundTint="@color/colorMasterSkill"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/master_l_btn"
-        app:layout_constraintEnd_toStartOf="@+id/master_l_btn" />
+        <TextView
+            android:id="@+id/servant_3_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Servant 3"
+            app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
+            app:layout_constraintEnd_toEndOf="@+id/skill_i_btn"
+            app:layout_constraintStart_toStartOf="@+id/skill_g_btn" />
 
-    <Button
-        android:id="@+id/master_j_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="j"
-        android:backgroundTint="@color/colorMasterSkill"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/master_l_btn"
-        app:layout_constraintEnd_toStartOf="@+id/master_k_btn" />
+        <Button
+            android:id="@+id/skill_a_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:text="a"
+            android:onClick="@{(v) -> ui.onSkill('a')}"
+            android:backgroundTint="@color/colorServant1"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@+id/servant_1_name"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="5dp"
-        android:text="Master\n  Skills"
-        app:layout_constraintEnd_toStartOf="@+id/master_j_btn"
-        app:layout_constraintTop_toTopOf="@+id/master_l_btn" />
+        <Button
+            android:id="@+id/skill_b_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:text="b"
+            android:onClick="@{(v) -> ui.onSkill('b')}"
+            android:backgroundTint="@color/colorServant1"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintStart_toEndOf="@+id/skill_a_btn" />
 
-    <Button
-        android:id="@+id/master_x_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Order Change"
-        android:backgroundTint="@color/colorMasterSkill"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
-        app:layout_constraintBottom_toTopOf="@+id/skill_a_btn"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/skill_c_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:text="c"
+            android:onClick="@{(v) -> ui.onSkill('c')}"
+            android:backgroundTint="@color/colorServant1"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintStart_toEndOf="@+id/skill_b_btn" />
 
-    <Button
-        android:id="@+id/auto_skill_undo_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Undo"
-        app:layout_constraintStart_toEndOf="@id/master_x_btn"
-        app:layout_constraintTop_toTopOf="@id/master_x_btn"/>
+        <Button
+            android:id="@+id/skill_d_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:text="d"
+            android:onClick="@{(v) -> ui.onSkill('d')}"
+            android:backgroundTint="@color/colorServant2"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/skill_e_btn" />
 
-    <TextView
-        android:id="@+id/servant_1_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Servant 1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/skill_c_btn"
-        app:layout_constraintStart_toStartOf="@+id/skill_a_btn" />
+        <Button
+            android:id="@+id/skill_e_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:text="e"
+            android:onClick="@{(v) -> ui.onSkill('e')}"
+            android:backgroundTint="@color/colorServant2"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/skill_g_btn"
+            app:layout_constraintStart_toEndOf="@+id/skill_c_btn" />
 
-    <TextView
-        android:id="@+id/servant_2_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Servant 2"
-        app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
-        app:layout_constraintEnd_toEndOf="@+id/skill_f_btn"
-        app:layout_constraintStart_toStartOf="@+id/skill_d_btn" />
+        <Button
+            android:id="@+id/skill_f_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:text="f"
+            android:onClick="@{(v) -> ui.onSkill('f')}"
+            android:backgroundTint="@color/colorServant2"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintStart_toEndOf="@+id/skill_e_btn" />
 
-    <TextView
-        android:id="@+id/servant_3_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Servant 3"
-        app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
-        app:layout_constraintEnd_toEndOf="@+id/skill_i_btn"
-        app:layout_constraintStart_toStartOf="@+id/skill_g_btn" />
+        <Button
+            android:id="@+id/skill_g_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:text="g"
+            android:onClick="@{(v) -> ui.onSkill('g')}"
+            android:backgroundTint="@color/colorServant3"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/skill_h_btn" />
 
-    <Button
-        android:id="@+id/skill_a_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="a"
-        android:backgroundTint="@color/colorServant1"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/servant_1_name"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/skill_h_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:text="h"
+            android:onClick="@{(v) -> ui.onSkill('h')}"
+            android:backgroundTint="@color/colorServant3"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/skill_i_btn" />
 
-    <Button
-        android:id="@+id/skill_b_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="b"
-        android:backgroundTint="@color/colorServant1"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintStart_toEndOf="@+id/skill_a_btn" />
-
-    <Button
-        android:id="@+id/skill_c_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="c"
-        android:backgroundTint="@color/colorServant1"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintStart_toEndOf="@+id/skill_b_btn" />
-
-    <Button
-        android:id="@+id/skill_d_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="d"
-        android:backgroundTint="@color/colorServant2"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_e_btn" />
-
-    <Button
-        android:id="@+id/skill_e_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="e"
-        android:backgroundTint="@color/colorServant2"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_g_btn"
-        app:layout_constraintStart_toEndOf="@+id/skill_c_btn" />
-
-    <Button
-        android:id="@+id/skill_f_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="f"
-        android:backgroundTint="@color/colorServant2"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintStart_toEndOf="@+id/skill_e_btn" />
-
-    <Button
-        android:id="@+id/skill_g_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="g"
-        android:backgroundTint="@color/colorServant3"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_h_btn" />
-
-    <Button
-        android:id="@+id/skill_h_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:text="h"
-        android:backgroundTint="@color/colorServant3"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/skill_i_btn" />
-
-    <Button
-        android:id="@+id/skill_i_btn"
-        style="@style/autoskill_servant_skill_btn"
-        android:layout_marginEnd="20dp"
-        android:text="i"
-        android:backgroundTint="@color/colorServant3"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
-        app:layout_constraintEnd_toStartOf="@+id/atk_btn" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/skill_i_btn"
+            style="@style/autoskill_servant_skill_btn"
+            android:layout_marginEnd="20dp"
+            android:text="i"
+            android:onClick="@{(v) -> ui.onSkill('i')}"
+            android:backgroundTint="@color/colorServant3"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/atk_btn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

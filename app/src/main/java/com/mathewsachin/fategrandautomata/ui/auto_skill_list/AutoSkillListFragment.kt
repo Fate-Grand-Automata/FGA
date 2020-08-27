@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.auto_skill_list
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -10,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -20,7 +18,7 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.util.appComponent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.autoskill_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,18 +32,10 @@ import javax.inject.Inject
 
 private val logger = KotlinLogging.logger {}
 
-class AutoSkillListFragment : Fragment() {
+@AndroidEntryPoint
+class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
     @Inject
     lateinit var preferences: IPreferences
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        context.appComponent.inject(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +43,7 @@ class AutoSkillListFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        inflater.inflate(R.layout.autoskill_list, container, false)
-
-    val vm: AutoSkillListViewModel by activityViewModels { viewModelFactory }
+    val vm: AutoSkillListViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

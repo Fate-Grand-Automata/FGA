@@ -9,10 +9,6 @@ interface IAutoSkillPreferences {
     val party: Int
     val support: ISupportPreferences
 
-    val skill1Max: Boolean
-    val skill2Max: Boolean
-    val skill3Max: Boolean
-
     fun export(): Map<String, *>
 
     fun import(map: Map<String, *>)

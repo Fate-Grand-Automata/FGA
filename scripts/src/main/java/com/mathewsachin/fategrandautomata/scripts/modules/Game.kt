@@ -50,6 +50,7 @@ class Game @Inject constructor(val prefs: IPreferences) {
     val supportSwipeEndClick = Location(5, 660)
     val supportFriendsRegion = Region(448, 332, 1210, 1091)
 
+    val supportMaxAscendedRegion = Region(376, 0, 16, 120)
     val supportLimitBreakRegion = Region(376, 0, 16, 90)
     val supportFriendRegion = Region(
         2234,

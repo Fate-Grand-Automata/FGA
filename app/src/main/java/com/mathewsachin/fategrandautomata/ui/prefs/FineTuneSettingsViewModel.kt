@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import javax.inject.Inject
 
-class FineTuneSettingsViewModel @Inject constructor(
+class FineTuneSettingsViewModel @ViewModelInject constructor(
     val prefs: PrefsCore
 ) : ViewModel() {
     val fineTunePrefs = listOf(

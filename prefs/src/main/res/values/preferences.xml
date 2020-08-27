@@ -28,6 +28,7 @@
     <string name="pref_support_pref_ce">support_pref_ce_list</string>
     <string name="pref_support_pref_ce_mlb">support_pref_ce_mlb</string>
 
+    <string name="pref_support_max_ascended">support_max_ascended</string>
     <string name="pref_support_skill_max_1">support_skill_max_1</string>
     <string name="pref_support_skill_max_2">support_skill_max_2</string>
     <string name="pref_support_skill_max_3">support_skill_max_3</string>

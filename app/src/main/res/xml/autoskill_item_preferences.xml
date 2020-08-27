@@ -47,7 +47,7 @@
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_mode"
             app:title="Selection Mode"
-            app:useSimpleSummaryProvider="true"/>
+            app:useSimpleSummaryProvider="true" />
 
         <ListPreference
             app:defaultValue="Manual"
@@ -56,13 +56,19 @@
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_fallback"
             app:title="Fallback Selection Mode"
-            app:useSimpleSummaryProvider="true"/>
+            app:useSimpleSummaryProvider="true" />
 
         <MultiSelectListPreference
             app:icon="@drawable/ic_crown"
             app:key="@string/pref_support_pref_servant"
             app:title="Preferred Servants"
-            app:allowDividerAbove="true"/>
+            app:allowDividerAbove="true" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_star"
+            app:key="@string/pref_support_max_ascended"
+            app:title="Max-ascended" />
 
         <Preference
             app:icon="@drawable/ic_wand"
@@ -85,7 +91,7 @@
             app:icon="@drawable/ic_friend"
             app:key="@string/pref_support_friend_names"
             app:title="Friend names"
-            app:allowDividerAbove="true"/>
+            app:allowDividerAbove="true" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"

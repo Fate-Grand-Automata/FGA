@@ -6,8 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import java.net.URL
+import javax.inject.Inject
 
-class UpdateChecker {
+class UpdateChecker @Inject constructor() {
     val githubApiReleasesLink =
         "https://api.github.com/repos/MathewSachin/Fate-Grand-Automata/releases"
 
