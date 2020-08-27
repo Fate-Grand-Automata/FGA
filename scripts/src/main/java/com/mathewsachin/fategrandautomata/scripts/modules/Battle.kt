@@ -53,13 +53,13 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         hasClickedAttack = false
     }
 
-    fun isIdle() = images.battle in game.battleScreenRegion
+    fun isIdle() = images.battle in Game.battleScreenRegion
 
     fun clickAttack() {
-        game.battleAttackClick.click()
+        Game.battleAttackClick.click()
 
         // Wait for Attack button to disappear
-        game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
+        Game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
 
         // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
         1.5.seconds.wait()
@@ -81,7 +81,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         0.5.seconds.wait()
 
-        game.battleExtraInfoWindowCloseClick.click()
+        Game.battleExtraInfoWindowCloseClick.click()
 
         hasChosenTarget = true
     }

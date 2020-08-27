@@ -80,8 +80,8 @@ class Scaling @Inject constructor(val gameAreaManager: GameAreaManager, val game
 
     fun init() {
         applyAspectRatioFix(
-            game.scriptSize,
-            game.imageSize
+            Game.scriptSize,
+            Game.imageSize
         )
     }
 }

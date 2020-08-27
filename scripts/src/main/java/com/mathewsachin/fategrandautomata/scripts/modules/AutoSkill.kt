@@ -58,16 +58,16 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         val img = images.battle
 
         // slow devices need this. do not remove.
-        game.battleScreenRegion.waitVanish(img, prefs.skillDelay)
+        Game.battleScreenRegion.waitVanish(img, prefs.skillDelay)
 
-        game.battleScreenRegion.exists(img, Timeout)
+        Game.battleScreenRegion.exists(img, Timeout)
     }
 
     private fun castSkill(skill: Skill) {
         skill.clickLocation.click()
 
         if (prefs.skillConfirmation) {
-            game.battleSkillOkClick.click()
+            Game.battleSkillOkClick.click()
         }
 
         waitForAnimationToFinish()
@@ -79,7 +79,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         0.5.seconds.wait()
 
         // Exit any extra menu
-        game.battleExtraInfoWindowCloseClick.click()
+        Game.battleExtraInfoWindowCloseClick.click()
 
         waitForAnimationToFinish()
     }
@@ -96,7 +96,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
     }
 
     private fun openMasterSkillMenu() {
-        game.battleMasterSkillOpenClick.click()
+        Game.battleMasterSkillOpenClick.click()
 
         0.5.seconds.wait()
     }
@@ -119,7 +119,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
             .clickLocation.click()
 
         if (prefs.skillConfirmation) {
-            game.battleSkillOkClick.click()
+            Game.battleSkillOkClick.click()
         }
 
         0.3.seconds.wait()
@@ -138,7 +138,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
         0.3.seconds.wait()
 
-        game.battleOrderChangeOkClick.click()
+        Game.battleOrderChangeOkClick.click()
 
         // Extra wait to allow order change dialog to close
         1.seconds.wait()
@@ -159,7 +159,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         0.5.seconds.wait()
 
         // Exit any extra menu
-        game.battleExtraInfoWindowCloseClick.click()
+        Game.battleExtraInfoWindowCloseClick.click()
 
         changeArray(defaultFunctionArray)
     }

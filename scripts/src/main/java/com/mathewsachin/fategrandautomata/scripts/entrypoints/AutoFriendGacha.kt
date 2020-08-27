@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
 import kotlin.time.seconds
@@ -48,7 +49,7 @@ class AutoFriendGacha @Inject constructor(
         val startRightSwipeLoc = Location(300, 500)
         val endRightSwipeLoc = Location(2000, 500)
 
-        while (images.friendSummon !in game.friendPtSummonCheck) {
+        while (images.friendSummon !in Game.friendPtSummonCheck) {
             swipe(startRightSwipeLoc, endRightSwipeLoc)
             1.0.seconds.wait()
         }

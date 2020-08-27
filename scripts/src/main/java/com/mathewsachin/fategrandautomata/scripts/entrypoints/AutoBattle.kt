@@ -19,7 +19,7 @@ import kotlin.time.seconds
  * Checks if Support Selection menu is up
  */
 fun IFGAutomataApi.isInSupport(): Boolean {
-    return game.supportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
+    return Game.supportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
 }
 
 /**
@@ -101,7 +101,7 @@ open class AutoBattle @Inject constructor(
     /**
      *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
      */
-    private fun isInMenu() = images.menu in game.menuScreenRegion
+    private fun isInMenu() = images.menu in Game.menuScreenRegion
 
     /**
      * Resets the battle state, clicks on the quest and refills the AP if needed.
@@ -112,7 +112,7 @@ open class AutoBattle @Inject constructor(
         showRefillsAndRunsMessage()
 
         // Click uppermost quest
-        game.menuSelectQuestClick.click()
+        Game.menuSelectQuestClick.click()
 
         afterSelectingQuest()
     }
@@ -129,10 +129,10 @@ open class AutoBattle @Inject constructor(
      * too few clicks.
      */
     private fun isInResult(): Boolean {
-        if (images.result in game.resultScreenRegion
-            || images.bond in game.resultBondRegion
+        if (images.result in Game.resultScreenRegion
+            || images.bond in Game.resultBondRegion
             // We're assuming CN and TW use the same Master/Mystic Code Level up image
-            || images.masterLvlUp in game.resultMasterLvlUpRegion
+            || images.masterLvlUp in Game.resultMasterLvlUpRegion
         ) {
             return true
         }
@@ -141,8 +141,8 @@ open class AutoBattle @Inject constructor(
 
         // We don't have TW images for these
         if (gameServer != GameServerEnum.Tw) {
-            return images.masterExp in game.resultMasterExpRegion
-                    || images.matRewards in game.resultMatRewardsRegion
+            return images.masterExp in Game.resultMasterExpRegion
+                    || images.matRewards in Game.resultMatRewardsRegion
         }
 
         // Not in any result screen
@@ -153,21 +153,21 @@ open class AutoBattle @Inject constructor(
      * Clicks through the reward screens.
      */
     private fun result() {
-        if (prefs.stopOnCEDrop && images.ceDrop in game.resultCeDropRegion) {
+        if (prefs.stopOnCEDrop && images.ceDrop in Game.resultCeDropRegion) {
             throw ScriptExitException("CE Dropped!")
         }
 
         if (prefs.screenshotDrops) {
             resultForDrops()
-        } else game.resultNextClick.click(20)
+        } else Game.resultNextClick.click(20)
     }
 
     private fun resultForDrops() {
-        if (images.matRewards in game.resultMatRewardsRegion) {
+        if (images.matRewards in Game.resultMatRewardsRegion) {
             screenshotDrops()
         }
 
-        game.resultNextClick.click()
+        Game.resultNextClick.click()
     }
 
     private fun screenshotDrops() {
@@ -200,7 +200,7 @@ open class AutoBattle @Inject constructor(
             }
 
             // check if we need to scroll to see more drops
-            if (images.dropScrollbar in game.resultDropScrollbarRegion) {
+            if (images.dropScrollbar in Game.resultDropScrollbarRegion) {
                 // scroll to end
                 Location(2306, 1032).click()
             } else break
@@ -210,7 +210,7 @@ open class AutoBattle @Inject constructor(
     private fun isRepeatScreen() =
         when (prefs.gameServer) {
             GameServerEnum.En, GameServerEnum.Jp, GameServerEnum.Cn -> {
-                images.confirm in game.continueRegion
+                images.confirm in Game.continueRegion
             }
             else -> false
         }
@@ -221,7 +221,7 @@ open class AutoBattle @Inject constructor(
 
         // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
         battle.resetState()
-        game.continueClick.click()
+        Game.continueClick.click()
 
         showRefillsAndRunsMessage()
 
@@ -230,36 +230,36 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isFriendRequestScreen() =
-        images.friendRequest in game.resultFriendRequestRegion
+        images.friendRequest in Game.resultFriendRequestRegion
 
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
-        game.resultFriendRequestRejectClick.click()
+        Game.resultFriendRequestRejectClick.click()
     }
 
     private fun isCeReward() =
-        images.bond10Reward in game.resultCeRewardRegion
+        images.bond10Reward in Game.resultCeRewardRegion
 
     private fun ceReward() {
         if (prefs.stopOnCEGet) {
             throw ScriptExitException("CE GET!")
         }
 
-        game.resultCeRewardCloseClick.click()
+        Game.resultCeRewardCloseClick.click()
         1.seconds.wait()
-        game.resultCeRewardCloseClick.click()
+        Game.resultCeRewardCloseClick.click()
     }
 
     /**
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
     private fun isInQuestRewardScreen() =
-        images.questReward in game.resultQuestRewardRegion
+        images.questReward in Game.resultQuestRewardRegion
 
     /**
      * Handles the quest rewards screen.
      */
-    private fun questReward() = game.resultNextClick.click()
+    private fun questReward() = Game.resultNextClick.click()
 
     // Selections Support option
     private fun support() {
@@ -282,7 +282,7 @@ open class AutoBattle @Inject constructor(
      * Checks if the window for withdrawing from the battle exists.
      */
     private fun needsToWithdraw() =
-        images.withdraw in game.withdrawRegion
+        images.withdraw in Game.withdrawRegion
 
     /**
      * Handles withdrawing from battle. Depending on [IPreferences.withdrawEnabled], the script either
@@ -294,7 +294,7 @@ open class AutoBattle @Inject constructor(
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
-        val withdrawRegion = game.withdrawRegion
+        val withdrawRegion = Game.withdrawRegion
             .findAll(images.withdraw)
             .firstOrNull() ?: return
 
@@ -303,12 +303,12 @@ open class AutoBattle @Inject constructor(
         0.5.seconds.wait()
 
         // Click the "Accept" button after choosing to withdraw
-        game.withdrawAcceptClick.click()
+        Game.withdrawAcceptClick.click()
 
         1.seconds.wait()
 
         // Click the "Close" button after accepting the withdrawal
-        game.withdrawCloseClick.click()
+        Game.withdrawCloseClick.click()
     }
 
     /**
@@ -331,18 +331,18 @@ open class AutoBattle @Inject constructor(
      * Clicks on the Close button for the special GudaGuda Final Honnouji reward window if it was
      * detected.
      */
-    private fun gudaFinalReward() = game.gudaFinalRewardsRegion.click()
+    private fun gudaFinalReward() = Game.gudaFinalRewardsRegion.click()
 
     /**
      * Checks if the SKIP button exists on the screen.
      */
     private fun needsToStorySkip() =
-        prefs.storySkip && game.menuStorySkipRegion.exists(images.storySkip, Similarity = 0.7)
+        prefs.storySkip && Game.menuStorySkipRegion.exists(images.storySkip, Similarity = 0.7)
 
     private fun skipStory() {
-        game.menuStorySkipClick.click()
+        Game.menuStorySkipClick.click()
         0.5.seconds.wait()
-        game.menuStorySkipYesClick.click()
+        Game.menuStorySkipYesClick.click()
     }
 
     /**
@@ -360,7 +360,7 @@ open class AutoBattle @Inject constructor(
             }
 
             1.seconds.wait()
-            game.staminaOkClick.click()
+            Game.staminaOkClick.click()
             ++stonesUsed
 
             3.seconds.wait()
@@ -380,12 +380,12 @@ open class AutoBattle @Inject constructor(
     fun selectParty() {
         val party = prefs.selectedAutoSkillConfig.party
 
-        if (!partySelected && party in game.partySelectionArray.indices) {
-            val currentParty = game.selectedPartyRegion
+        if (!partySelected && party in Game.partySelectionArray.indices) {
+            val currentParty = Game.selectedPartyRegion
                 .findAll(images.selectedParty)
                 .map { match ->
                     // Find party with min distance from center of matched region
-                    game.partySelectionArray.withIndex().minBy {
+                    Game.partySelectionArray.withIndex().minBy {
                         (it.value.X - match.Region.center.X).absoluteValue
                     }?.index
                 }
@@ -396,14 +396,14 @@ open class AutoBattle @Inject constructor(
                unresponsive if you switch from a party to the same one. */
             if (currentParty == null) {
                 val tempParty = if (party == 0) 1 else 0
-                game.partySelectionArray[tempParty].click()
+                Game.partySelectionArray[tempParty].click()
 
                 1.seconds.wait()
             }
 
             // Switch to the configured party
             if (currentParty != party) {
-                game.partySelectionArray[party].click()
+                Game.partySelectionArray[party].click()
 
                 1.2.seconds.wait()
             }
@@ -423,7 +423,7 @@ open class AutoBattle @Inject constructor(
     private fun startQuest() {
         selectParty()
 
-        game.menuStartQuestClick.click()
+        Game.menuStartQuestClick.click()
 
         2.seconds.wait()
 
@@ -471,14 +471,14 @@ open class AutoBattle @Inject constructor(
         when (prefs.gameServer) {
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
-                if (images.inventoryFull in game.inventoryFullRegion) {
+                if (images.inventoryFull in Game.inventoryFullRegion) {
                     throw ScriptExitException("Inventory Full")
                 }
             }
         }
 
         // Auto refill
-        while (images.stamina in game.staminaScreenRegion) {
+        while (images.stamina in Game.staminaScreenRegion) {
             refillStamina()
         }
     }
