@@ -134,13 +134,11 @@ open class AutoBattle @Inject constructor(
             images.bond to Game.resultBondRegion,
             images.masterLvlUp to Game.resultMasterLvlUpRegion,
             images.masterExp to Game.resultMasterExpRegion,
-            images.matRewards to Game.resultMatRewardsRegion,
-            images.bond10Reward to Game.resultCeRewardRegion
+            images.matRewards to Game.resultMatRewardsRegion
         )
 
-        return cases.any { (image, region) ->
-            image in region
-        }
+        return cases.any { (image, region) -> image in region }
+                || Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
     }
 
     /**
@@ -232,7 +230,9 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isCeReward() =
-        images.bond10Reward in Game.resultCeRewardDetailsRegion
+        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+
+    val ceRewardSimilarity = 0.75
 
     private fun ceReward() {
         if (prefs.stopOnCEGet) {
