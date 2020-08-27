@@ -101,6 +101,8 @@ class PrefsCore @Inject constructor(
 
     val stageCounterSimilarity = maker.int(R.string.pref_stage_counter_similarity, 85)
 
+    val autoStartService = maker.bool(R.string.pref_auto_start_service)
+
     private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
 
     fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =
