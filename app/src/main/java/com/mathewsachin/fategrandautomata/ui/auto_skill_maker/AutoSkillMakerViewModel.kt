@@ -11,6 +11,8 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         const val NoEnemy = -1
     }
 
+    var autoSkillItemKey = ""
+
     val state = savedState.get(::savedState.name)
         ?: AutoSkillMakerSavedState()
 
@@ -22,7 +24,6 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             enemyTarget.value ?: NoEnemy,
             stage.value ?: 1,
             turn.value ?: 1,
-            currentView.value ?: AutoSkillMakerViewState.Main,
             currentSkill,
             npSequence.value ?: emptyList(),
             cardsBeforeNp.value ?: 0,
@@ -98,12 +99,10 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     fun unSelectTargets() = setEnemyTarget(NoEnemy)
 
-    private val _cardsBeforeNp = MutableLiveData<Int>(state.cardsBeforeNp)
-
-    val cardsBeforeNp: LiveData<Int> = _cardsBeforeNp
+    val cardsBeforeNp = MutableLiveData<Int>(state.cardsBeforeNp)
 
     fun setCardsBeforeNp(cards: Int) {
-        _cardsBeforeNp.value = cards
+        cardsBeforeNp.value = cards
     }
 
     private val _stage = MutableLiveData<Int>(state.stage)
@@ -120,28 +119,14 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     val stage: LiveData<Int> = _stage
     val turn: LiveData<Int> = _turn
 
-    private fun nextStage() = _stage.next()
-    private fun nextTurn() = _turn.next()
-
     private fun prevStage() = _stage.prev()
     private fun prevTurn() = _turn.prev()
 
-    val currentView = MutableLiveData<AutoSkillMakerViewState>(state.currentView)
-
-    fun gotToMain() {
-        currentView.value = AutoSkillMakerViewState.Main
-    }
-
-    fun onSkill(SkillCode: Char) {
+    fun initSkill(SkillCode: Char) {
         currentSkill = SkillCode
-
-        currentView.value = AutoSkillMakerViewState.Target
     }
 
-    // Data Binding doesn't seem to work with default parameters or null
-    fun onSkillTarget() = onSkillTarget(null)
-
-    fun onSkillTarget(TargetCommand: Char?) {
+    fun targetSkill(TargetCommand: Char?) {
         var cmd = currentSkill.toString()
 
         if (TargetCommand != null) {
@@ -149,8 +134,6 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         }
 
         add(cmd)
-
-        gotToMain()
     }
 
     fun onNpClick(command: Char) {
@@ -194,7 +177,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onGoToNext(Separator: String) {
+    private fun onNext(Separator: String) {
         // Uncheck selected targets
         unSelectTargets()
 
@@ -206,16 +189,14 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
         add(Separator)
 
-        nextTurn()
-
-        gotToMain()
+        _turn.next()
     }
 
-    fun goToNextTurn() = onGoToNext(",")
+    fun nextTurn() = onNext(",")
 
-    fun goToNextStage() {
-        nextStage()
-        onGoToNext(",#,")
+    fun nextStage() {
+        _stage.next()
+        onNext(",#,")
     }
 
     private val _xSelectedParty = MutableLiveData<Int>(state.xSelectedParty)
@@ -232,22 +213,14 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         _xSelectedSub.value = member
     }
 
-    fun goToOrderChange() {
-        currentView.value = AutoSkillMakerViewState.OrderChange
-
+    fun initOrderChange() {
         setOrderChangePartyMember(1)
         setOrderChangeSubMember(1)
     }
 
-    fun orderChangeOk() {
+    fun commitOrderChange() {
         add("x${xSelectedParty.value}${xSelectedSub.value}")
-
-        gotToMain()
     }
-
-    fun canGoBack() = currentView.value != AutoSkillMakerViewState.Main
-
-    fun goBack() = gotToMain()
 
     private fun revertToPreviousEnemyTarget() {
         // Find the previous target, but within the same turn
@@ -316,11 +289,9 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     val npSequence: LiveData<List<Char>> = _npSequence
 
-    fun goToAtk() {
+    fun initAtk() {
         clearNpSequence()
 
-        setCardsBeforeNp(0)
-
-        currentView.value = AutoSkillMakerViewState.Atk
+        cardsBeforeNp.value = 0
     }
 }
