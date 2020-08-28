@@ -1,6 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.models.battle
 
+import kotlin.time.TimeSource
+
 class RunState {
+    private val timestamp = TimeSource.Monotonic.markNow()
+    val runTime get() = timestamp.elapsedNow()
+
     var stage = -1
         private set(value) {
             field = value
