@@ -142,3 +142,4 @@ Thanks for the rainbow apples.
 | Nathan Farrar            | $ 5.00 USD   |
 | Federico Rapetti         | € 3.00 EUR   |
 | William Lu               | $ 20.00 USD  |
+| @sleeping-player         | $ 100.00 USD |
