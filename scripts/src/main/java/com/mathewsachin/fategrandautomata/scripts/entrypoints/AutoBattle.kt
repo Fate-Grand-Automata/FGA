@@ -440,10 +440,12 @@ open class AutoBattle @Inject constructor(
         val message = StringBuilder().apply {
             val refill = prefs.refill
 
+            val runs = battle.state.runs
+
             if (refill.shouldLimitRuns && refill.limitRuns > 0) {
-                appendln("Ran ${battle.runs} out of ${refill.limitRuns} time(s)")
-            } else if (battle.runs > 0) {
-                appendln("Ran ${battle.runs} time(s)")
+                appendln("Ran $runs out of ${refill.limitRuns} time(s)")
+            } else if (runs > 0) {
+                appendln("Ran $runs time(s)")
             }
 
             if (refill.enabled) {

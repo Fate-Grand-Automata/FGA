@@ -236,11 +236,14 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
     }
 
     fun execute() {
-        val commandList = getCommandListFor(battle.currentStage, battle.currentTurn)
+        val stage = battle.state.runState.stage
+        val turn = battle.state.runState.turn
+
+        val commandList = getCommandListFor(stage, turn)
 
         if (commandList.isNotEmpty()) {
             executeCommandList(commandList)
-        } else if (battle.currentStage >= commandTable.lastIndex) {
+        } else if (stage >= commandTable.lastIndex) {
             // this will allow NP spam after all commands have been executed
             isFinished = true
         }
