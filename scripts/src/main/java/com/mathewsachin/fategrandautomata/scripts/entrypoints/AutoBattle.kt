@@ -37,6 +37,7 @@ open class AutoBattle @Inject constructor(
     private val autoSkill = AutoSkill(fgAutomataApi)
 
     private var stonesUsed = 0
+    private var withdrawCount = 0
     private var isContinuing = false
     private var partySelected = false
 
@@ -301,6 +302,8 @@ open class AutoBattle @Inject constructor(
 
         // Click the "Close" button after accepting the withdrawal
         Game.withdrawCloseClick.click()
+
+        ++withdrawCount
     }
 
     /**
