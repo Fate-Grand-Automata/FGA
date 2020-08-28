@@ -138,6 +138,12 @@
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
+            app:icon="@drawable/ic_launch"
+            app:key="@string/pref_auto_start_service"
+            app:title="Auto-start service" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:icon="@drawable/ic_pause"
             app:key="@string/pref_can_pause_script"
             app:summary="Experimental"

@@ -13,12 +13,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
+import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_main.*
 
+@AndroidEntryPoint
 class MainFragment : Fragment(R.layout.content_main) {
+    val vm: MainSettingsViewModel by activityViewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -126,10 +132,13 @@ class MainFragment : Fragment(R.layout.content_main) {
         }
     }
 
+    fun isServiceStarted() =
+        ScriptRunnerService.Instance?.serviceState is ServiceState.Started
+
     override fun onResume() {
         super.onResume()
 
-        if (toggling) {
+        if (toggling || (vm.autoStartService && !isServiceStarted())) {
             serviceToggleBtnOnClick()
         }
     }

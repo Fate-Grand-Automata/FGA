@@ -5,10 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import kotlinx.coroutines.flow.combine
+import java.util.concurrent.atomic.AtomicBoolean
 
 class MainSettingsViewModel @ViewModelInject constructor(
-    prefs: PrefsCore
+    val prefs: PrefsCore
 ) : ViewModel() {
+    val autoStartService
+        get() =
+            prefs.autoStartService.get() && oncePerActivityStart.getAndSet(false)
+
+    private val oncePerActivityStart = AtomicBoolean(false)
+    fun activityStarted() = oncePerActivityStart.set(true)
+
     val gameServer = prefs
         .gameServer
         .asFlow()
