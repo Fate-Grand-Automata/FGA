@@ -7,8 +7,7 @@ import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.seconds
 
 class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
-    var hasClickedAttack = false
-        private set
+    private var hasClickedAttack = false
 
     var hasChosenTarget = false
         private set
@@ -56,13 +55,17 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     fun isIdle() = images.battle in Game.battleScreenRegion
 
     fun clickAttack() {
+        if (hasClickedAttack) {
+            return
+        }
+
         Game.battleAttackClick.click()
 
         // Wait for Attack button to disappear
         Game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
 
         // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
-        1.5.seconds.wait()
+        2.seconds.wait()
 
         hasClickedAttack = true
 
@@ -108,9 +111,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         autoSkill.execute()
 
-        if (!hasClickedAttack) {
-            clickAttack()
-        }
+        clickAttack()
 
         if (card.canClickNpCards) {
             card.clickNpCards()

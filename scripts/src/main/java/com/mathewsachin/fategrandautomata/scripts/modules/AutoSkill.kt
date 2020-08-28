@@ -85,12 +85,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
     }
 
     private fun castNoblePhantasm(noblePhantasm: CommandCard.NP) {
-        if (!battle.hasClickedAttack) {
-            battle.clickAttack()
-
-            // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-            2.seconds.wait()
-        }
+        battle.clickAttack()
 
         card.clickNp(noblePhantasm)
     }
@@ -165,12 +160,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
     }
 
     private fun useCommandCardsBeforeNp() {
-        if (!battle.hasClickedAttack) {
-            battle.clickAttack()
-
-            // There is a delay after clicking attack before NP Cards come up. DON'T DELETE!
-            2.seconds.wait()
-        }
+        battle.clickAttack()
 
         changeArray(cardsPressedArray)
     }
