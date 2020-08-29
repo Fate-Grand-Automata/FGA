@@ -115,7 +115,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         get() {
             val weCanSpam = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
             val weAreInDanger = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
-                    && battle.hasChosenTarget
+                    && battle.state.runState.stageState.hasChosenTarget
 
             return (weCanSpam || weAreInDanger) && autoSkill.isFinished
         }
@@ -141,7 +141,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         var clicksLeft = Clicks.coerceAtLeast(0)
         val toClick = mutableListOf<CommandCard.Face>()
 
-        val cardsOrderedByPriority = cardPriority.atWave(battle.currentStage)
+        val cardsOrderedByPriority = cardPriority
+            .atWave(battle.state.runState.stage)
             .mapNotNull { commandCards[it] }
             .flatten()
 

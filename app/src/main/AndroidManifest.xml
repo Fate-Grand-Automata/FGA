@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.mathewsachin.fategrandautomata">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,9 +23,7 @@
         <activity
             android:name=".ui.auto_skill_maker.AutoSkillMakerActivity"
             android:label="Auto Skill Maker"
-            android:screenOrientation="userLandscape"
-            android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".accessibility.ScriptRunnerService"

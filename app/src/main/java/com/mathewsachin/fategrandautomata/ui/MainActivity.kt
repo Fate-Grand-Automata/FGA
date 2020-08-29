@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
 import com.mathewsachin.fategrandautomata.util.CutoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -65,5 +67,12 @@ class MainActivity : AppCompatActivity() {
                 Uri.parse("package:$packageName")
             )
         )
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val vm: MainSettingsViewModel by viewModels()
+        vm.activityStarted()
     }
 }

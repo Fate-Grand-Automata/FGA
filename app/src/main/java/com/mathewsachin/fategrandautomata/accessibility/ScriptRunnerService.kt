@@ -25,7 +25,10 @@ import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
+import mu.KotlinLogging
 import javax.inject.Inject
+
+private val logger = KotlinLogging.logger {}
 
 @AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
@@ -63,6 +66,8 @@ class ScriptRunnerService : AccessibilityService() {
     private val screenOffReceiver = ScreenOffReceiver()
 
     override fun onUnbind(intent: Intent?): Boolean {
+        logger.info("Accessibility Service unbind")
+
         stop()
 
         screenOffReceiver.unregister(this)
@@ -188,6 +193,8 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     override fun onServiceConnected() {
+        logger.info("Accessibility Service bound to system")
+
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {
             packageNames = GameServerEnum

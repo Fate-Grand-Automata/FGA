@@ -59,4 +59,20 @@ class AutoSkillMakerTest {
             Assert.assertEquals(vm.finish(), "$np")
         }
     }
+
+    @Test
+    fun test_order_change() {
+        for (starting in 1..3) {
+            for (sub in 1..3) {
+                val vm = getViewModel()
+
+                vm.initOrderChange()
+                vm.setOrderChangePartyMember(starting)
+                vm.setOrderChangeSubMember(sub)
+                vm.commitOrderChange()
+
+                Assert.assertEquals(vm.finish(), "x${starting}${sub}")
+            }
+        }
+    }
 }

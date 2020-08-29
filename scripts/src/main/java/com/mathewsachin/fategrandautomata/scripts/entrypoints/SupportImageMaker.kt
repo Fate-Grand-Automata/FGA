@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
+import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.libautomata.*
 import java.io.File
@@ -40,7 +41,7 @@ class SupportImageMaker @Inject constructor(
         var supportBound = Region(supportBoundX, 0, 286, 220)
 
         // At max two Servant+CE are completely on screen, so only use those
-        val regionArray = game.supportRegionToolSearchRegion
+        val regionArray = Game.supportRegionToolSearchRegion
             .findAll(
                 images.supportRegionTool,
                 supportRegionToolSimilarity
@@ -48,7 +49,7 @@ class SupportImageMaker @Inject constructor(
             .take(2)
             .toList()
 
-        val screenBounds = Region(0, 0, game.scriptSize.Width, game.scriptSize.Height)
+        val screenBounds = Region(Location(), Game.scriptSize)
 
         for ((i, testRegion) in regionArray.map { it.Region }.withIndex()) {
             // in the friend screen, the "Confirm Support Setup" button is higher
