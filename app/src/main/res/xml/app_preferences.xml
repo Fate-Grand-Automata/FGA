@@ -7,7 +7,7 @@
         app:entryValues="@array/game_server_values"
         app:icon="@drawable/ic_earth"
         app:key="@string/pref_gameserver"
-        app:title="Game Server"
+        app:title="@string/p_game_server"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
@@ -16,39 +16,39 @@
         app:entryValues="@array/battle_np_types"
         app:icon="@drawable/ic_star"
         app:key="@string/pref_battle_np"
-        app:title="Cast Noble Phantasm"
+        app:title="@string/p_cast_np"
         app:useSimpleSummaryProvider="true" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_target"
         app:key="@string/pref_auto_choose_target"
-        app:title="Auto choose target" />
+        app:title="@string/p_auto_choose_target" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_fast_forward"
         app:key="@string/pref_story_skip"
-        app:title="Story Skip" />
+        app:title="@string/p_story_skip" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_radio"
         app:key="@string/pref_skill_conf"
-        app:title="Skill Confirmation" />
+        app:title="@string/p_skill_confirmation" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_exit_run"
         app:key="@string/pref_withdraw_enabled"
-        app:title="Enable Withdraw" />
+        app:title="@string/p_enable_withdraw" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_card"
         app:key="@string/pref_stop_on_ce_drop"
-        app:title="Stop on CE drop"
-        app:summary="Experimental" />
+        app:title="@string/p_stop_on_ce_drop"
+        app:summary="@string/p_experimental" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
@@ -62,7 +62,7 @@
         app:icon="@drawable/ic_screenshot"
         app:key="@string/pref_screenshot_drops"
         app:title="Screenshot Drops"
-        app:summary="Experimental" />
+        app:summary="@string/p_experimental" />
 
     <SwitchPreferenceCompat
         app:defaultValue="true"
@@ -146,7 +146,7 @@
             app:defaultValue="false"
             app:icon="@drawable/ic_pause"
             app:key="@string/pref_can_pause_script"
-            app:summary="Experimental"
+            app:summary="@string/p_experimental"
             app:title="Allow pausing scripts" />
     </PreferenceCategory>
 </PreferenceScreen>

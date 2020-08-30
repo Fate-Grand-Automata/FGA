@@ -53,4 +53,13 @@
     <string name="support_img_namer_ce">Craft Essence(s)</string>
     <string name="support_img_namer_friend_names">Friend Name(s)</string>
     <string name="support_img_namer_item_name">Name</string>
+
+    <string name="p_game_server">Game Server</string>
+    <string name="p_cast_np">Cast Noble Phantasm</string>
+    <string name="p_auto_choose_target">Auto choose target</string>
+    <string name="p_story_skip">Story Skip</string>
+    <string name="p_skill_confirmation">Skill Confirmation</string>
+    <string name="p_enable_withdraw">Enable Withdraw</string>
+    <string name="p_stop_on_ce_drop">Stop on CE drop</string>
+    <string name="p_experimental">Experimental</string>
 </resources>
