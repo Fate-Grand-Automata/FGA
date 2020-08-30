@@ -121,4 +121,12 @@
 
     <string name="p_fine_tune">Fine-tune</string>
     <string name="p_fine_tune_default">Default: %d</string>
+
+    <string name="p_nav_refill">Refill</string>
+    <string name="p_nav_more_options">More options</string>
+    <string name="p_nav_fine_tune">Fine-tune</string>
+    <string name="p_nav_auto_skill_list">AutoSkill List</string>
+    <string name="p_nav_auto_skill_edit">Edit config</string>
+    <string name="p_nav_skill_levels">Skill Levels</string>
+    <string name="p_nav_card_priority">Card Priority</string>
 </resources>
