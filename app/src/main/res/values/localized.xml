@@ -26,5 +26,6 @@
     <string name="auto_skill_main_servant">Servant %d</string>
     <string name="auto_skill_main_attack">Attack</string>
 
-
+    <string name="auto_skill_master_skills_header">Master Skills</string>
+    <string name="auto_skill_master_skills_order_change">Order Change / Plug-suit</string>
 </resources>
