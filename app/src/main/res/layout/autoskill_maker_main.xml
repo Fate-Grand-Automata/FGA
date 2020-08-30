@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setEnemyTarget(1)}"
-                android:text="Enemy 1" />
+                android:text="@{@string/auto_skill_main_enemy(1)}" />
 
             <RadioButton
                 android:id="@+id/enemy_target_2"
@@ -54,14 +54,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:onClick="@{(v) -> vm.setEnemyTarget(2)}"
-                android:text="Enemy 2" />
+                android:text="@{@string/auto_skill_main_enemy(2)}" />
 
             <RadioButton
                 android:id="@+id/enemy_target_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setEnemyTarget(3)}"
-                android:text="Enemy 3" />
+                android:text="@{@string/auto_skill_main_enemy(3)}" />
         </RadioGroup>
 
         <androidx.constraintlayout.widget.Barrier

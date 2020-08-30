@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="card_prority_wave_number">WAVE %d</string>
+
+    <string name="auto_skill_item_copy">Copy</string>
+    <string name="auto_skill_item_delete">Delete</string>
+    <string name="auto_skill_item_export">Export</string>
+
+    <string name="auto_skill_list_no_items">No AutoSkill Items</string>
+    <string name="auto_skill_list_import">Import</string>
+    <string name="auto_skill_list_export_all">Export all</string>
+    <string name="auto_skill_list_delete">Delete</string>
+
+    <string name="auto_skill_maker_atk_header">Attack</string>
+    <string name="auto_skill_maker_atk_servant_np">Servant\n%d\n\nNP</string>
+    <string name="auto_skill_maker_atk_cards_before_np">Cards before NP</string>
+    <string name="auto_skill_maker_atk_done">Done</string>
+    <string name="auto_skill_maker_atk_next_wave">Next Wave</string>
+    <string name="auto_skill_maker_atk_next_turn">Next Turn \nin same wave</string>
+
+    <string name="auto_skill_main_enemy">Enemy %d</string>
+</resources>

@@ -8,6 +8,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
+import java.util.*
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 import kotlin.time.seconds
@@ -31,7 +32,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return this
             .split(',')
             .map { it.trim() }
-            .filter { it.isNotBlank() && it.toLowerCase() != "any" }
+            .filter { it.isNotBlank() && it.toLowerCase(Locale.US) != "any" }
     }
 
     private val autoSkillPrefs get() = prefs.selectedAutoSkillConfig.support
