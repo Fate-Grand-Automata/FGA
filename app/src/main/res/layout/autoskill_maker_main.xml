@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -46,7 +47,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setEnemyTarget(1)}"
-                android:text="Enemy 1" />
+                android:text="@{@string/auto_skill_maker_main_enemy(1)}"
+                tools:text="Enemy 1" />
 
             <RadioButton
                 android:id="@+id/enemy_target_2"
@@ -54,53 +56,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:onClick="@{(v) -> vm.setEnemyTarget(2)}"
-                android:text="Enemy 2" />
+                android:text="@{@string/auto_skill_maker_main_enemy(2)}"
+                tools:text="Enemy 2" />
 
             <RadioButton
                 android:id="@+id/enemy_target_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setEnemyTarget(3)}"
-                android:text="Enemy 3" />
+                android:text="@{@string/auto_skill_maker_main_enemy(3)}"
+                tools:text="Enemy 3" />
         </RadioGroup>
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/battle_status_barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="start"
-            app:constraint_referenced_ids="battle_stage_txt,battle_turn_txt" />
-
-        <TextView
-            android:id="@+id/battle_stage_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{vm.stage.toString()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/skill_a_btn" />
 
         <TextView
             android:id="@+id/battle_stage_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Battle: "
-            app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
-            app:layout_constraintTop_toTopOf="@+id/battle_stage_txt" />
-
-        <TextView
-            android:id="@+id/battle_turn_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{vm.turn.toString()}"
+            android:text="@{@string/auto_skill_maker_main_battle(vm.stage)}"
+            tools:text="Battle: 1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/battle_stage_txt" />
+            app:layout_constraintTop_toTopOf="@id/skill_a_btn" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Turn: "
-            app:layout_constraintEnd_toStartOf="@+id/battle_status_barrier"
-            app:layout_constraintTop_toTopOf="@+id/battle_turn_txt" />
+            android:text="@{@string/auto_skill_maker_main_turn(vm.turn)}"
+            tools:text="Turn: 1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/battle_stage_label" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/atk_btn"
@@ -114,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="100dp"
-            android:text="Attack"
+            android:text="@string/auto_skill_maker_main_attack"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@id/atk_btn"
@@ -128,7 +111,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorMasterSkill"
             android:onClick="@{(v) -> ui.goToMasterSkills()}"
-            android:text="Master\n  Skills"
+            android:text="@string/auto_skill_maker_main_master_skills"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/atk_btn"
             app:layout_constraintEnd_toStartOf="@id/atk_btn"
@@ -140,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{(v) -> ui.onUndo()}"
-            android:text="Undo"
+            android:text="@string/auto_skill_maker_main_undo"
             android:visibility="@{vm.skillCommand.empty ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/atk_btn"
             app:layout_constraintEnd_toStartOf="@id/master_skills"
@@ -152,7 +135,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant1"
             android:onClick="@{(v) -> ui.onSkill('a')}"
-            android:text="a"
+            android:text="@string/skill_code_a"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toTopOf="@id/servant_1_name"
             app:layout_constraintEnd_toStartOf="@id/skill_b_btn"
@@ -166,7 +149,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant1"
             android:onClick="@{(v) -> ui.onSkill('b')}"
-            android:text="b"
+            android:text="@string/skill_code_b"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
             app:layout_constraintEnd_toStartOf="@id/skill_c_btn"
@@ -177,7 +160,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant1"
             android:onClick="@{(v) -> ui.onSkill('c')}"
-            android:text="c"
+            android:text="@string/skill_code_c"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
             app:layout_constraintStart_toEndOf="@+id/skill_b_btn" />
@@ -186,7 +169,8 @@
             android:id="@+id/servant_1_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Servant 1"
+            android:text="@{@string/auto_skill_maker_main_servant(1)}"
+            tools:text="Servant 1"
             app:layout_constraintBottom_toTopOf="@id/skill_d_btn"
             app:layout_constraintEnd_toEndOf="@+id/skill_c_btn"
             app:layout_constraintStart_toStartOf="@+id/skill_a_btn"
@@ -197,7 +181,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant2"
             android:onClick="@{(v) -> ui.onSkill('d')}"
-            android:text="d"
+            android:text="@string/skill_code_d"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toTopOf="@id/servant_2_name"
             app:layout_constraintEnd_toStartOf="@+id/skill_e_btn"
@@ -210,7 +194,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant2"
             android:onClick="@{(v) -> ui.onSkill('e')}"
-            android:text="e"
+            android:text="@string/skill_code_e"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@+id/skill_f_btn"
             app:layout_constraintStart_toEndOf="@+id/skill_d_btn"
@@ -221,7 +205,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant2"
             android:onClick="@{(v) -> ui.onSkill('f')}"
-            android:text="f"
+            android:text="@string/skill_code_f"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/skill_e_btn"
@@ -231,7 +215,8 @@
             android:id="@+id/servant_2_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Servant 2"
+            android:text="@{@string/auto_skill_maker_main_servant(2)}"
+            tools:text="Servant 2"
             app:layout_constraintBottom_toTopOf="@id/skill_g_btn"
             app:layout_constraintEnd_toEndOf="@+id/skill_f_btn"
             app:layout_constraintStart_toStartOf="@+id/skill_d_btn"
@@ -242,7 +227,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant3"
             android:onClick="@{(v) -> ui.onSkill('g')}"
-            android:text="g"
+            android:text="@string/skill_code_g"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toTopOf="@id/servant_3_name"
             app:layout_constraintEnd_toStartOf="@+id/skill_h_btn"
@@ -253,7 +238,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant3"
             android:onClick="@{(v) -> ui.onSkill('h')}"
-            android:text="h"
+            android:text="@string/skill_code_h"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_g_btn"
             app:layout_constraintEnd_toStartOf="@+id/skill_i_btn" />
@@ -263,7 +248,7 @@
             style="@style/autoskill_servant_skill_btn"
             android:backgroundTint="@color/colorServant3"
             android:onClick="@{(v) -> ui.onSkill('i')}"
-            android:text="i"
+            android:text="@string/skill_code_i"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/skill_g_btn"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -272,7 +257,8 @@
             android:id="@+id/servant_3_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Servant 3"
+            android:text="@{@string/auto_skill_maker_main_servant(3)}"
+            tools:text="Servant 3"
             app:layout_constraintBottom_toTopOf="@id/atk_btn"
             app:layout_constraintEnd_toEndOf="@+id/skill_i_btn"
             app:layout_constraintStart_toStartOf="@+id/skill_g_btn"

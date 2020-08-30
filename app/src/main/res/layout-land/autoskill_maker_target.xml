@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -20,7 +21,7 @@
             android:id="@+id/target_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Target"
+            android:text="@string/auto_skill_maker_target_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +30,8 @@
             android:id="@+id/target_1"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:text="Servant\n\n1"
+            android:text="@{@string/auto_skill_maker_target_servant(1)}"
+            tools:text="Servant\n\n1"
             android:onClick="@{(v) -> ui.onSkillTarget('1')}"
             android:backgroundTint="@color/colorServant1"
             android:textColor="@android:color/white"
@@ -42,7 +44,8 @@
             android:id="@+id/target_2"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:text="Servant\n\n2"
+            android:text="@{@string/auto_skill_maker_target_servant(2)}"
+            tools:text="Servant\n\n2"
             android:onClick="@{(v) -> ui.onSkillTarget('2')}"
             android:backgroundTint="@color/colorServant2"
             android:textColor="@android:color/white"
@@ -54,7 +57,8 @@
             android:id="@+id/target_3"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:text="Servant\n\n3"
+            android:text="@{@string/auto_skill_maker_target_servant(3)}"
+            tools:text="Servant\n\n3"
             android:onClick="@{(v) -> ui.onSkillTarget('3')}"
             android:backgroundTint="@color/colorServant3"
             android:textColor="@android:color/white"
@@ -66,7 +70,7 @@
             android:id="@+id/no_target_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No target"
+            android:text="@string/auto_skill_maker_target_none"
             android:onClick="@{(v) -> ui.onSkillTarget()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -25,7 +25,7 @@ class FineTuneSettingsFragment : PreferenceFragmentCompat() {
         for (pref in vm.fineTunePrefs) {
             findPreference<Preference>(pref.key)?.let {
                 it.setDefaultValue(pref.defaultValue)
-                it.summary = "Default: ${pref.defaultValue}"
+                it.summary = getString(R.string.p_fine_tune_default, pref.defaultValue)
             }
         }
     }
