@@ -3,7 +3,7 @@
 
     <PreferenceCategory
         app:key="refill_category"
-        app:title="Refill">
+        app:title="@string/p_refill">
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_check"
