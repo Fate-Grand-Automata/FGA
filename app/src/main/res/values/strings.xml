@@ -2,4 +2,21 @@
     <string name="app_name">Fate/Grand Automata</string>
     <string name="action_settings">Settings</string>
     <string name="service_runner_description">This service actually runs the scripts. An accessibility service is required if clicks and swipes are to be performed without root.</string>
+
+    <string name="count_0">0</string>
+    <string name="count_1">1</string>
+    <string name="count_2">2</string>
+
+    <string name="skill_code_a">a</string>
+    <string name="skill_code_b">b</string>
+    <string name="skill_code_c">c</string>
+    <string name="skill_code_d">d</string>
+    <string name="skill_code_e">e</string>
+    <string name="skill_code_f">f</string>
+    <string name="skill_code_g">g</string>
+    <string name="skill_code_h">h</string>
+    <string name="skill_code_i">i</string>
+    <string name="skill_code_j">j</string>
+    <string name="skill_code_k">k</string>
+    <string name="skill_code_l">l</string>
 </resources>

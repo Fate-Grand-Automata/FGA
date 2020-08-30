@@ -19,4 +19,12 @@
     <string name="auto_skill_maker_atk_next_turn">Next Turn \nin same wave</string>
 
     <string name="auto_skill_main_enemy">Enemy %d</string>
+    <string name="auto_skill_main_battle">Battle: %d</string>
+    <string name="auto_skill_main_turn">Turn: %d</string>
+    <string name="auto_skill_main_master_skills">Master\n Skills</string>
+    <string name="auto_skill_main_undo">Undo</string>
+    <string name="auto_skill_main_servant">Servant %d</string>
+    <string name="auto_skill_main_attack">Attack</string>
+
+
 </resources>
