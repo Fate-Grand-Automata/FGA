@@ -61,5 +61,8 @@
     <string name="p_skill_confirmation">Skill Confirmation</string>
     <string name="p_enable_withdraw">Enable Withdraw</string>
     <string name="p_stop_on_ce_drop">Stop on CE drop</string>
+    <string name="p_stop_on_ce_get">Stop on CE GET</string>
+    <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
     <string name="p_experimental">Experimental</string>
+    <string name="p_screenshot_drops">Screenshot Drops</string>
 </resources>
