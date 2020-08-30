@@ -71,6 +71,22 @@
     <string name="p_limit_no_of_runs">Limit number of runs</string>
     <string name="p_runs">Runs</string>
 
+    <string name="p_auto_skill_name">Name</string>
+    <string name="p_auto_skill_cmd">Command</string>
+    <string name="p_auto_skill_party">Party</string>
+    <string name="p_auto_skill_support_class">Class</string>
+    <string name="p_auto_skill_card_priority">Card Priority</string>
+    <string name="p_auto_skill_support">Support</string>
+    <string name="p_auto_skill_support_selection_mode">Selection Mode</string>
+    <string name="p_auto_skill_support_fallback_selection_mode">Fallback Selection Mode</string>
+    <string name="p_auto_skill_support_pref_servants">Preferred Servants</string>
+    <string name="p_auto_skill_support_max_ascended">Max-ascended</string>
+    <string name="p_auto_skill_support_skill_levels">Skill Levels</string>
+    <string name="p_auto_skill_support_pref_ces">Preferred CEs</string>
+    <string name="p_auto_skill_support_mlb">Max-limit broken</string>
+    <string name="p_auto_skill_support_friend_names">Friend names</string>
+    <string name="p_auto_skill_support_friends_only">Friends Only</string>
+
     <string name="p_max_skill_1">Max Skill 1</string>
     <string name="p_max_skill_2">Max Skill 2</string>
     <string name="p_max_skill_3">Max Skill 3</string>
@@ -104,4 +120,5 @@
     <string name="p_allow_pause_script">Allow pausing scripts</string>
 
     <string name="p_fine_tune">Fine-tune</string>
+    <string name="p_fine_tune_default">Default: %d</string>
 </resources>
