@@ -21,7 +21,7 @@
         app:iconTint="@android:color/white"
         android:backgroundTint="@color/colorPrimary"
         android:textColor="@android:color/white"
-        android:text="Toggle Service"
+        android:text="@string/toggle_service"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

@@ -33,4 +33,10 @@
     <string name="auto_skill_order_change_starting_member">Starting Member</string>
     <string name="auto_skill_order_change_sub_member">Sub Member</string>
     <string name="auto_skill_order_change_servant">Servant\n\n%d</string>
+
+    <string name="card_priority_menu_info">Info</string>
+    <string name="toggle_service">Toggle Service</string>
+    <string name="fine_tune_menu_reset_to_defaults">Reset to defaults</string>
+    <string name="support_img_namer_item_name">Name</string>
+    <string name="support_menu_extract_default_support_images">Extract Default Support Images</string>
 </resources>
