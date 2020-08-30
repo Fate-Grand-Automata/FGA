@@ -54,6 +54,14 @@
     <string name="support_img_namer_friend_names">Friend Name(s)</string>
     <string name="support_img_namer_item_name">Name</string>
 
+    <string name="p_script_mode">Script Mode</string>
+    <string name="p_refill">Refill</string>
+    <string name="p_refill_summary">Manage AP refill</string>
+    <string name="p_auto_skill">Auto Skill</string>
+    <string name="p_auto_skill_summary">Manage Auto Skill configs</string>
+    <string name="p_more_options">More options</string>
+    <string name="p_update_available">Update Available</string>
+
     <string name="p_game_server">Game Server</string>
     <string name="p_cast_np">Cast Noble Phantasm</string>
     <string name="p_auto_choose_target">Auto choose target</string>
@@ -71,4 +79,16 @@
     <string name="p_rearrange_cards">Rearrange Cards</string>
 
     <string name="p_advanced">Advanced</string>
+    <string name="p_debug_mode">Debug mode</string>
+    <string name="p_debug_mode_summary">Highlight the regions being matched</string>
+    <string name="p_ignore_notch">Ignore Notch calculation</string>
+    <string name="p_ignore_notch_summary">Useful on Samsung phones</string>
+    <string name="p_record_screen">Record Screen</string>
+    <string name="p_record_screen_summary">Won\'t work with the root setting.\nA file named \'record.mp4\' will be saved to \'Fate-Grand-Automata\' folder.\nCopy or rename it if you want to keep it.</string>
+    <string name="p_root_screenshot">Use Root for Screenshots</string>
+    <string name="p_root_screenshot_summary">Useful on Nox (Android 7). Toggle service after changing this.</string>
+    <string name="p_auto_start_service">Auto-start service</string>
+    <string name="p_allow_pause_script">Allow pausing scripts</string>
+
+    <string name="p_fine_tune">Fine-tune</string>
 </resources>

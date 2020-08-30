@@ -105,48 +105,48 @@
         app:title="@string/p_advanced">
         <Preference
             app:key="@string/pref_nav_fine_tune"
-            app:title="Fine-tune"
+            app:title="@string/p_fine_tune"
             app:icon="@drawable/ic_tune" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="@string/pref_debug_mode"
             app:icon="@drawable/ic_bug"
-            app:summary="Highlight the regions being matched"
-            app:title="Debug mode" />
+            app:summary="@string/p_debug_mode_summary"
+            app:title="@string/p_debug_mode" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="@string/pref_ignore_notch"
-            app:summary="Useful on Samsung phones"
-            app:title="Ignore Notch calculation"
+            app:summary="@string/p_ignore_notch_summary"
+            app:title="@string/p_ignore_notch"
             app:icon="@drawable/ic_notch" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="@string/pref_record_screen"
             app:icon="@drawable/ic_video"
-            app:summary="Won't work with the root setting.\nA file named 'record.mp4' will be saved to 'Fate-Grand-Automata' folder.\nCopy or rename it if you want to keep it."
-            app:title="Record Screen" />
+            app:summary="@string/p_record_screen_summary"
+            app:title="@string/p_record_screen" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_key"
             app:key="@string/pref_use_root_screenshot"
-            app:summary="Useful on Nox (Android 7). Toggle service after changing this."
-            app:title="Use Root for Screenshots" />
+            app:summary="@string/p_root_screenshot_summary"
+            app:title="@string/p_root_screenshot" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_launch"
             app:key="@string/pref_auto_start_service"
-            app:title="Auto-start service" />
+            app:title="@string/p_auto_start_service" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_pause"
             app:key="@string/pref_can_pause_script"
             app:summary="@string/p_experimental"
-            app:title="Allow pausing scripts" />
+            app:title="@string/p_allow_pause_script" />
     </PreferenceCategory>
 </PreferenceScreen>
