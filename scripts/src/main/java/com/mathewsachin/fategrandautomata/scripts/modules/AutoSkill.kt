@@ -1,53 +1,14 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.models.*
-import com.mathewsachin.libautomata.ScriptExitException
+import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
+import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
+import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
+import com.mathewsachin.fategrandautomata.scripts.models.Skill
 import kotlin.time.Duration
 import kotlin.time.seconds
 
-typealias AutoSkillMap = Map<Char, () -> Unit>
-
 class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
-    private val defaultFunctionArray: AutoSkillMap = listOf(
-        Skill.Servant.list.map {
-            it.autoSkillCode to { castSkill(it) }
-        },
-        Skill.Master.list.map {
-            it.autoSkillCode to { castMasterSkill(it) }
-        },
-        CommandCard.NP.list.map {
-            it.autoSkillCode to { castNoblePhantasm(it) }
-        },
-        ServantTarget.list.map {
-            it.autoSkillCode to { selectSkillTarget(it) }
-        },
-        listOf(
-            'x' to { beginOrderChange() },
-            't' to { selectTarget() },
-            'n' to { useCommandCardsBeforeNp() },
-            '0' to { }
-        )
-    ).flatten().toMap()
-
-    private val startingMemberFunctionArray: AutoSkillMap =
-        OrderChangeMember.Starting.list
-            .associate { it.autoSkillCode to { selectStartingMember(it) } }
-
-    private val subMemberFunctionArray: AutoSkillMap =
-        OrderChangeMember.Sub.list
-            .associate { it.autoSkillCode to { selectSubMember(it) } }
-
-    private val enemyTargetArray: AutoSkillMap = EnemyTarget.list
-        .associate { it.autoSkillCode to { selectEnemyTarget(it) } }
-
-    private val cardsPressedArray: AutoSkillMap = mapOf(
-        '1' to { pressCards(1) },
-        '2' to { pressCards(2) }
-    )
-
-    private var currentArray = defaultFunctionArray
-
     private lateinit var battle: Battle
     private lateinit var card: Card
 
@@ -58,16 +19,22 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         val img = images.battle
 
         // slow devices need this. do not remove.
-        Game.battleScreenRegion.waitVanish(img, prefs.skillDelay)
+        Game.battleScreenRegion.waitVanish(img, 2.seconds)
 
         Game.battleScreenRegion.exists(img, Timeout)
     }
 
-    private fun castSkill(skill: Skill) {
+    private fun castSkill(skill: Skill, target: ServantTarget?) {
         skill.clickLocation.click()
 
         if (prefs.skillConfirmation) {
             Game.battleSkillOkClick.click()
+        }
+
+        if (target != null) {
+            prefs.skillDelay.wait()
+
+            selectSkillTarget(target)
         }
 
         waitForAnimationToFinish()
@@ -80,8 +47,6 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
         // Exit any extra menu
         Game.battleExtraInfoWindowCloseClick.click()
-
-        waitForAnimationToFinish()
     }
 
     private fun castNoblePhantasm(noblePhantasm: CommandCard.NP) {
@@ -96,17 +61,13 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
         0.5.seconds.wait()
     }
 
-    private fun castMasterSkill(skill: Skill.Master) {
+    private fun castMasterSkill(skill: Skill.Master, target: ServantTarget?) {
         openMasterSkillMenu()
 
-        castSkill(skill)
+        castSkill(skill, target)
     }
 
-    private fun changeArray(NewArray: AutoSkillMap) {
-        currentArray = NewArray
-    }
-
-    private fun beginOrderChange() {
+    private fun orderChange(action: AutoSkillAction.OrderChange) {
         openMasterSkillMenu()
 
         // Click on order change skill
@@ -119,17 +80,8 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
         0.3.seconds.wait()
 
-        changeArray(startingMemberFunctionArray)
-    }
-
-    private fun selectStartingMember(member: OrderChangeMember.Starting) {
-        member.clickLocation.click()
-
-        changeArray(subMemberFunctionArray)
-    }
-
-    private fun selectSubMember(member: OrderChangeMember.Sub) {
-        member.clickLocation.click()
+        action.starting.clickLocation.click()
+        action.sub.clickLocation.click()
 
         0.3.seconds.wait()
 
@@ -142,11 +94,7 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
         // Extra wait for the lag introduced by Order change
         1.seconds.wait()
-
-        changeArray(defaultFunctionArray)
     }
-
-    private fun selectTarget() = changeArray(enemyTargetArray)
 
     private fun selectEnemyTarget(enemyTarget: EnemyTarget) {
         enemyTarget.clickLocation.click()
@@ -155,95 +103,50 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
 
         // Exit any extra menu
         Game.battleExtraInfoWindowCloseClick.click()
-
-        changeArray(defaultFunctionArray)
     }
 
-    private fun useCommandCardsBeforeNp() {
-        battle.clickAttack()
+    fun act(action: AutoSkillAction) = when (action) {
+        is AutoSkillAction.CardsBeforeNP -> {
+            battle.clickAttack()
 
-        changeArray(cardsPressedArray)
-    }
-
-    private fun pressCards(NoOfCards: Int) {
-        card.clickCommandCards(NoOfCards)
-
-        changeArray(defaultFunctionArray)
+            card.clickCommandCards(action.count)
+        }
+        is AutoSkillAction.NP -> castNoblePhantasm(action.np)
+        is AutoSkillAction.ServantSkill -> castSkill(action.skill, action.target)
+        is AutoSkillAction.MasterSkill -> castMasterSkill(action.skill, action.target)
+        is AutoSkillAction.TargetEnemy -> selectEnemyTarget(action.enemy)
+        is AutoSkillAction.OrderChange -> orderChange(action)
+        AutoSkillAction.NoOp -> Unit
     }
 
     fun resetState() {
         isFinished = false
-
-        changeArray(defaultFunctionArray)
     }
 
-    private var commandTable = emptyList<List<String>>()
-
-    private fun validate(cmd: String) {
-        if (cmd != "0") {
-            when {
-                """^[1-3]""".toRegex().containsMatchIn(cmd) -> {
-                    throw ScriptExitException("Error at '${cmd}': Skill Command cannot start with number '1', '2' and '3'!")
-                }
-                cmd.contains('#') -> {
-                    throw ScriptExitException("Error at '${cmd}': '#' must be preceded and followed by ','! Correct: ',#,'")
-                }
-                """[^a-l1-6#ntx]""".toRegex().containsMatchIn(cmd) -> {
-                    throw ScriptExitException("Error at '${cmd}': Skill Command exceeded alphanumeric range! Expected 'x', 'n', 't' or range 'a' to 'l' for alphabets and '0' to '6' for numbers.")
-                }
-            }
-        }
-    }
-
-    private fun initCommands() {
-        val waves = prefs.selectedAutoSkillConfig.skillCommand
-            .split(",#,")
-
-        commandTable = waves
-            .map {
-                val turns = it.split(',')
-                turns.forEach { cmd -> validate(cmd) }
-
-                turns
-            }
-    }
+    lateinit var commandTable: AutoSkillCommand
 
     fun init(BattleModule: Battle, CardModule: Card) {
         battle = BattleModule
         card = CardModule
 
-        initCommands()
+        commandTable = AutoSkillCommand.parse(
+            prefs.selectedAutoSkillConfig.skillCommand
+        )
 
         resetState()
-    }
-
-    private fun getCommandListFor(Stage: Int, Turn: Int): String {
-        if (Stage < commandTable.size) {
-            val commandList = commandTable[Stage]
-
-            if (Turn < commandList.size) {
-                return commandList[Turn]
-            }
-        }
-
-        return ""
-    }
-
-    private fun executeCommandList(CommandList: String) {
-        for (command in CommandList) {
-            currentArray[command]?.invoke()
-        }
     }
 
     fun execute() {
         val stage = battle.state.runState.stage
         val turn = battle.state.runState.turn
 
-        val commandList = getCommandListFor(stage, turn)
+        val commandList = commandTable[stage, turn]
 
         if (commandList.isNotEmpty()) {
-            executeCommandList(commandList)
-        } else if (stage >= commandTable.lastIndex) {
+            for (action in commandList) {
+                act(action)
+            }
+        } else if (stage >= commandTable.lastStage) {
             // this will allow NP spam after all commands have been executed
             isFinished = true
         }
