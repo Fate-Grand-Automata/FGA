@@ -1,6 +1,5 @@
-package com.mathewsachin.fategrandautomata.scripts.modules
+package com.mathewsachin.fategrandautomata.scripts.models
 
-import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.libautomata.ScriptExitException
 import java.util.*
 
@@ -22,19 +21,19 @@ class AutoSkillCommand private constructor(
     }
 
     companion object {
-        private fun getTarget(queue: Deque<Char>): ServantTarget? {
-            val peekTarget = queue.peekFirst()
+        private fun getTarget(queue: Queue<Char>): ServantTarget? {
+            val peekTarget = queue.peek()
             val target = ServantTarget.list.firstOrNull { it.autoSkillCode == peekTarget }
             if (target != null) {
-                queue.removeFirst()
+                queue.remove()
             }
 
             return target
         }
 
-        fun parseAction(queue: Deque<Char>): AutoSkillAction {
+        fun parseAction(queue: Queue<Char>): AutoSkillAction {
             try {
-                return when (val c = queue.removeFirst()) {
+                return when (val c = queue.remove()) {
                     in Skill.Servant.list.map { it.autoSkillCode } -> {
                         val skill = Skill.Servant.list.first { it.autoSkillCode == c }
                         val target = getTarget(queue)
@@ -53,21 +52,21 @@ class AutoSkillCommand private constructor(
                         AutoSkillAction.NP(np)
                     }
                     't' -> {
-                        val code = queue.removeFirst()
+                        val code = queue.remove()
                         val target = EnemyTarget.list.first { it.autoSkillCode == code }
                         AutoSkillAction.TargetEnemy(target)
                     }
                     'n' -> {
-                        val code = queue.removeFirst()
+                        val code = queue.remove()
                         val count = code.toString().toInt()
                         AutoSkillAction.CardsBeforeNP(count)
                     }
                     'x' -> {
-                        val startingCode = queue.removeFirst()
+                        val startingCode = queue.remove()
                         val starting = OrderChangeMember.Starting.list
                             .first { it.autoSkillCode == startingCode }
 
-                        val subCode = queue.removeFirst()
+                        val subCode = queue.remove()
                         val sub = OrderChangeMember.Sub.list
                             .first { it.autoSkillCode == subCode }
 

@@ -1,6 +1,4 @@
-package com.mathewsachin.fategrandautomata.scripts.modules
-
-import com.mathewsachin.fategrandautomata.scripts.models.*
+package com.mathewsachin.fategrandautomata.scripts.models
 
 sealed class AutoSkillAction {
     class CardsBeforeNP(val count: Int) : AutoSkillAction() {
