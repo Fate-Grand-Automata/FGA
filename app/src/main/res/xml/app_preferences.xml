@@ -76,7 +76,7 @@
         app:entryValues="@array/boost_item_values"
         app:icon="@drawable/ic_boost"
         app:key="@string/pref_boost_item"
-        app:title="Boost Item"
+        app:title="@string/p_boost_item"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
@@ -85,14 +85,14 @@
         app:entryValues="@array/brave_chain_values"
         app:icon="@drawable/ic_crown"
         app:key="@string/pref_brave_chains"
-        app:title="Brave Chains (Experimental)"
+        app:title="@string/p_brave_chains"
         app:useSimpleSummaryProvider="true" />
 
     <SwitchPreferenceCompat
         app:icon="@drawable/ic_card"
         app:key="@string/pref_rearrange_cards"
-        app:title="Rearrange Cards"
-        app:summary="Experimental" />
+        app:title="@string/p_rearrange_cards"
+        app:summary="@string/p_experimental" />
 
     <!--    <SwitchPreferenceCompat-->
     <!--        app:defaultValue="false"-->
@@ -102,7 +102,7 @@
 
     <PreferenceCategory
         app:key="app_category"
-        app:title="Advanced">
+        app:title="@string/p_advanced">
         <Preference
             app:key="@string/pref_nav_fine_tune"
             app:title="Fine-tune"
