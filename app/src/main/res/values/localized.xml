@@ -62,6 +62,15 @@
     <string name="p_more_options">More options</string>
     <string name="p_update_available">Update Available</string>
 
+    <string name="p_enable_refill">Enable Refill</string>
+    <string name="p_repetitions">Repetitions</string>
+    <string name="p_auto_decrement">Auto-decrement</string>
+    <string name="p_auto_decrement_summary">Automatically decrease the refill amount by number of apples used</string>
+    <string name="p_resource">Resource</string>
+    <string name="p_run_limit">Run limit</string>
+    <string name="p_limit_no_of_runs">Limit number of runs</string>
+    <string name="p_runs">Runs</string>
+
     <string name="p_max_skill_1">Max Skill 1</string>
     <string name="p_max_skill_2">Max Skill 2</string>
     <string name="p_max_skill_3">Max Skill 3</string>
