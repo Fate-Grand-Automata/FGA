@@ -28,4 +28,9 @@
 
     <string name="auto_skill_master_skills_header">Master Skills</string>
     <string name="auto_skill_master_skills_order_change">Order Change / Plug-suit</string>
+
+    <string name="auto_skill_order_change_header">Order Change</string>
+    <string name="auto_skill_order_change_starting_member">Starting Member</string>
+    <string name="auto_skill_order_change_sub_member">Sub Member</string>
+    <string name="auto_skill_order_change_servant">Servant\n\n%d</string>
 </resources>
