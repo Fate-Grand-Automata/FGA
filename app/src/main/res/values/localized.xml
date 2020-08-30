@@ -18,23 +18,30 @@
     <string name="auto_skill_maker_atk_next_wave">Next Wave</string>
     <string name="auto_skill_maker_atk_next_turn">Next Turn \nin same wave</string>
 
-    <string name="auto_skill_main_enemy">Enemy %d</string>
-    <string name="auto_skill_main_battle">Battle: %d</string>
-    <string name="auto_skill_main_turn">Turn: %d</string>
-    <string name="auto_skill_main_master_skills">Master\n Skills</string>
-    <string name="auto_skill_main_undo">Undo</string>
-    <string name="auto_skill_main_servant">Servant %d</string>
-    <string name="auto_skill_main_attack">Attack</string>
+    <string name="auto_skill_maker_main_enemy">Enemy %d</string>
+    <string name="auto_skill_maker_main_battle">Battle: %d</string>
+    <string name="auto_skill_maker_main_turn">Turn: %d</string>
+    <string name="auto_skill_maker_main_master_skills">Master\n Skills</string>
+    <string name="auto_skill_maker_main_undo">Undo</string>
+    <string name="auto_skill_maker_main_servant">Servant %d</string>
+    <string name="auto_skill_maker_main_attack">Attack</string>
 
-    <string name="auto_skill_master_skills_header">Master Skills</string>
-    <string name="auto_skill_master_skills_order_change">Order Change / Plug-suit</string>
+    <string name="auto_skill_maker_master_skills_header">Master Skills</string>
+    <string name="auto_skill_maker_master_skills_order_change">Order Change / Plug-suit</string>
 
-    <string name="auto_skill_order_change_header">Order Change</string>
-    <string name="auto_skill_order_change_starting_member">Starting Member</string>
-    <string name="auto_skill_order_change_sub_member">Sub Member</string>
-    <string name="auto_skill_order_change_servant">Servant\n\n%d</string>
+    <string name="auto_skill_maker_order_change_header">Order Change</string>
+    <string name="auto_skill_maker_order_change_starting_member">Starting Member</string>
+    <string name="auto_skill_maker_order_change_sub_member">Sub Member</string>
+    <string name="auto_skill_maker_order_change_servant">Servant\n\n%d</string>
+
+    <string name="auto_skill_maker_target_header">Choose Target</string>
 
     <string name="card_priority_menu_info">Info</string>
+    <string name="card_priority_high">HIGH</string>
+    <string name="card_priority_low">LOW</string>
+    <string name="card_priority_add_wave">Add Wave</string>
+    <string name="card_priority_remove_last_wave">Remove Last Wave</string>
+
     <string name="toggle_service">Toggle Service</string>
     <string name="fine_tune_menu_reset_to_defaults">Reset to defaults</string>
     <string name="support_img_namer_item_name">Name</string>
