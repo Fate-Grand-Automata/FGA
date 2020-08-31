@@ -110,8 +110,8 @@
     <string name="p_advanced">고급</string>
     <string name="p_debug_mode">디버그 모드</string>
     <string name="p_debug_mode_summary">대조되고 있는 부분 표시하기</string>
-    <string name="p_ignore_notch">노치 계산 무시</string>
-    <string name="p_ignore_notch_summary">삼성 폰에서 유용 (S10 이상)</string>
+    <string name="p_ignore_notch">노치(화면에 구멍난 거) 계산 무시</string>
+    <string name="p_ignore_notch_summary">삼성 폰에서 유용</string>
     <string name="p_record_screen">화면 녹화</string>
     <string name="p_record_screen_summary">루팅 설정에서는 작동 안함.\n \'record.mp4\' 라는 파일이 \'Fate-Grand-Automata\' 폴더에 저장될 것.\n저장하고 싶다면 복사하거나 파일명을 변경할 것.</string>
     <string name="p_root_screenshot">루트 권한으로 스크린샷 하기</string>
