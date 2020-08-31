@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
     <string name="card_prority_wave_number">웨이브 %d</string>
 
     <string name="auto_skill_item_copy">복사</string>
