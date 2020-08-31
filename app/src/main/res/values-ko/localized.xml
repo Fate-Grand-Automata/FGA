@@ -35,7 +35,7 @@
     <string name="auto_skill_maker_order_change_servant">서번트\n\n%d</string>
 
     <string name="auto_skill_maker_target_header">대상 선택</string>
-    <string name="auto_skill_maker_target_none">대상 선택</string>
+    <string name="auto_skill_maker_target_none">대상 없음</string>
     <string name="auto_skill_maker_target_servant">서번트\n\n%d</string>
 
     <string name="card_priority_menu_info">정보</string>
