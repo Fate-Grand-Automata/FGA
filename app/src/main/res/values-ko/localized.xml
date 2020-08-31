@@ -129,4 +129,45 @@
     <string name="p_nav_auto_skill_edit">설정 파일 수정</string>
     <string name="p_nav_skill_levels">스킬 레벨</string>
     <string name="p_nav_card_priority">카드 우선</string>
+    
+    <string name="p_refill_type_all_apples">사과만 (성정석 제외)</string>
+    <string name="p_refill_type_gold">금</string>
+    <string name="p_refill_type_silver">은</string>
+    <string name="p_refill_type_bronze">동</string>
+    <string name="p_refill_type_sq">성정석 (무지개)</string>
+
+    <string name="p_brave_chains_don_t_care">상관 없음</string>
+    <string name="p_brave_chains_after_np">보구 후</string>
+    <string name="p_brave_chains_avoid">자제</string>
+
+    <string name="p_boost_item_disabled">비활성화</string>
+    <string name="p_boost_item_skip">스킵</string>
+
+    <string name="p_cast_np_none">없음</string>
+    <string name="p_cast_np_spam">반복</string>
+    <string name="p_cast_np_danger">위험</string>
+
+    <string name="p_support_mode_first">첫번째</string>
+    <string name="p_support_mode_manual">수동</string>
+    <string name="p_support_mode_preferred">선호</string>
+    <string name="p_support_mode_friend">친구</string>
+
+    <string name="p_script_mode_battle">배틀</string>
+    <string name="p_script_mode_lottery">룰렛</string>
+    <string name="p_script_mode_friend_gacha">프렌드 포인트 가챠</string>
+    <string name="p_script_mode_support_img_maker">서포트 이미지 메이커</string>
+
+    <string name="p_party_not_set">설정 안함</string>
+
+    <string name="p_support_class_none">없음</string>
+    <string name="p_support_class_all">모두</string>
+    <string name="p_support_class_saber">세이버</string>
+    <string name="p_support_class_archer">아처</string>
+    <string name="p_support_class_lancer">랜서</string>
+    <string name="p_support_class_rider">라이더</string>
+    <string name="p_support_class_caster">캐스터</string>
+    <string name="p_support_class_assassin">어쌔신</string>
+    <string name="p_support_class_berserker">버서커</string>
+    <string name="p_support_class_extra">엑스트라</string>
+    <string name="p_support_class_mix">혼합</string>
 </resources>
