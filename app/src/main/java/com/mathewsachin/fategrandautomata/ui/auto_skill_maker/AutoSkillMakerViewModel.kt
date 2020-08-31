@@ -4,20 +4,55 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 
 class AutoSkillMakerViewModel @ViewModelInject constructor(
+    val prefs: IPreferences,
     @Assisted val savedState: SavedStateHandle
 ) : ViewModel() {
     companion object {
         const val NoEnemy = -1
     }
 
-    var autoSkillItemKey = ""
+    val autoSkillItemKey: String = savedState[AutoSkillMakerActivityArgs::key.name]
+        ?: throw kotlin.Exception("Couldn't get AutoSkill key")
+
+    val autoSkillPrefs = prefs.forAutoSkillConfig(autoSkillItemKey)
 
     val state = savedState.get(::savedState.name)
         ?: AutoSkillMakerSavedState()
 
-    val model = AutoSkillMakerModel(state.skillString)
+    private val model: AutoSkillMakerModel
+    private val _stage: MutableLiveData<Int>
+
+    init {
+        model = if (state.skillString != null) {
+            AutoSkillMakerModel(state.skillString)
+        } else {
+            val skillString = autoSkillPrefs.skillCommand
+            val m = try {
+                AutoSkillMakerModel(skillString)
+            } catch (e: Exception) {
+                AutoSkillMakerModel("")
+            }
+
+            if (skillString.isNotEmpty()) {
+                when (m.skillCommand.last()) {
+                    is AutoSkillMakerEntry.Action -> m.skillCommand.add(AutoSkillMakerEntry.NextWave)
+                }
+            }
+
+            m
+        }
+
+        _stage = if (state.skillString != null) {
+            MutableLiveData(state.stage)
+        } else {
+            MutableLiveData(
+                model.skillCommand.count { it is AutoSkillMakerEntry.NextWave } + 1
+            )
+        }
+    }
 
     private var currentSkill = state.currentSkill
 
@@ -52,7 +87,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     private fun getSkillCmdString() = model.toString()
 
-    private val currentIndex get() = model.skillCommand.lastIndex
+    val currentIndex get() = model.skillCommand.lastIndex
 
     private fun add(entry: AutoSkillMakerEntry) {
         model.skillCommand.add(currentIndex + 1, entry)
@@ -116,8 +151,6 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         cardsBeforeNp.value = cards
     }
 
-    private val _stage = MutableLiveData(state.stage)
-
     fun MutableLiveData<Int>.next() {
         value = (value ?: 1) + 1
     }
@@ -163,6 +196,21 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     fun finish(): String {
         addNpsToSkillCmd()
+
+        // currentIndex = model.skillCommand.lastIndex
+        while (true) {
+            when (val last = last) {
+                is AutoSkillMakerEntry.NextWave,
+                is AutoSkillMakerEntry.NextTurn -> undo()
+                is AutoSkillMakerEntry.Action -> {
+                    when (last.action) {
+                        AutoSkillAction.NoOp -> undo()
+                        else -> break
+                    }
+                }
+                else -> break
+            }
+        }
 
         return getSkillCmdString()
     }
@@ -213,6 +261,8 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         }
 
         add(Separator)
+
+        clearNpSequence()
     }
 
     fun nextTurn() = onNext(AutoSkillMakerEntry.NextTurn)

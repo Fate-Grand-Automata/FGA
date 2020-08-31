@@ -40,6 +40,8 @@ class AutoSkillMakerMainFragment : Fragment() {
 
         viewModel.skillCommand.observe(viewLifecycleOwner) {
             adapter.update(it)
+
+            recyclerView.scrollToPosition(viewModel.currentIndex)
         }
     }
 

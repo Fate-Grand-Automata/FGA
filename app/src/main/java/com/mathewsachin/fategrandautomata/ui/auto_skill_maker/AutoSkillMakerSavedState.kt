@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class AutoSkillMakerSavedState(
-    val skillString: String = "",
+    val skillString: String? = null,
     val enemyTarget: Int = -1,
     val stage: Int = 1,
     val currentSkill: Char = '0',
