@@ -74,6 +74,7 @@
     <string name="pref_rearrange_cards">rearrange_cards</string>
 
     <string name="pref_can_pause_script">can_pause_script</string>
+    <string name="pref_auto_skill_cmd_text">auto_skill_cmd_text</string>
 
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_auto_skill">nav_auto_skill</string>
