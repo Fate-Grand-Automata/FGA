@@ -34,6 +34,9 @@ class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi
             selectSkillTarget(target)
         }
 
+        // Close the window that opens up if skill is on cool-down
+        Game.battleExtraInfoWindowCloseClick.click()
+
         waitForAnimationToFinish()
     }
 
