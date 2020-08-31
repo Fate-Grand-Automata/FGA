@@ -129,4 +129,45 @@
     <string name="p_nav_auto_skill_edit">Edit config</string>
     <string name="p_nav_skill_levels">Skill Levels</string>
     <string name="p_nav_card_priority">Card Priority</string>
+
+    <string name="p_refill_type_all_apples">All Apples (NO SQ)</string>
+    <string name="p_refill_type_gold">Gold</string>
+    <string name="p_refill_type_silver">Silver</string>
+    <string name="p_refill_type_bronze">Bronze</string>
+    <string name="p_refill_type_sq">SQ (Rainbow)</string>
+
+    <string name="p_brave_chains_don_t_care">Don\'t care</string>
+    <string name="p_brave_chains_after_np">After NP</string>
+    <string name="p_brave_chains_avoid">Avoid</string>
+
+    <string name="p_boost_item_disabled">Disabled</string>
+    <string name="p_boost_item_skip">Skip</string>
+
+    <string name="p_cast_np_none">None</string>
+    <string name="p_cast_np_spam">Spam</string>
+    <string name="p_cast_np_danger">Danger</string>
+
+    <string name="p_support_mode_first">First</string>
+    <string name="p_support_mode_manual">Manual</string>
+    <string name="p_support_mode_preferred">Preferred</string>
+    <string name="p_support_mode_friend">Friend</string>
+
+    <string name="p_script_mode_battle">Battle</string>
+    <string name="p_script_mode_lottery">Lottery</string>
+    <string name="p_script_mode_friend_gacha">Friend Gacha</string>
+    <string name="p_script_mode_support_img_maker">Support Image Maker</string>
+
+    <string name="p_party_not_set">Not Set</string>
+
+    <string name="p_support_class_none">None</string>
+    <string name="p_support_class_all">All</string>
+    <string name="p_support_class_saber">Saber</string>
+    <string name="p_support_class_archer">Archer</string>
+    <string name="p_support_class_lancer">Lancer</string>
+    <string name="p_support_class_rider">Rider</string>
+    <string name="p_support_class_caster">Caster</string>
+    <string name="p_support_class_assassin">Assassin</string>
+    <string name="p_support_class_berserker">Berserker</string>
+    <string name="p_support_class_extra">Extra</string>
+    <string name="p_support_class_mix">Mix</string>
 </resources>

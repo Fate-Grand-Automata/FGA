@@ -33,8 +33,8 @@
         app:title="@string/p_auto_skill_support">
         <ListPreference
             app:defaultValue="None"
-            app:entries="@array/support_class"
-            app:entryValues="@array/support_class"
+            app:entries="@array/support_class_labels"
+            app:entryValues="@array/support_class_values"
             app:icon="@drawable/ic_diamond"
             app:key="@string/pref_autoskill_support_class"
             app:title="@string/p_auto_skill_support_class"
@@ -42,8 +42,8 @@
 
         <ListPreference
             app:defaultValue="Preferred"
-            app:entries="@array/support_selection_modes"
-            app:entryValues="@array/support_selection_modes"
+            app:entries="@array/support_selection_modes_labels"
+            app:entryValues="@array/support_selection_modes_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_mode"
             app:title="@string/p_auto_skill_support_selection_mode"
@@ -51,8 +51,8 @@
 
         <ListPreference
             app:defaultValue="Manual"
-            app:entries="@array/support_selection_modes_fallback"
-            app:entryValues="@array/support_selection_modes_fallback"
+            app:entries="@array/support_selection_modes_fallback_labels"
+            app:entryValues="@array/support_selection_modes_fallback_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_fallback"
             app:title="@string/p_auto_skill_support_fallback_selection_mode"
