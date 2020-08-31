@@ -73,6 +73,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         preferredSupportOnCreate()
 
+        findPreference<EditTextPreference>(getString(R.string.pref_autoskill_notes))?.makeMultiLine()
+
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.setOnPreferenceClickListener {
                 val action = AutoSkillItemSettingsFragmentDirections

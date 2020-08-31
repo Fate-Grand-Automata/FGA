@@ -14,6 +14,12 @@ fun EditTextPreference.makeNumeric() {
     }
 }
 
+fun EditTextPreference.makeMultiLine() {
+    setOnBindEditTextListener {
+        it.isSingleLine = false
+    }
+}
+
 fun PreferenceFragmentCompat.findServantList() =
     findPreference<MultiSelectListPreference>(getString(prefKeys.pref_support_pref_servant))
 
