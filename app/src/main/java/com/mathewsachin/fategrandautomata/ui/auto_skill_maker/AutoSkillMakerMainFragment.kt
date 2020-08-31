@@ -17,7 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AutoSkillMakerMainFragment : Fragment() {
     val viewModel: AutoSkillMakerViewModel by activityViewModels()
-    val adapter = AutoSkillMakerHistoryAdapter()
+    val adapter = AutoSkillMakerHistoryAdapter {
+        viewModel.setCurrentIndex(it)
+    }
     lateinit var binding: AutoskillMakerMainBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
@@ -39,9 +41,10 @@ class AutoSkillMakerMainFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         viewModel.skillCommand.observe(viewLifecycleOwner) {
-            adapter.update(it)
+            val currentIndex = viewModel.currentIndex.value ?: 0
+            adapter.update(it, currentIndex)
 
-            recyclerView.scrollToPosition(viewModel.currentIndex)
+            recyclerView.scrollToPosition(currentIndex)
         }
     }
 
@@ -86,5 +89,10 @@ class AutoSkillMakerMainFragment : Fragment() {
             .actionAutoSkillMakerMainFragmentToAutoSkillMakerTargetFragment()
 
         findNavController().navigate(action)
+    }
+
+    fun onDone() {
+        viewModel.autoSkillPrefs.skillCommand = viewModel.finish()
+        activity?.finish()
     }
 }

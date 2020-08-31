@@ -25,6 +25,9 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     private val model: AutoSkillMakerModel
     private val _stage: MutableLiveData<Int>
 
+    private val _currentIndex = MutableLiveData<Int>()
+    val currentIndex: LiveData<Int> = _currentIndex
+
     init {
         model = if (state.skillString != null) {
             AutoSkillMakerModel(state.skillString)
@@ -37,8 +40,10 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             }
 
             if (skillString.isNotEmpty()) {
-                when (m.skillCommand.last()) {
-                    is AutoSkillMakerEntry.Action -> m.skillCommand.add(AutoSkillMakerEntry.NextWave)
+                when (val l = m.skillCommand.last()) {
+                    is AutoSkillMakerEntry.Action -> when (l.action) {
+                        is AutoSkillAction.NP -> m.skillCommand.add(AutoSkillMakerEntry.NextWave)
+                    }
                 }
             }
 
@@ -52,6 +57,10 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
                 model.skillCommand.count { it is AutoSkillMakerEntry.NextWave } + 1
             )
         }
+
+        _currentIndex.value = if (state.skillString != null) {
+            state.currentIndex
+        } else model.skillCommand.lastIndex
     }
 
     private var currentSkill = state.currentSkill
@@ -65,7 +74,8 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             npSequence.value ?: emptyList(),
             cardsBeforeNp.value ?: 0,
             xSelectedParty.value ?: 1,
-            xSelectedSub.value ?: 1
+            xSelectedSub.value ?: 1,
+            currentIndex.value ?: 0
         )
 
         savedState.set(::savedState.name, saveState)
@@ -87,33 +97,39 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     private fun getSkillCmdString() = model.toString()
 
-    val currentIndex get() = model.skillCommand.lastIndex
+    fun setCurrentIndex(index: Int) {
+        _currentIndex.value = index
+
+        notifySkillCommandUpdate()
+    }
 
     private fun add(entry: AutoSkillMakerEntry) {
-        model.skillCommand.add(currentIndex + 1, entry)
+        model.skillCommand.add((currentIndex.value ?: 0) + 1, entry)
+        _currentIndex.next()
 
         notifySkillCommandUpdate()
     }
 
     private fun undo() {
-        model.skillCommand.removeAt(currentIndex)
+        model.skillCommand.removeAt(currentIndex.value ?: 0)
+        _currentIndex.prev()
 
         notifySkillCommandUpdate()
     }
 
-    private fun isEmpty() = currentIndex == 0
+    private fun isEmpty() = currentIndex.value == 0
 
     private var last: AutoSkillMakerEntry
-        get() = model.skillCommand[currentIndex]
+        get() = model.skillCommand[currentIndex.value ?: 0]
         set(value) {
-            model.skillCommand[currentIndex] = value
+            model.skillCommand[currentIndex.value ?: 0] = value
 
             notifySkillCommandUpdate()
         }
 
     private fun reverseIterate(): List<AutoSkillMakerEntry> =
         model.skillCommand
-            .take(currentIndex + 1)
+            .take((currentIndex.value ?: 0) + 1)
             .reversed()
 
     private val _enemyTarget = MutableLiveData(state.enemyTarget)
@@ -195,9 +211,8 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     }
 
     fun finish(): String {
-        addNpsToSkillCmd()
+        _currentIndex.value = model.skillCommand.lastIndex
 
-        // currentIndex = model.skillCommand.lastIndex
         while (true) {
             when (val last = last) {
                 is AutoSkillMakerEntry.NextWave,
@@ -385,5 +400,9 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         clearNpSequence()
 
         cardsBeforeNp.value = 0
+    }
+
+    init {
+        revertToPreviousEnemyTarget()
     }
 }
