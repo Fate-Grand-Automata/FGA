@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 
 class AutoSkillMakerHistoryAdapter :
     RecyclerView.Adapter<AutoSkillMakerHistoryAdapter.ViewHolder>() {
@@ -14,9 +15,9 @@ class AutoSkillMakerHistoryAdapter :
         val textView: TextView = ItemView.findViewById(R.id.autoskill_maker_history_textview)
     }
 
-    private var items: List<String> = emptyList()
+    private var items: List<AutoSkillMakerEntry> = emptyList()
 
-    fun update(items: List<String>) {
+    fun update(items: List<AutoSkillMakerEntry>) {
         this.items = items
 
         notifyDataSetChanged()
@@ -36,22 +37,38 @@ class AutoSkillMakerHistoryAdapter :
 
         holder.itemView.let {
             if (it is CardView) {
-                val colorRes = when (cmd[0]) {
-                    // Turn/Battle change
-                    ',' -> R.color.colorStageChange
+                val defaultColor = R.color.colorAccent
 
-                    // Master Skill
-                    'j', 'k', 'l', 'x' -> R.color.colorMasterSkill
+                val colorRes = when (cmd) {
+                    is AutoSkillMakerEntry.NextWave,
+                    is AutoSkillMakerEntry.NextTurn -> R.color.colorStageChange
 
-                    // Enemy Target
-                    't' -> R.color.colorEnemyTarget
+                    is AutoSkillMakerEntry.Action -> when (cmd.action) {
+                        // Master Skill
+                        is AutoSkillAction.MasterSkill -> R.color.colorMasterSkill
 
-                    // Servants
-                    '4', 'a', 'b', 'c' -> R.color.colorServant1
-                    '5', 'd', 'e', 'f' -> R.color.colorServant2
-                    '6', 'g', 'h', 'i' -> R.color.colorServant3
+                        // Enemy Target
+                        is AutoSkillAction.TargetEnemy -> R.color.colorEnemyTarget
 
-                    else -> R.color.colorAccent
+                        // Servants
+                        is AutoSkillAction.ServantSkill -> when (cmd.action.skill.autoSkillCode) {
+                            'a', 'b', 'c' -> R.color.colorServant1
+                            'd', 'e', 'f' -> R.color.colorServant2
+                            'g', 'h', 'i' -> R.color.colorServant3
+                            else -> defaultColor
+                        }
+
+                        is AutoSkillAction.NP -> when (cmd.action.np.autoSkillCode) {
+                            '4' -> R.color.colorServant1
+                            '5' -> R.color.colorServant2
+                            '6' -> R.color.colorServant3
+                            else -> defaultColor
+                        }
+
+                        else -> defaultColor
+                    }
+
+                    else -> defaultColor
                 }
 
                 val color = it.context.getColor(colorRes)
@@ -60,6 +77,8 @@ class AutoSkillMakerHistoryAdapter :
             }
         }
 
-        holder.textView.text = cmd
+        holder.textView.text =
+            if (cmd is AutoSkillMakerEntry.Start) ">"
+            else cmd.toString()
     }
 }

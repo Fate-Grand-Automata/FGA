@@ -76,14 +76,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/auto_skill_maker_main_turn(vm.turn)}"
-            tools:text="Turn: 1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/battle_stage_label" />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/atk_btn"
             android:layout_width="100dp"

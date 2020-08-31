@@ -4,7 +4,7 @@ import com.mathewsachin.libautomata.ScriptExitException
 import java.util.*
 
 class AutoSkillCommand private constructor(
-    private val stages: List<List<List<AutoSkillAction>>>
+    val stages: List<List<List<AutoSkillAction>>>
 ) {
     val lastStage = stages.lastIndex
 

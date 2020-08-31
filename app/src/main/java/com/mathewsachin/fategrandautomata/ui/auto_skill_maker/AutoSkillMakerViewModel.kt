@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.mathewsachin.fategrandautomata.scripts.models.*
 
 class AutoSkillMakerViewModel @ViewModelInject constructor(
     @Assisted val savedState: SavedStateHandle
@@ -16,14 +17,15 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     val state = savedState.get(::savedState.name)
         ?: AutoSkillMakerSavedState()
 
+    val model = AutoSkillMakerModel(state.skillString)
+
     private var currentSkill = state.currentSkill
 
     fun saveState() {
         val saveState = AutoSkillMakerSavedState(
-            state.skillCommand,
+            model.toString(),
             enemyTarget.value ?: NoEnemy,
             stage.value ?: 1,
-            turn.value ?: 1,
             currentSkill,
             npSequence.value ?: emptyList(),
             cardsBeforeNp.value ?: 0,
@@ -40,43 +42,46 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         saveState()
     }
 
-    private val _skillCommand = MutableLiveData(state.skillCommand)
+    private val _skillCommand = MutableLiveData(model.skillCommand)
 
-    val skillCommand: LiveData<List<String>> = Transformations.map(_skillCommand) { it }
+    val skillCommand: LiveData<List<AutoSkillMakerEntry>> = Transformations.map(_skillCommand) { it }
 
     private fun notifySkillCommandUpdate() {
-        _skillCommand.value = state.skillCommand
+        _skillCommand.value = model.skillCommand
     }
 
-    private fun getSkillCmdString() = state.skillCommand.joinToString("")
+    private fun getSkillCmdString() = model.toString()
 
-    private fun add(Cmd: String) {
-        state.skillCommand.add(Cmd)
+    private val currentIndex get() = model.skillCommand.lastIndex
+
+    private fun add(entry: AutoSkillMakerEntry) {
+        model.skillCommand.add(currentIndex + 1, entry)
 
         notifySkillCommandUpdate()
     }
 
     private fun undo() {
-        val pos = state.skillCommand.lastIndex
-
-        state.skillCommand.removeAt(pos)
+        model.skillCommand.removeAt(currentIndex)
 
         notifySkillCommandUpdate()
     }
 
-    private fun isEmpty() = state.skillCommand.isEmpty()
+    private fun isEmpty() = currentIndex == 0
 
-    private var last
-        get() = state.skillCommand.last()
+    private var last: AutoSkillMakerEntry
+        get() = model.skillCommand[currentIndex]
         set(value) {
-            state.skillCommand[state.skillCommand.lastIndex] = value
+            model.skillCommand[currentIndex] = value
 
             notifySkillCommandUpdate()
         }
 
-    private fun reverseIterate() = state.skillCommand.reversed()
+    private fun reverseIterate(): List<AutoSkillMakerEntry> =
+        model.skillCommand
+            .take(currentIndex + 1)
+            .reversed()
 
-    private val _enemyTarget = MutableLiveData<Int>(state.enemyTarget)
+    private val _enemyTarget = MutableLiveData(state.enemyTarget)
 
     val enemyTarget: LiveData<Int> = _enemyTarget
 
@@ -87,10 +92,16 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             return
         }
 
-        val targetCmd = "t${target}"
+        val targetCmd = AutoSkillMakerEntry.Action(
+            AutoSkillAction.TargetEnemy(
+                EnemyTarget.list[target - 1]
+            )
+        )
+
+        val l = last
 
         // Merge consecutive target changes
-        if (!isEmpty() && last[0] == 't') {
+        if (!isEmpty() && l is AutoSkillMakerEntry.Action && l.action is AutoSkillAction.TargetEnemy) {
             last = targetCmd
         } else {
             add(targetCmd)
@@ -99,14 +110,13 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     fun unSelectTargets() = setEnemyTarget(NoEnemy)
 
-    val cardsBeforeNp = MutableLiveData<Int>(state.cardsBeforeNp)
+    val cardsBeforeNp = MutableLiveData(state.cardsBeforeNp)
 
     fun setCardsBeforeNp(cards: Int) {
         cardsBeforeNp.value = cards
     }
 
-    private val _stage = MutableLiveData<Int>(state.stage)
-    private val _turn = MutableLiveData<Int>(state.turn)
+    private val _stage = MutableLiveData(state.stage)
 
     fun MutableLiveData<Int>.next() {
         value = (value ?: 1) + 1
@@ -117,23 +127,26 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     }
 
     val stage: LiveData<Int> = _stage
-    val turn: LiveData<Int> = _turn
-
     private fun prevStage() = _stage.prev()
-    private fun prevTurn() = _turn.prev()
 
     fun initSkill(SkillCode: Char) {
         currentSkill = SkillCode
     }
 
     fun targetSkill(TargetCommand: Char?) {
-        var cmd = currentSkill.toString()
+        val skill = (Skill.Servant.list + Skill.Master.list)
+            .first { it.autoSkillCode == currentSkill }
 
-        if (TargetCommand != null) {
-            cmd += TargetCommand
-        }
+        val target = ServantTarget.list.firstOrNull { it.autoSkillCode == TargetCommand }
 
-        add(cmd)
+        add(
+            AutoSkillMakerEntry.Action(
+                when (skill) {
+                    is Skill.Servant -> AutoSkillAction.ServantSkill(skill, target)
+                    is Skill.Master -> AutoSkillAction.MasterSkill(skill, target)
+                }
+            )
+        )
     }
 
     fun onNpClick(command: Char) {
@@ -158,49 +171,59 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         npSequence.value?.let { nps ->
             if (nps.isNotEmpty()) {
                 when (cardsBeforeNp.value) {
-                    1 -> add("n1")
-                    2 -> add("n2")
+                    1 -> add(
+                        AutoSkillMakerEntry.Action(
+                            AutoSkillAction.CardsBeforeNP(1)
+                        )
+                    )
+                    2 -> add(
+                        AutoSkillMakerEntry.Action(
+                            AutoSkillAction.CardsBeforeNP(2)
+                        )
+                    )
                 }
             }
 
             // Show each NP as separate entry
             for (np in nps) {
-                add(np.toString())
+                add(
+                    AutoSkillMakerEntry.Action(
+                        AutoSkillAction.NP(
+                            CommandCard.NP.list.first { it.autoSkillCode == np }
+                        )
+                    )
+                )
             }
 
             // Add a '0' before consecutive turn/battle changes
-            if (!isEmpty() && last.last() == ',') {
-                add("0")
+            if (!isEmpty() && (last is AutoSkillMakerEntry.NextWave || last is AutoSkillMakerEntry.NextTurn)) {
+                add(AutoSkillMakerEntry.Action(AutoSkillAction.NoOp))
             }
-
-            clearNpSequence()
         }
     }
 
-    private fun onNext(Separator: String) {
+    private fun onNext(Separator: AutoSkillMakerEntry) {
         // Uncheck selected targets
         unSelectTargets()
 
         addNpsToSkillCmd()
 
         if (isEmpty()) {
-            add("0")
+            add(AutoSkillMakerEntry.Action(AutoSkillAction.NoOp))
         }
 
         add(Separator)
-
-        _turn.next()
     }
 
-    fun nextTurn() = onNext(",")
+    fun nextTurn() = onNext(AutoSkillMakerEntry.NextTurn)
 
     fun nextStage() {
         _stage.next()
-        onNext(",#,")
+        onNext(AutoSkillMakerEntry.NextWave)
     }
 
-    private val _xSelectedParty = MutableLiveData<Int>(state.xSelectedParty)
-    private val _xSelectedSub = MutableLiveData<Int>(state.xSelectedSub)
+    private val _xSelectedParty = MutableLiveData(state.xSelectedParty)
+    private val _xSelectedSub = MutableLiveData(state.xSelectedSub)
 
     val xSelectedParty: LiveData<Int> = _xSelectedParty
     val xSelectedSub: LiveData<Int> = _xSelectedSub
@@ -219,21 +242,32 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     }
 
     fun commitOrderChange() {
-        add("x${xSelectedParty.value}${xSelectedSub.value}")
+        add(
+            AutoSkillMakerEntry.Action(
+                AutoSkillAction.OrderChange(
+                    OrderChangeMember.Starting.list[(xSelectedParty.value ?: 1) - 1],
+                    OrderChangeMember.Sub.list[(xSelectedSub.value ?: 1) - 1]
+                )
+            )
+        )
     }
 
     private fun revertToPreviousEnemyTarget() {
-        // Find the previous target, but within the same turn
+        // Find the previous target, but within the same wave
         val previousTarget = reverseIterate()
-            .takeWhile { !it.contains(',') }
-            .firstOrNull { it.startsWith('t') }
+            .asSequence()
+            .takeWhile { it !is AutoSkillMakerEntry.NextWave }
+            .filterIsInstance<AutoSkillMakerEntry.Action>()
+            .map { it.action }
+            .filterIsInstance<AutoSkillAction.TargetEnemy>()
+            .firstOrNull()
 
         if (previousTarget == null) {
             unSelectTargets()
             return
         }
 
-        val target = when (previousTarget[1]) {
+        val target = when (previousTarget.enemy.autoSkillCode) {
             '1' -> 1
             '2' -> 2
             '3' -> 3
@@ -245,21 +279,25 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     private fun undoStageOrTurn() {
         // Decrement Battle/Turn count
-        if (last.contains('#')) {
+        if (last is AutoSkillMakerEntry.NextWave) {
             prevStage()
         }
-
-        prevTurn()
 
         // Undo the Battle/Turn change
         undo()
 
-        val itemsToRemove = setOf('4', '5', '6', 'n', '0')
+        fun shouldRemove(entry: AutoSkillMakerEntry) =
+            if (entry is AutoSkillMakerEntry.Action) {
+                when (entry.action) {
+                    is AutoSkillAction.NP,
+                    is AutoSkillAction.CardsBeforeNP,
+                    is AutoSkillAction.NoOp -> true
+                    else -> false
+                }
+            } else false
 
         // Remove NPs and cards before NPs
-        while (!isEmpty()
-            && last[0] in itemsToRemove
-        ) {
+        while (!isEmpty() && shouldRemove(last)) {
             undo()
         }
 
@@ -269,23 +307,27 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     fun onUndo(alertDialog: (onPositiveClick: () -> Unit) -> Unit) {
         if (!isEmpty()) {
             // Un-select target
-            when {
-                last.startsWith('t') -> {
-                    undo()
-                    revertToPreviousEnemyTarget()
-                }
+            when (val last = last) {
                 // Battle/Turn change
-                last.contains(',') -> {
+                is AutoSkillMakerEntry.NextWave, is AutoSkillMakerEntry.NextTurn -> {
                     alertDialog {
                         undoStageOrTurn()
                     }
                 }
-                else -> undo()
+                is AutoSkillMakerEntry.Action -> {
+                    if (last.action is AutoSkillAction.TargetEnemy) {
+                        undo()
+                        revertToPreviousEnemyTarget()
+                    } else undo()
+                }
+                // Do nothing
+                is AutoSkillMakerEntry.Start -> {
+                }
             }
         }
     }
 
-    private val _npSequence = MutableLiveData<List<Char>>(state.npSequence)
+    private val _npSequence = MutableLiveData(state.npSequence)
 
     val npSequence: LiveData<List<Char>> = _npSequence
 

@@ -5,10 +5,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class AutoSkillMakerSavedState(
-    val skillCommand: MutableList<String> = mutableListOf(),
+    val skillString: String = "",
     val enemyTarget: Int = -1,
     val stage: Int = 1,
-    val turn: Int = 1,
     val currentSkill: Char = '0',
     val npSequence: List<Char> = emptyList(),
     val cardsBeforeNp: Int = 0,
