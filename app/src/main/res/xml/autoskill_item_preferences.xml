@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
         app:defaultValue="--"
@@ -12,6 +13,12 @@
         app:icon="@drawable/ic_terminal"
         app:key="@string/pref_autoskill_cmd"
         app:title="@string/p_auto_skill_cmd"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        app:icon="@drawable/ic_note"
+        android:key="@string/pref_autoskill_notes"
+        app:title="@string/p_auto_skill_notes"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference

@@ -73,6 +73,7 @@
 
     <string name="p_auto_skill_name">Name</string>
     <string name="p_auto_skill_cmd">Command</string>
+    <string name="p_auto_skill_notes">Notes</string>
     <string name="p_auto_skill_party">Party</string>
     <string name="p_auto_skill_support_class">Class</string>
     <string name="p_auto_skill_card_priority">Card Priority</string>
