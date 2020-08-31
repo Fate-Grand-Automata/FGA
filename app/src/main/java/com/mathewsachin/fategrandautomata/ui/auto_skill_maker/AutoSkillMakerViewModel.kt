@@ -369,6 +369,14 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         revertToPreviousEnemyTarget()
     }
 
+    fun clear() {
+        _currentIndex.value = model.skillCommand.lastIndex
+
+        while (!isEmpty()) {
+            onUndo { it() }
+        }
+    }
+
     fun onUndo(alertDialog: (onPositiveClick: () -> Unit) -> Unit) {
         if (!isEmpty()) {
             // Un-select target

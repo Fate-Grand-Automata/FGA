@@ -66,6 +66,15 @@ class AutoSkillMakerMainFragment : Fragment() {
         }
     }
 
+    fun onClear() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirm Clear")
+            .setMessage("This will clear the AutoSkill command. Are you sure?")
+            .setNegativeButton(android.R.string.no, null)
+            .setPositiveButton(android.R.string.yes) { _, _ -> viewModel.clear() }
+            .show()
+    }
+
     fun goToAtk() {
         viewModel.initAtk()
 

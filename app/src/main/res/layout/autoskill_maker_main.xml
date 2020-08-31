@@ -116,11 +116,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{(v) -> ui.onUndo()}"
+            android:drawableStart="@drawable/ic_undo"
             android:text="@string/auto_skill_maker_main_undo"
             android:enabled="@{vm.currentIndex > 0}"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/auto_skill_history"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/auto_skill_clear_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v) -> ui.onClear()}"
+            android:drawableStart="@drawable/ic_clear"
+            android:text="@string/auto_skill_maker_main_clear"
+            android:enabled="@{vm.currentIndex > 0}"
+            app:layout_constraintTop_toTopOf="@id/auto_skill_undo_btn"
+            app:layout_constraintStart_toEndOf="@id/auto_skill_undo_btn" />
 
         <Button
             android:id="@+id/auto_skill_done_btn"
@@ -130,7 +142,7 @@
             android:drawableStart="@drawable/ic_check"
             android:text="@string/auto_skill_maker_atk_done"
             app:layout_constraintTop_toTopOf="@id/auto_skill_undo_btn"
-            app:layout_constraintStart_toEndOf="@id/auto_skill_undo_btn" />
+            app:layout_constraintStart_toEndOf="@id/auto_skill_clear_btn" />
 
         <Button
             android:id="@+id/skill_a_btn"

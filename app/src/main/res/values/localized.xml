@@ -23,6 +23,7 @@
     <string name="auto_skill_maker_main_turn">Turn: %d</string>
     <string name="auto_skill_maker_main_master_skills">Master\n Skills</string>
     <string name="auto_skill_maker_main_undo">Undo</string>
+    <string name="auto_skill_maker_main_clear">Clear</string>
     <string name="auto_skill_maker_main_servant">Servant %d</string>
     <string name="auto_skill_maker_main_attack">Attack</string>
 
