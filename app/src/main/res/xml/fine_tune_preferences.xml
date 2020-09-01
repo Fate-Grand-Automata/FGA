@@ -5,7 +5,7 @@
         app:key="support_swipe_category"
         app:title="Support">
         <SeekBarPreference
-            android:max="30"
+            android:max="35"
             app:icon="@drawable/ic_swipe"
             app:key="@string/pref_support_swipes_per_update"
             app:min="0"
@@ -14,7 +14,7 @@
             app:title="Swipes per Update" />
 
         <SeekBarPreference
-            android:max="30"
+            android:max="50"
             app:icon="@drawable/ic_refresh"
             app:key="@string/pref_support_max_updates"
             app:min="0"
@@ -31,7 +31,7 @@
             app:key="@string/pref_min_similarity"
             app:icon="@drawable/ic_image_search"
             app:min="50"
-            app:seekBarIncrement="5"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Min Similarity (%)" />
 
@@ -40,7 +40,7 @@
             app:key="@string/pref_mlb_similarity"
             app:icon="@drawable/ic_star"
             app:min="50"
-            app:seekBarIncrement="5"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="MLB Similarity (%)" />
 
@@ -49,7 +49,7 @@
             app:key="@string/pref_stage_counter_similarity"
             app:icon="@drawable/ic_counter"
             app:min="50"
-            app:seekBarIncrement="5"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Stage Counter Similarity (%)" />
     </PreferenceCategory>
@@ -61,8 +61,8 @@
             android:max="2000"
             app:key="@string/pref_click_wait_time"
             app:icon="@drawable/ic_click"
-            app:min="50"
-            app:seekBarIncrement="10"
+            app:min="0"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Wait after clicking (ms)" />
 
@@ -71,7 +71,7 @@
             app:key="@string/pref_click_duration"
             app:icon="@drawable/ic_click"
             app:min="1"
-            app:seekBarIncrement="10"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Click duration (ms)" />
 
@@ -79,7 +79,7 @@
             android:max="50"
             app:key="@string/pref_click_delay"
             app:icon="@drawable/ic_click"
-            app:min="1"
+            app:min="0"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Delay b/w repeated clicks (ms)" />
@@ -93,7 +93,7 @@
             app:key="@string/pref_swipe_wait_time"
             app:icon="@drawable/ic_swipe"
             app:min="50"
-            app:seekBarIncrement="10"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Wait after swiping (ms)" />
 
@@ -102,7 +102,7 @@
             app:key="@string/pref_swipe_duration"
             app:icon="@drawable/ic_swipe"
             app:min="50"
-            app:seekBarIncrement="10"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Swipe duration (ms)" />
 
@@ -111,7 +111,7 @@
             app:key="@string/pref_support_swipe_multiplier"
             app:icon="@drawable/ic_swipe"
             app:min="50"
-            app:seekBarIncrement="10"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Support Swipe Multiplier (%)" />
     </PreferenceCategory>
@@ -123,8 +123,8 @@
             android:max="2000"
             app:key="@string/pref_skill_delay"
             app:icon="@drawable/ic_wand"
-            app:min="100"
-            app:seekBarIncrement="10"
+            app:min="0"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Skill Delay (ms)" />
 
@@ -133,7 +133,7 @@
             app:key="@string/pref_wait_multiplier"
             app:icon="@drawable/ic_time"
             app:min="50"
-            app:seekBarIncrement="10"
+            app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="Wait Multiplier (%)" />
     </PreferenceCategory>
