@@ -20,6 +20,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -40,6 +41,9 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var storageDirs: StorageDirs
+
+    @Inject
+    lateinit var prefsCore: PrefsCore
 
     val args: AutoSkillItemSettingsFragmentArgs by navArgs()
 
@@ -73,12 +77,27 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         preferredSupportOnCreate()
 
+        findPreference<EditTextPreference>(getString(R.string.pref_autoskill_notes))?.makeMultiLine()
+
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.setOnPreferenceClickListener {
                 val action = AutoSkillItemSettingsFragmentDirections
                     .actionAutoSkillItemSettingsFragmentToCardPriorityFragment(args.key)
 
                 findNavController().navigate(action)
+
+                true
+            }
+        }
+
+        findPreference<EditTextPreference>(getString(prefKeys.pref_autoskill_cmd))?.let {
+            it.setOnPreferenceClickListener {
+                if (!prefsCore.showTextBoxForAutoSkillCmd.get()) {
+                    val action = AutoSkillItemSettingsFragmentDirections
+                        .actionAutoSkillItemSettingsFragmentToAutoSkillMakerActivity(args.key)
+
+                    findNavController().navigate(action)
+                }
 
                 true
             }
@@ -239,9 +258,11 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 }
             }
             getString(R.string.pref_autoskill_cmd) -> {
-                SkillCmdPreferenceDialogFragment().apply {
-                    autoSkillKey = args.key
-                    prepare(this)
+                if (prefsCore.showTextBoxForAutoSkillCmd.get()) {
+                    SkillCmdPreferenceDialogFragment().apply {
+                        autoSkillKey = args.key
+                        prepare(this)
+                    }
                 }
             }
             else -> super.onDisplayPreferenceDialog(preference)

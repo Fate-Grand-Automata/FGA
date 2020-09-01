@@ -7,68 +7,68 @@
         app:entryValues="@array/game_server_values"
         app:icon="@drawable/ic_earth"
         app:key="@string/pref_gameserver"
-        app:title="Game Server"
+        app:title="@string/p_game_server"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
         app:defaultValue="None"
-        app:entries="@array/battle_np_types"
-        app:entryValues="@array/battle_np_types"
+        app:entries="@array/battle_np_types_labels"
+        app:entryValues="@array/battle_np_types_values"
         app:icon="@drawable/ic_star"
         app:key="@string/pref_battle_np"
-        app:title="Cast Noble Phantasm"
+        app:title="@string/p_cast_np"
         app:useSimpleSummaryProvider="true" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_target"
         app:key="@string/pref_auto_choose_target"
-        app:title="Auto choose target" />
+        app:title="@string/p_auto_choose_target" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_fast_forward"
         app:key="@string/pref_story_skip"
-        app:title="Story Skip" />
+        app:title="@string/p_story_skip" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_radio"
         app:key="@string/pref_skill_conf"
-        app:title="Skill Confirmation" />
+        app:title="@string/p_skill_confirmation" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_exit_run"
         app:key="@string/pref_withdraw_enabled"
-        app:title="Enable Withdraw" />
+        app:title="@string/p_enable_withdraw" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_card"
         app:key="@string/pref_stop_on_ce_drop"
-        app:title="Stop on CE drop"
-        app:summary="Experimental" />
+        app:title="@string/p_stop_on_ce_drop"
+        app:summary="@string/p_experimental" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_card"
         app:key="@string/pref_stop_on_ce_get"
-        app:title="Stop on CE GET"
-        app:summary="First-time quest completion rewards and Bond CEs (Experimental)" />
+        app:title="@string/p_stop_on_ce_get"
+        app:summary="@string/p_stop_on_ce_get_summary" />
 
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:icon="@drawable/ic_screenshot"
         app:key="@string/pref_screenshot_drops"
-        app:title="Screenshot Drops"
-        app:summary="Experimental" />
+        app:title="@string/p_screenshot_drops"
+        app:summary="@string/p_experimental" />
 
     <SwitchPreferenceCompat
         app:defaultValue="true"
         app:icon="@drawable/ic_friend"
         app:key="@string/pref_friend_pts"
-        app:title="Friend Points Summons Only" />
+        app:title="@string/p_friend_summon_only" />
 
     <ListPreference
         app:defaultValue="-1"
@@ -76,7 +76,7 @@
         app:entryValues="@array/boost_item_values"
         app:icon="@drawable/ic_boost"
         app:key="@string/pref_boost_item"
-        app:title="Boost Item"
+        app:title="@string/p_boost_item"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
@@ -85,8 +85,14 @@
         app:entryValues="@array/brave_chain_values"
         app:icon="@drawable/ic_crown"
         app:key="@string/pref_brave_chains"
-        app:title="Brave Chains (Experimental)"
+        app:title="@string/p_brave_chains"
         app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreferenceCompat
+        app:icon="@drawable/ic_wand"
+        app:key="@string/pref_auto_skill_cmd_text"
+        app:title="@string/p_auto_skill_cmd_text"
+        app:summary="@string/p_auto_skill_cmd_text_summary" />
 
     <!--    <SwitchPreferenceCompat-->
     <!--        app:defaultValue="false"-->
@@ -96,51 +102,51 @@
 
     <PreferenceCategory
         app:key="app_category"
-        app:title="Advanced">
+        app:title="@string/p_advanced">
         <Preference
             app:key="@string/pref_nav_fine_tune"
-            app:title="Fine-tune"
+            app:title="@string/p_fine_tune"
             app:icon="@drawable/ic_tune" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="@string/pref_debug_mode"
             app:icon="@drawable/ic_bug"
-            app:summary="Highlight the regions being matched"
-            app:title="Debug mode" />
+            app:summary="@string/p_debug_mode_summary"
+            app:title="@string/p_debug_mode" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="@string/pref_ignore_notch"
-            app:summary="Useful on Samsung phones"
-            app:title="Ignore Notch calculation"
+            app:summary="@string/p_ignore_notch_summary"
+            app:title="@string/p_ignore_notch"
             app:icon="@drawable/ic_notch" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="@string/pref_record_screen"
             app:icon="@drawable/ic_video"
-            app:summary="Won't work with the root setting.\nA file named 'record.mp4' will be saved to 'Fate-Grand-Automata' folder.\nCopy or rename it if you want to keep it."
-            app:title="Record Screen" />
+            app:summary="@string/p_record_screen_summary"
+            app:title="@string/p_record_screen" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_key"
             app:key="@string/pref_use_root_screenshot"
-            app:summary="Useful on Nox (Android 7). Toggle service after changing this."
-            app:title="Use Root for Screenshots" />
+            app:summary="@string/p_root_screenshot_summary"
+            app:title="@string/p_root_screenshot" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_launch"
             app:key="@string/pref_auto_start_service"
-            app:title="Auto-start service" />
+            app:title="@string/p_auto_start_service" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_pause"
             app:key="@string/pref_can_pause_script"
-            app:summary="Experimental"
-            app:title="Allow pausing scripts" />
+            app:summary="@string/p_experimental"
+            app:title="@string/p_allow_pause_script" />
     </PreferenceCategory>
 </PreferenceScreen>

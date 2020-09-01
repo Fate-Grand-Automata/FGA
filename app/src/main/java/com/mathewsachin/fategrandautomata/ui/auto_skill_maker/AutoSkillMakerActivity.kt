@@ -16,14 +16,13 @@ class AutoSkillMakerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm.autoSkillItemKey = args.key
 
         setContentView(R.layout.auto_skill_maker)
     }
 
     fun isMainScreen() = findNavController(R.id.nav_host_fragment_auto_skill)
         .currentDestination?.id == R.id.main_auto_skill_maker
-    
+
     override fun onBackPressed() {
         if (isMainScreen()) {
             AlertDialog.Builder(this)

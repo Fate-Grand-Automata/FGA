@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="5dp"
-        android:text="HIGH"
+        android:text="@string/card_priority_high"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:text="LOW"
+        android:text="@string/card_priority_low"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/card_priority_high" />
 
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_plus"
-        android:text="Add Wave"
+        android:text="@string/card_priority_add_wave"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/card_priority_rm_btn"
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_close"
-        android:text="Remove Last Wave"
+        android:text="@string/card_priority_remove_last_wave"
         app:layout_constraintBottom_toBottomOf="@id/card_priority_add_btn"
         app:layout_constraintEnd_toStartOf="@id/card_priority_add_btn"
         app:layout_constraintStart_toStartOf="parent" />

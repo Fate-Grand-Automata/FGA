@@ -101,6 +101,8 @@ class PrefsCore @Inject constructor(
 
     val autoStartService = maker.bool(R.string.pref_auto_start_service)
 
+    val showTextBoxForAutoSkillCmd = maker.bool(R.string.pref_auto_skill_cmd_text)
+
     private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
 
     fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =

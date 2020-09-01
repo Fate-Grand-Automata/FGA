@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_auto_skill_delete"
         android:icon="@drawable/ic_delete"
-        android:title="Delete"
+        android:title="@string/auto_skill_list_delete"
         app:showAsAction="always" />
 </menu>

@@ -47,6 +47,7 @@
     <string name="pref_autoskill_cmd">autoskill_cmd</string>
     <string name="pref_autoskill_party">autoskill_party</string>
     <string name="pref_autoskill_support_class">autoskill_support_class</string>
+    <string name="pref_autoskill_notes">autoskill_notes</string>
 
     <string name="pref_brave_chains">brave_chains</string>
     <string name="pref_screenshot_drops">screenshot_drops</string>
@@ -75,6 +76,7 @@
     <string name="pref_skill_delay">skill_delay</string>
 
     <string name="pref_can_pause_script">can_pause_script</string>
+    <string name="pref_auto_skill_cmd_text">auto_skill_cmd_text</string>
 
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_auto_skill">nav_auto_skill</string>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="card_prority_wave_number">WAVE %d</string>
+
+    <string name="auto_skill_item_copy">Copy</string>
+    <string name="auto_skill_item_delete">Delete</string>
+    <string name="auto_skill_item_export">Export</string>
+
+    <string name="auto_skill_list_no_items">No AutoSkill Items</string>
+    <string name="auto_skill_list_import">Import</string>
+    <string name="auto_skill_list_export_all">Export all</string>
+    <string name="auto_skill_list_delete">Delete</string>
+
+    <string name="auto_skill_maker_atk_header">Attack</string>
+    <string name="auto_skill_maker_atk_servant_np">Servant\n%d\n\nNP</string>
+    <string name="auto_skill_maker_atk_cards_before_np">Cards before NP</string>
+    <string name="auto_skill_maker_atk_done">Done</string>
+    <string name="auto_skill_maker_atk_next_wave">Next Wave</string>
+    <string name="auto_skill_maker_atk_next_turn">Next Turn \nin same wave</string>
+
+    <string name="auto_skill_maker_main_enemy">Enemy %d</string>
+    <string name="auto_skill_maker_main_battle">Battle: %d</string>
+    <string name="auto_skill_maker_main_turn">Turn: %d</string>
+    <string name="auto_skill_maker_main_master_skills">Master\n Skills</string>
+    <string name="auto_skill_maker_main_undo">Undo</string>
+    <string name="auto_skill_maker_main_clear">Clear</string>
+    <string name="auto_skill_maker_main_servant">Servant %d</string>
+    <string name="auto_skill_maker_main_attack">Attack</string>
+    <string name="auto_skill_maker_cannot_select">To edit NP/Cards before NP, undo on the Turn/Wave separator</string>
+
+    <string name="auto_skill_maker_master_skills_header">Master Skills</string>
+    <string name="auto_skill_maker_master_skills_order_change">Order Change / Plug-suit</string>
+
+    <string name="auto_skill_maker_order_change_header">Order Change</string>
+    <string name="auto_skill_maker_order_change_starting_member">Starting Member</string>
+    <string name="auto_skill_maker_order_change_sub_member">Sub Member</string>
+    <string name="auto_skill_maker_order_change_servant">Servant\n\n%d</string>
+
+    <string name="auto_skill_maker_target_header">Choose Target</string>
+    <string name="auto_skill_maker_target_none">No Target</string>
+    <string name="auto_skill_maker_target_servant">Servant\n\n%d</string>
+
+    <string name="card_priority_menu_info">Info</string>
+    <string name="card_priority_high">HIGH</string>
+    <string name="card_priority_low">LOW</string>
+    <string name="card_priority_add_wave">Add Wave</string>
+    <string name="card_priority_remove_last_wave">Remove Last Wave</string>
+
+    <string name="toggle_service">Toggle Service</string>
+    <string name="fine_tune_menu_reset_to_defaults">Reset to defaults</string>
+    <string name="support_menu_extract_default_support_images">Extract Default Support Images</string>
+
+    <string name="support_img_namer_servants">Servant(s)</string>
+    <string name="support_img_namer_folder_hint">You can use folders like this: \'Merlin/asc1\'</string>
+    <string name="support_img_namer_ce">Craft Essence(s)</string>
+    <string name="support_img_namer_friend_names">Friend Name(s)</string>
+    <string name="support_img_namer_item_name">Name</string>
+
+    <string name="p_script_mode">Script Mode</string>
+    <string name="p_refill">Refill</string>
+    <string name="p_refill_summary">Manage AP refill</string>
+    <string name="p_auto_skill">Auto Skill</string>
+    <string name="p_auto_skill_summary">Manage Auto Skill configs</string>
+    <string name="p_more_options">More options</string>
+    <string name="p_update_available">Update Available</string>
+
+    <string name="p_enable_refill">Enable Refill</string>
+    <string name="p_repetitions">Repetitions</string>
+    <string name="p_auto_decrement">Auto-decrement</string>
+    <string name="p_auto_decrement_summary">Automatically decrease the refill amount by number of apples used</string>
+    <string name="p_resource">Resource</string>
+    <string name="p_run_limit">Run limit</string>
+    <string name="p_limit_no_of_runs">Limit number of runs</string>
+    <string name="p_runs">Runs</string>
+
+    <string name="p_auto_skill_name">Name</string>
+    <string name="p_auto_skill_cmd">Command</string>
+    <string name="p_auto_skill_notes">Notes</string>
+    <string name="p_auto_skill_party">Party</string>
+    <string name="p_auto_skill_support_class">Class</string>
+    <string name="p_auto_skill_card_priority">Card Priority</string>
+    <string name="p_auto_skill_support">Support</string>
+    <string name="p_auto_skill_support_selection_mode">Selection Mode</string>
+    <string name="p_auto_skill_support_fallback_selection_mode">Fallback Selection Mode</string>
+    <string name="p_auto_skill_support_pref_servants">Preferred Servants</string>
+    <string name="p_auto_skill_support_max_ascended">Max-ascended</string>
+    <string name="p_auto_skill_support_skill_levels">Skill Levels</string>
+    <string name="p_auto_skill_support_pref_ces">Preferred CEs</string>
+    <string name="p_auto_skill_support_mlb">Max-limit broken</string>
+    <string name="p_auto_skill_support_friend_names">Friend names</string>
+    <string name="p_auto_skill_support_friends_only">Friends Only</string>
+
+    <string name="p_max_skill_1">Max Skill 1</string>
+    <string name="p_max_skill_2">Max Skill 2</string>
+    <string name="p_max_skill_3">Max Skill 3</string>
+
+    <string name="p_game_server">Game Server</string>
+    <string name="p_cast_np">Cast Noble Phantasm</string>
+    <string name="p_auto_choose_target">Auto choose target</string>
+    <string name="p_story_skip">Story Skip</string>
+    <string name="p_skill_confirmation">Skill Confirmation</string>
+    <string name="p_enable_withdraw">Enable Withdraw</string>
+    <string name="p_stop_on_ce_drop">Stop on CE drop</string>
+    <string name="p_stop_on_ce_get">Stop on CE GET</string>
+    <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
+    <string name="p_experimental">Experimental</string>
+    <string name="p_screenshot_drops">Screenshot Drops</string>
+    <string name="p_friend_summon_only">Friend Points Summons Only</string>
+    <string name="p_boost_item">Boost Item</string>
+    <string name="p_brave_chains">Brave Chains (Experimental)</string>
+    <string name="p_rearrange_cards">Rearrange Cards</string>
+    <string name="p_auto_skill_cmd_text">AutoSkill Cmd TextBox</string>
+    <string name="p_auto_skill_cmd_text_summary">Show text-box for editing AutoSkill commands</string>
+
+    <string name="p_advanced">Advanced</string>
+    <string name="p_debug_mode">Debug mode</string>
+    <string name="p_debug_mode_summary">Highlight the regions being matched</string>
+    <string name="p_ignore_notch">Ignore Notch calculation</string>
+    <string name="p_ignore_notch_summary">Useful on Samsung phones</string>
+    <string name="p_record_screen">Record Screen</string>
+    <string name="p_record_screen_summary">Won\'t work with the root setting.\nA file named \'record.mp4\' will be saved to \'Fate-Grand-Automata\' folder.\nCopy or rename it if you want to keep it.</string>
+    <string name="p_root_screenshot">Use Root for Screenshots</string>
+    <string name="p_root_screenshot_summary">Useful on Nox (Android 7). Toggle service after changing this.</string>
+    <string name="p_auto_start_service">Auto-start service</string>
+    <string name="p_allow_pause_script">Allow pausing scripts</string>
+
+    <string name="p_fine_tune">Fine-tune</string>
+    <string name="p_fine_tune_default">Default: %d</string>
+
+    <string name="p_nav_refill">Refill</string>
+    <string name="p_nav_more_options">More options</string>
+    <string name="p_nav_fine_tune">Fine-tune</string>
+    <string name="p_nav_auto_skill_list">AutoSkill List</string>
+    <string name="p_nav_auto_skill_edit">Edit config</string>
+    <string name="p_nav_skill_levels">Skill Levels</string>
+    <string name="p_nav_card_priority">Card Priority</string>
+
+    <string name="p_refill_type_all_apples">All Apples (NO SQ)</string>
+    <string name="p_refill_type_gold">Gold</string>
+    <string name="p_refill_type_silver">Silver</string>
+    <string name="p_refill_type_bronze">Bronze</string>
+    <string name="p_refill_type_sq">SQ (Rainbow)</string>
+
+    <string name="p_brave_chains_don_t_care">Don\'t care</string>
+    <string name="p_brave_chains_after_np">After NP</string>
+    <string name="p_brave_chains_avoid">Avoid</string>
+
+    <string name="p_boost_item_disabled">Disabled</string>
+    <string name="p_boost_item_skip">Skip</string>
+
+    <string name="p_cast_np_none">None</string>
+    <string name="p_cast_np_spam">Spam</string>
+    <string name="p_cast_np_danger">Danger</string>
+
+    <string name="p_support_mode_first">First</string>
+    <string name="p_support_mode_manual">Manual</string>
+    <string name="p_support_mode_preferred">Preferred</string>
+    <string name="p_support_mode_friend">Friend</string>
+
+    <string name="p_script_mode_battle">Battle</string>
+    <string name="p_script_mode_lottery">Lottery</string>
+    <string name="p_script_mode_friend_gacha">Friend Gacha</string>
+    <string name="p_script_mode_support_img_maker">Support Image Maker</string>
+
+    <string name="p_party_not_set">Not Set</string>
+
+    <string name="p_support_class_none">None</string>
+    <string name="p_support_class_all">All</string>
+    <string name="p_support_class_saber">Saber</string>
+    <string name="p_support_class_archer">Archer</string>
+    <string name="p_support_class_lancer">Lancer</string>
+    <string name="p_support_class_rider">Rider</string>
+    <string name="p_support_class_caster">Caster</string>
+    <string name="p_support_class_assassin">Assassin</string>
+    <string name="p_support_class_berserker">Berserker</string>
+    <string name="p_support_class_extra">Extra</string>
+    <string name="p_support_class_mix">Mix</string>
+</resources>

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/support_img"
-        app:layout_constraintBottom_toBottomOf="@+id/support_img"/>
+        app:layout_constraintBottom_toBottomOf="@+id/support_img" />
 
     <ImageView
         android:id="@+id/support_img"
@@ -26,7 +26,7 @@
         android:id="@+id/support_img_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Name"
+        android:hint="@string/support_img_namer_item_name"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/support_img"
@@ -43,5 +43,5 @@
         android:textColor="@android:color/holo_red_light"
         android:layout_marginVertical="5dp"
         tools:text="Error messages will be shown here"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

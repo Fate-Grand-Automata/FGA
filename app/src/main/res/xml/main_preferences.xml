@@ -8,30 +8,30 @@
         app:entryValues="@array/script_mode_values"
         app:icon="@drawable/ic_script"
         app:key="@string/pref_script_mode"
-        app:title="Script Mode"
+        app:title="@string/p_script_mode"
         app:useSimpleSummaryProvider="true" />
 
     <Preference
         app:icon="@drawable/ic_apple"
         app:key="@string/pref_nav_refill"
-        app:summary="Manage AP refill"
-        app:title="Refill" />
+        app:summary="@string/p_refill_summary"
+        app:title="@string/p_refill" />
 
     <Preference
         app:icon="@drawable/ic_wand"
         app:key="@string/pref_nav_auto_skill"
-        app:summary="Manage Auto Skill configs"
-        app:title="Auto Skill" />
+        app:summary="@string/p_auto_skill_summary"
+        app:title="@string/p_auto_skill" />
 
     <Preference
         app:icon="@drawable/ic_dots_horizontal"
         app:key="@string/pref_nav_more"
-        app:title="More options" />
+        app:title="@string/p_more_options" />
 
     <Preference
         app:icon="@drawable/ic_star"
         app:key="@string/pref_nav_update"
-        app:title="Update Available"
+        app:title="@string/p_update_available"
         app:summary="v0.16.0"
         app:isPreferenceVisible="false">
         <intent android:action="android.intent.action.VIEW"

@@ -1,17 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
         app:defaultValue="--"
         app:icon="@drawable/ic_text_short"
         app:key="@string/pref_autoskill_name"
-        app:title="Name"
+        app:title="@string/p_auto_skill_name"
         app:useSimpleSummaryProvider="true" />
 
     <EditTextPreference
         app:icon="@drawable/ic_terminal"
         app:key="@string/pref_autoskill_cmd"
-        app:title="Skill Command"
+        app:title="@string/p_auto_skill_cmd"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        app:icon="@drawable/ic_note"
+        android:key="@string/pref_autoskill_notes"
+        app:title="@string/p_auto_skill_notes"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
@@ -20,84 +27,84 @@
         app:entryValues="@array/party_values"
         app:icon="@drawable/ic_flag"
         app:key="@string/pref_autoskill_party"
-        app:title="Party"
-        app:useSimpleSummaryProvider="true" />
-
-    <ListPreference
-        app:defaultValue="None"
-        app:entries="@array/support_class"
-        app:entryValues="@array/support_class"
-        app:icon="@drawable/ic_diamond"
-        app:key="@string/pref_autoskill_support_class"
-        app:title="Support Class"
+        app:title="@string/p_auto_skill_party"
         app:useSimpleSummaryProvider="true" />
 
     <Preference
         app:icon="@drawable/ic_sort"
         app:key="@string/pref_card_priority"
-        app:title="Card Priority" />
+        app:title="@string/p_auto_skill_card_priority" />
 
     <PreferenceCategory
         app:key="support_category"
-        app:title="Support">
+        app:title="@string/p_auto_skill_support">
+        <ListPreference
+            app:defaultValue="None"
+            app:entries="@array/support_class_labels"
+            app:entryValues="@array/support_class_values"
+            app:icon="@drawable/ic_diamond"
+            app:key="@string/pref_autoskill_support_class"
+            app:title="@string/p_auto_skill_support_class"
+            app:useSimpleSummaryProvider="true" />
+
         <ListPreference
             app:defaultValue="Preferred"
-            app:entries="@array/support_selection_modes"
-            app:entryValues="@array/support_selection_modes"
+            app:entries="@array/support_selection_modes_labels"
+            app:entryValues="@array/support_selection_modes_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_mode"
-            app:title="Selection Mode"
+            app:title="@string/p_auto_skill_support_selection_mode"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
             app:defaultValue="Manual"
-            app:entries="@array/support_selection_modes_fallback"
-            app:entryValues="@array/support_selection_modes_fallback"
+            app:entries="@array/support_selection_modes_fallback_labels"
+            app:entryValues="@array/support_selection_modes_fallback_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_fallback"
-            app:title="Fallback Selection Mode"
+            app:title="@string/p_auto_skill_support_fallback_selection_mode"
             app:useSimpleSummaryProvider="true" />
 
         <MultiSelectListPreference
             app:icon="@drawable/ic_crown"
             app:key="@string/pref_support_pref_servant"
-            app:title="Preferred Servants"
+            app:title="@string/p_auto_skill_support_pref_servants"
             app:allowDividerAbove="true" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_star"
             app:key="@string/pref_support_max_ascended"
-            app:title="Max-ascended" />
+            app:title="@string/p_auto_skill_support_max_ascended" />
 
         <Preference
             app:icon="@drawable/ic_wand"
             app:key="@string/pref_nav_skill_lvl"
-            app:title="Skill Levels" />
+            app:title="@string/p_auto_skill_support_skill_levels" />
 
         <MultiSelectListPreference
             app:icon="@drawable/ic_card"
             app:key="@string/pref_support_pref_ce"
-            app:title="Preferred CEs"
+            app:title="@string/p_auto_skill_support_pref_ces"
             app:allowDividerAbove="true" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_star"
             app:key="@string/pref_support_pref_ce_mlb"
-            app:title="Max-limit broken" />
+            app:title="@string/p_auto_skill_support_mlb" />
 
         <MultiSelectListPreference
             app:icon="@drawable/ic_friend"
             app:key="@string/pref_support_friend_names"
-            app:title="Friend names"
+            app:title="@string/p_auto_skill_support_friend_names"
             app:allowDividerAbove="true" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_friend"
             app:key="@string/pref_support_friends_only"
-            app:title="Friends Only"
+            app:title="@string/p_auto_skill_support_friends_only"
             app:allowDividerAbove="true" />
     </PreferenceCategory>
 </PreferenceScreen>

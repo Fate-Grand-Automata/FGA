@@ -36,11 +36,11 @@
     <fragment
         android:id="@+id/refillSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.RefillSettingsFragment"
-        android:label="Refill" />
+        android:label="@string/p_nav_refill" />
     <fragment
         android:id="@+id/moreSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.MoreSettingsFragment"
-        android:label="More options">
+        android:label="@string/p_nav_more_options">
         <action
             android:id="@+id/action_moreSettingsFragment_to_fineTuneSettingsFragment"
             app:destination="@id/fineTuneSettingsFragment"
@@ -52,11 +52,11 @@
     <fragment
         android:id="@+id/fineTuneSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.FineTuneSettingsFragment"
-        android:label="Fine-tune" />
+        android:label="@string/p_nav_fine_tune" />
     <fragment
         android:id="@+id/autoSkillListFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListFragment"
-        android:label="AutoSkill List"
+        android:label="@string/p_nav_auto_skill_list"
         tools:layout="@layout/autoskill_list">
         <action
             android:id="@+id/action_autoSkillListFragment_to_autoSkillItemSettingsFragment"
@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/autoSkillItemSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment"
-        android:label="Edit config">
+        android:label="@string/p_nav_auto_skill_edit">
         <argument
             android:name="key"
             app:argType="string" />
@@ -102,7 +102,7 @@
     <fragment
         android:id="@+id/skillLevelSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.SkillLevelSettingsFragment"
-        android:label="Skill Levels">
+        android:label="@string/p_nav_skill_levels">
         <argument
             android:name="key"
             app:argType="string" />
@@ -110,7 +110,7 @@
     <fragment
         android:id="@+id/cardPriorityFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.card_priority.CardPriorityFragment"
-        android:label="Card Priority">
+        android:label="@string/p_nav_card_priority">
         <argument
             android:name="key"
             app:argType="string" />

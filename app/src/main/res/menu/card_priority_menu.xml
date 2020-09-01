@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_card_priority_info"
         android:icon="@drawable/ic_info"
-        android:title="Info"
+        android:title="@string/card_priority_menu_info"
         app:showAsAction="ifRoom" />
 </menu>
