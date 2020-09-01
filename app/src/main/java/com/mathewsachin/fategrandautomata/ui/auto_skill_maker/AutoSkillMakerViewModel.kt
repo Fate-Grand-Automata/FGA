@@ -101,6 +101,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         _currentIndex.value = index
 
         notifySkillCommandUpdate()
+        revertToPreviousEnemyTarget()
     }
 
     private fun add(entry: AutoSkillMakerEntry) {
