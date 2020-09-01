@@ -122,24 +122,13 @@
             app:layout_constraintTop_toTopOf="@id/cards_before_np_0" />
 
         <Button
-            android:id="@+id/autoskill_done_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_check"
-            android:onClick="@{(v) -> ui.onDone()}"
-            android:text="@string/auto_skill_maker_atk_done"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/autoskill_next_battle_btn" />
-
-        <Button
             android:id="@+id/autoskill_next_battle_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_fast_forward"
             android:onClick="@{(v) -> ui.goToNextStage()}"
             android:text="@string/auto_skill_maker_atk_next_wave"
-            app:layout_constraintBottom_toTopOf="@+id/autoskill_done_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <Button

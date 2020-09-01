@@ -94,6 +94,12 @@
         app:title="@string/p_rearrange_cards"
         app:summary="@string/p_experimental" />
 
+    <SwitchPreferenceCompat
+        app:icon="@drawable/ic_wand"
+        app:key="@string/pref_auto_skill_cmd_text"
+        app:title="@string/p_auto_skill_cmd_text"
+        app:summary="@string/p_auto_skill_cmd_text_summary" />
+
     <!--    <SwitchPreferenceCompat-->
     <!--        app:defaultValue="false"-->
     <!--        app:key="@string/pref_guda_final"-->

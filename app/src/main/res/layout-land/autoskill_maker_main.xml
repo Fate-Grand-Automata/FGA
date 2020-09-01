@@ -22,6 +22,7 @@
         android:padding="16dp">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:theme="@style/Theme.MaterialComponents.DayNight"
             android:id="@+id/auto_skill_history"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -113,10 +114,32 @@
             android:layout_height="wrap_content"
             android:text="@string/auto_skill_maker_main_undo"
             android:onClick="@{(v) -> ui.onUndo()}"
-            android:visibility="@{vm.skillCommand.empty ? View.GONE : View.VISIBLE}"
+            android:drawableStart="@drawable/ic_undo"
+            android:enabled="@{vm.currentIndex > 0}"
             app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/skill_a_btn" />
+
+        <Button
+            android:id="@+id/auto_skill_clear_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v) -> ui.onClear()}"
+            android:drawableStart="@drawable/ic_clear"
+            android:text="@string/auto_skill_maker_main_clear"
+            android:enabled="@{vm.currentIndex > 0}"
+            app:layout_constraintTop_toTopOf="@id/auto_skill_undo_btn"
+            app:layout_constraintStart_toEndOf="@id/auto_skill_undo_btn" />
+
+        <Button
+            android:id="@+id/auto_skill_done_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v) -> ui.onDone()}"
+            android:drawableStart="@drawable/ic_check"
+            android:text="@string/auto_skill_maker_atk_done"
+            app:layout_constraintTop_toTopOf="@id/auto_skill_undo_btn"
+            app:layout_constraintStart_toEndOf="@id/auto_skill_clear_btn" />
 
         <TextView
             android:id="@+id/servant_1_name"

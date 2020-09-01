@@ -23,8 +23,10 @@
     <string name="auto_skill_maker_main_turn">Turn: %d</string>
     <string name="auto_skill_maker_main_master_skills">Master\n Skills</string>
     <string name="auto_skill_maker_main_undo">Undo</string>
+    <string name="auto_skill_maker_main_clear">Clear</string>
     <string name="auto_skill_maker_main_servant">Servant %d</string>
     <string name="auto_skill_maker_main_attack">Attack</string>
+    <string name="auto_skill_maker_cannot_select">To edit NP/Cards before NP, undo on the Turn/Wave separator</string>
 
     <string name="auto_skill_maker_master_skills_header">Master Skills</string>
     <string name="auto_skill_maker_master_skills_order_change">Order Change / Plug-suit</string>
@@ -107,6 +109,8 @@
     <string name="p_boost_item">Boost Item</string>
     <string name="p_brave_chains">Brave Chains (Experimental)</string>
     <string name="p_rearrange_cards">Rearrange Cards</string>
+    <string name="p_auto_skill_cmd_text">AutoSkill Cmd TextBox</string>
+    <string name="p_auto_skill_cmd_text_summary">Show text-box for editing AutoSkill commands</string>
 
     <string name="p_advanced">Advanced</string>
     <string name="p_debug_mode">Debug mode</string>

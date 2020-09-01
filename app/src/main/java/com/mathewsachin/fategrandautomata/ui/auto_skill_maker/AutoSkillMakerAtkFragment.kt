@@ -27,12 +27,6 @@ class AutoSkillMakerAtkFragment : Fragment() {
             }
             .root
 
-    fun onDone() {
-        val autoSkillPrefs = prefs.forAutoSkillConfig(viewModel.autoSkillItemKey)
-        autoSkillPrefs.skillCommand = viewModel.finish()
-        activity?.finish()
-    }
-
     private fun goBack() {
         findNavController().popBackStack()
     }

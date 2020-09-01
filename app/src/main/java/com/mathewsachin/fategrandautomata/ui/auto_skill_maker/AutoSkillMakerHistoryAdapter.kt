@@ -4,21 +4,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.cardview.widget.CardView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 
-class AutoSkillMakerHistoryAdapter :
+class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
     RecyclerView.Adapter<AutoSkillMakerHistoryAdapter.ViewHolder>() {
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val textView: TextView = ItemView.findViewById(R.id.autoskill_maker_history_textview)
+
+        var clickable = false
+        var index = -1
     }
 
     private var items: List<AutoSkillMakerEntry> = emptyList()
+    private var currentIndex = -1
 
-    fun update(items: List<AutoSkillMakerEntry>) {
+    fun update(items: List<AutoSkillMakerEntry>, current: Int) {
         this.items = items
+        this.currentIndex = current
 
         notifyDataSetChanged()
     }
@@ -27,7 +33,19 @@ class AutoSkillMakerHistoryAdapter :
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.autoskill_maker_history_item, parent, false)
 
-        return ViewHolder(view)
+        val holder = ViewHolder(view)
+
+        view.setOnClickListener {
+            if (holder.clickable) {
+                currentIndexListener(holder.index)
+            } else {
+                val context = view.context
+                val msg = context.getString(R.string.auto_skill_maker_cannot_select)
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        return holder
     }
 
     override fun getItemCount() = items.size
@@ -36,7 +54,7 @@ class AutoSkillMakerHistoryAdapter :
         val cmd = items[position]
 
         holder.itemView.let {
-            if (it is CardView) {
+            if (it is MaterialCardView) {
                 val defaultColor = R.color.colorAccent
 
                 val colorRes = when (cmd) {
@@ -74,11 +92,31 @@ class AutoSkillMakerHistoryAdapter :
                 val color = it.context.getColor(colorRes)
 
                 it.setCardBackgroundColor(color)
+
+                if (position == currentIndex) {
+                    it.radius = 20f
+                    it.strokeWidth = 5
+                } else {
+                    it.radius = 0f
+                    it.strokeWidth = 0
+                }
             }
         }
 
         holder.textView.text =
             if (cmd is AutoSkillMakerEntry.Start) ">"
             else cmd.toString()
+
+        holder.clickable = when (cmd) {
+            is AutoSkillMakerEntry.Action -> when (cmd.action) {
+                is AutoSkillAction.CardsBeforeNP,
+                is AutoSkillAction.NP,
+                AutoSkillAction.NoOp -> false
+                else -> true
+            }
+            else -> true
+        }
+
+        holder.index = position
     }
 }
