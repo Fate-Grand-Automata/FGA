@@ -26,6 +26,7 @@
     <string name="auto_skill_maker_main_clear">Clear</string>
     <string name="auto_skill_maker_main_servant">Servant %d</string>
     <string name="auto_skill_maker_main_attack">Attack</string>
+    <string name="auto_skill_maker_cannot_select">To edit NP/Cards before NP, undo on the Turn/Wave separator</string>
 
     <string name="auto_skill_maker_master_skills_header">Master Skills</string>
     <string name="auto_skill_maker_master_skills_order_change">Order Change / Plug-suit</string>

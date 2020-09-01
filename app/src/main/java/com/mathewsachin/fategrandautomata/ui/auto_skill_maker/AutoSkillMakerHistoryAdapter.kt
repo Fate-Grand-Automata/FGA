@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.mathewsachin.fategrandautomata.R
@@ -37,6 +38,10 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
         view.setOnClickListener {
             if (holder.clickable) {
                 currentIndexListener(holder.index)
+            } else {
+                val context = view.context
+                val msg = context.getString(R.string.auto_skill_maker_cannot_select)
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
             }
         }
 
