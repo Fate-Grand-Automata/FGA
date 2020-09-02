@@ -58,8 +58,8 @@ class AutoSkillMakerMainFragment : Fragment() {
     fun onUndo() {
         viewModel.onUndo {
             AlertDialog.Builder(requireContext())
-                .setTitle("Confirm NP deletion")
-                .setMessage("If you delete Battle/Turn separator, NPs and cards before NP for that turn will also be deleted. Are you sure?")
+                .setTitle(R.string.auto_skill_maker_confirm_np_deletion_title)
+                .setMessage(R.string.auto_skill_maker_confirm_np_deletion_message)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes) { _, _ -> it() }
                 .show()
@@ -68,8 +68,8 @@ class AutoSkillMakerMainFragment : Fragment() {
 
     fun onClear() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Confirm Clear")
-            .setMessage("This will clear the AutoSkill command. Are you sure?")
+            .setTitle(R.string.auto_skill_maker_confirm_clear_title)
+            .setMessage(R.string.auto_skill_maker_confirm_clear_message)
             .setNegativeButton(android.R.string.no, null)
             .setPositiveButton(android.R.string.yes) { _, _ -> viewModel.clear() }
             .show()

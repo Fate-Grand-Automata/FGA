@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.MultiSelectListPreferenceDialogFragmentCompat
+import com.mathewsachin.fategrandautomata.R
 
 class ClearMultiSelectListPreferenceDialog : MultiSelectListPreferenceDialogFragmentCompat() {
     fun setKey(key: String) {
@@ -13,7 +14,8 @@ class ClearMultiSelectListPreferenceDialog : MultiSelectListPreferenceDialogFrag
     override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
         super.onPrepareDialogBuilder(builder)
 
-        builder.setNeutralButton("Clear") { _, _ ->
+        val actionMsg = getString(R.string.auto_skill_item_clear_preferred)
+        builder.setNeutralButton(actionMsg) { _, _ ->
             (preference as MultiSelectListPreference)
                 .values = emptySet()
         }

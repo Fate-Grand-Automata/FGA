@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="card_prority_wave_number">웨이브 %d</string>
-
     <string name="auto_skill_item_copy">복사</string>
     <string name="auto_skill_item_delete">삭제</string>
     <string name="auto_skill_item_export">내보내기</string>
@@ -38,6 +36,7 @@
     <string name="auto_skill_maker_target_none">대상 없음</string>
     <string name="auto_skill_maker_target_servant">서번트\n\n%d</string>
 
+    <string name="card_priority_wave_number">웨이브 %d</string>
     <string name="card_priority_menu_info">정보</string>
     <string name="card_priority_high">높음</string>
     <string name="card_priority_low">낮음</string>
@@ -129,7 +128,7 @@
     <string name="p_nav_auto_skill_edit">설정 파일 수정</string>
     <string name="p_nav_skill_levels">스킬 레벨</string>
     <string name="p_nav_card_priority">카드 우선</string>
-    
+
     <string name="p_refill_type_all_apples">사과만 (성정석 제외)</string>
     <string name="p_refill_type_gold">금</string>
     <string name="p_refill_type_silver">은</string>

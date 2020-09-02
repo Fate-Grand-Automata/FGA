@@ -26,8 +26,8 @@ class AutoSkillMakerActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (isMainScreen()) {
             AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to exit? AutoSkill command will be lost.")
-                .setTitle("Confirm Exit")
+                .setMessage(R.string.auto_skill_maker_confirm_exit_message)
+                .setTitle(R.string.auto_skill_maker_confirm_exit_title)
                 .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
                 .setNegativeButton(android.R.string.no, null)
                 .show()

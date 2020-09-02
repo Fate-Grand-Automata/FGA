@@ -43,7 +43,7 @@ class CardPriorityListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.battleStageTextView.text =
-            holder.itemView.context.getString(R.string.card_prority_wave_number, position + 1)
+            holder.itemView.context.getString(R.string.card_priority_wave_number, position + 1)
 
         holder.rearrangeCardsSwitchView.setOnCheckedChangeListener { _, isChecked ->
             Items[position].rearrangeCards = isChecked

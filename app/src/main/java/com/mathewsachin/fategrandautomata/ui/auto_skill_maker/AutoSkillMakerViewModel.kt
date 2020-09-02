@@ -378,13 +378,13 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         }
     }
 
-    fun onUndo(alertDialog: (onPositiveClick: () -> Unit) -> Unit) {
+    fun onUndo(confirmNpDeletion: (onPositiveClick: () -> Unit) -> Unit) {
         if (!isEmpty()) {
             // Un-select target
             when (val last = last) {
                 // Battle/Turn change
                 is AutoSkillMakerEntry.NextWave, is AutoSkillMakerEntry.NextTurn -> {
-                    alertDialog {
+                    confirmNpDeletion {
                         undoStageOrTurn()
                     }
                 }

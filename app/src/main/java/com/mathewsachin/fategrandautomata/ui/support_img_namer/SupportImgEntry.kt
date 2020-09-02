@@ -14,18 +14,17 @@ class SupportImgEntry(
     val TargetDir: File,
     val Frame: View,
     val regex: Regex,
-    val invalidMsg: String) {
-
-    val checkBox = Frame.findViewById<CheckBox>(R.id.support_img_check)!!
-    val imgView = Frame.findViewById<ImageView>(R.id.support_img)!!
-    val textBox = Frame.findViewById<EditText>(R.id.support_img_txt)!!
-    val errorTxt = Frame.findViewById<TextView>(R.id.support_img_error)!!
+    val invalidMsg: String
+) {
+    val checkBox: CheckBox = Frame.findViewById(R.id.support_img_check)
+    val imgView: ImageView = Frame.findViewById(R.id.support_img)
+    val textBox: EditText = Frame.findViewById(R.id.support_img_txt)
+    val errorTxt: TextView = Frame.findViewById(R.id.support_img_error)
 
     init {
         if (!ImgPath.exists()) {
             hide()
-        }
-        else {
+        } else {
             imgView.setImageURI(Uri.parse(ImgPath.absolutePath))
 
             // Allow clicking the image to toggle the checkbox too for convenience
@@ -69,8 +68,10 @@ class SupportImgEntry(
             return true
         }
 
+        val context = Frame.context
+
         if (newFileName.isBlank()) {
-            showAlert("One of the names is still empty. Either delete the unnamed Servant/CE or specify a name.")
+            showAlert(context.getString(R.string.support_img_namer_blank_file_name))
             return false
         }
 
@@ -82,7 +83,7 @@ class SupportImgEntry(
         val newPath = File(TargetDir, "${newFileName}.png")
 
         if (newPath.exists()) {
-            showAlert("'${newFileName}' already exists. Specify another name.")
+            showAlert(context.getString(R.string.support_img_namer_file_name_already_exists, newFileName))
             return false
         }
 
@@ -116,9 +117,9 @@ class SupportImgEntry(
             // move
             oldPath.copyTo(newPath)
             oldPath.delete()
-        }
-        catch (e: Exception) {
-            showAlert("Failed to rename to: '${newFileName}'")
+        } catch (e: Exception) {
+            val context = Frame.context
+            showAlert(context.getString(R.string.support_img_namer_file_rename_failed, newFileName))
             return false
         }
 

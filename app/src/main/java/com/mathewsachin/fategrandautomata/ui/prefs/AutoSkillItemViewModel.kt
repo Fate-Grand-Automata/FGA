@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -10,27 +12,25 @@ import kotlinx.coroutines.flow.combine
 
 class AutoSkillItemViewModel @ViewModelInject constructor(
     val preferences: IPreferences,
-    val prefsCore: PrefsCore
+    val prefsCore: PrefsCore,
+    @Assisted savedState: SavedStateHandle
 ) : ViewModel() {
-    var key: String = ""
+    val autoSkillItemKey: String = savedState[AutoSkillItemSettingsFragmentArgs::key.name]
+        ?: throw kotlin.Exception("Couldn't get AutoSkill key")
 
-    private val prefs by lazy { prefsCore.forAutoSkillConfig(key) }
+    private val prefs = prefsCore.forAutoSkillConfig(autoSkillItemKey)
 
-    val cardPriority by lazy {
-        prefs
-            .cardPriority
-            .asFlow()
-            .asLiveData()
-    }
+    val cardPriority = prefs
+        .cardPriority
+        .asFlow()
+        .asLiveData()
 
-    val skillCommand by lazy {
-        prefs
-            .skillCommand
-            .asFlow()
-            .asLiveData()
-    }
+    val skillCommand = prefs
+        .skillCommand
+        .asFlow()
+        .asLiveData()
 
-    val skillLevels by lazy {
+    val skillLevels =
         combine(
             prefs.support.skill1Max.asFlow(),
             prefs.support.skill2Max.asFlow(),
@@ -42,14 +42,14 @@ class AutoSkillItemViewModel @ViewModelInject constructor(
                 }
         }
             .asLiveData()
-    }
 
-    val supportSelectionMode by lazy {
-        prefs.support.selectionMode.asFlow()
-            .asLiveData()
-    }
+    val supportSelectionMode = prefs
+        .support
+        .selectionMode
+        .asFlow()
+        .asLiveData()
 
-    val areServantsSelected by lazy {
+    val areServantsSelected =
         combine(
             prefs.support.selectionMode.asFlow(),
             prefs.support.preferredServants.asFlow()
@@ -58,9 +58,8 @@ class AutoSkillItemViewModel @ViewModelInject constructor(
                     && servants.isNotEmpty()
         }
             .asLiveData()
-    }
 
-    val areCEsSelected by lazy {
+    val areCEsSelected =
         combine(
             prefs.support.selectionMode.asFlow(),
             prefs.support.preferredCEs.asFlow()
@@ -69,5 +68,4 @@ class AutoSkillItemViewModel @ViewModelInject constructor(
                     && ces.isNotEmpty()
         }
             .asLiveData()
-    }
 }
