@@ -79,8 +79,6 @@ class PreferencesImpl @Inject constructor(
 
     override val skillDelay by prefs.skillDelay.map { it.milliseconds }
 
-    override val rearrangeCards by prefs.rearrangeCards
-
     override val screenshotDrops by prefs.screenshotDrops
 
     override val canPauseScript by prefs.canPauseScript

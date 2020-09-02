@@ -7,70 +7,56 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
-import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.card_priority.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CardPriorityFragment : Fragment(R.layout.card_priority) {
-    private lateinit var cardScores: MutableList<MutableList<CardScore>>
-    private lateinit var autoSkillPref: IAutoSkillPreferences
-
-    val args: CardPriorityFragmentArgs by navArgs()
-
-    @Inject
-    lateinit var preferences: IPreferences
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-
-        autoSkillPref = preferences.forAutoSkillConfig(args.key)
-
-        var cardPriority = autoSkillPref.cardPriority
-
-        // Handle simple mode and empty string
-        if (cardPriority.length == 3 || cardPriority.isBlank()) {
-            cardPriority =
-                defaultCardPriority
-        }
-
-        cardScores = CardPriorityPerWave.of(cardPriority)
-            .map { it.toMutableList() }
-            .toMutableList()
-    }
+    val vm: CardPriorityViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = CardPriorityListAdapter(cardScores)
+        setHasOptionsMenu(true)
+
+        val adapter = CardPriorityListAdapter(
+            vm.cardPriorityItems,
+            vm.experimental,
+            viewLifecycleOwner
+        )
+
+        vm.experimental.observe(viewLifecycleOwner) {
+            experimental_switch.isChecked = it
+        }
+
+        experimental_switch.setOnCheckedChangeListener { _, isChecked ->
+            vm.setExperimental(isChecked)
+        }
 
         val recyclerView = card_priority_list
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         card_priority_add_btn.setOnClickListener {
-            cardScores.add(mutableListOf<CardScore>().apply {
-                addAll(cardScores[0])
-            })
+            vm.cardPriorityItems.add(
+                CardPriorityListItem(
+                    vm.cardPriorityItems[0].scores.toMutableList(),
+                    false
+                )
+            )
 
-            adapter.notifyItemInserted(cardScores.lastIndex)
+            adapter.notifyItemInserted(vm.cardPriorityItems.lastIndex)
         }
 
         card_priority_rm_btn.setOnClickListener {
-            if (cardScores.size > 1) {
-                cardScores.removeAt(cardScores.lastIndex)
+            if (vm.cardPriorityItems.size > 1) {
+                vm.cardPriorityItems.removeAt(vm.cardPriorityItems.lastIndex)
 
-                adapter.notifyItemRemoved(cardScores.lastIndex + 1)
+                adapter.notifyItemRemoved(vm.cardPriorityItems.lastIndex + 1)
             }
         }
     }
@@ -78,13 +64,7 @@ class CardPriorityFragment : Fragment(R.layout.card_priority) {
     override fun onPause() {
         super.onPause()
 
-        val value = CardPriorityPerWave.from(
-            cardScores.map {
-                CardPriority.from(it)
-            }
-        ).toString()
-
-        autoSkillPref.cardPriority = value
+        vm.save()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

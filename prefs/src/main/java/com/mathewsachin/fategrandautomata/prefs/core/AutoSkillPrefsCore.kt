@@ -26,6 +26,15 @@ class AutoSkillPrefsCore(
         defaultCardPriority
     )
 
+    val experimental = maker.bool(R.string.pref_auto_skill_experimental)
+
+    var rearrangeCards by maker.string(R.string.pref_auto_skill_rearrange_cards)
+        .map({
+            it.split(",").map { m -> m == "T" }
+        }, {
+            it.joinToString(",") { m -> if (m) "T" else "F" }
+        })
+
     val party = maker.stringAsInt(R.string.pref_autoskill_party, -1)
 
     val support = SupportPrefsCore(maker, storageDirs)

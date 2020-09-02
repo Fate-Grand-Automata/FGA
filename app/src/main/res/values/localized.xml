@@ -69,6 +69,7 @@
     <string name="card_priority_low">LOW</string>
     <string name="card_priority_add_wave">Add Wave</string>
     <string name="card_priority_remove_last_wave">Remove Last Wave</string>
+    <string name="card_priority_experimental">Enable experimental features</string>
 
     <string name="toggle_service">Toggle Service</string>
     <string name="fine_tune_menu_reset_to_defaults">Reset to defaults</string>

@@ -199,7 +199,12 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
         // Do the same when clicking 2 cards unless they're used before NPs.
         // Skip if NP spamming because we don't know how many NPs might've been used
-        if (prefs.rearrangeCards
+        val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
+        val rearrangeCards = if (rearrangeCardsPerWave.isNotEmpty())
+            rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
+        else false
+
+        if (rearrangeCards
             && prefs.braveChains != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
             && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
             && (toClick.size == 3 || (toClick.size == 2 && !isBeforeNP))

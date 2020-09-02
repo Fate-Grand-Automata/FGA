@@ -5,6 +5,7 @@ interface IAutoSkillPreferences {
     var name: String
     var skillCommand: String
     var cardPriority: String
+    val rearrangeCards: List<Boolean>
     val party: Int
     val support: ISupportPreferences
 

@@ -29,7 +29,6 @@ interface IPreferences {
     val skillDelay: Duration
     val braveChains: BraveChainEnum
     val friendPtsOnly: Boolean
-    val rearrangeCards: Boolean
     val screenshotDrops: Boolean
     val canPauseScript: Boolean
 
