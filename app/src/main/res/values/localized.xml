@@ -126,6 +126,23 @@
 
     <string name="p_fine_tune">Fine-tune</string>
     <string name="p_fine_tune_default">Default: %d</string>
+    <string name="p_fine_tune_support">Support</string>
+    <string name="p_fine_tune_support_swipes_per_update">Swipes per Update</string>
+    <string name="p_fine_tune_support_max_updates">Max Updates</string>
+    <string name="p_fine_tune_similarity">Similarity</string>
+    <string name="p_fine_tune_min_similarity">Min Similarity (%)</string>
+    <string name="p_fine_tune_mlb_similarity">MLB Similarity (%)</string>
+    <string name="p_fine_tune_stage_counter_similarity">Stage Counter Similarity (%)</string>
+    <string name="p_fine_tune_clicks">Clicks</string>
+    <string name="p_fine_tune_wait_after_clicking">Wait after clicking (ms)</string>
+    <string name="p_fine_tune_click_duration">Click duration (ms)</string>
+    <string name="p_fine_tune_click_delay">Delay b/w repeated clicks (ms)</string>
+    <string name="p_fine_tune_swipes">Swipes</string>
+    <string name="p_fine_tune_wait_after_swiping">Wait after swiping (ms)</string>
+    <string name="p_fine_tune_swipe_duration">Swipe duration (ms)</string>
+    <string name="p_fine_tune_support_swipe_multiplier">Support Swipe Multiplier (%)</string>
+    <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
+    <string name="p_fine_tune_wait_multiplier">Wait Multiplier (%)</string>
 
     <string name="p_nav_refill">Refill</string>
     <string name="p_nav_more_options">More options</string>

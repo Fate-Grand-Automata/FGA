@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         app:key="support_swipe_category"
-        app:title="Support">
+        app:title="@string/p_fine_tune_support">
         <SeekBarPreference
             android:max="35"
             app:icon="@drawable/ic_swipe"
@@ -11,7 +11,7 @@
             app:min="0"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Swipes per Update" />
+            app:title="@string/p_fine_tune_support_swipes_per_update" />
 
         <SeekBarPreference
             android:max="50"
@@ -20,12 +20,12 @@
             app:min="0"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Max Updates" />
+            app:title="@string/p_fine_tune_support_max_updates" />
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="similarity_category"
-        app:title="Similarity">
+        app:title="@string/p_fine_tune_similarity">
         <SeekBarPreference
             android:max="100"
             app:key="@string/pref_min_similarity"
@@ -33,7 +33,7 @@
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Min Similarity (%)" />
+            app:title="@string/p_fine_tune_min_similarity" />
 
         <SeekBarPreference
             android:max="100"
@@ -42,7 +42,7 @@
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="MLB Similarity (%)" />
+            app:title="@string/p_fine_tune_mlb_similarity" />
 
         <SeekBarPreference
             android:max="100"
@@ -51,12 +51,12 @@
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Stage Counter Similarity (%)" />
+            app:title="@string/p_fine_tune_stage_counter_similarity" />
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="click_category"
-        app:title="Clicks">
+        app:title="@string/p_fine_tune_clicks">
         <SeekBarPreference
             android:max="2000"
             app:key="@string/pref_click_wait_time"
@@ -64,7 +64,7 @@
             app:min="0"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Wait after clicking (ms)" />
+            app:title="@string/p_fine_tune_wait_after_clicking" />
 
         <SeekBarPreference
             android:max="200"
@@ -73,7 +73,7 @@
             app:min="1"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Click duration (ms)" />
+            app:title="@string/p_fine_tune_click_duration" />
 
         <SeekBarPreference
             android:max="50"
@@ -82,12 +82,12 @@
             app:min="0"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Delay b/w repeated clicks (ms)" />
+            app:title="@string/p_fine_tune_click_delay" />
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="swipes_category"
-        app:title="Swipes">
+        app:title="@string/p_fine_tune_swipes">
         <SeekBarPreference
             android:max="3000"
             app:key="@string/pref_swipe_wait_time"
@@ -95,7 +95,7 @@
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Wait after swiping (ms)" />
+            app:title="@string/p_fine_tune_wait_after_swiping" />
 
         <SeekBarPreference
             android:max="1000"
@@ -104,7 +104,7 @@
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Swipe duration (ms)" />
+            app:title="@string/p_fine_tune_swipe_duration" />
 
         <SeekBarPreference
             android:max="200"
@@ -113,7 +113,7 @@
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Support Swipe Multiplier (%)" />
+            app:title="@string/p_fine_tune_support_swipe_multiplier" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -126,7 +126,7 @@
             app:min="0"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Skill Delay (ms)" />
+            app:title="@string/p_fine_tune_skill_delay" />
 
         <SeekBarPreference
             android:max="200"
@@ -135,6 +135,6 @@
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="Wait Multiplier (%)" />
+            app:title="@string/p_fine_tune_wait_multiplier" />
     </PreferenceCategory>
 </PreferenceScreen>
