@@ -96,8 +96,8 @@ class CardPriorityFragment : Fragment(R.layout.card_priority) {
         return when (item.itemId) {
             R.id.action_card_priority_info -> {
                 AlertDialog.Builder(requireContext())
-                    .setMessage("W: Weak (Effective)\nR: Resistive\n\nB: Buster\nA: Arts\nQ: Quick")
-                    .setTitle("Info")
+                    .setMessage(R.string.card_priority_info_content)
+                    .setTitle(R.string.card_priority_info_title)
                     .setPositiveButton(android.R.string.yes, null)
                     .show()
                 true

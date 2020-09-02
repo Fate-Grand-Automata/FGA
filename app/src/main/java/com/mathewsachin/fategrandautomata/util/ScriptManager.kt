@@ -7,6 +7,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.view.setPadding
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
@@ -144,7 +145,7 @@ class ScriptManager @Inject constructor(
                 screenshotService.startRecording()
             } else null
         } catch (e: Exception) {
-            val msg = "Couldn't start recording"
+            val msg = userInterface.Service.getString(R.string.cannot_start_recording)
             logger.error(msg, e)
             Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
 
@@ -192,7 +193,7 @@ class ScriptManager @Inject constructor(
         }
 
         ScriptRunnerDialog(userInterface).apply {
-            setTitle("Select AutoSkill Config")
+            setTitle(context.getString(R.string.select_auto_skill_config))
             setPositiveButton(context.getString(android.R.string.ok)) {
                 val selectedIndex = radioGroup.checkedRadioButtonId
                 if (selectedIndex in autoSkillItems.indices) {
@@ -206,7 +207,7 @@ class ScriptManager @Inject constructor(
             setNegativeButton(context.getString(android.R.string.cancel)) { }
 
             if (autoSkillItems.isEmpty()) {
-                setMessage("No AutoSkill Configs")
+                setMessage(context.getString(R.string.no_auto_skill_configs))
             } else setView(radioGroup)
 
             show()

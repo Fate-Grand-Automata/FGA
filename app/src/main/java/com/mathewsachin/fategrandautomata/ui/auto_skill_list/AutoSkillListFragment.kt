@@ -80,7 +80,7 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
                 actionMode?.finish()
             } else actionMode?.let {
                 it.title = requireActivity().title
-                it.subtitle = "$count selected"
+                it.subtitle = getString(R.string.auto_skill_list_selected_count, count)
             }
         }
 
@@ -141,7 +141,8 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
             }
 
             if (failed > 0) {
-                Toast.makeText(context, "Failed to export $failed item(s)", Toast.LENGTH_SHORT).show()
+                val msg = getString(R.string.auto_skill_list_export_failed, failed)
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -176,7 +177,8 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
             }
 
             if (failed > 0) {
-                Toast.makeText(requireContext(), "Import Failed for $failed item(s)", Toast.LENGTH_SHORT)
+                val msg = getString(R.string.auto_skill_list_import_failed, failed)
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -216,16 +218,16 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
                     val toDelete = listSection.selectedItems
 
                     AlertDialog.Builder(requireContext())
-                        .setMessage("Are you sure you want to delete ${toDelete.size} configuration(s)?")
-                        .setTitle("Confirm Deletion")
-                        .setPositiveButton("Delete") { _, _ ->
+                        .setMessage(getString(R.string.auto_skill_list_delete_confirm_message, toDelete.size))
+                        .setTitle(R.string.auto_skill_list_delete_confirm_title)
+                        .setPositiveButton(R.string.auto_skill_list_delete_confirm_ok) { _, _ ->
                             toDelete.forEach {
                                 preferences.removeAutoSkillConfig(it.id)
                             }
 
                             mode.finish()
                         }
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(android.R.string.cancel, null)
                         .show()
                     true
                 }

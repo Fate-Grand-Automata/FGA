@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.util
 
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
+import com.mathewsachin.fategrandautomata.R
 
 class MultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSelectListPreference> {
     override fun provideSummary(preference: MultiSelectListPreference): CharSequence {
@@ -18,6 +19,6 @@ class MultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSelectLis
             }
 
             selectedLabels.joinToString()
-        } else "Any"
+        } else preference.context.getString(R.string.auto_skill_support_any)
     }
 }

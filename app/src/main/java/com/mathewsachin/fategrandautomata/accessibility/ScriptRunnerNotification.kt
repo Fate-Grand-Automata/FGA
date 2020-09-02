@@ -62,14 +62,14 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
 
         val stopAction = NotificationCompat.Action.Builder(
             R.drawable.ic_close,
-            "Stop",
+            service.getString(R.string.notification_stop),
             stopIntent
         ).build()
 
         return NotificationCompat.Builder(service, channelId)
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
-            .setContentText("Accessibility Service Running")
+            .setContentText(service.getString(R.string.notification_text))
             .setSmallIcon(R.mipmap.notification_icon)
             .setColor(service.getColor(R.color.colorBusterWeak))
             .setPriority(NotificationManager.IMPORTANCE_LOW)

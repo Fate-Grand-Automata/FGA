@@ -60,7 +60,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             } catch (e: Exception) {
                 logger.error("Failed to export", e)
 
-                Toast.makeText(context, "Failed to Export", Toast.LENGTH_SHORT).show()
+                val msg = getString(R.string.auto_skill_item_export_failed)
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -185,8 +186,9 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     private fun performSupportImageExtraction() {
         lifecycleScope.launch {
             SupportImageExtractor(requireContext(), storageDirs).extract()
-            Toast.makeText(activity, "Support Images Extracted Successfully", Toast.LENGTH_SHORT)
-                .show()
+
+            val msg = getString(R.string.support_imgs_extracted)
+            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
             preferredSupportOnResume(storageDirs)
         }
     }
@@ -205,10 +207,10 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             }
             R.id.action_auto_skill_delete -> {
                 AlertDialog.Builder(requireContext())
-                    .setMessage("Are you sure you want to delete this configuration?")
-                    .setTitle("Confirm Deletion")
-                    .setPositiveButton("Delete") { _, _ -> deleteItem(args.key) }
-                    .setNegativeButton("Cancel", null)
+                    .setMessage(R.string.auto_skill_item_delete_confirm_message)
+                    .setTitle(R.string.auto_skill_item_delete_confirm_title)
+                    .setPositiveButton(R.string.auto_skill_item_delete_confirm_ok) { _, _ -> deleteItem(args.key) }
+                    .setNegativeButton(android.R.string.cancel, null)
                     .show()
                 true
             }
@@ -223,7 +225,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
                 val map = autoSkillPrefs.export()
                 newConfig.import(map)
-                newConfig.name += " (Copy)"
+                newConfig.name = getString(R.string.auto_skill_item_copy_name, newConfig.name)
 
                 val action = AutoSkillItemSettingsFragmentDirections
                     .actionAutoSkillItemSettingsFragmentSelf(guid)

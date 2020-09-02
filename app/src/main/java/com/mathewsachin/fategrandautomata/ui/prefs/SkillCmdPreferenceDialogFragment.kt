@@ -30,7 +30,8 @@ class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat(
     override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
         super.onPrepareDialogBuilder(builder)
 
-        builder.setNeutralButton("Maker") { _, _ ->
+        val actionMsg = getString(R.string.auto_skill_item_open_maker)
+        builder.setNeutralButton(actionMsg) { _, _ ->
             val action = AutoSkillItemSettingsFragmentDirections
                 .actionAutoSkillItemSettingsFragmentToAutoSkillMakerActivity(autoSkillKey)
 

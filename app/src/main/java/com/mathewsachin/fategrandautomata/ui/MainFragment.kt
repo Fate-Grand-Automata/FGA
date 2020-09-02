@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
@@ -20,6 +19,9 @@ import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_main.*
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger { }
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.content_main) {
@@ -33,7 +35,7 @@ class MainFragment : Fragment(R.layout.content_main) {
 
     val startMediaProjection = registerForActivityResult(StartMediaProjection()) { intent ->
         if (intent == null) {
-            Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_SHORT).show()
+            logger.info("MediaProjection cancelled by user")
             ScriptRunnerService.Instance?.notification?.hide()
         } else ScriptRunnerService.Instance?.start(intent)
     }
@@ -43,15 +45,15 @@ class MainFragment : Fragment(R.layout.content_main) {
             return true
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Accessibility Disabled")
-            .setMessage("Turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.")
-            .setPositiveButton("Go To Settings") { _, _ ->
+            .setTitle(R.string.accessibility_disabled_title)
+            .setMessage(R.string.accessibility_disabled_message)
+            .setPositiveButton(R.string.accessibility_disabled_go_to_settings) { _, _ ->
                 // Open Accessibility Settings
                 val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                 toggling = true
                 startActivity(intent)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(android.R.string.cancel, null)
             .show()
 
         return false
