@@ -36,7 +36,7 @@
         android:id="@+id/experimental_switch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Enable Experimental features"
+        android:text="@string/card_priority_experimental"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="16dp"
         app:layout_constraintStart_toStartOf="parent"
