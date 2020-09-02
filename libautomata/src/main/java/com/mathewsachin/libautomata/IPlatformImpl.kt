@@ -12,6 +12,8 @@ interface IPlatformImpl {
      */
     fun toast(Message: String)
 
+    fun notify(message: String)
+
     /**
      * Creates a new [IPattern] without any image data.
      */

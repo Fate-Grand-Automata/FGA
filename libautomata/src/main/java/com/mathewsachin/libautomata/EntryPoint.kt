@@ -28,12 +28,14 @@ abstract class EntryPoint(
             script()
         } catch (e: ScriptAbortException) {
             // Script stopped by user
+            platformImpl.notify("Script stopped by user or screen turned OFF")
         } catch (e: ScriptExitException) {
             scriptExitListener.invoke(e)
 
             // Show the message box only if there is some message
             if (!e.message.isBlank()) {
                 platformImpl.messageBox("Script Exited", e.message)
+                platformImpl.notify("Script Exited")
             }
         } catch (e: Exception) {
             println(e.messageAndStackTrace)
@@ -41,6 +43,7 @@ abstract class EntryPoint(
             scriptExitListener.invoke(e)
 
             platformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
+            platformImpl.notify("Unexpected Error")
         }
 
         try {

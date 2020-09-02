@@ -19,4 +19,6 @@ interface IAutomataExtensions : IDurationExtensions,
     val screenshotManager: ScreenshotManager
 
     fun toast(msg: String)
+
+    fun notify(msg: String)
 }

@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.os.*
 import android.widget.Toast
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -21,6 +22,7 @@ import kotlin.time.milliseconds
 
 class AndroidImpl @Inject constructor(
     service: Service,
+    val notification: ScriptRunnerNotification,
     val preferences: IPreferences,
     val cutoutManager: CutoutManager,
     val highlightManager: HighlightManager
@@ -39,6 +41,8 @@ class AndroidImpl @Inject constructor(
                 .show()
         }
     }
+
+    override fun notify(message: String) = notification.message(message)
 
     override fun getResizableBlankPattern(): IPattern {
         return DroidCvPattern()

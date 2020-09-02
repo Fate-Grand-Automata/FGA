@@ -26,5 +26,7 @@ class AutomataApi @Inject constructor(
             .copy() // It is important that the image gets cloned here.
 
     override fun toast(msg: String) = platformImpl.toast(msg)
+
+    override fun notify(msg: String) = platformImpl.notify(msg)
 }
 
