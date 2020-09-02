@@ -233,4 +233,6 @@
     <string name="cannot_start_recording">Couldn\'t start recording</string>
     <string name="select_auto_skill_config">Select AutoSkill Config</string>
     <string name="no_auto_skill_configs">No AutoSkill Configs</string>
+
+    <string name="script_msg_ap_ran_out">AP ran out!</string>
 </resources>

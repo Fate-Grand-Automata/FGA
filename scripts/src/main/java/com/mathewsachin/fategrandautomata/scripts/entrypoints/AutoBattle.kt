@@ -359,7 +359,7 @@ open class AutoBattle @Inject constructor(
             ++stonesUsed
 
             3.seconds.wait()
-        } else throw ScriptExitException("AP ran out!")
+        } else throw ScriptExitException(messages.apRanOut)
     }
 
     /**

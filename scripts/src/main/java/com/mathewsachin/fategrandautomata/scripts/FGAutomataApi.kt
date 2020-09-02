@@ -11,5 +11,6 @@ class FGAutomataApi @Inject constructor(
     override val prefs: IPreferences,
     override val images: ImageLocator,
     override val game: Game,
-    override val scaling: Scaling
+    override val scaling: Scaling,
+    override val messages: IScriptMessages
 ) : IFGAutomataApi, IAutomataExtensions by automataApi
