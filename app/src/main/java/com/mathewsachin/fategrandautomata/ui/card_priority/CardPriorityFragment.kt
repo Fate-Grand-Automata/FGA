@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,18 +16,12 @@ import kotlinx.android.synthetic.main.card_priority.*
 
 @AndroidEntryPoint
 class CardPriorityFragment : Fragment(R.layout.card_priority) {
-    val args: CardPriorityFragmentArgs by navArgs()
     val vm: CardPriorityViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-
-        vm.key = args.key
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setHasOptionsMenu(true)
 
         val adapter = CardPriorityListAdapter(
             vm.cardPriorityItems,

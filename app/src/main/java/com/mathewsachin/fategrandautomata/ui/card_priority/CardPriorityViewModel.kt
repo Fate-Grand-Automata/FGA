@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -9,9 +11,13 @@ import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 
 class CardPriorityViewModel @ViewModelInject constructor(
-    val prefsCore: PrefsCore
+    val prefsCore: PrefsCore,
+    @Assisted savedState: SavedStateHandle
 ) : ViewModel() {
-    var key: String = ""
+    val autoSkillItemKey: String = savedState[CardPriorityFragmentArgs::key.name]
+        ?: throw kotlin.Exception("Couldn't get AutoSkill key")
+
+    private val autoSkillPref = prefsCore.forAutoSkillConfig(autoSkillItemKey)
 
     val cardPriorityItems: MutableList<CardPriorityListItem> by lazy {
         var cardPriority = autoSkillPref.cardPriority.get()
@@ -35,13 +41,10 @@ class CardPriorityViewModel @ViewModelInject constructor(
             .toMutableList()
     }
 
-    private val autoSkillPref by lazy { prefsCore.forAutoSkillConfig(key) }
-
-    val experimental by lazy {
-        autoSkillPref.experimental
-            .asFlow()
-            .asLiveData()
-    }
+    val experimental = autoSkillPref
+        .experimental
+        .asFlow()
+        .asLiveData()
 
     fun setExperimental(value: Boolean) = autoSkillPref.experimental.set(value)
 
