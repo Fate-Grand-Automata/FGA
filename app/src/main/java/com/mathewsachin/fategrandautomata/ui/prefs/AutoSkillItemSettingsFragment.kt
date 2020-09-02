@@ -120,7 +120,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         super.onViewCreated(view, savedInstanceState)
 
         val vm: AutoSkillItemViewModel by viewModels()
-        vm.key = args.key
 
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             vm.cardPriority.observe(viewLifecycleOwner) { priority ->
