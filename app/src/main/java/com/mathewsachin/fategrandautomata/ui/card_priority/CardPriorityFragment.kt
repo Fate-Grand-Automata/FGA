@@ -8,28 +8,16 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
-import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.card_priority.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CardPriorityFragment : Fragment(R.layout.card_priority) {
-    private lateinit var cardScores: MutableList<MutableList<CardScore>>
-    private lateinit var autoSkillPref: IAutoSkillPreferences
-
     val args: CardPriorityFragmentArgs by navArgs()
-
     val vm: CardPriorityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,14 +1,14 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
-import javax.inject.Inject
 
-class CardPriorityViewModel @Inject constructor(
+class CardPriorityViewModel @ViewModelInject constructor(
     val prefsCore: PrefsCore
 ) : ViewModel() {
     var key: String = ""

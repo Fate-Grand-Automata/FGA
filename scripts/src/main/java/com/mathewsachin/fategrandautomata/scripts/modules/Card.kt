@@ -201,7 +201,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // Skip if NP spamming because we don't know how many NPs might've been used
         val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
         val rearrangeCards = if (rearrangeCardsPerWave.isNotEmpty())
-            rearrangeCardsPerWave[battle.currentStage.coerceIn(rearrangeCardsPerWave.indices)]
+            rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
         else false
 
         if (rearrangeCards
