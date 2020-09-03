@@ -1,9 +1,6 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -107,7 +104,7 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             .setContentTitle(service.getString(R.string.app_name))
             .setContentText(msg)
             .setSmallIcon(R.mipmap.notification_icon)
-            .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
+            .setDefaults(Notification.DEFAULT_SOUND)
             .setTimeoutAfter(10_000) // 10s
             .build()
 
