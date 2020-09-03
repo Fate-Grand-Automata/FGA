@@ -26,7 +26,7 @@ class SupportImageMaker @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFGAutomataApi by fgAutomataApi {
     private val dir = storageDirs.supportImgTempDir
 
     override fun script(): Nothing {
@@ -67,7 +67,7 @@ class SupportImageMaker @Inject constructor(
         }
 
         if (regionArray.isEmpty()) {
-            throw ScriptExitException("No support images were found on the current screen. Are you on Support selection or Friend list screen?")
+            throw ScriptExitException(messages.supportImageMakerNotFound)
         }
 
         throw SupportImageMakerExitException()

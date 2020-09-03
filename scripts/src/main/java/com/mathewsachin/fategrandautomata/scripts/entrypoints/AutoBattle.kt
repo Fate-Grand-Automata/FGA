@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.absoluteValue
-import kotlin.time.Duration
 import kotlin.time.seconds
 
 /**
@@ -31,7 +30,7 @@ open class AutoBattle @Inject constructor(
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi,
     val storageDirs: StorageDirs
-) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFGAutomataApi by fgAutomataApi {
     private val support = Support(fgAutomataApi)
     private val card = Card(fgAutomataApi)
     private val battle = Battle(fgAutomataApi)
@@ -51,12 +50,12 @@ open class AutoBattle @Inject constructor(
             throw ScriptExitException(makeExitMessage(e.message))
         } catch (e: ScriptAbortException) {
             val msg = if (e.message.isBlank())
-                "Script stopped by user or screen turned OFF"
+                messages.stoppedByUser
             else e.message
 
             throw ScriptAbortException(makeExitMessage(msg))
         } catch (e: Exception) {
-            throw Exception(makeExitMessage("Unexpected Error: ${e.message}"), e)
+            throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
         } finally {
             if (prefs.refill.autoDecrement) {
                 prefs.refill.repetitions -= stonesUsed
@@ -64,37 +63,26 @@ open class AutoBattle @Inject constructor(
         }
     }
 
-    private val Duration.stringify: String
-        get() =
-            toComponents { hours, minutes, seconds, _ ->
-                (if (hours > 0)
-                    listOf(hours, minutes, seconds)
-                else listOf(minutes, seconds))
-                    .joinToString(":") { "%02d".format(it) }
-            }
-
     private fun makeExitMessage(reason: String) = buildString {
         appendLine(reason)
         appendLine()
 
         appendLine(makeRefillAndRunsMessage())
 
-        appendLine("Time: ${battle.state.totalBattleTime.stringify}")
+        appendLine(messages.time(battle.state.totalBattleTime))
 
         if (battle.state.runs > 1) {
-            val avgTime = battle.state.averageRunTime.stringify
-
-            appendLine("Average time per run: $avgTime")
+            appendLine(messages.avgTimePerRun(battle.state.averageRunTime))
 
             with(battle.state) {
-                appendLine("Turns: $minTurns (min), $averageTurns (avg), $maxTurns (max)")
+                appendLine(messages.turns(minTurns, averageTurns, maxTurns))
             }
         } else if (battle.state.runs == 1) {
-            appendLine("Turns: ${battle.state.totalTurns}")
+            appendLine(messages.turns(battle.state.totalTurns))
         }
 
         if (withdrawCount > 0) {
-            appendLine("Withdrew $withdrawCount time(s)")
+            appendLine(messages.timesWithdrew(withdrawCount))
         }
     }.trimEnd()
 
@@ -196,9 +184,10 @@ open class AutoBattle @Inject constructor(
      */
     private fun result() {
         if (images.ceDrop in Game.resultCeDropRegion) {
+            val msg = messages.ceDropped
             if (prefs.stopOnCEDrop) {
-                throw ScriptExitException("CE Dropped!")
-            } else notify("CE Dropped!")
+                throw ScriptExitException(msg)
+            } else notify(msg)
         }
 
         if (prefs.screenshotDrops) {
@@ -288,8 +277,8 @@ open class AutoBattle @Inject constructor(
 
     private fun ceReward() {
         if (prefs.stopOnCEGet) {
-            throw ScriptExitException("CE GET!")
-        } else notify("CE GET!")
+            throw ScriptExitException(messages.ceGet)
+        } else notify(messages.ceGet)
 
         Game.resultCeRewardCloseClick.click()
     }
@@ -334,7 +323,7 @@ open class AutoBattle @Inject constructor(
      */
     private fun withdraw() {
         if (!prefs.withdrawEnabled) {
-            throw ScriptExitException("All servants have been defeated and auto-withdrawing is disabled.")
+            throw ScriptExitException(messages.withdrawDisabled)
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
@@ -490,15 +479,15 @@ open class AutoBattle @Inject constructor(
         val runs = battle.state.runs
 
         if (refill.shouldLimitRuns && refill.limitRuns > 0) {
-            appendLine("Ran $runs out of ${refill.limitRuns} time(s)")
+            appendLine(messages.timesRanOutOf(runs, refill.limitRuns))
         } else if (runs > 0) {
-            appendLine("Ran $runs time(s)")
+            appendLine(messages.timesRan(runs))
         }
 
         if (refill.enabled) {
             val refillRepetitions = refill.repetitions
             if (refillRepetitions > 0) {
-                appendLine("$stonesUsed refills used out of $refillRepetitions")
+                appendLine(messages.refillsUsedOutOf(stonesUsed, refillRepetitions))
             }
         }
     }.trimEnd()
@@ -522,7 +511,7 @@ open class AutoBattle @Inject constructor(
             // We only have images for JP and NA
             GameServerEnum.En, GameServerEnum.Jp -> {
                 if (images.inventoryFull in Game.inventoryFullRegion) {
-                    throw ScriptExitException("Inventory Full")
+                    throw ScriptExitException(messages.inventoryFull)
                 }
             }
         }

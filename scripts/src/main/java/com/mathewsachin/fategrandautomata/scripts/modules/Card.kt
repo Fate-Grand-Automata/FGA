@@ -74,7 +74,7 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             return CardTypeEnum.Quick
         }
 
-        val msg = "Failed to determine Card type $region"
+        val msg = messages.failedToDetermineCardType(commandCard)
         toast(msg)
         logger.debug(msg)
 

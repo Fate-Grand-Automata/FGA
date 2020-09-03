@@ -13,7 +13,7 @@ class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFGAutomataApi by fgAutomataApi {
     private val spinClick = Location(834, 860)
     private val finishedLotteryBoxRegion = Region(540, 860, 140, 100)
     private val fullPresentBoxRegion = Region(1280, 720, 1280, 720)
@@ -55,7 +55,7 @@ class AutoLottery @Inject constructor(
                         Similarity = 0.65
                     ) -> reset()
                     images.presentBoxFull in fullPresentBoxRegion -> {
-                        throw ScriptExitException("Present Box Full")
+                        throw ScriptExitException(messages.lotteryPresentBoxFull)
                     }
                     else -> spin()
                 }

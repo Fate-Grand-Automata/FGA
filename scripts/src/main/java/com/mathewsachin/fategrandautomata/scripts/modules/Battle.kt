@@ -30,7 +30,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             state.nextRun()
 
             if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
-                throw ScriptExitException("Ran ${state.runs} time(s)")
+                throw ScriptExitException(messages.timesRan(state.runs))
             }
         }
     }

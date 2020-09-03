@@ -7,7 +7,8 @@ import kotlin.concurrent.thread
  */
 abstract class EntryPoint(
     val exitManager: ExitManager,
-    val platformImpl: IPlatformImpl
+    val platformImpl: IPlatformImpl,
+    private val messages: IAutomataMessages
 ) {
     /**
      * Starts the logic of the script mode in a new thread.
@@ -29,25 +30,27 @@ abstract class EntryPoint(
         } catch (e: ScriptAbortException) {
             // Script stopped by user
             if (e.message.isNotBlank()) {
-                platformImpl.messageBox("Script Exited", e.message)
+                platformImpl.messageBox(messages.scriptExited, e.message)
             }
 
-            platformImpl.notify("Script stopped by user or screen turned OFF")
+            platformImpl.notify(messages.stoppedByUser)
         } catch (e: ScriptExitException) {
             scriptExitListener.invoke(e)
 
             // Show the message box only if there is some message
             if (e.message.isNotBlank()) {
-                platformImpl.messageBox("Script Exited", e.message)
-                platformImpl.notify("Script Exited")
+                val msg = messages.scriptExited
+                platformImpl.messageBox(msg, e.message)
+                platformImpl.notify(msg)
             }
         } catch (e: Exception) {
             println(e.messageAndStackTrace)
 
             scriptExitListener.invoke(e)
 
-            platformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
-            platformImpl.notify("Unexpected Error")
+            val msg = messages.unexpectedError
+            platformImpl.messageBox(msg, e.messageAndStackTrace, e)
+            platformImpl.notify(msg)
         }
     }
 

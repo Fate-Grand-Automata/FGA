@@ -13,7 +13,7 @@ class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFGAutomataApi by fgAutomataApi {
     private val first10SummonClick = Location(1400, 1120)
     private val okClick = Location(1600, 1120)
     private val continueSummonClick = Location(1600, 1325)

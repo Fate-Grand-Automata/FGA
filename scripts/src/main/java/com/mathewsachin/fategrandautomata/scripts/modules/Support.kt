@@ -76,7 +76,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun selectManual(): Boolean {
-        throw ScriptExitException("Support selection set to Manual")
+        throw ScriptExitException(messages.supportSelectionManual)
     }
 
     private var lastSupportRefreshTimestamp: TimeMark? = null
@@ -87,7 +87,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             val toWait = supportRefreshThreshold - elapsed
 
             if (toWait.isPositive()) {
-                toast("Support list will be updated in $toWait")
+                toast(messages.supportListUpdatedIn(toWait))
 
                 toWait.wait()
             }
@@ -177,7 +177,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             return selectPreferred { findFriendName() }
         }
 
-        throw ScriptExitException("When using 'friend' support selection mode, specify at least one friend name.")
+        throw ScriptExitException(messages.supportSelectionFriendNotSet)
     }
 
     private fun selectPreferred(SearchMethod: SearchFunction): Boolean {
@@ -251,7 +251,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             hasServants && hasCraftEssences -> { -> searchServantAndCE() }
             hasServants -> { -> findServants().firstOrNull() ?: SearchFunctionResult.NotFound }
             hasCraftEssences -> { -> findCraftEssence(Game.supportListRegion) }
-            else -> throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
+            else -> throw ScriptExitException(messages.supportSelectionPreferredNotSet)
         }
     }
 
