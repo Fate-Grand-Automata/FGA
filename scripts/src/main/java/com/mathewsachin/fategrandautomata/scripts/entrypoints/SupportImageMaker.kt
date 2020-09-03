@@ -38,7 +38,8 @@ class SupportImageMaker @Inject constructor(
 
         // the servant and CE images are further to the right in the friend screen
         val supportBoundX = if (isInSupport) 106 else 176
-        var supportBound = Region(supportBoundX, 0, 286, 220)
+        val supportBound = Region(supportBoundX, 0, 286, 220)
+        val screenBounds = Region(Location(), Game.scriptSize)
 
         // At max two Servant+CE are completely on screen, so only use those
         val regionArray = Game.supportRegionToolSearchRegion
@@ -46,23 +47,20 @@ class SupportImageMaker @Inject constructor(
                 images.supportRegionTool,
                 supportRegionToolSimilarity
             )
+            .map {
+                // in the friend screen, the "Confirm Support Setup" button is higher
+                val newSupportBoundY = it.Region.Y + (if (isInSupport) 66 else 82)
+                supportBound.copy(Y = newSupportBoundY)
+            }
+            .filter { it in screenBounds }
             .take(2)
             .toList()
 
-        val screenBounds = Region(Location(), Game.scriptSize)
-
-        for ((i, testRegion) in regionArray.map { it.Region }.withIndex()) {
-            // in the friend screen, the "Confirm Support Setup" button is higher
-            val newSupportBoundY = testRegion.Y + (if (isInSupport) 66 else 82)
-            supportBound = supportBound.copy(Y = newSupportBoundY)
-
-            if (supportBound !in screenBounds)
-                continue
-
-            supportBound.getPattern().use {
+        for ((i, region) in regionArray.withIndex()) {
+            region.getPattern().use {
                 extractServantImage(it, i)
                 extractCeImage(it, i)
-                extractFriendNameImage(supportBound, isInSupport, i)
+                extractFriendNameImage(region, isInSupport, i)
             }
         }
 
