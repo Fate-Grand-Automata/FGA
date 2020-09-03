@@ -1,9 +1,6 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -18,28 +15,47 @@ import javax.inject.Inject
 @ServiceScoped
 class ScriptRunnerNotification @Inject constructor(val service: Service) {
 
-    private val channelId = "service"
+    private object Channels {
+        const val service = "service"
+        const val old = "fategrandautomata-notifications"
+        const val message = "message"
+    }
+
+    private object Ids {
+        const val foregroundNotification = 1
+
+        const val messageNotification = 2
+    }
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
+            val notifyManager = NotificationManagerCompat.from(service)
+
+            NotificationChannel(
+                Channels.service,
                 "Service Running",
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
                 description = "Ongoing notification that the service is running in the background"
 
                 setShowBadge(false)
+                notifyManager.createNotificationChannel(this)
             }
 
-            val notifyManager = NotificationManagerCompat.from(service)
-            notifyManager.createNotificationChannel(channel)
+            NotificationChannel(
+                Channels.message,
+                "Messages",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Plays sound on Script exit and other events"
+
+                setShowBadge(false)
+                notifyManager.createNotificationChannel(this)
+            }
 
             try {
                 // Delete the old channel
-                notifyManager.deleteNotificationChannel(
-                    "fategrandautomata-notifications"
-                )
+                notifyManager.deleteNotificationChannel(Channels.old)
             } catch (e: Exception) {
             }
         }
@@ -66,7 +82,7 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             stopIntent
         ).build()
 
-        return NotificationCompat.Builder(service, channelId)
+        return NotificationCompat.Builder(service, Channels.service)
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
             .setContentText(service.getString(R.string.notification_text))
@@ -77,12 +93,23 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             .addAction(stopAction)
     }
 
-    private val foregroundNotificationId = 1
-
     fun show() {
         val builder = startBuildNotification()
 
-        service.startForeground(foregroundNotificationId, builder.build())
+        service.startForeground(Ids.foregroundNotification, builder.build())
+    }
+
+    fun message(msg: String) {
+        val notification = NotificationCompat.Builder(service, Channels.message)
+            .setContentTitle(service.getString(R.string.app_name))
+            .setContentText(msg)
+            .setSmallIcon(R.mipmap.notification_icon)
+            .setDefaults(Notification.DEFAULT_SOUND)
+            .setTimeoutAfter(10_000) // 10s
+            .build()
+
+        NotificationManagerCompat.from(service)
+            .notify(Ids.messageNotification, notification)
     }
 
     class NotificationReceiver : BroadcastReceiver() {
