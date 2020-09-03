@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.absoluteValue
+import kotlin.time.Duration
 import kotlin.time.seconds
 
 /**
@@ -44,6 +45,54 @@ open class AutoBattle @Inject constructor(
     override fun script(): Nothing {
         init()
 
+        try {
+            loop()
+        } catch (e: ScriptExitException) {
+            throw ScriptExitException(makeExitMessage(e.message))
+        } catch (e: ScriptAbortException) {
+            val msg = if (e.message.isBlank())
+                "Script stopped by user or screen turned OFF"
+            else e.message
+
+            throw ScriptAbortException(makeExitMessage(msg))
+        } catch (e: Exception) {
+            throw Exception(makeExitMessage("Unexpected Error: ${e.message}"), e)
+        } finally {
+            if (prefs.refill.autoDecrement) {
+                prefs.refill.repetitions -= stonesUsed
+            }
+        }
+    }
+
+    private val Duration.stringify: String
+        get() =
+            toComponents { hours, minutes, seconds, _ ->
+                (if (hours > 0)
+                    listOf(hours, minutes, seconds)
+                else listOf(minutes, seconds))
+                    .joinToString(":") { "%02d".format(it) }
+            }
+
+    private fun makeExitMessage(reason: String) = buildString {
+        appendLine(reason)
+        appendLine()
+
+        appendLine(makeRefillAndRunsMessage())
+
+        appendLine("Time: ${battle.state.totalBattleTime.stringify}")
+
+        if (battle.state.runs > 1) {
+            val avg = battle.state.averageRunTime.stringify
+
+            appendLine("Average time per run: $avg")
+        }
+
+        if (withdrawCount > 0) {
+            appendLine("Withdrew $withdrawCount time(s)")
+        }
+    }.trimEnd()
+
+    private fun loop(): Nothing {
         // a map of validators and associated actions
         // if the validator function evaluates to true, the associated action function is called
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
@@ -74,12 +123,6 @@ open class AutoBattle @Inject constructor(
             actor?.invoke()
 
             1.seconds.wait()
-        }
-    }
-
-    override fun postActions() {
-        if (prefs.refill.autoDecrement) {
-            prefs.refill.repetitions -= stonesUsed
         }
     }
 
@@ -435,28 +478,30 @@ open class AutoBattle @Inject constructor(
         }
     }
 
+    private fun makeRefillAndRunsMessage() = buildString {
+        val refill = prefs.refill
+
+        val runs = battle.state.runs
+
+        if (refill.shouldLimitRuns && refill.limitRuns > 0) {
+            appendLine("Ran $runs out of ${refill.limitRuns} time(s)")
+        } else if (runs > 0) {
+            appendLine("Ran $runs time(s)")
+        }
+
+        if (refill.enabled) {
+            val refillRepetitions = refill.repetitions
+            if (refillRepetitions > 0) {
+                appendLine("$stonesUsed refills used out of $refillRepetitions")
+            }
+        }
+    }.trimEnd()
+
     /**
      * Will show a toast informing the user of number of runs and how many apples have been used so far.
      */
     private fun showRefillsAndRunsMessage() {
-        val message = StringBuilder().apply {
-            val refill = prefs.refill
-
-            val runs = battle.state.runs
-
-            if (refill.shouldLimitRuns && refill.limitRuns > 0) {
-                appendln("Ran $runs out of ${refill.limitRuns} time(s)")
-            } else if (runs > 0) {
-                appendln("Ran $runs time(s)")
-            }
-
-            if (refill.enabled) {
-                val refillRepetitions = refill.repetitions
-                if (refillRepetitions > 0) {
-                    appendln("$stonesUsed refills used out of $refillRepetitions")
-                }
-            }
-        }.toString().trimEnd()
+        val message = makeRefillAndRunsMessage()
 
         if (message.isNotBlank()) {
             platformImpl.toast(message)

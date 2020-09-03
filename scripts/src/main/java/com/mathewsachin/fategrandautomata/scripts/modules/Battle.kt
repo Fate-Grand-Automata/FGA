@@ -16,6 +16,8 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         autoSkill = AutoSkillModule
         card = CardModule
 
+        state.markStartTime()
+
         resetState()
     }
 

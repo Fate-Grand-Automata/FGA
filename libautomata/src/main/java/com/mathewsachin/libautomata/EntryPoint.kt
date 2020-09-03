@@ -28,12 +28,16 @@ abstract class EntryPoint(
             script()
         } catch (e: ScriptAbortException) {
             // Script stopped by user
+            if (e.message.isNotBlank()) {
+                platformImpl.messageBox("Script Exited", e.message)
+            }
+
             platformImpl.notify("Script stopped by user or screen turned OFF")
         } catch (e: ScriptExitException) {
             scriptExitListener.invoke(e)
 
             // Show the message box only if there is some message
-            if (!e.message.isBlank()) {
+            if (e.message.isNotBlank()) {
                 platformImpl.messageBox("Script Exited", e.message)
                 platformImpl.notify("Script Exited")
             }
@@ -44,12 +48,6 @@ abstract class EntryPoint(
 
             platformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
             platformImpl.notify("Unexpected Error")
-        }
-
-        try {
-            postActions()
-        } catch (e: Exception) {
-            platformImpl.messageBox("Error", e.messageAndStackTrace, e)
         }
     }
 
@@ -63,8 +61,6 @@ abstract class EntryPoint(
      * @throws ScriptExitException when an exit condition was reached
      */
     protected abstract fun script(): Nothing
-
-    protected open fun postActions() {}
 
     /**
      * A listener function, which is called when the script detected an exit condition or when an

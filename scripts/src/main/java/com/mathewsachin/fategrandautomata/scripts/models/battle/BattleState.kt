@@ -4,12 +4,16 @@ import kotlin.time.Duration
 import kotlin.time.TimeSource
 
 class BattleState {
-    private val timestamp = TimeSource.Monotonic.markNow()
+    private var timestamp = TimeSource.Monotonic.markNow()
+    fun markStartTime() {
+        timestamp = TimeSource.Monotonic.markNow()
+    }
+
     val totalBattleTime get() = timestamp.elapsedNow()
 
-    var maxRunTime = Duration.INFINITE
+    var maxRunTime = Duration.ZERO
         private set
-    var minRunTime = Duration.ZERO
+    var minRunTime = Duration.INFINITE
         private set
     var averageRunTime = Duration.ZERO
         private set
