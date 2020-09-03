@@ -169,7 +169,7 @@
     <string name="p_fine_tune_clicks">터치</string>
     <string name="p_fine_tune_wait_after_clicking">터치 후 딜레이 (ms)</string>
     <string name="p_fine_tune_click_duration">터치 지속 시간 (ms)</string>
-    <string name="p_fine_tune_click_delay">반복 터치 b/w 딜레이 (ms)</string>
+    <string name="p_fine_tune_click_delay">반복 터치 사이 딜레이 (ms)</string>
     <string name="p_fine_tune_swipes">스와이프</string>
     <string name="p_fine_tune_wait_after_swiping">스와이프 후 딜레이 (ms)</string>
     <string name="p_fine_tune_swipe_duration">스와이프 지속 시간 (ms)</string>
