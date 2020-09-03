@@ -5,6 +5,8 @@ import kotlin.time.TimeSource
 class RunState {
     private val timestamp = TimeSource.Monotonic.markNow()
     val runTime get() = timestamp.elapsedNow()
+    var totalTurns = 0
+        private set
 
     var stage = -1
         private set(value) {
@@ -20,6 +22,11 @@ class RunState {
     var turn = -1
         private set(value) {
             field = value
+
+            if (value != -1) {
+                ++totalTurns
+            }
+
             turnState = TurnState()
         }
 

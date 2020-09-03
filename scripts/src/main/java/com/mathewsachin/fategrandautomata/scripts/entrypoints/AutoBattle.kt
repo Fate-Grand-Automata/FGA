@@ -82,9 +82,15 @@ open class AutoBattle @Inject constructor(
         appendLine("Time: ${battle.state.totalBattleTime.stringify}")
 
         if (battle.state.runs > 1) {
-            val avg = battle.state.averageRunTime.stringify
+            val avgTime = battle.state.averageRunTime.stringify
 
-            appendLine("Average time per run: $avg")
+            appendLine("Average time per run: $avgTime")
+
+            with(battle.state) {
+                appendLine("Turns: $minTurns (min), $averageTurns (avg), $maxTurns (max)")
+            }
+        } else if (battle.state.runs == 1) {
+            appendLine("Turns: ${battle.state.totalTurns}")
         }
 
         if (withdrawCount > 0) {
