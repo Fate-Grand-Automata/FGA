@@ -142,7 +142,7 @@
     <string name="p_boost_item">부스트 아이템</string>
     <string name="p_brave_chains">브레이브 체인 (실험적)</string>
     <string name="p_rearrange_cards">카드 재배열</string>
-    <string name="p_auto_skill_cmd_text">오토 스킬 Cmd 텍스트 박스</string>
+    <string name="p_auto_skill_cmd_text">오토 스킬 커맨드 텍스트 박스</string>
     <string name="p_auto_skill_cmd_text_summary">오트 스킬 커맨드를 수정하기 위해 텍스트 박스 보이기</string>
 
     <string name="p_advanced">고급</string>
@@ -160,7 +160,7 @@
     <string name="p_fine_tune">미세 조정</string>
     <string name="p_fine_tune_default">기본값: %d</string>
     <string name="p_fine_tune_support">서포트</string>
-    <string name="p_fine_tune_support_swipes_per_update">Swipes per Update</string>
+    <string name="p_fine_tune_support_swipes_per_update">업데이트당 </string>
     <string name="p_fine_tune_support_max_updates">최대 업데이트</string>
     <string name="p_fine_tune_similarity">유사성</string>
     <string name="p_fine_tune_min_similarity">최소 유사성 (%)</string>
