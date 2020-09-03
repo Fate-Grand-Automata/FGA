@@ -108,7 +108,7 @@
 
     <string name="p_auto_skill_name">이름</string>
     <string name="p_auto_skill_cmd">커맨드</string>
-    <string name="p_auto_skill_notes">Notes</string>
+    <string name="p_auto_skill_notes">메모</string>
     <string name="p_auto_skill_party">파티</string>
     <string name="p_auto_skill_support_class">클래스</string>
     <string name="p_auto_skill_card_priority">카드 우선</string>
