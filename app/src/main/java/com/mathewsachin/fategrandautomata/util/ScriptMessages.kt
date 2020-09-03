@@ -13,57 +13,58 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
         get() = context.getString(R.string.script_msg_ap_ran_out)
 
     override val stoppedByUser: String
-        get() = "Script stopped by user or screen turned OFF"
+        get() = context.getString(R.string.stopped_by_user)
 
     override val unexpectedError: String
-        get() = "Unexpected Error"
+        get() = context.getString(R.string.unexpected_error)
 
     override val scriptExited: String
-        get() = "Script Exited"
+        get() = context.getString(R.string.script_exited)
 
     override val inventoryFull: String
-        get() = "Inventory Full"
+        get() = context.getString(R.string.inventory_full)
 
     override val lotteryPresentBoxFull: String
-        get() = "Present Box Full"
+        get() = context.getString(R.string.present_box_full)
 
     override val supportImageMakerNotFound: String
-        get() = "No support images were found on the current screen. Are you on Support selection or Friend list screen?"
+        get() = context.getString(R.string.support_img_maker_not_found)
 
     override val supportSelectionManual: String
-        get() = "Support selection set to Manual"
+        get() = context.getString(R.string.support_selection_manual)
 
     override val supportSelectionFriendNotSet: String
-        get() = "When using 'friend' support selection mode, specify at least one friend name."
+        get() = context.getString(R.string.support_selection_friend_not_set)
 
     override val supportSelectionPreferredNotSet: String
-        get() = "When using 'preferred' support selection mode, specify at least one Servant or Craft Essence."
+        get() = context.getString(R.string.support_selection_preferred_not_set)
 
     override val ceDropped: String
-        get() = "CE Dropped!"
+        get() = context.getString(R.string.ce_dropped)
 
     override val ceGet: String
-        get() = "CE GET!"
+        get() = context.getString(R.string.ce_get)
 
     override val withdrawDisabled: String
-        get() = "All servants have been defeated and auto-withdrawing is disabled."
+        get() = context.getString(R.string.withdraw_disabled)
 
-    override fun timesRan(times: Int) = "Ran $times time(s)"
+    override fun timesRan(times: Int) =
+        context.getString(R.string.times_ran, times)
 
     override fun timesRanOutOf(times: Int, outOf: Int) =
-        "Ran $times out of $outOf time(s)"
+        context.getString(R.string.times_ran_out_of, times, outOf)
 
     override fun refillsUsedOutOf(used: Int, outOf: Int) =
-        "$used refills used out of $outOf"
+        context.getString(R.string.refills_used_out_of, used, outOf)
 
     override fun failedToDetermineCardType(card: CommandCard.Face) =
-        "Failed to determine Card type: $card"
+        context.getString(R.string.failed_to_determine_card_type, card)
 
     override fun supportListUpdatedIn(duration: Duration) =
-        "Support list will be updated in $duration"
+        context.getString(R.string.support_list_updated_in, duration.toString())
 
     override fun timesWithdrew(times: Int) =
-        "Withdrew $times time(s)"
+        context.getString(R.string.times_withdrew, times)
 
     private val Duration.stringify: String
         get() =
@@ -75,13 +76,14 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
             }
 
     override fun time(duration: Duration) =
-        "Time: ${duration.stringify}"
+        context.getString(R.string.battle_time, duration.stringify)
 
     override fun avgTimePerRun(duration: Duration) =
-        "Average time per run: ${duration.stringify}"
+        context.getString(R.string.avg_time_per_run, duration.stringify)
 
     override fun turns(min: Int, avg: Int, max: Int) =
-        "Turns: $min (min), $avg (avg), $max (max)"
+        context.getString(R.string.turns_stats, min, avg, max)
 
-    override fun turns(turns: Int) = "Turns: $turns"
+    override fun turns(turns: Int) =
+        context.getString(R.string.turns_count, turns)
 }

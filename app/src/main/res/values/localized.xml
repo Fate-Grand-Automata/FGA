@@ -90,6 +90,7 @@
 
     <string name="p_script_mode">Script Mode</string>
     <string name="p_refill">Refill</string>
+    <string name="p_refill_off">OFF</string>
     <string name="p_refill_summary">Manage AP refill</string>
     <string name="p_auto_skill">Auto Skill</string>
     <string name="p_auto_skill_summary">Manage Auto Skill configs</string>
@@ -236,4 +237,26 @@
     <string name="no_auto_skill_configs">No AutoSkill Configs</string>
 
     <string name="script_msg_ap_ran_out">AP ran out!</string>
+    <string name="stopped_by_user">Script stopped by user or screen turned OFF</string>
+    <string name="unexpected_error">Unexpected Error</string>
+    <string name="script_exited">Script Exited</string>
+    <string name="inventory_full">Inventory Full</string>
+    <string name="present_box_full">Present Box Full</string>
+    <string name="support_img_maker_not_found">No support images were found on the current screen. Are you on Support selection or Friend list screen?</string>
+    <string name="support_selection_manual">Support selection set to Manual</string>
+    <string name="support_selection_friend_not_set">When using \'friend\' support selection mode, specify at least one friend name.</string>
+    <string name="support_selection_preferred_not_set">When using \'preferred\' support selection mode, specify at least one Servant or Craft Essence.</string>
+    <string name="ce_dropped">CE Dropped!</string>
+    <string name="ce_get">CE GET!</string>
+    <string name="withdraw_disabled">All servants have been defeated and auto-withdrawing is disabled.</string>
+    <string name="times_ran">Ran %d time(s)</string>
+    <string name="times_ran_out_of">Ran %1$d out of %2$d time(s)</string>
+    <string name="refills_used_out_of">%1$d refills used out of %2$d</string>
+    <string name="failed_to_determine_card_type">Failed to determine Card type: %s</string>
+    <string name="support_list_updated_in">Support list will be updated in %s</string>
+    <string name="times_withdrew">Withdrew %d times</string>
+    <string name="battle_time">Time: %s</string>
+    <string name="avg_time_per_run">Average time per run: %s</string>
+    <string name="turns_count">Turns: %d</string>
+    <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string>
 </resources>

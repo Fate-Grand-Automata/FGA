@@ -1,14 +1,18 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.combine
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainSettingsViewModel @ViewModelInject constructor(
-    val prefs: PrefsCore
+    val prefs: PrefsCore,
+    @ApplicationContext val context: Context
 ) : ViewModel() {
     val autoStartService
         get() =
@@ -35,7 +39,7 @@ class MainSettingsViewModel @ViewModelInject constructor(
     ) { enabled, resource, repetitions ->
         if (enabled)
             "$resource x${repetitions}"
-        else "OFF"
+        else context.getString(R.string.p_refill_off)
     }
         .asLiveData()
 }
