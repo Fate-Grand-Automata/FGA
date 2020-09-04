@@ -370,7 +370,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         revertToPreviousEnemyTarget()
     }
 
-    fun clear() {
+    fun clearAll() {
         _currentIndex.value = model.skillCommand.lastIndex
 
         while (!isEmpty()) {

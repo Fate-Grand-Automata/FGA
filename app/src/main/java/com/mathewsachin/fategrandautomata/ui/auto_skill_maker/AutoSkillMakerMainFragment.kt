@@ -71,7 +71,7 @@ class AutoSkillMakerMainFragment : Fragment() {
             .setTitle(R.string.auto_skill_maker_confirm_clear_title)
             .setMessage(R.string.auto_skill_maker_confirm_clear_message)
             .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes) { _, _ -> viewModel.clear() }
+            .setPositiveButton(android.R.string.yes) { _, _ -> viewModel.clearAll() }
             .show()
     }
 
