@@ -35,8 +35,8 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         )
     }
 
-    private fun getCardAffinity(commandCard: CommandCard.Face): CardAffinityEnum {
-        val region = commandCard.affinityRegion
+    private fun CommandCard.Face.affinity(): CardAffinityEnum {
+        val region = affinityRegion
 
         if (images.weak in region) {
             return CardAffinityEnum.Weak
@@ -49,18 +49,18 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return CardAffinityEnum.Normal
     }
 
-    private fun getCardType(commandCard: CommandCard.Face): CardTypeEnum {
-        val region = commandCard.typeRegion
-
-        val stunRegion = region.copy(
+    private fun CommandCard.Face.isStunned(): Boolean {
+        val stunRegion = typeRegion.copy(
             Y = 930,
             Width = 248,
             Height = 188
         )
 
-        if (images.stun in stunRegion) {
-            return CardTypeEnum.Unknown
-        }
+        return images.stun in stunRegion
+    }
+
+    private fun CommandCard.Face.type(): CardTypeEnum {
+        val region = typeRegion
 
         if (images.buster in region) {
             return CardTypeEnum.Buster
@@ -74,10 +74,6 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             return CardTypeEnum.Quick
         }
 
-        val msg = messages.failedToDetermineCardType(commandCard)
-        toast(msg)
-        logger.debug(msg)
-
         return CardTypeEnum.Unknown
     }
 
@@ -85,22 +81,51 @@ class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
     private var firstNp: CommandCard.NP? = null
 
+    private fun getCommandCards(): Map<CardScore, List<CommandCard.Face>> {
+        data class CardResult(
+            val card: CommandCard.Face,
+            val isStunned: Boolean,
+            val type: CardTypeEnum,
+            val affinity: CardAffinityEnum
+        )
+
+        val cards = CommandCard.Face.list
+            .map {
+                val stunned = it.isStunned()
+                val type = if (stunned)
+                    CardTypeEnum.Unknown
+                else it.type()
+                val affinity = if (type == CardTypeEnum.Unknown)
+                    CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
+                else it.affinity()
+
+                CardResult(it, stunned, type, affinity)
+            }
+
+        val failedToDetermine = cards
+            .filter { !it.isStunned && it.type == CardTypeEnum.Unknown }
+            .map { it.card }
+
+        if (failedToDetermine.isNotEmpty()) {
+            val msg = messages.failedToDetermineCardType(failedToDetermine)
+            toast(msg)
+            logger.debug(msg)
+        }
+
+        return cards
+            .groupBy { CardScore(it.type, it.affinity) }
+            .mapValues { (_, value) ->
+                value.map { it.card }
+            }
+    }
+
     fun readCommandCards() {
         remainingCards.addAll(CommandCard.Face.list)
         remainingNps.addAll(CommandCard.NP.list)
         firstNp = null
 
         screenshotManager.useSameSnapIn {
-            commandCards = CommandCard.Face.list
-                .groupBy {
-                    val type = getCardType(it)
-                    val affinity =
-                        if (type == CardTypeEnum.Unknown)
-                            CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
-                        else getCardAffinity(it)
-
-                    CardScore(type, affinity)
-                }
+            commandCards = getCommandCards()
 
             if (prefs.braveChains != BraveChainEnum.None) {
                 val supportGroup = CommandCard.Face.list

@@ -57,8 +57,8 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
     override fun refillsUsedOutOf(used: Int, outOf: Int) =
         context.getString(R.string.refills_used_out_of, used, outOf)
 
-    override fun failedToDetermineCardType(card: CommandCard.Face) =
-        context.getString(R.string.failed_to_determine_card_type, card)
+    override fun failedToDetermineCardType(cards: List<CommandCard.Face>) =
+        context.getString(R.string.failed_to_determine_card_type, cards)
 
     override fun supportListUpdatedIn(duration: Duration) =
         context.getString(R.string.support_list_updated_in, duration.toString())

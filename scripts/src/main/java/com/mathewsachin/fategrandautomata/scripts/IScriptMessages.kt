@@ -21,7 +21,7 @@ interface IScriptMessages : IAutomataMessages {
 
     fun refillsUsedOutOf(used: Int, outOf: Int): String
 
-    fun failedToDetermineCardType(card: CommandCard.Face): String
+    fun failedToDetermineCardType(cards: List<CommandCard.Face>): String
 
     fun supportListUpdatedIn(duration: Duration): String
 
