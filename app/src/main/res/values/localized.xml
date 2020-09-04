@@ -169,7 +169,7 @@
     <string name="p_fine_tune_clicks">Clicks</string>
     <string name="p_fine_tune_wait_after_clicking">Wait after clicking (ms)</string>
     <string name="p_fine_tune_click_duration">Click duration (ms)</string>
-    <string name="p_fine_tune_click_delay">Delay b/w repeated clicks (ms)</string>
+    <string name="p_fine_tune_click_delay">Multi-Click Interval (ms)</string>
     <string name="p_fine_tune_swipes">Swipes</string>
     <string name="p_fine_tune_wait_after_swiping">Wait after swiping (ms)</string>
     <string name="p_fine_tune_swipe_duration">Swipe duration (ms)</string>
