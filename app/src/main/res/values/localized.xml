@@ -142,7 +142,7 @@
     <string name="p_boost_item">Boost Item</string>
     <string name="p_brave_chains">Brave Chains (Experimental)</string>
     <string name="p_rearrange_cards">Rearrange Cards</string>
-    <string name="p_auto_skill_cmd_text">AutoSkill Cmd TextBox</string>
+    <string name="p_auto_skill_cmd_text">Skill Command TextBox</string>
     <string name="p_auto_skill_cmd_text_summary">Show text-box for editing AutoSkill commands</string>
 
     <string name="p_advanced">Advanced</string>
