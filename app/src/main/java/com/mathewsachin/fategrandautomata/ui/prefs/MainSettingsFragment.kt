@@ -1,7 +1,9 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
@@ -21,6 +23,15 @@ private val logger = KotlinLogging.logger {}
 
 @AndroidEntryPoint
 class MainSettingsFragment : PreferenceFragmentCompat() {
+    val goToAutoSkill = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        if (it.values.all { m -> m }) {
+            val action = MainFragmentDirections
+                .actionMainFragmentToAutoSkillListFragment()
+
+            findNavController().navigate(action)
+        }
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main_preferences, rootKey)
 
@@ -37,10 +48,11 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(prefKeys.pref_nav_auto_skill))?.let {
             it.setOnPreferenceClickListener {
-                val action = MainFragmentDirections
-                    .actionMainFragmentToAutoSkillListFragment()
-
-                findNavController().navigate(action)
+                val permissions = arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                goToAutoSkill.launch(permissions)
 
                 true
             }
