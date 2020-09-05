@@ -62,7 +62,7 @@
         app:icon="@drawable/ic_screenshot"
         app:key="@string/pref_screenshot_drops"
         app:title="@string/p_screenshot_drops"
-        app:summary="@string/p_experimental" />
+        app:summary="@string/p_screenshot_drops_summary" />
 
     <SwitchPreferenceCompat
         app:defaultValue="true"
