@@ -160,7 +160,7 @@
     <string name="p_fine_tune">미세 조정</string>
     <string name="p_fine_tune_default">기본값: %d</string>
     <string name="p_fine_tune_support">서포트</string>
-    <string name="p_fine_tune_support_swipes_per_update">업데이트당 스와이프</string>
+    <string name="p_fine_tune_support_swipes_per_update">갱신당 스와이프 수</string>
     <string name="p_fine_tune_support_max_updates">최대 업데이트</string>
     <string name="p_fine_tune_similarity">유사성</string>
     <string name="p_fine_tune_min_similarity">최소 유사성 (%)</string>
