@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
@@ -23,7 +23,7 @@ const val limitBrokenCharacter = '*'
 
 private val logger = KotlinLogging.logger {}
 
-class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
+class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private var preferredServantArray = listOf<String>()
     private var friendNameArray = listOf<String>()
     private var preferredCEArray = listOf<PreferredCEEntry>()

@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import kotlin.time.Duration
 import kotlin.time.seconds
 
-class AutoSkill(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
+class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
     private lateinit var card: Card
 

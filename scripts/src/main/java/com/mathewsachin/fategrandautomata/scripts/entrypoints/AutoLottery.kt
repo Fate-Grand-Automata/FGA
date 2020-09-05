@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
@@ -12,8 +12,8 @@ import kotlin.time.seconds
 class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFGAutomataApi by fgAutomataApi {
+    fgAutomataApi: IFgoAutomataApi
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     private val spinClick = Location(834, 860)
     private val finishedLotteryBoxRegion = Region(540, 860, 140, 100)
     private val fullPresentBoxRegion = Region(1280, 720, 1280, 720)

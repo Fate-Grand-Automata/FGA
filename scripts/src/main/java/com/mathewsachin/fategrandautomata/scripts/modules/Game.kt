@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.Location
@@ -10,9 +10,9 @@ import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.seconds
 
-fun IFGAutomataApi.needsToRetry() = images.retry in Game.retryRegion
+fun IFgoAutomataApi.needsToRetry() = images.retry in Game.retryRegion
 
-fun IFGAutomataApi.retry() {
+fun IFgoAutomataApi.retry() {
     Game.retryRegion.click()
 
     2.seconds.wait()

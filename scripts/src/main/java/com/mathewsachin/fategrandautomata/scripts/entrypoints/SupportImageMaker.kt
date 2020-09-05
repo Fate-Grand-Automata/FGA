@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
@@ -25,8 +25,8 @@ class SupportImageMaker @Inject constructor(
     storageDirs: StorageDirs,
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFGAutomataApi by fgAutomataApi {
+    fgAutomataApi: IFgoAutomataApi
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     private val dir = storageDirs.supportImgTempDir
 
     override fun script(): Nothing {

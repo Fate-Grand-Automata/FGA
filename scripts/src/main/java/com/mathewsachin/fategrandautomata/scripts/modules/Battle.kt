@@ -1,12 +1,12 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.seconds
 
-class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
+class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     val state = BattleState()
 
     private lateinit var autoSkill: AutoSkill

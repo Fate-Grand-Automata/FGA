@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
@@ -18,7 +18,7 @@ import kotlin.time.seconds
 /**
  * Checks if Support Selection menu is up
  */
-fun IFGAutomataApi.isInSupport(): Boolean {
+fun IFgoAutomataApi.isInSupport(): Boolean {
     return Game.supportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
 }
 
@@ -28,9 +28,9 @@ fun IFGAutomataApi.isInSupport(): Boolean {
 open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi,
+    fgAutomataApi: IFgoAutomataApi,
     val storageDirs: StorageDirs
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFGAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     private val support = Support(fgAutomataApi)
     private val card = Card(fgAutomataApi)
     private val battle = Battle(fgAutomataApi)

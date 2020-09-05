@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
@@ -12,8 +12,8 @@ import kotlin.time.seconds
 class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFGAutomataApi by fgAutomataApi {
+    fgAutomataApi: IFgoAutomataApi
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     private val first10SummonClick = Location(1400, 1120)
     private val okClick = Location(1600, 1120)
     private val continueSummonClick = Location(1600, 1325)

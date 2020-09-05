@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
@@ -13,7 +13,7 @@ import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
-class Card(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
+class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 

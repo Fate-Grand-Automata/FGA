@@ -5,10 +5,10 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 import javax.inject.Inject
 
-class FGAutomataApi @Inject constructor(
+class FgoAutomataApi @Inject constructor(
     automataApi: IAutomataExtensions,
     override val prefs: IPreferences,
     override val images: ImageLocator,
     override val game: Game,
     override val messages: IScriptMessages
-) : IFGAutomataApi, IAutomataExtensions by automataApi
+) : IFgoAutomataApi, IAutomataExtensions by automataApi
