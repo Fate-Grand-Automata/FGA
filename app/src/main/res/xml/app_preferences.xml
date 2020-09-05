@@ -79,15 +79,6 @@
         app:title="@string/p_boost_item"
         app:useSimpleSummaryProvider="true" />
 
-    <ListPreference
-        app:defaultValue="None"
-        app:entries="@array/brave_chain_labels"
-        app:entryValues="@array/brave_chain_values"
-        app:icon="@drawable/ic_crown"
-        app:key="@string/pref_brave_chains"
-        app:title="@string/p_brave_chains"
-        app:useSimpleSummaryProvider="true" />
-
     <SwitchPreferenceCompat
         app:icon="@drawable/ic_wand"
         app:key="@string/pref_auto_skill_cmd_text"

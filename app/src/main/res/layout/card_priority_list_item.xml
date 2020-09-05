@@ -26,13 +26,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_priority_battle_stage" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/rearrange_cards"
+    <TextView
+        android:id="@+id/brave_chains_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/p_rearrange_cards"
-        android:layout_marginVertical="16dp"
-        app:layout_constraintTop_toBottomOf="@id/card_priority_items"
+        android:layout_marginTop="16dp"
+        android:text="@string/p_brave_chains"
+        app:layout_constraintStart_toStartOf="@id/brave_chains"
+        app:layout_constraintTop_toBottomOf="@id/card_priority_items" />
+
+    <Spinner
+        android:id="@+id/brave_chains"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rearrange_cards"
+        app:layout_constraintTop_toBottomOf="@id/brave_chains_label" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/rearrange_cards"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/p_rearrange_cards"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toEndOf="@id/brave_chains"
+        app:layout_constraintTop_toTopOf="@id/brave_chains_label"
+        app:layout_constraintBottom_toBottomOf="@id/brave_chains"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
