@@ -2,7 +2,9 @@ package com.mathewsachin.fategrandautomata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivityArgs
 import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel
+import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -11,7 +13,10 @@ class AutoSkillMakerTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    fun getViewModel() = AutoSkillMakerViewModel(SavedStateHandle())
+    fun getViewModel() = AutoSkillMakerViewModel(
+        mockk(relaxed = true),
+        SavedStateHandle(mapOf(AutoSkillMakerActivityArgs::key.name to "foo"))
+    )
 
     @Test
     fun test_empty() {
@@ -34,7 +39,7 @@ class AutoSkillMakerTest {
         test_skill { vm, c ->
             vm.targetSkill(null)
 
-            Assert.assertEquals(vm.finish(), "$c")
+            Assert.assertEquals("$c", vm.finish())
         }
     }
 
@@ -44,7 +49,7 @@ class AutoSkillMakerTest {
             test_skill { vm, c ->
                 vm.targetSkill(target)
 
-                Assert.assertEquals(vm.finish(), "${c}${target}")
+                Assert.assertEquals("${c}${target}", vm.finish())
             }
         }
     }
@@ -55,8 +60,9 @@ class AutoSkillMakerTest {
             val vm = getViewModel()
 
             vm.onNpClick(np)
+            vm.nextStage()
 
-            Assert.assertEquals(vm.finish(), "$np")
+            Assert.assertEquals("$np", vm.finish())
         }
     }
 
@@ -71,7 +77,7 @@ class AutoSkillMakerTest {
                 vm.setOrderChangeSubMember(sub)
                 vm.commitOrderChange()
 
-                Assert.assertEquals(vm.finish(), "x${starting}${sub}")
+                Assert.assertEquals("x${starting}${sub}", vm.finish())
             }
         }
     }

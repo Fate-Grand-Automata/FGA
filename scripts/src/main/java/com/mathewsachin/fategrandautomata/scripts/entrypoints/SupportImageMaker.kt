@@ -30,8 +30,6 @@ class SupportImageMaker @Inject constructor(
     private val dir = storageDirs.supportImgTempDir
 
     override fun script(): Nothing {
-        scaling.init()
-
         cleanExtractFolder()
 
         val isInSupport = isInSupport()

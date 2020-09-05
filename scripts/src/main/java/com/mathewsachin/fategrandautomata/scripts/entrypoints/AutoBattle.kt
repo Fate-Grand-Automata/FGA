@@ -127,8 +127,6 @@ open class AutoBattle @Inject constructor(
      * Then initialize the AutoSkill, Battle, and Card modules in modules.
      */
     private fun init() {
-        scaling.init()
-
         autoSkill.init(battle, card)
         battle.init(autoSkill, card)
         card.init(autoSkill, battle)

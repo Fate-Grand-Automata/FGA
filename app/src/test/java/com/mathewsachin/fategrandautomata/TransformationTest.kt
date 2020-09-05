@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata
 
+import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Location
@@ -10,7 +11,11 @@ import org.junit.Test
 
 class TransformationTest {
     fun getGameAreaManager(windowRegion: Region): GameAreaManager {
-        return GameAreaManager(FakePlatformImpl(windowRegion))
+        return FgoGameAreaManager(
+            FakePlatformImpl(windowRegion),
+            Game.scriptSize,
+            Game.imageSize
+        )
     }
 
     @Test

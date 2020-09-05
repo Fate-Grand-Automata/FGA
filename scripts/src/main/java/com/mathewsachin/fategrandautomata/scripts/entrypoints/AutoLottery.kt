@@ -45,8 +45,6 @@ class AutoLottery @Inject constructor(
             }
         }
 
-        scaling.init()
-
         while (true) {
             screenshotManager.useSameSnapIn {
                 when {

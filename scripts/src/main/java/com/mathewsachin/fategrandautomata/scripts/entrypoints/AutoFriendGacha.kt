@@ -22,8 +22,6 @@ class AutoFriendGacha @Inject constructor(
     private val continueSummonRegion = Region(1244, 1264, 580, 170)
 
     override fun script(): Nothing {
-        scaling.init()
-
         if (prefs.friendPtsOnly) {
             isInFriendPtsSummon()
         }

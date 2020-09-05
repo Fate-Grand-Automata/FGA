@@ -11,6 +11,7 @@ class FakePlatformImpl(override val windowRegion: Region) : IPlatformImpl {
         get() = TODO("Not yet implemented")
 
     override fun toast(Message: String) {}
+    override fun notify(message: String) {}
 
     override fun getResizableBlankPattern(): IPattern {
         TODO("Not yet implemented")
