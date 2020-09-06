@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
@@ -36,8 +37,10 @@ class AutoFriendGacha @Inject constructor(
                     continueSummonClick.click()
                     0.3.seconds.wait()
                     okClick.click()
-                    0.3.seconds.wait()
-                    okClick.click()
+                    if (prefs.gameServer ==  GameServerEnum.Tw) {
+                        0.3.seconds.wait()
+                        okClick.click()
+                    }
                     3.seconds.wait()
                 }
                 else -> skipRapidClick.click(15)
