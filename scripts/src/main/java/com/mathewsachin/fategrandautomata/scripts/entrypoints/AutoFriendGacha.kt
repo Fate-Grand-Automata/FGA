@@ -36,6 +36,8 @@ class AutoFriendGacha @Inject constructor(
                     continueSummonClick.click()
                     0.3.seconds.wait()
                     okClick.click()
+                    0.3.seconds.wait()
+                    okClick.click()
                     3.seconds.wait()
                 }
                 else -> skipRapidClick.click(15)
