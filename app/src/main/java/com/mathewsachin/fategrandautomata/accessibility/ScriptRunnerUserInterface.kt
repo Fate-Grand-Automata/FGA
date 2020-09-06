@@ -37,7 +37,7 @@ class ScriptRunnerUserInterface @Inject constructor(
 
     val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-    private val metrics: DisplayMetrics
+    val metrics: DisplayMetrics
         get() {
             val res = DisplayMetrics()
 

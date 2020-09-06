@@ -21,7 +21,7 @@ interface IPreferences {
     val stopOnCEGet: Boolean
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
-    val ignoreNotchCalculation: Boolean
+    var ignoreNotchCalculation: Boolean
     val useRootForScreenshots: Boolean
     val gudaFinal: Boolean
     val recordScreen: Boolean

@@ -97,6 +97,8 @@ class PrefsCore @Inject constructor(
 
     val showTextBoxForAutoSkillCmd = maker.bool(R.string.pref_auto_skill_cmd_text)
 
+    val newGameAreaDetection = maker.bool(R.string.pref_new_game_area_detection)
+
     private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
 
     fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =

@@ -15,7 +15,7 @@ import org.opencv.core.Size as CvSize
 private val logger = KotlinLogging.logger {}
 
 class DroidCvPattern(
-    private var Mat: Mat? = Mat(),
+    internal var Mat: Mat? = Mat(),
     private val OwnsMat: Boolean = true
 ) : IPattern {
     private data class MatWithAlpha(val mat: Mat, val alpha: Mat?)

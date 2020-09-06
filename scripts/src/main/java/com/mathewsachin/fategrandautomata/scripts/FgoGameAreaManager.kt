@@ -1,6 +1,9 @@
 package com.mathewsachin.fategrandautomata.scripts
 
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.CompareBy
+import com.mathewsachin.libautomata.GameAreaManager
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.Size
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -43,11 +46,11 @@ private fun calculateGameAreaWithoutBorders(
 }
 
 class FgoGameAreaManager(
-    val platformImpl: IPlatformImpl,
+    val windowRegionProvider: () -> Region,
     scriptSize: Size,
     imageSize: Size
 ) : GameAreaManager {
-    private val gameWithBorders = platformImpl.windowRegion
+    private val gameWithBorders = windowRegionProvider()
     private val scaleBy = decideScaleMethod(
         scriptSize,
         gameWithBorders.size
@@ -70,5 +73,5 @@ class FgoGameAreaManager(
     }
 
     override val gameArea
-        get() = gameAreaIgnoringNotch + platformImpl.windowRegion.location
+        get() = gameAreaIgnoringNotch + windowRegionProvider().location
 }

@@ -18,6 +18,7 @@
 
     <string name="pref_extract_def_support_imgs">extract_def_support_imgs</string>
     <string name="pref_stage_counter_similarity">stage_counter_similarity</string>
+    <string name="pref_new_game_area_detection">new_game_area_detection</string>
 
     <string name="pref_refill_enabled">refill_enabled</string>
     <string name="pref_refill_repetitions">refill_repetitions</string>

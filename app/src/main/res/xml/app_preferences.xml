@@ -85,6 +85,12 @@
         app:title="@string/p_auto_skill_cmd_text"
         app:summary="@string/p_auto_skill_cmd_text_summary" />
 
+    <SwitchPreferenceCompat
+        app:icon="@drawable/ic_plus"
+        app:key="@string/pref_new_game_area_detection"
+        app:title="New Game Area Detection"
+        app:summary="@string/p_experimental" />
+
     <!--    <SwitchPreferenceCompat-->
     <!--        app:defaultValue="false"-->
     <!--        app:key="@string/pref_guda_final"-->
