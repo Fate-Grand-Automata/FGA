@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.libautomata.IPlatformPrefs
@@ -27,7 +26,6 @@ interface IPreferences {
     val gudaFinal: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
-    val braveChains: BraveChainEnum
     val friendPtsOnly: Boolean
     val screenshotDrops: Boolean
     val canPauseScript: Boolean

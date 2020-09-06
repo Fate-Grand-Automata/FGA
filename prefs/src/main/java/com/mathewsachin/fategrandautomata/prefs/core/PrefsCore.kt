@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.prefs.core
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import javax.inject.Inject
@@ -58,11 +57,6 @@ class PrefsCore @Inject constructor(
     val gudaFinal = maker.bool(R.string.pref_guda_final)
 
     val recordScreen = maker.bool(R.string.pref_record_screen)
-
-    val braveChains = maker.enum(
-        R.string.pref_brave_chains,
-        BraveChainEnum.None
-    )
 
     val skillDelay = maker.int(R.string.pref_skill_delay, 500)
 

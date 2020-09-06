@@ -4,6 +4,7 @@ import android.content.Context
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 
 class AutoSkillPrefsCore(
     val id: String,
@@ -33,6 +34,16 @@ class AutoSkillPrefsCore(
             it.split(",").map { m -> m == "T" }
         }, {
             it.joinToString(",") { m -> if (m) "T" else "F" }
+        })
+
+    var braveChains by maker.string(R.string.pref_auto_skill_brave_chains)
+        .map({
+            it.split(",").map { m ->
+                if (m.isBlank()) BraveChainEnum.None
+                else BraveChainEnum.valueOf(m)
+            }
+        }, {
+            it.joinToString(",") { m -> m.toString() }
         })
 
     val party = maker.stringAsInt(R.string.pref_autoskill_party, -1)

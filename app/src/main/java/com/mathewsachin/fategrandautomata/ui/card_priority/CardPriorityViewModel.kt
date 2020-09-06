@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 
@@ -28,6 +29,7 @@ class CardPriorityViewModel @ViewModelInject constructor(
         }
 
         val rearrangeCards = autoSkillPref.rearrangeCards
+        val braveChains = autoSkillPref.braveChains
 
         CardPriorityPerWave.of(cardPriority)
             .map { it.toMutableList() }
@@ -35,7 +37,8 @@ class CardPriorityViewModel @ViewModelInject constructor(
             .map {
                 CardPriorityListItem(
                     it.value,
-                    rearrangeCards.getOrElse(it.index) { false }
+                    rearrangeCards.getOrElse(it.index) { false },
+                    braveChains.getOrElse(it.index) { BraveChainEnum.None }
                 )
             }
             .toMutableList()
@@ -58,6 +61,10 @@ class CardPriorityViewModel @ViewModelInject constructor(
         autoSkillPref.cardPriority.set(value)
         autoSkillPref.rearrangeCards = if (experimental.value == true)
             cardPriorityItems.map { it.rearrangeCards }
+        else emptyList()
+
+        autoSkillPref.braveChains = if (experimental.value == true)
+            cardPriorityItems.map { it.braveChains }
         else emptyList()
     }
 }
