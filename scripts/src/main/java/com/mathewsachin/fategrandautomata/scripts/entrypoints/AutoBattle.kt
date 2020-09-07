@@ -507,13 +507,10 @@ open class AutoBattle @Inject constructor(
     private fun afterSelectingQuest() {
         1.5.seconds.wait()
 
-        // Inventory full. Stop script.
-        when (prefs.gameServer) {
-            // We only have images for JP and NA
-            GameServerEnum.En, GameServerEnum.Jp -> {
-                if (images.inventoryFull in Game.inventoryFullRegion) {
-                    throw ScriptExitException(messages.inventoryFull)
-                }
+        // Inventory full. Stop script. We only have images for JP and NA
+        if (prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)) {
+            if (images.inventoryFull in Game.inventoryFullRegion) {
+                throw ScriptExitException(messages.inventoryFull)
             }
         }
 
