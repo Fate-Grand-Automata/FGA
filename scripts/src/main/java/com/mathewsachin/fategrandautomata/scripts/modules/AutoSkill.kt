@@ -32,10 +32,10 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
             prefs.skillDelay.wait()
 
             selectSkillTarget(target)
+        } else {
+            // Close the window that opens up if skill is on cool-down
+            Game.battleExtraInfoWindowCloseClick.click()
         }
-
-        // Close the window that opens up if skill is on cool-down
-        Game.battleExtraInfoWindowCloseClick.click()
 
         waitForAnimationToFinish()
     }

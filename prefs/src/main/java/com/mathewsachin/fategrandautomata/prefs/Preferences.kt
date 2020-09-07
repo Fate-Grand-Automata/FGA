@@ -75,8 +75,6 @@ class PreferencesImpl @Inject constructor(
 
     override val recordScreen by prefs.recordScreen
 
-    override val braveChains by prefs.braveChains
-
     override val skillDelay by prefs.skillDelay.map { it.milliseconds }
 
     override val screenshotDrops by prefs.screenshotDrops

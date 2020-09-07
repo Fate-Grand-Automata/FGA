@@ -80,6 +80,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
     private var firstNp: CommandCard.NP? = null
+    private var braveChainsThisTurn = BraveChainEnum.None
 
     private fun getCommandCards(): Map<CardScore, List<CommandCard.Face>> {
         data class CardResult(
@@ -127,7 +128,12 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         screenshotManager.useSameSnapIn {
             commandCards = getCommandCards()
 
-            if (prefs.braveChains != BraveChainEnum.None) {
+            val braveChainsPerWave = prefs.selectedAutoSkillConfig.braveChains
+            braveChainsThisTurn = if (braveChainsPerWave.isNotEmpty())
+                braveChainsPerWave[battle.state.runState.stage.coerceIn(braveChainsPerWave.indices)]
+            else BraveChainEnum.None
+
+            if (braveChainsThisTurn != BraveChainEnum.None) {
                 val supportGroup = CommandCard.Face.list
                     .filter { images.support in it.supportCheckRegion }
                 commandCardGroups = groupByFaceCard(supportGroup)
@@ -192,7 +198,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 .addToClickList()
         }
 
-        when (prefs.braveChains) {
+        when (braveChainsThisTurn) {
             BraveChainEnum.AfterNP -> {
                 commandCardGroupedWithNp[firstNp]?.let { npGroup ->
                     pickCardsOrderedByPriority {
@@ -230,7 +236,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         else false
 
         if (rearrangeCards
-            && prefs.braveChains != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
+            && braveChainsThisTurn != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
             && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
             && (toClick.size == 3 || (toClick.size == 2 && !isBeforeNP))
         ) {

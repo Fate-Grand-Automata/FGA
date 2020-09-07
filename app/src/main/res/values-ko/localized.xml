@@ -103,7 +103,7 @@
     <string name="p_screenshot_drops">드롭 아이템 스크린샷</string>
     <string name="p_friend_summon_only">프렌드 포인트 소환만</string>
     <string name="p_boost_item">부스트 아이템</string>
-    <string name="p_brave_chains">브레이브 체인 (실험적)</string>
+    <string name="p_brave_chains">브레이브 체인</string>
     <string name="p_rearrange_cards">카드 재배열</string>
 
     <string name="p_advanced">고급</string>

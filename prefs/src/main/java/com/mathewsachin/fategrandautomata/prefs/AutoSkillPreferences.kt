@@ -22,6 +22,8 @@ internal class AutoSkillPreferences(
 
     override val rearrangeCards get() = prefs.rearrangeCards
 
+    override val braveChains get() = prefs.braveChains
+
     override val party by prefs.party
 
     override val support = SupportPreferences(prefs.support, storageDirs)

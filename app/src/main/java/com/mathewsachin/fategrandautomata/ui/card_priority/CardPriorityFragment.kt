@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.card_priority.*
 
@@ -45,7 +46,8 @@ class CardPriorityFragment : Fragment(R.layout.card_priority) {
             vm.cardPriorityItems.add(
                 CardPriorityListItem(
                     vm.cardPriorityItems[0].scores.toMutableList(),
-                    false
+                    false,
+                    BraveChainEnum.None
                 )
             )
 

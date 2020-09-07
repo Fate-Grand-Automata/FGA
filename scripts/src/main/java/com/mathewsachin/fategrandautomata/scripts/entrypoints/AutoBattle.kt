@@ -94,6 +94,7 @@ open class AutoBattle @Inject constructor(
             { battle.isIdle() } to { battle.performBattle() },
             { isInMenu() } to { menu() },
             { isInResult() } to { result() },
+            { isInDropsScreen() } to { dropScreen() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
@@ -169,8 +170,7 @@ open class AutoBattle @Inject constructor(
             images.result to Game.resultScreenRegion,
             images.bond to Game.resultBondRegion,
             images.masterLvlUp to Game.resultMasterLvlUpRegion,
-            images.masterExp to Game.resultMasterExpRegion,
-            images.matRewards to Game.resultMatRewardsRegion
+            images.masterExp to Game.resultMasterExpRegion
         )
 
         return cases.any { (image, region) -> image in region }
@@ -188,17 +188,20 @@ open class AutoBattle @Inject constructor(
             } else notify(msg)
         }
 
-        if (prefs.screenshotDrops) {
-            resultForDrops()
-        } else Game.resultNextClick.click(20)
+        if (prefs.screenshotDrops)
+            Game.resultClick.click(15)
+        else Game.resultNextClick.click(20)
     }
 
-    private fun resultForDrops() {
-        if (images.matRewards in Game.resultMatRewardsRegion) {
+    private fun isInDropsScreen() =
+        images.matRewards in Game.resultMatRewardsRegion
+
+    private fun dropScreen() {
+        if (prefs.screenshotDrops) {
             screenshotDrops()
         }
 
-        Game.resultNextClick.click()
+        Game.resultNextClick.click(5)
     }
 
     private fun screenshotDrops() {
