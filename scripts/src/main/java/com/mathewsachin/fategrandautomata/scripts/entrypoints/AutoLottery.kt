@@ -39,7 +39,7 @@ class AutoLottery @Inject constructor(
     }
 
     override fun script(): Nothing {
-        when (prefs.gameServer in listOf(GameServerEnum.Cn, GameServerEnum.Kr)) {
+        if (prefs.gameServer in listOf(GameServerEnum.Cn, GameServerEnum.Kr)) {
             throw ScriptExitException("Lottery script doesn't support this server right now.")
         }
 
