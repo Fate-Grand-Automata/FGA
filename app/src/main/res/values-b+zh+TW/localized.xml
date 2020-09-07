@@ -1,2 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <!-- <string name="auto_skill_item_copy">Copy</string>
+    <string name="auto_skill_item_delete">Delete</string>
+    <string name="auto_skill_item_export">Export</string>
+    <string name="auto_skill_item_export_failed">Failed to Export</string>
+    <string name="auto_skill_item_copy_name">%s (Copy)</string>
+    <string name="auto_skill_item_delete_confirm_title">Confirm Deletion</string>
+    <string name="auto_skill_item_delete_confirm_ok">Delete</string>
+    <string name="auto_skill_item_delete_confirm_message">Are you sure you want to delete this configuration?</string>
+    <string name="auto_skill_item_clear_preferred">Clear</string>
+    <string name="auto_skill_item_open_maker">Maker</string>
+    <string name="auto_skill_support_any">Any</string>
+
+    <string name="support_imgs_extracted">Support Images Extracted Successfully</string>
+    <string name="support_img_not_found">Unable to load image: %1$s. Put images in %2$s folder</string> -->
+
+    <string name="auto_skill_list_no_items">目前沒有腳本，請按右下角的加號新增</string>
+    <string name="auto_skill_list_import">匯入腳本</string>
+    <string name="auto_skill_list_export_all">輸出腳本</string>
+    <string name="auto_skill_list_delete">刪除</string>
+    <string name="auto_skill_list_selected_count">已選擇 %d 個腳本</string>
+    <string name="auto_skill_list_export_failed">輸出 %d 個腳本失敗</string>
+    <string name="auto_skill_list_import_failed">輸入 %d 個腳本失敗</string>
+    <string name="auto_skill_list_delete_confirm_title">確認刪除</string>
+    <string name="auto_skill_list_delete_confirm_ok">刪除</string>
+    <string name="auto_skill_list_delete_confirm_message">確定要刪除 %d 個腳本?</string>
+
+    <string name="auto_skill_maker_confirm_exit_title">確認離開</string>
+    <string name="auto_skill_maker_confirm_exit_message">將不會儲存目前設定的腳本，確定要離開?</string>
+    <string name="auto_skill_maker_confirm_clear_title">確認重設</string>
+    <string name="auto_skill_maker_confirm_clear_message">將會重設目前設定的腳本，確定要重設?</string>
+    <string name="auto_skill_maker_confirm_np_deletion_title">確認重設寶具</string>
+    <string name="auto_skill_maker_confirm_np_deletion_message">重設寶具實，寶具前墊刀也會一並取消，確認回復?</string>
+    <string name="auto_skill_maker_atk_header">攻擊指令</string>
+    <string name="auto_skill_maker_atk_servant_np">從者\n%d\n\n寶具</string>
+    <string name="auto_skill_maker_atk_cards_before_np">寶具前墊刀</string>
+    <string name="auto_skill_maker_atk_done">完成</string>
+    <string name="auto_skill_maker_atk_next_wave">下一波</string>
+    <string name="auto_skill_maker_atk_next_turn">下一回合\n(同一波敵人)</string>
+
+    <string name="auto_skill_maker_main_enemy">敵人 %d</string>
+    <string name="auto_skill_maker_main_battle">BATTLE %d</string>
+    <string name="auto_skill_maker_main_turn">%d 回合</string>
+    <string name="auto_skill_maker_main_master_skills">御主技能</string>
+    <string name="auto_skill_maker_main_undo">回復</string>
+    <string name="auto_skill_maker_main_clear">重設</string>
+    <string name="auto_skill_maker_main_servant">從者 %d</string>
+    <string name="auto_skill_maker_main_attack">Attack</string>
+    <string name="auto_skill_maker_cannot_select">請先重設回合/寶具指令</string>
+
+    <string name="auto_skill_maker_master_skills_header">御主技能</string>
+    <string name="auto_skill_maker_master_skills_order_change">Order Change / 換人</string>
+
+    <string name="auto_skill_maker_order_change_header">Order Change</string>
+    <string name="auto_skill_maker_order_change_starting_member">首發成員</string>
+    <string name="auto_skill_maker_order_change_sub_member">候補成員</string>
+    <string name="auto_skill_maker_order_change_servant">從者\n\n%d</string>
+
+    <string name="auto_skill_maker_target_header">請選擇對象</string>
+    <string name="auto_skill_maker_target_none">無對象</string>
+    <string name="auto_skill_maker_target_servant">從者\n\n%d</string>
+
+    <string name="card_priority_wave_number">BATTLE %d</string>
+    <string name="card_priority_menu_info">備註</string>
+    <string name="card_priority_info_title">備註</string>
+    <string name="card_priority_info_content">W: 紅字傷害(WEAK)\nR: 藍字傷害(RESIST)\n\nB: Buster\nA: Arts\nQ: Quick</string>
+    <string name="card_priority_high">優先選出</string>
+    <string name="card_priority_low">盡量不選出</string>
+    <string name="card_priority_add_wave">新增BATTLE</string>
+    <string name="card_priority_remove_last_wave">移除BATTLE</string>
+    <string name="card_priority_experimental">開啟實驗功能</string>
+
+    <!-- <string name="toggle_service">Toggle Service</string>
+    <string name="fine_tune_menu_reset_to_defaults">Reset to defaults</string>
+    <string name="support_menu_extract_default_support_images">Extract Default Support Images</string>
+
+    <string name="support_img_namer_servants">Servant(s)</string>
+    <string name="support_img_namer_folder_hint">You can use folders like this: \'Merlin/asc1\'</string>
+    <string name="support_img_namer_ce">Craft Essence(s)</string>
+    <string name="support_img_namer_friend_names">Friend Name(s)</string>
+    <string name="support_img_namer_item_name">Name</string>
+    <string name="support_img_namer_servant_invalid_message">You\'re not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: %s</string>
+    <string name="support_img_namer_ce_or_friend_invalid_message">You\'re not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: %s</string>
+    <string name="support_img_namer_title">Pick what you want</string>
+    <string name="support_img_namer_done">Done</string>
+    <string name="support_img_namer_blank_file_name">One of the names is still empty. Either uncheck the unnamed Servant/CE or specify a name.</string>
+    <string name="support_img_namer_file_name_already_exists">\'%s\' already exists. Specify another name.</string>
+    <string name="support_img_namer_file_rename_failed">Failed to rename to: \'%s\'</string> -->
+
+    <string name="p_script_mode">腳本模式</string>
+    <string name="p_refill">自動回體</string>
+    <string name="p_refill_off">關閉</string>
+    <string name="p_refill_summary">設定自動回體</string>
+    <string name="p_auto_skill">周回腳本</string>
+    <string name="p_auto_skill_summary">設定周回腳本</string>
+    <string name="p_more_options">更多</string>
+    <string name="p_update_available">更新</string>
+
+    <string name="p_enable_refill">開啟自動回體</string>
+    <string name="p_repetitions">自動回體次數</string>
+    <string name="p_auto_decrement">Auto-decrement</string>
+    <string name="p_auto_decrement_summary">Automatically decrease the refill amount by number of apples used</string>
+    <string name="p_resource">使用蘋果</string>
+    <string name="p_run_limit">次數限制</string>
+    <string name="p_limit_no_of_runs">設定回體次數上限</string>
+    <string name="p_runs">上限</string>
+
+    <!-- <string name="p_auto_skill_name">Name</string>
+    <string name="p_auto_skill_cmd">Command</string>
+    <string name="p_auto_skill_notes">Notes</string>
+    <string name="p_auto_skill_party">Party</string>
+    <string name="p_auto_skill_support_class">Class</string>
+    <string name="p_auto_skill_card_priority">Card Priority</string>
+    <string name="p_auto_skill_support">Support</string>
+    <string name="p_auto_skill_support_selection_mode">Selection Mode</string>
+    <string name="p_auto_skill_support_fallback_selection_mode">Fallback Selection Mode</string>
+    <string name="p_auto_skill_support_pref_servants">Preferred Servants</string>
+    <string name="p_auto_skill_support_max_ascended">Max-ascended</string>
+    <string name="p_auto_skill_support_skill_levels">Skill Levels</string>
+    <string name="p_auto_skill_support_pref_ces">Preferred CEs</string>
+    <string name="p_auto_skill_support_mlb">Max-limit broken</string>
+    <string name="p_auto_skill_support_friend_names">Friend names</string>
+    <string name="p_auto_skill_support_friends_only">Friends Only</string>
+
+    <string name="p_max_skill_1">Max Skill 1</string>
+    <string name="p_max_skill_2">Max Skill 2</string>
+    <string name="p_max_skill_3">Max Skill 3</string>
+
+    <string name="p_game_server">Game Server</string>
+    <string name="p_cast_np">Cast Noble Phantasm</string>
+    <string name="p_auto_choose_target">Auto choose target</string>
+    <string name="p_story_skip">Story Skip</string>
+    <string name="p_skill_confirmation">Skill Confirmation</string>
+    <string name="p_enable_withdraw">Enable Withdraw</string>
+    <string name="p_stop_on_ce_drop">Stop on CE drop</string>
+    <string name="p_stop_on_ce_get">Stop on CE GET</string>
+    <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
+    <string name="p_experimental">Experimental</string>
+    <string name="p_screenshot_drops">Screenshot Drops</string>
+    <string name="p_screenshot_drops_summary">Saved to \'Fate-Grand-Automata/drops\' folder</string>
+    <string name="p_friend_summon_only">Friend Points Summons Only</string>
+    <string name="p_boost_item">Boost Item</string>
+    <string name="p_brave_chains">Brave Chains</string>
+    <string name="p_rearrange_cards">Rearrange Cards</string>
+    <string name="p_auto_skill_cmd_text">Skill Command TextBox</string>
+    <string name="p_auto_skill_cmd_text_summary">Show text-box for editing AutoSkill commands</string>
+
+    <string name="p_advanced">Advanced</string>
+    <string name="p_debug_mode">Debug mode</string>
+    <string name="p_debug_mode_summary">Highlight the regions being matched</string>
+    <string name="p_ignore_notch">Ignore Notch calculation</string>
+    <string name="p_ignore_notch_summary">Useful on Samsung phones</string>
+    <string name="p_record_screen">Record Screen</string>
+    <string name="p_record_screen_summary">Won\'t work with the root setting.\nA file named \'record.mp4\' will be saved to \'Fate-Grand-Automata\' folder.\nCopy or rename it if you want to keep it.</string>
+    <string name="p_root_screenshot">Use Root for Screenshots</string>
+    <string name="p_root_screenshot_summary">Useful on Nox (Android 7). Toggle service after changing this.</string>
+    <string name="p_auto_start_service">Auto-start service</string>
+    <string name="p_allow_pause_script">Allow pausing scripts</string>
+
+    <string name="p_fine_tune">Fine-tune</string>
+    <string name="p_fine_tune_default">Default: %d</string>
+    <string name="p_fine_tune_support">Support</string>
+    <string name="p_fine_tune_support_swipes_per_update">Swipes per Update</string>
+    <string name="p_fine_tune_support_max_updates">Max Updates</string>
+    <string name="p_fine_tune_similarity">Similarity</string>
+    <string name="p_fine_tune_min_similarity">Min Similarity (%)</string>
+    <string name="p_fine_tune_mlb_similarity">MLB Similarity (%)</string>
+    <string name="p_fine_tune_stage_counter_similarity">Stage Counter Similarity (%)</string>
+    <string name="p_fine_tune_clicks">Clicks</string>
+    <string name="p_fine_tune_wait_after_clicking">Wait after clicking (ms)</string>
+    <string name="p_fine_tune_click_duration">Click duration (ms)</string>
+    <string name="p_fine_tune_click_delay">Multi-Click Interval (ms)</string>
+    <string name="p_fine_tune_swipes">Swipes</string>
+    <string name="p_fine_tune_wait_after_swiping">Wait after swiping (ms)</string>
+    <string name="p_fine_tune_swipe_duration">Swipe duration (ms)</string>
+    <string name="p_fine_tune_support_swipe_multiplier">Support Swipe Multiplier (%)</string>
+    <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
+    <string name="p_fine_tune_wait_multiplier">Wait Multiplier (%)</string>
+
+    <string name="p_nav_refill">Refill</string>
+    <string name="p_nav_more_options">More options</string>
+    <string name="p_nav_fine_tune">Fine-tune</string>
+    <string name="p_nav_auto_skill_list">AutoSkill List</string>
+    <string name="p_nav_auto_skill_edit">Edit config</string>
+    <string name="p_nav_skill_levels">Skill Levels</string>
+    <string name="p_nav_card_priority">Card Priority</string>
+
+    <string name="p_refill_type_all_apples">All Apples (NO SQ)</string>
+    <string name="p_refill_type_gold">Gold</string>
+    <string name="p_refill_type_silver">Silver</string>
+    <string name="p_refill_type_bronze">Bronze</string>
+    <string name="p_refill_type_sq">SQ (Rainbow)</string>
+
+    <string name="p_brave_chains_don_t_care">Don\'t care</string>
+    <string name="p_brave_chains_after_np">After NP</string>
+    <string name="p_brave_chains_avoid">Avoid</string>
+
+    <string name="p_boost_item_disabled">Disabled</string>
+    <string name="p_boost_item_skip">Skip</string>
+
+    <string name="p_cast_np_none">None</string>
+    <string name="p_cast_np_spam">Spam</string>
+    <string name="p_cast_np_danger">Danger</string>
+
+    <string name="p_support_mode_first">First</string>
+    <string name="p_support_mode_manual">Manual</string>
+    <string name="p_support_mode_preferred">Preferred</string>
+    <string name="p_support_mode_friend">Friend</string>
+
+    <string name="p_script_mode_battle">Battle</string>
+    <string name="p_script_mode_lottery">Lottery</string>
+    <string name="p_script_mode_friend_gacha">Friend Gacha</string>
+    <string name="p_script_mode_support_img_maker">Support Image Maker</string>
+
+    <string name="p_party_not_set">Not Set</string>
+
+    <string name="p_support_class_none">None</string>
+    <string name="p_support_class_all">All</string>
+    <string name="p_support_class_saber">Saber</string>
+    <string name="p_support_class_archer">Archer</string>
+    <string name="p_support_class_lancer">Lancer</string>
+    <string name="p_support_class_rider">Rider</string>
+    <string name="p_support_class_caster">Caster</string>
+    <string name="p_support_class_assassin">Assassin</string>
+    <string name="p_support_class_berserker">Berserker</string>
+    <string name="p_support_class_extra">Extra</string>
+    <string name="p_support_class_mix">Mix</string>
+
+    <string name="notification_text">Accessibility Service Running</string>
+    <string name="notification_stop">Stop</string>
+
+    <string name="accessibility_disabled_title">Accessibility Disabled</string>
+    <string name="accessibility_disabled_message">Turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
+    <string name="accessibility_disabled_go_to_settings">Go To Settings</string>
+    <string name="cannot_start_recording">Couldn\'t start recording</string>
+    <string name="select_auto_skill_config">Select AutoSkill Config</string>
+    <string name="no_auto_skill_configs">No AutoSkill Configs</string>
+
+    <string name="script_msg_ap_ran_out">AP ran out!</string>
+    <string name="stopped_by_user">Script stopped by user or screen turned OFF</string>
+    <string name="unexpected_error">Unexpected Error</string>
+    <string name="script_exited">Script Exited</string>
+    <string name="inventory_full">Inventory Full</string>
+    <string name="present_box_full">Present Box Full</string>
+    <string name="support_img_maker_not_found">No support images were found on the current screen. Are you on Support selection or Friend list screen?</string>
+    <string name="support_selection_manual">Support selection set to Manual</string>
+    <string name="support_selection_friend_not_set">When using \'friend\' support selection mode, specify at least one friend name.</string>
+    <string name="support_selection_preferred_not_set">When using \'preferred\' support selection mode, specify at least one Servant or Craft Essence.</string>
+    <string name="ce_dropped">CE Dropped!</string>
+    <string name="ce_get">CE GET!</string>
+    <string name="withdraw_disabled">All servants have been defeated and auto-withdrawing is disabled.</string>
+    <string name="times_ran">Ran %d time(s)</string>
+    <string name="times_ran_out_of">Ran %1$d out of %2$d time(s)</string>
+    <string name="refills_used_out_of">%1$d refills used out of %2$d</string>
+    <string name="failed_to_determine_card_type">Failed to determine Card type: %s</string>
+    <string name="support_list_updated_in">Support list will be updated in %s</string>
+    <string name="times_withdrew">Withdrew %d times</string>
+    <string name="battle_time">Time: %s</string>
+    <string name="avg_time_per_run">Average time per run: %s</string>
+    <string name="turns_count">Turns: %d</string>
+    <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string> -->
+</resources>
