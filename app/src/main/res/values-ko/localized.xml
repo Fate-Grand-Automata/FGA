@@ -100,7 +100,7 @@
     <string name="p_enable_refill">사과 사용 활성화</string>
     <string name="p_repetitions">반복</string>
     <string name="p_auto_decrement">자동 감소</string>
-    <string name="p_auto_decrement_summary">사과 갯수 사용에 따라 자동으로 AP 회복량 줄이기</string>
+    <string name="p_auto_decrement_summary">사과 갯수 사용에 따라 자동으로 사과 갯수 사용량 줄이기</string>
     <string name="p_resource">리소스</string>
     <string name="p_run_limit">반복 제한</string>
     <string name="p_limit_no_of_runs">반복 횟수 제한</string>
