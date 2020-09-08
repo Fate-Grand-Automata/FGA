@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- <string name="auto_skill_item_copy">Copy</string>
-    <string name="auto_skill_item_delete">Delete</string>
-    <string name="auto_skill_item_export">Export</string>
-    <string name="auto_skill_item_export_failed">Failed to Export</string>
-    <string name="auto_skill_item_copy_name">%s (Copy)</string>
-    <string name="auto_skill_item_delete_confirm_title">Confirm Deletion</string>
-    <string name="auto_skill_item_delete_confirm_ok">Delete</string>
-    <string name="auto_skill_item_delete_confirm_message">Are you sure you want to delete this configuration?</string>
-    <string name="auto_skill_item_clear_preferred">Clear</string>
-    <string name="auto_skill_item_open_maker">Maker</string>
-    <string name="auto_skill_support_any">Any</string>
+    <string name="auto_skill_item_copy">複製</string>
+    <string name="auto_skill_item_delete">刪除</string>
+    <string name="auto_skill_item_export">匯出</string>
+    <string name="auto_skill_item_export_failed">匯出失敗</string>
+    <string name="auto_skill_item_copy_name">%s (複製)</string>
+    <string name="auto_skill_item_delete_confirm_title">確認刪除</string>
+    <string name="auto_skill_item_delete_confirm_ok">刪除</string>
+    <string name="auto_skill_item_delete_confirm_message">確定要刪除此腳本嗎?</string>
+    <string name="auto_skill_item_clear_preferred">清除選擇</string>
+    <string name="auto_skill_item_open_maker">製作器</string>
+    <string name="auto_skill_support_any">任何</string>
 
-    <string name="support_imgs_extracted">Support Images Extracted Successfully</string>
-    <string name="support_img_not_found">Unable to load image: %1$s. Put images in %2$s folder</string> -->
+    <string name="support_imgs_extracted">成功擷取助戰從者圖片</string>
+    <string name="support_img_not_found">助戰從者圖片載入失敗: %1$s 。請將從者圖片放在 %2$s 資料夾</string>
 
     <string name="auto_skill_list_no_items">目前沒有腳本，請按右下角的加號新增</string>
     <string name="auto_skill_list_import">匯入腳本</string>
-    <string name="auto_skill_list_export_all">輸出腳本</string>
+    <string name="auto_skill_list_export_all">匯出腳本</string>
     <string name="auto_skill_list_delete">刪除</string>
     <string name="auto_skill_list_selected_count">已選擇 %d 個腳本</string>
-    <string name="auto_skill_list_export_failed">輸出 %d 個腳本失敗</string>
-    <string name="auto_skill_list_import_failed">輸入 %d 個腳本失敗</string>
+    <string name="auto_skill_list_export_failed">匯出 %d 個腳本失敗</string>
+    <string name="auto_skill_list_import_failed">匯入 %d 個腳本失敗</string>
     <string name="auto_skill_list_delete_confirm_title">確認刪除</string>
     <string name="auto_skill_list_delete_confirm_ok">刪除</string>
     <string name="auto_skill_list_delete_confirm_message">確定要刪除 %d 個腳本?</string>
