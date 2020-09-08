@@ -128,6 +128,8 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
 
     private fun selectFirst(): Boolean {
         while (true) {
+            0.5.seconds.wait()
+
             Game.supportFirstSupportClick.click()
 
             // Handle the case of a friend not having set a support servant
