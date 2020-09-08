@@ -199,24 +199,24 @@
     <string name="p_boost_item_disabled">關閉</string>
     <string name="p_boost_item_skip">跳過</string>
 
-    <!-- <string name="p_cast_np_none">None</string>
-    <string name="p_cast_np_spam">Spam</string>
-    <string name="p_cast_np_danger">Danger</string>
+    <string name="p_cast_np_none">無</string>
+    <string name="p_cast_np_spam">能放就放</string>
+    <string name="p_cast_np_danger">Danger 敵人時施放</string>
 
-    <string name="p_support_mode_first">First</string>
-    <string name="p_support_mode_manual">Manual</string>
-    <string name="p_support_mode_preferred">Preferred</string>
-    <string name="p_support_mode_friend">Friend</string>
+    <string name="p_support_mode_first">第一個支援從者</string>
+    <string name="p_support_mode_manual">手動選擇</string>
+    <string name="p_support_mode_preferred">偏好支援</string>
+    <string name="p_support_mode_friend">好友支援</string>
 
-    <string name="p_script_mode_battle">Battle</string>
-    <string name="p_script_mode_lottery">Lottery</string>
-    <string name="p_script_mode_friend_gacha">Friend Gacha</string>
-    <string name="p_script_mode_support_img_maker">Support Image Maker</string>
+    <string name="p_script_mode_battle">戰鬥</string>
+    <string name="p_script_mode_lottery">抽箱</string>
+    <string name="p_script_mode_friend_gacha">友情抽</string>
+    <string name="p_script_mode_support_img_maker">支援從者圖片擷取器</string>
 
-    <string name="p_party_not_set">Not Set</string>
+    <string name="p_party_not_set">未設定</string>
 
-    <string name="p_support_class_none">None</string>
-    <string name="p_support_class_all">All</string>
+    <string name="p_support_class_none">無</string>
+    <string name="p_support_class_all">全部職階</string>
     <string name="p_support_class_saber">Saber</string>
     <string name="p_support_class_archer">Archer</string>
     <string name="p_support_class_lancer">Lancer</string>
@@ -225,39 +225,39 @@
     <string name="p_support_class_assassin">Assassin</string>
     <string name="p_support_class_berserker">Berserker</string>
     <string name="p_support_class_extra">Extra</string>
-    <string name="p_support_class_mix">Mix</string> -->
+    <string name="p_support_class_mix">混合職階</string>
 
-    <!-- <string name="notification_text">Accessibility Service Running</string>
-    <string name="notification_stop">Stop</string>
+    <string name="notification_text">輔助項目執行中</string>
+    <string name="notification_stop">停止</string>
 
-    <string name="accessibility_disabled_title">Accessibility Disabled</string>
-    <string name="accessibility_disabled_message">Turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
-    <string name="accessibility_disabled_go_to_settings">Go To Settings</string>
-    <string name="cannot_start_recording">Couldn\'t start recording</string>
-    <string name="select_auto_skill_config">Select AutoSkill Config</string>
-    <string name="no_auto_skill_configs">No AutoSkill Configs</string>
+    <string name="accessibility_disabled_title">輔助項目已關閉</string>
+    <string name="accessibility_disabled_message">請在系統設定中開啟輔助項目設定，如果已經開啟請關閉後重開。</string>
+    <string name="accessibility_disabled_go_to_settings">前往設定</string>
+    <string name="cannot_start_recording">無法開啟螢幕錄影</string>
+    <string name="select_auto_skill_config">選取腳本</string>
+    <string name="no_auto_skill_configs">無腳本</string>
 
-    <string name="script_msg_ap_ran_out">AP ran out!</string>
-    <string name="stopped_by_user">Script stopped by user or screen turned OFF</string>
+    <string name="script_msg_ap_ran_out">體力用完了</string>
+    <string name="stopped_by_user">螢幕關閉或用戶停止腳本</string>
     <string name="unexpected_error">Unexpected Error</string>
-    <string name="script_exited">Script Exited</string>
-    <string name="inventory_full">Inventory Full</string>
-    <string name="present_box_full">Present Box Full</string>
-    <string name="support_img_maker_not_found">No support images were found on the current screen. Are you on Support selection or Friend list screen?</string>
-    <string name="support_selection_manual">Support selection set to Manual</string>
-    <string name="support_selection_friend_not_set">When using \'friend\' support selection mode, specify at least one friend name.</string>
-    <string name="support_selection_preferred_not_set">When using \'preferred\' support selection mode, specify at least one Servant or Craft Essence.</string>
-    <string name="ce_dropped">CE Dropped!</string>
-    <string name="ce_get">CE GET!</string>
-    <string name="withdraw_disabled">All servants have been defeated and auto-withdrawing is disabled.</string>
-    <string name="times_ran">Ran %d time(s)</string>
-    <string name="times_ran_out_of">Ran %1$d out of %2$d time(s)</string>
-    <string name="refills_used_out_of">%1$d refills used out of %2$d</string>
-    <string name="failed_to_determine_card_type">Failed to determine Card type: %s</string>
-    <string name="support_list_updated_in">Support list will be updated in %s</string>
-    <string name="times_withdrew">Withdrew %d times</string>
-    <string name="battle_time">Time: %s</string>
-    <string name="avg_time_per_run">Average time per run: %s</string>
-    <string name="turns_count">Turns: %d</string>
-    <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string> -->
+    <string name="script_exited">腳本停止</string>
+    <string name="inventory_full">背包已滿</string>
+    <string name="present_box_full">禮物盒已滿</string>
+    <string name="support_img_maker_not_found">無法偵測支援，請到好友選擇畫面或支援選擇畫面再執行。</string>
+    <string name="support_selection_manual">已切換至手動選擇支援從者</string>
+    <string name="support_selection_friend_not_set">使用「好友支援」時請設定偏好好友</string>
+    <string name="support_selection_preferred_not_set">使用「偏好支援」時請設定偏好從者或偏好禮裝</string>
+    <string name="ce_dropped">禮裝掉落!</string>
+    <string name="ce_get">獲得禮裝!</string>
+    <string name="withdraw_disabled">無設定撤退且從者全滅</string>
+    <string name="times_ran">已執行 %d 次</string>
+    <string name="times_ran_out_of">已執行 %1$d / %2$d 次</string>
+    <string name="refills_used_out_of">已自動回體 %1$d / %2$d 次</string>
+    <string name="failed_to_determine_card_type">辨識卡色失敗: %s</string>
+    <string name="support_list_updated_in">支援清單在 %s 後刷新</string>
+    <string name="times_withdrew">已撤退 %d 次</string>
+    <string name="battle_time">周回時間: %s</string>
+    <string name="avg_time_per_run">平均一場時間: %s</string>
+    <string name="turns_count">回合 %d</string>
+    <string name="turns_stats">回合: %1$d (最少), %2$d (平均), %3$d (最多)</string>
 </resources>
