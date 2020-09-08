@@ -9,7 +9,7 @@
     <string name="auto_skill_item_delete_confirm_ok">刪除</string>
     <string name="auto_skill_item_delete_confirm_message">確定要刪除此腳本嗎?</string>
     <string name="auto_skill_item_clear_preferred">清除選擇</string>
-    <string name="auto_skill_item_open_maker">製作器</string>
+    <string name="auto_skill_item_open_maker">產生器</string>
     <string name="auto_skill_support_any">任何</string>
 
     <string name="support_imgs_extracted">成功擷取支援從者圖片</string>
@@ -31,7 +31,7 @@
     <string name="auto_skill_maker_confirm_clear_title">確認重設</string>
     <string name="auto_skill_maker_confirm_clear_message">將會重設目前設定的腳本，確定要重設?</string>
     <string name="auto_skill_maker_confirm_np_deletion_title">確認重設寶具</string>
-    <string name="auto_skill_maker_confirm_np_deletion_message">重設寶具實，寶具前墊刀也會一並取消，確認回復?</string>
+    <string name="auto_skill_maker_confirm_np_deletion_message">寶具前墊刀等設定也會重設，確認回復?</string>
     <string name="auto_skill_maker_atk_header">攻擊指令</string>
     <string name="auto_skill_maker_atk_servant_np">從者\n%d\n\n寶具</string>
     <string name="auto_skill_maker_atk_cards_before_np">寶具前墊刀</string>
@@ -50,7 +50,7 @@
     <string name="auto_skill_maker_cannot_select">請先重設回合/寶具指令</string>
 
     <string name="auto_skill_maker_master_skills_header">御主技能</string>
-    <string name="auto_skill_maker_master_skills_order_change">Order Change / 換人</string>
+    <string name="auto_skill_maker_master_skills_order_change">換人\nOrder Change</string>
 
     <string name="auto_skill_maker_order_change_header">Order Change</string>
     <string name="auto_skill_maker_order_change_starting_member">首發成員</string>
@@ -71,7 +71,7 @@
     <string name="card_priority_remove_last_wave">移除BATTLE</string>
     <string name="card_priority_experimental">開啟實驗功能</string>
 
-    <string name="toggle_service">開啟服務</string>
+    <string name="toggle_service">開關服務</string>
     <string name="fine_tune_menu_reset_to_defaults">回復預設值</string>
     <string name="support_menu_extract_default_support_images">擷取預設支援從者圖片</string>
 
@@ -97,11 +97,11 @@
     <string name="p_more_options">更多</string>
     <string name="p_update_available">更新</string>
 
-    <string name="p_enable_refill">開啟自動回體</string>
+    <string name="p_enable_refill">啟動自動回體</string>
     <string name="p_repetitions">自動回體次數</string>
-    <string name="p_auto_decrement">Auto-decrement</string>
-    <string name="p_auto_decrement_summary">Automatically decrease the refill amount by number of apples used</string>
-    <string name="p_resource">使用蘋果</string>
+    <string name="p_auto_decrement">追蹤消耗</string>
+    <string name="p_auto_decrement_summary">自動追蹤已使用的蘋果以減少自動回體次數</string>
+    <string name="p_resource">選擇蘋果</string>
     <string name="p_run_limit">次數限制</string>
     <string name="p_limit_no_of_runs">設定回體次數上限</string>
     <string name="p_runs">上限</string>
@@ -129,13 +129,13 @@
 
     <string name="p_game_server">伺服器</string>
     <string name="p_cast_np">自動寶具</string>
-    <string name="p_auto_choose_target">自動選敵人</string>
+    <string name="p_auto_choose_target">自動選取敵人</string>
     <string name="p_story_skip">跳過劇情</string>
     <string name="p_skill_confirmation">技能確認</string>
     <string name="p_enable_withdraw">啟用撤退</string>
     <string name="p_stop_on_ce_drop">禮裝掉落自動停止</string>
     <string name="p_stop_on_ce_get">禮裝獲得自動停止</string>
-    <string name="p_stop_on_ce_get_summary">首次通關及絆禮裝獲得</string>
+    <string name="p_stop_on_ce_get_summary">首次通關及絆禮裝獲得時自動停止腳本</string>
     <string name="p_experimental">實驗功能</string>
     <string name="p_screenshot_drops">掉落截圖</string>
     <string name="p_screenshot_drops_summary">存至 \'Fate-Grand-Automata/drops\' 資料夾</string>
@@ -144,7 +144,7 @@
     <string name="p_brave_chains">Brave Chains</string>
     <string name="p_rearrange_cards">調換出卡順序(優先性高的卡後出)</string>
     <string name="p_auto_skill_cmd_text">腳本對話框</string>
-    <string name="p_auto_skill_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入製作器)</string>
+    <string name="p_auto_skill_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
 
     <string name="p_advanced">進階</string>
     <string name="p_debug_mode">Debug mode</string>
@@ -154,17 +154,17 @@
     <string name="p_record_screen">螢幕錄影</string>
     <string name="p_record_screen_summary">將儲存 \'record.mp4\' 至 \'Fate-Grand-Automata\' 資料夾，不適用root。</string>
     <string name="p_root_screenshot">以root截圖</string>
-    <string name="p_root_screenshot_summary">請在開啟服務前選取此設定，對Android 7機種有幫助</string>
+    <string name="p_root_screenshot_summary">對Android 7機種有幫助，請在開啟服務前選取此設定</string>
     <string name="p_auto_start_service">自動開啟服務</string>
     <string name="p_allow_pause_script">允許暫停腳本</string>
 
     <string name="p_fine_tune">微調</string>
     <string name="p_fine_tune_default">預設: %d</string>
-    <string name="p_fine_tune_support">支援從者選擇</string>
-    <string name="p_fine_tune_support_swipes_per_update">每次更新滑動次數</string>
-    <string name="p_fine_tune_support_max_updates">更新次數限制</string>
-    <string name="p_fine_tune_similarity">影像比對相似度</string>
-    <string name="p_fine_tune_min_similarity">最低 (%)</string>
+    <string name="p_fine_tune_support">支援從者列表</string>
+    <string name="p_fine_tune_support_swipes_per_update">支援列表更新後滑動次數</string>
+    <string name="p_fine_tune_support_max_updates">支援列表更新次數限制</string>
+    <string name="p_fine_tune_similarity">影像比對</string>
+    <string name="p_fine_tune_min_similarity">最低相似度 (%)</string>
     <string name="p_fine_tune_mlb_similarity">滿破相似度 (%)</string>
     <string name="p_fine_tune_stage_counter_similarity">關卡計數相似度 (%)</string>
     <string name="p_fine_tune_clicks">點選</string>
@@ -172,21 +172,21 @@
     <string name="p_fine_tune_click_duration">點選時間 (ms)</string>
     <string name="p_fine_tune_click_delay">連擊間隔 (ms)</string>
     <string name="p_fine_tune_swipes">滑動</string>
-    <string name="p_fine_tune_wait_after_swiping">畫動後暫停 (ms)</string>
+    <string name="p_fine_tune_wait_after_swiping">滑動後暫停 (ms)</string>
     <string name="p_fine_tune_swipe_duration">滑動時間 (ms)</string>
     <string name="p_fine_tune_support_swipe_multiplier">支援選擇加乘 (%)</string>
-    <string name="p_fine_tune_skill_delay">放技等待 (ms)</string>
+    <string name="p_fine_tune_skill_delay">放技後等待 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">等待加乘 (%)</string>
 
     <string name="p_nav_refill">自動回體</string>
     <string name="p_nav_more_options">更多選項</string>
     <string name="p_nav_fine_tune">微調</string>
     <string name="p_nav_auto_skill_list">腳本列表</string>
-    <string name="p_nav_auto_skill_edit">腳本編輯</string>
+    <string name="p_nav_auto_skill_edit">編輯腳本</string>
     <string name="p_nav_skill_levels">技能等級</string>
     <string name="p_nav_card_priority">指令卡優先性</string>
 
-    <string name="p_refill_type_all_apples">所有蘋果</string>
+    <string name="p_refill_type_all_apples">所有蘋果 (不使用聖晶石)</string>
     <string name="p_refill_type_gold">黃金果實</string>
     <string name="p_refill_type_silver">白銀果實</string>
     <string name="p_refill_type_bronze">赤銅果實</string>
@@ -203,14 +203,14 @@
     <string name="p_cast_np_spam">能放就放</string>
     <string name="p_cast_np_danger">Danger 敵人時施放</string>
 
-    <string name="p_support_mode_first">第一個支援從者</string>
+    <string name="p_support_mode_first">第一位支援</string>
     <string name="p_support_mode_manual">手動選擇</string>
-    <string name="p_support_mode_preferred">偏好支援</string>
-    <string name="p_support_mode_friend">好友支援</string>
+    <string name="p_support_mode_preferred">偏好從者</string>
+    <string name="p_support_mode_friend">好友從者</string>
 
     <string name="p_script_mode_battle">戰鬥</string>
     <string name="p_script_mode_lottery">抽箱</string>
-    <string name="p_script_mode_friend_gacha">友情抽</string>
+    <string name="p_script_mode_friend_gacha">友情點數召喚</string>
     <string name="p_script_mode_support_img_maker">支援從者圖片擷取器</string>
 
     <string name="p_party_not_set">未設定</string>
@@ -227,11 +227,11 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">混合職階</string>
 
-    <string name="notification_text">輔助項目執行中</string>
+    <string name="notification_text">無障礙服務執行中</string>
     <string name="notification_stop">停止</string>
 
-    <string name="accessibility_disabled_title">輔助項目已關閉</string>
-    <string name="accessibility_disabled_message">請在系統設定中開啟輔助項目設定，如果已經開啟請關閉後重開。</string>
+    <string name="accessibility_disabled_title">無障礙服務已關閉</string>
+    <string name="accessibility_disabled_message">請在系統設定中開啟無障礙服務設定，如果已經開啟請關閉後重新開啟。</string>
     <string name="accessibility_disabled_go_to_settings">前往設定</string>
     <string name="cannot_start_recording">無法開啟螢幕錄影</string>
     <string name="select_auto_skill_config">選取腳本</string>
