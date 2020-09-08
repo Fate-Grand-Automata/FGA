@@ -175,7 +175,8 @@
     <string name="p_fine_tune_wait_after_swiping">滑動後暫停 (ms)</string>
     <string name="p_fine_tune_swipe_duration">滑動時間 (ms)</string>
     <string name="p_fine_tune_support_swipe_multiplier">支援選擇加乘 (%)</string>
-    <string name="p_fine_tune_skill_delay">放技後等待 (ms)</string>
+    <string name="p_fine_tune_wait">施放技能後等待時間</string>
+    <string name="p_fine_tune_skill_delay">等待時間 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">等待加乘 (%)</string>
 
     <string name="p_nav_refill">自動回體</string>
