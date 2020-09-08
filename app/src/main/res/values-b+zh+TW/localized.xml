@@ -111,7 +111,7 @@
     <string name="p_auto_skill_notes">備註</string>
     <string name="p_auto_skill_party">隊伍編號</string>
     <string name="p_auto_skill_support_class">支援從者職階</string>
-    <string name="p_auto_skill_card_priority">選卡優先性</string>
+    <string name="p_auto_skill_card_priority">偏好指令卡</string>
     <string name="p_auto_skill_support">支援從者</string>
     <string name="p_auto_skill_support_selection_mode">支援從者選取方式</string>
     <string name="p_auto_skill_support_fallback_selection_mode">備用選取方式</string>
@@ -141,8 +141,8 @@
     <string name="p_screenshot_drops_summary">存至 \'Fate-Grand-Automata/drops\' 資料夾</string>
     <string name="p_friend_summon_only">只使用友情點數召喚</string>
     <string name="p_boost_item">加速道具</string>
-    <string name="p_brave_chains">Brave Chains</string>
-    <string name="p_rearrange_cards">調換出卡順序(優先性高的卡後出)</string>
+    <string name="p_brave_chains">EX串</string>
+    <string name="p_rearrange_cards">調換順序\n(優先性高的卡後出)</string>
     <string name="p_auto_skill_cmd_text">腳本對話框</string>
     <string name="p_auto_skill_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
 
@@ -175,9 +175,9 @@
     <string name="p_fine_tune_wait_after_swiping">滑動後暫停 (ms)</string>
     <string name="p_fine_tune_swipe_duration">滑動時間 (ms)</string>
     <string name="p_fine_tune_support_swipe_multiplier">支援選擇加乘 (%)</string>
-    <string name="p_fine_tune_wait">施放技能後等待時間</string>
-    <string name="p_fine_tune_skill_delay">等待時間 (ms)</string>
-    <string name="p_fine_tune_wait_multiplier">等待加乘 (%)</string>
+    <string name="p_fine_tune_wait">等待時間</string>
+    <string name="p_fine_tune_skill_delay">施放技能後等待時間 (ms)</string>
+    <string name="p_fine_tune_wait_multiplier">等待時間加乘 (%)</string>
 
     <string name="p_nav_refill">自動回體</string>
     <string name="p_nav_more_options">更多選項</string>
@@ -185,7 +185,7 @@
     <string name="p_nav_auto_skill_list">腳本列表</string>
     <string name="p_nav_auto_skill_edit">編輯腳本</string>
     <string name="p_nav_skill_levels">技能等級</string>
-    <string name="p_nav_card_priority">指令卡優先性</string>
+    <string name="p_nav_card_priority">偏好指令卡</string>
 
     <string name="p_refill_type_all_apples">所有蘋果 (不使用聖晶石)</string>
     <string name="p_refill_type_gold">黃金果實</string>
@@ -194,7 +194,7 @@
     <string name="p_refill_type_sq">聖晶石 (彩色蘋果)</string>
 
     <string name="p_brave_chains_don_t_care">無偏好</string>
-    <string name="p_brave_chains_after_np">寶具後串EX串EX</string>
+    <string name="p_brave_chains_after_np">寶具後串EX</string>
     <string name="p_brave_chains_avoid">避免自串EX</string>
 
     <string name="p_boost_item_disabled">關閉</string>
