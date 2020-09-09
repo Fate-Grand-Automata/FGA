@@ -105,19 +105,19 @@ jobs:
 
       - name: Download Bundle
         uses: actions/download-artifact@v1
-          with:
-            name: bundle
+        with:
+          name: bundle
 
       - name: Download mapping file
         uses: actions/download-artifact@v1
-          with:
-            name: mapping
+        with:
+          name: mapping
 
       - name: Deploy to Play Store
         uses: r0adkll/upload-google-play@v1
-          with:
-            track: beta
-            serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
-            packageName: com.mathewsachin.fategrandautomata.apk
-            releaseFile: ./bundle/app-release.aab
-            mappingFile: ./mapping/mapping.txt
+        with:
+          track: beta
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
+          packageName: com.mathewsachin.fategrandautomata.apk
+          releaseFile: ./bundle/app-release.aab
+          mappingFile: ./mapping/mapping.txt
