@@ -12,7 +12,7 @@
     <string name="auto_skill_item_open_maker">產生器</string>
     <string name="auto_skill_support_any">任何</string>
 
-    <string name="support_imgs_extracted">成功擷取支援從者圖片</string>
+    <string name="support_imgs_extracted">圖片複製成功</string>
     <string name="support_img_not_found">支援從者圖片載入失敗: %1$s 。請將從者圖片放在 %2$s 資料夾</string>
 
     <string name="auto_skill_list_no_items">目前沒有腳本，請按右下角的加號新增</string>
@@ -24,14 +24,14 @@
     <string name="auto_skill_list_import_failed">匯入 %d 個腳本失敗</string>
     <string name="auto_skill_list_delete_confirm_title">確認刪除</string>
     <string name="auto_skill_list_delete_confirm_ok">刪除</string>
-    <string name="auto_skill_list_delete_confirm_message">確定要刪除 %d 個腳本?</string>
+    <string name="auto_skill_list_delete_confirm_message">確認刪除 %d 個腳本?</string>
 
     <string name="auto_skill_maker_confirm_exit_title">確認離開</string>
-    <string name="auto_skill_maker_confirm_exit_message">將不會儲存目前設定的腳本，確定要離開?</string>
-    <string name="auto_skill_maker_confirm_clear_title">確認重設</string>
-    <string name="auto_skill_maker_confirm_clear_message">將會重設目前設定的腳本，確定要重設?</string>
-    <string name="auto_skill_maker_confirm_np_deletion_title">確認重設寶具</string>
-    <string name="auto_skill_maker_confirm_np_deletion_message">寶具前墊刀等設定也會重設，確認回復?</string>
+    <string name="auto_skill_maker_confirm_exit_message">將不會儲存目前設定的腳本，確認離開?</string>
+    <string name="auto_skill_maker_confirm_clear_title">確認清除</string>
+    <string name="auto_skill_maker_confirm_clear_message">將會清除所有設定，確認執行?</string>
+    <string name="auto_skill_maker_confirm_np_deletion_title">確認復原寶具指令</string>
+    <string name="auto_skill_maker_confirm_np_deletion_message">寶具前墊刀等設定也會復原，確認執行?</string>
     <string name="auto_skill_maker_atk_header">攻擊指令</string>
     <string name="auto_skill_maker_atk_servant_np">從者\n%d\n\n寶具</string>
     <string name="auto_skill_maker_atk_cards_before_np">寶具前墊刀</string>
@@ -43,7 +43,7 @@
     <string name="auto_skill_maker_main_battle">BATTLE %d</string>
     <string name="auto_skill_maker_main_turn">%d 回合</string>
     <string name="auto_skill_maker_main_master_skills">御主技能</string>
-    <string name="auto_skill_maker_main_undo">回復</string>
+    <string name="auto_skill_maker_main_undo">復原</string>
     <string name="auto_skill_maker_main_clear">重設</string>
     <string name="auto_skill_maker_main_servant">從者 %d</string>
     <string name="auto_skill_maker_main_attack">Attack</string>
@@ -72,8 +72,8 @@
     <string name="card_priority_experimental">開啟實驗功能</string>
 
     <string name="toggle_service">開關服務</string>
-    <string name="fine_tune_menu_reset_to_defaults">回復預設值</string>
-    <string name="support_menu_extract_default_support_images">擷取預設支援從者圖片</string>
+    <string name="fine_tune_menu_reset_to_defaults">還原設定</string>
+    <string name="support_menu_extract_default_support_images">複製預設支援圖片</string>
 
     <string name="support_img_namer_servants">從者</string>
     <string name="support_img_namer_folder_hint">可以使用以下方式命名資料夾: \'Merlin/asc1\'</string>
@@ -95,7 +95,7 @@
     <string name="p_auto_skill">周回腳本</string>
     <string name="p_auto_skill_summary">設定周回腳本</string>
     <string name="p_more_options">更多</string>
-    <string name="p_update_available">更新</string>
+    <string name="p_update_available">有可用的更新</string>
 
     <string name="p_enable_refill">啟動自動回體</string>
     <string name="p_repetitions">自動回體次數</string>
@@ -111,7 +111,7 @@
     <string name="p_auto_skill_notes">備註</string>
     <string name="p_auto_skill_party">隊伍編號</string>
     <string name="p_auto_skill_support_class">支援從者職階</string>
-    <string name="p_auto_skill_card_priority">選卡優先性</string>
+    <string name="p_auto_skill_card_priority">偏好指令卡</string>
     <string name="p_auto_skill_support">支援從者</string>
     <string name="p_auto_skill_support_selection_mode">支援從者選取方式</string>
     <string name="p_auto_skill_support_fallback_selection_mode">備用選取方式</string>
@@ -141,8 +141,8 @@
     <string name="p_screenshot_drops_summary">存至 \'Fate-Grand-Automata/drops\' 資料夾</string>
     <string name="p_friend_summon_only">只使用友情點數召喚</string>
     <string name="p_boost_item">加速道具</string>
-    <string name="p_brave_chains">Brave Chains</string>
-    <string name="p_rearrange_cards">調換出卡順序(優先性高的卡後出)</string>
+    <string name="p_brave_chains">EX串</string>
+    <string name="p_rearrange_cards">調換順序\n(優先性高的卡後出)</string>
     <string name="p_auto_skill_cmd_text">腳本對話框</string>
     <string name="p_auto_skill_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
 
@@ -154,7 +154,7 @@
     <string name="p_record_screen">螢幕錄影</string>
     <string name="p_record_screen_summary">將儲存 \'record.mp4\' 至 \'Fate-Grand-Automata\' 資料夾，不適用root。</string>
     <string name="p_root_screenshot">以root截圖</string>
-    <string name="p_root_screenshot_summary">對Android 7機種有幫助，請在開啟服務前選取此設定</string>
+    <string name="p_root_screenshot_summary">對夜神模擬器(Nox with Android 7)有幫助，請在開啟服務前選取此設定</string>
     <string name="p_auto_start_service">自動開啟服務</string>
     <string name="p_allow_pause_script">允許暫停腳本</string>
 
@@ -175,9 +175,9 @@
     <string name="p_fine_tune_wait_after_swiping">滑動後暫停 (ms)</string>
     <string name="p_fine_tune_swipe_duration">滑動時間 (ms)</string>
     <string name="p_fine_tune_support_swipe_multiplier">支援選擇加乘 (%)</string>
-    <string name="p_fine_tune_wait">施放技能後等待時間</string>
-    <string name="p_fine_tune_skill_delay">等待時間 (ms)</string>
-    <string name="p_fine_tune_wait_multiplier">等待加乘 (%)</string>
+    <string name="p_fine_tune_wait">等待時間</string>
+    <string name="p_fine_tune_skill_delay">施放技能後等待時間 (ms)</string>
+    <string name="p_fine_tune_wait_multiplier">等待時間加乘 (%)</string>
 
     <string name="p_nav_refill">自動回體</string>
     <string name="p_nav_more_options">更多選項</string>
@@ -185,7 +185,7 @@
     <string name="p_nav_auto_skill_list">腳本列表</string>
     <string name="p_nav_auto_skill_edit">編輯腳本</string>
     <string name="p_nav_skill_levels">技能等級</string>
-    <string name="p_nav_card_priority">指令卡優先性</string>
+    <string name="p_nav_card_priority">偏好指令卡</string>
 
     <string name="p_refill_type_all_apples">所有蘋果 (不使用聖晶石)</string>
     <string name="p_refill_type_gold">黃金果實</string>
@@ -194,7 +194,7 @@
     <string name="p_refill_type_sq">聖晶石 (彩色蘋果)</string>
 
     <string name="p_brave_chains_don_t_care">無偏好</string>
-    <string name="p_brave_chains_after_np">寶具後串EX串EX</string>
+    <string name="p_brave_chains_after_np">寶具後串EX</string>
     <string name="p_brave_chains_avoid">避免自串EX</string>
 
     <string name="p_boost_item_disabled">關閉</string>
@@ -212,12 +212,12 @@
     <string name="p_script_mode_battle">戰鬥</string>
     <string name="p_script_mode_lottery">抽箱</string>
     <string name="p_script_mode_friend_gacha">友情點數召喚</string>
-    <string name="p_script_mode_support_img_maker">支援從者圖片擷取器</string>
+    <string name="p_script_mode_support_img_maker">支援從者圖片截取器</string>
 
     <string name="p_party_not_set">未設定</string>
 
     <string name="p_support_class_none">無</string>
-    <string name="p_support_class_all">全部職階</string>
+    <string name="p_support_class_all">全部職階 (All) </string>
     <string name="p_support_class_saber">Saber</string>
     <string name="p_support_class_archer">Archer</string>
     <string name="p_support_class_lancer">Lancer</string>
@@ -226,7 +226,7 @@
     <string name="p_support_class_assassin">Assassin</string>
     <string name="p_support_class_berserker">Berserker</string>
     <string name="p_support_class_extra">Extra</string>
-    <string name="p_support_class_mix">混合職階</string>
+    <string name="p_support_class_mix">混合職階 (Mix)</string>
 
     <string name="notification_text">無障礙服務執行中</string>
     <string name="notification_stop">停止</string>
@@ -240,7 +240,7 @@
 
     <string name="script_msg_ap_ran_out">體力用完了</string>
     <string name="stopped_by_user">螢幕關閉或用戶停止腳本</string>
-    <string name="unexpected_error">Unexpected Error</string>
+    <string name="unexpected_error">未知錯誤</string>
     <string name="script_exited">腳本停止</string>
     <string name="inventory_full">背包已滿</string>
     <string name="present_box_full">禮物盒已滿</string>
