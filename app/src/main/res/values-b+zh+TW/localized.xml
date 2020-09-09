@@ -12,7 +12,7 @@
     <string name="auto_skill_item_open_maker">產生器</string>
     <string name="auto_skill_support_any">任何</string>
 
-    <string name="support_imgs_extracted">成功截取支援從者圖片</string>
+    <string name="support_imgs_extracted">圖片複製成功</string>
     <string name="support_img_not_found">支援從者圖片載入失敗: %1$s 。請將從者圖片放在 %2$s 資料夾</string>
 
     <string name="auto_skill_list_no_items">目前沒有腳本，請按右下角的加號新增</string>
@@ -73,7 +73,7 @@
 
     <string name="toggle_service">開關服務</string>
     <string name="fine_tune_menu_reset_to_defaults">還原設定</string>
-    <string name="support_menu_extract_default_support_images">截取預設支援從者圖片</string>
+    <string name="support_menu_extract_default_support_images">複製預設支援圖片</string>
 
     <string name="support_img_namer_servants">從者</string>
     <string name="support_img_namer_folder_hint">可以使用以下方式命名資料夾: \'Merlin/asc1\'</string>
