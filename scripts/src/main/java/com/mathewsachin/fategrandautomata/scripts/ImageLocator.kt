@@ -69,7 +69,6 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val masterExp get() = load("master_exp.png")
 
-    // TODO: Verify the CN image
     val masterLvlUp get() = load("master_lvl_up.png")
 
     val matRewards get() = load("mat_rewards.png")
@@ -97,4 +96,16 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
     val goldXP get() = load("GoldXP.png")
 
     val giftBoxCheck get() = load("gift_box_check.png")
+
+    val ceDrop get() = load("ce_drop.png")
+
+    val friendSummon get() = load("friend_summon.png")
+
+    val dropScrollbar get() = load("drop_scrollbar.png")
+
+    val supportExtra get() = load("support_extra.png")
+
+    val supportNotFound get() = load("support_not_found.png")
+
+    val support get() = load("support.png")
 }

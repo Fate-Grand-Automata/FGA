@@ -1,18 +1,19 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.*
+import javax.inject.Inject
 import kotlin.time.seconds
 
 /**
  * Continually opens lottery boxes until either the present box is full or there is no currency left.
  */
-class AutoLottery(
+class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
+    fgAutomataApi: IFgoAutomataApi
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     private val spinClick = Location(834, 860)
     private val finishedLotteryBoxRegion = Region(540, 860, 140, 100)
     private val fullPresentBoxRegion = Region(1280, 720, 1280, 720)
@@ -38,13 +39,9 @@ class AutoLottery(
     }
 
     override fun script(): Nothing {
-        when (prefs.gameServer) {
-            GameServerEnum.Cn -> {
-                throw ScriptExitException("Lottery script doesn't support the CN server right now.")
-            }
+        if (prefs.gameServer in listOf(GameServerEnum.Cn, GameServerEnum.Kr)) {
+            throw ScriptExitException("Lottery script doesn't support this server right now.")
         }
-
-        scaling.init()
 
         while (true) {
             screenshotManager.useSameSnapIn {
@@ -53,8 +50,8 @@ class AutoLottery(
                         images.finishedLotteryBox,
                         Similarity = 0.65
                     ) -> reset()
-                    fullPresentBoxRegion.exists(images.presentBoxFull) -> {
-                        throw ScriptExitException("Present Box Full")
+                    images.presentBoxFull in fullPresentBoxRegion -> {
+                        throw ScriptExitException(messages.lotteryPresentBoxFull)
                     }
                     else -> spin()
                 }

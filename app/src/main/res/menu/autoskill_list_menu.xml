@@ -4,6 +4,11 @@
     <item
         android:id="@+id/action_auto_skill_import"
         android:icon="@drawable/ic_zip"
-        android:title="Import"
+        android:title="@string/auto_skill_list_import"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_auto_skill_export_all"
+        android:icon="@drawable/ic_zip"
+        android:title="@string/auto_skill_list_export_all"
         app:showAsAction="never" />
 </menu>

@@ -9,7 +9,7 @@
         android:id="@+id/servant_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Servant(s)"
+        android:text="@string/support_img_namer_servants"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,28 +27,30 @@
         android:id="@+id/folder_help_txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="You can use folders like this: 'Merlin/asc1'"
+        android:text="@string/support_img_namer_folder_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/folder_help_ic"
         app:layout_constraintTop_toBottomOf="@+id/servant_txt" />
 
     <!-- Servant 0 -->
-    <include layout="@layout/support_img_namer_item"
+    <include
+        layout="@layout/support_img_namer_item"
         android:id="@+id/support_img_servant_0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/folder_help_txt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Servant 1 -->
-    <include layout="@layout/support_img_namer_item"
+    <include
+        layout="@layout/support_img_namer_item"
         android:id="@+id/support_img_servant_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/support_img_servant_0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- CE Header -->
     <TextView
@@ -56,28 +58,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Craft Essence(s)"
+        android:text="@string/support_img_namer_ce"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/support_img_servant_1" />
 
     <!-- CE 0 -->
-    <include layout="@layout/support_img_namer_item"
+    <include
+        layout="@layout/support_img_namer_item"
         android:id="@+id/support_img_ce_0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/ce_txt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- CE 1 -->
-    <include layout="@layout/support_img_namer_item"
+    <include
+        layout="@layout/support_img_namer_item"
         android:id="@+id/support_img_ce_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/support_img_ce_0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Friend Header -->
     <TextView
@@ -85,27 +89,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Friend Name(s)"
+        android:text="@string/support_img_namer_friend_names"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/support_img_ce_1" />
 
     <!-- Friend 0 -->
-    <include layout="@layout/support_img_namer_item"
+    <include
+        layout="@layout/support_img_namer_item"
         android:id="@+id/support_img_friend_0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/friend_txt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Friend 1 -->
-    <include layout="@layout/support_img_namer_item"
+    <include
+        layout="@layout/support_img_namer_item"
         android:id="@+id/support_img_friend_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/support_img_friend_0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

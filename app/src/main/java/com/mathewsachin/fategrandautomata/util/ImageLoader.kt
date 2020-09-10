@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.IImageLoader
@@ -8,6 +9,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.ScriptExitException
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -16,7 +18,7 @@ import javax.inject.Inject
 class ImageLoader @Inject constructor(
     val storageDirs: StorageDirs,
     val prefs: IPreferences,
-    val context: Context
+    @ApplicationContext val context: Context
 ) : IImageLoader {
     private fun fileLoader(FileName: String): IPattern? {
         val filepath = File(storageDirs.supportImgFolder, FileName)
@@ -106,7 +108,9 @@ class ImageLoader @Inject constructor(
     override fun loadSupportPattern(path: String): IPattern {
         if (!supportCachedPatterns.containsKey(path)) {
             val pattern = fileLoader(path)
-                ?: throw ScriptExitException("Unable to load image: $path. Put images in ${storageDirs.supportImgFolder} folder")
+                ?: throw ScriptExitException(
+                    context.getString(R.string.support_img_not_found, path, storageDirs.supportImgFolder)
+                )
 
             supportCachedPatterns[path] = pattern
         }

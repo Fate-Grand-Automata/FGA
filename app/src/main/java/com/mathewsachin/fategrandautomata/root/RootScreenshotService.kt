@@ -4,6 +4,7 @@ import android.os.Build
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.util.readIntLE
+import com.mathewsachin.libautomata.IColorScreenshotProvider
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
@@ -21,7 +22,7 @@ class RootScreenshotService(
     private val SuperUser: SuperUser,
     storageDirs: StorageDirs,
     val platformImpl: IPlatformImpl
-) : IScreenshotService {
+) : IScreenshotService, IColorScreenshotProvider {
     private var buffer: ByteArray? = null
     private val imgPath = File(storageDirs.storageRoot, "sshot.raw").absolutePath
 
@@ -29,7 +30,7 @@ class RootScreenshotService(
     private val rootConvertMat = Mat()
     private val pattern = DroidCvPattern(rootConvertMat, false)
 
-    override fun takeScreenshot(): IPattern {
+    private fun screenshotIntoBuffer() {
         SuperUser.sendCommand("/system/bin/screencap $imgPath")
 
         FileInputStream(imgPath).use {
@@ -59,10 +60,23 @@ class RootScreenshotService(
         }
 
         rootLoadMat?.put(0, 0, buffer)
+    }
+
+    override fun takeScreenshot(): IPattern {
+        screenshotIntoBuffer()
 
         Imgproc.cvtColor(rootLoadMat, rootConvertMat, Imgproc.COLOR_RGBA2GRAY)
 
         return pattern
+    }
+
+    override fun takeColorScreenshot(): IPattern {
+        screenshotIntoBuffer()
+
+        val mat = Mat()
+        Imgproc.cvtColor(rootLoadMat, mat, Imgproc.COLOR_RGBA2BGR)
+
+        return DroidCvPattern(mat)
     }
 
     override fun close() {

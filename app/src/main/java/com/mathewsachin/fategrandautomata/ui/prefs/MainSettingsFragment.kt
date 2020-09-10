@@ -1,33 +1,35 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.content.Context
+import android.Manifest
 import android.os.Bundle
+import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
 import com.mathewsachin.fategrandautomata.ui.UpdateCheckViewModel
 import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
-import com.mathewsachin.fategrandautomata.util.appComponent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
-import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 private val logger = KotlinLogging.logger {}
 
+@AndroidEntryPoint
 class MainSettingsFragment : PreferenceFragmentCompat() {
-    @Inject
-    lateinit var preferences: IPreferences
+    val goToAutoSkill = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        if (it.values.all { m -> m }) {
+            val action = MainFragmentDirections
+                .actionMainFragmentToAutoSkillListFragment()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        context.appComponent.inject(this)
+            findNavController().navigate(action)
+        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -46,10 +48,11 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(prefKeys.pref_nav_auto_skill))?.let {
             it.setOnPreferenceClickListener {
-                val action = MainFragmentDirections
-                    .actionMainFragmentToAutoSkillListFragment()
-
-                findNavController().navigate(action)
+                val permissions = arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                goToAutoSkill.launch(permissions)
 
                 true
             }
@@ -67,6 +70,18 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val vm: MainSettingsViewModel by activityViewModels()
+
+        findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
+            vm.refillMessage.observe(viewLifecycleOwner) { msg ->
+                it.summary = msg
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -74,14 +89,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         lifecycleScope.launch {
             checkForUpdates(updateCheckViewModel)
-        }
-
-        findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
-            val prefs = preferences.refill
-            it.summary = when (prefs.enabled) {
-                true -> "${prefs.resource} x${prefs.repetitions}"
-                false -> "OFF"
-            }
         }
     }
 

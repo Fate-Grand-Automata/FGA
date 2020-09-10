@@ -2,7 +2,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="16dp"
+    android:animateLayoutChanges="true">
+
     <TextView
         android:id="@+id/card_priority_battle_stage"
         android:layout_width="wrap_content"
@@ -12,16 +15,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Wave N"/>
+        tools:text="Wave N" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/card_priority_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_priority_battle_stage"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/card_priority_battle_stage" />
+
+    <TextView
+        android:id="@+id/brave_chains_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/p_brave_chains"
+        app:layout_constraintStart_toStartOf="@id/brave_chains"
+        app:layout_constraintTop_toBottomOf="@id/card_priority_items" />
+
+    <Spinner
+        android:id="@+id/brave_chains"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rearrange_cards"
+        app:layout_constraintTop_toBottomOf="@id/brave_chains_label" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/rearrange_cards"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/p_rearrange_cards"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toEndOf="@id/brave_chains"
+        app:layout_constraintTop_toTopOf="@id/brave_chains_label"
+        app:layout_constraintBottom_toBottomOf="@id/brave_chains"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

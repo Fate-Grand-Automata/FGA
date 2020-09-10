@@ -53,7 +53,18 @@ class CardPriorityAdapter(private val Items: MutableList<CardScore>) :
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_priority_item, parent, false)
 
-        return ViewHolder(view)
+        val holder = ViewHolder(view).apply {
+            textView.setTextColor(Color.WHITE)
+        }
+
+        view.setOnTouchListener { _, event ->
+            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                itemTouchHelper.startDrag(holder)
+            }
+            true
+        }
+
+        return holder
     }
 
     override fun getItemCount() = Items.size
@@ -65,13 +76,6 @@ class CardPriorityAdapter(private val Items: MutableList<CardScore>) :
         val colorRes = Items[position].getColorRes()
         val colorInt = context.getColor(colorRes)
         holder.itemView.setBackgroundColor(colorInt)
-        holder.textView.setTextColor(Color.WHITE)
-        holder.itemView.setOnTouchListener { _, event ->
-            if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                itemTouchHelper.startDrag(holder)
-            }
-            true
-        }
     }
 
     override fun onItemMove(From: Int, To: Int) {

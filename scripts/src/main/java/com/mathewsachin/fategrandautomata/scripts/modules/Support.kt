@@ -1,12 +1,16 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
+import java.util.*
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource
 import kotlin.time.seconds
 
 private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
@@ -19,37 +23,25 @@ const val limitBrokenCharacter = '*'
 
 private val logger = KotlinLogging.logger {}
 
-class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
-    private val preferredServantArray = mutableListOf<String>()
-    private val friendNameArray = mutableListOf<String>()
+class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
+    private var preferredServantArray = listOf<String>()
+    private var friendNameArray = listOf<String>()
+    private var preferredCEArray = listOf<PreferredCEEntry>()
 
-    private val preferredCEArray = mutableListOf<PreferredCEEntry>()
-
-    private fun String.process(): Sequence<String> {
+    private fun String.process(): List<String> {
         return this
-            .splitToSequence(',')
+            .split(',')
             .map { it.trim() }
-            .filter { it.isNotBlank() && it.toLowerCase() != "any" }
+            .filter { it.isNotBlank() && it.toLowerCase(Locale.US) != "any" }
     }
 
     private val autoSkillPrefs get() = prefs.selectedAutoSkillConfig.support
 
     fun init() {
-        preferredServantArray.clear()
-        friendNameArray.clear()
-        preferredCEArray.clear()
+        friendNameArray = autoSkillPrefs.friendNames.process()
+        preferredServantArray = autoSkillPrefs.preferredServants.process()
 
-        // Friend names
-        for (friend in autoSkillPrefs.friendNames.process()) {
-            friendNameArray.add(friend)
-        }
-
-        // Servants
-        for (servant in autoSkillPrefs.preferredServants.process()) {
-            preferredServantArray.add(servant)
-        }
-
-        val ceEntries = autoSkillPrefs.preferredCEs
+        preferredCEArray = autoSkillPrefs.preferredCEs
             .process()
             .map {
                 val mlb = it.startsWith(limitBrokenCharacter)
@@ -59,20 +51,16 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     name = name.substring(1)
                 }
 
-                PreferredCEEntry(
-                    name,
-                    mlb
-                )
+                PreferredCEEntry(name, mlb)
             }
-
-        // Craft essences
-        for (craftEssence in ceEntries) {
-            preferredCEArray.add(craftEssence)
-        }
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
-        while (!game.supportScreenRegion.exists(images.supportScreen)) {
+        waitForSupportScreenToLoad()
+
+        if (autoSkillPrefs.supportClass != SupportClass.None) {
+            autoSkillPrefs.supportClass.clickLocation.click()
+
             0.3.seconds.wait()
         }
 
@@ -88,36 +76,79 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun selectManual(): Boolean {
-        throw ScriptExitException("Support selection set to Manual")
+        throw ScriptExitException(messages.supportSelectionManual)
     }
 
-    private fun selectFirst(): Boolean {
-        1.seconds.wait()
-        game.supportFirstSupportClick.click()
+    private var lastSupportRefreshTimestamp: TimeMark? = null
+    private val supportRefreshThreshold = 10.seconds
 
-        val pattern = images.supportScreen
+    private fun refreshSupportList() {
+        lastSupportRefreshTimestamp?.elapsedNow()?.let { elapsed ->
+            val toWait = supportRefreshThreshold - elapsed
 
-        // https://github.com/29988122/Fate-Grand-Order_Lua/issues/192 , band-aid fix but it's working well.
-        if (game.supportScreenRegion.exists(pattern)) {
-            2.seconds.wait()
+            if (toWait.isPositive()) {
+                toast(messages.supportListUpdatedIn(toWait))
 
-            while (game.supportScreenRegion.exists(pattern)) {
-                10.seconds.wait()
-                game.supportUpdateClick.click()
-                1.seconds.wait()
-                game.supportUpdateYesClick.click()
-                3.seconds.wait()
-                game.supportFirstSupportClick.click()
-                1.seconds.wait()
+                toWait.wait()
             }
         }
 
-        return true
+        Game.supportUpdateClick.click()
+        1.seconds.wait()
+
+        Game.supportUpdateYesClick.click()
+
+        waitForSupportScreenToLoad()
+        updateLastSupportRefreshTimestamp()
+    }
+
+    private fun updateLastSupportRefreshTimestamp() {
+        lastSupportRefreshTimestamp = TimeSource.Monotonic.markNow()
+    }
+
+    private fun waitForSupportScreenToLoad() {
+        while (true) {
+            when {
+                needsToRetry() -> retry()
+                // wait for dialogs to close
+                images.supportExtra !in Game.supportExtraRegion -> 1.seconds.wait()
+                images.supportNotFound in Game.supportNotFoundRegion -> {
+                    updateLastSupportRefreshTimestamp()
+                    refreshSupportList()
+                    return
+                }
+                Game.supportRegionToolSearchRegion.exists(
+                    images.supportRegionTool,
+                    Similarity = supportRegionToolSimilarity
+                ) -> return
+                images.guest in Game.supportFriendRegion -> return
+            }
+        }
+    }
+
+    private fun selectFirst(): Boolean {
+        while (true) {
+            0.5.seconds.wait()
+
+            Game.supportFirstSupportClick.click()
+
+            // Handle the case of a friend not having set a support servant
+            if (Game.supportScreenRegion.waitVanish(
+                    images.supportScreen,
+                    Similarity = 0.85,
+                    Timeout = 10.seconds
+                )
+            ) {
+                return true
+            }
+
+            refreshSupportList()
+        }
     }
 
     private fun searchVisible(SearchMethod: SearchFunction) =
         screenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
-            if (!isFriend(game.supportFriendRegion)) {
+            if (!isFriend(Game.supportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SearchVisibleResult.NoFriendsFound
             }
@@ -144,11 +175,11 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         })
 
     private fun selectFriend(): Boolean {
-        if (friendNameArray.size > 0) {
+        if (friendNameArray.isNotEmpty()) {
             return selectPreferred { findFriendName() }
         }
 
-        throw ScriptExitException("When using 'friend' support selection mode, specify at least one friend name.")
+        throw ScriptExitException(messages.supportSelectionFriendNotSet)
     }
 
     private fun selectPreferred(SearchMethod: SearchFunction): Boolean {
@@ -156,39 +187,29 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         var numberOfUpdates = 0
 
         while (true) {
-            when (val result = searchVisible(SearchMethod)) {
-                is SearchVisibleResult.Found -> {
+            val result = searchVisible(SearchMethod)
+
+            when {
+                result is SearchVisibleResult.Found -> {
                     result.support.click()
                     return true
                 }
+                result is SearchVisibleResult.NotFound
+                        && numberOfSwipes < prefs.support.swipesPerUpdate -> {
+                    scrollList()
+                    ++numberOfSwipes
+                    0.3.seconds.wait()
+                }
+                numberOfUpdates < prefs.support.maxUpdates -> {
+                    refreshSupportList()
+
+                    ++numberOfUpdates
+                    numberOfSwipes = 0
+                }
                 else -> {
-                    if (result == SearchVisibleResult.NotFound
-                        && numberOfSwipes < prefs.support.swipesPerUpdate
-                    ) {
-                        scrollList()
-                        ++numberOfSwipes
-                        0.3.seconds.wait()
-                    } else if (numberOfUpdates < prefs.support.maxUpdates) {
-                        toast("Support list will be updated in 3 seconds.")
-                        3.seconds.wait()
-
-                        game.supportUpdateClick.click()
-                        1.seconds.wait()
-                        game.supportUpdateYesClick.click()
-
-                        while (needsToRetry()) {
-                            retry()
-                        }
-
-                        3.seconds.wait()
-
-                        ++numberOfUpdates
-                        numberOfSwipes = 0
-                    } else {
-                        // -- okay, we have run out of options, let's give up
-                        game.supportListTopClick.click()
-                        return selectSupport(autoSkillPrefs.fallbackTo)
-                    }
+                    // -- okay, we have run out of options, let's give up
+                    Game.supportListTopClick.click()
+                    return selectSupport(autoSkillPrefs.fallbackTo)
                 }
             }
         }
@@ -225,25 +246,15 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     private fun decideSearchMethod(): SearchFunction {
-        val hasServants = preferredServantArray.size > 0
-        val hasCraftEssences = preferredCEArray.size > 0
+        val hasServants = preferredServantArray.isNotEmpty()
+        val hasCraftEssences = preferredCEArray.isNotEmpty()
 
-        if (hasServants && hasCraftEssences) {
-            return { searchServantAndCE() }
+        return when {
+            hasServants && hasCraftEssences -> { -> searchServantAndCE() }
+            hasServants -> { -> findServants().firstOrNull() ?: SearchFunctionResult.NotFound }
+            hasCraftEssences -> { -> findCraftEssence(Game.supportListRegion) }
+            else -> throw ScriptExitException(messages.supportSelectionPreferredNotSet)
         }
-
-        if (hasServants) {
-            return {
-                findServants().firstOrNull()
-                    ?: SearchFunctionResult.NotFound
-            }
-        }
-
-        if (hasCraftEssences) {
-            return { findCraftEssence(game.supportListRegion) }
-        }
-
-        throw ScriptExitException("When using 'preferred' support selection mode, specify at least one Servant or Craft Essence.")
     }
 
     /**
@@ -251,14 +262,14 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
      */
     private fun scrollList() {
         val endY = lerp(
-            game.supportSwipeStartClick.Y,
-            game.supportSwipeEndClick.Y,
+            Game.supportSwipeStartClick.Y,
+            Game.supportSwipeEndClick.Y,
             prefs.support.supportSwipeMultiplier
         )
 
         swipe(
-            game.supportSwipeStartClick,
-            game.supportSwipeEndClick.copy(Y = endY)
+            Game.supportSwipeStartClick,
+            Game.supportSwipeEndClick.copy(Y = endY)
         )
     }
 
@@ -276,7 +287,7 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
                     friendName
                 )
 
-            for (theFriend in game.supportFriendsRegion.findAll(pattern)) {
+            for (theFriend in Game.supportFriendsRegion.findAll(pattern)) {
                 return SearchFunctionResult.Found(theFriend.Region)
             }
         }
@@ -287,17 +298,20 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private fun findServants(): Sequence<SearchFunctionResult> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
-            val pattern =
-                images.loadSupportPattern(
-                    preferredServant
-                )
+            val pattern = images.loadSupportPattern(
+                preferredServant
+            )
 
             cropFriendLock(pattern).use {
-                for (servant in game.supportListRegion.findAll(it)) {
+                for (servant in Game.supportListRegion.findAll(it)) {
+                    if (autoSkillPrefs.maxAscended && !isMaxAscended(servant.Region)) {
+                        continue
+                    }
+
                     val needMaxedSkills = listOf(
-                        prefs.selectedAutoSkillConfig.skill1Max,
-                        prefs.selectedAutoSkillConfig.skill2Max,
-                        prefs.selectedAutoSkillConfig.skill3Max
+                        autoSkillPrefs.skill1Max,
+                        autoSkillPrefs.skill2Max,
+                        autoSkillPrefs.skill3Max
                     )
                     val skillCheckNeeded = needMaxedSkills.any()
 
@@ -339,10 +353,9 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private fun findCraftEssence(SearchRegion: Region): SearchFunctionResult {
         for (preferredCraftEssence in preferredCEArray) {
             // Cached pattern. Don't dispose here.
-            val pattern =
-                images.loadSupportPattern(
-                    preferredCraftEssence.Name
-                )
+            val pattern = images.loadSupportPattern(
+                preferredCraftEssence.Name
+            )
 
             val craftEssences = SearchRegion.findAll(pattern)
 
@@ -356,25 +369,20 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         return SearchFunctionResult.NotFound
     }
 
-    private fun findSupportBounds(Support: Region): Region {
-        val regionArray = game.supportRegionToolSearchRegion
+    private fun findSupportBounds(Support: Region) =
+        Game.supportRegionToolSearchRegion
             .findAll(
                 images.supportRegionTool,
                 supportRegionToolSimilarity
             )
-
-        for (testRegion in regionArray) {
-            val supportBound = game.supportDefaultBounds
-                .copy(Y = testRegion.Region.Y - 70)
-
-            if (supportBound.contains(Support)) {
-                return supportBound
+            .map {
+                Game.supportDefaultBounds
+                    .copy(Y = it.Region.Y - 70)
             }
-        }
-
-        logger.debug("Default Region being returned")
-        return game.supportDefaultBounds
-    }
+            .firstOrNull { Support in it }
+            ?: Game.supportDefaultBounds.also {
+                logger.debug("Default Region being returned")
+            }
 
     private fun isFriend(Region: Region): Boolean {
         val onlySelectFriends = autoSkillPrefs.friendsOnly
@@ -387,17 +395,26 @@ class Support(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
             images.friend,
             images.guest,
             images.follow
-        ).any { Region.exists(it) }
+        ).any { it in Region }
+    }
+
+    private fun isStarPresent(region: Region): Boolean {
+        val mlbSimilarity = prefs.support.mlbSimilarity
+        return region.exists(images.limitBroken, Similarity = mlbSimilarity)
+    }
+
+    private fun isMaxAscended(servant: Region): Boolean {
+        val maxAscendedRegion = Game.supportMaxAscendedRegion
+            .copy(Y = servant.Y)
+
+        return isStarPresent(maxAscendedRegion)
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
-        val limitBreakRegion = game.supportLimitBreakRegion
+        val limitBreakRegion = Game.supportLimitBreakRegion
             .copy(Y = CraftEssence.Y)
 
-        val limitBreakPattern = images.limitBroken
-
-        val mlbSimilarity = prefs.support.mlbSimilarity
-        return limitBreakRegion.exists(limitBreakPattern, Similarity = mlbSimilarity)
+        return isStarPresent(limitBreakRegion)
     }
 
     private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {

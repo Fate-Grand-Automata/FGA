@@ -17,7 +17,8 @@ interface IPreferences {
     val autoChooseTarget: Boolean
     val storySkip: Boolean
     val withdrawEnabled: Boolean
-    val stopAfterBond10: Boolean
+    val stopOnCEDrop: Boolean
+    val stopOnCEGet: Boolean
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
     val ignoreNotchCalculation: Boolean
@@ -25,6 +26,11 @@ interface IPreferences {
     val gudaFinal: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
+    val friendPtsOnly: Boolean
+    val screenshotDrops: Boolean
+    val canPauseScript: Boolean
+
+    val stageCounterSimilarity: Double
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

@@ -1,0 +1,50 @@
+name: Close issues with insufficient info
+on:
+  issues:
+    types: [opened]
+jobs:
+  bugTemplateCheck:
+    if: >-
+          github.event.issue.user.id != 10654537 && github.event.issue.user.id != 12360257 &&
+          contains(github.event.issue.labels.*.name, 'bug') && 
+          (!contains(github.event.issue.body, 'Device model') || contains(github.event.issue.body, 'Device model: [e.g. Xiaomi Redmi 4]'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close Issue
+        uses: peter-evans/close-issue@v1
+        with:
+          comment: |
+            Bug reports must use the [template](https://github.com/MathewSachin/Fate-Grand-Automata/blob/master/.github/ISSUE_TEMPLATE/bug_report.md).
+            
+            Please correct your description and then add a comment mentioning (@) the owner of this repository to reopen the issue for you.
+            
+            This action was performed automatically.
+      - name: Label Issue
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: insufficient info
+  labelCheck:
+    if: >-
+          github.event.issue.user.id != 10654537 && github.event.issue.user.id != 12360257 &&
+          join(github.event.issue.labels) == ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close Issue
+        uses: peter-evans/close-issue@v1
+        with:
+          comment: |
+            It seems like you have not used one of the issue templates when creating this issue.
+            
+            Please go back to [this page](https://github.com/MathewSachin/Fate-Grand-Automata/issues/new/choose) and create a new issue.
+            
+            This action was performed automatically.
+      - name: Lock Issue
+        uses: OSDKDev/lock-issues@v1.1
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Label Issue
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: insufficient info

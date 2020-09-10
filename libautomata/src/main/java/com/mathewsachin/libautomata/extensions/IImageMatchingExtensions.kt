@@ -19,6 +19,8 @@ interface IImageMatchingExtensions {
         Similarity: Double? = null
     ): Boolean
 
+    operator fun Region.contains(image: IPattern) = exists(image)
+
     /**
      * Waits until the given image cannot be found in the [Region] anymore.
      *

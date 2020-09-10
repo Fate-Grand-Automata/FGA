@@ -8,14 +8,21 @@ class ExitManagerTest {
     @Test(expected = ScriptAbortException::class)
     fun exit_manager_throws_after_exit() {
         val exitManager = ExitManager()
-        exitManager.request()
+        exitManager.exit()
+        exitManager.checkExitRequested()
+    }
+
+    @Test(expected = ScriptAbortException::class)
+    fun exit_manager_exit_after_pause() {
+        val exitManager = ExitManager()
+        exitManager.pause()
+        exitManager.exit()
         exitManager.checkExitRequested()
     }
 
     @Test
-    fun exit_manager_can_cancel() {
+    fun exit_not_requested() {
         val exitManager = ExitManager()
-        exitManager.request()
-        exitManager.cancel()
+        exitManager.checkExitRequested()
     }
 }

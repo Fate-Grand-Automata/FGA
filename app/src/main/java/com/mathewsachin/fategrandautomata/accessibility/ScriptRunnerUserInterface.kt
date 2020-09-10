@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
 import android.annotation.SuppressLint
+import android.app.Service
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
@@ -13,18 +14,18 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.dagger.service.ServiceScope
 import com.mathewsachin.fategrandautomata.ui.HighlightManager
 import com.mathewsachin.libautomata.Location
+import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 import kotlin.time.milliseconds
 
-@ServiceScope
+@ServiceScoped
 class ScriptRunnerUserInterface @Inject constructor(
-    val Service: ScriptRunnerService,
+    val Service: Service,
     val highlightManager: HighlightManager
 ) {
     val overlayType: Int
@@ -67,6 +68,7 @@ class ScriptRunnerUserInterface @Inject constructor(
 
     private val scriptCtrlBtnLayout = FrameLayout(Service)
     private var scriptCtrlBtn: ImageButton
+    private var scriptPauseBtn: ImageButton
 
     private val scriptCtrlBtnLayoutParams = WindowManager.LayoutParams().apply {
         type = overlayType
@@ -92,6 +94,8 @@ class ScriptRunnerUserInterface @Inject constructor(
     }
 
     init {
+        require(Service is ScriptRunnerService)
+
         val inflater = LayoutInflater.from(Service)
         inflater.inflate(R.layout.script_runner, scriptCtrlBtnLayout)
 
@@ -99,6 +103,12 @@ class ScriptRunnerUserInterface @Inject constructor(
             Service.registerScriptCtrlBtnListeners(it)
 
             it.setOnTouchListener(::scriptCtrlBtnOnTouch)
+        }
+
+        scriptPauseBtn = scriptCtrlBtnLayout.findViewById<ImageButton>(R.id.script_pause_btn).apply {
+            visibility = View.GONE
+
+            Service.registerScriptPauseBtnListeners(this)
         }
 
         // By default put the button on bottom-left corner
@@ -116,6 +126,15 @@ class ScriptRunnerUserInterface @Inject constructor(
         windowManager.removeView(highlightManager.highlightView)
     }
 
+    var isPauseButtonVisibile
+        get() = scriptPauseBtn.visibility == View.VISIBLE
+        set(value) {
+            scriptPauseBtn.post {
+                scriptPauseBtn.visibility = if (value) View.VISIBLE else View.GONE
+            }
+        }
+
+
     fun setPlayIcon() {
         scriptCtrlBtn.post {
             scriptCtrlBtn.setImageResource(R.drawable.ic_play)
@@ -124,6 +143,14 @@ class ScriptRunnerUserInterface @Inject constructor(
 
     fun setStopIcon() {
         scriptCtrlBtn.setImageResource(R.drawable.ic_stop)
+    }
+
+    fun setPauseIcon() {
+        scriptPauseBtn.setImageResource(R.drawable.ic_pause)
+    }
+
+    fun setResumeIcon() {
+        scriptPauseBtn.setImageResource(R.drawable.ic_play)
     }
 
     fun showAsRecording() {

@@ -2,11 +2,11 @@
 <resources>
     <!-- Label ordering must match values -->
     <array name="refill_type_labels">
-        <item>All Apples (NO SQ)</item>
-        <item>Gold</item>
-        <item>Silver</item>
-        <item>Bronze</item>
-        <item>SQ (Rainbow)</item>
+        <item>@string/p_refill_type_all_apples</item>
+        <item>@string/p_refill_type_gold</item>
+        <item>@string/p_refill_type_silver</item>
+        <item>@string/p_refill_type_bronze</item>
+        <item>@string/p_refill_type_sq</item>
     </array>
 
     <array name="refill_type_values">
@@ -17,9 +17,21 @@
         <item>SQ</item>
     </array>
 
+    <array name="brave_chain_labels">
+        <item>@string/p_brave_chains_don_t_care</item>
+        <item>@string/p_brave_chains_after_np</item>
+        <item>@string/p_brave_chains_avoid</item>
+    </array>
+
+    <array name="brave_chain_values">
+        <item>None</item>
+        <item>AfterNP</item>
+        <item>Avoid</item>
+    </array>
+
     <array name="boost_item_labels">
-        <item>Disabled</item>
-        <item>Skip</item>
+        <item>@string/p_boost_item_disabled</item>
+        <item>@string/p_boost_item_skip</item>
         <item>Item 1</item>
         <item>Item 2</item>
         <item>Item 3</item>
@@ -33,7 +45,13 @@
         <item>3</item>
     </string-array>
 
-    <array name="battle_np_types">
+    <array name="battle_np_types_labels">
+        <item>@string/p_cast_np_none</item>
+        <item>@string/p_cast_np_spam</item>
+        <item>@string/p_cast_np_danger</item>
+    </array>
+
+    <array name="battle_np_types_values">
         <item>None</item>
         <item>Spam</item>
         <item>Danger</item>
@@ -44,6 +62,7 @@
         <item>JP</item>
         <item>CN</item>
         <item>TW</item>
+        <item>KR</item>
     </array>
 
     <array name="game_server_values">
@@ -51,25 +70,38 @@
         <item>Jp</item>
         <item>Cn</item>
         <item>Tw</item>
+        <item>Kr</item>
     </array>
 
-    <array name="support_selection_modes">
+    <array name="support_selection_modes_labels">
+        <item>@string/p_support_mode_first</item>
+        <item>@string/p_support_mode_manual</item>
+        <item>@string/p_support_mode_preferred</item>
+        <item>@string/p_support_mode_friend</item>
+    </array>
+
+    <array name="support_selection_modes_values">
         <item>First</item>
         <item>Manual</item>
         <item>Preferred</item>
         <item>Friend</item>
     </array>
 
-    <array name="support_selection_modes_fallback">
+    <array name="support_selection_modes_fallback_labels">
+        <item>@string/p_support_mode_first</item>
+        <item>@string/p_support_mode_manual</item>
+    </array>
+
+    <array name="support_selection_modes_fallback_values">
         <item>First</item>
         <item>Manual</item>
     </array>
 
     <array name="script_mode_labels">
-        <item>Battle</item>
-        <item>Lottery</item>
-        <item>Friend Gacha</item>
-        <item>Support Image Maker</item>
+        <item>@string/p_script_mode_battle</item>
+        <item>@string/p_script_mode_lottery</item>
+        <item>@string/p_script_mode_friend_gacha</item>
+        <item>@string/p_script_mode_support_img_maker</item>
         <item>Gift Box</item>
     </array>
 
@@ -82,7 +114,7 @@
     </array>
 
     <array name="party_labels">
-        <item>Not Set</item>
+        <item>@string/p_party_not_set</item>
         <item>Party 1</item>
         <item>Party 2</item>
         <item>Party 3</item>
@@ -108,4 +140,32 @@
         <item>8</item>
         <item>9</item>
     </string-array>
+
+    <array name="support_class_labels">
+        <item>@string/p_support_class_none</item>,
+        <item>@string/p_support_class_all</item>,
+        <item>@string/p_support_class_saber</item>,
+        <item>@string/p_support_class_archer</item>,
+        <item>@string/p_support_class_lancer</item>,
+        <item>@string/p_support_class_rider</item>,
+        <item>@string/p_support_class_caster</item>,
+        <item>@string/p_support_class_assassin</item>,
+        <item>@string/p_support_class_berserker</item>,
+        <item>@string/p_support_class_extra</item>,
+        <item>@string/p_support_class_mix</item>
+    </array>
+
+    <array name="support_class_values">
+        <item>None</item>,
+        <item>All</item>,
+        <item>Saber</item>,
+        <item>Archer</item>,
+        <item>Lancer</item>,
+        <item>Rider</item>,
+        <item>Caster</item>,
+        <item>Assassin</item>,
+        <item>Berserker</item>,
+        <item>Extra</item>,
+        <item>Mix</item>
+    </array>
 </resources>

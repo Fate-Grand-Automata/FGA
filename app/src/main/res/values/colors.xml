@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#1B3147</color>
     <color name="colorAccent">#3498db</color>
 
+    <color name="button_material">@color/button_material_light</color>
+    <color name="primary_text_material">#de000000</color>
+
     <color name="colorEnemyTarget">#2e7d32</color>
     <color name="colorMasterSkill">#006064</color>
     <color name="colorStageChange">#616161</color>

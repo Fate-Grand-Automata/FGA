@@ -8,15 +8,13 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceComponent
-import com.mathewsachin.fategrandautomata.dagger.service.ScriptRunnerServiceModule
+import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
@@ -26,8 +24,13 @@ import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.messageAndStackTrace
+import dagger.hilt.android.AndroidEntryPoint
+import mu.KotlinLogging
 import javax.inject.Inject
 
+private val logger = KotlinLogging.logger {}
+
+@AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
     companion object {
         var Instance: ScriptRunnerService? = null
@@ -57,13 +60,14 @@ class ScriptRunnerService : AccessibilityService() {
     @Inject
     lateinit var platformImpl: IPlatformImpl
 
-    private var sshotService: IScreenshotService? = null
+    @Inject
+    lateinit var scriptComponentBuilder: ScriptComponentBuilder
+
     private val screenOffReceiver = ScreenOffReceiver()
 
-    // stopping is handled by Screenshot service
-    private var mediaProjection: MediaProjection? = null
-
     override fun onUnbind(intent: Intent?): Boolean {
+        logger.info("Accessibility Service unbind")
+
         stop()
 
         screenOffReceiver.unregister(this)
@@ -80,29 +84,28 @@ class ScriptRunnerService : AccessibilityService() {
 
     val wantsMediaProjectionToken: Boolean get() = !prefs.useRootForScreenshots
 
-    var serviceStarted = false
+    var serviceState: ServiceState = ServiceState.Stopped
         private set
 
     fun start(MediaProjectionToken: Intent? = null): Boolean {
-        if (serviceStarted) {
+        if (serviceState is ServiceState.Started) {
             return false
         }
 
-        if (!registerScreenshot(MediaProjectionToken)) {
-            return false
-        }
+        val screenshotService = registerScreenshot(MediaProjectionToken)
+            ?: return false
 
         userInterface.show()
 
-        serviceStarted = true
+        serviceState = ServiceState.Started(screenshotService)
 
         return true
     }
 
-    private fun registerScreenshot(MediaProjectionToken: Intent?): Boolean {
-        sshotService = try {
+    private fun registerScreenshot(MediaProjectionToken: Intent?): IScreenshotService? {
+        return try {
             if (MediaProjectionToken != null) {
-                mediaProjection =
+                val mediaProjection =
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
@@ -112,26 +115,23 @@ class ScriptRunnerService : AccessibilityService() {
             } else RootScreenshotService(SuperUser(), storageDirs, platformImpl)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-            return false
+            null
         }
-
-        return true
     }
 
     fun stop(): Boolean {
         scriptManager.stopScript()
 
-        if (!serviceStarted) {
-            return false
+        serviceState.let {
+            if (it is ServiceState.Started) {
+                it.screenshotService.close()
+            } else return false
         }
-
-        sshotService?.close()
-        sshotService = null
 
         imageLoader.clearImageCache()
 
         userInterface.hide()
-        serviceStarted = false
+        serviceState = ServiceState.Stopped
 
         notification.hide()
 
@@ -162,30 +162,48 @@ class ScriptRunnerService : AccessibilityService() {
 
     fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
         scriptCtrlBtn.setThrottledClickListener {
-            if (scriptManager.scriptStarted) {
-                scriptManager.stopScript()
-            } else sshotService?.let {
-                // Overwrite the server in the preferences with the detected one, if possible
-                currentFgoServer?.let { server -> prefs.gameServer = server }
+            val state = serviceState
 
-                scriptManager.startScript(this, it, component)
+            if (state is ServiceState.Started) {
+                when (scriptManager.scriptState) {
+                    is ScriptState.Started -> scriptManager.stopScript()
+                    is ScriptState.Stopped -> {
+                        // Overwrite the server in the preferences with the detected one, if possible
+                        currentFgoServer?.let { server -> prefs.gameServer = server }
+
+                        scriptManager.startScript(this, state.screenshotService, scriptComponentBuilder)
+                    }
+                }
             }
         }
     }
 
-    private lateinit var component: ScriptRunnerServiceComponent
+    fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) {
+        scriptPauseBtn.setThrottledClickListener {
+            if (serviceState is ServiceState.Started) {
+                val scriptState = scriptManager.scriptState
+
+                if (scriptState is ScriptState.Started) {
+                    if (scriptState.paused) {
+                        scriptManager.resumeScript()
+                    } else scriptManager.pauseScript()
+                }
+            }
+        }
+    }
 
     override fun onServiceConnected() {
-        Instance = this
-        component = appComponent.scriptRunnerServiceComponent()
-            .scriptRunnerServiceModule(
-                ScriptRunnerServiceModule(
-                    this
-                )
-            )
-            .build()
+        logger.info("Accessibility Service bound to system")
 
-        component.inject(this)
+        // We only want events from FGO
+        serviceInfo = serviceInfo.apply {
+            packageNames = GameServerEnum
+                .values()
+                .map { it.packageName }
+                .toTypedArray()
+        }
+
+        Instance = this
 
         screenOffReceiver.register(this) {
             scriptManager.stopScript()

@@ -10,7 +10,6 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterfac
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
-import java.io.File
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
 private const val InvalidChars = """<>"\|:\*\?\\\/"""
@@ -20,16 +19,17 @@ val ServantRegex = Regex("""$FileNameRegex(/$FileNameRegex)?""")
 val CeRegex = Regex(FileNameRegex)
 
 private const val InvalidCharsMsg = "<, >, \", |, :, *, ?, \\, /"
-const val ServantInvalidMsg =
-    "You're not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
-const val CeOrFriendInvalidMsg =
-    "You're not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: $InvalidCharsMsg"
 
 private fun getSupportEntries(
     Frame: View,
-    tempDir: File,
     storageDirs: StorageDirs
 ): List<SupportImgEntry> {
+    val tempDir = storageDirs.supportImgTempDir
+
+    val context = Frame.context
+    val servantInvalidMsg = context.getString(R.string.support_img_namer_servant_invalid_message, InvalidCharsMsg)
+    val ceOrFriendInvalidMsg = context.getString(R.string.support_img_namer_ce_or_friend_invalid_message, InvalidCharsMsg)
+
     val servant0 = SupportImgEntry(
         getServantImgPath(
             tempDir,
@@ -37,7 +37,7 @@ private fun getSupportEntries(
         ),
         storageDirs.supportServantImgFolder,
         Frame.findViewById(R.id.support_img_servant_0),
-        ServantRegex, ServantInvalidMsg
+        ServantRegex, servantInvalidMsg
     )
     val servant1 = SupportImgEntry(
         getServantImgPath(
@@ -46,7 +46,7 @@ private fun getSupportEntries(
         ),
         storageDirs.supportServantImgFolder,
         Frame.findViewById(R.id.support_img_servant_1),
-        ServantRegex, ServantInvalidMsg
+        ServantRegex, servantInvalidMsg
     )
 
     val ce0 = SupportImgEntry(
@@ -56,7 +56,7 @@ private fun getSupportEntries(
         ),
         storageDirs.supportCeFolder,
         Frame.findViewById(R.id.support_img_ce_0),
-        CeRegex, CeOrFriendInvalidMsg
+        CeRegex, ceOrFriendInvalidMsg
     )
     val ce1 = SupportImgEntry(
         getCeImgPath(
@@ -65,7 +65,7 @@ private fun getSupportEntries(
         ),
         storageDirs.supportCeFolder,
         Frame.findViewById(R.id.support_img_ce_1),
-        CeRegex, CeOrFriendInvalidMsg
+        CeRegex, ceOrFriendInvalidMsg
     )
 
     val friend0 = SupportImgEntry(
@@ -75,7 +75,7 @@ private fun getSupportEntries(
         ),
         storageDirs.supportFriendFolder,
         Frame.findViewById(R.id.support_img_friend_0),
-        CeRegex, CeOrFriendInvalidMsg
+        CeRegex, ceOrFriendInvalidMsg
     )
     val friend1 = SupportImgEntry(
         getFriendImgPath(
@@ -84,27 +84,27 @@ private fun getSupportEntries(
         ),
         storageDirs.supportFriendFolder,
         Frame.findViewById(R.id.support_img_friend_1),
-        CeRegex, CeOrFriendInvalidMsg
+        CeRegex, ceOrFriendInvalidMsg
     )
 
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
 }
 
-fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs, tempDir: File) {
+fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs) {
     val frame = FrameLayout(UI.Service)
 
     val inflater = LayoutInflater.from(UI.Service)
     inflater.inflate(R.layout.support_img_namer, frame)
 
-    val entryList = getSupportEntries(frame, tempDir, storageDirs)
+    val entryList = getSupportEntries(frame, storageDirs)
 
     ScriptRunnerDialog(UI).apply {
         autoDismiss = false
 
-        setTitle("Pick what you want")
+        setTitle(UI.Service.getString(R.string.support_img_namer_title))
         setView(frame)
 
-        setPositiveButton("Done") {
+        setPositiveButton(UI.Service.getString(R.string.support_img_namer_done)) {
             if (entryList.all { it.isValid() }) {
                 if (entryList.all { it.rename() }) {
                     hide()

@@ -1,9 +1,6 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -11,43 +8,62 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.dagger.service.ServiceScope
 import com.mathewsachin.fategrandautomata.ui.MainActivity
+import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
 
-@ServiceScope
+@ServiceScoped
 class ScriptRunnerNotification @Inject constructor(val service: Service) {
 
-    private val channelId = "fategrandautomata-notifications"
-    private var channelCreated = false
+    private object Channels {
+        const val service = "service"
+        const val old = "fategrandautomata-notifications"
+        const val message = "message"
+    }
 
-    private fun createNotificationChannel() {
-        if (channelCreated) {
-            return
-        }
+    private object Ids {
+        const val foregroundNotification = 1
 
+        const val messageNotification = 2
+    }
+
+    init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                channelId,
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                description = channelId
-            }
-
             val notifyManager = NotificationManagerCompat.from(service)
 
-            notifyManager.createNotificationChannel(channel)
-        }
+            NotificationChannel(
+                Channels.service,
+                "Service Running",
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = "Ongoing notification that the service is running in the background"
 
-        channelCreated = true
+                setShowBadge(false)
+                notifyManager.createNotificationChannel(this)
+            }
+
+            NotificationChannel(
+                Channels.message,
+                "Messages",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Plays sound on Script exit and other events"
+
+                setShowBadge(false)
+                notifyManager.createNotificationChannel(this)
+            }
+
+            try {
+                // Delete the old channel
+                notifyManager.deleteNotificationChannel(Channels.old)
+            } catch (e: Exception) {
+            }
+        }
     }
 
     fun hide() = service.stopForeground(true)
 
     private fun startBuildNotification(): NotificationCompat.Builder {
-        createNotificationChannel()
-
         val activityIntent = PendingIntent
             .getActivity(service, 0, Intent(service, MainActivity::class.java), 0)
 
@@ -62,27 +78,38 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
 
         val stopAction = NotificationCompat.Action.Builder(
             R.drawable.ic_close,
-            "Stop",
+            service.getString(R.string.notification_stop),
             stopIntent
         ).build()
 
-        return NotificationCompat.Builder(service, channelId)
+        return NotificationCompat.Builder(service, Channels.service)
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
-            .setContentText("Accessibility Service Running")
+            .setContentText(service.getString(R.string.notification_text))
             .setSmallIcon(R.mipmap.notification_icon)
             .setColor(service.getColor(R.color.colorBusterWeak))
-            .setPriority(NotificationManager.IMPORTANCE_HIGH)
+            .setPriority(NotificationManager.IMPORTANCE_LOW)
             .setContentIntent(activityIntent)
             .addAction(stopAction)
     }
 
-    private val foregroundNotificationId = 1
-
     fun show() {
         val builder = startBuildNotification()
 
-        service.startForeground(foregroundNotificationId, builder.build())
+        service.startForeground(Ids.foregroundNotification, builder.build())
+    }
+
+    fun message(msg: String) {
+        val notification = NotificationCompat.Builder(service, Channels.message)
+            .setContentTitle(service.getString(R.string.app_name))
+            .setContentText(msg)
+            .setSmallIcon(R.mipmap.notification_icon)
+            .setDefaults(Notification.DEFAULT_SOUND)
+            .setTimeoutAfter(10_000) // 10s
+            .build()
+
+        NotificationManagerCompat.from(service)
+            .notify(Ids.messageNotification, notification)
     }
 
     class NotificationReceiver : BroadcastReceiver() {

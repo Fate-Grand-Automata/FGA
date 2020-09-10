@@ -7,14 +7,13 @@ import kotlin.concurrent.thread
  */
 abstract class EntryPoint(
     val exitManager: ExitManager,
-    val platformImpl: IPlatformImpl
+    val platformImpl: IPlatformImpl,
+    private val messages: IAutomataMessages
 ) {
     /**
      * Starts the logic of the script mode in a new thread.
      */
     fun run() {
-        exitManager.cancel()
-
         thread(start = true) {
             scriptRunner()
         }
@@ -23,26 +22,35 @@ abstract class EntryPoint(
     /**
      * Notifies the script that the user requested it to stop.
      */
-    fun stop() = exitManager.request()
+    fun stop() = exitManager.exit()
 
     private fun scriptRunner() {
         try {
             script()
         } catch (e: ScriptAbortException) {
             // Script stopped by user
+            if (e.message.isNotBlank()) {
+                platformImpl.messageBox(messages.scriptExited, e.message)
+            }
+
+            platformImpl.notify(messages.stoppedByUser)
         } catch (e: ScriptExitException) {
-            scriptExitListener?.invoke()
+            scriptExitListener.invoke(e)
 
             // Show the message box only if there is some message
-            if (!e.message.isNullOrBlank()) {
-                platformImpl.messageBox("Script Exited", e.message)
+            if (e.message.isNotBlank()) {
+                val msg = messages.scriptExited
+                platformImpl.messageBox(msg, e.message)
+                platformImpl.notify(msg)
             }
         } catch (e: Exception) {
             println(e.messageAndStackTrace)
 
-            scriptExitListener?.invoke()
+            scriptExitListener.invoke(e)
 
-            platformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
+            val msg = messages.unexpectedError
+            platformImpl.messageBox(msg, e.messageAndStackTrace, e)
+            platformImpl.notify(msg)
         }
     }
 
@@ -61,5 +69,5 @@ abstract class EntryPoint(
      * A listener function, which is called when the script detected an exit condition or when an
      * unexpected error occurred.
      */
-    var scriptExitListener: (() -> Unit)? = null
+    var scriptExitListener: (Exception?) -> Unit = { }
 }

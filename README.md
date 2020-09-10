@@ -109,10 +109,6 @@ You can also use it from the Friend List which is easier since you don't have to
 6. Click on `Done`. The selected images are saved to the correct folders.
 5. Use the images with Auto Support Selection.
 
-## Like the project? Want to support me?
-~~Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!~~ `SUCCESS!`  
-Oh, and code/doc contributions are surely welcome!
-
 ## Acknowledgements
 - [FGO-Lua][FGOLua] developers are the real deal. Without them this app won't exist.
 - We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
@@ -120,3 +116,30 @@ Oh, and code/doc contributions are surely welcome!
 - Drag-sort logic on Card Priority screen is thanks to https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
 
 [FGOLua]: https://github.com/29988122/Fate-Grand-Order_Lua
+
+## Like the project? Want to support me?
+~~Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!~~ `SUCCESS!`  
+Oh, and code/doc contributions are surely welcome!
+
+I really didn't want to put up a donation link, but a lot of people kept asking me, more so because they don't have to pay for AnkuLua now.
+After using up a lot apples I had saved for Gilfest when testing new features, I think accepting a few rainbow apples won't hurt.
+
+You can send rainbow apples here: https://paypal.me/MathewSachin.
+
+**Disclaimer:** This is my (@MathewSachin's) personal link, the amount won’t go to other developers if you donate there.
+Since this project is a fork of FGO-lua, there is a lot of work involved from the developers there.
+Only donate for what you feel I have added over the FGO-lua project.
+
+---
+
+Thanks for the rainbow apples.
+
+|                          |              |
+|--------------------------|--------------|
+| Vítor Martins Salustiano | R$ 50.00 BRL |
+| Fred Hong                | $ 10.00 USD  |
+| Ji Hoon Kim              | $ 10.00 USD  |
+| Nathan Farrar            | $ 5.00 USD   |
+| Federico Rapetti         | € 3.00 EUR   |
+| William Lu               | $ 20.00 USD  |
+| @sleeping-player         | $ 100.00 USD |
