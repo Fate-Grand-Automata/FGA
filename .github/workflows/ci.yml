@@ -31,15 +31,13 @@ jobs:
           echo "::set-env name=FGA_VERSION_NAME::$VERSION_NAME"
 
       - name: Build Android Package
-        run: |
-          echo "::set-env name=BUILD_CONFIG::release"
-          ./gradlew assembleRelease
+        run: ./gradlew assembleCi
 
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
           name: apk
-          path: app/build/outputs/apk/${{ env.BUILD_CONFIG }}/app-${{ env.BUILD_CONFIG }}.apk
+          path: app/build/outputs/apk/ci/app-ci.apk
 
       - name: Build Bundle
         if: startsWith(github.ref, 'refs/tags/')
@@ -91,7 +89,7 @@ jobs:
   #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #        with:
   #          upload_url: ${{ steps.create_release.outputs.upload_url }}
-  #          asset_path: ./apk/app-release.apk
+  #          asset_path: ./apk/app-ci.apk
   #          asset_name: com.mathewsachin.fategrandautomata.apk
   #          asset_content_type: application/vnd.android.package-archive
 
