@@ -118,6 +118,6 @@ jobs:
         with:
           track: beta
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
-          packageName: com.mathewsachin.fategrandautomata.apk
+          packageName: com.mathewsachin.fategrandautomata
           releaseFile: ./bundle/app-release.aab
           mappingFile: ./mapping/mapping.txt
