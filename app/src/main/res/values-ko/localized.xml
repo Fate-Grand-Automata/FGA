@@ -25,7 +25,7 @@
     <string name="auto_skill_list_delete_confirm_title">삭제 확인</string>
     <string name="auto_skill_list_delete_confirm_ok">삭제</string>
     <string name="auto_skill_list_delete_confirm_message">%d 설정(들)을 정말로 지우시겠습니까?</string>
-    
+
     <string name="auto_skill_maker_confirm_exit_title">나가기 확인</string>
     <string name="auto_skill_maker_confirm_exit_message">정말로 나가시겠습니까? 오토 스킬 커맨드가 사라집니다.</string>
     <string name="auto_skill_maker_confirm_clear_title">초기화 확인</string>
@@ -95,7 +95,6 @@
     <string name="p_auto_skill">오토 스킬</string>
     <string name="p_auto_skill_summary">오토 스킬 설정관리</string>
     <string name="p_more_options">더 많은 옵션</string>
-    <string name="p_update_available">업데이트 가능</string>
 
     <string name="p_enable_refill">사과 사용 활성화</string>
     <string name="p_repetitions">반복</string>
