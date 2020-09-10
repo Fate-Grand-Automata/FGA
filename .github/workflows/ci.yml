@@ -114,7 +114,7 @@ jobs:
       - name: Deploy to Play Store
         uses: r0adkll/upload-google-play@v1
         with:
-          track: beta
+          track: alpha
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
           packageName: com.mathewsachin.fategrandautomata
           releaseFile: ./bundle/app-release.aab
