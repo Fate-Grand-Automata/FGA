@@ -1,12 +1,11 @@
 # Fate/Grand Automata
 [![CI](https://github.com/MathewSachin/Fate-Grand-Automata/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/MathewSachin/Fate-Grand-Automata/actions)
-[![Downloads](https://img.shields.io/github/downloads/MathewSachin/Fate-Grand-Automata/total.svg?style=flat-square)](https://mathewsachin.github.io/Fate-Grand-Automata)
 
 ![Logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png)
 
 Auto-battle app for Fate/Grand Order (Android 7 or later, no need for Root).  
 
-Download from our [Website](https://MathewSachin.github.io/Fate-Grand-Automata).
+<a href='https://play.google.com/store/apps/details?id=com.mathewsachin.fategrandautomata&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' width="175" src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
 This is pretty much a **Kotlin** port of [Fate-Grand-Order_Lua][FGOLua] with UI for configuring Settings and inbuilt Sikuli like API.
 And there's no time limit on the use of the app unlike FGO-Lua.
