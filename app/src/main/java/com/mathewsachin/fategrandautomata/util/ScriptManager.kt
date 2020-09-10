@@ -65,7 +65,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.Lottery -> entryPoint.lottery()
             ScriptModeEnum.FriendGacha -> entryPoint.friendGacha()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
-            ScriptModeEnum.GiftBox -> entryPoint.autoGiftBox()
+            ScriptModeEnum.GiftBox -> entryPoint.giftBox()
             else -> entryPoint.battle()
         }
 

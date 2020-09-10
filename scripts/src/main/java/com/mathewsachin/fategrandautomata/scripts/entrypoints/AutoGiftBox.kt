@@ -1,14 +1,15 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.*
+import javax.inject.Inject
 
-class AutoGiftBox(
+class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
+    fgAutomataApi: IFgoAutomataApi
+) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
 
     companion object {
         const val goldThreshold = 3
@@ -19,8 +20,6 @@ class AutoGiftBox(
     private var clickCount = 0
 
     override fun script(): Nothing {
-        scaling.init()
-
         while (clickCount < maxClickCount) {
             checkGifts()
 
@@ -36,6 +35,16 @@ class AutoGiftBox(
             GameServerEnum.En -> 420
             else -> 420
         }
+
+    sealed class OcrResult {
+        object Failed : OcrResult()
+        data class Success(val number: Int) : OcrResult()
+    }
+
+    private fun Region.ocr(): OcrResult =
+        if (images.art in this)
+            OcrResult.Success(0)
+        else OcrResult.Failed
 
     private fun checkGifts() {
         for (gift in checkRegion.findAll(images.giftBoxCheck)) {
