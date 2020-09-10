@@ -43,11 +43,17 @@ android {
     }
 
     signingConfigs {
-        common {
+        debug {
             storeFile file("fgadebug.keystore")
             storePassword "123abc"
             keyAlias "fgadebug"
             keyPassword "123abc"
+        }
+        release {
+            storeFile file("fgautomata.keystore")
+            storePassword System.env.KEYSTORE_PASS
+            keyAlias "fgautomata"
+            keyPassword System.env.KEYSTORE_PASS
         }
     }
 
@@ -55,17 +61,18 @@ android {
         debug {
             debuggable true
             applicationIdSuffix '.debug'
-            signingConfig signingConfigs.common
+            signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.common
+            signingConfig signingConfigs.release
         }
         ci {
             initWith release
             applicationIdSuffix '.debug'
+            signingConfig signingConfigs.debug
         }
     }
 }
