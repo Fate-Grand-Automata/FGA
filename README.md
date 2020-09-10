@@ -1,7 +1,7 @@
 # Fate/Grand Automata
 [![CI](https://github.com/MathewSachin/Fate-Grand-Automata/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/MathewSachin/Fate-Grand-Automata/actions)
 
-![Logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png)
+![Logo](app/src/release/res/mipmap-xxxhdpi/ic_launcher_round.png)
 
 Auto-battle app for Fate/Grand Order (Android 7 or later, no need for Root).  
 
