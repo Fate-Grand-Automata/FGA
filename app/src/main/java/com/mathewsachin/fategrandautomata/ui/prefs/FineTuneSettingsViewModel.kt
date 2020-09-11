@@ -21,7 +21,8 @@ class FineTuneSettingsViewModel @ViewModelInject constructor(
         prefs.swipeDuration,
         prefs.supportSwipeMultiplier,
         prefs.skillDelay,
-        prefs.waitMultiplier
+        prefs.waitMultiplier,
+        prefs.waitBeforeTurn
     )
 
     val liveDataMap = fineTunePrefs

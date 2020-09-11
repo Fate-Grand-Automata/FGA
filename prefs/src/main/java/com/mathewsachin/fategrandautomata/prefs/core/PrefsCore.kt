@@ -9,7 +9,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PrefsCore @Inject constructor(
+class PrefsCore
+@Inject constructor(
     val maker: PrefMaker,
     val storageDirs: StorageDirs
 ) {
@@ -96,6 +97,8 @@ class PrefsCore @Inject constructor(
     val autoStartService = maker.bool(R.string.pref_auto_start_service)
 
     val showTextBoxForAutoSkillCmd = maker.bool(R.string.pref_auto_skill_cmd_text)
+
+    val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn)
 
     private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
 
