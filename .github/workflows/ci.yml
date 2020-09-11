@@ -66,42 +66,6 @@ jobs:
           name: mapping
           path: app/build/outputs/mapping/release/mapping.txt
 
-  # TURNED OFF GITHUB ACTIONS SINCE TESTING PLAY STORE
-
-  #  github_releases:
-  #    needs: build
-  #    runs-on: macos-latest
-  #    if: startsWith(github.ref, 'refs/tags/')
-  #    steps:
-  #      - name: Set tag env var
-  #        run: echo ::set-env name=TAG_VERSION::${GITHUB_REF:10}
-  #
-  #      - name: Draft Release
-  #        id: create_release
-  #        uses: actions/create-release@latest
-  #        env:
-  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #        with:
-  #          tag_name: ${{ env.TAG_VERSION }}
-  #          release_name: 'Fate/Grand Automata ${{ env.TAG_VERSION }}'
-  #          draft: true
-  #          prerelease: true
-  #
-  #      - name: Download Artifact
-  #        uses: actions/download-artifact@v1
-  #        with:
-  #          name: apk
-  #
-  #      - name: Upload APK to GitHub Releases
-  #        uses: actions/upload-release-asset@v1
-  #        env:
-  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #        with:
-  #          upload_url: ${{ steps.create_release.outputs.upload_url }}
-  #          asset_path: ./apk/app-ci.apk
-  #          asset_name: com.mathewsachin.fategrandautomata.apk
-  #          asset_content_type: application/vnd.android.package-archive
-
   play_store:
     needs: build
     runs-on: macos-latest
