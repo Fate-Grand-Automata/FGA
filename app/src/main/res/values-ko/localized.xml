@@ -176,6 +176,7 @@
     <string name="p_fine_tune_support_swipe_multiplier">서포트 스와이프 배율기 (%)</string>
     <string name="p_fine_tune_wait">딜레이</string>
     <string name="p_fine_tune_skill_delay">스킬 딜레이 (ms)</string>
+    <string name="p_fine_tune_wait_before_turn">턴 이전 딜레이 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">딜레이 배율기 (%)</string>
 
     <string name="p_nav_refill">사과 사용</string>
