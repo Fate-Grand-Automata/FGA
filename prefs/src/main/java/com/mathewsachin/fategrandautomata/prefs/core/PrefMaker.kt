@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import androidx.annotation.StringRes
 import com.tfcporciuncula.flow.FlowSharedPreferences
 import com.tfcporciuncula.flow.Serializer
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 class PrefMaker(
     val prefs: SharedPreferences,
     val context: Context

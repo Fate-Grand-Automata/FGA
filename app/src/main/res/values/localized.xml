@@ -176,6 +176,7 @@
     <string name="p_fine_tune_support_swipe_multiplier">Support Swipe Multiplier (%)</string>
     <string name="p_fine_tune_wait">Wait</string>
     <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
+    <string name="p_fine_tune_wait_before_turn">Wait before Turn (ms)</string>
     <string name="p_fine_tune_wait_multiplier">Wait Multiplier (%)</string>
 
     <string name="p_nav_refill">Refill</string>

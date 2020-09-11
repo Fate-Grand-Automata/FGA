@@ -31,6 +31,7 @@ interface IPreferences {
     val canPauseScript: Boolean
 
     val stageCounterSimilarity: Double
+    val waitBeforeTurn: Duration
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs
