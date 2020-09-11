@@ -98,7 +98,7 @@ class PrefsCore
 
     val showTextBoxForAutoSkillCmd = maker.bool(R.string.pref_auto_skill_cmd_text)
 
-    val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn)
+    val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn, 500)
 
     private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
 
