@@ -74,7 +74,7 @@ class PrefsCore
 
     val supportSwipesPerUpdate = maker.int(R.string.pref_support_swipes_per_update, 10)
 
-    val supportMaxUpdates = maker.int(R.string.pref_support_max_updates, 3)
+    val supportMaxUpdates = maker.int(R.string.pref_support_max_updates, 5)
 
     val debugMode = maker.bool(R.string.pref_debug_mode)
 
