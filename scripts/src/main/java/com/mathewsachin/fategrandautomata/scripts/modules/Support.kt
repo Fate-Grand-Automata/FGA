@@ -225,13 +225,10 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                     else -> findSupportBounds(servant.Support)
                 }
 
-                val craftEssence = findCraftEssence(supportBounds)
+                val ceBounds = Game.supportDefaultCeBounds + Location(0, supportBounds.Y)
+                val craftEssence = findCraftEssence(ceBounds)
 
-                // CEs are always below Servants in the support list
-                // see docs/support_list_edge_case_fix.png to understand why this conditional exists
-                if (craftEssence is SearchFunctionResult.Found
-                    && craftEssence.Support.Y > servant.Support.Y
-                ) {
+                if (craftEssence is SearchFunctionResult.Found) {
                     // only return if found. if not, try the other servants before scrolling
                     return SearchFunctionResult.FoundWithBounds(
                         craftEssence.Support,
