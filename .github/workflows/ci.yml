@@ -11,84 +11,81 @@ on:
 jobs:
   build:
     runs-on: macos-latest
-    env:
-      NOT_FORK: ${{secrets.NOT_FORK == 'true'}}
-      FORK: ${{secrets.NOT_FORK != 'true'}}
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
 
-    - name: Determine Version Name
-      shell: pwsh
-      run: |
-        $VERSION_CODE = $env:GITHUB_RUN_NUMBER
-        $VERSION_NAME = $env:GITHUB_RUN_NUMBER
-        if ($env:GITHUB_REF.StartsWith('refs/tags/')) {
-            $VERSION_NAME = $env:GITHUB_REF.Substring(10)
-        }
-        echo "::set-env name=FGA_VERSION_CODE::$VERSION_CODE"
-        echo "::set-env name=FGA_VERSION_NAME::$VERSION_NAME"
+      - name: Determine Version Name
+        shell: pwsh
+        run: |
+          $VERSION_CODE = $env:GITHUB_RUN_NUMBER
+          $VERSION_NAME = $env:GITHUB_RUN_NUMBER
+          if ($env:GITHUB_REF.StartsWith('refs/tags/')) {
+              $VERSION_NAME = $env:GITHUB_REF.Substring(10)
+          }
+          echo "::set-env name=FGA_VERSION_CODE::$VERSION_CODE"
+          echo "::set-env name=FGA_VERSION_NAME::$VERSION_NAME"
 
-    - name: Decrypt keystore (GPG)
-      env:
-        GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
-      working-directory: ./app
-      if: env.NOT_FORK == 'true'
-      run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
+      - name: Build Android Package
+        run: ./gradlew assembleCi
 
-    - name: Sign Android Package
-      env:
-        KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-      run: |
-        if [ "$FORK" == "true" ]
-        then
-          echo "::set-env name=BUILD_CONFIG::fork"
-          ./gradlew assembleFork
-        else
-          echo "::set-env name=BUILD_CONFIG::release"
-          ./gradlew assembleRelease
-        fi       
+      - name: Upload APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: apk
+          path: app/build/outputs/apk/ci/app-ci.apk
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v1
-      with:
-        name: apk
-        path: app/build/outputs/apk/${{ env.BUILD_CONFIG }}/app-${{ env.BUILD_CONFIG }}.apk
+      - name: Decrypt keystore (GPG)
+        env:
+          GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
+        working-directory: ./app
+        if: startsWith(github.ref, 'refs/tags/')
+        run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
-  deploy:
+      - name: Build Bundle
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+        run: ./gradlew bundleRelease
+
+      - name: Upload Bundle
+        uses: actions/upload-artifact@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: bundle
+          path: app/build/outputs/bundle/release/app-release.aab
+
+      - name: Upload De-obfuscation mapping file
+        uses: actions/upload-artifact@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: mapping
+          path: app/build/outputs/mapping/release/mapping.txt
+
+  play_store:
     needs: build
     runs-on: macos-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
-    - name: Set tag env var
-      run: echo ::set-env name=TAG_VERSION::${GITHUB_REF:10}
+      - name: Download Bundle
+        uses: actions/download-artifact@v1
+        with:
+          name: bundle
 
-    - name: Draft Release
-      id: create_release
-      uses: actions/create-release@latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ env.TAG_VERSION }}
-        release_name: 'Fate/Grand Automata ${{ env.TAG_VERSION }}'
-        draft: true
-        prerelease: true
+      - name: Download mapping file
+        uses: actions/download-artifact@v1
+        with:
+          name: mapping
 
-    - name: Download Artifact
-      uses: actions/download-artifact@v1
-      with:
-        name: apk
-
-    - name: Upload APK to GitHub Releases
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./apk/app-release.apk
-        asset_name: com.mathewsachin.fategrandautomata.apk
-        asset_content_type: application/vnd.android.package-archive
+      - name: Deploy to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          track: production
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
+          packageName: com.mathewsachin.fategrandautomata
+          releaseFile: ./bundle/app-release.aab
+          mappingFile: ./mapping/mapping.txt

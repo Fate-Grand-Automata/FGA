@@ -69,9 +69,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
-        fork {
+        ci {
             initWith release
-            applicationIdSuffix '.fork'
+            applicationIdSuffix '.debug'
             signingConfig signingConfigs.debug
         }
     }

@@ -95,7 +95,6 @@
     <string name="p_auto_skill">周回腳本</string>
     <string name="p_auto_skill_summary">設定周回腳本</string>
     <string name="p_more_options">更多</string>
-    <string name="p_update_available">有可用的更新</string>
 
     <string name="p_enable_refill">啟動自動回體</string>
     <string name="p_repetitions">自動回體次數</string>

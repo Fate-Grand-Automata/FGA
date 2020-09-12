@@ -95,7 +95,6 @@
     <string name="p_auto_skill">Auto Skill</string>
     <string name="p_auto_skill_summary">Manage Auto Skill configs</string>
     <string name="p_more_options">More options</string>
-    <string name="p_update_available">Update Available</string>
 
     <string name="p_enable_refill">Enable Refill</string>
     <string name="p_repetitions">Repetitions</string>

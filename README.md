@@ -1,19 +1,17 @@
 # Fate/Grand Automata
 [![CI](https://github.com/MathewSachin/Fate-Grand-Automata/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/MathewSachin/Fate-Grand-Automata/actions)
-[![Downloads](https://img.shields.io/github/downloads/MathewSachin/Fate-Grand-Automata/total.svg?style=flat-square)](https://mathewsachin.github.io/Fate-Grand-Automata)
 
-![Logo](app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png)
+![Logo](app/src/release/res/mipmap-xxxhdpi/ic_launcher_round.png)
 
-Auto-battle app for Fate/Grand Order (Android 7 or later, no need for Root).  
+Auto-battle app for F/GO (Android 7 or later, no need for Root).  
 
-Download from our [Website](https://MathewSachin.github.io/Fate-Grand-Automata).
+<a href='https://play.google.com/store/apps/details?id=com.mathewsachin.fategrandautomata&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' width="175" src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
-This is pretty much a **Kotlin** port of [Fate-Grand-Order_Lua][FGOLua] with UI for configuring Settings and inbuilt Sikuli like API.
-And there's no time limit on the use of the app unlike FGO-Lua.
+This is a **Kotlin** port of [FGO-Lua][FGOLua] as an Android app with UI for configuration and without a time-limit on use.  
+It doesn't tamper with the game in anyway and works by looking at the screen and tapping things just like a normal user would do.  
+It's not made to do the story for you, but to automate the mundane farming.
 
-[Running on Samsung devices](https://MathewSachin.github.io/Fate-Grand-Automata/SAMSUNG.html) |
-[Running on Emulators](https://MathewSachin.github.io/Fate-Grand-Automata/EMULATORS.html)
-
+Having Trouble? See the [Troubleshooting Guide](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting) first.  
 Join us on our [GamePress thread](https://community.gamepress.gg/t/automatic-farming-app-fate-grand-automata/72155) for discussions.
 
 ## Video Guide by @reconman
@@ -35,79 +33,25 @@ We use [OpenCV](https://opencv.org/) for image recognition,
 and [Accessibility Service](https://developer.android.com/guide/topics/ui/accessibility) for clicking/swiping.
 
 ## How to Use?
-1. Download from the [Website](https://MathewSachin.github.io/Fate-Grand-Automata). I can't put this app on `Play Store` due to some restrictive features this app uses.
-2. Install on your phone. You'll need to enable installing apps out of `Play Store`.
-3. Launch the app. Grant it permissions it asks for: `Read External Storage`, `Write External Storage`, `Ignore Battery Optimizations`.
-4. Click on `Toggle Service`. You would be prompted to turn on the `Accessibility Service` and taken to `Accessibility Settings` page.
-   If it is already ON, turn it OFF and then turn it ON again.
-   If you turned ON `Accessibility Service` right now, click again on `Toggle Service`.
-5. You would be asked for `Media Projection` permission.
-6. Now, you can see a button with play icon on it floating on screen.
-7. Open F/GO and Go to the node you want to farm.
-8. Press Play to start. The same button can be pressed to stop later.
+1. Install from the Play Store link given above and launch the app.
+2. Click on `Toggle Service` and give all the permissions it asks for.
+3. Now, you can see a button with play icon on it floating on screen.
+4. Open F/GO and Go to the node you want to farm.
+5. Press Play to start. The same button can be pressed to stop later.
 
 ## How to configure?
-For how the settings work, see the original [Fate-Grand-Order_Lua][FGOLua] project.
+For how the settings work, see the original [FGO-Lua][FGOLua] project.
 
-AutoSkill configuration can be created at `Settings/AutoSkill/Manage AutoSkill configurations`.  
-If you've set a Servant or CE in the selected AutoSkill configuration and AutoSkill is Enabled, then support selection mode is assumed to be preferred.
+Though there are many more features added in this project, we didn't get time to make proper documentation yet.
 
-## Where to put Servant/CE images?
-Put:
-- Servant images in `Fate-Grand-Automata/support/servant` folder
-- CE images in `Fate-Grand-Automata/support/ce` folder
-- Friend name images in `Fate-Grand-Automata/support/friend` folder
+## How to make/use images of Servant/CE/Friend?
 
-The app has some common Servant/CEs inbuilt. You can extract them using the `Extract Default Support Images` option.
-The app should extract them automatically when you go to the Support settings screen.
-If you want to use any other preferred servant or ce, you have to create their images using `Support Image Maker` script.
-
-Instead of having to select multiple ascension images for a servant, you can put all the images of a servant in a folder and select the folder in settings.
-
-Here's what an example directory structure looks like:
-
-```
-Fate-Grand-Automata/
--- support/
--- -- servants/
--- -- -- ozy4.png
--- -- -- melt4.png
--- -- -- Merlin/
--- -- -- -- merlin1.png
--- -- -- -- merlin2.png
--- -- -- -- merlin3.png
--- -- -- -- merlin4.png
--- -- -- -- merlin_c.png
--- -- -- Waver/
--- -- -- -- waver1.png
--- -- -- -- waver2.png
--- -- -- -- waver3.png
--- -- -- -- waver4.png
--- -- ce/
--- -- -- kscope.png
--- -- -- black_grail.png
--- -- friend/
--- -- -- mathew.png
--- -- -- recon.png
-```
+See the wiki page for [Support Image Maker](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Support-Image-Maker).
 
 ## What about other scripts like Lottery and Friend Gacha?
 There is an option in Settings called `Script Mode`.
 It defaults to `Battle`.
 Set it to the script you require.
-
-## How to use Support Image Maker?
-`Support Image Maker` automatically creates images from the Support screen that can be used with the script.
-You can also use it from the Friend List which is easier since you don't have to keep refreshing till the desired Servant/CE shows up.
-
-1. Set the `Script Mode` option in Settings to `Support Image Maker`.
-2. Now, click on `Toggle Service` button, the `Play` button shows itself.
-3. Open F/GO. Go to support selection or friend list screen and ensure that the Servant/CE you want is visible (It is important that the complete Servant + CE region is visible).
-4. Click on Play. Support Image Namer dialog should pop up.
-5. Check the images you want to keep. Type a name for the image (NO NEED for file-format like `.png`).
-   For servant images, you can use a folder like: `Nero/asc1`. This will save an image named `asc1.png` in `Fate-Grand-Automata/support/servant/Nero` folder. By grouping in a folder, you can pick a single entry in settings to match with all ascensions and costumes.
-6. Click on `Done`. The selected images are saved to the correct folders.
-5. Use the images with Auto Support Selection.
 
 ## Acknowledgements
 - [FGO-Lua][FGOLua] developers are the real deal. Without them this app won't exist.
@@ -121,25 +65,4 @@ You can also use it from the Friend List which is easier since you don't have to
 ~~Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!~~ `SUCCESS!`  
 Oh, and code/doc contributions are surely welcome!
 
-I really didn't want to put up a donation link, but a lot of people kept asking me, more so because they don't have to pay for AnkuLua now.
-After using up a lot apples I had saved for Gilfest when testing new features, I think accepting a few rainbow apples won't hurt.
-
-You can send rainbow apples here: https://paypal.me/MathewSachin.
-
-**Disclaimer:** This is my (@MathewSachin's) personal link, the amount won’t go to other developers if you donate there.
-Since this project is a fork of FGO-lua, there is a lot of work involved from the developers there.
-Only donate for what you feel I have added over the FGO-lua project.
-
----
-
-Thanks for the rainbow apples.
-
-|                          |              |
-|--------------------------|--------------|
-| Vítor Martins Salustiano | R$ 50.00 BRL |
-| Fred Hong                | $ 10.00 USD  |
-| Ji Hoon Kim              | $ 10.00 USD  |
-| Nathan Farrar            | $ 5.00 USD   |
-| Federico Rapetti         | € 3.00 EUR   |
-| William Lu               | $ 20.00 USD  |
-| @sleeping-player         | $ 100.00 USD |
+For donations, see the [wiki](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Donations).
