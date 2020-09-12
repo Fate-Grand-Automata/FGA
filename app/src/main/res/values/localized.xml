@@ -13,6 +13,7 @@
     <string name="auto_skill_support_any">Any</string>
 
     <string name="support_imgs_extracted">Support Images Extracted Successfully</string>
+    <string name="support_imgs_extract_failed">Couldn\'t extract support images</string>
     <string name="support_img_not_found">Unable to load image: %1$s. Put images in %2$s folder</string>
 
     <string name="auto_skill_list_no_items">No AutoSkill Items</string>

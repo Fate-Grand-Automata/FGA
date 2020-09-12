@@ -184,11 +184,18 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
     private fun performSupportImageExtraction() {
         lifecycleScope.launch {
-            SupportImageExtractor(requireContext(), storageDirs).extract()
+            val msg = try {
+                SupportImageExtractor(requireContext(), storageDirs).extract()
+                preferredSupportOnResume(storageDirs)
 
-            val msg = getString(R.string.support_imgs_extracted)
+                getString(R.string.support_imgs_extracted)
+            } catch (e: Exception) {
+                getString(R.string.support_imgs_extract_failed).also { msg ->
+                    logger.error(msg, e)
+                }
+            }
+
             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
-            preferredSupportOnResume(storageDirs)
         }
     }
 
