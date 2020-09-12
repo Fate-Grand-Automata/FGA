@@ -17,6 +17,7 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.refill_preferences, rootKey)
 
         findPreference<EditTextPreference>(getString(prefKeys.pref_refill_repetitions))?.makeNumeric()
+        findPreference<EditTextPreference>(getString(R.string.pref_limit_runs))?.makeNumeric()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
