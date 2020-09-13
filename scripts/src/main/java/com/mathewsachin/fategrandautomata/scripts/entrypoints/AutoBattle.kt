@@ -421,7 +421,7 @@ open class AutoBattle @Inject constructor(
                 .findAll(images.selectedParty)
                 .map { match ->
                     // Find party with min distance from center of matched region
-                    Game.partySelectionArray.withIndex().minBy {
+                    Game.partySelectionArray.withIndex().minByOrNull {
                         (it.value.X - match.Region.center.X).absoluteValue
                     }?.index
                 }

@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
@@ -11,7 +12,7 @@ class AutoSkillPrefsCore(
     val context: Context,
     val storageDirs: StorageDirs
 ) {
-    val sharedPrefs = context.getSharedPreferences(
+    val sharedPrefs: SharedPreferences = context.getSharedPreferences(
         id,
         Context.MODE_PRIVATE
     )
