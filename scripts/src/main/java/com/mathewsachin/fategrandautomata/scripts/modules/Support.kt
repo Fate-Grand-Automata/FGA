@@ -55,13 +55,13 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
             }
     }
 
-    fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
+    fun selectSupport(SelectionMode: SupportSelectionModeEnum, continuing: Boolean): Boolean {
         waitForSupportScreenToLoad()
 
-        if (autoSkillPrefs.supportClass != SupportClass.None) {
+        if (!continuing && autoSkillPrefs.supportClass != SupportClass.None) {
             autoSkillPrefs.supportClass.clickLocation.click()
 
-            0.3.seconds.wait()
+            0.5.seconds.wait()
         }
 
         return when (SelectionMode) {
@@ -209,7 +209,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                 else -> {
                     // -- okay, we have run out of options, let's give up
                     Game.supportListTopClick.click()
-                    return selectSupport(autoSkillPrefs.fallbackTo)
+                    return selectSupport(autoSkillPrefs.fallbackTo, true)
                 }
             }
         }
