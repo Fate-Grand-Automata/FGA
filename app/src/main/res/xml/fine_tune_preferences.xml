@@ -129,6 +129,15 @@
             app:title="@string/p_fine_tune_skill_delay" />
 
         <SeekBarPreference
+            android:max="2000"
+            app:icon="@drawable/ic_time"
+            app:key="@string/pref_wait_before_turn"
+            app:min="0"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:title="@string/p_fine_tune_wait_before_turn" />
+
+        <SeekBarPreference
             android:max="200"
             app:icon="@drawable/ic_time"
             app:key="@string/pref_wait_multiplier"

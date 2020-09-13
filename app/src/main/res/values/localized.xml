@@ -13,6 +13,7 @@
     <string name="auto_skill_support_any">Any</string>
 
     <string name="support_imgs_extracted">Support Images Extracted Successfully</string>
+    <string name="support_imgs_extract_failed">Couldn\'t extract support images</string>
     <string name="support_img_not_found">Unable to load image: %1$s. Put images in %2$s folder</string>
 
     <string name="auto_skill_list_no_items">No AutoSkill Items</string>
@@ -95,7 +96,6 @@
     <string name="p_auto_skill">Auto Skill</string>
     <string name="p_auto_skill_summary">Manage Auto Skill configs</string>
     <string name="p_more_options">More options</string>
-    <string name="p_update_available">Update Available</string>
 
     <string name="p_enable_refill">Enable Refill</string>
     <string name="p_repetitions">Repetitions</string>
@@ -177,6 +177,7 @@
     <string name="p_fine_tune_support_swipe_multiplier">Support Swipe Multiplier (%)</string>
     <string name="p_fine_tune_wait">Wait</string>
     <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
+    <string name="p_fine_tune_wait_before_turn">Wait before Turn (ms)</string>
     <string name="p_fine_tune_wait_multiplier">Wait Multiplier (%)</string>
 
     <string name="p_nav_refill">Refill</string>
