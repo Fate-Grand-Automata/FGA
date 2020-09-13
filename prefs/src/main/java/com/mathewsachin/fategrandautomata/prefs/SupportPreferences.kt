@@ -29,7 +29,7 @@ fun mapPreferredServants(
         val dir = File(storageDirs.supportServantImgFolder, servantEntry)
 
         if (dir.isDirectory && dir.exists()) {
-            val fileNames = dir.listFiles()
+            val fileNames = (dir.listFiles() ?: emptyArray())
                 .filter { it.isFile }
                 // Give priority to later ascensions
                 .sortedWith(compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.name })
