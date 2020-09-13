@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
+import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 import mu.KotlinLogging
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
@@ -23,7 +23,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             val action = MainFragmentDirections
                 .actionMainFragmentToAutoSkillListFragment()
 
-            findNavController().navigate(action)
+            nav(action)
         }
     }
 
@@ -35,7 +35,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                 val action = MainFragmentDirections
                     .actionMainFragmentToRefillSettingsFragment()
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }
@@ -58,7 +58,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                 val action = MainFragmentDirections
                     .actionMainFragmentToMoreSettingsFragment()
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }

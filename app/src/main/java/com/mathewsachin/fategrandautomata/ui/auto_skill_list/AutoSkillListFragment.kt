@@ -10,13 +10,13 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.autoskill_list.*
 import kotlinx.coroutines.Dispatchers
@@ -110,7 +110,7 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
         val action = AutoSkillListFragmentDirections
             .actionAutoSkillListFragmentToAutoSkillItemSettingsFragment(Id)
 
-        findNavController().navigate(action)
+        nav(action)
     }
 
     val autoSkillExportAll = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUri ->

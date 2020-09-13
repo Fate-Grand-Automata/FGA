@@ -84,7 +84,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 val action = AutoSkillItemSettingsFragmentDirections
                     .actionAutoSkillItemSettingsFragmentToCardPriorityFragment(args.key)
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }
@@ -96,7 +96,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                     val action = AutoSkillItemSettingsFragmentDirections
                         .actionAutoSkillItemSettingsFragmentToAutoSkillMakerActivity(args.key)
 
-                    findNavController().navigate(action)
+                    nav(action)
                 }
 
                 true
@@ -108,7 +108,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 val action = AutoSkillItemSettingsFragmentDirections
                     .actionAutoSkillItemSettingsFragmentToSkillLevelSettingsFragment(args.key)
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }
@@ -235,7 +235,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 val action = AutoSkillItemSettingsFragmentDirections
                     .actionAutoSkillItemSettingsFragmentSelf(guid)
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }

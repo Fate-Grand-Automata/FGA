@@ -3,11 +3,11 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
@@ -21,7 +21,7 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
                 val action = MoreSettingsFragmentDirections
                     .actionMoreSettingsFragmentToFineTuneSettingsFragment()
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }
