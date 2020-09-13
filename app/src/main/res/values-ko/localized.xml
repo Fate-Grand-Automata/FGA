@@ -69,7 +69,7 @@
     <string name="card_priority_low">낮음</string>
     <string name="card_priority_add_wave">웨이브 추가</string>
     <string name="card_priority_remove_last_wave">마지막 웨이브 제거</string>
-    <string name="card_priority_experimental">실험직 기능 활성화</string>
+    <string name="card_priority_experimental">실험적 기능 활성화</string>
 
     <string name="toggle_service">서비스 ON/OFF</string>
     <string name="fine_tune_menu_reset_to_defaults">기본값으로 리셋</string>
@@ -160,7 +160,7 @@
     <string name="p_fine_tune_default">기본값: %d</string>
     <string name="p_fine_tune_support">서포트</string>
     <string name="p_fine_tune_support_swipes_per_update">갱신당 스와이프 수</string>
-    <string name="p_fine_tune_support_max_updates">최대 업데이트</string>
+    <string name="p_fine_tune_support_max_updates">최대 갱신 수</string>
     <string name="p_fine_tune_similarity">유사성</string>
     <string name="p_fine_tune_min_similarity">최소 유사성 (%)</string>
     <string name="p_fine_tune_mlb_similarity">최대해방 / 풀돌 유사성 (%)</string>
@@ -175,6 +175,7 @@
     <string name="p_fine_tune_support_swipe_multiplier">서포트 스와이프 배율기 (%)</string>
     <string name="p_fine_tune_wait">딜레이</string>
     <string name="p_fine_tune_skill_delay">스킬 딜레이 (ms)</string>
+    <string name="p_fine_tune_wait_before_turn">턴 시작 전 딜레이 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">딜레이 배율기 (%)</string>
 
     <string name="p_nav_refill">사과 사용</string>
@@ -236,7 +237,7 @@
     <string name="select_auto_skill_config">오토 스킬 설정 선택</string>
     <string name="no_auto_skill_configs">오토 스킬 설정 없음</string>
 
-    <string name="script_msg_ap_ran_out">AP 다 씀!</string>
+    <string name="script_msg_ap_ran_out">AP를 모두 소비하였습니다!</string>
     <string name="stopped_by_user">사용자에 의해 스크립트 중지됨 또는 화면 꺼짐</string>
     <string name="unexpected_error">예상 밖의 오류</string>
     <string name="script_exited">스크립트 빠져나옴</string>
@@ -258,5 +259,5 @@
     <string name="battle_time">시간: %s</string>
     <string name="avg_time_per_run">반복 평균 시간: %s</string>
     <string name="turns_count">턴: %d</string>
-    <string name="turns_stats">턴: %1$d (분), %2$d (평균), %3$d (최대)</string>
+    <string name="turns_stats">턴: %1$d (최단), %2$d (평균), %3$d (최장)</string>
 </resources>
