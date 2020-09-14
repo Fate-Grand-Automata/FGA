@@ -83,7 +83,11 @@ class RootScreenshotService(
         rootLoadMat?.release()
         rootConvertMat.release()
 
-        SuperUser.close()
+        try {
+            SuperUser.close()
+        } catch (e: Exception) {
+            logger.error("Error closing super user", e)
+        }
 
         pattern.close()
 

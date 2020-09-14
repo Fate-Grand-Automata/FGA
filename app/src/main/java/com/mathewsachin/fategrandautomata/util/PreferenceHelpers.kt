@@ -42,7 +42,7 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
 }
 
 private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
-    val entries = ImgFolder.listFiles()
+    val entries = (ImgFolder.listFiles() ?: emptyArray())
         .filter { it.isFile }
         .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
 
@@ -63,7 +63,7 @@ fun PreferenceFragmentCompat.preferredSupportOnResume(storageDirs: StorageDirs) 
     val friendNames = findFriendNamesList() ?: return
 
     servants.apply {
-        val entries = storageDirs.supportServantImgFolder.listFiles()
+        val entries = (storageDirs.supportServantImgFolder.listFiles() ?: emptyArray())
             .map { it.name }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
             .toTypedArray()

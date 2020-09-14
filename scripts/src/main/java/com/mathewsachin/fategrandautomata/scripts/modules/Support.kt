@@ -55,13 +55,13 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
             }
     }
 
-    fun selectSupport(SelectionMode: SupportSelectionModeEnum): Boolean {
+    fun selectSupport(SelectionMode: SupportSelectionModeEnum, continuing: Boolean): Boolean {
         waitForSupportScreenToLoad()
 
-        if (autoSkillPrefs.supportClass != SupportClass.None) {
+        if (!continuing && autoSkillPrefs.supportClass != SupportClass.None) {
             autoSkillPrefs.supportClass.clickLocation.click()
 
-            0.3.seconds.wait()
+            0.5.seconds.wait()
         }
 
         return when (SelectionMode) {
@@ -209,7 +209,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                 else -> {
                     // -- okay, we have run out of options, let's give up
                     Game.supportListTopClick.click()
-                    return selectSupport(autoSkillPrefs.fallbackTo)
+                    return selectSupport(autoSkillPrefs.fallbackTo, true)
                 }
             }
         }
@@ -225,13 +225,10 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                     else -> findSupportBounds(servant.Support)
                 }
 
-                val craftEssence = findCraftEssence(supportBounds)
+                val ceBounds = Game.supportDefaultCeBounds + Location(0, supportBounds.Y)
+                val craftEssence = findCraftEssence(ceBounds)
 
-                // CEs are always below Servants in the support list
-                // see docs/support_list_edge_case_fix.png to understand why this conditional exists
-                if (craftEssence is SearchFunctionResult.Found
-                    && craftEssence.Support.Y > servant.Support.Y
-                ) {
+                if (craftEssence is SearchFunctionResult.Found) {
                     // only return if found. if not, try the other servants before scrolling
                     return SearchFunctionResult.FoundWithBounds(
                         craftEssence.Support,

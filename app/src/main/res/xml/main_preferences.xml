@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
         app:defaultValue="Battle"
@@ -27,14 +26,4 @@
         app:icon="@drawable/ic_dots_horizontal"
         app:key="@string/pref_nav_more"
         app:title="@string/p_more_options" />
-
-    <Preference
-        app:icon="@drawable/ic_star"
-        app:key="@string/pref_nav_update"
-        app:title="@string/p_update_available"
-        app:summary="v0.16.0"
-        app:isPreferenceVisible="false">
-        <intent android:action="android.intent.action.VIEW"
-            android:data="https://mathewsachin.github.io/Fate-Grand-Automata"/>
-    </Preference>
 </PreferenceScreen>

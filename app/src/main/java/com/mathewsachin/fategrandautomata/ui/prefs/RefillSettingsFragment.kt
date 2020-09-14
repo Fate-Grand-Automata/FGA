@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
@@ -17,6 +16,7 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.refill_preferences, rootKey)
 
         findPreference<EditTextPreference>(getString(prefKeys.pref_refill_repetitions))?.makeNumeric()
+        findPreference<EditTextPreference>(getString(R.string.pref_limit_runs))?.makeNumeric()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
