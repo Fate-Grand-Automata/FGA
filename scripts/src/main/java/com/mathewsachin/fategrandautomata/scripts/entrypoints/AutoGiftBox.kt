@@ -31,34 +31,32 @@ class AutoGiftBox @Inject constructor(
 
     private val countRegionX
         get() = when (prefs.gameServer) {
-            GameServerEnum.Jp -> 355
-            GameServerEnum.En -> 420
+            GameServerEnum.Jp -> 330
+            GameServerEnum.En -> 400
             else -> 420
         }
-
-    sealed class OcrResult {
-        object Failed : OcrResult()
-        data class Success(val number: Int) : OcrResult()
-    }
-
-    private fun Region.ocr(): OcrResult =
-        if (images.art in this)
-            OcrResult.Success(0)
-        else OcrResult.Failed
 
     private fun checkGifts() {
         for (gift in checkRegion.findAll(images.giftBoxCheck)) {
             val countRegion = Region(countRegionX, gift.Region.Y - 50, 100, 30)
-            val iconRegion = Region(95, gift.Region.Y - 58, 115, 120)
+            val iconRegion = Region(95, gift.Region.Y - 58, 200, 120)
             val clickSpot = Location(850, gift.Region.Y + 25)
 
-            if (iconRegion.exists(images.goldXP)) {
-                val ocrResult = countRegion.ocr()
+            val gold = images.goldXP in iconRegion
+            val silver = !gold && images.silverXP in iconRegion
 
-                if (ocrResult is OcrResult.Failed) {
-                    continue
-                } else if (ocrResult is OcrResult.Success) {
-                    if (ocrResult.number > goldThreshold) {
+            if (gold || silver) {
+                if (gold) {
+                    val count = mapOf(
+                        1 to images.x1,
+                        2 to images.x2,
+                        3 to images.x3,
+                        4 to images.x4
+                    ).entries.firstOrNull { (_, pattern) ->
+                        pattern in iconRegion
+                    }?.key
+
+                    if (count == null || count > goldThreshold) {
                         continue
                     }
                 }
