@@ -28,6 +28,8 @@ abstract class EntryPoint(
         try {
             script()
         } catch (e: ScriptAbortException) {
+            scriptExitListener.invoke(null)
+
             // Script stopped by user
             if (e.message.isNotBlank()) {
                 platformImpl.messageBox(messages.scriptExited, e.message)
@@ -51,6 +53,8 @@ abstract class EntryPoint(
             val msg = messages.unexpectedError
             platformImpl.messageBox(msg, e.messageAndStackTrace, e)
             platformImpl.notify(msg)
+        } finally {
+            scriptExitListener = { }
         }
     }
 
