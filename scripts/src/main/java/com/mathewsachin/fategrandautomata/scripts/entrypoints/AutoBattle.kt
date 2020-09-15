@@ -101,7 +101,8 @@ open class AutoBattle @Inject constructor(
             { needsToWithdraw() } to { withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
-            { isCeReward() } to { ceReward() }
+            { isCeReward() } to { ceReward() },
+            { isCeRewardDetails() } to { ceRewardDetails() }
             //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
 
@@ -174,7 +175,28 @@ open class AutoBattle @Inject constructor(
         )
 
         return cases.any { (image, region) -> image in region }
-                || Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+    }
+
+    val ceRewardSimilarity = 0.75
+
+    private fun isCeReward() =
+        Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+
+    /**
+     * It seems like we need to click on CE (center of screen) to accept them
+     */
+    private fun ceReward() =
+        Region(Location(), Game.scriptSize).center.click()
+
+    private fun isCeRewardDetails() =
+        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+
+    private fun ceRewardDetails() {
+        if (prefs.stopOnCEGet) {
+            throw ScriptExitException(messages.ceGet)
+        } else notify(messages.ceGet)
+
+        Game.resultCeRewardCloseClick.click()
     }
 
     /**
@@ -267,19 +289,6 @@ open class AutoBattle @Inject constructor(
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
         Game.resultFriendRequestRejectClick.click()
-    }
-
-    private fun isCeReward() =
-        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
-
-    val ceRewardSimilarity = 0.75
-
-    private fun ceReward() {
-        if (prefs.stopOnCEGet) {
-            throw ScriptExitException(messages.ceGet)
-        } else notify(messages.ceGet)
-
-        Game.resultCeRewardCloseClick.click()
     }
 
     /**
