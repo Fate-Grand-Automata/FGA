@@ -36,10 +36,13 @@ class AutoFriendGacha @Inject constructor(
                 continueSummonClick.click()
                 0.3.seconds.wait()
                 okClick.click()
-                if (prefs.gameServer in listOf(GameServerEnum.Tw, GameServerEnum.Kr)) {
+
+                // TW is still on the old format
+                if (prefs.gameServer == GameServerEnum.Tw) {
                     0.3.seconds.wait()
                     okClick.click()
                 }
+
                 3.seconds.wait()
             } else skipRapidClick.click(15)
         }

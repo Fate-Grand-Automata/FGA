@@ -242,12 +242,10 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isRepeatScreen() =
-        when (prefs.gameServer) {
-            GameServerEnum.En, GameServerEnum.Jp, GameServerEnum.Cn -> {
-                images.confirm in Game.continueRegion
-            }
-            else -> false
-        }
+        // Not yet on TW
+        if (prefs.gameServer != GameServerEnum.Tw) {
+            images.confirm in Game.continueRegion
+        } else false
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
