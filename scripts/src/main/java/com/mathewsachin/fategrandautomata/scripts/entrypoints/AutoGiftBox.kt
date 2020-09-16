@@ -33,6 +33,7 @@ class AutoGiftBox @Inject constructor(
             GameServerEnum.Jp -> 660
             GameServerEnum.En -> 800
             GameServerEnum.Kr -> 670
+            GameServerEnum.Tw -> 700
             else -> throw ScriptExitException("Not supported on this server yet")
         }
 
