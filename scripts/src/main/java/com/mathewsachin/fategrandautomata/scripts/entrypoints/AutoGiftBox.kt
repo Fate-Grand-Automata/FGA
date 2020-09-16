@@ -25,14 +25,15 @@ class AutoGiftBox @Inject constructor(
             swipe(Location(700, 1200), Location(700, 175))
         }
 
-        throw ScriptExitException("Picked $clickCount EXP stacks")
+        throw ScriptExitException(messages.pickedExpStack(clickCount))
     }
 
     private val countRegionX
         get() = when (prefs.gameServer) {
             GameServerEnum.Jp -> 660
             GameServerEnum.En -> 800
-            else -> 840
+            GameServerEnum.Kr -> 670
+            else -> throw ScriptExitException("Not supported on this server yet")
         }
 
     private fun checkGifts() {

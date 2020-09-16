@@ -265,4 +265,5 @@
     <string name="avg_time_per_run">Average time per run: %s</string>
     <string name="turns_count">Turns: %d</string>
     <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string>
+    <string name="picked_exp_stacks">Picked %d EXP stacks</string>
 </resources>
