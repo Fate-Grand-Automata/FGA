@@ -12,9 +12,8 @@ class AutoGiftBox @Inject constructor(
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
 
     companion object {
-        const val goldThreshold = 1
         const val maxClickCount = 99
-        val checkRegion = Region(820, 225, 60, 1050) * 2.0
+        val checkRegion = Region(1640, 400, 120, 2120)
     }
 
     private var clickCount = 0
@@ -38,8 +37,8 @@ class AutoGiftBox @Inject constructor(
 
     private fun checkGifts() {
         for (gift in checkRegion.findAll(images.giftBoxCheck)) {
-            val countRegion = Region(countRegionX, gift.Region.Y - 120, 400, 80)
-            val iconRegion = Region(190, gift.Region.Y - 116, 400, 240)
+            val countRegion = Region(countRegionX, gift.Region.Y - 120, 300, 100)
+            val iconRegion = Region(190, gift.Region.Y - 116, 300, 240)
             val clickSpot = Location(1700, gift.Region.Y + 50)
 
             val gold = images.goldXP in iconRegion
@@ -53,10 +52,10 @@ class AutoGiftBox @Inject constructor(
                         3 to images.x3,
                         4 to images.x4
                     ).entries.firstOrNull { (_, pattern) ->
-                        pattern in countRegion
+                        countRegion.exists(pattern, Similarity = 0.87)
                     }?.key
 
-                    if (count == null || count > goldThreshold) {
+                    if (count == null || count > prefs.maxGoldEmberSetSize) {
                         continue
                     }
                 }

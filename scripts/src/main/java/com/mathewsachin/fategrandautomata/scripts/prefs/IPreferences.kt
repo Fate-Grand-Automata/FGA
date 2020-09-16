@@ -29,6 +29,7 @@ interface IPreferences {
     val friendPtsOnly: Boolean
     val screenshotDrops: Boolean
     val canPauseScript: Boolean
+    val maxGoldEmberSetSize: Int
 
     val stageCounterSimilarity: Double
     val waitBeforeTurn: Duration
