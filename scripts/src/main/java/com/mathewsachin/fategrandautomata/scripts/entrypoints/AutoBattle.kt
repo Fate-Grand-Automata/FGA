@@ -145,6 +145,9 @@ open class AutoBattle @Inject constructor(
      * Resets the battle state, clicks on the quest and refills the AP if needed.
      */
     private fun menu() {
+        // In case the repeat loop breaks and we end up in menu (like withdrawing from quests)
+        isContinuing = false
+
         battle.resetState()
 
         showRefillsAndRunsMessage()
