@@ -22,7 +22,7 @@ class AutoGiftBox @Inject constructor(
         while (clickCount < maxClickCount) {
             checkGifts()
 
-            swipe(Location(700, 700), Location(700, 175))
+            swipe(Location(700, 1200), Location(700, 175))
         }
 
         throw ScriptExitException("Picked $clickCount EXP stacks")
