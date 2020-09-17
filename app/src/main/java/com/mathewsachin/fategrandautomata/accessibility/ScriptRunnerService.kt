@@ -13,6 +13,8 @@ import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
@@ -29,6 +31,19 @@ import mu.KotlinLogging
 import javax.inject.Inject
 
 private val logger = KotlinLogging.logger {}
+
+fun Context.dayNightThemed() = ContextThemeWrapper(this, androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog)
+
+fun showOverlayDialog(context: Context, builder: AlertDialog.Builder.() -> Unit): AlertDialog {
+    val alertDialog = AlertDialog.Builder(context.dayNightThemed())
+        .apply(builder)
+        .create()
+
+    alertDialog.window?.setType(ScriptRunnerUserInterface.overlayType)
+    alertDialog.show()
+
+    return alertDialog
+}
 
 @AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
@@ -235,21 +250,21 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
-        ScriptRunnerDialog(userInterface).apply {
+        showOverlayDialog(this) {
             setTitle(Title)
-            setMessage(Message)
-            setPositiveButton(getString(android.R.string.ok)) { }
+                .setMessage(Message)
+                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .let {
+                    if (Error != null) {
+                        // TODO: Translate
+                        it.setNeutralButton("Copy") { _, _ ->
+                            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
 
-            if (Error != null) {
-                setNeutralButton("Copy") {
-                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
-
-                    clipboard.setPrimaryClip(clipData)
+                            clipboard.setPrimaryClip(clipData)
+                        }
+                    }
                 }
-            }
-
-            show()
         }
     }
 }

@@ -1,17 +1,15 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Handler
 import android.os.Looper
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.core.view.children
-import androidx.core.view.setPadding
+import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
+import com.mathewsachin.fategrandautomata.accessibility.showOverlayDialog
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
@@ -168,60 +166,33 @@ class ScriptManager @Inject constructor(
 
     private fun autoSkillPicker(context: Context, entryPointRunner: () -> Unit) {
         var selected = preferences.selectedAutoSkillConfig
-        var isSelected = false
-
         val autoSkillItems = preferences.autoSkillPreferences
+        val initialSelectedIndex = autoSkillItems.indexOfFirst { it.id == selected.id }
 
-        val radioGroup = RadioGroup(context).apply {
-            orientation = RadioGroup.VERTICAL
-            setPadding(20)
-        }
-
-        for ((index, item) in autoSkillItems.withIndex()) {
-            val radioBtn = RadioButton(context).apply {
-                text = item.name
-                id = index
-            }
-
-            radioGroup.addView(radioBtn)
-
-            if (selected.id == item.id) {
-                radioGroup.check(index)
-                isSelected = true
+        fun DialogInterface.setOkBtnEnabled(enable: Boolean) {
+            if (this is AlertDialog) {
+                getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = enable
             }
         }
 
-        ScriptRunnerDialog(userInterface).apply {
-            setTitle(context.getString(R.string.select_auto_skill_config))
-            setPositiveButton(context.getString(android.R.string.ok)) {
-                if (autoSkillItems.isNotEmpty()) {
-                    val selectedIndex = radioGroup.checkedRadioButtonId
-                    if (selectedIndex in autoSkillItems.indices) {
-                        selected = autoSkillItems[selectedIndex]
-
-                        preferences.selectedAutoSkillConfig = selected
-                    }
-
+        showOverlayDialog(context) {
+            setTitle(R.string.select_auto_skill_config)
+                .apply {
+                    if (autoSkillItems.isNotEmpty()) {
+                        setSingleChoiceItems(
+                            autoSkillItems.map { it.name }.toTypedArray(),
+                            initialSelectedIndex
+                        ) { dialog, choice ->
+                            selected = autoSkillItems[choice]
+                            dialog.setOkBtnEnabled(true)
+                        }
+                    } else setMessage(R.string.no_auto_skill_configs)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    preferences.selectedAutoSkillConfig = selected
                     entryPointRunner()
                 }
-            }.apply {
-                if (autoSkillItems.isNotEmpty()) {
-                    isEnabled = isSelected
-
-                    radioGroup.children.forEach {
-                        it.setOnClickListener { isEnabled = true }
-                    }
-                }
-            }
-            if (autoSkillItems.isNotEmpty()) {
-                setNegativeButton(context.getString(android.R.string.cancel)) { }
-            }
-
-            if (autoSkillItems.isEmpty()) {
-                setMessage(context.getString(R.string.no_auto_skill_configs))
-            } else setView(radioGroup)
-
-            show()
-        }
+        }.setOkBtnEnabled(initialSelectedIndex != -1)
     }
 }
