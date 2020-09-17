@@ -6,6 +6,7 @@ import android.os.Looper
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.core.view.children
 import androidx.core.view.setPadding
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
@@ -14,7 +15,6 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterfac
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
@@ -113,16 +113,13 @@ class ScriptManager @Inject constructor(
             .build()
 
         val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
+        val entryPointProvider = { getEntryPoint(hiltEntryPoint) }
 
-        getEntryPoint(hiltEntryPoint).apply {
-            if (this is AutoBattle) {
-                autoSkillPicker(context) {
-                    runEntryPoint(this, screenshotService)
-                }
-            } else {
-                runEntryPoint(this, screenshotService)
+        if (preferences.scriptMode == ScriptModeEnum.Battle) {
+            autoSkillPicker(context) {
+                runEntryPoint(screenshotService, entryPointProvider)
             }
-        }
+        } else runEntryPoint(screenshotService, entryPointProvider)
     }
 
     fun stopScript() {
@@ -133,7 +130,7 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private fun runEntryPoint(EntryPoint: EntryPoint, screenshotService: IScreenshotService) {
+    private fun runEntryPoint(screenshotService: IScreenshotService, entryPointProvider: () -> EntryPoint) {
         if (scriptState is ScriptState.Started) {
             return
         }
@@ -150,9 +147,11 @@ class ScriptManager @Inject constructor(
             null
         }
 
-        scriptState = ScriptState.Started(EntryPoint, recording)
+        val entryPoint = entryPointProvider()
 
-        EntryPoint.scriptExitListener = { onScriptExit(it) }
+        scriptState = ScriptState.Started(entryPoint, recording)
+
+        entryPoint.scriptExitListener = { onScriptExit(it) }
 
         userInterface.setStopIcon()
         if (preferences.canPauseScript) {
@@ -164,11 +163,12 @@ class ScriptManager @Inject constructor(
             userInterface.showAsRecording()
         }
 
-        EntryPoint.run()
+        entryPoint.run()
     }
 
-    private fun autoSkillPicker(context: Context, EntryPointRunner: () -> Unit) {
+    private fun autoSkillPicker(context: Context, entryPointRunner: () -> Unit) {
         var selected = preferences.selectedAutoSkillConfig
+        var isSelected = false
 
         val autoSkillItems = preferences.autoSkillPreferences
 
@@ -187,22 +187,35 @@ class ScriptManager @Inject constructor(
 
             if (selected.id == item.id) {
                 radioGroup.check(index)
+                isSelected = true
             }
         }
 
         ScriptRunnerDialog(userInterface).apply {
             setTitle(context.getString(R.string.select_auto_skill_config))
             setPositiveButton(context.getString(android.R.string.ok)) {
-                val selectedIndex = radioGroup.checkedRadioButtonId
-                if (selectedIndex in autoSkillItems.indices) {
-                    selected = autoSkillItems[selectedIndex]
+                if (autoSkillItems.isNotEmpty()) {
+                    val selectedIndex = radioGroup.checkedRadioButtonId
+                    if (selectedIndex in autoSkillItems.indices) {
+                        selected = autoSkillItems[selectedIndex]
 
-                    preferences.selectedAutoSkillConfig = selected
+                        preferences.selectedAutoSkillConfig = selected
+                    }
+
+                    entryPointRunner()
                 }
+            }.apply {
+                if (autoSkillItems.isNotEmpty()) {
+                    isEnabled = isSelected
 
-                EntryPointRunner()
+                    radioGroup.children.forEach {
+                        it.setOnClickListener { isEnabled = true }
+                    }
+                }
             }
-            setNegativeButton(context.getString(android.R.string.cancel)) { }
+            if (autoSkillItems.isNotEmpty()) {
+                setNegativeButton(context.getString(android.R.string.cancel)) { }
+            }
 
             if (autoSkillItems.isEmpty()) {
                 setMessage(context.getString(R.string.no_auto_skill_configs))

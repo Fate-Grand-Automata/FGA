@@ -64,32 +64,31 @@ class ScriptRunnerDialog(val UI: ScriptRunnerUserInterface) {
         textView.text = Message
     }
 
-    private fun setButton(@IdRes ButtonId: Int, Message: String, OnClick: () -> Unit) {
+    private fun setButton(@IdRes ButtonId: Int, Message: String, OnClick: Button.() -> Unit): Button {
         val btn = frame.findViewById<Button>(ButtonId)
 
         btn.visibility = View.VISIBLE
         btn.text = Message
 
         btn.setOnClickListener {
-            OnClick()
+            btn.OnClick()
 
             if (autoDismiss) {
                 hide()
             }
         }
+
+        return btn
     }
 
-    fun setPositiveButton(Message: String, OnClick: () -> Unit) {
+    fun setPositiveButton(Message: String, OnClick: Button.() -> Unit) =
         setButton(R.id.script_runner_dialog_btn_positive, Message, OnClick)
-    }
 
-    fun setNegativeButton(Message: String, OnClick: () -> Unit) {
+    fun setNegativeButton(Message: String, OnClick: Button.() -> Unit) =
         setButton(R.id.script_runner_dialog_btn_negative, Message, OnClick)
-    }
 
-    fun setNeutralButton(Message: String, OnClick: () -> Unit) {
+    fun setNeutralButton(Message: String, OnClick: Button.() -> Unit) =
         setButton(R.id.script_runner_dialog_btn_neutral, Message, OnClick)
-    }
 
     fun setView(View: View) {
         val content = frame.findViewById<ViewGroup>(R.id.script_runner_dialog_content)
