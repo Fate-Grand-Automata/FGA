@@ -86,4 +86,7 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
 
     override fun turns(turns: Int) =
         context.getString(R.string.turns_count, turns)
+
+    override fun pickedExpStack(stacks: Int) =
+        context.getString(R.string.picked_exp_stacks, stacks)
 }

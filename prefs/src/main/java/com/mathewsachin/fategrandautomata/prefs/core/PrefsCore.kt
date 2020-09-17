@@ -100,6 +100,8 @@ class PrefsCore
 
     val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn, 500)
 
+    val maxGoldEmberSetSize = maker.int(R.string.pref_max_gold_ember_set_size, 1)
+
     private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
 
     fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =
