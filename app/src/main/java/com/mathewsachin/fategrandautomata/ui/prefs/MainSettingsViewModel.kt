@@ -26,6 +26,11 @@ class MainSettingsViewModel @ViewModelInject constructor(
         .asFlow()
         .asLiveData()
 
+    val scriptMode = prefs
+        .scriptMode
+        .asFlow()
+        .asLiveData()
+
     val refillRepetitions = prefs
         .refill
         .repetitions

@@ -12,7 +12,7 @@ class PreferencesImpl @Inject constructor(
     val prefs: PrefsCore,
     val storageDirs: StorageDirs
 ) : IPreferences {
-    override val scriptMode by prefs.scriptMode
+    override var scriptMode by prefs.scriptMode
 
     override var gameServer by prefs.gameServer
 

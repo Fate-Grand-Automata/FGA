@@ -5,15 +5,23 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.annotation.CallSuper
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
 
 @ServiceScoped
-class ScriptRunnerNotification @Inject constructor(val service: Service) {
+class ScriptRunnerNotification @Inject constructor(
+    val service: Service,
+    val prefs: IPreferences
+) {
 
     private object Channels {
         const val service = "service"
@@ -71,7 +79,7 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             service,
             1,
             Intent(service, NotificationReceiver::class.java).apply {
-                putExtra(NotificationReceiver.keyAction, NotificationReceiver.actionStop)
+                putExtra(keyAction, actionStop)
             },
             PendingIntent.FLAG_UPDATE_CURRENT
         )
@@ -80,6 +88,21 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             R.drawable.ic_close,
             service.getString(R.string.notification_stop),
             stopIntent
+        ).build()
+
+        val scriptIntent = PendingIntent.getBroadcast(
+            service,
+            2,
+            Intent(service, NotificationReceiver::class.java).apply {
+                putExtra(keyAction, actionScript)
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val chooseScriptAction = NotificationCompat.Action.Builder(
+            R.drawable.ic_script,
+            service.getString(R.string.p_script_mode),
+            scriptIntent
         ).build()
 
         return NotificationCompat.Builder(service, Channels.service)
@@ -91,6 +114,7 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             .setPriority(NotificationManager.IMPORTANCE_LOW)
             .setContentIntent(activityIntent)
             .addAction(stopAction)
+            .addAction(chooseScriptAction)
     }
 
     fun show() {
@@ -112,16 +136,49 @@ class ScriptRunnerNotification @Inject constructor(val service: Service) {
             .notify(Ids.messageNotification, notification)
     }
 
-    class NotificationReceiver : BroadcastReceiver() {
-        companion object {
-            const val actionStop = "ACTION_STOP"
-            const val keyAction = "action"
+    companion object {
+        const val actionStop = "ACTION_STOP"
+        const val actionScript = "ACTION_SCRIPT"
+        const val keyAction = "action"
+    }
+
+    abstract class HiltBroadcastReceiver : BroadcastReceiver() {
+        @CallSuper
+        override fun onReceive(context: Context, intent: Intent) {
+        }
+    }
+
+    @AndroidEntryPoint
+    class NotificationReceiver : HiltBroadcastReceiver() {
+        @Inject
+        @ApplicationContext
+        lateinit var context: Context
+
+        @Inject
+        lateinit var prefs: IPreferences
+
+        override fun onReceive(context: Context, intent: Intent) {
+            super.onReceive(context, intent)
+
+            when (intent.getStringExtra(keyAction)) {
+                actionStop -> ScriptRunnerService.Instance?.stop()
+                actionScript -> chooseScript()
+            }
         }
 
-        override fun onReceive(context: Context?, intent: Intent?) {
-            when (intent?.getStringExtra(keyAction)) {
-                actionStop -> ScriptRunnerService.Instance?.stop()
+        fun chooseScript() {
+            showOverlayDialog(context) {
+                setTitle(R.string.p_script_mode)
+                    .setSingleChoiceItems(R.array.script_mode_labels, prefs.scriptMode.ordinal) { dialog, which ->
+                        prefs.scriptMode = ScriptModeEnum.values()[which]
+
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
             }
+
+            val it = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
+            context.sendBroadcast(it)
         }
     }
 }
