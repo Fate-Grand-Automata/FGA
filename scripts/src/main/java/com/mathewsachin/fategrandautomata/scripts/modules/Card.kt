@@ -279,7 +279,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
         otherNps.associateWithTo(npGroups) {
             it.servantCropRegion.getPattern().use { npCropped ->
-                otherGroups.maxBy { group ->
+                otherGroups.maxByOrNull { group ->
                     group.first()
                         .servantMatchRegion
                         .findAll(npCropped, 0.4)

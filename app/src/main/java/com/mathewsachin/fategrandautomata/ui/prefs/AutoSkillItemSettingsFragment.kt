@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.EditTextPreference
@@ -85,7 +84,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 val action = AutoSkillItemSettingsFragmentDirections
                     .actionAutoSkillItemSettingsFragmentToCardPriorityFragment(args.key)
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }
@@ -97,7 +96,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                     val action = AutoSkillItemSettingsFragmentDirections
                         .actionAutoSkillItemSettingsFragmentToAutoSkillMakerActivity(args.key)
 
-                    findNavController().navigate(action)
+                    nav(action)
                 }
 
                 true
@@ -109,7 +108,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 val action = AutoSkillItemSettingsFragmentDirections
                     .actionAutoSkillItemSettingsFragmentToSkillLevelSettingsFragment(args.key)
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }
@@ -236,7 +235,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 val action = AutoSkillItemSettingsFragmentDirections
                     .actionAutoSkillItemSettingsFragmentSelf(guid)
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }

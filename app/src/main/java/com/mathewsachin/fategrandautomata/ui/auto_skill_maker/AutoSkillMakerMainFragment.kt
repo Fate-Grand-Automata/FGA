@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerMainBinding
+import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -81,14 +80,14 @@ class AutoSkillMakerMainFragment : Fragment() {
         val action = AutoSkillMakerMainFragmentDirections
             .actionAutoSkillMakerMainFragmentToAutoSkillMakerAtkFragment()
 
-        findNavController().navigate(action)
+        nav(action)
     }
 
     fun goToMasterSkills() {
         val action = AutoSkillMakerMainFragmentDirections
             .actionAutoSkillMakerMainFragmentToAutoSkillMakerMasterSkillsFragment()
 
-        findNavController().navigate(action)
+        nav(action)
     }
 
     fun onSkill(SkillCode: Char) {
@@ -97,7 +96,7 @@ class AutoSkillMakerMainFragment : Fragment() {
         val action = AutoSkillMakerMainFragmentDirections
             .actionAutoSkillMakerMainFragmentToAutoSkillMakerTargetFragment()
 
-        findNavController().navigate(action)
+        nav(action)
     }
 
     fun onDone() {

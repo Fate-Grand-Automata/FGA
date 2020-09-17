@@ -38,7 +38,7 @@ class ScriptManager @Inject constructor(
     var scriptState: ScriptState = ScriptState.Stopped
         private set
 
-    private fun onScriptExit(e: Exception?) {
+    private fun onScriptExit(e: Exception?) = handler.post {
         userInterface.setPlayIcon()
         userInterface.isPauseButtonVisibile = false
 
@@ -56,7 +56,7 @@ class ScriptManager @Inject constructor(
         scriptState = ScriptState.Stopped
 
         if (e is SupportImageMakerExitException) {
-            handler.post { showSupportImageNamer(userInterface, storageDirs) }
+            showSupportImageNamer(userInterface, storageDirs)
         }
     }
 
@@ -127,10 +127,7 @@ class ScriptManager @Inject constructor(
     fun stopScript() {
         scriptState.let { state ->
             if (state is ScriptState.Started) {
-                state.entryPoint.scriptExitListener = { }
                 state.entryPoint.stop()
-
-                onScriptExit(null)
             }
         }
     }
@@ -154,7 +151,7 @@ class ScriptManager @Inject constructor(
 
         scriptState = ScriptState.Started(EntryPoint, recording)
 
-        EntryPoint.scriptExitListener = ::onScriptExit
+        EntryPoint.scriptExitListener = { onScriptExit(it) }
 
         userInterface.setStopIcon()
         if (preferences.canPauseScript) {

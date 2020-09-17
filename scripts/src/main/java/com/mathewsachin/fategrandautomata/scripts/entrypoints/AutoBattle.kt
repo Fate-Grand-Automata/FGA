@@ -101,7 +101,8 @@ open class AutoBattle @Inject constructor(
             { needsToWithdraw() } to { withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
-            { isCeReward() } to { ceReward() }
+            { isCeReward() } to { ceReward() },
+            { isCeRewardDetails() } to { ceRewardDetails() }
             //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
 
@@ -174,7 +175,28 @@ open class AutoBattle @Inject constructor(
         )
 
         return cases.any { (image, region) -> image in region }
-                || Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+    }
+
+    val ceRewardSimilarity = 0.75
+
+    private fun isCeReward() =
+        Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+
+    /**
+     * It seems like we need to click on CE (center of screen) to accept them
+     */
+    private fun ceReward() =
+        Region(Location(), Game.scriptSize).center.click()
+
+    private fun isCeRewardDetails() =
+        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+
+    private fun ceRewardDetails() {
+        if (prefs.stopOnCEGet) {
+            throw ScriptExitException(messages.ceGet)
+        } else notify(messages.ceGet)
+
+        Game.resultCeRewardCloseClick.click()
     }
 
     /**
@@ -242,12 +264,10 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isRepeatScreen() =
-        when (prefs.gameServer) {
-            GameServerEnum.En, GameServerEnum.Jp, GameServerEnum.Cn -> {
-                images.confirm in Game.continueRegion
-            }
-            else -> false
-        }
+        // Not yet on TW
+        if (prefs.gameServer != GameServerEnum.Tw) {
+            images.confirm in Game.continueRegion
+        } else false
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
@@ -271,19 +291,6 @@ open class AutoBattle @Inject constructor(
         Game.resultFriendRequestRejectClick.click()
     }
 
-    private fun isCeReward() =
-        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
-
-    val ceRewardSimilarity = 0.75
-
-    private fun ceReward() {
-        if (prefs.stopOnCEGet) {
-            throw ScriptExitException(messages.ceGet)
-        } else notify(messages.ceGet)
-
-        Game.resultCeRewardCloseClick.click()
-    }
-
     /**
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
@@ -299,7 +306,7 @@ open class AutoBattle @Inject constructor(
     private fun support() {
         // Friend selection
         val hasSelectedSupport =
-            support.selectSupport(prefs.selectedAutoSkillConfig.support.selectionMode)
+            support.selectSupport(prefs.selectedAutoSkillConfig.support.selectionMode, isContinuing)
 
         if (hasSelectedSupport && !isContinuing) {
             4.seconds.wait()
@@ -421,7 +428,7 @@ open class AutoBattle @Inject constructor(
                 .findAll(images.selectedParty)
                 .map { match ->
                     // Find party with min distance from center of matched region
-                    Game.partySelectionArray.withIndex().minBy {
+                    Game.partySelectionArray.withIndex().minByOrNull {
                         (it.value.X - match.Region.center.X).absoluteValue
                     }?.index
                 }

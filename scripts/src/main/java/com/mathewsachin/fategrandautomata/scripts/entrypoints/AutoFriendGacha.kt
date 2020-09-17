@@ -32,19 +32,19 @@ class AutoFriendGacha @Inject constructor(
         okClick.click()
 
         while (true) {
-            when {
-                images.fpSummonContinue in continueSummonRegion -> {
-                    continueSummonClick.click()
+            if (images.fpSummonContinue in continueSummonRegion) {
+                continueSummonClick.click()
+                0.3.seconds.wait()
+                okClick.click()
+
+                // TW is still on the old format
+                if (prefs.gameServer == GameServerEnum.Tw) {
                     0.3.seconds.wait()
                     okClick.click()
-                    if (prefs.gameServer in listOf(GameServerEnum.Tw, GameServerEnum.Kr)) {
-                        0.3.seconds.wait()
-                        okClick.click()
-                    }
-                    3.seconds.wait()
                 }
-                else -> skipRapidClick.click(15)
-            }
+
+                3.seconds.wait()
+            } else skipRapidClick.click(15)
         }
     }
 
