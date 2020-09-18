@@ -5,12 +5,12 @@ import com.mathewsachin.libautomata.Location
 
 sealed class RefillResource {
     sealed class Single(val clickLocation: Location) : RefillResource() {
-        object SaintQuartz : Single(Location(1270, 345))
+        object SaintQuartz : Single(Location(750, 345))
 
         sealed class Apple(clickLocation: Location) : Single(clickLocation) {
-            object Gold : Apple(Location(1270, 634))
-            object Silver : Apple(Location(1270, 922))
-            object Bronze : Apple(Location(1270, 1140))
+            object Gold : Apple(Location(750, 634))
+            object Silver : Apple(Location(750, 922))
+            object Bronze : Apple(Location(750, 1140))
         }
     }
 
