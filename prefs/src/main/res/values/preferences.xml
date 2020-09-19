@@ -79,6 +79,8 @@
     <string name="pref_can_pause_script">can_pause_script</string>
     <string name="pref_auto_skill_cmd_text">auto_skill_cmd_text</string>
 
+    <string name="pref_max_gold_ember_set_size">max_gold_ember_set_size</string>
+
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_auto_skill">nav_auto_skill</string>
     <string name="pref_nav_more">nav_more</string>

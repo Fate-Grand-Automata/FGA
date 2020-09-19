@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
@@ -73,6 +74,12 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
             vm.refillMessage.observe(viewLifecycleOwner) { msg ->
                 it.summary = msg
+            }
+        }
+
+        findPreference<ListPreference>(getString(R.string.pref_script_mode))?.let {
+            vm.scriptMode.observe(viewLifecycleOwner) { mode ->
+                it.value = mode.toString()
             }
         }
     }

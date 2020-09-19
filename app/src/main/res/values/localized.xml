@@ -214,6 +214,9 @@
     <string name="p_script_mode_lottery">Lottery</string>
     <string name="p_script_mode_friend_gacha">Friend Gacha</string>
     <string name="p_script_mode_support_img_maker">Support Image Maker</string>
+    <string name="p_script_mode_gift_box">Gift Box</string>
+
+    <string name="p_max_gold_ember_set_size">Max Gold ember set size</string>
 
     <string name="p_party_not_set">Not Set</string>
 
@@ -262,4 +265,5 @@
     <string name="avg_time_per_run">Average time per run: %s</string>
     <string name="turns_count">Turns: %d</string>
     <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string>
+    <string name="picked_exp_stacks">Picked %d EXP stacks</string>
 </resources>

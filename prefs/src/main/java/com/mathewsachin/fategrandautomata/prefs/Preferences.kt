@@ -12,7 +12,7 @@ class PreferencesImpl @Inject constructor(
     val prefs: PrefsCore,
     val storageDirs: StorageDirs
 ) : IPreferences {
-    override val scriptMode by prefs.scriptMode
+    override var scriptMode by prefs.scriptMode
 
     override var gameServer by prefs.gameServer
 
@@ -84,6 +84,8 @@ class PreferencesImpl @Inject constructor(
     override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
 
     override val waitBeforeTurn by prefs.waitBeforeTurn.map { it.milliseconds }
+
+    override val maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
 
     private val autoSkillMap = mutableMapOf<String, IAutoSkillPreferences>()
 

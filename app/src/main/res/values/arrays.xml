@@ -102,6 +102,7 @@
         <item>@string/p_script_mode_lottery</item>
         <item>@string/p_script_mode_friend_gacha</item>
         <item>@string/p_script_mode_support_img_maker</item>
+        <item>@string/p_script_mode_gift_box</item>
     </array>
 
     <array name="script_mode_values">
@@ -109,6 +110,7 @@
         <item>Lottery</item>
         <item>FriendGacha</item>
         <item>SupportImageMaker</item>
+        <item>GiftBox</item>
     </array>
 
     <array name="party_labels">
