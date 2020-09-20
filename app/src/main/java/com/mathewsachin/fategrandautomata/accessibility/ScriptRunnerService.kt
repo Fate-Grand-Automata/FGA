@@ -214,7 +214,7 @@ class ScriptRunnerService : AccessibilityService() {
         serviceInfo = serviceInfo.apply {
             packageNames = GameServerEnum
                 .values()
-                .map { it.packageName }
+                .flatMap { it.packageNames.toList() }
                 .toTypedArray()
         }
 

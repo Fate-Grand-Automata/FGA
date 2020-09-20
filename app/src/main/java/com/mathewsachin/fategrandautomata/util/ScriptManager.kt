@@ -171,7 +171,7 @@ class ScriptManager @Inject constructor(
 
         fun DialogInterface.setOkBtnEnabled(enable: Boolean) {
             if (this is AlertDialog) {
-                getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = enable
+                getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = enable
             }
         }
 

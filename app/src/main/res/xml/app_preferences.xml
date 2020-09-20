@@ -1,16 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <ListPreference
-        app:defaultValue="En"
-        app:entries="@array/game_server_labels"
-        app:entryValues="@array/game_server_values"
-        app:icon="@drawable/ic_earth"
-        app:key="@string/pref_gameserver"
-        app:title="@string/p_game_server"
-        app:useSimpleSummaryProvider="true" />
-
     <PreferenceCategory
         app:key="battle_category"
         app:title="@string/p_script_mode_battle">
