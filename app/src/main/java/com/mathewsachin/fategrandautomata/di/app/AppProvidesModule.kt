@@ -2,12 +2,16 @@ package com.mathewsachin.fategrandautomata.di.app
 
 import android.content.Context
 import android.media.projection.MediaProjectionManager
+import android.os.Build
 import android.os.Environment
 import android.view.WindowManager
 import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefMaker
+import com.mathewsachin.fategrandautomata.scripts.IDropScreenshotStore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.util.LegacyDropScreenshotStore
+import com.mathewsachin.fategrandautomata.util.ScopedDropScreenshotStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,4 +55,11 @@ class AppProvidesModule {
             PreferenceManager.getDefaultSharedPreferences(context),
             context
         )
+
+    @Singleton
+    @Provides
+    fun provideDropScreenshotStore(@ApplicationContext context: Context, storageDirs: StorageDirs): IDropScreenshotStore =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ScopedDropScreenshotStore(context)
+        } else LegacyDropScreenshotStore(storageDirs)
 }
