@@ -2,9 +2,13 @@ package com.mathewsachin.fategrandautomata
 
 import java.io.File
 
-class StorageDirs(val storageRoot: File, val cacheRoot: File) {
-    init {
-        storageRoot.mkdirs()
+class StorageDirs(storageRoot: File, val cacheRoot: File) {
+    val storageRoot by lazy {
+        if (!storageRoot.exists()) {
+            storageRoot.mkdirs()
+        }
+
+        storageRoot
     }
 
     private val supportImgFolderPath: File by lazy {

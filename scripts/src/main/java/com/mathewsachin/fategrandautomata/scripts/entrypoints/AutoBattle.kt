@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.scripts.IDropScreenshotStore
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
@@ -8,9 +8,6 @@ import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 import kotlin.time.seconds
@@ -29,7 +26,7 @@ open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi,
-    val storageDirs: StorageDirs
+    val dropScreenshotStore: IDropScreenshotStore
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     private val support = Support(fgAutomataApi)
     private val card = Card(fgAutomataApi)
@@ -232,31 +229,15 @@ open class AutoBattle @Inject constructor(
     private fun screenshotDrops() {
         0.5.seconds.wait()
 
-        val dropsFolder = File(
-            storageDirs.storageRoot,
-            "drops"
-        )
-
-        if (!dropsFolder.exists()) {
-            dropsFolder.mkdirs()
-        }
-
-        val sdf = SimpleDateFormat("dd-M-yyyy-hh-mm-ss", Locale.US)
-        val timeString = sdf.format(Date())
+        val shotService = screenshotManager.screenshotService
+        val shots = mutableListOf<IPattern>()
 
         for (i in 0..1) {
-            val dropFileName = "${timeString}.${i}.png"
-
-            val shotService = screenshotManager.screenshotService
             val shot = if (shotService is IColorScreenshotProvider) {
                 shotService.takeColorScreenshot()
             } else screenshotManager.getScreenshot()
 
-            shot.use {
-                it.save(
-                    File(dropsFolder, dropFileName).absolutePath
-                )
-            }
+            shots.add(shot)
 
             // check if we need to scroll to see more drops
             if (images.dropScrollbar in Game.resultDropScrollbarRegion) {
@@ -264,6 +245,8 @@ open class AutoBattle @Inject constructor(
                 Location(2306, 1032).click()
             } else break
         }
+
+        dropScreenshotStore.insert(shots)
     }
 
     private fun isRepeatScreen() =
