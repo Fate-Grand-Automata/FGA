@@ -14,6 +14,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.LegacyDropScreenshotStore
 import com.mathewsachin.fategrandautomata.util.LegacySupportStore
 import com.mathewsachin.fategrandautomata.util.ScopedDropScreenshotStore
+import com.mathewsachin.fategrandautomata.util.ScopedSupportStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,7 +67,8 @@ class AppProvidesModule {
 
     @Singleton
     @Provides
-    fun provideSupportStore(@ApplicationContext context: Context): SupportStore {
-        return LegacySupportStore()
-    }
+    fun provideSupportStore(@ApplicationContext context: Context): SupportStore =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ScopedSupportStore(context)
+        } else LegacySupportStore()
 }
