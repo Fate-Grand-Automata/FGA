@@ -1,11 +1,12 @@
 package com.mathewsachin.fategrandautomata.scripts
 
+import com.mathewsachin.fategrandautomata.SupportStore
 import javax.inject.Inject
 
 class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
     private fun load(path: String) = imgLoader.loadRegionPattern(path)
 
-    fun loadSupportPattern(path: String) = imgLoader.loadSupportPattern(path)
+    fun loadSupportPattern(support: SupportStore.SupportImage.File) = imgLoader.loadSupportPattern(support)
 
     val battle get() = load("battle.png")
 

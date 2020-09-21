@@ -17,6 +17,7 @@
     <string name="pref_auto_skill_brave_chains">auto_skill_brave_chains</string>
 
     <string name="pref_extract_def_support_imgs">extract_def_support_imgs</string>
+    <string name="pref_auto_extract_support_imgs">auto_extract_support_images</string>
     <string name="pref_stage_counter_similarity">stage_counter_similarity</string>
     <string name="pref_wait_before_turn">wait_before_turn</string>
 

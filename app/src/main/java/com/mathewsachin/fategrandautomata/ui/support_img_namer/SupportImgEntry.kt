@@ -8,12 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.ITemporaryStore
-import java.io.File
+import java.io.OutputStream
 
 class SupportImgEntry(
     val tempStore: ITemporaryStore,
     val tempStoreKey: String,
-    val TargetDir: File,
+    val inserter: (String) -> OutputStream,
     val Frame: View,
     val regex: Regex,
     val invalidMsg: String
@@ -82,13 +82,6 @@ class SupportImgEntry(
             return false
         }
 
-        val newPath = File(TargetDir, "${newFileName}.png")
-
-        if (newPath.exists()) {
-            showAlert(context.getString(R.string.support_img_namer_file_name_already_exists, newFileName))
-            return false
-        }
-
         return true
     }
 
@@ -104,19 +97,12 @@ class SupportImgEntry(
             return true
         }
 
-        val newFileName = textBox.text.toString()
-        val newPath = File(TargetDir, "${newFileName}.png")
+        val newFileName = "${textBox.text}.png"
 
         try {
-            val newPathDir = newPath.parentFile
-
-            if (!newPathDir.exists()) {
-                newPathDir.mkdirs()
-            }
-
             // move
-            tempStore.read(tempStoreKey).use { old ->
-                newPath.outputStream().use { new ->
+            inserter(newFileName).use { new ->
+                tempStore.read(tempStoreKey).use { old ->
                     old.copyTo(new)
                 }
             }

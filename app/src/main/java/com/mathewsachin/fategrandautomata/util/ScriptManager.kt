@@ -7,7 +7,7 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.SupportStore
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.accessibility.showOverlayDialog
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
@@ -32,7 +32,7 @@ class ScriptManager @Inject constructor(
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
-    val storageDirs: StorageDirs,
+    val supportStore: SupportStore,
     val tempStore: ITemporaryStore
 ) {
     var scriptState: ScriptState = ScriptState.Stopped
@@ -56,7 +56,7 @@ class ScriptManager @Inject constructor(
         scriptState = ScriptState.Stopped
 
         if (e is SupportImageMakerExitException) {
-            showSupportImageNamer(userInterface, tempStore, storageDirs)
+            showSupportImageNamer(userInterface, tempStore, supportStore)
         }
     }
 

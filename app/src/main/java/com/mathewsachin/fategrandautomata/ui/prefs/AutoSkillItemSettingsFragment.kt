@@ -18,7 +18,7 @@ import androidx.preference.PreferenceDialogFragmentCompat
 import androidx.preference.PreferenceFragmentCompat
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.SupportStore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
@@ -39,7 +39,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     lateinit var preferences: IPreferences
 
     @Inject
-    lateinit var storageDirs: StorageDirs
+    lateinit var supportStore: SupportStore
 
     @Inject
     lateinit var prefsCore: PrefsCore
@@ -176,16 +176,19 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        if (storageDirs.shouldExtractSupportImages) {
+        // TODO: Automatic extract is broken
+        if (!prefsCore.autoExtractedSupportImages.get()) {
             performSupportImageExtraction()
-        } else preferredSupportOnResume(storageDirs)
+        } else preferredSupportOnResume(supportStore)
     }
 
     private fun performSupportImageExtraction() {
         lifecycleScope.launch {
             val msg = try {
-                SupportImageExtractor(requireContext(), storageDirs).extract()
-                preferredSupportOnResume(storageDirs)
+                SupportImageExtractor(requireContext(), supportStore).extract()
+                preferredSupportOnResume(supportStore)
+
+                prefsCore.autoExtractedSupportImages.set(true)
 
                 getString(R.string.support_imgs_extracted)
             } catch (e: Exception) {

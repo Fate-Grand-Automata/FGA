@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
+import com.mathewsachin.fategrandautomata.SupportStore
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
@@ -8,51 +9,28 @@ import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
-import java.util.*
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 import kotlin.time.seconds
-
-private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
 
 private typealias SearchFunction = () -> SearchFunctionResult
 
 const val supportRegionToolSimilarity = 0.75
 
-const val limitBrokenCharacter = '*'
-
 private val logger = KotlinLogging.logger {}
 
 class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
-    private var preferredServantArray = listOf<String>()
-    private var friendNameArray = listOf<String>()
-    private var preferredCEArray = listOf<PreferredCEEntry>()
-
-    private fun String.process(): List<String> {
-        return this
-            .split(',')
-            .map { it.trim() }
-            .filter { it.isNotBlank() && it.toLowerCase(Locale.US) != "any" }
-    }
+    private var preferredServantArray = listOf<SupportStore.SupportImage.File>()
+    private var friendNameArray = listOf<SupportStore.SupportImage.File>()
+    private var preferredCEArray = listOf<SupportStore.SupportImage.File>()
 
     private val autoSkillPrefs get() = prefs.selectedAutoSkillConfig.support
 
     fun init() {
-        friendNameArray = autoSkillPrefs.friendNames.process()
-        preferredServantArray = autoSkillPrefs.preferredServants.process()
+        friendNameArray = autoSkillPrefs.friendNames
+        preferredServantArray = autoSkillPrefs.preferredServants
 
         preferredCEArray = autoSkillPrefs.preferredCEs
-            .process()
-            .map {
-                val mlb = it.startsWith(limitBrokenCharacter)
-                var name = it
-
-                if (mlb) {
-                    name = name.substring(1)
-                }
-
-                PreferredCEEntry(name, mlb)
-            }
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum, continuing: Boolean): Boolean {
@@ -279,10 +257,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
     private fun findFriendName(): SearchFunctionResult {
         for (friendName in friendNameArray) {
             // Cached pattern. Don't dispose here.
-            val pattern =
-                images.loadSupportPattern(
-                    friendName
-                )
+            val pattern = images.loadSupportPattern(friendName)
 
             for (theFriend in Game.supportFriendsRegion.findAll(pattern)) {
                 return SearchFunctionResult.Found(theFriend.Region)
@@ -295,9 +270,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
     private fun findServants(): Sequence<SearchFunctionResult> = sequence {
         for (preferredServant in preferredServantArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = images.loadSupportPattern(
-                preferredServant
-            )
+            val pattern = images.loadSupportPattern(preferredServant)
 
             cropFriendLock(pattern).use {
                 for (servant in Game.supportListRegion.findAll(it)) {
@@ -350,14 +323,12 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
     private fun findCraftEssence(SearchRegion: Region): SearchFunctionResult {
         for (preferredCraftEssence in preferredCEArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = images.loadSupportPattern(
-                preferredCraftEssence.Name
-            )
+            val pattern = images.loadSupportPattern(preferredCraftEssence)
 
             val craftEssences = SearchRegion.findAll(pattern)
 
             for (craftEssence in craftEssences.map { it.Region }) {
-                if (!preferredCraftEssence.PreferMlb || isLimitBroken(craftEssence)) {
+                if (!autoSkillPrefs.mlb || isLimitBroken(craftEssence)) {
                     return SearchFunctionResult.Found(craftEssence)
                 }
             }

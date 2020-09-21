@@ -4,8 +4,7 @@ import android.text.InputType
 import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
-import com.mathewsachin.fategrandautomata.StorageDirs
-import java.io.File
+import com.mathewsachin.fategrandautomata.SupportStore
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 fun EditTextPreference.makeNumeric() {
@@ -41,9 +40,8 @@ fun PreferenceFragmentCompat.preferredSupportOnCreate() {
     }
 }
 
-private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
-    val entries = (ImgFolder.listFiles() ?: emptyArray())
-        .filter { it.isFile }
+private fun MultiSelectListPreference.populateFriendOrCe(items: List<SupportStore.SupportImage.File>) {
+    val entries = items
         .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
 
     // actual values
@@ -57,13 +55,13 @@ private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
         .toTypedArray()
 }
 
-fun PreferenceFragmentCompat.preferredSupportOnResume(storageDirs: StorageDirs) {
+fun PreferenceFragmentCompat.preferredSupportOnResume(supportStore: SupportStore) {
     val servants = findServantList() ?: return
     val ces = findCeList() ?: return
     val friendNames = findFriendNamesList() ?: return
 
     servants.apply {
-        val entries = (storageDirs.supportServantImgFolder.listFiles() ?: emptyArray())
+        val entries = supportStore.servants
             .map { it.name }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
             .toTypedArray()
@@ -73,10 +71,10 @@ fun PreferenceFragmentCompat.preferredSupportOnResume(storageDirs: StorageDirs) 
     }
 
     ces.apply {
-        populateFriendOrCe(storageDirs.supportCeFolder)
+        populateFriendOrCe(supportStore.ces)
     }
 
     friendNames.apply {
-        populateFriendOrCe(storageDirs.supportFriendFolder)
+        populateFriendOrCe(supportStore.friends)
     }
 }

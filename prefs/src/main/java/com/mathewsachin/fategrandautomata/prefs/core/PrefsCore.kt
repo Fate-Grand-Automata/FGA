@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -11,8 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class PrefsCore
 @Inject constructor(
-    val maker: PrefMaker,
-    val storageDirs: StorageDirs
+    val maker: PrefMaker
 ) {
     val scriptMode = maker.enum(
         R.string.pref_script_mode,
@@ -102,14 +100,15 @@ class PrefsCore
 
     val maxGoldEmberSetSize = maker.int(R.string.pref_max_gold_ember_set_size, 1)
 
+    val autoExtractedSupportImages = maker.bool(R.string.pref_auto_extract_support_imgs)
+
     private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
 
     fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =
         autoSkillMap.getOrPut(id) {
             AutoSkillPrefsCore(
                 id,
-                maker.context,
-                storageDirs
+                maker.context
             )
         }
 

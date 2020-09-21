@@ -13,16 +13,10 @@ class LegacyDropScreenshotStore : IDropScreenshotStore {
     }
 
     private val dropsFolder by lazy {
-        val folder = File(
+        File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
             subFolder
-        )
-
-        if (!folder.exists()) {
-            folder.mkdirs()
-        }
-
-        folder
+        ).apply { mkdirs() }
     }
 
     override fun insert(images: List<IPattern>) {
