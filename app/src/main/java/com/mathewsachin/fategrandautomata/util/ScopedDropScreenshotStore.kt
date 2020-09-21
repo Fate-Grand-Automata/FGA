@@ -29,7 +29,10 @@ class ScopedDropScreenshotStore @Inject constructor(
             val values = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, dropFileName)
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
-                put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/FGA/drops")
+                put(
+                    MediaStore.MediaColumns.RELATIVE_PATH,
+                    "${Environment.DIRECTORY_PICTURES}/${LegacyDropScreenshotStore.subFolder}"
+                )
             }
 
             resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)?.let { uri ->

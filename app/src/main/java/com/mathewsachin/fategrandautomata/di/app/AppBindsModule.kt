@@ -3,7 +3,9 @@ package com.mathewsachin.fategrandautomata.di.app
 import com.mathewsachin.fategrandautomata.prefs.PreferencesImpl
 import com.mathewsachin.fategrandautomata.scripts.IImageLoader
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
+import com.mathewsachin.fategrandautomata.scripts.ITemporaryStore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.util.CacheStore
 import com.mathewsachin.fategrandautomata.util.ImageLoader
 import com.mathewsachin.fategrandautomata.util.ScriptMessages
 import dagger.Binds
@@ -26,4 +28,8 @@ interface AppBindsModule {
     @Singleton
     @Binds
     fun bindScriptMessages(scriptMessages: ScriptMessages): IScriptMessages
+
+    @Singleton
+    @Binds
+    fun bindTempStore(cacheStore: CacheStore): ITemporaryStore
 }

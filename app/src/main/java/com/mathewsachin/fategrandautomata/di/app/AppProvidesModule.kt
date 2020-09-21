@@ -30,8 +30,7 @@ class AppProvidesModule {
             File(
                 Environment.getExternalStorageDirectory(),
                 "Fate-Grand-Automata"
-            ),
-            context.cacheDir
+            )
         )
 
     @Singleton
@@ -58,8 +57,8 @@ class AppProvidesModule {
 
     @Singleton
     @Provides
-    fun provideDropScreenshotStore(@ApplicationContext context: Context, storageDirs: StorageDirs): IDropScreenshotStore =
+    fun provideDropScreenshotStore(@ApplicationContext context: Context): IDropScreenshotStore =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ScopedDropScreenshotStore(context)
-        } else LegacyDropScreenshotStore(storageDirs)
+        } else LegacyDropScreenshotStore()
 }

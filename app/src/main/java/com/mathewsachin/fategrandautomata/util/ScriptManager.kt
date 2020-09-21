@@ -12,6 +12,7 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterfac
 import com.mathewsachin.fategrandautomata.accessibility.showOverlayDialog
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
+import com.mathewsachin.fategrandautomata.scripts.ITemporaryStore
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -31,7 +32,8 @@ class ScriptManager @Inject constructor(
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
-    val storageDirs: StorageDirs
+    val storageDirs: StorageDirs,
+    val tempStore: ITemporaryStore
 ) {
     var scriptState: ScriptState = ScriptState.Stopped
         private set
@@ -54,7 +56,7 @@ class ScriptManager @Inject constructor(
         scriptState = ScriptState.Stopped
 
         if (e is SupportImageMakerExitException) {
-            showSupportImageNamer(userInterface, storageDirs)
+            showSupportImageNamer(userInterface, tempStore, storageDirs)
         }
     }
 

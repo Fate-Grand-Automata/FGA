@@ -55,10 +55,8 @@ interface IPattern : AutoCloseable {
     /**
      * Saves the image data to the given file path.
      *
-     * @param FileName an absolute file path pointing to the save location
+     * @param stream an [OutputStream] to write the image into. PNG format is expected.
      */
-    fun save(FileName: String)
-
     fun save(stream: OutputStream)
 
     /**

@@ -1,16 +1,18 @@
 package com.mathewsachin.fategrandautomata.ui.support_img_namer
 
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.ITemporaryStore
 import java.io.File
 
 class SupportImgEntry(
-    val ImgPath: File,
+    val tempStore: ITemporaryStore,
+    val tempStoreKey: String,
     val TargetDir: File,
     val Frame: View,
     val regex: Regex,
@@ -22,10 +24,12 @@ class SupportImgEntry(
     val errorTxt: TextView = Frame.findViewById(R.id.support_img_error)
 
     init {
-        if (!ImgPath.exists()) {
+        if (!tempStore.exists(tempStoreKey)) {
             hide()
         } else {
-            imgView.setImageURI(Uri.parse(ImgPath.absolutePath))
+            tempStore.read(tempStoreKey).use { stream ->
+                imgView.setImageBitmap(BitmapFactory.decodeStream(stream))
+            }
 
             // Allow clicking the image to toggle the checkbox too for convenience
             imgView.setOnClickListener {
@@ -60,14 +64,12 @@ class SupportImgEntry(
             return true
         }
 
-        val oldPath = ImgPath
-        val newFileName = textBox.text.toString()
-
-        if (!oldPath.exists()) {
+        if (!tempStore.exists(tempStoreKey)) {
             // Either the file was deleted or not generated in the first place.
             return true
         }
 
+        val newFileName = textBox.text.toString()
         val context = Frame.context
 
         if (newFileName.isBlank()) {
@@ -97,14 +99,12 @@ class SupportImgEntry(
             return true
         }
 
-        val oldPath = ImgPath
-        val newFileName = textBox.text.toString()
-
-        if (!oldPath.exists()) {
+        if (!tempStore.exists(tempStoreKey)) {
             // Either the file was deleted or not generated in the first place.
             return true
         }
 
+        val newFileName = textBox.text.toString()
         val newPath = File(TargetDir, "${newFileName}.png")
 
         try {
@@ -115,8 +115,13 @@ class SupportImgEntry(
             }
 
             // move
-            oldPath.copyTo(newPath)
-            oldPath.delete()
+            tempStore.read(tempStoreKey).use { old ->
+                newPath.outputStream().use { new ->
+                    old.copyTo(new)
+                }
+            }
+
+            tempStore.delete(tempStoreKey)
         } catch (e: Exception) {
             val context = Frame.context
             showAlert(context.getString(R.string.support_img_namer_file_rename_failed, newFileName))

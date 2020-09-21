@@ -191,10 +191,6 @@ class DroidCvPattern(
         return DroidCvPattern(result).also { it.tag = tag }
     }
 
-    override fun save(FileName: String) {
-        Imgcodecs.imwrite(FileName, Mat)
-    }
-
     override fun save(stream: OutputStream) {
         val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 

@@ -2,7 +2,7 @@ package com.mathewsachin.fategrandautomata
 
 import java.io.File
 
-class StorageDirs(storageRoot: File, val cacheRoot: File) {
+class StorageDirs(storageRoot: File) {
     val storageRoot by lazy {
         if (!storageRoot.exists()) {
             storageRoot.mkdirs()
@@ -56,16 +56,6 @@ class StorageDirs(storageRoot: File, val cacheRoot: File) {
 
     val supportFriendFolder: File by lazy {
         val dir = File(supportImgFolder, "friend")
-
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
-
-        dir
-    }
-
-    val supportImgTempDir: File by lazy {
-        val dir = File(cacheRoot, "support")
 
         if (!dir.exists()) {
             dir.mkdirs()

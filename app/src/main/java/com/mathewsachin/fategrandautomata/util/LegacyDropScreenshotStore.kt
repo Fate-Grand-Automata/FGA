@@ -1,18 +1,21 @@
 package com.mathewsachin.fategrandautomata.util
 
-import com.mathewsachin.fategrandautomata.StorageDirs
+import android.os.Environment
 import com.mathewsachin.fategrandautomata.scripts.IDropScreenshotStore
 import com.mathewsachin.libautomata.IPattern
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
-class LegacyDropScreenshotStore @Inject constructor(val storageDirs: StorageDirs) : IDropScreenshotStore {
+class LegacyDropScreenshotStore : IDropScreenshotStore {
+    companion object {
+        const val subFolder = "FGA/drops"
+    }
+
     private val dropsFolder by lazy {
         val folder = File(
-            storageDirs.storageRoot,
-            "drops"
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+            subFolder
         )
 
         if (!folder.exists()) {
@@ -30,9 +33,9 @@ class LegacyDropScreenshotStore @Inject constructor(val storageDirs: StorageDirs
             val dropFileName = "${timeString}.${i}.png"
 
             image.use {
-                it.save(
-                    File(dropsFolder, dropFileName).absolutePath
-                )
+                File(dropsFolder, dropFileName).outputStream().use { stream ->
+                    image.save(stream)
+                }
             }
         }
     }

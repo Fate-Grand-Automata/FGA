@@ -137,7 +137,7 @@
     <string name="p_stop_on_ce_get_summary">首次通關及絆禮裝獲得時自動停止腳本</string>
     <string name="p_experimental">實驗功能</string>
     <string name="p_screenshot_drops">掉落截圖</string>
-    <string name="p_screenshot_drops_summary">存至 \'Fate-Grand-Automata/drops\' 資料夾</string>
+    <string name="p_screenshot_drops_summary">存至 \'Pictures/FGA/drops\' 資料夾</string>
     <string name="p_friend_summon_only">只使用友情點數召喚</string>
     <string name="p_boost_item">加速道具</string>
     <string name="p_brave_chains">EX串</string>

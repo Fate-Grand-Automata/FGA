@@ -1,36 +1,32 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.ITemporaryStore
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.libautomata.*
-import java.io.File
 import javax.inject.Inject
 
-fun getServantImgPath(dir: File, Index: Int): File {
-    return File(dir, "servant_${Index}.png")
-}
-
-fun getCeImgPath(dir: File, Index: Int): File {
-    return File(dir, "ce_${Index}.png")
-}
-
-fun getFriendImgPath(dir: File, Index: Int): File {
-    return File(dir, "friend_${Index}.png")
-}
-
 class SupportImageMaker @Inject constructor(
-    storageDirs: StorageDirs,
+    val tempStore: ITemporaryStore,
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
-    private val dir = storageDirs.supportImgTempDir
+    companion object {
+        fun getServantImgKey(index: Int) =
+            "support/servant_${index}.png"
+
+        fun getCeImgKey(index: Int) =
+            "support/ce_${index}.png"
+
+        fun getFriendImgKey(index: Int) =
+            "support/friend_${index}.png"
+    }
 
     override fun script(): Nothing {
-        cleanExtractFolder()
+        tempStore.clear()
 
         val isInSupport = isInSupport()
 
@@ -69,27 +65,21 @@ class SupportImageMaker @Inject constructor(
         throw SupportImageMakerExitException()
     }
 
-    private fun cleanExtractFolder() {
-        dir.listFiles()?.forEach {
-            it.delete()
-        }
-    }
-
     private fun extractServantImage(supportBoundImage: IPattern, i: Int) {
         val servant = supportBoundImage.crop(Region(0, 0, 125, 44))
         servant.use {
-            servant.save(
-                getServantImgPath(dir, i).absolutePath
-            )
+            tempStore.write(getServantImgKey(i)).use { stream ->
+                servant.save(stream)
+            }
         }
     }
 
     private fun extractCeImage(supportRegionImage: IPattern, i: Int) {
         val ce = supportRegionImage.crop(Region(0, 80, supportRegionImage.width, 25))
         ce.use {
-            ce.save(
-                getCeImgPath(dir, i).absolutePath
-            )
+            tempStore.write(getCeImgKey(i)).use { stream ->
+                ce.save(stream)
+            }
         }
     }
 
@@ -100,9 +90,9 @@ class SupportImageMaker @Inject constructor(
 
         val friendPattern = friendBound.getPattern()
         friendPattern.use {
-            friendPattern.save(
-                getFriendImgPath(dir, i).absolutePath
-            )
+            tempStore.write(getFriendImgKey(i)).use { stream ->
+                friendPattern.save(stream)
+            }
         }
     }
 }
