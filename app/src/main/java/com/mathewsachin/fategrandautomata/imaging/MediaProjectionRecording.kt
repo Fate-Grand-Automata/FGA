@@ -5,7 +5,7 @@ import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import android.util.DisplayMetrics
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.util.StoragePaths
 import java.io.File
 
 /**
@@ -13,8 +13,7 @@ import java.io.File
  */
 class MediaProjectionRecording(
     MediaProjection: MediaProjection,
-    DisplayMetrics: DisplayMetrics,
-    storageDirs: StorageDirs
+    DisplayMetrics: DisplayMetrics
 ) : AutoCloseable {
 
     private val virtualDisplay: VirtualDisplay
@@ -44,7 +43,7 @@ class MediaProjectionRecording(
         mediaRecorder.setVideoFrameRate(profile.videoFrameRate)
         mediaRecorder.setVideoSize(screenWidth, screenHeight)
 
-        val outFile = File(storageDirs.storageRoot, "record.mp4")
+        val outFile = File(StoragePaths.pictures, "record.mp4")
         mediaRecorder.setOutputFile(outFile.absolutePath)
 
         mediaRecorder.prepare()

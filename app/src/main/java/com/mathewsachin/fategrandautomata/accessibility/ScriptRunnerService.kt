@@ -15,7 +15,6 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
@@ -59,9 +58,6 @@ class ScriptRunnerService : AccessibilityService() {
 
     @Inject
     lateinit var mediaProjectionManager: MediaProjectionManager
-
-    @Inject
-    lateinit var storageDirs: StorageDirs
 
     @Inject
     lateinit var userInterface: ScriptRunnerUserInterface
@@ -124,10 +120,9 @@ class ScriptRunnerService : AccessibilityService() {
                     mediaProjectionManager.getMediaProjection(RESULT_OK, MediaProjectionToken)
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
-                    userInterface.mediaProjectionMetrics,
-                    storageDirs
+                    userInterface.mediaProjectionMetrics
                 )
-            } else RootScreenshotService(SuperUser(), storageDirs, platformImpl)
+            } else RootScreenshotService(SuperUser(), platformImpl)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             null

@@ -1,12 +1,12 @@
 package com.mathewsachin.fategrandautomata.util
 
-import android.os.Environment
 import com.mathewsachin.fategrandautomata.SupportStore
 import java.io.File
+import javax.inject.Inject
 
-class LegacySupportStore : SupportStore {
+// On Android 11, we can access Media directories using File APIs
+class LegacySupportStore @Inject constructor() : SupportStore {
     companion object {
-        const val subFolder = "FGA/support"
         const val servant = "servant"
         const val ce = "ce"
         const val friend = "friend"
@@ -24,17 +24,11 @@ class LegacySupportStore : SupportStore {
             get() = file.nameWithoutExtension
     }
 
-    private val supportImgFolderPath: File by lazy {
-        File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-            subFolder
-        ).apply { mkdirs() }
-    }
-
-    val shouldExtractSupportImages get() = !supportImgFolderPath.exists()
-
     val supportImgFolder: File by lazy {
-        supportImgFolderPath.apply { mkdirs() }
+        File(
+            StoragePaths.pictures,
+            "support"
+        ).apply { mkdirs() }
     }
 
     val supportServantImgFolder: File by lazy {

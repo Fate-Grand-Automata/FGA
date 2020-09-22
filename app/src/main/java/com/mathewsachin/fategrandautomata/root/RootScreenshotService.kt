@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
+import com.mathewsachin.fategrandautomata.util.StoragePaths
 import com.mathewsachin.fategrandautomata.util.readIntLE
 import com.mathewsachin.libautomata.IColorScreenshotProvider
 import com.mathewsachin.libautomata.IPattern
@@ -20,11 +20,10 @@ private val logger = KotlinLogging.logger {}
 
 class RootScreenshotService(
     private val SuperUser: SuperUser,
-    storageDirs: StorageDirs,
     val platformImpl: IPlatformImpl
 ) : IScreenshotService, IColorScreenshotProvider {
     private var buffer: ByteArray? = null
-    private val imgPath = File(storageDirs.storageRoot, "sshot.raw").absolutePath
+    private val imgPath = File(StoragePaths.pictures, "sshot.raw").absolutePath
 
     private var rootLoadMat: Mat? = null
     private val rootConvertMat = Mat()

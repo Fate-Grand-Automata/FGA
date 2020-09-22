@@ -176,7 +176,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        // TODO: Automatic extract is broken
         if (!prefsCore.autoExtractedSupportImages.get()) {
             performSupportImageExtraction()
         } else preferredSupportOnResume(supportStore)

@@ -1,13 +1,13 @@
 package com.mathewsachin.fategrandautomata.di.app
 
+import com.mathewsachin.fategrandautomata.SupportStore
 import com.mathewsachin.fategrandautomata.prefs.PreferencesImpl
+import com.mathewsachin.fategrandautomata.scripts.IDropScreenshotStore
 import com.mathewsachin.fategrandautomata.scripts.IImageLoader
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.ITemporaryStore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.util.CacheStore
-import com.mathewsachin.fategrandautomata.util.ImageLoader
-import com.mathewsachin.fategrandautomata.util.ScriptMessages
+import com.mathewsachin.fategrandautomata.util.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -32,4 +32,12 @@ interface AppBindsModule {
     @Singleton
     @Binds
     fun bindTempStore(cacheStore: CacheStore): ITemporaryStore
+
+    @Singleton
+    @Binds
+    fun bindDropScreenshotStore(dropScreenshotStore: LegacyDropScreenshotStore): IDropScreenshotStore
+
+    @Singleton
+    @Binds
+    fun bindSupportStore(supportStore: LegacySupportStore): SupportStore
 }

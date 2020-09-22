@@ -6,7 +6,6 @@ import android.media.Image
 import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.util.DisplayMetrics
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.libautomata.IColorScreenshotProvider
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IScreenshotService
@@ -19,8 +18,7 @@ import org.opencv.imgproc.Imgproc
  */
 class MediaProjectionScreenshotService(
     private val MediaProjection: MediaProjection,
-    private val DisplayMetrics: DisplayMetrics,
-    private val storageDirs: StorageDirs
+    private val DisplayMetrics: DisplayMetrics
 ) : IScreenshotService, IColorScreenshotProvider {
     private val colorCorrectedMat = Mat()
 
@@ -86,5 +84,5 @@ class MediaProjectionScreenshotService(
     }
 
     override fun startRecording() =
-        MediaProjectionRecording(MediaProjection, DisplayMetrics, storageDirs)
+        MediaProjectionRecording(MediaProjection, DisplayMetrics)
 }
