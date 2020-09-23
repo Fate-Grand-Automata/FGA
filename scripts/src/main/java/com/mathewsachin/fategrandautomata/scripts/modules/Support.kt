@@ -5,7 +5,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
 import java.util.*
@@ -196,7 +195,12 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                 }
                 result is SearchVisibleResult.NotFound
                         && numberOfSwipes < prefs.support.swipesPerUpdate -> {
-                    scrollList()
+
+                    swipe(
+                        Game.supportSwipeStartClick,
+                        Game.supportSwipeEndClick
+                    )
+
                     ++numberOfSwipes
                     0.3.seconds.wait()
                 }
@@ -253,28 +257,6 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
             else -> throw ScriptExitException(messages.supportSelectionPreferredNotSet)
         }
     }
-
-    /**
-     * Scroll support list considering [IPreferences.supportSwipeMultiplier].
-     */
-    private fun scrollList() {
-        val endY = lerp(
-            Game.supportSwipeStartClick.Y,
-            Game.supportSwipeEndClick.Y,
-            prefs.support.supportSwipeMultiplier
-        )
-
-        swipe(
-            Game.supportSwipeStartClick,
-            Game.supportSwipeEndClick.copy(Y = endY)
-        )
-    }
-
-    /**
-     * linear interpolation
-     */
-    private fun lerp(start: Int, end: Int, fraction: Double) =
-        (start + (end - start) * fraction).toInt()
 
     private fun findFriendName(): SearchFunctionResult {
         for (friendName in friendNameArray) {

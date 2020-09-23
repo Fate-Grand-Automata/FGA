@@ -174,7 +174,7 @@
     <string name="p_fine_tune_swipes">Swipes</string>
     <string name="p_fine_tune_wait_after_swiping">Wait after swiping (ms)</string>
     <string name="p_fine_tune_swipe_duration">Swipe duration (ms)</string>
-    <string name="p_fine_tune_support_swipe_multiplier">Support Swipe Multiplier (%)</string>
+    <string name="p_fine_tune_swipe_multiplier">Swipe Multiplier (%)</string>
     <string name="p_fine_tune_wait">Wait</string>
     <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
     <string name="p_fine_tune_wait_before_turn">Wait before Turn (ms)</string>

@@ -9,4 +9,6 @@ interface IPlatformPrefs {
     val minSimilarity: Double
 
     val waitMultiplier: Double
+
+    val swipeMultiplier: Double
 }
