@@ -6,16 +6,19 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation 'com.google.dagger:dagger:2.29.1'
-    kapt 'com.google.dagger:dagger-compiler:2.29.1'
+    implementation "com.google.dagger:hilt-core:2.29.1-alpha"
+    kapt "com.google.dagger:hilt-compiler:2.29.1-alpha"
 
     api 'io.github.microutils:kotlin-logging:2.0.3'
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
 }
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
