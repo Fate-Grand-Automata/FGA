@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.modules.Game
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
 
@@ -22,10 +24,30 @@ class AutoGiftBox @Inject constructor(
         while (clickCount < maxClickCount) {
             checkGifts()
 
-            swipe(Location(700, 650), Location(700, 175))
+            scrollList()
         }
 
         throw ScriptExitException(messages.pickedExpStack(clickCount))
+    }
+
+    /**
+     * linear interpolation
+     */
+    private fun lerp(start: Int, end: Int, fraction: Double) =
+        (start + (end - start) * fraction).toInt()
+
+    /**
+     * Scroll support list considering [IPreferences.supportSwipeMultiplier].
+     */
+    private fun scrollList() {
+        val endY = lerp(
+            Game.supportSwipeStartClick.Y,
+            Game.supportSwipeEndClick.Y,
+            prefs.support.supportSwipeMultiplier
+        )
+
+        swipe(Location(700,  Game.supportSwipeStartClick.Y),Location(700, endY)
+        )
     }
 
     private val countRegionX
