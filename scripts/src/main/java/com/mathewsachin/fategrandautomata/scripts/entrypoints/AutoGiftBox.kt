@@ -23,7 +23,6 @@ class AutoGiftBox @Inject constructor(
     override fun script(): Nothing {
         while (clickCount < maxClickCount) {
             checkGifts()
-
             scrollList()
         }
 
@@ -31,13 +30,13 @@ class AutoGiftBox @Inject constructor(
     }
 
     /**
-     * linear interpolation
+     * Referenced from modules/support.kt
      */
     private fun lerp(start: Int, end: Int, fraction: Double) =
         (start + (end - start) * fraction).toInt()
 
     /**
-     * Scroll support list considering [IPreferences.supportSwipeMultiplier].
+     * Referenced from modules/support.kt
      */
     private fun scrollList() {
         val endY = lerp(
@@ -45,8 +44,7 @@ class AutoGiftBox @Inject constructor(
             Game.supportSwipeEndClick.Y,
             prefs.support.supportSwipeMultiplier
         )
-
-        swipe(Location(700,  Game.supportSwipeStartClick.Y),Location(700, endY)
+        swipe(Location(700,  Game.supportSwipeStartClick.Y), Location(700, endY)
         )
     }
 
