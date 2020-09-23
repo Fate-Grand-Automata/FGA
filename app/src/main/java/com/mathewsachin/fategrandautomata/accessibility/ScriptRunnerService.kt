@@ -221,7 +221,12 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = this
 
         screenOffReceiver.register(this) {
-            scriptManager.stopScript()
+            scriptManager.scriptState.let { state ->
+                // Don't stop if already paused
+                if (state is ScriptState.Started && !state.paused) {
+                    scriptManager.stopScript()
+                }
+            }
         }
 
         super.onServiceConnected()
