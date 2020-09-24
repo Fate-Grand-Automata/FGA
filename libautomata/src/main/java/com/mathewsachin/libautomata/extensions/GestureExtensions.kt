@@ -21,13 +21,13 @@ class GestureExtensions @Inject constructor(
             Start.X,
             End.X,
             platformImpl.prefs.swipeMultiplier
-        )
+        ).coerceAtLeast(0)
 
         val endY = lerp(
             Start.Y,
             End.Y,
             platformImpl.prefs.swipeMultiplier
-        )
+        ).coerceAtLeast(0)
 
         gestureService.swipe(
             Start.transform(),
