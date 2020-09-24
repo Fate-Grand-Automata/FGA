@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.WhitePixelsProvider
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.ScriptExitException
@@ -125,12 +126,16 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         return !game.battleStageCountRegion.exists(
             snapshot,
-            Similarity = prefs.stageCounterSimilarity
+            Similarity = 0.7
         )
     }
 
     fun takeStageSnapshot() {
         state.runState.stageState.stageCountSnaphot =
-            game.battleStageCountRegion.getPattern()
+            game.battleStageCountRegion.getPattern().let {
+                if (it is WhitePixelsProvider) {
+                    it.use { m -> m.getWhitePixelMask(170) }
+                } else it
+            }
     }
 }

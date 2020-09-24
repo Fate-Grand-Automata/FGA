@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.imaging
 
+import com.mathewsachin.fategrandautomata.scripts.WhitePixelsProvider
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Match
 import com.mathewsachin.libautomata.Region
@@ -17,36 +18,14 @@ private val logger = KotlinLogging.logger {}
 class DroidCvPattern(
     private var Mat: Mat? = Mat(),
     private val OwnsMat: Boolean = true
-) : IPattern {
-    private data class MatWithAlpha(val mat: Mat, val alpha: Mat?)
-
-    var alpha: Mat? = null
-
+) : IPattern, WhitePixelsProvider {
     private companion object {
-        fun makeMat(Stream: InputStream): MatWithAlpha {
+        fun makeMat(Stream: InputStream): Mat {
             val byteArray = Stream.readBytes()
-            DisposableMat(MatOfByte(*byteArray)).use {
-                val decoded = Imgcodecs.imdecode(it.Mat, Imgcodecs.IMREAD_UNCHANGED)
-                var alphaChannel: Mat? = null
-
-                // Change color images to grayscale and extract alpha if present
-                when (decoded.channels()) {
-                    4 -> {
-                        // RGBA
-                        alphaChannel =
-                            Mat().apply { Core.extractChannel(decoded, this, 3) }
-                        Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGBA2GRAY)
-                    }
-                    3 -> Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGB2GRAY)
-                }
-
-                return MatWithAlpha(decoded, alphaChannel)
+            return DisposableMat(MatOfByte(*byteArray)).use {
+                Imgcodecs.imdecode(it.Mat, Imgcodecs.IMREAD_GRAYSCALE)
             }
         }
-    }
-
-    private constructor(matWithAlpha: MatWithAlpha) : this(matWithAlpha.mat) {
-        alpha = matWithAlpha.alpha
     }
 
     constructor(Stream: InputStream, tag: String) : this(makeMat(Stream)) {
@@ -96,22 +75,12 @@ class DroidCvPattern(
             val result = DisposableMat()
 
             if (Template.width <= width && Template.height <= height) {
-                if (alpha != null) {
-                    Imgproc.matchTemplate(
-                        Mat,
-                        Template.Mat,
-                        result.Mat,
-                        Imgproc.TM_CCOEFF_NORMED,
-                        alpha
-                    )
-                } else {
-                    Imgproc.matchTemplate(
-                        Mat,
-                        Template.Mat,
-                        result.Mat,
-                        Imgproc.TM_CCOEFF_NORMED
-                    )
-                }
+                Imgproc.matchTemplate(
+                    Mat,
+                    Template.Mat,
+                    result.Mat,
+                    Imgproc.TM_CCOEFF_NORMED
+                )
             } else {
                 logger.debug { "Skipped matching $Template: Region out of bounds" }
             }
@@ -195,5 +164,13 @@ class DroidCvPattern(
 
     override fun copy() = DroidCvPattern(Mat?.clone()).also {
         it.tag = tag
+    }
+
+    override fun getWhitePixelMask(threshold: Int): IPattern {
+        val result = Mat()
+
+        Imgproc.threshold(Mat, result, threshold.toDouble(), 255.0, Imgproc.THRESH_BINARY)
+
+        return DroidCvPattern(result).also { it.tag = tag }
     }
 }
