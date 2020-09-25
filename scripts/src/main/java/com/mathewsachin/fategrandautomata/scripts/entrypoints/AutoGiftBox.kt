@@ -22,7 +22,7 @@ class AutoGiftBox @Inject constructor(
         while (clickCount < maxClickCount) {
             checkGifts()
 
-            swipe(Location(700, 650), Location(700, 175))
+            swipe(Location(700, 950), Location(700, 375))
         }
 
         throw ScriptExitException(messages.pickedExpStack(clickCount))

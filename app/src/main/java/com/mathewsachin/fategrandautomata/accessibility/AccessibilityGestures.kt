@@ -4,12 +4,15 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.app.Service
 import android.graphics.Path
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.extensions.IDurationExtensions
 import mu.KotlinLogging
 import javax.inject.Inject
+import kotlin.math.*
 
 private val logger = KotlinLogging.logger {}
 
@@ -23,12 +26,11 @@ class AccessibilityGestures @Inject constructor(
 ) : IGestureService, IDurationExtensions by durationExtensions {
     val service = service as AccessibilityService
 
-    override fun swipe(Start: Location, End: Location) {
-        val swipePath = Path()
-        swipePath.moveTo(Start.X.toFloat(), Start.Y.toFloat())
-        swipePath.lineTo(End.X.toFloat(), End.Y.toFloat())
-
-        logger.debug { "swipe $Start, $End" }
+    fun swipe7(Start: Location, End: Location) {
+        val swipePath = Path().apply {
+            moveTo(Start.X.toFloat(), Start.Y.toFloat())
+            lineTo(End.X.toFloat(), End.Y.toFloat())
+        }
 
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
@@ -38,6 +40,120 @@ class AccessibilityGestures @Inject constructor(
         performGesture(swipeStroke)
 
         gesturePrefs.swipeWaitTime.wait()
+    }
+
+    /*
+    void ManualTouch(Location Start, Location End)
+{
+    var direction = Math.Atan2(Start.X - End.X, Start.Y - End.Y);
+
+    var distanceLeft = Math.Sqrt(Math.Pow(Start.X - End.X, 2) + Math.Pow(Start.Y - End.Y, 2));
+
+    const int thresholdDistance = 5;
+    const int betweenScrollWait = 5;
+
+    while (distanceLeft > 0)
+    {
+        var distanceToScroll = Math.Max(thresholdDistance, distanceLeft);
+
+        var x = (Start.X + distanceToScroll * Math.Cos(direction)).Round();
+        var y = (Start.Y + distanceToScroll * Math.Sin(direction)).Round();
+        End = new Location(x, y);
+
+        Scroll(Start, End);
+        AutomataApi.Wait(betweenScrollWait);
+
+        Start = End;
+
+        distanceLeft -= distanceToScroll;
+    }
+}
+    */
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun swipe8(Start: Location, End: Location) {
+        val xDiff = (End.X - Start.X).toFloat()
+        val yDiff = (End.Y - Start.Y).toFloat()
+        val direction = atan2(xDiff, yDiff)
+        var distanceLeft = sqrt(xDiff.pow(2) + yDiff.pow(2))
+
+        val thresholdDistance = 30f
+        val tapDuration = 50L
+        val swipeDuration = 1L
+
+        var from = Start
+
+        val mouseDownPath = Path().apply {
+            moveTo(Start.X.toFloat(), Start.Y.toFloat())
+        }
+
+        var elapsed = 0L
+
+        var lastStroke = GestureDescription.StrokeDescription(
+            mouseDownPath,
+            elapsed,
+            tapDuration,
+            true
+        )
+
+        elapsed += tapDuration
+
+        performGestureWithoutWaiting(lastStroke)
+
+        while (distanceLeft > 0) {
+            val distanceToScroll = minOf(thresholdDistance, distanceLeft)
+
+            val x = (from.X + distanceToScroll * sin(direction)).roundToInt()
+            val y = (from.Y + distanceToScroll * cos(direction)).roundToInt()
+            val to = Location(x, y)
+
+            println("dswipe: $from $to")
+
+            val swipePath = Path().apply {
+                moveTo(from.X.toFloat(), from.Y.toFloat())
+                lineTo(to.X.toFloat(), to.Y.toFloat())
+            }
+
+            lastStroke = lastStroke.continueStroke(
+                swipePath,
+                elapsed,
+                swipeDuration,
+                true
+            )
+
+            elapsed += swipeDuration
+
+            performGestureWithoutWaiting(lastStroke)
+
+            from = to
+
+            distanceLeft -= distanceToScroll
+        }
+
+        val mouseUpPath = Path().apply {
+            moveTo(from.X.toFloat(), from.Y.toFloat())
+        }
+
+        lastStroke = lastStroke.continueStroke(
+            mouseUpPath,
+            elapsed,
+            tapDuration,
+            false
+        )
+
+        performGesture(lastStroke)
+
+        gesturePrefs.swipeWaitTime.wait()
+    }
+
+    override fun swipe(Start: Location, End: Location) {
+        logger.debug { "swipe $Start, $End" }
+
+        val swipeFunction = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ::swipe8
+        } else ::swipe7
+
+        swipeFunction(Start, End)
     }
 
     override fun click(Location: Location, Times: Int) {
@@ -57,6 +173,14 @@ class AccessibilityGestures @Inject constructor(
         }
 
         gesturePrefs.clickWaitTime.wait()
+    }
+
+    private fun performGestureWithoutWaiting(StrokeDesc: GestureDescription.StrokeDescription) {
+        val gestureDesc = GestureDescription.Builder()
+            .addStroke(StrokeDesc)
+            .build()
+
+        service.dispatchGesture(gestureDesc, null, null)
     }
 
     private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {
