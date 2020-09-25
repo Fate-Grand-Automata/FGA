@@ -22,7 +22,7 @@ class AutoGiftBox @Inject constructor(
         while (clickCount < maxClickCount) {
             checkGifts()
 
-            swipe(Location(700, 950), Location(700, 375))
+            swipe(Location(1400, 1200), Location(1400, 400))
         }
 
         throw ScriptExitException(messages.pickedExpStack(clickCount))
@@ -38,7 +38,7 @@ class AutoGiftBox @Inject constructor(
         }
 
     private fun checkGifts() {
-        for (gift in checkRegion.findAll(images.giftBoxCheck)) {
+        for (gift in checkRegion.findAll(images.giftBoxCheck).sortedBy { it.Region.Y }) {
             val countRegion = Region(countRegionX, gift.Region.Y - 120, 300, 100)
             val iconRegion = Region(190, gift.Region.Y - 116, 300, 240)
             val clickSpot = Location(1700, gift.Region.Y + 50)

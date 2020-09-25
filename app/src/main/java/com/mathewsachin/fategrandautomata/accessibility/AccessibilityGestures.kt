@@ -77,8 +77,8 @@ class AccessibilityGestures @Inject constructor(
         val direction = atan2(xDiff, yDiff)
         var distanceLeft = sqrt(xDiff.pow(2) + yDiff.pow(2))
 
-        val thresholdDistance = 30f
-        val tapDuration = 50L
+        val thresholdDistance = 5f
+        val tapDuration = 100L
         val swipeDuration = 1L
 
         var from = Start
@@ -87,18 +87,14 @@ class AccessibilityGestures @Inject constructor(
             moveTo(Start.X.toFloat(), Start.Y.toFloat())
         }
 
-        var elapsed = 0L
-
         var lastStroke = GestureDescription.StrokeDescription(
             mouseDownPath,
-            elapsed,
+            0,
             tapDuration,
             true
         )
 
-        elapsed += tapDuration
-
-        performGestureWithoutWaiting(lastStroke)
+        performGesture(lastStroke)
 
         while (distanceLeft > 0) {
             val distanceToScroll = minOf(thresholdDistance, distanceLeft)
@@ -107,8 +103,6 @@ class AccessibilityGestures @Inject constructor(
             val y = (from.Y + distanceToScroll * cos(direction)).roundToInt()
             val to = Location(x, y)
 
-            println("dswipe: $from $to")
-
             val swipePath = Path().apply {
                 moveTo(from.X.toFloat(), from.Y.toFloat())
                 lineTo(to.X.toFloat(), to.Y.toFloat())
@@ -116,14 +110,12 @@ class AccessibilityGestures @Inject constructor(
 
             lastStroke = lastStroke.continueStroke(
                 swipePath,
-                elapsed,
+                1,
                 swipeDuration,
                 true
             )
 
-            elapsed += swipeDuration
-
-            performGestureWithoutWaiting(lastStroke)
+            performGesture(lastStroke)
 
             from = to
 
@@ -136,7 +128,7 @@ class AccessibilityGestures @Inject constructor(
 
         lastStroke = lastStroke.continueStroke(
             mouseUpPath,
-            elapsed,
+            1,
             tapDuration,
             false
         )
@@ -173,14 +165,6 @@ class AccessibilityGestures @Inject constructor(
         }
 
         gesturePrefs.clickWaitTime.wait()
-    }
-
-    private fun performGestureWithoutWaiting(StrokeDesc: GestureDescription.StrokeDescription) {
-        val gestureDesc = GestureDescription.Builder()
-            .addStroke(StrokeDesc)
-            .build()
-
-        service.dispatchGesture(gestureDesc, null, null)
     }
 
     private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {
