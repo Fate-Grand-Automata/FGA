@@ -42,34 +42,6 @@ class AccessibilityGestures @Inject constructor(
         gesturePrefs.swipeWaitTime.wait()
     }
 
-    /*
-    void ManualTouch(Location Start, Location End)
-{
-    var direction = Math.Atan2(Start.X - End.X, Start.Y - End.Y);
-
-    var distanceLeft = Math.Sqrt(Math.Pow(Start.X - End.X, 2) + Math.Pow(Start.Y - End.Y, 2));
-
-    const int thresholdDistance = 5;
-    const int betweenScrollWait = 5;
-
-    while (distanceLeft > 0)
-    {
-        var distanceToScroll = Math.Max(thresholdDistance, distanceLeft);
-
-        var x = (Start.X + distanceToScroll * Math.Cos(direction)).Round();
-        var y = (Start.Y + distanceToScroll * Math.Sin(direction)).Round();
-        End = new Location(x, y);
-
-        Scroll(Start, End);
-        AutomataApi.Wait(betweenScrollWait);
-
-        Start = End;
-
-        distanceLeft -= distanceToScroll;
-    }
-}
-    */
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun swipe8(Start: Location, End: Location) {
         val xDiff = (End.X - Start.X).toFloat()
