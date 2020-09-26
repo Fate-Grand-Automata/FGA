@@ -3,7 +3,10 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.Location
 import javax.inject.Inject
 import kotlin.time.seconds
 
@@ -20,19 +23,19 @@ class AutoFriendGacha @Inject constructor(
     private val continueSummonClick = Location(1600, 1325)
     private val skipRapidClick = Location(2520, 1400)
 
-    private val continueSummonRegion = Region(1244, 1264, 580, 170)
-
     override fun script(): Nothing {
-        if (prefs.friendPtsOnly) {
-            isInFriendPtsSummon()
+        if (images.fpSummonContinue !in Game.continueSummonRegion) {
+            if (prefs.friendPtsOnly) {
+                isInFriendPtsSummon()
+            }
+
+            first10SummonClick.click()
+            0.3.seconds.wait()
+            okClick.click()
         }
 
-        first10SummonClick.click()
-        0.3.seconds.wait()
-        okClick.click()
-
         while (true) {
-            if (images.fpSummonContinue in continueSummonRegion) {
+            if (images.fpSummonContinue in Game.continueSummonRegion) {
                 continueSummonClick.click()
                 0.3.seconds.wait()
                 okClick.click()
