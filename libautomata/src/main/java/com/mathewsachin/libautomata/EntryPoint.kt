@@ -67,7 +67,7 @@ abstract class EntryPoint(
      * @throws ScriptAbortException when the user stopped the script
      * @throws ScriptExitException when an exit condition was reached
      */
-    protected abstract fun script(): Nothing
+    abstract fun script(): Nothing
 
     /**
      * A listener function, which is called when the script detected an exit condition or when an
