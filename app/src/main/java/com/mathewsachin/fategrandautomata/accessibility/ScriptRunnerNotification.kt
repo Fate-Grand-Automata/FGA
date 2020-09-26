@@ -8,7 +8,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,21 +88,6 @@ class ScriptRunnerNotification @Inject constructor(
             stopIntent
         ).build()
 
-        val scriptIntent = PendingIntent.getBroadcast(
-            service,
-            2,
-            Intent(service, NotificationReceiver::class.java).apply {
-                putExtra(keyAction, actionScript)
-            },
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val chooseScriptAction = NotificationCompat.Action.Builder(
-            R.drawable.ic_script,
-            service.getString(R.string.p_script_mode),
-            scriptIntent
-        ).build()
-
         return NotificationCompat.Builder(service, Channels.service)
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
@@ -113,7 +97,6 @@ class ScriptRunnerNotification @Inject constructor(
             .setPriority(NotificationManager.IMPORTANCE_LOW)
             .setContentIntent(activityIntent)
             .addAction(stopAction)
-            .addAction(chooseScriptAction)
     }
 
     fun show() {
@@ -137,7 +120,6 @@ class ScriptRunnerNotification @Inject constructor(
 
     companion object {
         const val actionStop = "ACTION_STOP"
-        const val actionScript = "ACTION_SCRIPT"
         const val keyAction = "action"
     }
 
@@ -153,23 +135,7 @@ class ScriptRunnerNotification @Inject constructor(
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.getStringExtra(keyAction)) {
                 actionStop -> ScriptRunnerService.Instance?.stop()
-                actionScript -> chooseScript()
             }
-        }
-
-        fun chooseScript() {
-            showOverlayDialog(context) {
-                setTitle(R.string.p_script_mode)
-                    .setSingleChoiceItems(R.array.script_mode_labels, prefs.scriptMode.ordinal) { dialog, which ->
-                        prefs.scriptMode = ScriptModeEnum.values()[which]
-
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-            }
-
-            val it = Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)
-            context.sendBroadcast(it)
         }
     }
 }
