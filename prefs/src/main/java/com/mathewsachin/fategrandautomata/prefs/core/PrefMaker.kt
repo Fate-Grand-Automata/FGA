@@ -35,7 +35,20 @@ class PrefMaker(
     inline fun <reified T : Enum<T>> enum(
         @StringRes key: Int,
         default: T
-    ) = Pref(flowPrefs.getEnum(k(key), default))
+    ): Pref<T> {
+        val serializer = object : Serializer<T> {
+            override fun deserialize(serialized: String) =
+                try {
+                    enumValueOf(serialized)
+                } catch (e: Exception) {
+                    default
+                }
+
+            override fun serialize(value: T) = value.name
+        }
+
+        return Pref(flowPrefs.getObject(k(key), serializer, default))
+    }
 
     fun stringSet(@StringRes key: Int) =
         Pref(flowPrefs.getStringSet(k(key)))

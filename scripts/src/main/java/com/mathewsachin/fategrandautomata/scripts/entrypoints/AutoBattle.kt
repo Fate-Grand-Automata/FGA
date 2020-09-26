@@ -49,11 +49,16 @@ open class AutoBattle @Inject constructor(
         } catch (e: ScriptExitException) {
             throw ScriptExitException(makeExitMessage(e.message))
         } catch (e: ScriptAbortException) {
-            val msg = if (e.message.isBlank())
-                messages.stoppedByUser
-            else e.message
+            val msg = makeExitMessage(
+                if (e.message.isBlank())
+                    messages.stoppedByUser
+                else e.message
+            )
 
-            throw ScriptAbortException(makeExitMessage(msg))
+            throw when (e) {
+                is ScriptAbortException.User -> ScriptAbortException.User(msg)
+                is ScriptAbortException.ScreenTurnedOff -> ScriptAbortException.ScreenTurnedOff(msg)
+            }
         } catch (e: Exception) {
             throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
         } finally {
