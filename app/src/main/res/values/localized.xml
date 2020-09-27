@@ -139,7 +139,6 @@
     <string name="p_experimental">Experimental</string>
     <string name="p_screenshot_drops">Screenshot Drops</string>
     <string name="p_screenshot_drops_summary">Saved to \'Fate-Grand-Automata/drops\' folder</string>
-    <string name="p_friend_summon_only">Friend Points Summons Only</string>
     <string name="p_boost_item">Boost Item</string>
     <string name="p_brave_chains">Brave Chains</string>
     <string name="p_rearrange_cards">Rearrange Cards</string>

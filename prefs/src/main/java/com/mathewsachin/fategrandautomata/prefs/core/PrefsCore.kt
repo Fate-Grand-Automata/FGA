@@ -45,8 +45,6 @@ class PrefsCore
 
     val stopOnCEGet = maker.bool(R.string.pref_stop_on_ce_get)
 
-    val friendPtsOnly = maker.bool(R.string.pref_friend_pts, true)
-
     val boostItemSelectionMode = maker.stringAsInt(R.string.pref_boost_item, -1)
 
     val refill = RefillPrefsCore(maker)

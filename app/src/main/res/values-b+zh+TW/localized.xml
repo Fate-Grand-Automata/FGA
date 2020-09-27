@@ -138,7 +138,6 @@
     <string name="p_experimental">實驗功能</string>
     <string name="p_screenshot_drops">掉落截圖</string>
     <string name="p_screenshot_drops_summary">存至 \'Fate-Grand-Automata/drops\' 資料夾</string>
-    <string name="p_friend_summon_only">只使用友情點數召喚</string>
     <string name="p_boost_item">加速道具</string>
     <string name="p_brave_chains">EX串</string>
     <string name="p_rearrange_cards">調換順序\n(優先性高的卡後出)</string>
