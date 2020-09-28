@@ -91,7 +91,6 @@
 
     <string name="p_script_mode">Script Mode</string>
     <string name="p_refill">Refill</string>
-    <string name="p_refill_on">ON</string>
     <string name="p_refill_off">OFF</string>
     <string name="p_refill_summary">Manage AP refill</string>
     <string name="p_auto_skill">Auto Skill</string>
