@@ -112,6 +112,7 @@ class Game @Inject constructor(val prefs: IPreferences) {
 
         val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
         val friendPtSummonCheck = Region(1380, 1220, 75, 75)
+        val continueSummonRegion = Region(1244, 1264, 580, 170)
     }
 
     val battleStageCountRegion

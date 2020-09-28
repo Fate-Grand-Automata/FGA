@@ -4,7 +4,7 @@ import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.mathewsachin.fategrandautomata.R
 
-class MultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSelectListPreference> {
+class SupportMultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSelectListPreference> {
     override fun provideSummary(preference: MultiSelectListPreference): CharSequence {
         return if (preference.values.isNotEmpty()) {
             val selectedLabels = preference.values.map {

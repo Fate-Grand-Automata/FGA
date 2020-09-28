@@ -22,7 +22,7 @@ abstract class EntryPoint(
     /**
      * Notifies the script that the user requested it to stop.
      */
-    fun stop() = exitManager.exit()
+    fun stop(reason: ScriptAbortException) = exitManager.exit(reason)
 
     private fun scriptRunner() {
         try {
@@ -35,7 +35,9 @@ abstract class EntryPoint(
                 platformImpl.messageBox(messages.scriptExited, e.message)
             }
 
-            platformImpl.notify(messages.stoppedByUser)
+            if (e !is ScriptAbortException.User) {
+                platformImpl.notify(messages.stoppedByUser)
+            }
         } catch (e: ScriptExitException) {
             scriptExitListener.invoke(e)
 

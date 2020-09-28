@@ -2,18 +2,16 @@
 <resources>
     <!-- Label ordering must match values -->
     <array name="refill_type_labels">
-        <item>@string/p_refill_type_all_apples</item>
-        <item>@string/p_refill_type_gold</item>
-        <item>@string/p_refill_type_silver</item>
         <item>@string/p_refill_type_bronze</item>
+        <item>@string/p_refill_type_silver</item>
+        <item>@string/p_refill_type_gold</item>
         <item>@string/p_refill_type_sq</item>
     </array>
 
     <array name="refill_type_values">
-        <item>AllApples</item>
-        <item>Gold</item>
-        <item>Silver</item>
         <item>Bronze</item>
+        <item>Silver</item>
+        <item>Gold</item>
         <item>SQ</item>
     </array>
 

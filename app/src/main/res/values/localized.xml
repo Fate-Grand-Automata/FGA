@@ -98,6 +98,7 @@
     <string name="p_more_options">More options</string>
 
     <string name="p_enable_refill">Enable Refill</string>
+    <string name="p_refill_none">None</string>
     <string name="p_repetitions">Repetitions</string>
     <string name="p_auto_decrement">Auto-decrement</string>
     <string name="p_auto_decrement_summary">Automatically decrease the refill amount by number of apples used</string>
@@ -188,11 +189,10 @@
     <string name="p_nav_skill_levels">Skill Levels</string>
     <string name="p_nav_card_priority">Card Priority</string>
 
-    <string name="p_refill_type_all_apples">All Apples (NO SQ)</string>
     <string name="p_refill_type_gold">Gold</string>
     <string name="p_refill_type_silver">Silver</string>
     <string name="p_refill_type_bronze">Bronze</string>
-    <string name="p_refill_type_sq">SQ (Rainbow)</string>
+    <string name="p_refill_type_sq">SQ</string>
 
     <string name="p_brave_chains_don_t_care">Don\'t care</string>
     <string name="p_brave_chains_after_np">After NP</string>
