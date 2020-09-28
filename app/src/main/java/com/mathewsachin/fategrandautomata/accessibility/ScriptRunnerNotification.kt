@@ -135,6 +135,11 @@ class ScriptRunnerNotification @Inject constructor(
             .notify(Ids.messageNotification, notification)
     }
 
+    fun hideMessage() {
+        NotificationManagerCompat.from(service)
+            .cancel(Ids.messageNotification)
+    }
+
     companion object {
         const val actionStop = "ACTION_STOP"
         const val actionScript = "ACTION_SCRIPT"
