@@ -402,13 +402,14 @@ open class AutoBattle @Inject constructor(
     private fun refillStamina() {
         val refillPrefs = prefs.refill
 
-        if (refillPrefs.enabled && stonesUsed < refillPrefs.repetitions) {
-            when (val resource = RefillResource.of(refillPrefs.resource)) {
-                is RefillResource.Single -> resource.clickLocation.click()
-                is RefillResource.Multiple -> resource.items.forEach {
-                    it.clickLocation.click()
-                }
-            }
+        if (refillPrefs.enabled
+            && stonesUsed < refillPrefs.repetitions
+            && refillPrefs.resources.isNotEmpty()
+        ) {
+
+            refillPrefs.resources
+                .map { RefillResource.of(it) }
+                .forEach { it.clickLocation.click() }
 
             1.seconds.wait()
             Game.staminaOkClick.click()

@@ -31,13 +31,13 @@ fun PreferenceFragmentCompat.findFriendNamesList() =
 
 fun PreferenceFragmentCompat.preferredSupportOnCreate() {
     val servants = findServantList() ?: return
-    servants.summaryProvider = MultiSelectListSummaryProvider()
+    servants.summaryProvider = SupportMultiSelectListSummaryProvider()
 
     val ces = findCeList() ?: return
-    ces.summaryProvider = MultiSelectListSummaryProvider()
+    ces.summaryProvider = SupportMultiSelectListSummaryProvider()
 
     findFriendNamesList()?.apply {
-        summaryProvider = MultiSelectListSummaryProvider()
+        summaryProvider = SupportMultiSelectListSummaryProvider()
     }
 }
 
