@@ -106,8 +106,6 @@ class AccessibilityGestures @Inject constructor(
         )
 
         performGesture(lastStroke)
-
-        gesturePrefs.swipeWaitTime.wait()
     }
 
     override fun swipe(Start: Location, End: Location) {

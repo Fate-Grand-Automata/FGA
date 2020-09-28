@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
@@ -8,7 +9,8 @@ import javax.inject.Inject
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFgoAutomataApi
+    fgAutomataApi: IFgoAutomataApi,
+    val swipeLocations: ISwipeLocations
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
 
     companion object {
@@ -19,10 +21,12 @@ class AutoGiftBox @Inject constructor(
     private var clickCount = 0
 
     override fun script(): Nothing {
+        val swipeLocation = swipeLocations.giftBox
+
         while (clickCount < maxClickCount) {
             checkGifts()
 
-            swipe(Location(1400, 1200), Location(1400, 400))
+            swipe(swipeLocation.start, swipeLocation.end)
         }
 
         throw ScriptExitException(messages.pickedExpStack(clickCount))

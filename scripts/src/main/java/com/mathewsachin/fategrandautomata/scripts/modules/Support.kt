@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
@@ -22,7 +23,10 @@ const val limitBrokenCharacter = '*'
 
 private val logger = KotlinLogging.logger {}
 
-class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
+class Support(
+    fgAutomataApi: IFgoAutomataApi,
+    val swipeLocations: ISwipeLocations
+) : IFgoAutomataApi by fgAutomataApi {
     private var preferredServantArray = listOf<String>()
     private var friendNameArray = listOf<String>()
     private var preferredCEArray = listOf<PreferredCEEntry>()
@@ -187,6 +191,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
 
         while (true) {
             val result = searchVisible(SearchMethod)
+            val swipeLocation = swipeLocations.supportList
 
             when {
                 result is SearchVisibleResult.Found -> {
@@ -196,10 +201,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                 result is SearchVisibleResult.NotFound
                         && numberOfSwipes < prefs.support.swipesPerUpdate -> {
 
-                    swipe(
-                        Game.supportSwipeStartClick,
-                        Game.supportSwipeEndClick
-                    )
+                    swipe(swipeLocation.start, swipeLocation.end)
 
                     ++numberOfSwipes
                     0.3.seconds.wait()
