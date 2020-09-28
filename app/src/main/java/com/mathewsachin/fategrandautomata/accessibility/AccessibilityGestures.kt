@@ -13,6 +13,7 @@ import com.mathewsachin.libautomata.extensions.IDurationExtensions
 import mu.KotlinLogging
 import javax.inject.Inject
 import kotlin.math.*
+import kotlin.time.milliseconds
 
 private val logger = KotlinLogging.logger {}
 
@@ -106,6 +107,8 @@ class AccessibilityGestures @Inject constructor(
         )
 
         performGesture(lastStroke)
+
+        100.milliseconds.wait()
     }
 
     override fun swipe(Start: Location, End: Location) {
