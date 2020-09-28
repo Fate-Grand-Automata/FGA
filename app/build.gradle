@@ -104,7 +104,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
     implementation 'com.google.code.gson:gson:2.8.6'
-    testImplementation "io.mockk:mockk:1.10.0"
+    testImplementation "io.mockk:mockk:1.10.2"
 
     implementation 'dev.ahamed.mva3:adapter:3.0.0'
     implementation 'sk.baka.slf4j:slf4j-handroid:1.7.31'
