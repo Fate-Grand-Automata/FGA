@@ -13,7 +13,6 @@ import com.mathewsachin.libautomata.extensions.IDurationExtensions
 import mu.KotlinLogging
 import javax.inject.Inject
 import kotlin.math.*
-import kotlin.time.milliseconds
 
 private val logger = KotlinLogging.logger {}
 
@@ -51,7 +50,6 @@ class AccessibilityGestures @Inject constructor(
         var distanceLeft = sqrt(xDiff.pow(2) + yDiff.pow(2))
 
         val thresholdDistance = 5f
-        val tapDuration = 100L
         val swipeDuration = 1L
 
         var from = Start
@@ -63,7 +61,7 @@ class AccessibilityGestures @Inject constructor(
         var lastStroke = GestureDescription.StrokeDescription(
             mouseDownPath,
             0,
-            tapDuration,
+            200L,
             true
         )
 
@@ -102,13 +100,11 @@ class AccessibilityGestures @Inject constructor(
         lastStroke = lastStroke.continueStroke(
             mouseUpPath,
             1,
-            tapDuration,
+            400L,
             false
         )
 
         performGesture(lastStroke)
-
-        100.milliseconds.wait()
     }
 
     override fun swipe(Start: Location, End: Location) {
