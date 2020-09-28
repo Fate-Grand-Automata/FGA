@@ -39,11 +39,11 @@ class MainSettingsViewModel @ViewModelInject constructor(
 
     val refillMessage = combine(
         prefs.refill.enabled.asFlow(),
-        prefs.refill.resource.asFlow(),
+        prefs.refill.resources.asFlow(),
         prefs.refill.repetitions.asFlow()
-    ) { enabled, resource, repetitions ->
-        if (enabled)
-            "$resource x${repetitions}"
+    ) { enabled, resources, repetitions ->
+        if (enabled && repetitions > 0 && resources.isNotEmpty())
+            "$resources x$repetitions"
         else context.getString(R.string.p_refill_off)
     }
         .asLiveData()

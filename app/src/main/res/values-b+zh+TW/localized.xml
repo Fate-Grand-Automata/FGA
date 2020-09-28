@@ -186,11 +186,10 @@
     <string name="p_nav_skill_levels">技能等級</string>
     <string name="p_nav_card_priority">偏好指令卡</string>
 
-    <string name="p_refill_type_all_apples">所有蘋果 (不使用聖晶石)</string>
     <string name="p_refill_type_gold">黃金果實</string>
     <string name="p_refill_type_silver">白銀果實</string>
     <string name="p_refill_type_bronze">赤銅果實</string>
-    <string name="p_refill_type_sq">聖晶石 (彩色蘋果)</string>
+    <string name="p_refill_type_sq">聖晶石</string>
 
     <string name="p_brave_chains_don_t_care">無偏好</string>
     <string name="p_brave_chains_after_np">寶具後串EX</string>
