@@ -107,7 +107,7 @@ dependencies {
     testImplementation "io.mockk:mockk:1.10.2"
 
     implementation 'dev.ahamed.mva3:adapter:3.0.0'
-    implementation 'sk.baka.slf4j:slf4j-handroid:1.7.31'
+    implementation 'sk.baka.slf4j:slf4j-handroid:1.7.32'
 
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
