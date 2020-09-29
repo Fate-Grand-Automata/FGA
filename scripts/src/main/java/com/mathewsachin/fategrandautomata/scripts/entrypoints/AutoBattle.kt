@@ -49,11 +49,16 @@ open class AutoBattle @Inject constructor(
         } catch (e: ScriptExitException) {
             throw ScriptExitException(makeExitMessage(e.message))
         } catch (e: ScriptAbortException) {
-            val msg = if (e.message.isBlank())
-                messages.stoppedByUser
-            else e.message
+            val msg = makeExitMessage(
+                if (e.message.isBlank())
+                    messages.stoppedByUser
+                else e.message
+            )
 
-            throw ScriptAbortException(makeExitMessage(msg))
+            throw when (e) {
+                is ScriptAbortException.User -> ScriptAbortException.User(msg)
+                is ScriptAbortException.ScreenTurnedOff -> ScriptAbortException.ScreenTurnedOff(msg)
+            }
         } catch (e: Exception) {
             throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
         } finally {
@@ -397,13 +402,14 @@ open class AutoBattle @Inject constructor(
     private fun refillStamina() {
         val refillPrefs = prefs.refill
 
-        if (refillPrefs.enabled && stonesUsed < refillPrefs.repetitions) {
-            when (val resource = RefillResource.of(refillPrefs.resource)) {
-                is RefillResource.Single -> resource.clickLocation.click()
-                is RefillResource.Multiple -> resource.items.forEach {
-                    it.clickLocation.click()
-                }
-            }
+        if (refillPrefs.enabled
+            && stonesUsed < refillPrefs.repetitions
+            && refillPrefs.resources.isNotEmpty()
+        ) {
+
+            refillPrefs.resources
+                .map { RefillResource.of(it) }
+                .forEach { it.clickLocation.click() }
 
             1.seconds.wait()
             Game.staminaOkClick.click()

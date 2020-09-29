@@ -22,7 +22,7 @@
 
     <string name="pref_refill_enabled">refill_enabled</string>
     <string name="pref_refill_repetitions">refill_repetitions</string>
-    <string name="pref_refill_resource">refill_resource</string>
+    <string name="pref_refill_resource">refill_resource_x</string>
     <string name="pref_refill_decrement">refill_decrement</string>
 
     <string name="pref_support_pref_servant">support_pref_servant_list</string>

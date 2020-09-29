@@ -25,6 +25,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
 import mu.KotlinLogging
@@ -135,7 +136,7 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun stop(): Boolean {
-        scriptManager.stopScript()
+        scriptManager.stopScript(ScriptAbortException.User())
 
         serviceState.let {
             if (it is ServiceState.Started) {
@@ -181,7 +182,7 @@ class ScriptRunnerService : AccessibilityService() {
 
             if (state is ServiceState.Started) {
                 when (scriptManager.scriptState) {
-                    is ScriptState.Started -> scriptManager.stopScript()
+                    is ScriptState.Started -> scriptManager.stopScript(ScriptAbortException.User())
                     is ScriptState.Stopped -> {
                         // Overwrite the server in the preferences with the detected one, if possible
                         currentFgoServer?.let { server -> prefs.gameServer = server }
@@ -224,7 +225,7 @@ class ScriptRunnerService : AccessibilityService() {
             scriptManager.scriptState.let { state ->
                 // Don't stop if already paused
                 if (state is ScriptState.Started && !state.paused) {
-                    scriptManager.stopScript()
+                    scriptManager.stopScript(ScriptAbortException.ScreenTurnedOff())
                 }
             }
         }
@@ -259,6 +260,7 @@ class ScriptRunnerService : AccessibilityService() {
             setTitle(Title)
                 .setMessage(Message)
                 .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setOnDismissListener { notification.hideMessage() }
                 .let {
                     if (Error != null) {
                         // TODO: Translate

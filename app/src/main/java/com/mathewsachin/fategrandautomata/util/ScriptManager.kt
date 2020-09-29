@@ -18,6 +18,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.ScriptAbortException
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
 import mu.KotlinLogging
@@ -120,10 +121,10 @@ class ScriptManager @Inject constructor(
         } else runEntryPoint(screenshotService, entryPointProvider)
     }
 
-    fun stopScript() {
+    fun stopScript(reason: ScriptAbortException) {
         scriptState.let { state ->
             if (state is ScriptState.Started) {
-                state.entryPoint.stop()
+                state.entryPoint.stop(reason)
             }
         }
     }
