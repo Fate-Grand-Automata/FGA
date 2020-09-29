@@ -26,11 +26,22 @@ class AccessibilityGestures @Inject constructor(
 ) : IGestureService, IDurationExtensions by durationExtensions {
     val service = service as AccessibilityService
 
-    fun swipe7(Start: Location, End: Location) {
-        val swipePath = Path().apply {
-            moveTo(Start.X.toFloat(), Start.Y.toFloat())
-            lineTo(End.X.toFloat(), End.Y.toFloat())
-        }
+    fun Path.moveTo(location: Location) = apply {
+        moveTo(location.X.toFloat(), location.Y.toFloat())
+    }
+
+    fun Path.lineTo(location: Location) = apply {
+        lineTo(location.X.toFloat(), location.Y.toFloat())
+    }
+
+    /**
+     * On Android 7, swipe is like a flick.
+     * If the swipe distance is too long, FGO won't detect it correctly and have occasional weird behaviour like sudden jumps
+     */
+    fun swipe7(start: Location, end: Location) {
+        val swipePath = Path()
+            .moveTo(start)
+            .lineTo(end)
 
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
@@ -42,21 +53,26 @@ class AccessibilityGestures @Inject constructor(
         gesturePrefs.swipeWaitTime.wait()
     }
 
+    /**
+     * Android 8+ swipe is precise due to use of continued gestures.
+     *
+     * Instead of swiping the whole distance as a single gesture,
+     * it is split into multiple small swipes, which is similar to how events are sent if a real human is doing it.
+     * There is a finger down delay, followed by multiple small swipe events, followed by a finger lift delay.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
-    fun swipe8(Start: Location, End: Location) {
-        val xDiff = (End.X - Start.X).toFloat()
-        val yDiff = (End.Y - Start.Y).toFloat()
+    fun swipe8(start: Location, end: Location) {
+        val xDiff = (end.X - start.X).toFloat()
+        val yDiff = (end.Y - start.Y).toFloat()
         val direction = atan2(xDiff, yDiff)
         var distanceLeft = sqrt(xDiff.pow(2) + yDiff.pow(2))
 
         val thresholdDistance = 5f
         val swipeDuration = 1L
 
-        var from = Start
+        var from = start
 
-        val mouseDownPath = Path().apply {
-            moveTo(Start.X.toFloat(), Start.Y.toFloat())
-        }
+        val mouseDownPath = Path().moveTo(start)
 
         var lastStroke = GestureDescription.StrokeDescription(
             mouseDownPath,
@@ -74,10 +90,9 @@ class AccessibilityGestures @Inject constructor(
             val y = (from.Y + distanceToScroll * cos(direction)).roundToInt()
             val to = Location(x, y)
 
-            val swipePath = Path().apply {
-                moveTo(from.X.toFloat(), from.Y.toFloat())
-                lineTo(to.X.toFloat(), to.Y.toFloat())
-            }
+            val swipePath = Path()
+                .moveTo(from)
+                .lineTo(to)
 
             lastStroke = lastStroke.continueStroke(
                 swipePath,
@@ -93,9 +108,7 @@ class AccessibilityGestures @Inject constructor(
             distanceLeft -= distanceToScroll
         }
 
-        val mouseUpPath = Path().apply {
-            moveTo(from.X.toFloat(), from.Y.toFloat())
-        }
+        val mouseUpPath = Path().moveTo(from)
 
         lastStroke = lastStroke.continueStroke(
             mouseUpPath,
@@ -118,8 +131,7 @@ class AccessibilityGestures @Inject constructor(
     }
 
     override fun click(Location: Location, Times: Int) {
-        val swipePath = Path()
-        swipePath.moveTo(Location.X.toFloat(), Location.Y.toFloat())
+        val swipePath = Path().moveTo(Location)
 
         val stroke = GestureDescription.StrokeDescription(
             swipePath,

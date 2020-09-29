@@ -5,6 +5,10 @@ import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.libautomata.Location
 import javax.inject.Inject
 
+/**
+ * Android 8 added support for continued gestures, so we can do precise swiping.
+ * On Android 7, long swipes cause weird behaviour, so we need different locations.
+ */
 class SwipeLocations @Inject constructor() : ISwipeLocations {
     fun isNewSwipeMethod() =
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
