@@ -171,6 +171,13 @@ class DroidCvPattern(
 
         Imgproc.threshold(Mat, result, threshold.toDouble(), 255.0, Imgproc.THRESH_BINARY)
 
-        return DroidCvPattern(result).also { it.tag = tag }
+        val contours = mutableListOf<MatOfPoint>()
+        Imgproc.findContours(result, contours, Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE)
+
+        val rect = Imgproc.boundingRect(contours[0])
+
+        return DroidCvPattern(result)
+            .also { it.tag = tag }
+            .crop(Region(rect.x, rect.y, rect.width, rect.height))
     }
 }
