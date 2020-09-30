@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mathewsachin.fategrandautomata.R
@@ -14,6 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.milliseconds
 
 @ServiceScoped
 class ScriptRunnerNotification @Inject constructor(
@@ -116,6 +120,28 @@ class ScriptRunnerNotification @Inject constructor(
 
         NotificationManagerCompat.from(service)
             .notify(Ids.messageNotification, notification)
+
+        vibrate(100.milliseconds)
+    }
+
+    private fun vibrate(Duration: Duration) {
+        val v = service.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(
+                VibrationEffect.createOneShot(
+                    Duration.toLongMilliseconds(),
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
+            )
+        } else {
+            v.vibrate(Duration.toLongMilliseconds())
+        }
+    }
+
+    fun hideMessage() {
+        NotificationManagerCompat.from(service)
+            .cancel(Ids.messageNotification)
     }
 
     companion object {

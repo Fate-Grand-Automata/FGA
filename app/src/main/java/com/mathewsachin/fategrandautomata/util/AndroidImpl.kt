@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.app.Service
-import android.content.Context
-import android.os.*
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
@@ -18,7 +18,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration
-import kotlin.time.milliseconds
 
 class AndroidImpl @Inject constructor(
     service: Service,
@@ -52,27 +51,10 @@ class AndroidImpl @Inject constructor(
         Handler(Looper.getMainLooper())
     }
 
-    private fun vibrate(Duration: Duration) {
-        val v = service.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(
-                VibrationEffect.createOneShot(
-                    Duration.toLongMilliseconds(),
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
-            )
-        } else {
-            v.vibrate(Duration.toLongMilliseconds())
-        }
-    }
-
     override fun messageBox(Title: String, Message: String, Error: Exception?) {
         handler.post {
             service.showMessageBox(Title, Message, Error)
         }
-
-        vibrate(100.milliseconds)
     }
 
     override fun highlight(Region: Region, Duration: Duration) {

@@ -260,6 +260,7 @@ class ScriptRunnerService : AccessibilityService() {
             setTitle(Title)
                 .setMessage(Message)
                 .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setOnDismissListener { notification.hideMessage() }
                 .let {
                     if (Error != null) {
                         // TODO: Translate
