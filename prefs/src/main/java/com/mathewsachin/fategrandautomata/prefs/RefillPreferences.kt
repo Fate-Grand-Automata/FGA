@@ -14,7 +14,7 @@ internal class RefillPreferences(val prefs: RefillPrefsCore) :
     override val resources by prefs.resources.map { set ->
         set.map {
             enumValueOf<RefillResourceEnum>(it)
-        }
+        }.sortedBy { it.ordinal }
     }
 
     override val autoDecrement by prefs.autoDecrement
