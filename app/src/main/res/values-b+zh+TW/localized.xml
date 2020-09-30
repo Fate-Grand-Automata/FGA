@@ -1,2 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="auto_skill_item_copy">複製</string>
+    <string name="auto_skill_item_delete">刪除</string>
+    <string name="auto_skill_item_export">匯出</string>
+    <string name="auto_skill_item_export_failed">匯出失敗</string>
+    <string name="auto_skill_item_copy_name">%s (複製)</string>
+    <string name="auto_skill_item_delete_confirm_title">確認刪除</string>
+    <string name="auto_skill_item_delete_confirm_ok">刪除</string>
+    <string name="auto_skill_item_delete_confirm_message">確定要刪除此腳本嗎?</string>
+    <string name="auto_skill_item_clear_preferred">清除選擇</string>
+    <string name="auto_skill_item_open_maker">產生器</string>
+    <string name="auto_skill_support_any">任何</string>
+
+    <string name="support_imgs_extracted">圖片複製成功</string>
+    <string name="support_img_not_found">支援從者圖片載入失敗: %1$s 。請將從者圖片放在 %2$s 資料夾</string>
+
+    <string name="auto_skill_list_no_items">目前沒有腳本，請按右下角的加號新增</string>
+    <string name="auto_skill_list_import">匯入腳本</string>
+    <string name="auto_skill_list_export_all">匯出腳本</string>
+    <string name="auto_skill_list_delete">刪除</string>
+    <string name="auto_skill_list_selected_count">已選擇 %d 個腳本</string>
+    <string name="auto_skill_list_export_failed">匯出 %d 個腳本失敗</string>
+    <string name="auto_skill_list_import_failed">匯入 %d 個腳本失敗</string>
+    <string name="auto_skill_list_delete_confirm_title">確認刪除</string>
+    <string name="auto_skill_list_delete_confirm_ok">刪除</string>
+    <string name="auto_skill_list_delete_confirm_message">確認刪除 %d 個腳本?</string>
+
+    <string name="auto_skill_maker_confirm_exit_title">確認離開</string>
+    <string name="auto_skill_maker_confirm_exit_message">將不會儲存目前設定的腳本，確認離開?</string>
+    <string name="auto_skill_maker_confirm_clear_title">確認清除</string>
+    <string name="auto_skill_maker_confirm_clear_message">將會清除所有設定，確認執行?</string>
+    <string name="auto_skill_maker_confirm_np_deletion_title">確認復原寶具指令</string>
+    <string name="auto_skill_maker_confirm_np_deletion_message">寶具前墊刀等設定也會復原，確認執行?</string>
+    <string name="auto_skill_maker_atk_header">攻擊指令</string>
+    <string name="auto_skill_maker_atk_servant_np">從者\n%d\n\n寶具</string>
+    <string name="auto_skill_maker_atk_cards_before_np">寶具前墊刀</string>
+    <string name="auto_skill_maker_atk_done">完成</string>
+    <string name="auto_skill_maker_atk_next_wave">下一波</string>
+    <string name="auto_skill_maker_atk_next_turn">下一回合\n(同一波敵人)</string>
+
+    <string name="auto_skill_maker_main_enemy">敵人 %d</string>
+    <string name="auto_skill_maker_main_battle">BATTLE %d</string>
+    <string name="auto_skill_maker_main_turn">%d 回合</string>
+    <string name="auto_skill_maker_main_master_skills">御主技能</string>
+    <string name="auto_skill_maker_main_undo">復原</string>
+    <string name="auto_skill_maker_main_clear">重設</string>
+    <string name="auto_skill_maker_main_servant">從者 %d</string>
+    <string name="auto_skill_maker_main_attack">Attack</string>
+    <string name="auto_skill_maker_cannot_select">請先重設回合/寶具指令</string>
+
+    <string name="auto_skill_maker_master_skills_header">御主技能</string>
+    <string name="auto_skill_maker_master_skills_order_change">換人\nOrder Change</string>
+
+    <string name="auto_skill_maker_order_change_header">Order Change</string>
+    <string name="auto_skill_maker_order_change_starting_member">首發成員</string>
+    <string name="auto_skill_maker_order_change_sub_member">候補成員</string>
+    <string name="auto_skill_maker_order_change_servant">從者\n\n%d</string>
+
+    <string name="auto_skill_maker_target_header">請選擇對象</string>
+    <string name="auto_skill_maker_target_none">無對象</string>
+    <string name="auto_skill_maker_target_servant">從者\n\n%d</string>
+
+    <string name="card_priority_wave_number">BATTLE %d</string>
+    <string name="card_priority_menu_info">備註</string>
+    <string name="card_priority_info_title">備註</string>
+    <string name="card_priority_info_content">W: 紅字傷害(WEAK)\nR: 藍字傷害(RESIST)\n\nB: Buster\nA: Arts\nQ: Quick</string>
+    <string name="card_priority_high">優先選出</string>
+    <string name="card_priority_low">盡量不選出</string>
+    <string name="card_priority_add_wave">新增BATTLE</string>
+    <string name="card_priority_remove_last_wave">移除BATTLE</string>
+    <string name="card_priority_experimental">開啟實驗功能</string>
+
+    <string name="toggle_service">開關服務</string>
+    <string name="fine_tune_menu_reset_to_defaults">還原設定</string>
+    <string name="support_menu_extract_default_support_images">複製預設支援圖片</string>
+
+    <string name="support_img_namer_servants">從者</string>
+    <string name="support_img_namer_folder_hint">可以使用以下方式命名資料夾: \'Merlin/asc1\'</string>
+    <string name="support_img_namer_ce">概念禮裝</string>
+    <string name="support_img_namer_friend_names">好友名稱</string>
+    <string name="support_img_namer_item_name">名稱</string>
+    <string name="support_img_namer_servant_invalid_message">檔案名稱不可以句號或空格開頭、不可使用特殊字元: %s</string>
+    <string name="support_img_namer_ce_or_friend_invalid_message">檔案名稱不可以句號或空格開頭、不可使用特殊字元: %s</string>
+    <string name="support_img_namer_title">請選擇</string>
+    <string name="support_img_namer_done">完成</string>
+    <string name="support_img_namer_blank_file_name">名稱不可為空白，請取消勾選或是加上名稱</string>
+    <string name="support_img_namer_file_name_already_exists">\'%s\' 名稱重複，請使用其他名稱</string>
+    <string name="support_img_namer_file_rename_failed">重新命名成 \'%s\' 失敗</string>
+
+    <string name="p_script_mode">腳本模式</string>
+    <string name="p_refill">自動回體</string>
+    <string name="p_refill_off">關閉</string>
+    <string name="p_refill_summary">設定自動回體</string>
+    <string name="p_auto_skill">周回腳本</string>
+    <string name="p_auto_skill_summary">設定周回腳本</string>
+    <string name="p_more_options">更多</string>
+
+    <string name="p_enable_refill">啟動自動回體</string>
+    <string name="p_repetitions">自動回體次數</string>
+    <string name="p_auto_decrement">追蹤消耗</string>
+    <string name="p_auto_decrement_summary">自動追蹤已使用的蘋果以減少自動回體次數</string>
+    <string name="p_resource">選擇蘋果</string>
+    <string name="p_run_limit">次數限制</string>
+    <string name="p_limit_no_of_runs">設定回體次數上限</string>
+    <string name="p_runs">上限</string>
+
+    <string name="p_auto_skill_name">腳本名稱</string>
+    <string name="p_auto_skill_cmd">技能順序</string>
+    <string name="p_auto_skill_notes">備註</string>
+    <string name="p_auto_skill_party">隊伍編號</string>
+    <string name="p_auto_skill_support_class">支援從者職階</string>
+    <string name="p_auto_skill_card_priority">偏好指令卡</string>
+    <string name="p_auto_skill_support">支援從者</string>
+    <string name="p_auto_skill_support_selection_mode">支援從者選取方式</string>
+    <string name="p_auto_skill_support_fallback_selection_mode">備用選取方式</string>
+    <string name="p_auto_skill_support_pref_servants">偏好從者</string>
+    <string name="p_auto_skill_support_max_ascended">最終再臨</string>
+    <string name="p_auto_skill_support_skill_levels">技能等級</string>
+    <string name="p_auto_skill_support_pref_ces">偏好禮裝</string>
+    <string name="p_auto_skill_support_mlb">滿破</string>
+    <string name="p_auto_skill_support_friend_names">好友名稱</string>
+    <string name="p_auto_skill_support_friends_only">只選擇好友從者</string>
+
+    <string name="p_max_skill_1">一技滿</string>
+    <string name="p_max_skill_2">二技滿</string>
+    <string name="p_max_skill_3">三技滿</string>
+
+    <string name="p_game_server">伺服器</string>
+    <string name="p_cast_np">自動寶具</string>
+    <string name="p_auto_choose_target">自動選取敵人</string>
+    <string name="p_story_skip">跳過劇情</string>
+    <string name="p_skill_confirmation">技能確認</string>
+    <string name="p_enable_withdraw">啟用撤退</string>
+    <string name="p_stop_on_ce_drop">禮裝掉落自動停止</string>
+    <string name="p_stop_on_ce_get">禮裝獲得自動停止</string>
+    <string name="p_stop_on_ce_get_summary">首次通關及絆禮裝獲得時自動停止腳本</string>
+    <string name="p_experimental">實驗功能</string>
+    <string name="p_screenshot_drops">掉落截圖</string>
+    <string name="p_screenshot_drops_summary">存至 \'Fate-Grand-Automata/drops\' 資料夾</string>
+    <string name="p_friend_summon_only">只使用友情點數召喚</string>
+    <string name="p_boost_item">加速道具</string>
+    <string name="p_brave_chains">EX串</string>
+    <string name="p_rearrange_cards">調換順序\n(優先性高的卡後出)</string>
+    <string name="p_auto_skill_cmd_text">腳本對話框</string>
+    <string name="p_auto_skill_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
+
+    <string name="p_advanced">進階</string>
+    <string name="p_debug_mode">Debug mode</string>
+    <string name="p_debug_mode_summary">Highlight the regions being matched</string>
+    <string name="p_ignore_notch">忽略瀏海</string>
+    <string name="p_ignore_notch_summary">對三星手機有幫助</string>
+    <string name="p_record_screen">螢幕錄影</string>
+    <string name="p_record_screen_summary">將儲存 \'record.mp4\' 至 \'Fate-Grand-Automata\' 資料夾，不適用root。</string>
+    <string name="p_root_screenshot">以root截圖</string>
+    <string name="p_root_screenshot_summary">對夜神模擬器(Nox with Android 7)有幫助，請在開啟服務前選取此設定</string>
+    <string name="p_auto_start_service">自動開啟服務</string>
+    <string name="p_allow_pause_script">允許暫停腳本</string>
+
+    <string name="p_fine_tune">微調</string>
+    <string name="p_fine_tune_default">預設: %d</string>
+    <string name="p_fine_tune_support">支援從者列表</string>
+    <string name="p_fine_tune_support_swipes_per_update">支援列表更新後滑動次數</string>
+    <string name="p_fine_tune_support_max_updates">支援列表更新次數限制</string>
+    <string name="p_fine_tune_similarity">影像比對</string>
+    <string name="p_fine_tune_min_similarity">最低相似度 (%)</string>
+    <string name="p_fine_tune_mlb_similarity">滿破相似度 (%)</string>
+    <string name="p_fine_tune_stage_counter_similarity">關卡計數相似度 (%)</string>
+    <string name="p_fine_tune_clicks">點選</string>
+    <string name="p_fine_tune_wait_after_clicking">點選後暫停 (ms)</string>
+    <string name="p_fine_tune_click_duration">點選時間 (ms)</string>
+    <string name="p_fine_tune_click_delay">連擊間隔 (ms)</string>
+    <string name="p_fine_tune_swipes">滑動</string>
+    <string name="p_fine_tune_wait_after_swiping">滑動後暫停 (ms)</string>
+    <string name="p_fine_tune_swipe_duration">滑動時間 (ms)</string>
+    <string name="p_fine_tune_support_swipe_multiplier">支援選擇加乘 (%)</string>
+    <string name="p_fine_tune_wait">等待時間</string>
+    <string name="p_fine_tune_skill_delay">施放技能後等待時間 (ms)</string>
+    <string name="p_fine_tune_wait_multiplier">等待時間加乘 (%)</string>
+
+    <string name="p_nav_refill">自動回體</string>
+    <string name="p_nav_more_options">更多選項</string>
+    <string name="p_nav_fine_tune">微調</string>
+    <string name="p_nav_auto_skill_list">腳本列表</string>
+    <string name="p_nav_auto_skill_edit">編輯腳本</string>
+    <string name="p_nav_skill_levels">技能等級</string>
+    <string name="p_nav_card_priority">偏好指令卡</string>
+
+    <string name="p_refill_type_gold">黃金果實</string>
+    <string name="p_refill_type_silver">白銀果實</string>
+    <string name="p_refill_type_bronze">赤銅果實</string>
+    <string name="p_refill_type_sq">聖晶石</string>
+
+    <string name="p_brave_chains_don_t_care">無偏好</string>
+    <string name="p_brave_chains_after_np">寶具後串EX</string>
+    <string name="p_brave_chains_avoid">避免自串EX</string>
+
+    <string name="p_boost_item_disabled">關閉</string>
+    <string name="p_boost_item_skip">跳過</string>
+
+    <string name="p_cast_np_none">無</string>
+    <string name="p_cast_np_spam">能放就放</string>
+    <string name="p_cast_np_danger">Danger 敵人時施放</string>
+
+    <string name="p_support_mode_first">第一位支援</string>
+    <string name="p_support_mode_manual">手動選擇</string>
+    <string name="p_support_mode_preferred">偏好從者</string>
+    <string name="p_support_mode_friend">好友從者</string>
+
+    <string name="p_script_mode_battle">戰鬥</string>
+    <string name="p_script_mode_lottery">抽箱</string>
+    <string name="p_script_mode_friend_gacha">友情點數召喚</string>
+    <string name="p_script_mode_support_img_maker">支援從者圖片截取器</string>
+
+    <string name="p_party_not_set">未設定</string>
+
+    <string name="p_support_class_none">無</string>
+    <string name="p_support_class_all">全部職階 (All) </string>
+    <string name="p_support_class_saber">Saber</string>
+    <string name="p_support_class_archer">Archer</string>
+    <string name="p_support_class_lancer">Lancer</string>
+    <string name="p_support_class_rider">Rider</string>
+    <string name="p_support_class_caster">Caster</string>
+    <string name="p_support_class_assassin">Assassin</string>
+    <string name="p_support_class_berserker">Berserker</string>
+    <string name="p_support_class_extra">Extra</string>
+    <string name="p_support_class_mix">混合職階 (Mix)</string>
+
+    <string name="notification_text">無障礙服務執行中</string>
+    <string name="notification_stop">停止</string>
+
+    <string name="accessibility_disabled_title">無障礙服務已關閉</string>
+    <string name="accessibility_disabled_message">請在系統設定中開啟無障礙服務設定，如果已經開啟請關閉後重新開啟。</string>
+    <string name="accessibility_disabled_go_to_settings">前往設定</string>
+    <string name="cannot_start_recording">無法開啟螢幕錄影</string>
+    <string name="select_auto_skill_config">選取腳本</string>
+    <string name="no_auto_skill_configs">無腳本</string>
+
+    <string name="script_msg_ap_ran_out">體力用完了</string>
+    <string name="stopped_by_user">螢幕關閉或用戶停止腳本</string>
+    <string name="unexpected_error">未知錯誤</string>
+    <string name="script_exited">腳本停止</string>
+    <string name="inventory_full">背包已滿</string>
+    <string name="present_box_full">禮物盒已滿</string>
+    <string name="support_img_maker_not_found">無法偵測支援，請到好友選擇畫面或支援選擇畫面再執行。</string>
+    <string name="support_selection_manual">已切換至手動選擇支援從者</string>
+    <string name="support_selection_friend_not_set">使用「好友支援」時請設定偏好好友</string>
+    <string name="support_selection_preferred_not_set">使用「偏好支援」時請設定偏好從者或偏好禮裝</string>
+    <string name="ce_dropped">禮裝掉落!</string>
+    <string name="ce_get">獲得禮裝!</string>
+    <string name="withdraw_disabled">無設定撤退且從者全滅</string>
+    <string name="times_ran">已執行 %d 次</string>
+    <string name="times_ran_out_of">已執行 %1$d / %2$d 次</string>
+    <string name="refills_used_out_of">已自動回體 %1$d / %2$d 次</string>
+    <string name="failed_to_determine_card_type">辨識卡色失敗: %s</string>
+    <string name="support_list_updated_in">支援清單在 %s 後刷新</string>
+    <string name="times_withdrew">已撤退 %d 次</string>
+    <string name="battle_time">周回時間: %s</string>
+    <string name="avg_time_per_run">平均一場時間: %s</string>
+    <string name="turns_count">回合 %d</string>
+    <string name="turns_stats">回合: %1$d (最少), %2$d (平均), %3$d (最多)</string>
+</resources>

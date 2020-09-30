@@ -3,10 +3,12 @@ package com.mathewsachin.fategrandautomata.ui.support_img_namer
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ScrollView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerDialog
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
+import com.mathewsachin.fategrandautomata.accessibility.dayNightThemed
+import com.mathewsachin.fategrandautomata.accessibility.showOverlayDialog
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
@@ -91,29 +93,31 @@ private fun getSupportEntries(
 }
 
 fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs) {
-    val frame = FrameLayout(UI.Service)
+    val context = UI.Service.applicationContext
+    val themedContext = context.dayNightThemed()
+    val frame = FrameLayout(themedContext)
 
-    val inflater = LayoutInflater.from(UI.Service)
+    val inflater = LayoutInflater.from(themedContext)
     inflater.inflate(R.layout.support_img_namer, frame)
+
+    val content = ScrollView(themedContext).apply {
+        addView(frame)
+        setPadding(72, 20, 0, 0)
+    }
 
     val entryList = getSupportEntries(frame, storageDirs)
 
-    ScriptRunnerDialog(UI).apply {
-        autoDismiss = false
-
-        setTitle(UI.Service.getString(R.string.support_img_namer_title))
-        setView(frame)
-
-        setPositiveButton(UI.Service.getString(R.string.support_img_namer_done)) {
-            if (entryList.all { it.isValid() }) {
-                if (entryList.all { it.rename() }) {
-                    hide()
+    showOverlayDialog(context) {
+        setCancelable(false)
+            .setTitle(UI.Service.getString(R.string.support_img_namer_title))
+            .setView(content)
+            .setPositiveButton(UI.Service.getString(R.string.support_img_namer_done)) { dialog, _ ->
+                if (entryList.all { it.isValid() }) {
+                    if (entryList.all { it.rename() }) {
+                        dialog.dismiss()
+                    }
                 }
             }
-        }
-
-        setNegativeButton(UI.Service.getString(android.R.string.cancel)) { hide() }
-
-        show()
+            .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
     }
 }

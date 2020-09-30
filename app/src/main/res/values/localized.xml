@@ -13,6 +13,7 @@
     <string name="auto_skill_support_any">Any</string>
 
     <string name="support_imgs_extracted">Support Images Extracted Successfully</string>
+    <string name="support_imgs_extract_failed">Couldn\'t extract support images</string>
     <string name="support_img_not_found">Unable to load image: %1$s. Put images in %2$s folder</string>
 
     <string name="auto_skill_list_no_items">No AutoSkill Items</string>
@@ -95,9 +96,9 @@
     <string name="p_auto_skill">Auto Skill</string>
     <string name="p_auto_skill_summary">Manage Auto Skill configs</string>
     <string name="p_more_options">More options</string>
-    <string name="p_update_available">Update Available</string>
 
     <string name="p_enable_refill">Enable Refill</string>
+    <string name="p_refill_none">None</string>
     <string name="p_repetitions">Repetitions</string>
     <string name="p_auto_decrement">Auto-decrement</string>
     <string name="p_auto_decrement_summary">Automatically decrease the refill amount by number of apples used</string>
@@ -175,7 +176,9 @@
     <string name="p_fine_tune_wait_after_swiping">Wait after swiping (ms)</string>
     <string name="p_fine_tune_swipe_duration">Swipe duration (ms)</string>
     <string name="p_fine_tune_support_swipe_multiplier">Support Swipe Multiplier (%)</string>
+    <string name="p_fine_tune_wait">Wait</string>
     <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
+    <string name="p_fine_tune_wait_before_turn">Wait before Turn (ms)</string>
     <string name="p_fine_tune_wait_multiplier">Wait Multiplier (%)</string>
 
     <string name="p_nav_refill">Refill</string>
@@ -186,11 +189,10 @@
     <string name="p_nav_skill_levels">Skill Levels</string>
     <string name="p_nav_card_priority">Card Priority</string>
 
-    <string name="p_refill_type_all_apples">All Apples (NO SQ)</string>
     <string name="p_refill_type_gold">Gold</string>
     <string name="p_refill_type_silver">Silver</string>
     <string name="p_refill_type_bronze">Bronze</string>
-    <string name="p_refill_type_sq">SQ (Rainbow)</string>
+    <string name="p_refill_type_sq">SQ</string>
 
     <string name="p_brave_chains_don_t_care">Don\'t care</string>
     <string name="p_brave_chains_after_np">After NP</string>
@@ -212,6 +214,9 @@
     <string name="p_script_mode_lottery">Lottery</string>
     <string name="p_script_mode_friend_gacha">Friend Gacha</string>
     <string name="p_script_mode_support_img_maker">Support Image Maker</string>
+    <string name="p_script_mode_gift_box">Gift Box</string>
+
+    <string name="p_max_gold_ember_set_size">Max Gold ember set size</string>
 
     <string name="p_party_not_set">Not Set</string>
 
@@ -260,4 +265,5 @@
     <string name="avg_time_per_run">Average time per run: %s</string>
     <string name="turns_count">Turns: %d</string>
     <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string>
+    <string name="picked_exp_stacks">Picked %d EXP stacks</string>
 </resources>

@@ -13,6 +13,8 @@ import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
@@ -23,12 +25,26 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
 import mu.KotlinLogging
 import javax.inject.Inject
 
 private val logger = KotlinLogging.logger {}
+
+fun Context.dayNightThemed() = ContextThemeWrapper(this, androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog)
+
+fun showOverlayDialog(context: Context, builder: AlertDialog.Builder.() -> Unit): AlertDialog {
+    val alertDialog = AlertDialog.Builder(context.dayNightThemed())
+        .apply(builder)
+        .create()
+
+    alertDialog.window?.setType(ScriptRunnerUserInterface.overlayType)
+    alertDialog.show()
+
+    return alertDialog
+}
 
 @AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
@@ -120,7 +136,7 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun stop(): Boolean {
-        scriptManager.stopScript()
+        scriptManager.stopScript(ScriptAbortException.User())
 
         serviceState.let {
             if (it is ServiceState.Started) {
@@ -166,7 +182,7 @@ class ScriptRunnerService : AccessibilityService() {
 
             if (state is ServiceState.Started) {
                 when (scriptManager.scriptState) {
-                    is ScriptState.Started -> scriptManager.stopScript()
+                    is ScriptState.Started -> scriptManager.stopScript(ScriptAbortException.User())
                     is ScriptState.Stopped -> {
                         // Overwrite the server in the preferences with the detected one, if possible
                         currentFgoServer?.let { server -> prefs.gameServer = server }
@@ -199,14 +215,19 @@ class ScriptRunnerService : AccessibilityService() {
         serviceInfo = serviceInfo.apply {
             packageNames = GameServerEnum
                 .values()
-                .map { it.packageName }
+                .flatMap { it.packageNames.toList() }
                 .toTypedArray()
         }
 
         Instance = this
 
         screenOffReceiver.register(this) {
-            scriptManager.stopScript()
+            scriptManager.scriptState.let { state ->
+                // Don't stop if already paused
+                if (state is ScriptState.Started && !state.paused) {
+                    scriptManager.stopScript(ScriptAbortException.ScreenTurnedOff())
+                }
+            }
         }
 
         super.onServiceConnected()
@@ -235,21 +256,22 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
-        ScriptRunnerDialog(userInterface).apply {
+        showOverlayDialog(this) {
             setTitle(Title)
-            setMessage(Message)
-            setPositiveButton(getString(android.R.string.ok)) { }
+                .setMessage(Message)
+                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setOnDismissListener { notification.hideMessage() }
+                .let {
+                    if (Error != null) {
+                        // TODO: Translate
+                        it.setNeutralButton("Copy") { _, _ ->
+                            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
 
-            if (Error != null) {
-                setNeutralButton("Copy") {
-                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
-
-                    clipboard.setPrimaryClip(clipData)
+                            clipboard.setPrimaryClip(clipData)
+                        }
+                    }
                 }
-            }
-
-            show()
         }
     }
 }

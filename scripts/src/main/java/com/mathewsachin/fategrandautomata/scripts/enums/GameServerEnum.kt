@@ -1,10 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.enums
 
-enum class GameServerEnum constructor(val packageName: String) {
+enum class GameServerEnum constructor(vararg val packageNames: String) {
     En("com.aniplex.fategrandorder.en"),
     Jp("com.aniplex.fategrandorder"),
-    Cn("com.bilibili.fatego"),
-    Tw("com.komoe.fgomycard"),
+    Cn("com.bilibili.fatego", "com.bilibili.fatego.sharejoy"),
+    Tw("com.komoe.fgomycard", "com.xiaomeng.fategrandorder"),
     Kr("com.netmarble.fgok");
 
     companion object {
@@ -12,6 +12,6 @@ enum class GameServerEnum constructor(val packageName: String) {
          * Maps an APK package name to the corresponding [GameServerEnum].
          */
         fun fromPackageName(packageName: String): GameServerEnum? =
-            values().find { it.packageName == packageName }
+            values().find { packageName in it.packageNames }
     }
 }

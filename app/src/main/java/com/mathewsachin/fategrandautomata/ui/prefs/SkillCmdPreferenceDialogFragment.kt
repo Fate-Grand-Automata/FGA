@@ -3,9 +3,9 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreferenceDialogFragmentCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.util.nav
 
 class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat() {
 
@@ -35,7 +35,7 @@ class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat(
             val action = AutoSkillItemSettingsFragmentDirections
                 .actionAutoSkillItemSettingsFragmentToAutoSkillMakerActivity(autoSkillKey)
 
-            findNavController().navigate(action)
+            nav(action)
         }
     }
 }

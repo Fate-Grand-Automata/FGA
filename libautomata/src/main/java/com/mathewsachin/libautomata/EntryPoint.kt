@@ -22,18 +22,22 @@ abstract class EntryPoint(
     /**
      * Notifies the script that the user requested it to stop.
      */
-    fun stop() = exitManager.exit()
+    fun stop(reason: ScriptAbortException) = exitManager.exit(reason)
 
     private fun scriptRunner() {
         try {
             script()
         } catch (e: ScriptAbortException) {
+            scriptExitListener.invoke(null)
+
             // Script stopped by user
             if (e.message.isNotBlank()) {
                 platformImpl.messageBox(messages.scriptExited, e.message)
             }
 
-            platformImpl.notify(messages.stoppedByUser)
+            if (e !is ScriptAbortException.User) {
+                platformImpl.notify(messages.stoppedByUser)
+            }
         } catch (e: ScriptExitException) {
             scriptExitListener.invoke(e)
 
@@ -51,6 +55,8 @@ abstract class EntryPoint(
             val msg = messages.unexpectedError
             platformImpl.messageBox(msg, e.messageAndStackTrace, e)
             platformImpl.notify(msg)
+        } finally {
+            scriptExitListener = { }
         }
     }
 

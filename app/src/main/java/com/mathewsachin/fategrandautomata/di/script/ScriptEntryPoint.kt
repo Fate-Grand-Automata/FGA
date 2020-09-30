@@ -1,9 +1,6 @@
 package com.mathewsachin.fategrandautomata.di.script
 
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoFriendGacha
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoLottery
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 
@@ -17,4 +14,6 @@ interface ScriptEntryPoint {
     fun lottery(): AutoLottery
 
     fun supportImageMaker(): SupportImageMaker
+
+    fun giftBox(): AutoGiftBox
 }

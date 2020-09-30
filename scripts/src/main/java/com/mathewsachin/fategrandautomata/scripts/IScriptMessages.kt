@@ -34,4 +34,6 @@ interface IScriptMessages : IAutomataMessages {
     fun turns(min: Int, avg: Int, max: Int): String
 
     fun turns(turns: Int): String
+
+    fun pickedExpStack(stacks: Int): String
 }

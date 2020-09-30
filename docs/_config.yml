@@ -12,3 +12,4 @@ exclude: ["Gemfile", "Gemfile.lock"]
 
 plugins:
   - jekyll-seo-tag  # Search Engine Optimization
+  - jekyll-redirect-from

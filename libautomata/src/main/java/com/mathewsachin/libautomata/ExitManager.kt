@@ -26,7 +26,7 @@ class ExitManager {
                 block()
             }
         } catch (e: CancellationException) {
-            throw ScriptAbortException()
+            throw reason
         }
     }
 
@@ -43,8 +43,14 @@ class ExitManager {
 
     fun resume() = runBlocking { pauseMutex.unlock() }
 
+    private var reason: ScriptAbortException = ScriptAbortException.User()
+
     /**
      * Requests exit
      */
-    fun exit() = scope.cancel()
+    fun exit(reason: ScriptAbortException) {
+        this.reason = reason
+
+        scope.cancel()
+    }
 }

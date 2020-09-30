@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerMasterSkillsBinding
+import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +28,7 @@ class AutoSkillMakerMasterSkillsFragment : Fragment() {
         val action = AutoSkillMakerMasterSkillsFragmentDirections
             .actionAutoSkillMakerMasterSkillsFragmentToAutoSkillMakerTargetFragment()
 
-        findNavController().navigate(action)
+        nav(action)
     }
 
     fun goToOrderChange() {
@@ -37,6 +37,6 @@ class AutoSkillMakerMasterSkillsFragment : Fragment() {
         val action = AutoSkillMakerMasterSkillsFragmentDirections
             .actionAutoSkillMakerMasterSkillsFragmentToAutoSkillMakerOrderChangeFragment()
 
-        findNavController().navigate(action)
+        nav(action)
     }
 }

@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import androidx.annotation.StringRes
 import com.tfcporciuncula.flow.FlowSharedPreferences
 import com.tfcporciuncula.flow.Serializer
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 class PrefMaker(
     val prefs: SharedPreferences,
     val context: Context
@@ -25,19 +23,32 @@ class PrefMaker(
     fun string(@StringRes key: Int, default: String = "") =
         Pref(flowPrefs.getString(k(key), default))
 
-    private val stringAsIntSerializer =
+    private fun stringAsIntSerializer(default: Int) =
         object : Serializer<Int> {
-            override fun deserialize(serialized: String) = serialized.toInt()
+            override fun deserialize(serialized: String) = serialized.toIntOrNull() ?: default
             override fun serialize(value: Int) = value.toString()
         }
 
     fun stringAsInt(@StringRes key: Int, default: Int = 0) =
-        Pref(flowPrefs.getObject(k(key), stringAsIntSerializer, default))
+        Pref(flowPrefs.getObject(k(key), stringAsIntSerializer(default), default))
 
     inline fun <reified T : Enum<T>> enum(
         @StringRes key: Int,
         default: T
-    ) = Pref(flowPrefs.getEnum(k(key), default))
+    ): Pref<T> {
+        val serializer = object : Serializer<T> {
+            override fun deserialize(serialized: String) =
+                try {
+                    enumValueOf(serialized)
+                } catch (e: Exception) {
+                    default
+                }
+
+            override fun serialize(value: T) = value.name
+        }
+
+        return Pref(flowPrefs.getObject(k(key), serializer, default))
+    }
 
     fun stringSet(@StringRes key: Int) =
         Pref(flowPrefs.getStringSet(k(key)))

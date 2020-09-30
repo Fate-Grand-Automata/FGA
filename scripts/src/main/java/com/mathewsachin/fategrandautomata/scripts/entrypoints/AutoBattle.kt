@@ -49,11 +49,16 @@ open class AutoBattle @Inject constructor(
         } catch (e: ScriptExitException) {
             throw ScriptExitException(makeExitMessage(e.message))
         } catch (e: ScriptAbortException) {
-            val msg = if (e.message.isBlank())
-                messages.stoppedByUser
-            else e.message
+            val msg = makeExitMessage(
+                if (e.message.isBlank())
+                    messages.stoppedByUser
+                else e.message
+            )
 
-            throw ScriptAbortException(makeExitMessage(msg))
+            throw when (e) {
+                is ScriptAbortException.User -> ScriptAbortException.User(msg)
+                is ScriptAbortException.ScreenTurnedOff -> ScriptAbortException.ScreenTurnedOff(msg)
+            }
         } catch (e: Exception) {
             throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
         } finally {
@@ -101,7 +106,8 @@ open class AutoBattle @Inject constructor(
             { needsToWithdraw() } to { withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
-            { isCeReward() } to { ceReward() }
+            { isCeReward() } to { ceReward() },
+            { isCeRewardDetails() } to { ceRewardDetails() }
             //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
 
@@ -144,6 +150,9 @@ open class AutoBattle @Inject constructor(
      * Resets the battle state, clicks on the quest and refills the AP if needed.
      */
     private fun menu() {
+        // In case the repeat loop breaks and we end up in menu (like withdrawing from quests)
+        isContinuing = false
+
         battle.resetState()
 
         showRefillsAndRunsMessage()
@@ -174,7 +183,28 @@ open class AutoBattle @Inject constructor(
         )
 
         return cases.any { (image, region) -> image in region }
-                || Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+    }
+
+    val ceRewardSimilarity = 0.75
+
+    private fun isCeReward() =
+        Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+
+    /**
+     * It seems like we need to click on CE (center of screen) to accept them
+     */
+    private fun ceReward() =
+        Region(Location(), Game.scriptSize).center.click()
+
+    private fun isCeRewardDetails() =
+        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+
+    private fun ceRewardDetails() {
+        if (prefs.stopOnCEGet) {
+            throw ScriptExitException(messages.ceGet)
+        } else notify(messages.ceGet)
+
+        Game.resultCeRewardCloseClick.click()
     }
 
     /**
@@ -242,12 +272,10 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isRepeatScreen() =
-        when (prefs.gameServer) {
-            GameServerEnum.En, GameServerEnum.Jp, GameServerEnum.Cn -> {
-                images.confirm in Game.continueRegion
-            }
-            else -> false
-        }
+        // Not yet on TW
+        if (prefs.gameServer != GameServerEnum.Tw) {
+            images.confirm in Game.continueRegion
+        } else false
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
@@ -271,19 +299,6 @@ open class AutoBattle @Inject constructor(
         Game.resultFriendRequestRejectClick.click()
     }
 
-    private fun isCeReward() =
-        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
-
-    val ceRewardSimilarity = 0.75
-
-    private fun ceReward() {
-        if (prefs.stopOnCEGet) {
-            throw ScriptExitException(messages.ceGet)
-        } else notify(messages.ceGet)
-
-        Game.resultCeRewardCloseClick.click()
-    }
-
     /**
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
@@ -299,7 +314,7 @@ open class AutoBattle @Inject constructor(
     private fun support() {
         // Friend selection
         val hasSelectedSupport =
-            support.selectSupport(prefs.selectedAutoSkillConfig.support.selectionMode)
+            support.selectSupport(prefs.selectedAutoSkillConfig.support.selectionMode, isContinuing)
 
         if (hasSelectedSupport && !isContinuing) {
             4.seconds.wait()
@@ -387,13 +402,14 @@ open class AutoBattle @Inject constructor(
     private fun refillStamina() {
         val refillPrefs = prefs.refill
 
-        if (refillPrefs.enabled && stonesUsed < refillPrefs.repetitions) {
-            when (val resource = RefillResource.of(refillPrefs.resource)) {
-                is RefillResource.Single -> resource.clickLocation.click()
-                is RefillResource.Multiple -> resource.items.forEach {
-                    it.clickLocation.click()
-                }
-            }
+        if (refillPrefs.enabled
+            && stonesUsed < refillPrefs.repetitions
+            && refillPrefs.resources.isNotEmpty()
+        ) {
+
+            refillPrefs.resources
+                .map { RefillResource.of(it) }
+                .forEach { it.clickLocation.click() }
 
             1.seconds.wait()
             Game.staminaOkClick.click()
@@ -421,7 +437,7 @@ open class AutoBattle @Inject constructor(
                 .findAll(images.selectedParty)
                 .map { match ->
                     // Find party with min distance from center of matched region
-                    Game.partySelectionArray.withIndex().minBy {
+                    Game.partySelectionArray.withIndex().minByOrNull {
                         (it.value.X - match.Region.center.X).absoluteValue
                     }?.index
                 }
@@ -507,13 +523,10 @@ open class AutoBattle @Inject constructor(
     private fun afterSelectingQuest() {
         1.5.seconds.wait()
 
-        // Inventory full. Stop script.
-        when (prefs.gameServer) {
-            // We only have images for JP and NA
-            GameServerEnum.En, GameServerEnum.Jp -> {
-                if (images.inventoryFull in Game.inventoryFullRegion) {
-                    throw ScriptExitException(messages.inventoryFull)
-                }
+        // Inventory full. Stop script. We only have images for JP and NA
+        if (prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)) {
+            if (images.inventoryFull in Game.inventoryFullRegion) {
+                throw ScriptExitException(messages.inventoryFull)
             }
         }
 

@@ -19,10 +19,11 @@
     <string name="pref_extract_def_support_imgs">extract_def_support_imgs</string>
     <string name="pref_stage_counter_similarity">stage_counter_similarity</string>
     <string name="pref_new_game_area_detection">new_game_area_detection</string>
+    <string name="pref_wait_before_turn">wait_before_turn</string>
 
     <string name="pref_refill_enabled">refill_enabled</string>
     <string name="pref_refill_repetitions">refill_repetitions</string>
-    <string name="pref_refill_resource">refill_resource</string>
+    <string name="pref_refill_resource">refill_resource_x</string>
     <string name="pref_refill_decrement">refill_decrement</string>
 
     <string name="pref_support_pref_servant">support_pref_servant_list</string>
@@ -78,6 +79,8 @@
 
     <string name="pref_can_pause_script">can_pause_script</string>
     <string name="pref_auto_skill_cmd_text">auto_skill_cmd_text</string>
+
+    <string name="pref_max_gold_ember_set_size">max_gold_ember_set_size</string>
 
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_auto_skill">nav_auto_skill</string>
