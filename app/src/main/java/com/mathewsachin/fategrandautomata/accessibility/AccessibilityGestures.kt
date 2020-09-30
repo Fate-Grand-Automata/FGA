@@ -126,11 +126,9 @@ class AccessibilityGestures @Inject constructor(
     override fun swipe(Start: Location, End: Location) = runBlocking {
         logger.debug { "swipe $Start, $End" }
 
-        val swipeFunction = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ::swipe8
-        } else ::swipe7
-
-        swipeFunction(Start, End)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            swipe8(Start, End)
+        } else swipe7(Start, End)
     }
 
     override fun click(Location: Location, Times: Int) = runBlocking {
