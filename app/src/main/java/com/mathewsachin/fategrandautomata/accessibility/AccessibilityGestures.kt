@@ -8,8 +8,11 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.extensions.IDurationExtensions
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
 import mu.KotlinLogging
 import javax.inject.Inject
+import kotlin.coroutines.resume
 
 private val logger = KotlinLogging.logger {}
 
@@ -23,7 +26,7 @@ class AccessibilityGestures @Inject constructor(
 ) : IGestureService, IDurationExtensions by durationExtensions {
     val service = service as AccessibilityService
 
-    override fun swipe(Start: Location, End: Location) {
+    override fun swipe(Start: Location, End: Location) = runBlocking {
         val swipePath = Path()
         swipePath.moveTo(Start.X.toFloat(), Start.Y.toFloat())
         swipePath.lineTo(End.X.toFloat(), End.Y.toFloat())
@@ -40,7 +43,7 @@ class AccessibilityGestures @Inject constructor(
         gesturePrefs.swipeWaitTime.wait()
     }
 
-    override fun click(Location: Location, Times: Int) {
+    override fun click(Location: Location, Times: Int) = runBlocking {
         val swipePath = Path()
         swipePath.moveTo(Location.X.toFloat(), Location.Y.toFloat())
 
@@ -59,16 +62,22 @@ class AccessibilityGestures @Inject constructor(
         gesturePrefs.clickWaitTime.wait()
     }
 
-    private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {
+    private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Unit = suspendCancellableCoroutine {
         val gestureDesc = GestureDescription.Builder()
             .addStroke(StrokeDesc)
             .build()
 
-        val callback = GestureCompletedCallback()
+        val callback = object : AccessibilityService.GestureResultCallback() {
+            override fun onCompleted(gestureDescription: GestureDescription?) {
+                it.resume(Unit)
+            }
+
+            override fun onCancelled(gestureDescription: GestureDescription?) {
+                it.resume(Unit)
+            }
+        }
 
         service.dispatchGesture(gestureDesc, callback, null)
-
-        callback.waitTillFinish()
     }
 
     override fun close() {}
