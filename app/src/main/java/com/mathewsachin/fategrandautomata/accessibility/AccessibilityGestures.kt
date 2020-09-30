@@ -10,8 +10,11 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.extensions.IDurationExtensions
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
 import mu.KotlinLogging
 import javax.inject.Inject
+import kotlin.coroutines.resume
 import kotlin.math.*
 
 private val logger = KotlinLogging.logger {}
@@ -38,7 +41,7 @@ class AccessibilityGestures @Inject constructor(
      * On Android 7, swipe is like a flick.
      * If the swipe distance is too long, FGO won't detect it correctly and have occasional weird behaviour like sudden jumps
      */
-    fun swipe7(start: Location, end: Location) {
+    suspend fun swipe7(start: Location, end: Location) {
         val swipePath = Path()
             .moveTo(start)
             .lineTo(end)
@@ -61,7 +64,7 @@ class AccessibilityGestures @Inject constructor(
      * There is a finger down delay, followed by multiple small swipe events, followed by a finger lift delay.
      */
     @RequiresApi(Build.VERSION_CODES.O)
-    fun swipe8(start: Location, end: Location) {
+    suspend fun swipe8(start: Location, end: Location) {
         val xDiff = (end.X - start.X).toFloat()
         val yDiff = (end.Y - start.Y).toFloat()
         val direction = atan2(xDiff, yDiff)
@@ -120,7 +123,7 @@ class AccessibilityGestures @Inject constructor(
         performGesture(lastStroke)
     }
 
-    override fun swipe(Start: Location, End: Location) {
+    override fun swipe(Start: Location, End: Location) = runBlocking {
         logger.debug { "swipe $Start, $End" }
 
         val swipeFunction = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -130,7 +133,7 @@ class AccessibilityGestures @Inject constructor(
         swipeFunction(Start, End)
     }
 
-    override fun click(Location: Location, Times: Int) {
+    override fun click(Location: Location, Times: Int) = runBlocking {
         val swipePath = Path().moveTo(Location)
 
         val stroke = GestureDescription.StrokeDescription(
@@ -148,16 +151,22 @@ class AccessibilityGestures @Inject constructor(
         gesturePrefs.clickWaitTime.wait()
     }
 
-    private fun performGesture(StrokeDesc: GestureDescription.StrokeDescription) {
+    private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Unit = suspendCancellableCoroutine {
         val gestureDesc = GestureDescription.Builder()
             .addStroke(StrokeDesc)
             .build()
 
-        val callback = GestureCompletedCallback()
+        val callback = object : AccessibilityService.GestureResultCallback() {
+            override fun onCompleted(gestureDescription: GestureDescription?) {
+                it.resume(Unit)
+            }
+
+            override fun onCancelled(gestureDescription: GestureDescription?) {
+                it.resume(Unit)
+            }
+        }
 
         service.dispatchGesture(gestureDesc, callback, null)
-
-        callback.waitTillFinish()
     }
 
     override fun close() {}
