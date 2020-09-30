@@ -7,7 +7,6 @@ import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.util.RefillMultiSelectListSummaryProvider
 import com.mathewsachin.fategrandautomata.util.makeNumeric
 import dagger.hilt.android.AndroidEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
@@ -19,10 +18,6 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<EditTextPreference>(getString(prefKeys.pref_refill_repetitions))?.makeNumeric()
         findPreference<EditTextPreference>(getString(R.string.pref_limit_runs))?.makeNumeric()
-
-        findPreference<MultiSelectListPreference>(getString(R.string.pref_refill_resource))?.let {
-            it.summaryProvider = RefillMultiSelectListSummaryProvider()
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,6 +28,12 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
         findPreference<EditTextPreference>(getString(R.string.pref_refill_repetitions))?.let {
             vm.refillRepetitions.observe(viewLifecycleOwner) { repetitions ->
                 it.text = repetitions.toString()
+            }
+        }
+
+        findPreference<MultiSelectListPreference>(getString(R.string.pref_refill_resource))?.let {
+            vm.refillResources.observe(viewLifecycleOwner) { refillResourcesMsg ->
+                it.summary = refillResourcesMsg
             }
         }
     }
