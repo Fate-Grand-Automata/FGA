@@ -235,9 +235,6 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         } ?: AutoSkillAction.Atk.noOp()
 
     private fun onNext(separator: (AutoSkillAction.Atk) -> AutoSkillMakerEntry.Next) {
-        // Uncheck selected targets
-        unSelectTargets()
-
         add(separator(atk()))
 
         clearNpSequence()
@@ -247,6 +244,10 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     fun nextStage() {
         _stage.next()
+
+        // Uncheck selected targets
+        unSelectTargets()
+
         onNext { AutoSkillMakerEntry.Next.Wave(it) }
     }
 
