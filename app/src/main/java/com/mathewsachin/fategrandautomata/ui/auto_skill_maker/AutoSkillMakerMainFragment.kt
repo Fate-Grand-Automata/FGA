@@ -54,17 +54,6 @@ class AutoSkillMakerMainFragment : Fragment() {
         else -> -1
     }
 
-    fun onUndo() {
-        viewModel.onUndo {
-            AlertDialog.Builder(requireContext())
-                .setTitle(R.string.auto_skill_maker_confirm_np_deletion_title)
-                .setMessage(R.string.auto_skill_maker_confirm_np_deletion_message)
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes) { _, _ -> it() }
-                .show()
-        }
-    }
-
     fun onClear() {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.auto_skill_maker_confirm_clear_title)

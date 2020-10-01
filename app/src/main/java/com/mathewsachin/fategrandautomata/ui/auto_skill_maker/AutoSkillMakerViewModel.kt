@@ -42,7 +42,10 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             if (skillString.isNotEmpty()) {
                 when (val l = m.skillCommand.last()) {
                     is AutoSkillMakerEntry.Action -> when (l.action) {
-                        is AutoSkillAction.NP -> m.skillCommand.add(AutoSkillMakerEntry.NextWave)
+                        is AutoSkillAction.Atk -> {
+                            m.skillCommand.removeLast()
+                            m.skillCommand.add(AutoSkillMakerEntry.Next.Wave(l.action))
+                        }
                     }
                 }
             }
@@ -54,7 +57,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             MutableLiveData(state.stage)
         } else {
             MutableLiveData(
-                model.skillCommand.count { it is AutoSkillMakerEntry.NextWave } + 1
+                model.skillCommand.count { it is AutoSkillMakerEntry.Next.Wave } + 1
             )
         }
 
@@ -214,78 +217,37 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     fun finish(): String {
         _currentIndex.value = model.skillCommand.lastIndex
 
-        while (true) {
-            when (val last = last) {
-                is AutoSkillMakerEntry.NextWave,
-                is AutoSkillMakerEntry.NextTurn -> undo()
-                is AutoSkillMakerEntry.Action -> {
-                    when (last.action) {
-                        AutoSkillAction.NoOp -> undo()
-                        else -> break
-                    }
-                }
-                else -> break
-            }
+        while (last.let { l -> l is AutoSkillMakerEntry.Next && l.action == AutoSkillAction.Atk.noOp() }) {
+            undo()
         }
 
         return getSkillCmdString()
     }
 
-    private fun addNpsToSkillCmd() {
+    private fun atk(): AutoSkillAction.Atk =
         npSequence.value?.let { nps ->
-            if (nps.isNotEmpty()) {
-                when (cardsBeforeNp.value) {
-                    1 -> add(
-                        AutoSkillMakerEntry.Action(
-                            AutoSkillAction.CardsBeforeNP(1)
-                        )
-                    )
-                    2 -> add(
-                        AutoSkillMakerEntry.Action(
-                            AutoSkillAction.CardsBeforeNP(2)
-                        )
-                    )
-                }
-            }
+            AutoSkillAction.Atk(
+                nps.map { np ->
+                    CommandCard.NP.list.first { it.autoSkillCode == np }
+                }.toSet(),
+                (if (nps.isNotEmpty()) cardsBeforeNp.value else 0) ?: 0
+            )
+        } ?: AutoSkillAction.Atk.noOp()
 
-            // Show each NP as separate entry
-            for (np in nps) {
-                add(
-                    AutoSkillMakerEntry.Action(
-                        AutoSkillAction.NP(
-                            CommandCard.NP.list.first { it.autoSkillCode == np }
-                        )
-                    )
-                )
-            }
-
-            // Add a '0' before consecutive turn/battle changes
-            if (!isEmpty() && (last is AutoSkillMakerEntry.NextWave || last is AutoSkillMakerEntry.NextTurn)) {
-                add(AutoSkillMakerEntry.Action(AutoSkillAction.NoOp))
-            }
-        }
-    }
-
-    private fun onNext(Separator: AutoSkillMakerEntry) {
+    private fun onNext(separator: (AutoSkillAction.Atk) -> AutoSkillMakerEntry.Next) {
         // Uncheck selected targets
         unSelectTargets()
 
-        addNpsToSkillCmd()
-
-        if (isEmpty()) {
-            add(AutoSkillMakerEntry.Action(AutoSkillAction.NoOp))
-        }
-
-        add(Separator)
+        add(separator(atk()))
 
         clearNpSequence()
     }
 
-    fun nextTurn() = onNext(AutoSkillMakerEntry.NextTurn)
+    fun nextTurn() = onNext { AutoSkillMakerEntry.Next.Turn(it) }
 
     fun nextStage() {
         _stage.next()
-        onNext(AutoSkillMakerEntry.NextWave)
+        onNext { AutoSkillMakerEntry.Next.Wave(it) }
     }
 
     private val _xSelectedParty = MutableLiveData(state.xSelectedParty)
@@ -322,7 +284,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         // Find the previous target, but within the same wave
         val previousTarget = reverseIterate()
             .asSequence()
-            .takeWhile { it !is AutoSkillMakerEntry.NextWave }
+            .takeWhile { it !is AutoSkillMakerEntry.Next.Wave }
             .filterIsInstance<AutoSkillMakerEntry.Action>()
             .map { it.action }
             .filterIsInstance<AutoSkillAction.TargetEnemy>()
@@ -345,27 +307,12 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     private fun undoStageOrTurn() {
         // Decrement Battle/Turn count
-        if (last is AutoSkillMakerEntry.NextWave) {
+        if (last is AutoSkillMakerEntry.Next.Wave) {
             prevStage()
         }
 
         // Undo the Battle/Turn change
         undo()
-
-        fun shouldRemove(entry: AutoSkillMakerEntry) =
-            if (entry is AutoSkillMakerEntry.Action) {
-                when (entry.action) {
-                    is AutoSkillAction.NP,
-                    is AutoSkillAction.CardsBeforeNP,
-                    is AutoSkillAction.NoOp -> true
-                    else -> false
-                }
-            } else false
-
-        // Remove NPs and cards before NPs
-        while (!isEmpty() && shouldRemove(last)) {
-            undo()
-        }
 
         revertToPreviousEnemyTarget()
     }
@@ -374,19 +321,17 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         _currentIndex.value = model.skillCommand.lastIndex
 
         while (!isEmpty()) {
-            onUndo { it() }
+            onUndo()
         }
     }
 
-    fun onUndo(confirmNpDeletion: (onPositiveClick: () -> Unit) -> Unit) {
+    fun onUndo() {
         if (!isEmpty()) {
             // Un-select target
             when (val last = last) {
                 // Battle/Turn change
-                is AutoSkillMakerEntry.NextWave, is AutoSkillMakerEntry.NextTurn -> {
-                    confirmNpDeletion {
-                        undoStageOrTurn()
-                    }
+                is AutoSkillMakerEntry.Next -> {
+                    undoStageOrTurn()
                 }
                 is AutoSkillMakerEntry.Action -> {
                     if (last.action is AutoSkillAction.TargetEnemy) {
