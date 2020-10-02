@@ -90,8 +90,8 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         clickAttack()
 
-        if (card.canClickNpCards) {
-            card.clickNpCards()
+        if (card.canSpamNpCards) {
+            card.spamNpCards()
         }
 
         card.clickCommandCards()

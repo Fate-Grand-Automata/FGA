@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
+import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
@@ -18,13 +19,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
 
     private lateinit var cardPriority: CardPriorityPerWave
-
     private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
-    private val remainingCards = mutableSetOf<CommandCard.Face>()
-    private val remainingNps = mutableSetOf<CommandCard.NP>()
-    private val noOfCardsToClick
-        get() = (3 - (5 - remainingCards.size) - (3 - remainingNps.size))
-            .coerceAtLeast(0)
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
@@ -79,7 +74,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
-    private var firstNp: CommandCard.NP? = null
+    var atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp()
     private var braveChainsThisTurn = BraveChainEnum.None
 
     private fun getCommandCards(): Map<CardScore, List<CommandCard.Face>> {
@@ -121,9 +116,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     fun readCommandCards() {
-        remainingCards.addAll(CommandCard.Face.list)
-        remainingNps.addAll(CommandCard.NP.list)
-        firstNp = null
+        atk = AutoSkillAction.Atk.noOp()
 
         screenshotManager.useSameSnapIn {
             commandCards = getCommandCards()
@@ -142,7 +135,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         }
     }
 
-    val canClickNpCards: Boolean
+    val canSpamNpCards: Boolean
         get() {
             val weCanSpam = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
             val weAreInDanger = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
@@ -151,25 +144,18 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             return (weCanSpam || weAreInDanger) && autoSkill.isFinished
         }
 
-    fun clickNpCards() {
+    fun spamNpCards() {
         for (npCard in CommandCard.NP.list) {
             npCard.clickLocation.click()
         }
     }
 
-    fun clickNp(np: CommandCard.NP) {
-        if (np in remainingNps) {
-            np.clickLocation.click()
-            remainingNps.remove(np)
-
-            if (firstNp == null) {
-                firstNp = np
-            }
-        }
-    }
-
-    fun clickCommandCards(Clicks: Int = noOfCardsToClick) {
-        var clicksLeft = Clicks.coerceAtLeast(0)
+    private fun clickCommandCards(
+        clicks: Int,
+        isBeforeNP: Boolean,
+        remainingCards: MutableSet<CommandCard.Face>
+    ) {
+        var clicksLeft = clicks.coerceAtLeast(0)
         val toClick = mutableListOf<CommandCard.Face>()
 
         val cardsOrderedByPriority = cardPriority
@@ -200,7 +186,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
         when (braveChainsThisTurn) {
             BraveChainEnum.AfterNP -> {
-                commandCardGroupedWithNp[firstNp]?.let { npGroup ->
+                commandCardGroupedWithNp[atk.nps.firstOrNull()]?.let { npGroup ->
                     pickCardsOrderedByPriority {
                         it in npGroup
                     }
@@ -225,8 +211,6 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         // Pick more cards if needed
         pickCardsOrderedByPriority()
 
-        val isBeforeNP = firstNp == null
-
         // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
         // Do the same when clicking 2 cards unless they're used before NPs.
         // Skip if NP spamming because we don't know how many NPs might've been used
@@ -245,14 +229,32 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
         }
 
-        if (!isBeforeNP && Clicks < 3) {
+        if (!isBeforeNP && remainingCards.size > 2) {
             // Also click on remaining cards,
             // since some people may put NPs in AutoSkill which aren't charged yet
-            pickCardsOrderedByPriority(3 - Clicks)
+            pickCardsOrderedByPriority(remainingCards.size - 2)
         }
 
         logger.info("Clicking cards: $toClick")
         toClick.forEach { it.clickLocation.click() }
+    }
+
+    fun clickCommandCards() {
+        val remainingCards = CommandCard.Face.list.toMutableSet()
+        val remainingNps = CommandCard.NP.list.toMutableSet()
+
+        if (atk.cardsBeforeNP > 0) {
+            clickCommandCards(atk.cardsBeforeNP, true, remainingCards)
+        }
+
+        atk.nps.forEach { it.clickLocation.click() }
+        remainingNps -= atk.nps
+
+        val noOfCardsToClick =
+            (3 - (5 - remainingCards.size) - (3 - remainingNps.size))
+                .coerceAtLeast(0)
+
+        clickCommandCards(noOfCardsToClick, false, remainingCards)
     }
 
     private fun groupNpsWithFaceCards(
