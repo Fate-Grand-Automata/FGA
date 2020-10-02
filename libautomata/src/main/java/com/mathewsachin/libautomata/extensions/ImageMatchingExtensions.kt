@@ -133,5 +133,6 @@ class ImageMatchingExtensions @Inject constructor(
 
                 Match(region, it.score)
             }
+            .sortedBy { it.Region }
     }
 }
