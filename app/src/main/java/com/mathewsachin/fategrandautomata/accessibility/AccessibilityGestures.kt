@@ -70,11 +70,13 @@ class AccessibilityGestures @Inject constructor(
         val direction = atan2(xDiff, yDiff)
         var distanceLeft = sqrt(xDiff.pow(2) + yDiff.pow(2))
 
-        val thresholdDistance = 5f
+        val swipeDelay = 1L
         val swipeDuration = 1L
 
-        var from = start
+        val timesToSwipe = gesturePrefs.swipeDuration.toLongMilliseconds() / (swipeDelay + swipeDuration)
+        val thresholdDistance = distanceLeft / timesToSwipe
 
+        var from = start
         val mouseDownPath = Path().moveTo(start)
 
         var lastStroke = GestureDescription.StrokeDescription(
@@ -82,9 +84,9 @@ class AccessibilityGestures @Inject constructor(
             0,
             200L,
             true
-        )
-
-        performGesture(lastStroke)
+        ).also {
+            performGesture(it)
+        }
 
         while (distanceLeft > 0) {
             val distanceToScroll = minOf(thresholdDistance, distanceLeft)
@@ -99,28 +101,27 @@ class AccessibilityGestures @Inject constructor(
 
             lastStroke = lastStroke.continueStroke(
                 swipePath,
-                1,
+                swipeDelay,
                 swipeDuration,
                 true
-            )
-
-            performGesture(lastStroke)
+            ).also {
+                performGesture(it)
+            }
 
             from = to
-
             distanceLeft -= distanceToScroll
         }
 
         val mouseUpPath = Path().moveTo(from)
 
-        lastStroke = lastStroke.continueStroke(
+        lastStroke.continueStroke(
             mouseUpPath,
             1,
             400L,
             false
-        )
-
-        performGesture(lastStroke)
+        ).also {
+            performGesture(it)
+        }
     }
 
     override fun swipe(Start: Location, End: Location) = runBlocking {
