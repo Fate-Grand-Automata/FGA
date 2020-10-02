@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.mathewsachin.fategrandautomata.R
@@ -14,8 +13,6 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
     RecyclerView.Adapter<AutoSkillMakerHistoryAdapter.ViewHolder>() {
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val textView: TextView = ItemView.findViewById(R.id.autoskill_maker_history_textview)
-
-        var clickable = false
         var index = -1
     }
 
@@ -36,13 +33,7 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
         val holder = ViewHolder(view)
 
         view.setOnClickListener {
-            if (holder.clickable) {
-                currentIndexListener(holder.index)
-            } else {
-                val context = view.context
-                val msg = context.getString(R.string.auto_skill_maker_cannot_select)
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-            }
+            currentIndexListener(holder.index)
         }
 
         return holder
@@ -58,8 +49,7 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
                 val defaultColor = R.color.colorAccent
 
                 val colorRes = when (cmd) {
-                    is AutoSkillMakerEntry.NextWave,
-                    is AutoSkillMakerEntry.NextTurn -> R.color.colorStageChange
+                    is AutoSkillMakerEntry.Next -> R.color.colorStageChange
 
                     is AutoSkillMakerEntry.Action -> when (cmd.action) {
                         // Master Skill
@@ -73,13 +63,6 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
                             'a', 'b', 'c' -> R.color.colorServant1
                             'd', 'e', 'f' -> R.color.colorServant2
                             'g', 'h', 'i' -> R.color.colorServant3
-                            else -> defaultColor
-                        }
-
-                        is AutoSkillAction.NP -> when (cmd.action.np.autoSkillCode) {
-                            '4' -> R.color.colorServant1
-                            '5' -> R.color.colorServant2
-                            '6' -> R.color.colorServant3
                             else -> defaultColor
                         }
 
@@ -106,16 +89,6 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
         holder.textView.text =
             if (cmd is AutoSkillMakerEntry.Start) ">"
             else cmd.toString()
-
-        holder.clickable = when (cmd) {
-            is AutoSkillMakerEntry.Action -> when (cmd.action) {
-                is AutoSkillAction.CardsBeforeNP,
-                is AutoSkillAction.NP,
-                AutoSkillAction.NoOp -> false
-                else -> true
-            }
-            else -> true
-        }
 
         holder.index = position
     }
