@@ -150,13 +150,10 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         }
     }
 
-    private fun clickCommandCards(
-        clicks: Int,
-        isBeforeNP: Boolean,
-        remainingCards: MutableSet<CommandCard.Face>
-    ) {
+    private fun pickCards(clicks: Int = 3): List<CommandCard.Face> {
         var clicksLeft = clicks.coerceAtLeast(0)
         val toClick = mutableListOf<CommandCard.Face>()
+        val remainingCards = CommandCard.Face.list.toMutableSet()
 
         val cardsOrderedByPriority = cardPriority
             .atWave(battle.state.runState.stage)
@@ -184,13 +181,18 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 .addToClickList()
         }
 
-        when (braveChainsThisTurn) {
+        return when (braveChainsThisTurn) {
             BraveChainEnum.AfterNP -> {
                 commandCardGroupedWithNp[atk.nps.firstOrNull()]?.let { npGroup ->
                     pickCardsOrderedByPriority {
                         it in npGroup
                     }
                 }
+
+                // Pick more cards if needed
+                pickCardsOrderedByPriority()
+
+                toClick
             }
             BraveChainEnum.Avoid -> {
                 if (commandCardGroups.size > 1
@@ -205,56 +207,67 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                             .firstOrNull() ?: emptyList()
                     } while (clicksLeft > 0 && lastGroup.isNotEmpty())
                 }
+
+                // Pick more cards if needed
+                pickCardsOrderedByPriority()
+
+                toClick
+            }
+            BraveChainEnum.None -> {
+                // Pick more cards if needed
+                pickCardsOrderedByPriority()
+
+                rearrange(toClick)
             }
         }
+    }
 
-        // Pick more cards if needed
-        pickCardsOrderedByPriority()
+    private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
+        val cardsToRearrange = cards
+            .drop(atk.cardsBeforeNP)
+            .take((3 - atk.nps.size - atk.cardsBeforeNP).coerceAtLeast(0))
+            .size
 
-        // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
-        // Do the same when clicking 2 cards unless they're used before NPs.
-        // Skip if NP spamming because we don't know how many NPs might've been used
         val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
         val rearrangeCards = if (rearrangeCardsPerWave.isNotEmpty())
             rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
         else false
 
+        // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
+        // Do the same when clicking 2 cards unless they're used before NPs.
+        // Skip if NP spamming because we don't know how many NPs might've been used
         if (rearrangeCards
-            && braveChainsThisTurn != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
             && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
-            && (toClick.size == 3 || (toClick.size == 2 && !isBeforeNP))
+            && cardsToRearrange in 2..3
         ) {
             logger.info("Rearranging cards")
 
-            Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
+            return cards.toMutableList().also {
+                Collections.swap(it, it.lastIndex - 1, it.lastIndex)
+            }
         }
 
-        if (!isBeforeNP && remainingCards.size > 2) {
-            // Also click on remaining cards,
-            // since some people may put NPs in AutoSkill which aren't charged yet
-            pickCardsOrderedByPriority(remainingCards.size - 2)
-        }
-
-        logger.info("Clicking cards: $toClick")
-        toClick.forEach { it.clickLocation.click() }
+        return cards
     }
 
     fun clickCommandCards() {
-        val remainingCards = CommandCard.Face.list.toMutableSet()
-        val remainingNps = CommandCard.NP.list.toMutableSet()
+        val cards = pickCards()
 
         if (atk.cardsBeforeNP > 0) {
-            clickCommandCards(atk.cardsBeforeNP, true, remainingCards)
+            cards
+                .take(atk.cardsBeforeNP)
+                .also { logger.info("Clicking cards: $it") }
+                .forEach { it.clickLocation.click() }
         }
 
-        atk.nps.forEach { it.clickLocation.click() }
-        remainingNps -= atk.nps
+        atk.nps
+            .also { logger.info("Clicking NP(s): $it") }
+            .forEach { it.clickLocation.click() }
 
-        val noOfCardsToClick =
-            (3 - (5 - remainingCards.size) - (3 - remainingNps.size))
-                .coerceAtLeast(0)
-
-        clickCommandCards(noOfCardsToClick, false, remainingCards)
+        cards
+            .drop(atk.cardsBeforeNP)
+            .also { logger.info("Clicking cards: $it") }
+            .forEach { it.clickLocation.click() }
     }
 
     private fun groupNpsWithFaceCards(

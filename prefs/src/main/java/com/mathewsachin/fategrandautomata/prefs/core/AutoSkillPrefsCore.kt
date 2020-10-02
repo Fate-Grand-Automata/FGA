@@ -40,8 +40,11 @@ class AutoSkillPrefsCore(
     var braveChains by maker.string(R.string.pref_auto_skill_brave_chains)
         .map({
             it.split(",").map { m ->
-                if (m.isBlank()) BraveChainEnum.None
-                else BraveChainEnum.valueOf(m)
+                try {
+                    enumValueOf(m)
+                } catch (e: Exception) {
+                    BraveChainEnum.None
+                }
             }
         }, {
             it.joinToString(",") { m -> m.toString() }
