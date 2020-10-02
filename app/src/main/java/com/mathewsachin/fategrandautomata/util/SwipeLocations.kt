@@ -22,6 +22,6 @@ class SwipeLocations @Inject constructor() : ISwipeLocations {
     override val giftBox: ISwipeLocations.SwipeLocation
         get() = ISwipeLocations.SwipeLocation(
             Location(1400, if (isNewSwipeMethod()) 1200 else 1050),
-            Location(1400, if (isNewSwipeMethod()) 400 else 575)
+            Location(1400, if (isNewSwipeMethod()) 350 else 575)
         )
 }
