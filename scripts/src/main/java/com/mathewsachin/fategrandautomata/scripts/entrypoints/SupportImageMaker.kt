@@ -45,7 +45,6 @@ class SupportImageMaker @Inject constructor(
                 images.supportRegionTool,
                 supportRegionToolSimilarity
             )
-            .sortedBy { it.Region }
             .map {
                 // in the friend screen, the "Confirm Support Setup" button is higher
                 val newSupportBoundY = it.Region.Y + (if (isInSupport) 66 else 82)
@@ -54,6 +53,7 @@ class SupportImageMaker @Inject constructor(
             .filter { it in screenBounds }
             .take(2)
             .toList()
+            .sorted()
 
         for ((i, region) in regionArray.withIndex()) {
             region.getPattern().use {
