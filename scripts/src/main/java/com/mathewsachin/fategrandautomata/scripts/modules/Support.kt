@@ -284,7 +284,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                     friendName
                 )
 
-            for (theFriend in Game.supportFriendsRegion.findAll(pattern)) {
+            for (theFriend in Game.supportFriendsRegion.findAll(pattern).sortedBy { it.Region }) {
                 return SearchFunctionResult.Found(theFriend.Region)
             }
         }
@@ -300,7 +300,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
             )
 
             cropFriendLock(pattern).use {
-                for (servant in Game.supportListRegion.findAll(it)) {
+                for (servant in Game.supportListRegion.findAll(it).sortedBy { m -> m.Region }) {
                     if (autoSkillPrefs.maxAscended && !isMaxAscended(servant.Region)) {
                         continue
                     }
@@ -354,7 +354,9 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                 preferredCraftEssence.Name
             )
 
-            val craftEssences = SearchRegion.findAll(pattern)
+            val craftEssences = SearchRegion
+                .findAll(pattern)
+                .sortedBy { it.Region }
 
             for (craftEssence in craftEssences.map { it.Region }) {
                 if (!preferredCraftEssence.PreferMlb || isLimitBroken(craftEssence)) {
