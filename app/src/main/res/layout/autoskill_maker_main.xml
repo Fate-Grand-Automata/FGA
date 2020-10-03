@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/auto_skill_maker_main_undo"
-            android:onClick="@{(v) -> ui.onUndo()}"
+            android:onClick="@{(v) -> vm.onUndo()}"
             android:drawableStart="@drawable/ic_undo"
             android:enabled="@{vm.currentIndex > 0}"
             app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"

@@ -1,13 +1,22 @@
 package com.mathewsachin.fategrandautomata.scripts.models
 
 sealed class AutoSkillAction {
-    class CardsBeforeNP(val count: Int) : AutoSkillAction() {
+    data class Atk constructor(val nps: Set<CommandCard.NP>, val cardsBeforeNP: Int) : AutoSkillAction() {
         init {
-            require(count in 1..2) { "Only 1 or 2 cards can be used before NP" }
+            require(cardsBeforeNP in 0..2) { "Only 0, 1 or 2 cards can be used before NP" }
+        }
+
+        operator fun plus(other: Atk) =
+            Atk(nps + other.nps, cardsBeforeNP + other.cardsBeforeNP)
+
+        companion object {
+            fun noOp() = Atk(emptySet(), 0)
+
+            fun np(np: CommandCard.NP) = Atk(setOf(np), 0)
+
+            fun cardsBeforeNP(cards: Int) = Atk(emptySet(), cards)
         }
     }
-
-    class NP(val np: CommandCard.NP) : AutoSkillAction()
 
     class ServantSkill(val skill: Skill.Servant, val target: ServantTarget?) : AutoSkillAction()
 
@@ -19,6 +28,4 @@ sealed class AutoSkillAction {
         val starting: OrderChangeMember.Starting,
         val sub: OrderChangeMember.Sub
     ) : AutoSkillAction()
-
-    object NoOp : AutoSkillAction()
 }

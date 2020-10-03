@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
@@ -40,10 +39,6 @@ class AutoLottery @Inject constructor(
     }
 
     override fun script(): Nothing {
-        if (prefs.gameServer == GameServerEnum.Cn) {
-            throw ScriptExitException("Lottery script doesn't support this server right now.")
-        }
-
         while (true) {
             screenshotManager.useSameSnapIn {
                 when {

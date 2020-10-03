@@ -32,7 +32,6 @@
     <string name="auto_skill_maker_confirm_clear_title">Confirm Clear</string>
     <string name="auto_skill_maker_confirm_clear_message">This will clear the AutoSkill command. Are you sure?</string>
     <string name="auto_skill_maker_confirm_np_deletion_title">Confirm NP deletion</string>
-    <string name="auto_skill_maker_confirm_np_deletion_message">If you delete Battle/Turn separator, NPs and cards before NP for that turn will also be deleted. Are you sure?</string>
     <string name="auto_skill_maker_atk_header">Attack</string>
     <string name="auto_skill_maker_atk_servant_np">Servant\n%d\n\nNP</string>
     <string name="auto_skill_maker_atk_cards_before_np">Cards before NP</string>
