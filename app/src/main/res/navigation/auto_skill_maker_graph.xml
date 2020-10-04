@@ -62,5 +62,22 @@
     <fragment
         android:id="@+id/target_auto_skill_maker"
         android:name="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerTargetFragment"
-        android:label="Target" />
+        android:label="Target">
+        <argument
+            android:name="show_space_ishtar"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_target_auto_skill_maker_to_autoSkillMakerSpaceIshtarFragment"
+            app:destination="@id/space_ishtar_auto_skill_fragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/main_auto_skill_maker" />
+    </fragment>
+    <fragment
+        android:id="@+id/space_ishtar_auto_skill_fragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerSpaceIshtarFragment"
+        android:label="Space Ishtar" />
 </navigation>
