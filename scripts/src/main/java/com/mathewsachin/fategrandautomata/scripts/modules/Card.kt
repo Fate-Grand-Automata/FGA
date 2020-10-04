@@ -192,7 +192,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 // Pick more cards if needed
                 pickCardsOrderedByPriority()
 
-                toClick
+                rearrange(toClick)
             }
             BraveChainEnum.Avoid -> {
                 if (commandCardGroups.size > 1
@@ -214,7 +214,6 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 toClick
             }
             BraveChainEnum.None -> {
-                // Pick more cards if needed
                 pickCardsOrderedByPriority()
 
                 rearrange(toClick)
@@ -223,27 +222,29 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
-        val cardsToRearrange = cards
-            .drop(atk.cardsBeforeNP)
-            .take((3 - atk.nps.size - atk.cardsBeforeNP).coerceAtLeast(0))
-            .size
-
-        val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
-        val rearrangeCards = if (rearrangeCardsPerWave.isNotEmpty())
-            rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
-        else false
-
-        // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
-        // Do the same when clicking 2 cards unless they're used before NPs.
         // Skip if NP spamming because we don't know how many NPs might've been used
-        if (rearrangeCards
-            && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
-            && cardsToRearrange in 2..3
-        ) {
-            logger.info("Rearranging cards")
+        if (prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None) {
+            val cardsToRearrange = cards
+                .mapIndexed { index, _ -> index }
+                .drop(atk.cardsBeforeNP)
+                .take((3 - atk.nps.size - atk.cardsBeforeNP).coerceAtLeast(0))
+                .reversed()
 
-            return cards.toMutableList().also {
-                Collections.swap(it, it.lastIndex - 1, it.lastIndex)
+            // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
+            // Do the same when clicking 2 cards unless they're used before NPs.
+            if (cardsToRearrange.size in 2..3) {
+                val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
+                val rearrangeCards = if (rearrangeCardsPerWave.isNotEmpty())
+                    rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
+                else false
+
+                if (rearrangeCards) {
+                    logger.info("Rearranging cards")
+
+                    return cards.toMutableList().also {
+                        Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
+                    }
+                }
             }
         }
 
