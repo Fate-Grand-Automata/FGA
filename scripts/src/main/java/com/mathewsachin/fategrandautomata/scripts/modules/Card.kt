@@ -182,15 +182,21 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         }
 
         return when (braveChainsThisTurn) {
-            BraveChainEnum.AfterNP -> {
-                commandCardGroupedWithNp[atk.nps.firstOrNull()]?.let { npGroup ->
+            BraveChainEnum.WithNP -> {
+                val chainFaceCount = commandCardGroupedWithNp[atk.nps.firstOrNull()]?.let { npGroup ->
                     pickCardsOrderedByPriority {
                         it in npGroup
-                    }
+                    }.size
                 }
 
                 // Pick more cards if needed
                 pickCardsOrderedByPriority()
+
+                // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
+                // we want the matching face-card after NP.
+                if (listOf(atk.nps.size, atk.cardsBeforeNP, chainFaceCount).all { it == 1 }) {
+                    Collections.swap(toClick, 0, 1)
+                }
 
                 rearrange(toClick)
             }
@@ -223,11 +229,15 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
         // Skip if NP spamming because we don't know how many NPs might've been used
-        if (prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None) {
+        if (prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
+            // If there are cards before NP, at max there's only 1 card after NP
+            && atk.cardsBeforeNP == 0
+            // If there are more than 1 NPs, only 1 card after NPs at max
+            && atk.nps.size <= 1
+        ) {
             val cardsToRearrange = cards
                 .mapIndexed { index, _ -> index }
-                .drop(atk.cardsBeforeNP)
-                .take((3 - atk.nps.size - atk.cardsBeforeNP).coerceAtLeast(0))
+                .take((3 - atk.nps.size).coerceAtLeast(0))
                 .reversed()
 
             // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
