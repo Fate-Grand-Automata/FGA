@@ -83,9 +83,13 @@ class AutoSkillMakerMainFragment : Fragment() {
         viewModel.initSkill(SkillCode)
 
         val showSpaceIshtar = SkillCode in listOf('b', 'e', 'h')
+        val showEmiya = SkillCode in listOf('c', 'f', 'i')
 
         val action = AutoSkillMakerMainFragmentDirections
-            .actionAutoSkillMakerMainFragmentToAutoSkillMakerTargetFragment(showSpaceIshtar)
+            .actionAutoSkillMakerMainFragmentToAutoSkillMakerTargetFragment(
+                showSpaceIshtar,
+                showEmiya
+            )
 
         nav(action)
     }

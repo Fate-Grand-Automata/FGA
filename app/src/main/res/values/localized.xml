@@ -62,6 +62,7 @@
     <string name="auto_skill_maker_target_servant">Servant\n\n%d</string>
 
     <string name="auto_skill_maker_space_ishtar">Space Ishtar</string>
+    <string name="auto_skill_maker_emiya">Emiya</string>
     <string name="auto_skill_maker_quick">Quick</string>
     <string name="auto_skill_maker_arts">Arts</string>
     <string name="auto_skill_maker_buster">Buster</string>

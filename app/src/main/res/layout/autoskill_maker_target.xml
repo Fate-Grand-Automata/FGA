@@ -11,6 +11,10 @@
             type="Boolean" />
 
         <variable
+            name="show_emiya"
+            type="Boolean" />
+
+        <variable
             name="vm"
             type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel" />
 
@@ -73,16 +77,6 @@
             app:layout_constraintTop_toTopOf="@+id/target_1" />
 
         <Button
-            android:id="@+id/no_target_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/auto_skill_maker_target_none"
-            android:onClick="@{(v) -> ui.onSkillTarget()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/space_ishtar_btn" />
-
-        <Button
             android:id="@+id/space_ishtar_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,7 +84,28 @@
             android:visibility="@{show_space_ishtar ? View.VISIBLE : View.GONE}"
             android:onClick="@{(v) -> ui.onSpaceIshtar()}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/no_target_btn"
+            app:layout_constraintEnd_toStartOf="@id/emiya_btn"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/emiya_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_skill_maker_emiya"
+            android:visibility="@{show_emiya ? View.VISIBLE : View.GONE}"
+            android:onClick="@{(v) -> ui.onEmiya()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/no_target_btn"
+            app:layout_constraintStart_toEndOf="@id/space_ishtar_btn" />
+
+        <Button
+            android:id="@+id/no_target_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_skill_maker_target_none"
+            android:onClick="@{(v) -> ui.onSkillTarget()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/emiya_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
