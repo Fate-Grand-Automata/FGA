@@ -263,12 +263,9 @@ class Support(
     private fun findFriendName(): SearchFunctionResult {
         for (friendName in friendNameArray) {
             // Cached pattern. Don't dispose here.
-            val pattern =
-                images.loadSupportPattern(
-                    friendName
-                )
+            val pattern = images.loadSupportPattern(friendName)
 
-            for (theFriend in Game.supportFriendsRegion.findAll(pattern)) {
+            for (theFriend in Game.supportFriendsRegion.findAll(pattern).sorted()) {
                 return SearchFunctionResult.Found(theFriend.Region)
             }
         }
@@ -284,7 +281,7 @@ class Support(
             )
 
             cropFriendLock(pattern).use {
-                for (servant in Game.supportListRegion.findAll(it)) {
+                for (servant in Game.supportListRegion.findAll(it).sorted()) {
                     if (autoSkillPrefs.maxAscended && !isMaxAscended(servant.Region)) {
                         continue
                     }
@@ -338,7 +335,9 @@ class Support(
                 preferredCraftEssence.Name
             )
 
-            val craftEssences = SearchRegion.findAll(pattern)
+            val craftEssences = SearchRegion
+                .findAll(pattern)
+                .sorted()
 
             for (craftEssence in craftEssences.map { it.Region }) {
                 if (!preferredCraftEssence.PreferMlb || isLimitBroken(craftEssence)) {

@@ -31,7 +31,7 @@ class AutoSkillCommand private constructor(
             return target
         }
 
-        fun parseAction(queue: Queue<Char>): AutoSkillAction {
+        private fun parseAction(queue: Queue<Char>): AutoSkillAction {
             try {
                 return when (val c = queue.remove()) {
                     in Skill.Servant.list.map { it.autoSkillCode } -> {
@@ -49,7 +49,7 @@ class AutoSkillCommand private constructor(
                     in CommandCard.NP.list.map { it.autoSkillCode } -> {
                         val np = CommandCard.NP.list.first { it.autoSkillCode == c }
 
-                        AutoSkillAction.NP(np)
+                        AutoSkillAction.Atk.np(np)
                     }
                     't' -> {
                         val code = queue.remove()
@@ -59,7 +59,7 @@ class AutoSkillCommand private constructor(
                     'n' -> {
                         val code = queue.remove()
                         val count = code.toString().toInt()
-                        AutoSkillAction.CardsBeforeNP(count)
+                        AutoSkillAction.Atk.cardsBeforeNP(count)
                     }
                     'x' -> {
                         val startingCode = queue.remove()
@@ -72,7 +72,7 @@ class AutoSkillCommand private constructor(
 
                         AutoSkillAction.OrderChange(starting, sub)
                     }
-                    '0' -> AutoSkillAction.NoOp
+                    '0' -> AutoSkillAction.Atk.noOp()
                     else -> throw ScriptExitException("Unknown character: $c")
                 }
             } catch (e: Exception) {
@@ -94,7 +94,20 @@ class AutoSkillCommand private constructor(
                         val actions = mutableListOf<AutoSkillAction>()
 
                         while (!queue.isEmpty()) {
-                            actions.add(parseAction(queue))
+                            val action = parseAction(queue)
+
+                            // merge NPs and cards before NPs
+                            if (actions.isNotEmpty() && action is AutoSkillAction.Atk) {
+                                val last = actions.last()
+
+                                if (last is AutoSkillAction.Atk) {
+                                    actions[actions.lastIndex] = last + action
+
+                                    continue
+                                }
+                            }
+
+                            actions.add(action)
                         }
 
                         actions

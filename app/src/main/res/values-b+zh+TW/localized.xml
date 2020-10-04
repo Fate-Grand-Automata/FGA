@@ -31,7 +31,6 @@
     <string name="auto_skill_maker_confirm_clear_title">確認清除</string>
     <string name="auto_skill_maker_confirm_clear_message">將會清除所有設定，確認執行?</string>
     <string name="auto_skill_maker_confirm_np_deletion_title">確認復原寶具指令</string>
-    <string name="auto_skill_maker_confirm_np_deletion_message">寶具前墊刀等設定也會復原，確認執行?</string>
     <string name="auto_skill_maker_atk_header">攻擊指令</string>
     <string name="auto_skill_maker_atk_servant_np">從者\n%d\n\n寶具</string>
     <string name="auto_skill_maker_atk_cards_before_np">寶具前墊刀</string>
