@@ -61,6 +61,11 @@
     <string name="auto_skill_maker_target_none">No Target</string>
     <string name="auto_skill_maker_target_servant">Servant\n\n%d</string>
 
+    <string name="auto_skill_maker_space_ishtar">Space Ishtar</string>
+    <string name="auto_skill_maker_quick">Quick</string>
+    <string name="auto_skill_maker_arts">Arts</string>
+    <string name="auto_skill_maker_buster">Buster</string>
+
     <string name="card_priority_wave_number">WAVE %d</string>
     <string name="card_priority_menu_info">Info</string>
     <string name="card_priority_info_title">Info</string>
