@@ -23,14 +23,6 @@ interface IPattern : AutoCloseable {
     fun resize(Target: IPattern, Size: Size)
 
     /**
-     * Checks if the given image matches with a high enough similarity value.
-     *
-     * @param Template the image to match with
-     * @param Similarity the minimum similarity
-     */
-    fun isMatch(Template: IPattern, Similarity: Double): Boolean
-
-    /**
      * Finds all image matches with high enough similarity values.
      *
      * @param Template the image to match with

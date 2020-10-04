@@ -343,9 +343,8 @@ open class AutoBattle @Inject constructor(
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
-        val withdrawRegion = Game.withdrawRegion
-            .findAll(images.withdraw)
-            .firstOrNull() ?: return
+        val withdrawRegion = Game.withdrawRegion.find(images.withdraw)
+            ?: return
 
         withdrawRegion.Region.click()
 
@@ -434,14 +433,13 @@ open class AutoBattle @Inject constructor(
 
         if (!partySelected && party in Game.partySelectionArray.indices) {
             val currentParty = Game.selectedPartyRegion
-                .findAll(images.selectedParty)
-                .map { match ->
+                .find(images.selectedParty)
+                ?.let { match ->
                     // Find party with min distance from center of matched region
                     Game.partySelectionArray.withIndex().minByOrNull {
                         (it.value.X - match.Region.center.X).absoluteValue
                     }?.index
                 }
-                .firstOrNull()
 
             /* If the currently selected party cannot be detected, we need to switch to a party
                which was not configured. The reason is that the "Start Quest" button becomes
