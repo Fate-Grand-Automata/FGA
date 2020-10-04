@@ -38,7 +38,7 @@ class AutoGiftBox @Inject constructor(
         }
 
     private fun checkGifts() {
-        for (gift in checkRegion.findAll(images.giftBoxCheck).sortedBy { it.Region }) {
+        for (gift in checkRegion.findAll(images.giftBoxCheck).sorted()) {
             val countRegion = Region(countRegionX, gift.Region.Y - 120, 300, 100)
             val iconRegion = Region(190, gift.Region.Y - 116, 300, 240)
             val clickSpot = Location(1700, gift.Region.Y + 50)

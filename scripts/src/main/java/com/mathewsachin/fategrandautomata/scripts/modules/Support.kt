@@ -279,12 +279,9 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
     private fun findFriendName(): SearchFunctionResult {
         for (friendName in friendNameArray) {
             // Cached pattern. Don't dispose here.
-            val pattern =
-                images.loadSupportPattern(
-                    friendName
-                )
+            val pattern = images.loadSupportPattern(friendName)
 
-            for (theFriend in Game.supportFriendsRegion.findAll(pattern).sortedBy { it.Region }) {
+            for (theFriend in Game.supportFriendsRegion.findAll(pattern).sorted()) {
                 return SearchFunctionResult.Found(theFriend.Region)
             }
         }
@@ -300,7 +297,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
             )
 
             cropFriendLock(pattern).use {
-                for (servant in Game.supportListRegion.findAll(it).sortedBy { m -> m.Region }) {
+                for (servant in Game.supportListRegion.findAll(it).sorted()) {
                     if (autoSkillPrefs.maxAscended && !isMaxAscended(servant.Region)) {
                         continue
                     }
@@ -356,7 +353,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
 
             val craftEssences = SearchRegion
                 .findAll(pattern)
-                .sortedBy { it.Region }
+                .sorted()
 
             for (craftEssence in craftEssences.map { it.Region }) {
                 if (!preferredCraftEssence.PreferMlb || isLimitBroken(craftEssence)) {
