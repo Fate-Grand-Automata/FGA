@@ -53,6 +53,7 @@ class SupportImageMaker @Inject constructor(
             .filter { it in screenBounds }
             .take(2)
             .toList()
+            .sorted()
 
         for ((i, region) in regionArray.withIndex()) {
             region.getPattern().use {

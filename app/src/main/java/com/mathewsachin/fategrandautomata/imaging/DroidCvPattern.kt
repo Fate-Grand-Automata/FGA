@@ -122,18 +122,6 @@ class DroidCvPattern(
         return DisposableMat()
     }
 
-    override fun isMatch(Template: IPattern, Similarity: Double): Boolean {
-        match(Template).use {
-            val minMaxLocResult = Core.minMaxLoc(it.Mat)
-
-            val score = minMaxLocResult.maxVal
-
-            logger.debug { "Matched $Template with a score of $score" }
-
-            return score >= Similarity
-        }
-    }
-
     override fun findMatches(Template: IPattern, Similarity: Double) = sequence {
         val result = match(Template)
 
