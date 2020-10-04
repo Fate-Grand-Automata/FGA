@@ -46,4 +46,9 @@ interface IImageMatchingExtensions {
         Pattern: IPattern,
         Similarity: Double? = null
     ): Sequence<Match>
+
+    fun Region.find(
+        Pattern: IPattern,
+        Similarity: Double? = null
+    ): Match? = findAll(Pattern, Similarity).firstOrNull()
 }

@@ -282,8 +282,8 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 otherGroups.maxByOrNull { group ->
                     group.first()
                         .servantMatchRegion
-                        .findAll(npCropped, 0.4)
-                        .firstOrNull()?.score ?: 0.0
+                        .find(npCropped, 0.4)
+                        ?.score ?: 0.0
                 } ?: emptyList()
             }
         }
