@@ -108,12 +108,12 @@
 
         <SeekBarPreference
             android:max="200"
-            app:key="@string/pref_support_swipe_multiplier"
+            app:key="@string/pref_swipe_multiplier"
             app:icon="@drawable/ic_swipe"
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="@string/p_fine_tune_support_swipe_multiplier" />
+            app:title="@string/p_fine_tune_swipe_multiplier" />
     </PreferenceCategory>
 
     <PreferenceCategory
