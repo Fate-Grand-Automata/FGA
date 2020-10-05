@@ -67,8 +67,8 @@ class PrefsCore
 
     val mlbSimilarity = maker.int(R.string.pref_mlb_similarity, 70)
 
-    val supportSwipeMultiplier = maker.int(
-        R.string.pref_support_swipe_multiplier,
+    val swipeMultiplier = maker.int(
+        R.string.pref_swipe_multiplier,
         100
     )
 

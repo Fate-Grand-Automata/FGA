@@ -1,11 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
 import java.util.*
@@ -25,7 +25,10 @@ const val limitBrokenCharacter = '*'
 
 private val logger = KotlinLogging.logger {}
 
-class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
+class Support(
+    fgAutomataApi: IFgoAutomataApi,
+    val swipeLocations: ISwipeLocations
+) : IFgoAutomataApi by fgAutomataApi {
     private var preferredServantArray = listOf<String>()
     private var friendNameArray = listOf<String>()
     private var preferredCEArray = listOf<PreferredCEEntry>()
@@ -190,6 +193,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
 
         while (true) {
             val result = searchVisible(SearchMethod)
+            val swipeLocation = swipeLocations.supportList
 
             when {
                 result is SearchVisibleResult.Found -> {
@@ -198,7 +202,9 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                 }
                 result is SearchVisibleResult.NotFound
                         && numberOfSwipes < prefs.support.swipesPerUpdate -> {
-                    scrollList()
+
+                    swipe(swipeLocation.start, swipeLocation.end)
+
                     ++numberOfSwipes
                     0.3.seconds.wait()
                 }
@@ -250,28 +256,6 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
             else -> throw ScriptExitException(messages.supportSelectionPreferredNotSet)
         }
     }
-
-    /**
-     * Scroll support list considering [IPreferences.supportSwipeMultiplier].
-     */
-    private fun scrollList() {
-        val endY = lerp(
-            Game.supportSwipeStartClick.Y,
-            Game.supportSwipeEndClick.Y,
-            prefs.support.supportSwipeMultiplier
-        )
-
-        swipe(
-            Game.supportSwipeStartClick,
-            Game.supportSwipeEndClick.copy(Y = endY)
-        )
-    }
-
-    /**
-     * linear interpolation
-     */
-    private fun lerp(start: Int, end: Int, fraction: Double) =
-        (start + (end - start) * fraction).toInt()
 
     private fun findFriendName(): SearchFunctionResult {
         for (friendName in friendNameArray) {
