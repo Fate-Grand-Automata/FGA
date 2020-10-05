@@ -22,6 +22,7 @@ class AutoSkillMakerTargetFragment : Fragment() {
                 it.vm = viewModel
                 it.ui = this
                 it.showSpaceIshtar = args.showSpaceIshtar
+                it.showEmiya = args.showEmiya
                 it.lifecycleOwner = viewLifecycleOwner
             }
             .root
@@ -38,6 +39,13 @@ class AutoSkillMakerTargetFragment : Fragment() {
     fun onSpaceIshtar() {
         val action = AutoSkillMakerTargetFragmentDirections
             .actionTargetAutoSkillMakerToAutoSkillMakerSpaceIshtarFragment()
+
+        nav(action)
+    }
+
+    fun onEmiya() {
+        val action = AutoSkillMakerTargetFragmentDirections
+            .actionTargetAutoSkillMakerToAutoSkillMakerEmiyaFragment()
 
         nav(action)
     }
