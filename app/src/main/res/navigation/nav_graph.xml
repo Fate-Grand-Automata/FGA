@@ -14,24 +14,24 @@
         <action
             android:id="@+id/action_mainFragment_to_refillSettingsFragment"
             app:destination="@id/refillSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
         <action
             android:id="@+id/action_mainFragment_to_moreSettingsFragment"
             app:destination="@id/moreSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
         <action
             android:id="@+id/action_mainFragment_to_autoSkillListFragment"
             app:destination="@id/autoSkillListFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
     </fragment>
     <fragment
         android:id="@+id/refillSettingsFragment"
@@ -44,10 +44,10 @@
         <action
             android:id="@+id/action_moreSettingsFragment_to_fineTuneSettingsFragment"
             app:destination="@id/fineTuneSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
     </fragment>
     <fragment
         android:id="@+id/fineTuneSettingsFragment"
@@ -61,10 +61,10 @@
         <action
             android:id="@+id/action_autoSkillListFragment_to_autoSkillItemSettingsFragment"
             app:destination="@id/autoSkillItemSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
     </fragment>
     <fragment
         android:id="@+id/autoSkillItemSettingsFragment"
@@ -76,24 +76,24 @@
         <action
             android:id="@+id/action_autoSkillItemSettingsFragment_to_skillLevelSettingsFragment"
             app:destination="@id/skillLevelSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
         <action
             android:id="@+id/action_autoSkillItemSettingsFragment_to_cardPriorityFragment"
             app:destination="@id/cardPriorityFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
         <action
             android:id="@+id/action_autoSkillItemSettingsFragment_self"
             app:destination="@id/autoSkillItemSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit"
             app:popUpTo="@id/autoSkillListFragment" />
         <action
             android:id="@+id/action_autoSkillItemSettingsFragment_to_autoSkillMakerActivity"
