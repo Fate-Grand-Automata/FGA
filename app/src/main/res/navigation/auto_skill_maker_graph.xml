@@ -78,10 +78,10 @@
         <action
             android:id="@+id/action_target_auto_skill_maker_to_autoSkillMakerEmiyaFragment"
             app:destination="@id/emiya_auto_skill_maker"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit"
             app:popUpTo="@id/main_auto_skill_maker" />
         <argument
             android:name="show_emiya"
