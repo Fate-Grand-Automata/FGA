@@ -9,6 +9,8 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
 import java.util.*
+import kotlin.streams.asStream
+import kotlin.streams.toList
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 import kotlin.time.seconds
@@ -286,6 +288,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
 
     private fun findServants(): List<SearchFunctionResult.Found> =
         preferredServantArray
+            .parallelStream()
             .flatMap { entry ->
                 val pattern = images.loadSupportPattern(entry)
 
@@ -294,7 +297,7 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                     autoSkillPrefs.skill2Max,
                     autoSkillPrefs.skill3Max
                 )
-                val skillCheckNeeded = needMaxedSkills.any()
+                val skillCheckNeeded = needMaxedSkills.any { it }
 
                 cropFriendLock(pattern).use { cropped ->
                     Game.supportListRegion
@@ -308,9 +311,12 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
                         .filter {
                             it !is SearchFunctionResult.FoundWithBounds || checkMaxedSkills(it.Bounds, needMaxedSkills)
                         }
+                        // We want the processing to be finished before cropped pattern is released
                         .toList()
+                        .stream()
                 }
             }
+            .toList()
             .sortedBy { it.Support }
 
     /**
@@ -341,15 +347,18 @@ class Support(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi
 
     private fun findCraftEssences(SearchRegion: Region): List<FoundCE> =
         preferredCEArray
+            .parallelStream()
             .flatMap { entry ->
                 val pattern = images.loadSupportPattern(entry.Name)
 
                 SearchRegion
                     .findAll(pattern)
+                    .asStream()
                     .map { FoundCE(it.Region, isLimitBroken(it.Region)) }
                     .filter { !entry.PreferMlb || it.mlb }
-                    .sorted()
             }
+            .toList()
+            .sorted()
 
     private fun findSupportBounds(Support: Region) =
         Game.supportRegionToolSearchRegion
