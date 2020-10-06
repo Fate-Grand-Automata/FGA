@@ -28,9 +28,7 @@ class DroidCvPattern(
         }
     }
 
-    constructor(Stream: InputStream, tag: String) : this(makeMat(Stream)) {
-        this.tag = tag
-    }
+    constructor(Stream: InputStream) : this(makeMat(Stream))
 
     init {
         require(Mat != null) { "Mat should not be null" }
@@ -60,14 +58,15 @@ class DroidCvPattern(
     override fun resize(Size: Size): IPattern {
         val result = Mat()
         resize(result, Size)
-        return DroidCvPattern(result)
+        return DroidCvPattern(result).tag(tag)
     }
 
     override fun resize(Target: IPattern, Size: Size) {
         if (Target is DroidCvPattern) {
             resize(Target.Mat!!, Size)
-            Target.tag = tag
         }
+
+        Target.tag(tag)
     }
 
     private fun match(Template: IPattern): DisposableMat {
@@ -143,15 +142,11 @@ class DroidCvPattern(
 
         val result = Mat(Mat, rect)
 
-        return DroidCvPattern(result).also { it.tag = tag }
+        return DroidCvPattern(result).tag(tag)
     }
 
     override fun save(FileName: String) {
         Imgcodecs.imwrite(FileName, Mat)
-    }
-
-    override fun copy() = DroidCvPattern(Mat?.clone()).also {
-        it.tag = tag
     }
 
     override fun getWhitePixelMask(threshold: Int): IPattern {
@@ -165,7 +160,11 @@ class DroidCvPattern(
         val rect = Imgproc.boundingRect(contours[0])
 
         return DroidCvPattern(result)
-            .also { it.tag = tag }
+            .tag(tag)
             .crop(Region(rect.x, rect.y, rect.width, rect.height))
     }
+
+    override fun copy() = DroidCvPattern(Mat?.clone()).tag(tag)
+
+    override fun tag(tag: String) = apply { this.tag = tag }
 }

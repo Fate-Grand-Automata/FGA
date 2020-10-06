@@ -201,7 +201,7 @@
     <string name="p_refill_type_sq">SQ</string>
 
     <string name="p_brave_chains_don_t_care">Don\'t care</string>
-    <string name="p_brave_chains_after_np">After NP</string>
+    <string name="p_brave_chains_with_np">With NP</string>
     <string name="p_brave_chains_avoid">Avoid</string>
 
     <string name="p_boost_item_disabled">Disabled</string>

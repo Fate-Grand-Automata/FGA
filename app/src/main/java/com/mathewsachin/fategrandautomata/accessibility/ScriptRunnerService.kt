@@ -79,6 +79,12 @@ class ScriptRunnerService : AccessibilityService() {
     @Inject
     lateinit var scriptComponentBuilder: ScriptComponentBuilder
 
+    @Inject
+    lateinit var alarmManager: AlarmManager
+
+    @Inject
+    lateinit var clipboardManager: ClipboardManager
+
     private val screenOffReceiver = ScreenOffReceiver()
 
     override fun onUnbind(intent: Intent?): Boolean {
@@ -166,8 +172,8 @@ class ScriptRunnerService : AccessibilityService() {
             restartServiceIntent,
             PendingIntent.FLAG_ONE_SHOT
         )
-        val alarmService = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
-        alarmService.set(
+
+        alarmManager.set(
             AlarmManager.ELAPSED_REALTIME,
             SystemClock.elapsedRealtime() + 1000,
             restartServicePendingIntent
@@ -265,10 +271,9 @@ class ScriptRunnerService : AccessibilityService() {
                     if (Error != null) {
                         // TODO: Translate
                         it.setNeutralButton("Copy") { _, _ ->
-                            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
 
-                            clipboard.setPrimaryClip(clipData)
+                            clipboardManager.setPrimaryClip(clipData)
                         }
                     }
                 }

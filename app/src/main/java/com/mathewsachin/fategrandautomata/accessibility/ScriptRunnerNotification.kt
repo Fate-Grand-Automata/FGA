@@ -23,7 +23,8 @@ import kotlin.time.milliseconds
 @ServiceScoped
 class ScriptRunnerNotification @Inject constructor(
     val service: Service,
-    val prefs: IPreferences
+    val prefs: IPreferences,
+    val vibrator: Vibrator
 ) {
 
     private object Channels {
@@ -142,17 +143,15 @@ class ScriptRunnerNotification @Inject constructor(
     }
 
     private fun vibrate(Duration: Duration) {
-        val v = service.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(
+            vibrator.vibrate(
                 VibrationEffect.createOneShot(
                     Duration.toLongMilliseconds(),
                     VibrationEffect.DEFAULT_AMPLITUDE
                 )
             )
         } else {
-            v.vibrate(Duration.toLongMilliseconds())
+            vibrator.vibrate(Duration.toLongMilliseconds())
         }
     }
 
