@@ -76,6 +76,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
     var atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp()
     private var braveChainsThisTurn = BraveChainEnum.None
+    private var rearrangeCardsThisTurn = false
 
     private fun getCommandCards(): Map<CardScore, List<CommandCard.Face>> {
         data class CardResult(
@@ -115,19 +116,26 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             }
     }
 
-    fun readCommandCards() = screenshotManager.useSameSnapIn {
-        commandCards = getCommandCards()
-
+    fun readCommandCards() {
         val braveChainsPerWave = prefs.selectedAutoSkillConfig.braveChains
         braveChainsThisTurn = if (braveChainsPerWave.isNotEmpty())
             braveChainsPerWave[battle.state.runState.stage.coerceIn(braveChainsPerWave.indices)]
         else BraveChainEnum.None
 
-        if (braveChainsThisTurn != BraveChainEnum.None) {
-            val supportGroup = CommandCard.Face.list
-                .filter { images.support in it.supportCheckRegion }
-            commandCardGroups = groupByFaceCard(supportGroup)
-            commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
+        val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
+        rearrangeCardsThisTurn = if (rearrangeCardsPerWave.isNotEmpty())
+            rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
+        else false
+
+        screenshotManager.useSameSnapIn {
+            commandCards = getCommandCards()
+
+            if (braveChainsThisTurn != BraveChainEnum.None) {
+                val supportGroup = CommandCard.Face.list
+                    .filter { images.support in it.supportCheckRegion }
+                commandCardGroups = groupByFaceCard(supportGroup)
+                commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
+            }
         }
     }
 
@@ -192,7 +200,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
                 // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
                 // we want the matching face-card after NP.
-                if (listOf(atk.nps.size, atk.cardsBeforeNP, chainFaceCount).all { it == 1 }) {
+                if (rearrangeCardsThisTurn
+                    && listOf(atk.nps.size, atk.cardsBeforeNP, chainFaceCount).all { it == 1 }
+                ) {
                     Collections.swap(toClick, 0, 1)
                 }
 
@@ -226,8 +236,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
-        // Skip if NP spamming because we don't know how many NPs might've been used
-        if (prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
+        if (rearrangeCardsThisTurn
+            // Skip if NP spamming because we don't know how many NPs might've been used
+            && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
             // If there are cards before NP, at max there's only 1 card after NP
             && atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
@@ -241,17 +252,10 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
             // Do the same when clicking 2 cards unless they're used before NPs.
             if (cardsToRearrange.size in 2..3) {
-                val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
-                val rearrangeCards = if (rearrangeCardsPerWave.isNotEmpty())
-                    rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
-                else false
+                logger.info("Rearranging cards")
 
-                if (rearrangeCards) {
-                    logger.info("Rearranging cards")
-
-                    return cards.toMutableList().also {
-                        Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
-                    }
+                return cards.toMutableList().also {
+                    Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
                 }
             }
         }
