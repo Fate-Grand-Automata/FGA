@@ -115,27 +115,23 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             }
     }
 
-    fun readCommandCards() {
-        atk = AutoSkillAction.Atk.noOp()
+    fun readCommandCards() = screenshotManager.useSameSnapIn {
+        commandCards = getCommandCards()
 
-        screenshotManager.useSameSnapIn {
-            commandCards = getCommandCards()
+        val braveChainsPerWave = prefs.selectedAutoSkillConfig.braveChains
+        braveChainsThisTurn = if (braveChainsPerWave.isNotEmpty())
+            braveChainsPerWave[battle.state.runState.stage.coerceIn(braveChainsPerWave.indices)]
+        else BraveChainEnum.None
 
-            val braveChainsPerWave = prefs.selectedAutoSkillConfig.braveChains
-            braveChainsThisTurn = if (braveChainsPerWave.isNotEmpty())
-                braveChainsPerWave[battle.state.runState.stage.coerceIn(braveChainsPerWave.indices)]
-            else BraveChainEnum.None
-
-            if (braveChainsThisTurn != BraveChainEnum.None) {
-                val supportGroup = CommandCard.Face.list
-                    .filter { images.support in it.supportCheckRegion }
-                commandCardGroups = groupByFaceCard(supportGroup)
-                commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
-            }
+        if (braveChainsThisTurn != BraveChainEnum.None) {
+            val supportGroup = CommandCard.Face.list
+                .filter { images.support in it.supportCheckRegion }
+            commandCardGroups = groupByFaceCard(supportGroup)
+            commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
         }
     }
 
-    val canSpamNpCards: Boolean
+    private val canSpamNpCards: Boolean
         get() {
             val weCanSpam = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
             val weAreInDanger = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
@@ -144,10 +140,12 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             return (weCanSpam || weAreInDanger) && autoSkill.isFinished
         }
 
-    fun spamNpCards() {
-        for (npCard in CommandCard.NP.list) {
-            npCard.clickLocation.click()
-        }
+    private fun spamNpCards() = CommandCard.NP.list.forEach { it.pick() }
+
+    private fun CommandCard.NP.pick() {
+        clickLocation.click()
+
+        Game.battleExtraInfoWindowCloseClick.click()
     }
 
     private fun pickCards(clicks: Int = 3): List<CommandCard.Face> {
@@ -262,6 +260,10 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     fun clickCommandCards() {
+        if (canSpamNpCards) {
+            spamNpCards()
+        }
+
         val cards = pickCards()
 
         if (atk.cardsBeforeNP > 0) {
@@ -273,12 +275,14 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
         atk.nps
             .also { logger.info("Clicking NP(s): $it") }
-            .forEach { it.clickLocation.click() }
+            .forEach { it.pick() }
 
         cards
             .drop(atk.cardsBeforeNP)
             .also { logger.info("Clicking cards: $it") }
             .forEach { it.clickLocation.click() }
+
+        atk = AutoSkillAction.Atk.noOp()
     }
 
     private fun groupNpsWithFaceCards(

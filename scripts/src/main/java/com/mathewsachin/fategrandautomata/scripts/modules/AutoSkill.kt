@@ -100,11 +100,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     }
 
     fun act(action: AutoSkillAction) = when (action) {
-        is AutoSkillAction.Atk -> {
-            battle.clickAttack()
-
-            card.atk = action
-        }
+        is AutoSkillAction.Atk -> card.atk = action
         is AutoSkillAction.ServantSkill -> castSkill(action.skill, action.target)
         is AutoSkillAction.MasterSkill -> castMasterSkill(action.skill, action.target)
         is AutoSkillAction.TargetEnemy -> selectEnemyTarget(action.enemy)
