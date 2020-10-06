@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.app.Activity
-import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Surface
@@ -51,8 +50,7 @@ class CutoutManager @Inject constructor(
 
         // Check if there is a cutout
         if (cutout != Cutout.NoCutouts) {
-            val wm = Activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val rotation = wm.defaultDisplay.rotation
+            val rotation = windowManager.defaultDisplay.rotation
 
             // Store the cutout for Portrait orientation of device
             val (l, t, r, b) = cutout

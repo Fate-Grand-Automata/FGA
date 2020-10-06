@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     @Inject
     lateinit var cutoutManager: CutoutManager
 
+    @Inject
+    lateinit var powerManager: PowerManager
+
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +56,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun ignoreBatteryOptimizations() {
-        val powerManager = getSystemService(POWER_SERVICE) as PowerManager
-
         if (powerManager.isIgnoringBatteryOptimizations(packageName)) {
             return
         }
