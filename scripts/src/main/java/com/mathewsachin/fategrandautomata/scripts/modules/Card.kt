@@ -116,16 +116,21 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             }
     }
 
-    fun readCommandCards() {
-        val braveChainsPerWave = prefs.selectedAutoSkillConfig.braveChains
-        braveChainsThisTurn = if (braveChainsPerWave.isNotEmpty())
-            braveChainsPerWave[battle.state.runState.stage.coerceIn(braveChainsPerWave.indices)]
-        else BraveChainEnum.None
+    private fun <T> List<T>.inCurrentWave(default: T) =
+        if (isNotEmpty())
+            this[battle.state.runState.stage.coerceIn(indices)]
+        else default
 
-        val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
-        rearrangeCardsThisTurn = if (rearrangeCardsPerWave.isNotEmpty())
-            rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
-        else false
+    fun readCommandCards() {
+        braveChainsThisTurn = prefs
+            .selectedAutoSkillConfig
+            .braveChains
+            .inCurrentWave(BraveChainEnum.None)
+
+        rearrangeCardsThisTurn = prefs
+            .selectedAutoSkillConfig
+            .rearrangeCards
+            .inCurrentWave(false)
 
         screenshotManager.useSameSnapIn {
             commandCards = getCommandCards()
