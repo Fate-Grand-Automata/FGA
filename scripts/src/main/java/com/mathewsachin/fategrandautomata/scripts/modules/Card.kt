@@ -313,12 +313,17 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
         otherNps.associateWithTo(npGroups) {
             it.servantCropRegion.getPattern().tag("NP:$it").use { npCropped ->
-                otherGroups.maxByOrNull { group ->
-                    group.first()
-                        .servantMatchRegion
-                        .find(npCropped, 0.6)
-                        ?.score ?: 0.0
-                } ?: emptyList()
+                otherGroups
+                    .associateWith { group ->
+                        group.first()
+                            .servantMatchRegion
+                            .find(npCropped, 0.6)
+                            ?.score
+                    }
+                    .filter { (_, score) -> score != null }
+                    .maxByOrNull { (_, score) -> score ?: 0.0 }
+                    ?.key
+                    ?: emptyList()
             }
         }
 
