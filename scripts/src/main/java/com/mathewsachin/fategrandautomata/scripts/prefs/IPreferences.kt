@@ -33,6 +33,7 @@ interface IPreferences {
 
     val stageCounterSimilarity: Double
     val waitBeforeTurn: Duration
+    val waitBeforeCards: Duration
 
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs

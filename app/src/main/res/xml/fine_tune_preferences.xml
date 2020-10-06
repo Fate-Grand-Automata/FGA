@@ -108,12 +108,12 @@
 
         <SeekBarPreference
             android:max="200"
-            app:key="@string/pref_support_swipe_multiplier"
+            app:key="@string/pref_swipe_multiplier"
             app:icon="@drawable/ic_swipe"
             app:min="50"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:title="@string/p_fine_tune_support_swipe_multiplier" />
+            app:title="@string/p_fine_tune_swipe_multiplier" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -136,6 +136,15 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:title="@string/p_fine_tune_wait_before_turn" />
+
+        <SeekBarPreference
+            android:max="6000"
+            app:icon="@drawable/ic_card"
+            app:key="@string/pref_wait_before_cards"
+            app:min="0"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:title="@string/p_fine_tune_wait_before_cards" />
 
         <SeekBarPreference
             android:max="200"

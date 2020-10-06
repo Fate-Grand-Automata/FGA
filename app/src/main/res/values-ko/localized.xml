@@ -31,7 +31,6 @@
     <string name="auto_skill_maker_confirm_clear_title">초기화 확인</string>
     <string name="auto_skill_maker_confirm_clear_message">이 작업은 오토 스클 커맨드를 초기화 하게 됩니다. 정말로 하시겠습니까?</string>
     <string name="auto_skill_maker_confirm_np_deletion_title">보구 삭제 확인</string>
-    <string name="auto_skill_maker_confirm_np_deletion_message">배틀/턴 분리기를 지우게 되면 보구와 해당 턴의 보구 전의 카드도 지워집니다. 정말로 지우시겠습니까?</string>
     <string name="auto_skill_maker_atk_header">공격</string>
     <string name="auto_skill_maker_atk_servant_np">서번트\n%d\n\n보구</string>
     <string name="auto_skill_maker_atk_cards_before_np">보구 전 공격카드</string>
@@ -172,7 +171,7 @@
     <string name="p_fine_tune_swipes">스와이프</string>
     <string name="p_fine_tune_wait_after_swiping">스와이프 후 딜레이 (ms)</string>
     <string name="p_fine_tune_swipe_duration">스와이프 지속 시간 (ms)</string>
-    <string name="p_fine_tune_support_swipe_multiplier">서포트 스와이프 배율기 (%)</string>
+    <string name="p_fine_tune_swipe_multiplier">스와이프 배율기 (%)</string>
     <string name="p_fine_tune_wait">딜레이</string>
     <string name="p_fine_tune_skill_delay">스킬 딜레이 (ms)</string>
     <string name="p_fine_tune_wait_before_turn">턴 시작 전 딜레이 (ms)</string>

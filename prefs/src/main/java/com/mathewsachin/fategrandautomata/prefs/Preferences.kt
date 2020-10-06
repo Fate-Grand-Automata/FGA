@@ -85,6 +85,8 @@ class PreferencesImpl @Inject constructor(
 
     override val waitBeforeTurn by prefs.waitBeforeTurn.map { it.milliseconds }
 
+    override val waitBeforeCards by prefs.waitBeforeCards.map { it.milliseconds }
+
     override val maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
 
     private val autoSkillMap = mutableMapOf<String, IAutoSkillPreferences>()
@@ -122,9 +124,6 @@ class PreferencesImpl @Inject constructor(
         ISupportPreferencesCommon {
         override val mlbSimilarity by prefs.mlbSimilarity.map { it / 100.0 }
 
-        override val supportSwipeMultiplier by prefs.supportSwipeMultiplier
-            .map { it / 100.0 }
-
         override val swipesPerUpdate by prefs.supportSwipesPerUpdate
 
         override val maxUpdates by prefs.supportMaxUpdates
@@ -136,6 +135,9 @@ class PreferencesImpl @Inject constructor(
         override val minSimilarity by prefs.minSimilarity.map { it / 100.0 }
 
         override val waitMultiplier by prefs.waitMultiplier
+            .map { it / 100.0 }
+
+        override val swipeMultiplier by prefs.swipeMultiplier
             .map { it / 100.0 }
     }
 

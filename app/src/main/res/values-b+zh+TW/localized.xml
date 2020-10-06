@@ -31,7 +31,6 @@
     <string name="auto_skill_maker_confirm_clear_title">確認清除</string>
     <string name="auto_skill_maker_confirm_clear_message">將會清除所有設定，確認執行?</string>
     <string name="auto_skill_maker_confirm_np_deletion_title">確認復原寶具指令</string>
-    <string name="auto_skill_maker_confirm_np_deletion_message">寶具前墊刀等設定也會復原，確認執行?</string>
     <string name="auto_skill_maker_atk_header">攻擊指令</string>
     <string name="auto_skill_maker_atk_servant_np">從者\n%d\n\n寶具</string>
     <string name="auto_skill_maker_atk_cards_before_np">寶具前墊刀</string>
@@ -173,7 +172,6 @@
     <string name="p_fine_tune_swipes">滑動</string>
     <string name="p_fine_tune_wait_after_swiping">滑動後暫停 (ms)</string>
     <string name="p_fine_tune_swipe_duration">滑動時間 (ms)</string>
-    <string name="p_fine_tune_support_swipe_multiplier">支援選擇加乘 (%)</string>
     <string name="p_fine_tune_wait">等待時間</string>
     <string name="p_fine_tune_skill_delay">施放技能後等待時間 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">等待時間加乘 (%)</string>

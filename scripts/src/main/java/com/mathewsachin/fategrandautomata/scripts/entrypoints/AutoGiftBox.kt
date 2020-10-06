@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
@@ -8,7 +9,8 @@ import javax.inject.Inject
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
-    fgAutomataApi: IFgoAutomataApi
+    fgAutomataApi: IFgoAutomataApi,
+    val swipeLocations: ISwipeLocations
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
 
     companion object {
@@ -19,10 +21,12 @@ class AutoGiftBox @Inject constructor(
     private var clickCount = 0
 
     override fun script(): Nothing {
+        val swipeLocation = swipeLocations.giftBox
+
         while (clickCount < maxClickCount) {
             checkGifts()
 
-            swipe(Location(700, 650), Location(700, 175))
+            swipe(swipeLocation.start, swipeLocation.end)
         }
 
         throw ScriptExitException(messages.pickedExpStack(clickCount))
@@ -38,7 +42,7 @@ class AutoGiftBox @Inject constructor(
         }
 
     private fun checkGifts() {
-        for (gift in checkRegion.findAll(images.giftBoxCheck)) {
+        for (gift in checkRegion.findAll(images.giftBoxCheck).sorted()) {
             val countRegion = Region(countRegionX, gift.Region.Y - 120, 300, 100)
             val iconRegion = Region(190, gift.Region.Y - 116, 300, 240)
             val clickSpot = Location(1700, gift.Region.Y + 50)
