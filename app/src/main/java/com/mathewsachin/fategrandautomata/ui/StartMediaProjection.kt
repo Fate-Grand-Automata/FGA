@@ -13,9 +13,8 @@ class StartMediaProjection : ActivityResultContract<Unit, Intent?>() {
         return mediaProjectionManager.createScreenCaptureIntent()
     }
 
-    override fun parseResult(resultCode: Int, result: Intent?): Intent? {
-        return if (resultCode != Activity.RESULT_OK) {
+    override fun parseResult(resultCode: Int, result: Intent?) =
+        if (resultCode != Activity.RESULT_OK)
             null
-        } else result
-    }
+        else result
 }

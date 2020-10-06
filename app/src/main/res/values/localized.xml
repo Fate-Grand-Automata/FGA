@@ -184,6 +184,7 @@
     <string name="p_fine_tune_wait">Wait</string>
     <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
     <string name="p_fine_tune_wait_before_turn">Wait before Turn (ms)</string>
+    <string name="p_fine_tune_wait_before_cards">Wait before Cards (ms)</string>
     <string name="p_fine_tune_wait_multiplier">Wait Multiplier (%)</string>
 
     <string name="p_nav_refill">Refill</string>
@@ -200,7 +201,7 @@
     <string name="p_refill_type_sq">SQ</string>
 
     <string name="p_brave_chains_don_t_care">Don\'t care</string>
-    <string name="p_brave_chains_after_np">After NP</string>
+    <string name="p_brave_chains_with_np">With NP</string>
     <string name="p_brave_chains_avoid">Avoid</string>
 
     <string name="p_boost_item_disabled">Disabled</string>

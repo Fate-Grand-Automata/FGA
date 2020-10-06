@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
+import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
@@ -18,13 +19,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
 
     private lateinit var cardPriority: CardPriorityPerWave
-
     private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
-    private val remainingCards = mutableSetOf<CommandCard.Face>()
-    private val remainingNps = mutableSetOf<CommandCard.NP>()
-    private val noOfCardsToClick
-        get() = (3 - (5 - remainingCards.size) - (3 - remainingNps.size))
-            .coerceAtLeast(0)
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
@@ -79,8 +74,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
-    private var firstNp: CommandCard.NP? = null
+    var atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp()
     private var braveChainsThisTurn = BraveChainEnum.None
+    private var rearrangeCardsThisTurn = false
 
     private fun getCommandCards(): Map<CardScore, List<CommandCard.Face>> {
         data class CardResult(
@@ -120,18 +116,24 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             }
     }
 
+    private fun <T> List<T>.inCurrentWave(default: T) =
+        if (isNotEmpty())
+            this[battle.state.runState.stage.coerceIn(indices)]
+        else default
+
     fun readCommandCards() {
-        remainingCards.addAll(CommandCard.Face.list)
-        remainingNps.addAll(CommandCard.NP.list)
-        firstNp = null
+        braveChainsThisTurn = prefs
+            .selectedAutoSkillConfig
+            .braveChains
+            .inCurrentWave(BraveChainEnum.None)
+
+        rearrangeCardsThisTurn = prefs
+            .selectedAutoSkillConfig
+            .rearrangeCards
+            .inCurrentWave(false)
 
         screenshotManager.useSameSnapIn {
             commandCards = getCommandCards()
-
-            val braveChainsPerWave = prefs.selectedAutoSkillConfig.braveChains
-            braveChainsThisTurn = if (braveChainsPerWave.isNotEmpty())
-                braveChainsPerWave[battle.state.runState.stage.coerceIn(braveChainsPerWave.indices)]
-            else BraveChainEnum.None
 
             if (braveChainsThisTurn != BraveChainEnum.None) {
                 val supportGroup = CommandCard.Face.list
@@ -142,7 +144,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         }
     }
 
-    val canClickNpCards: Boolean
+    private val canSpamNpCards: Boolean
         get() {
             val weCanSpam = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
             val weAreInDanger = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
@@ -151,26 +153,18 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             return (weCanSpam || weAreInDanger) && autoSkill.isFinished
         }
 
-    fun clickNpCards() {
-        for (npCard in CommandCard.NP.list) {
-            npCard.clickLocation.click()
-        }
+    private fun spamNpCards() = CommandCard.NP.list.forEach { it.pick() }
+
+    private fun CommandCard.NP.pick() {
+        clickLocation.click()
+
+        Game.battleExtraInfoWindowCloseClick.click()
     }
 
-    fun clickNp(np: CommandCard.NP) {
-        if (np in remainingNps) {
-            np.clickLocation.click()
-            remainingNps.remove(np)
-
-            if (firstNp == null) {
-                firstNp = np
-            }
-        }
-    }
-
-    fun clickCommandCards(Clicks: Int = noOfCardsToClick) {
-        var clicksLeft = Clicks.coerceAtLeast(0)
+    private fun pickCards(clicks: Int = 3): List<CommandCard.Face> {
+        var clicksLeft = clicks.coerceAtLeast(0)
         val toClick = mutableListOf<CommandCard.Face>()
+        val remainingCards = CommandCard.Face.list.toMutableSet()
 
         val cardsOrderedByPriority = cardPriority
             .atWave(battle.state.runState.stage)
@@ -198,13 +192,26 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 .addToClickList()
         }
 
-        when (braveChainsThisTurn) {
-            BraveChainEnum.AfterNP -> {
-                commandCardGroupedWithNp[firstNp]?.let { npGroup ->
+        return when (braveChainsThisTurn) {
+            BraveChainEnum.WithNP -> {
+                val chainFaceCount = commandCardGroupedWithNp[atk.nps.firstOrNull()]?.let { npGroup ->
                     pickCardsOrderedByPriority {
                         it in npGroup
-                    }
+                    }.size
                 }
+
+                // Pick more cards if needed
+                pickCardsOrderedByPriority()
+
+                // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
+                // we want the matching face-card after NP.
+                if (rearrangeCardsThisTurn
+                    && listOf(atk.nps.size, atk.cardsBeforeNP, chainFaceCount).all { it == 1 }
+                ) {
+                    Collections.swap(toClick, 0, 1)
+                }
+
+                rearrange(toClick)
             }
             BraveChainEnum.Avoid -> {
                 if (commandCardGroups.size > 1
@@ -219,40 +226,72 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                             .firstOrNull() ?: emptyList()
                     } while (clicksLeft > 0 && lastGroup.isNotEmpty())
                 }
+
+                // Pick more cards if needed
+                pickCardsOrderedByPriority()
+
+                toClick
+            }
+            BraveChainEnum.None -> {
+                pickCardsOrderedByPriority()
+
+                rearrange(toClick)
+            }
+        }
+    }
+
+    private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
+        if (rearrangeCardsThisTurn
+            // Skip if NP spamming because we don't know how many NPs might've been used
+            && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
+            // If there are cards before NP, at max there's only 1 card after NP
+            && atk.cardsBeforeNP == 0
+            // If there are more than 1 NPs, only 1 card after NPs at max
+            && atk.nps.size <= 1
+        ) {
+            val cardsToRearrange = cards
+                .mapIndexed { index, _ -> index }
+                .take((3 - atk.nps.size).coerceAtLeast(0))
+                .reversed()
+
+            // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
+            // Do the same when clicking 2 cards unless they're used before NPs.
+            if (cardsToRearrange.size in 2..3) {
+                logger.info("Rearranging cards")
+
+                return cards.toMutableList().also {
+                    Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
+                }
             }
         }
 
-        // Pick more cards if needed
-        pickCardsOrderedByPriority()
+        return cards
+    }
 
-        val isBeforeNP = firstNp == null
-
-        // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
-        // Do the same when clicking 2 cards unless they're used before NPs.
-        // Skip if NP spamming because we don't know how many NPs might've been used
-        val rearrangeCardsPerWave = prefs.selectedAutoSkillConfig.rearrangeCards
-        val rearrangeCards = if (rearrangeCardsPerWave.isNotEmpty())
-            rearrangeCardsPerWave[battle.state.runState.stage.coerceIn(rearrangeCardsPerWave.indices)]
-        else false
-
-        if (rearrangeCards
-            && braveChainsThisTurn != BraveChainEnum.Avoid // Avoid: consecutive cards to be of different servants
-            && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
-            && (toClick.size == 3 || (toClick.size == 2 && !isBeforeNP))
-        ) {
-            logger.info("Rearranging cards")
-
-            Collections.swap(toClick, toClick.lastIndex - 1, toClick.lastIndex)
+    fun clickCommandCards() {
+        if (canSpamNpCards) {
+            spamNpCards()
         }
 
-        if (!isBeforeNP && Clicks < 3) {
-            // Also click on remaining cards,
-            // since some people may put NPs in AutoSkill which aren't charged yet
-            pickCardsOrderedByPriority(3 - Clicks)
+        val cards = pickCards()
+
+        if (atk.cardsBeforeNP > 0) {
+            cards
+                .take(atk.cardsBeforeNP)
+                .also { logger.info("Clicking cards: $it") }
+                .forEach { it.clickLocation.click() }
         }
 
-        logger.info("Clicking cards: $toClick")
-        toClick.forEach { it.clickLocation.click() }
+        atk.nps
+            .also { logger.info("Clicking NP(s): $it") }
+            .forEach { it.pick() }
+
+        cards
+            .drop(atk.cardsBeforeNP)
+            .also { logger.info("Clicking cards: $it") }
+            .forEach { it.clickLocation.click() }
+
+        atk = AutoSkillAction.Atk.noOp()
     }
 
     private fun groupNpsWithFaceCards(
@@ -278,13 +317,18 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         } else groups
 
         otherNps.associateWithTo(npGroups) {
-            it.servantCropRegion.getPattern().use { npCropped ->
-                otherGroups.maxByOrNull { group ->
-                    group.first()
-                        .servantMatchRegion
-                        .find(npCropped, 0.4)
-                        ?.score ?: 0.0
-                } ?: emptyList()
+            it.servantCropRegion.getPattern().tag("NP:$it").use { npCropped ->
+                otherGroups
+                    .associateWith { group ->
+                        group.first()
+                            .servantMatchRegion
+                            .find(npCropped, 0.6)
+                            ?.score
+                    }
+                    .filter { (_, score) -> score != null }
+                    .maxByOrNull { (_, score) -> score ?: 0.0 }
+                    ?.key
+                    ?: emptyList()
             }
         }
 
@@ -311,7 +355,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             group.add(u)
 
             if (remaining.isNotEmpty()) {
-                val me = u.servantCropRegion.getPattern()
+                val me = u.servantCropRegion
+                    .getPattern()
+                    .tag("Card:$u")
 
                 me.use {
                     val matched = remaining.filter {

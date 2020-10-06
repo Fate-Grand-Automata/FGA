@@ -27,7 +27,7 @@ class ImageLoader @Inject constructor(
             val inputStream = FileInputStream(filepath)
 
             inputStream.use {
-                return DroidCvPattern(it, FileName)
+                return DroidCvPattern(it).tag(FileName)
             }
         }
 
@@ -42,7 +42,7 @@ class ImageLoader @Inject constructor(
         val inputStream = assets.open(filePath)
 
         inputStream.use {
-            return DroidCvPattern(it, filePath)
+            return DroidCvPattern(it).tag(filePath)
         }
     }
 

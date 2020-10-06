@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.accessibility
 
 import android.annotation.SuppressLint
 import android.app.Service
-import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
@@ -26,7 +25,8 @@ import kotlin.time.milliseconds
 @ServiceScoped
 class ScriptRunnerUserInterface @Inject constructor(
     val Service: Service,
-    val highlightManager: HighlightManager
+    val highlightManager: HighlightManager,
+    val windowManager: WindowManager
 ) {
     companion object {
         val overlayType: Int
@@ -36,8 +36,6 @@ class ScriptRunnerUserInterface @Inject constructor(
                 } else WindowManager.LayoutParams.TYPE_PHONE
             }
     }
-
-    val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
     private val metrics: DisplayMetrics
         get() {

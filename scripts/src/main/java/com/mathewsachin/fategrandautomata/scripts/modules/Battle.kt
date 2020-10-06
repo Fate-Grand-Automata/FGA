@@ -37,7 +37,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
     fun isIdle() = images.battle in Game.battleScreenRegion
 
-    fun clickAttack() {
+    private fun clickAttack() {
         if (state.runState.turnState.hasClickedAttack) {
             return
         }
@@ -47,8 +47,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         // Wait for Attack button to disappear
         Game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
 
-        // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
-        2.seconds.wait()
+        prefs.waitBeforeCards.wait()
 
         state.runState.turnState.hasClickedAttack = true
 
@@ -89,10 +88,6 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         autoSkill.execute()
 
         clickAttack()
-
-        if (card.canClickNpCards) {
-            card.clickNpCards()
-        }
 
         card.clickCommandCards()
 
