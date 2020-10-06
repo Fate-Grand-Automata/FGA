@@ -19,6 +19,16 @@ class ServantTarget private constructor(
             ServantTarget(
                 Location(1940, 880),
                 '3'
+            ),
+
+            // Emiya
+            ServantTarget(
+                Location(990, 880),
+                '7'
+            ),
+            ServantTarget(
+                Location(1610, 880),
+                '8'
             )
         )
     }

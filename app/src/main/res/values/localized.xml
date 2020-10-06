@@ -61,6 +61,12 @@
     <string name="auto_skill_maker_target_none">No Target</string>
     <string name="auto_skill_maker_target_servant">Servant\n\n%d</string>
 
+    <string name="auto_skill_maker_space_ishtar">Space Ishtar</string>
+    <string name="auto_skill_maker_emiya">Emiya</string>
+    <string name="auto_skill_maker_quick">Quick</string>
+    <string name="auto_skill_maker_arts">Arts</string>
+    <string name="auto_skill_maker_buster">Buster</string>
+
     <string name="card_priority_wave_number">WAVE %d</string>
     <string name="card_priority_menu_info">Info</string>
     <string name="card_priority_info_title">Info</string>
@@ -173,10 +179,11 @@
     <string name="p_fine_tune_swipes">Swipes</string>
     <string name="p_fine_tune_wait_after_swiping">Wait after swiping (ms)</string>
     <string name="p_fine_tune_swipe_duration">Swipe duration (ms)</string>
-    <string name="p_fine_tune_support_swipe_multiplier">Support Swipe Multiplier (%)</string>
+    <string name="p_fine_tune_swipe_multiplier">Swipe Multiplier (%)</string>
     <string name="p_fine_tune_wait">Wait</string>
     <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
     <string name="p_fine_tune_wait_before_turn">Wait before Turn (ms)</string>
+    <string name="p_fine_tune_wait_before_cards">Wait before Cards (ms)</string>
     <string name="p_fine_tune_wait_multiplier">Wait Multiplier (%)</string>
 
     <string name="p_nav_refill">Refill</string>

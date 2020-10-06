@@ -170,7 +170,7 @@
     <string name="p_fine_tune_swipes">스와이프</string>
     <string name="p_fine_tune_wait_after_swiping">스와이프 후 딜레이 (ms)</string>
     <string name="p_fine_tune_swipe_duration">스와이프 지속 시간 (ms)</string>
-    <string name="p_fine_tune_support_swipe_multiplier">서포트 스와이프 배율기 (%)</string>
+    <string name="p_fine_tune_swipe_multiplier">스와이프 배율기 (%)</string>
     <string name="p_fine_tune_wait">딜레이</string>
     <string name="p_fine_tune_skill_delay">스킬 딜레이 (ms)</string>
     <string name="p_fine_tune_wait_before_turn">턴 시작 전 딜레이 (ms)</string>
