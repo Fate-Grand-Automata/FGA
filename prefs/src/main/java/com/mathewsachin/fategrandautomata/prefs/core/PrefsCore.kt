@@ -9,8 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PrefsCore
-@Inject constructor(
+class PrefsCore @Inject constructor(
     val maker: PrefMaker,
     val storageDirs: StorageDirs
 ) {
@@ -99,6 +98,8 @@ class PrefsCore
     val showTextBoxForAutoSkillCmd = maker.bool(R.string.pref_auto_skill_cmd_text)
 
     val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn, 500)
+
+    val waitBeforeCards = maker.int(R.string.pref_wait_before_cards, 2000)
 
     val maxGoldEmberSetSize = maker.int(R.string.pref_max_gold_ember_set_size, 1)
 
