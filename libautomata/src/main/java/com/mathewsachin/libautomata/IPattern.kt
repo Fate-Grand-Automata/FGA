@@ -53,6 +53,8 @@ interface IPattern : AutoCloseable {
      * Makes a copy of the image.
      */
     fun copy(): IPattern
+
+    fun tag(tag: String): IPattern
 }
 
 /**

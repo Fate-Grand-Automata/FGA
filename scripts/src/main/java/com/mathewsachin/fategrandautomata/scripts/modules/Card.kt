@@ -312,7 +312,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         } else groups
 
         otherNps.associateWithTo(npGroups) {
-            it.servantCropRegion.getPattern().use { npCropped ->
+            it.servantCropRegion.getPattern().tag("NP:$it").use { npCropped ->
                 otherGroups.maxByOrNull { group ->
                     group.first()
                         .servantMatchRegion
@@ -345,7 +345,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             group.add(u)
 
             if (remaining.isNotEmpty()) {
-                val me = u.servantCropRegion.getPattern()
+                val me = u.servantCropRegion
+                    .getPattern()
+                    .tag("Card:$u")
 
                 me.use {
                     val matched = remaining.filter {

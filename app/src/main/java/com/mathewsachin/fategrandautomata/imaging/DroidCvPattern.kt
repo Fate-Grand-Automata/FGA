@@ -184,4 +184,6 @@ class DroidCvPattern(
     override fun copy() = DroidCvPattern(Mat?.clone()).also {
         it.tag = tag
     }
+
+    override fun tag(tag: String) = apply { this.tag = tag }
 }
