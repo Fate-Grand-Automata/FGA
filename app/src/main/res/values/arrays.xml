@@ -17,13 +17,13 @@
 
     <array name="brave_chain_labels">
         <item>@string/p_brave_chains_don_t_care</item>
-        <item>@string/p_brave_chains_after_np</item>
+        <item>@string/p_brave_chains_with_np</item>
         <item>@string/p_brave_chains_avoid</item>
     </array>
 
     <array name="brave_chain_values">
         <item>None</item>
-        <item>AfterNP</item>
+        <item>WithNP</item>
         <item>Avoid</item>
     </array>
 

@@ -37,7 +37,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
     fun isIdle() = images.battle in Game.battleScreenRegion
 
-    fun clickAttack() {
+    private fun clickAttack() {
         if (state.runState.turnState.hasClickedAttack) {
             return
         }
@@ -88,10 +88,6 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         autoSkill.execute()
 
         clickAttack()
-
-        if (card.canClickNpCards) {
-            card.clickNpCards()
-        }
 
         card.clickCommandCards()
 
