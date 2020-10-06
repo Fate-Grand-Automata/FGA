@@ -316,7 +316,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 otherGroups.maxByOrNull { group ->
                     group.first()
                         .servantMatchRegion
-                        .find(npCropped, 0.4)
+                        .find(npCropped, 0.6)
                         ?.score ?: 0.0
                 } ?: emptyList()
             }
