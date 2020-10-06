@@ -91,7 +91,7 @@ class PrefsCore @Inject constructor(
 
     val swipeDuration = maker.int(R.string.pref_swipe_duration, 300)
 
-    val stageCounterSimilarity = maker.int(R.string.pref_stage_counter_similarity, 85)
+    val stageCounterSimilarity = maker.int(R.string.pref_stage_counter_similarity, 70)
 
     val autoStartService = maker.bool(R.string.pref_auto_start_service)
 

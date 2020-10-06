@@ -121,7 +121,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         return !game.battleStageCountRegion.exists(
             snapshot,
-            Similarity = 0.7
+            Similarity = prefs.stageCounterSimilarity
         )
     }
 
@@ -131,6 +131,6 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
                 if (it is WhitePixelsProvider) {
                     it.use { m -> m.getWhitePixelMask(170) }
                 } else it
-            }
+            }.tag("WAVE:${state.runState.stage}")
     }
 }
