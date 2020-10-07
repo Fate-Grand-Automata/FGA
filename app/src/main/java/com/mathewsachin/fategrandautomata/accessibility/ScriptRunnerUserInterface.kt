@@ -126,7 +126,7 @@ class ScriptRunnerUserInterface @Inject constructor(
         windowManager.removeView(highlightManager.highlightView)
     }
 
-    var isPauseButtonVisibile
+    var isPauseButtonVisible
         get() = scriptPauseBtn.visibility == View.VISIBLE
         set(value) {
             scriptPauseBtn.post {
@@ -134,6 +134,9 @@ class ScriptRunnerUserInterface @Inject constructor(
             }
         }
 
+    fun playButtonEnabled(enabled: Boolean) = scriptCtrlBtn.post {
+        scriptCtrlBtn.isEnabled = enabled
+    }
 
     fun setPlayIcon() {
         scriptCtrlBtn.post {

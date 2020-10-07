@@ -7,11 +7,11 @@ import android.widget.ScrollView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
-import com.mathewsachin.fategrandautomata.accessibility.dayNightThemed
-import com.mathewsachin.fategrandautomata.accessibility.showOverlayDialog
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
+import com.mathewsachin.fategrandautomata.util.dayNightThemed
+import com.mathewsachin.fategrandautomata.util.showOverlayDialog
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
 private const val InvalidChars = """<>"\|:\*\?\\\/"""

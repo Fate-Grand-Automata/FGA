@@ -6,15 +6,12 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.ContextThemeWrapper
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
@@ -32,19 +29,6 @@ import mu.KotlinLogging
 import javax.inject.Inject
 
 private val logger = KotlinLogging.logger {}
-
-fun Context.dayNightThemed() = ContextThemeWrapper(this, androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog)
-
-fun showOverlayDialog(context: Context, builder: AlertDialog.Builder.() -> Unit): AlertDialog {
-    val alertDialog = AlertDialog.Builder(context.dayNightThemed())
-        .apply(builder)
-        .create()
-
-    alertDialog.window?.setType(ScriptRunnerUserInterface.overlayType)
-    alertDialog.show()
-
-    return alertDialog
-}
 
 @AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
@@ -183,7 +167,7 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
-        scriptCtrlBtn.setThrottledClickListener {
+        scriptCtrlBtn.setOnClickListener {
             val state = serviceState
 
             if (state is ServiceState.Started) {
@@ -200,19 +184,10 @@ class ScriptRunnerService : AccessibilityService() {
         }
     }
 
-    fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) {
-        scriptPauseBtn.setThrottledClickListener {
-            if (serviceState is ServiceState.Started) {
-                val scriptState = scriptManager.scriptState
-
-                if (scriptState is ScriptState.Started) {
-                    if (scriptState.paused) {
-                        scriptManager.resumeScript()
-                    } else scriptManager.pauseScript()
-                }
-            }
+    fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) =
+        scriptPauseBtn.setOnClickListener {
+            scriptManager.togglePause()
         }
-    }
 
     override fun onServiceConnected() {
         logger.info("Accessibility Service bound to system")
