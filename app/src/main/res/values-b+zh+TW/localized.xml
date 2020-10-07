@@ -230,8 +230,6 @@
     <string name="accessibility_disabled_message">請在系統設定中開啟無障礙服務設定，如果已經開啟請關閉後重新開啟。</string>
     <string name="accessibility_disabled_go_to_settings">前往設定</string>
     <string name="cannot_start_recording">無法開啟螢幕錄影</string>
-    <string name="select_auto_skill_config">選取腳本</string>
-    <string name="no_auto_skill_configs">無腳本</string>
 
     <string name="script_msg_ap_ran_out">體力用完了</string>
     <string name="stopped_by_user">螢幕關閉或用戶停止腳本</string>

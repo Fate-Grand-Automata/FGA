@@ -231,8 +231,6 @@
     <string name="accessibility_disabled_message">시스템 설정에서 접근성 서비스 사용을 활성화 하십시오. 이미 활성화 되어 있다면 비활성화 후 다시 활성화 하십시오.</string>
     <string name="accessibility_disabled_go_to_settings">설정으로 가기</string>
     <string name="cannot_start_recording">화면 녹화를 시작할 수 없음</string>
-    <string name="select_auto_skill_config">오토 스킬 설정 선택</string>
-    <string name="no_auto_skill_configs">오토 스킬 설정 없음</string>
 
     <string name="script_msg_ap_ran_out">AP를 모두 소비하였습니다!</string>
     <string name="stopped_by_user">사용자에 의해 스크립트 중지됨 또는 화면 꺼짐</string>

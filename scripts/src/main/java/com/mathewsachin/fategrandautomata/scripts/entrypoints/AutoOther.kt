@@ -22,16 +22,18 @@ class AutoOther @Inject constructor(
 
         1.seconds.wait()
 
-        when {
+        val entryPoint = when {
             images.friendSummon in Game.friendPtSummonCheck || images.fpSummonContinue in Game.continueSummonRegion ->
-                fp.get().script()
+                fp.get()
             images.finishedLotteryBox in lotteryCheckRegion || images.finishedLotteryBox in Game.finishedLotteryBoxRegion ->
-                lottery.get().script()
+                lottery.get()
             images.goldXP in screenArea || images.silverXP in screenArea ->
-                giftBox.get().script()
+                giftBox.get()
             images.supportRegionTool in Game.supportRegionToolSearchRegion ->
-                supportImageMaker.get().script()
+                supportImageMaker.get()
             else -> throw ScriptExitException("Couldn't detect Script type")
         }
+
+        entryPoint.script()
     }
 }

@@ -160,7 +160,7 @@ class ScriptManager @Inject constructor(
     }
 
     sealed class PickerItem(val name: String) {
-        object Other : PickerItem("Lottery/FP/Present/Support Image Maker")
+        class Other(name: String) : PickerItem(name)
         class Battle(val autoSkill: IAutoSkillPreferences) : PickerItem(autoSkill.name)
     }
 
@@ -172,11 +172,12 @@ class ScriptManager @Inject constructor(
                 autoSkillItems.indexOfFirst { it.id == selectedAutoSkill.id } + 1
             else 0
 
-        val pickerItems = listOf(PickerItem.Other) + autoSkillItems.map { PickerItem.Battle(it) }
+        val other = PickerItem.Other(context.getString(R.string.other_scripts))
+        val pickerItems = listOf(other) + autoSkillItems.map { PickerItem.Battle(it) }
         var selected = pickerItems[initialSelectedIndex]
 
         showOverlayDialog(context) {
-            setTitle(R.string.select_auto_skill_config)
+            setTitle(R.string.select_script)
                 .apply {
                     setSingleChoiceItems(
                         pickerItems.map { it.name }.toTypedArray(),
