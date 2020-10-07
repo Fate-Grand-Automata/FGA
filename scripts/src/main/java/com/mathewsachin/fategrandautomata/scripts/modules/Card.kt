@@ -282,9 +282,11 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 .forEach { it.clickLocation.click() }
         }
 
-        atk.nps
-            .also { logger.info("Clicking NP(s): $it") }
-            .forEach { it.pick() }
+        if (atk.nps.isNotEmpty()) {
+            atk.nps
+                .also { logger.info("Clicking NP(s): $it") }
+                .forEach { it.pick() }
+        }
 
         cards
             .drop(atk.cardsBeforeNP)
