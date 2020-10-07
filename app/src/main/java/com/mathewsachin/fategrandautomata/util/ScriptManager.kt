@@ -22,7 +22,6 @@ import dagger.hilt.android.scopes.ServiceScoped
 import mu.KotlinLogging
 import javax.inject.Inject
 import kotlin.time.milliseconds
-import kotlin.time.seconds
 
 private val logger = KotlinLogging.logger {}
 
@@ -44,10 +43,7 @@ class ScriptManager @Inject constructor(
 
         scriptState.let { prevState ->
             if (prevState is ScriptState.Started && prevState.recording != null) {
-                // record for 2 seconds more to show things like error messages
-                userInterface.postDelayed(2.seconds) {
-                    prevState.recording.close()
-                }
+                prevState.recording.close()
             }
         }
 

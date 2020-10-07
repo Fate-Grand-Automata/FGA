@@ -236,12 +236,15 @@ class ScriptRunnerService : AccessibilityService() {
         }
     }
 
-    fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
+    fun showMessageBox(Title: String, Message: String, Error: Exception?, onDismiss: () -> Unit) {
         showOverlayDialog(this) {
             setTitle(Title)
                 .setMessage(Message)
                 .setPositiveButton(android.R.string.ok) { _, _ -> }
-                .setOnDismissListener { notification.hideMessage() }
+                .setOnDismissListener {
+                    notification.hideMessage()
+                    onDismiss()
+                }
                 .let {
                     if (Error != null) {
                         // TODO: Translate
