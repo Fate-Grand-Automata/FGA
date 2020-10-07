@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
 import kotlin.time.seconds
@@ -14,8 +15,8 @@ class AutoLottery @Inject constructor(
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     private val spinClick = Location(834, 860)
-    private val finishedLotteryBoxRegion = Region(540, 860, 140, 100)
-    private val fullPresentBoxRegion = Region(1280, 720, 1280, 720)
+
+    private val fullPresentBoxRegion = Region(1300, 860, 1000, 500)
     private val resetClick = Location(2200, 480)
     private val resetConfirmationClick = Location(1774, 1122)
     private val resetCloseClick = Location(1270, 1120)
@@ -41,10 +42,7 @@ class AutoLottery @Inject constructor(
         while (true) {
             screenshotManager.useSameSnapIn {
                 when {
-                    finishedLotteryBoxRegion.exists(
-                        images.finishedLotteryBox,
-                        Similarity = 0.65
-                    ) -> reset()
+                    images.finishedLotteryBox in Game.finishedLotteryBoxRegion -> reset()
                     images.presentBoxFull in fullPresentBoxRegion -> {
                         throw ScriptExitException(messages.lotteryPresentBoxFull)
                     }

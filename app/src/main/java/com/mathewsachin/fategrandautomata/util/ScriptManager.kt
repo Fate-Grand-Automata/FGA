@@ -1,11 +1,9 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
@@ -14,6 +12,7 @@ import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
@@ -61,11 +60,8 @@ class ScriptManager @Inject constructor(
 
     private fun getEntryPoint(entryPoint: ScriptEntryPoint): EntryPoint =
         when (preferences.scriptMode) {
-            ScriptModeEnum.Lottery -> entryPoint.lottery()
-            ScriptModeEnum.FriendGacha -> entryPoint.friendGacha()
-            ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
-            ScriptModeEnum.GiftBox -> entryPoint.giftBox()
-            else -> entryPoint.battle()
+            ScriptModeEnum.Other -> entryPoint.other()
+            ScriptModeEnum.Battle -> entryPoint.battle()
         }
 
     private val handler by lazy {
@@ -114,11 +110,9 @@ class ScriptManager @Inject constructor(
         val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
         val entryPointProvider = { getEntryPoint(hiltEntryPoint) }
 
-        if (preferences.scriptMode == ScriptModeEnum.Battle) {
-            autoSkillPicker(context) {
-                runEntryPoint(screenshotService, entryPointProvider)
-            }
-        } else runEntryPoint(screenshotService, entryPointProvider)
+        autoSkillPicker(context) {
+            runEntryPoint(screenshotService, entryPointProvider)
+        }
     }
 
     fun stopScript(reason: ScriptAbortException) {
@@ -165,35 +159,44 @@ class ScriptManager @Inject constructor(
         entryPoint.run()
     }
 
-    private fun autoSkillPicker(context: Context, entryPointRunner: () -> Unit) {
-        var selected = preferences.selectedAutoSkillConfig
-        val autoSkillItems = preferences.autoSkillPreferences
-        val initialSelectedIndex = autoSkillItems.indexOfFirst { it.id == selected.id }
+    sealed class PickerItem(val name: String) {
+        class Other(name: String) : PickerItem(name)
+        class Battle(val autoSkill: IAutoSkillPreferences) : PickerItem(autoSkill.name)
+    }
 
-        fun DialogInterface.setOkBtnEnabled(enable: Boolean) {
-            if (this is AlertDialog) {
-                getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = enable
-            }
-        }
+    private fun autoSkillPicker(context: Context, entryPointRunner: () -> Unit) {
+        val selectedAutoSkill = preferences.selectedAutoSkillConfig
+        val autoSkillItems = preferences.autoSkillPreferences
+        val initialSelectedIndex =
+            if (preferences.scriptMode == ScriptModeEnum.Battle)
+                autoSkillItems.indexOfFirst { it.id == selectedAutoSkill.id } + 1
+            else 0
+
+        val other = PickerItem.Other(context.getString(R.string.other_scripts))
+        val pickerItems = listOf(other) + autoSkillItems.map { PickerItem.Battle(it) }
+        var selected = pickerItems[initialSelectedIndex]
 
         showOverlayDialog(context) {
-            setTitle(R.string.select_auto_skill_config)
+            setTitle(R.string.select_script)
                 .apply {
-                    if (autoSkillItems.isNotEmpty()) {
-                        setSingleChoiceItems(
-                            autoSkillItems.map { it.name }.toTypedArray(),
-                            initialSelectedIndex
-                        ) { dialog, choice ->
-                            selected = autoSkillItems[choice]
-                            dialog.setOkBtnEnabled(true)
-                        }
-                    } else setMessage(R.string.no_auto_skill_configs)
+                    setSingleChoiceItems(
+                        pickerItems.map { it.name }.toTypedArray(),
+                        initialSelectedIndex
+                    ) { _, choice -> selected = pickerItems[choice] }
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    preferences.selectedAutoSkillConfig = selected
+                    preferences.scriptMode = when (val s = selected) {
+                        is PickerItem.Other -> ScriptModeEnum.Other
+                        is PickerItem.Battle -> {
+                            preferences.selectedAutoSkillConfig = s.autoSkill
+
+                            ScriptModeEnum.Battle
+                        }
+                    }
+
                     entryPointRunner()
                 }
-        }.setOkBtnEnabled(initialSelectedIndex != -1)
+        }
     }
 }
