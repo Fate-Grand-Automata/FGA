@@ -26,7 +26,6 @@ interface IPreferences {
     val gudaFinal: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
-    val friendPtsOnly: Boolean
     val screenshotDrops: Boolean
     val canPauseScript: Boolean
     val maxGoldEmberSetSize: Int

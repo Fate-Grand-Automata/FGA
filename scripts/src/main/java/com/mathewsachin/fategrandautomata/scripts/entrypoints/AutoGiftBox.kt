@@ -12,7 +12,6 @@ class AutoGiftBox @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     val swipeLocations: ISwipeLocations
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
-
     companion object {
         const val maxClickCount = 99
         val checkRegion = Region(1640, 400, 120, 2120)
