@@ -145,7 +145,6 @@
     <string name="p_experimental">Experimental</string>
     <string name="p_screenshot_drops">Screenshot Drops</string>
     <string name="p_screenshot_drops_summary">Saved to \'Fate-Grand-Automata/drops\' folder</string>
-    <string name="p_friend_summon_only">Friend Points Summons Only</string>
     <string name="p_boost_item">Boost Item</string>
     <string name="p_brave_chains">Brave Chains</string>
     <string name="p_rearrange_cards">Rearrange Cards</string>
@@ -245,8 +244,8 @@
     <string name="accessibility_disabled_message">Turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
     <string name="accessibility_disabled_go_to_settings">Go To Settings</string>
     <string name="cannot_start_recording">Couldn\'t start recording</string>
-    <string name="select_auto_skill_config">Select AutoSkill Config</string>
-    <string name="no_auto_skill_configs">No AutoSkill Configs</string>
+    <string name="select_script">Select Script</string>
+    <string name="other_scripts">Lottery/FP/GiftBox/\nSupport Image Maker</string>
 
     <string name="script_msg_ap_ran_out">AP ran out!</string>
     <string name="stopped_by_user">Script stopped by user or screen turned OFF</string>
