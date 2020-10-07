@@ -51,9 +51,9 @@ class AndroidImpl @Inject constructor(
         Handler(Looper.getMainLooper())
     }
 
-    override fun messageBox(Title: String, Message: String, Error: Exception?) {
+    override fun messageBox(Title: String, Message: String, Error: Exception?, onDismiss: () -> Unit) {
         handler.post {
-            service.showMessageBox(Title, Message, Error)
+            service.showMessageBox(Title, Message, Error, onDismiss)
         }
     }
 
