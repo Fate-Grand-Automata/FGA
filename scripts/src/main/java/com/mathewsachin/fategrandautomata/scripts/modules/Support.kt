@@ -9,6 +9,8 @@ import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.libautomata.*
 import mu.KotlinLogging
 import java.util.*
+import kotlin.streams.asStream
+import kotlin.streams.toList
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 import kotlin.time.seconds
@@ -221,32 +223,23 @@ class Support(
         }
     }
 
-    private fun searchServantAndCE(): SearchFunctionResult {
-        val servants = findServants()
+    data class FoundServantAndCE(val supportBounds: Region, val ce: FoundCE)
 
-        for (servant in servants) {
-            if (servant is SearchFunctionResult.Found) {
-                val supportBounds = when (servant) {
-                    is SearchFunctionResult.FoundWithBounds -> servant.Bounds
-                    else -> findSupportBounds(servant.Support)
+    private fun searchServantAndCE(): SearchFunctionResult =
+        findServants()
+            .mapNotNull {
+                val supportBounds = when (it) {
+                    is SearchFunctionResult.FoundWithBounds -> it.Bounds
+                    else -> findSupportBounds(it.Support)
                 }
 
                 val ceBounds = Game.supportDefaultCeBounds + Location(0, supportBounds.Y)
-                val craftEssence = findCraftEssence(ceBounds)
-
-                if (craftEssence is SearchFunctionResult.Found) {
-                    // only return if found. if not, try the other servants before scrolling
-                    return SearchFunctionResult.FoundWithBounds(
-                        craftEssence.Support,
-                        supportBounds
-                    )
-                }
+                findCraftEssences(ceBounds).firstOrNull()
+                    ?.let { ce -> FoundServantAndCE(supportBounds, ce) }
             }
-        }
-
-        // not found, continue scrolling
-        return SearchFunctionResult.NotFound
-    }
+            .sortedBy { it.ce }
+            .map { SearchFunctionResult.FoundWithBounds(it.ce.region, it.supportBounds) }
+            .firstOrNull() ?: SearchFunctionResult.NotFound
 
     private fun decideSearchMethod(): SearchFunction {
         val hasServants = preferredServantArray.isNotEmpty()
@@ -255,7 +248,11 @@ class Support(
         return when {
             hasServants && hasCraftEssences -> { -> searchServantAndCE() }
             hasServants -> { -> findServants().firstOrNull() ?: SearchFunctionResult.NotFound }
-            hasCraftEssences -> { -> findCraftEssence(Game.supportListRegion) }
+            hasCraftEssences -> { ->
+                findCraftEssences(Game.supportListRegion)
+                    .map { SearchFunctionResult.Found(it.region) }
+                    .firstOrNull() ?: SearchFunctionResult.NotFound
+            }
             else -> throw ScriptExitException(messages.supportSelectionPreferredNotSet)
         }
     }
@@ -273,43 +270,38 @@ class Support(
         return SearchFunctionResult.NotFound
     }
 
-    private fun findServants(): Sequence<SearchFunctionResult> = sequence {
-        for (preferredServant in preferredServantArray) {
-            // Cached pattern. Don't dispose here.
-            val pattern = images.loadSupportPattern(
-                preferredServant
-            )
+    private fun findServants(): List<SearchFunctionResult.Found> =
+        preferredServantArray
+            .parallelStream()
+            .flatMap { entry ->
+                val pattern = images.loadSupportPattern(entry)
 
-            cropFriendLock(pattern).use {
-                for (servant in Game.supportListRegion.findAll(it).sorted()) {
-                    if (autoSkillPrefs.maxAscended && !isMaxAscended(servant.Region)) {
-                        continue
-                    }
+                val needMaxedSkills = listOf(
+                    autoSkillPrefs.skill1Max,
+                    autoSkillPrefs.skill2Max,
+                    autoSkillPrefs.skill3Max
+                )
+                val skillCheckNeeded = needMaxedSkills.any { it }
 
-                    val needMaxedSkills = listOf(
-                        autoSkillPrefs.skill1Max,
-                        autoSkillPrefs.skill2Max,
-                        autoSkillPrefs.skill3Max
-                    )
-                    val skillCheckNeeded = needMaxedSkills.any()
-
-                    val bounds =
-                        if (skillCheckNeeded) findSupportBounds(servant.Region)
-                        else null
-
-                    if (bounds != null && !checkMaxedSkills(bounds, needMaxedSkills)) {
-                        continue
-                    }
-
-                    val result = if (bounds != null)
-                        SearchFunctionResult.FoundWithBounds(servant.Region, bounds)
-                    else SearchFunctionResult.Found(servant.Region)
-
-                    yield(result)
+                cropFriendLock(pattern).use { cropped ->
+                    Game.supportListRegion
+                        .findAll(cropped)
+                        .filter { !autoSkillPrefs.maxAscended || isMaxAscended(it.Region) }
+                        .map {
+                            if (skillCheckNeeded)
+                                SearchFunctionResult.FoundWithBounds(it.Region, findSupportBounds(it.Region))
+                            else SearchFunctionResult.Found(it.Region)
+                        }
+                        .filter {
+                            it !is SearchFunctionResult.FoundWithBounds || checkMaxedSkills(it.Bounds, needMaxedSkills)
+                        }
+                        // We want the processing to be finished before cropped pattern is released
+                        .toList()
+                        .stream()
                 }
             }
-        }
-    }
+            .toList()
+            .sortedBy { it.Support }
 
     /**
      * If you lock your friends, a lock icon shows on the left of servant image,
@@ -328,26 +320,29 @@ class Support(
         return servant.crop(lockCropRegion)
     }
 
-    private fun findCraftEssence(SearchRegion: Region): SearchFunctionResult {
-        for (preferredCraftEssence in preferredCEArray) {
-            // Cached pattern. Don't dispose here.
-            val pattern = images.loadSupportPattern(
-                preferredCraftEssence.Name
-            )
-
-            val craftEssences = SearchRegion
-                .findAll(pattern)
-                .sorted()
-
-            for (craftEssence in craftEssences.map { it.Region }) {
-                if (!preferredCraftEssence.PreferMlb || isLimitBroken(craftEssence)) {
-                    return SearchFunctionResult.Found(craftEssence)
-                }
-            }
+    data class FoundCE(val region: Region, val mlb: Boolean) : Comparable<FoundCE> {
+        override fun compareTo(other: FoundCE) = when {
+            // Prefer MLB
+            mlb && !other.mlb -> -1
+            !mlb && other.mlb -> 1
+            else -> region.compareTo(other.region)
         }
-
-        return SearchFunctionResult.NotFound
     }
+
+    private fun findCraftEssences(SearchRegion: Region): List<FoundCE> =
+        preferredCEArray
+            .parallelStream()
+            .flatMap { entry ->
+                val pattern = images.loadSupportPattern(entry.Name)
+
+                SearchRegion
+                    .findAll(pattern)
+                    .asStream()
+                    .map { FoundCE(it.Region, isLimitBroken(it.Region)) }
+                    .filter { !entry.PreferMlb || it.mlb }
+            }
+            .toList()
+            .sorted()
 
     private fun findSupportBounds(Support: Region) =
         Game.supportRegionToolSearchRegion
