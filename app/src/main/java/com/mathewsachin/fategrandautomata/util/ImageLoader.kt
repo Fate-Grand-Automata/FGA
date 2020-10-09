@@ -50,7 +50,7 @@ class ImageLoader @Inject constructor(
         GameServerEnum.En
     private var regionCachedPatterns = mutableMapOf<String, IPattern>()
 
-    override fun loadRegionPattern(path: String): IPattern {
+    override fun loadRegionPattern(path: String): IPattern = synchronized(regionCachedPatterns) {
         val server = prefs.gameServer
 
         // Reload Patterns on Server change
@@ -60,14 +60,9 @@ class ImageLoader @Inject constructor(
             currentGameServer = server
         }
 
-        if (!regionCachedPatterns.containsKey(path)) {
-            val pattern =
-                loadPatternWithFallback(path)
-
-            regionCachedPatterns[path] = pattern
+        return regionCachedPatterns.getOrPut(path) {
+            loadPatternWithFallback(path)
         }
-
-        return regionCachedPatterns[path]!!
     }
 
     /**
@@ -85,7 +80,7 @@ class ImageLoader @Inject constructor(
         return createPattern(currentGameServer, path)
     }
 
-    override fun clearImageCache() {
+    override fun clearImageCache() = synchronized(regionCachedPatterns) {
         for (pattern in regionCachedPatterns.values) {
             pattern.close()
         }
@@ -97,7 +92,7 @@ class ImageLoader @Inject constructor(
 
     private var supportCachedPatterns = mutableMapOf<String, IPattern>()
 
-    override fun clearSupportCache() {
+    override fun clearSupportCache() = synchronized(supportCachedPatterns) {
         for (pattern in supportCachedPatterns.values) {
             pattern.close()
         }
@@ -105,16 +100,12 @@ class ImageLoader @Inject constructor(
         supportCachedPatterns.clear()
     }
 
-    override fun loadSupportPattern(path: String): IPattern {
-        if (!supportCachedPatterns.containsKey(path)) {
-            val pattern = fileLoader(path)
+    override fun loadSupportPattern(path: String): IPattern = synchronized(supportCachedPatterns) {
+        return supportCachedPatterns.getOrPut(path) {
+            fileLoader(path)
                 ?: throw ScriptExitException(
                     context.getString(R.string.support_img_not_found, path, storageDirs.supportImgFolder)
                 )
-
-            supportCachedPatterns[path] = pattern
         }
-
-        return supportCachedPatterns[path]!!
     }
 }
