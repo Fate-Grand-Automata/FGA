@@ -107,7 +107,6 @@ dependencies {
     testImplementation "io.mockk:mockk:1.10.2"
 
     implementation 'dev.ahamed.mva3:adapter:3.0.0'
-    implementation 'sk.baka.slf4j:slf4j-handroid:1.7.32'
 
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
@@ -118,6 +117,8 @@ dependencies {
 
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
     kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
+
+    implementation 'com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

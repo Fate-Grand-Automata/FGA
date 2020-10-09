@@ -26,12 +26,11 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import mu.KotlinLogging
+import timber.log.Timber
+import timber.log.error
 import java.util.*
 import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
-
-private val logger = KotlinLogging.logger {}
 
 @AndroidEntryPoint
 class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
@@ -57,7 +56,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                     outStream.writer().use { it.write(json) }
                 }
             } catch (e: Exception) {
-                logger.error("Failed to export", e)
+                Timber.error(e) { "Failed to export" }
 
                 val msg = getString(R.string.auto_skill_item_export_failed)
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
@@ -190,7 +189,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 getString(R.string.support_imgs_extracted)
             } catch (e: Exception) {
                 getString(R.string.support_imgs_extract_failed).also { msg ->
-                    logger.error(msg, e)
+                    Timber.error(e) { msg }
                 }
             }
 

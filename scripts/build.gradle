@@ -9,6 +9,8 @@ dependencies {
 
     implementation "com.google.dagger:hilt-core:2.29.1-alpha"
     kapt "com.google.dagger:hilt-compiler:2.29.1-alpha"
+
+    implementation 'com.jakewharton.timber:timber-jdk:5.0.0-SNAPSHOT'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

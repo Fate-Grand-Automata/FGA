@@ -7,7 +7,8 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.libautomata.*
-import mu.KotlinLogging
+import timber.log.Timber
+import timber.log.debug
 import java.util.*
 import kotlin.streams.asStream
 import kotlin.streams.toList
@@ -22,8 +23,6 @@ private typealias SearchFunction = () -> SearchFunctionResult
 const val supportRegionToolSimilarity = 0.75
 
 const val limitBrokenCharacter = '*'
-
-private val logger = KotlinLogging.logger {}
 
 class Support(
     fgAutomataApi: IFgoAutomataApi,
@@ -356,7 +355,7 @@ class Support(
             }
             .firstOrNull { Support in it }
             ?: Game.supportDefaultBounds.also {
-                logger.debug("Default Region being returned")
+                Timber.debug { "Default Region being returned" }
             }
 
     private fun isFriend(Region: Region): Boolean {
@@ -413,7 +412,7 @@ class Support(
                 }
             }
 
-        logger.debug {
+        Timber.debug {
             // Detected skill levels as string for debugging
             result
                 .zip(needMaxedSkills)

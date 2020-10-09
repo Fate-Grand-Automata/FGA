@@ -12,12 +12,11 @@ import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.extensions.IDurationExtensions
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
-import mu.KotlinLogging
+import timber.log.Timber
+import timber.log.debug
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.math.*
-
-private val logger = KotlinLogging.logger {}
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
@@ -125,7 +124,7 @@ class AccessibilityGestures @Inject constructor(
     }
 
     override fun swipe(Start: Location, End: Location) = runBlocking {
-        logger.debug { "swipe $Start, $End" }
+        Timber.debug { "swipe $Start, $End" }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             swipe8(Start, End)
@@ -141,7 +140,7 @@ class AccessibilityGestures @Inject constructor(
             gesturePrefs.clickDuration.toLongMilliseconds()
         )
 
-        logger.debug { "click $Location x$Times" }
+        Timber.debug { "click $Location x$Times" }
 
         repeat(Times) {
             performGesture(stroke)

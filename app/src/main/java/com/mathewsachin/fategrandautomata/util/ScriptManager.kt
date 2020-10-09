@@ -19,11 +19,10 @@ import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.ScriptAbortException
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
-import mu.KotlinLogging
+import timber.log.Timber
+import timber.log.error
 import javax.inject.Inject
 import kotlin.time.milliseconds
-
-private val logger = KotlinLogging.logger {}
 
 @ServiceScoped
 class ScriptManager @Inject constructor(
@@ -130,7 +129,7 @@ class ScriptManager @Inject constructor(
             } else null
         } catch (e: Exception) {
             val msg = userInterface.Service.getString(R.string.cannot_start_recording)
-            logger.error(msg, e)
+            Timber.error(e) { msg }
             Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
 
             null
