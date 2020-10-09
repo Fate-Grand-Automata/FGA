@@ -2,6 +2,10 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.Size
 import kotlin.time.Duration
 import kotlin.time.seconds
 
@@ -38,6 +42,18 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         }
 
         waitForAnimationToFinish()
+    }
+
+    private val Skill.imageRegion
+        get() = Region(clickLocation + Location(30, 30), Size(30, 30))
+
+    fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
+        skillTable[skill]?.image?.close()
+
+        val image = skill.imageRegion.getPattern().tag("SKILL:$skill")
+        skillTable[skill] = SkillTableEntry(target, image)
+
+        castSkill(skill, target)
     }
 
     private fun selectSkillTarget(target: ServantTarget) {
@@ -101,7 +117,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
 
     fun act(action: AutoSkillAction) = when (action) {
         is AutoSkillAction.Atk -> card.atk = action
-        is AutoSkillAction.ServantSkill -> castSkill(action.skill, action.target)
+        is AutoSkillAction.ServantSkill -> castServantSkill(action.skill, action.target)
         is AutoSkillAction.MasterSkill -> castMasterSkill(action.skill, action.target)
         is AutoSkillAction.TargetEnemy -> selectEnemyTarget(action.enemy)
         is AutoSkillAction.OrderChange -> orderChange(action)
@@ -109,6 +125,24 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
 
     fun resetState() {
         isFinished = false
+
+        skillTable.values.forEach { it.image.close() }
+        skillTable.clear()
+    }
+
+    private data class SkillTableEntry(
+        val target: ServantTarget?,
+        val image: IPattern
+    )
+
+    private var skillTable = mutableMapOf<Skill.Servant, SkillTableEntry>()
+
+    fun skillSpam() {
+        for ((skill, entry) in skillTable) {
+            if (entry.image in skill.imageRegion) {
+                castSkill(skill, entry.target)
+            }
+        }
     }
 
     lateinit var commandTable: AutoSkillCommand
@@ -137,6 +171,8 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         } else if (stage >= commandTable.lastStage) {
             // this will allow NP spam after all commands have been executed
             isFinished = true
+
+            skillSpam()
         }
     }
 }
