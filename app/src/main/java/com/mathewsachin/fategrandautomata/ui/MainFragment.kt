@@ -19,9 +19,8 @@ import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_main.*
-import mu.KotlinLogging
-
-private val logger = KotlinLogging.logger { }
+import timber.log.Timber
+import timber.log.info
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.content_main) {
@@ -35,7 +34,7 @@ class MainFragment : Fragment(R.layout.content_main) {
 
     val startMediaProjection = registerForActivityResult(StartMediaProjection()) { intent ->
         if (intent == null) {
-            logger.info("MediaProjection cancelled by user")
+            Timber.info { "MediaProjection cancelled by user" }
             ScriptRunnerService.Instance?.notification?.hide()
         } else ScriptRunnerService.Instance?.start(intent)
     }

@@ -25,10 +25,9 @@ import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
-import mu.KotlinLogging
+import timber.log.Timber
+import timber.log.info
 import javax.inject.Inject
-
-private val logger = KotlinLogging.logger {}
 
 @AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
@@ -72,7 +71,7 @@ class ScriptRunnerService : AccessibilityService() {
     private val screenOffReceiver = ScreenOffReceiver()
 
     override fun onUnbind(intent: Intent?): Boolean {
-        logger.info("Accessibility Service unbind")
+        Timber.info { "Accessibility Service unbind" }
 
         stop()
 
@@ -190,7 +189,7 @@ class ScriptRunnerService : AccessibilityService() {
         }
 
     override fun onServiceConnected() {
-        logger.info("Accessibility Service bound to system")
+        Timber.info { "Accessibility Service bound to system" }
 
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {

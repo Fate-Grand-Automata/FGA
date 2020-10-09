@@ -22,14 +22,13 @@ import kotlinx.android.synthetic.main.autoskill_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import mu.KotlinLogging
 import mva3.adapter.ListSection
 import mva3.adapter.MultiViewAdapter
 import mva3.adapter.util.Mode
+import timber.log.Timber
+import timber.log.error
 import java.util.*
 import javax.inject.Inject
-
-private val logger = KotlinLogging.logger {}
 
 @AndroidEntryPoint
 class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
@@ -134,7 +133,7 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
                             }
                         }
                 } catch (e: Exception) {
-                    logger.error("Failed to export", e)
+                    Timber.error(e) { "Failed to export" }
                     ++failed
                 }
             }
@@ -170,7 +169,7 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
                         }
                     } catch (e: Exception) {
                         ++failed
-                        logger.error("Import Failed", e)
+                        Timber.error(e) { "Import Failed" }
                     }
                 }
             }

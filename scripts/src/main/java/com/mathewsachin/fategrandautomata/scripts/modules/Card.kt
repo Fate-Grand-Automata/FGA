@@ -9,10 +9,9 @@ import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import mu.KotlinLogging
+import timber.log.Timber
+import timber.log.debug
 import java.util.*
-
-private val logger = KotlinLogging.logger {}
 
 class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
@@ -106,7 +105,8 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         if (failedToDetermine.isNotEmpty()) {
             val msg = messages.failedToDetermineCardType(failedToDetermine)
             toast(msg)
-            logger.debug(msg)
+
+            Timber.debug { msg }
         }
 
         return cards
@@ -257,7 +257,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
             // Do the same when clicking 2 cards unless they're used before NPs.
             if (cardsToRearrange.size in 2..3) {
-                logger.info("Rearranging cards")
+                Timber.debug { "Rearranging cards" }
 
                 return cards.toMutableList().also {
                     Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
@@ -278,17 +278,19 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         if (atk.cardsBeforeNP > 0) {
             cards
                 .take(atk.cardsBeforeNP)
-                .also { logger.info("Clicking cards: $it") }
+                .also { Timber.debug { "Clicking cards: $it" } }
                 .forEach { it.clickLocation.click() }
         }
 
-        atk.nps
-            .also { logger.info("Clicking NP(s): $it") }
-            .forEach { it.pick() }
+        if (atk.nps.isNotEmpty()) {
+            atk.nps
+                .also { Timber.debug { "Clicking NP(s): $it" } }
+                .forEach { it.pick() }
+        }
 
         cards
             .drop(atk.cardsBeforeNP)
-            .also { logger.info("Clicking cards: $it") }
+            .also { Timber.debug { "Clicking cards: $it" } }
             .forEach { it.clickLocation.click() }
 
         atk = AutoSkillAction.Atk.noOp()
@@ -332,7 +334,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             }
         }
 
-        logger.info("NPs grouped with Face-cards: $npGroups")
+        Timber.debug { "NPs grouped with Face-cards: $npGroups" }
         return npGroups
     }
 
@@ -344,7 +346,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             groups.add(supportGroup)
             remaining.removeAll(supportGroup)
 
-            logger.info("Support group: $supportGroup")
+            Timber.debug { "Support group: $supportGroup" }
         }
 
         while (remaining.isNotEmpty()) {
@@ -372,7 +374,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             groups.add(group)
         }
 
-        logger.info("Face-card groups: $groups")
+        Timber.debug { "Face-card groups: $groups" }
 
         return groups
     }

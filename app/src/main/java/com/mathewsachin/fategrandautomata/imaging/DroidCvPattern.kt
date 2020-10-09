@@ -5,15 +5,15 @@ import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Match
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
-import mu.KotlinLogging
 import org.opencv.core.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
+import timber.log.Timber
+import timber.log.debug
+import timber.log.verbose
 import java.io.InputStream
 import kotlin.math.roundToInt
 import org.opencv.core.Size as CvSize
-
-private val logger = KotlinLogging.logger {}
 
 class DroidCvPattern(
     private var Mat: Mat? = Mat(),
@@ -81,7 +81,7 @@ class DroidCvPattern(
                     Imgproc.TM_CCOEFF_NORMED
                 )
             } else {
-                logger.debug { "Skipped matching $Template: Region out of bounds" }
+                Timber.verbose { "Skipped matching $Template: Region out of bounds" }
             }
 
             return result
@@ -109,7 +109,7 @@ class DroidCvPattern(
 
                     val match = Match(region, score)
 
-                    logger.debug { "Matched $Template with a score of ${match.score}" }
+                    Timber.debug { "Matched $Template with a score of ${match.score}" }
                     yield(match)
 
                     val mask = DisposableMat()
@@ -124,7 +124,7 @@ class DroidCvPattern(
                         )
                     }
                 } else {
-                    logger.debug { "Stopped matching $Template at score ($score) < similarity ($Similarity)" }
+                    Timber.verbose { "Stopped matching $Template at score ($score) < similarity ($Similarity)" }
                     break
                 }
             }

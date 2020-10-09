@@ -8,15 +8,15 @@ import com.mathewsachin.libautomata.IColorScreenshotProvider
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
-import mu.KotlinLogging
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
+import timber.log.Timber
+import timber.log.debug
+import timber.log.error
 import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
-
-private val logger = KotlinLogging.logger {}
 
 class RootScreenshotService(
     private val SuperUser: SuperUser,
@@ -49,7 +49,7 @@ class RootScreenshotService(
                         platformImpl.toast("Unexpected raw image format: $format")
                     }
 
-                    logger.debug { "${w}x${h} format=$format" }
+                    Timber.debug { "${w}x${h} format=$format" }
 
                     buffer = ByteArray(w * h * 4)
                     rootLoadMat = Mat(h, w, CvType.CV_8UC4)
@@ -86,7 +86,7 @@ class RootScreenshotService(
         try {
             SuperUser.close()
         } catch (e: Exception) {
-            logger.error("Error closing super user", e)
+            Timber.error(e) { "Error closing super user" }
         }
 
         pattern.close()
