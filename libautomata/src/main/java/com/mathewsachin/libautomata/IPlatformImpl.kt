@@ -30,5 +30,5 @@ interface IPlatformImpl {
      * @param Region a [Region] on the screen
      * @param Duration how long the borders should be displayed
      */
-    fun highlight(Region: Region, Duration: Duration)
+    fun highlight(Region: Region, Duration: Duration, success: Boolean)
 }
