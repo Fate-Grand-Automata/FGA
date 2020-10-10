@@ -3,9 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.Size
 import kotlin.time.Duration
 import kotlin.time.seconds
 
@@ -45,7 +43,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     }
 
     private val Skill.imageRegion
-        get() = Region(clickLocation + Location(30, 30), Size(30, 30))
+        get() = Region(30, 30, 30, 30) + clickLocation
 
     fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
         skillTable[skill]?.image?.close()
