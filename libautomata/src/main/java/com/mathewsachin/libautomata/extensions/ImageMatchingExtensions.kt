@@ -97,17 +97,10 @@ class ImageMatchingExtensions @Inject constructor(
         Pattern: IPattern,
         Similarity: Double?
     ): Sequence<Match> {
-        var sshot = screenshotManager.getScreenshot()
-
-        if (platformImpl.prefs.debugMode) {
-            this.highlight()
-        }
-
-        sshot = sshot.crop(this.transformToImage())
-
         val similarity = Similarity ?: platformImpl.prefs.minSimilarity
 
-        return sshot
+        return screenshotManager.getScreenshot()
+            .crop(this.transformToImage())
             .findMatches(Pattern, similarity)
             .map {
                 exitManager.checkExitRequested()
@@ -118,6 +111,11 @@ class ImageMatchingExtensions @Inject constructor(
                 region += this.location
 
                 Match(region, it.score)
+            }
+            .also {
+                if (platformImpl.prefs.debugMode) {
+                    this.highlight(success = it.any())
+                }
             }
     }
 }
