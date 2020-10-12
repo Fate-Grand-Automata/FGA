@@ -90,7 +90,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'com.github.iamareebjamal:opencv-android:4.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
