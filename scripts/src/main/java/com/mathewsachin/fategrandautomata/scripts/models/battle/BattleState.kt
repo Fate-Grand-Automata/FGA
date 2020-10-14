@@ -46,8 +46,31 @@ class BattleState {
             runState = RunState()
         }
 
-    var runState = RunState()
-        private set
+    private var runState = RunState()
+
+    var hasChosenTarget
+        get() = runState.stageState.hasChosenTarget
+        set(value) {
+            runState.stageState.hasChosenTarget = value
+        }
+
+    var hasClickedAttack
+        get() = runState.turnState.hasClickedAttack
+        set(value) {
+            runState.turnState.hasClickedAttack = value
+        }
+
+    var stageCountSnaphot
+        get() = runState.stageState.stageCountSnaphot
+        set(value) {
+            runState.stageState.stageCountSnaphot = value
+        }
+
+    val stage get() = runState.stage
+    val turn get() = runState.turn
+
+    fun nextTurn() = runState.nextTurn()
+    fun nextStage() = runState.nextStage()
 
     fun nextRun() = ++runs
 }

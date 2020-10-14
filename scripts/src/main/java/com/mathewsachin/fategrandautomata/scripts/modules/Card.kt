@@ -118,7 +118,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private fun <T> List<T>.inCurrentWave(default: T) =
         if (isNotEmpty())
-            this[battle.state.runState.stage.coerceIn(indices)]
+            this[battle.state.stage.coerceIn(indices)]
         else default
 
     fun readCommandCards() {
@@ -162,7 +162,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         val remainingCards = CommandCard.Face.list.toMutableSet()
 
         val cardsOrderedByPriority = cardPriority
-            .atWave(battle.state.runState.stage)
+            .atWave(battle.state.stage)
             .mapNotNull { commandCards[it] }
             .flatten()
 

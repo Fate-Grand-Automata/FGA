@@ -137,7 +137,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     fun canSpam(spam: SpamEnum): Boolean {
         val weCanSpam = spam == SpamEnum.Spam
         val weAreInDanger = spam == SpamEnum.Danger
-                && battle.state.runState.stageState.hasChosenTarget
+                && battle.state.hasChosenTarget
 
         return (weCanSpam || weAreInDanger) && isFinished
     }
@@ -166,8 +166,8 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     }
 
     fun execute() {
-        val stage = battle.state.runState.stage
-        val turn = battle.state.runState.turn
+        val stage = battle.state.stage
+        val turn = battle.state.turn
 
         val commandList = commandTable[stage, turn]
 
