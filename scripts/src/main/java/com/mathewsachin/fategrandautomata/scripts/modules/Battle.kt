@@ -131,6 +131,6 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
                 if (it is WhitePixelsProvider) {
                     it.use { m -> m.getWhitePixelMask(170) }
                 } else it
-            }.tag("WAVE:${state.runState.stage}")
+            }.tag("WAVE:${state.stage}")
     }
 }
