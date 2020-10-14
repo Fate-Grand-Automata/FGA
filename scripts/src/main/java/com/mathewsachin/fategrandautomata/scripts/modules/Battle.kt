@@ -99,7 +99,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         state.nextTurn()
 
-        if (!state.hasChosenTarget && prefs.autoChooseTarget) {
+        if (!state.hasChosenTarget && prefs.selectedAutoSkillConfig.autoChooseTarget) {
             autoChooseTarget()
         }
     }

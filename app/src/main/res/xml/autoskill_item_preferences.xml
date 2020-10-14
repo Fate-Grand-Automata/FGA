@@ -36,6 +36,35 @@
         app:title="@string/p_auto_skill_card_priority" />
 
     <PreferenceCategory
+        app:key="spam_category"
+        app:title="@string/p_spam_spam"
+        app:summary="@string/p_spam_summary">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_target"
+            app:key="@string/pref_auto_choose_target"
+            app:title="@string/p_auto_choose_target" />
+
+        <ListPreference
+            app:defaultValue="None"
+            app:entries="@array/spam_types_labels"
+            app:entryValues="@array/spam_types_values"
+            app:icon="@drawable/ic_star"
+            app:key="@string/pref_spam_np"
+            app:title="@string/p_spam_np"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="None"
+            app:entries="@array/spam_types_labels"
+            app:entryValues="@array/spam_types_values"
+            app:icon="@drawable/ic_wand"
+            app:key="@string/pref_spam_skill"
+            app:title="@string/p_spam_skill"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="support_category"
         app:title="@string/p_auto_skill_support">
         <ListPreference

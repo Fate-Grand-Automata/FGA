@@ -48,12 +48,6 @@ class PreferencesImpl @Inject constructor(
             selectedAutoSkillConfigKey = value.id
         }
 
-    override val npSpam by prefs.npSpam
-
-    override val skillSpam by prefs.skillSpam
-
-    override val autoChooseTarget by prefs.autoChooseTarget
-
     override val storySkip by prefs.storySkip
 
     override val withdrawEnabled by prefs.withdrawEnabled

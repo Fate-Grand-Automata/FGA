@@ -134,6 +134,7 @@
     <string name="p_max_skill_3">Max Skill 3</string>
 
     <string name="p_game_server">Game Server</string>
+    <string name="p_spam_summary">Danger mode requires Auto-targeting</string>
     <string name="p_spam_np">NP Spam</string>
     <string name="p_spam_skill">Skill Spam</string>
     <string name="p_auto_choose_target">Auto choose target</string>
