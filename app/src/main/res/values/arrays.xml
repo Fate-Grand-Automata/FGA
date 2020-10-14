@@ -43,13 +43,13 @@
         <item>3</item>
     </string-array>
 
-    <array name="battle_np_types_labels">
-        <item>@string/p_cast_np_none</item>
-        <item>@string/p_cast_np_spam</item>
-        <item>@string/p_cast_np_danger</item>
+    <array name="spam_types_labels">
+        <item>@string/p_spam_none</item>
+        <item>@string/p_spam_spam</item>
+        <item>@string/p_spam_danger</item>
     </array>
 
-    <array name="battle_np_types_values">
+    <array name="spam_types_values">
         <item>None</item>
         <item>Spam</item>
         <item>Danger</item>

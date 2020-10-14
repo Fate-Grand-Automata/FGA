@@ -45,11 +45,20 @@
 
         <ListPreference
             app:defaultValue="None"
-            app:entries="@array/battle_np_types_labels"
-            app:entryValues="@array/battle_np_types_values"
+            app:entries="@array/spam_types_labels"
+            app:entryValues="@array/spam_types_values"
             app:icon="@drawable/ic_star"
-            app:key="@string/pref_battle_np"
-            app:title="@string/p_cast_np"
+            app:key="@string/pref_spam_np"
+            app:title="@string/p_spam_np"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="None"
+            app:entries="@array/spam_types_labels"
+            app:entryValues="@array/spam_types_values"
+            app:icon="@drawable/ic_wand"
+            app:key="@string/pref_spam_skill"
+            app:title="@string/p_spam_skill"
             app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat

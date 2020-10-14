@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
-import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.libautomata.IPlatformPrefs
 import kotlin.time.Duration
 
@@ -13,7 +13,8 @@ interface IPreferences {
     val autoSkillList: Set<String>
     val autoSkillPreferences: List<IAutoSkillPreferences>
     var selectedAutoSkillConfig: IAutoSkillPreferences
-    val castNoblePhantasm: BattleNoblePhantasmEnum
+    val npSpam: SpamEnum
+    val skillSpam: SpamEnum
     val autoChooseTarget: Boolean
     val storySkip: Boolean
     val withdrawEnabled: Boolean
