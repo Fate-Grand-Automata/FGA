@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 
 interface IAutoSkillPreferences {
     val id: String
@@ -11,6 +12,10 @@ interface IAutoSkillPreferences {
     val braveChains: List<BraveChainEnum>
     val party: Int
     val support: ISupportPreferences
+
+    val npSpam: SpamEnum
+    val skillSpam: SpamEnum
+    val autoChooseTarget: Boolean
 
     fun export(): Map<String, *>
 

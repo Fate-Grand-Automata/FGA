@@ -143,7 +143,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     }
 
     private fun skillSpam() {
-        if (canSpam(prefs.skillSpam)) {
+        if (canSpam(prefs.selectedAutoSkillConfig.skillSpam)) {
             for ((skill, entry) in skillTable) {
                 if (entry.image in skill.imageRegion) {
                     castSkill(skill, entry.target)

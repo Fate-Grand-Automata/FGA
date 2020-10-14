@@ -6,6 +6,7 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 
 class AutoSkillPrefsCore(
     val id: String,
@@ -53,4 +54,16 @@ class AutoSkillPrefsCore(
     val party = maker.stringAsInt(R.string.pref_autoskill_party, -1)
 
     val support = SupportPrefsCore(maker, storageDirs)
+
+    val npSpam = maker.enum(
+        R.string.pref_spam_np,
+        SpamEnum.None
+    )
+
+    val skillSpam = maker.enum(
+        R.string.pref_spam_skill,
+        SpamEnum.None
+    )
+
+    val autoChooseTarget = maker.bool(R.string.pref_auto_choose_target)
 }

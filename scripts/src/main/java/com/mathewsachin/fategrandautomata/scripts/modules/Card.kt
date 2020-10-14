@@ -146,7 +146,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private val spamNps: Set<CommandCard.NP>
         get() =
-            if (autoSkill.canSpam(prefs.npSpam)) {
+            if (autoSkill.canSpam(prefs.selectedAutoSkillConfig.npSpam)) {
                 CommandCard.NP.list.toSet()
             } else emptySet()
 
@@ -238,7 +238,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
         if (rearrangeCardsThisTurn
             // Skip if NP spamming because we don't know how many NPs might've been used
-            && prefs.npSpam == SpamEnum.None
+            && prefs.selectedAutoSkillConfig.npSpam == SpamEnum.None
             // If there are cards before NP, at max there's only 1 card after NP
             && atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max

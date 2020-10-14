@@ -4,7 +4,6 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,18 +27,6 @@ class PrefsCore @Inject constructor(
     val autoSkillList = maker.stringSet(R.string.pref_autoskill_list)
 
     val selectedAutoSkillConfig = maker.string(R.string.pref_autoskill_selected)
-
-    val npSpam = maker.enum(
-        R.string.pref_spam_np,
-        SpamEnum.None
-    )
-
-    val skillSpam = maker.enum(
-        R.string.pref_spam_skill,
-        SpamEnum.None
-    )
-
-    val autoChooseTarget = maker.bool(R.string.pref_auto_choose_target)
 
     val storySkip = maker.bool(R.string.pref_story_skip)
 
