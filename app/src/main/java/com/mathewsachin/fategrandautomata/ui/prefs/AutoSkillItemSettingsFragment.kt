@@ -12,10 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.preference.EditTextPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceDialogFragmentCompat
-import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.*
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
@@ -66,6 +63,9 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
     private lateinit var autoSkillPrefs: IAutoSkillPreferences
 
+    private fun findFriendNamesList(): MultiSelectListPreference? =
+        findPreference(getString(prefKeys.pref_support_friend_names))
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = args.key
         autoSkillPrefs = preferences.forAutoSkillConfig(args.key)
@@ -74,7 +74,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
 
-        preferredSupportOnCreate()
+        findFriendNamesList()?.summaryProvider = SupportMultiSelectListSummaryProvider()
 
         findPreference<EditTextPreference>(getString(R.string.pref_autoskill_notes))?.makeMultiLine()
 
@@ -102,10 +102,10 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_preferred_support))?.let {
             it.setOnPreferenceClickListener {
                 val action = AutoSkillItemSettingsFragmentDirections
-                    .actionAutoSkillItemSettingsFragmentToSkillLevelSettingsFragment(args.key)
+                    .actionAutoSkillItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
 
                 nav(action)
 
@@ -131,44 +131,21 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        findPreference<Preference>(getString(R.string.pref_nav_skill_lvl))?.let {
-            vm.skillLevels.observe(viewLifecycleOwner) { levels ->
-                it.summary = levels
-            }
+        val navPreferred = findPreference<Preference>(getString(R.string.pref_nav_preferred_support))
+        val friendNames = findFriendNamesList()
+        val fallback = findPreference<Preference>(getString(prefKeys.pref_support_fallback))
 
-            val maxAscended = findPreference<Preference>(getString(R.string.pref_support_max_ascended))
-                ?: return
-
-            vm.areServantsSelected.observe(viewLifecycleOwner) { visible ->
-                it.isVisible = visible
-                maxAscended.isVisible = visible
-            }
-        } ?: return
-
-        val servants = findServantList() ?: return
-        val ces = findCeList() ?: return
-        val friendNames = findFriendNamesList() ?: return
-        val friendsOnly =
-            findPreference<Preference>(getString(prefKeys.pref_support_friends_only)) ?: return
-        val fallback = findPreference<Preference>(getString(prefKeys.pref_support_fallback)) ?: return
+        vm.preferredMessage.observe(viewLifecycleOwner) { msg ->
+            navPreferred?.summary = msg
+        }
 
         vm.supportSelectionMode.observe(viewLifecycleOwner) {
             val preferred = it == SupportSelectionModeEnum.Preferred
             val friend = it == SupportSelectionModeEnum.Friend
 
-            servants.isVisible = preferred
-            ces.isVisible = preferred
-            friendsOnly.isVisible = preferred
-
-            friendNames.isVisible = friend
-
-            fallback.isVisible = preferred || friend
-        }
-
-        findPreference<Preference>(getString(prefKeys.pref_support_pref_ce_mlb))?.let {
-            vm.areCEsSelected.observe(viewLifecycleOwner) { visible ->
-                it.isVisible = visible
-            }
+            friendNames?.isVisible = friend
+            fallback?.isVisible = preferred || friend
+            navPreferred?.isVisible = preferred
         }
     }
 
@@ -177,14 +154,20 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         if (storageDirs.shouldExtractSupportImages) {
             performSupportImageExtraction()
-        } else preferredSupportOnResume(storageDirs)
+        } else populateFriendNames()
+    }
+
+    private fun populateFriendNames() {
+        findFriendNamesList()?.apply {
+            populateFriendOrCe(storageDirs.supportFriendFolder)
+        }
     }
 
     private fun performSupportImageExtraction() {
         lifecycleScope.launch {
             val msg = try {
                 SupportImageExtractor(requireContext(), storageDirs).extract()
-                preferredSupportOnResume(storageDirs)
+                populateFriendNames()
 
                 getString(R.string.support_imgs_extracted)
             } catch (e: Exception) {
@@ -255,8 +238,6 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         }
 
         when (preference.key) {
-            getString(R.string.pref_support_pref_ce),
-            getString(R.string.pref_support_pref_servant),
             getString(R.string.pref_support_friend_names) -> {
                 ClearMultiSelectListPreferenceDialog().apply {
                     setKey(preference.key)

@@ -193,7 +193,6 @@
     <string name="p_nav_fine_tune">Fine-tune</string>
     <string name="p_nav_auto_skill_list">AutoSkill List</string>
     <string name="p_nav_auto_skill_edit">Edit config</string>
-    <string name="p_nav_skill_levels">Skill Levels</string>
     <string name="p_nav_card_priority">Card Priority</string>
 
     <string name="p_refill_type_gold">Gold</string>

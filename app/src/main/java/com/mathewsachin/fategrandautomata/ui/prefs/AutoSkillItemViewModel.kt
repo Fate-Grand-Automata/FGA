@@ -1,18 +1,21 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import android.content.Context
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.combine
 
 class AutoSkillItemViewModel @ViewModelInject constructor(
     val preferences: IPreferences,
     val prefsCore: PrefsCore,
+    @ApplicationContext context: Context,
     @Assisted savedState: SavedStateHandle
 ) : ViewModel() {
     val autoSkillItemKey: String = savedState[AutoSkillItemSettingsFragmentArgs::key.name]
@@ -30,16 +33,45 @@ class AutoSkillItemViewModel @ViewModelInject constructor(
         .asFlow()
         .asLiveData()
 
-    val skillLevels =
+    private val skillLevels =
         combine(
             prefs.support.skill1Max.asFlow(),
             prefs.support.skill2Max.asFlow(),
             prefs.support.skill3Max.asFlow()
-        ) { s1, s2, s3 ->
-            listOf(s1, s2, s3)
-                .joinToString("/") {
-                    if (it) "10" else "x"
+        ) { s1, s2, s3 -> listOf(s1, s2, s3) }
+
+    val preferredMessage =
+        combine(
+            prefs.support.preferredServants.asFlow(),
+            prefs.support.preferredCEs.asFlow(),
+            prefs.support.mlb.asFlow(),
+            skillLevels
+        ) { servants, ces, mlb, levels ->
+            buildString {
+                if (servants.isEmpty() && ces.isEmpty()) {
+                    appendLine(context.getString(R.string.auto_skill_support_any))
                 }
+
+                if (servants.isNotEmpty()) {
+                    appendLine(servants.joinToString())
+
+                    if (levels.any { it }) {
+                        appendLine(levels.joinToString("/", prefix = "[", postfix = "]") {
+                            if (it) "10" else "x"
+                        })
+                    }
+                }
+
+                appendLine()
+
+                if (ces.isNotEmpty()) {
+                    appendLine(ces.joinToString().let {
+                        if (mlb)
+                            "$it (☆)"
+                        else it
+                    })
+                }
+            }.trim()
         }
             .asLiveData()
 
@@ -48,24 +80,4 @@ class AutoSkillItemViewModel @ViewModelInject constructor(
         .selectionMode
         .asFlow()
         .asLiveData()
-
-    val areServantsSelected =
-        combine(
-            prefs.support.selectionMode.asFlow(),
-            prefs.support.preferredServants.asFlow()
-        ) { mode, servants ->
-            mode == SupportSelectionModeEnum.Preferred
-                    && servants.isNotEmpty()
-        }
-            .asLiveData()
-
-    val areCEsSelected =
-        combine(
-            prefs.support.selectionMode.asFlow(),
-            prefs.support.preferredCEs.asFlow()
-        ) { mode, ces ->
-            mode == SupportSelectionModeEnum.Preferred
-                    && ces.isNotEmpty()
-        }
-            .asLiveData()
 }

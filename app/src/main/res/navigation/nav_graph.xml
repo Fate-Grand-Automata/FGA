@@ -74,8 +74,8 @@
             android:name="key"
             app:argType="string" />
         <action
-            android:id="@+id/action_autoSkillItemSettingsFragment_to_skillLevelSettingsFragment"
-            app:destination="@id/skillLevelSettingsFragment"
+            android:id="@+id/action_autoSkillItemSettingsFragment_to_preferredSupportSettingsFragment"
+            app:destination="@id/prefSupportSettingsFragment"
             app:enterAnim="@anim/open_enter"
             app:exitAnim="@anim/open_exit"
             app:popEnterAnim="@anim/close_enter"
@@ -100,9 +100,9 @@
             app:destination="@id/autoSkillMakerActivity" />
     </fragment>
     <fragment
-        android:id="@+id/skillLevelSettingsFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.prefs.SkillLevelSettingsFragment"
-        android:label="@string/p_nav_skill_levels">
+        android:id="@+id/prefSupportSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.PreferredSupportSettingsFragment"
+        android:label="@string/p_support_mode_preferred">
         <argument
             android:name="key"
             app:argType="string" />
