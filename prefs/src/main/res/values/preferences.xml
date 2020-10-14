@@ -4,7 +4,8 @@
     <string name="pref_skill_conf">skill_conf</string>
     <string name="pref_autoskill_selected">autoskill_selected</string>
     <string name="pref_card_priority">card_priority</string>
-    <string name="pref_battle_np">battle_np</string>
+    <string name="pref_spam_np">battle_np</string>
+    <string name="pref_spam_skill">skill_spam</string>
     <string name="pref_auto_choose_target">auto_choose_target</string>
     <string name="pref_story_skip">story_skip</string>
     <string name="pref_stop_on_ce_drop">stop_on_ce_drop</string>

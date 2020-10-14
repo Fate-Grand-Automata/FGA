@@ -1,10 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
@@ -144,16 +144,11 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         }
     }
 
-    private val canSpamNpCards: Boolean
-        get() {
-            val weCanSpam = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Spam
-            val weAreInDanger = prefs.castNoblePhantasm == BattleNoblePhantasmEnum.Danger
-                    && battle.state.runState.stageState.hasChosenTarget
-
-            return (weCanSpam || weAreInDanger) && autoSkill.isFinished
-        }
-
-    private fun spamNpCards() = CommandCard.NP.list.forEach { it.pick() }
+    private val spamNps: Set<CommandCard.NP>
+        get() =
+            if (autoSkill.canSpam(prefs.npSpam)) {
+                CommandCard.NP.list.toSet()
+            } else emptySet()
 
     private fun CommandCard.NP.pick() {
         clickLocation.click()
@@ -243,7 +238,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
         if (rearrangeCardsThisTurn
             // Skip if NP spamming because we don't know how many NPs might've been used
-            && prefs.castNoblePhantasm == BattleNoblePhantasmEnum.None
+            && prefs.npSpam == SpamEnum.None
             // If there are cards before NP, at max there's only 1 card after NP
             && atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
@@ -269,10 +264,6 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     fun clickCommandCards() {
-        if (canSpamNpCards) {
-            spamNpCards()
-        }
-
         val cards = pickCards()
 
         if (atk.cardsBeforeNP > 0) {
@@ -282,8 +273,10 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 .forEach { it.clickLocation.click() }
         }
 
-        if (atk.nps.isNotEmpty()) {
-            atk.nps
+        val nps = atk.nps + spamNps
+
+        if (nps.isNotEmpty()) {
+            nps
                 .also { Timber.debug { "Clicking NP(s): $it" } }
                 .forEach { it.pick() }
         }

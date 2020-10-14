@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Region
@@ -10,9 +11,7 @@ import kotlin.time.seconds
 class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
     private lateinit var card: Card
-
-    var isFinished = false
-        private set
+    private var isFinished = false
 
     private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
         val img = images.battle
@@ -45,7 +44,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     private val Skill.imageRegion
         get() = Region(30, 30, 30, 30) + clickLocation
 
-    fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
+    private fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
         skillTable[skill]?.image?.close()
 
         val image = skill.imageRegion.getPattern().tag("SKILL:$skill")
@@ -113,7 +112,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         Game.battleExtraInfoWindowCloseClick.click()
     }
 
-    fun act(action: AutoSkillAction) = when (action) {
+    private fun act(action: AutoSkillAction) = when (action) {
         is AutoSkillAction.Atk -> card.atk = action
         is AutoSkillAction.ServantSkill -> castServantSkill(action.skill, action.target)
         is AutoSkillAction.MasterSkill -> castMasterSkill(action.skill, action.target)
@@ -135,10 +134,20 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
 
     private var skillTable = mutableMapOf<Skill.Servant, SkillTableEntry>()
 
-    fun skillSpam() {
-        for ((skill, entry) in skillTable) {
-            if (entry.image in skill.imageRegion) {
-                castSkill(skill, entry.target)
+    fun canSpam(spam: SpamEnum): Boolean {
+        val weCanSpam = spam == SpamEnum.Spam
+        val weAreInDanger = spam == SpamEnum.Danger
+                && battle.state.runState.stageState.hasChosenTarget
+
+        return (weCanSpam || weAreInDanger) && isFinished
+    }
+
+    private fun skillSpam() {
+        if (canSpam(prefs.skillSpam)) {
+            for ((skill, entry) in skillTable) {
+                if (entry.image in skill.imageRegion) {
+                    castSkill(skill, entry.target)
+                }
             }
         }
     }

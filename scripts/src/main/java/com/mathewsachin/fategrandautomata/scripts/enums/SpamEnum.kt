@@ -1,5 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts.enums
 
-enum class BattleNoblePhantasmEnum {
+enum class SpamEnum {
     None, Spam, Danger
 }
