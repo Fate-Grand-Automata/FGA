@@ -134,7 +134,9 @@
     <string name="p_max_skill_3">Max Skill 3</string>
 
     <string name="p_game_server">Game Server</string>
-    <string name="p_cast_np">Cast Noble Phantasm</string>
+    <string name="p_spam_summary">Danger mode requires Auto-targeting</string>
+    <string name="p_spam_np">NP Spam</string>
+    <string name="p_spam_skill">Skill Spam</string>
     <string name="p_auto_choose_target">Auto choose target</string>
     <string name="p_story_skip">Story Skip</string>
     <string name="p_skill_confirmation">Skill Confirmation</string>
@@ -206,9 +208,9 @@
     <string name="p_boost_item_disabled">Disabled</string>
     <string name="p_boost_item_skip">Skip</string>
 
-    <string name="p_cast_np_none">None</string>
-    <string name="p_cast_np_spam">Spam</string>
-    <string name="p_cast_np_danger">Danger</string>
+    <string name="p_spam_none">None</string>
+    <string name="p_spam_spam">Spam</string>
+    <string name="p_spam_danger">Danger</string>
 
     <string name="p_support_mode_first">First</string>
     <string name="p_support_mode_manual">Manual</string>

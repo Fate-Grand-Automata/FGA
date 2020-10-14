@@ -27,8 +27,8 @@ jobs:
           if ($env:GITHUB_REF.StartsWith('refs/tags/')) {
               $VERSION_NAME = $env:GITHUB_REF.Substring(10)
           }
-          echo "::set-env name=FGA_VERSION_CODE::$VERSION_CODE"
-          echo "::set-env name=FGA_VERSION_NAME::$VERSION_NAME"
+          echo "FGA_VERSION_CODE=$VERSION_CODE" >> $env:GITHUB_ENV
+          echo "FGA_VERSION_NAME=$VERSION_NAME" >> $env:GITHUB_ENV
 
       - name: Build Android Package
         run: ./gradlew assembleCi

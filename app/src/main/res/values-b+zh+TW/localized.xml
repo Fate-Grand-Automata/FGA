@@ -126,7 +126,7 @@
     <string name="p_max_skill_3">三技滿</string>
 
     <string name="p_game_server">伺服器</string>
-    <string name="p_cast_np">自動寶具</string>
+    <string name="p_spam_np">自動寶具</string>
     <string name="p_auto_choose_target">自動選取敵人</string>
     <string name="p_story_skip">跳過劇情</string>
     <string name="p_skill_confirmation">技能確認</string>
@@ -194,9 +194,9 @@
     <string name="p_boost_item_disabled">關閉</string>
     <string name="p_boost_item_skip">跳過</string>
 
-    <string name="p_cast_np_none">無</string>
-    <string name="p_cast_np_spam">能放就放</string>
-    <string name="p_cast_np_danger">Danger 敵人時施放</string>
+    <string name="p_spam_none">無</string>
+    <string name="p_spam_spam">能放就放</string>
+    <string name="p_spam_danger">Danger 敵人時施放</string>
 
     <string name="p_support_mode_first">第一位支援</string>
     <string name="p_support_mode_manual">手動選擇</string>

@@ -48,10 +48,6 @@ class PreferencesImpl @Inject constructor(
             selectedAutoSkillConfigKey = value.id
         }
 
-    override val castNoblePhantasm by prefs.castNoblePhantasm
-
-    override val autoChooseTarget by prefs.autoChooseTarget
-
     override val storySkip by prefs.storySkip
 
     override val withdrawEnabled by prefs.withdrawEnabled

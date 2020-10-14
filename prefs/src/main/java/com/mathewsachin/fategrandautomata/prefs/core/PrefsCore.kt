@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.prefs.core
 
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
-import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import javax.inject.Inject
@@ -28,13 +27,6 @@ class PrefsCore @Inject constructor(
     val autoSkillList = maker.stringSet(R.string.pref_autoskill_list)
 
     val selectedAutoSkillConfig = maker.string(R.string.pref_autoskill_selected)
-
-    val castNoblePhantasm = maker.enum(
-        R.string.pref_battle_np,
-        BattleNoblePhantasmEnum.None
-    )
-
-    val autoChooseTarget = maker.bool(R.string.pref_auto_choose_target)
 
     val storySkip = maker.bool(R.string.pref_story_skip)
 

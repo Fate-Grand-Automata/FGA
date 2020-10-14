@@ -44,21 +44,6 @@
             app:summary="@string/p_screenshot_drops_summary" />
 
         <ListPreference
-            app:defaultValue="None"
-            app:entries="@array/battle_np_types_labels"
-            app:entryValues="@array/battle_np_types_values"
-            app:icon="@drawable/ic_star"
-            app:key="@string/pref_battle_np"
-            app:title="@string/p_cast_np"
-            app:useSimpleSummaryProvider="true" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_target"
-            app:key="@string/pref_auto_choose_target"
-            app:title="@string/p_auto_choose_target" />
-
-        <ListPreference
             app:defaultValue="-1"
             app:entries="@array/boost_item_labels"
             app:entryValues="@array/boost_item_values"

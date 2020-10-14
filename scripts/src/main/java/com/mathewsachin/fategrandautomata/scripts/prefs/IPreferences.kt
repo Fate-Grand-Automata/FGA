@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
-import com.mathewsachin.fategrandautomata.scripts.enums.BattleNoblePhantasmEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.libautomata.IPlatformPrefs
@@ -13,8 +12,6 @@ interface IPreferences {
     val autoSkillList: Set<String>
     val autoSkillPreferences: List<IAutoSkillPreferences>
     var selectedAutoSkillConfig: IAutoSkillPreferences
-    val castNoblePhantasm: BattleNoblePhantasmEnum
-    val autoChooseTarget: Boolean
     val storySkip: Boolean
     val withdrawEnabled: Boolean
     val stopOnCEDrop: Boolean

@@ -126,7 +126,7 @@
     <string name="p_max_skill_3">3 스킬 만렙</string>
 
     <string name="p_game_server">게임 서버</string>
-    <string name="p_cast_np">보구 사용</string>
+    <string name="p_spam_np">보구 사용</string>
     <string name="p_auto_choose_target">대상 자동 선택</string>
     <string name="p_story_skip">스토리 스킵</string>
     <string name="p_skill_confirmation">스킬 사용 확인</string>
@@ -195,9 +195,9 @@
     <string name="p_boost_item_disabled">비활성화</string>
     <string name="p_boost_item_skip">스킵</string>
 
-    <string name="p_cast_np_none">없음</string>
-    <string name="p_cast_np_spam">반복</string>
-    <string name="p_cast_np_danger">위험</string>
+    <string name="p_spam_none">없음</string>
+    <string name="p_spam_spam">반복</string>
+    <string name="p_spam_danger">위험</string>
 
     <string name="p_support_mode_first">첫번째</string>
     <string name="p_support_mode_manual">수동</string>

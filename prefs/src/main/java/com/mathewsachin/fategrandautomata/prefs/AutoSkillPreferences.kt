@@ -28,6 +28,12 @@ internal class AutoSkillPreferences(
 
     override val support = SupportPreferences(prefs.support, storageDirs)
 
+    override val npSpam by prefs.npSpam
+
+    override val skillSpam by prefs.skillSpam
+
+    override val autoChooseTarget by prefs.autoChooseTarget
+
     override fun export(): Map<String, *> = prefs.sharedPrefs.all
 
     override fun import(map: Map<String, *>) =
