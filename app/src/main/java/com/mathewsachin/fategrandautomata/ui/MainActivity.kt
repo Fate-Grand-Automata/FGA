@@ -1,10 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
-import android.provider.Settings
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -36,11 +33,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val navController: NavController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        // Only once
-        if (savedInstanceState == null) {
-            ignoreBatteryOptimizations()
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -53,19 +45,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onAttachedToWindow()
 
         cutoutManager.applyCutout(this)
-    }
-
-    private fun ignoreBatteryOptimizations() {
-        if (powerManager.isIgnoringBatteryOptimizations(packageName)) {
-            return
-        }
-
-        startActivity(
-            Intent(
-                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                Uri.parse("package:$packageName")
-            )
-        )
     }
 
     override fun onStart() {
