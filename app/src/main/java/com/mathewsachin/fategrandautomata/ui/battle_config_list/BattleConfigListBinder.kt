@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_list
+package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +44,7 @@ class AutoSkillListBinder(
 
     override fun createViewHolder(parent: ViewGroup) =
         ViewHolder(
-            inflate(parent, R.layout.autoskill_item)
+            inflate(parent, R.layout.battle_config_item)
         )
 
     override fun canBindData(item: Any?) =

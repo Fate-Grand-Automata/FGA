@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,17 +7,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerTargetBinding
+import com.mathewsachin.fategrandautomata.databinding.SkillMakerTargetBinding
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AutoSkillMakerTargetFragment : Fragment() {
-    val viewModel: AutoSkillMakerViewModel by activityViewModels()
-    val args: AutoSkillMakerTargetFragmentArgs by navArgs()
+class SkillMakerTargetFragment : Fragment() {
+    val viewModel: SkillMakerViewModel by activityViewModels()
+    val args: SkillMakerTargetFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        AutoskillMakerTargetBinding.inflate(inflater, container, false)
+        SkillMakerTargetBinding.inflate(inflater, container, false)
             .also {
                 it.vm = viewModel
                 it.ui = this
@@ -37,15 +37,15 @@ class AutoSkillMakerTargetFragment : Fragment() {
     }
 
     fun onSpaceIshtar() {
-        val action = AutoSkillMakerTargetFragmentDirections
-            .actionTargetAutoSkillMakerToAutoSkillMakerSpaceIshtarFragment()
+        val action = SkillMakerTargetFragmentDirections
+            .actionTargetSkillMakerToSkillMakerSpaceIshtarFragment()
 
         nav(action)
     }
 
     fun onEmiya() {
-        val action = AutoSkillMakerTargetFragmentDirections
-            .actionTargetAutoSkillMakerToAutoSkillMakerEmiyaFragment()
+        val action = SkillMakerTargetFragmentDirections
+            .actionTargetSkillMakerToSkillMakerEmiyaFragment()
 
         nav(action)
     }

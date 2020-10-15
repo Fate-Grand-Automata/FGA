@@ -8,11 +8,11 @@
 
         <variable
             name="vm"
-            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel" />
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerViewModel" />
 
         <variable
             name="ui"
-            type="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerMainFragment" />
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerMainFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"

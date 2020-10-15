@@ -2,8 +2,8 @@ package com.mathewsachin.fategrandautomata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivityArgs
-import com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerViewModel
+import com.mathewsachin.fategrandautomata.ui.skill_maker.AutoSkillMakerActivityArgs
+import com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerViewModel
 import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Rule
@@ -13,7 +13,7 @@ class AutoSkillMakerTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    fun getViewModel() = AutoSkillMakerViewModel(
+    fun getViewModel() = SkillMakerViewModel(
         mockk(relaxed = true),
         SavedStateHandle(mapOf(AutoSkillMakerActivityArgs::key.name to "foo"))
     )
@@ -25,7 +25,7 @@ class AutoSkillMakerTest {
         assert(vm.finish().isEmpty())
     }
 
-    fun test_skill(block: (AutoSkillMakerViewModel, Char) -> Unit) {
+    fun test_skill(block: (SkillMakerViewModel, Char) -> Unit) {
         for (c in 'a'..'l') {
             val vm = getViewModel()
 

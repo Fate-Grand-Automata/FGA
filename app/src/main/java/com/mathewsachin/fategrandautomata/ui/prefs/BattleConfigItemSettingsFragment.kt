@@ -30,7 +30,7 @@ import javax.inject.Inject
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 @AndroidEntryPoint
-class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
+class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var preferences: IPreferences
 
@@ -40,7 +40,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var prefsCore: PrefsCore
 
-    val args: AutoSkillItemSettingsFragmentArgs by navArgs()
+    val args: BattleConfigItemSettingsFragmentArgs by navArgs()
 
     val autoSkillExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
         if (uri != null) {
@@ -72,7 +72,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         setHasOptionsMenu(true)
 
-        setPreferencesFromResource(R.xml.autoskill_item_preferences, rootKey)
+        setPreferencesFromResource(R.xml.battle_config_preferences, rootKey)
 
         findFriendNamesList()?.summaryProvider = SupportMultiSelectListSummaryProvider()
 
@@ -80,8 +80,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.setOnPreferenceClickListener {
-                val action = AutoSkillItemSettingsFragmentDirections
-                    .actionAutoSkillItemSettingsFragmentToCardPriorityFragment(args.key)
+                val action = BattleConfigItemSettingsFragmentDirections
+                    .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
 
                 nav(action)
 
@@ -92,8 +92,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
         findPreference<EditTextPreference>(getString(prefKeys.pref_autoskill_cmd))?.let {
             it.setOnPreferenceClickListener {
                 if (!prefsCore.showTextBoxForAutoSkillCmd.get()) {
-                    val action = AutoSkillItemSettingsFragmentDirections
-                        .actionAutoSkillItemSettingsFragmentToAutoSkillMakerActivity(args.key)
+                    val action = BattleConfigItemSettingsFragmentDirections
+                        .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
 
                     nav(action)
                 }
@@ -104,8 +104,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(R.string.pref_nav_preferred_support))?.let {
             it.setOnPreferenceClickListener {
-                val action = AutoSkillItemSettingsFragmentDirections
-                    .actionAutoSkillItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
+                val action = BattleConfigItemSettingsFragmentDirections
+                    .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
 
                 nav(action)
 
@@ -117,7 +117,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vm: AutoSkillItemViewModel by viewModels()
+        val vm: BattleConfigItemViewModel by viewModels()
 
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             vm.cardPriority.observe(viewLifecycleOwner) { priority ->
@@ -214,8 +214,8 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 newConfig.import(map)
                 newConfig.name = getString(R.string.auto_skill_item_copy_name, newConfig.name)
 
-                val action = AutoSkillItemSettingsFragmentDirections
-                    .actionAutoSkillItemSettingsFragmentSelf(guid)
+                val action = BattleConfigItemSettingsFragmentDirections
+                    .actionBattleConfigItemSettingsFragmentSelf(guid)
 
                 nav(action)
 

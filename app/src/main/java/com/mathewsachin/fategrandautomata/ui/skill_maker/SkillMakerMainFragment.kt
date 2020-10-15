@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,20 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerMainBinding
+import com.mathewsachin.fategrandautomata.databinding.SkillMakerMainBinding
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AutoSkillMakerMainFragment : Fragment() {
-    val viewModel: AutoSkillMakerViewModel by activityViewModels()
-    val adapter = AutoSkillMakerHistoryAdapter {
+class SkillMakerMainFragment : Fragment() {
+    val viewModel: SkillMakerViewModel by activityViewModels()
+    val adapter = SkillMakerHistoryAdapter {
         viewModel.setCurrentIndex(it)
     }
-    lateinit var binding: AutoskillMakerMainBinding
+    lateinit var binding: SkillMakerMainBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        AutoskillMakerMainBinding.inflate(inflater, container, false)
+        SkillMakerMainBinding.inflate(inflater, container, false)
             .also {
                 it.vm = viewModel
                 it.ui = this
@@ -66,15 +66,15 @@ class AutoSkillMakerMainFragment : Fragment() {
     fun goToAtk() {
         viewModel.initAtk()
 
-        val action = AutoSkillMakerMainFragmentDirections
-            .actionAutoSkillMakerMainFragmentToAutoSkillMakerAtkFragment()
+        val action = SkillMakerMainFragmentDirections
+            .actionSkillMakerMainFragmentToSkillMakerAtkFragment()
 
         nav(action)
     }
 
     fun goToMasterSkills() {
-        val action = AutoSkillMakerMainFragmentDirections
-            .actionAutoSkillMakerMainFragmentToAutoSkillMakerMasterSkillsFragment()
+        val action = SkillMakerMainFragmentDirections
+            .actionSkillMakerMainFragmentToSkillMakerMasterSkillsFragment()
 
         nav(action)
     }
@@ -85,8 +85,8 @@ class AutoSkillMakerMainFragment : Fragment() {
         val showSpaceIshtar = SkillCode in listOf('b', 'e', 'h')
         val showEmiya = SkillCode in listOf('c', 'f', 'i')
 
-        val action = AutoSkillMakerMainFragmentDirections
-            .actionAutoSkillMakerMainFragmentToAutoSkillMakerTargetFragment(
+        val action = SkillMakerMainFragmentDirections
+            .actionSkillMakerMainFragmentToSkillMakerTargetFragment(
                 showSpaceIshtar,
                 showEmiya
             )

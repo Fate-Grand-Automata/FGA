@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -9,12 +9,12 @@ import com.mathewsachin.fategrandautomata.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AutoSkillMakerActivity : AppCompatActivity(R.layout.auto_skill_maker) {
-    val vm: AutoSkillMakerViewModel by viewModels()
-    val args: AutoSkillMakerActivityArgs by navArgs()
+class SkillMakerActivity : AppCompatActivity(R.layout.skill_maker) {
+    val vm: SkillMakerViewModel by viewModels()
+    val args: SkillMakerActivityArgs by navArgs()
 
     fun isMainScreen() = findNavController(R.id.nav_host_fragment_auto_skill)
-        .currentDestination?.id == R.id.main_auto_skill_maker
+        .currentDestination?.id == R.id.main_skill_maker
 
     override fun onBackPressed() {
         if (isMainScreen()) {

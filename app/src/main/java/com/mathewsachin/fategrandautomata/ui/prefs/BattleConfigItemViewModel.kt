@@ -12,13 +12,13 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.combine
 
-class AutoSkillItemViewModel @ViewModelInject constructor(
+class BattleConfigItemViewModel @ViewModelInject constructor(
     val preferences: IPreferences,
     val prefsCore: PrefsCore,
     @ApplicationContext context: Context,
     @Assisted savedState: SavedStateHandle
 ) : ViewModel() {
-    val autoSkillItemKey: String = savedState[AutoSkillItemSettingsFragmentArgs::key.name]
+    val autoSkillItemKey: String = savedState[BattleConfigItemSettingsFragmentArgs::key.name]
         ?: throw kotlin.Exception("Couldn't get AutoSkill key")
 
     private val prefs = prefsCore.forAutoSkillConfig(autoSkillItemKey)

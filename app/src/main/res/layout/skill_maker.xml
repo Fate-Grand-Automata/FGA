@@ -10,6 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/auto_skill_maker_graph" />
+        app:navGraph="@navigation/skill_maker_graph" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,19 +6,19 @@
         app:defaultValue="--"
         app:icon="@drawable/ic_text_short"
         app:key="@string/pref_autoskill_name"
-        app:title="@string/p_auto_skill_name"
+        app:title="@string/p_battle_config_name"
         app:useSimpleSummaryProvider="true" />
 
     <EditTextPreference
         app:icon="@drawable/ic_terminal"
         app:key="@string/pref_autoskill_cmd"
-        app:title="@string/p_auto_skill_cmd"
+        app:title="@string/p_battle_config_cmd"
         app:useSimpleSummaryProvider="true" />
 
     <EditTextPreference
         app:icon="@drawable/ic_note"
         android:key="@string/pref_autoskill_notes"
-        app:title="@string/p_auto_skill_notes"
+        app:title="@string/p_battle_config_notes"
         app:useSimpleSummaryProvider="true" />
 
     <ListPreference
@@ -27,24 +27,24 @@
         app:entryValues="@array/party_values"
         app:icon="@drawable/ic_flag"
         app:key="@string/pref_autoskill_party"
-        app:title="@string/p_auto_skill_party"
+        app:title="@string/p_battle_config_party"
         app:useSimpleSummaryProvider="true" />
 
     <Preference
         app:icon="@drawable/ic_sort"
         app:key="@string/pref_card_priority"
-        app:title="@string/p_auto_skill_card_priority" />
+        app:title="@string/p_battle_config_card_priority" />
 
     <PreferenceCategory
         app:key="support_category"
-        app:title="@string/p_auto_skill_support">
+        app:title="@string/p_battle_config_support">
         <ListPreference
             app:defaultValue="None"
             app:entries="@array/support_class_labels"
             app:entryValues="@array/support_class_values"
             app:icon="@drawable/ic_diamond"
             app:key="@string/pref_autoskill_support_class"
-            app:title="@string/p_auto_skill_support_class"
+            app:title="@string/p_battle_config_support_class"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
@@ -53,7 +53,7 @@
             app:entryValues="@array/support_selection_modes_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_mode"
-            app:title="@string/p_auto_skill_support_selection_mode"
+            app:title="@string/p_battle_config_support_selection_mode"
             app:useSimpleSummaryProvider="true" />
 
         <Preference
@@ -64,7 +64,7 @@
         <MultiSelectListPreference
             app:icon="@drawable/ic_friend"
             app:key="@string/pref_support_friend_names"
-            app:title="@string/p_auto_skill_support_friend_names" />
+            app:title="@string/p_battle_config_support_friend_names" />
 
         <ListPreference
             app:defaultValue="Manual"
@@ -72,7 +72,7 @@
             app:entryValues="@array/support_selection_modes_fallback_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_fallback"
-            app:title="@string/p_auto_skill_support_fallback_selection_mode"
+            app:title="@string/p_battle_config_support_fallback_selection_mode"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

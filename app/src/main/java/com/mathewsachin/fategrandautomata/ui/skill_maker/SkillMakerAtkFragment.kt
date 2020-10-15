@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,20 +6,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerAtkBinding
+import com.mathewsachin.fategrandautomata.databinding.SkillMakerAtkBinding
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AutoSkillMakerAtkFragment : Fragment() {
-    val viewModel: AutoSkillMakerViewModel by activityViewModels()
+class SkillMakerAtkFragment : Fragment() {
+    val viewModel: SkillMakerViewModel by activityViewModels()
 
     @Inject
     lateinit var prefs: IPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        AutoskillMakerAtkBinding.inflate(inflater, container, false)
+        SkillMakerAtkBinding.inflate(inflater, container, false)
             .also {
                 it.vm = viewModel
                 it.ui = this

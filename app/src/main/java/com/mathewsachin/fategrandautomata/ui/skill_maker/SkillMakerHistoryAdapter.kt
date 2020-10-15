@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +9,17 @@ import com.google.android.material.card.MaterialCardView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 
-class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
-    RecyclerView.Adapter<AutoSkillMakerHistoryAdapter.ViewHolder>() {
+class SkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
+    RecyclerView.Adapter<SkillMakerHistoryAdapter.ViewHolder>() {
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val textView: TextView = ItemView.findViewById(R.id.autoskill_maker_history_textview)
         var index = -1
     }
 
-    private var items: List<AutoSkillMakerEntry> = emptyList()
+    private var items: List<SkillMakerEntry> = emptyList()
     private var currentIndex = -1
 
-    fun update(items: List<AutoSkillMakerEntry>, current: Int) {
+    fun update(items: List<SkillMakerEntry>, current: Int) {
         this.items = items
         this.currentIndex = current
 
@@ -28,7 +28,7 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.autoskill_maker_history_item, parent, false)
+            .inflate(R.layout.skill_maker_history_item, parent, false)
 
         val holder = ViewHolder(view)
 
@@ -49,9 +49,9 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
                 val defaultColor = R.color.colorAccent
 
                 val colorRes = when (cmd) {
-                    is AutoSkillMakerEntry.Next -> R.color.colorStageChange
+                    is SkillMakerEntry.Next -> R.color.colorStageChange
 
-                    is AutoSkillMakerEntry.Action -> when (cmd.action) {
+                    is SkillMakerEntry.Action -> when (cmd.action) {
                         // Master Skill
                         is AutoSkillAction.MasterSkill -> R.color.colorMasterSkill
 
@@ -87,7 +87,7 @@ class AutoSkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
         }
 
         holder.textView.text =
-            if (cmd is AutoSkillMakerEntry.Start) ">"
+            if (cmd is SkillMakerEntry.Start) ">"
             else cmd.toString()
 
         holder.index = position

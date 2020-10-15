@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,15 +6,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerSpaceIshtarBinding
+import com.mathewsachin.fategrandautomata.databinding.SkillMakerEmiyaBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AutoSkillMakerSpaceIshtarFragment : Fragment() {
-    val viewModel: AutoSkillMakerViewModel by activityViewModels()
+class SkillMakerEmiyaFragment : Fragment() {
+    val viewModel: SkillMakerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        AutoskillMakerSpaceIshtarBinding.inflate(inflater, container, false)
+        SkillMakerEmiyaBinding.inflate(inflater, container, false)
             .also {
                 it.vm = viewModel
                 it.ui = this
@@ -22,7 +22,10 @@ class AutoSkillMakerSpaceIshtarFragment : Fragment() {
             }
             .root
 
-    fun onSkillTarget(TargetCommand: Char?) {
+    fun onArts() = onSkillTarget('7')
+    fun onBuster() = onSkillTarget('8')
+
+    private fun onSkillTarget(TargetCommand: Char?) {
         viewModel.targetSkill(TargetCommand)
 
         findNavController().popBackStack()

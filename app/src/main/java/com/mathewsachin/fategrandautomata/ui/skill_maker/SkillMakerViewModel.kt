@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
@@ -6,7 +6,7 @@ import androidx.lifecycle.*
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 
-class AutoSkillMakerViewModel @ViewModelInject constructor(
+class SkillMakerViewModel @ViewModelInject constructor(
     val prefs: IPreferences,
     @Assisted val savedState: SavedStateHandle
 ) : ViewModel() {
@@ -14,15 +14,15 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         const val NoEnemy = -1
     }
 
-    val autoSkillItemKey: String = savedState[AutoSkillMakerActivityArgs::key.name]
+    val autoSkillItemKey: String = savedState[SkillMakerActivityArgs::key.name]
         ?: throw kotlin.Exception("Couldn't get AutoSkill key")
 
     val autoSkillPrefs = prefs.forAutoSkillConfig(autoSkillItemKey)
 
     val state = savedState.get(::savedState.name)
-        ?: AutoSkillMakerSavedState()
+        ?: SkillMakerSavedState()
 
-    private val model: AutoSkillMakerModel
+    private val model: SkillMakerModel
     private val _stage: MutableLiveData<Int>
 
     private val _currentIndex = MutableLiveData<Int>()
@@ -30,21 +30,21 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     init {
         model = if (state.skillString != null) {
-            AutoSkillMakerModel(state.skillString)
+            SkillMakerModel(state.skillString)
         } else {
             val skillString = autoSkillPrefs.skillCommand
             val m = try {
-                AutoSkillMakerModel(skillString)
+                SkillMakerModel(skillString)
             } catch (e: Exception) {
-                AutoSkillMakerModel("")
+                SkillMakerModel("")
             }
 
             if (skillString.isNotEmpty()) {
                 when (val l = m.skillCommand.last()) {
-                    is AutoSkillMakerEntry.Action -> when (l.action) {
+                    is SkillMakerEntry.Action -> when (l.action) {
                         is AutoSkillAction.Atk -> {
                             m.skillCommand.removeLast()
-                            m.skillCommand.add(AutoSkillMakerEntry.Next.Wave(l.action))
+                            m.skillCommand.add(SkillMakerEntry.Next.Wave(l.action))
                         }
                     }
                 }
@@ -57,7 +57,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             MutableLiveData(state.stage)
         } else {
             MutableLiveData(
-                model.skillCommand.count { it is AutoSkillMakerEntry.Next.Wave } + 1
+                model.skillCommand.count { it is SkillMakerEntry.Next.Wave } + 1
             )
         }
 
@@ -69,7 +69,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     private var currentSkill = state.currentSkill
 
     fun saveState() {
-        val saveState = AutoSkillMakerSavedState(
+        val saveState = SkillMakerSavedState(
             model.toString(),
             enemyTarget.value ?: NoEnemy,
             stage.value ?: 1,
@@ -92,7 +92,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     private val _skillCommand = MutableLiveData(model.skillCommand)
 
-    val skillCommand: LiveData<List<AutoSkillMakerEntry>> = Transformations.map(_skillCommand) { it }
+    val skillCommand: LiveData<List<SkillMakerEntry>> = Transformations.map(_skillCommand) { it }
 
     private fun notifySkillCommandUpdate() {
         _skillCommand.value = model.skillCommand
@@ -107,7 +107,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         revertToPreviousEnemyTarget()
     }
 
-    private fun add(entry: AutoSkillMakerEntry) {
+    private fun add(entry: SkillMakerEntry) {
         model.skillCommand.add((currentIndex.value ?: 0) + 1, entry)
         _currentIndex.next()
 
@@ -123,7 +123,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     private fun isEmpty() = currentIndex.value == 0
 
-    private var last: AutoSkillMakerEntry
+    private var last: SkillMakerEntry
         get() = model.skillCommand[currentIndex.value ?: 0]
         set(value) {
             model.skillCommand[currentIndex.value ?: 0] = value
@@ -131,7 +131,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             notifySkillCommandUpdate()
         }
 
-    private fun reverseIterate(): List<AutoSkillMakerEntry> =
+    private fun reverseIterate(): List<SkillMakerEntry> =
         model.skillCommand
             .take((currentIndex.value ?: 0) + 1)
             .reversed()
@@ -147,7 +147,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             return
         }
 
-        val targetCmd = AutoSkillMakerEntry.Action(
+        val targetCmd = SkillMakerEntry.Action(
             AutoSkillAction.TargetEnemy(
                 EnemyTarget.list[target - 1]
             )
@@ -156,7 +156,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         val l = last
 
         // Merge consecutive target changes
-        if (!isEmpty() && l is AutoSkillMakerEntry.Action && l.action is AutoSkillAction.TargetEnemy) {
+        if (!isEmpty() && l is SkillMakerEntry.Action && l.action is AutoSkillAction.TargetEnemy) {
             last = targetCmd
         } else {
             add(targetCmd)
@@ -193,7 +193,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         val target = ServantTarget.list.firstOrNull { it.autoSkillCode == TargetCommand }
 
         add(
-            AutoSkillMakerEntry.Action(
+            SkillMakerEntry.Action(
                 when (skill) {
                     is Skill.Servant -> AutoSkillAction.ServantSkill(skill, target)
                     is Skill.Master -> AutoSkillAction.MasterSkill(skill, target)
@@ -217,7 +217,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
     fun finish(): String {
         _currentIndex.value = model.skillCommand.lastIndex
 
-        while (last.let { l -> l is AutoSkillMakerEntry.Next && l.action == AutoSkillAction.Atk.noOp() }) {
+        while (last.let { l -> l is SkillMakerEntry.Next && l.action == AutoSkillAction.Atk.noOp() }) {
             undo()
         }
 
@@ -234,13 +234,13 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             )
         } ?: AutoSkillAction.Atk.noOp()
 
-    private fun onNext(separator: (AutoSkillAction.Atk) -> AutoSkillMakerEntry.Next) {
+    private fun onNext(separator: (AutoSkillAction.Atk) -> SkillMakerEntry.Next) {
         add(separator(atk()))
 
         clearNpSequence()
     }
 
-    fun nextTurn() = onNext { AutoSkillMakerEntry.Next.Turn(it) }
+    fun nextTurn() = onNext { SkillMakerEntry.Next.Turn(it) }
 
     fun nextStage() {
         _stage.next()
@@ -248,7 +248,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         // Uncheck selected targets
         unSelectTargets()
 
-        onNext { AutoSkillMakerEntry.Next.Wave(it) }
+        onNext { SkillMakerEntry.Next.Wave(it) }
     }
 
     private val _xSelectedParty = MutableLiveData(state.xSelectedParty)
@@ -272,7 +272,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     fun commitOrderChange() {
         add(
-            AutoSkillMakerEntry.Action(
+            SkillMakerEntry.Action(
                 AutoSkillAction.OrderChange(
                     OrderChangeMember.Starting.list[(xSelectedParty.value ?: 1) - 1],
                     OrderChangeMember.Sub.list[(xSelectedSub.value ?: 1) - 1]
@@ -285,8 +285,8 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
         // Find the previous target, but within the same wave
         val previousTarget = reverseIterate()
             .asSequence()
-            .takeWhile { it !is AutoSkillMakerEntry.Next.Wave }
-            .filterIsInstance<AutoSkillMakerEntry.Action>()
+            .takeWhile { it !is SkillMakerEntry.Next.Wave }
+            .filterIsInstance<SkillMakerEntry.Action>()
             .map { it.action }
             .filterIsInstance<AutoSkillAction.TargetEnemy>()
             .firstOrNull()
@@ -308,7 +308,7 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
 
     private fun undoStageOrTurn() {
         // Decrement Battle/Turn count
-        if (last is AutoSkillMakerEntry.Next.Wave) {
+        if (last is SkillMakerEntry.Next.Wave) {
             prevStage()
         }
 
@@ -331,17 +331,17 @@ class AutoSkillMakerViewModel @ViewModelInject constructor(
             // Un-select target
             when (val last = last) {
                 // Battle/Turn change
-                is AutoSkillMakerEntry.Next -> {
+                is SkillMakerEntry.Next -> {
                     undoStageOrTurn()
                 }
-                is AutoSkillMakerEntry.Action -> {
+                is SkillMakerEntry.Action -> {
                     if (last.action is AutoSkillAction.TargetEnemy) {
                         undo()
                         revertToPreviousEnemyTarget()
                     } else undo()
                 }
                 // Do nothing
-                is AutoSkillMakerEntry.Start -> {
+                is SkillMakerEntry.Start -> {
                 }
             }
         }

@@ -103,7 +103,7 @@ class ScriptManager @Inject constructor(
         val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
         val entryPointProvider = { getEntryPoint(hiltEntryPoint) }
 
-        autoSkillPicker(context) {
+        scriptPicker(context) {
             runEntryPoint(screenshotService, entryPointProvider)
         }
     }
@@ -159,7 +159,7 @@ class ScriptManager @Inject constructor(
         class Battle(val autoSkill: IAutoSkillPreferences) : PickerItem(autoSkill.name)
     }
 
-    private fun autoSkillPicker(context: Context, entryPointRunner: () -> Unit) {
+    private fun scriptPicker(context: Context, entryPointRunner: () -> Unit) {
         val selectedAutoSkill = preferences.selectedAutoSkillConfig
         val autoSkillItems = preferences.autoSkillPreferences
         val initialSelectedIndex =

@@ -19,7 +19,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     val goToAutoSkill = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         if (it.values.all { m -> m }) {
             val action = MainFragmentDirections
-                .actionMainFragmentToAutoSkillListFragment()
+                .actionMainFragmentToBattleConfigListFragment()
 
             nav(action)
         }

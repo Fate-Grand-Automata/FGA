@@ -1,11 +1,11 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
 
-sealed class AutoSkillMakerEntry {
-    class Action(val action: AutoSkillAction) : AutoSkillMakerEntry() {
+sealed class SkillMakerEntry {
+    class Action(val action: AutoSkillAction) : SkillMakerEntry() {
         private fun toString(skill: Skill, target: ServantTarget?) =
             if (target == null)
                 "${skill.autoSkillCode}"
@@ -32,11 +32,11 @@ sealed class AutoSkillMakerEntry {
         }
     }
 
-    object Start : AutoSkillMakerEntry() {
+    object Start : SkillMakerEntry() {
         override fun toString() = ""
     }
 
-    sealed class Next(val action: AutoSkillAction.Atk) : AutoSkillMakerEntry() {
+    sealed class Next(val action: AutoSkillAction.Atk) : SkillMakerEntry() {
         protected fun AutoSkillAction.Atk.str() = if (action == AutoSkillAction.Atk.noOp()) ""
         else Action(this).toString()
 

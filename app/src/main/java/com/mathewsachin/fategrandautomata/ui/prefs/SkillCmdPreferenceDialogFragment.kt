@@ -32,8 +32,8 @@ class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat(
 
         val actionMsg = getString(R.string.auto_skill_item_open_maker)
         builder.setNeutralButton(actionMsg) { _, _ ->
-            val action = AutoSkillItemSettingsFragmentDirections
-                .actionAutoSkillItemSettingsFragmentToAutoSkillMakerActivity(autoSkillKey)
+            val action = BattleConfigItemSettingsFragmentDirections
+                .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(autoSkillKey)
 
             nav(action)
         }

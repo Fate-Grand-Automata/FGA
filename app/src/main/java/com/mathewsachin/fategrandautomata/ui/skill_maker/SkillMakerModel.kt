@@ -1,18 +1,18 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillCommand
 
-class AutoSkillMakerModel(skillString: String) {
+class SkillMakerModel(skillString: String) {
     private fun reduce(
-        acc: List<AutoSkillMakerEntry>,
-        add: List<AutoSkillMakerEntry>,
-        separator: (AutoSkillAction.Atk) -> AutoSkillMakerEntry.Next
-    ): List<AutoSkillMakerEntry> {
+        acc: List<SkillMakerEntry>,
+        add: List<SkillMakerEntry>,
+        separator: (AutoSkillAction.Atk) -> SkillMakerEntry.Next
+    ): List<SkillMakerEntry> {
         if (acc.isNotEmpty()) {
             val last = acc.last()
 
-            if (last is AutoSkillMakerEntry.Action && last.action is AutoSkillAction.Atk) {
+            if (last is SkillMakerEntry.Action && last.action is AutoSkillAction.Atk) {
                 return acc.subList(0, acc.lastIndex) + separator(last.action) + add
             }
         }
@@ -25,28 +25,28 @@ class AutoSkillMakerModel(skillString: String) {
         .map { turns ->
             turns
                 .map { turn ->
-                    turn.map<AutoSkillAction, AutoSkillMakerEntry> {
-                        AutoSkillMakerEntry.Action(it)
+                    turn.map<AutoSkillAction, SkillMakerEntry> {
+                        SkillMakerEntry.Action(it)
                     }
                 }
                 .reduce { acc, turn ->
-                    reduce(acc, turn) { AutoSkillMakerEntry.Next.Turn(it) }
+                    reduce(acc, turn) { SkillMakerEntry.Next.Turn(it) }
                 }
         }
         .reduce { acc, stage ->
-            reduce(acc, stage) { AutoSkillMakerEntry.Next.Wave(it) }
+            reduce(acc, stage) { SkillMakerEntry.Next.Wave(it) }
         }
-        .let { listOf(AutoSkillMakerEntry.Start) + it }
+        .let { listOf(SkillMakerEntry.Start) + it }
         .toMutableList()
 
     override fun toString(): String {
-        fun getSkillCmd(): List<AutoSkillMakerEntry> {
+        fun getSkillCmd(): List<SkillMakerEntry> {
             if (skillCommand.isNotEmpty()) {
                 val last = skillCommand.last()
 
                 // remove trailing ',' or ',#,'
-                if (last is AutoSkillMakerEntry.Next) {
-                    return skillCommand.subList(0, skillCommand.lastIndex) + AutoSkillMakerEntry.Action(last.action)
+                if (last is SkillMakerEntry.Next) {
+                    return skillCommand.subList(0, skillCommand.lastIndex) + SkillMakerEntry.Action(last.action)
                 }
             }
 

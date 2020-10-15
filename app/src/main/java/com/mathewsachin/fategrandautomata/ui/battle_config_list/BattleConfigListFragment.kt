@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_list
+package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
 import android.net.Uri
 import android.os.Bundle
@@ -18,7 +18,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.autoskill_list.*
+import kotlinx.android.synthetic.main.battle_config_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,7 +31,7 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
+class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
     @Inject
     lateinit var preferences: IPreferences
 
@@ -41,7 +41,7 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
         setHasOptionsMenu(true)
     }
 
-    val vm: AutoSkillListViewModel by activityViewModels()
+    val vm: BattleConfigListViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -106,8 +106,8 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
     }
 
     private fun editItem(Id: String) {
-        val action = AutoSkillListFragmentDirections
-            .actionAutoSkillListFragmentToAutoSkillItemSettingsFragment(Id)
+        val action = BattleConfigListFragmentDirections
+            .actionBattleConfigListFragmentToBattleConfigItemSettingsFragment(Id)
 
         nav(action)
     }

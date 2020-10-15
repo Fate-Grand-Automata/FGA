@@ -1,20 +1,20 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.mathewsachin.fategrandautomata.databinding.AutoskillMakerMasterSkillsBinding
+import com.mathewsachin.fategrandautomata.databinding.SkillMakerMasterSkillsBinding
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AutoSkillMakerMasterSkillsFragment : Fragment() {
-    val viewModel: AutoSkillMakerViewModel by activityViewModels()
+class SkillMakerMasterSkillsFragment : Fragment() {
+    val viewModel: SkillMakerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        AutoskillMakerMasterSkillsBinding.inflate(inflater, container, false)
+        SkillMakerMasterSkillsBinding.inflate(inflater, container, false)
             .also {
                 it.vm = viewModel
                 it.ui = this
@@ -25,8 +25,8 @@ class AutoSkillMakerMasterSkillsFragment : Fragment() {
     fun onSkill(SkillCode: Char) {
         viewModel.initSkill(SkillCode)
 
-        val action = AutoSkillMakerMasterSkillsFragmentDirections
-            .actionAutoSkillMakerMasterSkillsFragmentToAutoSkillMakerTargetFragment()
+        val action = SkillMakerMasterSkillsFragmentDirections
+            .actionSkillMakerMasterSkillsFragmentToSkillMakerTargetFragment()
 
         nav(action)
     }
@@ -34,8 +34,8 @@ class AutoSkillMakerMasterSkillsFragment : Fragment() {
     fun goToOrderChange() {
         viewModel.initOrderChange()
 
-        val action = AutoSkillMakerMasterSkillsFragmentDirections
-            .actionAutoSkillMakerMasterSkillsFragmentToAutoSkillMakerOrderChangeFragment()
+        val action = SkillMakerMasterSkillsFragmentDirections
+            .actionSkillMakerMasterSkillsFragmentToSkillMakerOrderChangeFragment()
 
         nav(action)
     }

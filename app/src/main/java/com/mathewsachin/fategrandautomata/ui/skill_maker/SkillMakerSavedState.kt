@@ -1,10 +1,10 @@
-package com.mathewsachin.fategrandautomata.ui.auto_skill_maker
+package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class AutoSkillMakerSavedState(
+data class SkillMakerSavedState(
     val skillString: String? = null,
     val enemyTarget: Int = -1,
     val stage: Int = 1,
