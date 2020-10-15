@@ -14,6 +14,6 @@ class BattleConfigListViewModel @ViewModelInject constructor(
     val autoSkillItems = prefsCore
         .autoSkillList
         .asFlow()
-        .map { prefs.autoSkillPreferences }
+        .map { prefs.battleConfigs }
         .asLiveData()
 }

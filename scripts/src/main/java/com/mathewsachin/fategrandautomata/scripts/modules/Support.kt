@@ -39,7 +39,7 @@ class Support(
             .filter { it.isNotBlank() && it.toLowerCase(Locale.US) != "any" }
     }
 
-    private val autoSkillPrefs get() = prefs.selectedAutoSkillConfig.support
+    private val autoSkillPrefs get() = prefs.selectedBattleConfig.support
 
     fun init() {
         friendNameArray = autoSkillPrefs.friendNames.process()

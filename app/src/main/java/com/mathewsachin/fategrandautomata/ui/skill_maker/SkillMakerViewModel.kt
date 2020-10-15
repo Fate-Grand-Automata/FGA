@@ -17,7 +17,7 @@ class SkillMakerViewModel @ViewModelInject constructor(
     val autoSkillItemKey: String = savedState[SkillMakerActivityArgs::key.name]
         ?: throw kotlin.Exception("Couldn't get AutoSkill key")
 
-    val autoSkillPrefs = prefs.forAutoSkillConfig(autoSkillItemKey)
+    val autoSkillPrefs = prefs.forBattleConfig(autoSkillItemKey)
 
     val state = savedState.get(::savedState.name)
         ?: SkillMakerSavedState()

@@ -45,7 +45,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
     val autoSkillExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
         if (uri != null) {
             try {
-                val values = preferences.forAutoSkillConfig(args.key).export()
+                val values = preferences.forBattleConfig(args.key).export()
                 val gson = Gson()
                 val json = gson.toJson(values)
 
@@ -68,7 +68,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = args.key
-        autoSkillPrefs = preferences.forAutoSkillConfig(args.key)
+        autoSkillPrefs = preferences.forBattleConfig(args.key)
 
         setHasOptionsMenu(true)
 
@@ -207,8 +207,8 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             }
             R.id.action_battle_config_copy -> {
                 val guid = UUID.randomUUID().toString()
-                preferences.addAutoSkillConfig(guid)
-                val newConfig = preferences.forAutoSkillConfig(guid)
+                preferences.addBattleConfig(guid)
+                val newConfig = preferences.forBattleConfig(guid)
 
                 val map = autoSkillPrefs.export()
                 newConfig.import(map)
@@ -226,7 +226,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun deleteItem(AutoSkillItemKey: String) {
-        preferences.removeAutoSkillConfig(AutoSkillItemKey)
+        preferences.removeBattleConfig(AutoSkillItemKey)
 
         findNavController().popBackStack()
     }

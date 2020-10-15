@@ -94,7 +94,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
     private fun newConfig(): String {
         val guid = UUID.randomUUID().toString()
 
-        preferences.addAutoSkillConfig(guid)
+        preferences.addBattleConfig(guid)
 
         return guid
     }
@@ -165,7 +165,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
                                 .toMap()
 
                             val id = newConfig()
-                            preferences.forAutoSkillConfig(id).import(map)
+                            preferences.forBattleConfig(id).import(map)
                         }
                     } catch (e: Exception) {
                         ++failed
@@ -220,7 +220,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
                         .setTitle(R.string.battle_config_list_delete_confirm_title)
                         .setPositiveButton(R.string.battle_config_list_delete_confirm_ok) { _, _ ->
                             toDelete.forEach {
-                                preferences.removeAutoSkillConfig(it.id)
+                                preferences.removeBattleConfig(it.id)
                             }
 
                             mode.finish()

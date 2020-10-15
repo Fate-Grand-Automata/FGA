@@ -160,8 +160,8 @@ class ScriptManager @Inject constructor(
     }
 
     private fun scriptPicker(context: Context, entryPointRunner: () -> Unit) {
-        val selectedAutoSkill = preferences.selectedAutoSkillConfig
-        val autoSkillItems = preferences.autoSkillPreferences
+        val selectedAutoSkill = preferences.selectedBattleConfig
+        val autoSkillItems = preferences.battleConfigs
         val initialSelectedIndex =
             if (preferences.scriptMode == ScriptModeEnum.Battle)
                 autoSkillItems.indexOfFirst { it.id == selectedAutoSkill.id } + 1
@@ -184,7 +184,7 @@ class ScriptManager @Inject constructor(
                     preferences.scriptMode = when (val s = selected) {
                         is PickerItem.Other -> ScriptModeEnum.Other
                         is PickerItem.Battle -> {
-                            preferences.selectedAutoSkillConfig = s.autoSkill
+                            preferences.selectedBattleConfig = s.autoSkill
 
                             ScriptModeEnum.Battle
                         }

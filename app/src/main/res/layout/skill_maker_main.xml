@@ -173,7 +173,7 @@
 
         <Button
             android:id="@+id/skill_a_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_a"
             android:onClick="@{(v) -> ui.onSkill('a')}"
             android:backgroundTint="@color/colorServant1"
@@ -183,7 +183,7 @@
 
         <Button
             android:id="@+id/skill_b_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_b"
             android:onClick="@{(v) -> ui.onSkill('b')}"
             android:backgroundTint="@color/colorServant1"
@@ -193,7 +193,7 @@
 
         <Button
             android:id="@+id/skill_c_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_c"
             android:onClick="@{(v) -> ui.onSkill('c')}"
             android:backgroundTint="@color/colorServant1"
@@ -203,7 +203,7 @@
 
         <Button
             android:id="@+id/skill_d_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_d"
             android:onClick="@{(v) -> ui.onSkill('d')}"
             android:backgroundTint="@color/colorServant2"
@@ -213,7 +213,7 @@
 
         <Button
             android:id="@+id/skill_e_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_e"
             android:onClick="@{(v) -> ui.onSkill('e')}"
             android:backgroundTint="@color/colorServant2"
@@ -224,7 +224,7 @@
 
         <Button
             android:id="@+id/skill_f_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_f"
             android:onClick="@{(v) -> ui.onSkill('f')}"
             android:backgroundTint="@color/colorServant2"
@@ -234,7 +234,7 @@
 
         <Button
             android:id="@+id/skill_g_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_g"
             android:onClick="@{(v) -> ui.onSkill('g')}"
             android:backgroundTint="@color/colorServant3"
@@ -244,7 +244,7 @@
 
         <Button
             android:id="@+id/skill_h_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_h"
             android:onClick="@{(v) -> ui.onSkill('h')}"
             android:backgroundTint="@color/colorServant3"
@@ -254,7 +254,7 @@
 
         <Button
             android:id="@+id/skill_i_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:layout_marginEnd="20dp"
             android:text="@string/skill_code_i"
             android:onClick="@{(v) -> ui.onSkill('i')}"

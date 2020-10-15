@@ -39,7 +39,7 @@
 
         <Button
             android:id="@+id/master_l_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:layout_marginBottom="20dp"
             android:text="@string/skill_code_l"
             android:onClick="@{(v) -> ui.onSkill('l')}"
@@ -51,7 +51,7 @@
 
         <Button
             android:id="@+id/master_k_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_k"
             android:onClick="@{(v) -> ui.onSkill('k')}"
             android:backgroundTint="@color/colorMasterSkill"
@@ -61,7 +61,7 @@
 
         <Button
             android:id="@+id/master_j_btn"
-            style="@style/autoskill_servant_skill_btn"
+            style="@style/skill_maker_servant_skill_btn"
             android:text="@string/skill_code_j"
             android:onClick="@{(v) -> ui.onSkill('j')}"
             android:backgroundTint="@color/colorMasterSkill"
