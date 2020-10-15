@@ -125,7 +125,7 @@ class AutoSkillListFragment : Fragment(R.layout.autoskill_list) {
                 val json = gson.toJson(values)
 
                 try {
-                    dir?.createFile("*/*", "auto_skill_${autoSkillItem.name}.json")
+                    dir?.createFile("*/*", "${autoSkillItem.name}.fga")
                         ?.uri
                         ?.let { uri ->
                             resolver.openOutputStream(uri)?.use { outStream ->

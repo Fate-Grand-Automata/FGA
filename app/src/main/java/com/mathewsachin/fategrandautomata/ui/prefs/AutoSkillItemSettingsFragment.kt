@@ -202,7 +202,7 @@ class AutoSkillItemSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
             R.id.action_auto_skill_export -> {
-                autoSkillExport.launch("auto_skill_${autoSkillPrefs.name}.json")
+                autoSkillExport.launch("${autoSkillPrefs.name}.fga")
                 true
             }
             R.id.action_auto_skill_copy -> {
