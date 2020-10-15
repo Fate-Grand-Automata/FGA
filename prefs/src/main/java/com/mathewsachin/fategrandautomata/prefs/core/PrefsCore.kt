@@ -24,7 +24,7 @@ class PrefsCore @Inject constructor(
 
     val skillConfirmation = maker.bool(R.string.pref_skill_conf)
 
-    val autoSkillList = maker.stringSet(R.string.pref_battle_config_list)
+    val battleConfigList = maker.stringSet(R.string.pref_battle_config_list)
 
     val selectedAutoSkillConfig = maker.string(R.string.pref_battle_config_selected)
 
@@ -93,16 +93,16 @@ class PrefsCore @Inject constructor(
 
     val maxGoldEmberSetSize = maker.int(R.string.pref_max_gold_ember_set_size, 1)
 
-    private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
+    private val battleConfigMap = mutableMapOf<String, BattleConfigCore>()
 
-    fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =
-        autoSkillMap.getOrPut(id) {
-            AutoSkillPrefsCore(
+    fun forBattleConfig(id: String): BattleConfigCore =
+        battleConfigMap.getOrPut(id) {
+            BattleConfigCore(
                 id,
                 maker.context,
                 storageDirs
             )
         }
 
-    fun removeAutoSkillConfig(id: String) = autoSkillMap.remove(id)
+    fun removeBattleConfig(id: String) = battleConfigMap.remove(id)
 }

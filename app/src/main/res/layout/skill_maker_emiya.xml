@@ -13,7 +13,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/autoskill_view_target"
+        android:id="@+id/skill_maker_view_target"
         style="@style/skill_maker_view">
 
         <TextView

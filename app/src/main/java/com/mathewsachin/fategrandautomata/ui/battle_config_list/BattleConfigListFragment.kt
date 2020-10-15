@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +52,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
 
         initView()
 
-        vm.autoSkillItems.observe(viewLifecycleOwner) { items ->
+        vm.battleConfigItems.observe(viewLifecycleOwner) { items ->
             listSection.set(items)
 
             battle_config_no_items.visibility =
@@ -62,16 +62,16 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
     }
 
     lateinit var adapter: MultiViewAdapter
-    lateinit var listSection: ListSection<IAutoSkillPreferences>
+    lateinit var listSection: ListSection<IBattleConfig>
 
     private fun initView() {
         adapter = MultiViewAdapter()
 
-        adapter.registerItemBinders(AutoSkillListBinder({
+        adapter.registerItemBinders(BattleConfigListBinder({
             editItem(it.id)
         }) { enterActionMode() })
 
-        listSection = ListSection<IAutoSkillPreferences>()
+        listSection = ListSection<IBattleConfig>()
         listSection.setOnSelectionChangedListener { _, _, selectedItems ->
             val count = selectedItems.size
             if (count == 0) {
@@ -112,7 +112,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
         nav(action)
     }
 
-    val autoSkillExportAll = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUri ->
+    val battleConfigsExportAll = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUri ->
         if (dirUri != null) {
             val gson = Gson()
             val resolver = requireContext().contentResolver
@@ -120,12 +120,12 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
 
             var failed = 0
 
-            vm.autoSkillItems.value?.forEach { autoSkillItem ->
-                val values = autoSkillItem.export()
+            vm.battleConfigItems.value?.forEach { battleConfig ->
+                val values = battleConfig.export()
                 val json = gson.toJson(values)
 
                 try {
-                    dir?.createFile("*/*", "${autoSkillItem.name}.fga")
+                    dir?.createFile("*/*", "${battleConfig.name}.fga")
                         ?.uri
                         ?.let { uri ->
                             resolver.openOutputStream(uri)?.use { outStream ->
@@ -145,7 +145,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
         }
     }
 
-    val autoSkillImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+    val battleConfigImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         var failed = 0
 
         lifecycleScope.launch {
@@ -190,11 +190,11 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_battle_config_import -> {
-                autoSkillImport.launch("*/*")
+                battleConfigImport.launch("*/*")
                 true
             }
             R.id.action_battle_config_export_all -> {
-                autoSkillExportAll.launch(Uri.EMPTY)
+                battleConfigsExportAll.launch(Uri.EMPTY)
                 true
             }
             else -> super.onOptionsItemSelected(item)

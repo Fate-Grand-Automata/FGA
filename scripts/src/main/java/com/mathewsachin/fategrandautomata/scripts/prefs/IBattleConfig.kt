@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.prefs
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 
-interface IAutoSkillPreferences {
+interface IBattleConfig {
     val id: String
     var name: String
     var skillCommand: String

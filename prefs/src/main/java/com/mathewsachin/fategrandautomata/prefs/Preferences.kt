@@ -18,7 +18,7 @@ class PreferencesImpl @Inject constructor(
 
     override val skillConfirmation by prefs.skillConfirmation
 
-    private var battleConfigList by prefs.autoSkillList
+    private var battleConfigList by prefs.battleConfigList
 
     override val battleConfigs
         get() = battleConfigList.map { forBattleConfig(it) }
@@ -26,9 +26,9 @@ class PreferencesImpl @Inject constructor(
 
     private var selectedAutoSkillConfigKey by prefs.selectedAutoSkillConfig
 
-    private var lastConfig: IAutoSkillPreferences? = null
+    private var lastConfig: IBattleConfig? = null
 
-    override var selectedBattleConfig: IAutoSkillPreferences
+    override var selectedBattleConfig: IBattleConfig
         get() {
             val config = lastConfig.let {
                 val currentSelectedKey =
@@ -82,11 +82,11 @@ class PreferencesImpl @Inject constructor(
 
     override val maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
 
-    private val autoSkillMap = mutableMapOf<String, IAutoSkillPreferences>()
+    private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 
-    override fun forBattleConfig(id: String): IAutoSkillPreferences =
+    override fun forBattleConfig(id: String): IBattleConfig =
         autoSkillMap.getOrPut(id) {
-            AutoSkillPreferences(
+            BattleConfig(
                 id,
                 prefs,
                 storageDirs
@@ -102,7 +102,7 @@ class PreferencesImpl @Inject constructor(
     override fun removeBattleConfig(id: String) {
         prefs.maker.context.deleteSharedPreferences(id)
         autoSkillMap.remove(id)
-        prefs.removeAutoSkillConfig(id)
+        prefs.removeBattleConfig(id)
 
         battleConfigList = battleConfigList
             .toMutableSet()

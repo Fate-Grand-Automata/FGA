@@ -16,7 +16,7 @@ import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 @AndroidEntryPoint
 class MainSettingsFragment : PreferenceFragmentCompat() {
-    val goToAutoSkill = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+    val goToBattleConfigList = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         if (it.values.all { m -> m }) {
             val action = MainFragmentDirections
                 .actionMainFragmentToBattleConfigListFragment()
@@ -45,7 +45,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 )
-                goToAutoSkill.launch(permissions)
+                goToBattleConfigList.launch(permissions)
 
                 true
             }

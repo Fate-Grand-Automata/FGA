@@ -16,7 +16,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/autoskill_view_main"
+        android:id="@+id/skill_maker_view_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">

@@ -18,7 +18,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +42,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
     val args: BattleConfigItemSettingsFragmentArgs by navArgs()
 
-    val autoSkillExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+    val battleConfigExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
         if (uri != null) {
             try {
                 val values = preferences.forBattleConfig(args.key).export()
@@ -61,7 +61,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private lateinit var autoSkillPrefs: IAutoSkillPreferences
+    private lateinit var autoSkillPrefs: IBattleConfig
 
     private fun findFriendNamesList(): MultiSelectListPreference? =
         findPreference(getString(prefKeys.pref_support_friend_names))
@@ -202,7 +202,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
             R.id.action_battle_config_export -> {
-                autoSkillExport.launch("${autoSkillPrefs.name}.fga")
+                battleConfigExport.launch("${autoSkillPrefs.name}.fga")
                 true
             }
             R.id.action_battle_config_copy -> {
@@ -247,7 +247,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             getString(R.string.pref_battle_config_cmd) -> {
                 if (prefsCore.showTextBoxForAutoSkillCmd.get()) {
                     SkillCmdPreferenceDialogFragment().apply {
-                        autoSkillKey = args.key
+                        battleConfigKey = args.key
                         prepare(this)
                     }
                 }

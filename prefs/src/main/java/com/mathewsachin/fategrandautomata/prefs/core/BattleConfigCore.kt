@@ -8,7 +8,7 @@ import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 
-class AutoSkillPrefsCore(
+class BattleConfigCore(
     val id: String,
     val context: Context,
     val storageDirs: StorageDirs

@@ -14,7 +14,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/autoskill_view_atk"
+        android:id="@+id/skill_maker_view_atk"
         style="@style/skill_maker_view">
 
         <TextView
@@ -34,7 +34,7 @@
             android:onClick="@{(v) -> vm.onNpClick('4')}"
             android:text="@{@string/skill_maker_atk_servant_np(1)}"
             android:textColor="@{vm.npSequence.contains('4') ? @android:color/white : @color/primary_text_material}"
-            app:layout_constraintBottom_toTopOf="@id/autoskill_next_turn_btn"
+            app:layout_constraintBottom_toTopOf="@id/skill_maker_next_turn_btn"
             app:layout_constraintEnd_toStartOf="@+id/np_5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +109,7 @@
             app:layout_constraintStart_toEndOf="@id/cards_before_np_1" />
 
         <Button
-            android:id="@+id/autoskill_next_battle_btn"
+            android:id="@+id/skill_maker_next_battle_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_fast_forward"
@@ -119,7 +119,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
-            android:id="@+id/autoskill_next_turn_btn"
+            android:id="@+id/skill_maker_next_turn_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -127,6 +127,6 @@
             android:onClick="@{(v) -> ui.goToNextTurn()}"
             android:text="@string/skill_maker_atk_next_turn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/autoskill_next_battle_btn" />
+            app:layout_constraintEnd_toStartOf="@id/skill_maker_next_battle_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,16 +3,16 @@ package com.mathewsachin.fategrandautomata.prefs
 import androidx.core.content.edit
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 
 const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
 
-internal class AutoSkillPreferences(
+internal class BattleConfig(
     override val id: String,
     prefsCore: PrefsCore,
     val storageDirs: StorageDirs
-) : IAutoSkillPreferences {
-    val prefs = prefsCore.forAutoSkillConfig(id)
+) : IBattleConfig {
+    val prefs = prefsCore.forBattleConfig(id)
 
     override var name by prefs.name
 
@@ -42,7 +42,7 @@ internal class AutoSkillPreferences(
         }
 
     override fun equals(other: Any?): Boolean {
-        if (other is IAutoSkillPreferences) {
+        if (other is IBattleConfig) {
             return other.id == id
         }
 

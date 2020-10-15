@@ -15,21 +15,21 @@ class CardPriorityViewModel @ViewModelInject constructor(
     val prefsCore: PrefsCore,
     @Assisted savedState: SavedStateHandle
 ) : ViewModel() {
-    val autoSkillItemKey: String = savedState[CardPriorityFragmentArgs::key.name]
-        ?: throw kotlin.Exception("Couldn't get AutoSkill key")
+    val battleConfigKey: String = savedState[CardPriorityFragmentArgs::key.name]
+        ?: throw kotlin.Exception("Couldn't get Battle Config key")
 
-    private val autoSkillPref = prefsCore.forAutoSkillConfig(autoSkillItemKey)
+    private val battleConfig = prefsCore.forBattleConfig(battleConfigKey)
 
     val cardPriorityItems: MutableList<CardPriorityListItem> by lazy {
-        var cardPriority = autoSkillPref.cardPriority.get()
+        var cardPriority = battleConfig.cardPriority.get()
 
         // Handle simple mode and empty string
         if (cardPriority.length == 3 || cardPriority.isBlank()) {
             cardPriority = defaultCardPriority
         }
 
-        val rearrangeCards = autoSkillPref.rearrangeCards
-        val braveChains = autoSkillPref.braveChains
+        val rearrangeCards = battleConfig.rearrangeCards
+        val braveChains = battleConfig.braveChains
 
         CardPriorityPerWave.of(cardPriority)
             .map { it.toMutableList() }
@@ -44,12 +44,12 @@ class CardPriorityViewModel @ViewModelInject constructor(
             .toMutableList()
     }
 
-    val experimental = autoSkillPref
+    val experimental = battleConfig
         .experimental
         .asFlow()
         .asLiveData()
 
-    fun setExperimental(value: Boolean) = autoSkillPref.experimental.set(value)
+    fun setExperimental(value: Boolean) = battleConfig.experimental.set(value)
 
     fun save() {
         val value = CardPriorityPerWave.from(
@@ -58,12 +58,12 @@ class CardPriorityViewModel @ViewModelInject constructor(
             }
         ).toString()
 
-        autoSkillPref.cardPriority.set(value)
-        autoSkillPref.rearrangeCards = if (experimental.value == true)
+        battleConfig.cardPriority.set(value)
+        battleConfig.rearrangeCards = if (experimental.value == true)
             cardPriorityItems.map { it.rearrangeCards }
         else emptyList()
 
-        autoSkillPref.braveChains = if (experimental.value == true)
+        battleConfig.braveChains = if (experimental.value == true)
             cardPriorityItems.map { it.braveChains }
         else emptyList()
     }
