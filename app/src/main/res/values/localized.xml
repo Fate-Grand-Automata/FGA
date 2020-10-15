@@ -16,7 +16,7 @@
     <string name="support_imgs_extract_failed">Couldn\'t extract support images</string>
     <string name="support_img_not_found">Unable to load image: %1$s. Put images in %2$s folder</string>
 
-    <string name="auto_skill_list_no_items">No AutoSkill Items</string>
+    <string name="auto_skill_list_no_items">No configs</string>
     <string name="auto_skill_list_import">Import</string>
     <string name="auto_skill_list_export_all">Export all</string>
     <string name="auto_skill_list_delete">Delete</string>
@@ -28,9 +28,9 @@
     <string name="auto_skill_list_delete_confirm_message">Are you sure you want to delete %d configuration(s)?</string>
 
     <string name="auto_skill_maker_confirm_exit_title">Confirm Exit</string>
-    <string name="auto_skill_maker_confirm_exit_message">Are you sure you want to exit? AutoSkill command will be lost.</string>
+    <string name="auto_skill_maker_confirm_exit_message">Are you sure you want to exit? Skill command will be lost.</string>
     <string name="auto_skill_maker_confirm_clear_title">Confirm Clear</string>
-    <string name="auto_skill_maker_confirm_clear_message">This will clear the AutoSkill command. Are you sure?</string>
+    <string name="auto_skill_maker_confirm_clear_message">This will clear the Skill command. Are you sure?</string>
     <string name="auto_skill_maker_confirm_np_deletion_title">Confirm NP deletion</string>
     <string name="auto_skill_maker_atk_header">Attack</string>
     <string name="auto_skill_maker_atk_servant_np">Servant\n%d\n\nNP</string>
@@ -98,8 +98,8 @@
     <string name="p_refill">Refill</string>
     <string name="p_refill_off">OFF</string>
     <string name="p_refill_summary">Manage AP refill</string>
-    <string name="p_auto_skill">Auto Skill</string>
-    <string name="p_auto_skill_summary">Manage Auto Skill configs</string>
+    <string name="p_auto_skill">Battle Configs</string>
+    <string name="p_auto_skill_summary">Manage configs for Battle script</string>
     <string name="p_more_options">More options</string>
 
     <string name="p_enable_refill">Enable Refill</string>
@@ -151,7 +151,7 @@
     <string name="p_brave_chains">Brave Chains</string>
     <string name="p_rearrange_cards">Rearrange Cards</string>
     <string name="p_auto_skill_cmd_text">Skill Command TextBox</string>
-    <string name="p_auto_skill_cmd_text_summary">Show text-box for editing AutoSkill commands</string>
+    <string name="p_auto_skill_cmd_text_summary">Show text-box for editing Skill commands</string>
 
     <string name="p_advanced">Advanced</string>
     <string name="p_debug_mode">Debug mode</string>
@@ -191,7 +191,7 @@
     <string name="p_nav_refill">Refill</string>
     <string name="p_nav_more_options">More options</string>
     <string name="p_nav_fine_tune">Fine-tune</string>
-    <string name="p_nav_auto_skill_list">AutoSkill List</string>
+    <string name="p_nav_auto_skill_list">Battle Configs</string>
     <string name="p_nav_auto_skill_edit">Edit config</string>
     <string name="p_nav_card_priority">Card Priority</string>
 
