@@ -85,7 +85,7 @@ class PrefsCore @Inject constructor(
 
     val autoStartService = maker.bool(R.string.pref_auto_start_service)
 
-    val showTextBoxForAutoSkillCmd = maker.bool(R.string.pref_battle_config_cmd_text)
+    val showTextBoxForSkillCmd = maker.bool(R.string.pref_battle_config_cmd_text)
 
     val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn, 500)
 

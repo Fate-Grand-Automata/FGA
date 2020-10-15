@@ -18,10 +18,10 @@ class BattleConfigItemViewModel @ViewModelInject constructor(
     @ApplicationContext context: Context,
     @Assisted savedState: SavedStateHandle
 ) : ViewModel() {
-    val autoSkillItemKey: String = savedState[BattleConfigItemSettingsFragmentArgs::key.name]
-        ?: throw kotlin.Exception("Couldn't get AutoSkill key")
+    val battleConfigKey: String = savedState[BattleConfigItemSettingsFragmentArgs::key.name]
+        ?: throw kotlin.Exception("Couldn't get Battle Config key")
 
-    private val prefs = prefsCore.forBattleConfig(autoSkillItemKey)
+    private val prefs = prefsCore.forBattleConfig(battleConfigKey)
 
     val cardPriority = prefs
         .cardPriority

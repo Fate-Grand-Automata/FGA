@@ -61,14 +61,14 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private lateinit var autoSkillPrefs: IBattleConfig
+    private lateinit var battleConfig: IBattleConfig
 
     private fun findFriendNamesList(): MultiSelectListPreference? =
         findPreference(getString(prefKeys.pref_support_friend_names))
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = args.key
-        autoSkillPrefs = preferences.forBattleConfig(args.key)
+        battleConfig = preferences.forBattleConfig(args.key)
 
         setHasOptionsMenu(true)
 
@@ -91,7 +91,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<EditTextPreference>(getString(prefKeys.pref_battle_config_cmd))?.let {
             it.setOnPreferenceClickListener {
-                if (!prefsCore.showTextBoxForAutoSkillCmd.get()) {
+                if (!prefsCore.showTextBoxForSkillCmd.get()) {
                     val action = BattleConfigItemSettingsFragmentDirections
                         .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
 
@@ -202,7 +202,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
             R.id.action_battle_config_export -> {
-                battleConfigExport.launch("${autoSkillPrefs.name}.fga")
+                battleConfigExport.launch("${battleConfig.name}.fga")
                 true
             }
             R.id.action_battle_config_copy -> {
@@ -210,7 +210,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
                 preferences.addBattleConfig(guid)
                 val newConfig = preferences.forBattleConfig(guid)
 
-                val map = autoSkillPrefs.export()
+                val map = battleConfig.export()
                 newConfig.import(map)
                 newConfig.name = getString(R.string.battle_config_item_copy_name, newConfig.name)
 
@@ -225,8 +225,8 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun deleteItem(AutoSkillItemKey: String) {
-        preferences.removeBattleConfig(AutoSkillItemKey)
+    private fun deleteItem(battleConfigKey: String) {
+        preferences.removeBattleConfig(battleConfigKey)
 
         findNavController().popBackStack()
     }
@@ -245,7 +245,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
                 }
             }
             getString(R.string.pref_battle_config_cmd) -> {
-                if (prefsCore.showTextBoxForAutoSkillCmd.get()) {
+                if (prefsCore.showTextBoxForSkillCmd.get()) {
                     SkillCmdPreferenceDialogFragment().apply {
                         battleConfigKey = args.key
                         prepare(this)

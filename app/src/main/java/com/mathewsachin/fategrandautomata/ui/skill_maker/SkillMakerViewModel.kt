@@ -14,10 +14,10 @@ class SkillMakerViewModel @ViewModelInject constructor(
         const val NoEnemy = -1
     }
 
-    val autoSkillItemKey: String = savedState[SkillMakerActivityArgs::key.name]
-        ?: throw kotlin.Exception("Couldn't get AutoSkill key")
+    val battleConfigKey: String = savedState[SkillMakerActivityArgs::key.name]
+        ?: throw kotlin.Exception("Couldn't get Battle Config key")
 
-    val autoSkillPrefs = prefs.forBattleConfig(autoSkillItemKey)
+    val battleConfig = prefs.forBattleConfig(battleConfigKey)
 
     val state = savedState.get(::savedState.name)
         ?: SkillMakerSavedState()
@@ -32,7 +32,7 @@ class SkillMakerViewModel @ViewModelInject constructor(
         model = if (state.skillString != null) {
             SkillMakerModel(state.skillString)
         } else {
-            val skillString = autoSkillPrefs.skillCommand
+            val skillString = battleConfig.skillCommand
             val m = try {
                 SkillMakerModel(skillString)
             } catch (e: Exception) {

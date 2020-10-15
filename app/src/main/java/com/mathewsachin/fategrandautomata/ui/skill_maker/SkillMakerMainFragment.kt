@@ -95,7 +95,7 @@ class SkillMakerMainFragment : Fragment() {
     }
 
     fun onDone() {
-        viewModel.autoSkillPrefs.skillCommand = viewModel.finish()
+        viewModel.battleConfig.skillCommand = viewModel.finish()
         activity?.finish()
     }
 }
