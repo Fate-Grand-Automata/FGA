@@ -25,7 +25,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         battle = BattleModule
 
         cardPriority = CardPriorityPerWave.of(
-            prefs.selectedAutoSkillConfig.cardPriority
+            prefs.selectedBattleConfig.cardPriority
         )
     }
 
@@ -123,12 +123,12 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     fun readCommandCards() {
         braveChainsThisTurn = prefs
-            .selectedAutoSkillConfig
+            .selectedBattleConfig
             .braveChains
             .inCurrentWave(BraveChainEnum.None)
 
         rearrangeCardsThisTurn = prefs
-            .selectedAutoSkillConfig
+            .selectedBattleConfig
             .rearrangeCards
             .inCurrentWave(false)
 
@@ -146,7 +146,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private val spamNps: Set<CommandCard.NP>
         get() =
-            if (autoSkill.canSpam(prefs.selectedAutoSkillConfig.npSpam)) {
+            if (autoSkill.canSpam(prefs.selectedBattleConfig.npSpam)) {
                 CommandCard.NP.list.toSet()
             } else emptySet()
 
@@ -238,7 +238,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
         if (rearrangeCardsThisTurn
             // Skip if NP spamming because we don't know how many NPs might've been used
-            && prefs.selectedAutoSkillConfig.npSpam == SpamEnum.None
+            && prefs.selectedBattleConfig.npSpam == SpamEnum.None
             // If there are cards before NP, at max there's only 1 card after NP
             && atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max

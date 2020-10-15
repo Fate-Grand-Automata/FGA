@@ -2,7 +2,7 @@
     <string name="pref_script_mode">script_mode</string>
     <string name="pref_gameserver">gameserver</string>
     <string name="pref_skill_conf">skill_conf</string>
-    <string name="pref_autoskill_selected">autoskill_selected</string>
+    <string name="pref_battle_config_selected">autoskill_selected</string>
     <string name="pref_card_priority">card_priority</string>
     <string name="pref_spam_np">battle_np</string>
     <string name="pref_spam_skill">skill_spam</string>
@@ -12,9 +12,9 @@
     <string name="pref_stop_on_ce_get">stop_on_ce_get</string>
     <string name="pref_boost_item">selected_boost_item</string>
     <string name="pref_withdraw_enabled">withdraw_enabled</string>
-    <string name="pref_auto_skill_experimental">auto_skill_experimental</string>
-    <string name="pref_auto_skill_rearrange_cards">auto_skill_rearrange_cards</string>
-    <string name="pref_auto_skill_brave_chains">auto_skill_brave_chains</string>
+    <string name="pref_battle_config_experimental">auto_skill_experimental</string>
+    <string name="pref_battle_config_rearrange_cards">auto_skill_rearrange_cards</string>
+    <string name="pref_battle_config_brave_chains">auto_skill_brave_chains</string>
 
     <string name="pref_extract_def_support_imgs">extract_def_support_imgs</string>
     <string name="pref_stage_counter_similarity">stage_counter_similarity</string>
@@ -43,14 +43,14 @@
     <string name="pref_support_mode">support_mode</string>
     <string name="pref_support_fallback">support_fallback</string>
 
-    <string name="pref_autoskill_manage">autoskill_manage</string>
-    <string name="pref_autoskill_delete">autoskill_delete</string>
-    <string name="pref_autoskill_list">autoskill_list</string>
-    <string name="pref_autoskill_name">autoskill_name</string>
-    <string name="pref_autoskill_cmd">autoskill_cmd</string>
-    <string name="pref_autoskill_party">autoskill_party</string>
-    <string name="pref_autoskill_support_class">autoskill_support_class</string>
-    <string name="pref_autoskill_notes">autoskill_notes</string>
+    <string name="pref_battle_config_manage">autoskill_manage</string>
+    <string name="pref_battle_config_delete">autoskill_delete</string>
+    <string name="pref_battle_config_list">autoskill_list</string>
+    <string name="pref_battle_config_name">autoskill_name</string>
+    <string name="pref_battle_config_cmd">autoskill_cmd</string>
+    <string name="pref_battle_config_party">autoskill_party</string>
+    <string name="pref_battle_config_support_class">autoskill_support_class</string>
+    <string name="pref_battle_config_notes">autoskill_notes</string>
 
     <string name="pref_screenshot_drops">screenshot_drops</string>
     <string name="pref_should_limit_runs">should_limit_runs</string>
@@ -78,12 +78,12 @@
     <string name="pref_skill_delay">skill_delay</string>
 
     <string name="pref_can_pause_script">can_pause_script</string>
-    <string name="pref_auto_skill_cmd_text">auto_skill_cmd_text</string>
+    <string name="pref_battle_config_cmd_text">auto_skill_cmd_text</string>
 
     <string name="pref_max_gold_ember_set_size">max_gold_ember_set_size</string>
 
     <string name="pref_nav_refill">nav_refill</string>
-    <string name="pref_nav_auto_skill">nav_auto_skill</string>
+    <string name="pref_nav_battle_config">nav_battle_config</string>
     <string name="pref_nav_more">nav_more</string>
     <string name="pref_nav_fine_tune">nav_fine_tune</string>
     <string name="pref_nav_update">nav_update</string>

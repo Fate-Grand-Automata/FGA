@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerViewModel" />
+
+        <variable
+            name="ui"
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerMainFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/skill_maker_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:theme="@style/Theme.MaterialComponents.DayNight"
+            android:id="@+id/skill_history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/battle_stage_label"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal" />
+
+        <RadioGroup
+            android:id="@+id/enemy_target_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:checkedButton="@{ui.enemyTargetRadio(vm.enemyTarget)}">
+
+            <RadioButton
+                android:id="@+id/enemy_target_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setEnemyTarget(1)}"
+                android:text="@{@string/skill_maker_main_enemy(1)}"
+                tools:text="Enemy 1" />
+
+            <RadioButton
+                android:id="@+id/enemy_target_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:onClick="@{(v) -> vm.setEnemyTarget(2)}"
+                android:text="@{@string/skill_maker_main_enemy(2)}"
+                tools:text="Enemy 2" />
+
+            <RadioButton
+                android:id="@+id/enemy_target_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> vm.setEnemyTarget(3)}"
+                android:text="@{@string/skill_maker_main_enemy(3)}"
+                tools:text="Enemy 3" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/battle_stage_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/skill_maker_main_battle(vm.stage)}"
+            tools:text="Battle: 1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/atk_btn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:onClick="@{(v) -> ui.goToAtk()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_maker_main_attack"
+            android:textAllCaps="true"
+            android:elevation="100dp"
+            android:textColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="@id/atk_btn"
+            app:layout_constraintStart_toStartOf="@id/atk_btn"
+            app:layout_constraintEnd_toEndOf="@id/atk_btn"
+            app:layout_constraintBottom_toBottomOf="@id/atk_btn" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/skill_maker_main_master_skills"
+            android:backgroundTint="@color/colorMasterSkill"
+            android:textColor="@android:color/white"
+            android:onClick="@{(v) -> ui.goToMasterSkills()}"
+            app:layout_constraintBottom_toTopOf="@+id/atk_btn"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/skill_undo_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_maker_main_undo"
+            android:onClick="@{(v) -> vm.onUndo()}"
+            android:drawableStart="@drawable/ic_undo"
+            android:enabled="@{vm.currentIndex > 0}"
+            app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/skill_a_btn" />
+
+        <Button
+            android:id="@+id/skill_clear_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v) -> ui.onClear()}"
+            android:drawableStart="@drawable/ic_clear"
+            android:text="@string/skill_maker_main_clear"
+            android:enabled="@{vm.currentIndex > 0}"
+            app:layout_constraintTop_toTopOf="@id/skill_undo_btn"
+            app:layout_constraintStart_toEndOf="@id/skill_undo_btn" />
+
+        <Button
+            android:id="@+id/skill_done_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v) -> ui.onDone()}"
+            android:drawableStart="@drawable/ic_check"
+            android:text="@string/skill_maker_atk_done"
+            app:layout_constraintTop_toTopOf="@id/skill_undo_btn"
+            app:layout_constraintStart_toEndOf="@id/skill_clear_btn" />
+
+        <TextView
+            android:id="@+id/servant_1_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/skill_maker_main_servant(1)}"
+            tools:text="Servant 1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/skill_c_btn"
+            app:layout_constraintStart_toStartOf="@+id/skill_a_btn" />
+
+        <TextView
+            android:id="@+id/servant_2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/skill_maker_main_servant(2)}"
+            tools:text="Servant 2"
+            app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
+            app:layout_constraintEnd_toEndOf="@+id/skill_f_btn"
+            app:layout_constraintStart_toStartOf="@+id/skill_d_btn" />
+
+        <TextView
+            android:id="@+id/servant_3_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/skill_maker_main_servant(3)}"
+            tools:text="Servant 3"
+            app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
+            app:layout_constraintEnd_toEndOf="@+id/skill_i_btn"
+            app:layout_constraintStart_toStartOf="@+id/skill_g_btn" />
+
+        <Button
+            android:id="@+id/skill_a_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:text="@string/skill_code_a"
+            android:onClick="@{(v) -> ui.onSkill('a')}"
+            android:backgroundTint="@color/colorServant1"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@+id/servant_1_name"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/skill_b_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:text="@string/skill_code_b"
+            android:onClick="@{(v) -> ui.onSkill('b')}"
+            android:backgroundTint="@color/colorServant1"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintStart_toEndOf="@+id/skill_a_btn" />
+
+        <Button
+            android:id="@+id/skill_c_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:text="@string/skill_code_c"
+            android:onClick="@{(v) -> ui.onSkill('c')}"
+            android:backgroundTint="@color/colorServant1"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintStart_toEndOf="@+id/skill_b_btn" />
+
+        <Button
+            android:id="@+id/skill_d_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:text="@string/skill_code_d"
+            android:onClick="@{(v) -> ui.onSkill('d')}"
+            android:backgroundTint="@color/colorServant2"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/skill_e_btn" />
+
+        <Button
+            android:id="@+id/skill_e_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:text="@string/skill_code_e"
+            android:onClick="@{(v) -> ui.onSkill('e')}"
+            android:backgroundTint="@color/colorServant2"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/skill_g_btn"
+            app:layout_constraintStart_toEndOf="@+id/skill_c_btn" />
+
+        <Button
+            android:id="@+id/skill_f_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:text="@string/skill_code_f"
+            android:onClick="@{(v) -> ui.onSkill('f')}"
+            android:backgroundTint="@color/colorServant2"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintStart_toEndOf="@+id/skill_e_btn" />
+
+        <Button
+            android:id="@+id/skill_g_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:text="@string/skill_code_g"
+            android:onClick="@{(v) -> ui.onSkill('g')}"
+            android:backgroundTint="@color/colorServant3"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/skill_h_btn" />
+
+        <Button
+            android:id="@+id/skill_h_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:text="@string/skill_code_h"
+            android:onClick="@{(v) -> ui.onSkill('h')}"
+            android:backgroundTint="@color/colorServant3"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/skill_i_btn" />
+
+        <Button
+            android:id="@+id/skill_i_btn"
+            style="@style/skill_maker_servant_skill_btn"
+            android:layout_marginEnd="20dp"
+            android:text="@string/skill_code_i"
+            android:onClick="@{(v) -> ui.onSkill('i')}"
+            android:backgroundTint="@color/colorServant3"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/skill_a_btn"
+            app:layout_constraintEnd_toStartOf="@+id/atk_btn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

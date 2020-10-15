@@ -1,0 +1,18 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/colorAccent"
+    android:layout_marginHorizontal="4dp"
+    app:strokeColor="@android:color/darker_gray">
+
+    <TextView
+        android:id="@+id/skill_maker_history_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        tools:text="Skill" />
+</com.google.android.material.card.MaterialCardView>

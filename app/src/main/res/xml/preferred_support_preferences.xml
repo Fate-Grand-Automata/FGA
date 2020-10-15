@@ -5,21 +5,21 @@
         app:defaultValue="false"
         app:icon="@drawable/ic_friend"
         app:key="@string/pref_support_friends_only"
-        app:title="@string/p_auto_skill_support_friends_only" />
+        app:title="@string/p_battle_config_support_friends_only" />
 
     <PreferenceCategory
         app:key="servant_category"
-        app:title="@string/p_auto_skill_support_pref_servants">
+        app:title="@string/p_battle_config_support_pref_servants">
         <MultiSelectListPreference
             app:icon="@drawable/ic_crown"
             app:key="@string/pref_support_pref_servant"
-            app:title="@string/p_auto_skill_support_pref_servants" />
+            app:title="@string/p_battle_config_support_pref_servants" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_star"
             app:key="@string/pref_support_max_ascended"
-            app:title="@string/p_auto_skill_support_max_ascended" />
+            app:title="@string/p_battle_config_support_max_ascended" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
@@ -42,16 +42,16 @@
 
     <PreferenceCategory
         app:key="ce_category"
-        app:title="@string/p_auto_skill_support_pref_ces">
+        app:title="@string/p_battle_config_support_pref_ces">
         <MultiSelectListPreference
             app:icon="@drawable/ic_card"
             app:key="@string/pref_support_pref_ce"
-            app:title="@string/p_auto_skill_support_pref_ces" />
+            app:title="@string/p_battle_config_support_pref_ces" />
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_star"
             app:key="@string/pref_support_pref_ce_mlb"
-            app:title="@string/p_auto_skill_support_mlb" />
+            app:title="@string/p_battle_config_support_mlb" />
     </PreferenceCategory>
 </PreferenceScreen>

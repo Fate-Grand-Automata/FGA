@@ -316,7 +316,7 @@ open class AutoBattle @Inject constructor(
     private fun support() {
         // Friend selection
         val hasSelectedSupport =
-            support.selectSupport(prefs.selectedAutoSkillConfig.support.selectionMode, isContinuing)
+            support.selectSupport(prefs.selectedBattleConfig.support.selectionMode, isContinuing)
 
         if (hasSelectedSupport && !isContinuing) {
             4.seconds.wait()
@@ -431,7 +431,7 @@ open class AutoBattle @Inject constructor(
      * changed to the configured one by clicking on the little dots above the party names.
      */
     fun selectParty() {
-        val party = prefs.selectedAutoSkillConfig.party
+        val party = prefs.selectedBattleConfig.party
 
         if (!partySelected && party in Game.partySelectionArray.indices) {
             val currentParty = Game.selectedPartyRegion

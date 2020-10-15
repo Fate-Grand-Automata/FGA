@@ -9,19 +9,19 @@ import com.mathewsachin.fategrandautomata.util.nav
 
 class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat() {
 
-    var autoSkillKey = ""
+    var battleConfigKey = ""
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putString(::autoSkillKey.name, autoSkillKey)
+        outState.putString(::battleConfigKey.name, battleConfigKey)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        arguments = bundleOf(ARG_KEY to getString(R.string.pref_autoskill_cmd))
+        arguments = bundleOf(ARG_KEY to getString(R.string.pref_battle_config_cmd))
 
         if (savedInstanceState != null) {
-            autoSkillKey = savedInstanceState.getString(::autoSkillKey.name, "")
+            battleConfigKey = savedInstanceState.getString(::battleConfigKey.name, "")
         }
 
         super.onCreate(savedInstanceState)
@@ -30,10 +30,10 @@ class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat(
     override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
         super.onPrepareDialogBuilder(builder)
 
-        val actionMsg = getString(R.string.auto_skill_item_open_maker)
+        val actionMsg = getString(R.string.battle_config_item_open_maker)
         builder.setNeutralButton(actionMsg) { _, _ ->
-            val action = AutoSkillItemSettingsFragmentDirections
-                .actionAutoSkillItemSettingsFragmentToAutoSkillMakerActivity(autoSkillKey)
+            val action = BattleConfigItemSettingsFragmentDirections
+                .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(battleConfigKey)
 
             nav(action)
         }

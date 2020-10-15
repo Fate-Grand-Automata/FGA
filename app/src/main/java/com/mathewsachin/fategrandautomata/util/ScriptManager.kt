@@ -11,7 +11,7 @@ import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.IAutoSkillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
@@ -103,7 +103,7 @@ class ScriptManager @Inject constructor(
         val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
         val entryPointProvider = { getEntryPoint(hiltEntryPoint) }
 
-        autoSkillPicker(context) {
+        scriptPicker(context) {
             runEntryPoint(screenshotService, entryPointProvider)
         }
     }
@@ -156,19 +156,19 @@ class ScriptManager @Inject constructor(
 
     sealed class PickerItem(val name: String) {
         class Other(name: String) : PickerItem(name)
-        class Battle(val autoSkill: IAutoSkillPreferences) : PickerItem(autoSkill.name)
+        class Battle(val battleConfig: IBattleConfig) : PickerItem(battleConfig.name)
     }
 
-    private fun autoSkillPicker(context: Context, entryPointRunner: () -> Unit) {
-        val selectedAutoSkill = preferences.selectedAutoSkillConfig
-        val autoSkillItems = preferences.autoSkillPreferences
+    private fun scriptPicker(context: Context, entryPointRunner: () -> Unit) {
+        val selectedBattleConfig = preferences.selectedBattleConfig
+        val battleConfigs = preferences.battleConfigs
         val initialSelectedIndex =
             if (preferences.scriptMode == ScriptModeEnum.Battle)
-                autoSkillItems.indexOfFirst { it.id == selectedAutoSkill.id } + 1
+                battleConfigs.indexOfFirst { it.id == selectedBattleConfig.id } + 1
             else 0
 
         val other = PickerItem.Other(context.getString(R.string.other_scripts))
-        val pickerItems = listOf(other) + autoSkillItems.map { PickerItem.Battle(it) }
+        val pickerItems = listOf(other) + battleConfigs.map { PickerItem.Battle(it) }
         var selected = pickerItems[initialSelectedIndex]
 
         showOverlayDialog(context) {
@@ -184,7 +184,7 @@ class ScriptManager @Inject constructor(
                     preferences.scriptMode = when (val s = selected) {
                         is PickerItem.Other -> ScriptModeEnum.Other
                         is PickerItem.Battle -> {
-                            preferences.selectedAutoSkillConfig = s.autoSkill
+                            preferences.selectedBattleConfig = s.battleConfig
 
                             ScriptModeEnum.Battle
                         }

@@ -8,9 +8,9 @@
 
     <Preference
         app:icon="@drawable/ic_formation"
-        app:key="@string/pref_nav_auto_skill"
-        app:summary="@string/p_auto_skill_summary"
-        app:title="@string/p_auto_skill" />
+        app:key="@string/pref_nav_battle_config"
+        app:summary="@string/p_battle_config_summary"
+        app:title="@string/p_battle_config" />
 
     <Preference
         app:icon="@drawable/ic_dots_horizontal"
