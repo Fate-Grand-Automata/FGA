@@ -8,11 +8,11 @@
     app:strokeColor="@android:color/darker_gray">
 
     <TextView
-        android:id="@+id/autoskill_maker_history_textview"
+        android:id="@+id/skill_maker_history_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
         android:textSize="16sp"
         android:textColor="@android:color/white"
-        tools:text="AutoSkill" />
+        tools:text="Skill" />
 </com.google.android.material.card.MaterialCardView>

@@ -19,8 +19,8 @@ class SkillMakerActivity : AppCompatActivity(R.layout.skill_maker) {
     override fun onBackPressed() {
         if (isMainScreen()) {
             AlertDialog.Builder(this)
-                .setMessage(R.string.auto_skill_maker_confirm_exit_message)
-                .setTitle(R.string.auto_skill_maker_confirm_exit_title)
+                .setMessage(R.string.skill_maker_confirm_exit_message)
+                .setTitle(R.string.skill_maker_confirm_exit_title)
                 .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
                 .setNegativeButton(android.R.string.no, null)
                 .show()

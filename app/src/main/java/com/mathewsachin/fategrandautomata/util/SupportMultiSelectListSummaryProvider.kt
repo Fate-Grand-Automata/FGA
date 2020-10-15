@@ -19,6 +19,6 @@ class SupportMultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSe
             }
 
             selectedLabels.joinToString()
-        } else preference.context.getString(R.string.auto_skill_support_any)
+        } else preference.context.getString(R.string.battle_config_support_any)
     }
 }

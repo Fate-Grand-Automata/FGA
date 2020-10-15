@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_auto_skill_import"
+        android:id="@+id/action_battle_config_import"
         android:icon="@drawable/ic_zip"
-        android:title="@string/auto_skill_list_import"
+        android:title="@string/battle_config_list_import"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_auto_skill_export_all"
+        android:id="@+id/action_battle_config_export_all"
         android:icon="@drawable/ic_zip"
-        android:title="@string/auto_skill_list_export_all"
+        android:title="@string/battle_config_list_export_all"
         app:showAsAction="never" />
 </menu>

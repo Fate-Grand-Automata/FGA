@@ -21,7 +21,7 @@
             android:id="@+id/atk_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/auto_skill_maker_atk_header"
+            android:text="@string/skill_maker_atk_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
             android:layout_height="120dp"
             android:backgroundTint="@{vm.npSequence.contains('4') ? @color/colorServant1 : @color/button_material}"
             android:onClick="@{(v) -> vm.onNpClick('4')}"
-            android:text="@{@string/auto_skill_maker_atk_servant_np(1)}"
+            android:text="@{@string/skill_maker_atk_servant_np(1)}"
             android:textColor="@{vm.npSequence.contains('4') ? @android:color/white : @color/primary_text_material}"
             app:layout_constraintBottom_toTopOf="@id/autoskill_next_turn_btn"
             app:layout_constraintEnd_toStartOf="@+id/np_5"
@@ -46,7 +46,7 @@
             android:layout_height="120dp"
             android:backgroundTint="@{vm.npSequence.contains('5') ? @color/colorServant2 : @color/button_material}"
             android:onClick="@{(v) -> vm.onNpClick('5')}"
-            android:text="@{@string/auto_skill_maker_atk_servant_np(2)}"
+            android:text="@{@string/skill_maker_atk_servant_np(2)}"
             android:textColor="@{vm.npSequence.contains('5') ? @android:color/white : @color/primary_text_material}"
             app:layout_constraintEnd_toStartOf="@+id/np_6"
             app:layout_constraintStart_toEndOf="@+id/np_4"
@@ -58,7 +58,7 @@
             android:layout_height="120dp"
             android:backgroundTint="@{vm.npSequence.contains('6') ? @color/colorServant3 : @color/button_material}"
             android:onClick="@{(v) -> vm.onNpClick('6')}"
-            android:text="@{@string/auto_skill_maker_atk_servant_np(3)}"
+            android:text="@{@string/skill_maker_atk_servant_np(3)}"
             android:textColor="@{vm.npSequence.contains('6') ? @android:color/white : @color/primary_text_material}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/np_5"
@@ -68,7 +68,7 @@
             android:id="@+id/cards_before_np_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/auto_skill_maker_atk_cards_before_np"
+            android:text="@string/skill_maker_atk_cards_before_np"
             app:layout_constraintBottom_toTopOf="@id/cards_before_np_0"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_fast_forward"
             android:onClick="@{(v) -> ui.goToNextStage()}"
-            android:text="@string/auto_skill_maker_atk_next_wave"
+            android:text="@string/skill_maker_atk_next_wave"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -125,7 +125,7 @@
             android:layout_marginEnd="16dp"
             android:alpha="0.8"
             android:onClick="@{(v) -> ui.goToNextTurn()}"
-            android:text="@string/auto_skill_maker_atk_next_turn"
+            android:text="@string/skill_maker_atk_next_turn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/autoskill_next_battle_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,7 +23,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:theme="@style/Theme.MaterialComponents.DayNight"
-            android:id="@+id/auto_skill_history"
+            android:id="@+id/skill_history"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/enemy_target_radio"
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setEnemyTarget(1)}"
-                android:text="@{@string/auto_skill_maker_main_enemy(1)}"
+                android:text="@{@string/skill_maker_main_enemy(1)}"
                 tools:text="Enemy 1" />
 
             <RadioButton
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:onClick="@{(v) -> vm.setEnemyTarget(2)}"
-                android:text="@{@string/auto_skill_maker_main_enemy(2)}"
+                android:text="@{@string/skill_maker_main_enemy(2)}"
                 tools:text="Enemy 2" />
 
             <RadioButton
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> vm.setEnemyTarget(3)}"
-                android:text="@{@string/auto_skill_maker_main_enemy(3)}"
+                android:text="@{@string/skill_maker_main_enemy(3)}"
                 tools:text="Enemy 3" />
         </RadioGroup>
 
@@ -72,7 +72,7 @@
             android:id="@+id/battle_stage_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/auto_skill_maker_main_battle(vm.stage)}"
+            android:text="@{@string/skill_maker_main_battle(vm.stage)}"
             tools:text="Battle: 1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -88,7 +88,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/auto_skill_maker_main_attack"
+            android:text="@string/skill_maker_main_attack"
             android:textAllCaps="true"
             android:elevation="100dp"
             android:textColor="@android:color/white"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="@string/auto_skill_maker_main_master_skills"
+            android:text="@string/skill_maker_main_master_skills"
             android:backgroundTint="@color/colorMasterSkill"
             android:textColor="@android:color/white"
             android:onClick="@{(v) -> ui.goToMasterSkills()}"
@@ -109,10 +109,10 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
-            android:id="@+id/auto_skill_undo_btn"
+            android:id="@+id/skill_undo_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/auto_skill_maker_main_undo"
+            android:text="@string/skill_maker_main_undo"
             android:onClick="@{(v) -> vm.onUndo()}"
             android:drawableStart="@drawable/ic_undo"
             android:enabled="@{vm.currentIndex > 0}"
@@ -121,31 +121,31 @@
             app:layout_constraintBottom_toTopOf="@id/skill_a_btn" />
 
         <Button
-            android:id="@+id/auto_skill_clear_btn"
+            android:id="@+id/skill_clear_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{(v) -> ui.onClear()}"
             android:drawableStart="@drawable/ic_clear"
-            android:text="@string/auto_skill_maker_main_clear"
+            android:text="@string/skill_maker_main_clear"
             android:enabled="@{vm.currentIndex > 0}"
-            app:layout_constraintTop_toTopOf="@id/auto_skill_undo_btn"
-            app:layout_constraintStart_toEndOf="@id/auto_skill_undo_btn" />
+            app:layout_constraintTop_toTopOf="@id/skill_undo_btn"
+            app:layout_constraintStart_toEndOf="@id/skill_undo_btn" />
 
         <Button
-            android:id="@+id/auto_skill_done_btn"
+            android:id="@+id/skill_done_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{(v) -> ui.onDone()}"
             android:drawableStart="@drawable/ic_check"
-            android:text="@string/auto_skill_maker_atk_done"
-            app:layout_constraintTop_toTopOf="@id/auto_skill_undo_btn"
-            app:layout_constraintStart_toEndOf="@id/auto_skill_clear_btn" />
+            android:text="@string/skill_maker_atk_done"
+            app:layout_constraintTop_toTopOf="@id/skill_undo_btn"
+            app:layout_constraintStart_toEndOf="@id/skill_clear_btn" />
 
         <TextView
             android:id="@+id/servant_1_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/auto_skill_maker_main_servant(1)}"
+            android:text="@{@string/skill_maker_main_servant(1)}"
             tools:text="Servant 1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/skill_c_btn"
@@ -155,7 +155,7 @@
             android:id="@+id/servant_2_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/auto_skill_maker_main_servant(2)}"
+            android:text="@{@string/skill_maker_main_servant(2)}"
             tools:text="Servant 2"
             app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
             app:layout_constraintEnd_toEndOf="@+id/skill_f_btn"
@@ -165,7 +165,7 @@
             android:id="@+id/servant_3_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/auto_skill_maker_main_servant(3)}"
+            android:text="@{@string/skill_maker_main_servant(3)}"
             tools:text="Servant 3"
             app:layout_constraintBottom_toBottomOf="@+id/servant_1_name"
             app:layout_constraintEnd_toEndOf="@+id/skill_i_btn"

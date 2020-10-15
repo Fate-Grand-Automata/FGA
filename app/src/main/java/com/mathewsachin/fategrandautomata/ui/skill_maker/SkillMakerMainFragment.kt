@@ -34,7 +34,7 @@ class SkillMakerMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = binding.autoSkillHistory
+        val recyclerView = binding.skillHistory
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -56,8 +56,8 @@ class SkillMakerMainFragment : Fragment() {
 
     fun onClear() {
         AlertDialog.Builder(requireContext())
-            .setTitle(R.string.auto_skill_maker_confirm_clear_title)
-            .setMessage(R.string.auto_skill_maker_confirm_clear_message)
+            .setTitle(R.string.skill_maker_confirm_clear_title)
+            .setMessage(R.string.skill_maker_confirm_clear_message)
             .setNegativeButton(android.R.string.no, null)
             .setPositiveButton(android.R.string.yes) { _, _ -> viewModel.clearAll() }
             .show()

@@ -55,7 +55,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             } catch (e: Exception) {
                 Timber.error(e) { "Failed to export" }
 
-                val msg = getString(R.string.auto_skill_item_export_failed)
+                val msg = getString(R.string.battle_config_item_export_failed)
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
             }
         }
@@ -181,7 +181,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.autoskill_item_menu, menu)
+        inflater.inflate(R.menu.battle_config_item_menu, menu)
         inflater.inflate(R.menu.support_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -192,27 +192,27 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
                 performSupportImageExtraction()
                 true
             }
-            R.id.action_auto_skill_delete -> {
+            R.id.action_battle_config_delete -> {
                 AlertDialog.Builder(requireContext())
-                    .setMessage(R.string.auto_skill_item_delete_confirm_message)
-                    .setTitle(R.string.auto_skill_item_delete_confirm_title)
-                    .setPositiveButton(R.string.auto_skill_item_delete_confirm_ok) { _, _ -> deleteItem(args.key) }
+                    .setMessage(R.string.battle_config_item_delete_confirm_message)
+                    .setTitle(R.string.battle_config_item_delete_confirm_title)
+                    .setPositiveButton(R.string.battle_config_item_delete_confirm_ok) { _, _ -> deleteItem(args.key) }
                     .setNegativeButton(android.R.string.cancel, null)
                     .show()
                 true
             }
-            R.id.action_auto_skill_export -> {
+            R.id.action_battle_config_export -> {
                 autoSkillExport.launch("${autoSkillPrefs.name}.fga")
                 true
             }
-            R.id.action_auto_skill_copy -> {
+            R.id.action_battle_config_copy -> {
                 val guid = UUID.randomUUID().toString()
                 preferences.addAutoSkillConfig(guid)
                 val newConfig = preferences.forAutoSkillConfig(guid)
 
                 val map = autoSkillPrefs.export()
                 newConfig.import(map)
-                newConfig.name = getString(R.string.auto_skill_item_copy_name, newConfig.name)
+                newConfig.name = getString(R.string.battle_config_item_copy_name, newConfig.name)
 
                 val action = BattleConfigItemSettingsFragmentDirections
                     .actionBattleConfigItemSettingsFragmentSelf(guid)

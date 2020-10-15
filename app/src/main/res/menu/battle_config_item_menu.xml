@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_auto_skill_copy"
+        android:id="@+id/action_battle_config_copy"
         android:icon="@drawable/ic_copy"
-        android:title="@string/auto_skill_item_copy"
+        android:title="@string/battle_config_item_copy"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_auto_skill_delete"
+        android:id="@+id/action_battle_config_delete"
         android:icon="@drawable/ic_delete"
-        android:title="@string/auto_skill_item_delete"
+        android:title="@string/battle_config_item_delete"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_auto_skill_export"
+        android:id="@+id/action_battle_config_export"
         android:icon="@drawable/ic_zip"
-        android:title="@string/auto_skill_item_export"
+        android:title="@string/battle_config_item_export"
         app:showAsAction="never" />
 </menu>

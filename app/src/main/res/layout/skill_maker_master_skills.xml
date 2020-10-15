@@ -20,7 +20,7 @@
             android:id="@+id/target_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/auto_skill_maker_master_skills_header"
+            android:text="@string/skill_maker_master_skills_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
             android:id="@+id/master_x_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/auto_skill_maker_master_skills_order_change"
+            android:text="@string/skill_maker_master_skills_order_change"
             android:onClick="@{(v) -> ui.goToOrderChange()}"
             android:backgroundTint="@color/colorServant3"
             android:textColor="@android:color/white"

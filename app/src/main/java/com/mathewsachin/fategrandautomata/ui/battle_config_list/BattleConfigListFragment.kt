@@ -78,7 +78,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
                 actionMode?.finish()
             } else actionMode?.let {
                 it.title = requireActivity().title
-                it.subtitle = getString(R.string.auto_skill_list_selected_count, count)
+                it.subtitle = getString(R.string.battle_config_list_selected_count, count)
             }
         }
 
@@ -139,7 +139,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
             }
 
             if (failed > 0) {
-                val msg = getString(R.string.auto_skill_list_export_failed, failed)
+                val msg = getString(R.string.battle_config_list_export_failed, failed)
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
             }
         }
@@ -175,7 +175,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
             }
 
             if (failed > 0) {
-                val msg = getString(R.string.auto_skill_list_import_failed, failed)
+                val msg = getString(R.string.battle_config_list_import_failed, failed)
                 Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
                     .show()
             }
@@ -183,17 +183,17 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.autoskill_list_menu, menu)
+        inflater.inflate(R.menu.battle_config_list_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_auto_skill_import -> {
+            R.id.action_battle_config_import -> {
                 autoSkillImport.launch("*/*")
                 true
             }
-            R.id.action_auto_skill_export_all -> {
+            R.id.action_battle_config_export_all -> {
                 autoSkillExportAll.launch(Uri.EMPTY)
                 true
             }
@@ -212,13 +212,13 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
     val actionModeCallback = object : ActionMode.Callback {
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
             when (item.itemId) {
-                R.id.action_auto_skill_delete -> {
+                R.id.action_battle_config_delete -> {
                     val toDelete = listSection.selectedItems
 
                     AlertDialog.Builder(requireContext())
-                        .setMessage(getString(R.string.auto_skill_list_delete_confirm_message, toDelete.size))
-                        .setTitle(R.string.auto_skill_list_delete_confirm_title)
-                        .setPositiveButton(R.string.auto_skill_list_delete_confirm_ok) { _, _ ->
+                        .setMessage(getString(R.string.battle_config_list_delete_confirm_message, toDelete.size))
+                        .setTitle(R.string.battle_config_list_delete_confirm_title)
+                        .setPositiveButton(R.string.battle_config_list_delete_confirm_ok) { _, _ ->
                             toDelete.forEach {
                                 preferences.removeAutoSkillConfig(it.id)
                             }
@@ -234,7 +234,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
 
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             val inflater = mode.menuInflater
-            inflater.inflate(R.menu.autoskill_list_multi_menu, menu)
+            inflater.inflate(R.menu.battle_config_list_multi_menu, menu)
             return true
         }
 

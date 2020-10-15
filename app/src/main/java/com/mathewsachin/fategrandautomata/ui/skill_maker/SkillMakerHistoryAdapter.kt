@@ -12,7 +12,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 class SkillMakerHistoryAdapter(val currentIndexListener: (Int) -> Unit) :
     RecyclerView.Adapter<SkillMakerHistoryAdapter.ViewHolder>() {
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val textView: TextView = ItemView.findViewById(R.id.autoskill_maker_history_textview)
+        val textView: TextView = ItemView.findViewById(R.id.skill_maker_history_text_view)
         var index = -1
     }
 

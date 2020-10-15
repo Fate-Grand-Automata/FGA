@@ -49,7 +49,7 @@ class BattleConfigItemViewModel @ViewModelInject constructor(
         ) { servants, ces, mlb, levels ->
             buildString {
                 if (servants.isEmpty() && ces.isEmpty()) {
-                    appendLine(context.getString(R.string.auto_skill_support_any))
+                    appendLine(context.getString(R.string.battle_config_support_any))
                 }
 
                 if (servants.isNotEmpty()) {
