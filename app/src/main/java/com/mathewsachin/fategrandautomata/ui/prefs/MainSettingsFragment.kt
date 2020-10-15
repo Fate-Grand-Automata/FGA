@@ -39,7 +39,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        findPreference<Preference>(getString(prefKeys.pref_nav_auto_skill))?.let {
+        findPreference<Preference>(getString(prefKeys.pref_nav_battle_config))?.let {
             it.setOnPreferenceClickListener {
                 val permissions = arrayOf(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,

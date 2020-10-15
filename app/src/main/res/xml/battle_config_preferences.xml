@@ -5,19 +5,19 @@
     <EditTextPreference
         app:defaultValue="--"
         app:icon="@drawable/ic_text_short"
-        app:key="@string/pref_autoskill_name"
+        app:key="@string/pref_battle_config_name"
         app:title="@string/p_battle_config_name"
         app:useSimpleSummaryProvider="true" />
 
     <EditTextPreference
         app:icon="@drawable/ic_terminal"
-        app:key="@string/pref_autoskill_cmd"
+        app:key="@string/pref_battle_config_cmd"
         app:title="@string/p_battle_config_cmd"
         app:useSimpleSummaryProvider="true" />
 
     <EditTextPreference
         app:icon="@drawable/ic_note"
-        android:key="@string/pref_autoskill_notes"
+        android:key="@string/pref_battle_config_notes"
         app:title="@string/p_battle_config_notes"
         app:useSimpleSummaryProvider="true" />
 
@@ -26,7 +26,7 @@
         app:entries="@array/party_labels"
         app:entryValues="@array/party_values"
         app:icon="@drawable/ic_flag"
-        app:key="@string/pref_autoskill_party"
+        app:key="@string/pref_battle_config_party"
         app:title="@string/p_battle_config_party"
         app:useSimpleSummaryProvider="true" />
 
@@ -43,7 +43,7 @@
             app:entries="@array/support_class_labels"
             app:entryValues="@array/support_class_values"
             app:icon="@drawable/ic_diamond"
-            app:key="@string/pref_autoskill_support_class"
+            app:key="@string/pref_battle_config_support_class"
             app:title="@string/p_battle_config_support_class"
             app:useSimpleSummaryProvider="true" />
 

@@ -76,7 +76,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
         findFriendNamesList()?.summaryProvider = SupportMultiSelectListSummaryProvider()
 
-        findPreference<EditTextPreference>(getString(R.string.pref_autoskill_notes))?.makeMultiLine()
+        findPreference<EditTextPreference>(getString(R.string.pref_battle_config_notes))?.makeMultiLine()
 
         findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
             it.setOnPreferenceClickListener {
@@ -89,7 +89,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        findPreference<EditTextPreference>(getString(prefKeys.pref_autoskill_cmd))?.let {
+        findPreference<EditTextPreference>(getString(prefKeys.pref_battle_config_cmd))?.let {
             it.setOnPreferenceClickListener {
                 if (!prefsCore.showTextBoxForAutoSkillCmd.get()) {
                     val action = BattleConfigItemSettingsFragmentDirections
@@ -125,7 +125,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        findPreference<EditTextPreference>(getString(R.string.pref_autoskill_cmd))?.let {
+        findPreference<EditTextPreference>(getString(R.string.pref_battle_config_cmd))?.let {
             vm.skillCommand.observe(viewLifecycleOwner) { cmd ->
                 it.text = cmd
             }
@@ -244,7 +244,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
                     prepare(this)
                 }
             }
-            getString(R.string.pref_autoskill_cmd) -> {
+            getString(R.string.pref_battle_config_cmd) -> {
                 if (prefsCore.showTextBoxForAutoSkillCmd.get()) {
                     SkillCmdPreferenceDialogFragment().apply {
                         autoSkillKey = args.key

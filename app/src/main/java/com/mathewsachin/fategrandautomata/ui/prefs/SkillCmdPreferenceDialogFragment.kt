@@ -18,7 +18,7 @@ class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat(
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        arguments = bundleOf(ARG_KEY to getString(R.string.pref_autoskill_cmd))
+        arguments = bundleOf(ARG_KEY to getString(R.string.pref_battle_config_cmd))
 
         if (savedInstanceState != null) {
             autoSkillKey = savedInstanceState.getString(::autoSkillKey.name, "")

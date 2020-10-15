@@ -20,25 +20,25 @@ class AutoSkillPrefsCore(
 
     private val maker = PrefMaker(sharedPrefs, context)
 
-    val name = maker.string(R.string.pref_autoskill_name, "--")
+    val name = maker.string(R.string.pref_battle_config_name, "--")
 
-    val skillCommand = maker.string(R.string.pref_autoskill_cmd)
+    val skillCommand = maker.string(R.string.pref_battle_config_cmd)
 
     val cardPriority = maker.string(
         R.string.pref_card_priority,
         defaultCardPriority
     )
 
-    val experimental = maker.bool(R.string.pref_auto_skill_experimental)
+    val experimental = maker.bool(R.string.pref_battle_config_experimental)
 
-    var rearrangeCards by maker.string(R.string.pref_auto_skill_rearrange_cards)
+    var rearrangeCards by maker.string(R.string.pref_battle_config_rearrange_cards)
         .map({
             it.split(",").map { m -> m == "T" }
         }, {
             it.joinToString(",") { m -> if (m) "T" else "F" }
         })
 
-    var braveChains by maker.string(R.string.pref_auto_skill_brave_chains)
+    var braveChains by maker.string(R.string.pref_battle_config_brave_chains)
         .map({
             it.split(",").map { m ->
                 try {
@@ -51,7 +51,7 @@ class AutoSkillPrefsCore(
             it.joinToString(",") { m -> m.toString() }
         })
 
-    val party = maker.stringAsInt(R.string.pref_autoskill_party, -1)
+    val party = maker.stringAsInt(R.string.pref_battle_config_party, -1)
 
     val support = SupportPrefsCore(maker, storageDirs)
 
