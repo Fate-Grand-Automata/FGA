@@ -91,8 +91,8 @@
     <string name="p_refill">사과 사용</string>
     <string name="p_refill_off">끔</string>
     <string name="p_refill_summary">사과 사용 관리</string>
-    <string name="p_auto_skill">오토 스킬</string>
-    <string name="p_auto_skill_summary">오토 스킬 설정관리</string>
+    <string name="p_battle_config">오토 스킬</string>
+    <string name="p_battle_config_summary">오토 스킬 설정관리</string>
     <string name="p_more_options">더 많은 옵션</string>
 
     <string name="p_enable_refill">사과 사용 활성화</string>
@@ -139,8 +139,8 @@
     <string name="p_boost_item">부스트 아이템</string>
     <string name="p_brave_chains">브레이브 체인</string>
     <string name="p_rearrange_cards">카드 재배열</string>
-    <string name="p_auto_skill_cmd_text">오토 스킬 커맨드 텍스트 박스</string>
-    <string name="p_auto_skill_cmd_text_summary">오트 스킬 커맨드를 수정하기 위해 텍스트 박스 보이기</string>
+    <string name="p_battle_config_cmd_text">오토 스킬 커맨드 텍스트 박스</string>
+    <string name="p_battle_config_cmd_text_summary">오트 스킬 커맨드를 수정하기 위해 텍스트 박스 보이기</string>
 
     <string name="p_advanced">고급</string>
     <string name="p_debug_mode">디버그 모드</string>
@@ -179,8 +179,8 @@
     <string name="p_nav_refill">사과 사용</string>
     <string name="p_nav_more_options">더 많은 옵션</string>
     <string name="p_nav_fine_tune">미세 조정</string>
-    <string name="p_nav_auto_skill_list">오토 스킬 목록</string>
-    <string name="p_nav_auto_skill_edit">설정 파일 수정</string>
+    <string name="p_nav_battle_config_list">오토 스킬 목록</string>
+    <string name="p_nav_battle_config_edit">설정 파일 수정</string>
     <string name="p_nav_card_priority">카드 우선</string>
 
     <string name="p_refill_type_gold">금</string>

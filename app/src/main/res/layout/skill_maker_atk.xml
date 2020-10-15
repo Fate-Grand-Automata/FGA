@@ -15,7 +15,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/autoskill_view_atk"
-        style="@style/auto_skill_view">
+        style="@style/skill_maker_view">
 
         <TextView
             android:id="@+id/atk_label"

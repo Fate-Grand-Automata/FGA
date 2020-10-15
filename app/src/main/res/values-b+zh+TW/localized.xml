@@ -91,8 +91,8 @@
     <string name="p_refill">自動回體</string>
     <string name="p_refill_off">關閉</string>
     <string name="p_refill_summary">設定自動回體</string>
-    <string name="p_auto_skill">周回腳本</string>
-    <string name="p_auto_skill_summary">設定周回腳本</string>
+    <string name="p_battle_config">周回腳本</string>
+    <string name="p_battle_config_summary">設定周回腳本</string>
     <string name="p_more_options">更多</string>
 
     <string name="p_enable_refill">啟動自動回體</string>
@@ -140,8 +140,8 @@
     <string name="p_boost_item">加速道具</string>
     <string name="p_brave_chains">EX串</string>
     <string name="p_rearrange_cards">調換順序\n(優先性高的卡後出)</string>
-    <string name="p_auto_skill_cmd_text">腳本對話框</string>
-    <string name="p_auto_skill_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
+    <string name="p_battle_config_cmd_text">腳本對話框</string>
+    <string name="p_battle_config_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
 
     <string name="p_advanced">進階</string>
     <string name="p_debug_mode">Debug mode</string>
@@ -178,8 +178,8 @@
     <string name="p_nav_refill">自動回體</string>
     <string name="p_nav_more_options">更多選項</string>
     <string name="p_nav_fine_tune">微調</string>
-    <string name="p_nav_auto_skill_list">腳本列表</string>
-    <string name="p_nav_auto_skill_edit">編輯腳本</string>
+    <string name="p_nav_battle_config_list">腳本列表</string>
+    <string name="p_nav_battle_config_edit">編輯腳本</string>
     <string name="p_nav_card_priority">偏好指令卡</string>
 
     <string name="p_refill_type_gold">黃金果實</string>

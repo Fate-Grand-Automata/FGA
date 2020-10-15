@@ -13,7 +13,7 @@ class SkillMakerActivity : AppCompatActivity(R.layout.skill_maker) {
     val vm: SkillMakerViewModel by viewModels()
     val args: SkillMakerActivityArgs by navArgs()
 
-    fun isMainScreen() = findNavController(R.id.nav_host_fragment_auto_skill)
+    fun isMainScreen() = findNavController(R.id.nav_host_fragment_skill_maker)
         .currentDestination?.id == R.id.main_skill_maker
 
     override fun onBackPressed() {

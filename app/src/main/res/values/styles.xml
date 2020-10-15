@@ -15,7 +15,7 @@
         <item name="android:src">@drawable/ic_delete</item>
     </style>
 
-    <style name="auto_skill_view">
+    <style name="skill_maker_view">
         <item name="android:background">?android:colorBackground</item>
         <item name="android:clickable">true</item>
         <item name="android:layout_width">match_parent</item>

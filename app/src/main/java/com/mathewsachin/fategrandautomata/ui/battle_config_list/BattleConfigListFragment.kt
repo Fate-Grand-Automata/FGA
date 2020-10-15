@@ -46,7 +46,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        autoskill_add_btn.setOnClickListener {
+        battle_config_add_btn.setOnClickListener {
             addOnBtnClick()
         }
 
@@ -55,7 +55,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
         vm.autoSkillItems.observe(viewLifecycleOwner) { items ->
             listSection.set(items)
 
-            auto_skill_no_items.visibility =
+            battle_config_no_items.visibility =
                 if (items.isEmpty()) View.VISIBLE
                 else View.GONE
         }
@@ -84,9 +84,9 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
 
         adapter.addSection(listSection)
 
-        auto_skill_list_view.adapter = adapter
-        auto_skill_list_view.layoutManager = LinearLayoutManager(requireContext())
-        auto_skill_list_view.addItemDecoration(
+        battle_config_list_view.adapter = adapter
+        battle_config_list_view.layoutManager = LinearLayoutManager(requireContext())
+        battle_config_list_view.addItemDecoration(
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
     }

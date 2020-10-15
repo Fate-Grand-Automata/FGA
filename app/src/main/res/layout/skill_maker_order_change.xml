@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/autoskill_view_order_change"
-        style="@style/auto_skill_view">
+        style="@style/skill_maker_view">
 
         <TextView
             android:id="@+id/order_change_label"

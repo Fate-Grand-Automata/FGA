@@ -25,7 +25,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/autoskill_view_target"
-        style="@style/auto_skill_view">
+        style="@style/skill_maker_view">
 
         <TextView
             android:id="@+id/target_label"

@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/battleConfigListFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.battle_config_list.BattleConfigListFragment"
-        android:label="@string/p_nav_auto_skill_list"
+        android:label="@string/p_nav_battle_config_list"
         tools:layout="@layout/battle_config_list">
         <action
             android:id="@+id/action_battleConfigListFragment_to_battleConfigItemSettingsFragment"
@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/battleConfigItemSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.BattleConfigItemSettingsFragment"
-        android:label="@string/p_nav_auto_skill_edit">
+        android:label="@string/p_nav_battle_config_edit">
         <argument
             android:name="key"
             app:argType="string" />
