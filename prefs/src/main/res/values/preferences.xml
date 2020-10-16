@@ -77,7 +77,6 @@
 
     <string name="pref_skill_delay">skill_delay</string>
 
-    <string name="pref_can_pause_script">can_pause_script</string>
     <string name="pref_battle_config_cmd_text">auto_skill_cmd_text</string>
 
     <string name="pref_max_gold_ember_set_size">max_gold_ember_set_size</string>

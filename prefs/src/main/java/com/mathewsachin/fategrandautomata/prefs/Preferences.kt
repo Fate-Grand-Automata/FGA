@@ -72,8 +72,6 @@ class PreferencesImpl @Inject constructor(
 
     override val screenshotDrops by prefs.screenshotDrops
 
-    override val canPauseScript by prefs.canPauseScript
-
     override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
 
     override val waitBeforeTurn by prefs.waitBeforeTurn.map { it.milliseconds }
