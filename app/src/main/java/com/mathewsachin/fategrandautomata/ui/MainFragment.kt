@@ -25,7 +25,7 @@ import timber.log.Timber
 import timber.log.info
 
 @AndroidEntryPoint
-class MainFragment : Fragment(R.layout.content_main) {
+class MainFragment : Fragment() {
     companion object {
         private var mediaProjectionToken: Intent? = null
     }

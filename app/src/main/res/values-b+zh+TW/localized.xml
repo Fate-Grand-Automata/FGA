@@ -70,7 +70,6 @@
     <string name="card_priority_remove_last_wave">移除BATTLE</string>
     <string name="card_priority_experimental">開啟實驗功能</string>
 
-    <string name="toggle_service">開關服務</string>
     <string name="fine_tune_menu_reset_to_defaults">還原設定</string>
     <string name="support_menu_extract_default_support_images">複製預設支援圖片</string>
 

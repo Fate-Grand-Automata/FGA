@@ -30,7 +30,7 @@
             app:iconTint="@android:color/white"
             android:backgroundTint="@{vm.serviceStarted ? @color/colorStopService : @color/colorPrimary}"
             android:textColor="@android:color/white"
-            android:text="@{vm.serviceStarted ? `STOP` : `START`}"
+            android:text="@{vm.serviceStarted ? @string/stop_service : @string/start_service}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
