@@ -23,7 +23,6 @@ interface IPreferences {
     val recordScreen: Boolean
     val skillDelay: Duration
     val screenshotDrops: Boolean
-    val canPauseScript: Boolean
     val maxGoldEmberSetSize: Int
 
     val stageCounterSimilarity: Double

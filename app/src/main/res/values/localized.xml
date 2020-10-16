@@ -163,7 +163,6 @@
     <string name="p_root_screenshot">Use Root for Screenshots</string>
     <string name="p_root_screenshot_summary">Useful on Nox (Android 7). Toggle service after changing this.</string>
     <string name="p_auto_start_service">Auto-start service</string>
-    <string name="p_allow_pause_script">Allow pausing scripts</string>
 
     <string name="p_fine_tune">Fine-tune</string>
     <string name="p_fine_tune_default">Default: %d</string>

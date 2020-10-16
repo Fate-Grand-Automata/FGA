@@ -141,14 +141,14 @@ class ScriptManager @Inject constructor(
 
         entryPoint.scriptExitListener = { onScriptExit(it) }
 
-        userInterface.setStopIcon()
-        if (preferences.canPauseScript) {
-            userInterface.setPauseIcon()
-            userInterface.isPauseButtonVisible = true
-        }
+        userInterface.apply {
+            setStopIcon()
+            setPauseIcon()
+            isPauseButtonVisible = true
 
-        if (recording != null) {
-            userInterface.showAsRecording()
+            if (recording != null) {
+                showAsRecording()
+            }
         }
 
         entryPoint.run()

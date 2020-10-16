@@ -52,8 +52,6 @@ class PrefsCore @Inject constructor(
 
     val screenshotDrops = maker.bool(R.string.pref_screenshot_drops)
 
-    val canPauseScript = maker.bool(R.string.pref_can_pause_script)
-
     val mlbSimilarity = maker.int(R.string.pref_mlb_similarity, 70)
 
     val swipeMultiplier = maker.int(

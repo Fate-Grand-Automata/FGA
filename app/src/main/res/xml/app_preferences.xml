@@ -120,12 +120,5 @@
             app:icon="@drawable/ic_launch"
             app:key="@string/pref_auto_start_service"
             app:title="@string/p_auto_start_service" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_pause"
-            app:key="@string/pref_can_pause_script"
-            app:summary="@string/p_experimental"
-            app:title="@string/p_allow_pause_script" />
     </PreferenceCategory>
 </PreferenceScreen>

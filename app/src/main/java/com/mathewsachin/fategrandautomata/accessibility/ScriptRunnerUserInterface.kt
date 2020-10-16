@@ -9,6 +9,7 @@ import android.util.DisplayMetrics
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
@@ -98,6 +99,15 @@ class ScriptRunnerUserInterface @Inject constructor(
 
         val inflater = LayoutInflater.from(Service)
         inflater.inflate(R.layout.script_runner, scriptCtrlBtnLayout)
+
+        scriptCtrlBtnLayout.findViewById<LinearLayout>(R.id.script_ctrl_container).let { container ->
+            val ratio = mediaProjectionMetrics.widthPixels / mediaProjectionMetrics.heightPixels.toDouble()
+
+            // If 17:9 or wider, we have enough space to show PLAY and PAUSE buttons vertically
+            container.orientation = if (ratio > 17 / 9.0) {
+                LinearLayout.VERTICAL
+            } else LinearLayout.HORIZONTAL
+        }
 
         scriptCtrlBtn = scriptCtrlBtnLayout.findViewById<ImageButton>(R.id.script_toggle_btn).also {
             Service.registerScriptCtrlBtnListeners(it)
