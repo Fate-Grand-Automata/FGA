@@ -153,7 +153,6 @@
     <string name="p_root_screenshot">以root截圖</string>
     <string name="p_root_screenshot_summary">對夜神模擬器(Nox with Android 7)有幫助，請在開啟服務前選取此設定</string>
     <string name="p_auto_start_service">自動開啟服務</string>
-    <string name="p_allow_pause_script">允許暫停腳本</string>
 
     <string name="p_fine_tune">微調</string>
     <string name="p_fine_tune_default">預設: %d</string>

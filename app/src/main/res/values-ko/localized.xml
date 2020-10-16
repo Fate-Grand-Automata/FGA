@@ -152,7 +152,6 @@
     <string name="p_root_screenshot">루트 권한으로 스크린샷 하기</string>
     <string name="p_root_screenshot_summary">녹스(안드로이드 7)에서 유용. 해당 부분 활성화 후 서비스 ON.</string>
     <string name="p_auto_start_service">서비스 자동시작</string>
-    <string name="p_allow_pause_script">스크립트 일시중지 허가</string>
 
     <string name="p_fine_tune">미세 조정</string>
     <string name="p_fine_tune_default">기본값: %d</string>
