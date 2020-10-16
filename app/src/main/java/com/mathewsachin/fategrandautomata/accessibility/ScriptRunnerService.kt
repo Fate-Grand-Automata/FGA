@@ -49,6 +49,8 @@ class ScriptRunnerService : AccessibilityService() {
             return (Instance?.start(mediaProjectionToken) == true).also { success ->
                 if (success) {
                     _serviceStarted.value = true
+
+                    Toast.makeText(Instance, "Open FGO to start scripts", Toast.LENGTH_SHORT).show()
                 }
             }
         }

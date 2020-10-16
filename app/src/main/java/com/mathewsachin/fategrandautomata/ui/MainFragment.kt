@@ -5,7 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
@@ -16,9 +18,9 @@ import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
+import com.mathewsachin.fategrandautomata.databinding.ContentMainBinding
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 import timber.log.info
 
@@ -30,15 +32,15 @@ class MainFragment : Fragment(R.layout.content_main) {
 
     val vm: MainSettingsViewModel by activityViewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        ContentMainBinding.inflate(inflater)
+            .also {
+                it.vm = vm
+                it.lifecycleOwner = viewLifecycleOwner
 
-        service_toggle_btn.setOnClickListener { serviceToggleBtnOnClick() }
-
-        ScriptRunnerService.serviceStarted.observe(viewLifecycleOwner) { started ->
-            service_toggle_btn.text = if (started) "STOP" else "START"
-        }
-    }
+                it.serviceToggleBtn.setOnClickListener { serviceToggleBtnOnClick() }
+            }
+            .root
 
     private fun startWithMediaProjection() {
         mediaProjectionToken.let {
