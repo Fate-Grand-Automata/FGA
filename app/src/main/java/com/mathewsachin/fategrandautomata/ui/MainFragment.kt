@@ -5,7 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
@@ -16,32 +18,36 @@ import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
+import com.mathewsachin.fategrandautomata.databinding.ContentMainBinding
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 import timber.log.info
 
 @AndroidEntryPoint
-class MainFragment : Fragment(R.layout.content_main) {
+class MainFragment : Fragment() {
     companion object {
         private var mediaProjectionToken: Intent? = null
     }
 
     val vm: MainSettingsViewModel by activityViewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        ContentMainBinding.inflate(inflater)
+            .also {
+                it.vm = vm
+                it.lifecycleOwner = viewLifecycleOwner
 
-        service_toggle_btn.setOnClickListener { serviceToggleBtnOnClick() }
-    }
+                it.serviceToggleBtn.setOnClickListener { serviceToggleBtnOnClick() }
+            }
+            .root
 
     private fun startWithMediaProjection() {
         mediaProjectionToken.let {
             if (it != null) {
                 // Cloning the Intent allows reuse.
                 // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
-                ScriptRunnerService.Instance?.start(it.clone() as Intent)
+                ScriptRunnerService.startService(it.clone() as Intent)
             } else startMediaProjection.launch()
         }
     }
@@ -57,7 +63,7 @@ class MainFragment : Fragment(R.layout.content_main) {
     }
 
     private fun checkAccessibilityService(): Boolean {
-        if (ScriptRunnerService.Instance != null)
+        if (ScriptRunnerService.isAccessibilityServiceRunning())
             return true
 
         AlertDialog.Builder(requireContext())
@@ -136,26 +142,23 @@ class MainFragment : Fragment(R.layout.content_main) {
             ?: return
 
         when (instance.serviceState) {
-            is ServiceState.Started -> instance.stop()
+            is ServiceState.Started -> ScriptRunnerService.stopService()
             is ServiceState.Stopped -> {
                 if (instance.wantsMediaProjectionToken) {
                     instance.notification.show()
 
                     startWithMediaProjection()
-                } else if (instance.start()) {
+                } else if (ScriptRunnerService.startService()) {
                     instance.notification.show()
                 }
             }
         }
     }
 
-    fun isServiceStarted() =
-        ScriptRunnerService.Instance?.serviceState is ServiceState.Started
-
     override fun onResume() {
         super.onResume()
 
-        if (toggling || (vm.autoStartService && !isServiceStarted())) {
+        if (toggling || (vm.autoStartService && !ScriptRunnerService.isServiceStarted())) {
             serviceToggleBtnOnClick()
         }
     }

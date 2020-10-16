@@ -70,7 +70,6 @@
     <string name="card_priority_remove_last_wave">마지막 웨이브 제거</string>
     <string name="card_priority_experimental">실험적 기능 활성화</string>
 
-    <string name="toggle_service">서비스 ON/OFF</string>
     <string name="fine_tune_menu_reset_to_defaults">기본값으로 리셋</string>
     <string name="support_menu_extract_default_support_images">기본 서포트 이미지 추출</string>
 
