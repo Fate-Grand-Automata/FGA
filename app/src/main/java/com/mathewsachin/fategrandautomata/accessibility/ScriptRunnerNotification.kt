@@ -159,7 +159,7 @@ class ScriptRunnerNotification @Inject constructor(
 
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.getStringExtra(keyAction)) {
-                actionStop -> ScriptRunnerService.Instance?.stop()
+                actionStop -> ScriptRunnerService.stopService()
             }
         }
     }
