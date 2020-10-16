@@ -24,6 +24,10 @@ import timber.log.info
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.content_main) {
+    companion object {
+        private var mediaProjectionToken: Intent? = null
+    }
+
     val vm: MainSettingsViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,11 +40,24 @@ class MainFragment : Fragment(R.layout.content_main) {
         }
     }
 
+    private fun startWithMediaProjection() {
+        mediaProjectionToken.let {
+            if (it != null) {
+                // Cloning the Intent allows reuse.
+                // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
+                ScriptRunnerService.startService(it.clone() as Intent)
+            } else startMediaProjection.launch()
+        }
+    }
+
     val startMediaProjection = registerForActivityResult(StartMediaProjection()) { intent ->
         if (intent == null) {
             Timber.info { "MediaProjection cancelled by user" }
             ScriptRunnerService.Instance?.notification?.hide()
-        } else ScriptRunnerService.startService(intent)
+        } else {
+            mediaProjectionToken = intent
+            startWithMediaProjection()
+        }
     }
 
     private fun checkAccessibilityService(): Boolean {
@@ -128,8 +145,7 @@ class MainFragment : Fragment(R.layout.content_main) {
                 if (instance.wantsMediaProjectionToken) {
                     instance.notification.show()
 
-                    // This initiates a prompt dialog for the user to confirm screen projection.
-                    startMediaProjection.launch()
+                    startWithMediaProjection()
                 } else if (ScriptRunnerService.startService()) {
                     instance.notification.show()
                 }
