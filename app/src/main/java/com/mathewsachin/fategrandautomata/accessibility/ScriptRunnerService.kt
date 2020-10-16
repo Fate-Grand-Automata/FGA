@@ -12,6 +12,8 @@ import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
@@ -33,6 +35,29 @@ import javax.inject.Inject
 class ScriptRunnerService : AccessibilityService() {
     companion object {
         var Instance: ScriptRunnerService? = null
+            private set
+
+        fun isAccessibilityServiceRunning() = Instance != null
+
+        fun isServiceStarted() =
+            Instance?.serviceState is ServiceState.Started
+
+        private val _serviceStarted = MutableLiveData(isServiceStarted())
+        val serviceStarted: LiveData<Boolean> = _serviceStarted
+
+        fun startService(mediaProjectionToken: Intent? = null): Boolean {
+            return (Instance?.start(mediaProjectionToken) == true).also { success ->
+                if (success) {
+                    _serviceStarted.value = true
+                }
+            }
+        }
+
+        fun stopService(): Boolean {
+            return (Instance?.stop() == true).also {
+                _serviceStarted.value = false
+            }
+        }
     }
 
     @Inject
@@ -92,15 +117,13 @@ class ScriptRunnerService : AccessibilityService() {
     var serviceState: ServiceState = ServiceState.Stopped
         private set
 
-    fun start(MediaProjectionToken: Intent? = null): Boolean {
+    private fun start(MediaProjectionToken: Intent? = null): Boolean {
         if (serviceState is ServiceState.Started) {
             return false
         }
 
         val screenshotService = registerScreenshot(MediaProjectionToken)
             ?: return false
-
-        userInterface.show()
 
         serviceState = ServiceState.Started(screenshotService)
 
@@ -124,7 +147,7 @@ class ScriptRunnerService : AccessibilityService() {
         }
     }
 
-    fun stop(): Boolean {
+    private fun stop(): Boolean {
         scriptManager.stopScript(ScriptAbortException.User())
 
         serviceState.let {
@@ -173,9 +196,6 @@ class ScriptRunnerService : AccessibilityService() {
                 when (scriptManager.scriptState) {
                     is ScriptState.Started -> scriptManager.stopScript(ScriptAbortException.User())
                     is ScriptState.Stopped -> {
-                        // Overwrite the server in the preferences with the detected one, if possible
-                        currentFgoServer?.let { server -> prefs.gameServer = server }
-
                         scriptManager.startScript(this, state.screenshotService, scriptComponentBuilder)
                     }
                 }
@@ -190,14 +210,6 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onServiceConnected() {
         Timber.info { "Accessibility Service bound to system" }
-
-        // We only want events from FGO
-        serviceInfo = serviceInfo.apply {
-            packageNames = GameServerEnum
-                .values()
-                .flatMap { it.packageNames.toList() }
-                .toTypedArray()
-        }
 
         Instance = this
 
@@ -215,8 +227,6 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
-    private var currentFgoServer: GameServerEnum? = null
-
     /**
      * This method is called on any subscribed [AccessibilityEvent] in script_runner_service.xml.
      *
@@ -229,8 +239,17 @@ class ScriptRunnerService : AccessibilityService() {
                 val foregroundAppName = event.packageName?.toString()
                     ?: return
 
-                GameServerEnum.fromPackageName(foregroundAppName)
-                    ?.let { currentFgoServer = it }
+                val gameServer = GameServerEnum.fromPackageName(foregroundAppName)
+
+                if (gameServer != null) {
+                    prefs.gameServer = gameServer
+
+                    if (serviceState is ServiceState.Started) {
+                        userInterface.show()
+                    }
+                } else if (userInterface.metrics.let { it.widthPixels < it.heightPixels }) {
+                    userInterface.hide()
+                }
             }
         }
     }

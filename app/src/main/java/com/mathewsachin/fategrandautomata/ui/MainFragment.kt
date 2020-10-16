@@ -30,17 +30,21 @@ class MainFragment : Fragment(R.layout.content_main) {
         super.onViewCreated(view, savedInstanceState)
 
         service_toggle_btn.setOnClickListener { serviceToggleBtnOnClick() }
+
+        ScriptRunnerService.serviceStarted.observe(viewLifecycleOwner) { started ->
+            service_toggle_btn.text = if (started) "STOP" else "START"
+        }
     }
 
     val startMediaProjection = registerForActivityResult(StartMediaProjection()) { intent ->
         if (intent == null) {
             Timber.info { "MediaProjection cancelled by user" }
             ScriptRunnerService.Instance?.notification?.hide()
-        } else ScriptRunnerService.Instance?.start(intent)
+        } else ScriptRunnerService.startService(intent)
     }
 
     private fun checkAccessibilityService(): Boolean {
-        if (ScriptRunnerService.Instance != null)
+        if (ScriptRunnerService.isAccessibilityServiceRunning())
             return true
 
         AlertDialog.Builder(requireContext())
@@ -119,27 +123,24 @@ class MainFragment : Fragment(R.layout.content_main) {
             ?: return
 
         when (instance.serviceState) {
-            is ServiceState.Started -> instance.stop()
+            is ServiceState.Started -> ScriptRunnerService.stopService()
             is ServiceState.Stopped -> {
                 if (instance.wantsMediaProjectionToken) {
                     instance.notification.show()
 
                     // This initiates a prompt dialog for the user to confirm screen projection.
                     startMediaProjection.launch()
-                } else if (instance.start()) {
+                } else if (ScriptRunnerService.startService()) {
                     instance.notification.show()
                 }
             }
         }
     }
 
-    fun isServiceStarted() =
-        ScriptRunnerService.Instance?.serviceState is ServiceState.Started
-
     override fun onResume() {
         super.onResume()
 
-        if (toggling || (vm.autoStartService && !isServiceStarted())) {
+        if (toggling || (vm.autoStartService && !ScriptRunnerService.isServiceStarted())) {
             serviceToggleBtnOnClick()
         }
     }

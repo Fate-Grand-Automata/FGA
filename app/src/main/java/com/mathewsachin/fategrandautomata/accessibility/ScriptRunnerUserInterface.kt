@@ -5,6 +5,7 @@ import android.app.Service
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
+import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.FrameLayout
@@ -37,7 +38,7 @@ class ScriptRunnerUserInterface @Inject constructor(
             }
     }
 
-    private val metrics: DisplayMetrics
+    val metrics: DisplayMetrics
         get() {
             val res = DisplayMetrics()
 
@@ -116,14 +117,24 @@ class ScriptRunnerUserInterface @Inject constructor(
         scriptCtrlBtnLayoutParams.y = maxOf(m.widthPixels, m.heightPixels)
     }
 
+    private var shown = false
+
     fun show() {
-        windowManager.addView(highlightManager.highlightView, highlightLayoutParams)
-        windowManager.addView(scriptCtrlBtnLayout, scriptCtrlBtnLayoutParams)
+        if (!shown && Settings.canDrawOverlays(Service)) {
+            windowManager.addView(highlightManager.highlightView, highlightLayoutParams)
+            windowManager.addView(scriptCtrlBtnLayout, scriptCtrlBtnLayoutParams)
+
+            shown = true
+        }
     }
 
     fun hide() {
-        windowManager.removeView(scriptCtrlBtnLayout)
-        windowManager.removeView(highlightManager.highlightView)
+        if (shown && Settings.canDrawOverlays(Service)) {
+            windowManager.removeView(scriptCtrlBtnLayout)
+            windowManager.removeView(highlightManager.highlightView)
+
+            shown = false
+        }
     }
 
     var isPauseButtonVisible
