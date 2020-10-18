@@ -229,7 +229,6 @@
     <string name="cannot_start_recording">화면 녹화를 시작할 수 없음</string>
 
     <string name="script_msg_ap_ran_out">AP를 모두 소비하였습니다!</string>
-    <string name="stopped_by_user">사용자에 의해 스크립트 중지됨 또는 화면 꺼짐</string>
     <string name="unexpected_error">예상 밖의 오류</string>
     <string name="script_exited">스크립트 빠져나옴</string>
     <string name="inventory_full">인벤토리 꽉 참</string>
