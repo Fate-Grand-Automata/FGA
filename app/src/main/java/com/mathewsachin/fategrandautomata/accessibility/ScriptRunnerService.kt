@@ -31,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import timber.log.debug
 import timber.log.info
+import timber.log.verbose
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -236,6 +237,8 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = this
 
         screenOffReceiver.register(this) {
+            Timber.verbose { "SCREEN OFF" }
+
             scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
                 if (success) {
                     val msg = getString(R.string.screen_turned_off)
@@ -255,10 +258,16 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         // Hide overlay in Portrait orientation
-        userInterface.apply {
-            if (isLandscape() && serviceState is ServiceState.Started)
-                show()
-            else hide()
+        if (isLandscape()) {
+            Timber.verbose { "LANDSCAPE" }
+
+            if (serviceState is ServiceState.Started) {
+                userInterface.show()
+            }
+        } else {
+            Timber.verbose { "PORTRAIT" }
+
+            userInterface.hide()
         }
     }
 
