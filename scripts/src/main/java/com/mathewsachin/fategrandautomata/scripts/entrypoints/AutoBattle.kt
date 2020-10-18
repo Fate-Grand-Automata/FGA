@@ -57,10 +57,7 @@ open class AutoBattle @Inject constructor(
                 else e.message
             )
 
-            throw when (e) {
-                is ScriptAbortException.User -> ScriptAbortException.User(msg)
-                is ScriptAbortException.ScreenTurnedOff -> ScriptAbortException.ScreenTurnedOff(msg)
-            }
+            throw ScriptAbortException(msg)
         } catch (e: Exception) {
             throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
         } finally {

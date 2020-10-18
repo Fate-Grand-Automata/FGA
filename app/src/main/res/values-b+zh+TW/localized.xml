@@ -228,7 +228,6 @@
     <string name="cannot_start_recording">無法開啟螢幕錄影</string>
 
     <string name="script_msg_ap_ran_out">體力用完了</string>
-    <string name="stopped_by_user">螢幕關閉或用戶停止腳本</string>
     <string name="unexpected_error">未知錯誤</string>
     <string name="script_exited">腳本停止</string>
     <string name="inventory_full">背包已滿</string>
