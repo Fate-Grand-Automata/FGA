@@ -16,7 +16,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
-import com.mathewsachin.libautomata.ScriptAbortException
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
@@ -67,22 +66,32 @@ class ScriptManager @Inject constructor(
         Handler(Looper.getMainLooper())
     }
 
-    fun togglePause() {
+    enum class PauseAction {
+        Pause, Resume, Toggle
+    }
+
+    fun pause(action: PauseAction): Boolean {
         scriptState.let { state ->
             if (state is ScriptState.Started) {
-                if (state.paused) {
+                if (state.paused && action != PauseAction.Pause) {
                     userInterface.setPauseIcon()
                     state.entryPoint.exitManager.resume()
 
                     state.paused = false
-                } else {
+
+                    return true
+                } else if (!state.paused && action != PauseAction.Resume) {
                     userInterface.setResumeIcon()
                     state.entryPoint.exitManager.pause()
 
                     state.paused = true
+
+                    return true
                 }
             }
         }
+
+        return false
     }
 
     fun startScript(
@@ -108,12 +117,12 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    fun stopScript(reason: ScriptAbortException) {
+    fun stopScript() {
         scriptState.let { state ->
             if (state is ScriptState.Started) {
                 userInterface.isPauseButtonVisible = false
                 userInterface.playButtonEnabled(false)
-                state.entryPoint.stop(reason)
+                state.entryPoint.stop()
             }
         }
     }

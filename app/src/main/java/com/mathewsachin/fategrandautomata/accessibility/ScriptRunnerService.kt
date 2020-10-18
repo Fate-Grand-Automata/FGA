@@ -26,7 +26,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
-import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -163,7 +162,7 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     private fun stop(): Boolean {
-        scriptManager.stopScript(ScriptAbortException.User())
+        scriptManager.stopScript()
 
         serviceState.let {
             if (it is ServiceState.Started) {
@@ -209,7 +208,7 @@ class ScriptRunnerService : AccessibilityService() {
 
             if (state is ServiceState.Started) {
                 when (scriptManager.scriptState) {
-                    is ScriptState.Started -> scriptManager.stopScript(ScriptAbortException.User())
+                    is ScriptState.Started -> scriptManager.stopScript()
                     is ScriptState.Stopped -> {
                         scriptManager.startScript(this, state.screenshotService, scriptComponentBuilder)
                     }
@@ -220,7 +219,7 @@ class ScriptRunnerService : AccessibilityService() {
 
     fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) =
         scriptPauseBtn.setOnClickListener {
-            scriptManager.togglePause()
+            scriptManager.pause(ScriptManager.PauseAction.Toggle)
         }
 
     override fun onServiceConnected() {
@@ -237,10 +236,11 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = this
 
         screenOffReceiver.register(this) {
-            scriptManager.scriptState.let { state ->
-                // Don't stop if already paused
-                if (state is ScriptState.Started && !state.paused) {
-                    scriptManager.stopScript(ScriptAbortException.ScreenTurnedOff())
+            scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
+                if (success) {
+                    val msg = getString(R.string.screen_turned_off)
+                    platformImpl.notify(msg)
+                    platformImpl.messageBox(msg, msg)
                 }
             }
         }
