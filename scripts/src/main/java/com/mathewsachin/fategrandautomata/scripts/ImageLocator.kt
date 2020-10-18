@@ -49,8 +49,6 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val ceDetails get() = load("ce_details.png")
 
-    val friendRequest get() = load("friendrequest.png")
-
     val confirm get() = load("confirm.png")
 
     val questReward get() = load("questreward.png")

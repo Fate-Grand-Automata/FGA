@@ -289,7 +289,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isFriendRequestScreen() =
-        images.friendRequest in Game.resultFriendRequestRegion
+        images.supportExtra in Game.resultFriendRequestRegion
 
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
