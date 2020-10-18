@@ -105,7 +105,7 @@ open class AutoBattle @Inject constructor(
             { needsToWithdraw() } to { withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
-            { isCeReward() } to { ceReward() },
+            { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() }
             //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
@@ -184,19 +184,17 @@ open class AutoBattle @Inject constructor(
         return cases.any { (image, region) -> image in region }
     }
 
-    val ceRewardSimilarity = 0.75
-
-    private fun isCeReward() =
-        Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+    private fun isBond10CEReward() =
+        Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = 0.75)
 
     /**
      * It seems like we need to click on CE (center of screen) to accept them
      */
-    private fun ceReward() =
+    private fun bond10CEReward() =
         Region(Location(), Game.scriptSize).center.click()
 
     private fun isCeRewardDetails() =
-        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+        images.ceDetails in Game.resultCeRewardDetailsRegion
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
