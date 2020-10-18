@@ -14,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
@@ -46,13 +47,19 @@ class ScriptRunnerService : AccessibilityService() {
         val serviceStarted: LiveData<Boolean> = _serviceStarted
 
         fun startService(mediaProjectionToken: Intent? = null): Boolean {
-            return (Instance?.start(mediaProjectionToken) == true).also { success ->
-                if (success) {
-                    _serviceStarted.value = true
+            return Instance?.let { service ->
+                service.start(mediaProjectionToken).also { success ->
+                    if (success) {
+                        _serviceStarted.value = true
 
-                    Toast.makeText(Instance, "Open FGO to start scripts", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            service,
+                            service.getString(R.string.start_service_toast),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
+            } ?: false
         }
 
         fun stopService(): Boolean {
