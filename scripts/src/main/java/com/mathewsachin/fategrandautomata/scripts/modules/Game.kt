@@ -99,7 +99,7 @@ class Game @Inject constructor(val prefs: IPreferences) {
 
         val resultCeDropRegion = Region(1860, 0, 240, 100)
         val resultCeRewardRegion = Region(1050, 1216, 33, 28)
-        val resultCeRewardDetailsRegion = Region(310, 1295, 45, 30)
+        val resultCeRewardDetailsRegion = Region(0, 512, 135, 115)
         val resultCeRewardCloseClick = Location(80, 60)
         val resultFriendRequestRegion = Region(660, 120, 140, 160)
         val resultFriendRequestRejectClick = Location(600, 1200)

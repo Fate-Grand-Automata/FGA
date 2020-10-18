@@ -33,10 +33,7 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val supportScreen get() = load("support_screen.png")
 
-    val supportRegionTool
-        get() = load(
-            "support_region_tool.png"
-        )
+    val supportRegionTool get() = load("support_region_tool.png")
 
     val storySkip get() = load("storyskip.png")
 
@@ -48,7 +45,9 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val bond get() = load("bond.png")
 
-    val bond10Reward get() = load("ce_reward.png")
+    val bond10Reward get() = load("bond10.png")
+
+    val ceDetails get() = load("ce_details.png")
 
     val friendRequest get() = load("friendrequest.png")
 
@@ -60,10 +59,7 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val withdraw get() = load("withdraw.png")
 
-    val finishedLotteryBox
-        get() = load(
-            "lottery.png"
-        )
+    val finishedLotteryBox get() = load("lottery.png")
 
     val presentBoxFull get() = load("StopGifts.png")
 
@@ -73,17 +69,11 @@ class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
 
     val matRewards get() = load("mat_rewards.png")
 
-    val gudaFinalRewards
-        get() = load(
-            "guda_final_rewards.png"
-        )
+    val gudaFinalRewards get() = load("guda_final_rewards.png")
 
     val inventoryFull get() = load("inven_full.png")
 
-    val fpSummonContinue
-        get() = load(
-            "fp_continue.png"
-        )
+    val fpSummonContinue get() = load("fp_continue.png")
 
     val skillTen get() = load("skill_ten.png")
 
