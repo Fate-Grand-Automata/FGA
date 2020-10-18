@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
+import android.content.res.Configuration
 import android.media.projection.MediaProjectionManager
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
@@ -29,6 +30,7 @@ import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import timber.log.debug
 import timber.log.info
 import javax.inject.Inject
 
@@ -136,6 +138,10 @@ class ScriptRunnerService : AccessibilityService() {
 
         serviceState = ServiceState.Started(screenshotService)
 
+        if (isLandscape()) {
+            userInterface.show()
+        }
+
         return true
     }
 
@@ -220,6 +226,14 @@ class ScriptRunnerService : AccessibilityService() {
     override fun onServiceConnected() {
         Timber.info { "Accessibility Service bound to system" }
 
+        // We only want events from FGO
+        serviceInfo = serviceInfo.apply {
+            packageNames = GameServerEnum
+                .values()
+                .flatMap { it.packageNames.toList() }
+                .toTypedArray()
+        }
+
         Instance = this
 
         screenOffReceiver.register(this) {
@@ -236,11 +250,23 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
+    private fun isLandscape() =
+        userInterface.metrics.let { it.widthPixels >= it.heightPixels }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        // Hide overlay in Portrait orientation
+        userInterface.apply {
+            if (isLandscape() && serviceState is ServiceState.Started)
+                show()
+            else hide()
+        }
+    }
+
     /**
      * This method is called on any subscribed [AccessibilityEvent] in script_runner_service.xml.
      *
      * When the app in the foreground changes, this method will check if the foreground app is one
-     * of the FGO APKs and will store that information into [currentFgoServer].
+     * of the FGO APKs.
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         when (event?.eventType) {
@@ -248,17 +274,10 @@ class ScriptRunnerService : AccessibilityService() {
                 val foregroundAppName = event.packageName?.toString()
                     ?: return
 
-                val gameServer = GameServerEnum.fromPackageName(foregroundAppName)
+                GameServerEnum.fromPackageName(foregroundAppName)?.let { server ->
+                    Timber.debug { "Detected FGO: $server" }
 
-                if (gameServer != null) {
-                    prefs.gameServer = gameServer
-
-                    if (serviceState is ServiceState.Started) {
-                        userInterface.show()
-                    }
-                } else if (userInterface.metrics.let { it.widthPixels < it.heightPixels }) {
-                    // Hides the overlay in portrait mode
-                    userInterface.hide()
+                    prefs.gameServer = server
                 }
             }
         }
