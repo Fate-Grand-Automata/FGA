@@ -250,6 +250,7 @@ class ScriptRunnerService : AccessibilityService() {
                         userInterface.show()
                     }
                 } else if (userInterface.metrics.let { it.widthPixels < it.heightPixels }) {
+                    // Hides the overlay in portrait mode
                     userInterface.hide()
                 }
             }
