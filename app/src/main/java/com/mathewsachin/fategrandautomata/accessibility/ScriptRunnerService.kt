@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
+import android.content.res.Configuration
 import android.media.projection.MediaProjectionManager
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
@@ -28,7 +29,9 @@ import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import timber.log.debug
 import timber.log.info
+import timber.log.verbose
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,11 +49,19 @@ class ScriptRunnerService : AccessibilityService() {
         val serviceStarted: LiveData<Boolean> = _serviceStarted
 
         fun startService(mediaProjectionToken: Intent? = null): Boolean {
-            return (Instance?.start(mediaProjectionToken) == true).also { success ->
-                if (success) {
-                    _serviceStarted.value = true
+            return Instance?.let { service ->
+                service.start(mediaProjectionToken).also { success ->
+                    if (success) {
+                        _serviceStarted.value = true
+
+                        Toast.makeText(
+                            service,
+                            service.getString(R.string.start_service_toast),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
+            } ?: false
         }
 
         fun stopService(): Boolean {
@@ -125,9 +136,11 @@ class ScriptRunnerService : AccessibilityService() {
         val screenshotService = registerScreenshot(MediaProjectionToken)
             ?: return false
 
-        userInterface.show()
-
         serviceState = ServiceState.Started(screenshotService)
+
+        if (isLandscape()) {
+            userInterface.show()
+        }
 
         return true
     }
@@ -198,9 +211,6 @@ class ScriptRunnerService : AccessibilityService() {
                 when (scriptManager.scriptState) {
                     is ScriptState.Started -> scriptManager.stopScript()
                     is ScriptState.Stopped -> {
-                        // Overwrite the server in the preferences with the detected one, if possible
-                        currentFgoServer?.let { server -> prefs.gameServer = server }
-
                         scriptManager.startScript(this, state.screenshotService, scriptComponentBuilder)
                     }
                 }
@@ -227,6 +237,8 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = this
 
         screenOffReceiver.register(this) {
+            Timber.verbose { "SCREEN OFF" }
+
             scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
                 if (success) {
                     val msg = getString(R.string.screen_turned_off)
@@ -241,13 +253,29 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
-    private var currentFgoServer: GameServerEnum? = null
+    private fun isLandscape() =
+        userInterface.metrics.let { it.widthPixels >= it.heightPixels }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        // Hide overlay in Portrait orientation
+        if (isLandscape()) {
+            Timber.verbose { "LANDSCAPE" }
+
+            if (serviceState is ServiceState.Started) {
+                userInterface.show()
+            }
+        } else {
+            Timber.verbose { "PORTRAIT" }
+
+            userInterface.hide()
+        }
+    }
 
     /**
      * This method is called on any subscribed [AccessibilityEvent] in script_runner_service.xml.
      *
      * When the app in the foreground changes, this method will check if the foreground app is one
-     * of the FGO APKs and will store that information into [currentFgoServer].
+     * of the FGO APKs.
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         when (event?.eventType) {
@@ -255,8 +283,11 @@ class ScriptRunnerService : AccessibilityService() {
                 val foregroundAppName = event.packageName?.toString()
                     ?: return
 
-                GameServerEnum.fromPackageName(foregroundAppName)
-                    ?.let { currentFgoServer = it }
+                GameServerEnum.fromPackageName(foregroundAppName)?.let { server ->
+                    Timber.debug { "Detected FGO: $server" }
+
+                    prefs.gameServer = server
+                }
             }
         }
     }

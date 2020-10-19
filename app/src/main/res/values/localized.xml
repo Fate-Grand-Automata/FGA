@@ -79,6 +79,7 @@
 
     <string name="start_service">Start Service</string>
     <string name="stop_service">Stop Service</string>
+    <string name="start_service_toast">Open FGO to run scripts</string>
     <string name="fine_tune_menu_reset_to_defaults">Reset to defaults</string>
     <string name="support_menu_extract_default_support_images">Extract Default Support Images</string>
 
