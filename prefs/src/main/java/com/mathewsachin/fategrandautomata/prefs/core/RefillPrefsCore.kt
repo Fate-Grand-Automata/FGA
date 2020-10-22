@@ -20,5 +20,5 @@ class RefillPrefsCore(maker: PrefMaker) {
 
     val matToLimit = maker.enum(R.string.pref_limit_mat_by, MaterialEnum.Heart)
 
-    val limitMats = maker.stringAsInt(R.string.pref_limit_mats, 0)
+    val limitMats = maker.stringAsInt(R.string.pref_limit_mats, 1)
 }

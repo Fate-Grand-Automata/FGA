@@ -13,9 +13,9 @@ enum class MaterialEnum {
     //    Stake,
 //    Gunpowder,
     Seed,
+    GhostLantern,
 
-    //    GhostLantern,
-//    TwinCrystal,
+    //    TwinCrystal,
 //    SerpentJewel,
     Feather,
 

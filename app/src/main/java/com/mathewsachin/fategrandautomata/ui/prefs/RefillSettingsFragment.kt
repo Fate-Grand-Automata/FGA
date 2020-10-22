@@ -66,6 +66,7 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
             MaterialEnum.Chain -> R.drawable.mat_chain
             MaterialEnum.Fluid -> R.drawable.mat_fluid
             MaterialEnum.Seed -> R.drawable.mat_seed
+            MaterialEnum.GhostLantern -> R.drawable.mat_ghost_lantern
             MaterialEnum.Feather -> R.drawable.mat_feather
             MaterialEnum.Page -> R.drawable.mat_page
             MaterialEnum.Magatama -> R.drawable.mat_magatama

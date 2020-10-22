@@ -57,6 +57,7 @@ val MaterialEnum.stringRes
         MaterialEnum.Chain -> R.string.mat_chain
         MaterialEnum.Fluid -> R.string.mat_fluid
         MaterialEnum.Seed -> R.string.mat_seed
+        MaterialEnum.GhostLantern -> R.string.mat_ghost_lantern
         MaterialEnum.Feather -> R.string.mat_feather
         MaterialEnum.Page -> R.string.mat_page
         MaterialEnum.Magatama -> R.string.mat_magatama
