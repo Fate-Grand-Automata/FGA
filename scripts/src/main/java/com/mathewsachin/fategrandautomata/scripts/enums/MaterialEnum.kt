@@ -25,10 +25,12 @@ enum class MaterialEnum {
 //    Horseshoe,
 //    KnightMedal,
 //    ShellOfReminiscence,
-//    Magatama,
-//    EternalIce,
-//    GiantRing,
-//    AuroraSteel,
+    Magatama,
+
+    //    EternalIce,
+    GiantRing,
+
+    //    AuroraSteel,
 //    AncientBellOfTranquility,
 //    ArrowHead,
 //    CrownOfRadiantSilver,
