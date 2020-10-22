@@ -17,8 +17,9 @@ enum class MaterialEnum {
     //    GhostLantern,
 //    TwinCrystal,
 //    SerpentJewel,
-//    Feather,
-//    Gear,
+    Feather,
+
+    //    Gear,
     Page,
 
     //    HomunculusBaby,
