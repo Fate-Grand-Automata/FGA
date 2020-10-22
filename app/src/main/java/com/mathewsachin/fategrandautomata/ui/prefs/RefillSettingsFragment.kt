@@ -10,7 +10,10 @@ import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
+import com.mathewsachin.fategrandautomata.util.initWith
 import com.mathewsachin.fategrandautomata.util.makeNumeric
+import com.mathewsachin.fategrandautomata.util.stringRes
 import dagger.hilt.android.AndroidEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
@@ -21,6 +24,9 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<EditTextPreference>(getString(prefKeys.pref_refill_repetitions))?.makeNumeric()
         findPreference<EditTextPreference>(getString(R.string.pref_limit_runs))?.makeNumeric()
+
+        findPreference<MultiSelectListPreference>(getString(R.string.pref_refill_resource))
+            ?.initWith<RefillResourceEnum> { it.stringRes }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

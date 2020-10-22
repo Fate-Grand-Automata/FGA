@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.text.InputType
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import java.io.File
 
@@ -30,5 +31,29 @@ fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
     // labels
     this.entries = entries
         .map { it.nameWithoutExtension }
+        .toTypedArray()
+}
+
+inline fun <reified T : Enum<T>> MultiSelectListPreference.initWith(localized: (T) -> Int) {
+    val values = enumValues<T>()
+
+    this.entries = values
+        .map { it.toString() }
+        .toTypedArray()
+
+    this.entryValues = values
+        .map { context.getString(localized(it)) }
+        .toTypedArray()
+}
+
+inline fun <reified T : Enum<T>> ListPreference.initWith(localized: (T) -> Int) {
+    val values = enumValues<T>()
+
+    this.entries = values
+        .map { it.toString() }
+        .toTypedArray()
+
+    this.entryValues = values
+        .map { context.getString(localized(it)) }
         .toTypedArray()
 }

@@ -23,8 +23,6 @@
 
     <ListPreference
         app:defaultValue="-1"
-        app:entries="@array/party_labels"
-        app:entryValues="@array/party_values"
         app:icon="@drawable/ic_flag"
         app:key="@string/pref_battle_config_party"
         app:title="@string/p_battle_config_party"
@@ -40,8 +38,6 @@
         app:title="@string/p_battle_config_support">
         <ListPreference
             app:defaultValue="None"
-            app:entries="@array/support_class_labels"
-            app:entryValues="@array/support_class_values"
             app:icon="@drawable/ic_diamond"
             app:key="@string/pref_battle_config_support_class"
             app:title="@string/p_battle_config_support_class"
@@ -49,8 +45,6 @@
 
         <ListPreference
             app:defaultValue="Preferred"
-            app:entries="@array/support_selection_modes_labels"
-            app:entryValues="@array/support_selection_modes_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_mode"
             app:title="@string/p_battle_config_support_selection_mode"
@@ -68,8 +62,6 @@
 
         <ListPreference
             app:defaultValue="Manual"
-            app:entries="@array/support_selection_modes_fallback_labels"
-            app:entryValues="@array/support_selection_modes_fallback_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_fallback"
             app:title="@string/p_battle_config_support_fallback_selection_mode"
@@ -88,8 +80,6 @@
 
         <ListPreference
             app:defaultValue="None"
-            app:entries="@array/spam_types_labels"
-            app:entryValues="@array/spam_types_values"
             app:icon="@drawable/ic_star"
             app:key="@string/pref_spam_np"
             app:title="@string/p_spam_np"
@@ -97,8 +87,6 @@
 
         <ListPreference
             app:defaultValue="None"
-            app:entries="@array/spam_types_labels"
-            app:entryValues="@array/spam_types_values"
             app:icon="@drawable/ic_wand"
             app:key="@string/pref_spam_skill"
             app:title="@string/p_spam_skill"

@@ -45,8 +45,6 @@
 
         <ListPreference
             app:defaultValue="-1"
-            app:entries="@array/boost_item_labels"
-            app:entryValues="@array/boost_item_values"
             app:icon="@drawable/ic_boost"
             app:key="@string/pref_boost_item"
             app:title="@string/p_boost_item"
