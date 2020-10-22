@@ -127,9 +127,27 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
         findPreference<ListPreference>(getString(R.string.pref_battle_config_party))?.apply {
             entries = arrayOf(getString(R.string.p_party_not_set)) +
                     (1..10).map { "Party $it" }.toTypedArray()
-            
+
             entryValues = (-1..9)
                 .map { it.toString() }
+                .toTypedArray()
+        }
+
+        findPreference<ListPreference>(getString(R.string.pref_support_mode))
+            ?.initWith<SupportSelectionModeEnum> { it.stringRes }
+
+        findPreference<ListPreference>(getString(R.string.pref_support_fallback))?.apply {
+            val values = listOf(
+                SupportSelectionModeEnum.First,
+                SupportSelectionModeEnum.Manual
+            )
+
+            entryValues = values
+                .map { it.toString() }
+                .toTypedArray()
+
+            entries = values
+                .map { context.getString(it.stringRes) }
                 .toTypedArray()
         }
     }

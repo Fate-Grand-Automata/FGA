@@ -45,8 +45,6 @@
 
         <ListPreference
             app:defaultValue="Preferred"
-            app:entries="@array/support_selection_modes_labels"
-            app:entryValues="@array/support_selection_modes_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_mode"
             app:title="@string/p_battle_config_support_selection_mode"
@@ -64,8 +62,6 @@
 
         <ListPreference
             app:defaultValue="Manual"
-            app:entries="@array/support_selection_modes_fallback_labels"
-            app:entryValues="@array/support_selection_modes_fallback_values"
             app:icon="@drawable/ic_dots_vertical"
             app:key="@string/pref_support_fallback"
             app:title="@string/p_battle_config_support_fallback_selection_mode"

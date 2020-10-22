@@ -1,10 +1,7 @@
 package com.mathewsachin.fategrandautomata.util
 
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
+import com.mathewsachin.fategrandautomata.scripts.enums.*
 
 val RefillResourceEnum.stringRes
     get() = when (this) {
@@ -41,4 +38,12 @@ val SupportClass.stringRes
         SupportClass.Berserker -> R.string.p_support_class_berserker
         SupportClass.Extra -> R.string.p_support_class_extra
         SupportClass.Mix -> R.string.p_support_class_mix
+    }
+
+val SupportSelectionModeEnum.stringRes
+    get() = when (this) {
+        SupportSelectionModeEnum.First -> R.string.p_support_mode_first
+        SupportSelectionModeEnum.Manual -> R.string.p_support_mode_manual
+        SupportSelectionModeEnum.Friend -> R.string.p_support_mode_friend
+        SupportSelectionModeEnum.Preferred -> R.string.p_support_mode_preferred
     }

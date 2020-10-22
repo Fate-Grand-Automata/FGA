@@ -15,28 +15,4 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-
-    <array name="support_selection_modes_labels">
-        <item>@string/p_support_mode_first</item>
-        <item>@string/p_support_mode_manual</item>
-        <item>@string/p_support_mode_preferred</item>
-        <item>@string/p_support_mode_friend</item>
-    </array>
-
-    <array name="support_selection_modes_values">
-        <item>First</item>
-        <item>Manual</item>
-        <item>Preferred</item>
-        <item>Friend</item>
-    </array>
-
-    <array name="support_selection_modes_fallback_labels">
-        <item>@string/p_support_mode_first</item>
-        <item>@string/p_support_mode_manual</item>
-    </array>
-
-    <array name="support_selection_modes_fallback_values">
-        <item>First</item>
-        <item>Manual</item>
-    </array>
 </resources>
