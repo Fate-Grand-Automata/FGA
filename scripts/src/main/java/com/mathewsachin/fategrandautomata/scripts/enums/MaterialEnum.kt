@@ -2,8 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.enums
 
 enum class MaterialEnum {
     Proof,
-
-    //Bone,
+    Bone,
     Fang,
     Dust,
 

@@ -153,6 +153,7 @@
 
     <array name="mats_labels">
         <item>Proof of Hero</item>
+        <item>Evil Bone</item>
         <item>Dragon\'s Fang</item>
         <item>Void\'s Dust</item>
         <item>Mystic Spinal Fluid</item>
@@ -166,6 +167,7 @@
 
     <array name="mats_values">
         <item>Proof</item>
+        <item>Bone</item>
         <item>Fang</item>
         <item>Dust</item>
         <item>Fluid</item>
