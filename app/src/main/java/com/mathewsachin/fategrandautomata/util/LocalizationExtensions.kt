@@ -47,3 +47,22 @@ val SupportSelectionModeEnum.stringRes
         SupportSelectionModeEnum.Friend -> R.string.p_support_mode_friend
         SupportSelectionModeEnum.Preferred -> R.string.p_support_mode_preferred
     }
+
+val MaterialEnum.stringRes
+    get() = when (this) {
+        MaterialEnum.Proof -> R.string.mat_proof
+        MaterialEnum.Bone -> R.string.mat_bone
+        MaterialEnum.Fang -> R.string.mat_fang
+        MaterialEnum.Dust -> R.string.mat_dust
+        MaterialEnum.Chain -> R.string.mat_chain
+        MaterialEnum.Fluid -> R.string.mat_fluid
+        MaterialEnum.Seed -> R.string.mat_seed
+        MaterialEnum.Feather -> R.string.mat_feather
+        MaterialEnum.Page -> R.string.mat_page
+        MaterialEnum.Magatama -> R.string.mat_magatama
+        MaterialEnum.GiantRing -> R.string.mat_giant_ring
+        MaterialEnum.Claw -> R.string.mat_claw
+        MaterialEnum.Heart -> R.string.mat_heart
+        MaterialEnum.SpiritRoot -> R.string.mat_spirit_root
+        MaterialEnum.Scarab -> R.string.mat_scarab
+    }

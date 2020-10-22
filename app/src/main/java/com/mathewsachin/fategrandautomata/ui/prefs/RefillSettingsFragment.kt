@@ -24,9 +24,13 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<EditTextPreference>(getString(prefKeys.pref_refill_repetitions))?.makeNumeric()
         findPreference<EditTextPreference>(getString(R.string.pref_limit_runs))?.makeNumeric()
+        findPreference<EditTextPreference>(getString(R.string.pref_limit_mats))?.makeNumeric()
 
         findPreference<MultiSelectListPreference>(getString(R.string.pref_refill_resource))
             ?.initWith<RefillResourceEnum> { it.stringRes }
+
+        findPreference<ListPreference>(getString(R.string.pref_limit_mat_by))
+            ?.initWith<MaterialEnum> { it.stringRes }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

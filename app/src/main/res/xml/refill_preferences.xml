@@ -64,8 +64,6 @@
             app:defaultValue="Heart"
             app:dependency="@string/pref_should_limit_mats"
             app:icon="@drawable/mat_heart"
-            app:entries="@array/mats_labels"
-            app:entryValues="@array/mats_values"
             app:key="@string/pref_limit_mat_by"
             app:title="Material"
             app:useSimpleSummaryProvider="true" />
