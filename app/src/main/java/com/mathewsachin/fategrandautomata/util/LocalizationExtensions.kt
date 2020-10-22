@@ -66,4 +66,17 @@ val MaterialEnum.stringRes
         MaterialEnum.Heart -> R.string.mat_heart
         MaterialEnum.SpiritRoot -> R.string.mat_spirit_root
         MaterialEnum.Scarab -> R.string.mat_scarab
+        MaterialEnum.OctupletCrystal -> R.string.mat_octuplet
+        MaterialEnum.SerpentJewel -> R.string.mat_serpent_jewel
+        MaterialEnum.Gear -> R.string.mat_gear
+        MaterialEnum.HomunculusBaby -> R.string.mat_homunculus
+        MaterialEnum.Horseshoe -> R.string.mat_horseshoe
+        MaterialEnum.ShellOfReminiscence -> R.string.mat_shell
+        MaterialEnum.DragonScale -> R.string.mat_scale
+        MaterialEnum.YoungHorn -> R.string.mat_young_horn
+        MaterialEnum.TearStone -> R.string.mat_tear_stone
+        MaterialEnum.Grease -> R.string.mat_grease
+        MaterialEnum.Lanugo -> R.string.mat_lanugo
+        MaterialEnum.Gallstone -> R.string.mat_gallstone
+        MaterialEnum.MysteriousWine -> R.string.mat_wine
     }

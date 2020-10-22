@@ -293,4 +293,17 @@
     <string name="mat_heart">Heart of the Foreign God</string>
     <string name="mat_spirit_root">Spirit Root</string>
     <string name="mat_scarab">Scarab of Wisdom</string>
+    <string name="mat_octuplet">Octuplet Crystal</string>
+    <string name="mat_serpent_jewel">Serpent Jewel</string>
+    <string name="mat_gear">Eternal Gear</string>
+    <string name="mat_homunculus">Homunculus Baby</string>
+    <string name="mat_horseshoe">Meteor Horseshoe</string>
+    <string name="mat_shell">Shell of Reminiscence</string>
+    <string name="mat_scale">Reverse Dragon Scale</string>
+    <string name="mat_young_horn">Warhorse\'s Young Horn</string>
+    <string name="mat_tear_stone">Tearstone of Blood</string>
+    <string name="mat_grease">Black Beast Grease</string>
+    <string name="mat_lanugo">Primordial Lanugo</string>
+    <string name="mat_gallstone">Cursed Beast Gallstone</string>
+    <string name="mat_wine">Mysterious Divine Wine</string>
 </resources>

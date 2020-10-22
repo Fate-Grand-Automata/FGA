@@ -75,5 +75,12 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
             MaterialEnum.Heart -> R.drawable.mat_heart
             MaterialEnum.SpiritRoot -> R.drawable.mat_spirit_root
             MaterialEnum.Scarab -> R.drawable.mat_scarab
+            MaterialEnum.DragonScale -> R.drawable.mat_scale
+            MaterialEnum.Gallstone -> R.drawable.mat_gall_stone
+            MaterialEnum.Gear -> R.drawable.mat_gear
+            MaterialEnum.Grease -> R.drawable.mat_grease
+            MaterialEnum.HomunculusBaby -> R.drawable.mat_homunculus
+            // TODO: Other Mats
+            else -> R.drawable.ic_diamond
         }
 }
