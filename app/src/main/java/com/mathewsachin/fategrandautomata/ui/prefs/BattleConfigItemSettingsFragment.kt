@@ -18,6 +18,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -119,6 +120,9 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             .forEach { pref ->
                 pref.initWith<SpamEnum> { it.stringRes }
             }
+
+        findPreference<ListPreference>(getString(R.string.pref_battle_config_support_class))
+            ?.initWith<SupportClass> { it.stringRes }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

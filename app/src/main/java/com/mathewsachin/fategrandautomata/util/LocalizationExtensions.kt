@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 
 val RefillResourceEnum.stringRes
     get() = when (this) {
@@ -25,4 +26,19 @@ val SpamEnum.stringRes
         SpamEnum.None -> R.string.p_spam_none
         SpamEnum.Spam -> R.string.p_spam_spam
         SpamEnum.Danger -> R.string.p_spam_danger
+    }
+
+val SupportClass.stringRes
+    get() = when (this) {
+        SupportClass.None -> R.string.p_support_class_none
+        SupportClass.All -> R.string.p_support_class_all
+        SupportClass.Saber -> R.string.p_support_class_saber
+        SupportClass.Archer -> R.string.p_support_class_archer
+        SupportClass.Lancer -> R.string.p_support_class_lancer
+        SupportClass.Rider -> R.string.p_support_class_rider
+        SupportClass.Caster -> R.string.p_support_class_caster
+        SupportClass.Assassin -> R.string.p_support_class_assassin
+        SupportClass.Berserker -> R.string.p_support_class_berserker
+        SupportClass.Extra -> R.string.p_support_class_extra
+        SupportClass.Mix -> R.string.p_support_class_mix
     }

@@ -83,32 +83,4 @@
         <item>8</item>
         <item>9</item>
     </string-array>
-
-    <array name="support_class_labels">
-        <item>@string/p_support_class_none</item>,
-        <item>@string/p_support_class_all</item>,
-        <item>@string/p_support_class_saber</item>,
-        <item>@string/p_support_class_archer</item>,
-        <item>@string/p_support_class_lancer</item>,
-        <item>@string/p_support_class_rider</item>,
-        <item>@string/p_support_class_caster</item>,
-        <item>@string/p_support_class_assassin</item>,
-        <item>@string/p_support_class_berserker</item>,
-        <item>@string/p_support_class_extra</item>,
-        <item>@string/p_support_class_mix</item>
-    </array>
-
-    <array name="support_class_values">
-        <item>None</item>,
-        <item>All</item>,
-        <item>Saber</item>,
-        <item>Archer</item>,
-        <item>Lancer</item>,
-        <item>Rider</item>,
-        <item>Caster</item>,
-        <item>Assassin</item>,
-        <item>Berserker</item>,
-        <item>Extra</item>,
-        <item>Mix</item>
-    </array>
 </resources>

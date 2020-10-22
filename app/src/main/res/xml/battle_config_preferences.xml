@@ -40,8 +40,6 @@
         app:title="@string/p_battle_config_support">
         <ListPreference
             app:defaultValue="None"
-            app:entries="@array/support_class_labels"
-            app:entryValues="@array/support_class_values"
             app:icon="@drawable/ic_diamond"
             app:key="@string/pref_battle_config_support_class"
             app:title="@string/p_battle_config_support_class"
