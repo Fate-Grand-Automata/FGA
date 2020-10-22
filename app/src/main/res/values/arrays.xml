@@ -152,18 +152,22 @@
     </array>
 
     <array name="mats_labels">
-        <item>Claw of Chaos</item>
-        <item>Void\'s Dust</item>
+        <item>Proof of Hero</item>
         <item>Dragon\'s Fang</item>
-        <item>Heart of the Foreign God</item>
+        <item>Void\'s Dust</item>
         <item>Seed of Yggdrasil</item>
+        <item>Forbidden Page</item>
+        <item>Claw of Chaos</item>
+        <item>Heart of the Foreign God</item>
     </array>
 
     <array name="mats_values">
-        <item>Claw</item>
-        <item>Dust</item>
+        <item>Proof</item>
         <item>Fang</item>
-        <item>Heart</item>
+        <item>Dust</item>
         <item>Seed</item>
+        <item>Page</item>
+        <item>Claw</item>
+        <item>Heart</item>
     </array>
 </resources>

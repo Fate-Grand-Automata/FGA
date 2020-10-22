@@ -49,10 +49,12 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
 
     private val MaterialEnum.drawable
         get() = when (this) {
-            MaterialEnum.Claw -> R.drawable.mat_claw
-            MaterialEnum.Dust -> R.drawable.mat_dust
+            MaterialEnum.Proof -> R.drawable.mat_proof
             MaterialEnum.Fang -> R.drawable.mat_fang
-            MaterialEnum.Heart -> R.drawable.mat_heart
+            MaterialEnum.Dust -> R.drawable.mat_dust
             MaterialEnum.Seed -> R.drawable.mat_seed
+            MaterialEnum.Page -> R.drawable.mat_page
+            MaterialEnum.Claw -> R.drawable.mat_claw
+            MaterialEnum.Heart -> R.drawable.mat_heart
         }
 }

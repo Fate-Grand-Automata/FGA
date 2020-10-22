@@ -1,9 +1,53 @@
 package com.mathewsachin.fategrandautomata.scripts.enums
 
 enum class MaterialEnum {
-    Claw,
-    Dust,
+    Proof,
+
+    //Bone,
     Fang,
+    Dust,
+
+    //    Chains,
+//    Stinger,
+//    Fluid,
+//    Stake,
+//    Gunpowder,
+    Seed,
+
+    //    GhostLantern,
+//    TwinCrystal,
+//    SerpentJewel,
+//    Feather,
+//    Gear,
+    Page,
+
+    //    HomunculusBaby,
+//    Horseshoe,
+//    KnightMedal,
+//    ShellOfReminiscence,
+//    Magatama,
+//    EternalIce,
+//    GiantRing,
+//    AuroraSteel,
+//    AncientBellOfTranquility,
+//    ArrowHead,
+//    CrownOfRadiantSilver,
+//    DivineSpiricleVein,
+    Claw,
     Heart,
-    Seed
+//    DragonScale,
+//    SpiritRoot,
+//    WarhorseYoungHorn,
+//    TearStoneOfBlood,
+//    Grease,
+//    LampOfEvilSealing,
+//    Scarab,
+//    Lanugo,
+//    Gallstone,
+//    MysteriousWine,
+//    DawnLightReactorCore,
+//    TsukmoMirror,
+//    GenesisEgg,
+//    CometShard,
+//    FruitOfLongevity
 }
