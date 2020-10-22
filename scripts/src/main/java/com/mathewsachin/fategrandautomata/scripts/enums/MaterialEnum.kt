@@ -5,9 +5,9 @@ enum class MaterialEnum {
     Bone,
     Fang,
     Dust,
+    Chain,
 
-    //    Chains,
-//    Stinger,
+    //    Stinger,
     Fluid,
 
     //    Stake,
