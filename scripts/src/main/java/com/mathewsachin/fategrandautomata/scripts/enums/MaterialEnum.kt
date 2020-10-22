@@ -9,8 +9,9 @@ enum class MaterialEnum {
 
     //    Chains,
 //    Stinger,
-//    Fluid,
-//    Stake,
+    Fluid,
+
+    //    Stake,
 //    Gunpowder,
     Seed,
 
@@ -35,13 +36,15 @@ enum class MaterialEnum {
 //    DivineSpiricleVein,
     Claw,
     Heart,
-//    DragonScale,
-//    SpiritRoot,
-//    WarhorseYoungHorn,
+
+    //    DragonScale,
+    SpiritRoot,
+
+    //    WarhorseYoungHorn,
 //    TearStoneOfBlood,
 //    Grease,
 //    LampOfEvilSealing,
-//    Scarab,
+    Scarab,
 //    Lanugo,
 //    Gallstone,
 //    MysteriousWine,

@@ -155,19 +155,25 @@
         <item>Proof of Hero</item>
         <item>Dragon\'s Fang</item>
         <item>Void\'s Dust</item>
+        <item>Mystic Spinal Fluid</item>
         <item>Seed of Yggdrasil</item>
         <item>Forbidden Page</item>
         <item>Claw of Chaos</item>
         <item>Heart of the Foreign God</item>
+        <item>Spirit Root</item>
+        <item>Scarab of Wisdom</item>
     </array>
 
     <array name="mats_values">
         <item>Proof</item>
         <item>Fang</item>
         <item>Dust</item>
+        <item>Fluid</item>
         <item>Seed</item>
         <item>Page</item>
         <item>Claw</item>
         <item>Heart</item>
+        <item>SpiritRoot</item>
+        <item>Scarab</item>
     </array>
 </resources>
