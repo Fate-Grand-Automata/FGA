@@ -16,22 +16,6 @@
         <item>3</item>
     </string-array>
 
-    <array name="game_server_labels">
-        <item>NA</item>
-        <item>JP</item>
-        <item>CN</item>
-        <item>TW</item>
-        <item>KR</item>
-    </array>
-
-    <array name="game_server_values">
-        <item>En</item>
-        <item>Jp</item>
-        <item>Cn</item>
-        <item>Tw</item>
-        <item>Kr</item>
-    </array>
-
     <array name="support_selection_modes_labels">
         <item>@string/p_support_mode_first</item>
         <item>@string/p_support_mode_manual</item>
@@ -55,32 +39,4 @@
         <item>First</item>
         <item>Manual</item>
     </array>
-
-    <array name="party_labels">
-        <item>@string/p_party_not_set</item>
-        <item>Party 1</item>
-        <item>Party 2</item>
-        <item>Party 3</item>
-        <item>Party 4</item>
-        <item>Party 5</item>
-        <item>Party 6</item>
-        <item>Party 7</item>
-        <item>Party 8</item>
-        <item>Party 9</item>
-        <item>Party 10</item>
-    </array>
-
-    <string-array name="party_values">
-        <item>-1</item>
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-    </string-array>
 </resources>

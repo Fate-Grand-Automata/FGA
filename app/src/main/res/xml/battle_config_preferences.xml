@@ -23,8 +23,6 @@
 
     <ListPreference
         app:defaultValue="-1"
-        app:entries="@array/party_labels"
-        app:entryValues="@array/party_values"
         app:icon="@drawable/ic_flag"
         app:key="@string/pref_battle_config_party"
         app:title="@string/p_battle_config_party"
