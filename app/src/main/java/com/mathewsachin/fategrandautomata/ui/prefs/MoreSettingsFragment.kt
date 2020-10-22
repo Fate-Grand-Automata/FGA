@@ -30,7 +30,10 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
         findPreference<ListPreference>(getString(R.string.pref_boost_item))?.apply {
             entries = listOf(R.string.p_boost_item_disabled, R.string.p_boost_item_skip)
                 .map { context.getString(it) }
-                .toTypedArray() + (1..3).map { "Item $it" }
+                .toTypedArray() +
+                    (1..3).map {
+                        context.getString(R.string.p_boost_item_number, it)
+                    }
 
             entryValues = (-1..3)
                 .map { it.toString() }

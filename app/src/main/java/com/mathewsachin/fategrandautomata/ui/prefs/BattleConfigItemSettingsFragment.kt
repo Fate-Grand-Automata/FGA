@@ -126,7 +126,9 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<ListPreference>(getString(R.string.pref_battle_config_party))?.apply {
             entries = arrayOf(getString(R.string.p_party_not_set)) +
-                    (1..10).map { "Party $it" }.toTypedArray()
+                    (1..10).map {
+                        context.getString(R.string.p_party_number, it)
+                    }
 
             entryValues = (-1..9)
                 .map { it.toString() }
