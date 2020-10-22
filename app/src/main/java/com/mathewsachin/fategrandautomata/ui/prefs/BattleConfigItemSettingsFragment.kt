@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -112,6 +113,12 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         }
+
+        listOf(R.string.pref_spam_np, R.string.pref_spam_skill)
+            .mapNotNull { findPreference<ListPreference>(getString(it)) }
+            .forEach { pref ->
+                pref.initWith<SpamEnum> { it.stringRes }
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

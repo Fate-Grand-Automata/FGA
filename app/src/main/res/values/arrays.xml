@@ -1,32 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Label ordering must match values -->
-    <array name="refill_type_labels">
-        <item>@string/p_refill_type_bronze</item>
-        <item>@string/p_refill_type_silver</item>
-        <item>@string/p_refill_type_gold</item>
-        <item>@string/p_refill_type_sq</item>
-    </array>
-
-    <array name="refill_type_values">
-        <item>Bronze</item>
-        <item>Silver</item>
-        <item>Gold</item>
-        <item>SQ</item>
-    </array>
-
-    <array name="brave_chain_labels">
-        <item>@string/p_brave_chains_don_t_care</item>
-        <item>@string/p_brave_chains_with_np</item>
-        <item>@string/p_brave_chains_avoid</item>
-    </array>
-
-    <array name="brave_chain_values">
-        <item>None</item>
-        <item>WithNP</item>
-        <item>Avoid</item>
-    </array>
-
     <array name="boost_item_labels">
         <item>@string/p_boost_item_disabled</item>
         <item>@string/p_boost_item_skip</item>
@@ -42,18 +15,6 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-
-    <array name="spam_types_labels">
-        <item>@string/p_spam_none</item>
-        <item>@string/p_spam_spam</item>
-        <item>@string/p_spam_danger</item>
-    </array>
-
-    <array name="spam_types_values">
-        <item>None</item>
-        <item>Spam</item>
-        <item>Danger</item>
-    </array>
 
     <array name="game_server_labels">
         <item>NA</item>

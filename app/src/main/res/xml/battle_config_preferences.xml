@@ -88,8 +88,6 @@
 
         <ListPreference
             app:defaultValue="None"
-            app:entries="@array/spam_types_labels"
-            app:entryValues="@array/spam_types_values"
             app:icon="@drawable/ic_star"
             app:key="@string/pref_spam_np"
             app:title="@string/p_spam_np"
@@ -97,8 +95,6 @@
 
         <ListPreference
             app:defaultValue="None"
-            app:entries="@array/spam_types_labels"
-            app:entryValues="@array/spam_types_values"
             app:icon="@drawable/ic_wand"
             app:key="@string/pref_spam_skill"
             app:title="@string/p_spam_skill"

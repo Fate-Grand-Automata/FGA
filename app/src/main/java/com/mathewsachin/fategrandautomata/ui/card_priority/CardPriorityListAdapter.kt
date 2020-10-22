@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
+import com.mathewsachin.fategrandautomata.util.stringRes
 
 class CardPriorityListAdapter(
     private val Items: List<CardPriorityListItem>,
@@ -47,10 +48,17 @@ class CardPriorityListAdapter(
                 holder.braveChainsSpinner.visibility = visible
             }
 
-            ArrayAdapter.createFromResource(
-                holder.itemView.context,
-                R.array.brave_chain_labels,
-                android.R.layout.simple_spinner_item
+            val context = holder.itemView.context
+            val items = enumValues<BraveChainEnum>()
+                .map {
+                    context.getString(it.stringRes)
+                }
+                .toTypedArray()
+
+            ArrayAdapter(
+                context,
+                android.R.layout.simple_spinner_item,
+                items
             ).also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
