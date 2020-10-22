@@ -2,11 +2,14 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.util.makeNumeric
 import dagger.hilt.android.AndroidEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
@@ -36,5 +39,20 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
                 it.summary = refillResourcesMsg
             }
         }
+
+        findPreference<ListPreference>(getString(R.string.pref_limit_mat_by))?.let {
+            vm.limitedMat.observe(viewLifecycleOwner) { mat ->
+                it.icon = ContextCompat.getDrawable(requireContext(), mat.drawable)
+            }
+        }
     }
+
+    private val MaterialEnum.drawable
+        get() = when (this) {
+            MaterialEnum.Claw -> R.drawable.mat_claw
+            MaterialEnum.Dust -> R.drawable.mat_dust
+            MaterialEnum.Fang -> R.drawable.mat_fang
+            MaterialEnum.Heart -> R.drawable.mat_heart
+            MaterialEnum.Seed -> R.drawable.mat_seed
+        }
 }
