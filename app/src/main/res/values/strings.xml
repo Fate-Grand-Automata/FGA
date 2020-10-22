@@ -1,22 +1,21 @@
 <resources>
-    <string name="app_name">FGA (Debug)</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name" translatable="false">FGA (Debug)</string>
     <string name="service_runner_description">This service actually runs the scripts. An accessibility service is required if clicks and swipes are to be performed without root.</string>
 
-    <string name="count_0">0</string>
-    <string name="count_1">1</string>
-    <string name="count_2">2</string>
+    <string name="count_0" translatable="false">0</string>
+    <string name="count_1" translatable="false">1</string>
+    <string name="count_2" translatable="false">2</string>
 
-    <string name="skill_code_a">a</string>
-    <string name="skill_code_b">b</string>
-    <string name="skill_code_c">c</string>
-    <string name="skill_code_d">d</string>
-    <string name="skill_code_e">e</string>
-    <string name="skill_code_f">f</string>
-    <string name="skill_code_g">g</string>
-    <string name="skill_code_h">h</string>
-    <string name="skill_code_i">i</string>
-    <string name="skill_code_j">j</string>
-    <string name="skill_code_k">k</string>
-    <string name="skill_code_l">l</string>
+    <string name="skill_code_a" translatable="false">a</string>
+    <string name="skill_code_b" translatable="false">b</string>
+    <string name="skill_code_c" translatable="false">c</string>
+    <string name="skill_code_d" translatable="false">d</string>
+    <string name="skill_code_e" translatable="false">e</string>
+    <string name="skill_code_f" translatable="false">f</string>
+    <string name="skill_code_g" translatable="false">g</string>
+    <string name="skill_code_h" translatable="false">h</string>
+    <string name="skill_code_i" translatable="false">i</string>
+    <string name="skill_code_j" translatable="false">j</string>
+    <string name="skill_code_k" translatable="false">k</string>
+    <string name="skill_code_l" translatable="false">l</string>
 </resources>

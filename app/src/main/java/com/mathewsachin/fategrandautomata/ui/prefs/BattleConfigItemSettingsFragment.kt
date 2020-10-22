@@ -17,6 +17,8 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -111,6 +113,44 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
                 true
             }
+        }
+
+        listOf(R.string.pref_spam_np, R.string.pref_spam_skill)
+            .mapNotNull { findPreference<ListPreference>(getString(it)) }
+            .forEach { pref ->
+                pref.initWith<SpamEnum> { it.stringRes }
+            }
+
+        findPreference<ListPreference>(getString(R.string.pref_battle_config_support_class))
+            ?.initWith<SupportClass> { it.stringRes }
+
+        findPreference<ListPreference>(getString(R.string.pref_battle_config_party))?.apply {
+            entries = arrayOf(getString(R.string.p_party_not_set)) +
+                    (1..10).map {
+                        context.getString(R.string.p_party_number, it)
+                    }
+
+            entryValues = (-1..9)
+                .map { it.toString() }
+                .toTypedArray()
+        }
+
+        findPreference<ListPreference>(getString(R.string.pref_support_mode))
+            ?.initWith<SupportSelectionModeEnum> { it.stringRes }
+
+        findPreference<ListPreference>(getString(R.string.pref_support_fallback))?.apply {
+            val values = listOf(
+                SupportSelectionModeEnum.First,
+                SupportSelectionModeEnum.Manual
+            )
+
+            entryValues = values
+                .map { it.toString() }
+                .toTypedArray()
+
+            entries = values
+                .map { context.getString(it.stringRes) }
+                .toTypedArray()
         }
     }
 
