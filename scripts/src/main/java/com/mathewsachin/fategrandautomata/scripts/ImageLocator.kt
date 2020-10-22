@@ -2,7 +2,10 @@ package com.mathewsachin.fategrandautomata.scripts
 
 import javax.inject.Inject
 
-class ImageLocator @Inject constructor(val imgLoader: IImageLoader) {
+class ImageLocator @Inject constructor(
+    private val imgLoader: IImageLoader,
+    val materials: MaterialImageLocator
+) {
     private fun load(path: String) = imgLoader.loadRegionPattern(path)
 
     fun loadSupportPattern(path: String) = imgLoader.loadSupportPattern(path)

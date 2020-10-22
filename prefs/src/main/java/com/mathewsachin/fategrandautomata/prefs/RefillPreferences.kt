@@ -22,4 +22,10 @@ internal class RefillPreferences(val prefs: RefillPrefsCore) :
     override val shouldLimitRuns by prefs.shouldLimitRuns
 
     override val limitRuns by prefs.limitRuns
+
+    override val shouldLimitMats by prefs.shouldLimitMats
+
+    override val matToLimit by prefs.matToLimit
+
+    override val limitMats by prefs.limitMats
 }

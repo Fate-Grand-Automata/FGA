@@ -52,4 +52,32 @@
             app:title="@string/p_runs"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="mat_limit_category"
+        app:title="Material Limit">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_check"
+            app:key="@string/pref_should_limit_mats"
+            app:title="Limit by Materials" />
+
+        <ListPreference
+            app:defaultValue="Heart"
+            app:dependency="@string/pref_should_limit_mats"
+            app:icon="@drawable/ic_diamond"
+            app:entries="@array/mats_labels"
+            app:entryValues="@array/mats_values"
+            app:key="@string/pref_limit_mat_by"
+            app:title="Material"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:defaultValue="1"
+            app:dependency="@string/pref_should_limit_mats"
+            app:icon="@drawable/ic_repeat"
+            app:key="@string/pref_limit_mats"
+            app:title="Count"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

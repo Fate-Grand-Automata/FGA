@@ -150,4 +150,20 @@
         <item>Extra</item>,
         <item>Mix</item>
     </array>
+
+    <array name="mats_labels">
+        <item>Claw of Chaos</item>
+        <item>Void\'s Dust</item>
+        <item>Dragon\'s Fang</item>
+        <item>Heart of the Foreign God</item>
+        <item>Seed of Yggdrasil</item>
+    </array>
+
+    <array name="mats_values">
+        <item>Claw</item>
+        <item>Dust</item>
+        <item>Fang</item>
+        <item>Heart</item>
+        <item>Seed</item>
+    </array>
 </resources>

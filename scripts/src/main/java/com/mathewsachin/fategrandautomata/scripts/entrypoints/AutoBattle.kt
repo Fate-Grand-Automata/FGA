@@ -42,6 +42,7 @@ open class AutoBattle @Inject constructor(
     private var withdrawCount = 0
     private var isContinuing = false
     private var partySelected = false
+    private var matsGot = 0
 
     override fun script(): Nothing {
         init()
@@ -204,6 +205,9 @@ open class AutoBattle @Inject constructor(
         Game.resultCeRewardCloseClick.click()
     }
 
+    private val wantDropsScreen
+        get() = prefs.screenshotDrops || prefs.refill.shouldLimitMats
+
     /**
      * Clicks through the reward screens.
      */
@@ -215,7 +219,7 @@ open class AutoBattle @Inject constructor(
             } else notify(msg)
         }
 
-        if (prefs.screenshotDrops)
+        if (wantDropsScreen)
             Game.resultClick.click(15)
         else Game.resultNextClick.click(20)
     }
@@ -224,6 +228,20 @@ open class AutoBattle @Inject constructor(
         images.matRewards in Game.resultMatRewardsRegion
 
     private fun dropScreen() {
+        if (prefs.refill.shouldLimitMats) {
+            val mat = images.materials[prefs.refill.matToLimit]
+
+            // TODO: Make the search region smaller
+            matsGot += Region(Location(), Game.scriptSize)
+                .findAll(mat)
+                .count()
+
+            if (matsGot >= prefs.refill.limitMats) {
+                // TODO: Translate
+                throw ScriptExitException("Got $matsGot ${prefs.refill.matToLimit}")
+            }
+        }
+
         if (prefs.screenshotDrops) {
             screenshotDrops()
         }

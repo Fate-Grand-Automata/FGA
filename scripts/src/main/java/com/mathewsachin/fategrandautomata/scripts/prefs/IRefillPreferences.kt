@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 
 interface IRefillPreferences {
@@ -10,4 +11,8 @@ interface IRefillPreferences {
 
     val shouldLimitRuns: Boolean
     val limitRuns: Int
+
+    val shouldLimitMats: Boolean
+    val matToLimit: MaterialEnum
+    val limitMats: Int
 }
