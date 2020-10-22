@@ -37,11 +37,11 @@ fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
 inline fun <reified T : Enum<T>> MultiSelectListPreference.initWith(localized: (T) -> Int) {
     val values = enumValues<T>()
 
-    this.entries = values
+    this.entryValues = values
         .map { it.toString() }
         .toTypedArray()
 
-    this.entryValues = values
+    this.entries = values
         .map { context.getString(localized(it)) }
         .toTypedArray()
 }
@@ -49,11 +49,11 @@ inline fun <reified T : Enum<T>> MultiSelectListPreference.initWith(localized: (
 inline fun <reified T : Enum<T>> ListPreference.initWith(localized: (T) -> Int) {
     val values = enumValues<T>()
 
-    this.entries = values
+    this.entryValues = values
         .map { it.toString() }
         .toTypedArray()
 
-    this.entryValues = values
+    this.entries = values
         .map { context.getString(localized(it)) }
         .toTypedArray()
 }
