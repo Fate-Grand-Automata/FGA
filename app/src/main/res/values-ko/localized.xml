@@ -206,7 +206,7 @@
     <string name="p_script_mode_friend_gacha">친구 포인트 가챠</string>
     <string name="p_script_mode_support_img_maker">서포트 이미지 메이커</string>
 
-    <string name="p_party_not_set">설정 안함</string>
+    <string name="p_not_set">설정 안함</string>
 
     <string name="p_support_class_none">없음</string>
     <string name="p_support_class_all">모두</string>

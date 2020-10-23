@@ -226,7 +226,8 @@
 
     <string name="p_max_gold_ember_set_size">Max Gold ember set size</string>
 
-    <string name="p_party_not_set">Not Set</string>
+    <string name="p_not_set">Not Set</string>
+
     <string name="p_party_number">Party %d</string>
 
     <string name="p_support_class_none">None</string>

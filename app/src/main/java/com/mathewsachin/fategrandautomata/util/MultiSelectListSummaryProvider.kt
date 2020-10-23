@@ -9,7 +9,9 @@ class SupportMultiSelectSummaryProvider : MultiSelectSummaryProvider(
     R.string.battle_config_support_any
 )
 
-open class MultiSelectSummaryProvider(@StringRes val noneText: Int? = null) : Preference.SummaryProvider<MultiSelectListPreference> {
+open class MultiSelectSummaryProvider(
+    @StringRes val noneText: Int = R.string.p_not_set
+) : Preference.SummaryProvider<MultiSelectListPreference> {
     override fun provideSummary(preference: MultiSelectListPreference) = when {
         preference.values.isNotEmpty() -> {
             val selectedLabels = preference.values.map {
@@ -25,9 +27,6 @@ open class MultiSelectSummaryProvider(@StringRes val noneText: Int? = null) : Pr
 
             selectedLabels.joinToString()
         }
-        noneText != null -> {
-            preference.context.getString(noneText)
-        }
-        else -> ""
+        else -> preference.context.getString(noneText)
     }
 }

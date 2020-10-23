@@ -205,7 +205,7 @@
     <string name="p_script_mode_friend_gacha">友情點數召喚</string>
     <string name="p_script_mode_support_img_maker">支援從者圖片截取器</string>
 
-    <string name="p_party_not_set">未設定</string>
+    <string name="p_not_set">未設定</string>
 
     <string name="p_support_class_none">無</string>
     <string name="p_support_class_all">全部職階 (All) </string>
