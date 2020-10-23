@@ -71,10 +71,4 @@ class MainSettingsViewModel @ViewModelInject constructor(
         .asLiveData()
 
     val serviceStarted get() = ScriptRunnerService.serviceStarted
-
-    val limitedMat = prefsCore
-        .refill
-        .matToLimit
-        .asFlow()
-        .asLiveData()
 }

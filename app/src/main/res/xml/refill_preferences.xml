@@ -60,14 +60,6 @@
             app:key="@string/pref_should_limit_mats"
             app:title="Limit by Materials" />
 
-        <ListPreference
-            app:defaultValue="Heart"
-            app:dependency="@string/pref_should_limit_mats"
-            app:icon="@drawable/mat_heart"
-            app:key="@string/pref_limit_mat_by"
-            app:title="Material"
-            app:useSimpleSummaryProvider="true" />
-
         <EditTextPreference
             app:defaultValue="1"
             app:dependency="@string/pref_should_limit_mats"

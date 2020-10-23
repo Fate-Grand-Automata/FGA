@@ -2,10 +2,8 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.preference.EditTextPreference
-import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
@@ -28,9 +26,6 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<MultiSelectListPreference>(getString(R.string.pref_refill_resource))
             ?.initWith<RefillResourceEnum> { it.stringRes }
-
-        findPreference<ListPreference>(getString(R.string.pref_limit_mat_by))
-            ?.initWith<MaterialEnum> { it.stringRes }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,11 +45,11 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        findPreference<ListPreference>(getString(R.string.pref_limit_mat_by))?.let {
-            vm.limitedMat.observe(viewLifecycleOwner) { mat ->
-                it.icon = ContextCompat.getDrawable(requireContext(), mat.drawable)
-            }
-        }
+//        findPreference<ListPreference>(getString(R.string.pref_limit_mat_by))?.let {
+//            vm.limitedMat.observe(viewLifecycleOwner) { mat ->
+//                it.icon = ContextCompat.getDrawable(requireContext(), mat.drawable)
+//            }
+//        }
     }
 
     private val MaterialEnum.drawable

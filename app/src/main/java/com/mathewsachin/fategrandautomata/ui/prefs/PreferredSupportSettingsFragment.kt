@@ -8,7 +8,7 @@ import androidx.preference.PreferenceDialogFragmentCompat
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.util.SupportMultiSelectListSummaryProvider
+import com.mathewsachin.fategrandautomata.util.SupportMultiSelectSummaryProvider
 import com.mathewsachin.fategrandautomata.util.populateFriendOrCe
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -31,8 +31,8 @@ class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
 
         setPreferencesFromResource(R.xml.preferred_support_preferences, rootKey)
 
-        findServantList()?.summaryProvider = SupportMultiSelectListSummaryProvider()
-        findCeList()?.summaryProvider = SupportMultiSelectListSummaryProvider()
+        findServantList()?.summaryProvider = SupportMultiSelectSummaryProvider()
+        findCeList()?.summaryProvider = SupportMultiSelectSummaryProvider()
     }
 
     private fun populatedServantAndCE() {

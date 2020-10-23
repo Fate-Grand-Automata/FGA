@@ -33,6 +33,11 @@
         app:key="@string/pref_card_priority"
         app:title="@string/p_battle_config_card_priority" />
 
+    <MultiSelectListPreference
+        app:icon="@drawable/ic_diamond"
+        app:key="@string/pref_battle_config_mat"
+        app:title="Material" />
+
     <PreferenceCategory
         app:key="support_category"
         app:title="@string/p_battle_config_support">

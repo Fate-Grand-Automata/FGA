@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
@@ -76,7 +77,7 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
         setPreferencesFromResource(R.xml.battle_config_preferences, rootKey)
 
-        findFriendNamesList()?.summaryProvider = SupportMultiSelectListSummaryProvider()
+        findFriendNamesList()?.summaryProvider = SupportMultiSelectSummaryProvider()
 
         findPreference<EditTextPreference>(getString(R.string.pref_battle_config_notes))?.makeMultiLine()
 
@@ -151,6 +152,11 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             entries = values
                 .map { context.getString(it.stringRes) }
                 .toTypedArray()
+        }
+
+        findPreference<MultiSelectListPreference>(getString(R.string.pref_battle_config_mat))?.apply {
+            initWith<MaterialEnum> { it.stringRes }
+            summaryProvider = MultiSelectSummaryProvider()
         }
     }
 

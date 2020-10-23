@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.modules.*
@@ -42,7 +43,7 @@ open class AutoBattle @Inject constructor(
     private var withdrawCount = 0
     private var isContinuing = false
     private var partySelected = false
-    private var matsGot = 0
+    private var matsGot = mutableMapOf<MaterialEnum, Int>()
 
     override fun script(): Nothing {
         init()
@@ -73,6 +74,10 @@ open class AutoBattle @Inject constructor(
         appendLine()
 
         appendLine(makeRefillAndRunsMessage())
+
+        if (prefs.selectedBattleConfig.materials.isNotEmpty()) {
+            appendLine("Got $matsGot")
+        }
 
         appendLine(messages.time(battle.state.totalBattleTime))
 
@@ -206,7 +211,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private val wantDropsScreen
-        get() = prefs.screenshotDrops || prefs.refill.shouldLimitMats
+        get() = prefs.screenshotDrops || prefs.selectedBattleConfig.materials.isNotEmpty()
 
     /**
      * Clicks through the reward screens.
@@ -228,17 +233,26 @@ open class AutoBattle @Inject constructor(
         images.matRewards in Game.resultMatRewardsRegion
 
     private fun dropScreen() {
-        if (prefs.refill.shouldLimitMats) {
-            val mat = images.materials[prefs.refill.matToLimit]
+        for (material in prefs.selectedBattleConfig.materials) {
+            val pattern = images.materials[material]
 
             // TODO: Make the search region smaller
-            matsGot += Region(Location(), Game.scriptSize)
-                .findAll(mat)
+            val count = Region(Location(), Game.scriptSize)
+                .findAll(pattern)
                 .count()
 
-            if (matsGot >= prefs.refill.limitMats) {
+            // Increment material count
+            matsGot.merge(material, count, Int::plus)
+        }
+
+        if (prefs.refill.shouldLimitMats) {
+            val totalMats = matsGot
+                .values
+                .sum()
+
+            if (totalMats >= prefs.refill.limitMats) {
                 // TODO: Translate
-                throw ScriptExitException("Got $matsGot ${prefs.refill.matToLimit}")
+                throw ScriptExitException("Got $totalMats materials")
             }
         }
 
