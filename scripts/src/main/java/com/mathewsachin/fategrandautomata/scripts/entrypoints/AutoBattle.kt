@@ -73,10 +73,15 @@ open class AutoBattle @Inject constructor(
         appendLine(reason)
         appendLine()
 
-        appendLine(makeRefillAndRunsMessage())
+        makeRefillAndRunsMessage().let { msg ->
+            if (msg.isNotBlank()) {
+                appendLine(msg)
+            }
+        }
 
         if (prefs.selectedBattleConfig.materials.isNotEmpty()) {
-            appendLine("Got $matsGot")
+            appendLine(messages.materials(matsGot))
+            appendLine()
         }
 
         appendLine(messages.time(battle.state.totalBattleTime))
@@ -144,6 +149,11 @@ open class AutoBattle @Inject constructor(
         card.init(autoSkill, battle)
 
         support.init()
+
+        // Set all Materials to 0
+        prefs.selectedBattleConfig
+            .materials
+            .associateWithTo(matsGot) { 0 }
     }
 
     /**
@@ -233,6 +243,21 @@ open class AutoBattle @Inject constructor(
         images.matRewards in Game.resultMatRewardsRegion
 
     private fun dropScreen() {
+        if (wantDropsScreen) {
+            // Give some time to load
+            0.5.seconds.wait()
+        }
+
+        trackMaterials()
+
+        if (prefs.screenshotDrops) {
+            screenshotDrops()
+        }
+
+        Game.resultNextClick.click(5)
+    }
+
+    private fun trackMaterials() {
         for (material in prefs.selectedBattleConfig.materials) {
             val pattern = images.materials[material]
 
@@ -252,20 +277,12 @@ open class AutoBattle @Inject constructor(
 
             if (totalMats >= prefs.refill.limitMats) {
                 // TODO: Translate
-                throw ScriptExitException("Got $totalMats materials")
+                throw ScriptExitException(messages.farmedMaterials(totalMats))
             }
         }
-
-        if (prefs.screenshotDrops) {
-            screenshotDrops()
-        }
-
-        Game.resultNextClick.click(5)
     }
 
     private fun screenshotDrops() {
-        0.5.seconds.wait()
-
         val dropsFolder = File(
             storageDirs.storageRoot,
             "drops"

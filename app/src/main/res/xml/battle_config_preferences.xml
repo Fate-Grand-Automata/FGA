@@ -34,9 +34,9 @@
         app:title="@string/p_battle_config_card_priority" />
 
     <MultiSelectListPreference
-        app:icon="@drawable/ic_diamond"
+        app:icon="@drawable/ic_fang"
         app:key="@string/pref_battle_config_mat"
-        app:title="Material" />
+        app:title="@string/p_mats" />
 
     <PreferenceCategory
         app:key="support_category"

@@ -278,6 +278,9 @@
     <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string>
     <string name="picked_exp_stacks">Picked %d EXP stacks</string>
 
+    <string name="p_mats">Materials</string>
+    <string name="mats_farmed">Farmed %d material(s)</string>
+
     <string name="mat_proof">Proof of Hero</string>
     <string name="mat_bone">Evil Bone</string>
     <string name="mat_fang">Dragon\'s Fang</string>

@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.util
 import android.content.Context
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -53,6 +54,14 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
 
     override fun timesRanOutOf(times: Int, outOf: Int) =
         context.getString(R.string.times_ran_out_of, times, outOf)
+
+    override fun farmedMaterials(count: Int) =
+        context.getString(R.string.mats_farmed, count)
+
+    override fun materials(mats: Map<MaterialEnum, Int>) =
+        mats.entries.joinToString { (mat, count) ->
+            "${context.getString(mat.stringRes)}: $count"
+        }
 
     override fun refillsUsedOutOf(used: Int, outOf: Int) =
         context.getString(R.string.refills_used_out_of, used, outOf)
