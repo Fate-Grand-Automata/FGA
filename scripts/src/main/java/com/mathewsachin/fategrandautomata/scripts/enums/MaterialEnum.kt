@@ -9,9 +9,8 @@ enum class MaterialEnum {
 
     //    Stinger,
     Fluid,
-
-    //    Stake,
-//    Gunpowder,
+    Stake,
+    Gunpowder,
     Seed,
     GhostLantern,
     OctupletCrystal,
@@ -21,8 +20,7 @@ enum class MaterialEnum {
     Page,
     HomunculusBaby,
     Horseshoe,
-
-    //    KnightMedal,
+    Medal,
     ShellOfReminiscence,
     Magatama,
 
@@ -41,8 +39,7 @@ enum class MaterialEnum {
     YoungHorn,
     TearStone,
     Grease,
-
-    //    LampOfEvilSealing,
+    LampOfEvilSealing,
     Scarab,
     Lanugo,
     Gallstone,

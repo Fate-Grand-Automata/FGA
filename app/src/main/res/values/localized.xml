@@ -310,4 +310,8 @@
     <string name="mat_lanugo">Primordial Lanugo</string>
     <string name="mat_gallstone">Cursed Beast Gallstone</string>
     <string name="mat_wine">Mysterious Divine Wine</string>
+    <string name="mat_stake">Stake of Wailing Night</string>
+    <string name="mat_gunpowder">Mystic Gunpowder</string>
+    <string name="mat_medal">Knight\'s Medal</string>
+    <string name="mat_lamp_evil_sealing">Lamp of Evil Sealing</string>
 </resources>

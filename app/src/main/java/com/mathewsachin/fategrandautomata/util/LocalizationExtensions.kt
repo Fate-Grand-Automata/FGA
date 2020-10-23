@@ -79,4 +79,8 @@ val MaterialEnum.stringRes
         MaterialEnum.Lanugo -> R.string.mat_lanugo
         MaterialEnum.Gallstone -> R.string.mat_gallstone
         MaterialEnum.MysteriousWine -> R.string.mat_wine
+        MaterialEnum.Stake -> R.string.mat_stake
+        MaterialEnum.Gunpowder -> R.string.mat_gunpowder
+        MaterialEnum.Medal -> R.string.mat_medal
+        MaterialEnum.LampOfEvilSealing -> R.string.mat_lamp_evil_sealing
     }
