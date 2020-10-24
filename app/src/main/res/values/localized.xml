@@ -314,4 +314,7 @@
     <string name="mat_gunpowder">Mystic Gunpowder</string>
     <string name="mat_medal">Knight\'s Medal</string>
     <string name="mat_lamp_evil_sealing">Lamp of Evil Sealing</string>
+    <string name="mat_stinger">Deadly Poisonous Needle</string>
+    <string name="mat_eternal_ice">Eternal Ice</string>
+    <string name="mat_steel">Aurora Steel</string>
 </resources>

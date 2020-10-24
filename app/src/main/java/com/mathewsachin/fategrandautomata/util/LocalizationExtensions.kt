@@ -83,4 +83,7 @@ val MaterialEnum.stringRes
         MaterialEnum.Gunpowder -> R.string.mat_gunpowder
         MaterialEnum.Medal -> R.string.mat_medal
         MaterialEnum.LampOfEvilSealing -> R.string.mat_lamp_evil_sealing
+        MaterialEnum.Stinger -> R.string.mat_stinger
+        MaterialEnum.EternalIce -> R.string.mat_eternal_ice
+        MaterialEnum.AuroraSteel -> R.string.mat_steel
     }

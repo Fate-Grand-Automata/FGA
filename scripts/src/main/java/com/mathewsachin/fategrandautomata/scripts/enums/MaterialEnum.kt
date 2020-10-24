@@ -6,8 +6,7 @@ enum class MaterialEnum {
     Fang,
     Dust,
     Chain,
-
-    //    Stinger,
+    Stinger,
     Fluid,
     Stake,
     Gunpowder,
@@ -23,15 +22,14 @@ enum class MaterialEnum {
     Medal,
     ShellOfReminiscence,
     Magatama,
-
-    //    EternalIce,
+    EternalIce,
     GiantRing,
+    AuroraSteel,
 
-    //    AuroraSteel,
-//    AncientBellOfTranquility,
-//    ArrowHead,
-//    CrownOfRadiantSilver,
-//    DivineSpiricleVein,
+    // AncientBellOfTranquility,
+    // ArrowHead,
+    // CrownOfRadiantSilver,
+    // DivineSpiricleVein,
     Claw,
     Heart,
     DragonScale,
@@ -44,9 +42,9 @@ enum class MaterialEnum {
     Lanugo,
     Gallstone,
     MysteriousWine,
-//    DawnLightReactorCore,
-//    TsukmoMirror,
-//    GenesisEgg,
-//    CometShard,
-//    FruitOfLongevity
+    // DawnLightReactorCore,
+    // TsukmoMirror,
+    // GenesisEgg,
+    // CometShard,
+    // FruitOfLongevity
 }
