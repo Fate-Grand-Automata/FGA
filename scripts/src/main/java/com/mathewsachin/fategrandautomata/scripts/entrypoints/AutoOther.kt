@@ -18,7 +18,7 @@ class AutoOther @Inject constructor(
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     override fun script(): Nothing {
         val screenArea = Region(Location(), Game.scriptSize)
-        val lotteryCheckRegion = Region(280, 870, 60, 100)
+        val lotteryCheckRegion = Region(150, 800, 340, 230)
 
         1.seconds.wait()
 
@@ -31,7 +31,7 @@ class AutoOther @Inject constructor(
                 giftBox.get()
             images.supportRegionTool in Game.supportRegionToolSearchRegion ->
                 supportImageMaker.get()
-            else -> throw ScriptExitException("Couldn't detect Script type")
+            else -> throw ScriptExitException(messages.cannotDetectScriptType)
         }
 
         entryPoint.script()

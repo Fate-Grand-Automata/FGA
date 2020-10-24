@@ -15,6 +15,7 @@ interface IScriptMessages : IAutomataMessages {
     val ceDropped: String
     val ceGet: String
     val withdrawDisabled: String
+    val cannotDetectScriptType: String
 
     fun timesRan(times: Int): String
     fun timesRanOutOf(times: Int, outOf: Int): String
