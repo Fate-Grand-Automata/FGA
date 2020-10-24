@@ -280,6 +280,8 @@
 
     <string name="p_mats">Materials</string>
     <string name="mats_farmed">Farmed %d material(s)</string>
+    <string name="p_mat_limit">Limit by Materials</string>
+    <string name="p_mat_limit_count">Count</string>
 
     <string name="mat_proof">Proof of Hero</string>
     <string name="mat_bone">Evil Bone</string>

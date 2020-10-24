@@ -276,7 +276,6 @@ open class AutoBattle @Inject constructor(
                 .sum()
 
             if (totalMats >= prefs.refill.limitMats) {
-                // TODO: Translate
                 throw ScriptExitException(messages.farmedMaterials(totalMats))
             }
         }
