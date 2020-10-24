@@ -259,7 +259,7 @@ open class AutoBattle @Inject constructor(
 
     private fun trackMaterials() {
         for (material in prefs.selectedBattleConfig.materials) {
-            val pattern = images.materials[material]
+            val pattern = images.material(material)
 
             // TODO: Make the search region smaller
             val count = Region(Location(), Game.scriptSize)

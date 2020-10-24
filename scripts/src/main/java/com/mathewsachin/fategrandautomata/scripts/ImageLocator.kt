@@ -1,11 +1,13 @@
 package com.mathewsachin.fategrandautomata.scripts
 
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import javax.inject.Inject
 
 class ImageLocator @Inject constructor(
-    private val imgLoader: IImageLoader,
-    val materials: MaterialImageLocator
+    private val imgLoader: IImageLoader
 ) {
+    fun material(material: MaterialEnum) = imgLoader.loadMaterial(material)
+
     private fun load(path: String) = imgLoader.loadRegionPattern(path)
 
     fun loadSupportPattern(path: String) = imgLoader.loadSupportPattern(path)
