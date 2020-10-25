@@ -28,11 +28,15 @@ import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.debug
 import timber.log.info
 import timber.log.verbose
 import javax.inject.Inject
+import kotlin.time.seconds
 
 @AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
@@ -54,11 +58,8 @@ class ScriptRunnerService : AccessibilityService() {
                     if (success) {
                         _serviceStarted.value = true
 
-                        Toast.makeText(
-                            service,
-                            service.getString(R.string.start_service_toast),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val msg = service.getString(R.string.start_service_toast)
+                        service.platformImpl.toast(msg)
                     }
                 }
             } ?: false
@@ -241,9 +242,10 @@ class ScriptRunnerService : AccessibilityService() {
 
             scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
                 if (success) {
+                    val title = getString(R.string.script_paused)
                     val msg = getString(R.string.screen_turned_off)
                     platformImpl.notify(msg)
-                    platformImpl.messageBox(msg, msg)
+                    platformImpl.messageBox(title, msg)
                 }
             }
         }
@@ -268,6 +270,19 @@ class ScriptRunnerService : AccessibilityService() {
             Timber.verbose { "PORTRAIT" }
 
             userInterface.hide()
+
+            // Pause if script is running
+            GlobalScope.launch {
+                // This delay is to avoid race-condition with screen turn OFF listener
+                delay(1.seconds)
+
+                scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
+                    if (success) {
+                        val msg = getString(R.string.script_paused)
+                        platformImpl.toast(msg)
+                    }
+                }
+            }
         }
     }
 
