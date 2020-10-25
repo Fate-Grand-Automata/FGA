@@ -1,0 +1,9 @@
+
+Use for other games
+
+
+I would need help simplifying your project.
+I currently use ankulua and have working scripts for some games. 
+I would like to create a universal base app that allows you to use lua scripts. 
+Basically an open version of ankulua. The idea is to have an app with only one button,
+for selecting scripts and a folder to load the images to search with openCv.
