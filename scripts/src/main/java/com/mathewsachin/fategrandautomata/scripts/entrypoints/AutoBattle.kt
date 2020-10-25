@@ -28,11 +28,10 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
  */
 open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
-    platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi,
     val storageDirs: StorageDirs,
     swipeLocations: ISwipeLocations
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     private val support = Support(fgAutomataApi, swipeLocations)
     private val card = Card(fgAutomataApi)
     private val battle = Battle(fgAutomataApi)
@@ -511,7 +510,7 @@ open class AutoBattle @Inject constructor(
         val message = makeRefillAndRunsMessage()
 
         if (message.isNotBlank()) {
-            platformImpl.toast(message)
+            toast(message)
         }
     }
 

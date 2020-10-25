@@ -214,6 +214,9 @@ class ScriptRunnerService : AccessibilityService() {
                     is ScriptState.Stopped -> {
                         scriptManager.startScript(this, state.screenshotService, scriptComponentBuilder)
                     }
+                    is ScriptState.Stopping -> {
+                        Timber.debug { "Already stopping ..." }
+                    }
                 }
             }
         }

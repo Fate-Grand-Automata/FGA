@@ -13,9 +13,8 @@ class AutoOther @Inject constructor(
     val giftBox: Provider<AutoGiftBox>,
     val supportImageMaker: Provider<SupportImageMaker>,
     exitManager: ExitManager,
-    platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     override fun script(): Nothing {
         val screenArea = Region(Location(), Game.scriptSize)
         val lotteryCheckRegion = Region(150, 800, 340, 230)

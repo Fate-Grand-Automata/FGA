@@ -1,10 +1,9 @@
 package com.mathewsachin.fategrandautomata.scripts
 
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import com.mathewsachin.libautomata.IAutomataMessages
 import kotlin.time.Duration
 
-interface IScriptMessages : IAutomataMessages {
+interface IScriptMessages {
     val apRanOut: String
     val inventoryFull: String
     val lotteryPresentBoxFull: String
@@ -16,6 +15,9 @@ interface IScriptMessages : IAutomataMessages {
     val ceGet: String
     val withdrawDisabled: String
     val cannotDetectScriptType: String
+    val stoppedByUser: String
+    val unexpectedError: String
+    val scriptExited: String
 
     fun timesRan(times: Int): String
     fun timesRanOutOf(times: Int, outOf: Int): String
