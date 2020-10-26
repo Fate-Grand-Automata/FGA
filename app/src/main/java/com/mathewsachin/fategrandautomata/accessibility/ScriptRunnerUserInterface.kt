@@ -155,9 +155,13 @@ class ScriptRunnerUserInterface @Inject constructor(
             }
         }
 
-    fun playButtonEnabled(enabled: Boolean) = scriptCtrlBtn.post {
-        scriptCtrlBtn.isEnabled = enabled
-    }
+    var isPlayButtonEnabled
+        get() = scriptCtrlBtn.isEnabled
+        set(value) {
+            scriptCtrlBtn.post {
+                scriptCtrlBtn.isEnabled = value
+            }
+        }
 
     fun setPlayIcon() {
         scriptCtrlBtn.post {

@@ -17,6 +17,7 @@ import com.mathewsachin.libautomata.*
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
@@ -45,6 +46,11 @@ class ScriptManager @Inject constructor(
     }
 
     private fun onScriptExit(e: Exception) = GlobalScope.launch {
+        userInterface.setPlayIcon()
+        userInterface.isPlayButtonEnabled = false
+        userInterface.isPauseButtonVisible = false
+        imageLoader.clearSupportCache()
+
         // Stop recording
         scriptState.let { state ->
             if (state is ScriptState.Started) {
@@ -60,15 +66,16 @@ class ScriptManager @Inject constructor(
             if (recording != null) {
                 // A little bit of delay so the exit message can be recorded
                 userInterface.postDelayed(500.milliseconds) {
-                    recording.close()
+                    try {
+                        recording.close()
+                    } catch (e: Exception) {
+                        val msg = "Failed to stop recording"
+                        Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
+                        Timber.error(e) { msg }
+                    }
                 }
             }
         }
-
-        userInterface.setPlayIcon()
-        userInterface.isPauseButtonVisible = false
-
-        imageLoader.clearSupportCache()
 
         when (e) {
             is SupportImageMaker.ExitException -> {
@@ -99,10 +106,8 @@ class ScriptManager @Inject constructor(
         }
 
         scriptState = ScriptState.Stopped
-
-        userInterface.postDelayed(250.milliseconds) {
-            userInterface.playButtonEnabled(true)
-        }
+        delay(250.milliseconds)
+        userInterface.isPlayButtonEnabled = true
     }
 
     private fun getEntryPoint(entryPoint: ScriptEntryPoint): EntryPoint =
@@ -148,7 +153,7 @@ class ScriptManager @Inject constructor(
             return
         }
 
-        userInterface.playButtonEnabled(false)
+        userInterface.isPlayButtonEnabled = false
 
         val scriptComponent = componentBuilder
             .screenshotService(screenshotService)
@@ -166,7 +171,7 @@ class ScriptManager @Inject constructor(
         scriptState.let { state ->
             if (state is ScriptState.Started) {
                 userInterface.isPauseButtonVisible = false
-                userInterface.playButtonEnabled(false)
+                userInterface.isPlayButtonEnabled = false
                 scriptState = ScriptState.Stopping(state)
                 state.entryPoint.stop()
             }
@@ -248,7 +253,7 @@ class ScriptManager @Inject constructor(
                     entryPointRunner()
                 }
                 .setOnDismissListener {
-                    userInterface.playButtonEnabled(true)
+                    userInterface.isPlayButtonEnabled = true
                 }
         }
     }
