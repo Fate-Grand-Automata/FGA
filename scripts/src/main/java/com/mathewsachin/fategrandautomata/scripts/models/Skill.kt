@@ -12,17 +12,17 @@ sealed class Skill(
     ) : Skill(clickLocation, autoSkillCode) {
         companion object {
             val list = listOf(
-                Servant(Location(140, 1160), 'a'),
-                Servant(Location(340, 1160), 'b'),
-                Servant(Location(540, 1160), 'c'),
+                Servant(Location(140, 1155), 'a'),
+                Servant(Location(328, 1155), 'b'),
+                Servant(Location(514, 1155), 'c'),
 
-                Servant(Location(770, 1160), 'd'),
-                Servant(Location(970, 1160), 'e'),
-                Servant(Location(1140, 1160), 'f'),
+                Servant(Location(775, 1155), 'd'),
+                Servant(Location(963, 1155), 'e'),
+                Servant(Location(1150, 1155), 'f'),
 
-                Servant(Location(1400, 1160), 'g'),
-                Servant(Location(1600, 1160), 'h'),
-                Servant(Location(1800, 1160), 'i')
+                Servant(Location(1413, 1155), 'g'),
+                Servant(Location(1600, 1155), 'h'),
+                Servant(Location(1788, 1155), 'i')
             )
         }
     }

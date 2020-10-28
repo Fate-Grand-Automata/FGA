@@ -143,10 +143,14 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     }
 
     private fun skillSpam() {
+        0.5.seconds.wait()
+
         if (canSpam(prefs.selectedBattleConfig.skillSpam)) {
             for ((skill, entry) in skillTable) {
                 if (entry.image in skill.imageRegion) {
                     castSkill(skill, entry.target)
+
+                    0.5.seconds.wait()
                 }
             }
         }
