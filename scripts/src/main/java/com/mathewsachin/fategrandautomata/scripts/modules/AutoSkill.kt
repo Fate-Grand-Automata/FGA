@@ -44,11 +44,18 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     private val Skill.imageRegion
         get() = Region(30, 30, 30, 30) + clickLocation
 
-    private fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
-        skillTable[skill]?.image?.close()
+    val skillSpamDelay = 0.25.seconds
 
-        val image = skill.imageRegion.getPattern().tag("SKILL:$skill")
-        skillTable[skill] = SkillTableEntry(target, image)
+    private fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
+        if (prefs.selectedBattleConfig.skillSpam != SpamEnum.None) {
+            skillTable[skill]?.image?.close()
+
+            // Some delay so we can take image of skill properly
+            skillSpamDelay.wait()
+
+            val image = skill.imageRegion.getPattern().tag("SKILL:$skill")
+            skillTable[skill] = SkillTableEntry(target, image)
+        }
 
         castSkill(skill, target)
     }
@@ -143,10 +150,15 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     }
 
     private fun skillSpam() {
+        skillSpamDelay.wait()
+
         if (canSpam(prefs.selectedBattleConfig.skillSpam)) {
             for ((skill, entry) in skillTable) {
                 if (entry.image in skill.imageRegion) {
                     castSkill(skill, entry.target)
+
+                    // Some delay for skill icon to be loaded
+                    skillSpamDelay.wait()
                 }
             }
         }
