@@ -207,7 +207,7 @@ open class AutoBattle @Inject constructor(
      * It seems like we need to click on CE (center of screen) to accept them
      */
     private fun bond10CEReward() =
-        Region(Location(), Game.scriptSize).center.click()
+        Game.scriptRegion.center.click()
 
     private fun isCeRewardDetails() =
         images.ceDetails in Game.resultCeRewardDetailsRegion
@@ -220,33 +220,18 @@ open class AutoBattle @Inject constructor(
         Game.resultCeRewardCloseClick.click()
     }
 
-    private val wantDropsScreen
-        get() = prefs.screenshotDrops || prefs.selectedBattleConfig.materials.isNotEmpty()
-
     /**
      * Clicks through the reward screens.
      */
     private fun result() {
-        if (images.ceDrop in Game.resultCeDropRegion) {
-            val msg = messages.ceDropped
-            if (prefs.stopOnCEDrop) {
-                throw ScriptExitException(msg)
-            } else notify(msg)
-        }
-
-        if (wantDropsScreen)
-            Game.resultClick.click(15)
-        else Game.resultNextClick.click(20)
+        Game.resultClick.click(15)
     }
 
     private fun isInDropsScreen() =
         images.matRewards in Game.resultMatRewardsRegion
 
     private fun dropScreen() {
-        if (wantDropsScreen) {
-            // Give some time to load
-            0.5.seconds.wait()
-        }
+        checkCEDrops()
 
         trackMaterials()
 
@@ -257,12 +242,30 @@ open class AutoBattle @Inject constructor(
         Game.resultNextClick.click(5)
     }
 
+    private fun checkCEDrops() {
+        val starsRegion = Region(40, -40, 80, 40)
+
+        val ceDropped = Game.scriptRegion
+            .findAll(images.dropCE)
+            .map { (region, _) ->
+                starsRegion + region.location
+            }
+            .any { images.dropCEStars in it }
+
+        if (ceDropped) {
+            val msg = messages.ceDropped
+            if (prefs.stopOnCEDrop) {
+                throw ScriptExitException(msg)
+            } else notify(msg)
+        }
+    }
+
     private fun trackMaterials() {
         for (material in prefs.selectedBattleConfig.materials) {
             val pattern = images.material(material)
 
             // TODO: Make the search region smaller
-            val count = Region(Location(), Game.scriptSize)
+            val count = Game.scriptRegion
                 .findAll(pattern)
                 .count()
 
