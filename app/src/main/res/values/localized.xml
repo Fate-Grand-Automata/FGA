@@ -226,7 +226,8 @@
 
     <string name="p_max_gold_ember_set_size">Max Gold ember set size</string>
 
-    <string name="p_party_not_set">Not Set</string>
+    <string name="p_not_set">Not Set</string>
+
     <string name="p_party_number">Party %d</string>
 
     <string name="p_support_class_none">None</string>
@@ -278,4 +279,46 @@
     <string name="turns_count">Turns: %d</string>
     <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string>
     <string name="picked_exp_stacks">Picked %d EXP stacks</string>
+
+    <string name="p_mats">Materials</string>
+    <string name="mats_farmed">Farmed %d material(s)</string>
+    <string name="p_mat_limit">Limit by Materials</string>
+    <string name="p_mat_limit_count">Count</string>
+
+    <string name="mat_proof">Proof of Hero</string>
+    <string name="mat_bone">Evil Bone</string>
+    <string name="mat_fang">Dragon\'s Fang</string>
+    <string name="mat_dust">Void\'s Dust</string>
+    <string name="mat_chain">Fool\'s Chain</string>
+    <string name="mat_fluid">Mystic Spinal Fluid</string>
+    <string name="mat_seed">Seed of Yggdrasil</string>
+    <string name="mat_ghost_lantern">Ghost Lantern</string>
+    <string name="mat_feather">Phoenix Feather</string>
+    <string name="mat_page">Forbidden Page</string>
+    <string name="mat_magatama">Refined Magatama</string>
+    <string name="mat_giant_ring">Giant\'s Ring</string>
+    <string name="mat_claw">Claw of Chaos</string>
+    <string name="mat_heart">Heart of the Foreign God</string>
+    <string name="mat_spirit_root">Spirit Root</string>
+    <string name="mat_scarab">Scarab of Wisdom</string>
+    <string name="mat_octuplet">Octuplet Crystal</string>
+    <string name="mat_serpent_jewel">Serpent Jewel</string>
+    <string name="mat_gear">Eternal Gear</string>
+    <string name="mat_homunculus">Homunculus Baby</string>
+    <string name="mat_horseshoe">Meteor Horseshoe</string>
+    <string name="mat_shell">Shell of Reminiscence</string>
+    <string name="mat_scale">Reverse Dragon Scale</string>
+    <string name="mat_young_horn">Warhorse\'s Young Horn</string>
+    <string name="mat_tear_stone">Tearstone of Blood</string>
+    <string name="mat_grease">Black Beast Grease</string>
+    <string name="mat_lanugo">Primordial Lanugo</string>
+    <string name="mat_gallstone">Cursed Beast Gallstone</string>
+    <string name="mat_wine">Mysterious Divine Wine</string>
+    <string name="mat_stake">Stake of Wailing Night</string>
+    <string name="mat_gunpowder">Mystic Gunpowder</string>
+    <string name="mat_medal">Knight\'s Medal</string>
+    <string name="mat_lamp_evil_sealing">Lamp of Evil Sealing</string>
+    <string name="mat_stinger">Deadly Poisonous Needle</string>
+    <string name="mat_eternal_ice">Eternal Ice</string>
+    <string name="mat_steel">Aurora Steel</string>
 </resources>

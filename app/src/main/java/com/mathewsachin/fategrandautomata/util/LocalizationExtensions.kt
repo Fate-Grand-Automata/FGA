@@ -47,3 +47,43 @@ val SupportSelectionModeEnum.stringRes
         SupportSelectionModeEnum.Friend -> R.string.p_support_mode_friend
         SupportSelectionModeEnum.Preferred -> R.string.p_support_mode_preferred
     }
+
+val MaterialEnum.stringRes
+    get() = when (this) {
+        MaterialEnum.Proof -> R.string.mat_proof
+        MaterialEnum.Bone -> R.string.mat_bone
+        MaterialEnum.Fang -> R.string.mat_fang
+        MaterialEnum.Dust -> R.string.mat_dust
+        MaterialEnum.Chain -> R.string.mat_chain
+        MaterialEnum.Fluid -> R.string.mat_fluid
+        MaterialEnum.Seed -> R.string.mat_seed
+        MaterialEnum.GhostLantern -> R.string.mat_ghost_lantern
+        MaterialEnum.Feather -> R.string.mat_feather
+        MaterialEnum.Page -> R.string.mat_page
+        MaterialEnum.Magatama -> R.string.mat_magatama
+        MaterialEnum.GiantRing -> R.string.mat_giant_ring
+        MaterialEnum.Claw -> R.string.mat_claw
+        MaterialEnum.Heart -> R.string.mat_heart
+        MaterialEnum.SpiritRoot -> R.string.mat_spirit_root
+        MaterialEnum.Scarab -> R.string.mat_scarab
+        MaterialEnum.OctupletCrystal -> R.string.mat_octuplet
+        MaterialEnum.SerpentJewel -> R.string.mat_serpent_jewel
+        MaterialEnum.Gear -> R.string.mat_gear
+        MaterialEnum.HomunculusBaby -> R.string.mat_homunculus
+        MaterialEnum.Horseshoe -> R.string.mat_horseshoe
+        MaterialEnum.ShellOfReminiscence -> R.string.mat_shell
+        MaterialEnum.DragonScale -> R.string.mat_scale
+        MaterialEnum.YoungHorn -> R.string.mat_young_horn
+        MaterialEnum.TearStone -> R.string.mat_tear_stone
+        MaterialEnum.Grease -> R.string.mat_grease
+        MaterialEnum.Lanugo -> R.string.mat_lanugo
+        MaterialEnum.Gallstone -> R.string.mat_gallstone
+        MaterialEnum.MysteriousWine -> R.string.mat_wine
+        MaterialEnum.Stake -> R.string.mat_stake
+        MaterialEnum.Gunpowder -> R.string.mat_gunpowder
+        MaterialEnum.Medal -> R.string.mat_medal
+        MaterialEnum.LampOfEvilSealing -> R.string.mat_lamp_evil_sealing
+        MaterialEnum.Stinger -> R.string.mat_stinger
+        MaterialEnum.EternalIce -> R.string.mat_eternal_ice
+        MaterialEnum.AuroraSteel -> R.string.mat_steel
+    }

@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 
 interface IBattleConfig {
@@ -11,6 +12,7 @@ interface IBattleConfig {
     val rearrangeCards: List<Boolean>
     val braveChains: List<BraveChainEnum>
     val party: Int
+    val materials: List<MaterialEnum>
     val support: ISupportPreferences
 
     val npSpam: SpamEnum

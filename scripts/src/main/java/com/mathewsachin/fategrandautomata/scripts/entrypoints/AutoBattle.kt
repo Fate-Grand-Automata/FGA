@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.modules.*
@@ -42,6 +43,7 @@ open class AutoBattle @Inject constructor(
     private var withdrawCount = 0
     private var isContinuing = false
     private var partySelected = false
+    private var matsGot = mutableMapOf<MaterialEnum, Int>()
 
     override fun script(): Nothing {
         init()
@@ -71,7 +73,16 @@ open class AutoBattle @Inject constructor(
         appendLine(reason)
         appendLine()
 
-        appendLine(makeRefillAndRunsMessage())
+        makeRefillAndRunsMessage().let { msg ->
+            if (msg.isNotBlank()) {
+                appendLine(msg)
+            }
+        }
+
+        if (prefs.selectedBattleConfig.materials.isNotEmpty()) {
+            appendLine(messages.materials(matsGot))
+            appendLine()
+        }
 
         appendLine(messages.time(battle.state.totalBattleTime))
 
@@ -138,6 +149,11 @@ open class AutoBattle @Inject constructor(
         card.init(autoSkill, battle)
 
         support.init()
+
+        // Set all Materials to 0
+        prefs.selectedBattleConfig
+            .materials
+            .associateWithTo(matsGot) { 0 }
     }
 
     /**
@@ -204,6 +220,9 @@ open class AutoBattle @Inject constructor(
         Game.resultCeRewardCloseClick.click()
     }
 
+    private val wantDropsScreen
+        get() = prefs.screenshotDrops || prefs.selectedBattleConfig.materials.isNotEmpty()
+
     /**
      * Clicks through the reward screens.
      */
@@ -215,7 +234,7 @@ open class AutoBattle @Inject constructor(
             } else notify(msg)
         }
 
-        if (prefs.screenshotDrops)
+        if (wantDropsScreen)
             Game.resultClick.click(15)
         else Game.resultNextClick.click(20)
     }
@@ -224,6 +243,13 @@ open class AutoBattle @Inject constructor(
         images.matRewards in Game.resultMatRewardsRegion
 
     private fun dropScreen() {
+        if (wantDropsScreen) {
+            // Give some time to load
+            0.5.seconds.wait()
+        }
+
+        trackMaterials()
+
         if (prefs.screenshotDrops) {
             screenshotDrops()
         }
@@ -231,9 +257,31 @@ open class AutoBattle @Inject constructor(
         Game.resultNextClick.click(5)
     }
 
-    private fun screenshotDrops() {
-        0.5.seconds.wait()
+    private fun trackMaterials() {
+        for (material in prefs.selectedBattleConfig.materials) {
+            val pattern = images.material(material)
 
+            // TODO: Make the search region smaller
+            val count = Region(Location(), Game.scriptSize)
+                .findAll(pattern)
+                .count()
+
+            // Increment material count
+            matsGot.merge(material, count, Int::plus)
+        }
+
+        if (prefs.refill.shouldLimitMats) {
+            val totalMats = matsGot
+                .values
+                .sum()
+
+            if (totalMats >= prefs.refill.limitMats) {
+                throw ScriptExitException(messages.farmedMaterials(totalMats))
+            }
+        }
+    }
+
+    private fun screenshotDrops() {
         val dropsFolder = File(
             storageDirs.storageRoot,
             "drops"

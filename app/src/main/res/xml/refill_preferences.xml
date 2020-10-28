@@ -50,4 +50,22 @@
             app:title="@string/p_runs"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="mat_limit_category"
+        app:title="@string/p_mats">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_check"
+            app:key="@string/pref_should_limit_mats"
+            app:title="@string/p_mat_limit" />
+
+        <EditTextPreference
+            app:defaultValue="1"
+            app:dependency="@string/pref_should_limit_mats"
+            app:icon="@drawable/ic_repeat"
+            app:key="@string/pref_limit_mats"
+            app:title="@string/p_mat_limit_count"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -51,10 +51,13 @@
     <string name="pref_battle_config_party">autoskill_party</string>
     <string name="pref_battle_config_support_class">autoskill_support_class</string>
     <string name="pref_battle_config_notes">autoskill_notes</string>
+    <string name="pref_battle_config_mat">battle_config_mat</string>
 
     <string name="pref_screenshot_drops">screenshot_drops</string>
     <string name="pref_should_limit_runs">should_limit_runs</string>
     <string name="pref_limit_runs">limit_runs</string>
+    <string name="pref_should_limit_mats">should_limit_mats</string>
+    <string name="pref_limit_mats">limit_mats</string>
 
     <string name="pref_ignore_notch">ignore_notch</string>
     <string name="pref_use_root_screenshot">use_root_screenshot</string>

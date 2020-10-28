@@ -53,6 +53,8 @@ class BattleConfigCore(
 
     val party = maker.stringAsInt(R.string.pref_battle_config_party, -1)
 
+    val materials = maker.stringSet(R.string.pref_battle_config_mat)
+
     val support = SupportPrefsCore(maker, storageDirs)
 
     val npSpam = maker.enum(
