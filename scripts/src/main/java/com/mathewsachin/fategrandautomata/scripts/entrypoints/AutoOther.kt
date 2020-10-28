@@ -17,7 +17,6 @@ class AutoOther @Inject constructor(
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
     override fun script(): Nothing {
-        val screenArea = Region(Location(), Game.scriptSize)
         val lotteryCheckRegion = Region(150, 800, 340, 230)
 
         1.seconds.wait()
@@ -27,7 +26,7 @@ class AutoOther @Inject constructor(
                 fp.get()
             images.finishedLotteryBox in lotteryCheckRegion || images.finishedLotteryBox in Game.finishedLotteryBoxRegion ->
                 lottery.get()
-            images.goldXP in screenArea || images.silverXP in screenArea ->
+            images.goldXP in Game.scriptRegion || images.silverXP in Game.scriptRegion ->
                 giftBox.get()
             images.supportRegionTool in Game.supportRegionToolSearchRegion ->
                 supportImageMaker.get()

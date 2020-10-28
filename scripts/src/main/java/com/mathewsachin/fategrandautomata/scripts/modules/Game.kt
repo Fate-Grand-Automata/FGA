@@ -24,6 +24,8 @@ class Game @Inject constructor(val prefs: IPreferences) {
         val imageSize = Size(1280, 720)
         val scriptSize = Size(2560, 1440)
 
+        val scriptRegion = Region(Location(), scriptSize)
+
         val menuScreenRegion = Region(2100, 1200, 1000, 1000)
         val continueRegion = Region(1400, 1000, 600, 200)
         val menuStorySkipRegion = Region(2240, 20, 300, 120)
