@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.content.Context
+import android.net.Uri
+import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -71,4 +73,14 @@ class MainSettingsViewModel @ViewModelInject constructor(
         .asLiveData()
 
     val serviceStarted get() = ScriptRunnerService.serviceStarted
+
+    fun checkRootDir(): Boolean {
+        val dirRoot = prefsCore.dirRoot.get()
+
+        if (dirRoot.isBlank())
+            return false
+
+        return DocumentFile.fromTreeUri(context, Uri.parse(dirRoot))
+            ?.exists() ?: false
+    }
 }

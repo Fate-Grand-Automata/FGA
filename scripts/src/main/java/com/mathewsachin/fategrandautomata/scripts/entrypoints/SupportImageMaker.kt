@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
@@ -22,12 +22,12 @@ fun getFriendImgPath(dir: File, Index: Int): File {
 }
 
 class SupportImageMaker @Inject constructor(
-    storageDirs: StorageDirs,
+    storageProvider: IStorageProvider,
     exitManager: ExitManager,
     platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
-    private val dir = storageDirs.supportImgTempDir
+    private val dir = storageProvider.supportImageTempDir
 
     override fun script(): Nothing {
         cleanExtractFolder()

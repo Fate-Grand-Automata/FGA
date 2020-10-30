@@ -5,11 +5,12 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ScrollView
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
+import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.dayNightThemed
 import com.mathewsachin.fategrandautomata.util.showOverlayDialog
 
@@ -24,9 +25,9 @@ private const val InvalidCharsMsg = "<, >, \", |, :, *, ?, \\, /"
 
 private fun getSupportEntries(
     Frame: View,
-    storageDirs: StorageDirs
+    storageProvider: StorageProvider
 ): List<SupportImgEntry> {
-    val tempDir = storageDirs.supportImgTempDir
+    val tempDir = storageProvider.supportImageTempDir
 
     val context = Frame.context
     val servantInvalidMsg = context.getString(R.string.support_img_namer_servant_invalid_message, InvalidCharsMsg)
@@ -37,7 +38,7 @@ private fun getSupportEntries(
             tempDir,
             0
         ),
-        storageDirs.supportServantImgFolder,
+        SupportImageKind.Servant,
         Frame.findViewById(R.id.support_img_servant_0),
         ServantRegex, servantInvalidMsg
     )
@@ -46,7 +47,7 @@ private fun getSupportEntries(
             tempDir,
             1
         ),
-        storageDirs.supportServantImgFolder,
+        SupportImageKind.Servant,
         Frame.findViewById(R.id.support_img_servant_1),
         ServantRegex, servantInvalidMsg
     )
@@ -56,7 +57,7 @@ private fun getSupportEntries(
             tempDir,
             0
         ),
-        storageDirs.supportCeFolder,
+        SupportImageKind.CE,
         Frame.findViewById(R.id.support_img_ce_0),
         CeRegex, ceOrFriendInvalidMsg
     )
@@ -65,7 +66,7 @@ private fun getSupportEntries(
             tempDir,
             1
         ),
-        storageDirs.supportCeFolder,
+        SupportImageKind.CE,
         Frame.findViewById(R.id.support_img_ce_1),
         CeRegex, ceOrFriendInvalidMsg
     )
@@ -75,7 +76,7 @@ private fun getSupportEntries(
             tempDir,
             0
         ),
-        storageDirs.supportFriendFolder,
+        SupportImageKind.Friend,
         Frame.findViewById(R.id.support_img_friend_0),
         CeRegex, ceOrFriendInvalidMsg
     )
@@ -84,7 +85,7 @@ private fun getSupportEntries(
             tempDir,
             1
         ),
-        storageDirs.supportFriendFolder,
+        SupportImageKind.Friend,
         Frame.findViewById(R.id.support_img_friend_1),
         CeRegex, ceOrFriendInvalidMsg
     )
@@ -92,7 +93,7 @@ private fun getSupportEntries(
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
 }
 
-fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDirs) {
+fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageProvider: StorageProvider) {
     val context = UI.Service.applicationContext
     val themedContext = context.dayNightThemed()
     val frame = FrameLayout(themedContext)
@@ -105,7 +106,7 @@ fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDir
         setPadding(72, 20, 0, 0)
     }
 
-    val entryList = getSupportEntries(frame, storageDirs)
+    val entryList = getSupportEntries(frame, storageProvider)
 
     showOverlayDialog(context) {
         setCancelable(false)
@@ -113,7 +114,7 @@ fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageDirs: StorageDir
             .setView(content)
             .setPositiveButton(UI.Service.getString(R.string.support_img_namer_done)) { dialog, _ ->
                 if (entryList.all { it.isValid() }) {
-                    if (entryList.all { it.rename() }) {
+                    if (entryList.all { it.rename(storageProvider) }) {
                         dialog.dismiss()
                     }
                 }

@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
@@ -9,8 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class PrefsCore @Inject constructor(
-    val maker: PrefMaker,
-    val storageDirs: StorageDirs
+    val maker: PrefMaker
 ) {
     val scriptMode = maker.enum(
         R.string.pref_script_mode,
@@ -91,14 +89,15 @@ class PrefsCore @Inject constructor(
 
     val maxGoldEmberSetSize = maker.int(R.string.pref_max_gold_ember_set_size, 1)
 
+    var dirRoot = maker.string(R.string.pref_dir)
+
     private val battleConfigMap = mutableMapOf<String, BattleConfigCore>()
 
     fun forBattleConfig(id: String): BattleConfigCore =
         battleConfigMap.getOrPut(id) {
             BattleConfigCore(
                 id,
-                maker.context,
-                storageDirs
+                maker.context
             )
         }
 

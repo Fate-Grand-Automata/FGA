@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.imaging
 
+import android.graphics.Bitmap
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Match
 import com.mathewsachin.libautomata.Region
@@ -11,6 +12,7 @@ import timber.log.Timber
 import timber.log.debug
 import timber.log.verbose
 import java.io.InputStream
+import java.io.OutputStream
 import kotlin.math.roundToInt
 import org.opencv.core.Size as CvSize
 
@@ -178,6 +180,25 @@ class DroidCvPattern(
 
     override fun save(FileName: String) {
         Imgcodecs.imwrite(FileName, Mat)
+    }
+
+    override fun save(stream: OutputStream) {
+        val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+
+        try {
+            DisposableMat().use {
+                val conversion = if (Mat?.type() == CvType.CV_8UC1)
+                    Imgproc.COLOR_GRAY2BGRA
+                else Imgproc.COLOR_BGR2RGBA
+
+                Imgproc.cvtColor(Mat, it.Mat, conversion)
+                org.opencv.android.Utils.matToBitmap(it.Mat, bmp)
+
+                bmp.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            }
+        } finally {
+            bmp.recycle()
+        }
     }
 
     override fun copy() = DroidCvPattern(Mat?.clone()).tag(tag)

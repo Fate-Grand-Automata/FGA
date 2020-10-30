@@ -1,5 +1,7 @@
 package com.mathewsachin.libautomata
 
+import java.io.OutputStream
+
 /**
  * Interface for image objects.
  */
@@ -48,6 +50,8 @@ interface IPattern : AutoCloseable {
      * @param FileName an absolute file path pointing to the save location
      */
     fun save(FileName: String)
+
+    fun save(stream: OutputStream)
 
     /**
      * Makes a copy of the image.
