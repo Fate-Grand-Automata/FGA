@@ -86,6 +86,7 @@
 
     <string name="pref_dir">dir_root</string>
 
+    <string name="pref_nav_storage">nav_storage</string>
     <string name="pref_nav_refill">nav_refill</string>
     <string name="pref_nav_battle_config">nav_battle_config</string>
     <string name="pref_nav_more">nav_more</string>

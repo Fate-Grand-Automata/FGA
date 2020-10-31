@@ -155,6 +155,9 @@
     <string name="p_battle_config_cmd_text">Skill Command TextBox</string>
     <string name="p_battle_config_cmd_text_summary">Show text-box for editing Skill commands</string>
 
+    <string name="p_storage">Storage</string>
+    <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
+
     <string name="p_advanced">Advanced</string>
     <string name="p_debug_mode">Debug mode</string>
     <string name="p_debug_mode_summary">Highlight the regions being matched</string>

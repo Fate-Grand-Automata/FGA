@@ -41,6 +41,9 @@ class StorageProvider @Inject constructor(
     val mimeAny = "*/*"
     val mimePng = "image/png"
 
+    val rootDirName
+        get() = dirRoot?.name
+
     val rootScreenshotFile
         get() = dirRoot.getOrCreateFile("sshot.raw")
 
