@@ -132,7 +132,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             .rearrangeCards
             .inCurrentWave(false)
 
-        screenshotManager.useSameSnapIn {
+        useSameSnapIn {
             commandCards = getCommandCards()
 
             if (braveChainsThisTurn != BraveChainEnum.None) {

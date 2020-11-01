@@ -123,7 +123,7 @@ open class AutoBattle @Inject constructor(
 
         // Loop through SCREENS until a Validator returns true
         while (true) {
-            val actor = screenshotManager.useSameSnapIn {
+            val actor = useSameSnapIn {
                 screens
                     .asSequence()
                     .filter { (validator, _) -> validator() }
@@ -300,12 +300,7 @@ open class AutoBattle @Inject constructor(
         for (i in 0..1) {
             val dropFileName = "${timeString}.${i}.png"
 
-            val shotService = screenshotManager.screenshotService
-            val shot = if (shotService is IColorScreenshotProvider) {
-                shotService.takeColorScreenshot()
-            } else screenshotManager.getScreenshot()
-
-            shot.use {
+            takeColorScreenshot().use {
                 it.save(
                     File(dropsFolder, dropFileName).absolutePath
                 )

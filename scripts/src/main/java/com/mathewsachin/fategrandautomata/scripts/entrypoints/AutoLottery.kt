@@ -40,7 +40,7 @@ class AutoLottery @Inject constructor(
 
     override fun script(): Nothing {
         while (true) {
-            screenshotManager.useSameSnapIn {
+            useSameSnapIn {
                 when {
                     images.finishedLotteryBox in Game.finishedLotteryBoxRegion -> reset()
                     images.presentBoxFull in fullPresentBoxRegion -> {

@@ -151,7 +151,7 @@ class Support(
     }
 
     private fun searchVisible(SearchMethod: SearchFunction) =
-        screenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
+        useSameSnapIn(fun(): SearchVisibleResult {
             if (!isFriend(Game.supportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SearchVisibleResult.NoFriendsFound
