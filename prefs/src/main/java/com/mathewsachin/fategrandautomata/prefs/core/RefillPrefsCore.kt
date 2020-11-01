@@ -14,4 +14,8 @@ class RefillPrefsCore(maker: PrefMaker) {
     val shouldLimitRuns = maker.bool(R.string.pref_should_limit_runs)
 
     val limitRuns = maker.stringAsInt(R.string.pref_limit_runs, 1)
+
+    val shouldLimitMats = maker.bool(R.string.pref_should_limit_mats)
+
+    val limitMats = maker.stringAsInt(R.string.pref_limit_mats, 1)
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerViewModel" />
+
+        <variable
+            name="ui"
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerEmiyaFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/skill_maker_view_target"
+        style="@style/skill_maker_view">
+
+        <TextView
+            android:id="@+id/target_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_maker_emiya"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/target_arts"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:text="@string/skill_maker_arts"
+            android:onClick="@{(v) -> ui.onArts()}"
+            android:backgroundTint="@color/colorArtsResist"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/target_buster"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/target_label" />
+
+        <Button
+            android:id="@+id/target_buster"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:text="@string/skill_maker_buster"
+            android:onClick="@{(v) -> ui.onBuster()}"
+            android:backgroundTint="@color/colorBuster"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/target_arts"
+            app:layout_constraintTop_toTopOf="@+id/target_arts" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

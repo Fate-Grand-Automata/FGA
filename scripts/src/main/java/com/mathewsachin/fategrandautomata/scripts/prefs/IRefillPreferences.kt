@@ -10,4 +10,7 @@ interface IRefillPreferences {
 
     val shouldLimitRuns: Boolean
     val limitRuns: Int
+
+    val shouldLimitMats: Boolean
+    val limitMats: Int
 }

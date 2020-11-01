@@ -9,9 +9,8 @@ interface IPreferences {
     var scriptMode: ScriptModeEnum
     var gameServer: GameServerEnum
     val skillConfirmation: Boolean
-    val autoSkillList: Set<String>
-    val autoSkillPreferences: List<IAutoSkillPreferences>
-    var selectedAutoSkillConfig: IAutoSkillPreferences
+    val battleConfigs: List<IBattleConfig>
+    var selectedBattleConfig: IBattleConfig
     val storySkip: Boolean
     val withdrawEnabled: Boolean
     val stopOnCEDrop: Boolean
@@ -24,7 +23,6 @@ interface IPreferences {
     val recordScreen: Boolean
     val skillDelay: Duration
     val screenshotDrops: Boolean
-    val canPauseScript: Boolean
     val maxGoldEmberSetSize: Int
 
     val stageCounterSimilarity: Double
@@ -35,7 +33,7 @@ interface IPreferences {
     val platformPrefs: IPlatformPrefs
     val gestures: IGesturesPreferences
 
-    fun forAutoSkillConfig(id: String): IAutoSkillPreferences
-    fun addAutoSkillConfig(id: String)
-    fun removeAutoSkillConfig(id: String)
+    fun forBattleConfig(id: String): IBattleConfig
+    fun addBattleConfig(id: String)
+    fun removeBattleConfig(id: String)
 }

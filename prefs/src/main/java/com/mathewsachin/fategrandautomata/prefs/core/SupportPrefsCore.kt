@@ -30,7 +30,7 @@ class SupportPrefsCore(
     )
 
     val supportClass = maker.enum(
-        R.string.pref_autoskill_support_class,
+        R.string.pref_battle_config_support_class,
         SupportClass.None
     )
 

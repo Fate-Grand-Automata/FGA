@@ -14,7 +14,7 @@ class ClearMultiSelectListPreferenceDialog : MultiSelectListPreferenceDialogFrag
     override fun onPrepareDialogBuilder(builder: AlertDialog.Builder) {
         super.onPrepareDialogBuilder(builder)
 
-        val actionMsg = getString(R.string.auto_skill_item_clear_preferred)
+        val actionMsg = getString(R.string.battle_config_item_clear_preferred)
         builder.setNeutralButton(actionMsg) { _, _ ->
             (preference as MultiSelectListPreference)
                 .values = emptySet()

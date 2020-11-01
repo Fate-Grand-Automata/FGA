@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_battle_config_delete"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/battle_config_list_delete"
+        app:showAsAction="always" />
+</menu>

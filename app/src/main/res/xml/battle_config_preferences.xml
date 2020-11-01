@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        app:defaultValue="--"
+        app:icon="@drawable/ic_text_short"
+        app:key="@string/pref_battle_config_name"
+        app:title="@string/p_battle_config_name"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        app:icon="@drawable/ic_terminal"
+        app:key="@string/pref_battle_config_cmd"
+        app:title="@string/p_battle_config_cmd"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        app:icon="@drawable/ic_note"
+        android:key="@string/pref_battle_config_notes"
+        app:title="@string/p_battle_config_notes"
+        app:useSimpleSummaryProvider="true" />
+
+    <ListPreference
+        app:defaultValue="-1"
+        app:icon="@drawable/ic_flag"
+        app:key="@string/pref_battle_config_party"
+        app:title="@string/p_battle_config_party"
+        app:useSimpleSummaryProvider="true" />
+
+    <Preference
+        app:icon="@drawable/ic_sort"
+        app:key="@string/pref_card_priority"
+        app:title="@string/p_battle_config_card_priority" />
+
+    <MultiSelectListPreference
+        app:icon="@drawable/ic_fang"
+        app:key="@string/pref_battle_config_mat"
+        app:title="@string/p_mats" />
+
+    <PreferenceCategory
+        app:key="support_category"
+        app:title="@string/p_battle_config_support">
+        <ListPreference
+            app:defaultValue="None"
+            app:icon="@drawable/ic_diamond"
+            app:key="@string/pref_battle_config_support_class"
+            app:title="@string/p_battle_config_support_class"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="Preferred"
+            app:icon="@drawable/ic_dots_vertical"
+            app:key="@string/pref_support_mode"
+            app:title="@string/p_battle_config_support_selection_mode"
+            app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            app:icon="@drawable/ic_card"
+            app:key="@string/pref_nav_preferred_support"
+            app:title="@string/p_support_mode_preferred" />
+
+        <MultiSelectListPreference
+            app:icon="@drawable/ic_friend"
+            app:key="@string/pref_support_friend_names"
+            app:title="@string/p_battle_config_support_friend_names" />
+
+        <ListPreference
+            app:defaultValue="Manual"
+            app:icon="@drawable/ic_dots_vertical"
+            app:key="@string/pref_support_fallback"
+            app:title="@string/p_battle_config_support_fallback_selection_mode"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="spam_category"
+        app:title="@string/p_spam_spam"
+        app:summary="@string/p_spam_summary">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_target"
+            app:key="@string/pref_auto_choose_target"
+            app:title="@string/p_auto_choose_target" />
+
+        <ListPreference
+            app:defaultValue="None"
+            app:icon="@drawable/ic_star"
+            app:key="@string/pref_spam_np"
+            app:title="@string/p_spam_np"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="None"
+            app:icon="@drawable/ic_wand"
+            app:key="@string/pref_spam_skill"
+            app:title="@string/p_spam_skill"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

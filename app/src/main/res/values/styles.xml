@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="autoskill_servant_skill_btn">
+    <style name="skill_maker_servant_skill_btn">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">50dp</item>
@@ -15,7 +15,7 @@
         <item name="android:src">@drawable/ic_delete</item>
     </style>
 
-    <style name="auto_skill_view">
+    <style name="skill_maker_view">
         <item name="android:background">?android:colorBackground</item>
         <item name="android:clickable">true</item>
         <item name="android:layout_width">match_parent</item>

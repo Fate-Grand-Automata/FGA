@@ -39,7 +39,7 @@ class Support(
             .filter { it.isNotBlank() && it.toLowerCase(Locale.US) != "any" }
     }
 
-    private val autoSkillPrefs get() = prefs.selectedAutoSkillConfig.support
+    private val autoSkillPrefs get() = prefs.selectedBattleConfig.support
 
     fun init() {
         friendNameArray = autoSkillPrefs.friendNames.process()
@@ -151,7 +151,7 @@ class Support(
     }
 
     private fun searchVisible(SearchMethod: SearchFunction) =
-        screenshotManager.useSameSnapIn(fun(): SearchVisibleResult {
+        useSameSnapIn(fun(): SearchVisibleResult {
             if (!isFriend(Game.supportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SearchVisibleResult.NoFriendsFound

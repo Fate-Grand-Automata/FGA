@@ -18,18 +18,17 @@ class PreferencesImpl @Inject constructor(
 
     override val skillConfirmation by prefs.skillConfirmation
 
-    override var autoSkillList by prefs.autoSkillList
-        private set
+    private var battleConfigList by prefs.battleConfigList
 
-    override val autoSkillPreferences
-        get() = autoSkillList.map { forAutoSkillConfig(it) }
+    override val battleConfigs
+        get() = battleConfigList.map { forBattleConfig(it) }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
 
     private var selectedAutoSkillConfigKey by prefs.selectedAutoSkillConfig
 
-    private var lastConfig: IAutoSkillPreferences? = null
+    private var lastConfig: IBattleConfig? = null
 
-    override var selectedAutoSkillConfig: IAutoSkillPreferences
+    override var selectedBattleConfig: IBattleConfig
         get() {
             val config = lastConfig.let {
                 val currentSelectedKey =
@@ -37,7 +36,7 @@ class PreferencesImpl @Inject constructor(
 
                 if (it != null && it.id == currentSelectedKey) {
                     it
-                } else forAutoSkillConfig(currentSelectedKey)
+                } else forBattleConfig(currentSelectedKey)
             }
 
             lastConfig = config
@@ -73,8 +72,6 @@ class PreferencesImpl @Inject constructor(
 
     override val screenshotDrops by prefs.screenshotDrops
 
-    override val canPauseScript by prefs.canPauseScript
-
     override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
 
     override val waitBeforeTurn by prefs.waitBeforeTurn.map { it.milliseconds }
@@ -83,29 +80,29 @@ class PreferencesImpl @Inject constructor(
 
     override val maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
 
-    private val autoSkillMap = mutableMapOf<String, IAutoSkillPreferences>()
+    private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 
-    override fun forAutoSkillConfig(id: String): IAutoSkillPreferences =
+    override fun forBattleConfig(id: String): IBattleConfig =
         autoSkillMap.getOrPut(id) {
-            AutoSkillPreferences(
+            BattleConfig(
                 id,
                 prefs,
                 storageDirs
             )
         }
 
-    override fun addAutoSkillConfig(id: String) {
-        autoSkillList = autoSkillList
+    override fun addBattleConfig(id: String) {
+        battleConfigList = battleConfigList
             .toMutableSet()
             .apply { add(id) }
     }
 
-    override fun removeAutoSkillConfig(id: String) {
+    override fun removeBattleConfig(id: String) {
         prefs.maker.context.deleteSharedPreferences(id)
         autoSkillMap.remove(id)
-        prefs.removeAutoSkillConfig(id)
+        prefs.removeBattleConfig(id)
 
-        autoSkillList = autoSkillList
+        battleConfigList = battleConfigList
             .toMutableSet()
             .apply { remove(id) }
 

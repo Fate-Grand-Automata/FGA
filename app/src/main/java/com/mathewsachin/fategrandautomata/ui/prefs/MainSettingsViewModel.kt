@@ -5,6 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.stringRes
@@ -68,4 +69,6 @@ class MainSettingsViewModel @ViewModelInject constructor(
         else context.getString(R.string.p_refill_off)
     }
         .asLiveData()
+
+    val serviceStarted get() = ScriptRunnerService.serviceStarted
 }

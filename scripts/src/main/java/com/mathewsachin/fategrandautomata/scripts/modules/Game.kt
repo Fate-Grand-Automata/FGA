@@ -24,6 +24,8 @@ class Game @Inject constructor(val prefs: IPreferences) {
         val imageSize = Size(1280, 720)
         val scriptSize = Size(2560, 1440)
 
+        val scriptRegion = Region(Location(), scriptSize)
+
         val menuScreenRegion = Region(2100, 1200, 1000, 1000)
         val continueRegion = Region(1400, 1000, 600, 200)
         val menuStorySkipRegion = Region(2240, 20, 300, 120)
@@ -99,9 +101,10 @@ class Game @Inject constructor(val prefs: IPreferences) {
 
         val resultCeDropRegion = Region(1860, 0, 240, 100)
         val resultCeRewardRegion = Region(1050, 1216, 33, 28)
-        val resultCeRewardDetailsRegion = Region(310, 1295, 45, 30)
+        val resultCeRewardDetailsRegion = Region(0, 512, 135, 115)
         val resultCeRewardCloseClick = Location(80, 60)
-        val resultFriendRequestRegion = Region(660, 120, 140, 160)
+
+        val resultFriendRequestRegion = Region(1880, 150, 100, 94)
         val resultFriendRequestRejectClick = Location(600, 1200)
         val resultQuestRewardRegion = Region(1630, 140, 370, 250)
         val resultClick = Location(1600, 1350)

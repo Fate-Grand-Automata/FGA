@@ -83,7 +83,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     }
 
     fun performBattle() {
-        screenshotManager.useSameSnapIn { onTurnStarted() }
+        useSameSnapIn { onTurnStarted() }
         prefs.waitBeforeTurn.wait()
 
         autoSkill.execute()
@@ -100,7 +100,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         state.nextTurn()
 
-        if (!state.hasChosenTarget && prefs.selectedAutoSkillConfig.autoChooseTarget) {
+        if (!state.hasChosenTarget && prefs.selectedBattleConfig.autoChooseTarget) {
             autoChooseTarget()
         }
     }

@@ -2,7 +2,6 @@ package com.mathewsachin.libautomata.extensions
 
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.ScreenshotManager
 
 interface IAutomataExtensions : IDurationExtensions,
     IGestureExtensions,
@@ -16,7 +15,9 @@ interface IAutomataExtensions : IDurationExtensions,
      */
     fun Region.getPattern(): IPattern
 
-    val screenshotManager: ScreenshotManager
+    fun <T> useSameSnapIn(block: () -> T): T
+
+    fun takeColorScreenshot(): IPattern
 
     fun toast(msg: String)
 

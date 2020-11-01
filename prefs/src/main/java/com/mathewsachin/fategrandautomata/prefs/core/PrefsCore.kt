@@ -24,9 +24,9 @@ class PrefsCore @Inject constructor(
 
     val skillConfirmation = maker.bool(R.string.pref_skill_conf)
 
-    val autoSkillList = maker.stringSet(R.string.pref_autoskill_list)
+    val battleConfigList = maker.stringSet(R.string.pref_battle_config_list)
 
-    val selectedAutoSkillConfig = maker.string(R.string.pref_autoskill_selected)
+    val selectedAutoSkillConfig = maker.string(R.string.pref_battle_config_selected)
 
     val storySkip = maker.bool(R.string.pref_story_skip)
 
@@ -51,8 +51,6 @@ class PrefsCore @Inject constructor(
     val skillDelay = maker.int(R.string.pref_skill_delay, 500)
 
     val screenshotDrops = maker.bool(R.string.pref_screenshot_drops)
-
-    val canPauseScript = maker.bool(R.string.pref_can_pause_script)
 
     val mlbSimilarity = maker.int(R.string.pref_mlb_similarity, 70)
 
@@ -85,7 +83,7 @@ class PrefsCore @Inject constructor(
 
     val autoStartService = maker.bool(R.string.pref_auto_start_service)
 
-    val showTextBoxForAutoSkillCmd = maker.bool(R.string.pref_auto_skill_cmd_text)
+    val showTextBoxForSkillCmd = maker.bool(R.string.pref_battle_config_cmd_text)
 
     val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn, 500)
 
@@ -93,16 +91,16 @@ class PrefsCore @Inject constructor(
 
     val maxGoldEmberSetSize = maker.int(R.string.pref_max_gold_ember_set_size, 1)
 
-    private val autoSkillMap = mutableMapOf<String, AutoSkillPrefsCore>()
+    private val battleConfigMap = mutableMapOf<String, BattleConfigCore>()
 
-    fun forAutoSkillConfig(id: String): AutoSkillPrefsCore =
-        autoSkillMap.getOrPut(id) {
-            AutoSkillPrefsCore(
+    fun forBattleConfig(id: String): BattleConfigCore =
+        battleConfigMap.getOrPut(id) {
+            BattleConfigCore(
                 id,
                 maker.context,
                 storageDirs
             )
         }
 
-    fun removeAutoSkillConfig(id: String) = autoSkillMap.remove(id)
+    fun removeBattleConfig(id: String) = battleConfigMap.remove(id)
 }

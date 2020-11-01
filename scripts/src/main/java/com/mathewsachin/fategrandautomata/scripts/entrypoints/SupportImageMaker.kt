@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.libautomata.*
@@ -24,9 +23,10 @@ fun getFriendImgPath(dir: File, Index: Int): File {
 class SupportImageMaker @Inject constructor(
     storageDirs: StorageDirs,
     exitManager: ExitManager,
-    platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    class ExitException : Exception()
+
     private val dir = storageDirs.supportImgTempDir
 
     override fun script(): Nothing {
@@ -37,7 +37,6 @@ class SupportImageMaker @Inject constructor(
         // the servant and CE images are further to the right in the friend screen
         val supportBoundX = if (isInSupport) 106 else 176
         val supportBound = Region(supportBoundX, 0, 286, 220)
-        val screenBounds = Region(Location(), Game.scriptSize)
 
         // At max two Servant+CE are completely on screen, so only use those
         val regionArray = Game.supportRegionToolSearchRegion
@@ -50,7 +49,7 @@ class SupportImageMaker @Inject constructor(
                 val newSupportBoundY = it.Region.Y + (if (isInSupport) 66 else 82)
                 supportBound.copy(Y = newSupportBoundY)
             }
-            .filter { it in screenBounds }
+            .filter { it in Game.scriptRegion }
             .take(2)
             .toList()
             .sorted()
@@ -67,7 +66,7 @@ class SupportImageMaker @Inject constructor(
             throw ScriptExitException(messages.supportImageMakerNotFound)
         }
 
-        throw SupportImageMakerExitException()
+        throw ExitException()
     }
 
     private fun cleanExtractFolder() {

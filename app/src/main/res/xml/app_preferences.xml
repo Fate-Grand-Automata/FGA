@@ -45,8 +45,6 @@
 
         <ListPreference
             app:defaultValue="-1"
-            app:entries="@array/boost_item_labels"
-            app:entryValues="@array/boost_item_values"
             app:icon="@drawable/ic_boost"
             app:key="@string/pref_boost_item"
             app:title="@string/p_boost_item"
@@ -54,9 +52,9 @@
 
         <SwitchPreferenceCompat
             app:icon="@drawable/ic_wand"
-            app:key="@string/pref_auto_skill_cmd_text"
-            app:title="@string/p_auto_skill_cmd_text"
-            app:summary="@string/p_auto_skill_cmd_text_summary" />
+            app:key="@string/pref_battle_config_cmd_text"
+            app:title="@string/p_battle_config_cmd_text"
+            app:summary="@string/p_battle_config_cmd_text_summary" />
 
         <!--    <SwitchPreferenceCompat-->
         <!--        app:defaultValue="false"-->
@@ -120,12 +118,5 @@
             app:icon="@drawable/ic_launch"
             app:key="@string/pref_auto_start_service"
             app:title="@string/p_auto_start_service" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_pause"
-            app:key="@string/pref_can_pause_script"
-            app:summary="@string/p_experimental"
-            app:title="@string/p_allow_pause_script" />
     </PreferenceCategory>
 </PreferenceScreen>

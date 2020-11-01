@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.modules.*
@@ -28,11 +29,10 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
  */
 open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
-    platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi,
     val storageDirs: StorageDirs,
     swipeLocations: ISwipeLocations
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     private val support = Support(fgAutomataApi, swipeLocations)
     private val card = Card(fgAutomataApi)
     private val battle = Battle(fgAutomataApi)
@@ -42,6 +42,7 @@ open class AutoBattle @Inject constructor(
     private var withdrawCount = 0
     private var isContinuing = false
     private var partySelected = false
+    private var matsGot = mutableMapOf<MaterialEnum, Int>()
 
     override fun script(): Nothing {
         init()
@@ -57,10 +58,7 @@ open class AutoBattle @Inject constructor(
                 else e.message
             )
 
-            throw when (e) {
-                is ScriptAbortException.User -> ScriptAbortException.User(msg)
-                is ScriptAbortException.ScreenTurnedOff -> ScriptAbortException.ScreenTurnedOff(msg)
-            }
+            throw ScriptAbortException(msg)
         } catch (e: Exception) {
             throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
         } finally {
@@ -74,7 +72,16 @@ open class AutoBattle @Inject constructor(
         appendLine(reason)
         appendLine()
 
-        appendLine(makeRefillAndRunsMessage())
+        makeRefillAndRunsMessage().let { msg ->
+            if (msg.isNotBlank()) {
+                appendLine(msg)
+            }
+        }
+
+        if (prefs.selectedBattleConfig.materials.isNotEmpty()) {
+            appendLine(messages.materials(matsGot))
+            appendLine()
+        }
 
         appendLine(messages.time(battle.state.totalBattleTime))
 
@@ -108,14 +115,14 @@ open class AutoBattle @Inject constructor(
             { needsToWithdraw() } to { withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
-            { isCeReward() } to { ceReward() },
+            { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() }
             //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
 
         // Loop through SCREENS until a Validator returns true
         while (true) {
-            val actor = screenshotManager.useSameSnapIn {
+            val actor = useSameSnapIn {
                 screens
                     .asSequence()
                     .filter { (validator, _) -> validator() }
@@ -141,6 +148,11 @@ open class AutoBattle @Inject constructor(
         card.init(autoSkill, battle)
 
         support.init()
+
+        // Set all Materials to 0
+        prefs.selectedBattleConfig
+            .materials
+            .associateWithTo(matsGot) { 0 }
     }
 
     /**
@@ -187,19 +199,17 @@ open class AutoBattle @Inject constructor(
         return cases.any { (image, region) -> image in region }
     }
 
-    val ceRewardSimilarity = 0.75
-
-    private fun isCeReward() =
-        Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+    private fun isBond10CEReward() =
+        Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = 0.75)
 
     /**
      * It seems like we need to click on CE (center of screen) to accept them
      */
-    private fun ceReward() =
-        Region(Location(), Game.scriptSize).center.click()
+    private fun bond10CEReward() =
+        Game.scriptRegion.center.click()
 
     private fun isCeRewardDetails() =
-        Game.resultCeRewardDetailsRegion.exists(images.bond10Reward, Similarity = ceRewardSimilarity)
+        images.ceDetails in Game.resultCeRewardDetailsRegion
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
@@ -213,22 +223,17 @@ open class AutoBattle @Inject constructor(
      * Clicks through the reward screens.
      */
     private fun result() {
-        if (images.ceDrop in Game.resultCeDropRegion) {
-            val msg = messages.ceDropped
-            if (prefs.stopOnCEDrop) {
-                throw ScriptExitException(msg)
-            } else notify(msg)
-        }
-
-        if (prefs.screenshotDrops)
-            Game.resultClick.click(15)
-        else Game.resultNextClick.click(20)
+        Game.resultClick.click(15)
     }
 
     private fun isInDropsScreen() =
         images.matRewards in Game.resultMatRewardsRegion
 
     private fun dropScreen() {
+        checkCEDrops()
+
+        trackMaterials()
+
         if (prefs.screenshotDrops) {
             screenshotDrops()
         }
@@ -236,9 +241,49 @@ open class AutoBattle @Inject constructor(
         Game.resultNextClick.click(5)
     }
 
-    private fun screenshotDrops() {
-        0.5.seconds.wait()
+    private fun checkCEDrops() {
+        val starsRegion = Region(40, -40, 80, 40)
 
+        val ceDropped = Game.scriptRegion
+            .findAll(images.dropCE)
+            .map { (region, _) ->
+                starsRegion + region.location
+            }
+            .any { images.dropCEStars in it }
+
+        if (ceDropped) {
+            val msg = messages.ceDropped
+            if (prefs.stopOnCEDrop) {
+                throw ScriptExitException(msg)
+            } else notify(msg)
+        }
+    }
+
+    private fun trackMaterials() {
+        for (material in prefs.selectedBattleConfig.materials) {
+            val pattern = images.material(material)
+
+            // TODO: Make the search region smaller
+            val count = Game.scriptRegion
+                .findAll(pattern)
+                .count()
+
+            // Increment material count
+            matsGot.merge(material, count, Int::plus)
+        }
+
+        if (prefs.refill.shouldLimitMats) {
+            val totalMats = matsGot
+                .values
+                .sum()
+
+            if (totalMats >= prefs.refill.limitMats) {
+                throw ScriptExitException(messages.farmedMaterials(totalMats))
+            }
+        }
+    }
+
+    private fun screenshotDrops() {
         val dropsFolder = File(
             storageDirs.storageRoot,
             "drops"
@@ -254,12 +299,7 @@ open class AutoBattle @Inject constructor(
         for (i in 0..1) {
             val dropFileName = "${timeString}.${i}.png"
 
-            val shotService = screenshotManager.screenshotService
-            val shot = if (shotService is IColorScreenshotProvider) {
-                shotService.takeColorScreenshot()
-            } else screenshotManager.getScreenshot()
-
-            shot.use {
+            takeColorScreenshot().use {
                 it.save(
                     File(dropsFolder, dropFileName).absolutePath
                 )
@@ -294,7 +334,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isFriendRequestScreen() =
-        images.friendRequest in Game.resultFriendRequestRegion
+        images.supportExtra in Game.resultFriendRequestRegion
 
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
@@ -316,7 +356,7 @@ open class AutoBattle @Inject constructor(
     private fun support() {
         // Friend selection
         val hasSelectedSupport =
-            support.selectSupport(prefs.selectedAutoSkillConfig.support.selectionMode, isContinuing)
+            support.selectSupport(prefs.selectedBattleConfig.support.selectionMode, isContinuing)
 
         if (hasSelectedSupport && !isContinuing) {
             4.seconds.wait()
@@ -431,7 +471,7 @@ open class AutoBattle @Inject constructor(
      * changed to the configured one by clicking on the little dots above the party names.
      */
     fun selectParty() {
-        val party = prefs.selectedAutoSkillConfig.party
+        val party = prefs.selectedBattleConfig.party
 
         if (!partySelected && party in Game.partySelectionArray.indices) {
             val currentParty = Game.selectedPartyRegion
@@ -516,7 +556,7 @@ open class AutoBattle @Inject constructor(
         val message = makeRefillAndRunsMessage()
 
         if (message.isNotBlank()) {
-            platformImpl.toast(message)
+            toast(message)
         }
     }
 

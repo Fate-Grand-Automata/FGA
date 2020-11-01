@@ -18,8 +18,8 @@
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".ui.auto_skill_maker.AutoSkillMakerActivity"
-            android:label="Auto Skill Maker"
+            android:name=".ui.skill_maker.SkillMakerActivity"
+            android:label="Skill Maker"
             android:screenOrientation="userLandscape"
             android:theme="@style/AppTheme.NoActionBar" />
 
