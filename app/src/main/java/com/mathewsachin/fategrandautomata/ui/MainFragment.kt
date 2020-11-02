@@ -125,8 +125,7 @@ class MainFragment : Fragment() {
         )
             return
 
-        if (!vm.checkRootDir()) {
-            pickDir.launch(Uri.EMPTY)
+        if (!vm.ensureRootDir(pickDir, requireContext())) {
             return
         }
 

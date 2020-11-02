@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -54,9 +53,9 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<Preference>(getString(prefKeys.pref_nav_battle_config))?.let {
             it.setOnPreferenceClickListener {
-                if (!vm.checkRootDir()) {
-                    pickDir.launch(Uri.EMPTY)
-                } else goToBattleConfigList()
+                if (vm.ensureRootDir(pickDir, requireContext())) {
+                    goToBattleConfigList()
+                }
 
                 true
             }

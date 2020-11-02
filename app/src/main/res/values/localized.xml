@@ -158,6 +158,12 @@
     <string name="p_storage">Storage</string>
     <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
 
+    <string name="p_choose_folder_title">Choose Folder</string>
+    <string name="p_choose_folder_message">Choose folder used to store Support images, drop images, etc.</string>
+    <string name="p_choose_folder_not_exist_title">Choose another folder</string>
+    <string name="p_choose_folder_not_exist_message">Can\'t access the folder used to store Support images, drop images, etc.</string>
+    <string name="p_choose_folder_action">Choose</string>
+
     <string name="p_advanced">Advanced</string>
     <string name="p_debug_mode">Debug mode</string>
     <string name="p_debug_mode_summary">Highlight the regions being matched</string>

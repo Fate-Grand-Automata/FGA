@@ -1,7 +1,9 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
+import androidx.activity.result.ActivityResultLauncher
 import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
@@ -74,13 +76,38 @@ class MainSettingsViewModel @ViewModelInject constructor(
 
     val serviceStarted get() = ScriptRunnerService.serviceStarted
 
-    fun checkRootDir(): Boolean {
+    // Activity context is needed since we can't show AlertDialog with Application context.
+    fun ensureRootDir(picker: ActivityResultLauncher<Uri>, activityContext: Context): Boolean {
         val dirRoot = prefsCore.dirRoot.get()
 
-        if (dirRoot.isBlank())
-            return false
+        if (dirRoot.isBlank()) {
+            AlertDialog.Builder(activityContext)
+                .setTitle(R.string.p_choose_folder_title)
+                .setMessage(R.string.p_choose_folder_message)
+                .setPositiveButton(R.string.p_choose_folder_action) { _, _ ->
+                    picker.launch(Uri.EMPTY)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
 
-        return DocumentFile.fromTreeUri(context, Uri.parse(dirRoot))
-            ?.exists() ?: false
+            return false
+        }
+
+        val docFile = DocumentFile.fromTreeUri(context, Uri.parse(dirRoot))
+
+        if (docFile?.exists() != true) {
+            AlertDialog.Builder(activityContext)
+                .setTitle(R.string.p_choose_folder_not_exist_title)
+                .setMessage(R.string.p_choose_folder_not_exist_message)
+                .setPositiveButton(R.string.p_choose_folder_action) { _, _ ->
+                    picker.launch(Uri.EMPTY)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+
+            return false
+        }
+
+        return true
     }
 }
