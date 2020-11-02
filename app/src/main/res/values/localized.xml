@@ -251,6 +251,9 @@
     <string name="accessibility_disabled_title">Accessibility Disabled</string>
     <string name="accessibility_disabled_message">Turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
     <string name="accessibility_disabled_go_to_settings">Go To Settings</string>
+    <string name="draw_overlay_disabled_title">Missing overlay permission</string>
+    <string name="draw_overlay_disabled_message">Please allow this app to draw over other apps. It is used to draw the control buttons.</string>
+    <string name="draw_overlay_disabled_go_to_settings">Go To Settings</string>
     <string name="cannot_start_recording">Couldn\'t start recording</string>
     <string name="select_script">Select Script</string>
     <string name="other_scripts">Lottery/FP/GiftBox/\nSupport Image Maker</string>

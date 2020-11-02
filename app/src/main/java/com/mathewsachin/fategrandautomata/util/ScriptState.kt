@@ -9,4 +9,6 @@ sealed class ScriptState {
         val recording: AutoCloseable?,
         var paused: Boolean = false
     ) : ScriptState()
+
+    class Stopping(val start: Started) : ScriptState()
 }

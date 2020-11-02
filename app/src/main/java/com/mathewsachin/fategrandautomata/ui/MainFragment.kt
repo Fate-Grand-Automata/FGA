@@ -95,12 +95,20 @@ class MainFragment : Fragment() {
         val context = requireContext()
 
         if (!Settings.canDrawOverlays(context)) {
-            val i = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:${context.packageName}")
-            )
-            toggling = true
-            startActivity(i)
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.draw_overlay_disabled_title)
+                .setMessage(R.string.draw_overlay_disabled_message)
+                .setPositiveButton(R.string.draw_overlay_disabled_go_to_settings) { _, _ ->
+                    // Open overlay settings
+                    val intent = Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:${context.packageName}")
+                    )
+                    toggling = true
+                    startActivity(intent)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
             return false
         }
 

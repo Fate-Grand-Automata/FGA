@@ -26,11 +26,10 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
  */
 open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
-    platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi,
     val storageProvider: IStorageProvider,
     swipeLocations: ISwipeLocations
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     private val support = Support(fgAutomataApi, swipeLocations)
     private val card = Card(fgAutomataApi)
     private val battle = Battle(fgAutomataApi)
@@ -120,7 +119,7 @@ open class AutoBattle @Inject constructor(
 
         // Loop through SCREENS until a Validator returns true
         while (true) {
-            val actor = screenshotManager.useSameSnapIn {
+            val actor = useSameSnapIn {
                 screens
                     .asSequence()
                     .filter { (validator, _) -> validator() }
@@ -285,12 +284,7 @@ open class AutoBattle @Inject constructor(
         val drops = mutableListOf<IPattern>()
 
         for (i in 0..1) {
-            val shotService = screenshotManager.screenshotService
-            val shot = if (shotService is IColorScreenshotProvider) {
-                shotService.takeColorScreenshot()
-            } else screenshotManager.getScreenshot()
-
-            drops.add(shot)
+            drops.add(takeColorScreenshot())
 
             // check if we need to scroll to see more drops
             if (images.dropScrollbar in Game.resultDropScrollbarRegion) {
@@ -545,7 +539,7 @@ open class AutoBattle @Inject constructor(
         val message = makeRefillAndRunsMessage()
 
         if (message.isNotBlank()) {
-            platformImpl.toast(message)
+            toast(message)
         }
     }
 

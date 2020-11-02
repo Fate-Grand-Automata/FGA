@@ -11,9 +11,8 @@ import kotlin.time.seconds
  */
 class AutoLottery @Inject constructor(
     exitManager: ExitManager,
-    platformImpl: IPlatformImpl,
     fgAutomataApi: IFgoAutomataApi
-) : EntryPoint(exitManager, platformImpl, fgAutomataApi.messages), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     private val spinClick = Location(834, 860)
 
     private val fullPresentBoxRegion = Region(1300, 860, 1000, 500)
@@ -40,7 +39,7 @@ class AutoLottery @Inject constructor(
 
     override fun script(): Nothing {
         while (true) {
-            screenshotManager.useSameSnapIn {
+            useSameSnapIn {
                 when {
                     images.finishedLotteryBox in Game.finishedLotteryBoxRegion -> reset()
                     images.presentBoxFull in fullPresentBoxRegion -> {

@@ -1,25 +1,28 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
-import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
+import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
-import com.mathewsachin.libautomata.EntryPoint
-import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.*
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import timber.log.error
 import javax.inject.Inject
+import kotlin.coroutines.resume
 import kotlin.time.milliseconds
 
 @ServiceScoped
@@ -27,32 +30,83 @@ class ScriptManager @Inject constructor(
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
-    val storageProvider: StorageProvider
+    val storageProvider: StorageProvider,
+    val platformImpl: IPlatformImpl,
+    val messages: IScriptMessages
 ) {
     var scriptState: ScriptState = ScriptState.Stopped
         private set
 
-    private fun onScriptExit(e: Exception?) = handler.post {
-        userInterface.setPlayIcon()
-        userInterface.isPauseButtonVisible = false
+    // Show message box synchronously
+    suspend fun message(Title: String, Message: String, Error: Exception? = null): Unit = suspendCancellableCoroutine {
+        platformImpl.messageBox(Title, Message, Error) {
+            it.resume(Unit)
+        }
+    }
 
+    private fun onScriptExit(e: Exception) = GlobalScope.launch {
+        userInterface.setPlayIcon()
+        userInterface.isPlayButtonEnabled = false
+        userInterface.isPauseButtonVisible = false
         imageLoader.clearSupportCache()
 
-        scriptState.let { prevState ->
-            if (prevState is ScriptState.Started && prevState.recording != null) {
-                prevState.recording.close()
+        // Stop recording
+        scriptState.let { state ->
+            if (state is ScriptState.Started) {
+                scriptState = ScriptState.Stopping(state)
+            }
+
+            val recording = when (state) {
+                ScriptState.Stopped -> null
+                is ScriptState.Started -> state.recording
+                is ScriptState.Stopping -> state.start.recording
+            }
+
+            if (recording != null) {
+                // A little bit of delay so the exit message can be recorded
+                userInterface.postDelayed(500.milliseconds) {
+                    try {
+                        recording.close()
+                    } catch (e: Exception) {
+                        val msg = "Failed to stop recording"
+                        Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
+                        Timber.error(e) { msg }
+                    }
+                }
+            }
+        }
+
+        when (e) {
+            is SupportImageMaker.ExitException -> {
+                showSupportImageNamer(userInterface, storageProvider)
+            }
+            is ScriptAbortException -> {
+                if (e.message.isNotBlank()) {
+                    message(messages.scriptExited, e.message)
+                }
+            }
+            is ScriptExitException -> {
+                // Show the message box only if there is some message
+                if (e.message.isNotBlank()) {
+                    val msg = messages.scriptExited
+                    platformImpl.notify(msg)
+
+                    message(msg, e.message)
+                }
+            }
+            else -> {
+                println(e.messageAndStackTrace)
+
+                val msg = messages.unexpectedError
+                platformImpl.notify(msg)
+
+                message(msg, e.messageAndStackTrace, e)
             }
         }
 
         scriptState = ScriptState.Stopped
-
-        if (e is SupportImageMakerExitException) {
-            showSupportImageNamer(userInterface, storageProvider)
-        }
-
-        userInterface.postDelayed(250.milliseconds) {
-            userInterface.playButtonEnabled(true)
-        }
+        delay(250.milliseconds)
+        userInterface.isPlayButtonEnabled = true
     }
 
     private fun getEntryPoint(entryPoint: ScriptEntryPoint): EntryPoint =
@@ -60,10 +114,6 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.Other -> entryPoint.other()
             ScriptModeEnum.Battle -> entryPoint.battle()
         }
-
-    private val handler by lazy {
-        Handler(Looper.getMainLooper())
-    }
 
     enum class PauseAction {
         Pause, Resume, Toggle
@@ -98,11 +148,11 @@ class ScriptManager @Inject constructor(
         screenshotService: IScreenshotService,
         componentBuilder: ScriptComponentBuilder
     ) {
-        if (scriptState is ScriptState.Started) {
+        if (scriptState !is ScriptState.Stopped) {
             return
         }
 
-        userInterface.playButtonEnabled(false)
+        userInterface.isPlayButtonEnabled = false
 
         val scriptComponent = componentBuilder
             .screenshotService(screenshotService)
@@ -120,14 +170,15 @@ class ScriptManager @Inject constructor(
         scriptState.let { state ->
             if (state is ScriptState.Started) {
                 userInterface.isPauseButtonVisible = false
-                userInterface.playButtonEnabled(false)
+                userInterface.isPlayButtonEnabled = false
+                scriptState = ScriptState.Stopping(state)
                 state.entryPoint.stop()
             }
         }
     }
 
     private fun runEntryPoint(screenshotService: IScreenshotService, entryPointProvider: () -> EntryPoint) {
-        if (scriptState is ScriptState.Started) {
+        if (scriptState !is ScriptState.Stopped) {
             return
         }
 
@@ -201,7 +252,7 @@ class ScriptManager @Inject constructor(
                     entryPointRunner()
                 }
                 .setOnDismissListener {
-                    userInterface.playButtonEnabled(true)
+                    userInterface.isPlayButtonEnabled = true
                 }
         }
     }

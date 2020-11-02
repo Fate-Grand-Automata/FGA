@@ -13,6 +13,10 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.dayNightThemed
 import com.mathewsachin.fategrandautomata.util.showOverlayDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
 
 // *, ?, \, |, / are special characters in Regex and need to be escaped using \
 private const val InvalidChars = """<>"\|:\*\?\\\/"""
@@ -93,7 +97,7 @@ private fun getSupportEntries(
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
 }
 
-fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageProvider: StorageProvider) {
+suspend fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageProvider: StorageProvider) = withContext(Dispatchers.Main) {
     val context = UI.Service.applicationContext
     val themedContext = context.dayNightThemed()
     val frame = FrameLayout(themedContext)
@@ -108,17 +112,22 @@ fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageProvider: Storag
 
     val entryList = getSupportEntries(frame, storageProvider)
 
-    showOverlayDialog(context) {
-        setCancelable(false)
-            .setTitle(UI.Service.getString(R.string.support_img_namer_title))
-            .setView(content)
-            .setPositiveButton(UI.Service.getString(R.string.support_img_namer_done)) { dialog, _ ->
-                if (entryList.all { it.isValid() }) {
-                    if (entryList.all { it.rename(storageProvider) }) {
-                        dialog.dismiss()
+    suspendCancellableCoroutine<Unit> { coroutine ->
+        showOverlayDialog(context) {
+            setCancelable(false)
+                .setTitle(UI.Service.getString(R.string.support_img_namer_title))
+                .setView(content)
+                .setPositiveButton(UI.Service.getString(R.string.support_img_namer_done)) { dialog, _ ->
+                    if (entryList.all { it.isValid() }) {
+                        if (entryList.all { it.rename(storageProvider) }) {
+                            dialog.dismiss()
+                        }
                     }
                 }
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
+                .setOnDismissListener {
+                    coroutine.resume(Unit)
+                }
+        }
     }
 }

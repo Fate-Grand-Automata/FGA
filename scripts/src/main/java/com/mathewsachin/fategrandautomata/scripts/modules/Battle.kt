@@ -82,7 +82,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     }
 
     fun performBattle() {
-        screenshotManager.useSameSnapIn { onTurnStarted() }
+        useSameSnapIn { onTurnStarted() }
         prefs.waitBeforeTurn.wait()
 
         autoSkill.execute()

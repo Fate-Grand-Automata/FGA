@@ -71,7 +71,7 @@ class MediaProjectionScreenshotService(
 
                 DroidCvPattern(mat)
             }
-        } ?: pattern
+        } ?: pattern.copy()
 
     override fun close() {
         colorCorrectedMat.release()
