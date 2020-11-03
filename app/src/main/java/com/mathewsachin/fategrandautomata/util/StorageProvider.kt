@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
+import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -164,6 +165,20 @@ class StorageProvider @Inject constructor(
 
                 resolver.openOutputStream(file.uri)?.use { stream ->
                     pattern.save(stream)
+                }
+            }
+        }
+    }
+
+    override fun dump(name: String, image: IPattern) {
+        image.use {
+            if (BuildConfig.DEBUG) {
+                val file = dirRoot
+                    .getOrCreateDir("dump")
+                    .getOrCreateFile(name)
+
+                resolver.openOutputStream(file.uri)?.use { stream ->
+                    image.save(stream)
                 }
             }
         }

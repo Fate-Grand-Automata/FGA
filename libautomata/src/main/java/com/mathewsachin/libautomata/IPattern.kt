@@ -44,13 +44,6 @@ interface IPattern : AutoCloseable {
      */
     fun crop(Region: Region): IPattern
 
-    /**
-     * Saves the image data to the given file path.
-     *
-     * @param FileName an absolute file path pointing to the save location
-     */
-    fun save(FileName: String)
-
     fun save(stream: OutputStream)
 
     /**

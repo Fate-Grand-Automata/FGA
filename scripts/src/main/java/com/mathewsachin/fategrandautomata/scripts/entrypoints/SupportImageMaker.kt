@@ -75,22 +75,20 @@ class SupportImageMaker @Inject constructor(
         }
     }
 
+    private fun IPattern.save(path: File) = use {
+        path.outputStream().use { stream ->
+            save(stream)
+        }
+    }
+
     private fun extractServantImage(supportBoundImage: IPattern, i: Int) {
         val servant = supportBoundImage.crop(Region(0, 0, 125, 44))
-        servant.use {
-            servant.save(
-                getServantImgPath(dir, i).absolutePath
-            )
-        }
+        servant.save(getServantImgPath(dir, i))
     }
 
     private fun extractCeImage(supportRegionImage: IPattern, i: Int) {
         val ce = supportRegionImage.crop(Region(0, 80, supportRegionImage.width, 25))
-        ce.use {
-            ce.save(
-                getCeImgPath(dir, i).absolutePath
-            )
-        }
+        ce.save(getCeImgPath(dir, i))
     }
 
     private fun extractFriendNameImage(supportBound: Region, isInSupport: Boolean, i: Int) {
@@ -99,10 +97,6 @@ class SupportImageMaker @Inject constructor(
         val friendBound = Region(friendNameX, supportBound.Y - 95, 400, 110)
 
         val friendPattern = friendBound.getPattern()
-        friendPattern.use {
-            friendPattern.save(
-                getFriendImgPath(dir, i).absolutePath
-            )
-        }
+        friendPattern.save(getFriendImgPath(dir, i))
     }
 }

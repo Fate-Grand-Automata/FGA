@@ -15,4 +15,9 @@ interface IStorageProvider {
     fun list(kind: SupportImageKind): List<String>
 
     fun dropScreenshot(patterns: List<IPattern>)
+
+    /**
+     * For debugging images
+     */
+    fun dump(name: String, image: IPattern)
 }
