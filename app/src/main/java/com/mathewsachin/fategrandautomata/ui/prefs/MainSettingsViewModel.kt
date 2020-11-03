@@ -30,13 +30,8 @@ class MainSettingsViewModel @ViewModelInject constructor(
     private val oncePerActivityStart = AtomicBoolean(false)
     fun activityStarted() = oncePerActivityStart.set(true)
 
-    val gameServer = prefsCore
-        .gameServer
-        .asFlow()
-        .asLiveData()
-
-    val scriptMode = prefsCore
-        .scriptMode
+    val useRootForScreenshots = prefsCore
+        .useRootForScreenshots
         .asFlow()
         .asLiveData()
 

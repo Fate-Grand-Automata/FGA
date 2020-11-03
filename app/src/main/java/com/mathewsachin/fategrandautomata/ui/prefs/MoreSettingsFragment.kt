@@ -8,13 +8,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 @AndroidEntryPoint
 class MoreSettingsFragment : PreferenceFragmentCompat() {
@@ -24,7 +24,7 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.app_preferences, rootKey)
 
-        findPreference<Preference>(getString(prefKeys.pref_nav_fine_tune))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_fine_tune))?.let {
             it.setOnPreferenceClickListener {
                 val action = MoreSettingsFragmentDirections
                     .actionMoreSettingsFragmentToFineTuneSettingsFragment()
@@ -58,8 +58,13 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
             it.summary = storageProvider.rootDirName
         }
 
-        findPreference<Preference>(getString(R.string.pref_use_root_screenshot))?.let {
-            it.isEnabled = RootScreenshotService.canUseRootForScreenshots()
+        findPreference<SwitchPreferenceCompat>(getString(R.string.pref_use_root_screenshot))?.let {
+            val canUseRoot = RootScreenshotService.canUseRootForScreenshots()
+            it.isEnabled = canUseRoot
+
+            if (!canUseRoot) {
+                it.isChecked = false
+            }
         }
     }
 
@@ -77,11 +82,13 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
 
         val vm: MainSettingsViewModel by activityViewModels()
 
-        // Since GameServer can be updated from other parts of code,
-        // we need to trigger a forced UI update here
-        findPreference<ListPreference>(getString(prefKeys.pref_gameserver))?.let {
-            vm.gameServer.observe(viewLifecycleOwner) { gameServer ->
-                it.value = gameServer.toString()
+        findPreference<SwitchPreferenceCompat>(getString(R.string.pref_record_screen))?.let {
+            vm.useRootForScreenshots.observe(viewLifecycleOwner) { root ->
+                it.isEnabled = !root
+
+                if (root) {
+                    it.isChecked = false
+                }
             }
         }
     }
