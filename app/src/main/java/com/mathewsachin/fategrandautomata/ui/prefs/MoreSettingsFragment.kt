@@ -9,6 +9,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +56,10 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
             }
 
             it.summary = storageProvider.rootDirName
+        }
+
+        findPreference<Preference>(getString(R.string.pref_use_root_screenshot))?.let {
+            it.isEnabled = RootScreenshotService.canUseRootForScreenshots()
         }
     }
 

@@ -21,6 +21,11 @@ class RootScreenshotService(
     val storageProvider: StorageProvider,
     val platformImpl: IPlatformImpl
 ) : IScreenshotService, IColorScreenshotProvider {
+    companion object {
+        fun canUseRootForScreenshots() =
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+    }
+
     private var buffer: ByteArray? = null
     private val imgPath = storageProvider.rootScreenshotFile
 

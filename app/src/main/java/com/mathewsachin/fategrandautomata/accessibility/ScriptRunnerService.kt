@@ -123,7 +123,8 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = null
     }
 
-    val wantsMediaProjectionToken: Boolean get() = !prefs.useRootForScreenshots
+    val wantsMediaProjectionToken: Boolean
+        get() = !(RootScreenshotService.canUseRootForScreenshots() && prefs.useRootForScreenshots)
 
     var serviceState: ServiceState = ServiceState.Stopped
         private set
