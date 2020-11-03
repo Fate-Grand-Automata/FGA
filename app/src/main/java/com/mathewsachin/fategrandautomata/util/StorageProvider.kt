@@ -45,7 +45,7 @@ class StorageProvider @Inject constructor(
         get() = dirRoot?.name
 
     val rootScreenshotFile
-        get() = dirRoot.getOrCreateFile("sshot.raw")
+        get() = File(context.getExternalFilesDir(null), "sshot.raw")
 
     private val recordingFile
         get() = dirRoot.getOrCreateFile("record.mp4")

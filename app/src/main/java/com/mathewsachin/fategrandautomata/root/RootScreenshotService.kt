@@ -22,8 +22,7 @@ class RootScreenshotService(
     val platformImpl: IPlatformImpl
 ) : IScreenshotService, IColorScreenshotProvider {
     private var buffer: ByteArray? = null
-    private val file = storageProvider.rootScreenshotFile
-    private val imgPath = file.uri.path
+    private val imgPath = storageProvider.rootScreenshotFile
 
     private var rootLoadMat: Mat? = null
     private val rootConvertMat = Mat()
@@ -32,7 +31,7 @@ class RootScreenshotService(
     private fun screenshotIntoBuffer() {
         SuperUser.sendCommand("/system/bin/screencap $imgPath")
 
-        storageProvider.resolver.openInputStream(file.uri)?.use {
+        imgPath.inputStream().use {
             DataInputStream(it).use { reader ->
                 val w = reader.readIntLE()
                 val h = reader.readIntLE()
