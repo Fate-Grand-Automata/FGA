@@ -23,7 +23,7 @@ class RootScreenshotService(
 ) : IScreenshotService, IColorScreenshotProvider {
     companion object {
         fun canUseRootForScreenshots() =
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.P
     }
 
     private var buffer: ByteArray? = null
