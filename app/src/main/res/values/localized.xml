@@ -159,7 +159,7 @@
     <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
 
     <string name="p_choose_folder_title">Choose Folder</string>
-    <string name="p_choose_folder_message">Choose folder used to store Support images, drop images, etc.</string>
+    <string name="p_choose_folder_message">Choose the folder to use to store Support images, drop images, etc.\n\nNOTE: You might have to use \'Show Internal Storage\' in your device\'s file picker.</string>
     <string name="p_choose_folder_not_exist_title">Choose another folder</string>
     <string name="p_choose_folder_not_exist_message">Can\'t access the folder used to store Support images, drop images, etc.</string>
     <string name="p_choose_folder_action">Choose</string>
