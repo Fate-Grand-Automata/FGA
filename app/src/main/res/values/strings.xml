@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">FGA (Debug)</string>
-    <string name="service_runner_description">This service actually runs the scripts. An accessibility service is required if clicks and swipes are to be performed without root.</string>
 
     <string name="count_0" translatable="false">0</string>
     <string name="count_1" translatable="false">1</string>
@@ -18,4 +17,6 @@
     <string name="skill_code_j" translatable="false">j</string>
     <string name="skill_code_k" translatable="false">k</string>
     <string name="skill_code_l" translatable="false">l</string>
+
+    <string name="link_troubleshoot" translatable="false">https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting</string>
 </resources>

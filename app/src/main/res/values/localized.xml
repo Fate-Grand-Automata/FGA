@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="service_runner_description">This service actually runs the scripts. An accessibility service is required if clicks and swipes are to be performed without root.</string>
+
     <string name="battle_config_item_copy">Copy</string>
     <string name="battle_config_item_delete">Delete</string>
     <string name="battle_config_item_export">Export</string>
@@ -200,6 +202,7 @@
 
     <string name="p_nav_refill">Refill</string>
     <string name="p_nav_more_options">More options</string>
+    <string name="p_nav_troubleshoot">Troubleshooting</string>
     <string name="p_nav_fine_tune">Fine-tune</string>
     <string name="p_nav_battle_config_list">Battle Configs</string>
     <string name="p_nav_battle_config_edit">Edit config</string>
