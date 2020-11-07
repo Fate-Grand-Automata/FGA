@@ -45,8 +45,8 @@ class MediaProjectionScreenshotService(
 
     override fun takeScreenshot(): IPattern {
         imageReader.acquireLatestImage()?.use { img ->
-            DisposableMat(img.toMat()).use {
-                Imgproc.cvtColor(it.Mat, colorCorrectedMat, Imgproc.COLOR_BGRA2GRAY)
+            img.toMat().use {
+                Imgproc.cvtColor(it, colorCorrectedMat, Imgproc.COLOR_BGRA2GRAY)
             }
         }
 
@@ -65,9 +65,9 @@ class MediaProjectionScreenshotService(
 
     override fun takeColorScreenshot(): IPattern =
         imageReader.acquireLatestImage()?.use { img ->
-            DisposableMat(img.toMat()).use {
+            img.toMat().use {
                 val mat = Mat()
-                Imgproc.cvtColor(it.Mat, mat, Imgproc.COLOR_RGBA2BGR)
+                Imgproc.cvtColor(it, mat, Imgproc.COLOR_RGBA2BGR)
 
                 DroidCvPattern(mat)
             }

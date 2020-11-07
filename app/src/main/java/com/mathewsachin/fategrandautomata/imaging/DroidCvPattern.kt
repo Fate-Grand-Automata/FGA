@@ -27,8 +27,9 @@ class DroidCvPattern(
     private companion object {
         fun makeMat(Stream: InputStream): MatWithAlpha {
             val byteArray = Stream.readBytes()
-            DisposableMat(MatOfByte(*byteArray)).use {
-                val decoded = Imgcodecs.imdecode(it.Mat, Imgcodecs.IMREAD_UNCHANGED)
+
+            MatOfByte(*byteArray).use {
+                val decoded = Imgcodecs.imdecode(it, Imgcodecs.IMREAD_UNCHANGED)
                 var alphaChannel: Mat? = null
 
                 // Change color images to grayscale and extract alpha if present
@@ -92,16 +93,16 @@ class DroidCvPattern(
         Target.tag(tag)
     }
 
-    private fun match(Template: IPattern): DisposableMat {
-        if (Template is DroidCvPattern) {
-            val result = DisposableMat()
+    private fun match(Template: IPattern): Mat {
+        val result = Mat()
 
+        if (Template is DroidCvPattern) {
             if (Template.width <= width && Template.height <= height) {
                 if (alpha != null) {
                     Imgproc.matchTemplate(
                         Mat,
                         Template.Mat,
-                        result.Mat,
+                        result,
                         Imgproc.TM_CCOEFF_NORMED,
                         alpha
                     )
@@ -109,18 +110,16 @@ class DroidCvPattern(
                     Imgproc.matchTemplate(
                         Mat,
                         Template.Mat,
-                        result.Mat,
+                        result,
                         Imgproc.TM_CCOEFF_NORMED
                     )
                 }
             } else {
                 Timber.verbose { "Skipped matching $Template: Region out of bounds" }
             }
-
-            return result
         }
 
-        return DisposableMat()
+        return result
     }
 
     override fun findMatches(Template: IPattern, Similarity: Double) = sequence {
@@ -128,7 +127,7 @@ class DroidCvPattern(
 
         result.use {
             while (true) {
-                val minMaxLocResult = Core.minMaxLoc(it.Mat)
+                val minMaxLocResult = Core.minMaxLoc(it)
                 val score = minMaxLocResult.maxVal
 
                 if (score >= Similarity) {
@@ -145,12 +144,11 @@ class DroidCvPattern(
                     Timber.debug { "Matched $Template with a score of ${match.score}" }
                     yield(match)
 
-                    val mask = DisposableMat()
-                    mask.use {
+                    Mat().use { mask ->
                         // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
                         val floodFillDiff = 0.3
                         Imgproc.floodFill(
-                            result.Mat, mask.Mat, loc, Scalar(0.0),
+                            result, mask, loc, Scalar(0.0),
                             Rect(),
                             Scalar(floodFillDiff), Scalar(floodFillDiff),
                             Imgproc.FLOODFILL_FIXED_RANGE
@@ -178,22 +176,24 @@ class DroidCvPattern(
         return DroidCvPattern(result).tag(tag)
     }
 
-    override fun save(stream: OutputStream) {
+    fun asBitmap(): Bitmap {
         val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
-        try {
-            DisposableMat().use {
-                val conversion = if (Mat?.type() == CvType.CV_8UC1)
-                    Imgproc.COLOR_GRAY2BGRA
-                else Imgproc.COLOR_BGR2RGBA
+        Mat().use {
+            val conversion = if (Mat?.type() == CvType.CV_8UC1)
+                Imgproc.COLOR_GRAY2BGRA
+            else Imgproc.COLOR_BGR2RGBA
 
-                Imgproc.cvtColor(Mat, it.Mat, conversion)
-                org.opencv.android.Utils.matToBitmap(it.Mat, bmp)
+            Imgproc.cvtColor(Mat, it, conversion)
+            org.opencv.android.Utils.matToBitmap(it, bmp)
+        }
 
-                bmp.compress(Bitmap.CompressFormat.PNG, 90, stream)
-            }
-        } finally {
-            bmp.recycle()
+        return bmp
+    }
+
+    override fun save(stream: OutputStream) {
+        asBitmap().use { bmp ->
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, stream)
         }
     }
 
