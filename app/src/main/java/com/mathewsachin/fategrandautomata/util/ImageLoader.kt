@@ -1,42 +1,26 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
+import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.IImageLoader
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.ScriptExitException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.opencv.android.Utils
 import org.opencv.imgcodecs.Imgcodecs
-import java.io.File
-import java.io.FileInputStream
 import java.io.FileNotFoundException
 import javax.inject.Inject
 
 class ImageLoader @Inject constructor(
-    val storageDirs: StorageDirs,
+    val storageProvider: IStorageProvider,
     val prefs: IPreferences,
     @ApplicationContext val context: Context
 ) : IImageLoader {
-    private fun fileLoader(FileName: String): IPattern? {
-        val filepath = File(storageDirs.supportImgFolder, FileName)
-
-        if (filepath.exists()) {
-            val inputStream = FileInputStream(filepath)
-
-            inputStream.use {
-                return DroidCvPattern(it).tag(FileName)
-            }
-        }
-
-        return null
-    }
-
     private fun createPattern(gameServer: GameServerEnum, FileName: String): IPattern {
         val filePath = "$gameServer/${FileName}"
 
@@ -93,22 +77,26 @@ class ImageLoader @Inject constructor(
         clearSupportCache()
     }
 
-    private var supportCachedPatterns = mutableMapOf<String, IPattern>()
+    private var supportCachedPatterns = mutableMapOf<String, List<IPattern>>()
 
     override fun clearSupportCache() = synchronized(supportCachedPatterns) {
-        for (pattern in supportCachedPatterns.values) {
-            pattern.close()
+        for (patterns in supportCachedPatterns.values) {
+            patterns.forEach { it.close() }
         }
 
         supportCachedPatterns.clear()
     }
 
-    override fun loadSupportPattern(path: String): IPattern = synchronized(supportCachedPatterns) {
-        return supportCachedPatterns.getOrPut(path) {
-            fileLoader(path)
-                ?: throw ScriptExitException(
-                    context.getString(R.string.support_img_not_found, path, storageDirs.supportImgFolder)
-                )
+    private fun fileLoader(kind: SupportImageKind, name: String): List<IPattern> {
+        val inputStreams = storageProvider.readSupportImage(kind, name)
+        return inputStreams.withIndex().map { (i, stream) ->
+            DroidCvPattern(stream).tag("$name:$i")
+        }
+    }
+
+    override fun loadSupportPattern(kind: SupportImageKind, name: String): List<IPattern> = synchronized(supportCachedPatterns) {
+        return supportCachedPatterns.getOrPut("$kind:$name") {
+            fileLoader(kind, name)
         }
     }
 
@@ -156,6 +144,6 @@ class ImageLoader @Inject constructor(
         regionCachedPatterns.getOrPut("materials/$material") {
             DroidCvPattern(
                 Utils.loadResource(context, material.drawable, Imgcodecs.IMREAD_GRAYSCALE)
-            )
+            ).tag("MAT:$material")
         }
 }

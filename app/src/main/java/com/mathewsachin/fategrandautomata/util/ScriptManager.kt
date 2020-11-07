@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.util
 import android.content.Context
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
@@ -31,7 +30,7 @@ class ScriptManager @Inject constructor(
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
-    val storageDirs: StorageDirs,
+    val storageProvider: StorageProvider,
     val platformImpl: IPlatformImpl,
     val messages: IScriptMessages
 ) {
@@ -79,7 +78,7 @@ class ScriptManager @Inject constructor(
 
         when (e) {
             is SupportImageMaker.ExitException -> {
-                showSupportImageNamer(userInterface, storageDirs)
+                showSupportImageNamer(userInterface, storageProvider)
             }
             is ScriptAbortException -> {
                 if (e.message.isNotBlank()) {

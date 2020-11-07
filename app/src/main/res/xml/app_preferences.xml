@@ -78,6 +78,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:key="storage_category"
+        app:title="Storage">
+        <Preference
+            app:key="@string/pref_nav_storage"
+            app:title="@string/p_folder"
+            app:icon="@drawable/ic_folder_edit" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="app_category"
         app:title="@string/p_advanced">
         <Preference

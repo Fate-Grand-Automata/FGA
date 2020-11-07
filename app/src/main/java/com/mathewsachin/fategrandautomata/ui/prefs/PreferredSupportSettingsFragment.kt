@@ -1,16 +1,24 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceDialogFragmentCompat
 import androidx.preference.PreferenceFragmentCompat
+import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.util.SupportMultiSelectSummaryProvider
 import com.mathewsachin.fategrandautomata.util.populateFriendOrCe
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+import timber.log.error
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -18,7 +26,7 @@ class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
     val args: PreferredSupportSettingsFragmentArgs by navArgs()
 
     @Inject
-    lateinit var storageDirs: StorageDirs
+    lateinit var storageProvider: IStorageProvider
 
     private fun findServantList(): MultiSelectListPreference? =
         findPreference(getString(R.string.pref_support_pref_servant))
@@ -35,29 +43,41 @@ class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
         findCeList()?.summaryProvider = SupportMultiSelectSummaryProvider()
     }
 
-    private fun populatedServantAndCE() {
+    private suspend fun populatedServantAndCE() {
         val servants = findServantList() ?: return
         val ces = findCeList() ?: return
 
         servants.apply {
-            val entries = (storageDirs.supportServantImgFolder.listFiles() ?: emptyArray())
-                .map { it.name }
-                .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
-                .toTypedArray()
+            val entries = try {
+                withContext(Dispatchers.IO) {
+                    storageProvider.list(SupportImageKind.Servant)
+                        .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
+                        .toTypedArray()
+                }
+            } catch (e: Exception) {
+                val msg = "Couldn't access Support images"
+
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                Timber.error(e) { msg }
+
+                emptyArray()
+            }
 
             this.entryValues = entries
             this.entries = entries
         }
 
         ces.apply {
-            populateFriendOrCe(storageDirs.supportCeFolder)
+            populateFriendOrCe(storageProvider, SupportImageKind.CE)
         }
     }
 
     override fun onResume() {
         super.onResume()
 
-        populatedServantAndCE()
+        lifecycleScope.launch {
+            populatedServantAndCE()
+        }
     }
 
     override fun onDisplayPreferenceDialog(preference: Preference) {

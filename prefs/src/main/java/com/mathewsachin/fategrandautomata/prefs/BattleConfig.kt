@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.prefs
 
 import androidx.core.content.edit
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.map
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
@@ -11,8 +10,7 @@ const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
 
 internal class BattleConfig(
     override val id: String,
-    prefsCore: PrefsCore,
-    val storageDirs: StorageDirs
+    prefsCore: PrefsCore
 ) : IBattleConfig {
     val prefs = prefsCore.forBattleConfig(id)
 
@@ -38,7 +36,7 @@ internal class BattleConfig(
         }
     }
 
-    override val support = SupportPreferences(prefs.support, storageDirs)
+    override val support = SupportPreferences(prefs.support)
 
     override val npSpam by prefs.npSpam
 

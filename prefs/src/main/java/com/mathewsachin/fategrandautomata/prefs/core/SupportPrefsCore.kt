@@ -1,13 +1,11 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 
 class SupportPrefsCore(
-    maker: PrefMaker,
-    val storageDirs: StorageDirs
+    maker: PrefMaker
 ) {
     val friendNames = maker.stringSet(R.string.pref_support_friend_names)
 

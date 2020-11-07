@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,8 +10,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
@@ -20,9 +17,11 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import com.mathewsachin.fategrandautomata.databinding.ContentMainBinding
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
+import com.mathewsachin.fategrandautomata.util.StorageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import timber.log.info
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -31,6 +30,17 @@ class MainFragment : Fragment() {
     }
 
     val vm: MainSettingsViewModel by activityViewModels()
+
+    @Inject
+    lateinit var storageProvider: StorageProvider
+
+    private val pickDir = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUrl ->
+        if (dirUrl != null) {
+            storageProvider.setRoot(dirUrl)
+
+            serviceToggleBtnOnClick()
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         ContentMainBinding.inflate(inflater)
@@ -105,46 +115,19 @@ class MainFragment : Fragment() {
         return true
     }
 
-    val requestPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        if (it.values.all { m -> m }) {
-            serviceToggleBtnOnClick()
-        }
-    }
-
-    private fun checkPermissions(): Boolean {
-        val permissionsToCheck = listOf(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-
-        val permissionsToRequest = permissionsToCheck
-            .filter {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    it
-                ) != PermissionChecker.PERMISSION_GRANTED
-            }
-            .toTypedArray()
-
-        if (permissionsToRequest.isNotEmpty()) {
-            requestPermission.launch(permissionsToRequest)
-
-            return false
-        }
-
-        return true
-    }
-
     private var toggling = false
 
     private fun serviceToggleBtnOnClick() {
         toggling = false
 
         if (!checkCanUseOverlays()
-            || !checkPermissions()
             || !checkAccessibilityService()
         )
             return
+
+        if (!vm.ensureRootDir(pickDir, requireContext())) {
+            return
+        }
 
         val instance = ScriptRunnerService.Instance
             ?: return

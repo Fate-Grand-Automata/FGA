@@ -14,15 +14,15 @@
         app:title="@string/p_battle_config" />
 
     <Preference
-        app:icon="@drawable/ic_dots_horizontal"
-        app:key="@string/pref_nav_more"
-        app:title="@string/p_more_options" />
-
-    <Preference
         app:icon="@drawable/ic_troubleshooting"
         app:title="@string/p_nav_troubleshoot">
         <intent
             android:action="android.intent.action.VIEW"
             android:data="@string/link_troubleshoot" />
     </Preference>
+
+    <Preference
+        app:icon="@drawable/ic_dots_horizontal"
+        app:key="@string/pref_nav_more"
+        app:title="@string/p_more_options" />
 </PreferenceScreen>

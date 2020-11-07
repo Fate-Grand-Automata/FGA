@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
@@ -21,13 +21,13 @@ fun getFriendImgPath(dir: File, Index: Int): File {
 }
 
 class SupportImageMaker @Inject constructor(
-    storageDirs: StorageDirs,
+    storageProvider: IStorageProvider,
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     class ExitException : Exception()
 
-    private val dir = storageDirs.supportImgTempDir
+    private val dir = storageProvider.supportImageTempDir
 
     override fun script(): Nothing {
         cleanExtractFolder()
@@ -75,22 +75,20 @@ class SupportImageMaker @Inject constructor(
         }
     }
 
+    private fun IPattern.save(path: File) = use {
+        path.outputStream().use { stream ->
+            save(stream)
+        }
+    }
+
     private fun extractServantImage(supportBoundImage: IPattern, i: Int) {
         val servant = supportBoundImage.crop(Region(0, 0, 125, 44))
-        servant.use {
-            servant.save(
-                getServantImgPath(dir, i).absolutePath
-            )
-        }
+        servant.save(getServantImgPath(dir, i))
     }
 
     private fun extractCeImage(supportRegionImage: IPattern, i: Int) {
         val ce = supportRegionImage.crop(Region(0, 80, supportRegionImage.width, 25))
-        ce.use {
-            ce.save(
-                getCeImgPath(dir, i).absolutePath
-            )
-        }
+        ce.save(getCeImgPath(dir, i))
     }
 
     private fun extractFriendNameImage(supportBound: Region, isInSupport: Boolean, i: Int) {
@@ -99,10 +97,6 @@ class SupportImageMaker @Inject constructor(
         val friendBound = Region(friendNameX, supportBound.Y - 95, 400, 110)
 
         val friendPattern = friendBound.getPattern()
-        friendPattern.use {
-            friendPattern.save(
-                getFriendImgPath(dir, i).absolutePath
-            )
-        }
+        friendPattern.save(getFriendImgPath(dir, i))
     }
 }

@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.prefs
 
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.map
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
@@ -10,7 +9,6 @@ import kotlin.time.milliseconds
 
 class PreferencesImpl @Inject constructor(
     val prefs: PrefsCore,
-    val storageDirs: StorageDirs
 ) : IPreferences {
     override var scriptMode by prefs.scriptMode
 
@@ -86,8 +84,7 @@ class PreferencesImpl @Inject constructor(
         autoSkillMap.getOrPut(id) {
             BattleConfig(
                 id,
-                prefs,
-                storageDirs
+                prefs
             )
         }
 

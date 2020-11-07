@@ -7,11 +7,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.SupportImageKind
+import com.mathewsachin.fategrandautomata.util.StorageProvider
 import java.io.File
 
 class SupportImgEntry(
     val ImgPath: File,
-    val TargetDir: File,
+    val kind: SupportImageKind,
     val Frame: View,
     val regex: Regex,
     val invalidMsg: String
@@ -80,17 +82,10 @@ class SupportImgEntry(
             return false
         }
 
-        val newPath = File(TargetDir, "${newFileName}.png")
-
-        if (newPath.exists()) {
-            showAlert(context.getString(R.string.support_img_namer_file_name_already_exists, newFileName))
-            return false
-        }
-
         return true
     }
 
-    fun rename(): Boolean {
+    fun rename(storageProvider: StorageProvider): Boolean {
         errorTxt.visibility = View.GONE
 
         if (!checkBox.isChecked) {
@@ -105,17 +100,13 @@ class SupportImgEntry(
             return true
         }
 
-        val newPath = File(TargetDir, "${newFileName}.png")
-
         try {
-            val newPathDir = newPath.parentFile
-
-            if (!newPathDir.exists()) {
-                newPathDir.mkdirs()
+            storageProvider.writeSupportImage(kind, "$newFileName.png").use { outStream ->
+                oldPath.inputStream().use { inStream ->
+                    inStream.copyTo(outStream)
+                }
             }
 
-            // move
-            oldPath.copyTo(newPath)
             oldPath.delete()
         } catch (e: Exception) {
             val context = Frame.context

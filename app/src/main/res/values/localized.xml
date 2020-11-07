@@ -150,12 +150,21 @@
     <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
     <string name="p_experimental">Experimental</string>
     <string name="p_screenshot_drops">Screenshot Drops</string>
-    <string name="p_screenshot_drops_summary">Saved to \'Fate-Grand-Automata/drops\' folder</string>
+    <string name="p_screenshot_drops_summary">Saved to \'drops\' folder</string>
     <string name="p_boost_item">Boost Item</string>
     <string name="p_brave_chains">Brave Chains</string>
     <string name="p_rearrange_cards">Rearrange Cards</string>
     <string name="p_battle_config_cmd_text">Skill Command TextBox</string>
     <string name="p_battle_config_cmd_text_summary">Show text-box for editing Skill commands</string>
+
+    <string name="p_storage">Storage</string>
+    <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
+
+    <string name="p_choose_folder_title">Choose Folder</string>
+    <string name="p_choose_folder_message">Choose the folder to use to store Support images, drop images, etc.\n\nNOTE: You might have to use \'Show Internal Storage\' in your device\'s file picker.</string>
+    <string name="p_choose_folder_not_exist_title">Choose another folder</string>
+    <string name="p_choose_folder_not_exist_message">Can\'t access the folder used to store Support images, drop images, etc.</string>
+    <string name="p_choose_folder_action">Choose</string>
 
     <string name="p_advanced">Advanced</string>
     <string name="p_debug_mode">Debug mode</string>
@@ -163,7 +172,7 @@
     <string name="p_ignore_notch">Ignore Notch calculation</string>
     <string name="p_ignore_notch_summary">Useful on Samsung phones</string>
     <string name="p_record_screen">Record Screen</string>
-    <string name="p_record_screen_summary">Won\'t work with the root setting.\nA file named \'record.mp4\' will be saved to \'Fate-Grand-Automata\' folder.\nCopy or rename it if you want to keep it.</string>
+    <string name="p_record_screen_summary">A file named \'record.mp4\' will be saved to output folder.\nCopy or rename it if you want to keep it.</string>
     <string name="p_root_screenshot">Use Root for Screenshots</string>
     <string name="p_root_screenshot_summary">Useful on Nox (Android 7). Toggle service after changing this.</string>
     <string name="p_auto_start_service">Auto-start service</string>

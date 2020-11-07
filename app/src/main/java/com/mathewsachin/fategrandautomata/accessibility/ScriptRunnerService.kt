@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
@@ -82,7 +81,7 @@ class ScriptRunnerService : AccessibilityService() {
     lateinit var mediaProjectionManager: MediaProjectionManager
 
     @Inject
-    lateinit var storageDirs: StorageDirs
+    lateinit var storageProvider: StorageProvider
 
     @Inject
     lateinit var userInterface: ScriptRunnerUserInterface
@@ -124,7 +123,8 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = null
     }
 
-    val wantsMediaProjectionToken: Boolean get() = !prefs.useRootForScreenshots
+    val wantsMediaProjectionToken: Boolean
+        get() = !(RootScreenshotService.canUseRootForScreenshots() && prefs.useRootForScreenshots)
 
     var serviceState: ServiceState = ServiceState.Stopped
         private set
@@ -154,9 +154,9 @@ class ScriptRunnerService : AccessibilityService() {
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
                     userInterface.mediaProjectionMetrics,
-                    storageDirs
+                    storageProvider
                 )
-            } else RootScreenshotService(SuperUser(), storageDirs, platformImpl)
+            } else RootScreenshotService(SuperUser(), storageProvider, platformImpl)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             null

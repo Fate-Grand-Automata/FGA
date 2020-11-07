@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -10,9 +10,6 @@ import com.mathewsachin.fategrandautomata.scripts.models.RefillResource
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 import kotlin.time.seconds
@@ -30,7 +27,7 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
 open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,
-    val storageDirs: StorageDirs,
+    val storageProvider: IStorageProvider,
     swipeLocations: ISwipeLocations
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     private val support = Support(fgAutomataApi, swipeLocations)
@@ -284,26 +281,10 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun screenshotDrops() {
-        val dropsFolder = File(
-            storageDirs.storageRoot,
-            "drops"
-        )
-
-        if (!dropsFolder.exists()) {
-            dropsFolder.mkdirs()
-        }
-
-        val sdf = SimpleDateFormat("dd-M-yyyy-hh-mm-ss", Locale.US)
-        val timeString = sdf.format(Date())
+        val drops = mutableListOf<IPattern>()
 
         for (i in 0..1) {
-            val dropFileName = "${timeString}.${i}.png"
-
-            takeColorScreenshot().use {
-                it.save(
-                    File(dropsFolder, dropFileName).absolutePath
-                )
-            }
+            drops.add(takeColorScreenshot())
 
             // check if we need to scroll to see more drops
             if (images.dropScrollbar in Game.resultDropScrollbarRegion) {
@@ -311,6 +292,8 @@ open class AutoBattle @Inject constructor(
                 Location(2306, 1032).click()
             } else break
         }
+
+        storageProvider.dropScreenshot(drops)
     }
 
     private fun isRepeatScreen() =

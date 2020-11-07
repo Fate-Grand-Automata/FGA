@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
+import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
@@ -9,20 +10,15 @@ import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
 import com.mathewsachin.libautomata.*
 import timber.log.Timber
 import timber.log.debug
-import java.util.*
 import kotlin.streams.asStream
 import kotlin.streams.toList
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 import kotlin.time.seconds
 
-private data class PreferredCEEntry(val Name: String, val PreferMlb: Boolean)
-
 private typealias SearchFunction = () -> SearchFunctionResult
 
 const val supportRegionToolSimilarity = 0.75
-
-const val limitBrokenCharacter = '*'
 
 class Support(
     fgAutomataApi: IFgoAutomataApi,
@@ -30,33 +26,13 @@ class Support(
 ) : IFgoAutomataApi by fgAutomataApi {
     private var preferredServantArray = listOf<String>()
     private var friendNameArray = listOf<String>()
-    private var preferredCEArray = listOf<PreferredCEEntry>()
-
-    private fun String.process(): List<String> {
-        return this
-            .split(',')
-            .map { it.trim() }
-            .filter { it.isNotBlank() && it.toLowerCase(Locale.US) != "any" }
-    }
-
+    private var preferredCEArray = listOf<String>()
     private val autoSkillPrefs get() = prefs.selectedBattleConfig.support
 
     fun init() {
-        friendNameArray = autoSkillPrefs.friendNames.process()
-        preferredServantArray = autoSkillPrefs.preferredServants.process()
-
+        friendNameArray = autoSkillPrefs.friendNames
+        preferredServantArray = autoSkillPrefs.preferredServants
         preferredCEArray = autoSkillPrefs.preferredCEs
-            .process()
-            .map {
-                val mlb = it.startsWith(limitBrokenCharacter)
-                var name = it
-
-                if (mlb) {
-                    name = name.substring(1)
-                }
-
-                PreferredCEEntry(name, mlb)
-            }
     }
 
     fun selectSupport(SelectionMode: SupportSelectionModeEnum, continuing: Boolean): Boolean {
@@ -259,10 +235,12 @@ class Support(
     private fun findFriendName(): SearchFunctionResult {
         for (friendName in friendNameArray) {
             // Cached pattern. Don't dispose here.
-            val pattern = images.loadSupportPattern(friendName)
+            val patterns = images.loadSupportPattern(SupportImageKind.Friend, friendName)
 
-            for (theFriend in Game.supportFriendsRegion.findAll(pattern).sorted()) {
-                return SearchFunctionResult.Found(theFriend.Region)
+            patterns.forEach { pattern ->
+                for (theFriend in Game.supportFriendsRegion.findAll(pattern).sorted()) {
+                    return SearchFunctionResult.Found(theFriend.Region)
+                }
             }
         }
 
@@ -271,10 +249,9 @@ class Support(
 
     private fun findServants(): List<SearchFunctionResult.Found> =
         preferredServantArray
+            .flatMap { entry -> images.loadSupportPattern(SupportImageKind.Servant, entry) }
             .parallelStream()
-            .flatMap { entry ->
-                val pattern = images.loadSupportPattern(entry)
-
+            .flatMap { pattern ->
                 val needMaxedSkills = listOf(
                     autoSkillPrefs.skill1Max,
                     autoSkillPrefs.skill2Max,
@@ -330,15 +307,14 @@ class Support(
 
     private fun findCraftEssences(SearchRegion: Region): List<FoundCE> =
         preferredCEArray
+            .flatMap { entry -> images.loadSupportPattern(SupportImageKind.CE, entry) }
             .parallelStream()
-            .flatMap { entry ->
-                val pattern = images.loadSupportPattern(entry.Name)
-
+            .flatMap { pattern ->
                 SearchRegion
                     .findAll(pattern)
                     .asStream()
                     .map { FoundCE(it.Region, isLimitBroken(it.Region)) }
-                    .filter { !entry.PreferMlb || it.mlb }
+                    .filter { !autoSkillPrefs.mlb || it.mlb }
             }
             .toList()
             .sorted()
