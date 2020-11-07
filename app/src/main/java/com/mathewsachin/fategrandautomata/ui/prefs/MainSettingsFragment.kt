@@ -1,34 +1,44 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
+import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
-import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainSettingsFragment : PreferenceFragmentCompat() {
-    val goToBattleConfigList = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        if (it.values.all { m -> m }) {
-            val action = MainFragmentDirections
-                .actionMainFragmentToBattleConfigListFragment()
+    @Inject
+    lateinit var storageProvider: StorageProvider
 
-            nav(action)
+    val vm: MainSettingsViewModel by activityViewModels()
+
+    fun goToBattleConfigList() {
+        val action = MainFragmentDirections
+            .actionMainFragmentToBattleConfigListFragment()
+
+        nav(action)
+    }
+
+    private val pickDir = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUrl ->
+        if (dirUrl != null) {
+            storageProvider.setRoot(dirUrl)
+
+            goToBattleConfigList()
         }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main_preferences, rootKey)
 
-        findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_refill))?.let {
             it.setOnPreferenceClickListener {
                 val action = MainFragmentDirections
                     .actionMainFragmentToRefillSettingsFragment()
@@ -39,19 +49,17 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        findPreference<Preference>(getString(prefKeys.pref_nav_battle_config))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_battle_config))?.let {
             it.setOnPreferenceClickListener {
-                val permissions = arrayOf(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-                goToBattleConfigList.launch(permissions)
+                if (vm.ensureRootDir(pickDir, requireContext())) {
+                    goToBattleConfigList()
+                }
 
                 true
             }
         }
 
-        findPreference<Preference>(getString(prefKeys.pref_nav_more))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_more))?.let {
             it.setOnPreferenceClickListener {
                 val action = MainFragmentDirections
                     .actionMainFragmentToMoreSettingsFragment()
@@ -66,17 +74,9 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vm: MainSettingsViewModel by activityViewModels()
-
-        findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_refill))?.let {
             vm.refillMessage.observe(viewLifecycleOwner) { msg ->
                 it.summary = msg
-            }
-        }
-
-        findPreference<ListPreference>(getString(R.string.pref_script_mode))?.let {
-            vm.scriptMode.observe(viewLifecycleOwner) { mode ->
-                it.value = mode.toString()
             }
         }
     }

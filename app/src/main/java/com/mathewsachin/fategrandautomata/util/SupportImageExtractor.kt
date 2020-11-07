@@ -2,62 +2,58 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
 import android.content.res.AssetManager
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.IStorageProvider
+import com.mathewsachin.fategrandautomata.SupportImageKind
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileOutputStream
 
 class SupportImageExtractor(
     val context: Context,
-    val storageDirs: StorageDirs
+    val storageProvider: IStorageProvider
 ) {
-    private fun extract(FolderName: String) {
-        val assetFolder = "Support/$FolderName"
-        val outDir = File(storageDirs.supportImgFolder, FolderName)
-
-        if (!outDir.exists()) {
-            outDir.mkdirs()
+    private val SupportImageKind.assetFolder
+        get() = "Support/" + when (this) {
+            SupportImageKind.Servant -> "servant"
+            SupportImageKind.CE -> "ce"
+            SupportImageKind.Friend -> "friend"
         }
 
+    private fun extract(kind: SupportImageKind) {
+        val assetFolder = kind.assetFolder
         val assets = context.assets
 
         for (assetFileName in assets.list(assetFolder)!!) {
             val assetPath = "${assetFolder}/$assetFileName"
-            val outPath = File(outDir, assetFileName)
-
             val subFiles = assets.list(assetPath) ?: emptyArray()
 
             // This is a folder
             if (subFiles.isNotEmpty()) {
-                if (!outPath.exists()) {
-                    outPath.mkdirs()
-                }
-
                 for (subFileName in subFiles) {
                     val subAssetPath = "${assetPath}/$subFileName"
-                    val subOutPath = File(outPath, subFileName)
+                    val subOutName = "$assetFileName/$subFileName"
 
                     copyAssetToFile(
                         assets,
                         subAssetPath,
-                        subOutPath
+                        kind,
+                        subOutName
                     )
                 }
             } else {
                 copyAssetToFile(
                     assets,
                     assetPath,
-                    outPath
+                    kind,
+                    assetFileName
                 )
             }
         }
     }
 
-    private fun copyAssetToFile(Assets: AssetManager, AssetPath: String, OutPath: File) {
+    private fun copyAssetToFile(Assets: AssetManager, AssetPath: String, kind: SupportImageKind, fileName: String) {
         val assetStream = Assets.open(AssetPath)
         assetStream.use {
-            val outStream = FileOutputStream(OutPath)
+            val outStream = storageProvider.writeSupportImage(kind, fileName)
             outStream.use {
                 assetStream.copyTo(outStream)
             }
@@ -66,7 +62,7 @@ class SupportImageExtractor(
 
     suspend fun extract() =
         withContext(Dispatchers.IO) {
-            extract("servant")
-            extract("ce")
+            extract(SupportImageKind.Servant)
+            extract(SupportImageKind.CE)
         }
 }

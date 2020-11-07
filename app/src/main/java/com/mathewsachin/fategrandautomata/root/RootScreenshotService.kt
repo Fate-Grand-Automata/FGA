@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
+import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.readIntLE
 import com.mathewsachin.libautomata.IColorScreenshotProvider
 import com.mathewsachin.libautomata.IPattern
@@ -15,16 +15,19 @@ import timber.log.Timber
 import timber.log.debug
 import timber.log.error
 import java.io.DataInputStream
-import java.io.File
-import java.io.FileInputStream
 
 class RootScreenshotService(
     private val SuperUser: SuperUser,
-    storageDirs: StorageDirs,
+    val storageProvider: StorageProvider,
     val platformImpl: IPlatformImpl
 ) : IScreenshotService, IColorScreenshotProvider {
+    companion object {
+        fun canUseRootForScreenshots() =
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+    }
+
     private var buffer: ByteArray? = null
-    private val imgPath = File(storageDirs.storageRoot, "sshot.raw").absolutePath
+    private val imgPath = storageProvider.rootScreenshotFile
 
     private var rootLoadMat: Mat? = null
     private val rootConvertMat = Mat()
@@ -33,7 +36,7 @@ class RootScreenshotService(
     private fun screenshotIntoBuffer() {
         SuperUser.sendCommand("/system/bin/screencap $imgPath")
 
-        FileInputStream(imgPath).use {
+        imgPath.inputStream().use {
             DataInputStream(it).use { reader ->
                 val w = reader.readIntLE()
                 val h = reader.readIntLE()

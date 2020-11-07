@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.mathewsachin.fategrandautomata.StorageDirs
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
@@ -10,8 +9,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 
 class BattleConfigCore(
     val id: String,
-    val context: Context,
-    val storageDirs: StorageDirs
+    val context: Context
 ) {
     val sharedPrefs: SharedPreferences = context.getSharedPreferences(
         id,
@@ -55,7 +53,7 @@ class BattleConfigCore(
 
     val materials = maker.stringSet(R.string.pref_battle_config_mat)
 
-    val support = SupportPrefsCore(maker, storageDirs)
+    val support = SupportPrefsCore(maker)
 
     val npSpam = maker.enum(
         R.string.pref_spam_np,

@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts
 
+import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import javax.inject.Inject
 
@@ -10,7 +11,7 @@ class ImageLocator @Inject constructor(
 
     private fun load(path: String) = imgLoader.loadRegionPattern(path)
 
-    fun loadSupportPattern(path: String) = imgLoader.loadSupportPattern(path)
+    fun loadSupportPattern(kind: SupportImageKind, name: String) = imgLoader.loadSupportPattern(kind, name)
 
     val battle get() = load("battle.png")
 

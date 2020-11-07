@@ -1,6 +1,10 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import android.app.AlertDialog
 import android.content.Context
+import android.net.Uri
+import androidx.activity.result.ActivityResultLauncher
+import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -26,13 +30,8 @@ class MainSettingsViewModel @ViewModelInject constructor(
     private val oncePerActivityStart = AtomicBoolean(false)
     fun activityStarted() = oncePerActivityStart.set(true)
 
-    val gameServer = prefsCore
-        .gameServer
-        .asFlow()
-        .asLiveData()
-
-    val scriptMode = prefsCore
-        .scriptMode
+    val useRootForScreenshots = prefsCore
+        .useRootForScreenshots
         .asFlow()
         .asLiveData()
 
@@ -71,4 +70,39 @@ class MainSettingsViewModel @ViewModelInject constructor(
         .asLiveData()
 
     val serviceStarted get() = ScriptRunnerService.serviceStarted
+
+    // Activity context is needed since we can't show AlertDialog with Application context.
+    fun ensureRootDir(picker: ActivityResultLauncher<Uri>, activityContext: Context): Boolean {
+        val dirRoot = prefsCore.dirRoot.get()
+
+        if (dirRoot.isBlank()) {
+            AlertDialog.Builder(activityContext)
+                .setTitle(R.string.p_choose_folder_title)
+                .setMessage(R.string.p_choose_folder_message)
+                .setPositiveButton(R.string.p_choose_folder_action) { _, _ ->
+                    picker.launch(Uri.EMPTY)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+
+            return false
+        }
+
+        val docFile = DocumentFile.fromTreeUri(context, Uri.parse(dirRoot))
+
+        if (docFile?.exists() != true) {
+            AlertDialog.Builder(activityContext)
+                .setTitle(R.string.p_choose_folder_not_exist_title)
+                .setMessage(R.string.p_choose_folder_not_exist_message)
+                .setPositiveButton(R.string.p_choose_folder_action) { _, _ ->
+                    picker.launch(Uri.EMPTY)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+
+            return false
+        }
+
+        return true
+    }
 }
