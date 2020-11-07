@@ -20,36 +20,14 @@ class DroidCvPattern(
     private var Mat: Mat? = Mat(),
     private val OwnsMat: Boolean = true
 ) : IPattern {
-    private data class MatWithAlpha(val mat: Mat, val alpha: Mat?)
-
-    var alpha: Mat? = null
-
     private companion object {
-        fun makeMat(Stream: InputStream): MatWithAlpha {
+        fun makeMat(Stream: InputStream): Mat {
             val byteArray = Stream.readBytes()
 
-            MatOfByte(*byteArray).use {
-                val decoded = Imgcodecs.imdecode(it, Imgcodecs.IMREAD_UNCHANGED)
-                var alphaChannel: Mat? = null
-
-                // Change color images to grayscale and extract alpha if present
-                when (decoded.channels()) {
-                    4 -> {
-                        // RGBA
-                        alphaChannel =
-                            Mat().apply { Core.extractChannel(decoded, this, 3) }
-                        Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGBA2GRAY)
-                    }
-                    3 -> Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGB2GRAY)
-                }
-
-                return MatWithAlpha(decoded, alphaChannel)
+            return MatOfByte(*byteArray).use {
+                Imgcodecs.imdecode(it, Imgcodecs.IMREAD_GRAYSCALE)
             }
         }
-    }
-
-    private constructor(matWithAlpha: MatWithAlpha) : this(matWithAlpha.mat) {
-        alpha = matWithAlpha.alpha
     }
 
     constructor(Stream: InputStream) : this(makeMat(Stream))
@@ -98,22 +76,12 @@ class DroidCvPattern(
 
         if (Template is DroidCvPattern) {
             if (Template.width <= width && Template.height <= height) {
-                if (alpha != null) {
-                    Imgproc.matchTemplate(
-                        Mat,
-                        Template.Mat,
-                        result,
-                        Imgproc.TM_CCOEFF_NORMED,
-                        alpha
-                    )
-                } else {
-                    Imgproc.matchTemplate(
-                        Mat,
-                        Template.Mat,
-                        result,
-                        Imgproc.TM_CCOEFF_NORMED
-                    )
-                }
+                Imgproc.matchTemplate(
+                    Mat,
+                    Template.Mat,
+                    result,
+                    Imgproc.TM_CCOEFF_NORMED
+                )
             } else {
                 Timber.verbose { "Skipped matching $Template: Region out of bounds" }
             }
