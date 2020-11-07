@@ -91,6 +91,8 @@ class ImageLocator @Inject constructor(
 
     val giftBoxCheck get() = load("gift_box_check.png")
 
+    val giftBoxScrollEnd get() = load("gift_box_scroll_end.png")
+
     val dropCE get() = load("drop_ce.png")
     val dropCEStars get() = load("drop_ce_star.png")
 
