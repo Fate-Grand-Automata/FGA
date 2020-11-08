@@ -14,6 +14,7 @@ interface IBattleConfig {
     val party: Int
     val materials: List<MaterialEnum>
     val support: ISupportPreferences
+    val shuffleIfNoEffectiveCardsInW3: Boolean
 
     val npSpam: SpamEnum
     val skillSpam: SpamEnum

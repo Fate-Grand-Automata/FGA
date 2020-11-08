@@ -5,10 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
-import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
-import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
+import com.mathewsachin.fategrandautomata.scripts.models.*
 import timber.log.Timber
 import timber.log.debug
 import java.util.*
@@ -263,7 +260,36 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         return cards
     }
 
+    private fun shouldShuffle(): Boolean {
+        if (battle.state.stage == 2 && !battle.state.shuffled) {
+            val effectiveCardCount = commandCards
+                .filterKeys { it.CardAffinity == CardAffinityEnum.Weak }
+                .map { it.value.size }
+                .sum()
+
+            return effectiveCardCount == 0
+        }
+
+        return false
+    }
+
+    private fun shuffleCards() {
+        if (shouldShuffle()) {
+            Game.battleBack.click()
+
+            autoSkill.castMasterSkill(Skill.Master.list[2])
+
+            battle.state.hasClickedAttack = false
+
+            battle.clickAttack()
+
+            battle.state.shuffled = true
+        }
+    }
+
     fun clickCommandCards() {
+        shuffleCards()
+
         val cards = pickCards()
 
         if (atk.cardsBeforeNP > 0) {

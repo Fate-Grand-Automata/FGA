@@ -66,6 +66,12 @@ class BattleState {
             runState.stageState.stageCountSnaphot = value
         }
 
+    var shuffled
+        get() = runState.shuffled
+        set(value) {
+            runState.shuffled = value
+        }
+
     val stage get() = runState.stage
     val turn get() = runState.turn
 

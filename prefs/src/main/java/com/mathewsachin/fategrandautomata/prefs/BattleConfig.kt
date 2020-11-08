@@ -36,6 +36,8 @@ internal class BattleConfig(
         }
     }
 
+    override val shuffleIfNoEffectiveCardsInW3 by prefs.shuffleIfNoEffectiveCardsInW3
+
     override val support = SupportPreferences(prefs.support)
 
     override val npSpam by prefs.npSpam

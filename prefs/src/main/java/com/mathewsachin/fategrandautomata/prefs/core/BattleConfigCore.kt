@@ -49,6 +49,8 @@ class BattleConfigCore(
             it.joinToString(",") { m -> m.toString() }
         })
 
+    val shuffleIfNoEffectiveCardsInW3 = maker.bool(R.string.pref_shuffle_if_no_effective_cards_in_w_3)
+
     val party = maker.stringAsInt(R.string.pref_battle_config_party, -1)
 
     val materials = maker.stringSet(R.string.pref_battle_config_mat)
