@@ -48,6 +48,13 @@ val SupportSelectionModeEnum.stringRes
         SupportSelectionModeEnum.Preferred -> R.string.p_support_mode_preferred
     }
 
+val ShuffleCardsEnum.stringRes
+    get() = when (this) {
+        ShuffleCardsEnum.None -> R.string.p_shuffle_cards_when_none
+        ShuffleCardsEnum.NoEffective -> R.string.p_shuffle_cards_when_no_effective
+        ShuffleCardsEnum.NoNPMatching -> R.string.p_shuffle_cards_when_no_np_matching
+    }
+
 val MaterialEnum.stringRes
     get() = when (this) {
         MaterialEnum.Proof -> R.string.mat_proof

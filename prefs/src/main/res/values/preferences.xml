@@ -94,5 +94,6 @@
     <string name="pref_nav_update">nav_update</string>
     <string name="pref_nav_preferred_support">nav_preferred_support</string>
 
-    <string name="pref_shuffle_if_no_effective_cards_in_w_3">shuffle_if_no_effective_cards_in_w_3</string>
+    <string name="pref_shuffle_cards">shuffle_cards</string>
+    <string name="pref_shuffle_cards_wave">shuffle_cards_wave</string>
 </resources>

@@ -36,7 +36,9 @@ internal class BattleConfig(
         }
     }
 
-    override val shuffleIfNoEffectiveCardsInW3 by prefs.shuffleIfNoEffectiveCardsInW3
+    override val shuffleCards by prefs.shuffleCards
+
+    override val shuffleCardsWave by prefs.shuffleCardsWave
 
     override val support = SupportPreferences(prefs.support)
 

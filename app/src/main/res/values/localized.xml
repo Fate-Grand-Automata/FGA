@@ -337,6 +337,10 @@
     <string name="mat_eternal_ice">Eternal Ice</string>
     <string name="mat_steel">Aurora Steel</string>
 
-    <string name="shuffle_cards">Shuffle cards</string>
-    <string name="shuffle_if_no_effective_cards_in_w_3">Shuffle if no effective cards in W3</string>
+    <string name="p_shuffle_cards">Shuffle cards</string>
+    <string name="p_shuffle_cards_wave">Wave</string>
+    <string name="p_shuffle_cards_when">When</string>
+    <string name="p_shuffle_cards_when_none">None</string>
+    <string name="p_shuffle_cards_when_no_effective">No effective cards</string>
+    <string name="p_shuffle_cards_when_no_np_matching">No cards matching NP</string>
 </resources>

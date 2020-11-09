@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 
 class BattleConfigCore(
@@ -49,7 +50,8 @@ class BattleConfigCore(
             it.joinToString(",") { m -> m.toString() }
         })
 
-    val shuffleIfNoEffectiveCardsInW3 = maker.bool(R.string.pref_shuffle_if_no_effective_cards_in_w_3)
+    val shuffleCards = maker.enum(R.string.pref_shuffle_cards, ShuffleCardsEnum.None)
+    val shuffleCardsWave = maker.int(R.string.pref_shuffle_cards_wave, 3)
 
     val party = maker.stringAsInt(R.string.pref_battle_config_party, -1)
 

@@ -33,12 +33,6 @@
         app:key="@string/pref_card_priority"
         app:title="@string/p_battle_config_card_priority" />
 
-    <SwitchPreferenceCompat
-        app:icon="@drawable/ic_refresh"
-        app:key="@string/pref_shuffle_if_no_effective_cards_in_w_3"
-        app:title="@string/shuffle_cards"
-        app:summary="@string/shuffle_if_no_effective_cards_in_w_3" />
-
     <MultiSelectListPreference
         app:icon="@drawable/ic_fang"
         app:key="@string/pref_battle_config_mat"
@@ -101,6 +95,26 @@
             app:icon="@drawable/ic_wand"
             app:key="@string/pref_spam_skill"
             app:title="@string/p_spam_skill"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="shuffle_category"
+        app:title="@string/p_shuffle_cards">
+        <SeekBarPreference
+            app:defaultValue="3"
+            app:min="1"
+            android:max="3"
+            app:showSeekBarValue="true"
+            app:icon="@drawable/ic_counter"
+            app:key="@string/pref_shuffle_cards_wave"
+            app:title="@string/p_shuffle_cards_wave" />
+
+        <ListPreference
+            app:defaultValue="None"
+            app:icon="@drawable/ic_refresh"
+            app:key="@string/pref_shuffle_cards"
+            app:title="@string/p_shuffle_cards_when"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 </PreferenceScreen>
