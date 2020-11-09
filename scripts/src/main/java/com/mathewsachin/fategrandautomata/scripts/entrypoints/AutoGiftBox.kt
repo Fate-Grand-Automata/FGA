@@ -26,14 +26,17 @@ class AutoGiftBox @Inject constructor(
         var nullStreak = 0
 
         while (clickCount < maxClickCount) {
-            val picked = pickGifts()
-            clickCount += picked
+            val picked = useSameSnapIn {
+                if (!aroundEnd) {
+                    // The scrollbar end position matches before completely at end
+                    // a few items can be left off if we're not careful
+                    aroundEnd = images.giftBoxScrollEnd in scrollEndRegion
+                }
 
-            if (!aroundEnd) {
-                // The scrollbar end position matches before completely at end
-                // a few items can be left off if we're not careful
-                aroundEnd = images.giftBoxScrollEnd in scrollEndRegion
+                pickGifts()
             }
+            
+            clickCount += picked
 
             swipe(swipeLocation.start, swipeLocation.end)
 
