@@ -17,10 +17,7 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
-import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.*
@@ -158,6 +155,9 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             initWith<MaterialEnum> { it.stringRes }
             summaryProvider = MultiSelectSummaryProvider()
         }
+
+        findPreference<ListPreference>(getString(R.string.pref_shuffle_cards))
+            ?.initWith<ShuffleCardsEnum> { it.stringRes }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

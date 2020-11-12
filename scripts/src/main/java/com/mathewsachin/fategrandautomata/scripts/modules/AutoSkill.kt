@@ -75,7 +75,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         0.5.seconds.wait()
     }
 
-    private fun castMasterSkill(skill: Skill.Master, target: ServantTarget?) {
+    fun castMasterSkill(skill: Skill.Master, target: ServantTarget? = null) {
         openMasterSkillMenu()
 
         castSkill(skill, target)

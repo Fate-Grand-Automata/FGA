@@ -97,4 +97,24 @@
             app:title="@string/p_spam_skill"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="shuffle_category"
+        app:title="@string/p_shuffle_cards">
+        <SeekBarPreference
+            app:defaultValue="3"
+            app:min="1"
+            android:max="3"
+            app:showSeekBarValue="true"
+            app:icon="@drawable/ic_counter"
+            app:key="@string/pref_shuffle_cards_wave"
+            app:title="@string/p_shuffle_cards_wave" />
+
+        <ListPreference
+            app:defaultValue="None"
+            app:icon="@drawable/ic_refresh"
+            app:key="@string/pref_shuffle_cards"
+            app:title="@string/p_shuffle_cards_when"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

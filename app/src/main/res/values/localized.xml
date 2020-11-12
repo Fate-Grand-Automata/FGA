@@ -336,4 +336,11 @@
     <string name="mat_stinger">Deadly Poisonous Needle</string>
     <string name="mat_eternal_ice">Eternal Ice</string>
     <string name="mat_steel">Aurora Steel</string>
+
+    <string name="p_shuffle_cards">Shuffle cards</string>
+    <string name="p_shuffle_cards_wave">Wave</string>
+    <string name="p_shuffle_cards_when">When</string>
+    <string name="p_shuffle_cards_when_none">None</string>
+    <string name="p_shuffle_cards_when_no_effective">No effective cards</string>
+    <string name="p_shuffle_cards_when_no_np_matching">No cards matching NP</string>
 </resources>

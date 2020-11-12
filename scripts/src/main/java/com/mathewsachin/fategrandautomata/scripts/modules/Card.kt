@@ -1,14 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
-import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
-import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
+import com.mathewsachin.fategrandautomata.scripts.enums.*
+import com.mathewsachin.fategrandautomata.scripts.models.*
 import timber.log.Timber
 import timber.log.debug
 import java.util.*
@@ -135,12 +129,10 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         useSameSnapIn {
             commandCards = getCommandCards()
 
-            if (braveChainsThisTurn != BraveChainEnum.None) {
-                val supportGroup = CommandCard.Face.list
-                    .filter { images.support in it.supportCheckRegion }
-                commandCardGroups = groupByFaceCard(supportGroup)
-                commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
-            }
+            val supportGroup = CommandCard.Face.list
+                .filter { images.support in it.supportCheckRegion }
+            commandCardGroups = groupByFaceCard(supportGroup)
+            commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
         }
     }
 
@@ -263,7 +255,58 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         return cards
     }
 
+    private fun shouldShuffle(): Boolean {
+        // Not this wave
+        if (battle.state.stage != (prefs.selectedBattleConfig.shuffleCardsWave - 1)) {
+            return false
+        }
+
+        // Already shuffled
+        if (battle.state.shuffled) {
+            return false
+        }
+
+        return when (prefs.selectedBattleConfig.shuffleCards) {
+            ShuffleCardsEnum.None -> false
+            ShuffleCardsEnum.NoEffective -> {
+                val effectiveCardCount = commandCards
+                    .filterKeys { it.CardAffinity == CardAffinityEnum.Weak }
+                    .map { it.value.size }
+                    .sum()
+
+                effectiveCardCount == 0
+            }
+            ShuffleCardsEnum.NoNPMatching -> {
+                if (atk.nps.isEmpty()) {
+                    false
+                } else {
+                    val matchingCount = atk.nps
+                        .mapNotNull { commandCardGroupedWithNp[it]?.size }
+                        .sum()
+
+                    matchingCount == 0
+                }
+            }
+        }
+    }
+
+    private fun shuffleCards() {
+        if (shouldShuffle()) {
+            Game.battleBack.click()
+
+            autoSkill.castMasterSkill(Skill.Master.list[2])
+
+            battle.state.hasClickedAttack = false
+
+            battle.clickAttack()
+
+            battle.state.shuffled = true
+        }
+    }
+
     fun clickCommandCards() {
+        shuffleCards()
+
         val cards = pickCards()
 
         if (atk.cardsBeforeNP > 0) {
@@ -317,7 +360,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                     .associateWith { group ->
                         group.first()
                             .servantMatchRegion
-                            .find(npCropped, 0.6)
+                            .find(npCropped, 0.65)
                             ?.score
                     }
                     .filter { (_, score) -> score != null }

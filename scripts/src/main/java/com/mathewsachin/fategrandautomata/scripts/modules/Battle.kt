@@ -37,7 +37,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
     fun isIdle() = images.battle in Game.battleScreenRegion
 
-    private fun clickAttack() {
+    fun clickAttack() {
         if (state.hasClickedAttack) {
             return
         }

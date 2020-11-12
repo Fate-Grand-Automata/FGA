@@ -36,6 +36,10 @@ internal class BattleConfig(
         }
     }
 
+    override val shuffleCards by prefs.shuffleCards
+
+    override val shuffleCardsWave by prefs.shuffleCardsWave
+
     override val support = SupportPreferences(prefs.support)
 
     override val npSpam by prefs.npSpam

@@ -36,4 +36,6 @@ class RunState {
     fun nextStage() = ++stage
 
     fun nextTurn() = ++turn
+
+    var shuffled = false
 }

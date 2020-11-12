@@ -93,6 +93,8 @@ class Game @Inject constructor(val prefs: IPreferences) {
         val battleMasterSkillOpenClick = Location(2380, 640)
         val battleOrderChangeOkClick = Location(1280, 1260)
 
+        val battleBack = Location(2400, 1370)
+
         val resultScreenRegion = Region(100, 300, 700, 200)
         val resultBondRegion = Region(2000, 750, 120, 190)
         val resultMasterExpRegion = Region(1280, 350, 400, 110)
