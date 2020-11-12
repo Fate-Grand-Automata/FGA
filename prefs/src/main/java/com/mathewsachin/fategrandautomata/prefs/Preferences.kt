@@ -88,10 +88,12 @@ class PreferencesImpl @Inject constructor(
             )
         }
 
-    override fun addBattleConfig(id: String) {
+    override fun addBattleConfig(id: String): IBattleConfig {
         battleConfigList = battleConfigList
             .toMutableSet()
             .apply { add(id) }
+
+        return forBattleConfig(id)
     }
 
     override fun removeBattleConfig(id: String) {

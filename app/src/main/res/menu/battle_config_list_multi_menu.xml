@@ -5,5 +5,10 @@
         android:id="@+id/action_battle_config_delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/battle_config_list_delete"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_battle_config_export_selected"
+        android:title="@string/battle_config_item_export"
+        app:showAsAction="never" />
 </menu>

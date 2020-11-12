@@ -34,6 +34,6 @@ interface IPreferences {
     val gestures: IGesturesPreferences
 
     fun forBattleConfig(id: String): IBattleConfig
-    fun addBattleConfig(id: String)
+    fun addBattleConfig(id: String): IBattleConfig
     fun removeBattleConfig(id: String)
 }
