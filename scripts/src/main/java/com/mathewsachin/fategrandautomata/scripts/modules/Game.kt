@@ -27,11 +27,12 @@ class Game @Inject constructor(val prefs: IPreferences) {
         val scriptRegion = Region(Location(), scriptSize)
 
         val menuScreenRegion = Region(2100, 1200, 1000, 1000)
-        val continueRegion = Region(1400, 1000, 600, 200)
+        val continueRegion = Region(1400, 1000, 800, 200)
         val menuStorySkipRegion = Region(2240, 20, 300, 120)
 
         val menuSelectQuestClick = Location(2290, 440)
         val menuStartQuestClick = Location(2400, 1350)
+        val continueBoostClick = Location(1260, 1120)
         val continueClick = Location(1650, 1120)
         val menuStorySkipClick = Location(2360, 80)
         val menuStorySkipYesClick = Location(1600, 1100)
