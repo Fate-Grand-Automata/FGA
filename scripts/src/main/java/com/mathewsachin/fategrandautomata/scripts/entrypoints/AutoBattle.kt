@@ -306,9 +306,23 @@ open class AutoBattle @Inject constructor(
         // Needed to show we don't need to enter the "StartQuest" function
         isContinuing = true
 
-        // Pressing Continue option after completing a quest, reseting the state as would occur in "Menu" function
+        // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
-        Game.continueClick.click()
+
+        val region = Game.continueRegion.find(images.confirm)?.Region
+            ?: return
+
+        // If Boost items are usable, Continue button shifts to the right
+        val useBoost = if (region.X > 1630) {
+            val boost = BoostItem.of(prefs.boostItemSelectionMode)
+
+            boost is BoostItem.Enabled && boost != BoostItem.Enabled.Skip
+        } else false
+
+        if (useBoost) {
+            Game.continueBoostClick.click()
+            useBoostItem()
+        } else Game.continueClick.click()
 
         showRefillsAndRunsMessage()
 
@@ -502,6 +516,10 @@ open class AutoBattle @Inject constructor(
 
         2.seconds.wait()
 
+        useBoostItem()
+    }
+
+    private fun useBoostItem() {
         val boostItem = BoostItem.of(prefs.boostItemSelectionMode)
         if (boostItem is BoostItem.Enabled) {
             boostItem.clickLocation.click()
