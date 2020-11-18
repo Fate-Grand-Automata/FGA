@@ -1,22 +1,26 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.databinding.CardPriorityBinding
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.card_priority.*
 
 @AndroidEntryPoint
-class CardPriorityFragment : Fragment(R.layout.card_priority) {
+class CardPriorityFragment : Fragment() {
     val vm: CardPriorityViewModel by viewModels()
+
+    lateinit var binding: CardPriorityBinding
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        CardPriorityBinding.inflate(inflater, container, false)
+            .also { binding = it }
+            .root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,18 +34,18 @@ class CardPriorityFragment : Fragment(R.layout.card_priority) {
         )
 
         vm.experimental.observe(viewLifecycleOwner) {
-            experimental_switch.isChecked = it
+            binding.experimentalSwitch.isChecked = it
         }
 
-        experimental_switch.setOnCheckedChangeListener { _, isChecked ->
+        binding.experimentalSwitch.setOnCheckedChangeListener { _, isChecked ->
             vm.setExperimental(isChecked)
         }
 
-        val recyclerView = card_priority_list
+        val recyclerView = binding.cardPriorityList
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        card_priority_add_btn.setOnClickListener {
+        binding.cardPriorityAddBtn.setOnClickListener {
             vm.cardPriorityItems.add(
                 CardPriorityListItem(
                     vm.cardPriorityItems[0].scores.toMutableList(),
@@ -53,7 +57,7 @@ class CardPriorityFragment : Fragment(R.layout.card_priority) {
             adapter.notifyItemInserted(vm.cardPriorityItems.lastIndex)
         }
 
-        card_priority_rm_btn.setOnClickListener {
+        binding.cardPriorityRmBtn.setOnClickListener {
             if (vm.cardPriorityItems.size > 1) {
                 vm.cardPriorityItems.removeAt(vm.cardPriorityItems.lastIndex)
 

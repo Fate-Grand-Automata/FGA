@@ -12,11 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.databinding.BattleConfigListBinding
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.battle_config_list.*
 import kotlinx.coroutines.launch
 import mva3.adapter.ListSection
 import mva3.adapter.MultiViewAdapter
@@ -24,7 +24,7 @@ import mva3.adapter.util.Mode
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
+class BattleConfigListFragment : Fragment() {
     @Inject
     lateinit var preferences: IPreferences
 
@@ -36,10 +36,17 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
 
     val vm: BattleConfigListViewModel by activityViewModels()
 
+    lateinit var binding: BattleConfigListBinding
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        BattleConfigListBinding.inflate(inflater, container, false)
+            .also { binding = it }
+            .root
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        battle_config_add_btn.setOnClickListener {
+        binding.battleConfigAddBtn.setOnClickListener {
             addOnBtnClick()
         }
 
@@ -48,7 +55,7 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
         vm.battleConfigItems.observe(viewLifecycleOwner) { items ->
             listSection.set(items)
 
-            battle_config_no_items.visibility =
+            binding.battleConfigNoItems.visibility =
                 if (items.isEmpty()) View.VISIBLE
                 else View.GONE
         }
@@ -77,11 +84,13 @@ class BattleConfigListFragment : Fragment(R.layout.battle_config_list) {
 
         adapter.addSection(listSection)
 
-        battle_config_list_view.adapter = adapter
-        battle_config_list_view.layoutManager = LinearLayoutManager(requireContext())
-        battle_config_list_view.addItemDecoration(
-            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        )
+        binding.battleConfigListView.let {
+            it.adapter = adapter
+            it.layoutManager = LinearLayoutManager(requireContext())
+            it.addItemDecoration(
+                DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+            )
+        }
     }
 
     private fun addOnBtnClick() =
