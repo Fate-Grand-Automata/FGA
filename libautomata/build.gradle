@@ -7,7 +7,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation "com.google.dagger:hilt-core:2.29.1-alpha"
-    kapt "com.google.dagger:hilt-compiler:2.29.1-alpha"
+    kapt "com.google.dagger:hilt-compiler:2.30-alpha"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
 }
