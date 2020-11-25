@@ -235,7 +235,11 @@ open class AutoBattle @Inject constructor(
             screenshotDrops()
         }
 
-        Game.resultNextClick.click(5)
+        // Click location changed on JP
+        Game.resultMatRewardsRegion
+            .find(images.matRewards)
+            ?.Region
+            ?.click(5)
     }
 
     private fun checkCEDrops() {
