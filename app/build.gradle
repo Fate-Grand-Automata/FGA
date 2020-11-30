@@ -112,7 +112,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.1"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.1"
 
-    implementation "com.google.dagger:hilt-android:2.29.1-alpha"
+    implementation "com.google.dagger:hilt-android:2.30.1-alpha"
     androidTestImplementation "com.google.dagger:hilt-android-testing:2.29.1-alpha"
     kapt "com.google.dagger:hilt-compiler:2.29.1-alpha"
 
