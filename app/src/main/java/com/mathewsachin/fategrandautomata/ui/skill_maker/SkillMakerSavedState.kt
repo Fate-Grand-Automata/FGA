@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SkillMakerSavedState(
