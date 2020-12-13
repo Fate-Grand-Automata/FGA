@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.annotation.CallSuper
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mathewsachin.fategrandautomata.R
@@ -142,14 +141,8 @@ class ScriptRunnerNotification @Inject constructor(
         const val keyAction = "action"
     }
 
-    abstract class HiltBroadcastReceiver : BroadcastReceiver() {
-        @CallSuper
-        override fun onReceive(context: Context, intent: Intent) {
-        }
-    }
-
     @AndroidEntryPoint
-    class NotificationReceiver : HiltBroadcastReceiver() {
+    class NotificationReceiver : BroadcastReceiver() {
         @Inject
         @ApplicationContext
         lateinit var context: Context
@@ -158,8 +151,6 @@ class ScriptRunnerNotification @Inject constructor(
         lateinit var prefs: IPreferences
 
         override fun onReceive(context: Context, intent: Intent) {
-            super.onReceive(context, intent)
-
             when (intent.getStringExtra(keyAction)) {
                 actionStop -> ScriptRunnerService.Instance?.stop()
                 actionScript -> chooseScript()

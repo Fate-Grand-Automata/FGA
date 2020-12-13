@@ -7,11 +7,15 @@ dependencies {
     api project(':libautomata')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    implementation "javax.inject:javax.inject:1"
+    implementation "com.google.dagger:hilt-core:2.29.1-alpha"
+    kapt "com.google.dagger:hilt-compiler:2.29.1-alpha"
 }
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
