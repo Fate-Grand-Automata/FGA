@@ -146,7 +146,6 @@
     <string name="p_debug_mode">Debug mode</string>
     <string name="p_debug_mode_summary">Highlight the regions being matched</string>
     <string name="p_ignore_notch">忽略瀏海</string>
-    <string name="p_ignore_notch_summary">對三星手機有幫助</string>
     <string name="p_record_screen">螢幕錄影</string>
     <string name="p_root_screenshot">以root截圖</string>
     <string name="p_root_screenshot_summary">對夜神模擬器(Nox with Android 7)有幫助，請在開啟服務前選取此設定</string>

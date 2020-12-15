@@ -145,7 +145,6 @@
     <string name="p_debug_mode">디버그 모드</string>
     <string name="p_debug_mode_summary">대조되고 있는 부분 표시하기</string>
     <string name="p_ignore_notch">노치(카메라 구멍) 계산 무시</string>
-    <string name="p_ignore_notch_summary">삼성 폰에서 유용</string>
     <string name="p_record_screen">화면 녹화</string>
     <string name="p_root_screenshot">루트 권한으로 스크린샷 하기</string>
     <string name="p_root_screenshot_summary">녹스(안드로이드 7)에서 유용. 해당 부분 활성화 후 서비스 ON.</string>
