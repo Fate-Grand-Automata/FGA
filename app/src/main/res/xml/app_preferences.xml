@@ -56,6 +56,12 @@
             app:title="@string/p_battle_config_cmd_text"
             app:summary="@string/p_battle_config_cmd_text_summary" />
 
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_time"
+            app:key="@string/pref_wait_ap_regen"
+            app:title="@string/p_wait_ap_regen_text"
+            app:summary="@string/p_wait_ap_regen_text_summary" />
+
         <!--    <SwitchPreferenceCompat-->
         <!--        app:defaultValue="false"-->
         <!--        app:key="@string/pref_guda_final"-->

@@ -440,9 +440,11 @@ open class AutoBattle @Inject constructor(
 
     /**
      * Refills the AP with apples depending on [IPreferences.refill].
+     * Otherwise if [IPreferences.waitAPRegen] is true, loops and wait for AP regeneration
      */
     private fun refillStamina() {
         val refillPrefs = prefs.refill
+        val waitAPRegenPrefs = prefs.waitAPRegen || true
 
         if (refillPrefs.enabled
             && stonesUsed < refillPrefs.repetitions
@@ -458,7 +460,11 @@ open class AutoBattle @Inject constructor(
             ++stonesUsed
 
             3.seconds.wait()
-        } else throw ScriptExitException(messages.apRanOut)
+        } else if (waitAPRegenPrefs) {
+            Location(1600, 1240).click();
+            20.seconds.wait()
+        }
+        else throw ScriptExitException(messages.apRanOut)
     }
 
     /**

@@ -58,6 +58,8 @@ class PreferencesImpl @Inject constructor(
     override val refill: IRefillPreferences =
         RefillPreferences(prefs.refill)
 
+    override val waitAPRegen by prefs.waitAPRegen
+
     override val ignoreNotchCalculation by prefs.ignoreNotchCalculation
 
     override val useRootForScreenshots by prefs.useRootForScreenshots
