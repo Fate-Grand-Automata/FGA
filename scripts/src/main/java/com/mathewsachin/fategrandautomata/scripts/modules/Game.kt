@@ -3,10 +3,11 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.Size
 import com.mathewsachin.libautomata.dagger.ScriptScope
+import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 import kotlin.time.seconds
 
@@ -19,13 +20,12 @@ fun IFgoAutomataApi.retry() {
 }
 
 @ScriptScope
-class Game @Inject constructor(val prefs: IPreferences) {
+class Game @Inject constructor(
+    val prefs: IPreferences,
+    val transformationExtensions: ITransformationExtensions,
+    val gameAreaManager: GameAreaManager
+) {
     companion object {
-        val imageSize = Size(1280, 720)
-        val scriptSize = Size(2560, 1440)
-
-        val scriptRegion = Region(Location(), scriptSize)
-
         val menuScreenRegion = Region(2100, 1200, 1000, 1000)
         val continueRegion = Region(1400, 1000, 800, 200)
         val menuStorySkipRegion = Region(2240, 20, 300, 120)
@@ -120,6 +120,12 @@ class Game @Inject constructor(val prefs: IPreferences) {
 
         val finishedLotteryBoxRegion = Region(540, 860, 140, 100)
     }
+
+    val scriptArea =
+        Region(
+            Location(),
+            gameAreaManager.gameArea.size * (1 / transformationExtensions.scriptToScreenScale())
+        )
 
     val battleStageCountRegion
         get() = when (prefs.gameServer) {

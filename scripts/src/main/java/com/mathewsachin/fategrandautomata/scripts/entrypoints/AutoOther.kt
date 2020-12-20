@@ -2,7 +2,10 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.ScriptExitException
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.time.seconds
@@ -25,7 +28,7 @@ class AutoOther @Inject constructor(
                 fp.get()
             images.finishedLotteryBox in lotteryCheckRegion || images.finishedLotteryBox in Game.finishedLotteryBoxRegion ->
                 lottery.get()
-            images.goldXP in Game.scriptRegion || images.silverXP in Game.scriptRegion ->
+            images.goldXP in game.scriptArea || images.silverXP in game.scriptArea ->
                 giftBox.get()
             images.supportRegionTool in Game.supportRegionToolSearchRegion ->
                 supportImageMaker.get()

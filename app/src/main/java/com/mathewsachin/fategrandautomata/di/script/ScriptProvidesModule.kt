@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
-import com.mathewsachin.fategrandautomata.scripts.modules.Game
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.IPlatformImpl
@@ -19,11 +19,6 @@ class ScriptProvidesModule {
 
     @ScriptScope
     @Provides
-    fun provideGameAreaManager(platformImpl: IPlatformImpl): GameAreaManager {
-        return FgoGameAreaManager(
-            platformImpl,
-            Game.scriptSize,
-            Game.imageSize
-        )
-    }
+    fun provideGameAreaManager(platformImpl: IPlatformImpl, prefs: IPreferences): GameAreaManager =
+        FgoGameAreaManager(platformImpl, prefs)
 }

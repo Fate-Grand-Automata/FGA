@@ -203,7 +203,7 @@ open class AutoBattle @Inject constructor(
      * It seems like we need to click on CE (center of screen) to accept them
      */
     private fun bond10CEReward() =
-        Game.scriptRegion.center.click()
+        game.scriptArea.center.click()
 
     private fun isCeRewardDetails() =
         images.ceDetails in Game.resultCeRewardDetailsRegion
@@ -245,7 +245,7 @@ open class AutoBattle @Inject constructor(
     private fun checkCEDrops() {
         val starsRegion = Region(40, -40, 80, 40)
 
-        val ceDropped = Game.scriptRegion
+        val ceDropped = game.scriptArea
             .findAll(images.dropCE)
             .map { (region, _) ->
                 starsRegion + region.location
@@ -265,7 +265,7 @@ open class AutoBattle @Inject constructor(
             val pattern = images.material(material)
 
             // TODO: Make the search region smaller
-            val count = Game.scriptRegion
+            val count = game.scriptArea
                 .findAll(pattern)
                 .count()
 

@@ -49,7 +49,7 @@ class SupportImageMaker @Inject constructor(
                 val newSupportBoundY = it.Region.Y + (if (isInSupport) 66 else 82)
                 supportBound.copy(Y = newSupportBoundY)
             }
-            .filter { it in Game.scriptRegion }
+            .filter { it in game.scriptArea }
             .take(2)
             .toList()
             .sorted()
