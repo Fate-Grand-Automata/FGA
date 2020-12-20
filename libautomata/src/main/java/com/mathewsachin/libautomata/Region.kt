@@ -96,11 +96,6 @@ data class Region(val X: Int, val Y: Int, val Width: Int, val Height: Int) : Com
                 && bottom >= Region.bottom
     }
 
-    override fun compareTo(other: Region) = when {
-        Y > other.Y -> 1
-        Y < other.Y -> -1
-        X > other.X -> 1
-        X < other.X -> -1
-        else -> 0
-    }
+    override fun compareTo(other: Region) =
+        location.compareTo(other.location)
 }
