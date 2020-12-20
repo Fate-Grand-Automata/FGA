@@ -5,7 +5,7 @@
 
 Auto-battle app for F/GO (Android 7 or later, no need for Root).  
 
-<a href='https://play.google.com/store/apps/details?id=com.mathewsachin.fategrandautomata&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' width="175" src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+Download from our [website](https://mathewsachin.github.io/Fate-Grand-Automata/)
 
 This is a **Kotlin** port of [FGO-Lua][FGOLua] as an Android app with UI for configuration and without a time-limit on use.  
 It doesn't tamper with the game in anyway and works by looking at the screen and tapping things just like a normal user would do.  
