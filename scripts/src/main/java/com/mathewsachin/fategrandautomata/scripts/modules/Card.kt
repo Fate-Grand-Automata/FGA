@@ -145,7 +145,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private fun CommandCard.NP.pick() {
         clickLocation.click()
 
-        Game.battleExtraInfoWindowCloseClick.click()
+        game.battleExtraInfoWindowCloseClick.click()
     }
 
     private fun pickCards(clicks: Int = 3): List<CommandCard.Face> {

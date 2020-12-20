@@ -22,12 +22,15 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         Game.battleScreenRegion.exists(img, Timeout)
     }
 
+    private fun confirmSkillUse() {
+        if (prefs.skillConfirmation) {
+            game.battleSkillOkClick.click()
+        }
+    }
+
     private fun castSkill(skill: Skill, target: ServantTarget?) {
         skill.clickLocation.click()
-
-        if (prefs.skillConfirmation) {
-            Game.battleSkillOkClick.click()
-        }
+        confirmSkillUse()
 
         if (target != null) {
             prefs.skillDelay.wait()
@@ -35,7 +38,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
             selectSkillTarget(target)
         } else {
             // Close the window that opens up if skill is on cool-down
-            Game.battleExtraInfoWindowCloseClick.click()
+            game.battleExtraInfoWindowCloseClick.click()
         }
 
         waitForAnimationToFinish()
@@ -66,7 +69,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         0.5.seconds.wait()
 
         // Exit any extra menu
-        Game.battleExtraInfoWindowCloseClick.click()
+        game.battleExtraInfoWindowCloseClick.click()
     }
 
     private fun openMasterSkillMenu() {
@@ -88,9 +91,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         Skill.Master.list.last()
             .clickLocation.click()
 
-        if (prefs.skillConfirmation) {
-            Game.battleSkillOkClick.click()
-        }
+        confirmSkillUse()
 
         0.3.seconds.wait()
 
@@ -99,7 +100,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
 
         0.3.seconds.wait()
 
-        Game.battleOrderChangeOkClick.click()
+        game.battleOrderChangeOkClick.click()
 
         // Extra wait to allow order change dialog to close
         1.seconds.wait()
@@ -116,7 +117,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         0.5.seconds.wait()
 
         // Exit any extra menu
-        Game.battleExtraInfoWindowCloseClick.click()
+        game.battleExtraInfoWindowCloseClick.click()
     }
 
     private fun act(action: AutoSkillAction) = when (action) {

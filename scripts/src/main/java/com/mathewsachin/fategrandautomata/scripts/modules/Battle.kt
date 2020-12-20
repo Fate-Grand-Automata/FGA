@@ -66,7 +66,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         0.5.seconds.wait()
 
-        Game.battleExtraInfoWindowCloseClick.click()
+        game.battleExtraInfoWindowCloseClick.click()
 
         state.hasChosenTarget = true
     }

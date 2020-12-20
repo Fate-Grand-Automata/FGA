@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Location
@@ -11,10 +12,10 @@ import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 import kotlin.time.seconds
 
-fun IFgoAutomataApi.needsToRetry() = images.retry in Game.retryRegion
+fun IFgoAutomataApi.needsToRetry() = images.retry in game.retryRegion
 
 fun IFgoAutomataApi.retry() {
-    Game.retryRegion.click()
+    game.retryRegion.click()
 
     2.seconds.wait()
 }
@@ -22,30 +23,17 @@ fun IFgoAutomataApi.retry() {
 @ScriptScope
 class Game @Inject constructor(
     val prefs: IPreferences,
-    val transformationExtensions: ITransformationExtensions,
+    transformationExtensions: ITransformationExtensions,
     val gameAreaManager: GameAreaManager
 ) {
     companion object {
         val menuScreenRegion = Region(2100, 1200, 1000, 1000)
-        val continueRegion = Region(1400, 1000, 800, 200)
         val menuStorySkipRegion = Region(2240, 20, 300, 120)
 
         val menuSelectQuestClick = Location(2290, 440)
         val menuStartQuestClick = Location(2400, 1350)
-        val continueBoostClick = Location(1260, 1120)
-        val continueClick = Location(1650, 1120)
+
         val menuStorySkipClick = Location(2360, 80)
-        val menuStorySkipYesClick = Location(1600, 1100)
-
-        val retryRegion = Region(1300, 1000, 700, 300)
-        val withdrawRegion = Region(400, 540, 1800, 190)
-        val withdrawAcceptClick = Location(1765, 720)
-        val withdrawCloseClick = Location(1270, 1140)
-
-        val inventoryFullRegion = Region(1050, 900, 458, 90)
-
-        val staminaScreenRegion = Region(600, 200, 300, 300)
-        val staminaOkClick = Location(1650, 1120)
 
         val supportScreenRegion = Region(0, 0, 200, 400)
         val supportListRegion = Region(70, 332, 378, 1091) // see docs/support_list_region.png
@@ -61,7 +49,6 @@ class Game @Inject constructor(
         ) // see docs/friend_region.png
 
         val supportUpdateClick = Location(1670, 250)
-        val supportUpdateYesClick = Location(1480, 1110)
         val supportListTopClick = Location(2480, 360)
         val supportFirstSupportClick = Location(1900, 500)
 
@@ -87,12 +74,9 @@ class Game @Inject constructor(
 
         val battleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
 
-        val battleExtraInfoWindowCloseClick = Location(2550, 10)
         val battleAttackClick = Location(2300, 1200)
-        val battleSkillOkClick = Location(1680, 850)
 
         val battleMasterSkillOpenClick = Location(2380, 640)
-        val battleOrderChangeOkClick = Location(1280, 1260)
 
         val battleBack = Location(2400, 1370)
 
@@ -102,7 +86,6 @@ class Game @Inject constructor(
         val resultMatRewardsRegion = Region(2080, 1220, 280, 200)
         val resultMasterLvlUpRegion = Region(1990, 160, 250, 270)
 
-        val resultCeDropRegion = Region(1860, 0, 240, 100)
         val resultCeRewardRegion = Region(1050, 1216, 33, 28)
         val resultCeRewardDetailsRegion = Region(0, 512, 135, 115)
         val resultCeRewardCloseClick = Location(80, 60)
@@ -126,6 +109,47 @@ class Game @Inject constructor(
             Location(),
             gameAreaManager.gameArea.size * (1 / transformationExtensions.scriptToScreenScale())
         )
+
+    fun Location.xFromCenter() =
+        this + Location(scriptArea.center.X, 0)
+
+    fun Region.xFromCenter() =
+        this + Location(scriptArea.center.X, 0)
+
+    fun Location.xFromRight() =
+        this + Location(scriptArea.right, 0)
+
+    val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
+    val continueBoostClick = Location(-20, 1120).xFromCenter()
+    val continueClick = Location(370, 1120).xFromCenter()
+
+    val inventoryFullRegion = Region(-230, 900, 458, 90).xFromCenter()
+
+    val menuStorySkipYesClick = Location(320, 1100).xFromCenter()
+
+    val retryRegion = Region(20, 1000, 700, 300).xFromCenter()
+
+    val staminaScreenRegion = Region(-680, 200, 300, 300).xFromCenter()
+    val staminaOkClick = Location(370, 1120).xFromCenter()
+
+    val withdrawRegion = Region(-880, 540, 1800, 190).xFromCenter()
+    val withdrawAcceptClick = Location(485, 720).xFromCenter()
+    val withdrawCloseClick = Location(-10, 1140).xFromCenter()
+
+    val battleSkillOkClick = Location(400, 850).xFromCenter()
+
+    val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
+
+    val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
+
+    val supportUpdateYesClick = Location(200, 1110).xFromCenter()
+
+    fun locate(refillResource: RefillResourceEnum) = when (refillResource) {
+        RefillResourceEnum.Bronze -> 1140
+        RefillResourceEnum.Silver -> 922
+        RefillResourceEnum.Gold -> 634
+        RefillResourceEnum.SQ -> 345
+    }.let { y -> Location(-530, y).xFromCenter() }
 
     val battleStageCountRegion
         get() = when (prefs.gameServer) {

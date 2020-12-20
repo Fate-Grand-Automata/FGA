@@ -76,7 +76,7 @@ class Support(
         Game.supportUpdateClick.click()
         1.seconds.wait()
 
-        Game.supportUpdateYesClick.click()
+        game.supportUpdateYesClick.click()
 
         waitForSupportScreenToLoad()
         updateLastSupportRefreshTimestamp()
