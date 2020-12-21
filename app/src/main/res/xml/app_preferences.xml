@@ -56,22 +56,27 @@
             app:title="@string/p_battle_config_cmd_text"
             app:summary="@string/p_battle_config_cmd_text_summary" />
 
-        <SwitchPreferenceCompat
-            app:icon="@drawable/ic_time"
-            app:key="@string/pref_wait_ap_regen"
-            app:title="@string/p_wait_ap_regen_text"
-            app:summary="@string/p_wait_ap_regen_text_summary" />
+        <PreferenceCategory
+            app:key="wait_ap_regen_category"
+            app:title="@string/p_wait_ap_regen_text">
+            <SwitchPreferenceCompat
+                app:icon="@drawable/ic_time"
+                app:key="@string/pref_wait_ap_regen"
+                app:title="@string/p_wait_ap_regen_text"
+                app:summary="@string/p_wait_ap_regen_text_summary" />
 
-        <SeekBarPreference
-            android:max="60"
-            app:icon="@drawable/ic_counter"
-            app:key="@string/pref_wait_ap_regen_minutes"
-            app:title="@string/p_wait_ap_regen_minutes_text"
-            app:summary="@string/p_wait_ap_regen_minutes_text_summary"
-            app:min="1"
-            app:defaultValue="5"
-            app:seekBarIncrement="1"
-            app:showSeekBarValue="true" />
+            <SeekBarPreference
+                android:max="60"
+                app:icon="@drawable/ic_counter"
+                app:key="@string/pref_wait_ap_regen_minutes"
+                app:title="@string/p_wait_ap_regen_minutes_text"
+                app:summary="@string/p_wait_ap_regen_minutes_text_summary"
+                app:min="1"
+                app:defaultValue="5"
+                app:seekBarIncrement="1"
+                app:showSeekBarValue="true" />
+        </PreferenceCategory>
+
 
         <!--    <SwitchPreferenceCompat-->
         <!--        app:defaultValue="false"-->

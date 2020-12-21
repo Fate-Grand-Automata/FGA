@@ -158,9 +158,9 @@
     <string name="p_battle_config_cmd_text_summary">Show text-box for editing Skill commands</string>
 
     <string name="p_wait_ap_regen_text">Wait for AP Regeneration</string>
-    <string name="p_wait_ap_regen_text_summary">Keeps FGA running even when AP runs out, and automatically restart node once enough AP has regenerated.</string>
-    <string name="p_wait_ap_regen_minutes_text">Wait for AP Regeneration: Re-Check Timer</string>
-    <string name="p_wait_ap_regen_minutes_text_summary">Time (minutes) to wait before re-checking. Requires Wait for AP Regeneration to be enabled. Default: 5 minutes</string>
+    <string name="p_wait_ap_regen_text_summary">Keeps FGA running even when AP runs out and automatically restart node once enough AP has regenerated.</string>
+    <string name="p_wait_ap_regen_minutes_text">Minutes before rechecking</string>
+    <string name="p_wait_ap_regen_minutes_text_summary">Default: 5</string>
 
     <string name="p_storage">Storage</string>
     <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
