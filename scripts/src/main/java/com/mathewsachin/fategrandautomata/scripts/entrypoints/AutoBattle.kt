@@ -444,6 +444,7 @@ open class AutoBattle @Inject constructor(
     private fun refillStamina() {
         val refillPrefs = prefs.refill
         val waitAPRegenPrefs = prefs.waitAPRegen
+        val waitAPRegenMinutePrefs = prefs.waitAPRegenMinutes
 
         if (refillPrefs.enabled
             && stonesUsed < refillPrefs.repetitions
@@ -461,8 +462,8 @@ open class AutoBattle @Inject constructor(
             3.seconds.wait()
         } else if (waitAPRegenPrefs) {
             Location(1300, 1240).click();
-            for (i in 1..5) {
-                toast("Waiting for AP regeneration. Re-checking in "+ (6-i) + " minutes.")
+            for (i in 1..waitAPRegenMinutePrefs) {
+                toast("Waiting for AP regeneration. Re-checking in "+ (waitAPRegenMinutePrefs-i) + " minutes.")
                 60.seconds.wait()
             }
         } else throw ScriptExitException(messages.apRanOut)

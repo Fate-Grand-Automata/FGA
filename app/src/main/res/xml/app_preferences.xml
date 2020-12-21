@@ -62,6 +62,17 @@
             app:title="@string/p_wait_ap_regen_text"
             app:summary="@string/p_wait_ap_regen_text_summary" />
 
+        <SeekBarPreference
+            android:max="60"
+            app:icon="@drawable/ic_counter"
+            app:key="@string/pref_wait_ap_regen_minutes"
+            app:title="@string/p_wait_ap_regen_minutes_text"
+            app:summary="@string/p_wait_ap_regen_minutes_text_summary"
+            app:min="1"
+            app:defaultValue="5"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true" />
+
         <!--    <SwitchPreferenceCompat-->
         <!--        app:defaultValue="false"-->
         <!--        app:key="@string/pref_guda_final"-->
