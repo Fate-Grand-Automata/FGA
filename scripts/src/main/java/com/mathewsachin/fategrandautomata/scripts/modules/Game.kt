@@ -10,6 +10,7 @@ import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
+import kotlin.math.roundToInt
 import kotlin.time.seconds
 
 fun IFgoAutomataApi.needsToRetry() = images.retry in game.retryRegion
@@ -57,20 +58,6 @@ class Game @Inject constructor(
         val supportDefaultCeBounds = Region(76, 270, 378, 150)
         val supportExtraRegion = Region(1200, 200, 130, 130)
         val supportNotFoundRegion = Region(468, 708, 100, 90)
-
-        val selectedPartyRegion = Region(1010, 62, 550, 72)
-        val partySelectionArray = listOf(
-            Location(1055, 100),
-            Location(1105, 100),
-            Location(1155, 100),
-            Location(1205, 100),
-            Location(1255, 100),
-            Location(1305, 100),
-            Location(1355, 100),
-            Location(1405, 100),
-            Location(1455, 100),
-            Location(1505, 100)
-        )
 
         val battleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
 
@@ -150,6 +137,14 @@ class Game @Inject constructor(
         RefillResourceEnum.Gold -> 634
         RefillResourceEnum.SQ -> 345
     }.let { y -> Location(-530, y).xFromCenter() }
+
+    val selectedPartyRegion = Region(-270, 62, 550, 72).xFromCenter()
+    val partySelectionArray = (0..9).map {
+        // Party indicators are center-aligned
+        val x = ((it - 4.5) * 50).roundToInt()
+
+        Location(x, 100).xFromCenter()
+    }
 
     val battleStageCountRegion
         get() = when (prefs.gameServer) {

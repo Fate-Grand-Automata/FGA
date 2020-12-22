@@ -478,12 +478,12 @@ open class AutoBattle @Inject constructor(
     fun selectParty() {
         val party = prefs.selectedBattleConfig.party
 
-        if (!partySelected && party in Game.partySelectionArray.indices) {
-            val currentParty = Game.selectedPartyRegion
+        if (!partySelected && party in game.partySelectionArray.indices) {
+            val currentParty = game.selectedPartyRegion
                 .find(images.selectedParty)
                 ?.let { match ->
                     // Find party with min distance from center of matched region
-                    Game.partySelectionArray.withIndex().minByOrNull {
+                    game.partySelectionArray.withIndex().minByOrNull {
                         (it.value.X - match.Region.center.X).absoluteValue
                     }?.index
                 }
@@ -493,14 +493,14 @@ open class AutoBattle @Inject constructor(
                unresponsive if you switch from a party to the same one. */
             if (currentParty == null) {
                 val tempParty = if (party == 0) 1 else 0
-                Game.partySelectionArray[tempParty].click()
+                game.partySelectionArray[tempParty].click()
 
                 1.seconds.wait()
             }
 
             // Switch to the configured party
             if (currentParty != party) {
-                Game.partySelectionArray[party].click()
+                game.partySelectionArray[party].click()
 
                 1.2.seconds.wait()
             }
