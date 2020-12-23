@@ -460,7 +460,7 @@ open class AutoBattle @Inject constructor(
 
             3.seconds.wait()
         } else if (waitAPRegenPrefs) {
-            Location(1300, 1240).click();
+            Location(1300, 1240).click()
             20.seconds.wait()
         } else throw ScriptExitException(messages.apRanOut)
     }

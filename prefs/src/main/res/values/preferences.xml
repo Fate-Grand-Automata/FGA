@@ -1,101 +1,96 @@
 <resources>
-    <string name="pref_script_mode">script_mode</string>
-    <string name="pref_gameserver">gameserver</string>
-    <string name="pref_skill_conf">skill_conf</string>
-    <string name="pref_battle_config_selected">autoskill_selected</string>
-    <string name="pref_card_priority">card_priority</string>
-    <string name="pref_spam_np">battle_np</string>
-    <string name="pref_spam_skill">skill_spam</string>
-    <string name="pref_auto_choose_target">auto_choose_target</string>
-    <string name="pref_story_skip">story_skip</string>
-    <string name="pref_stop_on_ce_drop">stop_on_ce_drop</string>
-    <string name="pref_stop_on_ce_get">stop_on_ce_get</string>
-    <string name="pref_boost_item">selected_boost_item</string>
-    <string name="pref_withdraw_enabled">withdraw_enabled</string>
-    <string name="pref_battle_config_experimental">auto_skill_experimental</string>
-    <string name="pref_battle_config_rearrange_cards">auto_skill_rearrange_cards</string>
-    <string name="pref_battle_config_brave_chains">auto_skill_brave_chains</string>
+    <string name="pref_script_mode" translatable="false">script_mode</string>
+    <string name="pref_gameserver" translatable="false">gameserver</string>
+    <string name="pref_skill_conf" translatable="false">skill_conf</string>
+    <string name="pref_battle_config_selected" translatable="false">autoskill_selected</string>
+    <string name="pref_card_priority" translatable="false">card_priority</string>
+    <string name="pref_spam_np" translatable="false">battle_np</string>
+    <string name="pref_spam_skill" translatable="false">skill_spam</string>
+    <string name="pref_auto_choose_target" translatable="false">auto_choose_target</string>
+    <string name="pref_story_skip" translatable="false">story_skip</string>
+    <string name="pref_stop_on_ce_drop" translatable="false">stop_on_ce_drop</string>
+    <string name="pref_stop_on_ce_get" translatable="false">stop_on_ce_get</string>
+    <string name="pref_boost_item" translatable="false">selected_boost_item</string>
+    <string name="pref_withdraw_enabled" translatable="false">withdraw_enabled</string>
+    <string name="pref_battle_config_experimental" translatable="false">auto_skill_experimental</string>
+    <string name="pref_battle_config_rearrange_cards" translatable="false">auto_skill_rearrange_cards</string>
+    <string name="pref_battle_config_brave_chains" translatable="false">auto_skill_brave_chains</string>
 
-    <string name="pref_extract_def_support_imgs">extract_def_support_imgs</string>
-    <string name="pref_stage_counter_similarity">stage_counter_similarity</string>
-    <string name="pref_wait_before_turn">wait_before_turn</string>
-    <string name="pref_wait_before_cards">wait_before_cards</string>
+    <string name="pref_stage_counter_similarity" translatable="false">stage_counter_similarity</string>
+    <string name="pref_wait_before_turn" translatable="false">wait_before_turn</string>
+    <string name="pref_wait_before_cards" translatable="false">wait_before_cards</string>
 
-    <string name="pref_refill_enabled">refill_enabled</string>
-    <string name="pref_refill_repetitions">refill_repetitions</string>
-    <string name="pref_refill_resource">refill_resource_x</string>
-    <string name="pref_refill_decrement">refill_decrement</string>
+    <string name="pref_refill_enabled" translatable="false">refill_enabled</string>
+    <string name="pref_refill_repetitions" translatable="false">refill_repetitions</string>
+    <string name="pref_refill_resource" translatable="false">refill_resource_x</string>
+    <string name="pref_refill_decrement" translatable="false">refill_decrement</string>
 
-    <string name="pref_wait_ap_regen">wait_for_ap_regeneration</string>
+    <string name="pref_wait_ap_regen" translatable="false">wait_for_ap_regeneration</string>
 
-    <string name="pref_support_pref_servant">support_pref_servant_list</string>
+    <string name="pref_support_pref_servant" translatable="false">support_pref_servant_list</string>
 
-    <string name="pref_support_pref_ce">support_pref_ce_list</string>
-    <string name="pref_support_pref_ce_mlb">support_pref_ce_mlb</string>
+    <string name="pref_support_pref_ce" translatable="false">support_pref_ce_list</string>
+    <string name="pref_support_pref_ce_mlb" translatable="false">support_pref_ce_mlb</string>
 
-    <string name="pref_support_max_ascended">support_max_ascended</string>
-    <string name="pref_support_skill_max_1">support_skill_max_1</string>
-    <string name="pref_support_skill_max_2">support_skill_max_2</string>
-    <string name="pref_support_skill_max_3">support_skill_max_3</string>
+    <string name="pref_support_max_ascended" translatable="false">support_max_ascended</string>
+    <string name="pref_support_skill_max_1" translatable="false">support_skill_max_1</string>
+    <string name="pref_support_skill_max_2" translatable="false">support_skill_max_2</string>
+    <string name="pref_support_skill_max_3" translatable="false">support_skill_max_3</string>
 
-    <string name="pref_support_friend_names">support_friend_names_list</string>
-    <string name="pref_support_friends_only">support_friends_only</string>
-    <string name="pref_support_swipes_per_update">support_swipes_per_update_x</string>
-    <string name="pref_support_max_updates">support_max_updates_x</string>
-    <string name="pref_support_mode">support_mode</string>
-    <string name="pref_support_fallback">support_fallback</string>
+    <string name="pref_support_friend_names" translatable="false">support_friend_names_list</string>
+    <string name="pref_support_friends_only" translatable="false">support_friends_only</string>
+    <string name="pref_support_swipes_per_update" translatable="false">support_swipes_per_update_x</string>
+    <string name="pref_support_max_updates" translatable="false">support_max_updates_x</string>
+    <string name="pref_support_mode" translatable="false">support_mode</string>
+    <string name="pref_support_fallback" translatable="false">support_fallback</string>
 
-    <string name="pref_battle_config_manage">autoskill_manage</string>
-    <string name="pref_battle_config_delete">autoskill_delete</string>
-    <string name="pref_battle_config_list">autoskill_list</string>
-    <string name="pref_battle_config_name">autoskill_name</string>
-    <string name="pref_battle_config_cmd">autoskill_cmd</string>
-    <string name="pref_battle_config_party">autoskill_party</string>
-    <string name="pref_battle_config_support_class">autoskill_support_class</string>
-    <string name="pref_battle_config_notes">autoskill_notes</string>
-    <string name="pref_battle_config_mat">battle_config_mat</string>
+    <string name="pref_battle_config_list" translatable="false">autoskill_list</string>
+    <string name="pref_battle_config_name" translatable="false">autoskill_name</string>
+    <string name="pref_battle_config_cmd" translatable="false">autoskill_cmd</string>
+    <string name="pref_battle_config_party" translatable="false">autoskill_party</string>
+    <string name="pref_battle_config_support_class" translatable="false">autoskill_support_class</string>
+    <string name="pref_battle_config_notes" translatable="false">autoskill_notes</string>
+    <string name="pref_battle_config_mat" translatable="false">battle_config_mat</string>
 
-    <string name="pref_screenshot_drops">screenshot_drops</string>
-    <string name="pref_should_limit_runs">should_limit_runs</string>
-    <string name="pref_limit_runs">limit_runs</string>
-    <string name="pref_should_limit_mats">should_limit_mats</string>
-    <string name="pref_limit_mats">limit_mats</string>
+    <string name="pref_screenshot_drops" translatable="false">screenshot_drops</string>
+    <string name="pref_should_limit_runs" translatable="false">should_limit_runs</string>
+    <string name="pref_limit_runs" translatable="false">limit_runs</string>
+    <string name="pref_should_limit_mats" translatable="false">should_limit_mats</string>
+    <string name="pref_limit_mats" translatable="false">limit_mats</string>
 
-    <string name="pref_ignore_notch">ignore_notch</string>
-    <string name="pref_use_root_screenshot">use_root_screenshot</string>
-    <string name="pref_use_root_gestures">use_root_gestures</string>
-    <string name="pref_debug_mode">debug_mode</string>
-    <string name="pref_guda_final">guda_final</string>
-    <string name="pref_record_screen">record_screen</string>
-    <string name="pref_auto_start_service">auto_start_service</string>
+    <string name="pref_ignore_notch" translatable="false">ignore_notch</string>
+    <string name="pref_use_root_screenshot" translatable="false">use_root_screenshot</string>
+    <string name="pref_debug_mode" translatable="false">debug_mode</string>
+    <string name="pref_guda_final" translatable="false">guda_final</string>
+    <string name="pref_record_screen" translatable="false">record_screen</string>
+    <string name="pref_auto_start_service" translatable="false">auto_start_service</string>
 
-    <string name="pref_min_similarity">min_similarity</string>
-    <string name="pref_mlb_similarity">mlb_similarity</string>
+    <string name="pref_min_similarity" translatable="false">min_similarity</string>
+    <string name="pref_mlb_similarity" translatable="false">mlb_similarity</string>
 
-    <string name="pref_click_wait_time">click_wait_time</string>
-    <string name="pref_click_duration">click_duration</string>
-    <string name="pref_click_delay">click_delay</string>
-    <string name="pref_swipe_wait_time">swipe_wait_time</string>
-    <string name="pref_swipe_duration">swipe_duration</string>
-    <string name="pref_wait_multiplier">wait_multiplier</string>
-    <string name="pref_swipe_multiplier">swipe_multiplier</string>
+    <string name="pref_click_wait_time" translatable="false">click_wait_time</string>
+    <string name="pref_click_duration" translatable="false">click_duration</string>
+    <string name="pref_click_delay" translatable="false">click_delay</string>
+    <string name="pref_swipe_wait_time" translatable="false">swipe_wait_time</string>
+    <string name="pref_swipe_duration" translatable="false">swipe_duration</string>
+    <string name="pref_wait_multiplier" translatable="false">wait_multiplier</string>
+    <string name="pref_swipe_multiplier" translatable="false">swipe_multiplier</string>
 
-    <string name="pref_skill_delay">skill_delay</string>
+    <string name="pref_skill_delay" translatable="false">skill_delay</string>
 
-    <string name="pref_battle_config_cmd_text">auto_skill_cmd_text</string>
+    <string name="pref_battle_config_cmd_text" translatable="false">auto_skill_cmd_text</string>
 
-    <string name="pref_max_gold_ember_set_size">max_gold_ember_set_size</string>
+    <string name="pref_max_gold_ember_set_size" translatable="false">max_gold_ember_set_size</string>
 
-    <string name="pref_dir">dir_root</string>
+    <string name="pref_dir" translatable="false">dir_root</string>
 
-    <string name="pref_nav_storage">nav_storage</string>
-    <string name="pref_nav_refill">nav_refill</string>
-    <string name="pref_nav_battle_config">nav_battle_config</string>
-    <string name="pref_nav_more">nav_more</string>
-    <string name="pref_nav_fine_tune">nav_fine_tune</string>
-    <string name="pref_nav_update">nav_update</string>
-    <string name="pref_nav_preferred_support">nav_preferred_support</string>
+    <string name="pref_nav_storage" translatable="false">nav_storage</string>
+    <string name="pref_nav_refill" translatable="false">nav_refill</string>
+    <string name="pref_nav_battle_config" translatable="false">nav_battle_config</string>
+    <string name="pref_nav_more" translatable="false">nav_more</string>
+    <string name="pref_nav_fine_tune" translatable="false">nav_fine_tune</string>
+    <string name="pref_nav_preferred_support" translatable="false">nav_preferred_support</string>
 
-    <string name="pref_shuffle_cards">shuffle_cards</string>
-    <string name="pref_shuffle_cards_wave">shuffle_cards_wave</string>
+    <string name="pref_shuffle_cards" translatable="false">shuffle_cards</string>
+    <string name="pref_shuffle_cards_wave" translatable="false">shuffle_cards_wave</string>
 </resources>

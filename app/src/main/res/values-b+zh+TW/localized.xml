@@ -13,7 +13,6 @@
     <string name="battle_config_support_any">任何</string>
 
     <string name="support_imgs_extracted">圖片複製成功</string>
-    <string name="support_img_not_found">支援從者圖片載入失敗: %1$s 。請將從者圖片放在 %2$s 資料夾</string>
 
     <string name="battle_config_list_no_items">目前沒有腳本，請按右下角的加號新增</string>
     <string name="battle_config_list_import">匯入腳本</string>
@@ -30,7 +29,6 @@
     <string name="skill_maker_confirm_exit_message">將不會儲存目前設定的腳本，確認離開?</string>
     <string name="skill_maker_confirm_clear_title">確認清除</string>
     <string name="skill_maker_confirm_clear_message">將會清除所有設定，確認執行?</string>
-    <string name="skill_maker_confirm_np_deletion_title">確認復原寶具指令</string>
     <string name="skill_maker_atk_header">攻擊指令</string>
     <string name="skill_maker_atk_servant_np">從者\n%d\n\n寶具</string>
     <string name="skill_maker_atk_cards_before_np">寶具前墊刀</string>
@@ -40,13 +38,11 @@
 
     <string name="skill_maker_main_enemy">敵人 %d</string>
     <string name="skill_maker_main_battle">BATTLE %d</string>
-    <string name="skill_maker_main_turn">%d 回合</string>
     <string name="skill_maker_main_master_skills">御主技能</string>
     <string name="skill_maker_main_undo">復原</string>
     <string name="skill_maker_main_clear">重設</string>
     <string name="skill_maker_main_servant">從者 %d</string>
     <string name="skill_maker_main_attack">Attack</string>
-    <string name="skill_maker_cannot_select">請先重設回合/寶具指令</string>
 
     <string name="skill_maker_master_skills_header">御主技能</string>
     <string name="skill_maker_master_skills_order_change">換人\nOrder Change</string>
@@ -83,10 +79,8 @@
     <string name="support_img_namer_title">請選擇</string>
     <string name="support_img_namer_done">完成</string>
     <string name="support_img_namer_blank_file_name">名稱不可為空白，請取消勾選或是加上名稱</string>
-    <string name="support_img_namer_file_name_already_exists">\'%s\' 名稱重複，請使用其他名稱</string>
     <string name="support_img_namer_file_rename_failed">重新命名成 \'%s\' 失敗</string>
 
-    <string name="p_script_mode">腳本模式</string>
     <string name="p_refill">自動回體</string>
     <string name="p_refill_off">關閉</string>
     <string name="p_refill_summary">設定自動回體</string>
@@ -114,7 +108,6 @@
     <string name="p_battle_config_support_fallback_selection_mode">備用選取方式</string>
     <string name="p_battle_config_support_pref_servants">偏好從者</string>
     <string name="p_battle_config_support_max_ascended">最終再臨</string>
-    <string name="p_battle_config_support_skill_levels">技能等級</string>
     <string name="p_battle_config_support_pref_ces">偏好禮裝</string>
     <string name="p_battle_config_support_mlb">滿破</string>
     <string name="p_battle_config_support_friend_names">好友名稱</string>
@@ -124,7 +117,6 @@
     <string name="p_max_skill_2">二技滿</string>
     <string name="p_max_skill_3">三技滿</string>
 
-    <string name="p_game_server">伺服器</string>
     <string name="p_spam_np">自動寶具</string>
     <string name="p_auto_choose_target">自動選取敵人</string>
     <string name="p_story_skip">跳過劇情</string>
@@ -202,9 +194,6 @@
     <string name="p_support_mode_friend">好友從者</string>
 
     <string name="p_script_mode_battle">戰鬥</string>
-    <string name="p_script_mode_lottery">抽箱</string>
-    <string name="p_script_mode_friend_gacha">友情點數召喚</string>
-    <string name="p_script_mode_support_img_maker">支援從者圖片截取器</string>
 
     <string name="p_not_set">未設定</string>
 

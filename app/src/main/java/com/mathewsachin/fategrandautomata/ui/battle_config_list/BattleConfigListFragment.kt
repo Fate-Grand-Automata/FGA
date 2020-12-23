@@ -71,7 +71,7 @@ class BattleConfigListFragment : Fragment() {
             editItem(it)
         }) { enterActionMode() })
 
-        listSection = ListSection<IBattleConfig>()
+        listSection = ListSection()
         listSection.setOnSelectionChangedListener { _, _, selectedItems ->
             val count = selectedItems.size
             if (count == 0) {

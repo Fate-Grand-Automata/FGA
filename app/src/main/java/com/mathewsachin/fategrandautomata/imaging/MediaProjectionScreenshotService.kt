@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.imaging
 
-import android.graphics.PixelFormat
+import android.graphics.ImageFormat
 import android.hardware.display.VirtualDisplay
 import android.media.Image
 import android.media.ImageReader
@@ -34,7 +34,7 @@ class MediaProjectionScreenshotService(
         val screenWidth = DisplayMetrics.widthPixels
         val screenHeight = DisplayMetrics.heightPixels
 
-        imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 2)
+        imageReader = ImageReader.newInstance(screenWidth, screenHeight, ImageFormat.FLEX_RGBA_8888, 2)
 
         virtualDisplay = MediaProjection.createVirtualDisplay(
             "ScreenCapture",

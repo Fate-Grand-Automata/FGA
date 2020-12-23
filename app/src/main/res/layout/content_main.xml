@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         tools:showIn="@layout/activity_main">
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:name="com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsFragment"
             android:id="@+id/main_pref"
             android:layout_width="match_parent"
