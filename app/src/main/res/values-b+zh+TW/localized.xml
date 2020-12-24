@@ -102,7 +102,7 @@
     <string name="p_refill_summary">設定自動回體</string>
     <string name="p_battle_config">周回腳本</string>
     <string name="p_battle_config_summary">設定周回腳本</string>
-    <string name="p_more_options">更多</string>
+    <string name="p_more_options">更多選項</string>
 
     <string name="p_enable_refill">啟動自動回體</string>
     <string name="p_refill_none">未選擇果實或聖晶石</string>
@@ -127,7 +127,7 @@
     <string name="p_battle_config_support_max_ascended">最終再臨</string>
     <string name="p_battle_config_support_skill_levels">技能等級</string>
     <string name="p_battle_config_support_pref_ces">偏好禮裝</string>
-    <string name="p_battle_config_support_mlb">滿破</string>
+    <string name="p_battle_config_support_mlb">滿破禮裝</string>
     <string name="p_battle_config_support_friend_names">好友名稱</string>
     <string name="p_battle_config_support_friends_only">只選擇好友從者</string>
 
@@ -150,7 +150,7 @@
     <string name="p_screenshot_drops">掉落截圖</string>
     <string name="p_screenshot_drops_summary">存至 \'drops\' 資料夾</string>
     <string name="p_boost_item">加速道具</string>
-    <string name="p_brave_chains">EX串</string>
+    <string name="p_brave_chains">Brave Chain</string>
     <string name="p_rearrange_cards">調換順序\n(優先性高的卡後出)</string>
     <string name="p_battle_config_cmd_text">腳本對話框</string>
     <string name="p_battle_config_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
@@ -205,7 +205,7 @@
     <string name="p_nav_more_options">更多選項</string>
     <string name="p_nav_troubleshoot">FGA有問題請先點這 (GitHub連結)</string>
     <string name="p_nav_fine_tune">微調</string>
-    <string name="p_nav_battle_config_list">腳本列表</string>
+    <string name="p_nav_battle_config_list">周回腳本</string>
     <string name="p_nav_battle_config_edit">編輯腳本</string>
     <string name="p_nav_card_priority">偏好指令卡</string>
 
@@ -216,7 +216,7 @@
 
     <string name="p_brave_chains_don_t_care">無偏好</string>
     <string name="p_brave_chains_with_np">寶具施放後</string>
-    <string name="p_brave_chains_avoid">避免自串EX</string>
+    <string name="p_brave_chains_avoid">避免Brave Chain</string>
 
     <string name="p_boost_item_disabled">關閉</string>
     <string name="p_boost_item_skip">跳過</string>
