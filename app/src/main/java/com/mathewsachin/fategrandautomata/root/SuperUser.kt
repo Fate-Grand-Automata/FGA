@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.root
 
+import java.io.DataInputStream
 import java.io.DataOutputStream
 
 /**
@@ -8,6 +9,7 @@ import java.io.DataOutputStream
 class SuperUser : AutoCloseable {
     var superUser: Process
     var outStream: DataOutputStream
+    var inStream: DataInputStream
 
     /**
      * Requests superuser rights and checks if the attempt was successful.
@@ -18,6 +20,7 @@ class SuperUser : AutoCloseable {
         try {
             superUser = Runtime.getRuntime().exec("su", null, null)
             outStream = DataOutputStream(superUser.outputStream)
+            inStream = DataInputStream(superUser.inputStream)
 
             // We can check if we got root by sending 'id' to the su process which returns current user's id.
             // The response should contain 'uid=0', where 0 is the id of root user.
@@ -47,7 +50,7 @@ class SuperUser : AutoCloseable {
     /**
      * Writes a line to the shell.
      */
-    private fun writeLine(Line: String) {
+    fun writeLine(Line: String) {
         outStream.writeBytes("${Line}\n")
         outStream.flush()
     }
