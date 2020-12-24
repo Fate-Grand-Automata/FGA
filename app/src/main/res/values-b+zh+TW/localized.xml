@@ -12,8 +12,9 @@
     <string name="battle_config_item_open_maker">產生器</string>
     <string name="battle_config_support_any">任何</string>
 
-    <string name="support_imgs_extracted">圖片複製成功</string>
-    <string name="support_img_not_found">支援從者圖片載入失敗: %1$s 。請將從者圖片放在 %2$s 資料夾</string>
+    <string name="support_imgs_extracted">支援圖片擷取成功</string>
+    <string name="support_imgs_extract_failed">無法擷取支援圖片</string>
+    <string name="support_img_not_found">支援圖片載入失敗: %1$s 。請將從者圖片放在 %2$s 資料夾</string>
 
     <string name="battle_config_list_no_items">目前沒有腳本，請按右下角的加號新增</string>
     <string name="battle_config_list_import">匯入腳本</string>
@@ -60,6 +61,12 @@
     <string name="skill_maker_target_none">無對象</string>
     <string name="skill_maker_target_servant">從者\n\n%d</string>
 
+    <string name="skill_maker_space_ishtar">宇宙伊絲塔 (Space Ishtar)</string>
+    <string name="skill_maker_emiya">Emiya</string>
+    <string name="skill_maker_quick">Quick</string>
+    <string name="skill_maker_arts">Arts</string>
+    <string name="skill_maker_buster">Buster</string>
+
     <string name="card_priority_wave_number">BATTLE %d</string>
     <string name="card_priority_menu_info">備註</string>
     <string name="card_priority_info_title">備註</string>
@@ -70,6 +77,9 @@
     <string name="card_priority_remove_last_wave">移除BATTLE</string>
     <string name="card_priority_experimental">開啟實驗功能</string>
 
+    <string name="start_service">開始服務</string>
+    <string name="stop_service">停止服務</string>
+    <string name="start_service_toast">開啟FGO以執行腳本</string>
     <string name="fine_tune_menu_reset_to_defaults">還原設定</string>
     <string name="support_menu_extract_default_support_images">複製預設支援圖片</string>
 
@@ -95,10 +105,11 @@
     <string name="p_more_options">更多</string>
 
     <string name="p_enable_refill">啟動自動回體</string>
+    <string name="p_refill_none">未選擇果實或聖晶石</string>
     <string name="p_repetitions">自動回體次數</string>
     <string name="p_auto_decrement">追蹤消耗</string>
-    <string name="p_auto_decrement_summary">自動追蹤已使用的蘋果以減少自動回體次數</string>
-    <string name="p_resource">選擇蘋果</string>
+    <string name="p_auto_decrement_summary">自動追蹤已使用的果實以減少自動回體次數</string>
+    <string name="p_resource">自動回體資源</string>
     <string name="p_run_limit">次數限制</string>
     <string name="p_limit_no_of_runs">設定回體次數上限</string>
     <string name="p_runs">上限</string>
@@ -120,12 +131,14 @@
     <string name="p_battle_config_support_friend_names">好友名稱</string>
     <string name="p_battle_config_support_friends_only">只選擇好友從者</string>
 
-    <string name="p_max_skill_1">一技滿</string>
-    <string name="p_max_skill_2">二技滿</string>
-    <string name="p_max_skill_3">三技滿</string>
+    <string name="p_max_skill_1">一技滿等</string>
+    <string name="p_max_skill_2">二技滿等</string>
+    <string name="p_max_skill_3">三技滿等</string>
 
     <string name="p_game_server">伺服器</string>
+    <string name="p_spam_summary">選擇Danger 敵人時施放選項需開啟自動選取敵人</string>
     <string name="p_spam_np">自動寶具</string>
+    <string name="p_spam_skill">自動施放技能</string>
     <string name="p_auto_choose_target">自動選取敵人</string>
     <string name="p_story_skip">跳過劇情</string>
     <string name="p_skill_confirmation">技能確認</string>
@@ -143,13 +156,24 @@
     <string name="p_battle_config_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
 
     <string name="p_wait_ap_regen_text">等待體力回復</string>
-    <string name="p_wait_ap_regen_text_summary">AP用完之後FGA將不會立刻退出，而是會持續確認體力是否回復並重新開始刷關</string>
+    <string name="p_wait_ap_regen_text_summary">AP用完之後FGA將不會立刻退出，而是會持續確認體力是否回復並重新開始關卡</string>
+
+    <string name="p_storage">資料存放位置</string>
+    <string name="p_folder">更改存放支援圖片、掉落截圖等的資料夾位置</string>
+
+    <string name="p_choose_folder_title">Choose Folder</string>
+    <string name="p_choose_folder_message">Choose the folder to use to store Support images, drop images, etc.\n\nNOTE: You might have to use \'Show Internal Storage\' in your device\'s file picker.</string>
+    <string name="p_choose_folder_not_exist_title">Choose another folder</string>
+    <string name="p_choose_folder_not_exist_message">Can\'t access the folder used to store Support images, drop images, etc.</string>
+    <string name="p_choose_folder_action">Choose</string>
 
     <string name="p_advanced">進階</string>
-    <string name="p_debug_mode">Debug mode</string>
-    <string name="p_debug_mode_summary">Highlight the regions being matched</string>
+    <string name="p_debug_mode">除錯模式</string>
+    <string name="p_debug_mode_summary">將框出比對影像的區域</string>
     <string name="p_ignore_notch">忽略瀏海</string>
+    <string name="p_ignore_notch_summary">若FGO未在您的手機上把瀏海部分空出來，請開啟此選項</string>
     <string name="p_record_screen">螢幕錄影</string>
+    <string name="p_record_screen_summary">將在存放資料的資料夾儲存 \'record.mp4\' 為名的螢幕錄影檔案\n重新命名或複製至其他位置以保留</string>
     <string name="p_root_screenshot">以root截圖</string>
     <string name="p_root_screenshot_summary">對夜神模擬器(Nox with Android 7)有幫助，請在開啟服務前選取此設定</string>
     <string name="p_auto_start_service">自動開啟服務</string>
@@ -170,12 +194,16 @@
     <string name="p_fine_tune_swipes">滑動</string>
     <string name="p_fine_tune_wait_after_swiping">滑動後暫停 (ms)</string>
     <string name="p_fine_tune_swipe_duration">滑動時間 (ms)</string>
+    <string name="p_fine_tune_swipe_multiplier">滑動加乘 (%)</string>
     <string name="p_fine_tune_wait">等待時間</string>
     <string name="p_fine_tune_skill_delay">施放技能後等待時間 (ms)</string>
+    <string name="p_fine_tune_wait_before_turn">回合間等待時間 (ms)</string>
+    <string name="p_fine_tune_wait_before_cards">選擇指令卡前等待時間 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">等待時間加乘 (%)</string>
 
     <string name="p_nav_refill">自動回體</string>
     <string name="p_nav_more_options">更多選項</string>
+    <string name="p_nav_troubleshoot">FGA有問題請先點這</string>
     <string name="p_nav_fine_tune">微調</string>
     <string name="p_nav_battle_config_list">腳本列表</string>
     <string name="p_nav_battle_config_edit">編輯腳本</string>
@@ -187,10 +215,13 @@
     <string name="p_refill_type_sq">聖晶石</string>
 
     <string name="p_brave_chains_don_t_care">無偏好</string>
+    <string name="p_brave_chains_with_np">寶具施放後</string>
     <string name="p_brave_chains_avoid">避免自串EX</string>
 
     <string name="p_boost_item_disabled">關閉</string>
     <string name="p_boost_item_skip">跳過</string>
+    <string name="p_boost_item_number">道具 %d</string>
+
 
     <string name="p_spam_none">無</string>
     <string name="p_spam_spam">能放就放</string>
@@ -204,9 +235,14 @@
     <string name="p_script_mode_battle">戰鬥</string>
     <string name="p_script_mode_lottery">抽箱</string>
     <string name="p_script_mode_friend_gacha">友情點數召喚</string>
-    <string name="p_script_mode_support_img_maker">支援從者圖片截取器</string>
+    <string name="p_script_mode_support_img_maker">支援圖片截取器</string>
+    <string name="p_script_mode_gift_box">禮物盒</string>
+
+    <string name="p_max_gold_ember_set_size">金種火最大領取數</string>
 
     <string name="p_not_set">未設定</string>
+
+    <string name="p_party_number">隊伍 %d</string>
 
     <string name="p_support_class_none">無</string>
     <string name="p_support_class_all">全部職階 (All) </string>
@@ -226,9 +262,17 @@
     <string name="accessibility_disabled_title">無障礙服務已關閉</string>
     <string name="accessibility_disabled_message">請在系統設定中開啟無障礙服務設定，如果已經開啟請關閉後重新開啟。</string>
     <string name="accessibility_disabled_go_to_settings">前往設定</string>
+    <string name="draw_overlay_disabled_title">無法顯示在其他應用程式上層</string>
+    <string name="draw_overlay_disabled_message">請讓此程式顯示在其他應用程式上層。FGA需要啟用此設定以顯示控制按鈕</string>
+    <string name="draw_overlay_disabled_go_to_settings">前往設定</string>
+    <string name="select_script">選擇腳本</string>
+    <string name="other_scripts">抽箱/友情點數召喚/領取禮物盒種火/\n支援圖片截取器</string>
     <string name="cannot_start_recording">無法開啟螢幕錄影</string>
 
-    <string name="script_msg_ap_ran_out">體力用完了</string>
+    <string name="script_msg_ap_ran_out">體力用盡！</string>
+    <string name="stopped_by_user">使用者停止腳本</string>
+    <string name="script_paused">暫停執行腳本</string>
+    <string name="screen_turned_off">腳本因螢幕關閉暫停執行</string>
     <string name="unexpected_error">未知錯誤</string>
     <string name="script_exited">腳本停止</string>
     <string name="inventory_full">背包已滿</string>
@@ -250,4 +294,54 @@
     <string name="avg_time_per_run">平均一場時間: %s</string>
     <string name="turns_count">回合 %d</string>
     <string name="turns_stats">回合: %1$d (最少), %2$d (平均), %3$d (最多)</string>
+    <string name="picked_exp_stacks">已挑選 %d 堆種火</string>
+
+<!--    <string name="p_mats">Materials</string>-->
+<!--    <string name="mats_farmed">Farmed %d material(s)</string>-->
+<!--    <string name="p_mat_limit">Limit by Materials</string>-->
+<!--    <string name="p_mat_limit_count">Count</string>-->
+
+<!--    <string name="mat_proof">Proof of Hero</string>-->
+<!--    <string name="mat_bone">Evil Bone</string>-->
+<!--    <string name="mat_fang">Dragon\'s Fang</string>-->
+<!--    <string name="mat_dust">Void\'s Dust</string>-->
+<!--    <string name="mat_chain">Fool\'s Chain</string>-->
+<!--    <string name="mat_fluid">Mystic Spinal Fluid</string>-->
+<!--    <string name="mat_seed">Seed of Yggdrasil</string>-->
+<!--    <string name="mat_ghost_lantern">Ghost Lantern</string>-->
+<!--    <string name="mat_feather">Phoenix Feather</string>-->
+<!--    <string name="mat_page">Forbidden Page</string>-->
+<!--    <string name="mat_magatama">Refined Magatama</string>-->
+<!--    <string name="mat_giant_ring">Giant\'s Ring</string>-->
+<!--    <string name="mat_claw">Claw of Chaos</string>-->
+<!--    <string name="mat_heart">Heart of the Foreign God</string>-->
+<!--    <string name="mat_spirit_root">Spirit Root</string>-->
+<!--    <string name="mat_scarab">Scarab of Wisdom</string>-->
+<!--    <string name="mat_octuplet">Octuplet Crystal</string>-->
+<!--    <string name="mat_serpent_jewel">Serpent Jewel</string>-->
+<!--    <string name="mat_gear">Eternal Gear</string>-->
+<!--    <string name="mat_homunculus">Homunculus Baby</string>-->
+<!--    <string name="mat_horseshoe">Meteor Horseshoe</string>-->
+<!--    <string name="mat_shell">Shell of Reminiscence</string>-->
+<!--    <string name="mat_scale">Reverse Dragon Scale</string>-->
+<!--    <string name="mat_young_horn">Warhorse\'s Young Horn</string>-->
+<!--    <string name="mat_tear_stone">Tearstone of Blood</string>-->
+<!--    <string name="mat_grease">Black Beast Grease</string>-->
+<!--    <string name="mat_lanugo">Primordial Lanugo</string>-->
+<!--    <string name="mat_gallstone">Cursed Beast Gallstone</string>-->
+<!--    <string name="mat_wine">Mysterious Divine Wine</string>-->
+<!--    <string name="mat_stake">Stake of Wailing Night</string>-->
+<!--    <string name="mat_gunpowder">Mystic Gunpowder</string>-->
+<!--    <string name="mat_medal">Knight\'s Medal</string>-->
+<!--    <string name="mat_lamp_evil_sealing">Lamp of Evil Sealing</string>-->
+<!--    <string name="mat_stinger">Deadly Poisonous Needle</string>-->
+<!--    <string name="mat_eternal_ice">Eternal Ice</string>-->
+<!--    <string name="mat_steel">Aurora Steel</string>-->
+
+<!--    <string name="p_shuffle_cards">Shuffle cards</string>-->
+<!--    <string name="p_shuffle_cards_wave">Wave</string>-->
+<!--    <string name="p_shuffle_cards_when">When</string>-->
+<!--    <string name="p_shuffle_cards_when_none">None</string>-->
+<!--    <string name="p_shuffle_cards_when_no_effective">No effective cards</string>-->
+<!--    <string name="p_shuffle_cards_when_no_np_matching">No cards matching NP</string>-->
 </resources>
