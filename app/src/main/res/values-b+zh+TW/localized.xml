@@ -14,7 +14,7 @@
 
     <string name="support_imgs_extracted">支援圖片擷取成功</string>
     <string name="support_imgs_extract_failed">無法擷取支援圖片</string>
-    <string name="support_img_not_found">支援圖片載入失敗: %1$s 。請將從者圖片放在 %2$s 資料夾</string>
+    <string name="support_img_not_found">支援圖片載入失敗: %1$s ，請將從者圖片放在 %2$s 資料夾</string>
 
     <string name="battle_config_list_no_items">目前沒有腳本，請按右下角的加號新增</string>
     <string name="battle_config_list_import">匯入腳本</string>
@@ -162,7 +162,7 @@
     <string name="p_folder">更改存放支援圖片、掉落截圖等的資料夾位置</string>
 
     <string name="p_choose_folder_title">選擇資料夾</string>
-    <string name="p_choose_folder_message">選擇存放支援、掉落物圖片等的資料夾。\n\n註:有可能需要開啟「顯示內部儲存空間」選項</string>
+    <string name="p_choose_folder_message">選擇存放支援、掉落物圖片等的資料夾\n\n註:有可能需要開啟「顯示內部儲存空間」選項</string>
     <string name="p_choose_folder_not_exist_title">選擇其他資料夾</string>
     <string name="p_choose_folder_not_exist_message">無法讀取資料夾</string>
     <string name="p_choose_folder_action">選擇</string>
@@ -260,10 +260,10 @@
     <string name="notification_stop">停止</string>
 
     <string name="accessibility_disabled_title">無障礙服務已關閉</string>
-    <string name="accessibility_disabled_message">請在系統設定中開啟無障礙服務設定，如果已經開啟請關閉後重新開啟。</string>
+    <string name="accessibility_disabled_message">請在系統設定中開啟無障礙服務設定，如果已經開啟請關閉後重新開啟</string>
     <string name="accessibility_disabled_go_to_settings">前往設定</string>
     <string name="draw_overlay_disabled_title">無法顯示在其他應用程式上層</string>
-    <string name="draw_overlay_disabled_message">請讓此程式顯示在其他應用程式上層。FGA需要啟用此設定以顯示控制按鈕</string>
+    <string name="draw_overlay_disabled_message">請讓此程式顯示在其他應用程式上層，FGA需要啟用此設定以顯示控制按鈕</string>
     <string name="draw_overlay_disabled_go_to_settings">前往設定</string>
     <string name="select_script">選擇腳本</string>
     <string name="other_scripts">抽箱/友情點數召喚/領取禮物盒種火/\n支援圖片截取器</string>
@@ -277,7 +277,7 @@
     <string name="script_exited">腳本停止</string>
     <string name="inventory_full">背包已滿</string>
     <string name="present_box_full">禮物盒已滿</string>
-    <string name="support_img_maker_not_found">無法偵測支援，請到好友選擇畫面或支援選擇畫面再執行。</string>
+    <string name="support_img_maker_not_found">無法偵測支援，請到好友選擇畫面或支援選擇畫面再執行</string>
     <string name="support_selection_manual">已切換至手動選擇支援從者</string>
     <string name="support_selection_friend_not_set">使用「好友支援」時請設定偏好好友</string>
     <string name="support_selection_preferred_not_set">使用「偏好支援」時請設定偏好從者或偏好禮裝</string>
