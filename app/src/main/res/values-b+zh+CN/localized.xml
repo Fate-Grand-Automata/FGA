@@ -456,7 +456,7 @@
 
     <string name="p_storage">储存</string>
 
-    <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
+    <string name="p_folder">改变图片储存文件夹.</string>
 
     <string name="p_choose_folder_title">选择文件夹</string>
 
@@ -528,7 +528,7 @@
 
     <string name="mats_farmed">Farmed %d material(s)</string>
 
-    <string name="p_mat_limit">Limit by Materials</string>
+    <string name="p_mat_limit">通过素材数量限制</string>
 
     <string name="p_mat_limit_count">数量</string>
 
@@ -604,16 +604,16 @@
 
     <string name="mat_steel">Aurora Steel</string>
 
-    <string name="p_shuffle_cards">Shuffle cards</string>
+    <string name="p_shuffle_cards">洗牌</string>
 
-    <string name="p_shuffle_cards_wave">Wave</string>
+    <string name="p_shuffle_cards_wave">波</string>
 
-    <string name="p_shuffle_cards_when">When</string>
+    <string name="p_shuffle_cards_when">当</string>
 
-    <string name="p_shuffle_cards_when_none">None</string>
+    <string name="p_shuffle_cards_when_none">无</string>
 
-    <string name="p_shuffle_cards_when_no_effective">No effective cards</string>
+    <string name="p_shuffle_cards_when_no_effective">无有效的卡</string>
 
-    <string name="p_shuffle_cards_when_no_np_matching">No cards matching NP</string>
+    <string name="p_shuffle_cards_when_no_np_matching">无宝具卡</string>
 
 </resources>
