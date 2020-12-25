@@ -161,11 +161,11 @@
     <string name="p_storage">資料存放位置</string>
     <string name="p_folder">更改存放支援圖片、掉落截圖等的資料夾位置</string>
 
-    <string name="p_choose_folder_title">Choose Folder</string>
-    <string name="p_choose_folder_message">Choose the folder to use to store Support images, drop images, etc.\n\nNOTE: You might have to use \'Show Internal Storage\' in your device\'s file picker.</string>
-    <string name="p_choose_folder_not_exist_title">Choose another folder</string>
-    <string name="p_choose_folder_not_exist_message">Can\'t access the folder used to store Support images, drop images, etc.</string>
-    <string name="p_choose_folder_action">Choose</string>
+    <string name="p_choose_folder_title">選擇資料夾</string>
+    <string name="p_choose_folder_message">選擇存放支援、掉落物圖片等的資料夾。\n\n註:有可能需要開啟「顯示內部儲存空間」選項</string>
+    <string name="p_choose_folder_not_exist_title">選擇其他資料夾</string>
+    <string name="p_choose_folder_not_exist_message">無法讀取資料夾</string>
+    <string name="p_choose_folder_action">選擇</string>
 
     <string name="p_advanced">進階</string>
     <string name="p_debug_mode">除錯模式</string>
@@ -245,7 +245,7 @@
     <string name="p_party_number">隊伍 %d</string>
 
     <string name="p_support_class_none">無</string>
-    <string name="p_support_class_all">全部職階 (All) </string>
+    <string name="p_support_class_all">全部職階 (All)</string>
     <string name="p_support_class_saber">Saber</string>
     <string name="p_support_class_archer">Archer</string>
     <string name="p_support_class_lancer">Lancer</string>
