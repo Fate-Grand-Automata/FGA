@@ -51,7 +51,9 @@ class RootScreenshotService(
             rootLoadMat = Mat(h, w, CvType.CV_8UC4)
         }
 
-        buffer?.let { b -> reader.read(b, 0, b.size) }
+        // "readFully" will wait for the entire data (b.size) to be available in the input stream,
+        // however long it takes (in actuality, it just takes a few milliseconds).
+        buffer?.let { b -> reader.readFully(b, 0, b.size) }
         rootLoadMat?.put(0, 0, buffer)
     }
 
