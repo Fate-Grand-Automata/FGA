@@ -44,6 +44,11 @@ private fun calculateGameAreaWithoutBorders(
     )
 }
 
+// Looks like only wider than 18:9 uses dynamic scaling, rest stays in 16:9
+// Thanks to SeibahMaster from GamePress
+fun Region.isWide() =
+    Width / Height.toDouble() > 18.0 / 9
+
 class FgoGameAreaManager(
     val platformImpl: IPlatformImpl,
     val prefs: IPreferences
@@ -73,10 +78,8 @@ class FgoGameAreaManager(
         is ScaleBy.Height -> CompareBy.Height(imageSize.Height)
     }
 
-    // Looks like only wider than 18:9 uses dynamic scaling, rest stays in 16:9
-    // Thanks to SeibahMaster from GamePress
     val isWide = prefs.gameServer == GameServerEnum.Jp
-            && platformImpl.windowRegion.let { it.Width / it.Height.toDouble() > 18.0 / 9 }
+            && platformImpl.windowRegion.isWide()
 
     override val gameArea
         get() =

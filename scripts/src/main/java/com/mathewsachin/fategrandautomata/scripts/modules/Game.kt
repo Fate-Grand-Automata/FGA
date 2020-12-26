@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
+import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Location
@@ -32,7 +33,6 @@ class Game @Inject constructor(
         val menuStorySkipRegion = Region(2240, 20, 300, 120)
 
         val menuSelectQuestClick = Location(2290, 440)
-        val menuStartQuestClick = Location(2400, 1350)
 
         val menuStorySkipClick = Location(2360, 80)
 
@@ -97,6 +97,9 @@ class Game @Inject constructor(
             gameAreaManager.gameArea.size * (1 / transformationExtensions.scriptToScreenScale())
         )
 
+    val isWide = prefs.gameServer == GameServerEnum.Jp
+            && scriptArea.isWide()
+
     fun Location.xFromCenter() =
         this + Location(scriptArea.center.X, 0)
 
@@ -106,11 +109,21 @@ class Game @Inject constructor(
     fun Location.xFromRight() =
         this + Location(scriptArea.right, 0)
 
+    fun Location.yFromBottom() =
+        this + Location(0, scriptArea.bottom)
+
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
     val continueClick = Location(370, 1120).xFromCenter()
 
     val inventoryFullRegion = Region(-230, 900, 458, 90).xFromCenter()
+
+    val menuStartQuestClick =
+        (if (isWide)
+            Location(-350, -160)
+        else Location(-160, -90))
+            .xFromRight()
+            .yFromBottom()
 
     val menuStorySkipYesClick = Location(320, 1100).xFromCenter()
 
