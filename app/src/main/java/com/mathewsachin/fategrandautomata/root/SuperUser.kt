@@ -56,15 +56,6 @@ class SuperUser : AutoCloseable {
     }
 
     /**
-     * Executes a shell command and waits until it's finished.
-     */
-    fun sendCommand(Command: String) {
-        writeLine(Command)
-
-        waitForCommand()
-    }
-
-    /**
      * Exits the shell, which also terminates the superuser session.
      */
     override fun close() {
