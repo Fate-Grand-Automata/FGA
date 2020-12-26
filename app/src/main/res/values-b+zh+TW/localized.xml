@@ -194,7 +194,7 @@
     <string name="p_fine_tune_swipes">滑動</string>
     <string name="p_fine_tune_wait_after_swiping">滑動後暫停 (ms)</string>
     <string name="p_fine_tune_swipe_duration">滑動時間 (ms)</string>
-    <string name="p_fine_tune_swipe_multiplier">滑動加乘 (%)</string>
+    <string name="p_fine_tune_swipe_multiplier">滑動距離加乘 (%)</string>
     <string name="p_fine_tune_wait">等待時間</string>
     <string name="p_fine_tune_skill_delay">施放技能後等待時間 (ms)</string>
     <string name="p_fine_tune_wait_before_turn">回合間等待時間 (ms)</string>
