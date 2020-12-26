@@ -85,7 +85,7 @@
 
     <PreferenceCategory
         app:key="storage_category"
-        app:title="Storage">
+        app:title="@string/p_storage">
         <Preference
             app:key="@string/pref_nav_storage"
             app:title="@string/p_folder"
