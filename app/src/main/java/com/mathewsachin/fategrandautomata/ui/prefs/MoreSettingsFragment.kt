@@ -57,15 +57,6 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
 
             it.summary = storageProvider.rootDirName
         }
-
-        findPreference<SwitchPreferenceCompat>(getString(R.string.pref_use_root_screenshot))?.let {
-            val canUseRoot = RootScreenshotService.canUseRootForScreenshots()
-            it.isEnabled = canUseRoot
-
-            if (!canUseRoot) {
-                it.isChecked = false
-            }
-        }
     }
 
     private val pickDir = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUrl ->
