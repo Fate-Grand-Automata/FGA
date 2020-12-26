@@ -2,14 +2,15 @@ package com.mathewsachin.fategrandautomata.accessibility
 
 import android.annotation.SuppressLint
 import android.app.Service
-import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
+import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.view.postDelayed
@@ -26,18 +27,19 @@ import kotlin.time.milliseconds
 @ServiceScoped
 class ScriptRunnerUserInterface @Inject constructor(
     val Service: Service,
-    val highlightManager: HighlightManager
+    val highlightManager: HighlightManager,
+    val windowManager: WindowManager
 ) {
-    val overlayType: Int
-        get() {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            } else WindowManager.LayoutParams.TYPE_PHONE
-        }
+    companion object {
+        val overlayType: Int
+            get() {
+                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                } else WindowManager.LayoutParams.TYPE_PHONE
+            }
+    }
 
-    val windowManager = Service.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-    private val metrics: DisplayMetrics
+    val metrics: DisplayMetrics
         get() {
             val res = DisplayMetrics()
 
@@ -99,6 +101,15 @@ class ScriptRunnerUserInterface @Inject constructor(
         val inflater = LayoutInflater.from(Service)
         inflater.inflate(R.layout.script_runner, scriptCtrlBtnLayout)
 
+        scriptCtrlBtnLayout.findViewById<LinearLayout>(R.id.script_ctrl_container).let { container ->
+            val ratio = mediaProjectionMetrics.widthPixels / mediaProjectionMetrics.heightPixels.toDouble()
+
+            // If 17:9 or wider, we have enough space to show PLAY and PAUSE buttons vertically
+            container.orientation = if (ratio > 17 / 9.0) {
+                LinearLayout.VERTICAL
+            } else LinearLayout.HORIZONTAL
+        }
+
         scriptCtrlBtn = scriptCtrlBtnLayout.findViewById<ImageButton>(R.id.script_toggle_btn).also {
             Service.registerScriptCtrlBtnListeners(it)
 
@@ -116,17 +127,27 @@ class ScriptRunnerUserInterface @Inject constructor(
         scriptCtrlBtnLayoutParams.y = maxOf(m.widthPixels, m.heightPixels)
     }
 
+    private var shown = false
+
     fun show() {
-        windowManager.addView(highlightManager.highlightView, highlightLayoutParams)
-        windowManager.addView(scriptCtrlBtnLayout, scriptCtrlBtnLayoutParams)
+        if (!shown && Settings.canDrawOverlays(Service)) {
+            windowManager.addView(highlightManager.highlightView, highlightLayoutParams)
+            windowManager.addView(scriptCtrlBtnLayout, scriptCtrlBtnLayoutParams)
+
+            shown = true
+        }
     }
 
     fun hide() {
-        windowManager.removeView(scriptCtrlBtnLayout)
-        windowManager.removeView(highlightManager.highlightView)
+        if (shown && Settings.canDrawOverlays(Service)) {
+            windowManager.removeView(scriptCtrlBtnLayout)
+            windowManager.removeView(highlightManager.highlightView)
+
+            shown = false
+        }
     }
 
-    var isPauseButtonVisibile
+    var isPauseButtonVisible
         get() = scriptPauseBtn.visibility == View.VISIBLE
         set(value) {
             scriptPauseBtn.post {
@@ -134,6 +155,13 @@ class ScriptRunnerUserInterface @Inject constructor(
             }
         }
 
+    var isPlayButtonEnabled
+        get() = scriptCtrlBtn.isEnabled
+        set(value) {
+            scriptCtrlBtn.post {
+                scriptCtrlBtn.isEnabled = value
+            }
+        }
 
     fun setPlayIcon() {
         scriptCtrlBtn.post {

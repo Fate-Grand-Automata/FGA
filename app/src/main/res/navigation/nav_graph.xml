@@ -14,24 +14,24 @@
         <action
             android:id="@+id/action_mainFragment_to_refillSettingsFragment"
             app:destination="@id/refillSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
         <action
             android:id="@+id/action_mainFragment_to_moreSettingsFragment"
             app:destination="@id/moreSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
         <action
-            android:id="@+id/action_mainFragment_to_autoSkillListFragment"
-            app:destination="@id/autoSkillListFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            android:id="@+id/action_mainFragment_to_battleConfigListFragment"
+            app:destination="@id/battleConfigListFragment"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
     </fragment>
     <fragment
         android:id="@+id/refillSettingsFragment"
@@ -44,65 +44,65 @@
         <action
             android:id="@+id/action_moreSettingsFragment_to_fineTuneSettingsFragment"
             app:destination="@id/fineTuneSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
     </fragment>
     <fragment
         android:id="@+id/fineTuneSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.FineTuneSettingsFragment"
         android:label="@string/p_nav_fine_tune" />
     <fragment
-        android:id="@+id/autoSkillListFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.auto_skill_list.AutoSkillListFragment"
-        android:label="@string/p_nav_auto_skill_list"
-        tools:layout="@layout/autoskill_list">
+        android:id="@+id/battleConfigListFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.battle_config_list.BattleConfigListFragment"
+        android:label="@string/p_nav_battle_config_list"
+        tools:layout="@layout/battle_config_list">
         <action
-            android:id="@+id/action_autoSkillListFragment_to_autoSkillItemSettingsFragment"
-            app:destination="@id/autoSkillItemSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            android:id="@+id/action_battleConfigListFragment_to_battleConfigItemSettingsFragment"
+            app:destination="@id/battleConfigItemSettingsFragment"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
     </fragment>
     <fragment
-        android:id="@+id/autoSkillItemSettingsFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.prefs.AutoSkillItemSettingsFragment"
-        android:label="@string/p_nav_auto_skill_edit">
+        android:id="@+id/battleConfigItemSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.BattleConfigItemSettingsFragment"
+        android:label="@string/p_nav_battle_config_edit">
         <argument
             android:name="key"
             app:argType="string" />
         <action
-            android:id="@+id/action_autoSkillItemSettingsFragment_to_skillLevelSettingsFragment"
-            app:destination="@id/skillLevelSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            android:id="@+id/action_battleConfigItemSettingsFragment_to_preferredSupportSettingsFragment"
+            app:destination="@id/prefSupportSettingsFragment"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
         <action
-            android:id="@+id/action_autoSkillItemSettingsFragment_to_cardPriorityFragment"
+            android:id="@+id/action_battleConfigItemSettingsFragment_to_cardPriorityFragment"
             app:destination="@id/cardPriorityFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
         <action
-            android:id="@+id/action_autoSkillItemSettingsFragment_self"
-            app:destination="@id/autoSkillItemSettingsFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/autoSkillListFragment" />
+            android:id="@+id/action_battleConfigItemSettingsFragment_self"
+            app:destination="@id/battleConfigItemSettingsFragment"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit"
+            app:popUpTo="@id/battleConfigListFragment" />
         <action
-            android:id="@+id/action_autoSkillItemSettingsFragment_to_autoSkillMakerActivity"
-            app:destination="@id/autoSkillMakerActivity" />
+            android:id="@+id/action_battleConfigItemSettingsFragment_to_battleConfigMakerActivity"
+            app:destination="@id/skillMakerActivity" />
     </fragment>
     <fragment
-        android:id="@+id/skillLevelSettingsFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.prefs.SkillLevelSettingsFragment"
-        android:label="@string/p_nav_skill_levels">
+        android:id="@+id/prefSupportSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.PreferredSupportSettingsFragment"
+        android:label="@string/p_support_mode_preferred">
         <argument
             android:name="key"
             app:argType="string" />
@@ -116,9 +116,9 @@
             app:argType="string" />
     </fragment>
     <activity
-        android:id="@+id/autoSkillMakerActivity"
-        android:name="com.mathewsachin.fategrandautomata.ui.auto_skill_maker.AutoSkillMakerActivity"
-        android:label="AutoSkillMakerActivity">
+        android:id="@+id/skillMakerActivity"
+        android:name="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerActivity"
+        android:label="SkillMakerActivity">
         <argument
             android:name="key"
             app:argType="string" />

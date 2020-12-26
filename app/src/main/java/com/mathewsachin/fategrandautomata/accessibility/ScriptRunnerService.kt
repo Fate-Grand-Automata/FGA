@@ -6,14 +6,16 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.media.projection.MediaProjectionManager
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
-import com.mathewsachin.fategrandautomata.StorageDirs
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
@@ -25,15 +27,48 @@ import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
-import mu.KotlinLogging
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import timber.log.debug
+import timber.log.info
+import timber.log.verbose
 import javax.inject.Inject
-
-private val logger = KotlinLogging.logger {}
+import kotlin.time.seconds
 
 @AndroidEntryPoint
 class ScriptRunnerService : AccessibilityService() {
     companion object {
         var Instance: ScriptRunnerService? = null
+            private set
+
+        fun isAccessibilityServiceRunning() = Instance != null
+
+        fun isServiceStarted() =
+            Instance?.serviceState is ServiceState.Started
+
+        private val _serviceStarted = MutableLiveData(isServiceStarted())
+        val serviceStarted: LiveData<Boolean> = _serviceStarted
+
+        fun startService(mediaProjectionToken: Intent? = null): Boolean {
+            return Instance?.let { service ->
+                service.start(mediaProjectionToken).also { success ->
+                    if (success) {
+                        _serviceStarted.value = true
+
+                        val msg = service.getString(R.string.start_service_toast)
+                        service.platformImpl.toast(msg)
+                    }
+                }
+            } ?: false
+        }
+
+        fun stopService(): Boolean {
+            return (Instance?.stop() == true).also {
+                _serviceStarted.value = false
+            }
+        }
     }
 
     @Inject
@@ -46,7 +81,7 @@ class ScriptRunnerService : AccessibilityService() {
     lateinit var mediaProjectionManager: MediaProjectionManager
 
     @Inject
-    lateinit var storageDirs: StorageDirs
+    lateinit var storageProvider: StorageProvider
 
     @Inject
     lateinit var userInterface: ScriptRunnerUserInterface
@@ -63,10 +98,16 @@ class ScriptRunnerService : AccessibilityService() {
     @Inject
     lateinit var scriptComponentBuilder: ScriptComponentBuilder
 
+    @Inject
+    lateinit var alarmManager: AlarmManager
+
+    @Inject
+    lateinit var clipboardManager: ClipboardManager
+
     private val screenOffReceiver = ScreenOffReceiver()
 
     override fun onUnbind(intent: Intent?): Boolean {
-        logger.info("Accessibility Service unbind")
+        Timber.info { "Accessibility Service unbind" }
 
         stop()
 
@@ -82,12 +123,13 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = null
     }
 
-    val wantsMediaProjectionToken: Boolean get() = !prefs.useRootForScreenshots
+    val wantsMediaProjectionToken: Boolean
+        get() = !(RootScreenshotService.canUseRootForScreenshots() && prefs.useRootForScreenshots)
 
     var serviceState: ServiceState = ServiceState.Stopped
         private set
 
-    fun start(MediaProjectionToken: Intent? = null): Boolean {
+    private fun start(MediaProjectionToken: Intent? = null): Boolean {
         if (serviceState is ServiceState.Started) {
             return false
         }
@@ -95,9 +137,11 @@ class ScriptRunnerService : AccessibilityService() {
         val screenshotService = registerScreenshot(MediaProjectionToken)
             ?: return false
 
-        userInterface.show()
-
         serviceState = ServiceState.Started(screenshotService)
+
+        if (isLandscape()) {
+            userInterface.show()
+        }
 
         return true
     }
@@ -110,16 +154,16 @@ class ScriptRunnerService : AccessibilityService() {
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
                     userInterface.mediaProjectionMetrics,
-                    storageDirs
+                    storageProvider
                 )
-            } else RootScreenshotService(SuperUser(), storageDirs, platformImpl)
+            } else RootScreenshotService(SuperUser(), storageProvider, platformImpl)
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             null
         }
     }
 
-    fun stop(): Boolean {
+    private fun stop(): Boolean {
         scriptManager.stopScript()
 
         serviceState.let {
@@ -150,8 +194,8 @@ class ScriptRunnerService : AccessibilityService() {
             restartServiceIntent,
             PendingIntent.FLAG_ONE_SHOT
         )
-        val alarmService = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
-        alarmService.set(
+
+        alarmManager.set(
             AlarmManager.ELAPSED_REALTIME,
             SystemClock.elapsedRealtime() + 1000,
             restartServicePendingIntent
@@ -161,52 +205,52 @@ class ScriptRunnerService : AccessibilityService() {
     }
 
     fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
-        scriptCtrlBtn.setThrottledClickListener {
+        scriptCtrlBtn.setOnClickListener {
             val state = serviceState
 
             if (state is ServiceState.Started) {
                 when (scriptManager.scriptState) {
                     is ScriptState.Started -> scriptManager.stopScript()
                     is ScriptState.Stopped -> {
-                        // Overwrite the server in the preferences with the detected one, if possible
-                        currentFgoServer?.let { server -> prefs.gameServer = server }
-
                         scriptManager.startScript(this, state.screenshotService, scriptComponentBuilder)
+                    }
+                    is ScriptState.Stopping -> {
+                        Timber.debug { "Already stopping ..." }
                     }
                 }
             }
         }
     }
 
-    fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) {
-        scriptPauseBtn.setThrottledClickListener {
-            if (serviceState is ServiceState.Started) {
-                val scriptState = scriptManager.scriptState
-
-                if (scriptState is ScriptState.Started) {
-                    if (scriptState.paused) {
-                        scriptManager.resumeScript()
-                    } else scriptManager.pauseScript()
-                }
-            }
+    fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) =
+        scriptPauseBtn.setOnClickListener {
+            scriptManager.pause(ScriptManager.PauseAction.Toggle)
         }
-    }
 
     override fun onServiceConnected() {
-        logger.info("Accessibility Service bound to system")
+        Timber.info { "Accessibility Service bound to system" }
 
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {
             packageNames = GameServerEnum
                 .values()
-                .map { it.packageName }
+                .flatMap { it.packageNames.toList() }
                 .toTypedArray()
         }
 
         Instance = this
 
         screenOffReceiver.register(this) {
-            scriptManager.stopScript()
+            Timber.verbose { "SCREEN OFF" }
+
+            scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
+                if (success) {
+                    val title = getString(R.string.script_paused)
+                    val msg = getString(R.string.screen_turned_off)
+                    platformImpl.notify(msg)
+                    platformImpl.messageBox(title, msg)
+                }
+            }
         }
 
         super.onServiceConnected()
@@ -214,13 +258,42 @@ class ScriptRunnerService : AccessibilityService() {
 
     override fun onInterrupt() {}
 
-    private var currentFgoServer: GameServerEnum? = null
+    private fun isLandscape() =
+        userInterface.metrics.let { it.widthPixels >= it.heightPixels }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        // Hide overlay in Portrait orientation
+        if (isLandscape()) {
+            Timber.verbose { "LANDSCAPE" }
+
+            if (serviceState is ServiceState.Started) {
+                userInterface.show()
+            }
+        } else {
+            Timber.verbose { "PORTRAIT" }
+
+            userInterface.hide()
+
+            // Pause if script is running
+            GlobalScope.launch {
+                // This delay is to avoid race-condition with screen turn OFF listener
+                delay(1.seconds)
+
+                scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
+                    if (success) {
+                        val msg = getString(R.string.script_paused)
+                        platformImpl.toast(msg)
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * This method is called on any subscribed [AccessibilityEvent] in script_runner_service.xml.
      *
      * When the app in the foreground changes, this method will check if the foreground app is one
-     * of the FGO APKs and will store that information into [currentFgoServer].
+     * of the FGO APKs.
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         when (event?.eventType) {
@@ -228,28 +301,34 @@ class ScriptRunnerService : AccessibilityService() {
                 val foregroundAppName = event.packageName?.toString()
                     ?: return
 
-                GameServerEnum.fromPackageName(foregroundAppName)
-                    ?.let { currentFgoServer = it }
+                GameServerEnum.fromPackageName(foregroundAppName)?.let { server ->
+                    Timber.debug { "Detected FGO: $server" }
+
+                    prefs.gameServer = server
+                }
             }
         }
     }
 
-    fun showMessageBox(Title: String, Message: String, Error: Exception? = null) {
-        ScriptRunnerDialog(userInterface).apply {
+    fun showMessageBox(Title: String, Message: String, Error: Exception?, onDismiss: () -> Unit) {
+        showOverlayDialog(this) {
             setTitle(Title)
-            setMessage(Message)
-            setPositiveButton(getString(android.R.string.ok)) { }
-
-            if (Error != null) {
-                setNeutralButton("Copy") {
-                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
-
-                    clipboard.setPrimaryClip(clipData)
+                .setMessage(Message)
+                .setPositiveButton(android.R.string.ok) { _, _ -> }
+                .setOnDismissListener {
+                    notification.hideMessage()
+                    onDismiss()
                 }
-            }
+                .let {
+                    if (Error != null) {
+                        // TODO: Translate
+                        it.setNeutralButton("Copy") { _, _ ->
+                            val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
 
-            show()
+                            clipboardManager.setPrimaryClip(clipData)
+                        }
+                    }
+                }
         }
     }
 }

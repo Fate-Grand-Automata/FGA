@@ -1,11 +1,19 @@
 package com.mathewsachin.fategrandautomata.util
 
+import androidx.annotation.StringRes
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
+import com.mathewsachin.fategrandautomata.R
 
-class MultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSelectListPreference> {
-    override fun provideSummary(preference: MultiSelectListPreference): CharSequence {
-        return if (preference.values.isNotEmpty()) {
+class SupportMultiSelectSummaryProvider : MultiSelectSummaryProvider(
+    R.string.battle_config_support_any
+)
+
+open class MultiSelectSummaryProvider(
+    @StringRes val noneText: Int = R.string.p_not_set
+) : Preference.SummaryProvider<MultiSelectListPreference> {
+    override fun provideSummary(preference: MultiSelectListPreference) = when {
+        preference.values.isNotEmpty() -> {
             val selectedLabels = preference.values.map {
                 val index = preference.findIndexOfValue(it)
 
@@ -18,6 +26,7 @@ class MultiSelectListSummaryProvider : Preference.SummaryProvider<MultiSelectLis
             }
 
             selectedLabels.joinToString()
-        } else "Any"
+        }
+        else -> preference.context.getString(noneText)
     }
 }

@@ -1,12 +1,12 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.ScriptExitException
 import kotlin.time.seconds
 
-class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
+class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     val state = BattleState()
 
     private lateinit var autoSkill: AutoSkill
@@ -16,6 +16,8 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         autoSkill = AutoSkillModule
         card = CardModule
 
+        state.markStartTime()
+
         resetState()
     }
 
@@ -24,11 +26,11 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         // Don't increment no. of runs if we're just clicking on quest again and again
         // This can happen due to lags introduced during some events
-        if (state.runState.stage != -1) {
+        if (state.stage != -1) {
             state.nextRun()
 
             if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
-                throw ScriptExitException("Ran ${state.runs} time(s)")
+                throw ScriptExitException(messages.timesRan(state.runs))
             }
         }
     }
@@ -36,7 +38,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     fun isIdle() = images.battle in Game.battleScreenRegion
 
     fun clickAttack() {
-        if (state.runState.turnState.hasClickedAttack) {
+        if (state.hasClickedAttack) {
             return
         }
 
@@ -45,10 +47,9 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
         // Wait for Attack button to disappear
         Game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
 
-        // Although it seems slow, make it no shorter than 1 sec to protect user with less processing power devices.
-        2.seconds.wait()
+        prefs.waitBeforeCards.wait()
 
-        state.runState.turnState.hasClickedAttack = true
+        state.hasClickedAttack = true
 
         card.readCommandCards()
     }
@@ -65,9 +66,9 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
 
         0.5.seconds.wait()
 
-        Game.battleExtraInfoWindowCloseClick.click()
+        game.battleExtraInfoWindowCloseClick.click()
 
-        state.runState.stageState.hasChosenTarget = true
+        state.hasChosenTarget = true
     }
 
     private fun autoChooseTarget() {
@@ -81,16 +82,12 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun performBattle() {
-        screenshotManager.useSameSnapIn { onTurnStarted() }
-        2.seconds.wait()
+        useSameSnapIn { onTurnStarted() }
+        prefs.waitBeforeTurn.wait()
 
         autoSkill.execute()
 
         clickAttack()
-
-        if (card.canClickNpCards) {
-            card.clickNpCards()
-        }
 
         card.clickCommandCards()
 
@@ -100,16 +97,16 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     private fun onTurnStarted() {
         checkCurrentStage()
 
-        state.runState.nextTurn()
+        state.nextTurn()
 
-        if (!state.runState.stageState.hasChosenTarget && prefs.autoChooseTarget) {
+        if (!state.hasChosenTarget && prefs.selectedBattleConfig.autoChooseTarget) {
             autoChooseTarget()
         }
     }
 
     private fun checkCurrentStage() {
         if (didStageChange()) {
-            state.runState.nextStage()
+            state.nextStage()
 
             takeStageSnapshot()
         }
@@ -118,7 +115,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     fun didStageChange(): Boolean {
         // Alternative fix for different font of stage count number among different regions, worked pretty damn well tho.
         // This will compare last screenshot with current screen, effectively get to know if stage changed or not.
-        val snapshot = state.runState.stageState.stageCountSnaphot
+        val snapshot = state.stageCountSnaphot
             ?: return true
 
         return !game.battleStageCountRegion.exists(
@@ -128,7 +125,7 @@ class Battle(fgAutomataApi: IFGAutomataApi) : IFGAutomataApi by fgAutomataApi {
     }
 
     fun takeStageSnapshot() {
-        state.runState.stageState.stageCountSnaphot =
+        state.stageCountSnaphot =
             game.battleStageCountRegion.getPattern()
     }
 }

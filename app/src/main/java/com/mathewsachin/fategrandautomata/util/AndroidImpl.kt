@@ -1,9 +1,10 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.app.Service
-import android.content.Context
-import android.os.*
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -17,10 +18,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration
-import kotlin.time.milliseconds
 
 class AndroidImpl @Inject constructor(
     service: Service,
+    val notification: ScriptRunnerNotification,
     val preferences: IPreferences,
     val cutoutManager: CutoutManager,
     val highlightManager: HighlightManager
@@ -40,6 +41,8 @@ class AndroidImpl @Inject constructor(
         }
     }
 
+    override fun notify(message: String) = notification.message(message)
+
     override fun getResizableBlankPattern(): IPattern {
         return DroidCvPattern()
     }
@@ -48,35 +51,18 @@ class AndroidImpl @Inject constructor(
         Handler(Looper.getMainLooper())
     }
 
-    private fun vibrate(Duration: Duration) {
-        val v = service.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(
-                VibrationEffect.createOneShot(
-                    Duration.toLongMilliseconds(),
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
-            )
-        } else {
-            v.vibrate(Duration.toLongMilliseconds())
-        }
-    }
-
-    override fun messageBox(Title: String, Message: String, Error: Exception?) {
+    override fun messageBox(Title: String, Message: String, Error: Exception?, onDismiss: () -> Unit) {
         handler.post {
-            service.showMessageBox(Title, Message, Error)
+            service.showMessageBox(Title, Message, Error, onDismiss)
         }
-
-        vibrate(100.milliseconds)
     }
 
-    override fun highlight(Region: Region, Duration: Duration) {
+    override fun highlight(Region: Region, Duration: Duration, success: Boolean) {
         // We can't draw over the notch area
         val region = Region - cutoutManager.getCutoutAppliedRegion().location
 
         GlobalScope.launch {
-            highlightManager.add(region)
+            highlightManager.add(region, success)
             delay(Duration.toLongMilliseconds())
             highlightManager.remove(region)
         }

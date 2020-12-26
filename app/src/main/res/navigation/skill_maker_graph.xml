@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/skill_maker_graph"
+    app:startDestination="@id/main_skill_maker">
+
+    <fragment
+        android:id="@+id/main_skill_maker"
+        android:name="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerMainFragment"
+        android:label="Main">
+        <action
+            android:id="@+id/action_skillMakerMainFragment_to_skillMakerTargetFragment"
+            app:destination="@id/target_skill_maker"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
+        <action
+            android:id="@+id/action_skillMakerMainFragment_to_skillMakerMasterSkillsFragment"
+            app:destination="@id/master_skills_skill_maker"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
+        <action
+            android:id="@+id/action_skillMakerMainFragment_to_skillMakerAtkFragment"
+            app:destination="@id/atk_skill_maker"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/atk_skill_maker"
+        android:name="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerAtkFragment"
+        android:label="Atk" />
+    <fragment
+        android:id="@+id/master_skills_skill_maker"
+        android:name="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerMasterSkillsFragment"
+        android:label="Master Skills">
+        <action
+            android:id="@+id/action_skillMakerMasterSkillsFragment_to_skillMakerTargetFragment"
+            app:destination="@id/target_skill_maker"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit"
+            app:popUpTo="@id/main_skill_maker" />
+        <action
+            android:id="@+id/action_skillMakerMasterSkillsFragment_to_skillMakerOrderChangeFragment"
+            app:destination="@id/order_change_skill_maker"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit"
+            app:popUpTo="@id/main_skill_maker" />
+    </fragment>
+    <fragment
+        android:id="@+id/order_change_skill_maker"
+        android:name="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerOrderChangeFragment"
+        android:label="Order Change" />
+    <fragment
+        android:id="@+id/target_skill_maker"
+        android:name="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerTargetFragment"
+        android:label="Target">
+        <argument
+            android:name="show_space_ishtar"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_target_skill_maker_to_skillMakerSpaceIshtarFragment"
+            app:destination="@id/space_ishtar_skill_fragment"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit"
+            app:popUpTo="@id/main_skill_maker" />
+        <action
+            android:id="@+id/action_target_skill_maker_to_skillMakerEmiyaFragment"
+            app:destination="@id/emiya_skill_maker"
+            app:enterAnim="@anim/open_enter"
+            app:exitAnim="@anim/open_exit"
+            app:popEnterAnim="@anim/close_enter"
+            app:popExitAnim="@anim/close_exit"
+            app:popUpTo="@id/main_skill_maker" />
+        <argument
+            android:name="show_emiya"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/space_ishtar_skill_fragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerSpaceIshtarFragment"
+        android:label="Space Ishtar" />
+    <fragment
+        android:id="@+id/emiya_skill_maker"
+        android:name="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerEmiyaFragment"
+        android:label="Emiya" />
+</navigation>

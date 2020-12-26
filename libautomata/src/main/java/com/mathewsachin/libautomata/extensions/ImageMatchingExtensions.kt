@@ -27,21 +27,7 @@ class ImageMatchingExtensions @Inject constructor(
         Region: Region,
         Image: IPattern,
         Similarity: Double?
-    ): Boolean {
-        exitManager.checkExitRequested()
-
-        var sshot = screenshotManager.getScreenshot()
-
-        if (platformImpl.prefs.debugMode) {
-            Region.highlight()
-        }
-
-        sshot = sshot.crop(Region.transformToImage())
-
-        val similarity = Similarity ?: platformImpl.prefs.minSimilarity
-
-        return sshot.isMatch(Image, similarity)
-    }
+    ) = Region.findAll(Image, Similarity).any()
 
     /**
      * Repeats the invocation of the Condition until it returns `true` or until the timeout has
@@ -111,17 +97,10 @@ class ImageMatchingExtensions @Inject constructor(
         Pattern: IPattern,
         Similarity: Double?
     ): Sequence<Match> {
-        var sshot = screenshotManager.getScreenshot()
-
-        if (platformImpl.prefs.debugMode) {
-            this.highlight()
-        }
-
-        sshot = sshot.crop(this.transformToImage())
-
         val similarity = Similarity ?: platformImpl.prefs.minSimilarity
 
-        return sshot
+        return screenshotManager.getScreenshot()
+            .crop(this.transformToImage())
             .findMatches(Pattern, similarity)
             .map {
                 exitManager.checkExitRequested()
@@ -132,6 +111,11 @@ class ImageMatchingExtensions @Inject constructor(
                 region += this.location
 
                 Match(region, it.score)
+            }
+            .also {
+                if (platformImpl.prefs.debugMode) {
+                    this.highlight(success = it.any())
+                }
             }
     }
 }

@@ -1,104 +1,96 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        app:key="battle_category"
+        app:title="@string/p_script_mode_battle">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_radio"
+            app:key="@string/pref_skill_conf"
+            app:title="@string/p_skill_confirmation" />
 
-    <ListPreference
-        app:defaultValue="En"
-        app:entries="@array/game_server_labels"
-        app:entryValues="@array/game_server_values"
-        app:icon="@drawable/ic_earth"
-        app:key="@string/pref_gameserver"
-        app:title="@string/p_game_server"
-        app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_fast_forward"
+            app:key="@string/pref_story_skip"
+            app:title="@string/p_story_skip" />
 
-    <ListPreference
-        app:defaultValue="None"
-        app:entries="@array/battle_np_types"
-        app:entryValues="@array/battle_np_types"
-        app:icon="@drawable/ic_star"
-        app:key="@string/pref_battle_np"
-        app:title="@string/p_cast_np"
-        app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_exit_run"
+            app:key="@string/pref_withdraw_enabled"
+            app:title="@string/p_enable_withdraw" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:icon="@drawable/ic_target"
-        app:key="@string/pref_auto_choose_target"
-        app:title="@string/p_auto_choose_target" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_card"
+            app:key="@string/pref_stop_on_ce_drop"
+            app:title="@string/p_stop_on_ce_drop"
+            app:summary="@string/p_experimental" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:icon="@drawable/ic_fast_forward"
-        app:key="@string/pref_story_skip"
-        app:title="@string/p_story_skip" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_card"
+            app:key="@string/pref_stop_on_ce_get"
+            app:title="@string/p_stop_on_ce_get"
+            app:summary="@string/p_stop_on_ce_get_summary" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:icon="@drawable/ic_radio"
-        app:key="@string/pref_skill_conf"
-        app:title="@string/p_skill_confirmation" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_screenshot"
+            app:key="@string/pref_screenshot_drops"
+            app:title="@string/p_screenshot_drops"
+            app:summary="@string/p_screenshot_drops_summary" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:icon="@drawable/ic_exit_run"
-        app:key="@string/pref_withdraw_enabled"
-        app:title="@string/p_enable_withdraw" />
+        <ListPreference
+            app:defaultValue="-1"
+            app:icon="@drawable/ic_boost"
+            app:key="@string/pref_boost_item"
+            app:title="@string/p_boost_item"
+            app:useSimpleSummaryProvider="true" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:icon="@drawable/ic_card"
-        app:key="@string/pref_stop_on_ce_drop"
-        app:title="@string/p_stop_on_ce_drop"
-        app:summary="@string/p_experimental" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_wand"
+            app:key="@string/pref_battle_config_cmd_text"
+            app:title="@string/p_battle_config_cmd_text"
+            app:summary="@string/p_battle_config_cmd_text_summary" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:icon="@drawable/ic_card"
-        app:key="@string/pref_stop_on_ce_get"
-        app:title="@string/p_stop_on_ce_get"
-        app:summary="@string/p_stop_on_ce_get_summary" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_time"
+            app:key="@string/pref_wait_ap_regen"
+            app:title="@string/p_wait_ap_regen_text"
+            app:summary="@string/p_wait_ap_regen_text_summary" />
 
-    <SwitchPreferenceCompat
-        app:defaultValue="false"
-        app:icon="@drawable/ic_screenshot"
-        app:key="@string/pref_screenshot_drops"
-        app:title="@string/p_screenshot_drops"
-        app:summary="@string/p_experimental" />
+        <!--    <SwitchPreferenceCompat-->
+        <!--        app:defaultValue="false"-->
+        <!--        app:key="@string/pref_guda_final"-->
+        <!--        app:summary="Support for the new rewards screen on JP"-->
+        <!--        app:title="GudaGuda Final Rerun" />-->
+    </PreferenceCategory>
 
-    <SwitchPreferenceCompat
-        app:defaultValue="true"
-        app:icon="@drawable/ic_friend"
-        app:key="@string/pref_friend_pts"
-        app:title="@string/p_friend_summon_only" />
+    <PreferenceCategory
+        app:key="gift_box_category"
+        app:title="@string/p_script_mode_gift_box">
+        <SeekBarPreference
+            android:max="4"
+            app:icon="@drawable/ic_refresh"
+            app:key="@string/pref_max_gold_ember_set_size"
+            app:min="0"
+            app:defaultValue="1"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:title="@string/p_max_gold_ember_set_size" />
+    </PreferenceCategory>
 
-    <ListPreference
-        app:defaultValue="-1"
-        app:entries="@array/boost_item_labels"
-        app:entryValues="@array/boost_item_values"
-        app:icon="@drawable/ic_boost"
-        app:key="@string/pref_boost_item"
-        app:title="@string/p_boost_item"
-        app:useSimpleSummaryProvider="true" />
-
-    <ListPreference
-        app:defaultValue="None"
-        app:entries="@array/brave_chain_labels"
-        app:entryValues="@array/brave_chain_values"
-        app:icon="@drawable/ic_crown"
-        app:key="@string/pref_brave_chains"
-        app:title="@string/p_brave_chains"
-        app:useSimpleSummaryProvider="true" />
-
-    <SwitchPreferenceCompat
-        app:icon="@drawable/ic_card"
-        app:key="@string/pref_rearrange_cards"
-        app:title="@string/p_rearrange_cards"
-        app:summary="@string/p_experimental" />
-
-    <!--    <SwitchPreferenceCompat-->
-    <!--        app:defaultValue="false"-->
-    <!--        app:key="@string/pref_guda_final"-->
-    <!--        app:summary="Support for the new rewards screen on JP"-->
-    <!--        app:title="GudaGuda Final Rerun" />-->
+    <PreferenceCategory
+        app:key="storage_category"
+        app:title="@string/p_storage">
+        <Preference
+            app:key="@string/pref_nav_storage"
+            app:title="@string/p_folder"
+            app:icon="@drawable/ic_folder_edit" />
+    </PreferenceCategory>
 
     <PreferenceCategory
         app:key="app_category"
@@ -141,12 +133,5 @@
             app:icon="@drawable/ic_launch"
             app:key="@string/pref_auto_start_service"
             app:title="@string/p_auto_start_service" />
-
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_pause"
-            app:key="@string/pref_can_pause_script"
-            app:summary="@string/p_experimental"
-            app:title="@string/p_allow_pause_script" />
     </PreferenceCategory>
 </PreferenceScreen>

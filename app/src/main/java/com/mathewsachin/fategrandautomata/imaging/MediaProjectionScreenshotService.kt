@@ -6,7 +6,7 @@ import android.media.Image
 import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.util.DisplayMetrics
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.libautomata.IColorScreenshotProvider
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IScreenshotService
@@ -20,7 +20,7 @@ import org.opencv.imgproc.Imgproc
 class MediaProjectionScreenshotService(
     private val MediaProjection: MediaProjection,
     private val DisplayMetrics: DisplayMetrics,
-    private val storageDirs: StorageDirs
+    private val storageProvider: StorageProvider,
 ) : IScreenshotService, IColorScreenshotProvider {
     private val colorCorrectedMat = Mat()
 
@@ -45,8 +45,8 @@ class MediaProjectionScreenshotService(
 
     override fun takeScreenshot(): IPattern {
         imageReader.acquireLatestImage()?.use { img ->
-            DisposableMat(img.toMat()).use {
-                Imgproc.cvtColor(it.Mat, colorCorrectedMat, Imgproc.COLOR_BGRA2GRAY)
+            img.toMat().use {
+                Imgproc.cvtColor(it, colorCorrectedMat, Imgproc.COLOR_BGRA2GRAY)
             }
         }
 
@@ -65,13 +65,13 @@ class MediaProjectionScreenshotService(
 
     override fun takeColorScreenshot(): IPattern =
         imageReader.acquireLatestImage()?.use { img ->
-            DisposableMat(img.toMat()).use {
+            img.toMat().use {
                 val mat = Mat()
-                Imgproc.cvtColor(it.Mat, mat, Imgproc.COLOR_RGBA2BGR)
+                Imgproc.cvtColor(it, mat, Imgproc.COLOR_RGBA2BGR)
 
                 DroidCvPattern(mat)
             }
-        } ?: pattern
+        } ?: pattern.copy()
 
     override fun close() {
         colorCorrectedMat.release()
@@ -86,5 +86,5 @@ class MediaProjectionScreenshotService(
     }
 
     override fun startRecording() =
-        MediaProjectionRecording(MediaProjection, DisplayMetrics, storageDirs)
+        MediaProjectionRecording(MediaProjection, DisplayMetrics, storageProvider)
 }

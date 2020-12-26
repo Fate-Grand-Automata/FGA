@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerViewModel" />
+
+        <variable
+            name="ui"
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerAtkFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/skill_maker_view_atk"
+        style="@style/skill_maker_view">
+
+        <TextView
+            android:id="@+id/atk_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_maker_atk_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/np_4"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:backgroundTint="@{vm.npSequence.contains('4') ? @color/colorServant1 : @color/button_material}"
+            android:onClick="@{(v) -> vm.onNpClick('4')}"
+            android:text="@{@string/skill_maker_atk_servant_np(1)}"
+            android:textColor="@{vm.npSequence.contains('4') ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintBottom_toTopOf="@id/skill_maker_next_turn_btn"
+            app:layout_constraintEnd_toStartOf="@+id/np_5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/atk_label" />
+
+        <Button
+            android:id="@+id/np_5"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:backgroundTint="@{vm.npSequence.contains('5') ? @color/colorServant2 : @color/button_material}"
+            android:onClick="@{(v) -> vm.onNpClick('5')}"
+            android:text="@{@string/skill_maker_atk_servant_np(2)}"
+            android:textColor="@{vm.npSequence.contains('5') ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintEnd_toStartOf="@+id/np_6"
+            app:layout_constraintStart_toEndOf="@+id/np_4"
+            app:layout_constraintTop_toTopOf="@+id/np_4" />
+
+        <Button
+            android:id="@+id/np_6"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:backgroundTint="@{vm.npSequence.contains('6') ? @color/colorServant3 : @color/button_material}"
+            android:onClick="@{(v) -> vm.onNpClick('6')}"
+            android:text="@{@string/skill_maker_atk_servant_np(3)}"
+            android:textColor="@{vm.npSequence.contains('6') ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/np_5"
+            app:layout_constraintTop_toTopOf="@+id/np_4" />
+
+        <TextView
+            android:id="@+id/cards_before_np_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_maker_atk_cards_before_np"
+            app:layout_constraintBottom_toTopOf="@id/cards_before_np_0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/cards_before_np_0"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@{vm.cardsBeforeNp == 0 ? @color/colorAccent : @color/button_material}"
+            android:onClick="@{(v) -> vm.setCardsBeforeNp(0)}"
+            android:text="@string/count_0"
+            android:textColor="@{vm.cardsBeforeNp == 0 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/cards_before_np_1"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@{vm.cardsBeforeNp == 1 ? @color/colorAccent : @color/button_material}"
+            android:onClick="@{(v) -> vm.setCardsBeforeNp(1)}"
+            android:text="@string/count_1"
+            android:textColor="@{vm.cardsBeforeNp == 1 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cards_before_np_0" />
+
+        <Button
+            android:id="@+id/cards_before_np_2"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@{vm.cardsBeforeNp == 2 ? @color/colorAccent : @color/button_material}"
+            android:onClick="@{(v) -> vm.setCardsBeforeNp(2)}"
+            android:text="@string/count_2"
+            android:textColor="@{vm.cardsBeforeNp == 2 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cards_before_np_1" />
+
+        <Button
+            android:id="@+id/skill_maker_next_battle_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_fast_forward"
+            android:onClick="@{(v) -> ui.goToNextStage()}"
+            android:text="@string/skill_maker_atk_next_wave"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/skill_maker_next_turn_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:alpha="0.8"
+            android:onClick="@{(v) -> ui.goToNextTurn()}"
+            android:text="@string/skill_maker_atk_next_turn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/skill_maker_next_battle_btn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

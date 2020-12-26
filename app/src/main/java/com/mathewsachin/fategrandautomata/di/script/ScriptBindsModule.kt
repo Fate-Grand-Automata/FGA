@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.fategrandautomata.accessibility.AccessibilityGestures
-import com.mathewsachin.fategrandautomata.scripts.FGAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.FgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.*
@@ -15,7 +15,7 @@ import dagger.hilt.InstallIn
 interface ScriptBindsModule {
     @ScriptScope
     @Binds
-    fun bindFgAutomataApi(fgAutomataApi: FGAutomataApi): IFGAutomataApi
+    fun bindFgAutomataApi(fgoAutomataApi: FgoAutomataApi): IFgoAutomataApi
 
     @ScriptScope
     @Binds

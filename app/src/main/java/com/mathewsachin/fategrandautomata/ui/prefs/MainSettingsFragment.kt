@@ -2,56 +2,69 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
-import com.mathewsachin.fategrandautomata.ui.UpdateCheckViewModel
-import com.mathewsachin.fategrandautomata.util.UpdateCheckResult
+import com.mathewsachin.fategrandautomata.util.StorageProvider
+import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import mu.KotlinLogging
-import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
-
-private val logger = KotlinLogging.logger {}
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainSettingsFragment : PreferenceFragmentCompat() {
+    @Inject
+    lateinit var storageProvider: StorageProvider
+
+    val vm: MainSettingsViewModel by activityViewModels()
+
+    fun goToBattleConfigList() {
+        val action = MainFragmentDirections
+            .actionMainFragmentToBattleConfigListFragment()
+
+        nav(action)
+    }
+
+    private val pickDir = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUrl ->
+        if (dirUrl != null) {
+            storageProvider.setRoot(dirUrl)
+
+            goToBattleConfigList()
+        }
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main_preferences, rootKey)
 
-        findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_refill))?.let {
             it.setOnPreferenceClickListener {
                 val action = MainFragmentDirections
                     .actionMainFragmentToRefillSettingsFragment()
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }
         }
 
-        findPreference<Preference>(getString(prefKeys.pref_nav_auto_skill))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_battle_config))?.let {
             it.setOnPreferenceClickListener {
-                val action = MainFragmentDirections
-                    .actionMainFragmentToAutoSkillListFragment()
-
-                findNavController().navigate(action)
+                if (vm.ensureRootDir(pickDir, requireContext())) {
+                    goToBattleConfigList()
+                }
 
                 true
             }
         }
 
-        findPreference<Preference>(getString(prefKeys.pref_nav_more))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_more))?.let {
             it.setOnPreferenceClickListener {
                 val action = MainFragmentDirections
                     .actionMainFragmentToMoreSettingsFragment()
 
-                findNavController().navigate(action)
+                nav(action)
 
                 true
             }
@@ -61,39 +74,9 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vm: MainSettingsViewModel by activityViewModels()
-
-        findPreference<Preference>(getString(prefKeys.pref_nav_refill))?.let {
+        findPreference<Preference>(getString(R.string.pref_nav_refill))?.let {
             vm.refillMessage.observe(viewLifecycleOwner) { msg ->
                 it.summary = msg
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val updateCheckViewModel: UpdateCheckViewModel by activityViewModels()
-
-        lifecycleScope.launch {
-            checkForUpdates(updateCheckViewModel)
-        }
-    }
-
-
-    suspend fun checkForUpdates(updateCheckViewModel: UpdateCheckViewModel) {
-        when (val result = updateCheckViewModel.check()) {
-            is UpdateCheckResult.Available -> {
-                findPreference<Preference>(getString(R.string.pref_nav_update))?.let {
-                    it.isVisible = true
-                    it.summary = result.version
-                }
-            }
-            is UpdateCheckResult.Failed -> {
-                logger.error(
-                    "Update check failed",
-                    result.e
-                )
             }
         }
     }

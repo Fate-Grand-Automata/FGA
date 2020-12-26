@@ -10,6 +10,12 @@
             app:key="@string/pref_refill_enabled"
             app:title="@string/p_enable_refill" />
 
+        <MultiSelectListPreference
+            app:dependency="@string/pref_refill_enabled"
+            app:icon="@drawable/ic_apple"
+            app:key="@string/pref_refill_resource"
+            app:title="@string/p_resource" />
+
         <EditTextPreference
             app:defaultValue="0"
             app:dependency="@string/pref_refill_enabled"
@@ -25,16 +31,6 @@
             app:dependency="@string/pref_refill_enabled"
             app:title="@string/p_auto_decrement"
             app:summary="@string/p_auto_decrement_summary" />
-
-        <ListPreference
-            app:defaultValue="AllApples"
-            app:dependency="@string/pref_refill_enabled"
-            app:entries="@array/refill_type_labels"
-            app:entryValues="@array/refill_type_values"
-            app:icon="@drawable/ic_apple"
-            app:key="@string/pref_refill_resource"
-            app:title="@string/p_resource"
-            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -52,6 +48,24 @@
             app:icon="@drawable/ic_repeat"
             app:key="@string/pref_limit_runs"
             app:title="@string/p_runs"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="mat_limit_category"
+        app:title="@string/p_mats">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_check"
+            app:key="@string/pref_should_limit_mats"
+            app:title="@string/p_mat_limit" />
+
+        <EditTextPreference
+            app:defaultValue="1"
+            app:dependency="@string/pref_should_limit_mats"
+            app:icon="@drawable/ic_repeat"
+            app:key="@string/pref_limit_mats"
+            app:title="@string/p_mat_limit_count"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 </PreferenceScreen>

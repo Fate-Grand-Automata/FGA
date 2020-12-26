@@ -9,13 +9,13 @@ import javax.inject.Singleton
 
 @Singleton
 class HighlightManager @Inject constructor(@ApplicationContext context: Context) {
-    private val regionsToHighlight = mutableSetOf<Region>()
+    private val regionsToHighlight = mutableMapOf<Region, Boolean>()
 
     val highlightView: View by lazy { HighlightView(context, regionsToHighlight) }
 
-    fun add(Region: Region) {
+    fun add(Region: Region, success: Boolean) {
         highlightView.post {
-            regionsToHighlight.add(Region)
+            regionsToHighlight[Region] = success
 
             highlightView.invalidate()
         }

@@ -1,57 +1,36 @@
 package com.mathewsachin.fategrandautomata.imaging
 
+import android.graphics.Bitmap
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Match
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
-import mu.KotlinLogging
 import org.opencv.core.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
+import timber.log.Timber
+import timber.log.debug
+import timber.log.verbose
 import java.io.InputStream
+import java.io.OutputStream
 import kotlin.math.roundToInt
 import org.opencv.core.Size as CvSize
-
-private val logger = KotlinLogging.logger {}
 
 class DroidCvPattern(
     private var Mat: Mat? = Mat(),
     private val OwnsMat: Boolean = true
 ) : IPattern {
-    private data class MatWithAlpha(val mat: Mat, val alpha: Mat?)
-
-    var alpha: Mat? = null
-
     private companion object {
-        fun makeMat(Stream: InputStream): MatWithAlpha {
+        fun makeMat(Stream: InputStream): Mat {
             val byteArray = Stream.readBytes()
-            DisposableMat(MatOfByte(*byteArray)).use {
-                val decoded = Imgcodecs.imdecode(it.Mat, Imgcodecs.IMREAD_UNCHANGED)
-                var alphaChannel: Mat? = null
 
-                // Change color images to grayscale and extract alpha if present
-                when (decoded.channels()) {
-                    4 -> {
-                        // RGBA
-                        alphaChannel =
-                            Mat().apply { Core.extractChannel(decoded, this, 3) }
-                        Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGBA2GRAY)
-                    }
-                    3 -> Imgproc.cvtColor(decoded, decoded, Imgproc.COLOR_RGB2GRAY)
-                }
-
-                return MatWithAlpha(decoded, alphaChannel)
+            return MatOfByte(*byteArray).use {
+                Imgcodecs.imdecode(it, Imgcodecs.IMREAD_GRAYSCALE)
             }
         }
     }
 
-    private constructor(matWithAlpha: MatWithAlpha) : this(matWithAlpha.mat) {
-        alpha = matWithAlpha.alpha
-    }
-
-    constructor(Stream: InputStream, tag: String) : this(makeMat(Stream)) {
-        this.tag = tag
-    }
+    constructor(Stream: InputStream) : this(makeMat(Stream))
 
     init {
         require(Mat != null) { "Mat should not be null" }
@@ -81,57 +60,34 @@ class DroidCvPattern(
     override fun resize(Size: Size): IPattern {
         val result = Mat()
         resize(result, Size)
-        return DroidCvPattern(result)
+        return DroidCvPattern(result).tag(tag)
     }
 
     override fun resize(Target: IPattern, Size: Size) {
         if (Target is DroidCvPattern) {
             resize(Target.Mat!!, Size)
-            Target.tag = tag
         }
+
+        Target.tag(tag)
     }
 
-    private fun match(Template: IPattern): DisposableMat {
+    private fun match(Template: IPattern): Mat {
+        val result = Mat()
+
         if (Template is DroidCvPattern) {
-            val result = DisposableMat()
-
             if (Template.width <= width && Template.height <= height) {
-                if (alpha != null) {
-                    Imgproc.matchTemplate(
-                        Mat,
-                        Template.Mat,
-                        result.Mat,
-                        Imgproc.TM_CCOEFF_NORMED,
-                        alpha
-                    )
-                } else {
-                    Imgproc.matchTemplate(
-                        Mat,
-                        Template.Mat,
-                        result.Mat,
-                        Imgproc.TM_CCOEFF_NORMED
-                    )
-                }
+                Imgproc.matchTemplate(
+                    Mat,
+                    Template.Mat,
+                    result,
+                    Imgproc.TM_CCOEFF_NORMED
+                )
             } else {
-                logger.debug { "Skipped matching $Template: Region out of bounds" }
+                Timber.verbose { "Skipped matching $Template: Region out of bounds" }
             }
-
-            return result
         }
 
-        return DisposableMat()
-    }
-
-    override fun isMatch(Template: IPattern, Similarity: Double): Boolean {
-        match(Template).use {
-            val minMaxLocResult = Core.minMaxLoc(it.Mat)
-
-            val score = minMaxLocResult.maxVal
-
-            logger.debug { "Matched $Template with a score of $score" }
-
-            return score >= Similarity
-        }
+        return result
     }
 
     override fun findMatches(Template: IPattern, Similarity: Double) = sequence {
@@ -139,7 +95,7 @@ class DroidCvPattern(
 
         result.use {
             while (true) {
-                val minMaxLocResult = Core.minMaxLoc(it.Mat)
+                val minMaxLocResult = Core.minMaxLoc(it)
                 val score = minMaxLocResult.maxVal
 
                 if (score >= Similarity) {
@@ -153,22 +109,21 @@ class DroidCvPattern(
 
                     val match = Match(region, score)
 
-                    logger.debug { "Matched $Template with a score of ${match.score}" }
+                    Timber.debug { "Matched $Template with a score of ${match.score}" }
                     yield(match)
 
-                    val mask = DisposableMat()
-                    mask.use {
+                    Mat().use { mask ->
                         // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
                         val floodFillDiff = 0.3
                         Imgproc.floodFill(
-                            result.Mat, mask.Mat, loc, Scalar(0.0),
+                            result, mask, loc, Scalar(0.0),
                             Rect(),
                             Scalar(floodFillDiff), Scalar(floodFillDiff),
                             Imgproc.FLOODFILL_FIXED_RANGE
                         )
                     }
                 } else {
-                    logger.debug { "Stopped matching $Template at score ($score) < similarity ($Similarity)" }
+                    Timber.verbose { "Stopped matching $Template at score ($score) < similarity ($Similarity)" }
                     break
                 }
             }
@@ -186,14 +141,31 @@ class DroidCvPattern(
 
         val result = Mat(Mat, rect)
 
-        return DroidCvPattern(result).also { it.tag = tag }
+        return DroidCvPattern(result).tag(tag)
     }
 
-    override fun save(FileName: String) {
-        Imgcodecs.imwrite(FileName, Mat)
+    fun asBitmap(): Bitmap {
+        val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+
+        Mat().use {
+            val conversion = if (Mat?.type() == CvType.CV_8UC1)
+                Imgproc.COLOR_GRAY2BGRA
+            else Imgproc.COLOR_BGR2RGBA
+
+            Imgproc.cvtColor(Mat, it, conversion)
+            org.opencv.android.Utils.matToBitmap(it, bmp)
+        }
+
+        return bmp
     }
 
-    override fun copy() = DroidCvPattern(Mat?.clone()).also {
-        it.tag = tag
+    override fun save(stream: OutputStream) {
+        asBitmap().use { bmp ->
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, stream)
+        }
     }
+
+    override fun copy() = DroidCvPattern(Mat?.clone()).tag(tag)
+
+    override fun tag(tag: String) = apply { this.tag = tag }
 }

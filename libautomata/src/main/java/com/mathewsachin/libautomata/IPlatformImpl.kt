@@ -12,6 +12,8 @@ interface IPlatformImpl {
      */
     fun toast(Message: String)
 
+    fun notify(message: String)
+
     /**
      * Creates a new [IPattern] without any image data.
      */
@@ -20,7 +22,7 @@ interface IPlatformImpl {
     /**
      * Shows a message box with the given title and message.
      */
-    fun messageBox(Title: String, Message: String, Error: Exception? = null)
+    fun messageBox(Title: String, Message: String, Error: Exception? = null, onDismiss: () -> Unit = { })
 
     /**
      * Adds borders around the given [Region].
@@ -28,5 +30,5 @@ interface IPlatformImpl {
      * @param Region a [Region] on the screen
      * @param Duration how long the borders should be displayed
      */
-    fun highlight(Region: Region, Duration: Duration)
+    fun highlight(Region: Region, Duration: Duration, success: Boolean)
 }

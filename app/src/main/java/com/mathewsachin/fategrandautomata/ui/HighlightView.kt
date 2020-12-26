@@ -9,10 +9,16 @@ import com.mathewsachin.libautomata.Region
 
 class HighlightView(
     Context: Context,
-    val regionsToHighlight: Set<Region>
+    val regionsToHighlight: Map<Region, Boolean>
 ) : View(Context) {
-    private val paint = Paint().apply {
+    private val red = Paint().apply {
         color = Color.RED
+        strokeWidth = 5f
+        style = Paint.Style.STROKE
+    }
+
+    private val green = Paint().apply {
+        color = Color.GREEN
         strokeWidth = 5f
         style = Paint.Style.STROKE
     }
@@ -20,13 +26,13 @@ class HighlightView(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        for (region in regionsToHighlight) {
+        for ((region, success) in regionsToHighlight) {
             canvas?.drawRect(
                 region.X.toFloat(),
                 region.Y.toFloat(),
                 region.right.toFloat(),
                 region.bottom.toFloat(),
-                paint
+                if (success) green else red
             )
         }
     }

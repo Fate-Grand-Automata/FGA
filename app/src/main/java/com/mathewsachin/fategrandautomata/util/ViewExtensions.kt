@@ -1,22 +1,19 @@
 package com.mathewsachin.fategrandautomata.util
 
-import android.view.View
+import android.content.Context
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 
-fun View.setThrottledClickListener(Listener: () -> Unit) {
-    var isWorking = false
+fun Context.dayNightThemed() = ContextThemeWrapper(this, androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog)
 
-    setOnClickListener {
-        if (isWorking) {
-            return@setOnClickListener
-        }
+fun showOverlayDialog(context: Context, builder: AlertDialog.Builder.() -> Unit): AlertDialog {
+    val alertDialog = AlertDialog.Builder(context.dayNightThemed())
+        .apply(builder)
+        .create()
 
-        isWorking = true
+    alertDialog.window?.setType(ScriptRunnerUserInterface.overlayType)
+    alertDialog.show()
 
-        try {
-            Listener()
-        }
-        finally {
-            isWorking = false
-        }
-    }
+    return alertDialog
 }

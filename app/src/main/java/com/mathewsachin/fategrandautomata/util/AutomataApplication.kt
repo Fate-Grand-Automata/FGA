@@ -1,12 +1,12 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.app.Application
-import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.mathewsachin.fategrandautomata.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import org.opencv.android.OpenCVLoader
-import org.slf4j.impl.HandroidLoggerAdapter
+import timber.log.LogcatTree
+import timber.log.Timber
 
 @HiltAndroidApp
 class AutomataApplication : Application() {
@@ -25,8 +25,12 @@ class AutomataApplication : Application() {
     }
 
     private fun initLogging() {
-        HandroidLoggerAdapter.DEBUG = BuildConfig.DEBUG
-        HandroidLoggerAdapter.ANDROID_API_LEVEL = Build.VERSION.SDK_INT
-        HandroidLoggerAdapter.APP_NAME = "FGA"
+        val tree = LogcatTree("FGA").let {
+            if (BuildConfig.DEBUG)
+                it
+            else it.withCompliantLogging()
+        }
+
+        Timber.plant(tree)
     }
 }

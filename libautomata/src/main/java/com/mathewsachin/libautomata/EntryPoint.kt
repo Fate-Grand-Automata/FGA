@@ -5,10 +5,7 @@ import kotlin.concurrent.thread
 /**
  * Basic class for all "script modes", such as Battle, Lottery and Summoning.
  */
-abstract class EntryPoint(
-    val exitManager: ExitManager,
-    val platformImpl: IPlatformImpl
-) {
+abstract class EntryPoint(val exitManager: ExitManager) {
     /**
      * Starts the logic of the script mode in a new thread.
      */
@@ -26,27 +23,10 @@ abstract class EntryPoint(
     private fun scriptRunner() {
         try {
             script()
-        } catch (e: ScriptAbortException) {
-            // Script stopped by user
-        } catch (e: ScriptExitException) {
+        } catch (e: Exception) {
             scriptExitListener.invoke(e)
 
-            // Show the message box only if there is some message
-            if (!e.message.isBlank()) {
-                platformImpl.messageBox("Script Exited", e.message)
-            }
-        } catch (e: Exception) {
-            println(e.messageAndStackTrace)
-
-            scriptExitListener.invoke(e)
-
-            platformImpl.messageBox("Unexpected Error", e.messageAndStackTrace, e)
-        }
-
-        try {
-            postActions()
-        } catch (e: Exception) {
-            platformImpl.messageBox("Error", e.messageAndStackTrace, e)
+            scriptExitListener = { }
         }
     }
 
@@ -59,13 +39,11 @@ abstract class EntryPoint(
      * @throws ScriptAbortException when the user stopped the script
      * @throws ScriptExitException when an exit condition was reached
      */
-    protected abstract fun script(): Nothing
-
-    protected open fun postActions() {}
+    abstract fun script(): Nothing
 
     /**
      * A listener function, which is called when the script detected an exit condition or when an
      * unexpected error occurred.
      */
-    var scriptExitListener: (Exception?) -> Unit = { }
+    var scriptExitListener: (Exception) -> Unit = { }
 }

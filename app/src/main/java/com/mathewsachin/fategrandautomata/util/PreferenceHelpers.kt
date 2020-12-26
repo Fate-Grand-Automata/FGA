@@ -1,12 +1,17 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.text.InputType
+import android.widget.Toast
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
-import androidx.preference.PreferenceFragmentCompat
-import com.mathewsachin.fategrandautomata.StorageDirs
+import com.mathewsachin.fategrandautomata.IStorageProvider
+import com.mathewsachin.fategrandautomata.SupportImageKind
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+import timber.log.error
 import java.io.File
-import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 fun EditTextPreference.makeNumeric() {
     setOnBindEditTextListener {
@@ -14,63 +19,57 @@ fun EditTextPreference.makeNumeric() {
     }
 }
 
-fun PreferenceFragmentCompat.findServantList() =
-    findPreference<MultiSelectListPreference>(getString(prefKeys.pref_support_pref_servant))
-
-fun PreferenceFragmentCompat.findCeList() =
-    findPreference<MultiSelectListPreference>(getString(prefKeys.pref_support_pref_ce))
-
-fun PreferenceFragmentCompat.findFriendNamesList() =
-    findPreference<MultiSelectListPreference>(getString(prefKeys.pref_support_friend_names))
-
-fun PreferenceFragmentCompat.preferredSupportOnCreate() {
-    val servants = findServantList() ?: return
-    servants.summaryProvider = MultiSelectListSummaryProvider()
-
-    val ces = findCeList() ?: return
-    ces.summaryProvider = MultiSelectListSummaryProvider()
-
-    findFriendNamesList()?.apply {
-        summaryProvider = MultiSelectListSummaryProvider()
+fun EditTextPreference.makeMultiLine() {
+    setOnBindEditTextListener {
+        it.isSingleLine = false
     }
 }
 
-private fun MultiSelectListPreference.populateFriendOrCe(ImgFolder: File) {
-    val entries = ImgFolder.listFiles()
-        .filter { it.isFile }
-        .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
+suspend fun MultiSelectListPreference.populateFriendOrCe(storageProvider: IStorageProvider, kind: SupportImageKind) {
+    val entries = try {
+        withContext(Dispatchers.IO) {
+            storageProvider.list(kind)
+                .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
+        }
+    } catch (e: Exception) {
+        val msg = "Couldn't access Support images"
+
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        Timber.error(e) { msg }
+
+        emptyList()
+    }
 
     // actual values
     this.entryValues = entries
-        .map { it.name }
         .toTypedArray()
 
     // labels
     this.entries = entries
-        .map { it.nameWithoutExtension }
+        .map { File(it).nameWithoutExtension }
         .toTypedArray()
 }
 
-fun PreferenceFragmentCompat.preferredSupportOnResume(storageDirs: StorageDirs) {
-    val servants = findServantList() ?: return
-    val ces = findCeList() ?: return
-    val friendNames = findFriendNamesList() ?: return
+inline fun <reified T : Enum<T>> MultiSelectListPreference.initWith(localized: (T) -> Int) {
+    val values = enumValues<T>()
 
-    servants.apply {
-        val entries = storageDirs.supportServantImgFolder.listFiles()
-            .map { it.name }
-            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
-            .toTypedArray()
+    this.entryValues = values
+        .map { it.toString() }
+        .toTypedArray()
 
-        this.entryValues = entries
-        this.entries = entries
-    }
+    this.entries = values
+        .map { context.getString(localized(it)) }
+        .toTypedArray()
+}
 
-    ces.apply {
-        populateFriendOrCe(storageDirs.supportCeFolder)
-    }
+inline fun <reified T : Enum<T>> ListPreference.initWith(localized: (T) -> Int) {
+    val values = enumValues<T>()
 
-    friendNames.apply {
-        populateFriendOrCe(storageDirs.supportFriendFolder)
-    }
+    this.entryValues = values
+        .map { it.toString() }
+        .toTypedArray()
+
+    this.entries = values
+        .map { context.getString(localized(it)) }
+        .toTypedArray()
 }

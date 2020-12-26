@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata
 
+import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.libautomata.GameAreaManager
-import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.extensions.TransformationExtensions
 import org.junit.Assert
@@ -10,13 +10,17 @@ import org.junit.Test
 
 class TransformationTest {
     fun getGameAreaManager(windowRegion: Region): GameAreaManager {
-        return GameAreaManager(FakePlatformImpl(windowRegion))
+        return FgoGameAreaManager(
+            FakePlatformImpl(windowRegion),
+            Game.scriptSize,
+            Game.imageSize
+        )
     }
 
     @Test
     fun no_scaling_when_window_region_is_same_as_script_dimensions() {
         val gameAreaManager = getGameAreaManager(
-            Region(Location(), Game.scriptSize)
+            Game.scriptRegion
         )
 
         TransformationExtensions(gameAreaManager).run {

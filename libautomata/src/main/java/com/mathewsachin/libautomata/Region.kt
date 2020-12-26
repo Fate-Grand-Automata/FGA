@@ -5,7 +5,7 @@ import kotlin.math.roundToInt
 /**
  * Represents a rectangular region.
  */
-data class Region(val X: Int, val Y: Int, val Width: Int, val Height: Int) {
+data class Region(val X: Int, val Y: Int, val Width: Int, val Height: Int) : Comparable<Region> {
     init {
         require(Width > 0) { "Width must be positive" }
         require(Height > 0) { "Height must be positive" }
@@ -95,4 +95,7 @@ data class Region(val X: Int, val Y: Int, val Width: Int, val Height: Int) {
                 && right >= Region.right
                 && bottom >= Region.bottom
     }
+
+    override fun compareTo(other: Region) =
+        location.compareTo(other.location)
 }

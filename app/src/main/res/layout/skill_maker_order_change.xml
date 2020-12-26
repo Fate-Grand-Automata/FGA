@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerViewModel" />
+
+        <variable
+            name="ui"
+            type="com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerOrderChangeFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/skill_maker_view_order_change"
+        style="@style/skill_maker_view">
+
+        <TextView
+            android:id="@+id/order_change_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_maker_order_change_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/order_change_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok"
+            android:onClick="@{(v) -> ui.orderChangeOk()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/order_change_cancel" />
+
+        <Button
+            android:id="@+id/order_change_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/cancel"
+            android:onClick="@{(v) -> ui.goBack()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/order_change_ok"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/x_party_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="25dp"
+            android:text="@{@string/skill_maker_order_change_servant(1)}"
+            tools:text="Servant\n\n1"
+            android:onClick="@{(v) -> vm.setOrderChangePartyMember(1)}"
+            android:backgroundTint="@{vm.XSelectedParty == 1 ? @color/colorServant1 : @color/button_material}"
+            android:textColor="@{vm.XSelectedParty == 1 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintBottom_toTopOf="@+id/order_change_ok"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_change_label"
+            tools:backgroundTint="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/x_party_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="25dp"
+            android:text="@{@string/skill_maker_order_change_servant(2)}"
+            tools:text="Servant\n\n2"
+            android:onClick="@{(v) -> vm.setOrderChangePartyMember(2)}"
+            android:backgroundTint="@{vm.XSelectedParty == 2 ? @color/colorServant2 : @color/button_material}"
+            android:textColor="@{vm.XSelectedParty == 2 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintStart_toEndOf="@+id/x_party_1"
+            app:layout_constraintTop_toTopOf="@+id/x_party_1" />
+
+        <Button
+            android:id="@+id/x_party_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="25dp"
+            android:text="@{@string/skill_maker_order_change_servant(3)}"
+            tools:text="Servant\n\n3"
+            android:onClick="@{(v) -> vm.setOrderChangePartyMember(3)}"
+            android:backgroundTint="@{vm.XSelectedParty == 3 ? @color/colorServant3 : @color/button_material}"
+            android:textColor="@{vm.XSelectedParty == 3 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintStart_toEndOf="@+id/x_party_2"
+            app:layout_constraintTop_toTopOf="@+id/x_party_1" />
+
+        <Button
+            android:id="@+id/x_sub_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="25dp"
+            android:text="@{@string/skill_maker_order_change_servant(3)}"
+            tools:text="Servant\n\n3"
+            android:onClick="@{(v) -> vm.setOrderChangeSubMember(3)}"
+            android:backgroundTint="@{vm.XSelectedSub == 3 ? @color/colorServant3 : @color/button_material}"
+            android:textColor="@{vm.XSelectedSub == 3 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/x_party_1" />
+
+        <Button
+            android:id="@+id/x_sub_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="25dp"
+            android:text="@{@string/skill_maker_order_change_servant(2)}"
+            tools:text="Servant\n\n2"
+            android:onClick="@{(v) -> vm.setOrderChangeSubMember(2)}"
+            android:backgroundTint="@{vm.XSelectedSub == 2 ? @color/colorServant2 : @color/button_material}"
+            android:textColor="@{vm.XSelectedSub == 2 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintEnd_toStartOf="@+id/x_sub_3"
+            app:layout_constraintTop_toTopOf="@+id/x_party_1" />
+
+        <Button
+            android:id="@+id/x_sub_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="25dp"
+            android:text="@{@string/skill_maker_order_change_servant(1)}"
+            tools:text="Servant\n\n1"
+            android:onClick="@{(v) -> vm.setOrderChangeSubMember(1)}"
+            android:backgroundTint="@{vm.XSelectedSub == 1 ? @color/colorServant1 : @color/button_material}"
+            android:textColor="@{vm.XSelectedSub == 1 ? @android:color/white : @color/primary_text_material}"
+            app:layout_constraintEnd_toStartOf="@+id/x_sub_2"
+            app:layout_constraintTop_toTopOf="@+id/x_party_1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_maker_order_change_starting_member"
+            app:layout_constraintBottom_toTopOf="@+id/x_party_1"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skill_maker_order_change_sub_member"
+            app:layout_constraintBottom_toTopOf="@+id/x_sub_1"
+            app:layout_constraintStart_toStartOf="@+id/x_sub_1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

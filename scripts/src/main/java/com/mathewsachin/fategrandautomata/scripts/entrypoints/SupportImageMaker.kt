@@ -1,8 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.StorageDirs
-import com.mathewsachin.fategrandautomata.scripts.IFGAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.SupportImageMakerExitException
+import com.mathewsachin.fategrandautomata.IStorageProvider
+import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.libautomata.*
@@ -22,23 +21,22 @@ fun getFriendImgPath(dir: File, Index: Int): File {
 }
 
 class SupportImageMaker @Inject constructor(
-    storageDirs: StorageDirs,
+    storageProvider: IStorageProvider,
     exitManager: ExitManager,
-    platformImpl: IPlatformImpl,
-    fgAutomataApi: IFGAutomataApi
-) : EntryPoint(exitManager, platformImpl), IFGAutomataApi by fgAutomataApi {
-    private val dir = storageDirs.supportImgTempDir
+    fgAutomataApi: IFgoAutomataApi
+) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    class ExitException : Exception()
+
+    private val dir = storageProvider.supportImageTempDir
 
     override fun script(): Nothing {
-        scaling.init()
-
         cleanExtractFolder()
 
         val isInSupport = isInSupport()
 
         // the servant and CE images are further to the right in the friend screen
         val supportBoundX = if (isInSupport) 106 else 176
-        var supportBound = Region(supportBoundX, 0, 286, 220)
+        val supportBound = Region(supportBoundX, 0, 286, 220)
 
         // At max two Servant+CE are completely on screen, so only use those
         val regionArray = Game.supportRegionToolSearchRegion
@@ -46,31 +44,29 @@ class SupportImageMaker @Inject constructor(
                 images.supportRegionTool,
                 supportRegionToolSimilarity
             )
+            .map {
+                // in the friend screen, the "Confirm Support Setup" button is higher
+                val newSupportBoundY = it.Region.Y + (if (isInSupport) 66 else 82)
+                supportBound.copy(Y = newSupportBoundY)
+            }
+            .filter { it in game.scriptArea }
             .take(2)
             .toList()
+            .sorted()
 
-        val screenBounds = Region(Location(), Game.scriptSize)
-
-        for ((i, testRegion) in regionArray.map { it.Region }.withIndex()) {
-            // in the friend screen, the "Confirm Support Setup" button is higher
-            val newSupportBoundY = testRegion.Y + (if (isInSupport) 66 else 82)
-            supportBound = supportBound.copy(Y = newSupportBoundY)
-
-            if (supportBound !in screenBounds)
-                continue
-
-            supportBound.getPattern().use {
+        for ((i, region) in regionArray.withIndex()) {
+            region.getPattern().use {
                 extractServantImage(it, i)
                 extractCeImage(it, i)
-                extractFriendNameImage(supportBound, isInSupport, i)
+                extractFriendNameImage(region, isInSupport, i)
             }
         }
 
         if (regionArray.isEmpty()) {
-            throw ScriptExitException("No support images were found on the current screen. Are you on Support selection or Friend list screen?")
+            throw ScriptExitException(messages.supportImageMakerNotFound)
         }
 
-        throw SupportImageMakerExitException()
+        throw ExitException()
     }
 
     private fun cleanExtractFolder() {
@@ -79,22 +75,20 @@ class SupportImageMaker @Inject constructor(
         }
     }
 
+    private fun IPattern.save(path: File) = use {
+        path.outputStream().use { stream ->
+            save(stream)
+        }
+    }
+
     private fun extractServantImage(supportBoundImage: IPattern, i: Int) {
         val servant = supportBoundImage.crop(Region(0, 0, 125, 44))
-        servant.use {
-            servant.save(
-                getServantImgPath(dir, i).absolutePath
-            )
-        }
+        servant.save(getServantImgPath(dir, i))
     }
 
     private fun extractCeImage(supportRegionImage: IPattern, i: Int) {
         val ce = supportRegionImage.crop(Region(0, 80, supportRegionImage.width, 25))
-        ce.use {
-            ce.save(
-                getCeImgPath(dir, i).absolutePath
-            )
-        }
+        ce.save(getCeImgPath(dir, i))
     }
 
     private fun extractFriendNameImage(supportBound: Region, isInSupport: Boolean, i: Int) {
@@ -103,10 +97,6 @@ class SupportImageMaker @Inject constructor(
         val friendBound = Region(friendNameX, supportBound.Y - 95, 400, 110)
 
         val friendPattern = friendBound.getPattern()
-        friendPattern.use {
-            friendPattern.save(
-                getFriendImgPath(dir, i).absolutePath
-            )
-        }
+        friendPattern.save(getFriendImgPath(dir, i))
     }
 }

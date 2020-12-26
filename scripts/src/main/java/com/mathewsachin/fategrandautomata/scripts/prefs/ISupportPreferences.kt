@@ -4,10 +4,10 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 
 interface ISupportPreferences {
-    val friendNames: String
-    val preferredServants: String
+    val friendNames: List<String>
+    val preferredServants: List<String>
     val mlb: Boolean
-    val preferredCEs: String
+    val preferredCEs: List<String>
     val friendsOnly: Boolean
     val selectionMode: SupportSelectionModeEnum
     val fallbackTo: SupportSelectionModeEnum

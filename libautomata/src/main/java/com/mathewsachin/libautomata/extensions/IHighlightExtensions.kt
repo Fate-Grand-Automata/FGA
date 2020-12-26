@@ -10,5 +10,5 @@ interface IHighlightExtensions {
      *
      * @param Duration how long the borders should be displayed
      */
-    fun Region.highlight(Duration: Duration = 0.3.seconds)
+    fun Region.highlight(Duration: Duration = 0.3.seconds, success: Boolean = false)
 }

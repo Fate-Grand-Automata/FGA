@@ -1,5 +1,7 @@
 package com.mathewsachin.libautomata
 
+import java.io.OutputStream
+
 /**
  * Interface for image objects.
  */
@@ -23,14 +25,6 @@ interface IPattern : AutoCloseable {
     fun resize(Target: IPattern, Size: Size)
 
     /**
-     * Checks if the given image matches with a high enough similarity value.
-     *
-     * @param Template the image to match with
-     * @param Similarity the minimum similarity
-     */
-    fun isMatch(Template: IPattern, Similarity: Double): Boolean
-
-    /**
      * Finds all image matches with high enough similarity values.
      *
      * @param Template the image to match with
@@ -50,17 +44,14 @@ interface IPattern : AutoCloseable {
      */
     fun crop(Region: Region): IPattern
 
-    /**
-     * Saves the image data to the given file path.
-     *
-     * @param FileName an absolute file path pointing to the save location
-     */
-    fun save(FileName: String)
+    fun save(stream: OutputStream)
 
     /**
      * Makes a copy of the image.
      */
     fun copy(): IPattern
+
+    fun tag(tag: String): IPattern
 }
 
 /**
