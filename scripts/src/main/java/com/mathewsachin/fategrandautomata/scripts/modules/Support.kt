@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
@@ -21,8 +20,7 @@ private typealias SearchFunction = () -> SearchFunctionResult
 const val supportRegionToolSimilarity = 0.75
 
 class Support(
-    fgAutomataApi: IFgoAutomataApi,
-    val swipeLocations: ISwipeLocations
+    fgAutomataApi: IFgoAutomataApi
 ) : IFgoAutomataApi by fgAutomataApi {
     private var preferredServantArray = listOf<String>()
     private var friendNameArray = listOf<String>()
@@ -39,7 +37,7 @@ class Support(
         waitForSupportScreenToLoad()
 
         if (!continuing && autoSkillPrefs.supportClass != SupportClass.None) {
-            autoSkillPrefs.supportClass.clickLocation.click()
+            game.locate(autoSkillPrefs.supportClass).click()
 
             0.5.seconds.wait()
         }
@@ -168,7 +166,6 @@ class Support(
 
         while (true) {
             val result = searchVisible(SearchMethod)
-            val swipeLocation = swipeLocations.supportList
 
             when {
                 result is SearchVisibleResult.Found -> {
@@ -178,7 +175,10 @@ class Support(
                 result is SearchVisibleResult.NotFound
                         && numberOfSwipes < prefs.support.swipesPerUpdate -> {
 
-                    swipe(swipeLocation.start, swipeLocation.end)
+                    swipe(
+                        game.supportListSwipeStart,
+                        game.supportListSwipeEnd
+                    )
 
                     ++numberOfSwipes
                     0.3.seconds.wait()

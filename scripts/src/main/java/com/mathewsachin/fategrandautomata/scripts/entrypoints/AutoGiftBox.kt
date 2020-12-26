@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.*
 import javax.inject.Inject
@@ -9,8 +8,7 @@ import kotlin.time.seconds
 
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi,
-    val swipeLocations: ISwipeLocations
+    fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     companion object {
         const val maxClickCount = 99
@@ -20,7 +18,6 @@ class AutoGiftBox @Inject constructor(
     }
 
     override fun script(): Nothing {
-        val swipeLocation = swipeLocations.giftBox
         var clickCount = 0
         var aroundEnd = false
         var nullStreak = 0
@@ -38,7 +35,10 @@ class AutoGiftBox @Inject constructor(
 
             clickCount += picked
 
-            swipe(swipeLocation.start, swipeLocation.end)
+            swipe(
+                game.giftBoxSwipeStart,
+                game.giftBoxSwipeEnd
+            )
 
             if (aroundEnd) {
                 // Once we're around the end, stop after we don't pick anything consecutively

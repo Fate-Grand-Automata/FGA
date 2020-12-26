@@ -4,7 +4,7 @@ import kotlin.time.Duration
 
 interface IPlatformImpl {
     val windowRegion: Region
-
+    val canLongSwipe: Boolean
     val prefs: IPlatformPrefs
 
     /**

@@ -3,10 +3,12 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.GameAreaManager
+import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -25,6 +27,7 @@ fun IFgoAutomataApi.retry() {
 
 @ScriptScope
 class Game @Inject constructor(
+    platformImpl: IPlatformImpl,
     val prefs: IPreferences,
     transformationExtensions: ITransformationExtensions,
     val gameAreaManager: GameAreaManager
@@ -157,12 +160,16 @@ class Game @Inject constructor(
 
     val supportFriendsRegion = Region(354, 332, 1210, 1091) + supportOffset
 
-    val supportMaxAscendedRegion = Region(282, 0, 16, 120) + supportOffset
-    val supportLimitBreakRegion = Region(282, 0, 16, 90) + supportOffset
+    val supportMaxAscendedRegion = Region(280, 0, 20, 120) + supportOffset
+    val supportLimitBreakRegion = Region(280, 0, 20, 90) + supportOffset
 
     val supportRegionToolSearchRegion = Region(2006, 0, 370, 1440) + supportOffset
     val supportDefaultBounds = Region(-18, 0, 2356, 428) + supportOffset
     val supportDefaultCeBounds = Region(-18, 270, 378, 150) + supportOffset
+
+    private val canLongSwipe = platformImpl.canLongSwipe
+    val supportListSwipeStart = Location(-59, if (canLongSwipe) 1000 else 1190) + supportOffset
+    val supportListSwipeEnd = Location(-89, if (canLongSwipe) 300 else 660) + supportOffset
 
     fun locate(refillResource: RefillResourceEnum) = when (refillResource) {
         RefillResourceEnum.Bronze -> 1140
@@ -218,6 +225,20 @@ class Game @Inject constructor(
         is Skill.Master -> locate(skill)
     }
 
+    fun locate(supportClass: SupportClass) = when (supportClass) {
+        SupportClass.None -> Location()
+        SupportClass.All -> Location(184, 256)
+        SupportClass.Saber -> Location(320, 256)
+        SupportClass.Archer -> Location(454, 256)
+        SupportClass.Lancer -> Location(568, 256)
+        SupportClass.Rider -> Location(724, 256)
+        SupportClass.Caster -> Location(858, 256)
+        SupportClass.Assassin -> Location(994, 256)
+        SupportClass.Berserker -> Location(1130, 256)
+        SupportClass.Extra -> Location(1264, 256)
+        SupportClass.Mix -> Location(1402, 256)
+    } + Location(if (isWide) 171 else 0, 0)
+
     fun locate(enemy: EnemyTarget) = when (enemy) {
         EnemyTarget.A -> Location(90, 80)
         EnemyTarget.B -> Location(570, 80)
@@ -243,7 +264,7 @@ class Game @Inject constructor(
             GameServerEnum.Tw -> Region(-850, 25, 55, 60)
             GameServerEnum.Jp -> {
                 if (isWide)
-                    Region(-836, 23, 33, 53)
+                    Region(-836, 23, 33, 53) // TODO: Incorrect
                 else Region(-796, 28, 31, 44)
             }
             else -> Region(-838, 25, 46, 53)
@@ -282,4 +303,7 @@ class Game @Inject constructor(
     val fpOkClick = Location(320, 1120).xFromCenter()
     val fpContinueSummonClick = Location(320, 1325).xFromCenter()
     val fpSkipRapidClick = Location(1240, 1400).xFromCenter()
+
+    val giftBoxSwipeStart = Location(1400, if (canLongSwipe) 1200 else 1050)
+    val giftBoxSwipeEnd = Location(1400, if (canLongSwipe) 350 else 575)
 }
