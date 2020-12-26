@@ -49,16 +49,12 @@ class Game @Inject constructor(
         val resultCeRewardDetailsRegion = Region(0, 512, 135, 115)
         val resultCeRewardCloseClick = Location(80, 60)
 
-        val resultFriendRequestRegion = Region(1880, 150, 100, 94)
-        val resultFriendRequestRejectClick = Location(600, 1200)
         val resultQuestRewardRegion = Region(1630, 140, 370, 250)
         val resultClick = Location(1600, 1350)
         val resultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
         val resultDropScrollbarRegion = Region(2260, 230, 100, 88)
 
         val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
-        val friendPtSummonCheck = Region(1380, 1220, 75, 75)
-        val continueSummonRegion = Region(1244, 1264, 580, 170)
 
         val finishedLotteryBoxRegion = Region(500, 860, 180, 100)
     }
@@ -276,4 +272,14 @@ class Game @Inject constructor(
     val battleSkillOkClick = Location(400, 850).xFromCenter()
     val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
     val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
+
+    val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
+    val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
+
+    val fpSummonCheck = Region(100, 1220, 75, 75).xFromCenter()
+    val fpContinueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
+    val fpFirst10SummonClick = Location(120, 1120).xFromCenter()
+    val fpOkClick = Location(320, 1120).xFromCenter()
+    val fpContinueSummonClick = Location(320, 1325).xFromCenter()
+    val fpSkipRapidClick = Location(1240, 1400).xFromCenter()
 }

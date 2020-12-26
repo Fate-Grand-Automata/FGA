@@ -1,11 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.Location
 import javax.inject.Inject
 import kotlin.time.seconds
 
@@ -16,25 +13,20 @@ class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
-    private val first10SummonClick = Location(1400, 1120)
-    private val okClick = Location(1600, 1120)
-    private val continueSummonClick = Location(1600, 1325)
-    private val skipRapidClick = Location(2520, 1400)
-
     override fun script(): Nothing {
-        if (images.fpSummonContinue !in Game.continueSummonRegion) {
-            first10SummonClick.click()
+        if (images.fpSummonContinue !in game.fpContinueSummonRegion) {
+            game.fpFirst10SummonClick.click()
             0.3.seconds.wait()
-            okClick.click()
+            game.fpOkClick.click()
         }
 
         while (true) {
-            if (images.fpSummonContinue in Game.continueSummonRegion) {
-                continueSummonClick.click()
+            if (images.fpSummonContinue in game.fpContinueSummonRegion) {
+                game.fpContinueSummonClick.click()
                 0.3.seconds.wait()
-                okClick.click()
+                game.fpOkClick.click()
                 3.seconds.wait()
-            } else skipRapidClick.click(15)
+            } else game.fpSkipRapidClick.click(15)
         }
     }
 }

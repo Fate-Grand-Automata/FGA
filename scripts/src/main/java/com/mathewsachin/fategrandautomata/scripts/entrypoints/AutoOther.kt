@@ -24,7 +24,7 @@ class AutoOther @Inject constructor(
         1.seconds.wait()
 
         val entryPoint = when {
-            images.friendSummon in Game.friendPtSummonCheck || images.fpSummonContinue in Game.continueSummonRegion ->
+            images.friendSummon in game.fpSummonCheck || images.fpSummonContinue in game.fpContinueSummonRegion ->
                 fp.get()
             images.finishedLotteryBox in lotteryCheckRegion || images.finishedLotteryBox in Game.finishedLotteryBoxRegion ->
                 lottery.get()
