@@ -38,6 +38,14 @@ class SuperUser : AutoCloseable {
     }
 
     /**
+     * Writes a line to the shell.
+     */
+    fun writeLine(Line: String) {
+        outStream.writeBytes("${Line}\n")
+        outStream.flush()
+    }
+
+    /**
      * Waits until the previous command has finished.
      */
     private fun waitForCommand() {
@@ -45,14 +53,6 @@ class SuperUser : AutoCloseable {
         writeLine("echo -n 0")
 
         superUser.inputStream.read()
-    }
-
-    /**
-     * Writes a line to the shell.
-     */
-    fun writeLine(Line: String) {
-        outStream.writeBytes("${Line}\n")
-        outStream.flush()
     }
 
     /**
