@@ -30,7 +30,7 @@ class AutoOther @Inject constructor(
                 lottery.get()
             images.goldXP in game.scriptArea || images.silverXP in game.scriptArea ->
                 giftBox.get()
-            images.supportRegionTool in Game.supportRegionToolSearchRegion ->
+            images.supportRegionTool in game.supportRegionToolSearchRegion ->
                 supportImageMaker.get()
             else -> throw ScriptExitException(messages.cannotDetectScriptType)
         }

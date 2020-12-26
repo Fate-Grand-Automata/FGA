@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.modules.Game
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
 import com.mathewsachin.libautomata.*
 import java.io.File
@@ -39,7 +38,7 @@ class SupportImageMaker @Inject constructor(
         val supportBound = Region(supportBoundX, 0, 286, 220)
 
         // At max two Servant+CE are completely on screen, so only use those
-        val regionArray = Game.supportRegionToolSearchRegion
+        val regionArray = game.supportRegionToolSearchRegion
             .findAll(
                 images.supportRegionTool,
                 supportRegionToolSimilarity
