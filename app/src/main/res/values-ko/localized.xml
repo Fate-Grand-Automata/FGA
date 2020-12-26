@@ -158,7 +158,7 @@
     <string name="p_battle_config_cmd_text_summary">오트 스킬 커맨드를 수정하기 위해 텍스트 박스 보이기</string>
 
     <string name="p_wait_ap_regen_text">AP 회복 대기</string>
-    <string name="p_wait_ap_regen_text_summary">AP가 다 소모되어도 FGA앱을 실행시키며, AP 충분히 회복되면 스크립트를 자동으로 재실행합니다.</string>
+    <string name="p_wait_ap_regen_text_summary">AP가 다 소모되어도 FGA앱을 실행시키며, AP가 충분히 회복되면 스크립트를 자동으로 재실행합니다.</string>
 
     <string name="p_storage">저장소</string>
     <string name="p_folder">서포트 이미지, 드롭 이미지 등의 폴더를 변경합니다.</string>
@@ -343,7 +343,7 @@
 
     <string name="p_shuffle_cards">카드 셔플</string>
     <string name="p_shuffle_cards_wave">웨이브</string>
-    <string name="p_shuffle_cards_when">언제</string>
+    <string name="p_shuffle_cards_when">웨이브 </string>
     <string name="p_shuffle_cards_when_none">없음</string>
     <string name="p_shuffle_cards_when_no_effective">효과있는 카드 없음</string>
     <string name="p_shuffle_cards_when_no_np_matching">보구와 맞는 카드 없음</string>
