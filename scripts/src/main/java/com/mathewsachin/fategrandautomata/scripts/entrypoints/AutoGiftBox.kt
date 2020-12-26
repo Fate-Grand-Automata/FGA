@@ -35,7 +35,7 @@ class AutoGiftBox @Inject constructor(
 
                 pickGifts()
             }
-            
+
             clickCount += picked
 
             swipe(swipeLocation.start, swipeLocation.end)
@@ -55,7 +55,11 @@ class AutoGiftBox @Inject constructor(
             }
         }
 
-        throw ScriptExitException(messages.pickedExpStack(clickCount))
+        /*
+           clickCount can be higher than maxClickCount when the script is close to the limit and
+           finds multiple collectible stacks on the screen. FGO will not register the extra clicks.
+         */
+        throw ScriptExitException(messages.pickedExpStack(clickCount.coerceAtMost(maxClickCount)))
     }
 
     private val countRegionX
