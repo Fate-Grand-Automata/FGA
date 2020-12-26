@@ -35,17 +35,17 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         }
     }
 
-    fun isIdle() = images.battle in Game.battleScreenRegion
+    fun isIdle() = images.battle in game.battleScreenRegion
 
     fun clickAttack() {
         if (state.hasClickedAttack) {
             return
         }
 
-        Game.battleAttackClick.click()
+        game.battleAttackClick.click()
 
         // Wait for Attack button to disappear
-        Game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
+        game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
 
         prefs.waitBeforeCards.wait()
 
@@ -54,15 +54,17 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         card.readCommandCards()
     }
 
-    private fun isPriorityTarget(enemyTarget: EnemyTarget): Boolean {
-        val isDanger = images.targetDanger in enemyTarget.region
-        val isServant = images.targetServant in enemyTarget.region
+    private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
+        val region = game.dangerRegion(enemy)
+
+        val isDanger = images.targetDanger in region
+        val isServant = images.targetServant in region
 
         return isDanger || isServant
     }
 
-    private fun chooseTarget(enemyTarget: EnemyTarget) {
-        enemyTarget.clickLocation.click()
+    private fun chooseTarget(enemy: EnemyTarget) {
+        game.locate(enemy).click()
 
         0.5.seconds.wait()
 

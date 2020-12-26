@@ -530,11 +530,11 @@ open class AutoBattle @Inject constructor(
     private fun useBoostItem() {
         val boostItem = BoostItem.of(prefs.boostItemSelectionMode)
         if (boostItem is BoostItem.Enabled) {
-            boostItem.clickLocation.click()
+            game.locate(boostItem).click()
 
             // in case you run out of items
             if (boostItem !is BoostItem.Enabled.Skip) {
-                BoostItem.Enabled.Skip.clickLocation.click()
+                game.locate(BoostItem.Enabled.Skip).click()
             }
         }
     }
