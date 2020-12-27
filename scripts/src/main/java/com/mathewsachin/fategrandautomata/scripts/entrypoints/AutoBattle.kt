@@ -8,6 +8,8 @@ import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
+import timber.log.Timber
+import timber.log.debug
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 import kotlin.time.seconds
@@ -186,8 +188,8 @@ open class AutoBattle @Inject constructor(
         val cases = sequenceOf(
             images.result to Game.resultScreenRegion,
             images.bond to Game.resultBondRegion,
-            images.masterLvlUp to Game.resultMasterLvlUpRegion,
-            images.masterExp to Game.resultMasterExpRegion
+            images.masterLvlUp to game.resultMasterLvlUpRegion,
+            images.masterExp to game.resultMasterExpRegion
         )
 
         return cases.any { (image, region) -> image in region }
@@ -216,12 +218,11 @@ open class AutoBattle @Inject constructor(
     /**
      * Clicks through the reward screens.
      */
-    private fun result() {
-        Game.resultClick.click(15)
-    }
+    private fun result() =
+        game.resultClick.click(15)
 
     private fun isInDropsScreen() =
-        images.matRewards in Game.resultMatRewardsRegion
+        images.matRewards in game.resultMatRewardsRegion
 
     private fun dropScreen() {
         checkCEDrops()
@@ -233,7 +234,7 @@ open class AutoBattle @Inject constructor(
         }
 
         // Click location changed on JP
-        Game.resultMatRewardsRegion
+        game.resultMatRewardsRegion
             .find(images.matRewards)
             ?.Region
             ?.click(5)
@@ -288,9 +289,9 @@ open class AutoBattle @Inject constructor(
             drops.add(takeColorScreenshot())
 
             // check if we need to scroll to see more drops
-            if (images.dropScrollbar in Game.resultDropScrollbarRegion) {
+            if (i == 0 && images.dropScrollbar in game.resultDropScrollbarRegion) {
                 // scroll to end
-                Location(2306, 1032).click()
+                game.resultDropScrollEndClick.click()
             } else break
         }
 
@@ -343,12 +344,12 @@ open class AutoBattle @Inject constructor(
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
     private fun isInQuestRewardScreen() =
-        images.questReward in Game.resultQuestRewardRegion
+        images.questReward in game.resultQuestRewardRegion
 
     /**
      * Handles the quest rewards screen.
      */
-    private fun questReward() = Game.resultNextClick.click()
+    private fun questReward() = game.resultClick.click()
 
     // Selections Support option
     private fun support() {
@@ -485,6 +486,8 @@ open class AutoBattle @Inject constructor(
                         (it.value.X - match.Region.center.X).absoluteValue
                     }?.index
                 }
+
+            Timber.debug { "Current Party: $currentParty" }
 
             /* If the currently selected party cannot be detected, we need to switch to a party
                which was not configured. The reason is that the "Start Quest" button becomes

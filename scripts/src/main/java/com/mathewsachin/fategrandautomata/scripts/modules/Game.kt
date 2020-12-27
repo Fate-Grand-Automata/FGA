@@ -7,10 +7,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.GameAreaManager
-import com.mathewsachin.libautomata.IPlatformImpl
-import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
@@ -34,8 +31,8 @@ class Game @Inject constructor(
 ) {
     companion object {
         val menuScreenRegion = Region(2100, 1200, 1000, 1000)
-        val menuStorySkipRegion = Region(2240, 20, 300, 120)
         val menuSelectQuestClick = Location(2290, 440)
+        val menuStorySkipRegion = Region(2240, 20, 300, 120)
         val menuStorySkipClick = Location(2360, 80)
 
         val supportNotFoundRegion = Region(468, 708, 100, 90)
@@ -44,18 +41,10 @@ class Game @Inject constructor(
 
         val resultScreenRegion = Region(100, 300, 700, 200)
         val resultBondRegion = Region(2000, 750, 120, 190)
-        val resultMasterExpRegion = Region(1280, 350, 400, 110)
-        val resultMatRewardsRegion = Region(2080, 1220, 280, 200)
-        val resultMasterLvlUpRegion = Region(1990, 160, 250, 270)
 
         val resultCeRewardRegion = Region(1050, 1216, 33, 28)
         val resultCeRewardDetailsRegion = Region(0, 512, 135, 115)
         val resultCeRewardCloseClick = Location(80, 60)
-
-        val resultQuestRewardRegion = Region(1630, 140, 370, 250)
-        val resultClick = Location(1600, 1350)
-        val resultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
-        val resultDropScrollbarRegion = Region(2260, 230, 100, 88)
 
         val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
 
@@ -264,7 +253,7 @@ class Game @Inject constructor(
             GameServerEnum.Tw -> Region(-850, 25, 55, 60)
             GameServerEnum.Jp -> {
                 if (isWide)
-                    Region(-836, 23, 33, 53) // TODO: Incorrect
+                    Region(-869, 23, 33, 53)
                 else Region(-796, 28, 31, 44)
             }
             else -> Region(-838, 25, 46, 53)
@@ -296,6 +285,13 @@ class Game @Inject constructor(
 
     val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
     val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
+    val resultMatRewardsRegion = Region(800, 1220, 280, 200).xFromCenter()
+    val resultClick = Location(320, 1350).xFromCenter()
+    val resultQuestRewardRegion = Region(350, 140, 370, 250).xFromCenter()
+    val resultDropScrollbarRegion = Region(980, 230, 100, 88).xFromCenter()
+    val resultDropScrollEndClick = Location(1026, 1032).xFromCenter()
+    val resultMasterExpRegion = Region(0, 350, 400, 110).xFromCenter()
+    val resultMasterLvlUpRegion = Region(710, 160, 250, 270).xFromCenter()
 
     val fpSummonCheck = Region(100, 1220, 75, 75).xFromCenter()
     val fpContinueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
@@ -304,6 +300,18 @@ class Game @Inject constructor(
     val fpContinueSummonClick = Location(320, 1325).xFromCenter()
     val fpSkipRapidClick = Location(1240, 1400).xFromCenter()
 
-    val giftBoxSwipeStart = Location(1400, if (canLongSwipe) 1200 else 1050)
-    val giftBoxSwipeEnd = Location(1400, if (canLongSwipe) 350 else 575)
+    val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
+    val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
+    val giftBoxCheckRegion = Region(360, 400, 120, 2120).xFromCenter()
+    val giftBoxScrollEndRegion = Region(540, 1421, 120, 19).xFromCenter()
+    val giftBoxIconRegion = Region(-1090, -116, 300, 240).xFromCenter()
+    val giftBoxClickSpot = Location(420, 50).xFromCenter()
+
+    val giftBoxCountRegion = when (prefs.gameServer) {
+        GameServerEnum.Jp -> -620
+        GameServerEnum.En -> -480
+        GameServerEnum.Kr -> -610
+        GameServerEnum.Tw -> -580
+        else -> throw ScriptExitException("Not supported on this server yet")
+    }.let { x -> Region(x, -120, 300, 100).xFromCenter() }
 }
