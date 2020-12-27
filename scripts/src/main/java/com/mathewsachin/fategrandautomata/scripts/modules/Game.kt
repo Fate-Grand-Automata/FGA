@@ -40,8 +40,6 @@ class Game @Inject constructor(
         val resultCeRewardCloseClick = Location(80, 60)
 
         val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
-
-        val finishedLotteryBoxRegion = Region(500, 860, 180, 100)
     }
 
     val scriptArea =
@@ -313,4 +311,12 @@ class Game @Inject constructor(
         GameServerEnum.Tw -> -580
         else -> throw ScriptExitException("Not supported on this server yet")
     }.let { x -> Region(x, -120, 300, 100).xFromCenter() }
+
+    val lotteryFinishedRegion = Region(-780, 860, 180, 100).xFromCenter()
+    val lotteryCheckRegion = Region(-1130, 800, 340, 230).xFromCenter()
+    val lotterySpinClick = Location(-446, 860).xFromCenter()
+    val lotteryFullPresentBoxRegion = Region(20, 860, 1000, 500).xFromCenter()
+    val lotteryResetClick = Location(920, 480).xFromCenter()
+    val lotteryResetConfirmationClick = Location(494, 1122).xFromCenter()
+    val lotteryResetCloseClick = Location(-10, 1120).xFromCenter()
 }
