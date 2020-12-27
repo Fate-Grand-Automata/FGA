@@ -154,7 +154,7 @@ open class AutoBattle @Inject constructor(
     /**
      *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
      */
-    private fun isInMenu() = images.menu in Game.menuScreenRegion
+    private fun isInMenu() = images.menu in game.menuScreenRegion
 
     /**
      * Resets the battle state, clicks on the quest and refills the AP if needed.
@@ -168,7 +168,7 @@ open class AutoBattle @Inject constructor(
         showRefillsAndRunsMessage()
 
         // Click uppermost quest
-        Game.menuSelectQuestClick.click()
+        game.menuSelectQuestClick.click()
 
         afterSelectingQuest()
     }
@@ -196,7 +196,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isBond10CEReward() =
-        Game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = 0.75)
+        game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = 0.75)
 
     /**
      * It seems like we need to click on CE (center of screen) to accept them
@@ -205,14 +205,14 @@ open class AutoBattle @Inject constructor(
         game.scriptArea.center.click()
 
     private fun isCeRewardDetails() =
-        images.ceDetails in Game.resultCeRewardDetailsRegion
+        images.ceDetails in game.resultCeRewardDetailsRegion
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
             throw ScriptExitException(messages.ceGet)
         } else notify(messages.ceGet)
 
-        Game.resultCeRewardCloseClick.click()
+        game.resultCeRewardCloseClick.click()
     }
 
     /**
@@ -422,7 +422,7 @@ open class AutoBattle @Inject constructor(
      * Clicks on the Close button for the special GudaGuda Final Honnouji reward window if it was
      * detected.
      */
-    private fun gudaFinalReward() = Game.gudaFinalRewardsRegion.click()
+    private fun gudaFinalReward() = game.gudaFinalRewardsRegion.click()
 
     /**
      * Checks if the SKIP button exists on the screen.

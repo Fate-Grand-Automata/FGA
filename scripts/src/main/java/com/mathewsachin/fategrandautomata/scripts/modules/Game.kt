@@ -29,19 +29,6 @@ class Game @Inject constructor(
     transformationExtensions: ITransformationExtensions,
     val gameAreaManager: GameAreaManager
 ) {
-    companion object {
-        val menuScreenRegion = Region(2100, 1200, 1000, 1000)
-        val menuSelectQuestClick = Location(2290, 440)
-
-        val battleBack = Location(2400, 1370)
-
-        val resultCeRewardRegion = Region(1050, 1216, 33, 28)
-        val resultCeRewardDetailsRegion = Region(0, 512, 135, 115)
-        val resultCeRewardCloseClick = Location(80, 60)
-
-        val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
-    }
-
     val scriptArea =
         Region(
             Location(),
@@ -74,6 +61,18 @@ class Game @Inject constructor(
     val continueClick = Location(370, 1120).xFromCenter()
 
     val inventoryFullRegion = Region(-230, 900, 458, 90).xFromCenter()
+
+    val menuScreenRegion =
+        (if (isWide)
+            Region(-600, 1200, 600, 240)
+        else Region(-460, 1200, 460, 240))
+            .xFromRight()
+
+    val menuSelectQuestClick =
+        (if (isWide)
+            Location(-410, 440)
+        else Location(-270, 440))
+            .xFromRight()
 
     val menuStartQuestClick =
         (if (isWide)
@@ -275,6 +274,12 @@ class Game @Inject constructor(
     val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
     val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
 
+    val battleBack =
+        (if (isWide)
+            Location(-325, 1310)
+        else Location(-160, 1370))
+            .xFromRight()
+
     val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
     val menuStorySkipClick = Location(1080, 80).xFromCenter()
 
@@ -289,6 +294,10 @@ class Game @Inject constructor(
     val resultMasterLvlUpRegion = Region(710, 160, 250, 270).xFromCenter()
     val resultScreenRegion = Region(-1180, 300, 700, 200).xFromCenter()
     val resultBondRegion = Region(720, 750, 120, 190).xFromCenter()
+
+    val resultCeRewardRegion = Region(-230, 1216, 33, 28).xFromCenter()
+    val resultCeRewardDetailsRegion = Region(if (isWide) 193 else 0, 512, 135, 115)
+    val resultCeRewardCloseClick = Location(if (isWide) 265 else 80, 60)
 
     val fpSummonCheck = Region(100, 1220, 75, 75).xFromCenter()
     val fpContinueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
@@ -319,4 +328,6 @@ class Game @Inject constructor(
     val lotteryResetClick = Location(920, 480).xFromCenter()
     val lotteryResetConfirmationClick = Location(494, 1122).xFromCenter()
     val lotteryResetCloseClick = Location(-10, 1120).xFromCenter()
+
+    val gudaFinalRewardsRegion = Region(-120, 1040, 228, 76).xFromCenter()
 }

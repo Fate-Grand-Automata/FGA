@@ -292,7 +292,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private fun shuffleCards() {
         if (shouldShuffle()) {
-            Game.battleBack.click()
+            game.battleBack.click()
 
             autoSkill.castMasterSkill(Skill.Master.list[2])
 
