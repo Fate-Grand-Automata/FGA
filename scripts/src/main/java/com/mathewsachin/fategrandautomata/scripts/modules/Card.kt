@@ -24,7 +24,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
-        val region = affinityRegion
+        val region = game.affinityRegion(this)
 
         if (images.weak in region) {
             return CardAffinityEnum.Weak
@@ -38,7 +38,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     private fun CommandCard.Face.isStunned(): Boolean {
-        val stunRegion = typeRegion.copy(
+        val stunRegion = game.typeRegion(this).copy(
             Y = 930,
             Width = 248,
             Height = 188
@@ -48,7 +48,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     private fun CommandCard.Face.type(): CardTypeEnum {
-        val region = typeRegion
+        val region = game.typeRegion(this)
 
         if (images.buster in region) {
             return CardTypeEnum.Buster
@@ -130,7 +130,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             commandCards = getCommandCards()
 
             val supportGroup = CommandCard.Face.list
-                .filter { images.support in it.supportCheckRegion }
+                .filter { images.support in game.supportCheckRegion(it) }
             commandCardGroups = groupByFaceCard(supportGroup)
             commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
         }
@@ -143,7 +143,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             } else emptySet()
 
     private fun CommandCard.NP.pick() {
-        clickLocation.click()
+        game.clickLocation(this).click()
 
         game.battleExtraInfoWindowCloseClick.click()
     }
@@ -313,7 +313,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             cards
                 .take(atk.cardsBeforeNP)
                 .also { Timber.debug { "Clicking cards: $it" } }
-                .forEach { it.clickLocation.click() }
+                .forEach { game.clickLocation(it).click() }
         }
 
         val nps = atk.nps + spamNps
@@ -327,7 +327,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         cards
             .drop(atk.cardsBeforeNP)
             .also { Timber.debug { "Clicking cards: $it" } }
-            .forEach { it.clickLocation.click() }
+            .forEach { game.clickLocation(it).click() }
 
         atk = AutoSkillAction.Atk.noOp()
     }
@@ -339,7 +339,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         val npGroups = mutableMapOf<CommandCard.NP, List<CommandCard.Face>>()
 
         val supportNp = CommandCard.NP.list.firstOrNull {
-            images.support in it.supportCheckRegion
+            images.support in game.supportCheckRegion(it)
         }
 
         if (supportNp != null) {
@@ -355,11 +355,10 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         } else groups
 
         otherNps.associateWithTo(npGroups) {
-            it.servantCropRegion.getPattern().tag("NP:$it").use { npCropped ->
+            game.servantCropRegion(it).getPattern().tag("NP:$it").use { npCropped ->
                 otherGroups
                     .associateWith { group ->
-                        group.first()
-                            .servantMatchRegion
+                        game.servantMatchRegion(group.first())
                             .find(npCropped, 0.65)
                             ?.score
                     }
@@ -393,13 +392,13 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             group.add(u)
 
             if (remaining.isNotEmpty()) {
-                val me = u.servantCropRegion
+                val me = game.servantCropRegion(u)
                     .getPattern()
                     .tag("Card:$u")
 
                 me.use {
                     val matched = remaining.filter {
-                        me in it.servantMatchRegion
+                        me in game.servantMatchRegion(it)
                     }
 
                     remaining.removeAll(matched)

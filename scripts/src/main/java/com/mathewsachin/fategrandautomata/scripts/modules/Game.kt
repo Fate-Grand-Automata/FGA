@@ -330,4 +330,58 @@ class Game @Inject constructor(
     val lotteryResetCloseClick = Location(-10, 1120).xFromCenter()
 
     val gudaFinalRewardsRegion = Region(-120, 1040, 228, 76).xFromCenter()
+
+    fun clickLocation(card: CommandCard) = when (card) {
+        CommandCard.Face.A -> Location(-980, 1000)
+        CommandCard.Face.B -> Location(-530, 1000)
+        CommandCard.Face.C -> Location(20, 1000)
+        CommandCard.Face.D -> Location(520, 1000)
+        CommandCard.Face.E -> Location(1070, 1000)
+        CommandCard.NP.A -> Location(-280, 220)
+        CommandCard.NP.B -> Location(20, 400)
+        CommandCard.NP.C -> Location(460, 400)
+    }.xFromCenter()
+
+    fun affinityRegion(card: CommandCard.Face) = when (card) {
+        CommandCard.Face.A -> Region(-985, 650, 250, 200)
+        CommandCard.Face.B -> Region(-470, 650, 250, 200)
+        CommandCard.Face.C -> Region(41, 650, 250, 200)
+        CommandCard.Face.D -> Region(554, 650, 250, 200)
+        CommandCard.Face.E -> Region(1068, 650, 250, 200)
+    }.xFromCenter()
+
+    fun typeRegion(card: CommandCard.Face) = when (card) {
+        CommandCard.Face.A -> Region(-1280, 1060, 512, 200)
+        CommandCard.Face.B -> Region(-768, 1060, 512, 200)
+        CommandCard.Face.C -> Region(-256, 1060, 512, 200)
+        CommandCard.Face.D -> Region(256, 1060, 512, 200)
+        CommandCard.Face.E -> Region(768, 1060, 512, 200)
+    }.xFromCenter()
+
+    fun servantMatchRegion(card: CommandCard) = when (card) {
+        CommandCard.Face.A -> Region(-1174, 800, 300, 200)
+        CommandCard.Face.B -> Region(-660, 800, 300, 200)
+        CommandCard.Face.C -> Region(-150, 800, 300, 200)
+        CommandCard.Face.D -> Region(364, 800, 300, 200)
+        CommandCard.Face.E -> Region(880, 800, 300, 200)
+        CommandCard.NP.A -> Region(-602, 190, 300, 200)
+        CommandCard.NP.B -> Region(-142, 190, 300, 200)
+        CommandCard.NP.C -> Region(326, 190, 300, 200)
+    }.xFromCenter()
+
+    fun servantCropRegion(card: CommandCard) = when (card) {
+        CommandCard.Face.A -> Region(-1080, 890, 115, 85)
+        CommandCard.Face.B -> Region(-566, 890, 115, 85)
+        CommandCard.Face.C -> Region(-56, 890, 115, 85)
+        CommandCard.Face.D -> Region(458, 890, 115, 85)
+        CommandCard.Face.E -> Region(974, 890, 115, 85)
+        CommandCard.NP.A -> Region(-518, 290, 115, 65)
+        CommandCard.NP.B -> Region(-50, 290, 115, 65)
+        CommandCard.NP.C -> Region(414, 290, 115, 65)
+    }.xFromCenter()
+
+    fun supportCheckRegion(card: CommandCard) = when (card) {
+        is CommandCard.Face -> affinityRegion(card) + Location(-50, 100)
+        is CommandCard.NP -> (servantMatchRegion(card) + Location(110, -30)).copy(Height = 170)
+    }
 }
