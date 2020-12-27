@@ -32,15 +32,8 @@ class Game @Inject constructor(
     companion object {
         val menuScreenRegion = Region(2100, 1200, 1000, 1000)
         val menuSelectQuestClick = Location(2290, 440)
-        val menuStorySkipRegion = Region(2240, 20, 300, 120)
-        val menuStorySkipClick = Location(2360, 80)
-
-        val supportNotFoundRegion = Region(468, 708, 100, 90)
 
         val battleBack = Location(2400, 1370)
-
-        val resultScreenRegion = Region(100, 300, 700, 200)
-        val resultBondRegion = Region(2000, 750, 120, 190)
 
         val resultCeRewardRegion = Region(1050, 1216, 33, 28)
         val resultCeRewardDetailsRegion = Region(0, 512, 135, 115)
@@ -155,6 +148,7 @@ class Game @Inject constructor(
     val supportRegionToolSearchRegion = Region(2006, 0, 370, 1440) + supportOffset
     val supportDefaultBounds = Region(-18, 0, 2356, 428) + supportOffset
     val supportDefaultCeBounds = Region(-18, 270, 378, 150) + supportOffset
+    val supportNotFoundRegion = Region(374, 708, 100, 90) + supportOffset
 
     private val canLongSwipe = platformImpl.canLongSwipe
     val supportListSwipeStart = Location(-59, if (canLongSwipe) 1000 else 1190) + supportOffset
@@ -283,6 +277,9 @@ class Game @Inject constructor(
     val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
     val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
 
+    val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
+    val menuStorySkipClick = Location(1080, 80).xFromCenter()
+
     val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
     val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
     val resultMatRewardsRegion = Region(800, 1220, 280, 200).xFromCenter()
@@ -292,6 +289,8 @@ class Game @Inject constructor(
     val resultDropScrollEndClick = Location(1026, 1032).xFromCenter()
     val resultMasterExpRegion = Region(0, 350, 400, 110).xFromCenter()
     val resultMasterLvlUpRegion = Region(710, 160, 250, 270).xFromCenter()
+    val resultScreenRegion = Region(-1180, 300, 700, 200).xFromCenter()
+    val resultBondRegion = Region(720, 750, 120, 190).xFromCenter()
 
     val fpSummonCheck = Region(100, 1220, 75, 75).xFromCenter()
     val fpContinueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()

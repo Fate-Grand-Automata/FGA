@@ -186,8 +186,8 @@ open class AutoBattle @Inject constructor(
      */
     private fun isInResult(): Boolean {
         val cases = sequenceOf(
-            images.result to Game.resultScreenRegion,
-            images.bond to Game.resultBondRegion,
+            images.result to game.resultScreenRegion,
+            images.bond to game.resultBondRegion,
             images.masterLvlUp to game.resultMasterLvlUpRegion,
             images.masterExp to game.resultMasterExpRegion
         )
@@ -428,10 +428,10 @@ open class AutoBattle @Inject constructor(
      * Checks if the SKIP button exists on the screen.
      */
     private fun needsToStorySkip() =
-        prefs.storySkip && Game.menuStorySkipRegion.exists(images.storySkip, Similarity = 0.7)
+        prefs.storySkip && game.menuStorySkipRegion.exists(images.storySkip, Similarity = 0.7)
 
     private fun skipStory() {
-        Game.menuStorySkipClick.click()
+        game.menuStorySkipClick.click()
         0.5.seconds.wait()
         game.menuStorySkipYesClick.click()
     }

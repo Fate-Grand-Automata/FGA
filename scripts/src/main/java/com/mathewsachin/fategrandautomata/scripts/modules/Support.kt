@@ -90,7 +90,7 @@ class Support(
                 needsToRetry() -> retry()
                 // wait for dialogs to close
                 images.supportExtra !in game.supportExtraRegion -> 1.seconds.wait()
-                images.supportNotFound in Game.supportNotFoundRegion -> {
+                images.supportNotFound in game.supportNotFoundRegion -> {
                     updateLastSupportRefreshTimestamp()
                     refreshSupportList()
                     return
