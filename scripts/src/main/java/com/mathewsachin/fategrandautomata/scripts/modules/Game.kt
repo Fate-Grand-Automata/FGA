@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
+import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.Location
@@ -10,6 +11,7 @@ import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
+import kotlin.math.roundToInt
 import kotlin.time.seconds
 
 fun IFgoAutomataApi.needsToRetry() = images.retry in game.retryRegion
@@ -29,55 +31,14 @@ class Game @Inject constructor(
     companion object {
         val menuScreenRegion = Region(2100, 1200, 1000, 1000)
         val menuStorySkipRegion = Region(2240, 20, 300, 120)
-
         val menuSelectQuestClick = Location(2290, 440)
-        val menuStartQuestClick = Location(2400, 1350)
-
         val menuStorySkipClick = Location(2360, 80)
 
-        val supportScreenRegion = Region(0, 0, 200, 400)
-        val supportListRegion = Region(70, 332, 378, 1091) // see docs/support_list_region.png
-        val supportFriendsRegion = Region(448, 332, 1210, 1091)
-
-        val supportMaxAscendedRegion = Region(376, 0, 16, 120)
-        val supportLimitBreakRegion = Region(376, 0, 16, 90)
-        val supportFriendRegion = Region(
-            2234,
-            supportListRegion.Y,
-            120,
-            supportListRegion.Height
-        ) // see docs/friend_region.png
-
-        val supportUpdateClick = Location(1670, 250)
-        val supportListTopClick = Location(2480, 360)
-        val supportFirstSupportClick = Location(1900, 500)
-
-        val supportRegionToolSearchRegion = Region(2100, 0, 370, 1440)
-        val supportDefaultBounds = Region(76, 0, 2356, 428)
-        val supportDefaultCeBounds = Region(76, 270, 378, 150)
-        val supportExtraRegion = Region(1200, 200, 130, 130)
         val supportNotFoundRegion = Region(468, 708, 100, 90)
 
-        val selectedPartyRegion = Region(1010, 62, 550, 72)
-        val partySelectionArray = listOf(
-            Location(1055, 100),
-            Location(1105, 100),
-            Location(1155, 100),
-            Location(1205, 100),
-            Location(1255, 100),
-            Location(1305, 100),
-            Location(1355, 100),
-            Location(1405, 100),
-            Location(1455, 100),
-            Location(1505, 100)
-        )
-
         val battleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
-
         val battleAttackClick = Location(2300, 1200)
-
         val battleMasterSkillOpenClick = Location(2380, 640)
-
         val battleBack = Location(2400, 1370)
 
         val resultScreenRegion = Region(100, 300, 700, 200)
@@ -110,6 +71,9 @@ class Game @Inject constructor(
             gameAreaManager.gameArea.size * (1 / transformationExtensions.scriptToScreenScale())
         )
 
+    val isWide = prefs.gameServer == GameServerEnum.Jp
+            && scriptArea.isWide()
+
     fun Location.xFromCenter() =
         this + Location(scriptArea.center.X, 0)
 
@@ -119,11 +83,21 @@ class Game @Inject constructor(
     fun Location.xFromRight() =
         this + Location(scriptArea.right, 0)
 
+    fun Location.yFromBottom() =
+        this + Location(0, scriptArea.bottom)
+
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
     val continueClick = Location(370, 1120).xFromCenter()
 
     val inventoryFullRegion = Region(-230, 900, 458, 90).xFromCenter()
+
+    val menuStartQuestClick =
+        (if (isWide)
+            Location(-350, -160)
+        else Location(-160, -90))
+            .xFromRight()
+            .yFromBottom()
 
     val menuStorySkipYesClick = Location(320, 1100).xFromCenter()
 
@@ -142,7 +116,59 @@ class Game @Inject constructor(
 
     val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
 
+    val supportScreenRegion =
+        if (isWide)
+            Region(150, 0, 200, 400)
+        else Region(0, 0, 200, 400)
+
+    val supportExtraRegion =
+        if (isWide)
+            Region(1380, 200, 130, 130)
+        else Region(1200, 200, 130, 130)
+
+    val supportUpdateClick =
+        if (isWide)
+            Location(1870, 260)
+        else Location(1670, 250)
+
+    val supportListTopClick =
+        (if (isWide)
+            Location(-218, 360)
+        else Location(-80, 360)).xFromRight()
+
+    val supportFirstSupportClick = Location(0, 500).xFromCenter()
+
     val supportUpdateYesClick = Location(200, 1110).xFromCenter()
+
+    // Support Screen offset
+    // For wide-screen: centered in this region: 305 left to 270 right
+    // For 16:9 - 94 left to 145 right
+    val supportOffset =
+        if (isWide) {
+            val width = 2560 - 94 - 145
+            val total = scriptArea.Width - 305 - 270
+            val border = ((total - width) / 2.0).roundToInt()
+
+            Location(305 + border, 0)
+        } else Location(94, 0)
+
+    val supportListRegion = Region(-24, 332, 378, 1091) + supportOffset
+
+    val supportFriendRegion = Region(
+        2140,
+        supportListRegion.Y,
+        120,
+        supportListRegion.Height
+    ) + supportOffset
+
+    val supportFriendsRegion = Region(354, 332, 1210, 1091) + supportOffset
+
+    val supportMaxAscendedRegion = Region(282, 0, 16, 120) + supportOffset
+    val supportLimitBreakRegion = Region(282, 0, 16, 90) + supportOffset
+
+    val supportRegionToolSearchRegion = Region(2006, 0, 370, 1440) + supportOffset
+    val supportDefaultBounds = Region(-18, 0, 2356, 428) + supportOffset
+    val supportDefaultCeBounds = Region(-18, 270, 378, 150) + supportOffset
 
     fun locate(refillResource: RefillResourceEnum) = when (refillResource) {
         RefillResourceEnum.Bronze -> 1140
@@ -150,6 +176,14 @@ class Game @Inject constructor(
         RefillResourceEnum.Gold -> 634
         RefillResourceEnum.SQ -> 345
     }.let { y -> Location(-530, y).xFromCenter() }
+
+    val selectedPartyRegion = Region(-270, 62, 550, 72).xFromCenter()
+    val partySelectionArray = (0..9).map {
+        // Party indicators are center-aligned
+        val x = ((it - 4.5) * 50).roundToInt()
+
+        Location(x, 100).xFromCenter()
+    }
 
     val battleStageCountRegion
         get() = when (prefs.gameServer) {
