@@ -18,5 +18,11 @@
     <string name="skill_code_k" translatable="false">k</string>
     <string name="skill_code_l" translatable="false">l</string>
 
+    <string name="game_server_na">NA</string>
+    <string name="game_server_jp">JP</string>
+    <string name="game_server_cn">CN</string>
+    <string name="game_server_tw">TW</string>
+    <string name="game_server_kr">KR</string>
+
     <string name="link_troubleshoot" translatable="false">https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting</string>
 </resources>
