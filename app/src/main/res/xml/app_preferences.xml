@@ -10,6 +10,13 @@
             app:key="@string/pref_skill_conf"
             app:title="@string/p_skill_confirmation" />
 
+        <ListPreference
+            app:defaultValue="@string/pref_game_server_auto_detect"
+            app:icon="@drawable/ic_earth"
+            app:key="@string/pref_game_server"
+            app:title="@string/p_game_server"
+            app:useSimpleSummaryProvider="true" />
+
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:icon="@drawable/ic_fast_forward"
