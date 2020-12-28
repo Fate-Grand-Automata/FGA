@@ -1,26 +1,23 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.ScriptExitException
 import javax.inject.Inject
 import kotlin.time.seconds
 
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi,
-    val swipeLocations: ISwipeLocations
+    fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     companion object {
         const val maxClickCount = 99
         const val maxNullStreak = 3
-        val checkRegion = Region(1640, 400, 120, 2120)
-        val scrollEndRegion = Region(1820, 1421, 120, 19)
     }
 
     override fun script(): Nothing {
-        val swipeLocation = swipeLocations.giftBox
         var clickCount = 0
         var aroundEnd = false
         var nullStreak = 0
@@ -30,15 +27,18 @@ class AutoGiftBox @Inject constructor(
                 if (!aroundEnd) {
                     // The scrollbar end position matches before completely at end
                     // a few items can be left off if we're not careful
-                    aroundEnd = images.giftBoxScrollEnd in scrollEndRegion
+                    aroundEnd = images.giftBoxScrollEnd in game.giftBoxScrollEndRegion
                 }
 
                 pickGifts()
             }
-            
+
             clickCount += picked
 
-            swipe(swipeLocation.start, swipeLocation.end)
+            swipe(
+                game.giftBoxSwipeStart,
+                game.giftBoxSwipeEnd
+            )
 
             if (aroundEnd) {
                 // Once we're around the end, stop after we don't pick anything consecutively
@@ -55,26 +55,23 @@ class AutoGiftBox @Inject constructor(
             }
         }
 
-        throw ScriptExitException(messages.pickedExpStack(clickCount))
+        /*
+           clickCount can be higher than maxClickCount when the script is close to the limit and
+           finds multiple collectible stacks on the screen. FGO will not register the extra clicks.
+         */
+        throw ScriptExitException(messages.pickedExpStack(clickCount.coerceAtMost(maxClickCount)))
     }
-
-    private val countRegionX
-        get() = when (prefs.gameServer) {
-            GameServerEnum.Jp -> 660
-            GameServerEnum.En -> 800
-            GameServerEnum.Kr -> 670
-            GameServerEnum.Tw -> 700
-            else -> throw ScriptExitException("Not supported on this server yet")
-        }
 
     // Return picked count
     private fun pickGifts(): Int {
         var clickCount = 0
 
-        for (gift in checkRegion.findAll(images.giftBoxCheck).sorted()) {
-            val countRegion = Region(countRegionX, gift.Region.Y - 120, 300, 100)
-            val iconRegion = Region(190, gift.Region.Y - 116, 300, 240)
-            val clickSpot = Location(1700, gift.Region.Y + 50)
+        for (gift in game.giftBoxCheckRegion.findAll(images.giftBoxCheck).sorted()) {
+            val offset = Location(0, gift.Region.Y)
+
+            val countRegion = game.giftBoxCountRegion + offset
+            val iconRegion = game.giftBoxIconRegion + offset
+            val clickSpot = game.giftBoxClickSpot + offset
 
             val gold = images.goldXP in iconRegion
             val silver = !gold && images.silverXP in iconRegion

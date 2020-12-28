@@ -10,7 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.root.RootScreenshotService
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +37,7 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<ListPreference>(getString(R.string.pref_boost_item))?.apply {
             entries = listOf(R.string.p_boost_item_disabled, R.string.p_boost_item_skip)
-                .map { context.getString(it) }
+                .map { getString(it) }
                 .toTypedArray() +
                     (1..3).map {
                         context.getString(R.string.p_boost_item_number, it)
@@ -58,15 +58,26 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
             it.summary = storageProvider.rootDirName
         }
 
-        findPreference<SwitchPreferenceCompat>(getString(R.string.pref_use_root_screenshot))?.let {
-            val canUseRoot = RootScreenshotService.canUseRootForScreenshots()
-            it.isEnabled = canUseRoot
+        findPreference<ListPreference>(getString(R.string.pref_game_server))?.apply {
+            entries =
+                (listOf(R.string.p_game_server_auto_detect) + enumValues<GameServerEnum>().map { it.displayStringRes })
+                    .map { getString(it) }
+                    .toTypedArray()
 
-            if (!canUseRoot) {
-                it.isChecked = false
-            }
+            entryValues =
+                (listOf(getString(R.string.pref_game_server_auto_detect)) + enumValues<GameServerEnum>().map { it.name })
+                    .toTypedArray()
         }
     }
+
+    val GameServerEnum.displayStringRes
+        get() = when (this) {
+            GameServerEnum.En -> R.string.game_server_na
+            GameServerEnum.Jp -> R.string.game_server_jp
+            GameServerEnum.Cn -> R.string.game_server_cn
+            GameServerEnum.Tw -> R.string.game_server_tw
+            GameServerEnum.Kr -> R.string.game_server_kr
+        }
 
     private val pickDir = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUrl ->
         if (dirUrl != null) {

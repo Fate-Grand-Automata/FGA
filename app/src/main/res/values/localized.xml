@@ -130,6 +130,8 @@
     <string name="p_max_skill_2">Max Skill 2</string>
     <string name="p_max_skill_3">Max Skill 3</string>
 
+    <string name="p_game_server">Game Server</string>
+    <string name="p_game_server_auto_detect">Auto-detect</string>
     <string name="p_spam_summary">Danger mode requires Auto-targeting</string>
     <string name="p_spam_np">NP Spam</string>
     <string name="p_spam_skill">Skill Spam</string>
@@ -152,6 +154,7 @@
     <string name="p_wait_ap_regen_text">Wait for AP Regeneration</string>
     <string name="p_wait_ap_regen_text_summary">Keeps FGA running even when AP runs out, and automatically restart node once enough AP has regenerated.</string>
 
+    <string name="p_storage">Storage</string>
     <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
 
     <string name="p_choose_folder_title">Choose Folder</string>

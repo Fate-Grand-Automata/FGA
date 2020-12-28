@@ -1,34 +1,23 @@
 package com.mathewsachin.fategrandautomata.scripts.models
 
-import com.mathewsachin.libautomata.Location
+sealed class OrderChangeMember(val autoSkillCode: Char) {
+    sealed class Starting(autoSkillCode: Char) : OrderChangeMember(autoSkillCode) {
+        object A : Starting('1')
+        object B : Starting('2')
+        object C : Starting('3')
 
-sealed class OrderChangeMember(
-    val clickLocation: Location,
-    val autoSkillCode: Char
-) {
-    class Starting private constructor(
-        clickLocation: Location,
-        autoSkillCode: Char
-    ) : OrderChangeMember(clickLocation, autoSkillCode) {
         companion object {
-            val list = listOf(
-                Starting(Location(280, 700), '1'),
-                Starting(Location(680, 700), '2'),
-                Starting(Location(1080, 700), '3')
-            )
+            val list = listOf(A, B, C)
         }
     }
 
-    class Sub private constructor(
-        clickLocation: Location,
-        autoSkillCode: Char
-    ) : OrderChangeMember(clickLocation, autoSkillCode) {
+    sealed class Sub(autoSkillCode: Char) : OrderChangeMember(autoSkillCode) {
+        object A : Sub('1')
+        object B : Sub('2')
+        object C : Sub('3')
+
         companion object {
-            val list = listOf(
-                Sub(Location(1480, 700), '1'),
-                Sub(Location(1880, 700), '2'),
-                Sub(Location(2280, 700), '3')
-            )
+            val list = listOf(A, B, C)
         }
     }
 }

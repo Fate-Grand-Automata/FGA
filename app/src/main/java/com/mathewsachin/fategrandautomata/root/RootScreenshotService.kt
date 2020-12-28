@@ -21,47 +21,39 @@ class RootScreenshotService(
     val storageProvider: StorageProvider,
     val platformImpl: IPlatformImpl
 ) : IScreenshotService, IColorScreenshotProvider {
-    companion object {
-        fun canUseRootForScreenshots() =
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.P
-    }
-
+    private var reader: DataInputStream = SuperUser.inStream
     private var buffer: ByteArray? = null
-    private val imgPath = storageProvider.rootScreenshotFile
 
     private var rootLoadMat: Mat? = null
     private val rootConvertMat = Mat()
     private val pattern = DroidCvPattern(rootConvertMat, false)
 
     private fun screenshotIntoBuffer() {
-        SuperUser.sendCommand("/system/bin/screencap $imgPath")
+        SuperUser.writeLine("/system/bin/screencap")
 
-        imgPath.inputStream().use {
-            DataInputStream(it).use { reader ->
-                val w = reader.readIntLE()
-                val h = reader.readIntLE()
-                val format = reader.readIntLE()
+        val w = reader.readIntLE()
+        val h = reader.readIntLE()
+        val format = reader.readIntLE()
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    reader.readIntLE()
-                }
-
-                if (buffer == null) {
-                    // If format is not RGBA, notify
-                    if (format != 1) {
-                        platformImpl.toast("Unexpected raw image format: $format")
-                    }
-
-                    Timber.debug { "${w}x${h} format=$format" }
-
-                    buffer = ByteArray(w * h * 4)
-                    rootLoadMat = Mat(h, w, CvType.CV_8UC4)
-                }
-
-                buffer?.let { b -> reader.read(b, 0, b.size) }
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            reader.readIntLE()
         }
 
+        if (buffer == null) {
+            // If format is not RGBA, notify
+            if (format != 1) {
+                platformImpl.toast("Unexpected raw image format: $format")
+            }
+
+            Timber.debug { "${w}x${h} format=$format" }
+
+            buffer = ByteArray(w * h * 4)
+            rootLoadMat = Mat(h, w, CvType.CV_8UC4)
+        }
+
+        // "readFully" will wait for the entire data (b.size) to be available in the input stream,
+        // however long it takes (in actuality, it just takes a few milliseconds).
+        buffer?.let { b -> reader.readFully(b, 0, b.size) }
         rootLoadMat?.put(0, 0, buffer)
     }
 
