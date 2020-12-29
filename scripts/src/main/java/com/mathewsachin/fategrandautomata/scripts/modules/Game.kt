@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.ImageLocator
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
@@ -9,7 +10,10 @@ import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
+import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
+import timber.log.Timber
+import timber.log.debug
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.time.seconds
@@ -26,8 +30,10 @@ fun IFgoAutomataApi.retry() {
 class Game @Inject constructor(
     platformImpl: IPlatformImpl,
     val prefs: IPreferences,
+    val images: ImageLocator,
     transformationExtensions: ITransformationExtensions,
-    val gameAreaManager: GameAreaManager
+    val gameAreaManager: GameAreaManager,
+    val automataApi: IAutomataExtensions
 ) {
     val scriptArea =
         Region(
@@ -35,8 +41,8 @@ class Game @Inject constructor(
             gameAreaManager.gameArea.size * (1 / transformationExtensions.scriptToScreenScale())
         )
 
-    val isWide = prefs.gameServer == GameServerEnum.Jp
-            && scriptArea.isWide()
+    private val isJp = prefs.gameServer == GameServerEnum.Jp
+    val isWide = isJp && scriptArea.isWide()
 
     fun Location.xFromCenter() =
         this + Location(scriptArea.center.X, 0)
@@ -55,6 +61,22 @@ class Game @Inject constructor(
 
     fun Region.yFromBottom() =
         this + Location(0, scriptArea.bottom)
+
+    // Master Skills and Stage counter are right-aligned differently,
+    // so we use locations relative to a matched location
+    private val masterOffsetJp: Location by lazy {
+        automataApi.run {
+            Region(-170, 360, 170, 80)
+                .xFromRight()
+                .find(images.battleMenu)
+                ?.Region
+                ?.center
+                ?.copy(Y = 0)
+                ?: Location(-298, 0).xFromRight().also {
+                    Timber.debug { "Defaulting master offset" }
+                }
+        }
+    }
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
@@ -198,7 +220,11 @@ class Game @Inject constructor(
         Skill.Master.A -> Location(-740, 620)
         Skill.Master.B -> Location(-560, 620)
         Skill.Master.C -> Location(-400, 620)
-    }.xFromRight() + Location(if (isWide) -120 else 0, 0)
+    }.let {
+        if (isJp)
+            it + Location(178, 0) + masterOffsetJp
+        else it.xFromRight()
+    }
 
     fun locate(skill: Skill) = when (skill) {
         is Skill.Servant -> locate(skill)
@@ -241,14 +267,10 @@ class Game @Inject constructor(
 
     val battleStageCountRegion
         get() = when (prefs.gameServer) {
-            GameServerEnum.Tw -> Region(-850, 25, 55, 60)
-            GameServerEnum.Jp -> {
-                if (isWide)
-                    Region(-869, 23, 33, 53)
-                else Region(-796, 28, 31, 44)
-            }
-            else -> Region(-838, 25, 46, 53)
-        }.xFromRight()
+            GameServerEnum.Tw -> Region(1710, 25, 55, 60)
+            GameServerEnum.Jp -> Region(-571, 23, 33, 53) + masterOffsetJp
+            else -> Region(1722, 25, 46, 53)
+        }
 
     val battleScreenRegion =
         (if (isWide)
@@ -265,10 +287,9 @@ class Game @Inject constructor(
             .yFromBottom()
 
     val battleMasterSkillOpenClick =
-        (if (isWide)
-            Location(-300, 640)
-        else Location(-180, 640))
-            .xFromRight()
+        if (isJp)
+            Location(0, 640) + masterOffsetJp
+        else Location(-180, 640).xFromRight()
 
     val battleSkillOkClick = Location(400, 850).xFromCenter()
     val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()

@@ -106,6 +106,8 @@ class ImageLocator @Inject constructor(
 
     val support get() = load("support.png")
 
+    val battleMenu get() = load("battle_menu.png")
+
     val x1 get() = load("x1.png")
     val x2 get() = load("x2.png")
     val x3 get() = load("x3.png")
