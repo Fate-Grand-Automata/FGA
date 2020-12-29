@@ -28,6 +28,7 @@
     <string name="pref_refill_decrement">refill_decrement</string>
 
     <string name="pref_wait_ap_regen">wait_for_ap_regeneration</string>
+    <string name="pref_wait_ap_regen_minutes">wait_for_ap_regeneration_minutes</string>
 
     <string name="pref_support_pref_servant">support_pref_servant_list</string>
 

@@ -39,6 +39,8 @@ class PrefsCore @Inject constructor(
 
     val waitAPRegen = maker.bool(R.string.pref_wait_ap_regen)
 
+    val waitAPRegenMinutes = maker.int(R.string.pref_wait_ap_regen_minutes)
+
     val ignoreNotchCalculation = maker.bool(R.string.pref_ignore_notch)
 
     val useRootForScreenshots = maker.bool(R.string.pref_use_root_screenshot)
