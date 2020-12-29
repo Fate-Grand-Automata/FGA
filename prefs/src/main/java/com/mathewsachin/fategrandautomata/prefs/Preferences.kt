@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.prefs
 
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.map
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.IPlatformPrefs
 import javax.inject.Inject
@@ -12,7 +13,7 @@ class PreferencesImpl @Inject constructor(
 ) : IPreferences {
     override var scriptMode by prefs.scriptMode
 
-    override var gameServer by prefs.gameServer
+    override var gameServer = GameServerEnum.En
 
     override val skillConfirmation by prefs.skillConfirmation
 
