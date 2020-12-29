@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="service_runner_description">這是讓FGA可以使用腳本的設定，FGA需要開啟無障礙服務以在沒有root的情況下查看及控制螢幕，包含點按跟捲動等</string>
+
     <string name="battle_config_item_copy">複製</string>
     <string name="battle_config_item_delete">刪除</string>
     <string name="battle_config_item_export">匯出</string>
@@ -136,6 +138,7 @@
     <string name="p_max_skill_3">三技滿等</string>
 
     <string name="p_game_server">伺服器</string>
+    <string name="p_game_server_auto_detect">自動偵測</string>
     <string name="p_spam_summary">選擇Danger 敵人時施放選項需開啟自動選取敵人</string>
     <string name="p_spam_np">自動寶具</string>
     <string name="p_spam_skill">自動施放技能</string>
