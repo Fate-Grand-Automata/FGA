@@ -161,7 +161,7 @@
     <string name="p_wait_ap_regen_text">Wait for AP Regeneration</string>
     <string name="p_wait_ap_regen_text_summary">Keeps FGA running even when AP runs out and automatically restart node once enough AP has regenerated.</string>
     <string name="p_wait_ap_regen_minutes_text">Minutes Before Rechecking</string>
-    <string name="p_wait_ap_regen_minutes_text_summary">Default: 5. Please set your screen timeout to be longer than the duration.</string>
+    <string name="p_wait_ap_regen_minutes_text_summary">Please set your screen timeout to be longer than the duration.</string>
 
     <string name="p_storage">Storage</string>
     <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
