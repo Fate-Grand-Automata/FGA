@@ -160,7 +160,7 @@
 
     <string name="p_wait_ap_regen_text">Wait for AP Regeneration</string>
     <string name="p_wait_ap_regen_text_summary">Keeps FGA running even when AP runs out and automatically restart node once enough AP has regenerated.</string>
-    <string name="p_wait_ap_regen_minutes_text">Minutes before rechecking</string>
+    <string name="p_wait_ap_regen_minutes_text">Minutes Before Rechecking</string>
     <string name="p_wait_ap_regen_minutes_text_summary">Default: 5</string>
 
     <string name="p_storage">Storage</string>
