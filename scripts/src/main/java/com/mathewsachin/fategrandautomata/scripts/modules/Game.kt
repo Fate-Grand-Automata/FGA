@@ -69,7 +69,7 @@ class Game @Inject constructor(
     // so we use locations relative to a matched location
     private val masterOffsetJp: Location by lazy {
         automataApi.run {
-            Region(-170, 360, 170, 80)
+            Region(-400, 360, 400, 80)
                 .xFromRight()
                 .find(images.battleMenu)
                 ?.Region
@@ -289,10 +289,11 @@ class Game @Inject constructor(
             .xFromRight()
             .yFromBottom()
 
-    val battleMasterSkillOpenClick =
-        if (isJp)
-            Location(0, 640) + masterOffsetJp
-        else Location(-180, 640).xFromRight()
+    val battleMasterSkillOpenClick
+        get() =
+            if (isJp)
+                Location(0, 640) + masterOffsetJp
+            else Location(-180, 640).xFromRight()
 
     val battleSkillOkClick = Location(400, 850).xFromCenter()
     val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
