@@ -8,7 +8,10 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.GameAreaManager
+import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
@@ -329,18 +332,6 @@ class Game @Inject constructor(
 
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
-    val giftBoxCheckRegion = Region(360, 400, 120, 2120).xFromCenter()
-    val giftBoxScrollEndRegion = Region(540, 1421, 120, 19).xFromCenter()
-    val giftBoxIconRegion = Region(-1090, -116, 300, 240).xFromCenter()
-    val giftBoxClickSpot = Location(420, 50).xFromCenter()
-
-    val giftBoxCountRegion = when (prefs.gameServer) {
-        GameServerEnum.Jp -> -620
-        GameServerEnum.En -> -480
-        GameServerEnum.Kr -> -610
-        GameServerEnum.Tw -> -580
-        else -> throw ScriptExitException("Not supported on this server yet")
-    }.let { x -> Region(x, -120, 300, 100).xFromCenter() }
 
     val lotteryFinishedRegion = Region(-780, 860, 180, 100).xFromCenter()
     val lotteryCheckRegion = Region(-1130, 800, 340, 230).xFromCenter()
