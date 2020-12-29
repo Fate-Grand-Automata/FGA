@@ -46,6 +46,9 @@ class SkillMakerViewModel @ViewModelInject constructor(
                             m.skillCommand.removeLast()
                             m.skillCommand.add(SkillMakerEntry.Next.Wave(l.action))
                         }
+                        else -> {
+                            // do nothing
+                        }
                     }
                 }
             }

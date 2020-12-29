@@ -14,9 +14,8 @@
     <string name="battle_config_item_open_maker">메이커</string>
     <string name="battle_config_support_any">아무거나</string>
 
-    <string name="support_imgs_extracted">서포트 이미지가 성공적으로 추출되었습니다</string>  
+    <string name="support_imgs_extracted">서포트 이미지가 성공적으로 추출되었습니다</string>
     <string name="support_imgs_extract_failed">서포트 이미지 추출을 실패했습니다</string>
-    <string name="support_img_not_found">이미지 불러오기 실패: %1$s. %2$s 폴더에 이미지를 넣으시오.</string>
 
     <string name="battle_config_list_no_items">오토 스킬 아이템 없음</string>
     <string name="battle_config_list_import">불러오기</string>
@@ -33,7 +32,6 @@
     <string name="skill_maker_confirm_exit_message">정말로 나가시겠습니까? 오토 스킬 커맨드가 사라집니다.</string>
     <string name="skill_maker_confirm_clear_title">초기화 확인</string>
     <string name="skill_maker_confirm_clear_message">이 작업은 오토 스클 커맨드를 초기화 하게 됩니다. 정말로 하시겠습니까?</string>
-    <string name="skill_maker_confirm_np_deletion_title">보구 삭제 확인</string>
     <string name="skill_maker_atk_header">공격</string>
     <string name="skill_maker_atk_servant_np">서번트\n%d\n\n보구</string>
     <string name="skill_maker_atk_cards_before_np">보구 전 공격카드</string>
@@ -43,13 +41,11 @@
 
     <string name="skill_maker_main_enemy">적 %d</string>
     <string name="skill_maker_main_battle">배틀: %d</string>
-    <string name="skill_maker_main_turn">턴: %d</string>
     <string name="skill_maker_main_master_skills">마스터\n 스킬</string>
     <string name="skill_maker_main_undo">되돌리기</string>
     <string name="skill_maker_main_clear">초기화</string>
     <string name="skill_maker_main_servant">서번트 %d</string>
     <string name="skill_maker_main_attack">공격</string>
-    <string name="skill_maker_cannot_select">보구 전에 보구/카드를 수정하려면 턴/웨이브 분리기를 되돌려주십시오.</string>
 
     <string name="skill_maker_master_skills_header">마스터 스킬</string>
     <string name="skill_maker_master_skills_order_change">오더 체인지 / 전투복</string>
@@ -95,19 +91,17 @@
     <string name="support_img_namer_title">원하는 걸로 하세요</string>
     <string name="support_img_namer_done">완료</string>
     <string name="support_img_namer_blank_file_name">이름 중에 하나가 아직 공백입니다. 서번트나 개념예장을 체크 해제 하시거나 이름을 지정해주세요.</string>
-    <string name="support_img_namer_file_name_already_exists">\'%s\'은(는) 이미 존재합니다. 다른 이름을 지정해주세요.</string>
     <string name="support_img_namer_file_rename_failed">\'%s\'로 이름 변경 실패</string>
 
-    <string name="p_script_mode">스크립트 모드</string>
     <string name="p_refill">사과 사용</string>
     <string name="p_refill_off">끔</string>
-    <string name="p_refill_summary">사과 사용 관리</string>	
+    <string name="p_refill_summary">사과 사용 관리</string>
     <string name="p_battle_config">오토 스킬</string>
-    <string name="p_battle_config_summary">오토 스킬 설정관리</string>	
+    <string name="p_battle_config_summary">오토 스킬 설정관리</string>
     <string name="p_more_options">더 많은 옵션</string>
 
     <string name="p_enable_refill">사과 사용 활성화</string>
-    <string name="p_refill_none">없음</string>	
+    <string name="p_refill_none">없음</string>
     <string name="p_repetitions">반복</string>
     <string name="p_auto_decrement">자동 감소</string>
     <string name="p_auto_decrement_summary">사과 갯수 사용에 따라 자동으로 사과 갯수 사용량 줄이기</string>
@@ -127,7 +121,6 @@
     <string name="p_battle_config_support_fallback_selection_mode">실패시 선택 모드</string>
     <string name="p_battle_config_support_pref_servants">서번트 선호</string>
     <string name="p_battle_config_support_max_ascended">최종재림</string>
-    <string name="p_battle_config_support_skill_levels">스킬 레벨</string>
     <string name="p_battle_config_support_pref_ces">개념예장 선호</string>
     <string name="p_battle_config_support_mlb">최대해방 / 풀돌</string>
     <string name="p_battle_config_support_friend_names">친구 이름</string>
@@ -136,7 +129,7 @@
     <string name="p_max_skill_1">1 스킬 만렙</string>
     <string name="p_max_skill_2">2 스킬 만렙</string>
     <string name="p_max_skill_3">3 스킬 만렙</string>
-    
+
     <string name="p_game_server">게임 서버</string>
     <string name="p_game_server_auto_detect">자동 감지</string>
     <string name="p_spam_summary">위험 모드는 자동 표적 활성화가 필요합니다</string>
@@ -218,28 +211,25 @@
     <string name="p_refill_type_sq">성정석</string>
 
     <string name="p_brave_chains_don_t_care">상관 없음</string>
-    <string name="p_brave_chains_with_np">보구랑 같이</string>																																																			   
+    <string name="p_brave_chains_with_np">보구랑 같이</string>
     <string name="p_brave_chains_avoid">자제</string>
-	
-    <string name="p_boost_item_disabled">비활성화</string>										   
+
+    <string name="p_boost_item_disabled">비활성화</string>
     <string name="p_boost_item_skip">스킵</string>
     <string name="p_boost_item_number">아이템 %d</string>
 
     <string name="p_spam_none">없음</string>
     <string name="p_spam_spam">반복</string>
-    <string name="p_spam_danger">위험</string>																	
-	
+    <string name="p_spam_danger">위험</string>
+
     <string name="p_support_mode_first">첫번째</string>
-    <string name="p_support_mode_manual">수동</string>											 
+    <string name="p_support_mode_manual">수동</string>
     <string name="p_support_mode_preferred">선호</string>
-    <string name="p_support_mode_friend">친구</string>												 
+    <string name="p_support_mode_friend">친구</string>
 
     <string name="p_script_mode_battle">배틀</string>
-    <string name="p_script_mode_lottery">룰렛</string>
-    <string name="p_script_mode_friend_gacha">친구 포인트 가챠</string>
-    <string name="p_script_mode_support_img_maker">서포트 이미지 메이커</string>
     <string name="p_script_mode_gift_box">선물함</string>
-  
+
     <string name="p_max_gold_ember_set_size">4성 경험치 카드 개수</string>
 
     <string name="p_not_set">설정 안함</string>

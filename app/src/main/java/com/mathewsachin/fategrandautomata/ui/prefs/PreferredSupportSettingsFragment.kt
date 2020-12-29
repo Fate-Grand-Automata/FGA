@@ -82,6 +82,7 @@ class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         fun prepare(dialogFragment: PreferenceDialogFragmentCompat) {
+            @Suppress("DEPRECATION")
             dialogFragment.setTargetFragment(this, 0)
             dialogFragment.show(parentFragmentManager, null)
         }

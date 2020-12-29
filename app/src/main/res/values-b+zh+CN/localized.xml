@@ -16,7 +16,6 @@
 
     <string name="support_imgs_extracted">助战图片提取成功</string>
     <string name="support_imgs_extract_failed">无法提取助战图片</string>
-    <string name="support_img_not_found">助战图片载入失败: %1$s ，请将从者图片放在 %2$s 文件夹</string>
 
     <string name="battle_config_list_no_items">目前没有脚本，请按右下角的加号新增</string>
     <string name="battle_config_list_import">导入脚本</string>
@@ -33,7 +32,6 @@
     <string name="skill_maker_confirm_exit_message">将不会储存目前设定的脚本，确认离开?</string>
     <string name="skill_maker_confirm_clear_title">确认清除</string>
     <string name="skill_maker_confirm_clear_message">将会清除所有设定，确认执行?</string>
-    <string name="skill_maker_confirm_np_deletion_title">确认复原宝具指令</string>
     <string name="skill_maker_atk_header">攻击指令</string>
     <string name="skill_maker_atk_servant_np">从者\n%d\n\n宝具</string>
     <string name="skill_maker_atk_cards_before_np">宝具前垫刀</string>
@@ -43,13 +41,11 @@
 
     <string name="skill_maker_main_enemy">敌人 %d</string>
     <string name="skill_maker_main_battle">战斗 %d</string>
-    <string name="skill_maker_main_turn">%d 回合</string>
     <string name="skill_maker_main_master_skills">御主技能</string>
     <string name="skill_maker_main_undo">复原</string>
     <string name="skill_maker_main_clear">重设</string>
     <string name="skill_maker_main_servant">从者 %d</string>
     <string name="skill_maker_main_attack">攻击</string>
-    <string name="skill_maker_cannot_select">请先重设回合/宝具指令</string>
 
     <string name="skill_maker_master_skills_header">御主技能</string>
     <string name="skill_maker_master_skills_order_change">换人\nOrder Change</string>
@@ -95,10 +91,8 @@
     <string name="support_img_namer_title">请选择</string>
     <string name="support_img_namer_done">完成</string>
     <string name="support_img_namer_blank_file_name">名称不可为空白，请取消勾选或是加上名称</string>
-    <string name="support_img_namer_file_name_already_exists">\'%s\' 名称重复，请使用其他名称</string>
     <string name="support_img_namer_file_rename_failed">重新命名成 \'%s\' 失败</string>
 
-    <string name="p_script_mode">脚本模式</string>
     <string name="p_refill">自动回体</string>
     <string name="p_refill_off">关闭</string>
     <string name="p_refill_summary">设定自动回体</string>
@@ -127,7 +121,6 @@
     <string name="p_battle_config_support_fallback_selection_mode">备用选取方式</string>
     <string name="p_battle_config_support_pref_servants">偏好从者</string>
     <string name="p_battle_config_support_max_ascended">最终再临</string>
-    <string name="p_battle_config_support_skill_levels">技能等级</string>
     <string name="p_battle_config_support_pref_ces">偏好礼装</string>
     <string name="p_battle_config_support_mlb">满破礼装</string>
     <string name="p_battle_config_support_friend_names">好友名称</string>
@@ -235,9 +228,6 @@
     <string name="p_support_mode_friend">好友从者</string>
 
     <string name="p_script_mode_battle">战斗</string>
-    <string name="p_script_mode_lottery">抽无限池</string>
-    <string name="p_script_mode_friend_gacha">友情点数召唤</string>
-    <string name="p_script_mode_support_img_maker">助战图片截取器</string>
     <string name="p_script_mode_gift_box">礼物盒</string>
 
     <string name="p_max_gold_ember_set_size">金种火最大领取数</string>

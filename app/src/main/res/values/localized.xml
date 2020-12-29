@@ -16,7 +16,6 @@
 
     <string name="support_imgs_extracted">Support Images Extracted Successfully</string>
     <string name="support_imgs_extract_failed">Couldn\'t extract support images</string>
-    <string name="support_img_not_found">Unable to load image: %1$s. Put images in %2$s folder</string>
 
     <string name="battle_config_list_no_items">No configs</string>
     <string name="battle_config_list_import">Import</string>
@@ -33,7 +32,6 @@
     <string name="skill_maker_confirm_exit_message">Are you sure you want to exit? Skill command will be lost.</string>
     <string name="skill_maker_confirm_clear_title">Confirm Clear</string>
     <string name="skill_maker_confirm_clear_message">This will clear the Skill command. Are you sure?</string>
-    <string name="skill_maker_confirm_np_deletion_title">Confirm NP deletion</string>
     <string name="skill_maker_atk_header">Attack</string>
     <string name="skill_maker_atk_servant_np">Servant\n%d\n\nNP</string>
     <string name="skill_maker_atk_cards_before_np">Cards before NP</string>
@@ -43,13 +41,11 @@
 
     <string name="skill_maker_main_enemy">Enemy %d</string>
     <string name="skill_maker_main_battle">Battle: %d</string>
-    <string name="skill_maker_main_turn">Turn: %d</string>
     <string name="skill_maker_main_master_skills">Master\n Skills</string>
     <string name="skill_maker_main_undo">Undo</string>
     <string name="skill_maker_main_clear">Clear</string>
     <string name="skill_maker_main_servant">Servant %d</string>
     <string name="skill_maker_main_attack">Attack</string>
-    <string name="skill_maker_cannot_select">To edit NP/Cards before NP, undo on the Turn/Wave separator</string>
 
     <string name="skill_maker_master_skills_header">Master Skills</string>
     <string name="skill_maker_master_skills_order_change">Order Change / Plug-suit</string>
@@ -95,10 +91,8 @@
     <string name="support_img_namer_title">Pick what you want</string>
     <string name="support_img_namer_done">Done</string>
     <string name="support_img_namer_blank_file_name">One of the names is still empty. Either uncheck the unnamed Servant/CE or specify a name.</string>
-    <string name="support_img_namer_file_name_already_exists">\'%s\' already exists. Specify another name.</string>
     <string name="support_img_namer_file_rename_failed">Failed to rename to: \'%s\'</string>
 
-    <string name="p_script_mode">Script Mode</string>
     <string name="p_refill">Refill</string>
     <string name="p_refill_off">OFF</string>
     <string name="p_refill_summary">Manage AP refill</string>
@@ -127,7 +121,6 @@
     <string name="p_battle_config_support_fallback_selection_mode">Fallback Selection Mode</string>
     <string name="p_battle_config_support_pref_servants">Preferred Servants</string>
     <string name="p_battle_config_support_max_ascended">Max-ascended</string>
-    <string name="p_battle_config_support_skill_levels">Skill Levels</string>
     <string name="p_battle_config_support_pref_ces">Preferred CEs</string>
     <string name="p_battle_config_support_mlb">Max-limit broken</string>
     <string name="p_battle_config_support_friend_names">Friend names</string>
@@ -238,9 +231,6 @@
     <string name="p_support_mode_friend">Friend</string>
 
     <string name="p_script_mode_battle">Battle</string>
-    <string name="p_script_mode_lottery">Lottery</string>
-    <string name="p_script_mode_friend_gacha">Friend Gacha</string>
-    <string name="p_script_mode_support_img_maker">Support Image Maker</string>
     <string name="p_script_mode_gift_box">Gift Box</string>
 
     <string name="p_max_gold_ember_set_size">Max Gold ember set size</string>
