@@ -61,6 +61,8 @@ class PreferencesImpl @Inject constructor(
 
     override val waitAPRegen by prefs.waitAPRegen
 
+    override val waitAPRegenMinutes by prefs.waitAPRegenMinutes
+
     override val ignoreNotchCalculation by prefs.ignoreNotchCalculation
 
     override val useRootForScreenshots by prefs.useRootForScreenshots

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="service_runner_description">这个服务实际上运行脚本。如果要在没有root权限的情况下执行单击和滑动，则需要辅助功能服务。</string>
+
     <string name="battle_config_item_copy">复制</string>
     <string name="battle_config_item_delete">删除</string>
     <string name="battle_config_item_export">导出</string>
@@ -124,11 +126,12 @@
     <string name="p_battle_config_support_friend_names">好友名称</string>
     <string name="p_battle_config_support_friends_only">只选择好友从者</string>
 
-    <string name="p_max_skill_1">一技满等</string>
-    <string name="p_max_skill_2">二技满等</string>
-    <string name="p_max_skill_3">三技满等</string>
+    <string name="p_max_skill_1">一技能满级</string>
+    <string name="p_max_skill_2">二技能满级</string>
+    <string name="p_max_skill_3">三技能满级</string>
 
     <string name="p_game_server">服务器</string>
+    <string name="p_game_server_auto_detect">自动检测</string>
     <string name="p_spam_summary">选择危险敌人时施放选项需开启自动选取敌人</string>
     <string name="p_spam_np">自动宝具</string>
     <string name="p_spam_skill">自动施放技能</string>
@@ -161,7 +164,7 @@
     <string name="p_choose_folder_action">选择</string>
 
     <string name="p_advanced">进阶</string>
-    <string name="p_debug_mode">除错模式</string>
+    <string name="p_debug_mode">Debug模式</string>
     <string name="p_debug_mode_summary">将框出对比图像的区域</string>
     <string name="p_ignore_notch">忽略刘海</string>
     <string name="p_ignore_notch_summary">若FGO未在您的手机上把刘海部分空出來，请开启此选项</string>
@@ -215,7 +218,6 @@
     <string name="p_boost_item_skip">跳过</string>
     <string name="p_boost_item_number">道具 %d</string>
 
-
     <string name="p_spam_none">无</string>
     <string name="p_spam_spam">能放就放</string>
     <string name="p_spam_danger">危险敌人时施放</string>
@@ -253,10 +255,10 @@
     <string name="accessibility_disabled_message">请在系统设定中开启无障碍服务设定，如果已经开启请关闭后重新开启</string>
     <string name="accessibility_disabled_go_to_settings">前往设定</string>
     <string name="draw_overlay_disabled_title">无法显示在其他应用程序上层</string>
-    <string name="draw_overlay_disabled_message">请让此程式显示在其他应用程序上层，FGA需要启用此设定以显示控制按钮</string>
+    <string name="draw_overlay_disabled_message">请让此程序显示在其他应用程序上层，FGA需要启用此设定以显示控制按钮</string>
     <string name="draw_overlay_disabled_go_to_settings">前往设定</string>
     <string name="select_script">选择脚本</string>
-    <string name="other_scripts">抽礼物池/友情点数召唤/领取礼物盒种火/\n助战图片截取器</string>
+    <string name="other_scripts">抽无限池/友情点数召唤/领取礼物盒种火/\n助战图片截取器</string>
     <string name="cannot_start_recording">无法开启屏幕录影</string>
     <string name="cannot_detect_script_type">无法检测脚本类型</string>
 

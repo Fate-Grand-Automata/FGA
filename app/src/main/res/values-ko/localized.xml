@@ -131,6 +131,7 @@
     <string name="p_max_skill_3">3 스킬 만렙</string>
 
     <string name="p_game_server">게임 서버</string>
+    <string name="p_game_server_auto_detect">자동 감지</string>
     <string name="p_spam_summary">위험 모드는 자동 표적 활성화가 필요합니다</string>
     <string name="p_spam_np">보구 연속 사용</string>
     <string name="p_spam_skill">스킬 연속 사용</string>
