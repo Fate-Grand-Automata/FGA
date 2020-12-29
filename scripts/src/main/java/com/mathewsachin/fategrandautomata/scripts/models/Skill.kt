@@ -1,42 +1,31 @@
 package com.mathewsachin.fategrandautomata.scripts.models
 
-import com.mathewsachin.libautomata.Location
+sealed class Skill(val autoSkillCode: Char) {
+    sealed class Servant(autoSkillCode: Char) : Skill(autoSkillCode) {
+        object A1 : Servant('a')
+        object A2 : Servant('b')
+        object A3 : Servant('c')
 
-sealed class Skill(
-    val clickLocation: Location,
-    val autoSkillCode: Char
-) {
-    class Servant private constructor(
-        clickLocation: Location,
-        autoSkillCode: Char
-    ) : Skill(clickLocation, autoSkillCode) {
+        object B1 : Servant('d')
+        object B2 : Servant('e')
+        object B3 : Servant('f')
+
+        object C1 : Servant('g')
+        object C2 : Servant('h')
+        object C3 : Servant('i')
+
         companion object {
-            val list = listOf(
-                Servant(Location(140, 1155), 'a'),
-                Servant(Location(328, 1155), 'b'),
-                Servant(Location(514, 1155), 'c'),
-
-                Servant(Location(775, 1155), 'd'),
-                Servant(Location(963, 1155), 'e'),
-                Servant(Location(1150, 1155), 'f'),
-
-                Servant(Location(1413, 1155), 'g'),
-                Servant(Location(1600, 1155), 'h'),
-                Servant(Location(1788, 1155), 'i')
-            )
+            val list = listOf(A1, A2, A3, B1, B2, B3, C1, C2, C3)
         }
     }
 
-    class Master private constructor(
-        clickLocation: Location,
-        autoSkillCode: Char
-    ) : Skill(clickLocation, autoSkillCode) {
+    sealed class Master(autoSkillCode: Char) : Skill(autoSkillCode) {
+        object A : Master('j')
+        object B : Master('k')
+        object C : Master('l')
+
         companion object {
-            val list = listOf(
-                Master(Location(1820, 620), 'j'),
-                Master(Location(2000, 620), 'k'),
-                Master(Location(2160, 620), 'l')
-            )
+            val list = listOf(A, B, C)
         }
     }
 }

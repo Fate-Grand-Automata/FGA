@@ -1,17 +1,13 @@
 package com.mathewsachin.fategrandautomata.scripts.models
 
-import com.mathewsachin.libautomata.Location
-
 sealed class BoostItem {
-    // see docs/menu_boost_item_click_array.png
-
     object Disabled : BoostItem()
-    sealed class Enabled(val clickLocation: Location) : BoostItem() {
-        object Skip : Enabled(Location(1652, 1304))
+    sealed class Enabled : BoostItem() {
+        object Skip : Enabled()
 
-        object BoostItem1 : Enabled(Location(1280, 418))
-        object BoostItem2 : Enabled(Location(1280, 726))
-        object BoostItem3 : Enabled(Location(1280, 1000))
+        object BoostItem1 : Enabled()
+        object BoostItem2 : Enabled()
+        object BoostItem3 : Enabled()
     }
 
     companion object {

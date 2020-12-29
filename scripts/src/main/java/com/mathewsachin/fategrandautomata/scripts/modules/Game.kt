@@ -3,11 +3,11 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.isWide
+import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.GameAreaManager
-import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
@@ -24,47 +24,11 @@ fun IFgoAutomataApi.retry() {
 
 @ScriptScope
 class Game @Inject constructor(
+    platformImpl: IPlatformImpl,
     val prefs: IPreferences,
     transformationExtensions: ITransformationExtensions,
     val gameAreaManager: GameAreaManager
 ) {
-    companion object {
-        val menuScreenRegion = Region(2100, 1200, 1000, 1000)
-        val menuStorySkipRegion = Region(2240, 20, 300, 120)
-        val menuSelectQuestClick = Location(2290, 440)
-        val menuStorySkipClick = Location(2360, 80)
-
-        val supportNotFoundRegion = Region(468, 708, 100, 90)
-
-        val battleScreenRegion = Region(2105, 1259, 336, 116) // see docs/battle_region.png
-        val battleAttackClick = Location(2300, 1200)
-        val battleMasterSkillOpenClick = Location(2380, 640)
-        val battleBack = Location(2400, 1370)
-
-        val resultScreenRegion = Region(100, 300, 700, 200)
-        val resultBondRegion = Region(2000, 750, 120, 190)
-        val resultMasterExpRegion = Region(1280, 350, 400, 110)
-        val resultMatRewardsRegion = Region(2080, 1220, 280, 200)
-        val resultMasterLvlUpRegion = Region(1990, 160, 250, 270)
-
-        val resultCeRewardRegion = Region(1050, 1216, 33, 28)
-        val resultCeRewardDetailsRegion = Region(0, 512, 135, 115)
-        val resultCeRewardCloseClick = Location(80, 60)
-
-        val resultFriendRequestRegion = Region(1880, 150, 100, 94)
-        val resultFriendRequestRejectClick = Location(600, 1200)
-        val resultQuestRewardRegion = Region(1630, 140, 370, 250)
-        val resultClick = Location(1600, 1350)
-        val resultNextClick = Location(2200, 1350) // see docs/quest_result_next_click.png
-        val resultDropScrollbarRegion = Region(2260, 230, 100, 88)
-
-        val gudaFinalRewardsRegion = Region(1160, 1040, 228, 76)
-        val friendPtSummonCheck = Region(1380, 1220, 75, 75)
-        val continueSummonRegion = Region(1244, 1264, 580, 170)
-
-        val finishedLotteryBoxRegion = Region(500, 860, 180, 100)
-    }
-
     val scriptArea =
         Region(
             Location(),
@@ -83,7 +47,13 @@ class Game @Inject constructor(
     fun Location.xFromRight() =
         this + Location(scriptArea.right, 0)
 
+    fun Region.xFromRight() =
+        this + Location(scriptArea.right, 0)
+
     fun Location.yFromBottom() =
+        this + Location(0, scriptArea.bottom)
+
+    fun Region.yFromBottom() =
         this + Location(0, scriptArea.bottom)
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
@@ -91,6 +61,18 @@ class Game @Inject constructor(
     val continueClick = Location(370, 1120).xFromCenter()
 
     val inventoryFullRegion = Region(-230, 900, 458, 90).xFromCenter()
+
+    val menuScreenRegion =
+        (if (isWide)
+            Region(-600, 1200, 600, 240)
+        else Region(-460, 1200, 460, 240))
+            .xFromRight()
+
+    val menuSelectQuestClick =
+        (if (isWide)
+            Location(-410, 440)
+        else Location(-270, 440))
+            .xFromRight()
 
     val menuStartQuestClick =
         (if (isWide)
@@ -109,12 +91,6 @@ class Game @Inject constructor(
     val withdrawRegion = Region(-880, 540, 1800, 190).xFromCenter()
     val withdrawAcceptClick = Location(485, 720).xFromCenter()
     val withdrawCloseClick = Location(-10, 1140).xFromCenter()
-
-    val battleSkillOkClick = Location(400, 850).xFromCenter()
-
-    val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
-
-    val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
 
     val supportScreenRegion =
         if (isWide)
@@ -163,12 +139,17 @@ class Game @Inject constructor(
 
     val supportFriendsRegion = Region(354, 332, 1210, 1091) + supportOffset
 
-    val supportMaxAscendedRegion = Region(282, 0, 16, 120) + supportOffset
-    val supportLimitBreakRegion = Region(282, 0, 16, 90) + supportOffset
+    val supportMaxAscendedRegion = Region(280, 0, 20, 120) + supportOffset
+    val supportLimitBreakRegion = Region(280, 0, 20, 90) + supportOffset
 
     val supportRegionToolSearchRegion = Region(2006, 0, 370, 1440) + supportOffset
     val supportDefaultBounds = Region(-18, 0, 2356, 428) + supportOffset
     val supportDefaultCeBounds = Region(-18, 270, 378, 150) + supportOffset
+    val supportNotFoundRegion = Region(374, 708, 100, 90) + supportOffset
+
+    private val canLongSwipe = platformImpl.canLongSwipe
+    val supportListSwipeStart = Location(-59, if (canLongSwipe) 1000 else 1190) + supportOffset
+    val supportListSwipeEnd = Location(-89, if (canLongSwipe) 300 else 660) + supportOffset
 
     fun locate(refillResource: RefillResourceEnum) = when (refillResource) {
         RefillResourceEnum.Bronze -> 1140
@@ -176,6 +157,79 @@ class Game @Inject constructor(
         RefillResourceEnum.Gold -> 634
         RefillResourceEnum.SQ -> 345
     }.let { y -> Location(-530, y).xFromCenter() }
+
+    fun locate(boost: BoostItem.Enabled) = when (boost) {
+        BoostItem.Enabled.Skip -> Location(1652, 1304)
+        BoostItem.Enabled.BoostItem1 -> Location(1280, 418)
+        BoostItem.Enabled.BoostItem2 -> Location(1280, 726)
+        BoostItem.Enabled.BoostItem3 -> Location(1280, 1000)
+    }.xFromCenter()
+
+    fun locate(orderChangeMember: OrderChangeMember) = when (orderChangeMember) {
+        OrderChangeMember.Starting.A -> Location(-1000, 700)
+        OrderChangeMember.Starting.B -> Location(-600, 700)
+        OrderChangeMember.Starting.C -> Location(-200, 700)
+        OrderChangeMember.Sub.A -> Location(200, 700)
+        OrderChangeMember.Sub.B -> Location(600, 700)
+        OrderChangeMember.Sub.C -> Location(1000, 700)
+    }.xFromCenter()
+
+    fun locate(servantTarget: ServantTarget) = when (servantTarget) {
+        ServantTarget.A -> Location(-580, 880)
+        ServantTarget.B -> Location(0, 880)
+        ServantTarget.C -> Location(660, 880)
+        ServantTarget.Left -> Location(-290, 880)
+        ServantTarget.Right -> Location(330, 880)
+    }.xFromCenter()
+
+    fun locate(skill: Skill.Servant) = when (skill) {
+        Skill.Servant.A1 -> Location(140, 1155)
+        Skill.Servant.A2 -> Location(328, 1155)
+        Skill.Servant.A3 -> Location(514, 1155)
+        Skill.Servant.B1 -> Location(775, 1155)
+        Skill.Servant.B2 -> Location(963, 1155)
+        Skill.Servant.B3 -> Location(1150, 1155)
+        Skill.Servant.C1 -> Location(1413, 1155)
+        Skill.Servant.C2 -> Location(1600, 1155)
+        Skill.Servant.C3 -> Location(1788, 1155)
+    } + Location(if (isWide) 108 else 0, if (isWide) -22 else 0)
+
+    fun locate(skill: Skill.Master) = when (skill) {
+        Skill.Master.A -> Location(-740, 620)
+        Skill.Master.B -> Location(-560, 620)
+        Skill.Master.C -> Location(-400, 620)
+    }.xFromRight() + Location(if (isWide) -120 else 0, 0)
+
+    fun locate(skill: Skill) = when (skill) {
+        is Skill.Servant -> locate(skill)
+        is Skill.Master -> locate(skill)
+    }
+
+    fun locate(supportClass: SupportClass) = when (supportClass) {
+        SupportClass.None -> Location()
+        SupportClass.All -> Location(184, 256)
+        SupportClass.Saber -> Location(320, 256)
+        SupportClass.Archer -> Location(454, 256)
+        SupportClass.Lancer -> Location(568, 256)
+        SupportClass.Rider -> Location(724, 256)
+        SupportClass.Caster -> Location(858, 256)
+        SupportClass.Assassin -> Location(994, 256)
+        SupportClass.Berserker -> Location(1130, 256)
+        SupportClass.Extra -> Location(1264, 256)
+        SupportClass.Mix -> Location(1402, 256)
+    } + Location(if (isWide) 171 else 0, 0)
+
+    fun locate(enemy: EnemyTarget) = when (enemy) {
+        EnemyTarget.A -> Location(90, 80)
+        EnemyTarget.B -> Location(570, 80)
+        EnemyTarget.C -> Location(1050, 80)
+    } + Location(if (isWide) 183 else 0, 0)
+
+    fun dangerRegion(enemy: EnemyTarget) = when (enemy) {
+        EnemyTarget.A -> Region(0, 0, 485, 220)
+        EnemyTarget.B -> Region(485, 0, 482, 220)
+        EnemyTarget.C -> Region(967, 0, 476, 220)
+    } + Location(if (isWide) 150 else 0, 0)
 
     val selectedPartyRegion = Region(-270, 62, 550, 72).xFromCenter()
     val partySelectionArray = (0..9).map {
@@ -187,8 +241,147 @@ class Game @Inject constructor(
 
     val battleStageCountRegion
         get() = when (prefs.gameServer) {
-            GameServerEnum.Tw -> Region(1710, 25, 55, 60)
-            GameServerEnum.Jp -> Region(1764, 28, 31, 44)
-            else -> Region(1722, 25, 46, 53)
-        }
+            GameServerEnum.Tw -> Region(-850, 25, 55, 60)
+            GameServerEnum.Jp -> {
+                if (isWide)
+                    Region(-869, 23, 33, 53)
+                else Region(-796, 28, 31, 44)
+            }
+            else -> Region(-838, 25, 46, 53)
+        }.xFromRight()
+
+    val battleScreenRegion =
+        (if (isWide)
+            Region(-660, -210, 400, 175)
+        else Region(-455, -181, 336, 116))
+            .xFromRight()
+            .yFromBottom()
+
+    val battleAttackClick =
+        (if (isWide)
+            Location(-460, -230)
+        else Location(-260, -240))
+            .xFromRight()
+            .yFromBottom()
+
+    val battleMasterSkillOpenClick =
+        (if (isWide)
+            Location(-300, 640)
+        else Location(-180, 640))
+            .xFromRight()
+
+    val battleSkillOkClick = Location(400, 850).xFromCenter()
+    val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
+    val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
+
+    val battleBack =
+        (if (isWide)
+            Location(-325, 1310)
+        else Location(-160, 1370))
+            .xFromRight()
+
+    val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
+    val menuStorySkipClick = Location(1080, 80).xFromCenter()
+
+    val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
+    val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
+    val resultMatRewardsRegion = Region(800, 1220, 280, 200).xFromCenter()
+    val resultClick = Location(320, 1350).xFromCenter()
+    val resultQuestRewardRegion = Region(350, 140, 370, 250).xFromCenter()
+    val resultDropScrollbarRegion = Region(980, 230, 100, 88).xFromCenter()
+    val resultDropScrollEndClick = Location(1026, 1032).xFromCenter()
+    val resultMasterExpRegion = Region(0, 350, 400, 110).xFromCenter()
+    val resultMasterLvlUpRegion = Region(710, 160, 250, 270).xFromCenter()
+    val resultScreenRegion = Region(-1180, 300, 700, 200).xFromCenter()
+    val resultBondRegion = Region(720, 750, 120, 190).xFromCenter()
+
+    val resultCeRewardRegion = Region(-230, 1216, 33, 28).xFromCenter()
+    val resultCeRewardDetailsRegion = Region(if (isWide) 193 else 0, 512, 135, 115)
+    val resultCeRewardCloseClick = Location(if (isWide) 265 else 80, 60)
+
+    val fpSummonCheck = Region(100, 1220, 75, 75).xFromCenter()
+    val fpContinueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
+    val fpFirst10SummonClick = Location(120, 1120).xFromCenter()
+    val fpOkClick = Location(320, 1120).xFromCenter()
+    val fpContinueSummonClick = Location(320, 1325).xFromCenter()
+    val fpSkipRapidClick = Location(1240, 1400).xFromCenter()
+
+    val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
+    val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
+    val giftBoxCheckRegion = Region(360, 400, 120, 2120).xFromCenter()
+    val giftBoxScrollEndRegion = Region(540, 1421, 120, 19).xFromCenter()
+    val giftBoxIconRegion = Region(-1090, -116, 300, 240).xFromCenter()
+    val giftBoxClickSpot = Location(420, 50).xFromCenter()
+
+    val giftBoxCountRegion = when (prefs.gameServer) {
+        GameServerEnum.Jp -> -620
+        GameServerEnum.En -> -480
+        GameServerEnum.Kr -> -610
+        GameServerEnum.Tw -> -580
+        else -> throw ScriptExitException("Not supported on this server yet")
+    }.let { x -> Region(x, -120, 300, 100).xFromCenter() }
+
+    val lotteryFinishedRegion = Region(-780, 860, 180, 100).xFromCenter()
+    val lotteryCheckRegion = Region(-1130, 800, 340, 230).xFromCenter()
+    val lotterySpinClick = Location(-446, 860).xFromCenter()
+    val lotteryFullPresentBoxRegion = Region(20, 860, 1000, 500).xFromCenter()
+    val lotteryResetClick = Location(920, 480).xFromCenter()
+    val lotteryResetConfirmationClick = Location(494, 1122).xFromCenter()
+    val lotteryResetCloseClick = Location(-10, 1120).xFromCenter()
+
+    val gudaFinalRewardsRegion = Region(-120, 1040, 228, 76).xFromCenter()
+
+    fun clickLocation(card: CommandCard) = when (card) {
+        CommandCard.Face.A -> Location(-980, 1000)
+        CommandCard.Face.B -> Location(-530, 1000)
+        CommandCard.Face.C -> Location(20, 1000)
+        CommandCard.Face.D -> Location(520, 1000)
+        CommandCard.Face.E -> Location(1070, 1000)
+        CommandCard.NP.A -> Location(-280, 220)
+        CommandCard.NP.B -> Location(20, 400)
+        CommandCard.NP.C -> Location(460, 400)
+    }.xFromCenter()
+
+    fun affinityRegion(card: CommandCard.Face) = when (card) {
+        CommandCard.Face.A -> Region(-985, 650, 250, 200)
+        CommandCard.Face.B -> Region(-470, 650, 250, 200)
+        CommandCard.Face.C -> Region(41, 650, 250, 200)
+        CommandCard.Face.D -> Region(554, 650, 250, 200)
+        CommandCard.Face.E -> Region(1068, 650, 250, 200)
+    }.xFromCenter()
+
+    fun typeRegion(card: CommandCard.Face) = when (card) {
+        CommandCard.Face.A -> Region(-1280, 1060, 512, 200)
+        CommandCard.Face.B -> Region(-768, 1060, 512, 200)
+        CommandCard.Face.C -> Region(-256, 1060, 512, 200)
+        CommandCard.Face.D -> Region(256, 1060, 512, 200)
+        CommandCard.Face.E -> Region(768, 1060, 512, 200)
+    }.xFromCenter()
+
+    fun servantMatchRegion(card: CommandCard) = when (card) {
+        CommandCard.Face.A -> Region(-1174, 800, 300, 200)
+        CommandCard.Face.B -> Region(-660, 800, 300, 200)
+        CommandCard.Face.C -> Region(-150, 800, 300, 200)
+        CommandCard.Face.D -> Region(364, 800, 300, 200)
+        CommandCard.Face.E -> Region(880, 800, 300, 200)
+        CommandCard.NP.A -> Region(-602, 190, 300, 200)
+        CommandCard.NP.B -> Region(-142, 190, 300, 200)
+        CommandCard.NP.C -> Region(326, 190, 300, 200)
+    }.xFromCenter()
+
+    fun servantCropRegion(card: CommandCard) = when (card) {
+        CommandCard.Face.A -> Region(-1080, 890, 115, 85)
+        CommandCard.Face.B -> Region(-566, 890, 115, 85)
+        CommandCard.Face.C -> Region(-56, 890, 115, 85)
+        CommandCard.Face.D -> Region(458, 890, 115, 85)
+        CommandCard.Face.E -> Region(974, 890, 115, 85)
+        CommandCard.NP.A -> Region(-518, 290, 115, 65)
+        CommandCard.NP.B -> Region(-50, 290, 115, 65)
+        CommandCard.NP.C -> Region(414, 290, 115, 65)
+    }.xFromCenter()
+
+    fun supportCheckRegion(card: CommandCard) = when (card) {
+        is CommandCard.Face -> affinityRegion(card) + Location(-50, 100)
+        is CommandCard.NP -> (servantMatchRegion(card) + Location(110, -30)).copy(Height = 170)
+    }
 }

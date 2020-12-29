@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
 import com.mathewsachin.fategrandautomata.prefs.R
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,9 +14,9 @@ class PrefsCore @Inject constructor(
         ScriptModeEnum.Battle
     )
 
-    val gameServer = maker.enum(
-        R.string.pref_gameserver,
-        GameServerEnum.En
+    val gameServerRaw = maker.string(
+        R.string.pref_game_server,
+        maker.context.getString(R.string.pref_game_server_auto_detect)
     )
 
     val skillConfirmation = maker.bool(R.string.pref_skill_conf)

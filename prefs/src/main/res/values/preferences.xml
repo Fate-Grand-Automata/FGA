@@ -1,6 +1,7 @@
 <resources>
     <string name="pref_script_mode">script_mode</string>
-    <string name="pref_gameserver">gameserver</string>
+    <string name="pref_game_server">game_server</string>
+    <string name="pref_game_server_auto_detect">auto_detect</string>
     <string name="pref_skill_conf">skill_conf</string>
     <string name="pref_battle_config_selected">autoskill_selected</string>
     <string name="pref_card_priority">card_priority</string>

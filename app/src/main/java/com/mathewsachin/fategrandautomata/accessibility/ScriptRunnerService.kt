@@ -18,6 +18,7 @@ import androidx.lifecycle.MutableLiveData
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -30,10 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import timber.log.debug
-import timber.log.info
-import timber.log.verbose
+import timber.log.*
 import javax.inject.Inject
 import kotlin.time.seconds
 
@@ -76,6 +74,9 @@ class ScriptRunnerService : AccessibilityService() {
 
     @Inject
     lateinit var prefs: IPreferences
+
+    @Inject
+    lateinit var prefsCore: PrefsCore
 
     @Inject
     lateinit var mediaProjectionManager: MediaProjectionManager
@@ -123,8 +124,7 @@ class ScriptRunnerService : AccessibilityService() {
         Instance = null
     }
 
-    val wantsMediaProjectionToken: Boolean
-        get() = !(RootScreenshotService.canUseRootForScreenshots() && prefs.useRootForScreenshots)
+    val wantsMediaProjectionToken: Boolean get() = !prefs.useRootForScreenshots
 
     var serviceState: ServiceState = ServiceState.Stopped
         private set
@@ -212,6 +212,23 @@ class ScriptRunnerService : AccessibilityService() {
                 when (scriptManager.scriptState) {
                     is ScriptState.Started -> scriptManager.stopScript()
                     is ScriptState.Stopped -> {
+                        val server = prefsCore.gameServerRaw.get()
+
+                        prefs.gameServer =
+                            if (server == getString(R.string.pref_game_server_auto_detect))
+                                detectedFgoServer.also {
+                                    Timber.debug { "Using auto-detected Game Server: $it" }
+                                }
+                            else try {
+                                enumValueOf<GameServerEnum>(server).also {
+                                    Timber.debug { "Using Game Server: $it" }
+                                }
+                            } catch (e: Exception) {
+                                Timber.error(e) { "Game Server: Falling back to NA" }
+
+                                GameServerEnum.En
+                            }
+
                         scriptManager.startScript(this, state.screenshotService, scriptComponentBuilder)
                     }
                     is ScriptState.Stopping -> {
@@ -289,6 +306,8 @@ class ScriptRunnerService : AccessibilityService() {
         }
     }
 
+    private var detectedFgoServer = GameServerEnum.En
+
     /**
      * This method is called on any subscribed [AccessibilityEvent] in script_runner_service.xml.
      *
@@ -304,7 +323,7 @@ class ScriptRunnerService : AccessibilityService() {
                 GameServerEnum.fromPackageName(foregroundAppName)?.let { server ->
                     Timber.debug { "Detected FGO: $server" }
 
-                    prefs.gameServer = server
+                    detectedFgoServer = server
                 }
             }
         }

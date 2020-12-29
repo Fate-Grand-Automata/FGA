@@ -1,35 +1,15 @@
 package com.mathewsachin.fategrandautomata.scripts.models
 
-import com.mathewsachin.libautomata.Location
+sealed class ServantTarget(val autoSkillCode: Char) {
+    object A : ServantTarget('1')
+    object B : ServantTarget('2')
+    object C : ServantTarget('3')
 
-class ServantTarget private constructor(
-    val clickLocation: Location,
-    val autoSkillCode: Char
-) {
+    // Emiya
+    object Left : ServantTarget('7')
+    object Right : ServantTarget('8')
+
     companion object {
-        val list = listOf(
-            ServantTarget(
-                Location(700, 880),
-                '1'
-            ),
-            ServantTarget(
-                Location(1280, 880),
-                '2'
-            ),
-            ServantTarget(
-                Location(1940, 880),
-                '3'
-            ),
-
-            // Emiya
-            ServantTarget(
-                Location(990, 880),
-                '7'
-            ),
-            ServantTarget(
-                Location(1610, 880),
-                '8'
-            )
-        )
+        val list = listOf(A, B, C, Left, Right)
     }
 }
