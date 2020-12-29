@@ -79,7 +79,7 @@
                 app:title="@string/p_wait_ap_regen_minutes_text"
                 app:summary="@string/p_wait_ap_regen_minutes_text_summary"
                 app:min="1"
-                app:defaultValue="5"
+                app:defaultValue="1"
                 app:seekBarIncrement="1"
                 app:showSeekBarValue="true" />
         </PreferenceCategory>
