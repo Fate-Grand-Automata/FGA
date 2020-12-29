@@ -43,4 +43,6 @@ interface IScriptMessages {
     fun turns(turns: Int): String
 
     fun pickedExpStack(stacks: Int): String
+
+    fun waitAPToast(minutes: Int): String
 }

@@ -462,8 +462,7 @@ open class AutoBattle @Inject constructor(
         } else if (waitAPRegenPrefs) {
             Location(1300, 1240).click();
             for (i in waitAPRegenMinutePrefs..1) {
-                toast("Waiting for AP regeneration. Re-checking in $i minutes.")
-                toast("Waiting for AP regeneration. Re-checking in ${waitAPRegenMinutePrefs - i + 1} minutes.")
+                toast(messages.waitAPToast(i))
                 60.seconds.wait()
             }
         } else throw ScriptExitException(messages.apRanOut)

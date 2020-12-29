@@ -101,4 +101,7 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
 
     override fun pickedExpStack(stacks: Int) =
         context.getString(R.string.picked_exp_stacks, stacks)
+
+    override fun waitAPToast(minutes: Int) =
+        context.getString(R.string.wait_ap_regen_toast_message, minutes)
 }

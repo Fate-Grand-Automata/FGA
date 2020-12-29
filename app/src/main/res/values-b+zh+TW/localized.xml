@@ -158,10 +158,11 @@
     <string name="p_battle_config_cmd_text">腳本對話框</string>
     <string name="p_battle_config_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
 
-    <string name="p_wait_ap_regen_text">等待體力回復</string>
-    <string name="p_wait_ap_regen_text_summary">AP用完之後FGA將不會立刻退出，而是會持續確認體力是否回復並重新開始關卡</string>
+    <string name="p_wait_ap_regen_text">等待AP恢復</string>
+    <string name="p_wait_ap_regen_text_summary">AP用完之後FGA將不會立刻退出，而是會持續確認AP是否恢復並重新開始關卡</string>
     <string name="p_wait_ap_regen_minutes_text">重新檢查時間(分鐘)</string>
     <string name="p_wait_ap_regen_minutes_text_summary">需比螢幕自動關閉時間短</string>
+    <string name="wait_ap_regen_toast_message">等待AP恢復中，%d 分鐘後重新檢查</string>
 
     <string name="p_storage">資料存放位置</string>
     <string name="p_folder">更改存放支援圖片、掉落截圖等的資料夾位置</string>
