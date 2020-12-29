@@ -138,7 +138,7 @@
     <string name="p_max_skill_3">三技滿等</string>
 
     <string name="p_game_server">伺服器</string>
-    <string name="p_game_server_auto_detect">自動偵測伺服器</string>
+    <string name="p_game_server_auto_detect">自動偵測</string>
     <string name="p_spam_summary">選擇Danger 敵人時施放選項需開啟自動選取敵人</string>
     <string name="p_spam_np">自動寶具</string>
     <string name="p_spam_skill">自動施放技能</string>
