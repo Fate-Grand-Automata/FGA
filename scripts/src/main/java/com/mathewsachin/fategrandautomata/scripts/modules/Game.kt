@@ -164,8 +164,8 @@ class Game @Inject constructor(
 
     val supportFriendsRegion = Region(354, 332, 1210, 1091) + supportOffset
 
-    val supportMaxAscendedRegion = Region(280, 0, 20, 120) + supportOffset
-    val supportLimitBreakRegion = Region(280, 0, 20, 90) + supportOffset
+    val supportMaxAscendedRegion = Region(270, 0, 40, 120) + supportOffset
+    val supportLimitBreakRegion = Region(270, 0, 40, 90) + supportOffset
 
     val supportRegionToolSearchRegion = Region(2006, 0, 370, 1440) + supportOffset
     val supportDefaultBounds = Region(-18, 0, 2356, 428) + supportOffset
