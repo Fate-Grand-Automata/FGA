@@ -79,7 +79,6 @@ class AutoGiftBox @Inject constructor(
                 GameServerEnum.Jp, GameServerEnum.Tw, GameServerEnum.Cn -> -940
                 GameServerEnum.En -> -830
                 GameServerEnum.Kr -> -960
-                else -> throw ScriptExitException("Not supported on this server yet")
             }.let { x -> Region(x, -120, 300, 100) } + gift.Region.location
 
             val iconRegion = Region(-1480, -116, 300, 240) + gift.Region.location
