@@ -76,10 +76,9 @@ class AutoGiftBox @Inject constructor(
 
         for (gift in checkRegion.findAll(images.giftBoxCheck).sorted()) {
             val countRegion = when (prefs.gameServer) {
-                GameServerEnum.Jp -> -970
+                GameServerEnum.Jp, GameServerEnum.Tw, GameServerEnum.Cn -> -940
                 GameServerEnum.En -> -830
                 GameServerEnum.Kr -> -960
-                GameServerEnum.Tw -> -930
                 else -> throw ScriptExitException("Not supported on this server yet")
             }.let { x -> Region(x, -120, 300, 100) } + gift.Region.location
 
