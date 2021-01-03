@@ -125,6 +125,7 @@
     <string name="p_battle_config_support_mlb">Max-limit broken</string>
     <string name="p_battle_config_support_friend_names">Friend names</string>
     <string name="p_battle_config_support_friends_only">Friends Only</string>
+    <string name="p_battle_config_support_friend_name_hint">Friend name images can be added using \'Support Image Maker\' script</string>
 
     <string name="p_max_skill_1">Max Skill 1</string>
     <string name="p_max_skill_2">Max Skill 2</string>

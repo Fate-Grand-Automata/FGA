@@ -208,6 +208,10 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
     private suspend fun populateFriendNames() {
         findFriendNamesList()?.apply {
             populateFriendOrCe(storageProvider, SupportImageKind.Friend)
+
+            this.dialogMessage = if (entries.isEmpty()) {
+                getString(R.string.p_battle_config_support_friend_name_hint)
+            } else null
         }
     }
 
