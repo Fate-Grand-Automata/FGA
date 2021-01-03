@@ -39,6 +39,7 @@ open class AutoBattle @Inject constructor(
     private var isContinuing = false
     private var partySelected = false
     private var matsGot = mutableMapOf<MaterialEnum, Int>()
+    private var ceDropCount = 0
 
     override fun script(): Nothing {
         init()
@@ -72,6 +73,11 @@ open class AutoBattle @Inject constructor(
             if (msg.isNotBlank()) {
                 appendLine(msg)
             }
+        }
+
+        if (!prefs.stopOnCEDrop && ceDropCount > 0) {
+            appendLine("$ceDropCount ${messages.ceDropped}")
+            appendLine()
         }
 
         if (prefs.selectedBattleConfig.materials.isNotEmpty()) {
@@ -248,9 +254,11 @@ open class AutoBattle @Inject constructor(
             .map { (region, _) ->
                 starsRegion + region.location
             }
-            .any { images.dropCEStars in it }
+            .count { images.dropCEStars in it }
 
-        if (ceDropped) {
+        if (ceDropped > 0) {
+            ceDropCount += ceDropped
+
             val msg = messages.ceDropped
             if (prefs.stopOnCEDrop) {
                 throw ScriptExitException(msg)
@@ -442,14 +450,11 @@ open class AutoBattle @Inject constructor(
      */
     private fun refillStamina() {
         val refillPrefs = prefs.refill
-        val waitAPRegenPrefs = prefs.waitAPRegen
-        val waitAPRegenMinutePrefs = prefs.waitAPRegenMinutes
 
         if (refillPrefs.enabled
             && stonesUsed < refillPrefs.repetitions
             && refillPrefs.resources.isNotEmpty()
         ) {
-
             refillPrefs.resources
                 .map { game.locate(it) }
                 .forEach { it.click() }
@@ -459,9 +464,9 @@ open class AutoBattle @Inject constructor(
             ++stonesUsed
 
             3.seconds.wait()
-        } else if (waitAPRegenPrefs) {
+        } else if (prefs.waitAPRegen) {
             Location(1300, 1240).click()
-            for (i in waitAPRegenMinutePrefs downTo 1) {
+            for (i in prefs.waitAPRegenMinutes downTo 1) {
                 toast(messages.waitAPToast(i))
                 60.seconds.wait()
             }
