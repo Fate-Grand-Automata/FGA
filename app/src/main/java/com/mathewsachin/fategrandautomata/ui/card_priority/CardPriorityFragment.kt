@@ -27,19 +27,7 @@ class CardPriorityFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        val adapter = CardPriorityListAdapter(
-            vm.cardPriorityItems,
-            vm.experimental,
-            viewLifecycleOwner
-        )
-
-        vm.experimental.observe(viewLifecycleOwner) {
-            binding.experimentalSwitch.isChecked = it
-        }
-
-        binding.experimentalSwitch.setOnCheckedChangeListener { _, isChecked ->
-            vm.setExperimental(isChecked)
-        }
+        val adapter = CardPriorityListAdapter(vm.cardPriorityItems)
 
         val recyclerView = binding.cardPriorityList
         recyclerView.adapter = adapter

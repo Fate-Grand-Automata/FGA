@@ -13,7 +13,6 @@
     <string name="pref_stop_on_ce_get">stop_on_ce_get</string>
     <string name="pref_boost_item">selected_boost_item</string>
     <string name="pref_withdraw_enabled">withdraw_enabled</string>
-    <string name="pref_battle_config_experimental">auto_skill_experimental</string>
     <string name="pref_battle_config_rearrange_cards">auto_skill_rearrange_cards</string>
     <string name="pref_battle_config_brave_chains">auto_skill_brave_chains</string>
 

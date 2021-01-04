@@ -73,7 +73,6 @@
     <string name="card_priority_low">尽量不选出</string>
     <string name="card_priority_add_wave">新增战斗</string>
     <string name="card_priority_remove_last_wave">移除战斗</string>
-    <string name="card_priority_experimental">开启实验功能</string>
 
     <string name="start_service">开始服务</string>
     <string name="stop_service">停止服务</string>

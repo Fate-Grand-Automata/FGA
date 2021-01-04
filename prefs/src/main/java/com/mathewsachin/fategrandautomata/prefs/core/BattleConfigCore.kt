@@ -28,8 +28,6 @@ class BattleConfigCore(
         defaultCardPriority
     )
 
-    val experimental = maker.bool(R.string.pref_battle_config_experimental)
-
     var rearrangeCards by maker.string(R.string.pref_battle_config_rearrange_cards)
         .map({
             it.split(",").map { m -> m == "T" }

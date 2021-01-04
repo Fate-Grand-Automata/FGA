@@ -73,7 +73,6 @@
     <string name="card_priority_low">낮음</string>
     <string name="card_priority_add_wave">웨이브 추가</string>
     <string name="card_priority_remove_last_wave">마지막 웨이브 제거</string>
-    <string name="card_priority_experimental">실험적 기능 활성화</string>
 
     <string name="start_service">서비스 시작</string>
     <string name="stop_service">서비스 중지</string>
