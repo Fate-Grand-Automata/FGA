@@ -158,26 +158,22 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             .mapNotNull { commandCards[it] }
             .flatten()
 
+        fun addToClickList(vararg cards: CommandCard.Face) = cards.apply {
+            toClick.addAll(cards)
+            remainingCards.removeAll(cards)
+            clicksLeft -= cards.size
+        }
+
         fun pickCardsOrderedByPriority(
             clicks: Int = clicksLeft,
             filter: (CommandCard.Face) -> Boolean = { true }
-        ): List<CommandCard.Face> {
-            fun Sequence<CommandCard.Face>.addToClickList(): List<CommandCard.Face> {
-                val asList = toList()
-
-                toClick.addAll(asList)
-                remainingCards.removeAll(asList)
-                clicksLeft -= asList.size
-
-                return asList
-            }
-
-            return cardsOrderedByPriority
+        ) =
+            cardsOrderedByPriority
                 .asSequence()
                 .filter { it in remainingCards && filter(it) }
                 .take(clicks)
-                .addToClickList()
-        }
+                .toList()
+                .let { addToClickList(*(it.toTypedArray())) }
 
         return when (braveChainsThisTurn) {
             BraveChainEnum.WithNP -> {
@@ -205,13 +201,56 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                     && remainingCards.isNotEmpty()
                     && clicksLeft > 1
                 ) {
-                    var lastGroup = emptyList<CommandCard.Face>()
+                    if (rearrangeCardsThisTurn) {
+                        // Top 3 priority cards grouped by servant
+                        val topGrouped = cardsOrderedByPriority
+                            .take(clicksLeft)
+                            .groupBy { commandCardGroups.indexOfFirst { group -> it in group } }
+                            .map { it.value }
 
-                    do {
-                        lastGroup = pickCardsOrderedByPriority(1) { it !in lastGroup }
-                            .map { m -> commandCardGroups.firstOrNull { m in it } }
-                            .firstOrNull() ?: emptyList()
-                    } while (clicksLeft > 0 && lastGroup.isNotEmpty())
+                        when (topGrouped.size) {
+                            // All 3 cards of same servant
+                            1 -> {
+                                val group = commandCardGroups.first { topGrouped[0][0] in it }
+
+                                // Check if there's another servant
+                                val otherCard = cardsOrderedByPriority
+                                    .firstOrNull { it !in group }
+
+                                // If there's no other servant, this will fallback to default card picker
+                                if (otherCard != null) {
+                                    addToClickList(
+                                        topGrouped[0][0],
+                                        otherCard,
+                                        topGrouped[0][1]
+                                    )
+                                }
+                            }
+                            // Ideal case. 2 servant cards
+                            2 -> {
+                                // servant with 2 cards in first place
+                                val topSorted = topGrouped
+                                    .sortedByDescending { it.size }
+
+                                addToClickList(
+                                    topSorted[0][0],
+                                    topSorted[1][0],
+                                    topSorted[0][1]
+                                )
+                            }
+                            else -> {
+                                // Other cases will be handled by default picker below
+                            }
+                        }
+                    } else {
+                        var lastGroup = emptyList<CommandCard.Face>()
+
+                        do {
+                            lastGroup = pickCardsOrderedByPriority(1) { it !in lastGroup }
+                                .map { m -> commandCardGroups.firstOrNull { m in it } }
+                                .firstOrNull() ?: emptyList()
+                        } while (clicksLeft > 0 && lastGroup.isNotEmpty())
+                    }
                 }
 
                 // Pick more cards if needed

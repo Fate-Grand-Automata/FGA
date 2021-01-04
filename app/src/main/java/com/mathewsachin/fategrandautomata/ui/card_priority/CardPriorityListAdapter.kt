@@ -70,8 +70,6 @@ class CardPriorityListAdapter(
                 val value = BraveChainEnum.values()[pos]
 
                 Items[position].braveChains = value
-
-                holder.rearrangeCardsSwitchView.isEnabled = value != BraveChainEnum.Avoid
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
