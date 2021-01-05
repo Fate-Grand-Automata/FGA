@@ -238,8 +238,13 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                                     topSorted[0][1]
                                 )
                             }
-                            else -> {
-                                // Other cases will be handled by default picker below
+                            // Brave chain will already be avoided, but we can rearrange to optimize
+                            3 -> {
+                                addToClickList(
+                                    topGrouped[0][0],
+                                    topGrouped[2][0],
+                                    topGrouped[1][0]
+                                )
                             }
                         }
                     } else {
