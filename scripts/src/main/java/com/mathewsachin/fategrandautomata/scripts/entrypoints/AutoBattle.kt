@@ -21,6 +21,15 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
     return game.supportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
 }
 
+fun IFgoAutomataApi.stopIfInventoryFull() {
+    // Inventory full. Stop script. We only have images for JP and NA
+    if (prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)) {
+        if (images.inventoryFull in game.inventoryFullRegion) {
+            throw ScriptExitException(messages.inventoryFull)
+        }
+    }
+}
+
 /**
  * Script for starting quests, selecting the support and doing battles.
  */
@@ -581,13 +590,7 @@ open class AutoBattle @Inject constructor(
 
     private fun afterSelectingQuest() {
         1.5.seconds.wait()
-
-        // Inventory full. Stop script. We only have images for JP and NA
-        if (prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)) {
-            if (images.inventoryFull in game.inventoryFullRegion) {
-                throw ScriptExitException(messages.inventoryFull)
-            }
-        }
+        stopIfInventoryFull()
 
         // Auto refill
         while (images.stamina in game.staminaScreenRegion) {

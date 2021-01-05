@@ -21,6 +21,8 @@ class AutoFriendGacha @Inject constructor(
         }
 
         while (true) {
+            stopIfInventoryFull()
+
             if (images.fpSummonContinue in game.fpContinueSummonRegion) {
                 game.fpContinueSummonClick.click()
                 0.3.seconds.wait()
