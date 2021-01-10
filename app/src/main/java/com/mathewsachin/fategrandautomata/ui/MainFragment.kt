@@ -7,7 +7,6 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -18,6 +17,7 @@ import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import com.mathewsachin.fategrandautomata.databinding.ContentMainBinding
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
 import com.mathewsachin.fategrandautomata.util.StorageProvider
+import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import timber.log.info
@@ -34,12 +34,10 @@ class MainFragment : Fragment() {
     @Inject
     lateinit var storageProvider: StorageProvider
 
-    private val pickDir = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUrl ->
-        if (dirUrl != null) {
-            storageProvider.setRoot(dirUrl)
+    private val pickDir = registerPersistableDirPicker {
+        storageProvider.setRoot(it)
 
-            serviceToggleBtnOnClick()
-        }
+        serviceToggleBtnOnClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =

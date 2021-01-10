@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -10,6 +9,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
+import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -27,12 +27,10 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         nav(action)
     }
 
-    private val pickDir = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUrl ->
-        if (dirUrl != null) {
-            storageProvider.setRoot(dirUrl)
+    private val pickDir = registerPersistableDirPicker {
+        storageProvider.setRoot(it)
 
-            goToBattleConfigList()
-        }
+        goToBattleConfigList()
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

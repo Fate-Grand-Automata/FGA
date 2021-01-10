@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -13,6 +12,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
+import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -79,13 +79,11 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
             GameServerEnum.Kr -> R.string.game_server_kr
         }
 
-    private val pickDir = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUrl ->
-        if (dirUrl != null) {
-            storageProvider.setRoot(dirUrl)
+    private val pickDir = registerPersistableDirPicker {
+        storageProvider.setRoot(it)
 
-            findPreference<Preference>(getString(R.string.pref_nav_storage))
-                ?.summary = storageProvider.rootDirName
-        }
+        findPreference<Preference>(getString(R.string.pref_nav_storage))
+            ?.summary = storageProvider.rootDirName
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

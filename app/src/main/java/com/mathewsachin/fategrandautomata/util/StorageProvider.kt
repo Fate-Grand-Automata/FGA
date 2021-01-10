@@ -52,11 +52,13 @@ class StorageProvider @Inject constructor(
         get() = resolver.openFileDescriptor(recordingFile.uri, "rw")
             ?: throw Exception("Couldn't open recording file descriptor")
 
-    private val persistablePermission = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+    private val persistablePermission =
+        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
     fun setRoot(rootUri: Uri) {
         prefsCore.dirRoot.get().let { prevDir ->
-            if (prevDir.isNotBlank()) {
+            // Don't release permission if user picked the same directory again
+            if (prevDir.isNotBlank() && prevDir != rootUri.toString()) {
                 try {
                     resolver.releasePersistableUriPermission(Uri.parse(prevDir), persistablePermission)
                 } catch (e: Exception) {
