@@ -38,6 +38,18 @@ class RefillSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        findPreference<EditTextPreference>(getString(R.string.pref_limit_runs))?.let {
+            vm.limitRuns.observe(viewLifecycleOwner) { runs ->
+                it.text = runs.toString()
+            }
+        }
+
+        findPreference<EditTextPreference>(getString(R.string.pref_limit_mats))?.let {
+            vm.limitMats.observe(viewLifecycleOwner) { mats ->
+                it.text = mats.toString()
+            }
+        }
+
         findPreference<MultiSelectListPreference>(getString(R.string.pref_refill_resource))?.let {
             vm.refillResources.observe(viewLifecycleOwner) { refillResourcesMsg ->
                 it.summary = refillResourcesMsg

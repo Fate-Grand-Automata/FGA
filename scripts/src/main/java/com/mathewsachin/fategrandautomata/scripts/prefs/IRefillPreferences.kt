@@ -9,8 +9,10 @@ interface IRefillPreferences {
     val autoDecrement: Boolean
 
     val shouldLimitRuns: Boolean
-    val limitRuns: Int
+    var limitRuns: Int
+    val autoDecrementRuns: Boolean
 
     val shouldLimitMats: Boolean
-    val limitMats: Int
+    var limitMats: Int
+    val autoDecrementMats: Boolean
 }

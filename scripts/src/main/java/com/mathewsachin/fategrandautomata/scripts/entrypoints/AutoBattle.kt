@@ -68,8 +68,21 @@ open class AutoBattle @Inject constructor(
         } catch (e: Exception) {
             throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
         } finally {
-            if (prefs.refill.autoDecrement) {
-                prefs.refill.repetitions -= stonesUsed
+            val refill = prefs.refill
+
+            if (refill.autoDecrement) {
+                refill.repetitions -= stonesUsed
+            }
+
+            if (refill.shouldLimitRuns && refill.autoDecrementRuns) {
+                refill.limitRuns -= battle.state.runs
+            }
+
+            if (refill.shouldLimitMats && refill.autoDecrementMats) {
+                val totalMats = matsGot.values.sum()
+
+                refill.limitMats = (refill.limitMats - totalMats)
+                    .coerceAtLeast(0)
             }
         }
     }
