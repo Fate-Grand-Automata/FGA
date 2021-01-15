@@ -19,13 +19,13 @@ internal class RefillPreferences(val prefs: RefillPrefsCore) :
 
     override val autoDecrement by prefs.autoDecrement
 
-    override val shouldLimitRuns by prefs.shouldLimitRuns
+    override var shouldLimitRuns by prefs.shouldLimitRuns
 
     override var limitRuns by prefs.limitRuns
 
     override val autoDecrementRuns by prefs.autoDecrementRuns
 
-    override val shouldLimitMats by prefs.shouldLimitMats
+    override var shouldLimitMats by prefs.shouldLimitMats
 
     override var limitMats by prefs.limitMats
 
