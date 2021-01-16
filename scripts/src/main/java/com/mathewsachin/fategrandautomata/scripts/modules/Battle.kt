@@ -28,10 +28,10 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         // This can happen due to lags introduced during some events
         if (state.stage != -1) {
             state.nextRun()
+        }
 
-            if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
-                throw ScriptExitException(messages.timesRan(state.runs))
-            }
+        if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
+            throw ScriptExitException(messages.timesRan(state.runs))
         }
     }
 

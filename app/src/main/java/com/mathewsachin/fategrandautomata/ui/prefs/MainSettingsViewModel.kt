@@ -41,6 +41,30 @@ class MainSettingsViewModel @ViewModelInject constructor(
         .asFlow()
         .asLiveData()
 
+    val shouldLimitRuns = prefsCore
+        .refill
+        .shouldLimitRuns
+        .asFlow()
+        .asLiveData()
+
+    val limitRuns = prefsCore
+        .refill
+        .limitRuns
+        .asFlow()
+        .asLiveData()
+
+    val shouldLimitMats = prefsCore
+        .refill
+        .shouldLimitMats
+        .asFlow()
+        .asLiveData()
+
+    val limitMats = prefsCore
+        .refill
+        .limitMats
+        .asFlow()
+        .asLiveData()
+
     private val refillResourcesFlow = prefsCore
         .refill
         .resources

@@ -56,8 +56,10 @@
     <string name="pref_screenshot_drops">screenshot_drops</string>
     <string name="pref_should_limit_runs">should_limit_runs</string>
     <string name="pref_limit_runs">limit_runs</string>
+    <string name="pref_limit_runs_decrement">limit_runs_decrement</string>
     <string name="pref_should_limit_mats">should_limit_mats</string>
     <string name="pref_limit_mats">limit_mats</string>
+    <string name="pref_limit_mats_decrement">limit_mats_decrement</string>
 
     <string name="pref_ignore_notch">ignore_notch</string>
     <string name="pref_use_root_screenshot">use_root_screenshot</string>

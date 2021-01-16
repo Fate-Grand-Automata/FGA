@@ -68,8 +68,33 @@ open class AutoBattle @Inject constructor(
         } catch (e: Exception) {
             throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
         } finally {
-            if (prefs.refill.autoDecrement) {
-                prefs.refill.repetitions -= stonesUsed
+            val refill = prefs.refill
+
+            // Auto-decrement apples
+            if (refill.autoDecrement) {
+                refill.repetitions -= stonesUsed
+            }
+
+            // Auto-decrement runs
+            if (refill.shouldLimitRuns && refill.autoDecrementRuns) {
+                refill.limitRuns -= battle.state.runs
+
+                // Turn off run limit when done
+                if (refill.limitRuns <= 0) {
+                    refill.limitRuns = 1
+                    refill.shouldLimitRuns = false
+                }
+            }
+
+            // Auto-decrement materials
+            if (refill.shouldLimitMats && refill.autoDecrementMats) {
+                refill.limitMats -= matsGot.values.sum()
+
+                // Turn off limit by materials when done
+                if (refill.limitMats <= 0) {
+                    refill.limitMats = 1
+                    refill.shouldLimitMats = false
+                }
             }
         }
     }

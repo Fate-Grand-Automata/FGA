@@ -8,9 +8,11 @@ interface IRefillPreferences {
     val resources: List<RefillResourceEnum>
     val autoDecrement: Boolean
 
-    val shouldLimitRuns: Boolean
-    val limitRuns: Int
+    var shouldLimitRuns: Boolean
+    var limitRuns: Int
+    val autoDecrementRuns: Boolean
 
-    val shouldLimitMats: Boolean
-    val limitMats: Int
+    var shouldLimitMats: Boolean
+    var limitMats: Int
+    val autoDecrementMats: Boolean
 }

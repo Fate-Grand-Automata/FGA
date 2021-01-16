@@ -49,6 +49,13 @@
             app:key="@string/pref_limit_runs"
             app:title="@string/p_runs"
             app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_minus"
+            app:key="@string/pref_limit_runs_decrement"
+            app:dependency="@string/pref_should_limit_runs"
+            app:title="@string/p_auto_decrement" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -67,5 +74,12 @@
             app:key="@string/pref_limit_mats"
             app:title="@string/p_mat_limit_count"
             app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_minus"
+            app:key="@string/pref_limit_mats_decrement"
+            app:dependency="@string/pref_should_limit_mats"
+            app:title="@string/p_auto_decrement" />
     </PreferenceCategory>
 </PreferenceScreen>
