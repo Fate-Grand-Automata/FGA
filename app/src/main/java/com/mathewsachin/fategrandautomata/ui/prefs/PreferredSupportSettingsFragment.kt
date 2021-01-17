@@ -139,8 +139,7 @@ class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
         }
 
         when (preference.key) {
-            getString(R.string.pref_support_pref_ce),
-            getString(R.string.pref_support_pref_servant) -> {
+            servantList.key, ceList.key -> {
                 ClearMultiSelectListPreferenceDialog().apply {
                     setKey(preference.key)
                     prepare(this)

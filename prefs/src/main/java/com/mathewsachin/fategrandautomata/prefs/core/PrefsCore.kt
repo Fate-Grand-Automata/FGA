@@ -49,46 +49,33 @@ class PrefsCore @Inject constructor(
 
     val recordScreen = maker.bool(R.string.pref_record_screen)
 
-    val skillDelay = maker.int(R.string.pref_skill_delay, 500)
-
     val screenshotDrops = maker.bool(R.string.pref_screenshot_drops)
 
-    val mlbSimilarity = maker.int(R.string.pref_mlb_similarity, 70)
-
-    val swipeMultiplier = maker.int(
-        R.string.pref_swipe_multiplier,
-        100
-    )
-
-    val supportSwipesPerUpdate = maker.int(R.string.pref_support_swipes_per_update, 10)
-
-    val supportMaxUpdates = maker.int(R.string.pref_support_max_updates, 5)
+    val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
+    val supportMaxUpdates = maker.int("support_max_updates_x", 5)
 
     val debugMode = maker.bool(R.string.pref_debug_mode)
 
-    val minSimilarity = maker.int(R.string.pref_min_similarity, 80)
+    val minSimilarity = maker.int("min_similarity", 80)
+    val mlbSimilarity = maker.int("mlb_similarity", 70)
+    val stageCounterSimilarity = maker.int("stage_counter_similarity", 85)
 
-    val waitMultiplier = maker.int(R.string.pref_wait_multiplier, 100)
+    val skillDelay = maker.int("skill_delay", 500)
+    val waitMultiplier = maker.int("wait_multiplier", 100)
+    val waitBeforeTurn = maker.int("wait_before_turn", 500)
+    val waitBeforeCards = maker.int("wait_before_cards", 2000)
 
-    val clickWaitTime = maker.int(R.string.pref_click_wait_time, 300)
+    val clickWaitTime = maker.int("click_wait_time", 300)
+    val clickDuration = maker.int("click_duration", 50)
+    val clickDelay = maker.int("click_delay", 10)
 
-    val clickDuration = maker.int(R.string.pref_click_duration, 50)
-
-    val clickDelay = maker.int(R.string.pref_click_delay, 10)
-
-    val swipeWaitTime = maker.int(R.string.pref_swipe_wait_time, 700)
-
-    val swipeDuration = maker.int(R.string.pref_swipe_duration, 300)
-
-    val stageCounterSimilarity = maker.int(R.string.pref_stage_counter_similarity, 85)
+    val swipeWaitTime = maker.int("swipe_wait_time", 700)
+    val swipeDuration = maker.int("swipe_duration", 300)
+    val swipeMultiplier = maker.int("swipe_multiplier", 100)
 
     val autoStartService = maker.bool(R.string.pref_auto_start_service)
 
     val showTextBoxForSkillCmd = maker.bool(R.string.pref_battle_config_cmd_text)
-
-    val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn, 500)
-
-    val waitBeforeCards = maker.int(R.string.pref_wait_before_cards, 2000)
 
     val maxGoldEmberSetSize = maker.int(R.string.pref_max_gold_ember_set_size, 1)
 

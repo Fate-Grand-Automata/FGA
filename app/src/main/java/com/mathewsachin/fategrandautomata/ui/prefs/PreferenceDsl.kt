@@ -45,6 +45,25 @@ open class PreferenceBuilder {
 }
 
 @PreferenceDsl
+class SeekBarPreferenceBuilder : PreferenceBuilder() {
+    var max: Int? = null
+    var min = 0
+    var increment = 1
+    var showValue = true
+
+    override fun build(pref: Preference) {
+        super.build(pref)
+
+        if (pref is SeekBarPreference) {
+            pref.min = min
+            max?.also { pref.max = it }
+            pref.seekBarIncrement = increment
+            pref.showSeekBarValue = showValue
+        }
+    }
+}
+
+@PreferenceDsl
 class GroupPreferenceBuilder(val group: PreferenceGroup) : PreferenceBuilder() {
     var key: String? = null
 
@@ -56,6 +75,16 @@ class GroupPreferenceBuilder(val group: PreferenceGroup) : PreferenceBuilder() {
 
         it.setDefaultValue(defaultValue)
         PreferenceBuilder().apply(block).build(it)
+    }
+
+    fun Pref<Int>.seekBar(
+        block: SeekBarPreferenceBuilder.() -> Unit
+    ) = SeekBarPreference(group.context).also {
+        it.key = key
+        group.addPreference(it)
+
+        it.setDefaultValue(defaultValue)
+        SeekBarPreferenceBuilder().apply(block).build(it)
     }
 
     fun Pref<Int>.numeric(
