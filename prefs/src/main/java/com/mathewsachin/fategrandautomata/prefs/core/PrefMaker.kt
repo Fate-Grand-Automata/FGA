@@ -14,14 +14,23 @@ class PrefMaker(
 
     fun k(@StringRes key: Int) = context.getString(key)
 
+    fun int(key: String, default: Int = 0) =
+        Pref(flowPrefs.getInt(key, default))
+
     fun int(@StringRes key: Int, default: Int = 0) =
-        Pref(flowPrefs.getInt(k(key), default))
+        int(k(key), default)
+
+    fun bool(key: String, default: Boolean = false) =
+        Pref(flowPrefs.getBoolean(key, default))
 
     fun bool(@StringRes key: Int, default: Boolean = false) =
-        Pref(flowPrefs.getBoolean(k(key), default))
+        bool(k(key), default)
+
+    fun string(key: String, default: String = "") =
+        Pref(flowPrefs.getString(key, default))
 
     fun string(@StringRes key: Int, default: String = "") =
-        Pref(flowPrefs.getString(k(key), default))
+        string(k(key), default)
 
     private fun stringAsIntSerializer(default: Int) =
         object : Serializer<Int> {
@@ -29,8 +38,11 @@ class PrefMaker(
             override fun serialize(value: Int) = value.toString()
         }
 
+    fun stringAsInt(key: String, default: Int = 0) =
+        Pref(flowPrefs.getObject(key, stringAsIntSerializer(default), default))
+
     fun stringAsInt(@StringRes key: Int, default: Int = 0) =
-        Pref(flowPrefs.getObject(k(key), stringAsIntSerializer(default), default))
+        stringAsInt(k(key), default)
 
     inline fun <reified T : Enum<T>> enum(
         @StringRes key: Int,
@@ -50,6 +62,9 @@ class PrefMaker(
         return Pref(flowPrefs.getObject(k(key), serializer, default))
     }
 
+    fun stringSet(key: String) =
+        Pref(flowPrefs.getStringSet(key))
+
     fun stringSet(@StringRes key: Int) =
-        Pref(flowPrefs.getStringSet(k(key)))
+        stringSet(k(key))
 }
