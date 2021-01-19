@@ -87,6 +87,30 @@ class GroupPreferenceBuilder(val group: PreferenceGroup) : PreferenceBuilder() {
         SeekBarPreferenceBuilder().apply(block).build(it)
     }
 
+    fun Pref<String>.text(
+        block: PreferenceBuilder.() -> Unit
+    ) = EditTextPreference(group.context).also {
+        it.key = key
+        group.addPreference(it)
+
+        it.setDefaultValue(defaultValue)
+        it.summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
+        PreferenceBuilder().apply(block).build(it)
+        it.dialogTitle = it.title
+    }
+
+    fun <T> Pref<T>.list(
+        block: PreferenceBuilder.() -> Unit
+    ) = ListPreference(group.context).also {
+        it.key = key
+        group.addPreference(it)
+
+        it.setDefaultValue(defaultValue.toString())
+        it.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+        PreferenceBuilder().apply(block).build(it)
+        it.dialogTitle = it.title
+    }
+
     fun Pref<Int>.numeric(
         block: PreferenceBuilder.() -> Unit
     ) = EditTextPreference(group.context).also {
@@ -115,6 +139,14 @@ class GroupPreferenceBuilder(val group: PreferenceGroup) : PreferenceBuilder() {
     ) = PreferenceCategory(group.context).also {
         group.addPreference(it)
         GroupPreferenceBuilder(it).apply(block).build(it)
+    }
+
+    fun blank(
+        block: PreferenceBuilder.() -> Unit
+    ) = Preference(group.context).also {
+        group.addPreference(it)
+
+        PreferenceBuilder().apply(block).build(it)
     }
 
     override fun build(pref: Preference) {

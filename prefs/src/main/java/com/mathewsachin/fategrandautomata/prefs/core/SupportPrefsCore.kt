@@ -1,34 +1,29 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
-import com.mathewsachin.fategrandautomata.prefs.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 
 class SupportPrefsCore(
     maker: PrefMaker
 ) {
-    val friendNames = maker.stringSet(R.string.pref_support_friend_names)
-
+    val friendNames = maker.stringSet("support_friend_names_list")
     val preferredServants = maker.stringSet("support_pref_servant_list")
-
     val mlb = maker.bool("support_pref_ce_mlb")
-
     val preferredCEs = maker.stringSet("support_pref_ce_list")
-
     val friendsOnly = maker.bool("support_friends_only")
 
     val selectionMode = maker.enum(
-        R.string.pref_support_mode,
+        "support_mode",
         SupportSelectionModeEnum.Preferred
     )
 
     val fallbackTo = maker.enum(
-        R.string.pref_support_fallback,
+        "support_fallback",
         SupportSelectionModeEnum.Manual
     )
 
     val supportClass = maker.enum(
-        R.string.pref_battle_config_support_class,
+        "autoskill_support_class",
         SupportClass.None
     )
 
