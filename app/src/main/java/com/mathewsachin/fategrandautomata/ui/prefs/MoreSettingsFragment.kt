@@ -124,17 +124,6 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
             }
 
             category {
-                key = "gift_box_category"
-                title = R.string.p_script_mode_gift_box
-
-                prefs.maxGoldEmberSetSize.seekBar {
-                    title = R.string.p_max_gold_ember_set_size
-                    max = 4
-                    icon = R.drawable.ic_refresh
-                }
-            }
-
-            category {
                 key = "storage_category"
                 title = R.string.p_storage
 

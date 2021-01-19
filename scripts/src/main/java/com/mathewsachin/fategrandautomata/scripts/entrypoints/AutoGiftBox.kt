@@ -25,7 +25,7 @@ class AutoGiftBox @Inject constructor(
 
         val xpOffsetX = (game.scriptArea.find(images.goldXP) ?: game.scriptArea.find(images.silverXP))
             ?.Region?.center?.X
-            ?: throw Exception(messages.cannotDetectScriptType)
+            ?: throw Exception("Couldn't find Embers on screen. This shouldn't happen.")
 
         val checkRegion = Region(xpOffsetX + 1320, 350, 140, 1500)
         val scrollEndRegion = Region(100 + checkRegion.X, 1421, 320, 19)

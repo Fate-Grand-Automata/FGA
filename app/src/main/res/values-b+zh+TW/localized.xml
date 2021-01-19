@@ -232,6 +232,9 @@
     <string name="p_support_mode_friend">好友從者</string>
 
     <string name="p_script_mode_battle">戰鬥</string>
+    <string name="p_script_mode_lottery">抽箱</string>
+    <string name="p_script_mode_fp">友情點數召喚</string>
+    <string name="p_script_mode_support_image_maker">支援圖片截取器</string>
     <string name="p_script_mode_gift_box">禮物盒</string>
 
     <string name="p_max_gold_ember_set_size">金種火最大領取數</string>
@@ -262,7 +265,6 @@
     <string name="draw_overlay_disabled_message">請讓此程式顯示在其他應用程式上層，FGA需要啟用此設定以顯示控制按鈕</string>
     <string name="draw_overlay_disabled_go_to_settings">前往設定</string>
     <string name="select_script">選擇腳本</string>
-    <string name="other_scripts">抽箱/友情點數召喚/領取禮物盒種火/\n支援圖片截取器</string>
     <string name="cannot_start_recording">無法開啟螢幕錄影</string>
 
     <string name="script_msg_ap_ran_out">體力用盡！</string>
