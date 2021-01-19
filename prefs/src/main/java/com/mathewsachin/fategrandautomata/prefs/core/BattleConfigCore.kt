@@ -16,7 +16,7 @@ class BattleConfigCore(
         Context.MODE_PRIVATE
     )
 
-    private val maker = PrefMaker(sharedPrefs, context)
+    private val maker = PrefMaker(sharedPrefs)
 
     val name = maker.string("autoskill_name", "--")
     val skillCommand = maker.string("autoskill_cmd")

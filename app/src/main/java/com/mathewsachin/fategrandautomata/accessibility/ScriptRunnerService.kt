@@ -215,7 +215,7 @@ class ScriptRunnerService : AccessibilityService() {
                         val server = prefsCore.gameServerRaw.get()
 
                         prefs.gameServer =
-                            if (server == getString(R.string.pref_game_server_auto_detect))
+                            if (server == PrefsCore.GameServerAutoDetect)
                                 detectedFgoServer.also {
                                     Timber.debug { "Using auto-detected Game Server: $it" }
                                 }
