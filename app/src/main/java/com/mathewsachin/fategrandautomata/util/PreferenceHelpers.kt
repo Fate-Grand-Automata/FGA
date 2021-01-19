@@ -50,7 +50,7 @@ suspend fun MultiSelectListPreference.populateFriendOrCe(storageProvider: IStora
         .toTypedArray()
 }
 
-inline fun <reified T : Enum<T>> MultiSelectListPreference.initWith(localized: (T) -> Int) {
+inline fun <reified T : Enum<T>> MultiSelectListPreference.initWith(localized: (T) -> Int) = apply {
     val values = enumValues<T>()
 
     this.entryValues = values
@@ -62,7 +62,7 @@ inline fun <reified T : Enum<T>> MultiSelectListPreference.initWith(localized: (
         .toTypedArray()
 }
 
-inline fun <reified T : Enum<T>> ListPreference.initWith(localized: (T) -> Int) {
+inline fun <reified T : Enum<T>> ListPreference.initWith(localized: (T) -> Int) = apply {
     val values = enumValues<T>()
 
     this.entryValues = values

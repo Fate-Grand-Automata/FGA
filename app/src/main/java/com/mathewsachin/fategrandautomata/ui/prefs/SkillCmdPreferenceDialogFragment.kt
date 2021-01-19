@@ -7,7 +7,7 @@ import androidx.preference.EditTextPreferenceDialogFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.util.nav
 
-class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat() {
+class SkillCmdPreferenceDialogFragment(val prefKey: String) : EditTextPreferenceDialogFragmentCompat() {
 
     var battleConfigKey = ""
 
@@ -18,7 +18,7 @@ class SkillCmdPreferenceDialogFragment : EditTextPreferenceDialogFragmentCompat(
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        arguments = bundleOf(ARG_KEY to getString(R.string.pref_battle_config_cmd))
+        arguments = bundleOf(ARG_KEY to prefKey)
 
         if (savedInstanceState != null) {
             battleConfigKey = savedInstanceState.getString(::battleConfigKey.name, "")

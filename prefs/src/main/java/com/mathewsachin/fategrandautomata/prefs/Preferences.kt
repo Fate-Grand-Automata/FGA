@@ -102,7 +102,7 @@ class PreferencesImpl @Inject constructor(
     }
 
     override fun removeBattleConfig(id: String) {
-        prefs.maker.context.deleteSharedPreferences(id)
+        prefs.context.deleteSharedPreferences(id)
         autoSkillMap.remove(id)
         prefs.removeBattleConfig(id)
 

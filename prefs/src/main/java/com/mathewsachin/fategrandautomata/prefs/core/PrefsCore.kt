@@ -1,98 +1,79 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
-import com.mathewsachin.fategrandautomata.prefs.R
+import android.content.Context
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PrefsCore @Inject constructor(
-    val maker: PrefMaker
+    maker: PrefMaker,
+    @ApplicationContext val context: Context
 ) {
-    val scriptMode = maker.enum(
-        R.string.pref_script_mode,
-        ScriptModeEnum.Battle
-    )
+    companion object {
+        const val GameServerAutoDetect = "auto_detect"
+    }
+
+    val scriptMode = maker.enum("script_mode", ScriptModeEnum.Battle)
 
     val gameServerRaw = maker.string(
-        R.string.pref_game_server,
-        maker.context.getString(R.string.pref_game_server_auto_detect)
+        "game_server",
+        GameServerAutoDetect
     )
 
-    val skillConfirmation = maker.bool(R.string.pref_skill_conf)
+    val skillConfirmation = maker.bool("skill_conf")
 
-    val battleConfigList = maker.stringSet(R.string.pref_battle_config_list)
+    val battleConfigList = maker.stringSet("autoskill_list")
+    val selectedAutoSkillConfig = maker.string("autoskill_selected")
 
-    val selectedAutoSkillConfig = maker.string(R.string.pref_battle_config_selected)
+    val storySkip = maker.bool("story_skip")
+    val withdrawEnabled = maker.bool("withdraw_enabled")
 
-    val storySkip = maker.bool(R.string.pref_story_skip)
+    val stopOnCEDrop = maker.bool("stop_on_ce_drop")
+    val stopOnCEGet = maker.bool("stop_on_ce_get")
 
-    val withdrawEnabled = maker.bool(R.string.pref_withdraw_enabled)
-
-    val stopOnCEDrop = maker.bool(R.string.pref_stop_on_ce_drop)
-
-    val stopOnCEGet = maker.bool(R.string.pref_stop_on_ce_get)
-
-    val boostItemSelectionMode = maker.stringAsInt(R.string.pref_boost_item, -1)
+    val boostItemSelectionMode = maker.stringAsInt("selected_boost_item", -1)
 
     val refill = RefillPrefsCore(maker)
 
-    val waitAPRegen = maker.bool(R.string.pref_wait_ap_regen)
+    val waitAPRegen = maker.bool("wait_for_ap_regeneration")
+    val waitAPRegenMinutes = maker.int("wait_for_ap_regeneration_minutes", 1)
 
-    val waitAPRegenMinutes = maker.int(R.string.pref_wait_ap_regen_minutes)
+    val gudaFinal = maker.bool("guda_final")
 
-    val ignoreNotchCalculation = maker.bool(R.string.pref_ignore_notch)
+    val ignoreNotchCalculation = maker.bool("ignore_notch")
+    val useRootForScreenshots = maker.bool("use_root_screenshot")
+    val recordScreen = maker.bool("record_screen")
+    val screenshotDrops = maker.bool("screenshot_drops")
+    val debugMode = maker.bool("debug_mode")
+    val autoStartService = maker.bool("auto_start_service")
 
-    val useRootForScreenshots = maker.bool(R.string.pref_use_root_screenshot)
+    val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
+    val supportMaxUpdates = maker.int("support_max_updates_x", 5)
 
-    val gudaFinal = maker.bool(R.string.pref_guda_final)
+    val minSimilarity = maker.int("min_similarity", 80)
+    val mlbSimilarity = maker.int("mlb_similarity", 70)
+    val stageCounterSimilarity = maker.int("stage_counter_similarity", 85)
 
-    val recordScreen = maker.bool(R.string.pref_record_screen)
+    val skillDelay = maker.int("skill_delay", 500)
+    val waitMultiplier = maker.int("wait_multiplier", 100)
+    val waitBeforeTurn = maker.int("wait_before_turn", 500)
+    val waitBeforeCards = maker.int("wait_before_cards", 2000)
 
-    val skillDelay = maker.int(R.string.pref_skill_delay, 500)
+    val clickWaitTime = maker.int("click_wait_time", 300)
+    val clickDuration = maker.int("click_duration", 50)
+    val clickDelay = maker.int("click_delay", 10)
 
-    val screenshotDrops = maker.bool(R.string.pref_screenshot_drops)
+    val swipeWaitTime = maker.int("swipe_wait_time", 700)
+    val swipeDuration = maker.int("swipe_duration", 300)
+    val swipeMultiplier = maker.int("swipe_multiplier", 100)
 
-    val mlbSimilarity = maker.int(R.string.pref_mlb_similarity, 70)
+    val showTextBoxForSkillCmd = maker.bool("auto_skill_cmd_text")
 
-    val swipeMultiplier = maker.int(
-        R.string.pref_swipe_multiplier,
-        100
-    )
+    val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
 
-    val supportSwipesPerUpdate = maker.int(R.string.pref_support_swipes_per_update, 10)
-
-    val supportMaxUpdates = maker.int(R.string.pref_support_max_updates, 5)
-
-    val debugMode = maker.bool(R.string.pref_debug_mode)
-
-    val minSimilarity = maker.int(R.string.pref_min_similarity, 80)
-
-    val waitMultiplier = maker.int(R.string.pref_wait_multiplier, 100)
-
-    val clickWaitTime = maker.int(R.string.pref_click_wait_time, 300)
-
-    val clickDuration = maker.int(R.string.pref_click_duration, 50)
-
-    val clickDelay = maker.int(R.string.pref_click_delay, 10)
-
-    val swipeWaitTime = maker.int(R.string.pref_swipe_wait_time, 700)
-
-    val swipeDuration = maker.int(R.string.pref_swipe_duration, 300)
-
-    val stageCounterSimilarity = maker.int(R.string.pref_stage_counter_similarity, 85)
-
-    val autoStartService = maker.bool(R.string.pref_auto_start_service)
-
-    val showTextBoxForSkillCmd = maker.bool(R.string.pref_battle_config_cmd_text)
-
-    val waitBeforeTurn = maker.int(R.string.pref_wait_before_turn, 500)
-
-    val waitBeforeCards = maker.int(R.string.pref_wait_before_cards, 2000)
-
-    val maxGoldEmberSetSize = maker.int(R.string.pref_max_gold_ember_set_size, 1)
-
-    var dirRoot = maker.string(R.string.pref_dir)
+    var dirRoot = maker.string("dir_root")
 
     private val battleConfigMap = mutableMapOf<String, BattleConfigCore>()
 
@@ -100,7 +81,7 @@ class PrefsCore @Inject constructor(
         battleConfigMap.getOrPut(id) {
             BattleConfigCore(
                 id,
-                maker.context
+                context
             )
         }
 

@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.SupportImageKind
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.util.SupportMultiSelectSummaryProvider
 import com.mathewsachin.fategrandautomata.util.populateFriendOrCe
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,26 +29,76 @@ class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var storageProvider: IStorageProvider
 
-    private fun findServantList(): MultiSelectListPreference? =
-        findPreference(getString(R.string.pref_support_pref_servant))
+    @Inject
+    lateinit var prefsCore: PrefsCore
 
-    private fun findCeList(): MultiSelectListPreference? =
-        findPreference(getString(R.string.pref_support_pref_ce))
+    private lateinit var servantList: MultiSelectListPreference
+    private lateinit var ceList: MultiSelectListPreference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = args.key
 
-        setPreferencesFromResource(R.xml.preferred_support_preferences, rootKey)
+        val config = prefsCore.forBattleConfig(args.key).support
 
-        findServantList()?.summaryProvider = SupportMultiSelectSummaryProvider()
-        findCeList()?.summaryProvider = SupportMultiSelectSummaryProvider()
+        prefScreen {
+            config.friendsOnly.switch {
+                title = R.string.p_battle_config_support_friends_only
+                icon = R.drawable.ic_friend
+            }
+
+            category {
+                key = "servant_category"
+                title = R.string.p_battle_config_support_pref_servants
+
+                servantList = config.preferredServants.multiSelect {
+                    title = R.string.p_battle_config_support_pref_servants
+                    icon = R.drawable.ic_crown
+                }.also {
+                    it.summaryProvider = SupportMultiSelectSummaryProvider()
+                }
+
+                config.maxAscended.switch {
+                    title = R.string.p_battle_config_support_max_ascended
+                    icon = R.drawable.ic_star
+                }
+
+                config.skill1Max.switch {
+                    title = R.string.p_max_skill_1
+                    icon = R.drawable.ic_wand
+                }
+
+                config.skill2Max.switch {
+                    title = R.string.p_max_skill_2
+                    icon = R.drawable.ic_wand
+                }
+
+                config.skill3Max.switch {
+                    title = R.string.p_max_skill_3
+                    icon = R.drawable.ic_wand
+                }
+            }
+
+            category {
+                key = "ce_category"
+                title = R.string.p_battle_config_support_pref_ces
+
+                ceList = config.preferredCEs.multiSelect {
+                    title = R.string.p_battle_config_support_pref_ces
+                    icon = R.drawable.ic_card
+                }.also {
+                    it.summaryProvider = SupportMultiSelectSummaryProvider()
+                }
+
+                config.mlb.switch {
+                    title = R.string.p_battle_config_support_mlb
+                    icon = R.drawable.ic_star
+                }
+            }
+        }
     }
 
     private suspend fun populatedServantAndCE() {
-        val servants = findServantList() ?: return
-        val ces = findCeList() ?: return
-
-        servants.apply {
+        servantList.apply {
             val entries = try {
                 withContext(Dispatchers.IO) {
                     storageProvider.list(SupportImageKind.Servant)
@@ -67,7 +118,7 @@ class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
             this.entries = entries
         }
 
-        ces.apply {
+        ceList.apply {
             populateFriendOrCe(storageProvider, SupportImageKind.CE)
         }
     }
@@ -88,8 +139,7 @@ class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
         }
 
         when (preference.key) {
-            getString(R.string.pref_support_pref_ce),
-            getString(R.string.pref_support_pref_servant) -> {
+            servantList.key, ceList.key -> {
                 ClearMultiSelectListPreferenceDialog().apply {
                     setKey(preference.key)
                     prepare(this)
