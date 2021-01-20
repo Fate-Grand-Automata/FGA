@@ -227,6 +227,9 @@
     <string name="p_support_mode_friend">好友从者</string>
 
     <string name="p_script_mode_battle">战斗</string>
+    <string name="p_script_mode_lottery">抽无限池</string>
+    <string name="p_script_mode_fp">友情点数召唤</string>
+    <string name="p_script_mode_support_image_maker">助战图片截取器</string>
     <string name="p_script_mode_gift_box">礼物盒</string>
 
     <string name="p_max_gold_ember_set_size">金种火最大领取数</string>
@@ -257,9 +260,7 @@
     <string name="draw_overlay_disabled_message">请让此程序显示在其他应用程序上层，FGA需要启用此设定以显示控制按钮</string>
     <string name="draw_overlay_disabled_go_to_settings">前往设定</string>
     <string name="select_script">选择脚本</string>
-    <string name="other_scripts">抽无限池/友情点数召唤/领取礼物盒种火/\n助战图片截取器</string>
     <string name="cannot_start_recording">无法开启屏幕录影</string>
-    <string name="cannot_detect_script_type">无法检测脚本类型</string>
 
     <string name="script_msg_ap_ran_out">体力用尽！</string>
     <string name="stopped_by_user">使用者停止脚本</string>

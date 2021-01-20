@@ -25,7 +25,7 @@ interface IPreferences {
     val recordScreen: Boolean
     val skillDelay: Duration
     val screenshotDrops: Boolean
-    val maxGoldEmberSetSize: Int
+    var maxGoldEmberSetSize: Int
 
     val stageCounterSimilarity: Double
     val waitBeforeTurn: Duration

@@ -81,7 +81,7 @@ class PreferencesImpl @Inject constructor(
 
     override val waitBeforeCards by prefs.waitBeforeCards.map { it.milliseconds }
 
-    override val maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
+    override var maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
 
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 

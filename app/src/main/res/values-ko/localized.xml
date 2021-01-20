@@ -230,6 +230,9 @@
     <string name="p_support_mode_friend">친구</string>
 
     <string name="p_script_mode_battle">배틀</string>
+    <string name="p_script_mode_lottery">룰렛</string>
+    <string name="p_script_mode_fp">친구 포인트 가챠</string>
+    <string name="p_script_mode_support_image_maker">서포트 이미지 메이커</string>
     <string name="p_script_mode_gift_box">선물함</string>
 
     <string name="p_max_gold_ember_set_size">4성 경험치 카드 개수</string>
@@ -262,8 +265,6 @@
     <string name="draw_overlay_disabled_go_to_settings">설정으로 가기</string>
     <string name="cannot_start_recording">화면 녹화를 시작할 수 없음</string>
     <string name="select_script">스크립트 선택</string>
-    <string name="other_scripts">룰렛/프포/선물함/\n서포트 이미지 메이커</string>
-    <string name="cannot_detect_script_type">스크립트 유형을 감지할 수 없습니다</string>
 
     <string name="script_msg_ap_ran_out">AP를 모두 소비하였습니다!</string>
     <string name="stopped_by_user">사용자에 의해 스크립트 중지됨</string>
