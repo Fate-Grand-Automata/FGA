@@ -55,8 +55,6 @@ class SeekBarPreferenceBuilder : PreferenceBuilder() {
         super.build(pref)
 
         if (pref is SeekBarPreference) {
-            pref.min = min
-            pref.max = max
             pref.seekBarIncrement = increment
             pref.showSeekBarValue = showValue
         }
@@ -70,32 +68,35 @@ class GroupPreferenceBuilder(val group: PreferenceGroup) : PreferenceBuilder() {
     fun Pref<Boolean>.switch(
         block: PreferenceBuilder.() -> Unit
     ) = SwitchPreferenceCompat(group.context).also {
+        it.setDefaultValue(defaultValue)
         it.key = key
         group.addPreference(it)
 
-        it.setDefaultValue(defaultValue)
         PreferenceBuilder().apply(block).build(it)
     }
 
     fun Pref<Int>.seekBar(
         block: SeekBarPreferenceBuilder.() -> Unit
     ) = SeekBarPreference(group.context).also {
+        val builder = SeekBarPreferenceBuilder().apply(block)
+
+        it.min = builder.min
+        it.max = builder.max
+        it.setDefaultValue(defaultValue)
+        it.key = key
+
         group.addPreference(it)
 
-        it.setDefaultValue(defaultValue)
-        SeekBarPreferenceBuilder().apply(block).build(it)
-
-        // Set the key only after setting Max and Min values
-        it.key = key
+        builder.build(it)
     }
 
     fun Pref<String>.text(
         block: PreferenceBuilder.() -> Unit
     ) = EditTextPreference(group.context).also {
+        it.setDefaultValue(defaultValue)
         it.key = key
         group.addPreference(it)
 
-        it.setDefaultValue(defaultValue)
         it.summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
         PreferenceBuilder().apply(block).build(it)
         it.dialogTitle = it.title
@@ -104,10 +105,10 @@ class GroupPreferenceBuilder(val group: PreferenceGroup) : PreferenceBuilder() {
     fun <T> Pref<T>.list(
         block: PreferenceBuilder.() -> Unit
     ) = ListPreference(group.context).also {
+        it.setDefaultValue(defaultValue.toString())
         it.key = key
         group.addPreference(it)
 
-        it.setDefaultValue(defaultValue.toString())
         it.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         PreferenceBuilder().apply(block).build(it)
         it.dialogTitle = it.title
@@ -116,10 +117,10 @@ class GroupPreferenceBuilder(val group: PreferenceGroup) : PreferenceBuilder() {
     fun Pref<Int>.numeric(
         block: PreferenceBuilder.() -> Unit
     ) = EditTextPreference(group.context).also {
+        it.setDefaultValue(defaultValue.toString())
         it.key = key
         group.addPreference(it)
 
-        it.setDefaultValue(defaultValue.toString())
         it.makeNumeric()
         it.summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
         PreferenceBuilder().apply(block).build(it)
