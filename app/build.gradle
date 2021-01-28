@@ -7,7 +7,6 @@ apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.3"
     ndkVersion "21.3.6528147"
 
     compileOptions {
@@ -18,6 +17,17 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
+        compose true
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        useIR = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion '1.4.21'
+        kotlinCompilerExtensionVersion '1.0.0-alpha10'
     }
 
     testOptions {
@@ -120,6 +130,17 @@ dependencies {
     kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
 
     implementation 'com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT'
+
+    implementation 'androidx.compose.ui:ui:1.0.0-alpha10'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.0.0-alpha10'
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation 'androidx.compose.foundation:foundation:1.0.0-alpha10'
+    // Material Design
+    implementation 'androidx.compose.material:material:1.0.0-alpha10'
+    // Material design icons
+    implementation 'androidx.compose.material:material-icons-core:1.0.0-alpha10'
+    implementation 'androidx.compose.material:material-icons-extended:1.0.0-alpha10'
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

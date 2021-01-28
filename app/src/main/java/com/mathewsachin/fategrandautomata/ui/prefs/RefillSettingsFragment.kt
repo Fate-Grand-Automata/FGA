@@ -1,140 +1,120 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.preference.EditTextPreference
-import androidx.preference.MultiSelectListPreference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
 import com.mathewsachin.fategrandautomata.R
+import androidx.compose.runtime.getValue
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
-import com.mathewsachin.fategrandautomata.util.initWith
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.*
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
 import com.mathewsachin.fategrandautomata.util.stringRes
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RefillSettingsFragment : PreferenceFragmentCompat() {
+class RefillSettingsFragment : Fragment() {
     @Inject
     lateinit var prefsCore: PrefsCore
 
-    private lateinit var repetitions: EditTextPreference
-    private lateinit var resources: MultiSelectListPreference
-    private lateinit var shouldLimitRuns: SwitchPreferenceCompat
-    private lateinit var runLimit: EditTextPreference
-    private lateinit var shouldLimitMats: SwitchPreferenceCompat
-    private lateinit var matLimit: EditTextPreference
+    val vm: MainSettingsViewModel by activityViewModels()
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        val refill = prefsCore.refill
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        ComposeView(requireContext()).apply {
+            val refill = prefsCore.refill
 
-        prefScreen {
-            category {
-                key = "refill_category"
-                title = R.string.p_refill
+            setContent {
+                ComposePreferencesTheme {
+                    Surface {
+                        ScrollableColumn {
+                            PreferenceGroup(title = stringResource(R.string.p_refill)) {
+                                refill.enabled.SwitchPreference(
+                                    title = stringResource(R.string.p_enable_refill),
+                                    icon = vectorResource(R.drawable.ic_check)
+                                )
 
-                refill.enabled.switch {
-                    title = R.string.p_enable_refill
-                    icon = R.drawable.ic_check
-                }
+                                val refillEnabled by refill.enabled.dependency()
+                                val refillResourcesMessage by vm.refillResources.collectAsState("")
 
-                resources = refill.resources.multiSelect {
-                    dependency = refill.enabled
-                    icon = R.drawable.ic_apple
-                    title = R.string.p_resource
-                }.initWith<RefillResourceEnum> { it.stringRes }
+                                refill.resources.MultiSelectListPreference(
+                                    title = stringResource(R.string.p_resource),
+                                    icon = vectorResource(R.drawable.ic_apple),
+                                    entries = RefillResourceEnum.values()
+                                        .associate {
+                                            it.toString() to stringResource(it.stringRes)
+                                        },
+                                    enabled = refillEnabled,
+                                    summary = { refillResourcesMessage },
+                                    hint = "Priority is Bronze > Silver > Gold > SQ"
+                                )
 
-                repetitions = refill.repetitions.numeric {
-                    dependency = refill.enabled
-                    icon = R.drawable.ic_repeat
-                    title = R.string.p_repetitions
-                }
+                                refill.repetitions.EditNumberPreference(
+                                    title = stringResource(R.string.p_repetitions),
+                                    icon = vectorResource(R.drawable.ic_repeat),
+                                    enabled = refillEnabled
+                                )
 
-                refill.autoDecrement.switch {
-                    dependency = refill.enabled
-                    icon = R.drawable.ic_minus
-                    title = R.string.p_auto_decrement
-                    summary = R.string.p_auto_decrement_summary
+                                refill.autoDecrement.SwitchPreference(
+                                    title = stringResource(R.string.p_auto_decrement),
+                                    hint = stringResource(R.string.p_auto_decrement_summary),
+                                    icon = vectorResource(R.drawable.ic_minus),
+                                    enabled = refillEnabled
+                                )
+                            }
+
+                            PreferenceGroup(title = stringResource(R.string.p_run_limit)) {
+                                refill.shouldLimitRuns.SwitchPreference(
+                                    title = stringResource(R.string.p_limit_no_of_runs),
+                                    icon = vectorResource(R.drawable.ic_check)
+                                )
+
+                                val shouldLimitRuns by refill.shouldLimitRuns.dependency()
+
+                                refill.limitRuns.EditNumberPreference(
+                                    title = stringResource(R.string.p_runs),
+                                    icon = vectorResource(R.drawable.ic_repeat),
+                                    enabled = shouldLimitRuns
+                                )
+
+                                refill.autoDecrementRuns.SwitchPreference(
+                                    title = stringResource(R.string.p_auto_decrement),
+                                    icon = vectorResource(R.drawable.ic_minus),
+                                    enabled = shouldLimitRuns
+                                )
+                            }
+
+                            PreferenceGroup(title = stringResource(R.string.p_mat_limit)) {
+                                refill.shouldLimitMats.SwitchPreference(
+                                    title = stringResource(R.string.p_mat_limit),
+                                    icon = vectorResource(R.drawable.ic_check)
+                                )
+
+                                val shouldLimitMats by refill.shouldLimitMats.dependency()
+
+                                refill.limitMats.EditNumberPreference(
+                                    title = stringResource(R.string.p_mat_limit_count),
+                                    icon = vectorResource(R.drawable.ic_repeat),
+                                    enabled = shouldLimitMats
+                                )
+
+                                refill.autoDecrementMats.SwitchPreference(
+                                    title = stringResource(R.string.p_auto_decrement),
+                                    icon = vectorResource(R.drawable.ic_minus),
+                                    enabled = shouldLimitMats
+                                )
+                            }
+                        }
+                    }
                 }
             }
-
-            category {
-                key = "run_limit_category"
-                title = R.string.p_run_limit
-
-                shouldLimitRuns = refill.shouldLimitRuns.switch {
-                    title = R.string.p_limit_no_of_runs
-                    icon = R.drawable.ic_check
-                }
-
-                runLimit = refill.limitRuns.numeric {
-                    dependency = refill.shouldLimitRuns
-                    title = R.string.p_runs
-                    icon = R.drawable.ic_repeat
-                }
-
-                refill.autoDecrementRuns.switch {
-                    dependency = refill.shouldLimitRuns
-                    title = R.string.p_auto_decrement
-                    icon = R.drawable.ic_minus
-                }
-            }
-
-            category {
-                key = "mat_limit_category"
-                title = R.string.p_mat_limit
-
-                shouldLimitMats = refill.shouldLimitMats.switch {
-                    title = R.string.p_mat_limit
-                    icon = R.drawable.ic_check
-                }
-
-                matLimit = refill.limitMats.numeric {
-                    dependency = refill.shouldLimitMats
-                    title = R.string.p_mat_limit_count
-                    icon = R.drawable.ic_repeat
-                }
-
-                refill.autoDecrementMats.switch {
-                    dependency = refill.shouldLimitMats
-                    title = R.string.p_auto_decrement
-                    icon = R.drawable.ic_minus
-                }
-            }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val vm: MainSettingsViewModel by activityViewModels()
-
-        // These don't update automatically
-        vm.refillRepetitions.observe(viewLifecycleOwner) {
-            repetitions.text = it.toString()
-        }
-
-        vm.shouldLimitRuns.observe(viewLifecycleOwner) {
-            shouldLimitRuns.isChecked = it
-        }
-
-        vm.limitRuns.observe(viewLifecycleOwner) {
-            runLimit.text = it.toString()
-        }
-
-        vm.shouldLimitMats.observe(viewLifecycleOwner) {
-            shouldLimitMats.isChecked = it
-        }
-
-        vm.limitMats.observe(viewLifecycleOwner) {
-            matLimit.text = it.toString()
-        }
-
-        // Refill resources shown with priority
-        vm.refillResources.observe(viewLifecycleOwner) {
-            resources.summary = it
-        }
-    }
 }

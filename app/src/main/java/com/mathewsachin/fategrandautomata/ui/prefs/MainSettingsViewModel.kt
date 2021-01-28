@@ -35,37 +35,7 @@ class MainSettingsViewModel @ViewModelInject constructor(
         .asFlow()
         .asLiveData()
 
-    val refillRepetitions = prefsCore
-        .refill
-        .repetitions
-        .asFlow()
-        .asLiveData()
-
-    val shouldLimitRuns = prefsCore
-        .refill
-        .shouldLimitRuns
-        .asFlow()
-        .asLiveData()
-
-    val limitRuns = prefsCore
-        .refill
-        .limitRuns
-        .asFlow()
-        .asLiveData()
-
-    val shouldLimitMats = prefsCore
-        .refill
-        .shouldLimitMats
-        .asFlow()
-        .asLiveData()
-
-    val limitMats = prefsCore
-        .refill
-        .limitMats
-        .asFlow()
-        .asLiveData()
-
-    private val refillResourcesFlow = prefsCore
+    val refillResources = prefsCore
         .refill
         .resources
         .asFlow()
@@ -79,13 +49,11 @@ class MainSettingsViewModel @ViewModelInject constructor(
             } else context.getString(R.string.p_refill_none)
         }
 
-    val refillResources = refillResourcesFlow.asLiveData()
-
     val refillMessage = combine(
         prefsCore.refill.enabled.asFlow(),
         prefsCore.refill.resources.asFlow(),
         prefsCore.refill.repetitions.asFlow(),
-        refillResourcesFlow
+        refillResources
     ) { enabled, resources, repetitions, refillResourcesMsg ->
         if (enabled && repetitions > 0 && resources.isNotEmpty())
             "[$refillResourcesMsg] x$repetitions"
