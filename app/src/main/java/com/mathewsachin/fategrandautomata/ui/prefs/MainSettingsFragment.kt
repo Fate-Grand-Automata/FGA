@@ -3,12 +3,20 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.material.Surface
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.Preference
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
@@ -16,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainSettingsFragment : PreferenceFragmentCompat() {
+class MainSettingsFragment : Fragment() {
     @Inject
     lateinit var storageProvider: StorageProvider
 
@@ -35,61 +43,63 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         goToBattleConfigList()
     }
 
-    private lateinit var navRefill: Preference
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        ComposeView(requireContext()).apply {
+            setContent {
+                ComposePreferencesTheme {
+                    Surface {
+                        ScrollableColumn {
+                            val refillMsg by vm.refillMessage.collectAsState("")
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        prefScreen {
-            navRefill = blank {
-                title = R.string.p_refill
-                summary = R.string.p_refill_summary
-                icon = R.drawable.ic_apple
-            }.also {
-                it.setOnPreferenceClickListener {
-                    val action = MainFragmentDirections
-                        .actionMainFragmentToRefillSettingsFragment()
+                            Preference(
+                                title = stringResource(R.string.p_refill),
+                                summary = refillMsg,
+                                icon = vectorResource(R.drawable.ic_apple),
+                                onClick = {
+                                    val action = MainFragmentDirections
+                                        .actionMainFragmentToRefillSettingsFragment()
 
-                    nav(action)
+                                    nav(action)
+                                }
+                            )
 
-                    true
+                            Preference(
+                                title = stringResource(R.string.p_battle_config),
+                                summary = stringResource(R.string.p_battle_config_summary),
+                                icon = vectorResource(R.drawable.ic_formation),
+                                onClick = {
+                                    if (vm.ensureRootDir(pickDir, requireContext())) {
+                                        goToBattleConfigList()
+                                    }
+                                }
+                            )
+
+                            Preference(
+                                title = stringResource(R.string.p_nav_troubleshoot),
+                                icon = vectorResource(R.drawable.ic_troubleshooting),
+                                onClick = {
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(getString(R.string.link_troubleshoot))
+                                    )
+
+                                    startActivity(intent)
+                                }
+                            )
+
+                            Preference(
+                                title = stringResource(R.string.p_more_options),
+                                icon = vectorResource(R.drawable.ic_dots_horizontal),
+                                onClick = {
+                                    val action = MainFragmentDirections
+                                        .actionMainFragmentToMoreSettingsFragment()
+
+                                    nav(action)
+                                }
+                            )
+                        }
+                    }
                 }
             }
-
-            blank {
-                title = R.string.p_battle_config
-                summary = R.string.p_battle_config_summary
-                icon = R.drawable.ic_formation
-            }.setOnPreferenceClickListener {
-                if (vm.ensureRootDir(pickDir, requireContext())) {
-                    goToBattleConfigList()
-                }
-
-                true
-            }
-
-            blank {
-                title = R.string.p_nav_troubleshoot
-                icon = R.drawable.ic_troubleshooting
-            }.intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_troubleshoot)))
-
-            blank {
-                title = R.string.p_more_options
-                icon = R.drawable.ic_dots_horizontal
-            }.setOnPreferenceClickListener {
-                val action = MainFragmentDirections
-                    .actionMainFragmentToMoreSettingsFragment()
-
-                nav(action)
-
-                true
-            }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        vm.refillMessage.observe(viewLifecycleOwner) {
-            navRefill.summary = it
-        }
-    }
 }

@@ -59,7 +59,6 @@ class MainSettingsViewModel @ViewModelInject constructor(
             "[$refillResourcesMsg] x$repetitions"
         else context.getString(R.string.p_refill_off)
     }
-        .asLiveData()
 
     val serviceStarted get() = ScriptRunnerService.serviceStarted
 
