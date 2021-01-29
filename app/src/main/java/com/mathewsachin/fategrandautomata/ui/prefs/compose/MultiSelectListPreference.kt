@@ -16,43 +16,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.preference.MultiSelectListPreference
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import kotlinx.coroutines.flow.onEach
 
 @Composable
-fun Pref<Set<String>>.MultiSelectListPreference(
-    title: String,
-    summary: (List<String>) -> String = { it.joinToString() },
-    singleLineTitle: Boolean = true,
-    icon: ImageVector? = null,
+fun MultiSelectListPreferenceDialog(
+    showDialog: Boolean,
+    closeDialog: () -> Unit,
+    selected: Set<String>,
+    selectedChange: (Set<String>) -> Unit,
     entries: Map<String, String>,
-    enabled: Boolean = true,
-    hint: String = ""
+    title: String
 ) {
-    var tempSelected by savedInstanceState { defaultValue }
-    val selected by asFlow()
-        .onEach { tempSelected = it }
-        .collectAsState(defaultValue)
-    var showDialog by savedInstanceState { false }
-    val closeDialog = { showDialog = false }
-
-    val itemNames = entries
-        .filter { selected.contains(it.key) }
-        .map { it.value }
-
-    Preference(
-        title = title,
-        summary = summary(itemNames),
-        singleLineTitle = singleLineTitle,
-        icon = icon,
-        enabled = enabled,
-        onClick = { showDialog = true },
-        hint = hint
-    )
-
     if (showDialog) {
+        var tempSelected by savedInstanceState { selected }
+
         AlertDialog(
-            onDismissRequest = { closeDialog() },
+            onDismissRequest = closeDialog,
             title = { Text(text = title) },
             text = {
                 Column {
@@ -88,7 +69,7 @@ fun Pref<Set<String>>.MultiSelectListPreference(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        set(tempSelected)
+                        selectedChange(tempSelected)
                         closeDialog()
                     },
                     colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
@@ -98,7 +79,7 @@ fun Pref<Set<String>>.MultiSelectListPreference(
             },
             dismissButton = {
                 TextButton(
-                    onClick = { closeDialog() },
+                    onClick = closeDialog,
                     colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
                 ) {
                     Text(text = stringResource(id = android.R.string.cancel))
@@ -106,4 +87,41 @@ fun Pref<Set<String>>.MultiSelectListPreference(
             }
         )
     }
+}
+
+@Composable
+fun Pref<Set<String>>.MultiSelectListPreference(
+    title: String,
+    summary: (List<String>) -> String = { it.joinToString() },
+    singleLineTitle: Boolean = true,
+    icon: ImageVector? = null,
+    entries: Map<String, String>,
+    enabled: Boolean = true,
+    hint: String = ""
+) {
+    val selected by asFlow().collectAsState(defaultValue)
+    var showDialog by savedInstanceState { false }
+
+    val itemNames = entries
+        .filter { selected.contains(it.key) }
+        .map { it.value }
+
+    Preference(
+        title = title,
+        summary = summary(itemNames),
+        singleLineTitle = singleLineTitle,
+        icon = icon,
+        enabled = enabled,
+        onClick = { showDialog = true },
+        hint = hint
+    )
+
+    MultiSelectListPreferenceDialog(
+        showDialog = showDialog,
+        closeDialog = { showDialog = false },
+        selected = selected,
+        selectedChange = { set(it) },
+        entries = entries,
+        title = title
+    )
 }

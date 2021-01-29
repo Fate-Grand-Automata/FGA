@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
@@ -67,7 +66,7 @@ fun Preference(
         ListItem(
             text = title,
             secondaryText = summary,
-            icon = { icon?.let { Icon(imageVector = it, modifier = Modifier.size(40.dp)) } },
+            icon = icon?.let { { Icon(imageVector = it, modifier = Modifier.size(40.dp)) } },
             modifier = Modifier.clickable(onClick = { if (enabled) onClick() }),
             trailing = {
                 Row {

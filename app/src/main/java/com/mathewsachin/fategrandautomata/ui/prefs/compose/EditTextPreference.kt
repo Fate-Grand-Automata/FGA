@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -12,49 +13,32 @@ import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import kotlinx.coroutines.flow.onEach
 
 @Composable
-fun Pref<Int>.EditNumberPreference(
+fun EditTextPreferenceDialog(
     title: String,
-    singleLineTitle: Boolean = false,
-    icon: ImageVector? = null,
-    enabled: Boolean = true,
-    hint: String = "",
-    min: Int = 0
+    showDialog: Boolean,
+    value: String,
+    valueChange: (String) -> Unit,
+    closeDialog: () -> Unit,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    singleLine: Boolean = true
 ) {
-    var current by savedInstanceState { defaultValue.toString() }
-    val state by asFlow()
-        .onEach { current = it.toString() }
-        .collectAsState(defaultValue)
-    var showDialog by savedInstanceState { false }
-    val closeDialog = { showDialog = false }
-
-    Preference(
-        title = title,
-        summary = state.toString(),
-        singleLineTitle = singleLineTitle,
-        icon = icon,
-        enabled = enabled,
-        hint = hint,
-        onClick = { showDialog = true },
-    )
-
     if (showDialog) {
+        var current by savedInstanceState { value }
+
         val commit = {
-            set(current.toIntOrNull()?.coerceAtLeast(min) ?: defaultValue)
+            valueChange(current)
             closeDialog()
         }
 
         AlertDialog(
-            onDismissRequest = { closeDialog() },
+            onDismissRequest = closeDialog,
             title = { Text(text = title) },
             text = {
                 TextField(
                     value = current,
                     onValueChange = { current = it },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done,
-                        keyboardType = KeyboardType.Number
-                    ),
-                    singleLine = true,
+                    keyboardOptions = keyboardOptions,
+                    singleLine = singleLine,
                     onImeActionPerformed = { action, _ ->
                         if (action == ImeAction.Done) {
                             commit()
@@ -72,7 +56,7 @@ fun Pref<Int>.EditNumberPreference(
             },
             dismissButton = {
                 TextButton(
-                    onClick = { closeDialog() },
+                    onClick = closeDialog,
                     colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
                 ) {
                     Text(text = stringResource(id = android.R.string.cancel))
@@ -83,24 +67,61 @@ fun Pref<Int>.EditNumberPreference(
 }
 
 @Composable
+fun Pref<Int>.EditNumberPreference(
+    title: String,
+    singleLineTitle: Boolean = false,
+    icon: ImageVector? = null,
+    enabled: Boolean = true,
+    hint: String = "",
+    min: Int = 0,
+    max: Int = Int.MAX_VALUE,
+    summary: (Int) -> String = { it.toString() },
+    dialogTitle: String? = null
+) {
+    val state by asFlow().collectAsState(defaultValue)
+    var showDialog by savedInstanceState { false }
+
+    Preference(
+        title = title,
+        summary = summary(state),
+        singleLineTitle = singleLineTitle,
+        icon = icon,
+        enabled = enabled,
+        hint = hint,
+        onClick = { showDialog = true }
+    )
+
+    EditTextPreferenceDialog(
+        title = dialogTitle ?: title,
+        showDialog = showDialog,
+        value = state.toString(),
+        valueChange = { set(it.toIntOrNull()?.coerceIn(min, max) ?: defaultValue) },
+        closeDialog = { showDialog = false },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Number
+        ),
+        singleLine = true
+    )
+}
+
+@Composable
 fun Pref<String>.EditTextPreference(
     title: String,
     singleLineTitle: Boolean = false,
     singleLine: Boolean = false,
     icon: ImageVector? = null,
     enabled: Boolean = true,
-    hint: String = ""
+    hint: String = "",
+    summary: (String) -> String = { it },
+    dialogTitle: String? = null
 ) {
-    var current by savedInstanceState { defaultValue }
-    val state by asFlow()
-        .onEach { current = it }
-        .collectAsState(defaultValue)
+    val state by asFlow().collectAsState(defaultValue)
     var showDialog by savedInstanceState { false }
-    val closeDialog = { showDialog = false }
 
     Preference(
         title = title,
-        summary = state,
+        summary = summary(state),
         singleLineTitle = singleLineTitle,
         icon = icon,
         enabled = enabled,
@@ -108,46 +129,12 @@ fun Pref<String>.EditTextPreference(
         onClick = { showDialog = true },
     )
 
-    if (showDialog) {
-        val commit = {
-            set(current)
-            closeDialog()
-        }
-
-        AlertDialog(
-            onDismissRequest = { closeDialog() },
-            title = { Text(text = title) },
-            text = {
-                TextField(
-                    value = current,
-                    onValueChange = { current = it },
-                    singleLine = singleLine,
-                    onImeActionPerformed = { action, _ ->
-                        if (action == ImeAction.Done) {
-                            commit()
-                        }
-                    }
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        set(current)
-                        closeDialog()
-                    },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
-                ) {
-                    Text(text = stringResource(id = android.R.string.ok))
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { closeDialog() },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
-                ) {
-                    Text(text = stringResource(id = android.R.string.cancel))
-                }
-            }
-        )
-    }
+    EditTextPreferenceDialog(
+        title = dialogTitle ?: title,
+        showDialog = showDialog,
+        value = state,
+        valueChange = { set(it) },
+        closeDialog = { showDialog = false },
+        singleLine = singleLine
+    )
 }
