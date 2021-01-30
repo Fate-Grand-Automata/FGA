@@ -18,10 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.RefillPrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
@@ -62,11 +59,23 @@ fun RefillGroup(
     vm: MainSettingsViewModel
 ) {
     PreferenceGroup(title = stringResource(R.string.p_refill)) {
-        val refillEnabled by refill.enabled.dependency()
+        val refillEnabled by refill.enabled.collect()
         val refillResourcesMessage by vm.refillResources.collectAsState("")
 
         Row {
-            var showResourcesDialog by savedInstanceState { false }
+            val refillResources by refill.resources
+                .asFlow()
+                .collectAsState(refill.resources.get())
+
+            val refillResourcesDialog = multiSelectListDialog(
+                selected = refillResources,
+                selectedChange = { refill.resources.set(it) },
+                entries = RefillResourceEnum.values()
+                    .associate {
+                        it.toString() to stringResource(it.stringRes)
+                    },
+                title = stringResource(R.string.p_resource)
+            )
 
             ListItem(
                 icon = {
@@ -79,7 +88,7 @@ fun RefillGroup(
                 modifier = Modifier
                     .clickable {
                         if (refillEnabled) {
-                            showResourcesDialog = true
+                            refillResourcesDialog.show()
                         }
                     },
                 trailing = {
@@ -121,25 +130,9 @@ fun RefillGroup(
                     )
                 }
             ) {
-                val refillResources by refill.resources
-                    .asFlow()
-                    .collectAsState(refill.resources.get())
-
                 StatusWrapper(refillEnabled) {
                     Text(refillResourcesMessage)
                 }
-
-                MultiSelectListPreferenceDialog(
-                    showDialog = showResourcesDialog,
-                    closeDialog = { showResourcesDialog = false },
-                    selected = refillResources,
-                    selectedChange = { refill.resources.set(it) },
-                    entries = RefillResourceEnum.values()
-                        .associate {
-                            it.toString() to stringResource(it.stringRes)
-                        },
-                    title = stringResource(R.string.p_resource)
-                )
             }
         }
 
@@ -158,7 +151,7 @@ fun RunLimitGroup(
     refill: RefillPrefsCore
 ) {
     PreferenceGroup(title = stringResource(R.string.p_run_limit)) {
-        val shouldLimitRuns by refill.shouldLimitRuns.dependency()
+        val shouldLimitRuns by refill.shouldLimitRuns.collect()
 
         Row {
             Checkbox(
@@ -190,7 +183,7 @@ fun MatLimitGroup(
     refill: RefillPrefsCore
 ) {
     PreferenceGroup(title = stringResource(R.string.p_mat_limit)) {
-        val shouldLimitMats by refill.shouldLimitMats.dependency()
+        val shouldLimitMats by refill.shouldLimitMats.collect()
 
         Row {
             Checkbox(

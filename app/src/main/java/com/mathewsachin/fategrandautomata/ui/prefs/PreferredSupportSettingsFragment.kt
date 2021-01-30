@@ -1,151 +1,171 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.preference.MultiSelectListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceDialogFragmentCompat
-import androidx.preference.PreferenceFragmentCompat
-import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.SupportImageKind
+import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.util.SupportMultiSelectSummaryProvider
-import com.mathewsachin.fategrandautomata.util.populateFriendOrCe
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
-import timber.log.error
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PreferredSupportSettingsFragment : PreferenceFragmentCompat() {
+class PreferredSupportSettingsFragment : Fragment() {
     val args: PreferredSupportSettingsFragmentArgs by navArgs()
-
-    @Inject
-    lateinit var storageProvider: IStorageProvider
 
     @Inject
     lateinit var prefsCore: PrefsCore
 
-    private lateinit var servantList: MultiSelectListPreference
-    private lateinit var ceList: MultiSelectListPreference
+    val vm: PreferredSupportViewModel by viewModels()
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        preferenceManager.sharedPreferencesName = args.key
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        ComposeView(requireContext()).apply {
+            val config = prefsCore.forBattleConfig(args.key).support
 
-        val config = prefsCore.forBattleConfig(args.key).support
+            setContent {
+                ComposePreferencesTheme {
+                    Surface {
+                        ScrollableColumn {
+                            config.friendsOnly.SwitchPreference(
+                                title = stringResource(R.string.p_battle_config_support_friends_only),
+                                icon = vectorResource(R.drawable.ic_friend)
+                            )
 
-        prefScreen {
-            config.friendsOnly.switch {
-                title = R.string.p_battle_config_support_friends_only
-                icon = R.drawable.ic_friend
-            }
+                            PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_servants)) {
+                                config.preferredServants.MultiSelectListPreference(
+                                    title = stringResource(R.string.p_battle_config_support_pref_servants),
+                                    entries = vm.servants,
+                                    icon = vectorResource(R.drawable.ic_crown),
+                                    summary = {
+                                        if (it.isEmpty())
+                                            getString(R.string.p_not_set)
+                                        else it.joinToString()
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = vectorResource(id = R.drawable.ic_close),
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .clickable(onClick = { config.preferredServants.resetToDefault() })
+                                    )
+                                }
 
-            category {
-                key = "servant_category"
-                title = R.string.p_battle_config_support_pref_servants
+                                config.maxAscended.SwitchPreference(
+                                    title = stringResource(R.string.p_battle_config_support_max_ascended),
+                                    icon = vectorResource(R.drawable.ic_star)
+                                )
 
-                servantList = config.preferredServants.multiSelect {
-                    title = R.string.p_battle_config_support_pref_servants
-                    icon = R.drawable.ic_crown
-                }.also {
-                    it.summaryProvider = SupportMultiSelectSummaryProvider()
-                }
+                                Preference(
+                                    title = { Text(stringResource(R.string.p_max_skills)) },
+                                    icon = vectorResource(R.drawable.ic_wand),
+                                    summary = {
+                                        MaxSkills(
+                                            skills = listOf(
+                                                config.skill1Max,
+                                                config.skill2Max,
+                                                config.skill3Max
+                                            )
+                                        )
+                                    }
+                                )
+                            }
 
-                config.maxAscended.switch {
-                    title = R.string.p_battle_config_support_max_ascended
-                    icon = R.drawable.ic_star
-                }
+                            PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_ces)) {
+                                config.preferredCEs.MultiSelectListPreference(
+                                    title = stringResource(R.string.p_battle_config_support_pref_ces),
+                                    entries = vm.ces,
+                                    icon = vectorResource(R.drawable.ic_card),
+                                    summary = {
+                                        if (it.isEmpty())
+                                            getString(R.string.p_not_set)
+                                        else it.joinToString()
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = vectorResource(id = R.drawable.ic_close),
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .clickable(onClick = { config.preferredCEs.resetToDefault() })
+                                    )
+                                }
 
-                config.skill1Max.switch {
-                    title = R.string.p_max_skill_1
-                    icon = R.drawable.ic_wand
-                }
-
-                config.skill2Max.switch {
-                    title = R.string.p_max_skill_2
-                    icon = R.drawable.ic_wand
-                }
-
-                config.skill3Max.switch {
-                    title = R.string.p_max_skill_3
-                    icon = R.drawable.ic_wand
-                }
-            }
-
-            category {
-                key = "ce_category"
-                title = R.string.p_battle_config_support_pref_ces
-
-                ceList = config.preferredCEs.multiSelect {
-                    title = R.string.p_battle_config_support_pref_ces
-                    icon = R.drawable.ic_card
-                }.also {
-                    it.summaryProvider = SupportMultiSelectSummaryProvider()
-                }
-
-                config.mlb.switch {
-                    title = R.string.p_battle_config_support_mlb
-                    icon = R.drawable.ic_star
+                                config.mlb.SwitchPreference(
+                                    title = stringResource(R.string.p_battle_config_support_mlb),
+                                    icon = vectorResource(R.drawable.ic_star)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-
-    private suspend fun populatedServantAndCE() {
-        servantList.apply {
-            val entries = try {
-                withContext(Dispatchers.IO) {
-                    storageProvider.list(SupportImageKind.Servant)
-                        .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it })
-                        .toTypedArray()
-                }
-            } catch (e: Exception) {
-                val msg = "Couldn't access Support images"
-
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                Timber.error(e) { msg }
-
-                emptyArray()
-            }
-
-            this.entryValues = entries
-            this.entries = entries
-        }
-
-        ceList.apply {
-            populateFriendOrCe(storageProvider, SupportImageKind.CE)
-        }
-    }
 
     override fun onResume() {
         super.onResume()
 
-        lifecycleScope.launch {
-            populatedServantAndCE()
-        }
+        vm.refresh(requireContext())
+
+        // TODO: Allow clearing Servant/CE selection
     }
 
-    override fun onDisplayPreferenceDialog(preference: Preference) {
-        fun prepare(dialogFragment: PreferenceDialogFragmentCompat) {
-            @Suppress("DEPRECATION")
-            dialogFragment.setTargetFragment(this, 0)
-            dialogFragment.show(parentFragmentManager, null)
-        }
+    @Composable
+    fun MaxSkills(
+        skills: List<Pref<Boolean>>
+    ) {
+        Row {
+            fun skillText(max: Boolean) = if (max) "10" else "x"
+            fun Pref<Boolean>.toggle() =
+                set(!get())
 
-        when (preference.key) {
-            servantList.key, ceList.key -> {
-                ClearMultiSelectListPreferenceDialog().apply {
-                    setKey(preference.key)
-                    prepare(this)
+            skills.forEachIndexed { index, pref ->
+                if (index != 0) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(top = 25.dp)
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        Text("/")
+                    }
+                }
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(7.dp)
+                        .padding(top = 9.dp)
+                        .border(
+                            width = 1.dp,
+                            brush = SolidColor(MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)),
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .clickable { pref.toggle() }
+                        .padding(8.dp)
+                ) {
+                    val max by pref.collect()
+                    Text(skillText(max))
                 }
             }
-            else -> super.onDisplayPreferenceDialog(preference)
         }
     }
 }

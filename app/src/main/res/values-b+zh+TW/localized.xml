@@ -126,10 +126,6 @@
     <string name="p_battle_config_support_friends_only">只選擇好友從者</string>
     <string name="p_battle_config_support_friend_name_hint">請使用「支援圖片截取器」腳本加入好友名稱的圖片</string>
 
-    <string name="p_max_skill_1">一技滿等</string>
-    <string name="p_max_skill_2">二技滿等</string>
-    <string name="p_max_skill_3">三技滿等</string>
-
     <string name="p_game_server">伺服器</string>
     <string name="p_game_server_auto_detect">自動偵測</string>
     <string name="p_spam_summary">選擇Danger 敵人時施放選項需開啟自動選取敵人</string>

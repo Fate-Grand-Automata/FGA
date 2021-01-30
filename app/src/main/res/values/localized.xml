@@ -126,9 +126,7 @@
     <string name="p_battle_config_support_friends_only">Friends Only</string>
     <string name="p_battle_config_support_friend_name_hint">Friend name images can be added using \'Support Image Maker\' script</string>
 
-    <string name="p_max_skill_1">Max Skill 1</string>
-    <string name="p_max_skill_2">Max Skill 2</string>
-    <string name="p_max_skill_3">Max Skill 3</string>
+    <string name="p_max_skills">Max Skills</string>
 
     <string name="p_game_server">Game Server</string>
     <string name="p_game_server_auto_detect">Auto-detect</string>

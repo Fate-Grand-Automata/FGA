@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui.prefs.compose
 
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
@@ -17,7 +16,7 @@ fun Pref<Boolean>.SwitchPreference(
     hint: String = ""
 ) {
     val onClicked: (Boolean) -> Unit = { set(it) }
-    val state by asFlow().collectAsState(get())
+    val state by collect()
 
     Preference(
         title = title,

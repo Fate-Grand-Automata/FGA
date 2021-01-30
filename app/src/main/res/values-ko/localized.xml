@@ -125,10 +125,6 @@
     <string name="p_battle_config_support_friend_names">친구 이름</string>
     <string name="p_battle_config_support_friends_only">친구 한정</string>
 
-    <string name="p_max_skill_1">1 스킬 만렙</string>
-    <string name="p_max_skill_2">2 스킬 만렙</string>
-    <string name="p_max_skill_3">3 스킬 만렙</string>
-
     <string name="p_game_server">게임 서버</string>
     <string name="p_game_server_auto_detect">자동 감지</string>
     <string name="p_spam_summary">위험 모드는 자동 표적 활성화가 필요합니다</string>

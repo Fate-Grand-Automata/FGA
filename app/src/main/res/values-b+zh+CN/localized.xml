@@ -125,10 +125,6 @@
     <string name="p_battle_config_support_friend_names">好友名称</string>
     <string name="p_battle_config_support_friends_only">只选择好友从者</string>
 
-    <string name="p_max_skill_1">一技能满级</string>
-    <string name="p_max_skill_2">二技能满级</string>
-    <string name="p_max_skill_3">三技能满级</string>
-
     <string name="p_game_server">服务器</string>
     <string name="p_game_server_auto_detect">自动检测</string>
     <string name="p_spam_summary">选择危险敌人时施放选项需开启自动选取敌人</string>

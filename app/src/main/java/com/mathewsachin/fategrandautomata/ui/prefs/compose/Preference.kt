@@ -14,9 +14,9 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 
 @Composable
-fun Pref<Boolean>.dependency() =
+fun <T> Pref<T>.collect() =
     asFlow()
-        .collectAsState(defaultValue)
+        .collectAsState(get())
 
 @Composable
 fun Preference(

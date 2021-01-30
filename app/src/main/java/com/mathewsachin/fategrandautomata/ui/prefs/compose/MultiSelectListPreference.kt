@@ -1,92 +1,48 @@
 package com.mathewsachin.fategrandautomata.ui.prefs.compose
 
-import androidx.compose.material.Text
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.preference.MultiSelectListPreference
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
-import kotlinx.coroutines.flow.onEach
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.listItemsMultiChoice
 
 @Composable
-fun MultiSelectListPreferenceDialog(
-    showDialog: Boolean,
-    closeDialog: () -> Unit,
+fun multiSelectListDialog(
     selected: Set<String>,
     selectedChange: (Set<String>) -> Unit,
     entries: Map<String, String>,
     title: String
-) {
-    if (showDialog) {
-        var tempSelected by savedInstanceState { selected }
+): MaterialDialog {
+    val dialog = MaterialDialog()
 
-        AlertDialog(
-            onDismissRequest = closeDialog,
-            title = { Text(text = title) },
-            text = {
-                Column {
-                    entries.forEach { current ->
-                        val isSelected = tempSelected.contains(current.key)
-                        val onSelectionChanged = {
-                            val result = when (!isSelected) {
-                                true -> tempSelected + current.key
-                                false -> tempSelected - current.key
-                            }
-                            tempSelected = result
-                        }
-                        Row(Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = isSelected,
-                                onClick = { onSelectionChanged() }
-                            )
-                            .padding(16.dp)
-                        ) {
-                            Checkbox(checked = isSelected, onCheckedChange = {
-                                onSelectionChanged()
-                            })
-                            Text(
-                                text = current.value,
-                                style = MaterialTheme.typography.body1.merge(),
-                                modifier = Modifier.padding(start = 16.dp)
-                            )
-                        }
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        selectedChange(tempSelected)
-                        closeDialog()
-                    },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
-                ) {
-                    Text(text = stringResource(id = android.R.string.ok))
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = closeDialog,
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
-                ) {
-                    Text(text = stringResource(id = android.R.string.cancel))
-                }
+    dialog.build {
+        title(text = title)
+
+        val keys = entries.keys.toList()
+        val values = entries.values.toList()
+        val selectedIndices = selected.map { keys.indexOf(it) }
+
+        listItemsMultiChoice(
+            list = values,
+            initialSelection = selectedIndices,
+            onCheckedChange = { indices ->
+                val selectedKeys = indices
+                    .map { keys[it] }
+                    .toSet()
+
+                selectedChange(selectedKeys)
             }
         )
+
+        buttons {
+            positiveButton(res = android.R.string.ok)
+            negativeButton(res = android.R.string.cancel)
+        }
     }
+
+    return dialog
 }
 
 @Composable
@@ -97,14 +53,21 @@ fun Pref<Set<String>>.MultiSelectListPreference(
     icon: ImageVector? = null,
     entries: Map<String, String>,
     enabled: Boolean = true,
-    hint: String = ""
+    hint: String = "",
+    trailing: @Composable ((Modifier) -> Unit)? = null
 ) {
-    val selected by asFlow().collectAsState(get())
-    var showDialog by savedInstanceState { false }
+    val selected by collect()
 
     val itemNames = entries
         .filter { selected.contains(it.key) }
         .map { it.value }
+
+    val dialog = multiSelectListDialog(
+        selected = selected,
+        selectedChange = { set(it) },
+        entries = entries,
+        title = title
+    )
 
     Preference(
         title = title,
@@ -112,16 +75,8 @@ fun Pref<Set<String>>.MultiSelectListPreference(
         singleLineTitle = singleLineTitle,
         icon = icon,
         enabled = enabled,
-        onClick = { showDialog = true },
-        hint = hint
-    )
-
-    MultiSelectListPreferenceDialog(
-        showDialog = showDialog,
-        closeDialog = { showDialog = false },
-        selected = selected,
-        selectedChange = { set(it) },
-        entries = entries,
-        title = title
+        onClick = { dialog.show() },
+        hint = hint,
+        trailing = trailing
     )
 }

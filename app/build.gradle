@@ -140,6 +140,8 @@ dependencies {
     // Material design icons
     implementation 'androidx.compose.material:material-icons-core:1.0.0-alpha10'
     implementation 'androidx.compose.material:material-icons-extended:1.0.0-alpha10'
+
+    implementation "com.vanpra.compose-material-dialogs:core:0.2.11"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
