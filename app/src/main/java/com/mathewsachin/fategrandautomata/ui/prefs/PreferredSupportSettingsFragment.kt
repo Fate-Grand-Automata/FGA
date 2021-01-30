@@ -69,24 +69,28 @@ class PreferredSupportSettingsFragment : Fragment() {
                                     )
                                 }
 
-                                config.maxAscended.SwitchPreference(
-                                    title = stringResource(R.string.p_battle_config_support_max_ascended),
-                                    icon = vectorResource(R.drawable.ic_star)
-                                )
+                                val prefServants by config.preferredServants.collect()
 
-                                Preference(
-                                    title = { Text(stringResource(R.string.p_max_skills)) },
-                                    icon = vectorResource(R.drawable.ic_wand),
-                                    summary = {
-                                        MaxSkills(
-                                            skills = listOf(
-                                                config.skill1Max,
-                                                config.skill2Max,
-                                                config.skill3Max
+                                if (prefServants.isNotEmpty()) {
+                                    config.maxAscended.SwitchPreference(
+                                        title = stringResource(R.string.p_battle_config_support_max_ascended),
+                                        icon = vectorResource(R.drawable.ic_star)
+                                    )
+
+                                    Preference(
+                                        title = { Text(stringResource(R.string.p_max_skills)) },
+                                        icon = vectorResource(R.drawable.ic_wand),
+                                        summary = {
+                                            MaxSkills(
+                                                skills = listOf(
+                                                    config.skill1Max,
+                                                    config.skill2Max,
+                                                    config.skill3Max
+                                                )
                                             )
-                                        )
-                                    }
-                                )
+                                        }
+                                    )
+                                }
                             }
 
                             PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_ces)) {
@@ -108,10 +112,14 @@ class PreferredSupportSettingsFragment : Fragment() {
                                     )
                                 }
 
-                                config.mlb.SwitchPreference(
-                                    title = stringResource(R.string.p_battle_config_support_mlb),
-                                    icon = vectorResource(R.drawable.ic_star)
-                                )
+                                val prefCEs by config.preferredCEs.collect()
+
+                                if (prefCEs.isNotEmpty()) {
+                                    config.mlb.SwitchPreference(
+                                        title = stringResource(R.string.p_battle_config_support_mlb),
+                                        icon = vectorResource(R.drawable.ic_star)
+                                    )
+                                }
                             }
                         }
                     }
