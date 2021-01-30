@@ -1,172 +1,179 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SeekBarPreference
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.PreferenceGroup
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.SeekBarPreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FineTuneSettingsFragment : PreferenceFragmentCompat() {
+class FineTuneSettingsFragment : Fragment() {
     val vm: FineTuneSettingsViewModel by viewModels()
 
     @Inject
     lateinit var prefs: PrefsCore
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        prefScreen {
-            category {
-                key = "support_swipe_category"
-                title = R.string.p_fine_tune_support
+    @Composable
+    fun Pref<Int>.FineTuneSeekBar(
+        @StringRes title: Int,
+        @DrawableRes icon: Int,
+        valueRange: IntRange = 0..100,
+        valueRepresentation: (Int) -> String = { it.toString() }
+    ) {
+        SeekBarPreference(
+            title = stringResource(title),
+            summary = "Default: ${valueRepresentation(defaultValue)}",
+            icon = vectorResource(icon),
+            valueRange = valueRange,
+            valueRepresentation = valueRepresentation,
+            state = vm.getState(this)
+        )
+    }
 
-                prefs.supportSwipesPerUpdate.seekBar {
-                    title = R.string.p_fine_tune_support_swipes_per_update
-                    max = 35
-                    icon = R.drawable.ic_swipe
-                }
-
-                prefs.supportMaxUpdates.seekBar {
-                    title = R.string.p_fine_tune_support_max_updates
-                    max = 50
-                    icon = R.drawable.ic_refresh
-                }
-            }
-
-            category {
-                key = "similarity_category"
-                title = R.string.p_fine_tune_similarity
-
-                prefs.minSimilarity.seekBar {
-                    title = R.string.p_fine_tune_min_similarity
-                    min = 50
-                    max = 100
-                    icon = R.drawable.ic_image_search
-                }
-
-                prefs.mlbSimilarity.seekBar {
-                    title = R.string.p_fine_tune_mlb_similarity
-                    min = 50
-                    max = 100
-                    icon = R.drawable.ic_star
-                }
-
-                prefs.stageCounterSimilarity.seekBar {
-                    title = R.string.p_fine_tune_stage_counter_similarity
-                    min = 50
-                    max = 100
-                    icon = R.drawable.ic_counter
-                }
-            }
-
-            category {
-                key = "click_category"
-                title = R.string.p_fine_tune_clicks
-
-                prefs.clickWaitTime.seekBar {
-                    title = R.string.p_fine_tune_wait_after_clicking
-                    max = 2000
-                    icon = R.drawable.ic_click
-                }
-
-                prefs.clickDuration.seekBar {
-                    title = R.string.p_fine_tune_click_duration
-                    min = 1
-                    max = 200
-                    icon = R.drawable.ic_click
-                }
-
-                prefs.clickDelay.seekBar {
-                    title = R.string.p_fine_tune_click_delay
-                    max = 50
-                    icon = R.drawable.ic_click
-                }
-            }
-
-            category {
-                key = "swipes_category"
-                title = R.string.p_fine_tune_swipes
-
-                prefs.swipeWaitTime.seekBar {
-                    title = R.string.p_fine_tune_wait_after_swiping
-                    min = 50
-                    max = 3000
-                    icon = R.drawable.ic_swipe
-                }
-
-                prefs.swipeDuration.seekBar {
-                    title = R.string.p_fine_tune_swipe_duration
-                    min = 50
-                    max = 1000
-                    icon = R.drawable.ic_swipe
-                }
-
-                prefs.swipeMultiplier.seekBar {
-                    title = R.string.p_fine_tune_swipe_multiplier
-                    min = 50
-                    max = 200
-                    icon = R.drawable.ic_swipe
-                }
-            }
-
-            category {
-                key = "wait_category"
-                title = R.string.p_fine_tune_wait
-
-                prefs.skillDelay.seekBar {
-                    title = R.string.p_fine_tune_skill_delay
-                    max = 2000
-                    icon = R.drawable.ic_wand
-                }
-
-                prefs.waitBeforeTurn.seekBar {
-                    title = R.string.p_fine_tune_wait_before_turn
-                    max = 2000
-                    icon = R.drawable.ic_time
-                }
-
-                prefs.waitBeforeCards.seekBar {
-                    title = R.string.p_fine_tune_wait_before_cards
-                    max = 6000
-                    icon = R.drawable.ic_card
-                }
-
-                prefs.waitMultiplier.seekBar {
-                    title = R.string.p_fine_tune_wait_multiplier
-                    min = 50
-                    max = 200
-                    icon = R.drawable.ic_time
-                }
-            }
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
-
-        for (pref in vm.fineTunePrefs) {
-            findPreference<Preference>(pref.key)?.let {
-                it.summary = getString(R.string.p_fine_tune_default, pref.defaultValue)
-            }
-        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        ComposeView(requireContext()).apply {
+            setContent {
+                ComposePreferencesTheme {
+                    Surface {
+                        ScrollableColumn {
+                            PreferenceGroup(title = stringResource(R.string.p_fine_tune_support)) {
+                                prefs.supportSwipesPerUpdate.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_support_swipes_per_update,
+                                    icon = R.drawable.ic_swipe,
+                                    valueRange = 0..35
+                                )
 
-        for ((key, liveData) in vm.liveDataMap) {
-            findPreference<SeekBarPreference>(key)?.let {
-                liveData.observe(viewLifecycleOwner) { value ->
-                    it.value = value
+                                prefs.supportMaxUpdates.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_support_max_updates,
+                                    icon = R.drawable.ic_refresh,
+                                    valueRange = 0..50
+                                )
+                            }
+
+                            PreferenceGroup(title = stringResource(R.string.p_fine_tune_similarity)) {
+                                prefs.minSimilarity.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_min_similarity,
+                                    icon = R.drawable.ic_image_search,
+                                    valueRange = 50..100,
+                                    valueRepresentation = { "$it%" }
+                                )
+
+                                prefs.mlbSimilarity.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_mlb_similarity,
+                                    icon = R.drawable.ic_star,
+                                    valueRange = 50..100,
+                                    valueRepresentation = { "$it%" }
+                                )
+
+                                prefs.stageCounterSimilarity.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_stage_counter_similarity,
+                                    icon = R.drawable.ic_counter,
+                                    valueRange = 50..100,
+                                    valueRepresentation = { "$it%" }
+                                )
+                            }
+
+                            PreferenceGroup(title = stringResource(R.string.p_fine_tune_clicks)) {
+                                prefs.clickWaitTime.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_wait_after_clicking,
+                                    icon = R.drawable.ic_click,
+                                    valueRange = 0..2000,
+                                    valueRepresentation = { "${it}ms" }
+                                )
+
+                                prefs.clickDuration.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_click_duration,
+                                    icon = R.drawable.ic_click,
+                                    valueRange = 1..200,
+                                    valueRepresentation = { "${it}ms" }
+                                )
+
+                                prefs.clickDelay.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_click_delay,
+                                    icon = R.drawable.ic_click,
+                                    valueRange = 0..50,
+                                    valueRepresentation = { "${it}ms" }
+                                )
+                            }
+
+                            PreferenceGroup(title = stringResource(R.string.p_fine_tune_swipes)) {
+                                prefs.swipeWaitTime.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_wait_after_swiping,
+                                    icon = R.drawable.ic_swipe,
+                                    valueRange = 50..3000,
+                                    valueRepresentation = { "${it}ms" }
+                                )
+
+                                prefs.swipeDuration.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_swipe_duration,
+                                    icon = R.drawable.ic_swipe,
+                                    valueRange = 50..1000,
+                                    valueRepresentation = { "${it}ms" }
+                                )
+
+                                prefs.swipeMultiplier.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_swipe_multiplier,
+                                    icon = R.drawable.ic_swipe,
+                                    valueRange = 50..200,
+                                    valueRepresentation = { "${it}%" }
+                                )
+                            }
+
+                            PreferenceGroup(title = stringResource(R.string.p_fine_tune_wait)) {
+                                prefs.skillDelay.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_skill_delay,
+                                    icon = R.drawable.ic_wand,
+                                    valueRange = 0..2000,
+                                    valueRepresentation = { "${it}ms" }
+                                )
+
+                                prefs.waitBeforeTurn.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_wait_before_turn,
+                                    icon = R.drawable.ic_time,
+                                    valueRange = 0..2000,
+                                    valueRepresentation = { "${it}ms" }
+                                )
+
+                                prefs.waitBeforeCards.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_wait_before_cards,
+                                    icon = R.drawable.ic_card,
+                                    valueRange = 0..6000,
+                                    valueRepresentation = { "${it}ms" }
+                                )
+
+                                prefs.waitMultiplier.FineTuneSeekBar(
+                                    title = R.string.p_fine_tune_wait_multiplier,
+                                    icon = R.drawable.ic_time,
+                                    valueRange = 50..200,
+                                    valueRepresentation = { "${it}%" }
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fine_tune_menu, menu)

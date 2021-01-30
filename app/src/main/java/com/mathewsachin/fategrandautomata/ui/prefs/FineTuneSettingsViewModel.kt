@@ -1,8 +1,10 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 
 class FineTuneSettingsViewModel @ViewModelInject constructor(
@@ -26,8 +28,17 @@ class FineTuneSettingsViewModel @ViewModelInject constructor(
         prefs.waitBeforeCards
     )
 
-    val liveDataMap = fineTunePrefs
-        .associate { it.key to it.asFlow().asLiveData() }
+    // Have to keep current slider value independent of the preference to prevent inconsistencies
+    private val fineTuneStates = mutableMapOf<Pref<Int>, MutableState<Float>>()
 
-    fun resetAll() = fineTunePrefs.forEach { it.resetToDefault() }
+    fun getState(pref: Pref<Int>) =
+        fineTuneStates.getOrPut(pref) {
+            mutableStateOf(pref.get().toFloat())
+        }
+
+    fun resetAll() =
+        fineTunePrefs.forEach {
+            it.resetToDefault()
+            getState(it).value = it.defaultValue.toFloat()
+        }
 }

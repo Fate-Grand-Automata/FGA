@@ -1,10 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.prefs.compose
 
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Slider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,24 +15,35 @@ import kotlin.math.roundToInt
 @Composable
 fun Pref<Int>.SeekBarPreference(
     title: String,
-    summary: String,
-    singleLineTitle: Boolean,
-    icon: ImageVector,
+    state: MutableState<Float> = remember { mutableStateOf(get().toFloat()) },
+    summary: String = "",
+    singleLineTitle: Boolean = true,
+    icon: ImageVector? = null,
     valueRange: IntRange = 0..100,
-    steps: Int = 0,
     enabled: Boolean = true,
     valueRepresentation: (Int) -> String = { it.toString() },
     hint: String = ""
 ) {
     Preference(
-        title = { Text(text = title, maxLines = if (singleLineTitle) 1 else Int.MAX_VALUE) },
+        title = {
+            Row {
+                Text(
+                    text = title,
+                    maxLines = if (singleLineTitle) 1 else Int.MAX_VALUE,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Text(
+                    text = valueRepresentation(state.value.roundToInt())
+                )
+            }
+        },
         summary = {
             PreferenceSummary(
                 summary,
-                valueRepresentation,
                 valueRange,
-                steps,
-                enabled
+                enabled,
+                state
             )
         },
         icon = icon,
@@ -47,27 +55,18 @@ fun Pref<Int>.SeekBarPreference(
 @Composable
 private fun Pref<Int>.PreferenceSummary(
     summary: String,
-    valueRepresentation: (Int) -> String,
     valueRange: IntRange,
-    steps: Int,
     enabled: Boolean,
+    state: MutableState<Float>
 ) {
-    var sliderValue by remember { mutableStateOf(get()) }
-    asFlow().onEach { sliderValue = it }.collectAsState(get())
-
     Column {
         Text(text = summary)
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = valueRepresentation(sliderValue))
-            Spacer(modifier = Modifier.width(16.dp))
             Slider(
-                value = sliderValue.toFloat(),
-                onValueChange = { if (enabled) sliderValue = it.roundToInt() },
-                valueRange = valueRange.first.toFloat() .. valueRange.last.toFloat(),
-                steps = steps,
-                onValueChangeEnd = {
-                    set(sliderValue)
-                }
+                value = state.value,
+                onValueChange = { if (enabled) state.value = it },
+                onValueChangeEnd = { set(state.value.roundToInt()) },
+                valueRange = valueRange.first.toFloat() .. valueRange.last.toFloat()
             )
         }
     }
