@@ -29,7 +29,7 @@ fun Pref<String>.ListPreference(
     enabled: Boolean = true,
     hint: String = ""
 ) {
-    val selected by asFlow().collectAsState(initial = defaultValue)
+    val selected by asFlow().collectAsState(get())
     var showDialog by savedInstanceState { false }
     val closeDialog = { showDialog = false }
 

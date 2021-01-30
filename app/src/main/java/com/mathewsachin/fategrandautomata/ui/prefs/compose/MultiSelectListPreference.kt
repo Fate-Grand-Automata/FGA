@@ -99,7 +99,7 @@ fun Pref<Set<String>>.MultiSelectListPreference(
     enabled: Boolean = true,
     hint: String = ""
 ) {
-    val selected by asFlow().collectAsState(defaultValue)
+    val selected by asFlow().collectAsState(get())
     var showDialog by savedInstanceState { false }
 
     val itemNames = entries

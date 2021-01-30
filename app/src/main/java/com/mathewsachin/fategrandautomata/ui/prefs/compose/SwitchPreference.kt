@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.prefs.compose
 
-import androidx.compose.material.Checkbox
+import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,7 +17,7 @@ fun Pref<Boolean>.SwitchPreference(
     hint: String = ""
 ) {
     val onClicked: (Boolean) -> Unit = { set(it) }
-    val state by asFlow().collectAsState(defaultValue)
+    val state by asFlow().collectAsState(get())
 
     Preference(
         title = title,
@@ -28,16 +28,7 @@ fun Pref<Boolean>.SwitchPreference(
         onClick = { onClicked(!state) },
         hint = hint
     ) { modifier ->
-
-        // Not using Switch for now due to a weird error on Activity recreation
-//        Switch(
-//            checked = state,
-//            onCheckedChange = { onClicked(it) },
-//            enabled = enabled,
-//            modifier = modifier
-//        )
-
-        Checkbox(
+        Switch(
             checked = state,
             onCheckedChange = { onClicked(it) },
             enabled = enabled,

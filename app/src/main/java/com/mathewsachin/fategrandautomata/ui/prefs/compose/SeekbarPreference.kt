@@ -53,7 +53,7 @@ private fun Pref<Int>.PreferenceSummary(
     enabled: Boolean,
 ) {
     var sliderValue by remember { mutableStateOf(get()) }
-    asFlow().onEach { sliderValue = it }.collectAsState(defaultValue)
+    asFlow().onEach { sliderValue = it }.collectAsState(get())
 
     Column {
         Text(text = summary)

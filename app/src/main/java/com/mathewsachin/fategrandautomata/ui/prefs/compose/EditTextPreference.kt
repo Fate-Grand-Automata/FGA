@@ -78,7 +78,7 @@ fun Pref<Int>.EditNumberPreference(
     summary: (Int) -> String = { it.toString() },
     dialogTitle: String? = null
 ) {
-    val state by asFlow().collectAsState(defaultValue)
+    val state by asFlow().collectAsState(get())
     var showDialog by savedInstanceState { false }
 
     Preference(
@@ -116,7 +116,7 @@ fun Pref<String>.EditTextPreference(
     summary: (String) -> String = { it },
     dialogTitle: String? = null
 ) {
-    val state by asFlow().collectAsState(defaultValue)
+    val state by asFlow().collectAsState(get())
     var showDialog by savedInstanceState { false }
 
     Preference(
