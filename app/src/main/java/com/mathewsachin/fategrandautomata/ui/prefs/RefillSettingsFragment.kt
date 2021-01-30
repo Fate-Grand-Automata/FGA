@@ -92,17 +92,23 @@ fun RefillGroup(
                         }
                     },
                 trailing = {
-                    var showRepetitionDialog by savedInstanceState { false }
                     val refillRepetitions by refill.repetitions
                         .asFlow()
                         .collectAsState(refill.repetitions.get())
+
+                    val repetitionsDialog = editNumberDialog(
+                        title = stringResource(R.string.p_repetitions),
+                        value = refillRepetitions,
+                        validate = { it >= 0 },
+                        valueChange = { refill.repetitions.set(it.coerceIn(0, 999)) }
+                    )
 
                     StatusWrapper(refillEnabled) {
                         Box(
                             modifier = Modifier
                                 .clickable {
                                     if (refillEnabled) {
-                                        showRepetitionDialog = true
+                                        repetitionsDialog.show()
                                     }
                                 }
                                 .preferredHeight(40.dp),
@@ -116,18 +122,6 @@ fun RefillGroup(
                             )
                         }
                     }
-
-                    EditTextPreferenceDialog(
-                        title = stringResource(R.string.p_repetitions),
-                        showDialog = showRepetitionDialog,
-                        value = refillRepetitions.toString(),
-                        valueChange = {
-                            val pref = refill.repetitions
-                            val value = it.toIntOrNull()?.coerceIn(0, 999)
-                            pref.set(value ?: pref.defaultValue)
-                        },
-                        closeDialog = { showRepetitionDialog = false }
-                    )
                 }
             ) {
                 StatusWrapper(refillEnabled) {

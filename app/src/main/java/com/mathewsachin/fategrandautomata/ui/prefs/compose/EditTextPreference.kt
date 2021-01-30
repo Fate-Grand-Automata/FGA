@@ -1,70 +1,65 @@
 package com.mathewsachin.fategrandautomata.ui.prefs.compose
 
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
-import kotlinx.coroutines.flow.onEach
+import com.vanpra.composematerialdialogs.MaterialDialog
 
 @Composable
-fun EditTextPreferenceDialog(
+fun editTextDialog(
     title: String,
-    showDialog: Boolean,
     value: String,
     valueChange: (String) -> Unit,
-    closeDialog: () -> Unit,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(),
-    singleLine: Boolean = true
-) {
-    if (showDialog) {
-        var current by savedInstanceState { value }
+    validate: (String) -> Boolean = { true },
+    errorMessage: String = "",
+    keyboardOptions: KeyboardOptions = KeyboardOptions()
+): MaterialDialog {
+    val dialog = MaterialDialog()
 
-        val commit = {
-            valueChange(current)
-            closeDialog()
-        }
+    dialog.build {
+        title(text = title)
 
-        AlertDialog(
-            onDismissRequest = closeDialog,
-            title = { Text(text = title) },
-            text = {
-                TextField(
-                    value = current,
-                    onValueChange = { current = it },
-                    keyboardOptions = keyboardOptions,
-                    singleLine = singleLine,
-                    onImeActionPerformed = { action, _ ->
-                        if (action == ImeAction.Done) {
-                            commit()
-                        }
-                    }
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = { commit() },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
-                ) {
-                    Text(text = stringResource(id = android.R.string.ok))
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = closeDialog,
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colors.secondary),
-                ) {
-                    Text(text = stringResource(id = android.R.string.cancel))
-                }
-            }
+        input(
+            label = title,
+            keyboardOptions = keyboardOptions,
+            prefill = value,
+            onInput = { valueChange(it) },
+            isTextValid = validate,
+            errorMessage = errorMessage
         )
+
+        buttons {
+            positiveButton(res = android.R.string.ok)
+            negativeButton(res = android.R.string.cancel)
+        }
     }
+
+    return dialog
 }
+
+@Composable
+fun editNumberDialog(
+    title: String,
+    value: Int,
+    valueChange: (Int) -> Unit,
+    validate: (Int) -> Boolean = { true },
+    errorMessage: String = ""
+) =
+    editTextDialog(
+        title = title,
+        value = value.toString(),
+        valueChange = { valueChange(it.toInt()) },
+        validate = { it.toIntOrNull().let { num -> num != null && validate(num) } },
+        errorMessage = errorMessage,
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Number
+        )
+    )
 
 @Composable
 fun Pref<Int>.EditNumberPreference(
@@ -79,7 +74,12 @@ fun Pref<Int>.EditNumberPreference(
     dialogTitle: String? = null
 ) {
     val state by collect()
-    var showDialog by savedInstanceState { false }
+
+    val dialog = editNumberDialog(
+        title = dialogTitle ?: title,
+        value = state,
+        valueChange = { set(it.coerceIn(min, max)) }
+    )
 
     Preference(
         title = title,
@@ -88,20 +88,7 @@ fun Pref<Int>.EditNumberPreference(
         icon = icon,
         enabled = enabled,
         hint = hint,
-        onClick = { showDialog = true }
-    )
-
-    EditTextPreferenceDialog(
-        title = dialogTitle ?: title,
-        showDialog = showDialog,
-        value = state.toString(),
-        valueChange = { set(it.toIntOrNull()?.coerceIn(min, max) ?: defaultValue) },
-        closeDialog = { showDialog = false },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done,
-            keyboardType = KeyboardType.Number
-        ),
-        singleLine = true
+        onClick = { dialog.show() }
     )
 }
 
@@ -117,7 +104,15 @@ fun Pref<String>.EditTextPreference(
     dialogTitle: String? = null
 ) {
     val state by collect()
-    var showDialog by savedInstanceState { false }
+
+    val dialog = editTextDialog(
+        title = dialogTitle ?: title,
+        value = state,
+        valueChange = { set(it) },
+        keyboardOptions = KeyboardOptions(
+            imeAction = if (singleLine) ImeAction.Done else ImeAction.Unspecified
+        )
+    )
 
     Preference(
         title = title,
@@ -126,15 +121,6 @@ fun Pref<String>.EditTextPreference(
         icon = icon,
         enabled = enabled,
         hint = hint,
-        onClick = { showDialog = true },
-    )
-
-    EditTextPreferenceDialog(
-        title = dialogTitle ?: title,
-        showDialog = showDialog,
-        value = state,
-        valueChange = { set(it) },
-        closeDialog = { showDialog = false },
-        singleLine = singleLine
+        onClick = { dialog.show() }
     )
 }
