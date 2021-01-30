@@ -15,8 +15,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.Pref
 
 @Composable
 fun <T> Pref<T>.collect() =
-    asFlow()
-        .collectAsState(get())
+    remember { asFlow() }.collectAsState(get())
 
 @Composable
 fun Preference(
