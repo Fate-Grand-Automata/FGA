@@ -2,10 +2,12 @@ package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
 import android.content.Context
 import android.net.Uri
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -15,6 +17,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -29,8 +32,21 @@ class BattleConfigListViewModel @ViewModelInject constructor(
     val battleConfigItems = prefsCore
         .battleConfigList
         .asFlow()
-        .map { prefs.battleConfigs }
-        .asLiveData()
+        .map { list ->
+            list
+                .map { key -> prefsCore.forBattleConfig(key) }
+                .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name.get() })
+        }
+
+    var selectedConfigs = MutableStateFlow(emptySet<String>())
+
+    var selectionMode by mutableStateOf(false)
+
+    private fun configsToExport() =
+        if (selectionMode) {
+            selectedConfigs.value.map { prefs.forBattleConfig(it) }
+        }
+        else prefs.battleConfigs
 
     fun newConfig(): IBattleConfig {
         val guid = UUID.randomUUID().toString()
@@ -40,7 +56,7 @@ class BattleConfigListViewModel @ViewModelInject constructor(
 
     data class ImportExportResult(val failureCount: Int)
 
-    fun exportAsync(dirUri: Uri, configs: List<IBattleConfig>): Deferred<ImportExportResult> =
+    fun exportAsync(dirUri: Uri): Deferred<ImportExportResult> =
         viewModelScope.async {
             var failed = 0
 
@@ -48,6 +64,8 @@ class BattleConfigListViewModel @ViewModelInject constructor(
                 val gson = Gson()
                 val resolver = context.contentResolver
                 val dir = DocumentFile.fromTreeUri(context, dirUri)
+
+                val configs = configsToExport()
 
                 configs.forEach { battleConfig ->
                     val values = battleConfig.export()

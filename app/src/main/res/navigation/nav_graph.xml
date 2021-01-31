@@ -56,8 +56,7 @@
     <fragment
         android:id="@+id/battleConfigListFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.battle_config_list.BattleConfigListFragment"
-        android:label="@string/p_nav_battle_config_list"
-        tools:layout="@layout/battle_config_list">
+        android:label="@string/p_nav_battle_config_list">
         <action
             android:id="@+id/action_battleConfigListFragment_to_battleConfigItemSettingsFragment"
             app:destination="@id/battleConfigItemSettingsFragment"
