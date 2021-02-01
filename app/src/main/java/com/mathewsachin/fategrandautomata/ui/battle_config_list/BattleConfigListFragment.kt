@@ -217,8 +217,6 @@ class BattleConfigListFragment : Fragment() {
     var actionMode: ActionMode? = null
 
     fun enterActionMode() {
-        //adapter.startActionMode()
-        //adapter.setSelectionMode(Mode.MULTIPLE)
         actionMode = requireActivity().startActionMode(actionModeCallback)
         vm.selectionMode = true
     }
