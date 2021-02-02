@@ -104,26 +104,6 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
             }
 
             category {
-                key = "wait_ap_regen_category"
-                title = R.string.p_wait_ap_regen_text
-
-                prefs.waitAPRegen.switch {
-                    title = R.string.p_wait_ap_regen_text
-                    summary = R.string.p_wait_ap_regen_text_summary
-                    icon = R.drawable.ic_time
-                }
-
-                prefs.waitAPRegenMinutes.seekBar {
-                    dependency = prefs.waitAPRegen
-                    title = R.string.p_wait_ap_regen_minutes_text
-                    summary = R.string.p_wait_ap_regen_minutes_text_summary
-                    min = 1
-                    max = 60
-                    icon = R.drawable.ic_counter
-                }
-            }
-
-            category {
                 key = "storage_category"
                 title = R.string.p_storage
 

@@ -46,6 +46,7 @@ class RefillSettingsFragment : Fragment() {
                             RefillGroup(refill = refill, vm = vm)
                             RunLimitGroup(refill = refill)
                             MatLimitGroup(refill = refill)
+                            WaitForAPRegenGroup(prefs = prefsCore)
                         }
                     }
                 }
@@ -199,6 +200,42 @@ fun MatLimitGroup(
             refill.autoDecrementMats.SwitchPreference(
                 title = stringResource(R.string.p_auto_decrement),
                 icon = vectorResource(R.drawable.ic_minus)
+            )
+        }
+    }
+}
+
+@Composable
+fun WaitForAPRegenGroup(
+    prefs: PrefsCore
+) {
+    PreferenceGroup(title = stringResource(R.string.p_wait_ap_regen_text)) {
+        val waitEnabled by prefs.waitAPRegen.collect()
+
+        Row {
+            Checkbox(
+                checked = waitEnabled,
+                onCheckedChange = { prefs.waitAPRegen.set(it) },
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .align(Alignment.CenterVertically)
+                    .size(40.dp)
+            )
+
+            Preference(
+                title = stringResource(R.string.p_wait_ap_regen_text),
+                hint = stringResource(R.string.p_wait_ap_regen_text_summary),
+                enabled = waitEnabled
+            )
+        }
+
+        if (waitEnabled) {
+            prefs.waitAPRegenMinutes.SeekBarPreference(
+                title = stringResource(R.string.p_wait_ap_regen_minutes_text),
+                summary = stringResource(R.string.p_wait_ap_regen_minutes_text_summary),
+                valueRange = 1..60,
+                icon = vectorResource(R.drawable.ic_counter),
+                valueRepresentation = { "$it min" }
             )
         }
     }
