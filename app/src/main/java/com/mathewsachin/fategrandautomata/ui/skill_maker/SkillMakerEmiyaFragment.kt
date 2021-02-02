@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -77,22 +75,37 @@ fun EmiyaType(
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            Button(
+            TargetButton(
                 onClick = onArts,
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorArtsResist)),
-                modifier = Modifier.size(120.dp)
-            ) {
-                Text(stringResource(R.string.skill_maker_arts))
-            }
+                color = colorResource(R.color.colorArtsResist),
+                text = stringResource(R.string.skill_maker_arts)
+            )
 
-            Button(
+            TargetButton(
                 onClick = onBuster,
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorBuster)),
-                modifier = Modifier.size(120.dp)
-            ) {
-                Text(stringResource(R.string.skill_maker_buster))
-            }
+                color = colorResource(R.color.colorBuster),
+                text = stringResource(R.string.skill_maker_buster)
+            )
         }
+    }
+}
+
+@Composable
+fun TargetButton(
+    onClick: () -> Unit,
+    color: Color,
+    text: String
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(backgroundColor = color),
+        modifier = Modifier.size(120.dp)
+    ) {
+        Text(
+            text,
+            color = Color.White,
+            textAlign = TextAlign.Center
+        )
     }
 }
 

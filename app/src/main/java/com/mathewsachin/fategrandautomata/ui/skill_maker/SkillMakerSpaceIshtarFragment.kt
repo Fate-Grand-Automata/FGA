@@ -70,29 +70,23 @@ fun SpaceIshtarType(
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            Button(
+            TargetButton(
                 onClick = { onSkillTarget(ServantTarget.A) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorQuickResist)),
-                modifier = Modifier.size(120.dp)
-            ) {
-                Text(stringResource(R.string.skill_maker_quick))
-            }
+                color = colorResource(R.color.colorQuickResist),
+                text = stringResource(R.string.skill_maker_quick)
+            )
 
-            Button(
+            TargetButton(
                 onClick = { onSkillTarget(ServantTarget.B) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorArtsResist)),
-                modifier = Modifier.size(120.dp)
-            ) {
-                Text(stringResource(R.string.skill_maker_arts))
-            }
+                color = colorResource(R.color.colorArtsResist),
+                text = stringResource(R.string.skill_maker_arts)
+            )
 
-            Button(
+            TargetButton(
                 onClick = { onSkillTarget(ServantTarget.C) },
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorBuster)),
-                modifier = Modifier.size(120.dp)
-            ) {
-                Text(stringResource(R.string.skill_maker_buster))
-            }
+                color = colorResource(R.color.colorBuster),
+                text = stringResource(R.string.skill_maker_buster)
+            )
         }
     }
 }

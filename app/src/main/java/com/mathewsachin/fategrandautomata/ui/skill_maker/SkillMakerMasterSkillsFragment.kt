@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -93,7 +90,10 @@ fun MasterSkills(
                     onClick = onOrderChange,
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorServant3))
                 ) {
-                    Text(stringResource(R.string.skill_maker_master_skills_order_change))
+                    Text(
+                        stringResource(R.string.skill_maker_master_skills_order_change),
+                        color = Color.White
+                    )
                 }
             }
 
