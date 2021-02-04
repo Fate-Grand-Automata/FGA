@@ -77,8 +77,6 @@ class SkillMakerViewModel @ViewModelInject constructor(
             enemyTarget = enemyTarget.value ?: NoEnemy,
             stage = stage.value ?: 1,
             currentSkill = currentSkill,
-            npSequence = npSequence.value ?: emptyList(),
-            cardsBeforeNp = cardsBeforeNp.value ?: 0,
             currentIndex = currentIndex.value ?: 0
         )
 
@@ -166,12 +164,6 @@ class SkillMakerViewModel @ViewModelInject constructor(
 
     fun unSelectTargets() = setEnemyTarget(NoEnemy)
 
-    val cardsBeforeNp = MutableLiveData(state.cardsBeforeNp)
-
-    fun setCardsBeforeNp(cards: Int) {
-        cardsBeforeNp.value = cards
-    }
-
     fun MutableLiveData<Int>.next() {
         value = (value ?: 1) + 1
     }
@@ -201,18 +193,6 @@ class SkillMakerViewModel @ViewModelInject constructor(
         )
     }
 
-    fun onNpClick(command: Char) {
-        npSequence.value?.let { nps ->
-            if (nps.contains(command)) {
-                _npSequence.value = nps.filterNot { it == command }
-            } else _npSequence.value = nps + command
-        }
-    }
-
-    private fun clearNpSequence() {
-        _npSequence.value = emptyList()
-    }
-
     fun finish(): String {
         _currentIndex.value = model.skillCommand.lastIndex
 
@@ -223,31 +203,15 @@ class SkillMakerViewModel @ViewModelInject constructor(
         return getSkillCmdString()
     }
 
-    private fun atk(): AutoSkillAction.Atk =
-        npSequence.value?.let { nps ->
-            AutoSkillAction.Atk(
-                nps.map { np ->
-                    CommandCard.NP.list.first { it.autoSkillCode == np }
-                }.toSet(),
-                (if (nps.isNotEmpty()) cardsBeforeNp.value else 0) ?: 0
-            )
-        } ?: AutoSkillAction.Atk.noOp()
+    fun nextTurn(atk: AutoSkillAction.Atk) = add(SkillMakerEntry.Next.Turn(atk))
 
-    private fun onNext(separator: (AutoSkillAction.Atk) -> SkillMakerEntry.Next) {
-        add(separator(atk()))
-
-        clearNpSequence()
-    }
-
-    fun nextTurn() = onNext { SkillMakerEntry.Next.Turn(it) }
-
-    fun nextStage() {
+    fun nextStage(atk: AutoSkillAction.Atk) {
         _stage.next()
 
         // Uncheck selected targets
         unSelectTargets()
 
-        onNext { SkillMakerEntry.Next.Wave(it) }
+        add(SkillMakerEntry.Next.Wave(atk))
     }
 
     fun commitOrderChange(
@@ -328,16 +292,6 @@ class SkillMakerViewModel @ViewModelInject constructor(
                 }
             }
         }
-    }
-
-    private val _npSequence = MutableLiveData(state.npSequence)
-
-    val npSequence: LiveData<List<Char>> = _npSequence
-
-    fun initAtk() {
-        clearNpSequence()
-
-        cardsBeforeNp.value = 0
     }
 
     init {

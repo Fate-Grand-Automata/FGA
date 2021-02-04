@@ -64,8 +64,6 @@ class SkillMakerMainFragment : Fragment() {
     }
 
     fun goToAtk() {
-        viewModel.initAtk()
-
         val action = SkillMakerMainFragmentDirections
             .actionSkillMakerMainFragmentToSkillMakerAtkFragment()
 

@@ -9,7 +9,5 @@ data class SkillMakerSavedState(
     val enemyTarget: Int = -1,
     val stage: Int = 1,
     val currentSkill: Char = '0',
-    val npSequence: List<Char> = emptyList(),
-    val cardsBeforeNp: Int = 0,
     val currentIndex: Int = 0
 ) : Parcelable
