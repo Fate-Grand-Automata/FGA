@@ -1,13 +1,12 @@
 package com.mathewsachin.fategrandautomata.ui.prefs.compose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.material.Typography
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -15,11 +14,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-val purple200 = Color(0xFFBB86FC)
-val purple500 = Color(0xFF6200EE)
-val purple700 = Color(0xFF3700B3)
-val teal200 = Color(0xFF03DAC5)
-val gray019 = Color(0xFF303030)
+val blueNeutral = Color(0xff61b4f4)
+val blueLighter = Color(0xff98e6ff)
+val blueDarker = Color(0xff1c85c1)
+
+val tealNeutral = Color(0xff26a69a)
+val tealLighter = Color(0xff64d8cb)
+val tealDarker = Color(0xff00766c)
+
+val grayLighter = Color(0xfffafafa)
+val grayDarker = Color(0xFF303030)
 
 val shapes = Shapes(
     small = RoundedCornerShape(4.dp),
@@ -37,21 +41,23 @@ val typography = Typography(
 )
 
 private val DarkColorPalette = darkColors(
-    primary = purple200,
-    primaryVariant = purple700,
-    secondary = teal200,
-    surface = gray019,
-    background = gray019
+    primary = blueLighter,
+    primaryVariant = blueDarker,
+    secondary = tealLighter,
+    background = grayDarker,
+    surface = grayDarker
 )
 
 private val LightColorPalette = lightColors(
-    primary = purple500,
-    primaryVariant = purple700,
-    secondary = teal200
+    primary = blueNeutral,
+    primaryVariant = blueDarker,
+    secondary = tealNeutral,
+    secondaryVariant = tealDarker,
+    surface = grayLighter
 )
 
 @Composable
-fun ComposePreferencesTheme(
+fun FgaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -64,7 +70,12 @@ fun ComposePreferencesTheme(
     MaterialTheme(
         colors = colors,
         typography = typography,
-        shapes = shapes,
-        content = content
-    )
+        shapes = shapes
+    ) {
+        Surface(
+            modifier = Modifier.background(color = MaterialTheme.colors.background)
+        ) {
+            content()
+        }
+    }
 }

@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,13 +31,11 @@ class SkillMakerMasterSkillsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
-                ComposePreferencesTheme {
-                    Surface {
-                        MasterSkills(
-                            onMasterSkill = { onSkill(it) },
-                            onOrderChange = { goToOrderChange() }
-                        )
-                    }
+                FgaTheme {
+                    MasterSkills(
+                        onMasterSkill = { onSkill(it) },
+                        onOrderChange = { goToOrderChange() }
+                    )
                 }
             }
         }
@@ -52,8 +50,6 @@ class SkillMakerMasterSkillsFragment : Fragment() {
     }
 
     fun goToOrderChange() {
-        vm.initOrderChange()
-
         val action = SkillMakerMasterSkillsFragmentDirections
             .actionSkillMakerMasterSkillsFragmentToSkillMakerOrderChangeFragment()
 

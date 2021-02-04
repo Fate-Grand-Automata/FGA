@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
@@ -42,84 +41,82 @@ class PreferredSupportSettingsFragment : Fragment() {
             val config = prefsCore.forBattleConfig(args.key).support
 
             setContent {
-                ComposePreferencesTheme {
-                    Surface {
-                        ScrollableColumn {
-                            config.friendsOnly.SwitchPreference(
-                                title = stringResource(R.string.p_battle_config_support_friends_only),
-                                icon = vectorResource(R.drawable.ic_friend)
-                            )
+                FgaTheme {
+                    ScrollableColumn {
+                        config.friendsOnly.SwitchPreference(
+                            title = stringResource(R.string.p_battle_config_support_friends_only),
+                            icon = vectorResource(R.drawable.ic_friend)
+                        )
 
-                            PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_servants)) {
-                                config.preferredServants.MultiSelectListPreference(
-                                    title = stringResource(R.string.p_battle_config_support_pref_servants),
-                                    entries = vm.servants,
-                                    icon = vectorResource(R.drawable.ic_crown),
-                                    summary = {
-                                        if (it.isEmpty())
-                                            getString(R.string.p_not_set)
-                                        else it.joinToString()
-                                    }
-                                ) {
-                                    Icon(
-                                        imageVector = vectorResource(id = R.drawable.ic_close),
-                                        modifier = Modifier
-                                            .size(40.dp)
-                                            .clickable(onClick = { config.preferredServants.resetToDefault() })
-                                    )
+                        PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_servants)) {
+                            config.preferredServants.MultiSelectListPreference(
+                                title = stringResource(R.string.p_battle_config_support_pref_servants),
+                                entries = vm.servants,
+                                icon = vectorResource(R.drawable.ic_crown),
+                                summary = {
+                                    if (it.isEmpty())
+                                        getString(R.string.p_not_set)
+                                    else it.joinToString()
                                 }
-
-                                val prefServants by config.preferredServants.collect()
-
-                                if (prefServants.isNotEmpty()) {
-                                    config.maxAscended.SwitchPreference(
-                                        title = stringResource(R.string.p_battle_config_support_max_ascended),
-                                        icon = vectorResource(R.drawable.ic_star)
-                                    )
-
-                                    Preference(
-                                        title = { Text(stringResource(R.string.p_max_skills)) },
-                                        icon = vectorResource(R.drawable.ic_wand),
-                                        summary = {
-                                            MaxSkills(
-                                                skills = listOf(
-                                                    config.skill1Max,
-                                                    config.skill2Max,
-                                                    config.skill3Max
-                                                )
-                                            )
-                                        }
-                                    )
-                                }
+                            ) {
+                                Icon(
+                                    imageVector = vectorResource(id = R.drawable.ic_close),
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clickable(onClick = { config.preferredServants.resetToDefault() })
+                                )
                             }
 
-                            PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_ces)) {
-                                config.preferredCEs.MultiSelectListPreference(
-                                    title = stringResource(R.string.p_battle_config_support_pref_ces),
-                                    entries = vm.ces,
-                                    icon = vectorResource(R.drawable.ic_card),
+                            val prefServants by config.preferredServants.collect()
+
+                            if (prefServants.isNotEmpty()) {
+                                config.maxAscended.SwitchPreference(
+                                    title = stringResource(R.string.p_battle_config_support_max_ascended),
+                                    icon = vectorResource(R.drawable.ic_star)
+                                )
+
+                                Preference(
+                                    title = { Text(stringResource(R.string.p_max_skills)) },
+                                    icon = vectorResource(R.drawable.ic_wand),
                                     summary = {
-                                        if (it.isEmpty())
-                                            getString(R.string.p_not_set)
-                                        else it.joinToString()
+                                        MaxSkills(
+                                            skills = listOf(
+                                                config.skill1Max,
+                                                config.skill2Max,
+                                                config.skill3Max
+                                            )
+                                        )
                                     }
-                                ) {
-                                    Icon(
-                                        imageVector = vectorResource(id = R.drawable.ic_close),
-                                        modifier = Modifier
-                                            .size(40.dp)
-                                            .clickable(onClick = { config.preferredCEs.resetToDefault() })
-                                    )
-                                }
+                                )
+                            }
+                        }
 
-                                val prefCEs by config.preferredCEs.collect()
-
-                                if (prefCEs.isNotEmpty()) {
-                                    config.mlb.SwitchPreference(
-                                        title = stringResource(R.string.p_battle_config_support_mlb),
-                                        icon = vectorResource(R.drawable.ic_star)
-                                    )
+                        PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_ces)) {
+                            config.preferredCEs.MultiSelectListPreference(
+                                title = stringResource(R.string.p_battle_config_support_pref_ces),
+                                entries = vm.ces,
+                                icon = vectorResource(R.drawable.ic_card),
+                                summary = {
+                                    if (it.isEmpty())
+                                        getString(R.string.p_not_set)
+                                    else it.joinToString()
                                 }
+                            ) {
+                                Icon(
+                                    imageVector = vectorResource(id = R.drawable.ic_close),
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clickable(onClick = { config.preferredCEs.resetToDefault() })
+                                )
+                            }
+
+                            val prefCEs by config.preferredCEs.collect()
+
+                            if (prefCEs.isNotEmpty()) {
+                                config.mlb.SwitchPreference(
+                                    title = stringResource(R.string.p_battle_config_support_mlb),
+                                    icon = vectorResource(R.drawable.ic_star)
+                                )
                             }
                         }
                     }
@@ -131,8 +128,6 @@ class PreferredSupportSettingsFragment : Fragment() {
         super.onResume()
 
         vm.refresh(requireContext())
-
-        // TODO: Allow clearing Servant/CE selection
     }
 
     @Composable

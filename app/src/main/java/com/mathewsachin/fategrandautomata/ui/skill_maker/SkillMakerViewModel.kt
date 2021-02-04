@@ -73,15 +73,13 @@ class SkillMakerViewModel @ViewModelInject constructor(
 
     fun saveState() {
         val saveState = SkillMakerSavedState(
-            model.toString(),
-            enemyTarget.value ?: NoEnemy,
-            stage.value ?: 1,
-            currentSkill,
-            npSequence.value ?: emptyList(),
-            cardsBeforeNp.value ?: 0,
-            xSelectedParty.value ?: 1,
-            xSelectedSub.value ?: 1,
-            currentIndex.value ?: 0
+            skillString = model.toString(),
+            enemyTarget = enemyTarget.value ?: NoEnemy,
+            stage = stage.value ?: 1,
+            currentSkill = currentSkill,
+            npSequence = npSequence.value ?: emptyList(),
+            cardsBeforeNp = cardsBeforeNp.value ?: 0,
+            currentIndex = currentIndex.value ?: 0
         )
 
         savedState.set(::savedState.name, saveState)
@@ -189,11 +187,9 @@ class SkillMakerViewModel @ViewModelInject constructor(
         currentSkill = SkillCode
     }
 
-    fun targetSkill(TargetCommand: Char?) {
+    fun targetSkill(target: ServantTarget?) {
         val skill = (Skill.Servant.list + Skill.Master.list)
             .first { it.autoSkillCode == currentSkill }
-
-        val target = ServantTarget.list.firstOrNull { it.autoSkillCode == TargetCommand }
 
         add(
             SkillMakerEntry.Action(
@@ -254,31 +250,15 @@ class SkillMakerViewModel @ViewModelInject constructor(
         onNext { SkillMakerEntry.Next.Wave(it) }
     }
 
-    private val _xSelectedParty = MutableLiveData(state.xSelectedParty)
-    private val _xSelectedSub = MutableLiveData(state.xSelectedSub)
-
-    val xSelectedParty: LiveData<Int> = _xSelectedParty
-    val xSelectedSub: LiveData<Int> = _xSelectedSub
-
-    fun setOrderChangePartyMember(member: Int) {
-        _xSelectedParty.value = member
-    }
-
-    fun setOrderChangeSubMember(member: Int) {
-        _xSelectedSub.value = member
-    }
-
-    fun initOrderChange() {
-        setOrderChangePartyMember(1)
-        setOrderChangeSubMember(1)
-    }
-
-    fun commitOrderChange() {
+    fun commitOrderChange(
+        starting: OrderChangeMember.Starting,
+        sub: OrderChangeMember.Sub
+    ) {
         add(
             SkillMakerEntry.Action(
                 AutoSkillAction.OrderChange(
-                    OrderChangeMember.Starting.list[(xSelectedParty.value ?: 1) - 1],
-                    OrderChangeMember.Sub.list[(xSelectedSub.value ?: 1) - 1]
+                    starting,
+                    sub
                 )
             )
         )

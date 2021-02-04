@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,22 +32,20 @@ class SkillMakerTargetFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
-                ComposePreferencesTheme {
-                    Surface {
-                        SkillTarget(
-                            onSkillTarget = ::onSkillTarget,
-                            showEmiya = args.showEmiya,
-                            onEmiya = ::onEmiya,
-                            showSpaceIshtar = args.showSpaceIshtar,
-                            onSpaceIshtar = ::onSpaceIshtar
-                        )
-                    }
+                FgaTheme {
+                    SkillTarget(
+                        onSkillTarget = ::onSkillTarget,
+                        showEmiya = args.showEmiya,
+                        onEmiya = ::onEmiya,
+                        showSpaceIshtar = args.showSpaceIshtar,
+                        onSpaceIshtar = ::onSpaceIshtar
+                    )
                 }
             }
         }
 
     fun onSkillTarget(target: ServantTarget?) {
-        viewModel.targetSkill(target?.autoSkillCode)
+        viewModel.targetSkill(target)
 
         findNavController().popBackStack()
     }

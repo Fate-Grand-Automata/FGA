@@ -23,7 +23,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.RefillPrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.ui.prefs.compose.*
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import com.mathewsachin.fategrandautomata.util.stringRes
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,14 +40,12 @@ class RefillSettingsFragment : Fragment() {
             val refill = prefsCore.refill
 
             setContent {
-                ComposePreferencesTheme {
-                    Surface {
-                        ScrollableColumn {
-                            RefillGroup(refill = refill, vm = vm)
-                            RunLimitGroup(refill = refill)
-                            MatLimitGroup(refill = refill)
-                            WaitForAPRegenGroup(prefs = prefsCore)
-                        }
+                FgaTheme {
+                    ScrollableColumn {
+                        RefillGroup(refill = refill, vm = vm)
+                        RunLimitGroup(refill = refill)
+                        MatLimitGroup(refill = refill)
+                        WaitForAPRegenGroup(prefs = prefsCore)
                     }
                 }
             }

@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.MainFragmentDirections
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.prefs.compose.Preference
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
@@ -46,58 +46,56 @@ class MainSettingsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
-                ComposePreferencesTheme {
-                    Surface {
-                        ScrollableColumn {
-                            val refillMsg by vm.refillMessage.collectAsState("")
+                FgaTheme {
+                    ScrollableColumn {
+                        val refillMsg by vm.refillMessage.collectAsState("")
 
-                            Preference(
-                                title = stringResource(R.string.p_refill),
-                                summary = refillMsg,
-                                icon = vectorResource(R.drawable.ic_apple),
-                                onClick = {
-                                    val action = MainFragmentDirections
-                                        .actionMainFragmentToRefillSettingsFragment()
+                        Preference(
+                            title = stringResource(R.string.p_refill),
+                            summary = refillMsg,
+                            icon = vectorResource(R.drawable.ic_apple),
+                            onClick = {
+                                val action = MainFragmentDirections
+                                    .actionMainFragmentToRefillSettingsFragment()
 
-                                    nav(action)
+                                nav(action)
+                            }
+                        )
+
+                        Preference(
+                            title = stringResource(R.string.p_battle_config),
+                            summary = stringResource(R.string.p_battle_config_summary),
+                            icon = vectorResource(R.drawable.ic_formation),
+                            onClick = {
+                                if (vm.ensureRootDir(pickDir, requireContext())) {
+                                    goToBattleConfigList()
                                 }
-                            )
+                            }
+                        )
 
-                            Preference(
-                                title = stringResource(R.string.p_battle_config),
-                                summary = stringResource(R.string.p_battle_config_summary),
-                                icon = vectorResource(R.drawable.ic_formation),
-                                onClick = {
-                                    if (vm.ensureRootDir(pickDir, requireContext())) {
-                                        goToBattleConfigList()
-                                    }
-                                }
-                            )
+                        Preference(
+                            title = stringResource(R.string.p_nav_troubleshoot),
+                            icon = vectorResource(R.drawable.ic_troubleshooting),
+                            onClick = {
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(getString(R.string.link_troubleshoot))
+                                )
 
-                            Preference(
-                                title = stringResource(R.string.p_nav_troubleshoot),
-                                icon = vectorResource(R.drawable.ic_troubleshooting),
-                                onClick = {
-                                    val intent = Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(getString(R.string.link_troubleshoot))
-                                    )
+                                startActivity(intent)
+                            }
+                        )
 
-                                    startActivity(intent)
-                                }
-                            )
+                        Preference(
+                            title = stringResource(R.string.p_more_options),
+                            icon = vectorResource(R.drawable.ic_dots_horizontal),
+                            onClick = {
+                                val action = MainFragmentDirections
+                                    .actionMainFragmentToMoreSettingsFragment()
 
-                            Preference(
-                                title = stringResource(R.string.p_more_options),
-                                icon = vectorResource(R.drawable.ic_dots_horizontal),
-                                onClick = {
-                                    val action = MainFragmentDirections
-                                        .actionMainFragmentToMoreSettingsFragment()
-
-                                    nav(action)
-                                }
-                            )
-                        }
+                                nav(action)
+                            }
+                        )
                     }
                 }
             }

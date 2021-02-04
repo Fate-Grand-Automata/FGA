@@ -21,7 +21,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 
 @AndroidEntryPoint
 class SkillMakerEmiyaFragment : Fragment() {
@@ -30,22 +30,17 @@ class SkillMakerEmiyaFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
-                ComposePreferencesTheme {
-                    Surface {
-                        EmiyaType(
-                            onArts = { onSkillTarget(arts) },
-                            onBuster = { onSkillTarget(buster) }
-                        )
-                    }
+                FgaTheme {
+                    EmiyaType(
+                        onArts = { onSkillTarget(ServantTarget.Left) },
+                        onBuster = { onSkillTarget(ServantTarget.Right) }
+                    )
                 }
             }
         }
 
-    private val arts = ServantTarget.Left.autoSkillCode
-    private val buster = ServantTarget.Right.autoSkillCode
-
-    private fun onSkillTarget(TargetCommand: Char) {
-        vm.targetSkill(TargetCommand)
+    private fun onSkillTarget(target: ServantTarget) {
+        vm.targetSkill(target)
 
         findNavController().popBackStack()
     }

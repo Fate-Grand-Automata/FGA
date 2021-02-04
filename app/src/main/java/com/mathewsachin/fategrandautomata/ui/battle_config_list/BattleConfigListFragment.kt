@@ -29,7 +29,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.prefs.compose.collect
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,84 +54,82 @@ class BattleConfigListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
-                ComposePreferencesTheme {
-                    Surface {
-                        // TODO: This hack feels bad
-                        val configsStateList = mutableStateListOf<BattleConfigCore>()
-                        val configs by vm.battleConfigItems
-                            .onEach {
-                                configsStateList.clear()
-                                configsStateList.addAll(it)
-                            }
-                            .collectAsState(emptyList())
+                FgaTheme {
+                    // TODO: This hack feels bad
+                    val configsStateList = mutableStateListOf<BattleConfigCore>()
+                    val configs by vm.battleConfigItems
+                        .onEach {
+                            configsStateList.clear()
+                            configsStateList.addAll(it)
+                        }
+                        .collectAsState(emptyList())
 
-                        if (configs.isEmpty()) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Text(stringResource(R.string.battle_config_list_no_items))
-                            }
-                        } else {
-                            LazyColumn {
-                                items(configsStateList) {
-                                    val name by it.name.collect()
-                                    val selectedConfigs by vm.selectedConfigs.collectAsState(emptySet())
+                    if (configs.isEmpty()) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Text(stringResource(R.string.battle_config_list_no_items))
+                        }
+                    } else {
+                        LazyColumn {
+                            items(configsStateList) {
+                                val name by it.name.collect()
+                                val selectedConfigs by vm.selectedConfigs.collectAsState(emptySet())
 
-                                    ListItem(
-                                        modifier = Modifier
-                                            .clickable(
-                                                onClick = {
-                                                    if (vm.selectionMode) {
-                                                        vm.selectedConfigs.value = if (it.id in selectedConfigs) {
-                                                            selectedConfigs - it.id
-                                                        } else selectedConfigs + it.id
-                                                    } else {
-                                                        editItem(vm.prefs.forBattleConfig(it.id))
-                                                    }
-                                                },
-                                                onLongClick = {
-                                                    if (!vm.selectionMode) {
-                                                        enterActionMode()
-                                                        vm.selectedConfigs.value = setOf(it.id)
-                                                    }
+                                ListItem(
+                                    modifier = Modifier
+                                        .clickable(
+                                            onClick = {
+                                                if (vm.selectionMode) {
+                                                    vm.selectedConfigs.value = if (it.id in selectedConfigs) {
+                                                        selectedConfigs - it.id
+                                                    } else selectedConfigs + it.id
+                                                } else {
+                                                    editItem(vm.prefs.forBattleConfig(it.id))
                                                 }
-                                            ),
-                                        trailing = {
-                                            val selected = vm.selectionMode && it.id in selectedConfigs
-
-                                            if (selected) {
-                                                Icon(
-                                                    vectorResource(R.drawable.ic_check),
-                                                    modifier = Modifier
-                                                        .size(40.dp)
-                                                )
+                                            },
+                                            onLongClick = {
+                                                if (!vm.selectionMode) {
+                                                    enterActionMode()
+                                                    vm.selectedConfigs.value = setOf(it.id)
+                                                }
                                             }
-                                        }
-                                    ) {
-                                        Text(
-                                            name,
-                                            style = MaterialTheme.typography.body2
-                                        )
-                                    }
+                                        ),
+                                    trailing = {
+                                        val selected = vm.selectionMode && it.id in selectedConfigs
 
-                                    Divider()
+                                        if (selected) {
+                                            Icon(
+                                                vectorResource(R.drawable.ic_check),
+                                                modifier = Modifier
+                                                    .size(40.dp)
+                                            )
+                                        }
+                                    }
+                                ) {
+                                    Text(
+                                        name,
+                                        style = MaterialTheme.typography.body2
+                                    )
                                 }
+
+                                Divider()
                             }
                         }
                     }
+                }
 
-                    if (!vm.selectionMode) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.BottomEnd
-                        ) {
-                            FloatingActionButton(onClick = { addOnBtnClick() }) {
-                                Icon(
-                                    vectorResource(R.drawable.ic_plus),
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                )
-                            }
+                if (!vm.selectionMode) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.BottomEnd
+                    ) {
+                        FloatingActionButton(onClick = { addOnBtnClick() }) {
+                            Icon(
+                                vectorResource(R.drawable.ic_plus),
+                                modifier = Modifier
+                                    .size(40.dp)
+                            )
                         }
                     }
                 }

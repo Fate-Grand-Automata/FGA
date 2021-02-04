@@ -22,7 +22,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.ComposePreferencesTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,16 +32,14 @@ class SkillMakerSpaceIshtarFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
-                ComposePreferencesTheme {
-                    Surface {
-                        SpaceIshtarType(onSkillTarget = ::onSkillTarget)
-                    }
+                FgaTheme {
+                    SpaceIshtarType(onSkillTarget = ::onSkillTarget)
                 }
             }
         }
 
-    fun onSkillTarget(skill: ServantTarget) {
-        vm.targetSkill(skill.autoSkillCode)
+    fun onSkillTarget(target: ServantTarget) {
+        vm.targetSkill(target)
 
         findNavController().popBackStack()
     }
