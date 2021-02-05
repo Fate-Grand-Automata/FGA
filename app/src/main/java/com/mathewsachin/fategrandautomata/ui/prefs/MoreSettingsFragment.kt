@@ -2,14 +2,20 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.activityViewModels
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.fragment.app.Fragment
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.*
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
@@ -17,156 +23,142 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MoreSettingsFragment : PreferenceFragmentCompat() {
+class MoreSettingsFragment : Fragment() {
     @Inject
     lateinit var storageProvider: StorageProvider
 
     @Inject
     lateinit var prefs: PrefsCore
 
-    private lateinit var navStorage: Preference
-    private lateinit var recordScreen: SwitchPreferenceCompat
+    private val storageSummary: MutableState<String?> = mutableStateOf(null)
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        prefScreen {
-            category {
-                key = "battle_category"
-                title = R.string.p_script_mode_battle
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        ComposeView(requireContext()).apply {
+            setContent {
+                FgaTheme {
+                    ScrollableColumn {
+                        PreferenceGroup(title = stringResource(R.string.p_script_mode_battle)) {
+                            prefs.skillConfirmation.SwitchPreference(
+                                title = stringResource(R.string.p_skill_confirmation),
+                                icon = vectorResource(R.drawable.ic_radio)
+                            )
 
-                prefs.skillConfirmation.switch {
-                    title = R.string.p_skill_confirmation
-                    icon = R.drawable.ic_radio
-                }
+                            prefs.gameServerRaw.ListPreference(
+                                title = stringResource(R.string.p_game_server),
+                                icon = vectorResource(R.drawable.ic_earth),
+                                entries =
+                                    mapOf(PrefsCore.GameServerAutoDetect to getString(R.string.p_game_server_auto_detect))
+                                    .plus(
+                                        GameServerEnum.values().associate {
+                                            it.name to getString(it.displayStringRes)
+                                        }
+                                    )
+                            )
 
-                prefs.gameServerRaw.list {
-                    title = R.string.p_game_server
-                    icon = R.drawable.ic_earth
-                }.apply {
-                    entries =
-                        (listOf(R.string.p_game_server_auto_detect) + enumValues<GameServerEnum>().map { it.displayStringRes })
-                            .map { getString(it) }
-                            .toTypedArray()
+                            prefs.storySkip.SwitchPreference(
+                                title = stringResource(R.string.p_story_skip),
+                                icon = vectorResource(R.drawable.ic_fast_forward)
+                            )
 
-                    entryValues =
-                        (listOf(PrefsCore.GameServerAutoDetect) + enumValues<GameServerEnum>().map { it.name })
-                            .toTypedArray()
-                }
+                            prefs.withdrawEnabled.SwitchPreference(
+                                title = stringResource(R.string.p_enable_withdraw),
+                                icon = vectorResource(R.drawable.ic_exit_run)
+                            )
 
-                prefs.storySkip.switch {
-                    title = R.string.p_story_skip
-                    icon = R.drawable.ic_fast_forward
-                }
+                            prefs.stopOnCEDrop.SwitchPreference(
+                                title = stringResource(R.string.p_stop_on_ce_drop),
+                                icon = vectorResource(R.drawable.ic_card)
+                            )
 
-                prefs.withdrawEnabled.switch {
-                    title = R.string.p_enable_withdraw
-                    icon = R.drawable.ic_exit_run
-                }
+                            prefs.stopOnCEGet.SwitchPreference(
+                                title = stringResource(R.string.p_stop_on_ce_get),
+                                summary = stringResource(R.string.p_stop_on_ce_get_summary),
+                                icon = vectorResource(R.drawable.ic_card)
+                            )
 
-                prefs.stopOnCEDrop.switch {
-                    title = R.string.p_stop_on_ce_drop
-                    summary = R.string.p_experimental
-                    icon = R.drawable.ic_card
-                }
+                            prefs.screenshotDrops.SwitchPreference(
+                                title = stringResource(R.string.p_screenshot_drops),
+                                summary = stringResource(R.string.p_screenshot_drops_summary),
+                                icon = vectorResource(R.drawable.ic_screenshot)
+                            )
 
-                prefs.stopOnCEGet.switch {
-                    title = R.string.p_stop_on_ce_get
-                    summary = R.string.p_stop_on_ce_get_summary
-                    icon = R.drawable.ic_card
-                }
+                            prefs.boostItemSelectionMode.ListPreference(
+                                title = stringResource(R.string.p_boost_item),
+                                icon = vectorResource(R.drawable.ic_boost),
+                                entries = (-1..3).associateWith { it.boostItemString }
+                            )
 
-                prefs.screenshotDrops.switch {
-                    title = R.string.p_screenshot_drops
-                    summary = R.string.p_screenshot_drops_summary
-                    icon = R.drawable.ic_screenshot
-                }
+                            prefs.showTextBoxForSkillCmd.SwitchPreference(
+                                title = stringResource(R.string.p_battle_config_cmd_text),
+                                summary = stringResource(R.string.p_battle_config_cmd_text_summary),
+                                icon = vectorResource(R.drawable.ic_wand)
+                            )
+                        }
 
-                prefs.boostItemSelectionMode.list {
-                    title = R.string.p_boost_item
-                    icon = R.drawable.ic_boost
-                }.apply {
-                    entries = listOf(R.string.p_boost_item_disabled, R.string.p_boost_item_skip)
-                        .map { getString(it) }
-                        .toTypedArray() +
-                            (1..3).map {
-                                context.getString(R.string.p_boost_item_number, it)
-                            }
+                        PreferenceGroup(title = stringResource(R.string.p_storage)) {
+                            Preference(
+                                title = stringResource(R.string.p_folder),
+                                summary = storageSummary.value ?: "",
+                                icon = vectorResource(R.drawable.ic_folder_edit),
+                                onClick = { pickDir.launch(Uri.EMPTY) }
+                            )
+                        }
 
-                    entryValues = (-1..3)
-                        .map { it.toString() }
-                        .toTypedArray()
-                }
+                        PreferenceGroup(title = stringResource(R.string.p_advanced)) {
+                            Preference(
+                                title = stringResource(R.string.p_fine_tune),
+                                icon = vectorResource(R.drawable.ic_tune),
+                                onClick = {
+                                    val action = MoreSettingsFragmentDirections
+                                        .actionMoreSettingsFragmentToFineTuneSettingsFragment()
 
-                prefs.showTextBoxForSkillCmd.switch {
-                    title = R.string.p_battle_config_cmd_text
-                    summary = R.string.p_battle_config_cmd_text_summary
-                    icon = R.drawable.ic_wand
-                }
-            }
+                                    nav(action)
+                                }
+                            )
 
-            category {
-                key = "storage_category"
-                title = R.string.p_storage
+                            prefs.debugMode.SwitchPreference(
+                                title = stringResource(R.string.p_debug_mode),
+                                summary = stringResource(R.string.p_debug_mode_summary),
+                                icon = vectorResource(R.drawable.ic_bug)
+                            )
 
-                navStorage = blank {
-                    title = R.string.p_folder
-                    icon = R.drawable.ic_folder_edit
-                }.also {
-                    it.setOnPreferenceClickListener {
-                        pickDir.launch(Uri.EMPTY)
+                            prefs.ignoreNotchCalculation.SwitchPreference(
+                                title = stringResource(R.string.p_ignore_notch),
+                                summary = stringResource(R.string.p_ignore_notch_summary),
+                                icon = vectorResource(R.drawable.ic_notch)
+                            )
 
-                        true
+                            val rootForScreenshots by prefs.useRootForScreenshots.collect()
+
+                            prefs.recordScreen.SwitchPreference(
+                                title = stringResource(R.string.p_record_screen),
+                                summary = stringResource(R.string.p_record_screen_summary),
+                                icon = vectorResource(R.drawable.ic_video),
+                                enabled = !rootForScreenshots
+                            )
+
+                            prefs.useRootForScreenshots.SwitchPreference(
+                                title = stringResource(R.string.p_root_screenshot),
+                                summary = stringResource(R.string.p_root_screenshot_summary),
+                                icon = vectorResource(R.drawable.ic_key)
+                            )
+
+                            prefs.autoStartService.SwitchPreference(
+                                title = stringResource(R.string.p_auto_start_service),
+                                icon = vectorResource(R.drawable.ic_launch)
+                            )
+                        }
                     }
-
-                    it.summary = storageProvider.rootDirName
                 }
             }
-
-            category {
-                key = "advanced_category"
-                title = R.string.p_advanced
-
-                blank {
-                    title = R.string.p_fine_tune
-                    icon = R.drawable.ic_tune
-                }.setOnPreferenceClickListener {
-                    val action = MoreSettingsFragmentDirections
-                        .actionMoreSettingsFragmentToFineTuneSettingsFragment()
-
-                    nav(action)
-
-                    true
-                }
-
-                prefs.debugMode.switch {
-                    title = R.string.p_debug_mode
-                    summary = R.string.p_debug_mode_summary
-                    icon = R.drawable.ic_bug
-                }
-
-                prefs.ignoreNotchCalculation.switch {
-                    title = R.string.p_ignore_notch
-                    summary = R.string.p_ignore_notch_summary
-                    icon = R.drawable.ic_notch
-                }
-
-                recordScreen = prefs.recordScreen.switch {
-                    title = R.string.p_record_screen
-                    summary = R.string.p_record_screen_summary
-                    icon = R.drawable.ic_video
-                }
-
-                prefs.useRootForScreenshots.switch {
-                    title = R.string.p_root_screenshot
-                    summary = R.string.p_root_screenshot_summary
-                    icon = R.drawable.ic_key
-                }
-
-                prefs.autoStartService.switch {
-                    title = R.string.p_auto_start_service
-                    icon = R.drawable.ic_launch
-                }
-            }
+        }.also {
+            storageSummary.value = storageProvider.rootDirName
         }
+
+    val Int.boostItemString get() = when (this) {
+        -1 -> getString(R.string.p_boost_item_disabled)
+        0 -> getString(R.string.p_boost_item_skip)
+        else -> getString(R.string.p_boost_item_number, this)
     }
 
     val GameServerEnum.displayStringRes
@@ -181,20 +173,6 @@ class MoreSettingsFragment : PreferenceFragmentCompat() {
     private val pickDir = registerPersistableDirPicker {
         storageProvider.setRoot(it)
 
-        navStorage.summary = storageProvider.rootDirName
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val vm: MainSettingsViewModel by activityViewModels()
-
-        vm.useRootForScreenshots.observe(viewLifecycleOwner) { root ->
-            recordScreen.isEnabled = !root
-
-            if (root) {
-                recordScreen.isChecked = false
-            }
-        }
+        storageSummary.value = storageProvider.rootDirName
     }
 }
