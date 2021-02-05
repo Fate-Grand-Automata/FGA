@@ -1,5 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -10,10 +12,6 @@ class SkillMakerViewModel @ViewModelInject constructor(
     val prefs: IPreferences,
     @Assisted val savedState: SavedStateHandle
 ) : ViewModel() {
-    companion object {
-        const val NoEnemy = -1
-    }
-
     val battleConfigKey: String = savedState[SkillMakerActivityArgs::key.name]
         ?: throw kotlin.Exception("Couldn't get Battle Config key")
 
@@ -23,10 +21,10 @@ class SkillMakerViewModel @ViewModelInject constructor(
         ?: SkillMakerSavedState()
 
     private val model: SkillMakerModel
-    private val _stage: MutableLiveData<Int>
+    private val _stage = mutableStateOf(0)
 
-    private val _currentIndex = MutableLiveData<Int>()
-    val currentIndex: LiveData<Int> = _currentIndex
+    private val _currentIndex = mutableStateOf(0)
+    val currentIndex: State<Int> = _currentIndex
 
     init {
         model = if (state.skillString != null) {
@@ -56,12 +54,10 @@ class SkillMakerViewModel @ViewModelInject constructor(
             m
         }
 
-        _stage = if (state.skillString != null) {
-            MutableLiveData(state.stage)
+        _stage.value = if (state.skillString != null) {
+            state.stage
         } else {
-            MutableLiveData(
-                model.skillCommand.count { it is SkillMakerEntry.Next.Wave } + 1
-            )
+            model.skillCommand.count { it is SkillMakerEntry.Next.Wave } + 1
         }
 
         _currentIndex.value = if (state.skillString != null) {
@@ -74,10 +70,10 @@ class SkillMakerViewModel @ViewModelInject constructor(
     fun saveState() {
         val saveState = SkillMakerSavedState(
             skillString = model.toString(),
-            enemyTarget = enemyTarget.value ?: NoEnemy,
-            stage = stage.value ?: 1,
+            enemyTarget = enemyTarget.value,
+            stage = stage.value,
             currentSkill = currentSkill,
-            currentIndex = currentIndex.value ?: 0
+            currentIndex = currentIndex.value
         )
 
         savedState.set(::savedState.name, saveState)
@@ -89,60 +85,47 @@ class SkillMakerViewModel @ViewModelInject constructor(
         saveState()
     }
 
-    private val _skillCommand = MutableLiveData(model.skillCommand)
-
-    val skillCommand: LiveData<List<SkillMakerEntry>> = Transformations.map(_skillCommand) { it }
-
-    private fun notifySkillCommandUpdate() {
-        _skillCommand.value = model.skillCommand
-    }
+    val skillCommand = model.skillCommand
 
     private fun getSkillCmdString() = model.toString()
 
     fun setCurrentIndex(index: Int) {
         _currentIndex.value = index
 
-        notifySkillCommandUpdate()
         revertToPreviousEnemyTarget()
     }
 
     private fun add(entry: SkillMakerEntry) {
-        model.skillCommand.add((currentIndex.value ?: 0) + 1, entry)
-        _currentIndex.next()
-
-        notifySkillCommandUpdate()
+        model.skillCommand.add(currentIndex.value + 1, entry)
+        ++_currentIndex.value
     }
 
     private fun undo() {
-        model.skillCommand.removeAt(currentIndex.value ?: 0)
-        _currentIndex.prev()
-
-        notifySkillCommandUpdate()
+        model.skillCommand.removeAt(currentIndex.value)
+        --_currentIndex.value
     }
 
     private fun isEmpty() = currentIndex.value == 0
 
     private var last: SkillMakerEntry
-        get() = model.skillCommand[currentIndex.value ?: 0]
+        get() = model.skillCommand[currentIndex.value]
         set(value) {
-            model.skillCommand[currentIndex.value ?: 0] = value
-
-            notifySkillCommandUpdate()
+            model.skillCommand[currentIndex.value] = value
         }
 
     private fun reverseIterate(): List<SkillMakerEntry> =
         model.skillCommand
-            .take((currentIndex.value ?: 0) + 1)
+            .take(currentIndex.value + 1)
             .reversed()
 
-    private val _enemyTarget = MutableLiveData(state.enemyTarget)
+    private val _enemyTarget = mutableStateOf(state.enemyTarget)
 
-    val enemyTarget: LiveData<Int> = _enemyTarget
+    val enemyTarget: State<Int?> = _enemyTarget
 
-    fun setEnemyTarget(target: Int) {
+    fun setEnemyTarget(target: Int?) {
         _enemyTarget.value = target
 
-        if (target == NoEnemy) {
+        if (target == null) {
             return
         }
 
@@ -162,18 +145,10 @@ class SkillMakerViewModel @ViewModelInject constructor(
         }
     }
 
-    fun unSelectTargets() = setEnemyTarget(NoEnemy)
+    fun unSelectTargets() = setEnemyTarget(null)
 
-    fun MutableLiveData<Int>.next() {
-        value = (value ?: 1) + 1
-    }
-
-    fun MutableLiveData<Int>.prev() {
-        value = (value ?: 1) - 1
-    }
-
-    val stage: LiveData<Int> = _stage
-    private fun prevStage() = _stage.prev()
+    val stage: State<Int> = _stage
+    private fun prevStage() = --_stage.value
 
     fun initSkill(SkillCode: Char) {
         currentSkill = SkillCode
@@ -206,7 +181,7 @@ class SkillMakerViewModel @ViewModelInject constructor(
     fun nextTurn(atk: AutoSkillAction.Atk) = add(SkillMakerEntry.Next.Turn(atk))
 
     fun nextStage(atk: AutoSkillAction.Atk) {
-        _stage.next()
+        ++_stage.value
 
         // Uncheck selected targets
         unSelectTargets()

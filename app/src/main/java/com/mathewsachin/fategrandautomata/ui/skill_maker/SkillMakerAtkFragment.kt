@@ -3,6 +3,8 @@ package com.mathewsachin.fategrandautomata.ui.skill_maker
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -13,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -134,6 +137,7 @@ fun AtkScreen(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
         ) {
@@ -171,10 +175,6 @@ fun AtkScreen(
                 }
             }
 
-            Row(
-                modifier = Modifier.weight(1f)
-            ) { }
-
             fun npSet() =
                 npSequence
                     .mapNotNull {
@@ -187,29 +187,51 @@ fun AtkScreen(
                     }
                     .toSet()
 
-            Button(
-                onClick = { onNextTurn(AutoSkillAction.Atk(npSet(), cardsBeforeNp)) },
-                modifier = Modifier
-                    .padding(end = 16.dp)
-            ) {
-                Text(
-                    stringResource(R.string.skill_maker_atk_next_turn),
-                    textAlign = TextAlign.Center
+            Row {
+                Button(
+                    onClick = { onNextTurn(AutoSkillAction.Atk(npSet(), cardsBeforeNp)) },
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                ) {
+                    Text(
+                        stringResource(R.string.skill_maker_atk_next_turn),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                ButtonWithIcon(
+                    text = R.string.skill_maker_atk_next_wave,
+                    icon = R.drawable.ic_fast_forward,
+                    onClick = { onNextWave(AutoSkillAction.Atk(npSet(), cardsBeforeNp)) }
                 )
             }
+        }
+    }
+}
 
-            Button(
-                onClick = { onNextWave(AutoSkillAction.Atk(npSet(), cardsBeforeNp)) }
-            ) {
-                Row {
-                    Icon(
-                        vectorResource(R.drawable.ic_fast_forward),
-                        modifier = Modifier.padding(end = 16.dp)
-                    )
+@Composable
+fun ButtonWithIcon(
+    @StringRes text: Int,
+    @DrawableRes icon: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    Button(
+        enabled = enabled,
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Row {
+            Icon(
+                vectorResource(icon),
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(20.dp)
+                    .align(Alignment.CenterVertically)
+            )
 
-                    Text(stringResource(R.string.skill_maker_atk_next_wave))
-                }
-            }
+            Text(stringResource(text))
         }
     }
 }

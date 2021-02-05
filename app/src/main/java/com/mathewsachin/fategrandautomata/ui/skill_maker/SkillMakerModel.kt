@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
+import androidx.compose.runtime.toMutableStateList
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillCommand
 
@@ -37,7 +38,7 @@ class SkillMakerModel(skillString: String) {
             reduce(acc, stage) { SkillMakerEntry.Next.Wave(it) }
         }
         .let { listOf(SkillMakerEntry.Start) + it }
-        .toMutableList()
+        .toMutableStateList()
 
     override fun toString(): String {
         fun getSkillCmd(): List<SkillMakerEntry> {

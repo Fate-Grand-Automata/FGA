@@ -2,57 +2,57 @@ package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.databinding.SkillMakerMainBinding
+import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
+import com.mathewsachin.fategrandautomata.scripts.models.Skill
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SkillMakerMainFragment : Fragment() {
     val viewModel: SkillMakerViewModel by activityViewModels()
-    val adapter = SkillMakerHistoryAdapter {
-        viewModel.setCurrentIndex(it)
-    }
-    lateinit var binding: SkillMakerMainBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        SkillMakerMainBinding.inflate(inflater, container, false)
-            .also {
-                it.vm = viewModel
-                it.ui = this
-                binding = it
-                it.lifecycleOwner = viewLifecycleOwner
+        ComposeView(requireContext()).apply {
+            setContent {
+                FgaTheme {
+                    SkillMakerMain(
+                        vm = viewModel,
+                        onMasterSkills = { goToMasterSkills() },
+                        onAtk = { goToAtk() },
+                        onSkill = { onSkill(it.autoSkillCode) },
+                        onClear = { onClear() },
+                        onDone = { onDone() }
+                    )
+                }
             }
-            .root
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val recyclerView = binding.skillHistory
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-        viewModel.skillCommand.observe(viewLifecycleOwner) {
-            val currentIndex = viewModel.currentIndex.value ?: 0
-            adapter.update(it, currentIndex)
-
-            recyclerView.scrollToPosition(currentIndex)
         }
-    }
 
-    fun enemyTargetRadio(target: Int) = when (target) {
-        1 -> R.id.enemy_target_1
-        2 -> R.id.enemy_target_2
-        3 -> R.id.enemy_target_3
-        else -> -1
-    }
+    // TODO: Scroll to latest item in History when new added?
 
     fun onClear() {
         AlertDialog.Builder(requireContext())
@@ -95,5 +95,260 @@ class SkillMakerMainFragment : Fragment() {
     fun onDone() {
         viewModel.battleConfig.skillCommand = viewModel.finish()
         activity?.finish()
+    }
+}
+
+@Composable
+fun SkillMakerMain(
+    vm: SkillMakerViewModel,
+    onMasterSkills: () -> Unit,
+    onAtk: () -> Unit,
+    onSkill: (Skill.Servant) -> Unit,
+    onClear: () -> Unit,
+    onDone: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            val enemyTarget by vm.enemyTarget
+
+            EnemyTarget(
+                selected = enemyTarget,
+                onSelectedChange = { vm.setEnemyTarget(it) }
+            )
+
+            val stage by vm.stage
+            Text(stringResource(R.string.skill_maker_main_battle, stage))
+        }
+
+        SkillHistory(vm)
+
+        Row(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row {
+                    val currentIndex by vm.currentIndex
+
+                    ButtonWithIcon(
+                        text = R.string.skill_maker_main_undo,
+                        icon = R.drawable.ic_undo,
+                        onClick = { vm.onUndo() },
+                        enabled = currentIndex > 0,
+                        modifier = Modifier.padding(end = 5.dp)
+                    )
+
+                    ButtonWithIcon(
+                        text = R.string.skill_maker_main_clear,
+                        icon = R.drawable.ic_clear,
+                        onClick = onClear,
+                        enabled = currentIndex > 0,
+                        modifier = Modifier.padding(end = 5.dp)
+                    )
+
+                    ButtonWithIcon(
+                        text = R.string.skill_maker_atk_done,
+                        icon = R.drawable.ic_check,
+                        onClick = onDone
+                    )
+                }
+
+                Skills(onSkill = onSkill)
+            }
+
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.End,
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxHeight()
+            ) {
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorMasterSkill)),
+                    onClick = onMasterSkills
+                ) {
+                    Text(
+                        stringResource(R.string.skill_maker_main_master_skills),
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
+                }
+
+                Button(
+                    shape = CircleShape,
+                    onClick = onAtk,
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .size(120.dp)
+                ) {
+                    Text(
+                        stringResource(R.string.skill_maker_main_attack),
+                        color = Color.White
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SkillButtons(
+    list: List<Skill.Servant>,
+    color: Color,
+    onSkill: (Skill.Servant) -> Unit
+) {
+    Row {
+        list.map { skill ->
+            SkillButton(
+                skill = skill,
+                color = color,
+                onClick = { onSkill(skill) }
+            )
+        }
+    }
+}
+
+@Composable
+fun Skills(onSkill: (Skill.Servant) -> Unit) {
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Skill.Servant.list.chunked(3)
+                .mapIndexed { index, list ->
+                    val color = when (index) {
+                        0 -> R.color.colorServant1
+                        1 -> R.color.colorServant2
+                        2 -> R.color.colorServant3
+                        else -> R.color.colorAccent
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        SkillButtons(
+                            list = list,
+                            color = colorResource(color),
+                            onSkill = onSkill
+                        )
+
+                        Text(stringResource(R.string.skill_maker_main_servant, index + 1))
+                    }
+                }
+        }
+    }
+}
+
+val SkillMakerEntry.colorRes: Int get() {
+    val defaultColor = R.color.colorAccent
+
+    return when (this) {
+        is SkillMakerEntry.Next -> R.color.colorStageChange
+
+        is SkillMakerEntry.Action -> when (this.action) {
+            // Master Skill
+            is AutoSkillAction.MasterSkill -> R.color.colorMasterSkill
+
+            // Enemy Target
+            is AutoSkillAction.TargetEnemy -> R.color.colorEnemyTarget
+
+            // Servants
+            is AutoSkillAction.ServantSkill -> when (this.action.skill.autoSkillCode) {
+                'a', 'b', 'c' -> R.color.colorServant1
+                'd', 'e', 'f' -> R.color.colorServant2
+                'g', 'h', 'i' -> R.color.colorServant3
+                else -> defaultColor
+            }
+
+            else -> defaultColor
+        }
+
+        else -> defaultColor
+    }
+}
+
+@Composable
+fun SkillHistory(vm: SkillMakerViewModel) {
+    LazyRow(
+        modifier = Modifier.padding(vertical = 16.dp)
+    ) {
+        itemsIndexed(vm.skillCommand) { index, item ->
+            val isSelected = index == vm.currentIndex.value
+
+            val shape =
+                if (isSelected)
+                    RoundedCornerShape(7.dp)
+                else RectangleShape
+
+            Box(
+                modifier = Modifier
+                    .padding(end = 5.dp)
+                    .let {
+                        if (isSelected) {
+                            it.border(
+                                2.dp,
+                                color = colorResource(android.R.color.darker_gray),
+                                shape = shape
+                            )
+                        } else it
+                    }
+                    .background(colorResource(item.colorRes), shape)
+                    .clickable { vm.setCurrentIndex(index) }
+                    .padding(horizontal = 4.dp)
+            ) {
+                val text =
+                    if (item is SkillMakerEntry.Start) ">"
+                    else item.toString()
+
+                Text(
+                    text,
+                    color = Color.White
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun EnemyTarget(
+    selected: Int?,
+    onSelectedChange: (Int) -> Unit
+) {
+    Row {
+        (1..3).map {
+            val isSelected = selected == it
+            val onClick = { onSelectedChange(it) }
+
+            Row(
+                modifier = Modifier
+                    .padding(end = 10.dp)
+                    .clickable(onClick = onClick)
+            ) {
+                RadioButton(
+                    selected = isSelected,
+                    onClick = onClick
+                )
+
+                Text(
+                    stringResource(R.string.skill_maker_main_enemy, it),
+                    modifier = Modifier
+                        .padding(start = 5.dp)
+                )
+            }
+        }
     }
 }

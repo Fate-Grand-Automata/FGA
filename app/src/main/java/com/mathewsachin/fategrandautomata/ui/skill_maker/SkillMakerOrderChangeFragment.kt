@@ -81,6 +81,7 @@ fun OrderChange(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
@@ -90,10 +91,6 @@ fun OrderChange(
 
                 OrderChangeSide(selected = starting, onSelectedChange = { starting = it })
             }
-
-            Row(
-                modifier = Modifier.weight(1f)
-            ) { }
 
             Column {
                 Text(stringResource(R.string.skill_maker_order_change_sub_member))
