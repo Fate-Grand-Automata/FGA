@@ -12,6 +12,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.vanpra.composematerialdialogs.MaterialDialog
 
 @Composable
 fun <T> Pref<T>.collect() =
@@ -59,7 +60,14 @@ fun Preference(
     hint: String = "",
     trailing: @Composable ((Modifier) -> Unit)? = null
 ) {
-    var showHint by savedInstanceState { false }
+    val hintDialog = MaterialDialog()
+
+    hintDialog.build {
+        // TODO: Localize 'Hint'
+        title("Hint")
+
+        message(hint)
+    }
 
     StatusWrapper (enabled) {
         ListItem(
@@ -76,21 +84,11 @@ fun Preference(
                             imageVector = vectorResource(id = R.drawable.ic_info),
                             modifier = Modifier
                                 .size(40.dp)
-                                .clickable(onClick = { showHint = true })
+                                .clickable(onClick = { hintDialog.show() })
                         )
                     }
                 }
             }
-        )
-    }
-
-    if (showHint) {
-        AlertDialog(
-            onDismissRequest = { showHint = false },
-            // TODO: Localize 'Hint'
-            title = { Text(text = "Hint") },
-            text = { Text(hint) },
-            confirmButton = { }
         )
     }
 }
