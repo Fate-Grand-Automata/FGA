@@ -117,7 +117,7 @@
     <string name="p_battle_config_card_priority">Card Priority</string>
     <string name="p_battle_config_support">Support</string>
     <string name="p_battle_config_support_selection_mode">Selection Mode</string>
-    <string name="p_battle_config_support_fallback_selection_mode">Fallback Selection Mode</string>
+    <string name="p_battle_config_support_fallback_selection_mode">Fallback</string>
     <string name="p_battle_config_support_pref_servants">Preferred Servants</string>
     <string name="p_battle_config_support_max_ascended">Max-ascended</string>
     <string name="p_battle_config_support_pref_ces">Preferred CEs</string>

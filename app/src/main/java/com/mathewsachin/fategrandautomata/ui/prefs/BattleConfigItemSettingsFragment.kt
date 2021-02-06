@@ -1,13 +1,26 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,6 +33,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.*
 import com.mathewsachin.fategrandautomata.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,15 +43,15 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
+class BattleConfigItemSettingsFragment : Fragment() {
     @Inject
     lateinit var preferences: IPreferences
 
     @Inject
-    lateinit var storageProvider: StorageProvider
-
-    @Inject
     lateinit var prefsCore: PrefsCore
+
+    val vm: BattleConfigItemViewModel by viewModels()
+    val supportViewModel: PreferredSupportViewModel by activityViewModels()
 
     val args: BattleConfigItemSettingsFragmentArgs by navArgs()
 
@@ -62,230 +76,241 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
     private lateinit var battleConfig: IBattleConfig
 
-    private lateinit var friendNamesList: MultiSelectListPreference
-    private lateinit var fallbackMode: ListPreference
-    private lateinit var prefCmd: EditTextPreference
-    private lateinit var navCardPriority: Preference
-    private lateinit var navPreferred: Preference
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        preferenceManager.sharedPreferencesName = args.key
         battleConfig = preferences.forBattleConfig(args.key)
-
         setHasOptionsMenu(true)
-
-        val config = prefsCore.forBattleConfig(args.key)
-
-        prefScreen {
-            config.name.text {
-                title = R.string.p_battle_config_name
-                icon = R.drawable.ic_text_short
-            }
-
-            prefCmd = config.skillCommand.text {
-                title = R.string.p_battle_config_cmd
-                icon = R.drawable.ic_terminal
-            }.also {
-                it.setOnPreferenceClickListener {
-                    if (!prefsCore.showTextBoxForSkillCmd.get()) {
-                        val action = BattleConfigItemSettingsFragmentDirections
-                            .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
-
-                        nav(action)
-                    }
-
-                    true
-                }
-            }
-
-            config.notes.text {
-                title = R.string.p_battle_config_notes
-                icon = R.drawable.ic_note
-            }.also {
-                it.makeMultiLine()
-            }
-
-            config.party.list {
-                title = R.string.p_battle_config_party
-                icon = R.drawable.ic_flag
-            }.apply {
-                entries = arrayOf(getString(R.string.p_not_set)) +
-                        (1..10).map {
-                            getString(R.string.p_party_number, it)
-                        }
-
-                entryValues = (-1..9)
-                    .map { it.toString() }
-                    .toTypedArray()
-            }
-
-            navCardPriority = blank {
-                title = R.string.p_battle_config_card_priority
-                icon = R.drawable.ic_sort
-            }.also {
-                it.setOnPreferenceClickListener {
-                    val action = BattleConfigItemSettingsFragmentDirections
-                        .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
-
-                    nav(action)
-
-                    true
-                }
-            }
-
-            config.materials.multiSelect {
-                title = R.string.p_mats
-                icon = R.drawable.ic_fang
-            }.apply {
-                initWith<MaterialEnum> { it.stringRes }
-                summaryProvider = MultiSelectSummaryProvider()
-            }
-
-            category {
-                key = "support_category"
-                title = R.string.p_battle_config_support
-
-                config.support.supportClass.list {
-                    title = R.string.p_battle_config_support_class
-                    icon = R.drawable.ic_diamond
-                }.initWith<SupportClass> { it.stringRes }
-
-                config.support.selectionMode.list {
-                    title = R.string.p_battle_config_support_selection_mode
-                    icon = R.drawable.ic_dots_vertical
-                }.initWith<SupportSelectionModeEnum> { it.stringRes }
-
-                navPreferred = blank {
-                    title = R.string.p_support_mode_preferred
-                    icon = R.drawable.ic_card
-                }.also {
-                    it.setOnPreferenceClickListener {
-                        val action = BattleConfigItemSettingsFragmentDirections
-                            .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
-
-                        nav(action)
-
-                        true
-                    }
-                }
-
-                friendNamesList = config.support.friendNames.multiSelect {
-                    title = R.string.p_battle_config_support_friend_names
-                    icon = R.drawable.ic_friend
-                }.also {
-                    it.summaryProvider = SupportMultiSelectSummaryProvider()
-                }
-
-                fallbackMode = config.support.fallbackTo.list {
-                    title = R.string.p_battle_config_support_fallback_selection_mode
-                    icon = R.drawable.ic_dots_vertical
-                }.apply {
-                    val values = listOf(
-                        SupportSelectionModeEnum.First,
-                        SupportSelectionModeEnum.Manual
-                    )
-
-                    entryValues = values
-                        .map { it.toString() }
-                        .toTypedArray()
-
-                    entries = values
-                        .map { getString(it.stringRes) }
-                        .toTypedArray()
-                }
-            }
-
-            category {
-                key = "spam_category"
-                title = R.string.p_spam_spam
-                summary = R.string.p_spam_summary
-
-                config.autoChooseTarget.switch {
-                    title = R.string.p_auto_choose_target
-                    icon = R.drawable.ic_target
-                }
-
-                config.npSpam.list {
-                    title = R.string.p_spam_np
-                    icon = R.drawable.ic_star
-                }.initWith<SpamEnum> { it.stringRes }
-
-                config.skillSpam.list {
-                    title = R.string.p_spam_skill
-                    icon = R.drawable.ic_wand
-                }.initWith<SpamEnum> { it.stringRes }
-            }
-
-            category {
-                key = "shuffle_category"
-                title = R.string.p_shuffle_cards
-
-                config.shuffleCardsWave.seekBar {
-                    title = R.string.p_shuffle_cards_wave
-                    min = 1
-                    max = 3
-                    icon = R.drawable.ic_counter
-                }
-
-                config.shuffleCards.list {
-                    title = R.string.p_shuffle_cards_when
-                    icon = R.drawable.ic_refresh
-                }.initWith<ShuffleCardsEnum> { it.stringRes }
-            }
-        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        ComposeView(requireContext()).apply {
+            val config = prefsCore.forBattleConfig(args.key)
 
-        val vm: BattleConfigItemViewModel by viewModels()
+            setContent {
+                FgaTheme {
+                    ScrollableColumn {
+                        config.name.EditTextPreference(
+                            title = stringResource(R.string.p_battle_config_name),
+                            icon = vectorResource(R.drawable.ic_text_short)
+                        )
 
-        vm.cardPriority.observe(viewLifecycleOwner) {
-            navCardPriority.summary = it
+                        // TODO: Allow going from Text Box to Skill Maker
+                        val cmd by config.skillCommand.collect()
+                        val cmdDialog = editTextDialog(
+                            title = stringResource(R.string.p_battle_config_cmd),
+                            value = cmd,
+                            valueChange = { config.skillCommand.set(it) }
+                        )
+
+                        Preference(
+                            title = stringResource(R.string.p_battle_config_cmd),
+                            icon = vectorResource(R.drawable.ic_terminal),
+                            summary = cmd,
+                            onClick = {
+                                if (!prefsCore.showTextBoxForSkillCmd.get()) {
+                                    val action = BattleConfigItemSettingsFragmentDirections
+                                        .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
+
+                                    nav(action)
+                                } else cmdDialog.show()
+                            }
+                        )
+
+                        Divider()
+
+                        config.notes.EditTextPreference(
+                            title = stringResource(R.string.p_battle_config_notes),
+                            icon = vectorResource(R.drawable.ic_note)
+                        )
+
+                        Divider()
+
+                        val cardPriority by config.cardPriority.collect()
+
+                        Preference(
+                            title = stringResource(R.string.p_battle_config_card_priority),
+                            icon = vectorResource(R.drawable.ic_sort),
+                            summary = cardPriority,
+                            onClick = {
+                                val action = BattleConfigItemSettingsFragmentDirections
+                                    .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
+
+                                nav(action)
+                            }
+                        )
+
+                        Divider()
+
+                        Row {
+                            Box(modifier = Modifier.weight(1f)) {
+                                config.party.ListPreference(
+                                    title = stringResource(R.string.p_battle_config_party),
+                                    //icon = vectorResource(R.drawable.ic_flag),
+                                    entries = (-1..9).associateWith { it.partyString }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f)) {
+                                config.materials.MultiSelectListPreference(
+                                    title = stringResource(R.string.p_mats),
+                                    //icon = vectorResource(R.drawable.ic_fang),
+                                    entries = MaterialEnum.values()
+                                        .associate { it.name to getString(it.stringRes) }
+                                )
+                            }
+                        }
+
+                        Divider()
+
+                        PreferenceGroup(title = stringResource(R.string.p_battle_config_support)) {
+                            config.support.supportClass.ListPreference(
+                                title = stringResource(R.string.p_battle_config_support_class),
+                                //icon = vectorResource(R.drawable.ic_diamond),
+                                entries = SupportClass.values()
+                                    .associateWith { getString(it.stringRes) }
+                            )
+
+                            val supportMode by config.support.selectionMode.collect()
+                            val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
+                            val friendMode = supportMode == SupportSelectionModeEnum.Friend
+
+                            Row {
+                                Box(
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    config.support.selectionMode.ListPreference(
+                                        title = stringResource(R.string.p_battle_config_support_selection_mode),
+                                        //icon = vectorResource(R.drawable.ic_dots_vertical),
+                                        entries = SupportSelectionModeEnum.values()
+                                            .associateWith { getString(it.stringRes) }
+                                    )
+                                }
+
+                                if (preferredMode || friendMode) {
+                                    Box(
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        config.support.fallbackTo.ListPreference(
+                                            title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
+                                            entries = listOf(
+                                                SupportSelectionModeEnum.First,
+                                                SupportSelectionModeEnum.Manual
+                                            ).associateWith { getString(it.stringRes) }
+                                        )
+                                    }
+                                }
+                            }
+
+                            if (preferredMode) {
+                                val preferredSummary by vm.preferredMessage.collectAsState("")
+
+                                Preference(
+                                    title = stringResource(R.string.p_support_mode_preferred),
+                                    //icon = vectorResource(R.drawable.ic_card),
+                                    summary = preferredSummary,
+                                    onClick = {
+                                        val action = BattleConfigItemSettingsFragmentDirections
+                                            .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
+
+                                        nav(action)
+                                    }
+                                )
+                            }
+
+                            if (friendMode) {
+                                config.support.friendNames.SupportSelectPreference(
+                                    title = stringResource(R.string.p_battle_config_support_friend_names),
+                                    //icon = vectorResource(R.drawable.ic_friend),
+                                    entries = supportViewModel.friends
+                                )
+                            }
+                        }
+
+                        Divider()
+
+                        PreferenceGroup(title = stringResource(R.string.p_spam_spam)) {
+                            Text(
+                                stringResource(R.string.p_spam_summary),
+                                style = MaterialTheme.typography.caption,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                            )
+
+                            config.autoChooseTarget.SwitchPreference(
+                                title = stringResource(R.string.p_auto_choose_target),
+                                //icon = vectorResource(R.drawable.ic_target)
+                            )
+
+                            Row {
+                                Box(
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    config.npSpam.ListPreference(
+                                        title = stringResource(R.string.p_spam_np),
+                                        //icon = vectorResource(R.drawable.ic_star),
+                                        entries = SpamEnum.values()
+                                            .associateWith { getString(it.stringRes) }
+                                    )
+                                }
+
+                                Box(
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    config.skillSpam.ListPreference(
+                                        title = stringResource(R.string.p_spam_skill),
+                                        //icon = vectorResource(R.drawable.ic_wand),
+                                        entries = SpamEnum.values()
+                                            .associateWith { getString(it.stringRes) }
+                                    )
+                                }
+                            }
+                        }
+
+                        Divider()
+
+                        PreferenceGroup(title = stringResource(R.string.p_shuffle_cards)) {
+                            Row {
+                                Box(modifier = Modifier.weight(1f)) {
+                                    config.shuffleCards.ListPreference(
+                                        title = stringResource(R.string.p_shuffle_cards_when),
+                                        //icon = vectorResource(R.drawable.ic_refresh),
+                                        entries = ShuffleCardsEnum.values()
+                                            .associateWith { getString(it.stringRes) }
+                                    )
+                                }
+
+                                Box(modifier = Modifier.weight(1f)) {
+                                    config.shuffleCardsWave.StepperPreference(
+                                        title = stringResource(R.string.p_shuffle_cards_wave),
+                                        //icon = vectorResource(R.drawable.ic_counter),
+                                        valueRange = 1..3
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        vm.skillCommand.observe(viewLifecycleOwner) {
-            prefCmd.text = it
-        }
-
-        vm.preferredMessage.observe(viewLifecycleOwner) {
-            navPreferred.summary = it
-        }
-
-        vm.supportSelectionMode.observe(viewLifecycleOwner) {
-            val preferred = it == SupportSelectionModeEnum.Preferred
-            val friend = it == SupportSelectionModeEnum.Friend
-
-            friendNamesList.isVisible = friend
-            fallbackMode.isVisible = preferred || friend
-            navPreferred.isVisible = preferred
-        }
+    val Int.partyString get() = when (this) {
+        -1 -> getString(R.string.p_not_set)
+        else -> getString(R.string.p_party_number, this + 1)
     }
 
     override fun onResume() {
         super.onResume()
 
         lifecycleScope.launch {
-            if (storageProvider.shouldExtractSupportImages) {
+            if (supportViewModel.shouldExtractSupportImages) {
                 performSupportImageExtraction()
-            } else populateFriendNames()
-        }
-    }
-
-    private suspend fun populateFriendNames() {
-        friendNamesList.apply {
-            populateFriendOrCe(storageProvider, SupportImageKind.Friend)
-
-            this.dialogMessage = if (entries.isEmpty()) {
-                getString(R.string.p_battle_config_support_friend_name_hint)
-            } else null
+            } else supportViewModel.refresh(requireContext())
         }
     }
 
     private suspend fun performSupportImageExtraction() {
         val msg = try {
-            SupportImageExtractor(requireContext(), storageProvider).extract()
-            populateFriendNames()
+            supportViewModel.extract(requireContext())
 
             getString(R.string.support_imgs_extracted)
         } catch (e: Exception) {
@@ -347,31 +372,5 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
         preferences.removeBattleConfig(battleConfigKey)
 
         findNavController().popBackStack()
-    }
-
-    override fun onDisplayPreferenceDialog(preference: Preference) {
-        fun prepare(dialogFragment: PreferenceDialogFragmentCompat) {
-            @Suppress("DEPRECATION")
-            dialogFragment.setTargetFragment(this, 0)
-            dialogFragment.show(parentFragmentManager, null)
-        }
-
-        when (preference.key) {
-            friendNamesList.key -> {
-                ClearMultiSelectListPreferenceDialog().apply {
-                    setKey(preference.key)
-                    prepare(this)
-                }
-            }
-            prefCmd.key -> {
-                if (prefsCore.showTextBoxForSkillCmd.get()) {
-                    SkillCmdPreferenceDialogFragment(prefCmd.key).apply {
-                        battleConfigKey = args.key
-                        prepare(this)
-                    }
-                }
-            }
-            else -> super.onDisplayPreferenceDialog(preference)
-        }
     }
 }

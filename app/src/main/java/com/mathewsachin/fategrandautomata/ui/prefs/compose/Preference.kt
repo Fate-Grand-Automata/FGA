@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -26,7 +25,7 @@ fun Preference(
     icon: ImageVector? = null,
     enabled: Boolean = true,
     hint: String = "",
-    onClick: () -> Unit = { },
+    onClick: (() -> Unit)? = null,
     trailing: @Composable ((Modifier) -> Unit)? = null
 ) {
     Preference(
@@ -56,7 +55,7 @@ fun Preference(
     summary: @Composable (() -> Unit)? = null,
     icon: ImageVector? = null,
     enabled: Boolean = true,
-    onClick: () -> Unit = { },
+    onClick: (() -> Unit)? = null,
     hint: String = "",
     trailing: @Composable ((Modifier) -> Unit)? = null
 ) {
@@ -74,7 +73,11 @@ fun Preference(
             text = title,
             secondaryText = summary,
             icon = icon?.let { { Icon(imageVector = it, modifier = Modifier.size(40.dp)) } },
-            modifier = Modifier.clickable(onClick = { if (enabled) onClick() }),
+            modifier = Modifier.let{
+                if (onClick != null)
+                    it.clickable(onClick = { if (enabled) onClick() })
+                else it
+            },
             trailing = {
                 Row {
                     trailing?.invoke(Modifier.align(Alignment.CenterVertically))

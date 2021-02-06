@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.SupportImageKind
+import com.mathewsachin.fategrandautomata.util.StorageProvider
+import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,7 +18,7 @@ import timber.log.error
 import java.io.File
 
 class PreferredSupportViewModel @ViewModelInject constructor(
-    val storageProvider: IStorageProvider
+    val storageProvider: StorageProvider
 ): ViewModel() {
     var servants: Map<String, String> by mutableStateOf(emptyMap())
     var ces: Map<String, String> by mutableStateOf(emptyMap())
@@ -54,4 +56,13 @@ class PreferredSupportViewModel @ViewModelInject constructor(
                     .associateWith { File(it).nameWithoutExtension }
         }
     }
+
+    suspend fun extract(context: Context) {
+        SupportImageExtractor(context, storageProvider).extract()
+
+        refresh(context)
+    }
+
+    val shouldExtractSupportImages get() =
+        storageProvider.shouldExtractSupportImages
 }

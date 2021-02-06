@@ -13,11 +13,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
@@ -34,7 +36,7 @@ class PreferredSupportSettingsFragment : Fragment() {
     @Inject
     lateinit var prefsCore: PrefsCore
 
-    val vm: PreferredSupportViewModel by viewModels()
+    val vm: PreferredSupportViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
@@ -49,23 +51,11 @@ class PreferredSupportSettingsFragment : Fragment() {
                         )
 
                         PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_servants)) {
-                            config.preferredServants.MultiSelectListPreference(
+                            config.preferredServants.SupportSelectPreference(
                                 title = stringResource(R.string.p_battle_config_support_pref_servants),
                                 entries = vm.servants,
-                                icon = vectorResource(R.drawable.ic_crown),
-                                summary = {
-                                    if (it.isEmpty())
-                                        getString(R.string.p_not_set)
-                                    else it.joinToString()
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = vectorResource(id = R.drawable.ic_close),
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .clickable(onClick = { config.preferredServants.resetToDefault() })
-                                )
-                            }
+                                icon = vectorResource(R.drawable.ic_crown)
+                            )
 
                             val prefServants by config.preferredServants.collect()
 
@@ -92,23 +82,11 @@ class PreferredSupportSettingsFragment : Fragment() {
                         }
 
                         PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_ces)) {
-                            config.preferredCEs.MultiSelectListPreference(
+                            config.preferredCEs.SupportSelectPreference(
                                 title = stringResource(R.string.p_battle_config_support_pref_ces),
                                 entries = vm.ces,
-                                icon = vectorResource(R.drawable.ic_card),
-                                summary = {
-                                    if (it.isEmpty())
-                                        getString(R.string.p_not_set)
-                                    else it.joinToString()
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = vectorResource(id = R.drawable.ic_close),
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .clickable(onClick = { config.preferredCEs.resetToDefault() })
-                                )
-                            }
+                                icon = vectorResource(R.drawable.ic_card)
+                            )
 
                             val prefCEs by config.preferredCEs.collect()
 
@@ -170,5 +148,30 @@ class PreferredSupportSettingsFragment : Fragment() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun Pref<Set<String>>.SupportSelectPreference(
+    title: String,
+    entries: Map<String, String>,
+    icon: ImageVector? = null
+) {
+    MultiSelectListPreference(
+        title = title,
+        entries = entries,
+        icon = icon,
+        summary = {
+            if (it.isEmpty())
+                stringResource(R.string.p_not_set)
+            else it.joinToString()
+        }
+    ) {
+        Icon(
+            imageVector = vectorResource(id = R.drawable.ic_close),
+            modifier = Modifier
+                .size(40.dp)
+                .clickable(onClick = { resetToDefault() })
+        )
     }
 }

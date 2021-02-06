@@ -23,16 +23,6 @@ class BattleConfigItemViewModel @ViewModelInject constructor(
 
     private val prefs = prefsCore.forBattleConfig(battleConfigKey)
 
-    val cardPriority = prefs
-        .cardPriority
-        .asFlow()
-        .asLiveData()
-
-    val skillCommand = prefs
-        .skillCommand
-        .asFlow()
-        .asLiveData()
-
     private val skillLevels =
         combine(
             prefs.support.skill1Max.asFlow(),
@@ -73,11 +63,4 @@ class BattleConfigItemViewModel @ViewModelInject constructor(
                 }
             }.trim()
         }
-            .asLiveData()
-
-    val supportSelectionMode = prefs
-        .support
-        .selectionMode
-        .asFlow()
-        .asLiveData()
 }

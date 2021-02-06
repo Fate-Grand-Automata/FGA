@@ -48,7 +48,7 @@ fun multiSelectListDialog(
 @Composable
 fun Pref<Set<String>>.MultiSelectListPreference(
     title: String,
-    summary: (List<String>) -> String = { it.joinToString() },
+    summary: @Composable (List<String>) -> String = { it.joinToString() },
     singleLineTitle: Boolean = true,
     icon: ImageVector? = null,
     entries: Map<String, String>,
