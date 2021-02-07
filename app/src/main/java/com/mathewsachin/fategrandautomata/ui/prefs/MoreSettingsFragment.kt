@@ -87,12 +87,6 @@ class MoreSettingsFragment : Fragment() {
                                 icon = vectorResource(R.drawable.ic_boost),
                                 entries = (-1..3).associateWith { it.boostItemString }
                             )
-
-                            prefs.showTextBoxForSkillCmd.SwitchPreference(
-                                title = stringResource(R.string.p_battle_config_cmd_text),
-                                summary = stringResource(R.string.p_battle_config_cmd_text_summary),
-                                icon = vectorResource(R.drawable.ic_wand)
-                            )
                         }
 
                         PreferenceGroup(title = stringResource(R.string.p_storage)) {

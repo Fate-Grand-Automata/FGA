@@ -6,10 +6,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.collectAsState
@@ -25,16 +28,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.preference.*
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.compose.*
-import com.mathewsachin.fategrandautomata.util.*
+import com.mathewsachin.fategrandautomata.util.nav
+import com.mathewsachin.fategrandautomata.util.stringRes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -91,11 +93,11 @@ class BattleConfigItemSettingsFragment : Fragment() {
                 FgaTheme {
                     ScrollableColumn {
                         config.name.EditTextPreference(
-                            title = stringResource(R.string.p_battle_config_name),
-                            icon = vectorResource(R.drawable.ic_text_short)
+                            title = stringResource(R.string.p_battle_config_name)
                         )
 
-                        // TODO: Allow going from Text Box to Skill Maker
+                        Divider()
+
                         val cmd by config.skillCommand.collect()
                         val cmdDialog = editTextDialog(
                             title = stringResource(R.string.p_battle_config_cmd),
@@ -105,23 +107,26 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
                         Preference(
                             title = stringResource(R.string.p_battle_config_cmd),
-                            icon = vectorResource(R.drawable.ic_terminal),
                             summary = cmd,
                             onClick = {
-                                if (!prefsCore.showTextBoxForSkillCmd.get()) {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
+                                val action = BattleConfigItemSettingsFragmentDirections
+                                    .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
 
-                                    nav(action)
-                                } else cmdDialog.show()
+                                nav(action)
                             }
-                        )
+                        ) {
+                            Icon(
+                                vectorResource(R.drawable.ic_terminal),
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clickable { cmdDialog.show() }
+                            )
+                        }
 
                         Divider()
 
                         config.notes.EditTextPreference(
-                            title = stringResource(R.string.p_battle_config_notes),
-                            icon = vectorResource(R.drawable.ic_note)
+                            title = stringResource(R.string.p_battle_config_notes)
                         )
 
                         Divider()
@@ -130,7 +135,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
                         Preference(
                             title = stringResource(R.string.p_battle_config_card_priority),
-                            icon = vectorResource(R.drawable.ic_sort),
                             summary = cardPriority,
                             onClick = {
                                 val action = BattleConfigItemSettingsFragmentDirections
@@ -146,14 +150,12 @@ class BattleConfigItemSettingsFragment : Fragment() {
                             Box(modifier = Modifier.weight(1f)) {
                                 config.party.ListPreference(
                                     title = stringResource(R.string.p_battle_config_party),
-                                    //icon = vectorResource(R.drawable.ic_flag),
                                     entries = (-1..9).associateWith { it.partyString }
                                 )
                             }
                             Box(modifier = Modifier.weight(1f)) {
                                 config.materials.MultiSelectListPreference(
                                     title = stringResource(R.string.p_mats),
-                                    //icon = vectorResource(R.drawable.ic_fang),
                                     entries = MaterialEnum.values()
                                         .associate { it.name to getString(it.stringRes) }
                                 )
@@ -165,7 +167,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                         PreferenceGroup(title = stringResource(R.string.p_battle_config_support)) {
                             config.support.supportClass.ListPreference(
                                 title = stringResource(R.string.p_battle_config_support_class),
-                                //icon = vectorResource(R.drawable.ic_diamond),
                                 entries = SupportClass.values()
                                     .associateWith { getString(it.stringRes) }
                             )
@@ -180,7 +181,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                 ) {
                                     config.support.selectionMode.ListPreference(
                                         title = stringResource(R.string.p_battle_config_support_selection_mode),
-                                        //icon = vectorResource(R.drawable.ic_dots_vertical),
                                         entries = SupportSelectionModeEnum.values()
                                             .associateWith { getString(it.stringRes) }
                                     )
@@ -206,7 +206,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
                                 Preference(
                                     title = stringResource(R.string.p_support_mode_preferred),
-                                    //icon = vectorResource(R.drawable.ic_card),
                                     summary = preferredSummary,
                                     onClick = {
                                         val action = BattleConfigItemSettingsFragmentDirections
@@ -220,7 +219,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                             if (friendMode) {
                                 config.support.friendNames.SupportSelectPreference(
                                     title = stringResource(R.string.p_battle_config_support_friend_names),
-                                    //icon = vectorResource(R.drawable.ic_friend),
                                     entries = supportViewModel.friends
                                 )
                             }
@@ -237,8 +235,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
                             )
 
                             config.autoChooseTarget.SwitchPreference(
-                                title = stringResource(R.string.p_auto_choose_target),
-                                //icon = vectorResource(R.drawable.ic_target)
+                                title = stringResource(R.string.p_auto_choose_target)
                             )
 
                             Row {
@@ -247,7 +244,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                 ) {
                                     config.npSpam.ListPreference(
                                         title = stringResource(R.string.p_spam_np),
-                                        //icon = vectorResource(R.drawable.ic_star),
                                         entries = SpamEnum.values()
                                             .associateWith { getString(it.stringRes) }
                                     )
@@ -258,7 +254,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                 ) {
                                     config.skillSpam.ListPreference(
                                         title = stringResource(R.string.p_spam_skill),
-                                        //icon = vectorResource(R.drawable.ic_wand),
                                         entries = SpamEnum.values()
                                             .associateWith { getString(it.stringRes) }
                                     )
@@ -273,7 +268,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                 Box(modifier = Modifier.weight(1f)) {
                                     config.shuffleCards.ListPreference(
                                         title = stringResource(R.string.p_shuffle_cards_when),
-                                        //icon = vectorResource(R.drawable.ic_refresh),
                                         entries = ShuffleCardsEnum.values()
                                             .associateWith { getString(it.stringRes) }
                                     )
@@ -282,7 +276,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                 Box(modifier = Modifier.weight(1f)) {
                                     config.shuffleCardsWave.StepperPreference(
                                         title = stringResource(R.string.p_shuffle_cards_wave),
-                                        //icon = vectorResource(R.drawable.ic_counter),
                                         valueRange = 1..3
                                     )
                                 }

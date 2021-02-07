@@ -69,8 +69,6 @@ class PrefsCore @Inject constructor(
     val swipeDuration = maker.int("swipe_duration", 300)
     val swipeMultiplier = maker.int("swipe_multiplier", 100)
 
-    val showTextBoxForSkillCmd = maker.bool("auto_skill_cmd_text")
-
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
 
     var dirRoot = maker.string("dir_root")
