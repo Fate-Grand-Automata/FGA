@@ -17,6 +17,14 @@ internal class RefillPreferences(val prefs: RefillPrefsCore) :
         }.sortedBy { it.ordinal }
     }
 
+    override fun updateResources(resources: Set<RefillResourceEnum>) {
+        prefs.resources.set(
+            resources
+                .map { it.name }
+                .toSet()
+        )
+    }
+
     override val autoDecrement by prefs.autoDecrement
 
     override var shouldLimitRuns by prefs.shouldLimitRuns

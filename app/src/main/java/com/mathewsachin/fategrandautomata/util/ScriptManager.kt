@@ -2,15 +2,19 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.content.Context
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.prefs.ScriptLauncher
+import com.mathewsachin.fategrandautomata.ui.prefs.ScriptLauncherResponse
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.*
 import dagger.hilt.EntryPoints
@@ -30,6 +34,7 @@ class ScriptManager @Inject constructor(
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
+    val prefsCore: PrefsCore,
     val storageProvider: StorageProvider,
     val platformImpl: IPlatformImpl,
     val messages: IScriptMessages
@@ -236,72 +241,61 @@ class ScriptManager @Inject constructor(
 
     private fun scriptPicker(
         context: Context,
-        otherMode: ScriptModeEnum,
+        detectedMode: ScriptModeEnum,
         entryPointRunner: () -> Unit
     ) {
-        val pickerItems = preferences.battleConfigs
-            .map { PickerItem.Battle(it) }
-            .let {
-                val other = listOf(PickerItem.Other(context.getString(otherMode.display)))
+        var dialog: AlertDialog? = null
 
-                when (otherMode) {
-                    ScriptModeEnum.Battle -> it
-                    ScriptModeEnum.PresentBox ->
-                        (1..4).map { m -> PickerItem.PresentBox(m) }
-                    ScriptModeEnum.FP, ScriptModeEnum.Lottery ->
-                        other
-                    ScriptModeEnum.SupportImageMaker -> other + it
-                }
+        dialog = showOverlayDialog(context) {
+            setView(context.fakedComposeView {
+                ScriptLauncher(
+                    scriptMode = detectedMode,
+                    onResponse = {
+                        dialog?.hide()
+                        onScriptLauncherResponse(it, entryPointRunner)
+                    },
+                    prefs = preferences
+                )
+            })
+
+            setOnDismissListener {
+                userInterface.isPlayButtonEnabled = true
             }
+        }
+    }
 
-        val selectedBattleConfig = preferences.selectedBattleConfig
+    private fun onScriptLauncherResponse(resp: ScriptLauncherResponse, entryPointRunner: () -> Unit) {
+        userInterface.isPlayButtonEnabled = true
 
-        val initialSelectedIndex =
-            when (otherMode) {
-                ScriptModeEnum.SupportImageMaker, ScriptModeEnum.Battle ->
-                    pickerItems.indexOfFirst { it is PickerItem.Battle && it.battleConfig.id == selectedBattleConfig.id }
-                ScriptModeEnum.FP, ScriptModeEnum.Lottery -> 0
-                ScriptModeEnum.PresentBox ->
-                    pickerItems.indexOfFirst { it is PickerItem.PresentBox && it.maxGoldEmberSetSize == preferences.maxGoldEmberSetSize }
-            }.coerceIn(pickerItems.indices)
+        preferences.scriptMode = when (resp) {
+            ScriptLauncherResponse.Cancel -> return
+            ScriptLauncherResponse.FP -> ScriptModeEnum.FP
+            ScriptLauncherResponse.Lottery -> ScriptModeEnum.Lottery
+            is ScriptLauncherResponse.GiftBox -> {
+                preferences.maxGoldEmberSetSize = resp.maxGoldEmberStackSize
 
-        var selected = pickerItems[initialSelectedIndex]
+                ScriptModeEnum.PresentBox
+            }
+            ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
+            is ScriptLauncherResponse.Battle -> {
+                preferences.selectedBattleConfig = resp.config
+                preferences.refill.updateResources(resp.refillResources)
+                preferences.refill.repetitions = resp.refillCount
 
-        val dialogTitle = if (otherMode == ScriptModeEnum.PresentBox)
-            R.string.p_max_gold_ember_set_size
-        else R.string.select_script
+                preferences.refill.shouldLimitRuns = resp.limitRuns != null
+                resp.limitRuns?.let { preferences.refill.limitRuns = it }
 
-        showOverlayDialog(context) {
-            setTitle(dialogTitle)
-                .apply {
-                    setSingleChoiceItems(
-                        pickerItems.map { it.name }.toTypedArray(),
-                        initialSelectedIndex
-                    ) { _, choice -> selected = pickerItems[choice] }
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    preferences.scriptMode = when (val s = selected) {
-                        is PickerItem.Other -> otherMode
-                        is PickerItem.PresentBox -> {
-                            preferences.maxGoldEmberSetSize = s.maxGoldEmberSetSize
+                preferences.refill.shouldLimitMats = resp.limitMats != null
+                resp.limitMats?.let { preferences.refill.limitMats = it }
 
-                            ScriptModeEnum.PresentBox
-                        }
-                        is PickerItem.Battle -> {
-                            preferences.selectedBattleConfig = s.battleConfig
+                ScriptModeEnum.Battle
+            }
+        }
 
-                            ScriptModeEnum.Battle
-                        }
-                    }
-
-                    userInterface.postDelayed(500.milliseconds) {
-                        entryPointRunner()
-                    }
-                }
-                .setOnDismissListener {
-                    userInterface.isPlayButtonEnabled = true
-                }
+        if (resp !is ScriptLauncherResponse.Cancel) {
+            userInterface.postDelayed(500.milliseconds) {
+                entryPointRunner()
+            }
         }
     }
 }

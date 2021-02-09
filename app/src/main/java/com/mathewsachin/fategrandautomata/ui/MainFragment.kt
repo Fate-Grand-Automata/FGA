@@ -15,6 +15,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import com.mathewsachin.fategrandautomata.databinding.ContentMainBinding
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
@@ -33,6 +34,9 @@ class MainFragment : Fragment() {
 
     @Inject
     lateinit var storageProvider: StorageProvider
+
+    @Inject
+    lateinit var prefs: IPreferences
 
     private val pickDir = registerPersistableDirPicker {
         storageProvider.setRoot(it)

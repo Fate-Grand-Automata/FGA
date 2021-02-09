@@ -6,6 +6,8 @@ interface IRefillPreferences {
     val enabled: Boolean
     var repetitions: Int
     val resources: List<RefillResourceEnum>
+    fun updateResources(resources: Set<RefillResourceEnum>)
+
     val autoDecrement: Boolean
 
     var shouldLimitRuns: Boolean

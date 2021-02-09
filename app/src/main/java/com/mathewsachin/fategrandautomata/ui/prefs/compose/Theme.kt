@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui.prefs.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -59,6 +58,7 @@ private val LightColorPalette = lightColors(
 @Composable
 fun FgaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    backgroundColor: Color = MaterialTheme.colors.background,
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
@@ -73,7 +73,7 @@ fun FgaTheme(
         shapes = shapes
     ) {
         Surface(
-            modifier = Modifier.background(color = MaterialTheme.colors.background)
+            modifier = Modifier.background(color = backgroundColor)
         ) {
             content()
         }
