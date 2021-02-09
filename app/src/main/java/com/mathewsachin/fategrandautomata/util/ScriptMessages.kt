@@ -58,6 +58,9 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
     override fun farmedMaterials(count: Int) =
         context.getString(R.string.mats_farmed, count)
 
+    override fun timesRolled(times: Int) =
+        context.getString(R.string.times_rolled, times)
+
     override fun materials(mats: Map<MaterialEnum, Int>) =
         mats.entries.joinToString { (mat, count) ->
             "${context.getString(mat.stringRes)}: $count"

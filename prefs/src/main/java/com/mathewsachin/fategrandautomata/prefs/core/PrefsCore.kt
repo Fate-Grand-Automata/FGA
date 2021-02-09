@@ -49,6 +49,9 @@ class PrefsCore @Inject constructor(
     val debugMode = maker.bool("debug_mode")
     val autoStartService = maker.bool("auto_start_service")
 
+    val shouldLimitFP = maker.bool("should_fp_limit")
+    val limitFP = maker.int("fp_limit", 1)
+
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
     val supportMaxUpdates = maker.int("support_max_updates_x", 5)
 

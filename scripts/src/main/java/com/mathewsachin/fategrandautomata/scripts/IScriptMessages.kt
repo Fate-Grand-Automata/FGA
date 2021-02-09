@@ -23,6 +23,8 @@ interface IScriptMessages {
     fun timesRanOutOf(times: Int, outOf: Int): String
     fun farmedMaterials(count: Int): String
 
+    fun timesRolled(times: Int): String
+
     fun materials(mats: Map<MaterialEnum, Int>): String
 
     fun refillsUsedOutOf(used: Int, outOf: Int): String

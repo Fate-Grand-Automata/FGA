@@ -7,7 +7,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IRefillPreferences
 
 internal class RefillPreferences(val prefs: RefillPrefsCore) :
     IRefillPreferences {
-    override val enabled by prefs.enabled
+    override var enabled by prefs.enabled
 
     override var repetitions by prefs.repetitions
 

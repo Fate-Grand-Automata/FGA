@@ -1,10 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +32,70 @@ fun launcher(
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
         build = build
+    )
+}
+
+@Composable
+fun fpLauncher(
+    prefs: IPreferences,
+    modifier: Modifier = Modifier
+): ScriptLauncherResponseBuilder {
+    var shouldLimit by remember { mutableStateOf(prefs.shouldLimitFP) }
+    var rollLimit by remember { mutableStateOf(prefs.limitFP) }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            stringResource(R.string.p_script_mode_fp),
+            style = MaterialTheme.typography.h6
+        )
+
+        Divider(
+            modifier = Modifier
+                .padding(5.dp)
+                .padding(bottom = 16.dp)
+        )
+
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { shouldLimit = !shouldLimit }
+        ) {
+            Text(
+                stringResource(R.string.p_roll_limit),
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.secondary
+            )
+
+            Switch(
+                checked = shouldLimit,
+                onCheckedChange = { shouldLimit = it }
+            )
+        }
+
+        Box(
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Stepper(
+                value = rollLimit,
+                onValueChange = { rollLimit = it },
+                valueRange = 1..999,
+                enabled = shouldLimit
+            )
+        }
+    }
+
+    return ScriptLauncherResponseBuilder(
+        canBuild = { true },
+        build = {
+            ScriptLauncherResponse.FP(
+                if (shouldLimit) rollLimit else null
+            )
+        }
     )
 }
 
@@ -97,17 +159,18 @@ fun ScriptLauncher(
                 .padding(top = 5.dp)
                 .fillMaxSize()
         ) {
+            val modifier = Modifier.weight(1f)
+
             val responseBuilder = when (scriptMode) {
                 ScriptModeEnum.Battle, ScriptModeEnum.SupportImageMaker ->
                     battleLauncher(
                         prefs,
-                        modifier = Modifier.weight(1f)
+                        modifier
                     )
-                ScriptModeEnum.FP ->
-                    launcher(
-                        stringResource(R.string.p_script_mode_fp),
-                        modifier = Modifier.weight(1f)
-                    ) { ScriptLauncherResponse.FP }
+                ScriptModeEnum.FP -> fpLauncher(
+                    prefs,
+                    modifier
+                )
                 ScriptModeEnum.Lottery ->
                     launcher(
                         stringResource(R.string.p_script_mode_lottery),
@@ -115,7 +178,7 @@ fun ScriptLauncher(
                     ) { ScriptLauncherResponse.Lottery }
                 ScriptModeEnum.PresentBox -> giftBoxLauncher(
                     prefs,
-                    modifier = Modifier.weight(1f)
+                    modifier
                 )
             }
 

@@ -27,6 +27,9 @@ interface IPreferences {
     val screenshotDrops: Boolean
     var maxGoldEmberSetSize: Int
 
+    var shouldLimitFP: Boolean
+    var limitFP: Int
+
     val stageCounterSimilarity: Double
     val waitBeforeTurn: Duration
     val waitBeforeCards: Duration

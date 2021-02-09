@@ -108,6 +108,7 @@
     <string name="p_run_limit">Run limit</string>
     <string name="p_limit_no_of_runs">Limit number of runs</string>
     <string name="p_runs">Runs</string>
+    <string name="p_roll_limit">Limit number of rolls</string>
 
     <string name="p_battle_config_name">Name</string>
     <string name="p_battle_config_cmd">Command</string>
@@ -295,6 +296,8 @@
     <string name="mats_farmed">Farmed %d material(s)</string>
     <string name="p_mat_limit">Limit by Materials</string>
     <string name="p_mat_limit_count">Count</string>
+
+    <string name="times_rolled">Rolled %d time(s)</string>
 
     <string name="mat_proof">Proof of Hero</string>
     <string name="mat_bone">Evil Bone</string>

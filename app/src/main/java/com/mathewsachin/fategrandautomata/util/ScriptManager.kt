@@ -269,7 +269,12 @@ class ScriptManager @Inject constructor(
 
         preferences.scriptMode = when (resp) {
             ScriptLauncherResponse.Cancel -> return
-            ScriptLauncherResponse.FP -> ScriptModeEnum.FP
+            is ScriptLauncherResponse.FP -> {
+                preferences.shouldLimitFP = resp.limit != null
+                resp.limit?.let { preferences.limitFP = it }
+
+                ScriptModeEnum.FP
+            }
             ScriptLauncherResponse.Lottery -> ScriptModeEnum.Lottery
             is ScriptLauncherResponse.GiftBox -> {
                 preferences.maxGoldEmberSetSize = resp.maxGoldEmberStackSize
@@ -279,6 +284,8 @@ class ScriptManager @Inject constructor(
             ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
             is ScriptLauncherResponse.Battle -> {
                 preferences.selectedBattleConfig = resp.config
+
+                preferences.refill.enabled = resp.refillResources.isNotEmpty()
                 preferences.refill.updateResources(resp.refillResources)
                 preferences.refill.repetitions = resp.refillCount
 
