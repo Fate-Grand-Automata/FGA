@@ -18,6 +18,7 @@ interface IScriptMessages {
     val stoppedByUser: String
     val unexpectedError: String
     val scriptExited: String
+    val lotteryBoxResetIsDisabled: String
 
     fun timesRan(times: Int): String
     fun timesRanOutOf(times: Int, outOf: Int): String

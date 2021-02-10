@@ -8,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
@@ -16,22 +15,52 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 
 @Composable
-fun launcher(
-    text: String,
-    modifier: Modifier,
-    build: () -> ScriptLauncherResponse
+fun lotteryLauncher(
+    prefs: IPreferences,
+    modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
-    Text(
-        text,
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.h6,
+    var preventReset by remember { mutableStateOf(prefs.preventLotteryBoxReset) }
+
+    Column(
         modifier = modifier
-            .padding(top = 16.dp)
-    )
+            .fillMaxWidth()
+    ) {
+        Text(
+            stringResource(R.string.p_script_mode_lottery),
+            style = MaterialTheme.typography.h6
+        )
+
+        Divider(
+            modifier = Modifier
+                .padding(5.dp)
+                .padding(bottom = 16.dp)
+        )
+
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { preventReset = !preventReset }
+        ) {
+            Text(
+                stringResource(R.string.p_prevent_lottery_box_reset),
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.secondary
+            )
+
+            Switch(
+                checked = preventReset,
+                onCheckedChange = { preventReset = it }
+            )
+        }
+    }
 
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
-        build = build
+        build = {
+            ScriptLauncherResponse.Lottery(preventReset)
+        }
     )
 }
 
@@ -163,23 +192,10 @@ fun ScriptLauncher(
 
             val responseBuilder = when (scriptMode) {
                 ScriptModeEnum.Battle, ScriptModeEnum.SupportImageMaker ->
-                    battleLauncher(
-                        prefs,
-                        modifier
-                    )
-                ScriptModeEnum.FP -> fpLauncher(
-                    prefs,
-                    modifier
-                )
-                ScriptModeEnum.Lottery ->
-                    launcher(
-                        stringResource(R.string.p_script_mode_lottery),
-                        modifier = Modifier.weight(1f)
-                    ) { ScriptLauncherResponse.Lottery }
-                ScriptModeEnum.PresentBox -> giftBoxLauncher(
-                    prefs,
-                    modifier
-                )
+                    battleLauncher(prefs, modifier)
+                ScriptModeEnum.FP -> fpLauncher(prefs, modifier)
+                ScriptModeEnum.Lottery -> lotteryLauncher(prefs, modifier)
+                ScriptModeEnum.PresentBox -> giftBoxLauncher(prefs, modifier)
             }
 
             Divider()

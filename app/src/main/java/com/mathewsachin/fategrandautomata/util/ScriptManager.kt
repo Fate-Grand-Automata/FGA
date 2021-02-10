@@ -43,9 +43,9 @@ class ScriptManager @Inject constructor(
         private set
 
     // Show message box synchronously
-    suspend fun message(Title: String, Message: String, Error: Exception? = null): Unit = suspendCancellableCoroutine {
+    suspend fun message(Title: String, Message: String, Error: Exception? = null): Boolean = suspendCancellableCoroutine {
         platformImpl.messageBox(Title, Message, Error) {
-            it.resume(Unit)
+            it.resume(true)
         }
     }
 
@@ -275,7 +275,11 @@ class ScriptManager @Inject constructor(
 
                 ScriptModeEnum.FP
             }
-            ScriptLauncherResponse.Lottery -> ScriptModeEnum.Lottery
+            is ScriptLauncherResponse.Lottery -> {
+                preferences.preventLotteryBoxReset = resp.preventBoxReset
+
+                ScriptModeEnum.Lottery
+            }
             is ScriptLauncherResponse.GiftBox -> {
                 preferences.maxGoldEmberSetSize = resp.maxGoldEmberStackSize
 

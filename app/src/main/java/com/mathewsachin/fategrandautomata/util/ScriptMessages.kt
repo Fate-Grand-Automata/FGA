@@ -22,6 +22,9 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
     override val scriptExited: String
         get() = context.getString(R.string.script_exited)
 
+    override val lotteryBoxResetIsDisabled: String
+        get() = context.getString(R.string.lottery_reset_disabled)
+
     override val inventoryFull: String
         get() = context.getString(R.string.inventory_full)
 

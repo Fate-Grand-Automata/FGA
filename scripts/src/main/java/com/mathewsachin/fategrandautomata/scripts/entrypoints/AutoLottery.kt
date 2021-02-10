@@ -21,6 +21,10 @@ class AutoLottery @Inject constructor(
     }
 
     private fun reset() {
+        if (prefs.preventLotteryBoxReset) {
+            throw ScriptExitException(messages.lotteryBoxResetIsDisabled)
+        }
+
         game.lotteryResetClick.click()
         0.5.seconds.wait()
 

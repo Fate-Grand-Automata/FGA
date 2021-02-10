@@ -51,6 +51,7 @@ class PrefsCore @Inject constructor(
 
     val shouldLimitFP = maker.bool("should_fp_limit")
     val limitFP = maker.int("fp_limit", 1)
+    val preventLotteryBoxReset = maker.bool("prevent_lottery_reset")
 
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
     val supportMaxUpdates = maker.int("support_max_updates_x", 5)
