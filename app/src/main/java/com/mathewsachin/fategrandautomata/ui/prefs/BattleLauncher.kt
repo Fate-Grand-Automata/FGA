@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
@@ -34,8 +35,17 @@ fun battleLauncher(
     var limitMats by remember { mutableStateOf(prefs.refill.limitMats) }
 
     Row(modifier = modifier) {
+        // Scrolling the selected config into view
+        val configListState = rememberLazyListState()
+        LaunchedEffect(true) {
+            if (selectedConfigIndex != -1) {
+                configListState.snapToItemIndex(selectedConfigIndex)
+            }
+        }
+
         LazyColumn(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            state = configListState
         ) {
             itemsIndexed(configs) { index, item ->
                 BattleConfigItem(
