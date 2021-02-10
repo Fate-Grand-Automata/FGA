@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.material.Surface
-import androidx.compose.runtime.*
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -48,20 +46,6 @@ class MainSettingsFragment : Fragment() {
             setContent {
                 FgaTheme {
                     ScrollableColumn {
-                        val refillMsg by vm.refillMessage.collectAsState("")
-
-                        Preference(
-                            title = stringResource(R.string.p_refill),
-                            summary = refillMsg,
-                            icon = vectorResource(R.drawable.ic_apple),
-                            onClick = {
-                                val action = MainFragmentDirections
-                                    .actionMainFragmentToRefillSettingsFragment()
-
-                                nav(action)
-                            }
-                        )
-
                         Preference(
                             title = stringResource(R.string.p_battle_config),
                             summary = stringResource(R.string.p_battle_config_summary),

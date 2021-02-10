@@ -285,7 +285,6 @@ class ScriptManager @Inject constructor(
             is ScriptLauncherResponse.Battle -> {
                 preferences.selectedBattleConfig = resp.config
 
-                preferences.refill.enabled = resp.refillResources.isNotEmpty()
                 preferences.refill.updateResources(resp.refillResources)
                 preferences.refill.repetitions = resp.refillCount
 

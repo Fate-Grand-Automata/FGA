@@ -71,12 +71,10 @@ open class AutoBattle @Inject constructor(
             val refill = prefs.refill
 
             // Auto-decrement apples
-            if (refill.autoDecrement) {
-                refill.repetitions -= stonesUsed
-            }
+            refill.repetitions -= stonesUsed
 
             // Auto-decrement runs
-            if (refill.shouldLimitRuns && refill.autoDecrementRuns) {
+            if (refill.shouldLimitRuns) {
                 refill.limitRuns -= battle.state.runs
 
                 // Turn off run limit when done
@@ -87,7 +85,7 @@ open class AutoBattle @Inject constructor(
             }
 
             // Auto-decrement materials
-            if (refill.shouldLimitMats && refill.autoDecrementMats) {
+            if (refill.shouldLimitMats) {
                 refill.limitMats -= matsGot.values.sum()
 
                 // Turn off limit by materials when done
@@ -483,13 +481,12 @@ open class AutoBattle @Inject constructor(
      * Otherwise if [IPreferences.waitAPRegen] is true, loops and wait for AP regeneration
      */
     private fun refillStamina() {
-        val refillPrefs = prefs.refill
+        val refill = prefs.refill
 
-        if (refillPrefs.enabled
-            && stonesUsed < refillPrefs.repetitions
-            && refillPrefs.resources.isNotEmpty()
+        if (refill.resources.isNotEmpty()
+            && stonesUsed < refill.repetitions
         ) {
-            refillPrefs.resources
+            refill.resources
                 .map { game.locate(it) }
                 .forEach { it.click() }
 
@@ -594,7 +591,7 @@ open class AutoBattle @Inject constructor(
             appendLine(messages.timesRan(runs))
         }
 
-        if (refill.enabled) {
+        if (refill.resources.isNotEmpty()) {
             val refillRepetitions = refill.repetitions
             if (refillRepetitions > 0) {
                 appendLine(messages.refillsUsedOutOf(stonesUsed, refillRepetitions))
