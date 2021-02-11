@@ -327,10 +327,19 @@ fun SupportGroup(
         }
 
         if (friendMode) {
-            config.support.friendNames.SupportSelectPreference(
-                title = stringResource(R.string.p_battle_config_support_friend_names),
-                entries = friendEntries
-            )
+            if (friendEntries.isNotEmpty()) {
+                config.support.friendNames.SupportSelectPreference(
+                    title = stringResource(R.string.p_battle_config_support_friend_names),
+                    entries = friendEntries
+                )
+            }
+            else {
+                Preference(
+                    icon = vectorResource(R.drawable.ic_info),
+                    title = stringResource(R.string.p_battle_config_support_friend_names),
+                    summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
+                )
+            }
         }
     }
 }
