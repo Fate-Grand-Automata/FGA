@@ -9,15 +9,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
-import com.mathewsachin.fategrandautomata.databinding.ContentMainBinding
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.MainSettingsViewModel
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.Preference
 import com.mathewsachin.fategrandautomata.util.StorageProvider
+import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -44,15 +60,72 @@ class MainFragment : Fragment() {
         serviceToggleBtnOnClick()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        ContentMainBinding.inflate(inflater)
-            .also {
-                it.vm = vm
-                it.lifecycleOwner = viewLifecycleOwner
+    fun goToBattleConfigList() {
+        val action = MainFragmentDirections
+            .actionMainFragmentToBattleConfigListFragment()
 
-                it.serviceToggleBtn.setOnClickListener { serviceToggleBtnOnClick() }
+        nav(action)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        ComposeView(requireContext()).apply {
+            setContent {
+                FgaTheme {
+                    Column {
+                        ScrollableColumn(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Preference(
+                                title = stringResource(R.string.p_battle_config),
+                                summary = stringResource(R.string.p_battle_config_summary),
+                                icon = vectorResource(R.drawable.ic_formation),
+                                onClick = {
+                                    if (vm.ensureRootDir(pickDir, requireContext())) {
+                                        goToBattleConfigList()
+                                    }
+                                }
+                            )
+
+                            Preference(
+                                title = stringResource(R.string.p_nav_troubleshoot),
+                                icon = vectorResource(R.drawable.ic_troubleshooting),
+                                onClick = {
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(getString(R.string.link_troubleshoot))
+                                    )
+
+                                    startActivity(intent)
+                                }
+                            )
+
+                            Preference(
+                                title = stringResource(R.string.p_more_options),
+                                icon = vectorResource(R.drawable.ic_dots_horizontal),
+                                onClick = {
+                                    val action = MainFragmentDirections
+                                        .actionMainFragmentToMoreSettingsFragment()
+
+                                    nav(action)
+                                }
+                            )
+                        }
+
+                        val serviceStarted by vm.serviceStarted
+
+                        ExtendedFloatingActionButton(
+                            text = { Text(stringResource(if (serviceStarted) R.string.stop_service else R.string.start_service)) },
+                            onClick = { serviceToggleBtnOnClick() },
+                            icon = { Icon(vectorResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch)) },
+                            backgroundColor = colorResource(if (serviceStarted) R.color.colorStopService else R.color.colorPrimary),
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(32.dp)
+                        )
+                    }
+                }
             }
-            .root
+        }
 
     private fun startWithMediaProjection() {
         mediaProjectionToken.let {

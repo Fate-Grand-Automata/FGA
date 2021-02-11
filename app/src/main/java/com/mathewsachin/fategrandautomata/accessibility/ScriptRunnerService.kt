@@ -13,8 +13,8 @@ import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
@@ -46,8 +46,8 @@ class ScriptRunnerService : AccessibilityService() {
         fun isServiceStarted() =
             Instance?.serviceState is ServiceState.Started
 
-        private val _serviceStarted = MutableLiveData(isServiceStarted())
-        val serviceStarted: LiveData<Boolean> = _serviceStarted
+        private val _serviceStarted = mutableStateOf(isServiceStarted())
+        val serviceStarted: State<Boolean> = _serviceStarted
 
         fun startService(mediaProjectionToken: Intent? = null): Boolean {
             return Instance?.let { service ->
