@@ -11,18 +11,11 @@ internal class RefillPreferences(
     override var repetitions by prefs.repetitions
 
     override val resources by prefs.resources.map { set ->
-        set.map {
-            enumValueOf<RefillResourceEnum>(it)
-        }.sortedBy { it.ordinal }
+        set.sortedBy { it.ordinal }
     }
 
-    override fun updateResources(resources: Set<RefillResourceEnum>) {
-        prefs.resources.set(
-            resources
-                .map { it.name }
-                .toSet()
-        )
-    }
+    override fun updateResources(resources: Set<RefillResourceEnum>) =
+        prefs.resources.set(resources)
 
     override var shouldLimitRuns by prefs.shouldLimitRuns
     override var limitRuns by prefs.limitRuns

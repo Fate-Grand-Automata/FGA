@@ -13,7 +13,7 @@ interface IBattleConfig {
     val rearrangeCards: List<Boolean>
     val braveChains: List<BraveChainEnum>
     val party: Int
-    val materials: List<MaterialEnum>
+    val materials: Set<MaterialEnum>
     val support: ISupportPreferences
     val shuffleCards: ShuffleCardsEnum
     val shuffleCardsWave: Int

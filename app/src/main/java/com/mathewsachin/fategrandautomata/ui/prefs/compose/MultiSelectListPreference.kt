@@ -9,10 +9,10 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.listItemsMultiChoice
 
 @Composable
-fun multiSelectListDialog(
-    selected: Set<String>,
-    selectedChange: (Set<String>) -> Unit,
-    entries: Map<String, String>,
+fun <T> multiSelectListDialog(
+    selected: Set<T>,
+    selectedChange: (Set<T>) -> Unit,
+    entries: Map<T, String>,
     title: String
 ): MaterialDialog {
     val dialog = MaterialDialog()
@@ -46,12 +46,12 @@ fun multiSelectListDialog(
 }
 
 @Composable
-fun Pref<Set<String>>.MultiSelectListPreference(
+fun <T> Pref<Set<T>>.MultiSelectListPreference(
     title: String,
     summary: @Composable (List<String>) -> String = { it.joinToString() },
     singleLineTitle: Boolean = true,
     icon: ImageVector? = null,
-    entries: Map<String, String>,
+    entries: Map<T, String>,
     enabled: Boolean = true,
     hint: String = "",
     trailing: @Composable ((Modifier) -> Unit)? = null

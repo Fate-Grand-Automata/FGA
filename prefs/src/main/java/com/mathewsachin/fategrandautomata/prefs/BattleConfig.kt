@@ -2,8 +2,6 @@ package com.mathewsachin.fategrandautomata.prefs
 
 import androidx.core.content.edit
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.prefs.core.map
-import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 
 const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
@@ -20,21 +18,13 @@ internal class BattleConfig(
 
     override var cardPriority by prefs.cardPriority
 
-    override val rearrangeCards get() = prefs.rearrangeCards
+    override val rearrangeCards by prefs.rearrangeCards
 
-    override val braveChains get() = prefs.braveChains
+    override val braveChains by prefs.braveChains
 
     override val party by prefs.party
 
-    override val materials by prefs.materials.map {
-        it.mapNotNull { mat ->
-            try {
-                enumValueOf<MaterialEnum>(mat)
-            } catch (e: Exception) {
-                null
-            }
-        }
-    }
+    override val materials by prefs.materials
 
     override val shuffleCards by prefs.shuffleCards
 

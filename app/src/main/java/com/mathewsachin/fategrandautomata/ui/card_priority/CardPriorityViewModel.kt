@@ -36,8 +36,8 @@ class CardPriorityViewModel @ViewModelInject constructor(
             .map {
                 CardPriorityListItem(
                     it.value,
-                    rearrangeCards.getOrElse(it.index) { false },
-                    braveChains.getOrElse(it.index) { BraveChainEnum.None }
+                    rearrangeCards.get().getOrElse(it.index) { false },
+                    braveChains.get().getOrElse(it.index) { BraveChainEnum.None }
                 )
             }
             .toMutableList()
@@ -51,7 +51,7 @@ class CardPriorityViewModel @ViewModelInject constructor(
         ).toString()
 
         battleConfig.cardPriority.set(value)
-        battleConfig.rearrangeCards = cardPriorityItems.map { it.rearrangeCards }
-        battleConfig.braveChains = cardPriorityItems.map { it.braveChains }
+        battleConfig.rearrangeCards.set(cardPriorityItems.map { it.rearrangeCards })
+        battleConfig.braveChains.set(cardPriorityItems.map { it.braveChains })
     }
 }

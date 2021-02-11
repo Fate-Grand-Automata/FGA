@@ -15,6 +15,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
@@ -157,130 +159,34 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                 config.materials.MultiSelectListPreference(
                                     title = stringResource(R.string.p_mats),
                                     entries = MaterialEnum.values()
-                                        .associate { it.name to getString(it.stringRes) }
+                                        .associateWith { getString(it.stringRes) }
                                 )
                             }
                         }
 
                         Divider()
 
-                        PreferenceGroup(title = stringResource(R.string.p_battle_config_support)) {
-                            config.support.supportClass.ListPreference(
-                                title = stringResource(R.string.p_battle_config_support_class),
-                                entries = SupportClass.values()
-                                    .associateWith { getString(it.stringRes) }
-                            )
+                        val preferredSummary by vm.preferredMessage.collectAsState("")
 
-                            val supportMode by config.support.selectionMode.collect()
-                            val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
-                            val friendMode = supportMode == SupportSelectionModeEnum.Friend
+                        SupportGroup(
+                            config = config,
+                            goToPreferred = {
+                                val action = BattleConfigItemSettingsFragmentDirections
+                                    .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
 
-                            Row {
-                                Box(
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    config.support.selectionMode.ListPreference(
-                                        title = stringResource(R.string.p_battle_config_support_selection_mode),
-                                        entries = SupportSelectionModeEnum.values()
-                                            .associateWith { getString(it.stringRes) }
-                                    )
-                                }
-
-                                if (preferredMode || friendMode) {
-                                    Box(
-                                        modifier = Modifier.weight(1f)
-                                    ) {
-                                        config.support.fallbackTo.ListPreference(
-                                            title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
-                                            entries = listOf(
-                                                SupportSelectionModeEnum.First,
-                                                SupportSelectionModeEnum.Manual
-                                            ).associateWith { getString(it.stringRes) }
-                                        )
-                                    }
-                                }
-                            }
-
-                            if (preferredMode) {
-                                val preferredSummary by vm.preferredMessage.collectAsState("")
-
-                                Preference(
-                                    title = stringResource(R.string.p_support_mode_preferred),
-                                    summary = preferredSummary,
-                                    onClick = {
-                                        val action = BattleConfigItemSettingsFragmentDirections
-                                            .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
-
-                                        nav(action)
-                                    }
-                                )
-                            }
-
-                            if (friendMode) {
-                                config.support.friendNames.SupportSelectPreference(
-                                    title = stringResource(R.string.p_battle_config_support_friend_names),
-                                    entries = supportViewModel.friends
-                                )
-                            }
-                        }
+                                nav(action)
+                            },
+                            preferredSummary = preferredSummary,
+                            friendEntries = supportViewModel.friends
+                        )
 
                         Divider()
 
-                        PreferenceGroup(title = stringResource(R.string.p_spam_spam)) {
-                            Text(
-                                stringResource(R.string.p_spam_summary),
-                                style = MaterialTheme.typography.caption,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp)
-                            )
-
-                            config.autoChooseTarget.SwitchPreference(
-                                title = stringResource(R.string.p_auto_choose_target)
-                            )
-
-                            Row {
-                                Box(
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    config.npSpam.ListPreference(
-                                        title = stringResource(R.string.p_spam_np),
-                                        entries = SpamEnum.values()
-                                            .associateWith { getString(it.stringRes) }
-                                    )
-                                }
-
-                                Box(
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    config.skillSpam.ListPreference(
-                                        title = stringResource(R.string.p_spam_skill),
-                                        entries = SpamEnum.values()
-                                            .associateWith { getString(it.stringRes) }
-                                    )
-                                }
-                            }
-                        }
+                        SpamGroup(config)
 
                         Divider()
 
-                        PreferenceGroup(title = stringResource(R.string.p_shuffle_cards)) {
-                            Row {
-                                Box(modifier = Modifier.weight(1f)) {
-                                    config.shuffleCards.ListPreference(
-                                        title = stringResource(R.string.p_shuffle_cards_when),
-                                        entries = ShuffleCardsEnum.values()
-                                            .associateWith { getString(it.stringRes) }
-                                    )
-                                }
-
-                                Box(modifier = Modifier.weight(1f)) {
-                                    config.shuffleCardsWave.StepperPreference(
-                                        title = stringResource(R.string.p_shuffle_cards_wave),
-                                        valueRange = 1..3
-                                    )
-                                }
-                            }
-                        }
+                        ShuffleCardsGroup(config)
                     }
                 }
             }
@@ -365,5 +271,126 @@ class BattleConfigItemSettingsFragment : Fragment() {
         preferences.removeBattleConfig(battleConfigKey)
 
         findNavController().popBackStack()
+    }
+}
+
+@Composable
+fun SupportGroup(
+    config: BattleConfigCore,
+    preferredSummary: String,
+    friendEntries: Map<String, String>,
+    goToPreferred: () -> Unit
+) {
+    PreferenceGroup(title = stringResource(R.string.p_battle_config_support)) {
+        config.support.supportClass.ListPreference(
+            title = stringResource(R.string.p_battle_config_support_class),
+            entries = SupportClass.values()
+                .associateWith { stringResource(it.stringRes) }
+        )
+
+        val supportMode by config.support.selectionMode.collect()
+        val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
+        val friendMode = supportMode == SupportSelectionModeEnum.Friend
+
+        Row {
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                config.support.selectionMode.ListPreference(
+                    title = stringResource(R.string.p_battle_config_support_selection_mode),
+                    entries = SupportSelectionModeEnum.values()
+                        .associateWith { stringResource(it.stringRes) }
+                )
+            }
+
+            if (preferredMode || friendMode) {
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    config.support.fallbackTo.ListPreference(
+                        title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
+                        entries = listOf(
+                            SupportSelectionModeEnum.First,
+                            SupportSelectionModeEnum.Manual
+                        ).associateWith { stringResource(it.stringRes) }
+                    )
+                }
+            }
+        }
+
+        if (preferredMode) {
+            Preference(
+                title = stringResource(R.string.p_support_mode_preferred),
+                summary = preferredSummary,
+                onClick = goToPreferred
+            )
+        }
+
+        if (friendMode) {
+            config.support.friendNames.SupportSelectPreference(
+                title = stringResource(R.string.p_battle_config_support_friend_names),
+                entries = friendEntries
+            )
+        }
+    }
+}
+
+@Composable
+fun SpamGroup(config: BattleConfigCore) {
+    PreferenceGroup(title = stringResource(R.string.p_spam_spam)) {
+        Text(
+            stringResource(R.string.p_spam_summary),
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        )
+
+        config.autoChooseTarget.SwitchPreference(
+            title = stringResource(R.string.p_auto_choose_target)
+        )
+
+        Row {
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                config.npSpam.ListPreference(
+                    title = stringResource(R.string.p_spam_np),
+                    entries = SpamEnum.values()
+                        .associateWith { stringResource(it.stringRes) }
+                )
+            }
+
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                config.skillSpam.ListPreference(
+                    title = stringResource(R.string.p_spam_skill),
+                    entries = SpamEnum.values()
+                        .associateWith { stringResource(it.stringRes) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ShuffleCardsGroup(config: BattleConfigCore) {
+    PreferenceGroup(title = stringResource(R.string.p_shuffle_cards)) {
+        Row {
+            Box(modifier = Modifier.weight(1f)) {
+                config.shuffleCards.ListPreference(
+                    title = stringResource(R.string.p_shuffle_cards_when),
+                    entries = ShuffleCardsEnum.values()
+                        .associateWith { stringResource(it.stringRes) }
+                )
+            }
+
+            Box(modifier = Modifier.weight(1f)) {
+                config.shuffleCardsWave.StepperPreference(
+                    title = stringResource(R.string.p_shuffle_cards_wave),
+                    valueRange = 1..3
+                )
+            }
+        }
     }
 }
