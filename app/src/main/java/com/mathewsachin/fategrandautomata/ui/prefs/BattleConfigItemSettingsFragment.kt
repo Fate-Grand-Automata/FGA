@@ -394,11 +394,15 @@ fun ShuffleCardsGroup(config: BattleConfigCore) {
                 )
             }
 
-            Box(modifier = Modifier.weight(1f)) {
-                config.shuffleCardsWave.StepperPreference(
-                    title = stringResource(R.string.p_shuffle_cards_wave),
-                    valueRange = 1..3
-                )
+            val shuffleType by config.shuffleCards.collect()
+
+            if (shuffleType != ShuffleCardsEnum.None) {
+                Box(modifier = Modifier.weight(1f)) {
+                    config.shuffleCardsWave.StepperPreference(
+                        title = stringResource(R.string.p_shuffle_cards_wave),
+                        valueRange = 1..3
+                    )
+                }
             }
         }
     }
