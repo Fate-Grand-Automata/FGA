@@ -1,5 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
@@ -19,7 +22,7 @@ class CardPriorityViewModel @ViewModelInject constructor(
 
     private val battleConfig = prefsCore.forBattleConfig(battleConfigKey)
 
-    val cardPriorityItems: MutableList<CardPriorityListItem> by lazy {
+    val cardPriorityItems: SnapshotStateList<CardPriorityListItem> by lazy {
         var cardPriority = battleConfig.cardPriority.get()
 
         // Handle simple mode and empty string
@@ -36,11 +39,11 @@ class CardPriorityViewModel @ViewModelInject constructor(
             .map {
                 CardPriorityListItem(
                     it.value,
-                    rearrangeCards.get().getOrElse(it.index) { false },
-                    braveChains.get().getOrElse(it.index) { BraveChainEnum.None }
+                    mutableStateOf(rearrangeCards.get().getOrElse(it.index) { false }),
+                    mutableStateOf(braveChains.get().getOrElse(it.index) { BraveChainEnum.None })
                 )
             }
-            .toMutableList()
+            .toMutableStateList()
     }
 
     fun save() {
@@ -51,7 +54,7 @@ class CardPriorityViewModel @ViewModelInject constructor(
         ).toString()
 
         battleConfig.cardPriority.set(value)
-        battleConfig.rearrangeCards.set(cardPriorityItems.map { it.rearrangeCards })
-        battleConfig.braveChains.set(cardPriorityItems.map { it.braveChains })
+        battleConfig.rearrangeCards.set(cardPriorityItems.map { it.rearrangeCards.value })
+        battleConfig.braveChains.set(cardPriorityItems.map { it.braveChains.value })
     }
 }
