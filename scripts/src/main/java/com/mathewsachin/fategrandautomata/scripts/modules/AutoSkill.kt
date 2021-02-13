@@ -4,7 +4,6 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.Region
 import kotlin.time.Duration
 import kotlin.time.seconds
 
@@ -44,9 +43,6 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         waitForAnimationToFinish()
     }
 
-    private val Skill.imageRegion
-        get() = Region(30, 30, 30, 30) + game.locate(this)
-
     val skillSpamDelay = 0.25.seconds
 
     private fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
@@ -56,7 +52,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
             // Some delay so we can take image of skill properly
             skillSpamDelay.wait()
 
-            val image = skill.imageRegion.getPattern().tag("SKILL:$skill")
+            val image = game.imageRegion(skill).getPattern().tag("SKILL:$skill")
             skillTable[skill] = SkillTableEntry(target, image)
         }
 
@@ -156,7 +152,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
 
         if (canSpam(prefs.selectedBattleConfig.skillSpam)) {
             for ((skill, entry) in skillTable) {
-                if (entry.image in skill.imageRegion) {
+                if (entry.image in game.imageRegion(skill)) {
                     castSkill(skill, entry.target)
 
                     // Some delay for skill icon to be loaded

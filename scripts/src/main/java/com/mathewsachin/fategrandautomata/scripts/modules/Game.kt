@@ -8,7 +8,10 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.GameAreaManager
+import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
@@ -417,4 +420,7 @@ class Game @Inject constructor(
 
             Region(x + 25, 710, 290, 115)
         }
+
+    fun imageRegion(skill: Skill.Servant) =
+        Region(30, 30, 30, 30) + locate(skill)
 }
