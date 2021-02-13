@@ -108,6 +108,8 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
 
         // Extra wait for the lag introduced by Order change
         1.seconds.wait()
+
+        battle.servantTracker.orderChanged(action.starting, action.sub)
     }
 
     private fun selectEnemyTarget(enemy: EnemyTarget) {

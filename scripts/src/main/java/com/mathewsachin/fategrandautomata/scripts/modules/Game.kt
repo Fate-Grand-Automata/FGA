@@ -8,10 +8,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.GameAreaManager
-import com.mathewsachin.libautomata.IPlatformImpl
-import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
@@ -398,4 +395,26 @@ class Game @Inject constructor(
         is CommandCard.Face -> affinityRegion(card) + Location(-50, 100)
         is CommandCard.NP -> (servantMatchRegion(card) + Location(110, -30)).copy(Height = 170)
     }
+
+    fun servantChangeCheckRegion(slot: ServantSlot) =
+        when (slot) {
+            ServantSlot.A -> Skill.Servant.A2
+            ServantSlot.B -> Skill.Servant.B2
+            ServantSlot.C -> Skill.Servant.C2
+        }.let {
+            val x = locate(it).X
+
+            Region(x - 55, 810, 100, 100)
+        }
+
+    fun servantChangeSupportCheckRegion(slot: ServantSlot) =
+        when (slot) {
+            ServantSlot.A -> Skill.Servant.A2
+            ServantSlot.B -> Skill.Servant.B2
+            ServantSlot.C -> Skill.Servant.C2
+        }.let {
+            val x = locate(it).X
+
+            Region(x + 25, 710, 290, 115)
+        }
 }

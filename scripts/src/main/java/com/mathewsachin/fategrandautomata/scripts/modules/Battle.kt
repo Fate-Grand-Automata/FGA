@@ -8,6 +8,8 @@ import kotlin.time.seconds
 
 class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     val state = BattleState()
+    var servantTracker = ServantTracker(fgAutomataApi)
+        private set
 
     private lateinit var autoSkill: AutoSkill
     private lateinit var card: Card
@@ -28,6 +30,9 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         // This can happen due to lags introduced during some events
         if (state.stage != -1) {
             state.nextRun()
+
+            servantTracker.close()
+            servantTracker = ServantTracker(this)
         }
 
         if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
@@ -84,8 +89,13 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     }
 
     fun performBattle() {
-        useSameSnapIn { onTurnStarted() }
         prefs.waitBeforeTurn.wait()
+
+        useSameSnapIn {
+            onTurnStarted()
+
+            servantTracker.beginTurn()
+        }
 
         autoSkill.execute()
 
