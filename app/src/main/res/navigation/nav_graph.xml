@@ -9,8 +9,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.MainFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/content_main">
+        android:label="@string/app_name">
         <action
             android:id="@+id/action_mainFragment_to_moreSettingsFragment"
             app:destination="@id/moreSettingsFragment"
@@ -86,6 +85,9 @@
         <action
             android:id="@+id/action_battleConfigItemSettingsFragment_to_battleConfigMakerActivity"
             app:destination="@id/skillMakerActivity" />
+        <action
+            android:id="@+id/action_battleConfigItemSettingsFragment_to_spamSettingsFragment"
+            app:destination="@id/spamSettingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/prefSupportSettingsFragment"
@@ -111,4 +113,12 @@
             android:name="key"
             app:argType="string" />
     </activity>
+    <fragment
+        android:id="@+id/spamSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.prefs.SpamSettingsFragment"
+        android:label="SpamSettingsFragment" >
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </fragment>
 </navigation>

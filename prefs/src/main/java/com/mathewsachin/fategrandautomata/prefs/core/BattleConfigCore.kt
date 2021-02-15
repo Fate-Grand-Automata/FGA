@@ -6,7 +6,7 @@ import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
 import com.tfcporciuncula.flow.Serializer
 
 class BattleConfigCore(
@@ -71,6 +71,20 @@ class BattleConfigCore(
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
     val shuffleCardsWave = maker.int("shuffle_cards_wave", 3)
 
+    private var temp: List<ServantSpamConfig> = (1..6).map { ServantSpamConfig() }
+
+    // TODO: Implement this as JSON serialized string preference
+    val spam = maker.serialized(
+        "spam_x",
+        serializer = object: Serializer<List<ServantSpamConfig>> {
+            override fun deserialize(serialized: String) =
+                temp
+
+            override fun serialize(value: List<ServantSpamConfig>) = "".also { temp = value }
+        },
+        (1..6).map { ServantSpamConfig() }
+    )
+
     val party = maker.stringAsInt("autoskill_party", -1)
     val materials = maker.stringSet("battle_config_mat").map(
         defaultValue = emptySet(),
@@ -94,7 +108,5 @@ class BattleConfigCore(
 
     val support = SupportPrefsCore(maker)
 
-    val npSpam = maker.enum("battle_np", SpamEnum.None)
-    val skillSpam = maker.enum("skill_spam", SpamEnum.None)
     val autoChooseTarget = maker.bool("auto_choose_target")
 }

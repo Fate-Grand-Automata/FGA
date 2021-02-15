@@ -1,7 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.enums.*
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import timber.log.Timber
 import timber.log.debug
@@ -136,11 +139,19 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         }
     }
 
-    private val spamNps: Set<CommandCard.NP>
-        get() =
-            if (autoSkill.canSpam(prefs.selectedBattleConfig.npSpam)) {
-                CommandCard.NP.list.toSet()
-            } else emptySet()
+    private val spamNps: Set<CommandCard.NP> get() =
+        (ServantSlot.list.zip(CommandCard.NP.list))
+            .mapNotNull { (servantSlot, np) ->
+                val teamSlot = battle.servantTracker.deployed[servantSlot] ?: ServantTracker.TeamSlot.A
+                val npSpamConfig = battle.spamConfig
+                    .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
+                    .np
+
+                if (autoSkill.canSpam(npSpamConfig.spam) && (battle.state.stage + 1) in npSpamConfig.waves)
+                    np
+                else null
+            }
+            .toSet()
 
     private fun CommandCard.NP.pick() {
         game.clickLocation(this).click()
@@ -273,8 +284,6 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
         if (rearrangeCardsThisTurn
-            // Skip if NP spamming because we don't know how many NPs might've been used
-            && prefs.selectedBattleConfig.npSpam == SpamEnum.None
             // If there are cards before NP, at max there's only 1 card after NP
             && atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max

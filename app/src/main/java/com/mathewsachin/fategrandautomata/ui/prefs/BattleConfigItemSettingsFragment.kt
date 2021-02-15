@@ -33,7 +33,10 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.scripts.enums.*
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.compose.*
@@ -182,7 +185,15 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
                         Divider()
 
-                        SpamGroup(config)
+                        SpamGroup(
+                            config,
+                            goToSpam = {
+                                val action = BattleConfigItemSettingsFragmentDirections
+                                    .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
+
+                                nav(action)
+                            }
+                        )
 
                         Divider()
 
@@ -345,7 +356,10 @@ fun SupportGroup(
 }
 
 @Composable
-fun SpamGroup(config: BattleConfigCore) {
+fun SpamGroup(
+    config: BattleConfigCore,
+    goToSpam: () -> Unit
+) {
     PreferenceGroup(title = stringResource(R.string.p_spam_spam)) {
         Text(
             stringResource(R.string.p_spam_summary),
@@ -358,27 +372,10 @@ fun SpamGroup(config: BattleConfigCore) {
             title = stringResource(R.string.p_auto_choose_target)
         )
 
-        Row {
-            Box(
-                modifier = Modifier.weight(1f)
-            ) {
-                config.npSpam.ListPreference(
-                    title = stringResource(R.string.p_spam_np),
-                    entries = SpamEnum.values()
-                        .associateWith { stringResource(it.stringRes) }
-                )
-            }
-
-            Box(
-                modifier = Modifier.weight(1f)
-            ) {
-                config.skillSpam.ListPreference(
-                    title = stringResource(R.string.p_spam_skill),
-                    entries = SpamEnum.values()
-                        .associateWith { stringResource(it.stringRes) }
-                )
-            }
-        }
+        Preference(
+            title = stringResource(R.string.p_spam_spam),
+            onClick = goToSpam
+        )
     }
 }
 

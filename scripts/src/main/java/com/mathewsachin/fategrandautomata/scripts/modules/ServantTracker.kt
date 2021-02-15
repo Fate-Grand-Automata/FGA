@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.OrderChangeMember
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSlot
-import com.mathewsachin.fategrandautomata.scripts.models.Skill
+import com.mathewsachin.fategrandautomata.scripts.models.skills
 import com.mathewsachin.libautomata.IPattern
 import timber.log.Timber
 import timber.log.debug
@@ -34,7 +34,7 @@ class ServantTracker(
         TeamSlot.F
     )
 
-    private val deployed = mutableMapOf<ServantSlot, TeamSlot?>(
+    val deployed = mutableMapOf<ServantSlot, TeamSlot?>(
         ServantSlot.A to TeamSlot.A,
         ServantSlot.B to TeamSlot.B,
         ServantSlot.C to TeamSlot.C
@@ -42,40 +42,15 @@ class ServantTracker(
 
     class TeamSlotData(
         val checkImage: IPattern,
-        val skill1: IPattern,
-        val skill2: IPattern,
-        val skill3: IPattern
+        val skills: List<IPattern>
     ): AutoCloseable {
         override fun close() {
             checkImage.close()
-            skill1.close()
-            skill2.close()
-            skill3.close()
+            skills.forEach { it.close() }
         }
     }
 
-    fun ServantSlot.skill1() =
-        when (this) {
-            ServantSlot.A -> Skill.Servant.A1
-            ServantSlot.B -> Skill.Servant.B1
-            ServantSlot.C -> Skill.Servant.C1
-        }
-
-    fun ServantSlot.skill2() =
-        when (this) {
-            ServantSlot.A -> Skill.Servant.A2
-            ServantSlot.B -> Skill.Servant.B2
-            ServantSlot.C -> Skill.Servant.C2
-        }
-
-    fun ServantSlot.skill3() =
-        when (this) {
-            ServantSlot.A -> Skill.Servant.A3
-            ServantSlot.B -> Skill.Servant.B3
-            ServantSlot.C -> Skill.Servant.C3
-        }
-
-    private val checkImages = mutableMapOf<TeamSlot, TeamSlotData>()
+    val checkImages = mutableMapOf<TeamSlot, TeamSlotData>()
     private var supportSlot: TeamSlot? = null
 
     override fun close() {
@@ -88,9 +63,7 @@ class ServantTracker(
 
         checkImages[teamSlot] = TeamSlotData(
             checkImage = game.servantChangeCheckRegion(slot).getPattern(),
-            skill1 = game.imageRegion(slot.skill1()).getPattern(),
-            skill2 = game.imageRegion(slot.skill2()).getPattern(),
-            skill3 = game.imageRegion(slot.skill3()).getPattern()
+            skills = slot.skills().map { game.imageRegion(it).getPattern() }
         )
 
         if (supportSlot == null
@@ -133,7 +106,7 @@ class ServantTracker(
             OrderChangeMember.Starting.B -> ServantSlot.B
             OrderChangeMember.Starting.C -> ServantSlot.C
         }
-        val subIndex = sub.autoSkillCode - OrderChangeMember.Sub.A.autoSkillCode + 3
+        val subIndex = sub.autoSkillCode - OrderChangeMember.Sub.A.autoSkillCode
 
         if (subIndex in servantQueue.indices) {
             deployed[startingSlot]?.let { swapOut ->

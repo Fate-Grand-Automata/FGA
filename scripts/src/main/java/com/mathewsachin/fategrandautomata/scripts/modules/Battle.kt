@@ -10,6 +10,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     val state = BattleState()
     var servantTracker = ServantTracker(fgAutomataApi)
         private set
+    val spamConfig = prefs.selectedBattleConfig.spam
 
     private lateinit var autoSkill: AutoSkill
     private lateinit var card: Card
@@ -24,8 +25,6 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     }
 
     fun resetState() {
-        autoSkill.resetState()
-
         // Don't increment no. of runs if we're just clicking on quest again and again
         // This can happen due to lags introduced during some events
         if (state.stage != -1) {

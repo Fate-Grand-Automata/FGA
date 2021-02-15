@@ -3,14 +3,12 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
-import com.mathewsachin.libautomata.IPattern
 import kotlin.time.Duration
 import kotlin.time.seconds
 
 class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
     private lateinit var card: Card
-    private var isFinished = false
 
     private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
         val img = images.battle
@@ -43,19 +41,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         waitForAnimationToFinish()
     }
 
-    val skillSpamDelay = 0.25.seconds
-
     private fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
-        if (prefs.selectedBattleConfig.skillSpam != SpamEnum.None) {
-            skillTable[skill]?.image?.close()
-
-            // Some delay so we can take image of skill properly
-            skillSpamDelay.wait()
-
-            val image = game.imageRegion(skill).getPattern().tag("SKILL:$skill")
-            skillTable[skill] = SkillTableEntry(target, image)
-        }
-
         castSkill(skill, target)
     }
 
@@ -125,42 +111,59 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         is AutoSkillAction.OrderChange -> orderChange(action)
     }
 
-    fun resetState() {
-        isFinished = false
-
-        skillTable.values.forEach { it.image.close() }
-        skillTable.clear()
-    }
-
-    private data class SkillTableEntry(
-        val target: ServantTarget?,
-        val image: IPattern
-    )
-
-    private var skillTable = mutableMapOf<Skill.Servant, SkillTableEntry>()
-
     fun canSpam(spam: SpamEnum): Boolean {
         val weCanSpam = spam == SpamEnum.Spam
         val weAreInDanger = spam == SpamEnum.Danger
                 && battle.state.hasChosenTarget
 
-        return (weCanSpam || weAreInDanger) && isFinished
+        return weCanSpam || weAreInDanger
     }
 
+    val skillSpamDelay = 0.25.seconds
+
     private fun skillSpam() {
-        skillSpamDelay.wait()
+        ServantSlot.list.forEach { servantSlot ->
+            val skills = servantSlot.skills()
+            val teamSlot = battle.servantTracker.deployed[servantSlot] ?: ServantTracker.TeamSlot.A
+            val servantSpamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
 
-        if (canSpam(prefs.selectedBattleConfig.skillSpam)) {
-            for ((skill, entry) in skillTable) {
-                if (entry.image in game.imageRegion(skill)) {
-                    castSkill(skill, entry.target)
+            servantSpamConfig.skills.forEachIndexed { skillIndex, skillSpamConfig ->
+                if (canSpam(skillSpamConfig.spam) && (battle.state.stage + 1) in skillSpamConfig.waves) {
+                    val skill = skills[skillIndex]
+                    val skillImage = battle.servantTracker
+                        .checkImages[teamSlot]
+                        ?.skills
+                        ?.getOrNull(skillIndex)
 
-                    // Some delay for skill icon to be loaded
-                    skillSpamDelay.wait()
+                    if (skillImage != null) {
+                        // Some delay for skill icon to be loaded
+                        skillSpamDelay.wait()
+
+                        if (skillImage in game.imageRegion(skill)) {
+                            val target = skillSpamConfig.determineTarget(servantSlot)
+
+                            castSkill(skill, target)
+                        }
+                    }
                 }
             }
         }
     }
+
+    private fun SkillSpamConfig.determineTarget(servantSlot: ServantSlot) =
+        when (target) {
+            SkillSpamTarget.None -> null
+            SkillSpamTarget.Self -> when (servantSlot) {
+                ServantSlot.A -> ServantTarget.A
+                ServantSlot.B -> ServantTarget.B
+                ServantSlot.C -> ServantTarget.C
+            }
+            SkillSpamTarget.Slot1 -> ServantTarget.A
+            SkillSpamTarget.Slot2 -> ServantTarget.B
+            SkillSpamTarget.Slot3 -> ServantTarget.C
+            SkillSpamTarget.Left -> ServantTarget.Left
+            SkillSpamTarget.Right -> ServantTarget.Right
+        }
 
     lateinit var commandTable: AutoSkillCommand
 
@@ -171,8 +174,6 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         commandTable = AutoSkillCommand.parse(
             prefs.selectedBattleConfig.skillCommand
         )
-
-        resetState()
     }
 
     fun execute() {
@@ -185,11 +186,8 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
             for (action in commandList) {
                 act(action)
             }
-        } else if (stage >= commandTable.lastStage) {
-            // this will allow NP spam after all commands have been executed
-            isFinished = true
-
-            skillSpam()
         }
+
+        skillSpam()
     }
 }

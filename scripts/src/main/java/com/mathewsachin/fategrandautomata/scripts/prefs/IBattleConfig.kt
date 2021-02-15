@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.prefs
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
 
 interface IBattleConfig {
     val id: String
@@ -18,8 +18,7 @@ interface IBattleConfig {
     val shuffleCards: ShuffleCardsEnum
     val shuffleCardsWave: Int
 
-    val npSpam: SpamEnum
-    val skillSpam: SpamEnum
+    var spam: List<ServantSpamConfig>
     val autoChooseTarget: Boolean
 
     fun export(): Map<String, *>

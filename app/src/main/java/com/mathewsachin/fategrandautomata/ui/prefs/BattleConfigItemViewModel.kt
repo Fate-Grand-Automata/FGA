@@ -5,15 +5,12 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.combine
 
 class BattleConfigItemViewModel @ViewModelInject constructor(
-    val preferences: IPreferences,
     val prefsCore: PrefsCore,
     @ApplicationContext context: Context,
     @Assisted savedState: SavedStateHandle
