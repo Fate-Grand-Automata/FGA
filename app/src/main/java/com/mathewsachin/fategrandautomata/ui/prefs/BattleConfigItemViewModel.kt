@@ -1,19 +1,20 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.combine
+import javax.inject.Inject
 
-class BattleConfigItemViewModel @ViewModelInject constructor(
+@HiltViewModel
+class BattleConfigItemViewModel @Inject constructor(
     val prefsCore: PrefsCore,
     @ApplicationContext context: Context,
-    @Assisted savedState: SavedStateHandle
+    savedState: SavedStateHandle
 ) : ViewModel() {
     val battleConfigKey: String = savedState[BattleConfigItemSettingsFragmentArgs::key.name]
         ?: throw kotlin.Exception("Couldn't get Battle Config key")

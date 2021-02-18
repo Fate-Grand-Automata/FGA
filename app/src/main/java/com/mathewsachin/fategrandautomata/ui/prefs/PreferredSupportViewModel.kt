@@ -2,22 +2,25 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.runtime.*
-import androidx.hilt.lifecycle.ViewModelInject
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import timber.log.error
 import java.io.File
+import javax.inject.Inject
 
-class PreferredSupportViewModel @ViewModelInject constructor(
+@HiltViewModel
+class PreferredSupportViewModel @Inject constructor(
     val storageProvider: StorageProvider
 ): ViewModel() {
     var servants: Map<String, String> by mutableStateOf(emptyMap())

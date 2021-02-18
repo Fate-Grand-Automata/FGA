@@ -2,12 +2,14 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class FineTuneSettingsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class FineTuneSettingsViewModel @Inject constructor(
     val prefs: PrefsCore
 ) : ViewModel() {
     val fineTunePrefs = listOf(

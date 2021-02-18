@@ -5,16 +5,18 @@ import android.content.Context
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.documentfile.provider.DocumentFile
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 
-class MainSettingsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainSettingsViewModel @Inject constructor(
     val prefsCore: PrefsCore,
     val prefs: IPreferences,
     @ApplicationContext val context: Context

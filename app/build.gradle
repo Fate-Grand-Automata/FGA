@@ -119,25 +119,21 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    implementation "com.google.dagger:hilt-android:2.29.1-alpha"
-    androidTestImplementation "com.google.dagger:hilt-android-testing:2.29.1-alpha"
-    kapt "com.google.dagger:hilt-compiler:2.29.1-alpha"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
 
     implementation 'com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT'
 
-    implementation 'androidx.compose.ui:ui:1.0.0-alpha10'
-    // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.0.0-alpha10'
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation 'androidx.compose.foundation:foundation:1.0.0-alpha10'
-    // Material Design
-    implementation 'androidx.compose.material:material:1.0.0-alpha10'
-    // Material design icons
-    implementation 'androidx.compose.material:material-icons-core:1.0.0-alpha10'
-    implementation 'androidx.compose.material:material-icons-extended:1.0.0-alpha10'
+    def compose_version = "1.0.0-alpha10"
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-core:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
     implementation "com.vanpra.compose-material-dialogs:core:0.2.11"
 }

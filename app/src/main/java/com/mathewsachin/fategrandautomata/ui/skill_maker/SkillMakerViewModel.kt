@@ -2,15 +2,16 @@ package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SkillMakerViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SkillMakerViewModel @Inject constructor(
     val prefs: IPreferences,
-    @Assisted val savedState: SavedStateHandle
+    val savedState: SavedStateHandle
 ) : ViewModel() {
     val battleConfigKey: String = savedState[SkillMakerActivityArgs::key.name]
         ?: throw kotlin.Exception("Couldn't get Battle Config key")

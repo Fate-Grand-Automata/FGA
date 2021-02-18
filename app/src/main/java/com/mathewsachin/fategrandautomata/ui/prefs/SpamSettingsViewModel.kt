@@ -4,8 +4,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
@@ -14,10 +12,13 @@ import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamConfig
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SpamSettingsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SpamSettingsViewModel @Inject constructor(
     val preferences: IPreferences,
-    @Assisted savedState: SavedStateHandle
+    savedState: SavedStateHandle
 ): ViewModel() {
     val battleConfigKey: String = savedState[SpamSettingsFragmentArgs::key.name]
         ?: throw kotlin.Exception("Couldn't get Battle Config key")

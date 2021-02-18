@@ -6,13 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.documentfile.provider.DocumentFile
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -23,8 +23,10 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import timber.log.error
 import java.util.*
+import javax.inject.Inject
 
-class BattleConfigListViewModel @ViewModelInject constructor(
+@HiltViewModel
+class BattleConfigListViewModel @Inject constructor(
     prefsCore: PrefsCore,
     val prefs: IPreferences,
     @ApplicationContext val context: Context

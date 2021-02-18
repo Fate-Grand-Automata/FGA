@@ -3,8 +3,6 @@ package com.mathewsachin.fategrandautomata.ui.card_priority
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -12,10 +10,13 @@ import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CardPriorityViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CardPriorityViewModel @Inject constructor(
     val prefsCore: PrefsCore,
-    @Assisted savedState: SavedStateHandle
+    savedState: SavedStateHandle
 ) : ViewModel() {
     val battleConfigKey: String = savedState[CardPriorityFragmentArgs::key.name]
         ?: throw kotlin.Exception("Couldn't get Battle Config key")
