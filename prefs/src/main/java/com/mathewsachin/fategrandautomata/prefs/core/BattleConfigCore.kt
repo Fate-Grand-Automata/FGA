@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
@@ -71,18 +73,26 @@ class BattleConfigCore(
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
     val shuffleCardsWave = maker.int("shuffle_cards_wave", 3)
 
-    private var temp: List<ServantSpamConfig> = (1..6).map { ServantSpamConfig() }
+    private val gson = Gson()
+    private val defaultSpamConfig = (1..6).map { ServantSpamConfig() }
 
-    // TODO: Implement this as JSON serialized string preference
     val spam = maker.serialized(
         "spam_x",
         serializer = object: Serializer<List<ServantSpamConfig>> {
             override fun deserialize(serialized: String) =
-                temp
+                try {
+                    gson
+                        .fromJson(serialized, Array<ServantSpamConfig>::class.java)
+                        ?.toList() ?: defaultSpamConfig
+                }
+                catch (e: JsonSyntaxException) {
+                    defaultSpamConfig
+                }
 
-            override fun serialize(value: List<ServantSpamConfig>) = "".also { temp = value }
+            override fun serialize(value: List<ServantSpamConfig>) =
+                gson.toJson(value)
         },
-        (1..6).map { ServantSpamConfig() }
+        defaultSpamConfig
     )
 
     val party = maker.stringAsInt("autoskill_party", -1)

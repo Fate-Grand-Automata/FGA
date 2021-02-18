@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     api "androidx.preference:preference-ktx:1.1.1"
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     implementation "com.google.dagger:hilt-android:2.29.1-alpha"
     kapt "com.google.dagger:hilt-compiler:2.29.1-alpha"
