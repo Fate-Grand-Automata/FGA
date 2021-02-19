@@ -116,7 +116,7 @@
     <fragment
         android:id="@+id/spamSettingsFragment"
         android:name="com.mathewsachin.fategrandautomata.ui.prefs.SpamSettingsFragment"
-        android:label="SpamSettingsFragment" >
+        android:label="@string/p_spam_spam" >
         <argument
             android:name="key"
             app:argType="string" />

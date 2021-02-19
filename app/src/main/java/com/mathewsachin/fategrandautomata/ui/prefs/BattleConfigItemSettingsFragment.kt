@@ -9,12 +9,9 @@ import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -169,6 +166,18 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
                         Divider()
 
+                        Preference(
+                            title = stringResource(R.string.p_spam_spam),
+                            onClick = {
+                                val action = BattleConfigItemSettingsFragmentDirections
+                                    .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
+
+                                nav(action)
+                            }
+                        )
+
+                        Divider()
+
                         val preferredSummary by vm.preferredMessage.collectAsState("")
 
                         SupportGroup(
@@ -181,18 +190,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                             },
                             preferredSummary = preferredSummary,
                             friendEntries = supportViewModel.friends
-                        )
-
-                        Divider()
-
-                        SpamGroup(
-                            config,
-                            goToSpam = {
-                                val action = BattleConfigItemSettingsFragmentDirections
-                                    .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
-
-                                nav(action)
-                            }
                         )
 
                         Divider()
@@ -352,30 +349,6 @@ fun SupportGroup(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun SpamGroup(
-    config: BattleConfigCore,
-    goToSpam: () -> Unit
-) {
-    PreferenceGroup(title = stringResource(R.string.p_spam_spam)) {
-        Text(
-            stringResource(R.string.p_spam_summary),
-            style = MaterialTheme.typography.caption,
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-        )
-
-        config.autoChooseTarget.SwitchPreference(
-            title = stringResource(R.string.p_auto_choose_target)
-        )
-
-        Preference(
-            title = stringResource(R.string.p_spam_spam),
-            onClick = goToSpam
-        )
     }
 }
 
