@@ -18,6 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -114,9 +115,19 @@ class MainFragment : Fragment() {
                         val serviceStarted by vm.serviceStarted
 
                         ExtendedFloatingActionButton(
-                            text = { Text(stringResource(if (serviceStarted) R.string.stop_service else R.string.start_service)) },
+                            text = {
+                                Text(
+                                    stringResource(if (serviceStarted) R.string.stop_service else R.string.start_service),
+                                    color = Color.White
+                                )
+                            },
                             onClick = { serviceToggleBtnOnClick() },
-                            icon = { Icon(vectorResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch)) },
+                            icon = {
+                                Icon(
+                                    vectorResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch),
+                                    tint = Color.White
+                                )
+                            },
                             backgroundColor = colorResource(if (serviceStarted) R.color.colorStopService else R.color.colorPrimary),
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally)

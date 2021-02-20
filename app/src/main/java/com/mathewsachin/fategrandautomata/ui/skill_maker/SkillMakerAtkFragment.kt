@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -114,6 +113,7 @@ fun AtkScreen(
 
                 Surface(
                     elevation = 5.dp,
+                    shape = MaterialTheme.shapes.medium,
                     color =
                     if (isSelected)
                         colorResource(selectedColor)
@@ -152,6 +152,7 @@ fun AtkScreen(
 
                         Surface(
                             elevation = 5.dp,
+                            shape = MaterialTheme.shapes.medium,
                             color =
                             if (isSelected)
                                 colorResource(R.color.colorAccent)

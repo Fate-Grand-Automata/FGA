@@ -115,6 +115,7 @@ fun SkillButton(
 ) {
     Surface(
         color = color,
+        shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .padding(5.dp)
             .clickable(onClick = onClick)

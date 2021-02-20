@@ -35,25 +35,39 @@ fun battleLauncher(
     var limitMats by remember { mutableStateOf(prefs.refill.limitMats) }
 
     Row(modifier = modifier) {
-        // Scrolling the selected config into view
-        val configListState = rememberLazyListState()
-        LaunchedEffect(true) {
-            if (selectedConfigIndex != -1) {
-                configListState.snapToItemIndex(selectedConfigIndex)
+        if (configs.isNotEmpty()) {
+            // Scrolling the selected config into view
+            val configListState = rememberLazyListState()
+            LaunchedEffect(true) {
+                if (selectedConfigIndex != -1) {
+                    configListState.snapToItemIndex(selectedConfigIndex)
+                }
+            }
+
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                state = configListState
+            ) {
+                itemsIndexed(configs) { index, item ->
+                    BattleConfigItem(
+                        name = item.name,
+                        isSelected = selectedConfigIndex == index,
+                        onSelected = { selectedConfigIndex = index }
+                    )
+                }
+
+                item {
+                    Spacer(modifier.padding(16.dp))
+                }
             }
         }
-
-        LazyColumn(
-            modifier = Modifier.weight(1f),
-            state = configListState
-        ) {
-            itemsIndexed(configs) { index, item ->
-                BattleConfigItem(
-                    name = item.name,
-                    isSelected = selectedConfigIndex == index,
-                    onSelected = { selectedConfigIndex = index }
-                )
-            }
+        else {
+            Text(
+                stringResource(R.string.battle_config_list_no_items),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)
+            )
         }
 
         Box(
