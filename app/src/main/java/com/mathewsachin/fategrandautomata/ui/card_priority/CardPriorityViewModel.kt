@@ -35,6 +35,7 @@ class CardPriorityViewModel @Inject constructor(
         val braveChains = battleConfig.braveChains
 
         CardPriorityPerWave.of(cardPriority)
+            .take(3)
             .map { it.toMutableList() }
             .withIndex()
             .map {

@@ -140,6 +140,7 @@ fun OrderChangeSide(
 
             Surface(
                 elevation = 5.dp,
+                shape = MaterialTheme.shapes.medium,
                 color =
                     if (isSelected)
                         colorResource(selectedColor)

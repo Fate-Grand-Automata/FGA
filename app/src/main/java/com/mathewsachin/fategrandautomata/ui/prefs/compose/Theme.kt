@@ -52,7 +52,8 @@ private val LightColorPalette = lightColors(
     primaryVariant = blueDarker,
     secondary = tealNeutral,
     secondaryVariant = tealDarker,
-    surface = grayLighter
+    surface = grayLighter,
+    onSecondary = Color.White
 )
 
 @Composable

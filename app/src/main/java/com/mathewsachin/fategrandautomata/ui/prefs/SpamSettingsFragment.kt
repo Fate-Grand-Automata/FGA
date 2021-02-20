@@ -65,38 +65,40 @@ class SpamSettingsFragment : Fragment() {
 
                         Divider()
 
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(16.dp, 5.dp)
+                        ) {
+                            Text(
+                                "Servant:",
+                                modifier = Modifier.padding(end = 16.dp)
+                            )
+
+                            (1..vm.spamStates.size).map {
+                                val isSelected = vm.selectedServant == it - 1
+
+                                Box(
+                                    modifier = Modifier
+                                        .background(
+                                            color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
+                                            shape = MaterialTheme.shapes.medium
+                                        )
+                                        .clickable { vm.selectedServant = it - 1 }
+                                        .padding(14.dp, 5.dp)
+                                ) {
+                                    Text(
+                                        it.toString(),
+                                        color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
+                                    )
+                                }
+                            }
+                        }
+
+                        Divider()
+
                         Column(
                             modifier = Modifier.padding(16.dp)
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(bottom = 16.dp)
-                            ) {
-                                Text(
-                                    "Servant:",
-                                    modifier = Modifier.padding(end = 16.dp)
-                                )
-
-                                (1..vm.spamStates.size).map {
-                                    val isSelected = vm.selectedServant == it - 1
-
-                                    Box(
-                                        modifier = Modifier
-                                            .background(
-                                                color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
-                                                shape = MaterialTheme.shapes.medium
-                                            )
-                                            .clickable { vm.selectedServant = it - 1 }
-                                            .padding(14.dp, 5.dp)
-                                    ) {
-                                        Text(
-                                            it.toString(),
-                                            color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
-                                        )
-                                    }
-                                }
-                            }
-
                             val selectedConfig = vm.spamStates[vm.selectedServant]
 
                             Row(

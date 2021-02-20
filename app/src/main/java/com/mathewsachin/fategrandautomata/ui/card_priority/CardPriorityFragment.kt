@@ -3,22 +3,20 @@ package com.mathewsachin.fategrandautomata.ui.card_priority
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Checkbox
-import androidx.compose.material.ListItem
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
@@ -89,101 +87,147 @@ fun CardPriorityView(
             .fillMaxSize()
             .padding(vertical = 16.dp)
     ) {
+        var selectedWave by remember { mutableStateOf(0) }
+
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp)
+        ) {
+            LazyRow(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                itemsIndexed(items) { index, _ ->
+                    val isSelected = selectedWave == index
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .padding(end = 5.dp)
+                            .background(
+                                color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            )
+                            .clickable { selectedWave = index }
+                    ) {
+                        Text(
+                            stringResource(R.string.card_priority_wave_number, index + 1),
+                            color = if (isSelected) MaterialTheme.colors.onSecondary else Color.Unspecified,
+                            modifier = Modifier.padding(5.dp, 2.dp)
+                        )
+
+                        if (index > 0 && index == items.lastIndex) {
+                            Box(
+                                modifier = Modifier
+                                    .clickable {
+                                        if (items.size > 1) {
+                                            if (selectedWave == items.lastIndex) {
+                                                selectedWave = items.lastIndex - 1
+                                            }
+                                            items.removeLast()
+                                        }
+                                    }
+                            ) {
+                                Icon(
+                                    vectorResource(R.drawable.ic_close),
+                                    tint = MaterialTheme.colors.error
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (items.size < 3) {
+                Box(
+                    modifier = Modifier
+                        .background(
+                            MaterialTheme.colors.secondary,
+                            shape = CircleShape
+                        )
+                        .clickable {
+                            if (items.size < 3) {
+                                items.add(
+                                    CardPriorityListItem(
+                                        items[0].scores.toMutableList(),
+                                        mutableStateOf(false),
+                                        mutableStateOf(BraveChainEnum.None)
+                                    )
+                                )
+                            }
+                        }
+                ) {
+                    Icon(
+                        vectorResource(R.drawable.ic_plus),
+                        tint = MaterialTheme.colors.onSecondary
+                    )
+                }
+            }
+        }
+
+        Divider()
+
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(16.dp, 5.dp)
+                .padding(top = 11.dp)
         ) {
             Text(stringResource(R.string.card_priority_high))
             Text(stringResource(R.string.card_priority_low))
         }
 
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {
-            itemsIndexed(items) { index, item ->
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        stringResource(R.string.card_priority_wave_number, index + 1),
-                        modifier = Modifier.padding(vertical = 5.dp)
-                    )
+        items[selectedWave].Render()
+    }
+}
 
-                    CardPriorityDragSort(item.scores)
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 5.dp)
-                    ) {
-                        var braveChains by item.braveChains
-
-                        val braveChainDialog = listDialog(
-                            selected = braveChains,
-                            selectedChange = { braveChains = it },
-                            entries = BraveChainEnum.values()
-                                .associateWith { stringResource(it.stringRes) },
-                            title = stringResource(R.string.p_brave_chains)
-                        )
-
-                        ListItem(
-                            modifier = Modifier
-                                .weight(1f)
-                                .clickable { braveChainDialog.show() },
-                            text = { Text(stringResource(R.string.p_brave_chains)) },
-                            secondaryText = { Text(stringResource(braveChains.stringRes)) }
-                        )
-
-                        var rearrange by item.rearrangeCards
-
-                        ListItem(
-                            modifier = Modifier
-                                .weight(1f)
-                                .clickable { rearrange = !rearrange },
-                            text = { Text(stringResource(R.string.p_rearrange_cards)) },
-                            trailing = {
-                                Checkbox(
-                                    checked = rearrange,
-                                    onCheckedChange = { rearrange = it }
-                                )
-                            }
-                        )
-                    }
-                }
-            }
-        }
+@Composable
+fun CardPriorityListItem.Render() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CardPriorityDragSort(scores)
 
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(vertical = 5.dp)
         ) {
-            TextButton(
-                onClick = {
-                    if (items.size > 1) {
-                        items.removeLast()
-                    }
-                },
-                enabled = items.size > 0
-            ) {
-                Text(stringResource(R.string.card_priority_remove_last_wave))
-            }
+            var braveChains by braveChains
 
-            TextButton(
-                onClick = {
-                    items.add(
-                        CardPriorityListItem(
-                            items[0].scores.toMutableList(),
-                            mutableStateOf(false),
-                            mutableStateOf(BraveChainEnum.None)
-                        )
+            val braveChainDialog = listDialog(
+                selected = braveChains,
+                selectedChange = { braveChains = it },
+                entries = BraveChainEnum.values()
+                    .associateWith { stringResource(it.stringRes) },
+                title = stringResource(R.string.p_brave_chains)
+            )
+
+            ListItem(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { braveChainDialog.show() },
+                text = { Text(stringResource(R.string.p_brave_chains)) },
+                secondaryText = { Text(stringResource(braveChains.stringRes)) }
+            )
+
+            var rearrange by rearrangeCards
+
+            ListItem(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { rearrange = !rearrange },
+                text = { Text(stringResource(R.string.p_rearrange_cards)) },
+                trailing = {
+                    Checkbox(
+                        checked = rearrange,
+                        onCheckedChange = { rearrange = it }
                     )
                 }
-            ) {
-                Text(stringResource(R.string.card_priority_add_wave))
-            }
+            )
         }
     }
 }
