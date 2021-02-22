@@ -34,15 +34,11 @@ class SkillMakerOrderChangeFragment : Fragment() {
     val viewModel: SkillMakerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setContent {
-                FgaTheme {
-                    OrderChange(
-                        onCommit = { starting, sub -> orderChangeOk(starting, sub) },
-                        onCancel = { goBack() }
-                    )
-                }
-            }
+        skillMakerScaffold {
+            OrderChange(
+                onCommit = { starting, sub -> orderChangeOk(starting, sub) },
+                onCancel = { goBack() }
+            )
         }
 
     fun goBack() {

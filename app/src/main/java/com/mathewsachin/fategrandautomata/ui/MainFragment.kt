@@ -10,7 +10,8 @@ import android.view.ViewGroup
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.Icon
@@ -72,9 +73,9 @@ class MainFragment : Fragment() {
         ComposeView(requireContext()).apply {
             setContent {
                 FgaTheme {
-                    Column {
+                    Box {
                         ScrollableColumn(
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.fillMaxSize()
                         ) {
                             Preference(
                                 title = stringResource(R.string.p_battle_config),
@@ -130,7 +131,7 @@ class MainFragment : Fragment() {
                             },
                             backgroundColor = colorResource(if (serviceStarted) R.color.colorStopService else R.color.colorPrimary),
                             modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
+                                .align(Alignment.BottomEnd)
                                 .padding(32.dp)
                         )
                     }

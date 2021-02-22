@@ -29,15 +29,11 @@ class SkillMakerMasterSkillsFragment : Fragment() {
     val vm: SkillMakerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setContent {
-                FgaTheme {
-                    MasterSkills(
-                        onMasterSkill = { onSkill(it) },
-                        onOrderChange = { goToOrderChange() }
-                    )
-                }
-            }
+        skillMakerScaffold {
+            MasterSkills(
+                onMasterSkill = { onSkill(it) },
+                onOrderChange = { goToOrderChange() }
+            )
         }
 
     fun onSkill(skill: Skill.Master) {

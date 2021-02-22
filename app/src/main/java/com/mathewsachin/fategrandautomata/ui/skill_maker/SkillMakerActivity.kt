@@ -3,9 +3,16 @@ package com.mathewsachin.fategrandautomata.ui.skill_maker
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.ui.platform.AmbientLayoutDirection
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,3 +46,14 @@ class SkillMakerActivity : AppCompatActivity(R.layout.skill_maker) {
         super.onPause()
     }
 }
+
+fun Fragment.skillMakerScaffold(content: @Composable () -> Unit) =
+    ComposeView(requireContext()).apply {
+        setContent {
+            FgaTheme {
+                Providers(AmbientLayoutDirection provides LayoutDirection.Ltr) {
+                    content()
+                }
+            }
+        }
+    }

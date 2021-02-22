@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -28,7 +27,6 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -40,15 +38,11 @@ class SkillMakerAtkFragment : Fragment() {
     lateinit var prefs: IPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setContent {
-                FgaTheme {
-                    AtkScreen(
-                        onNextWave = { goToNextStage(it) },
-                        onNextTurn = { goToNextTurn(it) }
-                    )
-                }
-            }
+        skillMakerScaffold {
+            AtkScreen(
+                onNextWave = { goToNextStage(it) },
+                onNextTurn = { goToNextTurn(it) }
+            )
         }
 
     private fun goBack() {

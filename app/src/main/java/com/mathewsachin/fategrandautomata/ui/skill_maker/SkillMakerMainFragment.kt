@@ -37,19 +37,15 @@ class SkillMakerMainFragment : Fragment() {
     val viewModel: SkillMakerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setContent {
-                FgaTheme {
-                    SkillMakerMain(
-                        vm = viewModel,
-                        onMasterSkills = { goToMasterSkills() },
-                        onAtk = { goToAtk() },
-                        onSkill = { onSkill(it.autoSkillCode) },
-                        onClear = { onClear() },
-                        onDone = { onDone() }
-                    )
-                }
-            }
+        skillMakerScaffold {
+            SkillMakerMain(
+                vm = viewModel,
+                onMasterSkills = { goToMasterSkills() },
+                onAtk = { goToAtk() },
+                onSkill = { onSkill(it.autoSkillCode) },
+                onClear = { onClear() },
+                onDone = { onDone() }
+            )
         }
 
     // TODO: Scroll to latest item in History when new added?

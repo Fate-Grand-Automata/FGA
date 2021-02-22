@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -20,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,18 +28,14 @@ class SkillMakerTargetFragment : Fragment() {
     val args: SkillMakerTargetFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setContent {
-                FgaTheme {
-                    SkillTarget(
-                        onSkillTarget = ::onSkillTarget,
-                        showEmiya = args.showEmiya,
-                        onEmiya = ::onEmiya,
-                        showSpaceIshtar = args.showSpaceIshtar,
-                        onSpaceIshtar = ::onSpaceIshtar
-                    )
-                }
-            }
+        skillMakerScaffold {
+            SkillTarget(
+                onSkillTarget = ::onSkillTarget,
+                showEmiya = args.showEmiya,
+                onEmiya = ::onEmiya,
+                showSpaceIshtar = args.showSpaceIshtar,
+                onSpaceIshtar = ::onSpaceIshtar
+            )
         }
 
     fun onSkillTarget(target: ServantTarget?) {
