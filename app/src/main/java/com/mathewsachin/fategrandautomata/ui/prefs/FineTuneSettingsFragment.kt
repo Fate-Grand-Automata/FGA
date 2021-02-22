@@ -1,14 +1,26 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.mathewsachin.fategrandautomata.R
@@ -44,41 +56,45 @@ class FineTuneSettingsFragment : Fragment() {
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
                 FgaTheme {
-                    ScrollableColumn {
-                        SupportGroup(prefs)
-                        SimilarityGroup(prefs)
-                        ClicksGroup(prefs)
-                        SwipesGroup(prefs)
-                        WaitGroup(prefs)
+                    Box {
+                        ScrollableColumn(
+                            modifier = Modifier.padding(bottom = 60.dp)
+                        ) {
+                            SupportGroup(prefs)
+                            SimilarityGroup(prefs)
+                            ClicksGroup(prefs)
+                            SwipesGroup(prefs)
+                            WaitGroup(prefs)
+                            Spacer(Modifier.padding(30.dp))
+                        }
+
+                        ExtendedFloatingActionButton(
+                            text = {
+                                Text(
+                                    stringResource(R.string.fine_tune_menu_reset_to_defaults),
+                                    color = Color.White
+                                )
+                            },
+                            onClick = { vm.resetAll() },
+                            icon = {
+                                Icon(
+                                    vectorResource(R.drawable.ic_refresh),
+                                    tint = Color.White
+                                )
+                            },
+                            backgroundColor = colorResource(R.color.colorPrimary),
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(32.dp)
+                        )
                     }
                 }
             }
         }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fine_tune_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.reset_fine_tune -> {
-                vm.resetAll()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     @Composable
     fun SupportGroup(prefs: PrefsCore) {
