@@ -51,7 +51,7 @@ fun Fragment.skillMakerScaffold(content: @Composable () -> Unit) =
     ComposeView(requireContext()).apply {
         setContent {
             FgaTheme {
-                Providers(AmbientLayoutDirection provides LayoutDirection.Ltr) {
+                PreventRtl {
                     content()
                 }
             }

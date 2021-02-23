@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
+import com.mathewsachin.fategrandautomata.ui.PreventRtl
 import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.prefs.compose.listDialog
 import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
@@ -89,7 +90,37 @@ fun CardPriorityView(
     ) {
         var selectedWave by remember { mutableStateOf(0) }
 
-        Row (
+        CardPriorityWaveSelector(
+            items = items,
+            selectedWave = selectedWave,
+            onSelectedWaveChange = { selectedWave = it }
+        )
+
+        Divider()
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 5.dp)
+                .padding(top = 11.dp)
+        ) {
+            Text(stringResource(R.string.card_priority_high))
+            Text(stringResource(R.string.card_priority_low))
+        }
+
+        items[selectedWave].Render()
+    }
+}
+
+@Composable
+fun CardPriorityWaveSelector(
+    items: SnapshotStateList<CardPriorityListItem>,
+    selectedWave: Int,
+    onSelectedWaveChange: (Int) -> Unit
+) {
+    PreventRtl {
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
@@ -111,7 +142,7 @@ fun CardPriorityView(
                                 color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
                                 shape = MaterialTheme.shapes.medium
                             )
-                            .clickable { selectedWave = index }
+                            .clickable { onSelectedWaveChange(index) }
                     ) {
                         Text(
                             stringResource(R.string.card_priority_wave_number, index + 1),
@@ -125,7 +156,7 @@ fun CardPriorityView(
                                     .clickable {
                                         if (items.size > 1) {
                                             if (selectedWave == items.lastIndex) {
-                                                selectedWave = items.lastIndex - 1
+                                                onSelectedWaveChange(items.lastIndex - 1)
                                             }
                                             items.removeLast()
                                         }
@@ -167,21 +198,6 @@ fun CardPriorityView(
                 }
             }
         }
-
-        Divider()
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp, 5.dp)
-                .padding(top = 11.dp)
-        ) {
-            Text(stringResource(R.string.card_priority_high))
-            Text(stringResource(R.string.card_priority_low))
-        }
-
-        items[selectedWave].Render()
     }
 }
 
