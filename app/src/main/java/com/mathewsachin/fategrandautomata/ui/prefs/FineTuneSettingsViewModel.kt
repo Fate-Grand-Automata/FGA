@@ -38,9 +38,11 @@ class FineTuneSettingsViewModel @Inject constructor(
             mutableStateOf(pref.get().toFloat())
         }
 
+    fun reset(pref: Pref<Int>) {
+        pref.resetToDefault()
+        getState(pref).value = pref.defaultValue.toFloat()
+    }
+
     fun resetAll() =
-        fineTunePrefs.forEach {
-            it.resetToDefault()
-            getState(it).value = it.defaultValue.toFloat()
-        }
+        fineTunePrefs.forEach { reset(it) }
 }

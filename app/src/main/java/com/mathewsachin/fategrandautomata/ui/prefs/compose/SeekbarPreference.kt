@@ -1,15 +1,17 @@
 package com.mathewsachin.fategrandautomata.ui.prefs.compose
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Slider
-import androidx.compose.runtime.*
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
-import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
 
 @Composable
