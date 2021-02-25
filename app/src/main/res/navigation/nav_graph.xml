@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.MainFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.main.MainFragment"
         android:label="@string/app_name">
         <action
             android:id="@+id/action_mainFragment_to_moreSettingsFragment"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/moreSettingsFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.prefs.MoreSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.more.MoreSettingsFragment"
         android:label="@string/p_nav_more_options">
         <action
             android:id="@+id/action_moreSettingsFragment_to_fineTuneSettingsFragment"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/fineTuneSettingsFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.prefs.FineTuneSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.fine_tune.FineTuneSettingsFragment"
         android:label="@string/p_nav_fine_tune" />
     <fragment
         android:id="@+id/battleConfigListFragment"
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/battleConfigItemSettingsFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.prefs.BattleConfigItemSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.battle_config_item.BattleConfigItemSettingsFragment"
         android:label="@string/p_nav_battle_config_edit">
         <argument
             android:name="key"
@@ -91,7 +91,7 @@
     </fragment>
     <fragment
         android:id="@+id/prefSupportSettingsFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.prefs.PreferredSupportSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportSettingsFragment"
         android:label="@string/p_support_mode_preferred">
         <argument
             android:name="key"
@@ -115,7 +115,7 @@
     </activity>
     <fragment
         android:id="@+id/spamSettingsFragment"
-        android:name="com.mathewsachin.fategrandautomata.ui.prefs.SpamSettingsFragment"
+        android:name="com.mathewsachin.fategrandautomata.ui.spam.SpamSettingsFragment"
         android:label="@string/p_spam_spam" >
         <argument
             android:name="key"

@@ -1,9 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.4.21'
-    ext.nav_version = '2.3.3'
-    ext.hilt_version = '2.32-alpha'
+    ext {
+        kotlin_version = '1.4.21'
+        nav_version = '2.3.3'
+        hilt_version = '2.32-alpha'
+        compose_version = '1.0.0-alpha10'
+    }
     repositories {
         google()
         jcenter()

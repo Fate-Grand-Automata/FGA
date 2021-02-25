@@ -10,7 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.PreventRtl
-import com.mathewsachin.fategrandautomata.ui.prefs.compose.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.prefs.FgaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

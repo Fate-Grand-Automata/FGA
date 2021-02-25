@@ -34,7 +34,7 @@
         </service>
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
             <intent-filter>

@@ -9,7 +9,7 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.HighlightManager
+import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IPlatformPrefs

@@ -13,8 +13,8 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.prefs.ScriptLauncher
-import com.mathewsachin.fategrandautomata.ui.prefs.ScriptLauncherResponse
+import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncher
+import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncherResponse
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.libautomata.*
 import dagger.hilt.EntryPoints
