@@ -3,13 +3,13 @@ package com.mathewsachin.fategrandautomata.ui.spam
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
@@ -57,82 +57,62 @@ class SpamSettingsFragment : Fragment() {
 
             setContent {
                 FgaTheme {
-                    ScrollableColumn {
-                        config.autoChooseTarget.SwitchPreference(
-                            title = stringResource(R.string.p_auto_choose_target),
-                            summary = stringResource(R.string.p_spam_summary)
-                        )
-
-                        Divider()
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(16.dp, 5.dp)
-                        ) {
-                            Text(
-                                "Servant:",
-                                modifier = Modifier.padding(end = 16.dp)
+                    LazyColumn {
+                        item {
+                            config.autoChooseTarget.SwitchPreference(
+                                title = stringResource(R.string.p_auto_choose_target),
+                                summary = stringResource(R.string.p_spam_summary)
                             )
 
-                            (1..vm.spamStates.size).map {
-                                val isSelected = vm.selectedServant == it - 1
-
-                                Box(
-                                    modifier = Modifier
-                                        .background(
-                                            color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
-                                            shape = MaterialTheme.shapes.medium
-                                        )
-                                        .clickable { vm.selectedServant = it - 1 }
-                                        .padding(14.dp, 5.dp)
-                                ) {
-                                    Text(
-                                        it.toString(),
-                                        color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
-                                    )
-                                }
-                            }
+                            Divider()
                         }
 
-                        Divider()
-
-                        Column(
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            val selectedConfig = vm.spamStates[vm.selectedServant]
-
+                        item {
                             Row(
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(16.dp, 5.dp)
                             ) {
-                                Text("NP:")
-
-                                var selectedSpamMode by selectedConfig.np.spamMode
-                                var selectedWaves by selectedConfig.np.waves
-
-                                SelectSpamMode(
-                                    selected = selectedSpamMode,
-                                    onSelectChange = { selectedSpamMode = it },
-                                    modifier = Modifier.weight(1f)
+                                Text(
+                                    "Servant:",
+                                    modifier = Modifier.padding(end = 16.dp)
                                 )
 
-                                if (selectedSpamMode != SpamEnum.None) {
-                                    SelectWaves(
-                                        selected = selectedWaves,
-                                        onSelectChange = { selectedWaves = it },
-                                        modifier = Modifier.weight(1f)
-                                    )
+                                (1..vm.spamStates.size).map {
+                                    val isSelected = vm.selectedServant == it - 1
+
+                                    Box(
+                                        modifier = Modifier
+                                            .background(
+                                                color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
+                                                shape = MaterialTheme.shapes.medium
+                                            )
+                                            .clickable { vm.selectedServant = it - 1 }
+                                            .padding(14.dp, 5.dp)
+                                    ) {
+                                        Text(
+                                            it.toString(),
+                                            color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
+                                        )
+                                    }
                                 }
                             }
 
-                            selectedConfig.skills.mapIndexed { index, skillConfig ->
+                            Divider()
+                        }
+
+                        item {
+                            Column(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                val selectedConfig = vm.spamStates[vm.selectedServant]
+
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("S${index + 1}:")
+                                    Text("NP:")
 
-                                    var selectedSpamMode by skillConfig.spamMode
-                                    var selectedTarget by skillConfig.target
-                                    var selectedWaves by skillConfig.waves
+                                    var selectedSpamMode by selectedConfig.np.spamMode
+                                    var selectedWaves by selectedConfig.np.waves
 
                                     SelectSpamMode(
                                         selected = selectedSpamMode,
@@ -141,17 +121,43 @@ class SpamSettingsFragment : Fragment() {
                                     )
 
                                     if (selectedSpamMode != SpamEnum.None) {
-                                        SelectTarget(
-                                            selected = selectedTarget,
-                                            onSelectChange = { selectedTarget = it },
-                                            modifier = Modifier.weight(1f)
-                                        )
-
                                         SelectWaves(
                                             selected = selectedWaves,
                                             onSelectChange = { selectedWaves = it },
                                             modifier = Modifier.weight(1f)
                                         )
+                                    }
+                                }
+
+                                selectedConfig.skills.mapIndexed { index, skillConfig ->
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text("S${index + 1}:")
+
+                                        var selectedSpamMode by skillConfig.spamMode
+                                        var selectedTarget by skillConfig.target
+                                        var selectedWaves by skillConfig.waves
+
+                                        SelectSpamMode(
+                                            selected = selectedSpamMode,
+                                            onSelectChange = { selectedSpamMode = it },
+                                            modifier = Modifier.weight(1f)
+                                        )
+
+                                        if (selectedSpamMode != SpamEnum.None) {
+                                            SelectTarget(
+                                                selected = selectedTarget,
+                                                onSelectChange = { selectedTarget = it },
+                                                modifier = Modifier.weight(1f)
+                                            )
+
+                                            SelectWaves(
+                                                selected = selectedWaves,
+                                                onSelectChange = { selectedWaves = it },
+                                                modifier = Modifier.weight(1f)
+                                            )
+                                        }
                                     }
                                 }
                             }

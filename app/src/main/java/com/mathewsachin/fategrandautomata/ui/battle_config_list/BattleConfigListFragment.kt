@@ -6,12 +6,13 @@ import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,8 +20,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -76,7 +77,7 @@ class BattleConfigListFragment : Fragment() {
 
                                 ListItem(
                                     modifier = Modifier
-                                        .clickable(
+                                        .combinedClickable(
                                             onClick = {
                                                 if (vm.selectionMode) {
                                                     vm.selectedConfigs.value = if (it.id in selectedConfigs) {
@@ -98,7 +99,8 @@ class BattleConfigListFragment : Fragment() {
 
                                         if (selected) {
                                             Icon(
-                                                vectorResource(R.drawable.ic_check),
+                                                painterResource(R.drawable.ic_check),
+                                                contentDescription = "Select",
                                                 modifier = Modifier
                                                     .size(40.dp)
                                             )
@@ -126,7 +128,8 @@ class BattleConfigListFragment : Fragment() {
                     ) {
                         FloatingActionButton(onClick = { addOnBtnClick() }) {
                             Icon(
-                                vectorResource(R.drawable.ic_plus),
+                                painterResource(R.drawable.ic_plus),
+                                contentDescription = "Create new config",
                                 modifier = Modifier
                                     .size(40.dp)
                             )

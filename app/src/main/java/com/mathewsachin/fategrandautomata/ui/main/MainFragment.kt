@@ -9,10 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -74,43 +74,49 @@ class MainFragment : Fragment() {
             setContent {
                 FgaTheme {
                     Box {
-                        ScrollableColumn(
+                        LazyColumn(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            Preference(
-                                title = stringResource(R.string.p_battle_config),
-                                summary = stringResource(R.string.p_battle_config_summary),
-                                icon = vectorResource(R.drawable.ic_formation),
-                                onClick = {
-                                    if (vm.ensureRootDir(pickDir, requireContext())) {
-                                        goToBattleConfigList()
+                            item {
+                                Preference(
+                                    title = stringResource(R.string.p_battle_config),
+                                    summary = stringResource(R.string.p_battle_config_summary),
+                                    icon = painterResource(R.drawable.ic_formation),
+                                    onClick = {
+                                        if (vm.ensureRootDir(pickDir, requireContext())) {
+                                            goToBattleConfigList()
+                                        }
                                     }
-                                }
-                            )
+                                )
+                            }
 
-                            Preference(
-                                title = stringResource(R.string.p_nav_troubleshoot),
-                                icon = vectorResource(R.drawable.ic_troubleshooting),
-                                onClick = {
-                                    val intent = Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(getString(R.string.link_troubleshoot))
-                                    )
+                            item {
+                                Preference(
+                                    title = stringResource(R.string.p_nav_troubleshoot),
+                                    icon = painterResource(R.drawable.ic_troubleshooting),
+                                    onClick = {
+                                        val intent = Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse(getString(R.string.link_troubleshoot))
+                                        )
 
-                                    startActivity(intent)
-                                }
-                            )
+                                        startActivity(intent)
+                                    }
+                                )
+                            }
 
-                            Preference(
-                                title = stringResource(R.string.p_more_options),
-                                icon = vectorResource(R.drawable.ic_dots_horizontal),
-                                onClick = {
-                                    val action = MainFragmentDirections
-                                        .actionMainFragmentToMoreSettingsFragment()
+                            item {
+                                Preference(
+                                    title = stringResource(R.string.p_more_options),
+                                    icon = painterResource(R.drawable.ic_dots_horizontal),
+                                    onClick = {
+                                        val action = MainFragmentDirections
+                                            .actionMainFragmentToMoreSettingsFragment()
 
-                                    nav(action)
-                                }
-                            )
+                                        nav(action)
+                                    }
+                                )
+                            }
                         }
 
                         val serviceStarted by vm.serviceStarted
@@ -125,7 +131,8 @@ class MainFragment : Fragment() {
                             onClick = { serviceToggleBtnOnClick() },
                             icon = {
                                 Icon(
-                                    vectorResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch),
+                                    painterResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch),
+                                    contentDescription = "Toggle service",
                                     tint = Color.White
                                 )
                             },

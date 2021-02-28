@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -82,7 +82,8 @@ class FineTuneSettingsFragment : Fragment() {
             }
 
             Icon(
-                imageVector = vectorResource(id = R.drawable.ic_info),
+                painterResource(R.drawable.ic_info),
+                contentDescription = "Info",
                 modifier = Modifier
                     .padding(end = 16.dp)
                     .size(40.dp)
@@ -96,15 +97,15 @@ class FineTuneSettingsFragment : Fragment() {
             setContent {
                 FgaTheme {
                     Box {
-                        ScrollableColumn(
-                            modifier = Modifier.padding(bottom = 60.dp)
+                        LazyColumn(
+                            modifier = Modifier.padding(bottom = 60.dp),
+                            contentPadding = PaddingValues(bottom = 30.dp)
                         ) {
-                            SupportGroup(prefs)
-                            SimilarityGroup(prefs)
-                            ClicksGroup(prefs)
-                            SwipesGroup(prefs)
-                            WaitGroup(prefs)
-                            Spacer(Modifier.padding(30.dp))
+                            item { SupportGroup(prefs) }
+                            item { SimilarityGroup(prefs) }
+                            item { ClicksGroup(prefs) }
+                            item { SwipesGroup(prefs) }
+                            item { WaitGroup(prefs) }
                         }
 
                         ExtendedFloatingActionButton(
@@ -117,7 +118,8 @@ class FineTuneSettingsFragment : Fragment() {
                             onClick = { vm.resetAll() },
                             icon = {
                                 Icon(
-                                    vectorResource(R.drawable.ic_refresh),
+                                    painterResource(R.drawable.ic_refresh),
+                                    contentDescription = stringResource(R.string.fine_tune_menu_reset_to_defaults),
                                     tint = Color.White
                                 )
                             },

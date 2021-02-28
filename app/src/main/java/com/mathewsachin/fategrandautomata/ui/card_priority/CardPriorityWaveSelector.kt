@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -17,8 +18,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
@@ -74,7 +75,8 @@ fun CardPriorityWaveSelector(
                                     }
                             ) {
                                 Icon(
-                                    vectorResource(R.drawable.ic_close),
+                                    painterResource(R.drawable.ic_close),
+                                    contentDescription = "Remove wave",
                                     tint = MaterialTheme.colors.error
                                 )
                             }
@@ -103,7 +105,8 @@ fun CardPriorityWaveSelector(
                         }
                 ) {
                     Icon(
-                        vectorResource(R.drawable.ic_plus),
+                        painterResource(R.drawable.ic_plus),
+                        contentDescription = "Add wave",
                         tint = MaterialTheme.colors.onSecondary
                     )
                 }

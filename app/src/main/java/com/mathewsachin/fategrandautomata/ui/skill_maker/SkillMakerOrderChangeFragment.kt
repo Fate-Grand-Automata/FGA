@@ -11,7 +11,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,8 +59,8 @@ fun OrderChange(
     onCommit: (starting: OrderChangeMember.Starting, sub: OrderChangeMember.Sub) -> Unit,
     onCancel: () -> Unit
 ) {
-    var starting by savedInstanceState { 1 }
-    var sub by savedInstanceState { 1 }
+    var starting by rememberSaveable { mutableStateOf(1) }
+    var sub by rememberSaveable { mutableStateOf(1) }
 
     Column(
         modifier = Modifier

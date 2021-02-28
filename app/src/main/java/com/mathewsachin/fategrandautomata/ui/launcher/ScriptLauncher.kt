@@ -13,7 +13,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.FgaTheme
-import com.mathewsachin.fategrandautomata.ui.prefs.Stepper
+import com.mathewsachin.fategrandautomata.ui.Stepper
 
 @Composable
 fun lotteryLauncher(

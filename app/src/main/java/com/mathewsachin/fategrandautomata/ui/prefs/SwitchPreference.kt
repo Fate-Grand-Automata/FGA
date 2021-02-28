@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 
 @Composable
@@ -11,7 +11,7 @@ fun Pref<Boolean>.SwitchPreference(
     title: String,
     summary: String = "",
     singleLineTitle: Boolean = true,
-    icon: ImageVector? = null,
+    icon: Painter? = null,
     enabled: Boolean = true,
     hint: String = ""
 ) {

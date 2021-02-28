@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
@@ -65,7 +65,7 @@ fun editNumberDialog(
 fun Pref<Int>.EditNumberPreference(
     title: String,
     singleLineTitle: Boolean = false,
-    icon: ImageVector? = null,
+    icon: Painter? = null,
     enabled: Boolean = true,
     hint: String = "",
     min: Int = 0,
@@ -97,7 +97,7 @@ fun Pref<String>.EditTextPreference(
     title: String,
     singleLineTitle: Boolean = false,
     singleLine: Boolean = false,
-    icon: ImageVector? = null,
+    icon: Painter? = null,
     enabled: Boolean = true,
     hint: String = "",
     summary: (String) -> String = { it },
@@ -110,7 +110,7 @@ fun Pref<String>.EditTextPreference(
         value = state,
         valueChange = { set(it) },
         keyboardOptions = KeyboardOptions(
-            imeAction = if (singleLine) ImeAction.Done else ImeAction.Unspecified
+            imeAction = if (singleLine) ImeAction.Done else ImeAction.Default
         )
     )
 

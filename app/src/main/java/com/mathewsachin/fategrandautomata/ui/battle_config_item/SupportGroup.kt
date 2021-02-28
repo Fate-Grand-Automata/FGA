@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
@@ -78,7 +78,7 @@ fun SupportGroup(
                 )
             } else {
                 Preference(
-                    icon = vectorResource(R.drawable.ic_info),
+                    icon = painterResource(R.drawable.ic_info),
                     title = stringResource(R.string.p_battle_config_support_friend_names),
                     summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
                 )

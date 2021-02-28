@@ -20,7 +20,6 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
         useIR = true
     }
 
@@ -44,10 +43,6 @@ android {
 
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"
-        }
-
-        kotlinOptions {
-            jvmTarget = "1.8"
         }
     }
 
@@ -133,11 +128,10 @@ dependencies {
     implementation "androidx.compose.material:material-icons-core:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
-    implementation "com.vanpra.compose-material-dialogs:core:0.2.11"
-}
+    implementation 'androidx.activity:activity-compose:1.3.0-alpha03'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02'
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
+    implementation "com.vanpra.compose-material-dialogs:core:0.2.11"
 }
 
 kapt {

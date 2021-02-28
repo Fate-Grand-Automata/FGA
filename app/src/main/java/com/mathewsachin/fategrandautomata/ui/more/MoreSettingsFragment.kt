@@ -4,7 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -35,24 +35,28 @@ class MoreSettingsFragment : Fragment() {
         ComposeView(requireContext()).apply {
             setContent {
                 FgaTheme {
-                    ScrollableColumn {
-                        BattleGroup(prefs)
-                        WaitForAPRegenGroup(prefs)
+                    LazyColumn {
+                        item { BattleGroup(prefs) }
+                        item { WaitForAPRegenGroup(prefs) }
 
-                        StorageGroup(
-                            directoryName = storageSummary.value ?: "",
-                            onPickDirectory = { pickDir.launch(Uri.EMPTY) }
-                        )
+                        item {
+                            StorageGroup(
+                                directoryName = storageSummary.value ?: "",
+                                onPickDirectory = { pickDir.launch(Uri.EMPTY) }
+                            )
+                        }
 
-                        AdvancedGroup(
-                            prefs,
-                            goToFineTune = {
-                                val action = MoreSettingsFragmentDirections
-                                    .actionMoreSettingsFragmentToFineTuneSettingsFragment()
+                        item {
+                            AdvancedGroup(
+                                prefs,
+                                goToFineTune = {
+                                    val action = MoreSettingsFragmentDirections
+                                        .actionMoreSettingsFragmentToFineTuneSettingsFragment()
 
-                                nav(action)
-                            }
-                        )
+                                    nav(action)
+                                }
+                            )
+                        }
                     }
                 }
             }

@@ -11,7 +11,7 @@ import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
 @Composable
 fun CardPriorityDragSort(scores: MutableList<CardScore>) {
     AndroidView(
-        viewBlock = { context ->
+        factory = { context ->
             val adapter = CardPriorityAdapter(scores)
 
             val recyclerView = RecyclerView(context).apply {

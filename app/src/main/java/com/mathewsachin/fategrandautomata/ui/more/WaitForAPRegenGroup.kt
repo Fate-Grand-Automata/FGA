@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -47,7 +47,7 @@ fun WaitForAPRegenGroup(
                 title = stringResource(R.string.p_wait_ap_regen_minutes_text),
                 summary = stringResource(R.string.p_wait_ap_regen_minutes_text_summary),
                 valueRange = 1..60,
-                icon = vectorResource(R.drawable.ic_counter),
+                icon = painterResource(R.drawable.ic_counter),
                 valueRepresentation = { "$it min" }
             )
         }

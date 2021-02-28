@@ -2,10 +2,10 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.4.21'
+        kotlin_version = '1.4.30'
         nav_version = '2.3.3'
         hilt_version = '2.32-alpha'
-        compose_version = '1.0.0-alpha10'
+        compose_version = '1.0.0-beta01'
     }
     repositories {
         google()
@@ -28,6 +28,20 @@ allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    }
+}
+
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+            freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
+            freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
+
+            // Set JVM target to 1.8
+            jvmTarget = "1.8"
+        }
     }
 }
 

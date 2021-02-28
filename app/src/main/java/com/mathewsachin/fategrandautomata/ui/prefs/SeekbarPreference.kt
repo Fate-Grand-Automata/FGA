@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import kotlin.math.roundToInt
 
@@ -20,7 +20,7 @@ fun Pref<Int>.SeekBarPreference(
     state: MutableState<Float> = remember { mutableStateOf(get().toFloat()) },
     summary: String = "",
     singleLineTitle: Boolean = true,
-    icon: ImageVector? = null,
+    icon: Painter? = null,
     valueRange: IntRange = 0..100,
     enabled: Boolean = true,
     valueRepresentation: (Int) -> String = { it.toString() },
@@ -67,7 +67,7 @@ private fun Pref<Int>.PreferenceSummary(
             Slider(
                 value = state.value,
                 onValueChange = { if (enabled) state.value = it },
-                onValueChangeEnd = { set(state.value.roundToInt()) },
+                onValueChangeFinished = { set(state.value.roundToInt()) },
                 valueRange = valueRange.first.toFloat() .. valueRange.last.toFloat()
             )
         }

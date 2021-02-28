@@ -2,7 +2,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.listItemsSingleChoice
@@ -43,7 +43,7 @@ fun <T> Pref<T>.ListPreference(
     title: String,
     summary: String = "",
     singleLineTitle: Boolean = false,
-    icon: ImageVector? = null,
+    icon: Painter? = null,
     entries: Map<T, String> = emptyMap(),
     enabled: Boolean = true,
     hint: String = ""

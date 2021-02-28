@@ -1,13 +1,17 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
@@ -22,7 +26,7 @@ fun Preference(
     title: String,
     summary: String = "",
     singleLineTitle: Boolean = false,
-    icon: ImageVector? = null,
+    icon: Painter? = null,
     enabled: Boolean = true,
     hint: String = "",
     onClick: (() -> Unit)? = null,
@@ -53,7 +57,7 @@ fun Preference(
 fun Preference(
     title: @Composable () -> Unit,
     summary: @Composable (() -> Unit)? = null,
-    icon: ImageVector? = null,
+    icon: Painter? = null,
     enabled: Boolean = true,
     onClick: (() -> Unit)? = null,
     hint: String = "",
@@ -72,7 +76,15 @@ fun Preference(
         ListItem(
             text = title,
             secondaryText = summary,
-            icon = icon?.let { { Icon(imageVector = it, modifier = Modifier.size(40.dp)) } },
+            icon = icon?.let {
+                {
+                    Icon(
+                        it,
+                        contentDescription = "icon",
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+            },
             modifier = Modifier.let{
                 if (onClick != null)
                     it.clickable(onClick = { if (enabled) onClick() })
@@ -84,7 +96,8 @@ fun Preference(
 
                     if (hint.isNotBlank()) {
                         Icon(
-                            imageVector = vectorResource(id = R.drawable.ic_info),
+                            painterResource(R.drawable.ic_info),
+                            contentDescription = "Hint",
                             modifier = Modifier
                                 .size(40.dp)
                                 .clickable(onClick = { hintDialog.show() })
@@ -99,7 +112,7 @@ fun Preference(
 @Composable
 fun StatusWrapper(enabled: Boolean, content: @Composable () -> Unit) {
     if (!enabled) {
-        Providers(AmbientContentAlpha provides ContentAlpha.disabled) {
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
             content()
         }
     }

@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.more
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
@@ -16,7 +16,7 @@ fun StorageGroup(
         Preference(
             title = stringResource(R.string.p_folder),
             summary = directoryName,
-            icon = vectorResource(R.drawable.ic_folder_edit),
+            icon = painterResource(R.drawable.ic_folder_edit),
             onClick = onPickDirectory
         )
     }

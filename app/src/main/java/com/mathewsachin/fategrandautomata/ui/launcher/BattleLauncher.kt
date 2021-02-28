@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.launcher
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -18,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.prefs.Stepper
+import com.mathewsachin.fategrandautomata.ui.Stepper
 import com.mathewsachin.fategrandautomata.util.stringRes
 
 @Composable
@@ -41,7 +42,7 @@ fun battleLauncher(
             val configListState = rememberLazyListState()
             LaunchedEffect(true) {
                 if (selectedConfigIndex != -1) {
-                    configListState.snapToItemIndex(selectedConfigIndex)
+                    configListState.scrollToItem(selectedConfigIndex)
                 }
             }
 
@@ -76,7 +77,7 @@ fun battleLauncher(
                 .fillMaxHeight()
                 .padding(5.dp, 2.dp)
                 .background(MaterialTheme.colors.onSurface.copy(alpha = 0.12f))
-                .preferredWidth(1.dp)
+                .width(1.dp)
         ) { }
 
         Column(

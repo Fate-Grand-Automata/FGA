@@ -1,6 +1,7 @@
-package com.mathewsachin.fategrandautomata.ui.prefs
+package com.mathewsachin.fategrandautomata.ui
 
 import android.view.ViewConfiguration
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
@@ -8,9 +9,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.gesture.pressIndicatorGestureFilter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mathewsachin.fategrandautomata.ui.prefs.StatusWrapper
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,8 +41,8 @@ fun Stepper(
 
     fun makeModifier(delta: Int, enabled: Boolean) =
         Modifier
-            .pressIndicatorGestureFilter(
-                onStart = {
+            .pointerInput(true) {
+                detectTapGestures(onPress = {
                     currentJob?.cancel()
                     currentJob = scope.launch {
                         var first = false
@@ -68,11 +70,11 @@ fun Stepper(
                             }
                         }
                     }
-                },
-                onStop = { onComplete() },
-                onCancel = { onComplete() },
-                enabled = enabled && (currentValue + delta) in valueRange
-            )
+
+                    awaitRelease()
+                    onComplete()
+                })
+            }
 
     @Composable
     fun DeltaButton(delta: Int, text: String, enabled: Boolean) {
