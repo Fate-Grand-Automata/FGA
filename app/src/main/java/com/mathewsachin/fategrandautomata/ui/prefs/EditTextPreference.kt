@@ -1,11 +1,22 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.vanpra.composematerialdialogs.MaterialDialog
 
@@ -123,4 +134,85 @@ fun Pref<String>.EditTextPreference(
         hint = hint,
         onClick = { dialog.show() }
     )
+}
+
+fun MaterialDialog.setPositiveEnabled(index: Int, value: Boolean) {
+    // Have to make temp list in order for state to register change
+    synchronized(positiveEnabled) {
+        val tempList = positiveEnabled.toMutableList()
+        tempList[index] = value
+        positiveEnabled = tempList
+    }
+}
+
+/**
+ * @brief Adds an input field with the given parameters to the dialog
+ * @param label string to be shown in the input field before selection eg. Username
+ * @param hint hint to be shown in the input field when it is selected but empty eg. Joe
+ * @param prefill string to be input into the text field by default
+ * @param keyboardOptions software keyboard options which can be used to customize parts
+ * of the keyboard
+ * @param errorMessage a message to be shown to the user when the input is not valid
+ * @param isTextValid a function which is called to check if the user input is valid
+ * @param onInput a function which is called with the user input
+ */
+@SuppressLint("ComposableNaming")
+@Composable
+fun MaterialDialog.input(
+    label: String,
+    hint: String = "",
+    prefill: String = "",
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    errorMessage: String = "",
+    isTextValid: (String) -> Boolean = { true },
+    onInput: (String) -> Unit = {}
+) {
+    var text by remember { mutableStateOf(prefill) }
+    val valid = remember(text) { isTextValid(text) }
+
+    val positiveEnabledIndex = remember {
+            val index = positiveEnabledCounter.getAndIncrement()
+            positiveEnabled.add(index, valid)
+            index
+        }
+
+    val callbackIndex = remember {
+        val index = callbackCounter.getAndIncrement()
+        callbacks.add(index) { onInput(text) }
+        index
+    }
+
+    DisposableEffect(valid) {
+        setPositiveEnabled(positiveEnabledIndex, valid)
+        onDispose { }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            callbacks[callbackIndex] = {}
+            setPositiveEnabled(positiveEnabledIndex, true)
+        }
+    }
+
+    Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)) {
+        TextField(
+            value = text,
+            onValueChange = { text = it },
+            label = { Text(label, color = MaterialTheme.colors.onBackground.copy(0.8f)) },
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text(hint, color = MaterialTheme.colors.onBackground.copy(0.5f)) },
+            isError = !valid,
+            keyboardOptions = keyboardOptions,
+            textStyle = TextStyle(MaterialTheme.colors.onBackground, fontSize = 16.sp)
+        )
+
+        if (!valid) {
+            Text(
+                errorMessage,
+                fontSize = 14.sp,
+                color = MaterialTheme.colors.error,
+                modifier = Modifier.align(Alignment.End)
+            )
+        }
+    }
 }

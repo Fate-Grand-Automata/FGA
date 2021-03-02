@@ -184,6 +184,7 @@ fun Pref<Set<String>>.SupportSelectPreference(
             modifier = Modifier
                 .size(40.dp)
                 .clickable(onClick = { resetToDefault() })
+                .padding(7.dp)
         )
     }
 }

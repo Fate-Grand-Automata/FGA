@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
@@ -122,6 +123,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                     modifier = Modifier
                                         .size(40.dp)
                                         .clickable { cmdDialog.show() }
+                                        .padding(7.dp)
                                 )
                             }
 

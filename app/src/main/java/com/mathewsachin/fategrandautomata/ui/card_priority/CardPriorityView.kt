@@ -40,6 +40,6 @@ fun CardPriorityView(
             Text(stringResource(R.string.card_priority_low))
         }
 
-        items[selectedWave].Render()
+        items.getOrNull(selectedWave)?.Render()
     }
 }

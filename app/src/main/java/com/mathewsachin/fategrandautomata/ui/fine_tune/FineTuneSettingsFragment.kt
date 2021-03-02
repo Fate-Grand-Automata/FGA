@@ -54,7 +54,12 @@ class FineTuneSettingsFragment : Fragment() {
         hintDialog.build {
             iconTitle(
                 textRes = title,
-                iconRes = icon,
+                icon = {
+                    Icon(
+                        painterResource(icon),
+                        contentDescription = "icon"
+                    )
+                }
             )
 
             message("$defaultString\n\n$hint")
@@ -85,9 +90,11 @@ class FineTuneSettingsFragment : Fragment() {
                 painterResource(R.drawable.ic_info),
                 contentDescription = "Info",
                 modifier = Modifier
+                    .align(Alignment.CenterVertically)
                     .padding(end = 16.dp)
                     .size(40.dp)
                     .clickable(onClick = { hintDialog.show() })
+                    .padding(7.dp)
             )
         }
     }

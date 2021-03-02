@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -81,7 +82,9 @@ fun Preference(
                     Icon(
                         it,
                         contentDescription = "icon",
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(7.dp)
                     )
                 }
             },
@@ -101,6 +104,7 @@ fun Preference(
                             modifier = Modifier
                                 .size(40.dp)
                                 .clickable(onClick = { hintDialog.show() })
+                                .padding(7.dp)
                         )
                     }
                 }
