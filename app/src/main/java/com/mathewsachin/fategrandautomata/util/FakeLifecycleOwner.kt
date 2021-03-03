@@ -5,7 +5,10 @@ package com.mathewsachin.fategrandautomata.util
 import android.content.Context
 import android.os.Bundle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Recomposer
+import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.compositionContext
 import androidx.lifecycle.*
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
@@ -49,4 +52,5 @@ fun Context.fakedComposeView(view: @Composable () -> Unit) =
         ViewTreeLifecycleOwner.set(it, lifecycleOwner)
         ViewTreeViewModelStoreOwner.set(it) { viewModelStore }
         ViewTreeSavedStateRegistryOwner.set(it, lifecycleOwner)
+        it.compositionContext = Recomposer(AndroidUiDispatcher.CurrentThread)
     }
