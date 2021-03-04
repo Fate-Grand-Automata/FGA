@@ -281,11 +281,15 @@ val SkillMakerEntry.colorRes: Int get() {
 
 @Composable
 fun SkillHistory(vm: SkillMakerViewModel) {
+    val currentIndex by vm.currentIndex
+    val skillCommand = vm.skillCommand
+
     LazyRow(
         modifier = Modifier.padding(vertical = 16.dp)
     ) {
-        itemsIndexed(vm.skillCommand) { index, item ->
-            val isSelected = index == vm.currentIndex.value
+        // TODO: Compose is bugged on item removal in beta1: https://issuetracker.google.com/issues/163069767
+        itemsIndexed(skillCommand) { index, item ->
+            val isSelected = index == currentIndex
 
             val shape =
                 if (isSelected)

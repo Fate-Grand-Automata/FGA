@@ -39,40 +39,44 @@ fun Stepper(
         }
     }
 
+    // TODO: Enabled state for the buttons not working correctly
     fun makeModifier(delta: Int, enabled: Boolean) =
         Modifier
             .pointerInput(true) {
                 detectTapGestures(onPress = {
                     currentJob?.cancel()
-                    currentJob = scope.launch {
-                        var first = false
-                        val onCurrentValueChange = { currentValue += delta }
 
-                        try {
-                            delay(ViewConfiguration.getLongPressTimeout().milliseconds)
+                    if (enabled) {
+                        currentJob = scope.launch {
+                            var first = false
+                            val onCurrentValueChange = { currentValue += delta }
 
-                            var repeatInterval = 100.milliseconds
-                            val repeatIntervalDelta = 2.milliseconds
-                            val minRepeatInterval = 10.milliseconds
+                            try {
+                                delay(ViewConfiguration.getLongPressTimeout().milliseconds)
 
-                            while (true) {
-                                onCurrentValueChange()
-                                first = true
+                                var repeatInterval = 100.milliseconds
+                                val repeatIntervalDelta = 2.milliseconds
+                                val minRepeatInterval = 10.milliseconds
 
-                                delay(repeatInterval)
+                                while (true) {
+                                    onCurrentValueChange()
+                                    first = true
 
-                                repeatInterval = (repeatInterval - repeatIntervalDelta)
-                                    .coerceAtLeast(minRepeatInterval)
-                            }
-                        } catch (e: Exception) {
-                            if (!first) {
-                                onCurrentValueChange()
+                                    delay(repeatInterval)
+
+                                    repeatInterval = (repeatInterval - repeatIntervalDelta)
+                                        .coerceAtLeast(minRepeatInterval)
+                                }
+                            } catch (e: Exception) {
+                                if (!first) {
+                                    onCurrentValueChange()
+                                }
                             }
                         }
-                    }
 
-                    awaitRelease()
-                    onComplete()
+                        awaitRelease()
+                        onComplete()
+                    }
                 })
             }
 

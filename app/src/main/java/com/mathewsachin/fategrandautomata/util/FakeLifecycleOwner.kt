@@ -13,6 +13,8 @@ import androidx.lifecycle.*
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.ViewTreeSavedStateRegistryOwner
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class FakeLifecycleOwner : SavedStateRegistryOwner {
     private var lifecycleRegistry = LifecycleRegistry(this)
@@ -52,5 +54,11 @@ fun Context.fakedComposeView(view: @Composable () -> Unit) =
         ViewTreeLifecycleOwner.set(it, lifecycleOwner)
         ViewTreeViewModelStoreOwner.set(it) { viewModelStore }
         ViewTreeSavedStateRegistryOwner.set(it, lifecycleOwner)
-        it.compositionContext = Recomposer(AndroidUiDispatcher.CurrentThread)
+        val coroutineContext = AndroidUiDispatcher.CurrentThread
+        val runRecomposeScope = CoroutineScope(coroutineContext)
+        val recomposer = Recomposer(coroutineContext)
+        it.compositionContext = recomposer
+        runRecomposeScope.launch {
+            recomposer.runRecomposeAndApplyChanges()
+        }
     }

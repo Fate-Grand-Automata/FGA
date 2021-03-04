@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -43,7 +42,7 @@ fun CardPriorityWaveSelector(
                 modifier = Modifier
                     .weight(1f)
             ) {
-                itemsIndexed(items) { index, _ ->
+                items(items.size) { index ->
                     val isSelected = selectedWave == index
 
                     Row(

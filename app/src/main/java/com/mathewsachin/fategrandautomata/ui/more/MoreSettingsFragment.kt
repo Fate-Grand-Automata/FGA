@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
@@ -40,8 +41,10 @@ class MoreSettingsFragment : Fragment() {
                         item { WaitForAPRegenGroup(prefs) }
 
                         item {
+                            val summary by storageSummary
+
                             StorageGroup(
-                                directoryName = storageSummary.value ?: "",
+                                directoryName = summary ?: "",
                                 onPickDirectory = { pickDir.launch(Uri.EMPTY) }
                             )
                         }
