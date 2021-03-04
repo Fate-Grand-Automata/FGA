@@ -2,21 +2,27 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.vanpra.composematerialdialogs.MaterialDialog
 
@@ -53,54 +59,70 @@ fun editTextDialog(
 }
 
 @Composable
-fun editNumberDialog(
-    title: String,
-    value: Int,
-    valueChange: (Int) -> Unit,
-    validate: (Int) -> Boolean = { true },
-    errorMessage: String = ""
-) =
-    editTextDialog(
-        title = title,
-        value = value.toString(),
-        valueChange = { valueChange(it.toInt()) },
-        validate = { it.toIntOrNull().let { num -> num != null && validate(num) } },
-        errorMessage = errorMessage,
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done,
-            keyboardType = KeyboardType.Number
-        )
-    )
-
-@Composable
-fun Pref<Int>.EditNumberPreference(
-    title: String,
-    singleLineTitle: Boolean = false,
-    icon: Painter? = null,
-    enabled: Boolean = true,
-    hint: String = "",
-    min: Int = 0,
-    max: Int = Int.MAX_VALUE,
-    summary: (Int) -> String = { it.toString() },
-    dialogTitle: String? = null
+fun PreferenceTextEditor(
+    label: String,
+    prefill: String,
+    onSubmit: (String) -> Unit,
+    onCancel: () -> Unit,
+    validate: (String) -> Boolean = { true },
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
-    val state by collect()
+    var text by rememberSaveable(prefill) { mutableStateOf(prefill) }
+    val valid = remember(text) { validate(text) }
 
-    val dialog = editNumberDialog(
-        title = dialogTitle ?: title,
-        value = state,
-        valueChange = { set(it.coerceIn(min, max)) }
-    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val focusRequester = remember { FocusRequester() }
 
-    Preference(
-        title = title,
-        summary = summary(state),
-        singleLineTitle = singleLineTitle,
-        icon = icon,
-        enabled = enabled,
-        hint = hint,
-        onClick = { dialog.show() }
-    )
+        TextField(
+            value = text,
+            onValueChange = { text = it },
+            label = { Text(label, color = MaterialTheme.colors.onBackground.copy(0.8f)) },
+            modifier = Modifier
+                .focusRequester(focusRequester)
+                .weight(1f),
+            isError = !valid,
+            keyboardOptions = keyboardOptions,
+            textStyle = TextStyle(MaterialTheme.colors.onBackground, fontSize = 16.sp),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    if (valid) {
+                        onSubmit(text)
+                    }
+                }
+            )
+        )
+
+        SideEffect {
+            focusRequester.requestFocus()
+        }
+
+        IconButton(
+            onClick = onCancel,
+        ) {
+            Icon(
+                painterResource(R.drawable.ic_close),
+                contentDescription = stringResource(android.R.string.cancel),
+                tint = MaterialTheme.colors.error
+            )
+        }
+
+        IconButton(
+            onClick = { onSubmit(text) },
+            enabled = valid
+        ) {
+            StatusWrapper(enabled = valid) {
+                Icon(
+                    painterResource(R.drawable.ic_check),
+                    contentDescription = stringResource(android.R.string.ok)
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -112,28 +134,39 @@ fun Pref<String>.EditTextPreference(
     enabled: Boolean = true,
     hint: String = "",
     summary: (String) -> String = { it },
-    dialogTitle: String? = null
+    validate: (String) -> Boolean = { true}
 ) {
     val state by collect()
+    var editing by rememberSaveable { mutableStateOf(false) }
 
-    val dialog = editTextDialog(
-        title = dialogTitle ?: title,
-        value = state,
-        valueChange = { set(it) },
-        keyboardOptions = KeyboardOptions(
-            imeAction = if (singleLine) ImeAction.Done else ImeAction.Default
+    val keyboardOptions = KeyboardOptions(
+        imeAction = if (singleLine) ImeAction.Done else ImeAction.Default
+    )
+
+    if (editing) {
+        PreferenceTextEditor(
+            label = title,
+            prefill = state,
+            validate = validate,
+            onSubmit = {
+                set(it)
+                editing = false
+            },
+            onCancel = { editing = false },
+            keyboardOptions = keyboardOptions
         )
-    )
-
-    Preference(
-        title = title,
-        summary = summary(state),
-        singleLineTitle = singleLineTitle,
-        icon = icon,
-        enabled = enabled,
-        hint = hint,
-        onClick = { dialog.show() }
-    )
+    }
+    else {
+        Preference(
+            title = title,
+            summary = summary(state),
+            singleLineTitle = singleLineTitle,
+            icon = icon,
+            enabled = enabled,
+            hint = hint,
+            onClick = { editing = true }
+        )
+    }
 }
 
 fun MaterialDialog.setPositiveEnabled(index: Int, value: Boolean) {

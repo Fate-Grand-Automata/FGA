@@ -93,7 +93,9 @@ class BattleConfigItemSettingsFragment : Fragment() {
                     LazyColumn {
                         item {
                             config.name.EditTextPreference(
-                                title = stringResource(R.string.p_battle_config_name)
+                                title = stringResource(R.string.p_battle_config_name),
+                                validate = { it.isNotBlank() },
+                                singleLine = true
                             )
 
                             Divider()
