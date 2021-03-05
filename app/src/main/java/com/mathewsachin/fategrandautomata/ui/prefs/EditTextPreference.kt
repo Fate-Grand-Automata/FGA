@@ -9,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -67,7 +66,7 @@ fun PreferenceTextEditor(
     validate: (String) -> Boolean = { true },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
-    var text by rememberSaveable(prefill) { mutableStateOf(prefill) }
+    var text by remember(prefill) { mutableStateOf(prefill) }
     val valid = remember(text) { validate(text) }
 
     Row(
@@ -137,7 +136,7 @@ fun Pref<String>.EditTextPreference(
     validate: (String) -> Boolean = { true}
 ) {
     val state by collect()
-    var editing by rememberSaveable { mutableStateOf(false) }
+    var editing by remember { mutableStateOf(false) }
 
     val keyboardOptions = KeyboardOptions(
         imeAction = if (singleLine) ImeAction.Done else ImeAction.Default
@@ -220,7 +219,7 @@ fun MaterialDialog.input(
         onDispose { }
     }
 
-    DisposableEffect(Unit) {
+    DisposableEffect(true) {
         onDispose {
             callbacks[callbackIndex] = {}
             setPositiveEnabled(positiveEnabledIndex, true)

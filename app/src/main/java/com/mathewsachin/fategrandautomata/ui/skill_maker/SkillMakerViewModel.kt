@@ -2,7 +2,8 @@ package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,50 +22,42 @@ class SkillMakerViewModel @Inject constructor(
     val state = savedState.get(::savedState.name)
         ?: SkillMakerSavedState()
 
-    private val model: SkillMakerModel
-    private val _stage = mutableStateOf(0)
-
-    private val _currentIndex = mutableStateOf(0)
-    val currentIndex: State<Int> = _currentIndex
-
-    init {
-        model = if (state.skillString != null) {
-            SkillMakerModel(state.skillString)
-        } else {
-            val skillString = battleConfig.skillCommand
-            val m = try {
-                SkillMakerModel(skillString)
-            } catch (e: Exception) {
-                SkillMakerModel("")
-            }
-
-            if (skillString.isNotEmpty()) {
-                when (val l = m.skillCommand.last()) {
-                    is SkillMakerEntry.Action -> when (l.action) {
-                        is AutoSkillAction.Atk -> {
-                            m.skillCommand.removeLast()
-                            m.skillCommand.add(SkillMakerEntry.Next.Wave(l.action))
-                        }
-                        else -> {
-                            // do nothing
-                        }
-                    }
-                }
-            }
-
-            m
+    private val model: SkillMakerModel = if (state.skillString != null) {
+        SkillMakerModel(state.skillString)
+    } else {
+        val skillString = battleConfig.skillCommand
+        val m = try {
+            SkillMakerModel(skillString)
+        } catch (e: Exception) {
+            SkillMakerModel("")
         }
 
-        _stage.value = if (state.skillString != null) {
+        if (skillString.isNotEmpty()) {
+            m.skillCommand.last().let { l ->
+                if (l is SkillMakerEntry.Action && l.action is AutoSkillAction.Atk) {
+                    m.skillCommand.removeLast()
+                    m.skillCommand.add(SkillMakerEntry.Next.Wave(l.action))
+                }
+            }
+        }
+
+        m
+    }
+
+    private val _stage = mutableStateOf(
+        if (state.skillString != null) {
             state.stage
         } else {
             model.skillCommand.count { it is SkillMakerEntry.Next.Wave } + 1
         }
+    )
 
-        _currentIndex.value = if (state.skillString != null) {
+    private val _currentIndex = mutableStateOf(
+        if (state.skillString != null) {
             state.currentIndex
         } else model.skillCommand.lastIndex
-    }
+    )
+    val currentIndex: State<Int> = _currentIndex
 
     private var currentSkill = state.currentSkill
 
@@ -86,7 +79,7 @@ class SkillMakerViewModel @Inject constructor(
         saveState()
     }
 
-    val skillCommand = model.skillCommand
+    val skillCommand get() = model.skillCommand
 
     private fun getSkillCmdString() = model.toString()
 

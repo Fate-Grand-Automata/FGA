@@ -9,7 +9,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -251,7 +250,7 @@ fun Skills(onSkill: (Skill.Servant) -> Unit) {
     }
 }
 
-val SkillMakerEntry.colorRes: Int get() {
+val SkillMakerEntry?.colorRes: Int get() {
     val defaultColor = R.color.colorAccent
 
     return when (this) {
@@ -288,7 +287,9 @@ fun SkillHistory(vm: SkillMakerViewModel) {
         modifier = Modifier.padding(vertical = 16.dp)
     ) {
         // TODO: Compose is bugged on item removal in beta1: https://issuetracker.google.com/issues/163069767
-        itemsIndexed(skillCommand) { index, item ->
+        //itemsIndexed(skillCommand) { index, item ->
+        items(skillCommand.size) { index ->
+            val item = skillCommand.getOrNull(index)
             val isSelected = index == currentIndex
 
             val shape =
