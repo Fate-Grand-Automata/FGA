@@ -11,14 +11,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -103,30 +104,42 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
                         item {
                             val cmd by config.skillCommand.collect()
-                            val cmdDialog = editTextDialog(
-                                title = stringResource(R.string.p_battle_config_cmd),
-                                value = cmd,
-                                valueChange = { config.skillCommand.set(it) }
-                            )
+                            var editing by remember { mutableStateOf(false) }
 
-                            Preference(
-                                title = stringResource(R.string.p_battle_config_cmd),
-                                summary = cmd,
-                                onClick = {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
-
-                                    nav(action)
-                                }
-                            ) {
-                                Icon(
-                                    painterResource(R.drawable.ic_terminal),
-                                    contentDescription = "Show Textbox for editing Skill command",
-                                    modifier = Modifier
-                                        .size(40.dp)
-                                        .clickable { cmdDialog.show() }
-                                        .padding(7.dp)
+                            if (editing) {
+                                PreferenceTextEditor(
+                                    label = stringResource(R.string.p_battle_config_cmd),
+                                    prefill = cmd,
+                                    onSubmit = {
+                                        config.skillCommand.set(it)
+                                        editing = false
+                                    },
+                                    onCancel = { editing = false },
+                                    keyboardOptions = KeyboardOptions(
+                                        imeAction = ImeAction.Done
+                                    )
                                 )
+                            }
+                            else {
+                                Preference(
+                                    title = stringResource(R.string.p_battle_config_cmd),
+                                    summary = cmd,
+                                    onClick = {
+                                        val action = BattleConfigItemSettingsFragmentDirections
+                                            .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
+
+                                        nav(action)
+                                    }
+                                ) {
+                                    Icon(
+                                        painterResource(R.drawable.ic_terminal),
+                                        contentDescription = "Show Textbox for editing Skill command",
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .clickable { editing = true }
+                                            .padding(7.dp)
+                                    )
+                                }
                             }
 
                             Divider()
