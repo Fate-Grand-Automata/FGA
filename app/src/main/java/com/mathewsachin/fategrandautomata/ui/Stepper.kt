@@ -13,53 +13,52 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.ui.prefs.StatusWrapper
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.milliseconds
 
 @Composable
-fun Stepper(
-    value: Int,
-    onValueChange: (Int) -> Unit,
+private fun DeltaButton(
+    currentValue: Int,
+    onCurrentValueChange: (Int) -> Unit,
+    onCommit: (Int) -> Unit,
     valueRange: IntRange,
-    enabled: Boolean = true
+    delta: Int,
+    text: String,
+    enabled: Boolean
 ) {
     val scope = rememberCoroutineScope()
-    var currentJob by remember { mutableStateOf<Job?>(null) }
+    val canDelta = (currentValue + delta) in valueRange
+    val isEnabled = enabled && canDelta
 
-    var currentValue by remember(value) { mutableStateOf(value) }
+    val rememberedCanDelta by rememberUpdatedState(canDelta)
+    val rememberedIsEnabled by rememberUpdatedState(isEnabled)
 
-    val onComplete = {
-        scope.launch {
-            currentJob?.cancel()
-            currentJob?.join()
-
-            onValueChange(currentValue.coerceIn(valueRange))
-        }
+    val onCurrentValueDelta by rememberUpdatedState {
+        onCurrentValueChange(currentValue + delta)
+    }
+    val onPerformCommit by rememberUpdatedState {
+        onCommit(currentValue.coerceIn(valueRange))
     }
 
-    // TODO: Enabled state for the buttons not working correctly
-    fun makeModifier(delta: Int, enabled: Boolean) =
-        Modifier
+    val longPressTimeout = ViewConfiguration.getLongPressTimeout().milliseconds
+    var repeatInterval = 100.milliseconds
+    val repeatIntervalDelta = 2.milliseconds
+    val minRepeatInterval = 10.milliseconds
+
+    Surface(
+        modifier = Modifier
             .pointerInput(true) {
                 detectTapGestures(onPress = {
-                    currentJob?.cancel()
-
-                    if (enabled) {
-                        currentJob = scope.launch {
+                    if (rememberedIsEnabled) {
+                        val currentJob = scope.launch {
                             var first = false
-                            val onCurrentValueChange = { currentValue += delta }
 
                             try {
-                                delay(ViewConfiguration.getLongPressTimeout().milliseconds)
+                                delay(longPressTimeout)
 
-                                var repeatInterval = 100.milliseconds
-                                val repeatIntervalDelta = 2.milliseconds
-                                val minRepeatInterval = 10.milliseconds
-
-                                while (true) {
-                                    onCurrentValueChange()
+                                while (rememberedCanDelta) {
+                                    onCurrentValueDelta()
                                     first = true
 
                                     delay(repeatInterval)
@@ -68,37 +67,55 @@ fun Stepper(
                                         .coerceAtLeast(minRepeatInterval)
                                 }
                             } catch (e: Exception) {
-                                if (!first) {
-                                    onCurrentValueChange()
-                                }
+                                // Ignore
+                            }
+
+                            if (!first) {
+                                onCurrentValueDelta()
                             }
                         }
 
-                        awaitRelease()
-                        onComplete()
+                        tryAwaitRelease()
+
+                        currentJob.cancel()
+                        currentJob.join()
+
+                        onPerformCommit()
                     }
                 })
             }
-
-    @Composable
-    fun DeltaButton(delta: Int, text: String, enabled: Boolean) {
-        Surface(
-            modifier = makeModifier(delta, enabled)
-        ) {
-            StatusWrapper(enabled = enabled && (currentValue + delta) in valueRange) {
-                Text(
-                    text,
-                    modifier = Modifier
-                        .padding(20.dp, 10.dp)
-                )
-            }
+    ) {
+        StatusWrapper(enabled = isEnabled) {
+            Text(
+                text,
+                modifier = Modifier
+                    .padding(20.dp, 10.dp)
+            )
         }
     }
+}
+
+@Composable
+fun Stepper(
+    value: Int,
+    onValueChange: (Int) -> Unit,
+    valueRange: IntRange,
+    enabled: Boolean = true
+) {
+    var currentValue by remember(value) { mutableStateOf(value) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        DeltaButton(delta = -1, text = "-", enabled = enabled)
+        DeltaButton(
+            currentValue = currentValue,
+            onCurrentValueChange = { currentValue = it },
+            onCommit = onValueChange,
+            valueRange = valueRange,
+            delta = -1,
+            text = "-",
+            enabled = enabled
+        )
 
         StatusWrapper(enabled = enabled) {
             Text(
@@ -109,6 +126,14 @@ fun Stepper(
             )
         }
 
-        DeltaButton(delta = 1, text = "+", enabled = enabled)
+        DeltaButton(
+            currentValue = currentValue,
+            onCurrentValueChange = { currentValue = it },
+            onCommit = onValueChange,
+            valueRange = valueRange,
+            delta = 1,
+            text = "+",
+            enabled = enabled
+        )
     }
 }
