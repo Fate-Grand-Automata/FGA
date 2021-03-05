@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.ComposeView
@@ -140,6 +141,8 @@ class PreferredSupportSettingsFragment : Fragment() {
                     }
                 }
 
+                val max by pref.collect()
+
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
@@ -148,14 +151,21 @@ class PreferredSupportSettingsFragment : Fragment() {
                         .padding(top = 9.dp)
                         .border(
                             width = 1.dp,
-                            brush = SolidColor(MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)),
+                            brush = SolidColor(
+                                if (max) MaterialTheme.colors.secondary
+                                else MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
+                            ),
                             shape = MaterialTheme.shapes.medium
                         )
                         .clickable { pref.toggle() }
                         .padding(8.dp)
                 ) {
-                    val max by pref.collect()
-                    Text(skillText(max))
+                    Text(
+                        skillText(max),
+                        color =
+                            if (max) MaterialTheme.colors.secondary
+                            else Color.Unspecified
+                    )
                 }
             }
         }
