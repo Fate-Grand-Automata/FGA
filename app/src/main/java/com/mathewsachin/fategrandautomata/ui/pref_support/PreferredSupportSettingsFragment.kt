@@ -178,6 +178,8 @@ fun Pref<Set<String>>.SupportSelectPreference(
     entries: Map<String, String>,
     icon: Painter? = null
 ) {
+    val value by collect()
+
     MultiSelectListPreference(
         title = title,
         entries = entries,
@@ -188,13 +190,15 @@ fun Pref<Set<String>>.SupportSelectPreference(
             else it.joinToString()
         }
     ) {
-        Icon(
-            painterResource(R.drawable.ic_close),
-            contentDescription = "Clear",
-            modifier = Modifier
-                .size(40.dp)
-                .clickable(onClick = { resetToDefault() })
-                .padding(7.dp)
-        )
+        if (value.isNotEmpty()) {
+            Icon(
+                painterResource(R.drawable.ic_close),
+                contentDescription = "Clear",
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable(onClick = { resetToDefault() })
+                    .padding(7.dp)
+            )
+        }
     }
 }
