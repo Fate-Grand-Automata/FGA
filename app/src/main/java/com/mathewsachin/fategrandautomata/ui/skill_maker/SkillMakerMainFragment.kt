@@ -149,7 +149,7 @@ fun SkillMakerMain(
                         text = R.string.skill_maker_main_clear,
                         icon = R.drawable.ic_clear,
                         onClick = onClear,
-                        enabled = currentIndex > 0,
+                        enabled = vm.skillCommand.size > 1,
                         modifier = Modifier.padding(end = 5.dp)
                     )
 
