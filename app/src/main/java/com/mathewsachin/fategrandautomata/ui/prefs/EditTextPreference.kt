@@ -18,8 +18,10 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mathewsachin.fategrandautomata.R
@@ -67,8 +69,15 @@ fun PreferenceTextEditor(
     validate: (String) -> Boolean = { true },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
-    var text by remember(prefill) { mutableStateOf(prefill) }
-    val valid = remember(text) { validate(text) }
+    var textFieldValue by remember(prefill) {
+        mutableStateOf(
+            TextFieldValue(
+                prefill,
+                selection = TextRange(prefill.length)
+            )
+        )
+    }
+    val valid = remember(textFieldValue) { validate(textFieldValue.text) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -76,8 +85,8 @@ fun PreferenceTextEditor(
         val focusRequester = remember { FocusRequester() }
 
         TextField(
-            value = text,
-            onValueChange = { text = it },
+            value = textFieldValue,
+            onValueChange = { textFieldValue = it },
             label = { Text(label, color = MaterialTheme.colors.onBackground.copy(0.8f)) },
             modifier = Modifier
                 .focusRequester(focusRequester)
@@ -91,7 +100,7 @@ fun PreferenceTextEditor(
             keyboardActions = KeyboardActions(
                 onDone = {
                     if (valid) {
-                        onSubmit(text)
+                        onSubmit(textFieldValue.text)
                     }
                 }
             )
@@ -112,7 +121,7 @@ fun PreferenceTextEditor(
         }
 
         IconButton(
-            onClick = { onSubmit(text) },
+            onClick = { onSubmit(textFieldValue.text) },
             enabled = valid
         ) {
             StatusWrapper(enabled = valid) {
@@ -209,6 +218,7 @@ fun MaterialDialog.input(
         index
     }
 
+    // TODO: TextField/SoftwareKeyboard focus is bugged in compose beta1, Error happens if a focused TextField goes out of composition
     val focusManager = LocalFocusManager.current
 
     val callbackIndex = remember {
