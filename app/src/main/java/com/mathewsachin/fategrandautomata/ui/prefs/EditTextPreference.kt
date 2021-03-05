@@ -15,6 +15,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -203,14 +204,19 @@ fun MaterialDialog.input(
     val valid = remember(text) { isTextValid(text) }
 
     val positiveEnabledIndex = remember {
-            val index = positiveEnabledCounter.getAndIncrement()
-            positiveEnabled.add(index, valid)
-            index
-        }
+        val index = positiveEnabledCounter.getAndIncrement()
+        positiveEnabled.add(index, valid)
+        index
+    }
+
+    val focusManager = LocalFocusManager.current
 
     val callbackIndex = remember {
         val index = callbackCounter.getAndIncrement()
-        callbacks.add(index) { onInput(text) }
+        callbacks.add(index) {
+            focusManager.clearFocus(true)
+            onInput(text)
+        }
         index
     }
 
