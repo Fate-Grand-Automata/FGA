@@ -6,17 +6,18 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -31,8 +32,10 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
+import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.*
 import com.mathewsachin.fategrandautomata.util.nav
@@ -154,18 +157,20 @@ class BattleConfigItemSettingsFragment : Fragment() {
                         }
 
                         item {
-                            val cardPriority by config.cardPriority.collect()
+                            val cardPriority by vm.cardPriority.collectAsState(null)
 
-                            Preference(
-                                title = stringResource(R.string.p_battle_config_card_priority),
-                                summary = cardPriority,
-                                onClick = {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
+                            cardPriority?.let {
+                                Preference(
+                                    title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
+                                    summary = { CardPrioritySummary(it) },
+                                    onClick = {
+                                        val action = BattleConfigItemSettingsFragmentDirections
+                                            .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
 
-                                    nav(action)
-                                }
-                            )
+                                        nav(action)
+                                    }
+                                )
+                            }
 
                             Divider()
                         }
@@ -309,5 +314,37 @@ class BattleConfigItemSettingsFragment : Fragment() {
         preferences.removeBattleConfig(battleConfigKey)
 
         findNavController().popBackStack()
+    }
+}
+
+@Composable
+fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
+    Column(
+        modifier = Modifier
+            .padding(vertical = 5.dp)
+    ) {
+        cardPriority.forEachIndexed { wave, priorities ->
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 2.dp)
+            ) {
+                Text("W${wave + 1}: ")
+
+                priorities.forEach {
+                    Surface(
+                        color = colorResource(it.getColorRes()).copy(alpha = 0.7f),
+                        modifier = Modifier
+                            .padding(horizontal = 2.dp)
+                    ) {
+                        Text(
+                            it.toString(),
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(2.dp, 1.dp)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
