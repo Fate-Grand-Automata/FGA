@@ -215,7 +215,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
                         }
 
                         item {
-                            val preferredSummary by vm.preferredMessage.collectAsState("")
+                            val maxSkillText by vm.maxSkillText.collectAsState("")
 
                             SupportGroup(
                                 config = config,
@@ -225,7 +225,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
                                     nav(action)
                                 },
-                                preferredSummary = preferredSummary,
+                                maxSkillText = maxSkillText,
                                 friendEntries = supportViewModel.friends
                             )
 
