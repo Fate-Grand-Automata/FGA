@@ -79,58 +79,59 @@ fun PreferenceTextEditor(
     }
     val valid = remember(textFieldValue) { validate(textFieldValue.text) }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        val focusRequester = remember { FocusRequester() }
+    val focusRequester = remember { FocusRequester() }
 
-        TextField(
-            value = textFieldValue,
-            onValueChange = { textFieldValue = it },
-            label = { Text(label, color = MaterialTheme.colors.onBackground.copy(0.8f)) },
-            modifier = Modifier
-                .focusRequester(focusRequester)
-                .weight(1f),
-            isError = !valid,
-            keyboardOptions = keyboardOptions,
-            textStyle = TextStyle(MaterialTheme.colors.onBackground, fontSize = 16.sp),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    if (valid) {
-                        onSubmit(textFieldValue.text)
+    TextField(
+        value = textFieldValue,
+        onValueChange = { textFieldValue = it },
+        label = { Text(label, color = MaterialTheme.colors.onBackground.copy(0.8f)) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester),
+        isError = !valid,
+        keyboardOptions = keyboardOptions,
+        textStyle = TextStyle(MaterialTheme.colors.onBackground, fontSize = 16.sp),
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Transparent
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                if (valid) {
+                    onSubmit(textFieldValue.text)
+                }
+            }
+        ),
+        trailingIcon = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = onCancel,
+                ) {
+                    Icon(
+                        painterResource(R.drawable.ic_close),
+                        contentDescription = stringResource(android.R.string.cancel),
+                        tint = MaterialTheme.colors.error
+                    )
+                }
+
+                IconButton(
+                    onClick = { onSubmit(textFieldValue.text) },
+                    enabled = valid
+                ) {
+                    StatusWrapper(enabled = valid) {
+                        Icon(
+                            painterResource(R.drawable.ic_check),
+                            contentDescription = stringResource(android.R.string.ok)
+                        )
                     }
                 }
-            )
-        )
-
-        SideEffect {
-            focusRequester.requestFocus()
-        }
-
-        IconButton(
-            onClick = onCancel,
-        ) {
-            Icon(
-                painterResource(R.drawable.ic_close),
-                contentDescription = stringResource(android.R.string.cancel),
-                tint = MaterialTheme.colors.error
-            )
-        }
-
-        IconButton(
-            onClick = { onSubmit(textFieldValue.text) },
-            enabled = valid
-        ) {
-            StatusWrapper(enabled = valid) {
-                Icon(
-                    painterResource(R.drawable.ic_check),
-                    contentDescription = stringResource(android.R.string.ok)
-                )
             }
         }
+    )
+
+    SideEffect {
+        focusRequester.requestFocus()
     }
 }
 
