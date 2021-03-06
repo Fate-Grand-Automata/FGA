@@ -8,6 +8,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -38,6 +40,8 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.*
+import com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerEntry
+import com.mathewsachin.fategrandautomata.ui.skill_maker.colorRes
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.stringRes
 import dagger.hilt.android.AndroidEntryPoint
@@ -107,6 +111,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
                         item {
                             val cmd by config.skillCommand.collect()
+                            val parsedCommand by vm.skillCommand.collectAsState(listOf())
                             var editing by remember { mutableStateOf(false) }
 
                             if (editing) {
@@ -125,8 +130,8 @@ class BattleConfigItemSettingsFragment : Fragment() {
                             }
                             else {
                                 Preference(
-                                    title = stringResource(R.string.p_battle_config_cmd),
-                                    summary = cmd,
+                                    title = { Text(stringResource(R.string.p_battle_config_cmd)) },
+                                    summary = if (parsedCommand.isNotEmpty()) { { SkillCommandSummary(parsedCommand) } } else null,
                                     onClick = {
                                         val action = BattleConfigItemSettingsFragmentDirections
                                             .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
@@ -344,6 +349,29 @@ fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
+    LazyRow(
+        modifier = Modifier
+            .padding(vertical = 2.dp)
+    ) {
+        items(skillCommand) {
+            Surface(
+                color = colorResource(it.colorRes),
+                modifier = Modifier
+                    .padding(horizontal = 2.dp)
+            ) {
+                Text(
+                    it.toString(),
+                    color = Color.White,
+                    modifier = Modifier
+                        .padding(2.dp, 1.dp)
+                )
             }
         }
     }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.combine
@@ -28,6 +29,20 @@ class BattleConfigItemViewModel @Inject constructor(
             .asFlow()
             .map {
                 CardPriorityPerWave.of(it)
+            }
+
+    val skillCommand =
+        prefs.skillCommand
+            .asFlow()
+            .map {
+                try {
+                    SkillMakerModel(it)
+                }
+                catch (e: Exception) {
+                    SkillMakerModel("")
+                }
+                    .skillCommand
+                    .drop(1)
             }
 
     private val skillLevels =
