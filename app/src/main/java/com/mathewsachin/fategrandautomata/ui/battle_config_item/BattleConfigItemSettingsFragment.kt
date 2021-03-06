@@ -11,10 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,8 +29,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
+import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillCommand
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -110,45 +109,16 @@ class BattleConfigItemSettingsFragment : Fragment() {
                         }
 
                         item {
-                            val cmd by config.skillCommand.collect()
-                            val parsedCommand by vm.skillCommand.collectAsState(listOf())
-                            var editing by remember { mutableStateOf(false) }
+                            SkillCommandGroup(
+                                config = config,
+                                vm = vm,
+                                openSkillMaker = {
+                                    val action = BattleConfigItemSettingsFragmentDirections
+                                        .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
 
-                            if (editing) {
-                                PreferenceTextEditor(
-                                    label = stringResource(R.string.p_battle_config_cmd),
-                                    prefill = cmd,
-                                    onSubmit = {
-                                        config.skillCommand.set(it)
-                                        editing = false
-                                    },
-                                    onCancel = { editing = false },
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Done
-                                    )
-                                )
-                            }
-                            else {
-                                Preference(
-                                    title = { Text(stringResource(R.string.p_battle_config_cmd)) },
-                                    summary = if (parsedCommand.isNotEmpty()) { { SkillCommandSummary(parsedCommand) } } else null,
-                                    onClick = {
-                                        val action = BattleConfigItemSettingsFragmentDirections
-                                            .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
-
-                                        nav(action)
-                                    }
-                                ) {
-                                    Icon(
-                                        painterResource(R.drawable.ic_terminal),
-                                        contentDescription = "Show Textbox for editing Skill command",
-                                        modifier = Modifier
-                                            .size(40.dp)
-                                            .clickable { editing = true }
-                                            .padding(7.dp)
-                                    )
+                                    nav(action)
                                 }
-                            }
+                            )
 
                             Divider()
                         }
@@ -373,6 +343,71 @@ fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
                         .padding(2.dp, 1.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun SkillCommandGroup(
+    config: BattleConfigCore,
+    vm: BattleConfigItemViewModel,
+    openSkillMaker: () -> Unit
+) {
+    val cmd by config.skillCommand.collect()
+    val parsedCommand by vm.skillCommand.collectAsState(listOf())
+    var editing by remember { mutableStateOf(false) }
+
+    if (editing) {
+        var errorMessage by remember { mutableStateOf("") }
+
+        Column {
+            PreferenceTextEditor(
+                label = stringResource(R.string.p_battle_config_cmd),
+                prefill = cmd,
+                onSubmit = {
+                    try {
+                        // Check if parses correctly
+                        AutoSkillCommand.parse(it)
+
+                        config.skillCommand.set(it)
+                        editing = false
+                        errorMessage = ""
+                    } catch (e: Exception) {
+                        // TODO: Localize
+                        errorMessage = "Invalid skill command"
+                    }
+                },
+                onCancel = { editing = false },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                )
+            )
+
+            if (errorMessage.isNotBlank()) {
+                Text(
+                    errorMessage,
+                    style = MaterialTheme.typography.caption,
+                    color = MaterialTheme.colors.error,
+                    modifier = Modifier
+                        .padding(16.dp, 2.dp)
+                )
+            }
+        }
+    }
+    else {
+        Preference(
+            title = { Text(stringResource(R.string.p_battle_config_cmd)) },
+            summary = if (parsedCommand.isNotEmpty()) { { SkillCommandSummary(parsedCommand) } } else null,
+            onClick = openSkillMaker
+        ) {
+            Icon(
+                painterResource(R.drawable.ic_terminal),
+                contentDescription = "Show Textbox for editing Skill command",
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable { editing = true }
+                    .padding(7.dp)
+            )
         }
     }
 }
