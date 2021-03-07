@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.prefs
 
-import androidx.core.content.edit
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 
@@ -31,12 +30,10 @@ internal class BattleConfig(
 
     override var spam by prefs.spam
 
-    override fun export(): Map<String, *> = prefs.sharedPrefs.all
+    override fun export(): Map<String, *> = prefs.export()
 
     override fun import(map: Map<String, *>) =
-        prefs.sharedPrefs.edit {
-            import(map)
-        }
+        prefs.import(map)
 
     override fun equals(other: Any?): Boolean {
         if (other is IBattleConfig) {

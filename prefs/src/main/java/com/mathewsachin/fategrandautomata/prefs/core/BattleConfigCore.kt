@@ -2,9 +2,11 @@ package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
+import com.mathewsachin.fategrandautomata.prefs.import
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
@@ -21,6 +23,13 @@ class BattleConfigCore(
     )
 
     private val maker = PrefMaker(sharedPrefs)
+
+    fun import(map: Map<String, *>) =
+        sharedPrefs.edit {
+            import(map)
+        }
+
+    fun export(): Map<String, *> = sharedPrefs.all
 
     val name = maker.string("autoskill_name", "--")
     val skillCommand = maker.string("autoskill_cmd")
