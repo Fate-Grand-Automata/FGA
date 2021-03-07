@@ -31,7 +31,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.prefs.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.prefs.collect
-import com.mathewsachin.fategrandautomata.ui.prefs.editTextDialog
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -123,15 +122,8 @@ class BattleConfigListFragment : Fragment() {
                         }
 
                         if (!vm.selectionMode) {
-                            val newDialog = editTextDialog(
-                                title = stringResource(R.string.p_battle_config_name),
-                                value = "",
-                                valueChange = { addNewConfig(it) },
-                                validate = { it.isNotBlank() }
-                            )
-
                             FloatingActionButton(
-                                onClick = { newDialog.show() },
+                                onClick = { addNewConfig() },
                                 modifier = Modifier
                                     .align(Alignment.BottomEnd)
                                     .padding(16.dp)
@@ -166,10 +158,8 @@ class BattleConfigListFragment : Fragment() {
         }
     }
 
-    private fun addNewConfig(name: String) =
-        editItem(vm.newConfig().apply {
-            this.name = name
-        })
+    private fun addNewConfig() =
+        editItem(vm.newConfig())
 
     private fun editItem(config: IBattleConfig) {
         val action = BattleConfigListFragmentDirections
