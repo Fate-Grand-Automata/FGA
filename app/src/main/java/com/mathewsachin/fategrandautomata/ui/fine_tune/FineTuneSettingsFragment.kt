@@ -25,7 +25,7 @@ import androidx.fragment.app.viewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.ui.prefs.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
 import com.mathewsachin.fategrandautomata.ui.prefs.SeekBarPreference
 import com.vanpra.composematerialdialogs.MaterialDialog

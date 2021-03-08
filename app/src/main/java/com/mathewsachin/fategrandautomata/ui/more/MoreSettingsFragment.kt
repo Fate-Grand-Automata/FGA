@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.ui.prefs.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker

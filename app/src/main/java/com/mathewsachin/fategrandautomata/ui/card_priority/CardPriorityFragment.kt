@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.ui.prefs.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

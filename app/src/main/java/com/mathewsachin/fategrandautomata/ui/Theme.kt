@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.prefs
+package com.mathewsachin.fategrandautomata.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme

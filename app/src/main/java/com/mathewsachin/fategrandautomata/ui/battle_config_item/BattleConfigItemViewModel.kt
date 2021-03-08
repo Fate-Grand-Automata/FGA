@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
@@ -8,7 +7,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import java.io.OutputStream
@@ -17,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class BattleConfigItemViewModel @Inject constructor(
     val prefsCore: PrefsCore,
-    @ApplicationContext context: Context,
     savedState: SavedStateHandle
 ) : ViewModel() {
     val battleConfigKey: String = savedState[BattleConfigItemSettingsFragmentArgs::key.name]

@@ -28,8 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BattleConfigListViewModel @Inject constructor(
     prefsCore: PrefsCore,
-    val prefs: IPreferences,
-    @ApplicationContext val context: Context
+    val prefs: IPreferences
 ) : ViewModel() {
     val battleConfigItems = prefsCore
         .battleConfigList
@@ -58,7 +57,7 @@ class BattleConfigListViewModel @Inject constructor(
 
     data class ImportExportResult(val failureCount: Int)
 
-    fun exportAsync(dirUri: Uri): Deferred<ImportExportResult> =
+    fun exportAsync(dirUri: Uri, context: Context): Deferred<ImportExportResult> =
         viewModelScope.async {
             var failed = 0
 
@@ -91,7 +90,7 @@ class BattleConfigListViewModel @Inject constructor(
             ImportExportResult(failed)
         }
 
-    fun importAsync(uris: List<Uri>): Deferred<ImportExportResult> =
+    fun importAsync(uris: List<Uri>, context: Context): Deferred<ImportExportResult> =
         viewModelScope.async {
             var failed = 0
 

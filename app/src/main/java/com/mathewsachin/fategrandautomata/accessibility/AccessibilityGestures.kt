@@ -149,18 +149,18 @@ class AccessibilityGestures @Inject constructor(
         gesturePrefs.clickWaitTime.wait()
     }
 
-    private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Unit = suspendCancellableCoroutine {
+    private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Boolean = suspendCancellableCoroutine {
         val gestureDesc = GestureDescription.Builder()
             .addStroke(StrokeDesc)
             .build()
 
         val callback = object : AccessibilityService.GestureResultCallback() {
             override fun onCompleted(gestureDescription: GestureDescription?) {
-                it.resume(Unit)
+                it.resume(true)
             }
 
             override fun onCancelled(gestureDescription: GestureDescription?) {
-                it.resume(Unit)
+                it.resume(false)
             }
         }
 

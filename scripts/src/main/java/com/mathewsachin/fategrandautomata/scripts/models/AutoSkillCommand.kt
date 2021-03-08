@@ -6,8 +6,6 @@ import java.util.*
 class AutoSkillCommand private constructor(
     val stages: List<List<List<AutoSkillAction>>>
 ) {
-    val lastStage = stages.lastIndex
-
     operator fun get(stage: Int, turn: Int): List<AutoSkillAction> {
         if (stage < stages.size) {
             val turns = stages[stage]

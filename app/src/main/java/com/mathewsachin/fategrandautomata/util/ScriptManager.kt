@@ -11,7 +11,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncher
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncherResponse
@@ -223,22 +222,6 @@ class ScriptManager @Inject constructor(
         entryPoint.run()
     }
 
-    sealed class PickerItem(val name: String) {
-        class Other(name: String) : PickerItem(name)
-        class Battle(val battleConfig: IBattleConfig) : PickerItem(battleConfig.name)
-        class PresentBox(val maxGoldEmberSetSize: Int) : PickerItem(maxGoldEmberSetSize.toString())
-    }
-
-    val ScriptModeEnum.display
-        get() =
-            when (this) {
-                ScriptModeEnum.Battle -> R.string.p_script_mode_battle
-                ScriptModeEnum.FP -> R.string.p_script_mode_fp
-                ScriptModeEnum.Lottery -> R.string.p_script_mode_lottery
-                ScriptModeEnum.PresentBox -> R.string.p_script_mode_gift_box
-                ScriptModeEnum.SupportImageMaker -> R.string.p_script_mode_support_image_maker
-            }
-
     private fun scriptPicker(
         context: Context,
         detectedMode: ScriptModeEnum,
@@ -309,3 +292,13 @@ class ScriptManager @Inject constructor(
         }
     }
 }
+
+val ScriptModeEnum.stringRes
+    get() =
+        when (this) {
+            ScriptModeEnum.Battle -> R.string.p_script_mode_battle
+            ScriptModeEnum.FP -> R.string.p_script_mode_fp
+            ScriptModeEnum.Lottery -> R.string.p_script_mode_lottery
+            ScriptModeEnum.PresentBox -> R.string.p_script_mode_gift_box
+            ScriptModeEnum.SupportImageMaker -> R.string.p_script_mode_support_image_maker
+        }

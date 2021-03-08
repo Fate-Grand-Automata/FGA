@@ -34,6 +34,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.*

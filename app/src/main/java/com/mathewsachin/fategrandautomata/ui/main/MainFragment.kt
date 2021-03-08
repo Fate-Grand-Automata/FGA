@@ -32,7 +32,7 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.StartMediaProjection
-import com.mathewsachin.fategrandautomata.ui.prefs.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav

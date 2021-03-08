@@ -31,6 +31,7 @@ import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.prefs.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

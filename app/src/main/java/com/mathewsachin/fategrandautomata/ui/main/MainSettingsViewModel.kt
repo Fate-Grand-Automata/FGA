@@ -11,15 +11,13 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @HiltViewModel
 class MainSettingsViewModel @Inject constructor(
     val prefsCore: PrefsCore,
-    val prefs: IPreferences,
-    @ApplicationContext val context: Context
+    val prefs: IPreferences
 ) : ViewModel() {
     val autoStartService
         get() =
@@ -31,11 +29,11 @@ class MainSettingsViewModel @Inject constructor(
     val serviceStarted get() = ScriptRunnerService.serviceStarted
 
     // Activity context is needed since we can't show AlertDialog with Application context.
-    fun ensureRootDir(picker: ActivityResultLauncher<Uri>, activityContext: Context): Boolean {
+    fun ensureRootDir(picker: ActivityResultLauncher<Uri>, context: Context): Boolean {
         val dirRoot = prefsCore.dirRoot.get()
 
         if (dirRoot.isBlank()) {
-            AlertDialog.Builder(activityContext)
+            AlertDialog.Builder(context)
                 .setTitle(R.string.p_choose_folder_title)
                 .setMessage(R.string.p_choose_folder_message)
                 .setPositiveButton(R.string.p_choose_folder_action) { _, _ ->
@@ -50,7 +48,7 @@ class MainSettingsViewModel @Inject constructor(
         val docFile = DocumentFile.fromTreeUri(context, Uri.parse(dirRoot))
 
         if (docFile?.exists() != true) {
-            AlertDialog.Builder(activityContext)
+            AlertDialog.Builder(context)
                 .setTitle(R.string.p_choose_folder_not_exist_title)
                 .setMessage(R.string.p_choose_folder_not_exist_message)
                 .setPositiveButton(R.string.p_choose_folder_action) { _, _ ->

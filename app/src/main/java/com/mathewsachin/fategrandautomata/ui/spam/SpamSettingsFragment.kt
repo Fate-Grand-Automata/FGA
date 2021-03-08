@@ -30,7 +30,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
-import com.mathewsachin.fategrandautomata.ui.prefs.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
 import com.mathewsachin.fategrandautomata.ui.prefs.multiSelectListDialog

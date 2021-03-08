@@ -35,7 +35,7 @@ class Game @Inject constructor(
     val prefs: IPreferences,
     val images: ImageLocator,
     transformationExtensions: ITransformationExtensions,
-    val gameAreaManager: GameAreaManager,
+    gameAreaManager: GameAreaManager,
     val automataApi: IAutomataExtensions
 ) {
     val scriptArea =
