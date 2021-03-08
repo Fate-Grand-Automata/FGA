@@ -171,7 +171,7 @@ class BattleConfigListFragment : Fragment() {
     private fun exportBattleConfigs(dirUri: Uri?) {
         if (dirUri != null) {
             lifecycleScope.launch {
-                val result = vm.exportAsync(dirUri).await()
+                val result = vm.exportAsync(dirUri, requireContext()).await()
 
                 if (result.failureCount > 0) {
                     val msg = getString(R.string.battle_config_list_export_failed, result.failureCount)
@@ -189,7 +189,7 @@ class BattleConfigListFragment : Fragment() {
 
     val battleConfigImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
         lifecycleScope.launch {
-            val result = vm.importAsync(uris).await()
+            val result = vm.importAsync(uris, requireContext()).await()
 
             if (result.failureCount > 0) {
                 val msg = getString(R.string.battle_config_list_import_failed, result.failureCount)
