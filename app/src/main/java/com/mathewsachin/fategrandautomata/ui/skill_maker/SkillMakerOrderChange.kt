@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -21,41 +18,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.OrderChangeMember
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class SkillMakerOrderChangeFragment : Fragment() {
-    val viewModel: SkillMakerViewModel by activityViewModels()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        skillMakerScaffold {
-            OrderChange(
-                onCommit = { starting, sub -> orderChangeOk(starting, sub) },
-                onCancel = { goBack() }
-            )
-        }
-
-    fun goBack() {
-        findNavController().popBackStack()
-    }
-
-    fun orderChangeOk(
-        starting: OrderChangeMember.Starting,
-        sub: OrderChangeMember.Sub
-    ) {
-        viewModel.commitOrderChange(starting, sub)
-
-        goBack()
-    }
-}
 
 @Composable
-fun OrderChange(
+fun SkillMakerOrderChange(
     onCommit: (starting: OrderChangeMember.Starting, sub: OrderChangeMember.Sub) -> Unit,
     onCancel: () -> Unit
 ) {

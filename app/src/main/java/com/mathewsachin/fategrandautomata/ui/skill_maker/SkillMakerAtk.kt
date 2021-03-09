@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -21,50 +18,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-
-@AndroidEntryPoint
-class SkillMakerAtkFragment : Fragment() {
-    val viewModel: SkillMakerViewModel by activityViewModels()
-
-    @Inject
-    lateinit var prefs: IPreferences
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        skillMakerScaffold {
-            AtkScreen(
-                onNextWave = { goToNextStage(it) },
-                onNextTurn = { goToNextTurn(it) }
-            )
-        }
-
-    private fun goBack() {
-        findNavController().popBackStack()
-    }
-
-    fun goToNextStage(atk: AutoSkillAction.Atk) {
-        viewModel.nextStage(atk)
-
-        goBack()
-    }
-
-    fun goToNextTurn(atk: AutoSkillAction.Atk) {
-        viewModel.nextTurn(atk)
-
-        goBack()
-    }
-}
 
 @Composable
-fun SelectNps(
+private fun SelectNps(
     npSequence: String,
     onNpSequenceChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -118,7 +77,7 @@ fun SelectNps(
 }
 
 @Composable
-fun CardsBeforeNp(
+private fun CardsBeforeNp(
     cardsBeforeNp: Int,
     onCardsBeforeNpChange: (Int) -> Unit
 ) {
@@ -157,7 +116,7 @@ fun CardsBeforeNp(
 }
 
 @Composable
-fun AtkScreen(
+fun SkillMakerAtk(
     onNextWave: (AutoSkillAction.Atk) -> Unit,
     onNextTurn: (AutoSkillAction.Atk) -> Unit
 ) {

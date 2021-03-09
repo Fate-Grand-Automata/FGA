@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -16,34 +13,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class SkillMakerEmiyaFragment : Fragment() {
-    val vm: SkillMakerViewModel by activityViewModels()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        skillMakerScaffold {
-            EmiyaType(
-                onArts = { onSkillTarget(ServantTarget.Left) },
-                onBuster = { onSkillTarget(ServantTarget.Right) }
-            )
-        }
-
-    private fun onSkillTarget(target: ServantTarget) {
-        vm.targetSkill(target)
-
-        findNavController().popBackStack()
-    }
-}
 
 @Composable
-fun EmiyaType(
+fun SkillMakerEmiya(
     onArts: () -> Unit,
     onBuster: () -> Unit
 ) {
@@ -103,5 +76,5 @@ fun TargetButton(
 @Preview(widthDp = 600, heightDp = 300)
 @Composable
 fun TestEmiya() {
-    EmiyaType(onArts = { }, onBuster = { })
+    SkillMakerEmiya(onArts = { }, onBuster = { })
 }

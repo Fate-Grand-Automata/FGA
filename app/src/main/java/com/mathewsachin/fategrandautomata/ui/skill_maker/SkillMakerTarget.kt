@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -13,54 +10,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
-import com.mathewsachin.fategrandautomata.util.nav
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class SkillMakerTargetFragment : Fragment() {
-    val viewModel: SkillMakerViewModel by activityViewModels()
-    val args: SkillMakerTargetFragmentArgs by navArgs()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        skillMakerScaffold {
-            SkillTarget(
-                onSkillTarget = ::onSkillTarget,
-                showEmiya = args.showEmiya,
-                onEmiya = ::onEmiya,
-                showSpaceIshtar = args.showSpaceIshtar,
-                onSpaceIshtar = ::onSpaceIshtar
-            )
-        }
-
-    fun onSkillTarget(target: ServantTarget?) {
-        viewModel.targetSkill(target)
-
-        findNavController().popBackStack()
-    }
-
-    fun onSpaceIshtar() {
-        val action = SkillMakerTargetFragmentDirections
-            .actionTargetSkillMakerToSkillMakerSpaceIshtarFragment()
-
-        nav(action)
-    }
-
-    fun onEmiya() {
-        val action = SkillMakerTargetFragmentDirections
-            .actionTargetSkillMakerToSkillMakerEmiyaFragment()
-
-        nav(action)
-    }
-}
 
 @Composable
-fun SkillTarget(
+fun SkillMakerTarget(
     onSkillTarget: (ServantTarget?) -> Unit,
     showEmiya: Boolean,
     onEmiya: () -> Unit,

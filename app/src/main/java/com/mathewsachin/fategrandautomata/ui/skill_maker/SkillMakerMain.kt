@@ -1,9 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,75 +21,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
-import com.mathewsachin.fategrandautomata.util.nav
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class SkillMakerMainFragment : Fragment() {
-    val viewModel: SkillMakerViewModel by activityViewModels()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        skillMakerScaffold {
-            SkillMakerMain(
-                vm = viewModel,
-                onMasterSkills = { goToMasterSkills() },
-                onAtk = { goToAtk() },
-                onSkill = { onSkill(it.autoSkillCode) },
-                onClear = { onClear() },
-                onDone = { onDone() }
-            )
-        }
-
-    // TODO: Scroll to latest item in History when new added?
-
-    fun onClear() {
-        AlertDialog.Builder(requireContext())
-            .setTitle(R.string.skill_maker_confirm_clear_title)
-            .setMessage(R.string.skill_maker_confirm_clear_message)
-            .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes) { _, _ -> viewModel.clearAll() }
-            .show()
-    }
-
-    fun goToAtk() {
-        val action = SkillMakerMainFragmentDirections
-            .actionSkillMakerMainFragmentToSkillMakerAtkFragment()
-
-        nav(action)
-    }
-
-    fun goToMasterSkills() {
-        val action = SkillMakerMainFragmentDirections
-            .actionSkillMakerMainFragmentToSkillMakerMasterSkillsFragment()
-
-        nav(action)
-    }
-
-    fun onSkill(SkillCode: Char) {
-        viewModel.initSkill(SkillCode)
-
-        val showSpaceIshtar = SkillCode in listOf('b', 'e', 'h')
-        val showEmiya = SkillCode in listOf('c', 'f', 'i')
-
-        val action = SkillMakerMainFragmentDirections
-            .actionSkillMakerMainFragmentToSkillMakerTargetFragment(
-                showSpaceIshtar,
-                showEmiya
-            )
-
-        nav(action)
-    }
-
-    fun onDone() {
-        viewModel.battleConfig.skillCommand = viewModel.finish()
-        activity?.finish()
-    }
-}
 
 @Composable
 fun SkillMakerMain(
@@ -278,6 +208,7 @@ val SkillMakerEntry?.colorRes: Int get() {
     }
 }
 
+// TODO: Scroll to latest item in History when new added?
 @Composable
 fun SkillHistory(vm: SkillMakerViewModel) {
     val currentIndex by vm.currentIndex

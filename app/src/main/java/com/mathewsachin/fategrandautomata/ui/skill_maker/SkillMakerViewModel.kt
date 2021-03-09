@@ -15,7 +15,9 @@ class SkillMakerViewModel @Inject constructor(
     val savedState: SavedStateHandle
 ) : ViewModel() {
     val battleConfigKey: String = savedState[SkillMakerActivityArgs::key.name]
-        ?: throw kotlin.Exception("Couldn't get Battle Config key")
+        ?: throw Exception("Couldn't get Battle Config key")
+
+    val navigation = mutableStateOf<SkillMakerNav>(SkillMakerNav.Main)
 
     val battleConfig = prefs.forBattleConfig(battleConfigKey)
 
@@ -144,8 +146,14 @@ class SkillMakerViewModel @Inject constructor(
     val stage: State<Int> = _stage
     private fun prevStage() = --_stage.value
 
-    fun initSkill(SkillCode: Char) {
-        currentSkill = SkillCode
+    fun initSkill(skill: Skill) {
+        currentSkill = skill.autoSkillCode
+
+        navigation.value = SkillMakerNav.SkillTarget(skill)
+    }
+
+    fun back() {
+        navigation.value = SkillMakerNav.Main
     }
 
     fun targetSkill(target: ServantTarget?) {
@@ -160,6 +168,8 @@ class SkillMakerViewModel @Inject constructor(
                 }
             )
         )
+
+        back()
     }
 
     fun finish(): String {
@@ -172,7 +182,11 @@ class SkillMakerViewModel @Inject constructor(
         return getSkillCmdString()
     }
 
-    fun nextTurn(atk: AutoSkillAction.Atk) = add(SkillMakerEntry.Next.Turn(atk))
+    fun nextTurn(atk: AutoSkillAction.Atk) {
+        add(SkillMakerEntry.Next.Turn(atk))
+
+        back()
+    }
 
     fun nextStage(atk: AutoSkillAction.Atk) {
         ++_stage.value
@@ -181,6 +195,8 @@ class SkillMakerViewModel @Inject constructor(
         unSelectTargets()
 
         add(SkillMakerEntry.Next.Wave(atk))
+
+        back()
     }
 
     fun commitOrderChange(
@@ -195,6 +211,8 @@ class SkillMakerViewModel @Inject constructor(
                 )
             )
         )
+
+        back()
     }
 
     private fun revertToPreviousEnemyTarget() {

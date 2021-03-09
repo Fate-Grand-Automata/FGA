@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -15,44 +12,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
-import com.mathewsachin.fategrandautomata.util.nav
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class SkillMakerMasterSkillsFragment : Fragment() {
-    val vm: SkillMakerViewModel by activityViewModels()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        skillMakerScaffold {
-            MasterSkills(
-                onMasterSkill = { onSkill(it) },
-                onOrderChange = { goToOrderChange() }
-            )
-        }
-
-    fun onSkill(skill: Skill.Master) {
-        vm.initSkill(skill.autoSkillCode)
-
-        val action = SkillMakerMasterSkillsFragmentDirections
-            .actionSkillMakerMasterSkillsFragmentToSkillMakerTargetFragment()
-
-        nav(action)
-    }
-
-    fun goToOrderChange() {
-        val action = SkillMakerMasterSkillsFragmentDirections
-            .actionSkillMakerMasterSkillsFragmentToSkillMakerOrderChangeFragment()
-
-        nav(action)
-    }
-}
 
 @Composable
-fun MasterSkills(
+fun SkillMakerMasterSkills(
     onMasterSkill: (Skill.Master) -> Unit,
     onOrderChange: () -> Unit
 ) {
@@ -128,5 +92,5 @@ fun SkillButton(
 @Preview(widthDp = 600, heightDp = 300)
 @Composable
 fun TestMasterSkills() {
-    MasterSkills(onMasterSkill = { }, onOrderChange = { })
+    SkillMakerMasterSkills(onMasterSkill = { }, onOrderChange = { })
 }
