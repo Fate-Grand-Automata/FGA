@@ -229,20 +229,23 @@ class ScriptManager @Inject constructor(
     ) {
         var dialog: AlertDialog? = null
 
+        val composeView = FakedComposeView(context) {
+            ScriptLauncher(
+                scriptMode = detectedMode,
+                onResponse = {
+                    dialog?.hide()
+                    onScriptLauncherResponse(it, entryPointRunner)
+                },
+                prefs = preferences
+            )
+        }
+
         dialog = showOverlayDialog(context) {
-            setView(context.fakedComposeView {
-                ScriptLauncher(
-                    scriptMode = detectedMode,
-                    onResponse = {
-                        dialog?.hide()
-                        onScriptLauncherResponse(it, entryPointRunner)
-                    },
-                    prefs = preferences
-                )
-            })
+            setView(composeView.view)
 
             setOnDismissListener {
                 userInterface.isPlayButtonEnabled = true
+                composeView.close()
             }
         }
     }

@@ -14,9 +14,10 @@ import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.ViewTreeSavedStateRegistryOwner
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class FakeLifecycleOwner : SavedStateRegistryOwner {
+private class FakeLifecycleOwner : SavedStateRegistryOwner {
     private var lifecycleRegistry = LifecycleRegistry(this)
     private var savedStateRegistryController = SavedStateRegistryController.create(this)
 
@@ -42,23 +43,35 @@ class FakeLifecycleOwner : SavedStateRegistryOwner {
     }
 }
 
-fun Context.fakedComposeView(view: @Composable () -> Unit) =
-    ComposeView(this).also {
-        it.setContent { view() }
+class FakedComposeView(
+    private val context: Context,
+    private val content: @Composable () -> Unit
+): AutoCloseable {
+    private val viewModelStore = ViewModelStore()
+    private val lifecycleOwner = FakeLifecycleOwner()
+
+    private val coroutineContext = AndroidUiDispatcher.CurrentThread
+    private val runRecomposeScope = CoroutineScope(coroutineContext)
+    private val recomposer = Recomposer(coroutineContext)
+
+    val view get() = ComposeView(context).also {
+        it.setContent { content() }
 
         // Trick The ComposeView into thinking we are tracking lifecycle
-        val viewModelStore = ViewModelStore()
-        val lifecycleOwner = FakeLifecycleOwner()
         lifecycleOwner.performRestore(null)
         lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
         ViewTreeLifecycleOwner.set(it, lifecycleOwner)
         ViewTreeViewModelStoreOwner.set(it) { viewModelStore }
         ViewTreeSavedStateRegistryOwner.set(it, lifecycleOwner)
-        val coroutineContext = AndroidUiDispatcher.CurrentThread
-        val runRecomposeScope = CoroutineScope(coroutineContext)
-        val recomposer = Recomposer(coroutineContext)
+
         it.compositionContext = recomposer
         runRecomposeScope.launch {
             recomposer.runRecomposeAndApplyChanges()
         }
     }
+
+    override fun close() {
+        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        runRecomposeScope.cancel()
+    }
+}
