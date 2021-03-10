@@ -65,13 +65,7 @@ fun SkillCommandGroup(
             )
 
             if (errorMessage.isNotBlank()) {
-                Text(
-                    errorMessage,
-                    style = MaterialTheme.typography.caption,
-                    color = MaterialTheme.colors.error,
-                    modifier = Modifier
-                        .padding(16.dp, 2.dp)
-                )
+                PreferenceError(errorMessage)
             }
         }
     }
@@ -116,4 +110,16 @@ fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
             }
         }
     }
+}
+
+@Composable
+fun PreferenceError(error: String) {
+    Text(
+        error,
+        style = MaterialTheme.typography.caption,
+        color = MaterialTheme.colors.error,
+        modifier = Modifier
+            .padding(16.dp, 2.dp)
+            .padding(bottom = 5.dp)
+    )
 }

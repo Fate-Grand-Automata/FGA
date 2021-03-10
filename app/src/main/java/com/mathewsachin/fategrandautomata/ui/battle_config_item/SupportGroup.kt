@@ -68,11 +68,27 @@ fun SupportGroup(
         }
 
         if (preferredMode) {
+            val servants by config.support.preferredServants.collect()
+            val ces by config.support.preferredCEs.collect()
+
             Preference(
                 title = { Text(stringResource(R.string.p_support_mode_preferred)) },
-                summary = { PreferredSummary(config, maxSkillText) },
+                summary = {
+                    PreferredSummary(
+                        config = config,
+                        maxSkillText = maxSkillText,
+                        servants = servants,
+                        ces = ces
+                    )
+                },
                 onClick = goToPreferred
             )
+
+            if (servants.isEmpty() && ces.isEmpty()) {
+                PreferenceError(
+                    stringResource(R.string.support_selection_preferred_not_set)
+                )
+            }
         }
 
         if (friendMode) {
@@ -88,6 +104,14 @@ fun SupportGroup(
                     summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
                 )
             }
+
+            val friendNames by config.support.friendNames.collect()
+
+            if (friendNames.isEmpty()) {
+                PreferenceError(
+                    stringResource(R.string.support_selection_friend_not_set)
+                )
+            }
         }
     }
 }
@@ -95,7 +119,9 @@ fun SupportGroup(
 @Composable
 fun PreferredSummary(
     config: BattleConfigCore,
-    maxSkillText: String
+    maxSkillText: String,
+    servants: Set<String>,
+    ces: Set<String>
 ) {
     Column(
         modifier = Modifier
@@ -111,7 +137,6 @@ fun PreferredSummary(
                 contentDescription = "crown"
             )
 
-            val servants by config.support.preferredServants.collect()
             val text = if (servants.isNotEmpty())
                 servants.joinToString()
             else stringResource(R.string.battle_config_support_any)
@@ -148,7 +173,6 @@ fun PreferredSummary(
                 contentDescription = "card"
             )
 
-            val ces by config.support.preferredCEs.collect()
             val text = if (ces.isNotEmpty())
                 ces.joinToString()
             else stringResource(R.string.battle_config_support_any)
