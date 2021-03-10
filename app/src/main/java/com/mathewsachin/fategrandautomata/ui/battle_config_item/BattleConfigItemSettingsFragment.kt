@@ -5,21 +5,30 @@ import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
+import androidx.compose.material.ListItem
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -29,6 +38,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
@@ -38,6 +48,7 @@ import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.*
+import com.mathewsachin.fategrandautomata.util.drawable
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.stringRes
 import dagger.hilt.android.AndroidEntryPoint
@@ -146,16 +157,20 @@ class BattleConfigItemSettingsFragment : Fragment() {
                         item {
                             Row {
                                 Box(modifier = Modifier.weight(1f)) {
-                                    config.party.ListPreference(
-                                        title = stringResource(R.string.p_battle_config_party),
-                                        entries = (-1..9).associateWith { it.partyString }
+                                    Preference(
+                                        title = stringResource(R.string.p_spam_spam),
+                                        onClick = {
+                                            val action = BattleConfigItemSettingsFragmentDirections
+                                                .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
+
+                                            nav(action)
+                                        }
                                     )
                                 }
                                 Box(modifier = Modifier.weight(1f)) {
-                                    config.materials.MultiSelectListPreference(
-                                        title = stringResource(R.string.p_mats),
-                                        entries = MaterialEnum.values()
-                                            .associateWith { getString(it.stringRes) }
+                                    config.party.ListPreference(
+                                        title = stringResource(R.string.p_battle_config_party),
+                                        entries = (-1..9).associateWith { it.partyString }
                                     )
                                 }
                             }
@@ -164,15 +179,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
                         }
 
                         item {
-                            Preference(
-                                title = stringResource(R.string.p_spam_spam),
-                                onClick = {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
-
-                                    nav(action)
-                                }
-                            )
+                            config.materials.Materials()
 
                             Divider()
                         }
@@ -282,6 +289,63 @@ class BattleConfigItemSettingsFragment : Fragment() {
         preferences.removeBattleConfig(battleConfigKey)
 
         findNavController().popBackStack()
+    }
+}
+
+@Composable
+fun Pref<Set<MaterialEnum>>.Materials() {
+    val selected by collect()
+
+    val title = stringResource(R.string.p_mats)
+    val entries = MaterialEnum.values()
+        .associateWith { stringResource(it.stringRes) }
+
+    val dialog = multiSelectListDialog(
+        selected = selected,
+        selectedChange = { set(it) },
+        entries = entries,
+        title = title
+    )
+
+    ListItem(
+        text = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    title,
+                    modifier = Modifier.padding(end = 16.dp)
+                )
+
+                Box(modifier = Modifier.weight(1f)) {
+                    MaterialsSummary(materials = selected.toList())
+                }
+            }
+        },
+        modifier = Modifier
+            .clickable { dialog.show() }
+    )
+}
+
+@Composable
+fun MaterialsSummary(materials: List<MaterialEnum>) {
+    LazyRow(
+        horizontalArrangement = Arrangement.End,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(materials) { mat ->
+            Image(
+                painterResource(mat.drawable),
+                contentDescription = stringResource(mat.stringRes),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .size(24.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, Color.Gray, CircleShape)
+                    .alpha(0.8f)
+            )
+        }
     }
 }
 

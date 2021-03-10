@@ -100,46 +100,6 @@ class ImageLoader @Inject constructor(
         }
     }
 
-    private val MaterialEnum.drawable
-        get() = when (this) {
-            MaterialEnum.Proof -> R.drawable.mat_proof
-            MaterialEnum.Bone -> R.drawable.mat_bone
-            MaterialEnum.Fang -> R.drawable.mat_fang
-            MaterialEnum.Dust -> R.drawable.mat_dust
-            MaterialEnum.Chain -> R.drawable.mat_chain
-            MaterialEnum.Stinger -> R.drawable.mat_stinger
-            MaterialEnum.Fluid -> R.drawable.mat_fluid
-            MaterialEnum.Stake -> R.drawable.mat_stake
-            MaterialEnum.Gunpowder -> R.drawable.mat_gunpowder
-            MaterialEnum.Seed -> R.drawable.mat_seed
-            MaterialEnum.GhostLantern -> R.drawable.mat_ghost_lantern
-            MaterialEnum.OctupletCrystal -> R.drawable.mat_octuplet_crystal
-            MaterialEnum.SerpentJewel -> R.drawable.mat_serpent_jewel
-            MaterialEnum.Feather -> R.drawable.mat_feather
-            MaterialEnum.Gear -> R.drawable.mat_gear
-            MaterialEnum.Page -> R.drawable.mat_page
-            MaterialEnum.HomunculusBaby -> R.drawable.mat_homunculus_baby
-            MaterialEnum.Horseshoe -> R.drawable.mat_horseshoe
-            MaterialEnum.Medal -> R.drawable.mat_medal
-            MaterialEnum.ShellOfReminiscence -> R.drawable.mat_shell_of_reminiscence
-            MaterialEnum.Magatama -> R.drawable.mat_magatama
-            MaterialEnum.EternalIce -> R.drawable.mat_ice
-            MaterialEnum.GiantRing -> R.drawable.mat_giant_ring
-            MaterialEnum.AuroraSteel -> R.drawable.mat_steel
-            MaterialEnum.Claw -> R.drawable.mat_claw
-            MaterialEnum.Heart -> R.drawable.mat_heart
-            MaterialEnum.DragonScale -> R.drawable.mat_scale
-            MaterialEnum.SpiritRoot -> R.drawable.mat_spirit_root
-            MaterialEnum.YoungHorn -> R.drawable.mat_young_horn
-            MaterialEnum.TearStone -> R.drawable.mat_tear_stone
-            MaterialEnum.Grease -> R.drawable.mat_grease
-            MaterialEnum.LampOfEvilSealing -> R.drawable.mat_lamp_of_evil_sealing
-            MaterialEnum.Scarab -> R.drawable.mat_scarab
-            MaterialEnum.Lanugo -> R.drawable.mat_lanugo
-            MaterialEnum.Gallstone -> R.drawable.mat_gallstone
-            MaterialEnum.MysteriousWine -> R.drawable.mat_mysterious_wine
-        }
-
     override fun loadMaterial(material: MaterialEnum) =
         regionCachedPatterns.getOrPut("materials/$material") {
             DroidCvPattern(
@@ -147,3 +107,43 @@ class ImageLoader @Inject constructor(
             ).tag("MAT:$material")
         }
 }
+
+val MaterialEnum.drawable
+    get() = when (this) {
+        MaterialEnum.Proof -> R.drawable.mat_proof
+        MaterialEnum.Bone -> R.drawable.mat_bone
+        MaterialEnum.Fang -> R.drawable.mat_fang
+        MaterialEnum.Dust -> R.drawable.mat_dust
+        MaterialEnum.Chain -> R.drawable.mat_chain
+        MaterialEnum.Stinger -> R.drawable.mat_stinger
+        MaterialEnum.Fluid -> R.drawable.mat_fluid
+        MaterialEnum.Stake -> R.drawable.mat_stake
+        MaterialEnum.Gunpowder -> R.drawable.mat_gunpowder
+        MaterialEnum.Seed -> R.drawable.mat_seed
+        MaterialEnum.GhostLantern -> R.drawable.mat_ghost_lantern
+        MaterialEnum.OctupletCrystal -> R.drawable.mat_octuplet_crystal
+        MaterialEnum.SerpentJewel -> R.drawable.mat_serpent_jewel
+        MaterialEnum.Feather -> R.drawable.mat_feather
+        MaterialEnum.Gear -> R.drawable.mat_gear
+        MaterialEnum.Page -> R.drawable.mat_page
+        MaterialEnum.HomunculusBaby -> R.drawable.mat_homunculus_baby
+        MaterialEnum.Horseshoe -> R.drawable.mat_horseshoe
+        MaterialEnum.Medal -> R.drawable.mat_medal
+        MaterialEnum.ShellOfReminiscence -> R.drawable.mat_shell_of_reminiscence
+        MaterialEnum.Magatama -> R.drawable.mat_magatama
+        MaterialEnum.EternalIce -> R.drawable.mat_ice
+        MaterialEnum.GiantRing -> R.drawable.mat_giant_ring
+        MaterialEnum.AuroraSteel -> R.drawable.mat_steel
+        MaterialEnum.Claw -> R.drawable.mat_claw
+        MaterialEnum.Heart -> R.drawable.mat_heart
+        MaterialEnum.DragonScale -> R.drawable.mat_scale
+        MaterialEnum.SpiritRoot -> R.drawable.mat_spirit_root
+        MaterialEnum.YoungHorn -> R.drawable.mat_young_horn
+        MaterialEnum.TearStone -> R.drawable.mat_tear_stone
+        MaterialEnum.Grease -> R.drawable.mat_grease
+        MaterialEnum.LampOfEvilSealing -> R.drawable.mat_lamp_of_evil_sealing
+        MaterialEnum.Scarab -> R.drawable.mat_scarab
+        MaterialEnum.Lanugo -> R.drawable.mat_lanugo
+        MaterialEnum.Gallstone -> R.drawable.mat_gallstone
+        MaterialEnum.MysteriousWine -> R.drawable.mat_mysterious_wine
+    }
