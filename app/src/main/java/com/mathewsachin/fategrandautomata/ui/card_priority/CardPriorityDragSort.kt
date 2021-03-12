@@ -12,22 +12,20 @@ import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
 fun CardPriorityDragSort(scores: MutableList<CardScore>) {
     AndroidView(
         factory = { context ->
-            val adapter = CardPriorityAdapter(scores)
-
-            val recyclerView = RecyclerView(context).apply {
+            RecyclerView(context).apply {
                 setHasFixedSize(true)
-                this.adapter = adapter
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
+        },
+        update = {
+            it.adapter = CardPriorityAdapter(scores).also { adapter ->
+                val callback = ItemTouchHelperCallback(adapter)
+                val itemTouchHelper = ItemTouchHelper(callback)
+                itemTouchHelper.attachToRecyclerView(it)
 
-            val callback = ItemTouchHelperCallback(adapter)
-            val itemTouchHelper = ItemTouchHelper(callback)
-            itemTouchHelper.attachToRecyclerView(recyclerView)
-
-            adapter.itemTouchHelper = itemTouchHelper
-
-            recyclerView
+                adapter.itemTouchHelper = itemTouchHelper
+            }
         }
     )
 }
