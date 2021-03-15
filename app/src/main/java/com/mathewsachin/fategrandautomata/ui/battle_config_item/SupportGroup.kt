@@ -1,7 +1,13 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -9,6 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -31,11 +41,36 @@ fun SupportGroup(
     goToPreferred: () -> Unit
 ) {
     PreferenceGroup(title = stringResource(R.string.p_battle_config_support)) {
-        config.support.supportClass.ListPreference(
-            title = stringResource(R.string.p_battle_config_support_class),
-            entries = SupportClass.values()
-                .associateWith { stringResource(it.stringRes) }
-        )
+        val supportClass by config.support.supportClass.collect()
+
+        LazyRow(
+            modifier = Modifier
+                .padding(16.dp, 5.dp)
+        ) {
+            items(SupportClass.values().drop(1)) {
+                val isSelected = supportClass == it
+
+                Image(
+                    painterResource(it.drawable),
+                    contentDescription = it.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clip(DiamondShape)
+                        .border(
+                            2.dp,
+                            if (isSelected) MaterialTheme.colors.primary else Color.Unspecified,
+                            DiamondShape
+                        )
+                        .alpha(if (isSelected) 1f else 0.4f)
+                        .clickable {
+                            config.support.supportClass.set(
+                                if (isSelected) SupportClass.None else it
+                            )
+                        }
+                )
+            }
+        }
 
         val supportMode by config.support.selectionMode.collect()
         val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
@@ -115,6 +150,22 @@ fun SupportGroup(
         }
     }
 }
+
+val SupportClass.drawable @DrawableRes get() = when (this) {
+    SupportClass.None -> R.drawable.ic_dots_horizontal
+    SupportClass.All -> R.drawable.support_all
+    SupportClass.Saber -> R.drawable.support_saber
+    SupportClass.Archer -> R.drawable.support_archer
+    SupportClass.Lancer -> R.drawable.support_lancer
+    SupportClass.Rider -> R.drawable.support_rider
+    SupportClass.Caster -> R.drawable.support_caster
+    SupportClass.Assassin -> R.drawable.support_assassin
+    SupportClass.Berserker -> R.drawable.support_berserker
+    SupportClass.Extra -> R.drawable.support_extra
+    SupportClass.Mix -> R.drawable.support_mix
+}
+
+val DiamondShape = CutCornerShape(50)
 
 @Composable
 fun PreferredSummary(
