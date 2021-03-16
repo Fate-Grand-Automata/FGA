@@ -13,11 +13,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
-import androidx.compose.material.ListItem
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -168,10 +166,31 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                     )
                                 }
                                 Box(modifier = Modifier.weight(1f)) {
-                                    config.party.ListPreference(
-                                        title = stringResource(R.string.p_battle_config_party),
-                                        entries = (-1..9).associateWith { it.partyString }
+                                    val party by config.party.collect()
+
+                                    val dialog = listDialog(
+                                        selected = party,
+                                        selectedChange = { config.party.set(it) },
+                                        entries = (-1..9).associateWith { it.partyString },
+                                        title = stringResource(R.string.p_battle_config_party)
                                     )
+
+                                    ListItem(
+                                        modifier = Modifier
+                                            .clickable { dialog.show() },
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Text(stringResource(R.string.p_battle_config_party))
+
+                                            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                                                Text(if (party == -1) "-" else (party + 1).toString())
+                                            }
+                                        }
+                                    }
                                 }
                             }
 

@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -57,12 +56,12 @@ fun SupportGroup(
                     modifier = Modifier
                         .size(30.dp)
                         .clip(DiamondShape)
+                        .alpha(if (isSelected) 1f else 0.4f)
                         .border(
-                            2.dp,
-                            if (isSelected) MaterialTheme.colors.primary else Color.Unspecified,
+                            if (isSelected) 2.dp else 1.dp,
+                            if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
                             DiamondShape
                         )
-                        .alpha(if (isSelected) 1f else 0.4f)
                         .clickable {
                             config.support.supportClass.set(
                                 if (isSelected) SupportClass.None else it
