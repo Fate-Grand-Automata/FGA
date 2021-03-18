@@ -1,14 +1,9 @@
 package com.mathewsachin.fategrandautomata.ui.main
 
 import android.os.Bundle
-import android.os.PowerManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.mathewsachin.fategrandautomata.R
+import androidx.core.view.WindowCompat
 import com.mathewsachin.fategrandautomata.databinding.ActivityMainBinding
 import com.mathewsachin.fategrandautomata.util.CutoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,29 +14,13 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var cutoutManager: CutoutManager
 
-    @Inject
-    lateinit var powerManager: PowerManager
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    val navHostFragment by lazy {
-        supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-    }
-    val navController get() = navHostFragment.navController
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
-
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
     }
 
     override fun onAttachedToWindow() {

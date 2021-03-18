@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -12,6 +14,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import dev.chrisbanes.accompanist.insets.systemBarsPadding
 
 val blueNeutral = Color(0xff61b4f4)
 val blueLighter = Color(0xff98e6ff)
@@ -60,7 +64,7 @@ private val LightColorPalette = lightColors(
 fun FgaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     backgroundColor: Color = MaterialTheme.colors.background,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     val colors = if (darkTheme) {
         DarkColorPalette
@@ -76,7 +80,14 @@ fun FgaTheme(
         Surface(
             modifier = Modifier.background(color = backgroundColor)
         ) {
-            content()
+            ProvideWindowInsets {
+                Box(
+                    modifier = Modifier
+                        .systemBarsPadding()
+                ) {
+                    content()
+                }
+            }
         }
     }
 }

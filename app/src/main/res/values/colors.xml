@@ -27,4 +27,7 @@
     <color name="colorQuickWeak">#004d40</color>
     <color name="colorQuick">#2e7d32</color>
     <color name="colorQuickResist">#7cb342</color>
+
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_dark">#30000000</color> <!-- 19% black -->
 </resources>

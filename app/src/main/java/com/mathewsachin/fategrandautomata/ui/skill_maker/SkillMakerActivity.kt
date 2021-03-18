@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
+import androidx.core.view.WindowCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
@@ -22,27 +23,33 @@ class SkillMakerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
             FgaTheme {
                 PreventRtl {
                     SkillMakerUI(
                         vm = vm,
-                        onClear = {
-                            AlertDialog.Builder(this)
-                                .setTitle(R.string.skill_maker_confirm_clear_title)
-                                .setMessage(R.string.skill_maker_confirm_clear_message)
-                                .setNegativeButton(android.R.string.no, null)
-                                .setPositiveButton(android.R.string.yes) { _, _ -> vm.clearAll() }
-                                .show()
-                        },
-                        onDone = {
-                            vm.battleConfig.skillCommand = vm.finish()
-                            finish()
-                        }
+                        onClear = { onClear() },
+                        onDone = { onDone() }
                     )
                 }
             }
         }
+    }
+
+    private fun onDone() {
+        vm.battleConfig.skillCommand = vm.finish()
+        finish()
+    }
+
+    private fun onClear() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.skill_maker_confirm_clear_title)
+            .setMessage(R.string.skill_maker_confirm_clear_message)
+            .setNegativeButton(android.R.string.no, null)
+            .setPositiveButton(android.R.string.yes) { _, _ -> vm.clearAll() }
+            .show()
     }
 
     override fun onBackPressed() {
