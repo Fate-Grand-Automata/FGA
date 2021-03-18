@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="system_ui_scrim_light">#00000000</color>
+    <color name="system_ui_scrim_dark">#00000000</color>
+</resources>

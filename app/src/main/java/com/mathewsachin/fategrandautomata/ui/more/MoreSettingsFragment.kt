@@ -4,11 +4,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.Divider
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
@@ -16,6 +17,8 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.GroupSelector
+import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
@@ -36,29 +39,50 @@ class MoreSettingsFragment : Fragment() {
         ComposeView(requireContext()).apply {
             setContent {
                 FgaTheme {
-                    LazyColumn {
-                        item { BattleGroup(prefs) }
-                        item { WaitForAPRegenGroup(prefs) }
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Heading(stringResource(R.string.p_more_options))
 
-                        item {
-                            val summary by storageSummary
+                        var selectedGroup by remember { mutableStateOf(MoreSettingsGroup.Battle) }
 
-                            StorageGroup(
-                                directoryName = summary ?: "",
-                                onPickDirectory = { pickDir.launch(Uri.EMPTY) }
-                            )
-                        }
+                        GroupSelector(
+                            groups = MoreSettingsGroup.values().toList(),
+                            selected = selectedGroup,
+                            onSelectedChange = { selectedGroup = it }
+                        )
 
-                        item {
-                            AdvancedGroup(
-                                prefs,
-                                goToFineTune = {
-                                    val action = MoreSettingsFragmentDirections
-                                        .actionMoreSettingsFragmentToFineTuneSettingsFragment()
+                        Divider()
 
-                                    nav(action)
+                        LazyColumn {
+                            when (selectedGroup) {
+                                MoreSettingsGroup.Battle -> {
+                                    battleGroup(prefs)
+
+                                    item { WaitForAPRegenGroup(prefs) }
                                 }
-                            )
+                                MoreSettingsGroup.Storage -> {
+                                    item {
+                                        val summary by storageSummary
+
+                                        StorageGroup(
+                                            directoryName = summary ?: "",
+                                            onPickDirectory = { pickDir.launch(Uri.EMPTY) }
+                                        )
+                                    }
+                                }
+                                MoreSettingsGroup.Advanced -> {
+                                    advancedGroup(
+                                        prefs,
+                                        goToFineTune = {
+                                            val action = MoreSettingsFragmentDirections
+                                                .actionMoreSettingsFragmentToFineTuneSettingsFragment()
+
+                                            nav(action)
+                                        }
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -89,3 +113,13 @@ val GameServerEnum.displayStringRes
         GameServerEnum.Tw -> R.string.game_server_tw
         GameServerEnum.Kr -> R.string.game_server_kr
     }
+
+enum class MoreSettingsGroup {
+    Battle, Storage, Advanced;
+
+    val displayStringRes get() = when (this) {
+        Battle -> R.string.p_script_mode_battle
+        Storage -> R.string.p_storage
+        Advanced -> R.string.p_advanced
+    }
+}

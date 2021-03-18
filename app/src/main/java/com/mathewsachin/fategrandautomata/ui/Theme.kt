@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -83,6 +84,7 @@ fun FgaTheme(
             ProvideWindowInsets {
                 Box(
                     modifier = Modifier
+                        .fillMaxSize()
                         .systemBarsPadding()
                 ) {
                     content()

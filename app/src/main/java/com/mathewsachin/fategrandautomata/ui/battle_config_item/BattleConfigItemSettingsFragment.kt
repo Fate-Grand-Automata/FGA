@@ -1,7 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -43,6 +44,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.*
@@ -90,7 +92,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         battleConfig = preferences.forBattleConfig(args.key)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
@@ -99,130 +100,201 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
             setContent {
                 FgaTheme {
-                    LazyColumn {
-                        item {
-                            config.name.EditTextPreference(
-                                title = stringResource(R.string.p_battle_config_name),
-                                validate = { it.isNotBlank() },
-                                singleLine = true
-                            )
-
-                            Divider()
-                        }
-
-                        item {
-                            SkillCommandGroup(
-                                config = config,
-                                vm = vm,
-                                openSkillMaker = {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
-
-                                    nav(action)
-                                }
-                            )
-
-                            Divider()
-                        }
-
-                        item {
-                            config.notes.EditTextPreference(
-                                title = stringResource(R.string.p_battle_config_notes)
-                            )
-
-                            Divider()
-                        }
-
-                        item {
-                            val cardPriority by vm.cardPriority.collectAsState(null)
-
-                            cardPriority?.let {
-                                Preference(
-                                    title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
-                                    summary = { CardPrioritySummary(it) },
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Heading(stringResource(R.string.p_nav_battle_config_edit)) {
+                            item {
+                                Button(
                                     onClick = {
+                                        battleConfigExport.launch("${battleConfig.name}.fga")
+                                    },
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                ) {
+                                    Text(
+                                        stringResource(R.string.battle_config_item_export)
+                                    )
+                                }
+                            }
+
+                            item {
+                                Button(
+                                    onClick = { copy() },
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                ) {
+                                    Text(
+                                        stringResource(R.string.battle_config_item_copy)
+                                    )
+                                }
+                            }
+
+                            item {
+                                Button(
+                                    onClick = {
+                                        AlertDialog.Builder(requireContext())
+                                            .setMessage(R.string.battle_config_item_delete_confirm_message)
+                                            .setTitle(R.string.battle_config_item_delete_confirm_title)
+                                            .setPositiveButton(R.string.battle_config_item_delete_confirm_ok) { _, _ -> deleteItem(args.key) }
+                                            .setNegativeButton(android.R.string.cancel, null)
+                                            .show()
+                                    },
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                ) {
+                                    Text(
+                                        stringResource(R.string.battle_config_item_delete)
+                                    )
+                                }
+                            }
+
+                            item {
+                                Button(
+                                    onClick = {
+                                        lifecycleScope.launch {
+                                            performSupportImageExtraction()
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                ) {
+                                    Text(
+                                        stringResource(R.string.support_menu_extract_default_support_images)
+                                    )
+                                }
+                            }
+                        }
+
+                        LazyColumn(
+                            modifier = Modifier
+                                .weight(1f)
+                        ) {
+                            item {
+                                config.name.EditTextPreference(
+                                    title = stringResource(R.string.p_battle_config_name),
+                                    validate = { it.isNotBlank() },
+                                    singleLine = true
+                                )
+
+                                Divider()
+                            }
+
+                            item {
+                                SkillCommandGroup(
+                                    config = config,
+                                    vm = vm,
+                                    openSkillMaker = {
                                         val action = BattleConfigItemSettingsFragmentDirections
-                                            .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
+                                            .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
 
                                         nav(action)
                                     }
                                 )
+
+                                Divider()
                             }
 
-                            Divider()
-                        }
+                            item {
+                                config.notes.EditTextPreference(
+                                    title = stringResource(R.string.p_battle_config_notes)
+                                )
 
-                        item {
-                            Row {
-                                Box(modifier = Modifier.weight(1f)) {
+                                Divider()
+                            }
+
+                            item {
+                                val cardPriority by vm.cardPriority.collectAsState(null)
+
+                                cardPriority?.let {
                                     Preference(
-                                        title = stringResource(R.string.p_spam_spam),
+                                        title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
+                                        summary = { CardPrioritySummary(it) },
                                         onClick = {
                                             val action = BattleConfigItemSettingsFragmentDirections
-                                                .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
+                                                .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
 
                                             nav(action)
                                         }
                                     )
                                 }
-                                Box(modifier = Modifier.weight(1f)) {
-                                    val party by config.party.collect()
 
-                                    val dialog = listDialog(
-                                        selected = party,
-                                        selectedChange = { config.party.set(it) },
-                                        entries = (-1..9).associateWith { it.partyString },
-                                        title = stringResource(R.string.p_battle_config_party)
-                                    )
+                                Divider()
+                            }
 
-                                    ListItem(
-                                        modifier = Modifier
-                                            .clickable { dialog.show() },
-                                    ) {
-                                        Row(
+                            item {
+                                Row {
+                                    Box(modifier = Modifier.weight(1f)) {
+                                        Preference(
+                                            title = stringResource(R.string.p_spam_spam),
+                                            onClick = {
+                                                val action = BattleConfigItemSettingsFragmentDirections
+                                                    .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
+
+                                                nav(action)
+                                            }
+                                        )
+                                    }
+                                    Box(modifier = Modifier.weight(1f)) {
+                                        val party by config.party.collect()
+
+                                        val dialog = listDialog(
+                                            selected = party,
+                                            selectedChange = { config.party.set(it) },
+                                            entries = (-1..9).associateWith { it.partyString },
+                                            title = stringResource(R.string.p_battle_config_party)
+                                        )
+
+                                        ListItem(
                                             modifier = Modifier
-                                                .fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceBetween
+                                                .clickable { dialog.show() },
                                         ) {
-                                            Text(stringResource(R.string.p_battle_config_party))
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Text(stringResource(R.string.p_battle_config_party))
 
-                                            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                                                Text(if (party == -1) "-" else (party + 1).toString())
+                                                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                                                    Text(if (party == -1) "-" else (party + 1).toString())
+                                                }
                                             }
                                         }
                                     }
                                 }
+
+                                Divider()
                             }
 
-                            Divider()
-                        }
+                            item {
+                                config.materials.Materials()
 
-                        item {
-                            config.materials.Materials()
+                                Divider()
+                            }
 
-                            Divider()
-                        }
+                            item {
+                                val maxSkillText by vm.maxSkillText.collectAsState("")
 
-                        item {
-                            val maxSkillText by vm.maxSkillText.collectAsState("")
+                                SupportGroup(
+                                    config = config,
+                                    goToPreferred = {
+                                        val action = BattleConfigItemSettingsFragmentDirections
+                                            .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
 
-                            SupportGroup(
-                                config = config,
-                                goToPreferred = {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
+                                        nav(action)
+                                    },
+                                    maxSkillText = maxSkillText,
+                                    friendEntries = supportViewModel.friends
+                                )
 
-                                    nav(action)
-                                },
-                                maxSkillText = maxSkillText,
-                                friendEntries = supportViewModel.friends
-                            )
+                                Divider()
+                            }
 
-                            Divider()
-                        }
-
-                        item {
-                            ShuffleCardsGroup(config)
+                            item {
+                                ShuffleCardsGroup(config)
+                            }
                         }
                     }
                 }
@@ -232,6 +304,21 @@ class BattleConfigItemSettingsFragment : Fragment() {
     val Int.partyString get() = when (this) {
         -1 -> getString(R.string.p_not_set)
         else -> getString(R.string.p_party_number, this + 1)
+    }
+
+    private fun copy() {
+        val guid = UUID.randomUUID().toString()
+        preferences.addBattleConfig(guid)
+        val newConfig = preferences.forBattleConfig(guid)
+
+        val map = battleConfig.export()
+        newConfig.import(map)
+        newConfig.name = getString(R.string.battle_config_item_copy_name, newConfig.name)
+
+        val action = BattleConfigItemSettingsFragmentDirections
+            .actionBattleConfigItemSettingsFragmentSelf(guid)
+
+        nav(action)
     }
 
     override fun onResume() {
@@ -257,52 +344,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.battle_config_item_menu, menu)
-        inflater.inflate(R.menu.support_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            R.id.action_support_extract_defaults -> {
-                lifecycleScope.launch {
-                    performSupportImageExtraction()
-                }
-                true
-            }
-            R.id.action_battle_config_delete -> {
-                AlertDialog.Builder(requireContext())
-                    .setMessage(R.string.battle_config_item_delete_confirm_message)
-                    .setTitle(R.string.battle_config_item_delete_confirm_title)
-                    .setPositiveButton(R.string.battle_config_item_delete_confirm_ok) { _, _ -> deleteItem(args.key) }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
-                true
-            }
-            R.id.action_battle_config_export -> {
-                battleConfigExport.launch("${battleConfig.name}.fga")
-                true
-            }
-            R.id.action_battle_config_copy -> {
-                val guid = UUID.randomUUID().toString()
-                preferences.addBattleConfig(guid)
-                val newConfig = preferences.forBattleConfig(guid)
-
-                val map = battleConfig.export()
-                newConfig.import(map)
-                newConfig.name = getString(R.string.battle_config_item_copy_name, newConfig.name)
-
-                val action = BattleConfigItemSettingsFragmentDirections
-                    .actionBattleConfigItemSettingsFragmentSelf(guid)
-
-                nav(action)
-
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
 
     private fun deleteItem(battleConfigKey: String) {
         preferences.removeBattleConfig(battleConfigKey)

@@ -2,21 +2,22 @@ package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.animation.*
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -31,6 +32,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.prefs.collect
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,38 +46,117 @@ class BattleConfigListFragment : Fragment() {
     @Inject
     lateinit var preferences: IPreferences
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
-    }
-
     val vm: BattleConfigListViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
                 FgaTheme {
-                    BattleConfigList(
-                        vm = vm,
-                        editItem = { editItem(it) },
-                        enterActionMode = { enterActionMode() }
-                    )
+                    val selectionMode by vm.selectionMode
 
-                    if (!vm.selectionMode) {
-                        FloatingActionButton(
-                            onClick = { addNewConfig() },
-                            modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(16.dp)
-                        ) {
-                            Icon(
-                                painterResource(R.drawable.ic_plus),
-                                contentDescription = "Create new config",
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(7.dp)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Heading(stringResource(R.string.p_battle_config)) {
+                            item {
+                                Button(
+                                    onClick = {
+                                        battleConfigsExport.launch(Uri.EMPTY)
+                                    },
+                                    modifier = Modifier
+                                        .padding(end = 5.dp)
+                                        .animateContentSize()
+                                ) {
+                                    Text(
+                                        stringResource(
+                                            if (selectionMode)
+                                                R.string.battle_config_item_export
+                                            else R.string.battle_config_list_export_all
+                                        )
+                                    )
+                                }
+                            }
+
+                            item {
+                                Crossfade(selectionMode) {
+                                    if (it) {
+                                        Button(
+                                            onClick = {
+                                                deleteSelectedConfigs()
+                                            }
+                                        ) {
+                                            Text(
+                                                stringResource(R.string.battle_config_list_delete)
+                                            )
+                                        }
+                                    }
+                                    else {
+                                        Button(
+                                            onClick = {
+                                                battleConfigImport.launch("*/*")
+                                            }
+                                        ) {
+                                            Text(
+                                                stringResource(R.string.battle_config_list_import)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // TODO: This hack feels bad
+                        val configsStateList = mutableStateListOf<BattleConfigCore>()
+                        val configs by vm.battleConfigItems
+                            .onEach {
+                                configsStateList.clear()
+                                configsStateList.addAll(it)
+                            }
+                            .collectAsState(emptyList())
+
+                        if (configs.isEmpty()) {
+                            Text(
+                                stringResource(R.string.battle_config_list_no_items),
+                                modifier = Modifier.padding(16.dp)
                             )
+                        }
+                        else {
+                            Box(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                BattleConfigList(
+                                    vm = vm,
+                                    configs = configsStateList,
+                                    editItem = { editItem(it) }
+                                )
+                            }
+                        }
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(16.dp)
+                    ) {
+                        AnimatedVisibility(
+                            !selectionMode,
+                            enter = slideInVertically(initialOffsetY = { it / 2 }),
+                            exit = slideOutVertically(
+                                targetOffsetY = { it * 2 }
+                            )
+                        ) {
+                            FloatingActionButton(
+                                onClick = { addNewConfig() }
+                            ) {
+                                Icon(
+                                    Icons.Default.Add,
+                                    contentDescription = "Create new config",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .padding(7.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -89,10 +170,7 @@ class BattleConfigListFragment : Fragment() {
             vm.selectedConfigs.collect { set ->
                 val count = set.size
                 if (count == 0) {
-                    actionMode?.finish()
-                } else actionMode?.let {
-                    it.title = requireActivity().title
-                    it.subtitle = getString(R.string.battle_config_list_selected_count, count)
+                    vm.selectionMode.value = false
                 }
             }
         }
@@ -117,8 +195,6 @@ class BattleConfigListFragment : Fragment() {
                     val msg = getString(R.string.battle_config_list_export_failed, result.failureCount)
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                 }
-
-                actionMode?.finish()
             }
         }
     }
@@ -139,141 +215,78 @@ class BattleConfigListFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.battle_config_list_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+    private fun deleteSelectedConfigs() {
+        val toDelete = vm.selectedConfigs.value
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_battle_config_import -> {
-                battleConfigImport.launch("*/*")
-                true
-            }
-            R.id.action_battle_config_export_all -> {
-                battleConfigsExport.launch(Uri.EMPTY)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    var actionMode: ActionMode? = null
-
-    fun enterActionMode() {
-        actionMode = requireActivity().startActionMode(actionModeCallback)
-        vm.selectionMode = true
-    }
-
-    val actionModeCallback = object : ActionMode.Callback {
-        override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
-            when (item.itemId) {
-                R.id.action_battle_config_delete -> {
-                    val toDelete = vm.selectedConfigs.value
-
-                    AlertDialog.Builder(requireContext())
-                        .setMessage(getString(R.string.battle_config_list_delete_confirm_message, toDelete.size))
-                        .setTitle(R.string.battle_config_list_delete_confirm_title)
-                        .setPositiveButton(R.string.battle_config_list_delete_confirm_ok) { _, _ ->
-                            toDelete.forEach {
-                                preferences.removeBattleConfig(it)
-                            }
-
-                            mode.finish()
-                        }
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .show()
-                    true
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.battle_config_list_delete_confirm_message, toDelete.size))
+            .setTitle(R.string.battle_config_list_delete_confirm_title)
+            .setPositiveButton(R.string.battle_config_list_delete_confirm_ok) { _, _ ->
+                toDelete.forEach {
+                    preferences.removeBattleConfig(it)
                 }
-                R.id.action_battle_config_export_selected -> {
-                    battleConfigsExport.launch(Uri.EMPTY)
-                    true
-                }
-                else -> false
+
+                vm.selectionMode.value = false
             }
-
-        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-            val inflater = mode.menuInflater
-            inflater.inflate(R.menu.battle_config_list_multi_menu, menu)
-            return true
-        }
-
-        override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
-
-        override fun onDestroyActionMode(mode: ActionMode) {
-            vm.selectionMode = false
-            actionMode = null
-        }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 }
 
 @Composable
-fun BoxScope.BattleConfigList(
+fun BattleConfigList(
     vm: BattleConfigListViewModel,
-    editItem: (IBattleConfig) -> Unit,
-    enterActionMode: () -> Unit
+    configs: SnapshotStateList<BattleConfigCore>,
+    editItem: (IBattleConfig) -> Unit
 ) {
-    // TODO: This hack feels bad
-    val configsStateList = mutableStateListOf<BattleConfigCore>()
-    val configs by vm.battleConfigItems
-        .onEach {
-            configsStateList.clear()
-            configsStateList.addAll(it)
-        }
-        .collectAsState(emptyList())
+    val selectedConfigs by vm.selectedConfigs.collectAsState(emptySet())
+    var selectionMode by vm.selectionMode
 
-    if (configs.isEmpty()) {
-        Text(
-            stringResource(R.string.battle_config_list_no_items),
-            modifier = Modifier.align(Alignment.Center)
-        )
-    } else {
-        val selectedConfigs by vm.selectedConfigs.collectAsState(emptySet())
+    LazyColumn {
+        itemsIndexed(configs) { index, it ->
+            val name by it.name.collect()
 
-        LazyColumn {
-            items(configsStateList) {
-                val name by it.name.collect()
-
-                ListItem(
-                    modifier = Modifier
-                        .combinedClickable(
-                            onClick = {
-                                if (vm.selectionMode) {
-                                    vm.selectedConfigs.value = if (it.id in selectedConfigs) {
-                                        selectedConfigs - it.id
-                                    } else selectedConfigs + it.id
-                                } else {
-                                    editItem(vm.prefs.forBattleConfig(it.id))
-                                }
-                            },
-                            onLongClick = {
-                                if (!vm.selectionMode) {
-                                    enterActionMode()
-                                    vm.selectedConfigs.value = setOf(it.id)
-                                }
-                            }
-                        ),
-                    trailing = {
-                        val selected = vm.selectionMode && it.id in selectedConfigs
-
-                        if (selected) {
-                            Icon(
-                                painterResource(R.drawable.ic_check),
-                                contentDescription = "Select",
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(7.dp)
-                            )
-                        }
-                    }
-                ) {
-                    Text(
-                        name,
-                        style = MaterialTheme.typography.body2
-                    )
-                }
-
+            if (index != 0) {
                 Divider()
+            }
+
+            ListItem(
+                modifier = Modifier
+                    .combinedClickable(
+                        onClick = {
+                            if (selectionMode) {
+                                vm.selectedConfigs.value = if (it.id in selectedConfigs) {
+                                    selectedConfigs - it.id
+                                } else selectedConfigs + it.id
+                            } else {
+                                editItem(vm.prefs.forBattleConfig(it.id))
+                            }
+                        },
+                        onLongClick = {
+                            if (!selectionMode) {
+                                selectionMode = true
+                                vm.selectedConfigs.value = setOf(it.id)
+                            }
+                        }
+                    ),
+                trailing = {
+                    val selected = selectionMode && it.id in selectedConfigs
+
+                    if (selected) {
+                        Icon(
+                            painterResource(R.drawable.ic_check),
+                            contentDescription = "Select",
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(7.dp)
+                        )
+                    }
+                }
+            ) {
+                Text(
+                    name,
+                    style = MaterialTheme.typography.body2
+                )
             }
         }
     }

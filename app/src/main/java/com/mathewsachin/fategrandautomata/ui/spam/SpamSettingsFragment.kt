@@ -31,6 +31,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
 import com.mathewsachin.fategrandautomata.ui.prefs.multiSelectListDialog
@@ -58,6 +59,10 @@ class SpamSettingsFragment : Fragment() {
             setContent {
                 FgaTheme {
                     LazyColumn {
+                        item {
+                            Heading(stringResource(R.string.p_spam_spam))
+                        }
+
                         item {
                             config.autoChooseTarget.SwitchPreference(
                                 title = stringResource(R.string.p_auto_choose_target),

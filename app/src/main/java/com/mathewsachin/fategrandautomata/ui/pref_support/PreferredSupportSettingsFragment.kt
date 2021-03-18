@@ -32,6 +32,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.prefs.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -52,6 +53,10 @@ class PreferredSupportSettingsFragment : Fragment() {
             setContent {
                 FgaTheme {
                     LazyColumn {
+                        item {
+                            Heading(stringResource(R.string.p_support_mode_preferred))
+                        }
+
                         item {
                             config.friendsOnly.SwitchPreference(
                                 title = stringResource(R.string.p_battle_config_support_friends_only),

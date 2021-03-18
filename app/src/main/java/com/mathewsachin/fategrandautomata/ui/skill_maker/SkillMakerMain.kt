@@ -36,12 +36,13 @@ fun SkillMakerMain(
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(vertical = 16.dp)
             .fillMaxSize()
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
+                .padding(horizontal = 16.dp)
                 .fillMaxWidth()
         ) {
             val enemyTarget by vm.enemyTarget
@@ -57,7 +58,11 @@ fun SkillMakerMain(
 
         SkillHistory(vm)
 
-        Row(modifier = Modifier.weight(1f)) {
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 16.dp)
+        ) {
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -215,10 +220,8 @@ fun SkillHistory(vm: SkillMakerViewModel) {
     val skillCommand = vm.skillCommand
 
     LazyRow(
-        modifier = Modifier.padding(vertical = 16.dp)
+        contentPadding = PaddingValues(16.dp)
     ) {
-        // TODO: Compose is bugged on item removal in beta1: https://issuetracker.google.com/issues/163069767
-        //itemsIndexed(skillCommand) { index, item ->
         items(skillCommand.size) { index ->
             val item = skillCommand.getOrNull(index)
             val isSelected = index == currentIndex

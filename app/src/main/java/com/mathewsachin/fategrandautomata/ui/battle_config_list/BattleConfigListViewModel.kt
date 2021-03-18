@@ -2,9 +2,7 @@ package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +11,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -41,10 +38,10 @@ class BattleConfigListViewModel @Inject constructor(
 
     var selectedConfigs = MutableStateFlow(emptySet<String>())
 
-    var selectionMode by mutableStateOf(false)
+    var selectionMode = mutableStateOf(false)
 
     private fun configsToExport() =
-        if (selectionMode) {
+        if (selectionMode.value) {
             selectedConfigs.value.map { prefs.forBattleConfig(it) }
         }
         else prefs.battleConfigs

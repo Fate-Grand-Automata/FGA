@@ -9,17 +9,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.ui.Heading
 
 @Composable
 fun CardPriorityView(
     items: SnapshotStateList<CardPriorityListItem>
 ) {
+    var selectedWave by remember { mutableStateOf(0) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = 16.dp)
     ) {
-        var selectedWave by remember { mutableStateOf(0) }
+        Heading(stringResource(R.string.p_nav_card_priority))
 
         CardPriorityWaveSelector(
             items = items,
@@ -28,7 +30,6 @@ fun CardPriorityView(
         )
 
         Divider()
-
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier

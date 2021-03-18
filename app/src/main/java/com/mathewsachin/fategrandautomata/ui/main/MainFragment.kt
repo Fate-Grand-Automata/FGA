@@ -25,11 +25,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.StartMediaProjection
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.StorageProvider
@@ -75,6 +77,10 @@ class MainFragment : Fragment() {
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
+                        item {
+                            Heading(stringResource(R.string.app_name))
+                        }
+
                         item {
                             Preference(
                                 title = stringResource(R.string.p_battle_config),
@@ -140,6 +146,14 @@ class MainFragment : Fragment() {
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .padding(16.dp)
+                    )
+
+                    Text(
+                        "Build: ${BuildConfig.VERSION_CODE}",
+                        style = MaterialTheme.typography.subtitle2,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .align(Alignment.BottomStart)
                     )
                 }
             }
