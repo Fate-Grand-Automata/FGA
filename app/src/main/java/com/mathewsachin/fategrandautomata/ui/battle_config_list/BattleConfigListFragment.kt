@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.animation.*
@@ -16,7 +17,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,11 +52,26 @@ class BattleConfigListFragment : Fragment() {
 
     val vm: BattleConfigListViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Back button exits selection mode
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            vm.selectionMode.value = false
+        }
+
+        lifecycleScope.launchWhenStarted {
+            vm.selectionMode.collect {
+                callback.isEnabled = it
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
                 FgaTheme {
-                    val selectionMode by vm.selectionMode
+                    val selectionMode by vm.selectionMode.collectAsState()
 
                     Column(
                         modifier = Modifier
@@ -239,8 +258,8 @@ fun BattleConfigList(
     configs: SnapshotStateList<BattleConfigCore>,
     editItem: (IBattleConfig) -> Unit
 ) {
-    val selectedConfigs by vm.selectedConfigs.collectAsState(emptySet())
-    var selectionMode by vm.selectionMode
+    val selectedConfigs by vm.selectedConfigs.collectAsState()
+    val selectionMode by vm.selectionMode.collectAsState()
 
     LazyColumn {
         itemsIndexed(configs) { index, it ->
@@ -264,7 +283,7 @@ fun BattleConfigList(
                         },
                         onLongClick = {
                             if (!selectionMode) {
-                                selectionMode = true
+                                vm.selectionMode.value = true
                                 vm.selectedConfigs.value = setOf(it.id)
                             }
                         }

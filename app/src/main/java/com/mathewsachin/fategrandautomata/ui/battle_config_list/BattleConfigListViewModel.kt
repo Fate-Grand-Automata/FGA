@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.runtime.mutableStateOf
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -38,7 +37,7 @@ class BattleConfigListViewModel @Inject constructor(
 
     var selectedConfigs = MutableStateFlow(emptySet<String>())
 
-    var selectionMode = mutableStateOf(false)
+    var selectionMode = MutableStateFlow(false)
 
     private fun configsToExport() =
         if (selectionMode.value) {
