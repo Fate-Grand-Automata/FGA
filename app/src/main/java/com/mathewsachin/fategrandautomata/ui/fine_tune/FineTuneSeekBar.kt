@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.prefs.SeekBarPreference
 import com.vanpra.composematerialdialogs.MaterialDialog
 
@@ -25,7 +25,7 @@ fun FineTuneItem.FineTuneSeekBar() {
         iconTitle(
             textRes = name,
             icon = {
-                Icon(
+                DimmedIcon(
                     icon.asPainter(),
                     contentDescription = "icon"
                 )
@@ -56,7 +56,7 @@ fun FineTuneItem.FineTuneSeekBar() {
             )
         }
 
-        Icon(
+        DimmedIcon(
             painterResource(R.drawable.ic_info),
             contentDescription = "Info",
             modifier = Modifier

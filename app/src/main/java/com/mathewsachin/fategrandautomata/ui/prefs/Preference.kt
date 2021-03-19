@@ -4,7 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.ListItem
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -15,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.vanpra.composematerialdialogs.MaterialDialog
 
@@ -79,7 +83,7 @@ fun Preference(
             secondaryText = summary,
             icon = icon?.let {
                 {
-                    Icon(
+                    DimmedIcon(
                         it.asPainter(),
                         contentDescription = "icon",
                         modifier = Modifier
@@ -98,7 +102,7 @@ fun Preference(
                     trailing?.invoke(Modifier.align(Alignment.CenterVertically))
 
                     if (hint.isNotBlank()) {
-                        Icon(
+                        DimmedIcon(
                             painterResource(R.drawable.ic_info),
                             contentDescription = "Hint",
                             modifier = Modifier

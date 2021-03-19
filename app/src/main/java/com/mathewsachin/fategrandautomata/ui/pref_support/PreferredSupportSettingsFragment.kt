@@ -32,10 +32,7 @@ import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.ui.FgaTheme
-import com.mathewsachin.fategrandautomata.ui.Heading
-import com.mathewsachin.fategrandautomata.ui.VectorIcon
-import com.mathewsachin.fategrandautomata.ui.icon
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -200,7 +197,7 @@ fun Pref<Set<String>>.SupportSelectPreference(
         }
     ) {
         if (value.isNotEmpty()) {
-            Icon(
+            DimmedIcon(
                 painterResource(R.drawable.ic_close),
                 contentDescription = "Clear",
                 modifier = Modifier

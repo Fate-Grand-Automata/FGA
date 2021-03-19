@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillCommand
+import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceTextEditor
 import com.mathewsachin.fategrandautomata.ui.prefs.collect
@@ -77,7 +78,7 @@ fun SkillCommandGroup(
             } else null,
             onClick = openSkillMaker
         ) {
-            Icon(
+            DimmedIcon(
                 painterResource(R.drawable.ic_terminal),
                 contentDescription = "Show Textbox for editing Skill command",
                 modifier = Modifier

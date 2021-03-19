@@ -27,6 +27,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
+import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportSelectPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
@@ -185,7 +186,7 @@ fun PreferredSummary(
             modifier = Modifier
                 .padding(vertical = 2.dp)
         ) {
-            Icon(
+            DimmedIcon(
                 painterResource(R.drawable.ic_crown),
                 contentDescription = "crown"
             )
@@ -221,7 +222,7 @@ fun PreferredSummary(
             modifier = Modifier
                 .padding(vertical = 2.dp)
         ) {
-            Icon(
+            DimmedIcon(
                 painterResource(R.drawable.ic_card),
                 contentDescription = "card"
             )

@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,6 +36,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.prefs.collect
@@ -292,7 +294,7 @@ fun BattleConfigList(
                     val selected = selectionMode && it.id in selectedConfigs
 
                     if (selected) {
-                        Icon(
+                        DimmedIcon(
                             painterResource(R.drawable.ic_check),
                             contentDescription = "Select",
                             modifier = Modifier
