@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,8 +30,14 @@ import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.ui.*
-import com.mathewsachin.fategrandautomata.ui.prefs.*
+import com.mathewsachin.fategrandautomata.ui.DimmedIcon
+import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.VectorIcon
+import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectListPreference
+import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
+import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
+import com.mathewsachin.fategrandautomata.ui.prefs.collect
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -59,58 +63,61 @@ class PreferredSupportSettingsFragment : Fragment() {
 
                         item {
                             config.friendsOnly.SwitchPreference(
-                                title = stringResource(R.string.p_battle_config_support_friends_only),
-                                icon = icon(R.drawable.ic_friend)
+                                title = stringResource(R.string.p_battle_config_support_friends_only)
                             )
+
+                            Divider()
                         }
 
                         item {
                             PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_servants)) {
                                 config.preferredServants.SupportSelectPreference(
                                     title = stringResource(R.string.p_battle_config_support_pref_servants),
-                                    entries = vm.servants,
-                                    icon = icon(R.drawable.ic_crown)
+                                    entries = vm.servants
                                 )
 
                                 val prefServants by config.preferredServants.collect()
 
                                 if (prefServants.isNotEmpty()) {
                                     config.maxAscended.SwitchPreference(
-                                        title = stringResource(R.string.p_battle_config_support_max_ascended),
-                                        icon = icon(Icons.Default.Star)
+                                        title = stringResource(R.string.p_battle_config_support_max_ascended)
                                     )
 
-                                    Preference(
-                                        title = { Text(stringResource(R.string.p_max_skills)) },
-                                        icon = icon(R.drawable.ic_wand),
-                                        summary = {
-                                            MaxSkills(
-                                                skills = listOf(
-                                                    config.skill1Max,
-                                                    config.skill2Max,
-                                                    config.skill3Max
-                                                )
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.padding(16.dp)
+                                    ) {
+                                        Text(
+                                            stringResource(R.string.p_max_skills),
+                                            modifier = Modifier.weight(1f)
+                                        )
+
+                                        MaxSkills(
+                                            skills = listOf(
+                                                config.skill1Max,
+                                                config.skill2Max,
+                                                config.skill3Max
                                             )
-                                        }
-                                    )
+                                        )
+                                    }
                                 }
                             }
+
+                            Divider()
                         }
 
                         item {
                             PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_ces)) {
                                 config.preferredCEs.SupportSelectPreference(
                                     title = stringResource(R.string.p_battle_config_support_pref_ces),
-                                    entries = vm.ces,
-                                    icon = icon(R.drawable.ic_card)
+                                    entries = vm.ces
                                 )
 
                                 val prefCEs by config.preferredCEs.collect()
 
                                 if (prefCEs.isNotEmpty()) {
                                     config.mlb.SwitchPreference(
-                                        title = stringResource(R.string.p_battle_config_support_mlb),
-                                        icon = icon(Icons.Default.Star)
+                                        title = stringResource(R.string.p_battle_config_support_mlb)
                                     )
                                 }
                             }
@@ -130,21 +137,20 @@ class PreferredSupportSettingsFragment : Fragment() {
     fun MaxSkills(
         skills: List<Pref<Boolean>>
     ) {
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             fun skillText(max: Boolean) = if (max) "10" else "x"
             fun Pref<Boolean>.toggle() =
                 set(!get())
 
             skills.forEachIndexed { index, pref ->
                 if (index != 0) {
-                    Box(
-                        contentAlignment = Alignment.Center,
+                    Text(
+                        "/",
                         modifier = Modifier
-                            .padding(top = 25.dp)
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        Text("/")
-                    }
+                            .padding(horizontal = 8.dp)
+                    )
                 }
 
                 val max by pref.collect()
@@ -152,9 +158,6 @@ class PreferredSupportSettingsFragment : Fragment() {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(7.dp)
-                        .padding(top = 9.dp)
                         .border(
                             width = 1.dp,
                             brush = SolidColor(
@@ -164,7 +167,7 @@ class PreferredSupportSettingsFragment : Fragment() {
                             shape = MaterialTheme.shapes.medium
                         )
                         .clickable { pref.toggle() }
-                        .padding(8.dp)
+                        .size(40.dp)
                 ) {
                     Text(
                         skillText(max),

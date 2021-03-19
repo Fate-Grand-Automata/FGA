@@ -37,6 +37,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
@@ -157,11 +158,22 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                 .weight(1f)
                         ) {
                             item {
-                                config.name.EditTextPreference(
-                                    title = stringResource(R.string.p_battle_config_name),
-                                    validate = { it.isNotBlank() },
-                                    singleLine = true
-                                )
+                                Row(
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        config.name.EditTextPreference(
+                                            title = stringResource(R.string.p_battle_config_name),
+                                            validate = { it.isNotBlank() },
+                                            singleLine = true
+                                        )
+                                    }
+
+                                    PartySelection(config)
+                                }
 
                                 Divider()
                             }
@@ -177,6 +189,12 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                         nav(action)
                                     }
                                 )
+
+                                Divider()
+                            }
+
+                            item {
+                                config.materials.Materials()
 
                                 Divider()
                             }
@@ -209,52 +227,15 @@ class BattleConfigItemSettingsFragment : Fragment() {
                             }
 
                             item {
-                                Row {
-                                    Box(modifier = Modifier.weight(1f)) {
-                                        Preference(
-                                            title = stringResource(R.string.p_spam_spam),
-                                            onClick = {
-                                                val action = BattleConfigItemSettingsFragmentDirections
-                                                    .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
+                                Preference(
+                                    title = stringResource(R.string.p_spam_spam),
+                                    onClick = {
+                                        val action = BattleConfigItemSettingsFragmentDirections
+                                            .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
 
-                                                nav(action)
-                                            }
-                                        )
+                                        nav(action)
                                     }
-                                    Box(modifier = Modifier.weight(1f)) {
-                                        val party by config.party.collect()
-
-                                        val dialog = listDialog(
-                                            selected = party,
-                                            selectedChange = { config.party.set(it) },
-                                            entries = (-1..9).associateWith { it.partyString },
-                                            title = stringResource(R.string.p_battle_config_party)
-                                        )
-
-                                        ListItem(
-                                            modifier = Modifier
-                                                .clickable { dialog.show() },
-                                        ) {
-                                            Row(
-                                                modifier = Modifier
-                                                    .fillMaxWidth(),
-                                                horizontalArrangement = Arrangement.SpaceBetween
-                                            ) {
-                                                Text(stringResource(R.string.p_battle_config_party))
-
-                                                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                                                    Text(if (party == -1) "-" else (party + 1).toString())
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                Divider()
-                            }
-
-                            item {
-                                config.materials.Materials()
+                                )
 
                                 Divider()
                             }
@@ -285,11 +266,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                 }
             }
         }
-
-    val Int.partyString get() = when (this) {
-        -1 -> getString(R.string.p_not_set)
-        else -> getString(R.string.p_party_number, this + 1)
-    }
 
     private fun copy() {
         val guid = UUID.randomUUID().toString()
@@ -423,6 +399,41 @@ fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun PartySelection(config: BattleConfigCore) {
+    val party by config.party.collect()
+
+    val dialog = listDialog(
+        selected = party,
+        selectedChange = { config.party.set(it) },
+        entries = (-1..9)
+            .associateWith {
+                when (it) {
+                    -1 -> stringResource(R.string.p_not_set)
+                    else -> stringResource(R.string.p_party_number, it + 1)
+                }
+            },
+        title = stringResource(R.string.p_battle_config_party)
+    )
+
+    Column(
+        modifier = Modifier
+            .clickable { dialog.show() }
+            .padding(16.dp, 5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            stringResource(R.string.p_battle_config_party)
+                .toUpperCase(Locale.ROOT),
+            style = MaterialTheme.typography.caption
+        )
+
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(if (party == -1) "-" else (party + 1).toString())
         }
     }
 }
