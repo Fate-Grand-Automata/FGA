@@ -1,10 +1,11 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,13 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
+import com.mathewsachin.fategrandautomata.ui.VectorIcon
+import com.mathewsachin.fategrandautomata.ui.icon
 
 @Composable
 private fun SelectNps(
@@ -169,7 +171,7 @@ fun SkillMakerAtk(
 
                 ButtonWithIcon(
                     text = R.string.skill_maker_atk_next_wave,
-                    icon = R.drawable.ic_fast_forward,
+                    icon = icon(Icons.Default.FastForward),
                     onClick = { onNextWave(makeAtkAction(npSequence, cardsBeforeNp)) }
                 )
             }
@@ -195,7 +197,7 @@ private fun makeAtkAction(npSequence: String, cardsBeforeNp: Int): AutoSkillActi
 @Composable
 fun ButtonWithIcon(
     @StringRes text: Int,
-    @DrawableRes icon: Int,
+    icon: VectorIcon,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true
@@ -207,7 +209,7 @@ fun ButtonWithIcon(
     ) {
         Row {
             Icon(
-                painterResource(icon),
+                icon.asPainter(),
                 contentDescription = "button icon",
                 modifier = Modifier
                     .padding(end = 16.dp)

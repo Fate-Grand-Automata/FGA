@@ -3,8 +3,8 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.listItemsMultiChoice
 
@@ -50,7 +50,7 @@ fun <T> Pref<Set<T>>.MultiSelectListPreference(
     title: String,
     summary: @Composable (List<String>) -> String = { it.joinToString() },
     singleLineTitle: Boolean = true,
-    icon: Painter? = null,
+    icon: VectorIcon? = null,
     entries: Map<T, String>,
     enabled: Boolean = true,
     hint: String = "",

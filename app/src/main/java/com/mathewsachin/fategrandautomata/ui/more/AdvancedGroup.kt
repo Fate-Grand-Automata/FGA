@@ -2,10 +2,10 @@ package com.mathewsachin.fategrandautomata.ui.more
 
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.collect
@@ -17,7 +17,7 @@ fun LazyListScope.advancedGroup(
     item {
         Preference(
             title = stringResource(R.string.p_fine_tune),
-            icon = painterResource(R.drawable.ic_tune),
+            icon = icon(R.drawable.ic_tune),
             onClick = goToFineTune
         )
     }
@@ -26,7 +26,7 @@ fun LazyListScope.advancedGroup(
         prefs.debugMode.SwitchPreference(
             title = stringResource(R.string.p_debug_mode),
             summary = stringResource(R.string.p_debug_mode_summary),
-            icon = painterResource(R.drawable.ic_bug)
+            icon = icon(R.drawable.ic_bug)
         )
     }
 
@@ -34,7 +34,7 @@ fun LazyListScope.advancedGroup(
         prefs.ignoreNotchCalculation.SwitchPreference(
             title = stringResource(R.string.p_ignore_notch),
             summary = stringResource(R.string.p_ignore_notch_summary),
-            icon = painterResource(R.drawable.ic_notch)
+            icon = icon(R.drawable.ic_notch)
         )
     }
 
@@ -44,7 +44,7 @@ fun LazyListScope.advancedGroup(
         prefs.recordScreen.SwitchPreference(
             title = stringResource(R.string.p_record_screen),
             summary = stringResource(R.string.p_record_screen_summary),
-            icon = painterResource(R.drawable.ic_video),
+            icon = icon(R.drawable.ic_video),
             enabled = !rootForScreenshots
         )
     }
@@ -53,14 +53,14 @@ fun LazyListScope.advancedGroup(
         prefs.useRootForScreenshots.SwitchPreference(
             title = stringResource(R.string.p_root_screenshot),
             summary = stringResource(R.string.p_root_screenshot_summary),
-            icon = painterResource(R.drawable.ic_key)
+            icon = icon(R.drawable.ic_key)
         )
     }
 
     item {
         prefs.autoStartService.SwitchPreference(
             title = stringResource(R.string.p_auto_start_service),
-            icon = painterResource(R.drawable.ic_launch)
+            icon = icon(R.drawable.ic_launch)
         )
     }
 }

@@ -14,13 +14,14 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,6 +34,8 @@ import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.VectorIcon
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -60,7 +63,7 @@ class PreferredSupportSettingsFragment : Fragment() {
                         item {
                             config.friendsOnly.SwitchPreference(
                                 title = stringResource(R.string.p_battle_config_support_friends_only),
-                                icon = painterResource(R.drawable.ic_friend)
+                                icon = icon(R.drawable.ic_friend)
                             )
                         }
 
@@ -69,7 +72,7 @@ class PreferredSupportSettingsFragment : Fragment() {
                                 config.preferredServants.SupportSelectPreference(
                                     title = stringResource(R.string.p_battle_config_support_pref_servants),
                                     entries = vm.servants,
-                                    icon = painterResource(R.drawable.ic_crown)
+                                    icon = icon(R.drawable.ic_crown)
                                 )
 
                                 val prefServants by config.preferredServants.collect()
@@ -77,12 +80,12 @@ class PreferredSupportSettingsFragment : Fragment() {
                                 if (prefServants.isNotEmpty()) {
                                     config.maxAscended.SwitchPreference(
                                         title = stringResource(R.string.p_battle_config_support_max_ascended),
-                                        icon = painterResource(R.drawable.ic_star)
+                                        icon = icon(Icons.Default.Star)
                                     )
 
                                     Preference(
                                         title = { Text(stringResource(R.string.p_max_skills)) },
-                                        icon = painterResource(R.drawable.ic_wand),
+                                        icon = icon(R.drawable.ic_wand),
                                         summary = {
                                             MaxSkills(
                                                 skills = listOf(
@@ -102,7 +105,7 @@ class PreferredSupportSettingsFragment : Fragment() {
                                 config.preferredCEs.SupportSelectPreference(
                                     title = stringResource(R.string.p_battle_config_support_pref_ces),
                                     entries = vm.ces,
-                                    icon = painterResource(R.drawable.ic_card)
+                                    icon = icon(R.drawable.ic_card)
                                 )
 
                                 val prefCEs by config.preferredCEs.collect()
@@ -110,7 +113,7 @@ class PreferredSupportSettingsFragment : Fragment() {
                                 if (prefCEs.isNotEmpty()) {
                                     config.mlb.SwitchPreference(
                                         title = stringResource(R.string.p_battle_config_support_mlb),
-                                        icon = painterResource(R.drawable.ic_star)
+                                        icon = icon(Icons.Default.Star)
                                     )
                                 }
                             }
@@ -182,7 +185,7 @@ class PreferredSupportSettingsFragment : Fragment() {
 fun Pref<Set<String>>.SupportSelectPreference(
     title: String,
     entries: Map<String, String>,
-    icon: Painter? = null
+    icon: VectorIcon? = null
 ) {
     val value by collect()
 

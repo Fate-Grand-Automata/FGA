@@ -33,6 +33,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.StartMediaProjection
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
@@ -85,7 +86,7 @@ class MainFragment : Fragment() {
                             Preference(
                                 title = stringResource(R.string.p_battle_config),
                                 summary = stringResource(R.string.p_battle_config_summary),
-                                icon = painterResource(R.drawable.ic_formation),
+                                icon = icon(R.drawable.ic_formation),
                                 onClick = {
                                     if (vm.ensureRootDir(pickDir, requireContext())) {
                                         goToBattleConfigList()
@@ -97,7 +98,7 @@ class MainFragment : Fragment() {
                         item {
                             Preference(
                                 title = stringResource(R.string.p_nav_troubleshoot),
-                                icon = painterResource(R.drawable.ic_troubleshooting),
+                                icon = icon(R.drawable.ic_troubleshooting),
                                 onClick = {
                                     val intent = Intent(
                                         Intent.ACTION_VIEW,
@@ -112,7 +113,7 @@ class MainFragment : Fragment() {
                         item {
                             Preference(
                                 title = stringResource(R.string.p_more_options),
-                                icon = painterResource(R.drawable.ic_dots_horizontal),
+                                icon = icon(R.drawable.ic_dots_horizontal),
                                 onClick = {
                                     val action = MainFragmentDirections
                                         .actionMainFragmentToMoreSettingsFragment()

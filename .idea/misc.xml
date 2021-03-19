@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Mathew/source/repos/FateGrandAutomata-kt/app/src/main/res/drawable/ic_boost.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Mathew/source/repos/FateGrandAutomata-kt/app/src/main/res/drawable/ic_radio.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Mathew/source/repos/FateGrandAutomata-kt/app/src/main/res/menu/battle_config_item_menu.xml" value="0.25833333333333336" />
         <entry key="..\:/Users/Mathew/source/repos/FateGrandAutomata-kt/app/src/main/res/menu/battle_config_list_menu.xml" value="0.25833333333333336" />
       </map>

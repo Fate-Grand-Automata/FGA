@@ -26,7 +26,7 @@ fun FineTuneItem.FineTuneSeekBar() {
             textRes = name,
             icon = {
                 Icon(
-                    painterResource(icon),
+                    icon.asPainter(),
                     contentDescription = "icon"
                 )
             }

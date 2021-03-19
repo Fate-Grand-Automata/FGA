@@ -3,15 +3,15 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.painter.Painter
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.mathewsachin.fategrandautomata.ui.VectorIcon
 
 @Composable
 fun Pref<Boolean>.SwitchPreference(
     title: String,
     summary: String = "",
     singleLineTitle: Boolean = true,
-    icon: Painter? = null,
+    icon: VectorIcon? = null,
     enabled: Boolean = true,
     hint: String = ""
 ) {

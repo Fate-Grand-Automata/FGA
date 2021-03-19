@@ -11,11 +11,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.vanpra.composematerialdialogs.MaterialDialog
 
 @Composable
@@ -27,7 +27,7 @@ fun Preference(
     title: String,
     summary: String = "",
     singleLineTitle: Boolean = false,
-    icon: Painter? = null,
+    icon: VectorIcon? = null,
     enabled: Boolean = true,
     hint: String = "",
     onClick: (() -> Unit)? = null,
@@ -58,7 +58,7 @@ fun Preference(
 fun Preference(
     title: @Composable () -> Unit,
     summary: @Composable (() -> Unit)? = null,
-    icon: Painter? = null,
+    icon: VectorIcon? = null,
     enabled: Boolean = true,
     onClick: (() -> Unit)? = null,
     hint: String = "",
@@ -80,7 +80,7 @@ fun Preference(
             icon = icon?.let {
                 {
                     Icon(
-                        it,
+                        it.asPainter(),
                         contentDescription = "icon",
                         modifier = Modifier
                             .size(40.dp)

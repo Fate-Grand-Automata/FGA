@@ -11,6 +11,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -104,7 +106,7 @@ fun CardPriorityWaveSelector(
                         }
                 ) {
                     Icon(
-                        painterResource(R.drawable.ic_plus),
+                        Icons.Default.Add,
                         contentDescription = "Add wave",
                         tint = MaterialTheme.colors.onSecondary
                     )

@@ -11,6 +11,8 @@ import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,6 +27,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportSelectPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
@@ -133,7 +136,7 @@ fun SupportGroup(
                 )
             } else {
                 Preference(
-                    icon = painterResource(R.drawable.ic_info),
+                    icon = icon(R.drawable.ic_info),
                     title = stringResource(R.string.p_battle_config_support_friend_names),
                     summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
                 )
@@ -239,7 +242,7 @@ fun PreferredSummary(
 
                 if (mlb) {
                     Icon(
-                        painterResource(R.drawable.ic_star),
+                        Icons.Default.Star,
                         contentDescription = "MLB",
                         tint = MaterialTheme.colors.secondary,
                         modifier = Modifier.size(20.dp)

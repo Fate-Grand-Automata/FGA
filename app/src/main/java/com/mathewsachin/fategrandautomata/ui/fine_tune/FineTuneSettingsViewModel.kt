@@ -1,8 +1,11 @@
 package com.mathewsachin.fategrandautomata.ui.fine_tune
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.ui.icon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,14 +20,14 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.supportSwipesPerUpdate,
                     name = R.string.p_fine_tune_support_swipes_per_update,
-                    icon = R.drawable.ic_swipe,
+                    icon = icon(R.drawable.ic_swipe),
                     valueRange = 0..35,
                     hint = "Number of times to scroll through support list before refreshing."
                 ),
                 FineTuneItem(
                     pref = prefs.supportMaxUpdates,
                     name = R.string.p_fine_tune_support_max_updates,
-                    icon = R.drawable.ic_refresh,
+                    icon = icon(R.drawable.ic_refresh),
                     valueRange = 0..50,
                     hint = "Maximum number of times to refresh in support screen after which the configured fallback option is used."
                 )
@@ -36,7 +39,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.minSimilarity,
                     name = R.string.p_fine_tune_min_similarity,
-                    icon = R.drawable.ic_image_search,
+                    icon = icon(R.drawable.ic_image_search),
                     valueRange = 50..100,
                     valueRepresentation = { "$it%" },
                     hint = "The similarity threshold used for all image matching. Don't unnecessarily change this."
@@ -44,7 +47,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.mlbSimilarity,
                     name = R.string.p_fine_tune_mlb_similarity,
-                    icon = R.drawable.ic_star,
+                    icon = icon(Icons.Default.Star),
                     valueRange = 50..100,
                     valueRepresentation = { "$it%" },
                     hint = "Similarity threshold used for matching MLB star. Reduce this by a bit if MLB CEs are not detected."
@@ -52,7 +55,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.stageCounterSimilarity,
                     name = R.string.p_fine_tune_stage_counter_similarity,
-                    icon = R.drawable.ic_counter,
+                    icon = icon(R.drawable.ic_counter),
                     valueRange = 50..100,
                     valueRepresentation = { "$it%" },
                     hint = "Similarity threshold for detecting wave change. If your skill commands are used in the wrong wave, tweaking this might help."
@@ -65,7 +68,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.clickWaitTime,
                     name = R.string.p_fine_tune_wait_after_clicking,
-                    icon = R.drawable.ic_click,
+                    icon = icon(R.drawable.ic_click),
                     valueRange = 0..2000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Delay after each click/tap unless clicking repeatedly. Some time is needed for the game's animations to finish."
@@ -73,7 +76,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.clickDuration,
                     name = R.string.p_fine_tune_click_duration,
-                    icon = R.drawable.ic_click,
+                    icon = icon(R.drawable.ic_click),
                     valueRange = 1..200,
                     valueRepresentation = { "${it}ms" },
                     hint = "Every tap/click is like a hold and release performed quickly. This sets the time difference between the two."
@@ -81,7 +84,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.clickDelay,
                     name = R.string.p_fine_tune_click_delay,
-                    icon = R.drawable.ic_click,
+                    icon = icon(R.drawable.ic_click),
                     valueRange = 0..50,
                     valueRepresentation = { "${it}ms" },
                     hint = "Delay between individual taps/clicks when doing so repeatedly like at the end of battles, friend point summon and lottery script."
@@ -94,7 +97,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.swipeWaitTime,
                     name = R.string.p_fine_tune_wait_after_swiping,
-                    icon = R.drawable.ic_swipe,
+                    icon = icon(R.drawable.ic_swipe),
                     valueRange = 50..3000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Wait after all swipes. Some time is needed for the game's animations to finish."
@@ -102,7 +105,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.swipeDuration,
                     name = R.string.p_fine_tune_swipe_duration,
-                    icon = R.drawable.ic_swipe,
+                    icon = icon(R.drawable.ic_swipe),
                     valueRange = 50..1000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Time taken to swipe. Swiping faster will scroll more, slower will scroll less."
@@ -110,7 +113,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.swipeMultiplier,
                     name = R.string.p_fine_tune_swipe_multiplier,
-                    icon = R.drawable.ic_swipe,
+                    icon = icon(R.drawable.ic_swipe),
                     valueRange = 50..200,
                     valueRepresentation = { "${it}%" },
                     hint = "Control the length of swipes. This is multiplied with the number of pixels to swipe over. Use along with swipe duration to tweak it to your needs."
@@ -123,7 +126,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.skillDelay,
                     name = R.string.p_fine_tune_skill_delay,
-                    icon = R.drawable.ic_wand,
+                    icon = icon(R.drawable.ic_wand),
                     valueRange = 0..2000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Delay between pressing on skill and pressing on target servant."
@@ -131,7 +134,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.waitBeforeTurn,
                     name = R.string.p_fine_tune_wait_before_turn,
-                    icon = R.drawable.ic_time,
+                    icon = icon(R.drawable.ic_time),
                     valueRange = 0..2000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Delay before the skill sequence starts after Battle screen is detected. Slower devices might need longer delay."
@@ -139,7 +142,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.waitBeforeCards,
                     name = R.string.p_fine_tune_wait_before_cards,
-                    icon = R.drawable.ic_card,
+                    icon = icon(R.drawable.ic_card),
                     valueRange = 0..6000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Delay between clicking on Attack button and clicking on face-cards/NP. Slower devices might need longer delay."
@@ -147,7 +150,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                 FineTuneItem(
                     pref = prefs.waitMultiplier,
                     name = R.string.p_fine_tune_wait_multiplier,
-                    icon = R.drawable.ic_time,
+                    icon = icon(R.drawable.ic_time),
                     valueRange = 50..200,
                     valueRepresentation = { "${it}%" },
                     hint = "This multiples to every wait/delay. So, you can make the overall script slower/faster by using this."

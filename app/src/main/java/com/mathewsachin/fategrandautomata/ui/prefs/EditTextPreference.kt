@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.mathewsachin.fategrandautomata.ui.VectorIcon
 
 @Composable
 fun PreferenceTextEditor(
@@ -102,7 +103,7 @@ fun Pref<String>.EditTextPreference(
     title: String,
     singleLineTitle: Boolean = false,
     singleLine: Boolean = false,
-    icon: Painter? = null,
+    icon: VectorIcon? = null,
     enabled: Boolean = true,
     hint: String = "",
     summary: (String) -> String = { it },

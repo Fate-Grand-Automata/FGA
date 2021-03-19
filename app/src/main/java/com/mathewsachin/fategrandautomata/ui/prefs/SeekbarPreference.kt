@@ -10,8 +10,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import kotlin.math.roundToInt
 
 @Composable
@@ -20,7 +20,7 @@ fun Pref<Int>.SeekBarPreference(
     state: MutableState<Float> = remember { mutableStateOf(get().toFloat()) },
     summary: String = "",
     singleLineTitle: Boolean = true,
-    icon: Painter? = null,
+    icon: VectorIcon? = null,
     valueRange: IntRange = 0..100,
     enabled: Boolean = true,
     valueRepresentation: (Int) -> String = { it.toString() },

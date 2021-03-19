@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
+import com.mathewsachin.fategrandautomata.ui.icon
 
 @Composable
 fun SkillMakerMain(
@@ -74,7 +75,7 @@ fun SkillMakerMain(
 
                     ButtonWithIcon(
                         text = R.string.skill_maker_main_undo,
-                        icon = R.drawable.ic_undo,
+                        icon = icon(R.drawable.ic_undo),
                         onClick = { vm.onUndo() },
                         enabled = currentIndex > 0,
                         modifier = Modifier.padding(end = 5.dp)
@@ -82,7 +83,7 @@ fun SkillMakerMain(
 
                     ButtonWithIcon(
                         text = R.string.skill_maker_main_clear,
-                        icon = R.drawable.ic_clear,
+                        icon = icon(R.drawable.ic_clear),
                         onClick = onClear,
                         enabled = vm.skillCommand.size > 1,
                         modifier = Modifier.padding(end = 5.dp)
@@ -90,7 +91,7 @@ fun SkillMakerMain(
 
                     ButtonWithIcon(
                         text = R.string.skill_maker_atk_done,
-                        icon = R.drawable.ic_check,
+                        icon = icon(R.drawable.ic_check),
                         onClick = onDone
                     )
                 }
