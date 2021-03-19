@@ -45,7 +45,9 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.*
 import com.mathewsachin.fategrandautomata.util.drawable
@@ -106,33 +108,27 @@ class BattleConfigItemSettingsFragment : Fragment() {
                     ) {
                         Heading(stringResource(R.string.p_nav_battle_config_edit)) {
                             item {
-                                Button(
+                                HeadingButton(
+                                    text = stringResource(R.string.battle_config_item_export),
                                     onClick = {
                                         battleConfigExport.launch("${battleConfig.name}.fga")
-                                    },
-                                    modifier = Modifier
-                                        .padding(end = 5.dp)
-                                ) {
-                                    Text(
-                                        stringResource(R.string.battle_config_item_export)
-                                    )
-                                }
+                                    }
+                                )
                             }
 
                             item {
-                                Button(
-                                    onClick = { copy() },
-                                    modifier = Modifier
-                                        .padding(end = 5.dp)
-                                ) {
-                                    Text(
-                                        stringResource(R.string.battle_config_item_copy)
-                                    )
-                                }
+                                HeadingButton(
+                                    text = stringResource(R.string.battle_config_item_copy),
+                                    icon = icon(R.drawable.ic_copy),
+                                    onClick = { copy() }
+                                )
                             }
 
                             item {
-                                Button(
+                                HeadingButton(
+                                    text = stringResource(R.string.battle_config_item_delete),
+                                    color = MaterialTheme.colors.error,
+                                    icon = icon(R.drawable.ic_delete),
                                     onClick = {
                                         AlertDialog.Builder(requireContext())
                                             .setMessage(R.string.battle_config_item_delete_confirm_message)
@@ -140,30 +136,19 @@ class BattleConfigItemSettingsFragment : Fragment() {
                                             .setPositiveButton(R.string.battle_config_item_delete_confirm_ok) { _, _ -> deleteItem(args.key) }
                                             .setNegativeButton(android.R.string.cancel, null)
                                             .show()
-                                    },
-                                    modifier = Modifier
-                                        .padding(end = 5.dp)
-                                ) {
-                                    Text(
-                                        stringResource(R.string.battle_config_item_delete)
-                                    )
-                                }
+                                    }
+                                )
                             }
 
                             item {
-                                Button(
+                                HeadingButton(
+                                    text = stringResource(R.string.support_menu_extract_default_support_images),
                                     onClick = {
                                         lifecycleScope.launch {
                                             performSupportImageExtraction()
                                         }
-                                    },
-                                    modifier = Modifier
-                                        .padding(end = 5.dp)
-                                ) {
-                                    Text(
-                                        stringResource(R.string.support_menu_extract_default_support_images)
-                                    )
-                                }
+                                    }
+                                )
                             }
                         }
 
@@ -424,9 +409,10 @@ fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
 
                 priorities.forEach {
                     Surface(
-                        color = colorResource(it.getColorRes()).copy(alpha = 0.7f),
+                        color = colorResource(it.getColorRes()),
                         modifier = Modifier
                             .padding(horizontal = 2.dp)
+                            .alpha(0.8f)
                     ) {
                         Text(
                             it.toString(),

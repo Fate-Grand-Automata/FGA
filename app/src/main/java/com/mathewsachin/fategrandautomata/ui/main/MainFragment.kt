@@ -9,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,10 +31,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ServiceState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.FgaTheme
-import com.mathewsachin.fategrandautomata.ui.Heading
-import com.mathewsachin.fategrandautomata.ui.StartMediaProjection
-import com.mathewsachin.fategrandautomata.ui.icon
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
@@ -79,12 +79,31 @@ class MainFragment : Fragment() {
                         item {
                             Heading(stringResource(R.string.app_name)) {
                                 item {
-                                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                                        Text(
-                                            "Build: ${BuildConfig.VERSION_CODE}",
-                                            style = MaterialTheme.typography.subtitle2
-                                        )
-                                    }
+                                    HeadingButton(
+                                        text = "Build: ${BuildConfig.VERSION_CODE}",
+                                        onClick = {
+                                            val intent = Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse(getString(R.string.link_releases))
+                                            )
+
+                                            startActivity(intent)
+                                        }
+                                    )
+                                }
+
+                                item {
+                                    HeadingButton(
+                                        text = stringResource(R.string.p_nav_troubleshoot),
+                                        onClick = {
+                                            val intent = Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse(getString(R.string.link_troubleshoot))
+                                            )
+
+                                            startActivity(intent)
+                                        }
+                                    )
                                 }
                             }
                         }
@@ -104,21 +123,6 @@ class MainFragment : Fragment() {
 
                         item {
                             Preference(
-                                title = stringResource(R.string.p_nav_troubleshoot),
-                                icon = icon(R.drawable.ic_troubleshooting),
-                                onClick = {
-                                    val intent = Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(getString(R.string.link_troubleshoot))
-                                    )
-
-                                    startActivity(intent)
-                                }
-                            )
-                        }
-
-                        item {
-                            Preference(
                                 title = stringResource(R.string.p_more_options),
                                 icon = icon(R.drawable.ic_dots_horizontal),
                                 onClick = {
@@ -132,8 +136,17 @@ class MainFragment : Fragment() {
                     }
 
                     val serviceStarted by vm.serviceStarted
-                    val backgroundColor = if (serviceStarted) MaterialTheme.colors.error else MaterialTheme.colors.secondary
-                    val foregroundColor = if (serviceStarted) MaterialTheme.colors.onError else MaterialTheme.colors.onSecondary
+
+                    val backgroundColor by animateColorAsState(
+                        if (serviceStarted)
+                            MaterialTheme.colors.error
+                        else MaterialTheme.colors.secondary
+                    )
+
+                    val foregroundColor =
+                        if (serviceStarted)
+                            MaterialTheme.colors.onError
+                        else MaterialTheme.colors.onSecondary
 
                     ExtendedFloatingActionButton(
                         text = {

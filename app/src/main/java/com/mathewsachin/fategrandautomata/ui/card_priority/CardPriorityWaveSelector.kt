@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -93,6 +94,7 @@ fun CardPriorityWaveSelector(
                             MaterialTheme.colors.secondary,
                             shape = CircleShape
                         )
+                        .clip(CircleShape)
                         .clickable {
                             if (items.size < 3) {
                                 items.add(

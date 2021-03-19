@@ -9,7 +9,10 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +27,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,9 +38,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.DimmedIcon
-import com.mathewsachin.fategrandautomata.ui.FgaTheme
-import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.collect
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,47 +81,37 @@ class BattleConfigListFragment : Fragment() {
                     ) {
                         Heading(stringResource(R.string.p_battle_config)) {
                             item {
-                                Button(
+                                HeadingButton(
+                                    text = stringResource(
+                                        if (selectionMode)
+                                            R.string.battle_config_item_export
+                                        else R.string.battle_config_list_export_all
+                                    ),
                                     onClick = {
                                         battleConfigsExport.launch(Uri.EMPTY)
-                                    },
-                                    modifier = Modifier
-                                        .padding(end = 5.dp)
-                                        .animateContentSize()
-                                ) {
-                                    Text(
-                                        stringResource(
-                                            if (selectionMode)
-                                                R.string.battle_config_item_export
-                                            else R.string.battle_config_list_export_all
-                                        )
-                                    )
-                                }
+                                    }
+                                )
                             }
 
                             item {
                                 Crossfade(selectionMode) {
                                     if (it) {
-                                        Button(
+                                        HeadingButton(
+                                            text = stringResource(R.string.battle_config_list_delete),
                                             onClick = {
                                                 deleteSelectedConfigs()
-                                            }
-                                        ) {
-                                            Text(
-                                                stringResource(R.string.battle_config_list_delete)
-                                            )
-                                        }
+                                            },
+                                            color = MaterialTheme.colors.error,
+                                            icon = icon(R.drawable.ic_delete)
+                                        )
                                     }
                                     else {
-                                        Button(
+                                        HeadingButton(
+                                            text = stringResource(R.string.battle_config_list_import),
                                             onClick = {
                                                 battleConfigImport.launch("*/*")
                                             }
-                                        ) {
-                                            Text(
-                                                stringResource(R.string.battle_config_list_import)
-                                            )
-                                        }
+                                        )
                                     }
                                 }
                             }

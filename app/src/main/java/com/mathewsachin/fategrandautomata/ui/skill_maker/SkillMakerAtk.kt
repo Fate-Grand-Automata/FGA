@@ -23,6 +23,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.ui.icon
+import java.util.*
 
 @Composable
 private fun SelectNps(
@@ -207,17 +208,14 @@ fun ButtonWithIcon(
         onClick = onClick,
         modifier = modifier
     ) {
-        Row {
-            Icon(
-                icon.asPainter(),
-                contentDescription = "button icon",
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(20.dp)
-                    .align(Alignment.CenterVertically)
-            )
+        Icon(
+            icon.asPainter(),
+            contentDescription = "button icon",
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .size(20.dp)
+        )
 
-            Text(stringResource(text))
-        }
+        Text(stringResource(text))
     }
 }
