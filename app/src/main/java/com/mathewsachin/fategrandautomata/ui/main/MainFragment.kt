@@ -12,10 +12,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExtendedFloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,7 +77,16 @@ class MainFragment : Fragment() {
                             .fillMaxSize()
                     ) {
                         item {
-                            Heading(stringResource(R.string.app_name))
+                            Heading(stringResource(R.string.app_name)) {
+                                item {
+                                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                                        Text(
+                                            "Build: ${BuildConfig.VERSION_CODE}",
+                                            style = MaterialTheme.typography.subtitle2
+                                        )
+                                    }
+                                }
+                            }
                         }
 
                         item {
@@ -147,14 +154,6 @@ class MainFragment : Fragment() {
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .padding(16.dp)
-                    )
-
-                    Text(
-                        "Build: ${BuildConfig.VERSION_CODE}",
-                        style = MaterialTheme.typography.subtitle2,
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .align(Alignment.BottomStart)
                     )
                 }
             }
