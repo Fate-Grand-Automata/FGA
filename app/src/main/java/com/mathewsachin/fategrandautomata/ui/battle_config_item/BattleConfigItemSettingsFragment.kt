@@ -387,7 +387,6 @@ fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                     Surface(
                         color = colorResource(it.getColorRes()),
                         modifier = Modifier
-                            .padding(horizontal = 2.dp)
                             .alpha(0.8f)
                     ) {
                         Text(
