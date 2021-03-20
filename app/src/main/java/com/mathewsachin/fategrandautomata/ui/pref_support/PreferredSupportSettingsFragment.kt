@@ -3,14 +3,14 @@ package com.mathewsachin.fategrandautomata.ui.pref_support
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.foundation.border
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -18,8 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -155,26 +153,29 @@ class PreferredSupportSettingsFragment : Fragment() {
 
                 val max by pref.collect()
 
-                Box(
-                    contentAlignment = Alignment.Center,
+                val backgroundColor by animateColorAsState(
+                    if (max)
+                        MaterialTheme.colors.secondary
+                    else MaterialTheme.colors.surface,
+                )
+
+                val foregroundColor =
+                    if (max)
+                        MaterialTheme.colors.onSecondary
+                    else MaterialTheme.colors.onSurface
+
+                Card(
                     modifier = Modifier
-                        .border(
-                            width = 1.dp,
-                            brush = SolidColor(
-                                if (max) MaterialTheme.colors.secondary
-                                else MaterialTheme.colors.onBackground.copy(alpha = ContentAlpha.medium)
-                            ),
-                            shape = MaterialTheme.shapes.medium
-                        )
                         .clickable { pref.toggle() }
-                        .size(40.dp)
+                        .size(40.dp),
+                    backgroundColor = backgroundColor,
+                    contentColor = foregroundColor
                 ) {
-                    Text(
-                        skillText(max),
-                        color =
-                            if (max) MaterialTheme.colors.secondary
-                            else Color.Unspecified
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(skillText(max))
+                    }
                 }
             }
         }

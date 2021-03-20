@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -26,7 +25,7 @@ val tealNeutral = Color(0xff26a69a)
 val tealLighter = Color(0xff64d8cb)
 val tealDarker = Color(0xff00766c)
 
-val grayLighter = Color(0xfffafafa)
+val grayLighter = Color(0xffeeeeee)
 val grayDarker = Color(0xFF303030)
 
 val shapes = Shapes(
@@ -79,7 +78,7 @@ fun FgaTheme(
         shapes = shapes
     ) {
         Surface(
-            modifier = Modifier.background(color = backgroundColor)
+            color = MaterialTheme.colors.background
         ) {
             ProvideWindowInsets {
                 Box(

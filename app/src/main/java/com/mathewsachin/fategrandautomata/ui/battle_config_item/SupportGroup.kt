@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,32 +48,40 @@ fun SupportGroup(
     PreferenceGroup(title = stringResource(R.string.p_battle_config_support)) {
         val supportClass by config.support.supportClass.collect()
 
-        LazyRow(
+        Card(
             modifier = Modifier
                 .padding(16.dp, 5.dp)
+                .fillMaxWidth()
         ) {
-            items(SupportClass.values().drop(1)) {
-                val isSelected = supportClass == it
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(5.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                items(SupportClass.values().drop(1)) {
+                    val isSelected = supportClass == it
 
-                Image(
-                    painterResource(it.drawable),
-                    contentDescription = it.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clip(DiamondShape)
-                        .alpha(if (isSelected) 1f else 0.4f)
-                        .border(
-                            if (isSelected) 2.dp else 1.dp,
-                            if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface,
-                            DiamondShape
-                        )
-                        .clickable {
-                            config.support.supportClass.set(
-                                if (isSelected) SupportClass.None else it
+                    Image(
+                        painterResource(it.drawable),
+                        contentDescription = it.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(25.dp)
+                            .alpha(if (isSelected) 1f else 0.4f)
+                            .border(
+                                2.dp,
+                                if (isSelected) MaterialTheme.colors.primary else Color.Transparent,
+                                DiamondShape
                             )
-                        }
-                )
+                            .clip(DiamondShape)
+                            .clickable {
+                                config.support.supportClass.set(
+                                    if (isSelected) SupportClass.None else it
+                                )
+                            }
+                    )
+                }
             }
         }
 
@@ -203,17 +213,14 @@ fun PreferredSummary(
             )
 
             if (servants.isNotEmpty()) {
-                Text(
-                    maxSkillText,
-                    style = MaterialTheme.typography.caption,
-                    modifier = Modifier
-                        .border(
-                            0.5.dp,
-                            MaterialTheme.colors.onSurface,
-                            MaterialTheme.shapes.small
-                        )
-                        .padding(5.dp, 1.dp)
-                )
+                Card {
+                    Text(
+                        maxSkillText,
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier
+                            .padding(5.dp, 1.dp)
+                    )
+                }
             }
         }
 

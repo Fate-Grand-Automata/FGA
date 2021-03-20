@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -40,8 +41,10 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
@@ -350,25 +353,45 @@ fun Pref<Set<MaterialEnum>>.Materials() {
 
 @Composable
 fun MaterialsSummary(materials: List<MaterialEnum>) {
-    LazyRow(
-        horizontalArrangement = Arrangement.End,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        items(materials) { mat ->
-            Image(
-                painterResource(mat.drawable),
-                contentDescription = stringResource(mat.stringRes),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(5.dp)
-                    .size(24.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, Color.Gray, CircleShape)
-                    .alpha(0.8f)
-            )
+    if (materials.isNotEmpty()) {
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Card(
+                shape = RoundedCornerShape(50)
+            ) {
+                LazyRow(
+                    contentPadding = PaddingValues(7.dp, 5.dp)
+                ) {
+                    items(materials) { mat ->
+                        Image(
+                            painterResource(mat.drawable),
+                            contentDescription = stringResource(mat.stringRes),
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .padding(3.dp)
+                                .size(20.dp)
+                                .clip(CircleShape)
+                                .border(0.5.dp, MaterialTheme.colors.onSurface, CircleShape)
+                                .alpha(0.8f)
+                        )
+                    }
+                }
+            }
         }
     }
 }
+
+val CardScore.color: Color
+    @Composable get() {
+        // Dark colors won't be visible in dark theme
+        val score = if (MaterialTheme.colors.isLight)
+            this
+        else CardScore(CardType, CardAffinityEnum.Resist)
+
+        return colorResource(score.getColorRes())
+    }
 
 @Composable
 fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
@@ -379,22 +402,34 @@ fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
         cardPriority.forEachIndexed { wave, priorities ->
             Row(
                 modifier = Modifier
-                    .padding(vertical = 2.dp)
+                    .padding(vertical = 2.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("W${wave + 1}: ")
+                Text(
+                    "W${wave + 1}: ",
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                )
 
-                priorities.forEach {
-                    Surface(
-                        color = colorResource(it.getColorRes()),
+                Card {
+                    Row(
                         modifier = Modifier
-                            .alpha(0.8f)
+                            .padding(horizontal = 5.dp)
                     ) {
-                        Text(
-                            it.toString(),
-                            color = Color.White,
-                            modifier = Modifier
-                                .padding(2.dp, 1.dp)
-                        )
+                        priorities.forEachIndexed { index, it ->
+                            if (index != 0) {
+                                Text(
+                                    ",",
+                                    modifier = Modifier
+                                        .padding(end = 4.dp)
+                                )
+                            }
+
+                            Text(
+                                it.toString(),
+                                color = it.color
+                            )
+                        }
                     }
                 }
             }

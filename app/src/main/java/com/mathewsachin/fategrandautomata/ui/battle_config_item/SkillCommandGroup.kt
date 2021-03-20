@@ -7,12 +7,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -97,11 +96,10 @@ fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
             .padding(vertical = 2.dp)
     ) {
         items(skillCommand) {
-            Surface(
-                color = colorResource(it.colorRes),
+            Card(
+                backgroundColor = colorResource(it.colorRes),
                 modifier = Modifier
                     .padding(horizontal = 2.dp)
-                    .alpha(0.8f)
             ) {
                 Text(
                     it.toString(),
