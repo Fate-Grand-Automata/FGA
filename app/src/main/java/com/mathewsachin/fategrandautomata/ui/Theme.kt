@@ -63,7 +63,6 @@ private val LightColorPalette = lightColors(
 @Composable
 fun FgaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    backgroundColor: Color? = null,
     content: @Composable BoxScope.() -> Unit
 ) {
     val colors = if (darkTheme) {
@@ -78,7 +77,7 @@ fun FgaTheme(
         shapes = shapes
     ) {
         Surface(
-            color = backgroundColor ?: MaterialTheme.colors.background
+            color = MaterialTheme.colors.background
         ) {
             ProvideWindowInsets {
                 PreventRtl {

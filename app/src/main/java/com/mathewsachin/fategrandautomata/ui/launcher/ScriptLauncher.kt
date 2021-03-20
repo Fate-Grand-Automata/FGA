@@ -6,7 +6,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
@@ -180,9 +179,7 @@ fun ScriptLauncher(
     onResponse: (ScriptLauncherResponse) -> Unit,
     prefs: IPreferences
 ) {
-    FgaTheme(
-        backgroundColor = Color.Transparent
-    ) {
+    FgaTheme {
         Column(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
