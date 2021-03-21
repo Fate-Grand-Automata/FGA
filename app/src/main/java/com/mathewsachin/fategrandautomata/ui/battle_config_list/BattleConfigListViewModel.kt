@@ -9,11 +9,13 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.util.toggle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -35,9 +37,28 @@ class BattleConfigListViewModel @Inject constructor(
                 .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name.get() })
         }
 
-    var selectedConfigs = MutableStateFlow(emptySet<String>())
+    private val _selectedConfigs = MutableStateFlow(emptySet<String>())
+    val selectedConfigs: StateFlow<Set<String>> = _selectedConfigs
 
-    var selectionMode = MutableStateFlow(false)
+    fun toggleSelected(id: String) {
+        _selectedConfigs.value = selectedConfigs.value.toggle(id)
+
+        if (selectedConfigs.value.isEmpty()) {
+            endSelection()
+        }
+    }
+
+    private val _selectionMode = MutableStateFlow(false)
+    val selectionMode: StateFlow<Boolean> = _selectionMode
+
+    fun startSelection(id: String) {
+        _selectedConfigs.value = setOf(id)
+        _selectionMode.value = true
+    }
+
+    fun endSelection() {
+        _selectionMode.value = false
+    }
 
     private fun configsToExport() =
         if (selectionMode.value) {

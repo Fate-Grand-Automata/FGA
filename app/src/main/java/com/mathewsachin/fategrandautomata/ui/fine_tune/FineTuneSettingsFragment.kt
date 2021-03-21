@@ -22,6 +22,7 @@ import androidx.fragment.app.viewModels
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
 import com.mathewsachin.fategrandautomata.ui.Heading
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,15 +41,17 @@ class FineTuneSettingsFragment : Fragment() {
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        Heading(stringResource(R.string.p_fine_tune))
-
                         var selectedGroup by remember { mutableStateOf(vm.groups[0]) }
 
-                        FineTuneGroupSelector(
-                            groups = vm.groups,
-                            selected = selectedGroup,
-                            onSelectedChange = { selectedGroup = it }
-                        )
+                        Heading(stringResource(R.string.p_fine_tune)) {
+                            items(vm.groups) {
+                                GroupSelectorItem(
+                                    item = stringResource(it.name),
+                                    isSelected = selectedGroup == it,
+                                    onSelect = { selectedGroup = it }
+                                )
+                            }
+                        }
 
                         Divider()
 

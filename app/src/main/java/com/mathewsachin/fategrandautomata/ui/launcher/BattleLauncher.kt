@@ -21,6 +21,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.Stepper
 import com.mathewsachin.fategrandautomata.util.stringRes
+import com.mathewsachin.fategrandautomata.util.toggle
 
 @Composable
 fun battleLauncher(
@@ -251,8 +252,3 @@ fun RefillResourceEnum.RefillResource(
         )
     }
 }
-
-fun <T> Set<T>.toggle(item: T) =
-    if (item in this)
-        this - item
-    else this + item

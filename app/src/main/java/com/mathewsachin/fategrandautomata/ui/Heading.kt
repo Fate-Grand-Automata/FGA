@@ -1,21 +1,21 @@
 package com.mathewsachin.fategrandautomata.ui
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import java.util.*
 
@@ -28,9 +28,11 @@ fun Heading(
         modifier = Modifier
             .padding(vertical = 16.dp)
     ) {
+        val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+
         Text(
-            text,
-            style = MaterialTheme.typography.h4,
+            if (landscape) text.toUpperCase(Locale.ROOT) else text,
+            style = if (landscape) MaterialTheme.typography.subtitle2 else MaterialTheme.typography.h4,
             modifier = Modifier
                 .padding(start = 16.dp)
         )
@@ -38,7 +40,8 @@ fun Heading(
         if (subheading != null) {
             LazyRow(
                 contentPadding = PaddingValues(16.dp, 0.dp),
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = if (landscape) 7.dp else 16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 subheading()
             }
@@ -86,6 +89,49 @@ fun HeadingButton(
                 text.toUpperCase(Locale.ROOT),
                 style = MaterialTheme.typography.subtitle2
             )
+        }
+    }
+}
+
+@Composable
+fun FgaScaffold(
+    heading: String,
+    subheading: LazyListScope.() -> Unit,
+    content: LazyListScope.() -> Unit,
+    fab: @Composable BoxScope.() -> Unit = { },
+    separator: Boolean = false
+) {
+    FgaTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Heading(
+                    heading,
+                    subheading = subheading
+                )
+
+                if (separator) {
+                    Divider()
+                }
+
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    content = content
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
+            fab()
         }
     }
 }
