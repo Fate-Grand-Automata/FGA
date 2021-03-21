@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.vanpra.composematerialdialogs.MaterialDialog
@@ -48,11 +49,11 @@ fun <T> Pref<T>.ListPreference(
     enabled: Boolean = true,
     hint: String = ""
 ) {
-    val selected by collect()
+    var selected by remember()
 
     val dialog = listDialog(
         selected = selected,
-        selectedChange = { set(it) },
+        selectedChange = { selected = it },
         entries = entries,
         title = title
     )

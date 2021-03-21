@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
@@ -17,7 +18,7 @@ fun Pref<Int>.StepperPreference(
     enabled: Boolean = true,
     valueRepresentation: (Int) -> String = { it.toString() }
 ) {
-    val state by collect()
+    var state by remember()
 
     Preference(
         title = { Text(title) },
@@ -26,7 +27,7 @@ fun Pref<Int>.StepperPreference(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextButton(
-                    onClick = { set((state - 1).coerceIn(valueRange)) },
+                    onClick = { state = (state - 1).coerceIn(valueRange) },
                     enabled = enabled && state > valueRange.first
                 ) {
                     Text("-")
@@ -35,7 +36,7 @@ fun Pref<Int>.StepperPreference(
                 Text(valueRepresentation(state))
 
                 TextButton(
-                    onClick = { set((state + 1).coerceIn(valueRange)) },
+                    onClick = { state = (state + 1).coerceIn(valueRange) },
                     enabled = enabled && state < valueRange.last
                 ) {
                     Text("+")

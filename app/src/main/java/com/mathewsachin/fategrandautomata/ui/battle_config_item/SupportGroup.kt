@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -32,10 +33,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportSelectPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.Preference
-import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
-import com.mathewsachin.fategrandautomata.ui.prefs.collect
+import com.mathewsachin.fategrandautomata.ui.prefs.*
 import com.mathewsachin.fategrandautomata.util.stringRes
 
 @Composable
@@ -46,7 +44,7 @@ fun SupportGroup(
     goToPreferred: () -> Unit
 ) {
     PreferenceGroup(title = stringResource(R.string.p_battle_config_support)) {
-        val supportClass by config.support.supportClass.collect()
+        var supportClass by config.support.supportClass.remember()
 
         Card(
             modifier = Modifier
@@ -76,16 +74,15 @@ fun SupportGroup(
                             )
                             .clip(DiamondShape)
                             .clickable {
-                                config.support.supportClass.set(
+                                supportClass =
                                     if (isSelected) SupportClass.None else it
-                                )
                             }
                     )
                 }
             }
         }
 
-        val supportMode by config.support.selectionMode.collect()
+        val supportMode by config.support.selectionMode.remember()
         val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
         val friendMode = supportMode == SupportSelectionModeEnum.Friend
 
@@ -116,8 +113,8 @@ fun SupportGroup(
         }
 
         if (preferredMode) {
-            val servants by config.support.preferredServants.collect()
-            val ces by config.support.preferredCEs.collect()
+            val servants by config.support.preferredServants.remember()
+            val ces by config.support.preferredCEs.remember()
 
             Preference(
                 title = { Text(stringResource(R.string.p_support_mode_preferred)) },
@@ -153,7 +150,7 @@ fun SupportGroup(
                 )
             }
 
-            val friendNames by config.support.friendNames.collect()
+            val friendNames by config.support.friendNames.remember()
 
             if (friendNames.isEmpty()) {
                 PreferenceError(
@@ -246,7 +243,7 @@ fun PreferredSummary(
             )
 
             if (ces.isNotEmpty()) {
-                val mlb by config.support.mlb.collect()
+                val mlb by config.support.mlb.remember()
 
                 if (mlb) {
                     Icon(

@@ -8,10 +8,7 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ListItem
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,10 +18,31 @@ import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.vanpra.composematerialdialogs.MaterialDialog
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 @Composable
-fun <T> Pref<T>.collect() =
-    remember { asFlow() }.collectAsState(get())
+fun <T> Pref<T>.remember(): MutableState<T> {
+    var state by remember { mutableStateOf(defaultValue) }
+
+    LaunchedEffect(true) {
+        asFlow()
+            .onEach { state = it }
+            .collect()
+    }
+
+    return object: MutableState<T> {
+        override var value: T
+            get() = state
+            set(value) {
+                state = value
+                set(value)
+            }
+
+        override fun component1() = value
+        override fun component2(): (T) -> Unit = { value = it }
+    }
+}
 
 @Composable
 fun Preference(

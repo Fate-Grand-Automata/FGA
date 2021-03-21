@@ -24,7 +24,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillCommand
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceTextEditor
-import com.mathewsachin.fategrandautomata.ui.prefs.collect
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerEntry
 import com.mathewsachin.fategrandautomata.ui.skill_maker.colorRes
 
@@ -34,7 +34,7 @@ fun SkillCommandGroup(
     vm: BattleConfigItemViewModel,
     openSkillMaker: () -> Unit
 ) {
-    val cmd by config.skillCommand.collect()
+    var cmd by config.skillCommand.remember()
     val parsedCommand by vm.skillCommand.collectAsState(listOf())
     var editing by remember { mutableStateOf(false) }
 
@@ -50,7 +50,7 @@ fun SkillCommandGroup(
                         // Check if parses correctly
                         AutoSkillCommand.parse(it)
 
-                        config.skillCommand.set(it)
+                        cmd = it
                         editing = false
                         errorMessage = ""
                     } catch (e: Exception) {

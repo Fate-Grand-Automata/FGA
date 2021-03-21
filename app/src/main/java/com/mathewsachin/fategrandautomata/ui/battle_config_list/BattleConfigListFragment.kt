@@ -39,7 +39,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.*
-import com.mathewsachin.fategrandautomata.ui.prefs.collect
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -255,7 +255,7 @@ fun BattleConfigList(
 
     LazyColumn {
         itemsIndexed(configs) { index, it ->
-            val name by it.name.collect()
+            val name by it.name.remember()
 
             if (index != 0) {
                 Divider()

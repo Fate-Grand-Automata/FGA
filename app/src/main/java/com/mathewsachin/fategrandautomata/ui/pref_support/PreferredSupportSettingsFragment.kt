@@ -16,6 +16,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -35,7 +36,7 @@ import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectListPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.collect
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -74,7 +75,7 @@ class PreferredSupportSettingsFragment : Fragment() {
                                     entries = vm.servants
                                 )
 
-                                val prefServants by config.preferredServants.collect()
+                                val prefServants by config.preferredServants.remember()
 
                                 if (prefServants.isNotEmpty()) {
                                     config.maxAscended.SwitchPreference(
@@ -111,7 +112,7 @@ class PreferredSupportSettingsFragment : Fragment() {
                                     entries = vm.ces
                                 )
 
-                                val prefCEs by config.preferredCEs.collect()
+                                val prefCEs by config.preferredCEs.remember()
 
                                 if (prefCEs.isNotEmpty()) {
                                     config.mlb.SwitchPreference(
@@ -139,8 +140,6 @@ class PreferredSupportSettingsFragment : Fragment() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             fun skillText(max: Boolean) = if (max) "10" else "x"
-            fun Pref<Boolean>.toggle() =
-                set(!get())
 
             skills.forEachIndexed { index, pref ->
                 if (index != 0) {
@@ -151,7 +150,7 @@ class PreferredSupportSettingsFragment : Fragment() {
                     )
                 }
 
-                val max by pref.collect()
+                var max by pref.remember()
 
                 val backgroundColor by animateColorAsState(
                     if (max)
@@ -166,7 +165,7 @@ class PreferredSupportSettingsFragment : Fragment() {
 
                 Card(
                     modifier = Modifier
-                        .clickable { pref.toggle() }
+                        .clickable { max = !max }
                         .size(40.dp),
                     backgroundColor = backgroundColor,
                     contentColor = foregroundColor
@@ -188,7 +187,7 @@ fun Pref<Set<String>>.SupportSelectPreference(
     entries: Map<String, String>,
     icon: VectorIcon? = null
 ) {
-    val value by collect()
+    val value by remember()
 
     MultiSelectListPreference(
         title = title,

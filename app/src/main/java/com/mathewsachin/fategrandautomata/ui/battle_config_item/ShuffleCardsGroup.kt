@@ -12,7 +12,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
 import com.mathewsachin.fategrandautomata.ui.prefs.StepperPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.collect
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.stringRes
 
 @Composable
@@ -27,7 +27,7 @@ fun ShuffleCardsGroup(config: BattleConfigCore) {
                 )
             }
 
-            val shuffleType by config.shuffleCards.collect()
+            val shuffleType by config.shuffleCards.remember()
 
             if (shuffleType != ShuffleCardsEnum.None) {
                 Box(modifier = Modifier.weight(1f)) {

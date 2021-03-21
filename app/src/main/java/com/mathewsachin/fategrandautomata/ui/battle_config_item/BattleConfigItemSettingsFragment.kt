@@ -16,10 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -318,7 +315,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
 @Composable
 fun Pref<Set<MaterialEnum>>.Materials() {
-    val selected by collect()
+    var selected by remember()
 
     val title = stringResource(R.string.p_mats)
     val entries = MaterialEnum.values()
@@ -326,7 +323,7 @@ fun Pref<Set<MaterialEnum>>.Materials() {
 
     val dialog = multiSelectListDialog(
         selected = selected,
-        selectedChange = { set(it) },
+        selectedChange = { selected = it },
         entries = entries,
         title = title
     )
@@ -439,11 +436,11 @@ fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
 
 @Composable
 fun PartySelection(config: BattleConfigCore) {
-    val party by config.party.collect()
+    var party by config.party.remember()
 
     val dialog = listDialog(
         selected = party,
-        selectedChange = { config.party.set(it) },
+        selectedChange = { party = it },
         entries = (-1..9)
             .associateWith {
                 when (it) {

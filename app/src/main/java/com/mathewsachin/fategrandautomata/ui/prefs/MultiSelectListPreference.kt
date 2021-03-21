@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
@@ -56,7 +57,7 @@ fun <T> Pref<Set<T>>.MultiSelectListPreference(
     hint: String = "",
     trailing: @Composable ((Modifier) -> Unit)? = null
 ) {
-    val selected by collect()
+    var selected by remember()
 
     val itemNames = entries
         .filter { selected.contains(it.key) }
@@ -64,7 +65,7 @@ fun <T> Pref<Set<T>>.MultiSelectListPreference(
 
     val dialog = multiSelectListDialog(
         selected = selected,
-        selectedChange = { set(it) },
+        selectedChange = { selected = it },
         entries = entries,
         title = title
     )

@@ -8,7 +8,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.collect
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 
 fun LazyListScope.advancedGroup(
     prefs: PrefsCore,
@@ -39,7 +39,7 @@ fun LazyListScope.advancedGroup(
     }
 
     item {
-        val rootForScreenshots by prefs.useRootForScreenshots.collect()
+        val rootForScreenshots by prefs.useRootForScreenshots.remember()
 
         prefs.recordScreen.SwitchPreference(
             title = stringResource(R.string.p_record_screen),

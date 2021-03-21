@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Checkbox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,19 +17,19 @@ import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
 import com.mathewsachin.fategrandautomata.ui.prefs.SeekBarPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.collect
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 
 @Composable
 fun WaitForAPRegenGroup(
     prefs: PrefsCore
 ) {
     PreferenceGroup(title = stringResource(R.string.p_wait_ap_regen_text)) {
-        val waitEnabled by prefs.waitAPRegen.collect()
+        var waitEnabled by prefs.waitAPRegen.remember()
 
         Row {
             Checkbox(
                 checked = waitEnabled,
-                onCheckedChange = { prefs.waitAPRegen.set(it) },
+                onCheckedChange = { waitEnabled = it },
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .align(Alignment.CenterVertically)

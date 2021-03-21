@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 
@@ -15,8 +16,7 @@ fun Pref<Boolean>.SwitchPreference(
     enabled: Boolean = true,
     hint: String = ""
 ) {
-    val onClicked: (Boolean) -> Unit = { set(it) }
-    val state by collect()
+    var state by remember()
 
     Preference(
         title = title,
@@ -24,12 +24,12 @@ fun Pref<Boolean>.SwitchPreference(
         singleLineTitle = singleLineTitle,
         icon = icon,
         enabled = enabled,
-        onClick = { onClicked(!state) },
+        onClick = { state = !state },
         hint = hint
     ) { modifier ->
         Switch(
             checked = state,
-            onCheckedChange = { onClicked(it) },
+            onCheckedChange = { state = it },
             enabled = enabled,
             modifier = modifier
         )
