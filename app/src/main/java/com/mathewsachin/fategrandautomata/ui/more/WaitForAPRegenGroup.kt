@@ -3,10 +3,8 @@ package com.mathewsachin.fategrandautomata.ui.more
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Checkbox
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,21 +13,25 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
-import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
+import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
 import com.mathewsachin.fategrandautomata.ui.prefs.SeekBarPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.remember
 
-@Composable
-fun WaitForAPRegenGroup(
-    prefs: PrefsCore
+fun LazyListScope.WaitForAPRegenGroup(
+    prefs: PrefsCore,
+    waitEnabled: Boolean,
+    onWaitEnabledChange: (Boolean) -> Unit
 ) {
-    PreferenceGroup(title = stringResource(R.string.p_wait_ap_regen_text)) {
-        var waitEnabled by prefs.waitAPRegen.remember()
+    item {
+        PreferenceGroupHeader(
+            title = stringResource(R.string.p_wait_ap_regen_text)
+        )
+    }
 
+    item {
         Row {
             Checkbox(
                 checked = waitEnabled,
-                onCheckedChange = { waitEnabled = it },
+                onCheckedChange = { onWaitEnabledChange(it) },
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .align(Alignment.CenterVertically)
@@ -42,8 +44,10 @@ fun WaitForAPRegenGroup(
                 enabled = waitEnabled
             )
         }
+    }
 
-        if (waitEnabled) {
+    if (waitEnabled) {
+        item {
             prefs.waitAPRegenMinutes.SeekBarPreference(
                 title = stringResource(R.string.p_wait_ap_regen_minutes_text),
                 summary = stringResource(R.string.p_wait_ap_regen_minutes_text_summary),

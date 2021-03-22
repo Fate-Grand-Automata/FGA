@@ -34,7 +34,7 @@ import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectListPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroup
+import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +55,9 @@ class PreferredSupportSettingsFragment : Fragment() {
 
             setContent {
                 FgaTheme {
+                    val prefServants by config.preferredServants.remember()
+                    val prefCEs by config.preferredCEs.remember()
+
                     LazyColumn {
                         item {
                             Heading(stringResource(R.string.p_support_mode_preferred))
@@ -69,56 +72,66 @@ class PreferredSupportSettingsFragment : Fragment() {
                         }
 
                         item {
-                            PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_servants)) {
-                                config.preferredServants.SupportSelectPreference(
-                                    title = stringResource(R.string.p_battle_config_support_pref_servants),
-                                    entries = vm.servants
-                                )
-
-                                val prefServants by config.preferredServants.remember()
-
-                                if (prefServants.isNotEmpty()) {
-                                    config.maxAscended.SwitchPreference(
-                                        title = stringResource(R.string.p_battle_config_support_max_ascended)
-                                    )
-
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier.padding(16.dp)
-                                    ) {
-                                        Text(
-                                            stringResource(R.string.p_max_skills),
-                                            modifier = Modifier.weight(1f)
-                                        )
-
-                                        MaxSkills(
-                                            skills = listOf(
-                                                config.skill1Max,
-                                                config.skill2Max,
-                                                config.skill3Max
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-
-                            Divider()
+                            PreferenceGroupHeader(
+                                title = stringResource(R.string.p_battle_config_support_pref_servants)
+                            )
                         }
 
                         item {
-                            PreferenceGroup(title = stringResource(R.string.p_battle_config_support_pref_ces)) {
-                                config.preferredCEs.SupportSelectPreference(
-                                    title = stringResource(R.string.p_battle_config_support_pref_ces),
-                                    entries = vm.ces
+                            config.preferredServants.SupportSelectPreference(
+                                title = stringResource(R.string.p_battle_config_support_pref_servants),
+                                entries = vm.servants
+                            )
+                        }
+
+                        if (prefServants.isNotEmpty()) {
+                            item {
+                                config.maxAscended.SwitchPreference(
+                                    title = stringResource(R.string.p_battle_config_support_max_ascended)
                                 )
+                            }
 
-                                val prefCEs by config.preferredCEs.remember()
+                            item {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(16.dp)
+                                ) {
+                                    Text(
+                                        stringResource(R.string.p_max_skills),
+                                        modifier = Modifier.weight(1f)
+                                    )
 
-                                if (prefCEs.isNotEmpty()) {
-                                    config.mlb.SwitchPreference(
-                                        title = stringResource(R.string.p_battle_config_support_mlb)
+                                    MaxSkills(
+                                        skills = listOf(
+                                            config.skill1Max,
+                                            config.skill2Max,
+                                            config.skill3Max
+                                        )
                                     )
                                 }
+                            }
+                        }
+
+                        item { Divider() }
+
+                        item {
+                            PreferenceGroupHeader(
+                                title = stringResource(R.string.p_battle_config_support_pref_ces)
+                            )
+                        }
+
+                        item {
+                            config.preferredCEs.SupportSelectPreference(
+                                title = stringResource(R.string.p_battle_config_support_pref_ces),
+                                entries = vm.ces
+                            )
+                        }
+
+                        if (prefCEs.isNotEmpty()) {
+                            item {
+                                config.mlb.SwitchPreference(
+                                    title = stringResource(R.string.p_battle_config_support_mlb)
+                                )
                             }
                         }
                     }

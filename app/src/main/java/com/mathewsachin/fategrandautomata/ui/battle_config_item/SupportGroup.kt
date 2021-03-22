@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
@@ -33,17 +34,26 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportSelectPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.*
+import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
+import com.mathewsachin.fategrandautomata.ui.prefs.Preference
+import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.stringRes
 
-@Composable
-fun SupportGroup(
+fun LazyListScope.SupportGroup(
     config: BattleConfigCore,
+    supportMode: SupportSelectionModeEnum,
     maxSkillText: String,
     friendEntries: Map<String, String>,
     goToPreferred: () -> Unit
 ) {
-    PreferenceGroup(title = stringResource(R.string.p_battle_config_support)) {
+    item {
+        PreferenceGroupHeader(
+            title = stringResource(R.string.p_battle_config_support)
+        )
+    }
+
+    item {
         var supportClass by config.support.supportClass.remember()
 
         Card(
@@ -81,11 +91,12 @@ fun SupportGroup(
                 }
             }
         }
+    }
 
-        val supportMode by config.support.selectionMode.remember()
-        val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
-        val friendMode = supportMode == SupportSelectionModeEnum.Friend
+    val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
+    val friendMode = supportMode == SupportSelectionModeEnum.Friend
 
+    item {
         Row {
             Box(
                 modifier = Modifier.weight(1f)
@@ -111,8 +122,10 @@ fun SupportGroup(
                 }
             }
         }
+    }
 
-        if (preferredMode) {
+    if (preferredMode) {
+        item {
             val servants by config.support.preferredServants.remember()
             val ces by config.support.preferredCEs.remember()
 
@@ -135,8 +148,10 @@ fun SupportGroup(
                 )
             }
         }
+    }
 
-        if (friendMode) {
+    if (friendMode) {
+        item {
             if (friendEntries.isNotEmpty()) {
                 config.support.friendNames.SupportSelectPreference(
                     title = stringResource(R.string.p_battle_config_support_friend_names),

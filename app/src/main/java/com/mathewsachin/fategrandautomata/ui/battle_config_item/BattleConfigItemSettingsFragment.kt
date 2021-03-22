@@ -105,6 +105,8 @@ class BattleConfigItemSettingsFragment : Fragment() {
                 val battleConfigExport = activityResult(ActivityResultContracts.CreateDocument()) { uri ->
                     exportBattleConfig(uri)
                 }
+                val maxSkillText by vm.maxSkillText.collectAsState("")
+                val supportMode by config.support.selectionMode.remember()
 
                 FgaScaffold(
                     stringResource(R.string.p_nav_battle_config_edit),
@@ -237,27 +239,24 @@ class BattleConfigItemSettingsFragment : Fragment() {
                             Divider()
                         }
 
+                        SupportGroup(
+                            config = config,
+                            goToPreferred = {
+                                val action = BattleConfigItemSettingsFragmentDirections
+                                    .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
+
+                                nav(action)
+                            },
+                            supportMode = supportMode,
+                            maxSkillText = maxSkillText,
+                            friendEntries = supportViewModel.friends
+                        )
+
                         item {
-                            val maxSkillText by vm.maxSkillText.collectAsState("")
-
-                            SupportGroup(
-                                config = config,
-                                goToPreferred = {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
-
-                                    nav(action)
-                                },
-                                maxSkillText = maxSkillText,
-                                friendEntries = supportViewModel.friends
-                            )
-
                             Divider()
                         }
 
-                        item {
-                            ShuffleCardsGroup(config)
-                        }
+                        ShuffleCardsGroup(config)
                     }
                 )
             }
