@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.animation.AnimatedVisibility
@@ -35,14 +34,10 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.DimmedIcon
-import com.mathewsachin.fategrandautomata.ui.FgaScaffold
-import com.mathewsachin.fategrandautomata.ui.HeadingButton
-import com.mathewsachin.fategrandautomata.ui.icon
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -54,26 +49,18 @@ class BattleConfigListFragment : Fragment() {
 
     val vm: BattleConfigListViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Back button exits selection mode
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            vm.endSelection()
-        }
-
-        lifecycleScope.launchWhenStarted {
-            vm.selectionMode.collect {
-                callback.isEnabled = it
-            }
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
                 val selectionMode by vm.selectionMode.collectAsState()
                 val selectedConfigs by vm.selectedConfigs.collectAsState()
+
+                BackHandler(
+                    backDispatcher = requireActivity().onBackPressedDispatcher,
+                    enabled = selectionMode
+                ) {
+                    vm.endSelection()
+                }
 
                 // TODO: This hack feels bad
                 val configsStateList = mutableStateListOf<BattleConfigCore>()
