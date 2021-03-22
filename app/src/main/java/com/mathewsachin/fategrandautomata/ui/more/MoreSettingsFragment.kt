@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
@@ -44,7 +45,7 @@ class MoreSettingsFragment : Fragment() {
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        var selectedGroup by remember { mutableStateOf(MoreSettingsGroup.Battle) }
+                        var selectedGroup by rememberSaveable { mutableStateOf(MoreSettingsGroup.Battle) }
 
                         Heading(stringResource(R.string.p_more_options)) {
                             items(MoreSettingsGroup.values().toList()) {

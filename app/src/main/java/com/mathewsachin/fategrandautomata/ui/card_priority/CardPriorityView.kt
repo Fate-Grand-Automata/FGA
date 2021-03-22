@@ -3,7 +3,11 @@ package com.mathewsachin.fategrandautomata.ui.card_priority
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,7 +19,7 @@ import com.mathewsachin.fategrandautomata.ui.Heading
 fun CardPriorityView(
     items: SnapshotStateList<CardPriorityListItem>
 ) {
-    var selectedWave by remember { mutableStateOf(0) }
+    var selectedWave by rememberSaveable { mutableStateOf(0) }
 
     Column(
         modifier = Modifier

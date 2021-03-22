@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,14 +42,14 @@ class FineTuneSettingsFragment : Fragment() {
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        var selectedGroup by remember { mutableStateOf(vm.groups[0]) }
+                        var selectedIndex by rememberSaveable { mutableStateOf(0) }
 
                         Heading(stringResource(R.string.p_fine_tune)) {
-                            items(vm.groups) {
+                            itemsIndexed(vm.groups) { index, it ->
                                 GroupSelectorItem(
                                     item = stringResource(it.name),
-                                    isSelected = selectedGroup == it,
-                                    onSelect = { selectedGroup = it }
+                                    isSelected = selectedIndex == index,
+                                    onSelect = { selectedIndex = index }
                                 )
                             }
                         }
@@ -60,6 +61,8 @@ class FineTuneSettingsFragment : Fragment() {
                                 .weight(1f)
                                 .padding(top = 16.dp)
                         ) {
+                            val selectedGroup = vm.groups[selectedIndex]
+
                             LazyColumn(
                                 contentPadding = PaddingValues(bottom = 90.dp)
                             ) {
