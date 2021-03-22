@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -58,6 +59,7 @@ import timber.log.Timber
 import timber.log.error
 import java.util.*
 import javax.inject.Inject
+import androidx.activity.compose.registerForActivityResult as activityResult
 
 @AndroidEntryPoint
 class BattleConfigItemSettingsFragment : Fragment() {
@@ -72,7 +74,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
     val args: BattleConfigItemSettingsFragmentArgs by navArgs()
 
-    val battleConfigExport = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+    private fun exportBattleConfig(uri: Uri?) {
         if (uri != null) {
             try {
                 requireContext().contentResolver.openOutputStream(uri)?.use { outStream ->
@@ -100,6 +102,10 @@ class BattleConfigItemSettingsFragment : Fragment() {
             val config = prefsCore.forBattleConfig(args.key)
 
             setContent {
+                val battleConfigExport = activityResult(ActivityResultContracts.CreateDocument()) { uri ->
+                    exportBattleConfig(uri)
+                }
+
                 FgaScaffold(
                     stringResource(R.string.p_nav_battle_config_edit),
                     subheading = {

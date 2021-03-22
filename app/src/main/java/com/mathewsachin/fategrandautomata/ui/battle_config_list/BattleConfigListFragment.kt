@@ -41,6 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.activity.compose.registerForActivityResult as activityResult
 
 @AndroidEntryPoint
 class BattleConfigListFragment : Fragment() {
@@ -60,6 +61,18 @@ class BattleConfigListFragment : Fragment() {
                     enabled = selectionMode
                 ) {
                     vm.endSelection()
+                }
+
+                val battleConfigsExport = activityResult(
+                    ActivityResultContracts.OpenDocumentTree()
+                ) { dirUri ->
+                    exportBattleConfigs(dirUri)
+                }
+
+                val battleConfigImport = activityResult(
+                    ActivityResultContracts.GetMultipleContents()
+                ) { uris ->
+                    importBattleConfigs(uris)
                 }
 
                 // TODO: This hack feels bad
@@ -192,11 +205,7 @@ class BattleConfigListFragment : Fragment() {
         }
     }
 
-    val battleConfigsExport = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { dirUri ->
-        exportBattleConfigs(dirUri)
-    }
-
-    val battleConfigImport = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
+    private fun importBattleConfigs(uris: List<Uri>) {
         lifecycleScope.launch {
             val result = vm.importAsync(uris, requireContext()).await()
 
