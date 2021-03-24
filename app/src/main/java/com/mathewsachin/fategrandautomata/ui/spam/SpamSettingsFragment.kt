@@ -106,71 +106,98 @@ class SpamSettingsFragment : Fragment() {
                         }
 
                         item {
-                            Column(
-                                modifier = Modifier.padding(16.dp)
-                            ) {
-                                val selectedConfig = vm.spamStates[vm.selectedServant]
+                            val selectedConfig = vm.spamStates[vm.selectedServant]
 
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text("NP:")
-
-                                    var selectedSpamMode by selectedConfig.np.spamMode
-                                    var selectedWaves by selectedConfig.np.waves
-
-                                    SelectSpamMode(
-                                        selected = selectedSpamMode,
-                                        onSelectChange = { selectedSpamMode = it },
-                                        modifier = Modifier.weight(1f)
-                                    )
-
-                                    if (selectedSpamMode != SpamEnum.None) {
-                                        SelectWaves(
-                                            selected = selectedWaves,
-                                            onSelectChange = { selectedWaves = it },
-                                            modifier = Modifier.weight(1f)
-                                        )
-                                    }
-                                }
-
-                                selectedConfig.skills.mapIndexed { index, skillConfig ->
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text("S${index + 1}:")
-
-                                        var selectedSpamMode by skillConfig.spamMode
-                                        var selectedTarget by skillConfig.target
-                                        var selectedWaves by skillConfig.waves
-
-                                        SelectSpamMode(
-                                            selected = selectedSpamMode,
-                                            onSelectChange = { selectedSpamMode = it },
-                                            modifier = Modifier.weight(1f)
-                                        )
-
-                                        if (selectedSpamMode != SpamEnum.None) {
-                                            SelectTarget(
-                                                selected = selectedTarget,
-                                                onSelectChange = { selectedTarget = it },
-                                                modifier = Modifier.weight(1f)
-                                            )
-
-                                            SelectWaves(
-                                                selected = selectedWaves,
-                                                onSelectChange = { selectedWaves = it },
-                                                modifier = Modifier.weight(1f)
-                                            )
-                                        }
-                                    }
-                                }
-                            }
+                            SpamView(
+                                selectedConfig = selectedConfig
+                            )
                         }
                     }
                 }
             }
         }
+}
+
+@Composable
+private fun NpSpamView(
+    spamConfig: SpamSettingsViewModel.NpSpamState
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text("NP:")
+
+        var selectedSpamMode by spamConfig.spamMode
+        var selectedWaves by spamConfig.waves
+
+        SelectSpamMode(
+            selected = selectedSpamMode,
+            onSelectChange = { selectedSpamMode = it },
+            modifier = Modifier.weight(1f)
+        )
+
+        if (selectedSpamMode != SpamEnum.None) {
+            SelectWaves(
+                selected = selectedWaves,
+                onSelectChange = { selectedWaves = it },
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SkillSpamView(
+    index: Int,
+    skillConfig: SpamSettingsViewModel.SkillSpamState
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text("S${index + 1}:")
+
+        var selectedSpamMode by skillConfig.spamMode
+        var selectedTarget by skillConfig.target
+        var selectedWaves by skillConfig.waves
+
+        SelectSpamMode(
+            selected = selectedSpamMode,
+            onSelectChange = { selectedSpamMode = it },
+            modifier = Modifier.weight(1f)
+        )
+
+        if (selectedSpamMode != SpamEnum.None) {
+            SelectTarget(
+                selected = selectedTarget,
+                onSelectChange = { selectedTarget = it },
+                modifier = Modifier.weight(1f)
+            )
+
+            SelectWaves(
+                selected = selectedWaves,
+                onSelectChange = { selectedWaves = it },
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SpamView(
+    selectedConfig: SpamSettingsViewModel.SpamState
+) {
+    Column(
+        modifier = Modifier.padding(16.dp)
+    ) {
+        NpSpamView(spamConfig = selectedConfig.np)
+
+        selectedConfig.skills.mapIndexed { index, skillConfig ->
+            SkillSpamView(
+                index = index,
+                skillConfig = skillConfig
+            )
+        }
+    }
 }
 
 @Composable
