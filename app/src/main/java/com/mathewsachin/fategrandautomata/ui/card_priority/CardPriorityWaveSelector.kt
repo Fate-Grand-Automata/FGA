@@ -1,5 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -64,7 +67,7 @@ fun CardPriorityWaveSelector(
                             modifier = Modifier.padding(5.dp, 2.dp)
                         )
 
-                        if (index > 0 && index == items.lastIndex) {
+                        AnimatedVisibility (index > 0 && index == items.lastIndex) {
                             Box(
                                 modifier = Modifier
                                     .clickable {
@@ -87,7 +90,11 @@ fun CardPriorityWaveSelector(
                 }
             }
 
-            if (items.size < 3) {
+            AnimatedVisibility (
+                items.size < 3,
+                enter = slideInHorizontally(initialOffsetX = { it * 2 }),
+                exit = slideOutHorizontally(targetOffsetX = { it * 2 })
+            ) {
                 Box(
                     modifier = Modifier
                         .background(
