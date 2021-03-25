@@ -11,6 +11,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -91,7 +93,7 @@ fun SkillMakerMain(
 
                     ButtonWithIcon(
                         text = R.string.skill_maker_atk_done,
-                        icon = icon(R.drawable.ic_check),
+                        icon = icon(Icons.Default.Check),
                         onClick = onDone
                     )
                 }

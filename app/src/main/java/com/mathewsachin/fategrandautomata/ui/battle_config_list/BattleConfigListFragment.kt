@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -255,9 +256,9 @@ private fun BattleConfigListItem(
                 onLongClick = onLongClick
             ),
         trailing = {
-            if (isSelected) {
+            AnimatedVisibility (isSelected) {
                 DimmedIcon(
-                    icon(R.drawable.ic_check),
+                    icon(Icons.Default.Check),
                     contentDescription = "Select",
                     modifier = Modifier
                         .size(40.dp)

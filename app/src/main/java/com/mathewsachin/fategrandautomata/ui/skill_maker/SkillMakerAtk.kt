@@ -23,7 +23,6 @@ import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.ui.icon
-import java.util.*
 
 @Composable
 private fun SelectNps(
