@@ -31,18 +31,20 @@ private fun DeltaButton(
     val canDelta = (currentValue + delta) in valueRange
     val isEnabled = enabled && canDelta
 
+    // rememberUpdatedState is needed on State objects accessed from the gesture callback,
+    // otherwise the callback itself would get recomposed.
     val rememberedCanDelta by rememberUpdatedState(canDelta)
     val rememberedIsEnabled by rememberUpdatedState(isEnabled)
 
+    val rememberedCurrentValue by rememberUpdatedState(currentValue)
     val onCurrentValueDelta by rememberUpdatedState {
-        onCurrentValueChange(currentValue + delta)
+        onCurrentValueChange(rememberedCurrentValue + delta)
     }
     val onPerformCommit by rememberUpdatedState {
-        onCommit(currentValue.coerceIn(valueRange))
+        onCommit(rememberedCurrentValue.coerceIn(valueRange))
     }
 
     val longPressTimeout = ViewConfiguration.getLongPressTimeout().milliseconds
-    var repeatInterval = 100.milliseconds
     val repeatIntervalDelta = 2.milliseconds
     val minRepeatInterval = 10.milliseconds
 
@@ -56,6 +58,7 @@ private fun DeltaButton(
 
                             try {
                                 delay(longPressTimeout)
+                                var repeatInterval = 100.milliseconds
 
                                 while (rememberedCanDelta) {
                                     onCurrentValueDelta()
@@ -79,6 +82,9 @@ private fun DeltaButton(
 
                         currentJob.cancel()
                         currentJob.join()
+
+                        // Some delay otherwise value won't update on every other single tap
+                        delay(10.milliseconds)
 
                         onPerformCommit()
                     }
