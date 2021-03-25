@@ -209,7 +209,7 @@ fun PreferredSummary(
                 .padding(vertical = 2.dp)
         ) {
             DimmedIcon(
-                painterResource(R.drawable.ic_crown),
+                icon(R.drawable.ic_crown),
                 contentDescription = "crown"
             )
 
@@ -242,7 +242,7 @@ fun PreferredSummary(
                 .padding(vertical = 2.dp)
         ) {
             DimmedIcon(
-                painterResource(R.drawable.ic_card),
+                icon(R.drawable.ic_card),
                 contentDescription = "card"
             )
 

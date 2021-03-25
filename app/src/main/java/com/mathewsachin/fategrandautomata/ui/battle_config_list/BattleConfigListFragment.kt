@@ -24,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -258,7 +257,7 @@ private fun BattleConfigListItem(
         trailing = {
             if (isSelected) {
                 DimmedIcon(
-                    painterResource(R.drawable.ic_check),
+                    icon(R.drawable.ic_check),
                     contentDescription = "Select",
                     modifier = Modifier
                         .size(40.dp)

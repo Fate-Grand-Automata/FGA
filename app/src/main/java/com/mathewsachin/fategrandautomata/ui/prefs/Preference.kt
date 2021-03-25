@@ -11,12 +11,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.vanpra.composematerialdialogs.MaterialDialog
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -102,7 +102,7 @@ fun Preference(
             icon = icon?.let {
                 {
                     DimmedIcon(
-                        it.asPainter(),
+                        it,
                         contentDescription = "icon",
                         modifier = Modifier
                             .size(40.dp)
@@ -121,7 +121,7 @@ fun Preference(
 
                     if (hint.isNotBlank()) {
                         DimmedIcon(
-                            painterResource(R.drawable.ic_info),
+                            icon(R.drawable.ic_info),
                             contentDescription = "Hint",
                             modifier = Modifier
                                 .size(40.dp)

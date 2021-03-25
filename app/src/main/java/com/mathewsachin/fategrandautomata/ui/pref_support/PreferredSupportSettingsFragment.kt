@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -29,10 +28,7 @@ import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.ui.DimmedIcon
-import com.mathewsachin.fategrandautomata.ui.FgaTheme
-import com.mathewsachin.fategrandautomata.ui.Heading
-import com.mathewsachin.fategrandautomata.ui.VectorIcon
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectListPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
@@ -214,7 +210,7 @@ fun Pref<Set<String>>.SupportSelectPreference(
     ) {
         if (value.isNotEmpty()) {
             DimmedIcon(
-                painterResource(R.drawable.ic_close),
+                icon(R.drawable.ic_close),
                 contentDescription = "Clear",
                 modifier = Modifier
                     .size(40.dp)
