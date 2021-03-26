@@ -25,12 +25,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() {
-            content {
-                includeModule("com.vanpra.compose-material-dialogs", "core")
-                includeModule("org.jetbrains.kotlinx", "kotlinx-collections-immutable-jvm")
-            }
-        }
+        maven { url "https://dl.bintray.com/vanpra/maven" }
+        maven { url "https://kotlin.bintray.com/kotlinx" }
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
