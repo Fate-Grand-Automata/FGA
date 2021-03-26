@@ -16,6 +16,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -123,7 +126,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
                         item {
                             HeadingButton(
                                 text = stringResource(R.string.battle_config_item_copy),
-                                icon = icon(R.drawable.ic_copy),
+                                icon = icon(Icons.Default.ContentCopy),
                                 onClick = { copy() }
                             )
                         }
@@ -132,7 +135,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
                             HeadingButton(
                                 text = stringResource(R.string.battle_config_item_delete),
                                 color = MaterialTheme.colors.error,
-                                icon = icon(R.drawable.ic_delete),
+                                icon = icon(Icons.Default.Delete),
                                 onClick = {
                                     AlertDialog.Builder(requireContext())
                                         .setMessage(R.string.battle_config_item_delete_confirm_message)

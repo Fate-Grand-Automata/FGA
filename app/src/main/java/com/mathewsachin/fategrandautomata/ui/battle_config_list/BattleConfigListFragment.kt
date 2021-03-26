@@ -19,6 +19,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -109,7 +110,7 @@ class BattleConfigListFragment : Fragment() {
                                             deleteSelectedConfigs()
                                         },
                                         color = MaterialTheme.colors.error,
-                                        icon = icon(R.drawable.ic_delete)
+                                        icon = icon(Icons.Default.Delete)
                                     )
                                 }
                                 else {
