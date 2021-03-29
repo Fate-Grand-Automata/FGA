@@ -28,6 +28,7 @@ import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.prefs.core.SupportPrefsCore
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectListPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
@@ -50,88 +51,10 @@ class PreferredSupportSettingsFragment : Fragment() {
             val config = prefsCore.forBattleConfig(args.key).support
 
             setContent {
-                FgaTheme {
-                    val prefServants by config.preferredServants.remember()
-                    val prefCEs by config.preferredCEs.remember()
-
-                    LazyColumn {
-                        item {
-                            Heading(stringResource(R.string.p_support_mode_preferred))
-                        }
-
-                        item {
-                            config.friendsOnly.SwitchPreference(
-                                title = stringResource(R.string.p_battle_config_support_friends_only)
-                            )
-
-                            Divider()
-                        }
-
-                        item {
-                            PreferenceGroupHeader(
-                                title = stringResource(R.string.p_battle_config_support_pref_servants)
-                            )
-                        }
-
-                        item {
-                            config.preferredServants.SupportSelectPreference(
-                                title = stringResource(R.string.p_battle_config_support_pref_servants),
-                                entries = vm.servants
-                            )
-                        }
-
-                        if (prefServants.isNotEmpty()) {
-                            item {
-                                config.maxAscended.SwitchPreference(
-                                    title = stringResource(R.string.p_battle_config_support_max_ascended)
-                                )
-                            }
-
-                            item {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.padding(16.dp)
-                                ) {
-                                    Text(
-                                        stringResource(R.string.p_max_skills),
-                                        modifier = Modifier.weight(1f)
-                                    )
-
-                                    MaxSkills(
-                                        skills = listOf(
-                                            config.skill1Max,
-                                            config.skill2Max,
-                                            config.skill3Max
-                                        )
-                                    )
-                                }
-                            }
-                        }
-
-                        item { Divider() }
-
-                        item {
-                            PreferenceGroupHeader(
-                                title = stringResource(R.string.p_battle_config_support_pref_ces)
-                            )
-                        }
-
-                        item {
-                            config.preferredCEs.SupportSelectPreference(
-                                title = stringResource(R.string.p_battle_config_support_pref_ces),
-                                entries = vm.ces
-                            )
-                        }
-
-                        if (prefCEs.isNotEmpty()) {
-                            item {
-                                config.mlb.SwitchPreference(
-                                    title = stringResource(R.string.p_battle_config_support_mlb)
-                                )
-                            }
-                        }
-                    }
-                }
+                PreferredSupport(
+                    config = config,
+                    vm = vm
+                )
             }
         }
 
@@ -140,50 +63,139 @@ class PreferredSupportSettingsFragment : Fragment() {
 
         vm.refresh(requireContext())
     }
+}
 
-    @Composable
-    fun MaxSkills(
-        skills: List<Pref<Boolean>>
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            fun skillText(max: Boolean) = if (max) "10" else "x"
+@Composable
+fun PreferredSupport(
+    config: SupportPrefsCore,
+    vm: PreferredSupportViewModel
+) {
+    FgaTheme {
+        val prefServants by config.preferredServants.remember()
+        val prefCEs by config.preferredCEs.remember()
 
-            skills.forEachIndexed { index, pref ->
-                if (index != 0) {
-                    Text(
-                        "/",
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
+        LazyColumn {
+            item {
+                Heading(stringResource(R.string.p_support_mode_preferred))
+            }
+
+            item {
+                config.friendsOnly.SwitchPreference(
+                    title = stringResource(R.string.p_battle_config_support_friends_only)
+                )
+
+                Divider()
+            }
+
+            item {
+                PreferenceGroupHeader(
+                    title = stringResource(R.string.p_battle_config_support_pref_servants)
+                )
+            }
+
+            item {
+                config.preferredServants.SupportSelectPreference(
+                    title = stringResource(R.string.p_battle_config_support_pref_servants),
+                    entries = vm.servants
+                )
+            }
+
+            if (prefServants.isNotEmpty()) {
+                item {
+                    config.maxAscended.SwitchPreference(
+                        title = stringResource(R.string.p_battle_config_support_max_ascended)
                     )
                 }
 
-                var max by pref.remember()
-
-                val backgroundColor by animateColorAsState(
-                    if (max)
-                        MaterialTheme.colors.secondary
-                    else MaterialTheme.colors.surface,
-                )
-
-                val foregroundColor =
-                    if (max)
-                        MaterialTheme.colors.onSecondary
-                    else MaterialTheme.colors.onSurface
-
-                Card(
-                    modifier = Modifier
-                        .clickable { max = !max }
-                        .size(40.dp),
-                    backgroundColor = backgroundColor,
-                    contentColor = foregroundColor
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center
+                item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(16.dp)
                     ) {
-                        Text(skillText(max))
+                        Text(
+                            stringResource(R.string.p_max_skills),
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        MaxSkills(
+                            skills = listOf(
+                                config.skill1Max,
+                                config.skill2Max,
+                                config.skill3Max
+                            )
+                        )
                     }
+                }
+            }
+
+            item { Divider() }
+
+            item {
+                PreferenceGroupHeader(
+                    title = stringResource(R.string.p_battle_config_support_pref_ces)
+                )
+            }
+
+            item {
+                config.preferredCEs.SupportSelectPreference(
+                    title = stringResource(R.string.p_battle_config_support_pref_ces),
+                    entries = vm.ces
+                )
+            }
+
+            if (prefCEs.isNotEmpty()) {
+                item {
+                    config.mlb.SwitchPreference(
+                        title = stringResource(R.string.p_battle_config_support_mlb)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MaxSkills(
+    skills: List<Pref<Boolean>>
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        fun skillText(max: Boolean) = if (max) "10" else "x"
+
+        skills.forEachIndexed { index, pref ->
+            if (index != 0) {
+                Text(
+                    "/",
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                )
+            }
+
+            var max by pref.remember()
+
+            val backgroundColor by animateColorAsState(
+                if (max)
+                    MaterialTheme.colors.secondary
+                else MaterialTheme.colors.surface,
+            )
+
+            val foregroundColor =
+                if (max)
+                    MaterialTheme.colors.onSecondary
+                else MaterialTheme.colors.onSurface
+
+            Card(
+                modifier = Modifier
+                    .clickable { max = !max }
+                    .size(40.dp),
+                backgroundColor = backgroundColor,
+                contentColor = foregroundColor
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(skillText(max))
                 }
             }
         }

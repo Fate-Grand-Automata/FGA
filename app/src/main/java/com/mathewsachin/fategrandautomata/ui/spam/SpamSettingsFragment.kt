@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
@@ -57,65 +58,76 @@ class SpamSettingsFragment : Fragment() {
             val config = prefsCore.forBattleConfig(args.key)
 
             setContent {
-                FgaTheme {
-                    LazyColumn {
-                        item {
-                            Heading(stringResource(R.string.p_spam_spam))
-                        }
+                SpamView(
+                    config = config,
+                    vm = vm
+                )
+            }
+        }
+}
 
-                        item {
-                            config.autoChooseTarget.SwitchPreference(
-                                title = stringResource(R.string.p_auto_choose_target),
-                                summary = stringResource(R.string.p_spam_summary)
-                            )
+@Composable
+fun SpamView(
+    config: BattleConfigCore,
+    vm: SpamSettingsViewModel
+) {
+    FgaTheme {
+        LazyColumn {
+            item {
+                Heading(stringResource(R.string.p_spam_spam))
+            }
 
-                            Divider()
-                        }
+            item {
+                config.autoChooseTarget.SwitchPreference(
+                    title = stringResource(R.string.p_auto_choose_target),
+                    summary = stringResource(R.string.p_spam_summary)
+                )
 
-                        item {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(16.dp, 5.dp)
-                            ) {
-                                Text(
-                                    "Servant:",
-                                    modifier = Modifier.padding(end = 16.dp)
+                Divider()
+            }
+
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(16.dp, 5.dp)
+                ) {
+                    Text(
+                        "Servant:",
+                        modifier = Modifier.padding(end = 16.dp)
+                    )
+
+                    (1..vm.spamStates.size).map {
+                        val isSelected = vm.selectedServant == it - 1
+
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
+                                    shape = MaterialTheme.shapes.medium
                                 )
-
-                                (1..vm.spamStates.size).map {
-                                    val isSelected = vm.selectedServant == it - 1
-
-                                    Box(
-                                        modifier = Modifier
-                                            .background(
-                                                color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
-                                                shape = MaterialTheme.shapes.medium
-                                            )
-                                            .clickable { vm.selectedServant = it - 1 }
-                                            .padding(14.dp, 5.dp)
-                                    ) {
-                                        Text(
-                                            it.toString(),
-                                            color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
-                                        )
-                                    }
-                                }
-                            }
-
-                            Divider()
-                        }
-
-                        item {
-                            val selectedConfig = vm.spamStates[vm.selectedServant]
-
-                            SpamView(
-                                selectedConfig = selectedConfig
+                                .clickable { vm.selectedServant = it - 1 }
+                                .padding(14.dp, 5.dp)
+                        ) {
+                            Text(
+                                it.toString(),
+                                color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
                             )
                         }
                     }
                 }
+
+                Divider()
+            }
+
+            item {
+                val selectedConfig = vm.spamStates[vm.selectedServant]
+
+                SpamView(
+                    selectedConfig = selectedConfig
+                )
             }
         }
+    }
 }
 
 @Composable
