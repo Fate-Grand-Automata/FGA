@@ -15,6 +15,7 @@ import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,7 +25,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
@@ -42,16 +43,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SpamSettingsFragment : Fragment() {
     val args: SpamSettingsFragmentArgs by navArgs()
-    val vm: SpamSettingsViewModel by viewModels()
 
     @Inject
     lateinit var prefsCore: PrefsCore
-
-    override fun onPause() {
-        super.onPause()
-
-        vm.save()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
@@ -59,8 +53,7 @@ class SpamSettingsFragment : Fragment() {
 
             setContent {
                 SpamView(
-                    config = config,
-                    vm = vm
+                    config = config
                 )
             }
         }
@@ -69,8 +62,14 @@ class SpamSettingsFragment : Fragment() {
 @Composable
 fun SpamView(
     config: BattleConfigCore,
-    vm: SpamSettingsViewModel
+    vm: SpamSettingsViewModel = viewModel()
 ) {
+    DisposableEffect(vm) {
+        onDispose {
+            vm.save()
+        }
+    }
+
     FgaTheme {
         LazyColumn {
             item {

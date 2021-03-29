@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,6 +36,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
@@ -108,158 +110,41 @@ class BattleConfigItemSettingsFragment : Fragment() {
                 val battleConfigExport = activityResult(ActivityResultContracts.CreateDocument()) { uri ->
                     exportBattleConfig(uri)
                 }
-                val maxSkillText by vm.maxSkillText.collectAsState("")
-                val supportMode by config.support.selectionMode.remember()
 
-                FgaScaffold(
-                    stringResource(R.string.p_nav_battle_config_edit),
-                    subheading = {
-                        item {
-                            HeadingButton(
-                                text = stringResource(R.string.battle_config_item_export),
-                                onClick = {
-                                    battleConfigExport.launch("${battleConfig.name}.fga")
-                                }
-                            )
-                        }
-
-                        item {
-                            HeadingButton(
-                                text = stringResource(R.string.battle_config_item_copy),
-                                icon = icon(Icons.Default.ContentCopy),
-                                onClick = { copy() }
-                            )
-                        }
-
-                        item {
-                            HeadingButton(
-                                text = stringResource(R.string.battle_config_item_delete),
-                                color = MaterialTheme.colors.error,
-                                icon = icon(Icons.Default.Delete),
-                                onClick = {
-                                    AlertDialog.Builder(requireContext())
-                                        .setMessage(R.string.battle_config_item_delete_confirm_message)
-                                        .setTitle(R.string.battle_config_item_delete_confirm_title)
-                                        .setPositiveButton(R.string.battle_config_item_delete_confirm_ok) { _, _ -> deleteItem(args.key) }
-                                        .setNegativeButton(android.R.string.cancel, null)
-                                        .show()
-                                }
-                            )
-                        }
-
-                        item {
-                            HeadingButton(
-                                text = stringResource(R.string.support_menu_extract_default_support_images),
-                                onClick = {
-                                    lifecycleScope.launch {
-                                        performSupportImageExtraction()
-                                    }
-                                }
-                            )
+                BattleConfigItemView(
+                    config = config,
+                    friendEntries = supportViewModel.friends,
+                    onExport = { battleConfigExport.launch("${battleConfig.name}.fga") },
+                    onCopy = { copy() },
+                    onDelete = { deleteItem(battleConfig.id) },
+                    onExtractDefaultSupportImages = {
+                        lifecycleScope.launch {
+                            performSupportImageExtraction()
                         }
                     },
-                    content = {
-                        item {
-                            Row(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Box(
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    config.name.EditTextPreference(
-                                        title = stringResource(R.string.p_battle_config_name),
-                                        validate = { it.isNotBlank() },
-                                        singleLine = true
-                                    )
-                                }
+                    openSkillMaker = {
+                        val action = BattleConfigItemSettingsFragmentDirections
+                            .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
 
-                                PartySelection(config)
-                            }
+                        nav(action)
+                    },
+                    openCardPriority = {
+                        val action = BattleConfigItemSettingsFragmentDirections
+                            .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
 
-                            Divider()
-                        }
+                        nav(action)
+                    },
+                    openSpam = {
+                        val action = BattleConfigItemSettingsFragmentDirections
+                            .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
 
-                        item {
-                            SkillCommandGroup(
-                                config = config,
-                                vm = vm,
-                                openSkillMaker = {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
+                        nav(action)
+                    },
+                    openPreferredSupport = {
+                        val action = BattleConfigItemSettingsFragmentDirections
+                            .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
 
-                                    nav(action)
-                                }
-                            )
-
-                            Divider()
-                        }
-
-                        item {
-                            config.materials.Materials()
-
-                            Divider()
-                        }
-
-                        item {
-                            config.notes.EditTextPreference(
-                                title = stringResource(R.string.p_battle_config_notes)
-                            )
-
-                            Divider()
-                        }
-
-                        item {
-                            val cardPriority by vm.cardPriority.collectAsState(null)
-
-                            cardPriority?.let {
-                                Preference(
-                                    title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
-                                    summary = { CardPrioritySummary(it) },
-                                    onClick = {
-                                        val action = BattleConfigItemSettingsFragmentDirections
-                                            .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
-
-                                        nav(action)
-                                    }
-                                )
-                            }
-
-                            Divider()
-                        }
-
-                        item {
-                            Preference(
-                                title = stringResource(R.string.p_spam_spam),
-                                onClick = {
-                                    val action = BattleConfigItemSettingsFragmentDirections
-                                        .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
-
-                                    nav(action)
-                                }
-                            )
-
-                            Divider()
-                        }
-
-                        SupportGroup(
-                            config = config,
-                            goToPreferred = {
-                                val action = BattleConfigItemSettingsFragmentDirections
-                                    .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
-
-                                nav(action)
-                            },
-                            supportMode = supportMode,
-                            maxSkillText = maxSkillText,
-                            friendEntries = supportViewModel.friends
-                        )
-
-                        item {
-                            Divider()
-                        }
-
-                        ShuffleCardsGroup(config)
+                        nav(action)
                     }
                 )
             }
@@ -309,6 +194,152 @@ class BattleConfigItemSettingsFragment : Fragment() {
 
         findNavController().popBackStack()
     }
+}
+
+@Composable
+fun BattleConfigItemView(
+    config: BattleConfigCore,
+    friendEntries: Map<String, String>,
+    onExport: () -> Unit,
+    onCopy: () -> Unit,
+    onDelete: () -> Unit,
+    onExtractDefaultSupportImages: () -> Unit,
+    openSkillMaker: () -> Unit,
+    openCardPriority: () -> Unit,
+    openSpam: () -> Unit,
+    openPreferredSupport: () -> Unit,
+    vm: BattleConfigItemViewModel = viewModel()
+) {
+    val maxSkillText by vm.maxSkillText.collectAsState("")
+    val supportMode by config.support.selectionMode.remember()
+
+    FgaScaffold(
+        stringResource(R.string.p_nav_battle_config_edit),
+        subheading = {
+            item {
+                HeadingButton(
+                    text = stringResource(R.string.battle_config_item_export),
+                    onClick = onExport
+                )
+            }
+
+            item {
+                HeadingButton(
+                    text = stringResource(R.string.battle_config_item_copy),
+                    icon = icon(Icons.Default.ContentCopy),
+                    onClick = onCopy
+                )
+            }
+
+            item {
+                val context = LocalContext.current
+
+                HeadingButton(
+                    text = stringResource(R.string.battle_config_item_delete),
+                    color = MaterialTheme.colors.error,
+                    icon = icon(Icons.Default.Delete),
+                    onClick = {
+                        AlertDialog.Builder(context)
+                            .setMessage(R.string.battle_config_item_delete_confirm_message)
+                            .setTitle(R.string.battle_config_item_delete_confirm_title)
+                            .setPositiveButton(R.string.battle_config_item_delete_confirm_ok) { _, _ -> onDelete() }
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .show()
+                    }
+                )
+            }
+
+            item {
+                HeadingButton(
+                    text = stringResource(R.string.support_menu_extract_default_support_images),
+                    onClick = onExtractDefaultSupportImages
+                )
+            }
+        },
+        content = {
+            item {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        config.name.EditTextPreference(
+                            title = stringResource(R.string.p_battle_config_name),
+                            validate = { it.isNotBlank() },
+                            singleLine = true
+                        )
+                    }
+
+                    PartySelection(config)
+                }
+
+                Divider()
+            }
+
+            item {
+                SkillCommandGroup(
+                    config = config,
+                    vm = vm,
+                    openSkillMaker = openSkillMaker
+                )
+
+                Divider()
+            }
+
+            item {
+                config.materials.Materials()
+
+                Divider()
+            }
+
+            item {
+                config.notes.EditTextPreference(
+                    title = stringResource(R.string.p_battle_config_notes)
+                )
+
+                Divider()
+            }
+
+            item {
+                val cardPriority by vm.cardPriority.collectAsState(null)
+
+                cardPriority?.let {
+                    Preference(
+                        title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
+                        summary = { CardPrioritySummary(it) },
+                        onClick = openCardPriority
+                    )
+                }
+
+                Divider()
+            }
+
+            item {
+                Preference(
+                    title = stringResource(R.string.p_spam_spam),
+                    onClick = openSpam
+                )
+
+                Divider()
+            }
+
+            SupportGroup(
+                config = config,
+                goToPreferred = openPreferredSupport,
+                supportMode = supportMode,
+                maxSkillText = maxSkillText,
+                friendEntries = friendEntries
+            )
+
+            item {
+                Divider()
+            }
+
+            ShuffleCardsGroup(config)
+        }
+    )
 }
 
 @Composable

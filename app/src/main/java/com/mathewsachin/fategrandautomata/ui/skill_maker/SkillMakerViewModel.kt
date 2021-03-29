@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,14 +13,10 @@ import javax.inject.Inject
 @HiltViewModel
 class SkillMakerViewModel @Inject constructor(
     val prefs: IPreferences,
+    val battleConfig: IBattleConfig,
     val savedState: SavedStateHandle
 ) : ViewModel() {
-    val battleConfigKey: String = savedState[SkillMakerActivityArgs::key.name]
-        ?: throw Exception("Couldn't get Battle Config key")
-
     val navigation = mutableStateOf<SkillMakerNav>(SkillMakerNav.Main)
-
-    val battleConfig = prefs.forBattleConfig(battleConfigKey)
 
     val state = savedState.get(::savedState.name)
         ?: SkillMakerSavedState()

@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
+import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerModel
@@ -15,12 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BattleConfigItemViewModel @Inject constructor(
     val prefsCore: PrefsCore,
-    savedState: SavedStateHandle
+    val prefs: BattleConfigCore
 ) : ViewModel() {
-    val battleConfigKey: String = savedState[BattleConfigItemSettingsFragmentArgs::key.name]
-        ?: throw kotlin.Exception("Couldn't get Battle Config key")
-
-    private val prefs = prefsCore.forBattleConfig(battleConfigKey)
 
     val cardPriority =
         prefs.cardPriority

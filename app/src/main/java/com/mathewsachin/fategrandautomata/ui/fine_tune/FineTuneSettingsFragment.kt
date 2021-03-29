@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
@@ -30,14 +30,14 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FineTuneSettingsFragment : Fragment() {
-    val vm: FineTuneSettingsViewModel by viewModels()
-
     @Inject
     lateinit var prefs: PrefsCore
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             setContent {
+                val vm: FineTuneSettingsViewModel = viewModel()
+
                 FgaTheme {
                     Column(
                         modifier = Modifier.fillMaxSize()
