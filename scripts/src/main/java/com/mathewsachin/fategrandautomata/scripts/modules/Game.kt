@@ -343,8 +343,6 @@ class Game @Inject constructor(
     val lotteryResetConfirmationClick = Location(494, 1122).xFromCenter()
     val lotteryResetCloseClick = Location(-10, 1120).xFromCenter()
 
-    val gudaFinalRewardsRegion = Region(-120, 1040, 228, 76).xFromCenter()
-
     fun clickLocation(card: CommandCard) = when (card) {
         CommandCard.Face.A -> Location(-980, 1000)
         CommandCard.Face.B -> Location(-530, 1000)

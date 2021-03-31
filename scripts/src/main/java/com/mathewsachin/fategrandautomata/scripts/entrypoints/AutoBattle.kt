@@ -151,7 +151,6 @@ open class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() }
-            //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -437,28 +436,6 @@ open class AutoBattle @Inject constructor(
 
         ++withdrawCount
     }
-
-    /**
-     * Special result screen check for GudaGuda Final Honnouji.
-     *
-     * The check only runs if `GudaFinal` is activated in the preferences and if the GameServer is
-     * set to Japanese.
-     *
-     * When this event comes to other regions, the GameServer condition needs to be extended and image should be added.
-     */
-    private fun isGudaFinalRewardsScreen(): Boolean {
-        return false
-//        if (!prefs.GudaFinal || prefs.GameServer != GameServerEnum.Jp)
-//            return false
-//
-//        return game.GudaFinalRewardsRegion.exists(images.GudaFinalRewards)
-    }
-
-    /**
-     * Clicks on the Close button for the special GudaGuda Final Honnouji reward window if it was
-     * detected.
-     */
-    private fun gudaFinalReward() = game.gudaFinalRewardsRegion.click()
 
     /**
      * Checks if the SKIP button exists on the screen.

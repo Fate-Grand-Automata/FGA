@@ -65,8 +65,6 @@ class PreferencesImpl @Inject constructor(
 
     override val useRootForScreenshots by prefs.useRootForScreenshots
 
-    override val gudaFinal by prefs.gudaFinal
-
     override val recordScreen by prefs.recordScreen
 
     override val skillDelay by prefs.skillDelay.map { it.milliseconds }

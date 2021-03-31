@@ -39,8 +39,6 @@ class PrefsCore @Inject constructor(
 
     val waitAPRegen = maker.bool("wait_for_ap_regeneration")
 
-    val gudaFinal = maker.bool("guda_final")
-
     val ignoreNotchCalculation = maker.bool("ignore_notch")
     val useRootForScreenshots = maker.bool("use_root_screenshot")
     val recordScreen = maker.bool("record_screen")

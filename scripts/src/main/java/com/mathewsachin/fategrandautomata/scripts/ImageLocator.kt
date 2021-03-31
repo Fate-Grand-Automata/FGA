@@ -73,8 +73,6 @@ class ImageLocator @Inject constructor(
 
     val matRewards get() = load("mat_rewards.png")
 
-    val gudaFinalRewards get() = load("guda_final_rewards.png")
-
     val inventoryFull get() = load("inven_full.png")
 
     val fpSummonContinue get() = load("fp_continue.png")
