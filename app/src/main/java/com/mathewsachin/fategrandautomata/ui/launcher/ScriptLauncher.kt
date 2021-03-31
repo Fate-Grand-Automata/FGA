@@ -23,7 +23,8 @@ fun lotteryLauncher(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .padding(top = 5.dp)
     ) {
         Text(
             stringResource(R.string.p_script_mode_lottery),
@@ -74,7 +75,8 @@ fun fpLauncher(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .padding(top = 5.dp)
     ) {
         Text(
             stringResource(R.string.p_script_mode_fp),
@@ -137,7 +139,8 @@ fun giftBoxLauncher(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .padding(top = 5.dp)
     ) {
         Text(
             stringResource(R.string.p_script_mode_gift_box),
@@ -151,7 +154,7 @@ fun giftBoxLauncher(
         )
 
         Text(
-            stringResource(R.string.p_run_limit),
+            stringResource(R.string.p_max_gold_ember_set_size),
             style = MaterialTheme.typography.body2,
             color = MaterialTheme.colors.secondary
         )
@@ -182,8 +185,6 @@ fun ScriptLauncher(
     FgaTheme {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 5.dp)
                 .fillMaxSize()
         ) {
             val modifier = Modifier.weight(1f)

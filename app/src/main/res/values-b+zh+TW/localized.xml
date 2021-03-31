@@ -93,20 +93,10 @@
     <string name="support_img_namer_file_rename_failed">重新命名成 \'%s\' 失敗</string>
 
     <string name="p_refill">自動回體</string>
-    <string name="p_refill_off">關閉</string>
-    <string name="p_refill_summary">設定自動回體</string>
     <string name="p_battle_config">周回腳本</string>
     <string name="p_battle_config_summary">設定周回腳本</string>
     <string name="p_more_options">更多選項</string>
 
-    <string name="p_enable_refill">啟動自動回體</string>
-    <string name="p_refill_none">未選擇果實或聖晶石</string>
-    <string name="p_repetitions">自動回體次數</string>
-    <string name="p_auto_decrement">追蹤消耗</string>
-    <string name="p_auto_decrement_summary">自動追蹤已使用的果實以減少自動回體次數</string>
-    <string name="p_resource">自動回體資源</string>
-    <string name="p_run_limit">次數限制</string>
-    <string name="p_limit_no_of_runs">設定回體次數上限</string>
     <string name="p_runs">上限</string>
 
     <string name="p_battle_config_name">腳本名稱</string>
@@ -292,8 +282,6 @@
 
     <string name="p_mats">追縱掉落素材</string>
     <string name="mats_farmed">已獲得 %d 個素材</string>
-    <string name="p_mat_limit">依獲得素材數量限制</string>
-    <string name="p_mat_limit_count">數量</string>
 
     <string name="mat_proof">英雄之證</string>
     <string name="mat_bone">凶骨</string>

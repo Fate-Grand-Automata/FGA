@@ -93,20 +93,10 @@
     <string name="support_img_namer_file_rename_failed">\'%s\'로 이름 변경 실패</string>
 
     <string name="p_refill">사과 사용</string>
-    <string name="p_refill_off">끔</string>
-    <string name="p_refill_summary">사과 사용 관리</string>
     <string name="p_battle_config">오토 스킬</string>
     <string name="p_battle_config_summary">오토 스킬 설정관리</string>
     <string name="p_more_options">더 많은 옵션</string>
 
-    <string name="p_enable_refill">사과 사용 활성화</string>
-    <string name="p_refill_none">없음</string>
-    <string name="p_repetitions">반복</string>
-    <string name="p_auto_decrement">자동 감소</string>
-    <string name="p_auto_decrement_summary">사과 갯수 사용에 따라 자동으로 사과 갯수 사용량 줄이기</string>
-    <string name="p_resource">리소스</string>
-    <string name="p_run_limit">반복 제한</string>
-    <string name="p_limit_no_of_runs">반복 횟수 제한</string>
     <string name="p_runs">반복</string>
 
     <string name="p_battle_config_name">이름</string>
@@ -291,8 +281,6 @@
 
     <string name="p_mats">재료</string>
     <string name="mats_farmed">%d개의 재료 파밍됨</string>
-    <string name="p_mat_limit">재료 종류로 제한하기</string>
-    <string name="p_mat_limit_count">개수</string>
 
     <string name="mat_proof">영웅의 증표</string>
     <string name="mat_bone">흉골</string>

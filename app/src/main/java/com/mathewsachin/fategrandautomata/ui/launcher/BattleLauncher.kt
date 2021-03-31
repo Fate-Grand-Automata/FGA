@@ -2,16 +2,15 @@ package com.mathewsachin.fategrandautomata.ui.launcher
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material.Checkbox
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
@@ -37,7 +36,10 @@ fun battleLauncher(
     var shouldLimitMats by remember { mutableStateOf(prefs.refill.shouldLimitMats) }
     var limitMats by remember { mutableStateOf(prefs.refill.limitMats) }
 
-    Row(modifier = modifier) {
+    Row(
+        modifier = modifier
+            .padding(start = 5.dp, end = 5.dp, top = 5.dp)
+    ) {
         if (configs.isNotEmpty()) {
             // Scrolling the selected config into view
             val configListState = rememberLazyListState()
@@ -83,7 +85,7 @@ fun battleLauncher(
 
         Column(
             modifier = Modifier
-                .weight(1f)
+                .weight(1.5f)
                 .verticalScroll(rememberScrollState())
                 .padding(start = 5.dp)
         ) {
@@ -106,13 +108,13 @@ fun battleLauncher(
                 )
             }
 
-            Row(
+            LazyRow(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                RefillResourceEnum.values().map {
+                items(RefillResourceEnum.values()) {
                     it.RefillResource(
                         isSelected = it in refillResources,
                         toggle = {
@@ -124,67 +126,27 @@ fun battleLauncher(
 
             Divider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
 
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { shouldLimitRuns = !shouldLimitRuns }
-            ) {
-                Text(
-                    stringResource(R.string.p_run_limit),
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.secondary
-                )
+            Text(
+                stringResource(R.string.p_limit),
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.secondary
+            )
 
-                Switch(
-                    checked = shouldLimitRuns,
-                    onCheckedChange = { shouldLimitRuns = it }
-                )
-            }
+            LimitItem(
+                shouldLimit = shouldLimitRuns,
+                onShouldLimitChange = { shouldLimitRuns = it },
+                text = stringResource(R.string.p_runs),
+                count = limitRuns,
+                onCountChange = { limitRuns = it }
+            )
 
-            Box(
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Stepper(
-                    value = limitRuns,
-                    onValueChange = { limitRuns = it },
-                    valueRange = 1..999,
-                    enabled = shouldLimitRuns
-                )
-            }
-
-            Divider(modifier = Modifier.padding(bottom = 16.dp))
-
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { shouldLimitMats = !shouldLimitMats }
-            ) {
-                Text(
-                    stringResource(R.string.p_mat_limit),
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.secondary
-                )
-
-                Switch(
-                    checked = shouldLimitMats,
-                    onCheckedChange = { shouldLimitMats = it }
-                )
-            }
-
-            Box(
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Stepper(
-                    value = limitMats,
-                    onValueChange = { limitMats = it },
-                    valueRange = 1..999,
-                    enabled = shouldLimitMats
-                )
-            }
+            LimitItem(
+                shouldLimit = shouldLimitMats,
+                onShouldLimitChange = { shouldLimitMats = it },
+                text = stringResource(R.string.p_mats),
+                count = limitMats,
+                onCountChange = { limitMats = it }
+            )
         }
     }
 
@@ -203,6 +165,46 @@ fun battleLauncher(
 }
 
 @Composable
+fun LimitItem(
+    shouldLimit: Boolean,
+    onShouldLimitChange: (Boolean) -> Unit,
+    text: String,
+    count: Int,
+    onCountChange: (Int) -> Unit,
+    valueRange: IntRange = 1..999
+) {
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .clickable { onShouldLimitChange(!shouldLimit) }
+        ) {
+            Checkbox(
+                checked = shouldLimit,
+                onCheckedChange = onShouldLimitChange,
+                modifier = Modifier
+                    .padding(end = 5.dp)
+                    .alpha(if (shouldLimit) 1f else 0.7f)
+            )
+
+            Text("$text:")
+        }
+
+        Stepper(
+            value = count,
+            onValueChange = onCountChange,
+            valueRange = valueRange,
+            enabled = shouldLimit
+        )
+    }
+}
+
+@Composable
 fun BattleConfigItem(
     name: String,
     isSelected: Boolean,
@@ -211,18 +213,17 @@ fun BattleConfigItem(
     Row(
         modifier = Modifier
             .padding(3.dp)
-            .border(
-                width = 1.dp,
-                brush = SolidColor(if (isSelected) MaterialTheme.colors.primary else Color.Transparent),
+            .background(
+                color = if (isSelected) MaterialTheme.colors.primary else Color.Transparent,
                 shape = MaterialTheme.shapes.medium
             )
             .clickable(onClick = onSelected)
-            .padding(5.dp, 3.dp)
+            .padding(11.dp, 3.dp)
             .fillMaxWidth()
     ) {
         Text(
             name,
-            color = if (isSelected) MaterialTheme.colors.primary else Color.Unspecified
+            color = if (isSelected) MaterialTheme.colors.onPrimary else Color.Unspecified
         )
     }
 }

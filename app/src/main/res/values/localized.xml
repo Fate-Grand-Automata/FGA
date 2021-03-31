@@ -93,20 +93,11 @@
     <string name="support_img_namer_file_rename_failed">Failed to rename to: \'%s\'</string>
 
     <string name="p_refill">Refill</string>
-    <string name="p_refill_off">OFF</string>
-    <string name="p_refill_summary">Manage AP refill</string>
     <string name="p_battle_config">Battle Configs</string>
     <string name="p_battle_config_summary">Manage configs for Battle script</string>
     <string name="p_more_options">More options</string>
 
-    <string name="p_enable_refill">Enable Refill</string>
-    <string name="p_refill_none">None</string>
-    <string name="p_repetitions">Repetitions</string>
-    <string name="p_auto_decrement">Auto-decrement</string>
-    <string name="p_auto_decrement_summary">Automatically decrease the refill amount by number of apples used</string>
-    <string name="p_resource">Resource</string>
-    <string name="p_run_limit">Run limit</string>
-    <string name="p_limit_no_of_runs">Limit number of runs</string>
+    <string name="p_limit">Limit</string>
     <string name="p_runs">Runs</string>
     <string name="p_roll_limit">Limit number of rolls</string>
     <string name="p_prevent_lottery_box_reset">Prevent box reset</string>
@@ -296,8 +287,6 @@
 
     <string name="p_mats">Materials</string>
     <string name="mats_farmed">Farmed %d material(s)</string>
-    <string name="p_mat_limit">Limit by Materials</string>
-    <string name="p_mat_limit_count">Count</string>
 
     <string name="times_rolled">Rolled %d time(s)</string>
 
