@@ -4,11 +4,13 @@ import android.view.ViewConfiguration
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,8 @@ private fun DeltaButton(
     val minRepeatInterval = 10.milliseconds
 
     Surface(
+        color = Color.Transparent,
+        contentColor = MaterialTheme.colors.onBackground,
         modifier = Modifier
             .pointerInput(true) {
                 detectTapGestures(onPress = {
