@@ -1,6 +1,9 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -56,41 +59,10 @@ fun LazyListScope.SupportGroup(
     item {
         var supportClass by config.support.supportClass.remember()
 
-        Card(
-            modifier = Modifier
-                .padding(16.dp, 5.dp)
-                .fillMaxWidth()
-        ) {
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(5.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                items(SupportClass.values().drop(1)) {
-                    val isSelected = supportClass == it
-
-                    Image(
-                        painterResource(it.drawable),
-                        contentDescription = it.name,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(25.dp)
-                            .alpha(if (isSelected) 1f else 0.4f)
-                            .border(
-                                2.dp,
-                                if (isSelected) MaterialTheme.colors.primary else Color.Transparent,
-                                DiamondShape
-                            )
-                            .clip(DiamondShape)
-                            .clickable {
-                                supportClass =
-                                    if (isSelected) SupportClass.None else it
-                            }
-                    )
-                }
-            }
-        }
+        SupportClassPicker(
+            selected = supportClass,
+            onSelectedChange = { supportClass = it }
+        )
     }
 
     val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
@@ -170,6 +142,56 @@ fun LazyListScope.SupportGroup(
             if (friendNames.isEmpty()) {
                 PreferenceError(
                     stringResource(R.string.support_selection_friend_not_set)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SupportClassPicker(
+    selected: SupportClass,
+    onSelectedChange: (SupportClass) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .padding(16.dp, 5.dp)
+            .fillMaxWidth()
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(5.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            items(SupportClass.values().drop(1)) {
+                val isSelected = selected == it
+                val transition = updateTransition(isSelected, label = "Selected")
+                val alpha by transition.animateFloat(label = "alpha") { selected ->
+                    if (selected) 1f else 0.4f
+                }
+                val borderClass by transition.animateColor(label = "border color") { selected ->
+                    if (selected)
+                        MaterialTheme.colors.secondary
+                    else Color.Transparent
+                }
+
+                Image(
+                    painterResource(it.drawable),
+                    contentDescription = it.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(25.dp)
+                        .alpha(alpha)
+                        .border(2.dp, borderClass, DiamondShape)
+                        .clip(DiamondShape)
+                        .clickable {
+                            onSelectedChange(
+                                if (isSelected)
+                                    SupportClass.None
+                                else it
+                            )
+                        }
                 )
             }
         }
