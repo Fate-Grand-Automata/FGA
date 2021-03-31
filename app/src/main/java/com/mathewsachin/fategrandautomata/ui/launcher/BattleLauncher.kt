@@ -35,6 +35,7 @@ fun battleLauncher(
     var limitRuns by remember { mutableStateOf(prefs.refill.limitRuns) }
     var shouldLimitMats by remember { mutableStateOf(prefs.refill.shouldLimitMats) }
     var limitMats by remember { mutableStateOf(prefs.refill.limitMats) }
+    var waitApRegen by remember { mutableStateOf(prefs.waitAPRegen) }
 
     Row(
         modifier = modifier
@@ -124,6 +125,25 @@ fun battleLauncher(
                 }
             }
 
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clickable { waitApRegen = !waitApRegen }
+            ) {
+                Checkbox(
+                    checked = waitApRegen,
+                    onCheckedChange = { waitApRegen = it },
+                    modifier = Modifier
+                        .alpha(if (waitApRegen) 1f else 0.7f)
+                        .padding(end = 5.dp)
+                )
+
+                Text(
+                    stringResource(R.string.p_wait_ap_regen_text),
+                    style = MaterialTheme.typography.body2
+                )
+            }
+
             Divider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
 
             Text(
@@ -154,11 +174,12 @@ fun battleLauncher(
         canBuild = { selectedConfigIndex != -1 },
         build = {
             ScriptLauncherResponse.Battle(
-                configs[selectedConfigIndex],
-                refillResources,
-                refillCount,
-                if (shouldLimitRuns) limitRuns else null,
-                if (shouldLimitMats) limitMats else null
+                config = configs[selectedConfigIndex],
+                refillResources = refillResources,
+                refillCount = refillCount,
+                limitRuns = if (shouldLimitRuns) limitRuns else null,
+                limitMats = if (shouldLimitMats) limitMats else null,
+                waitApRegen = waitApRegen
             )
         }
     )
@@ -192,7 +213,10 @@ fun LimitItem(
                     .alpha(if (shouldLimit) 1f else 0.7f)
             )
 
-            Text("$text:")
+            Text(
+                "$text:",
+                style = MaterialTheme.typography.body2
+            )
         }
 
         Stepper(

@@ -17,7 +17,6 @@ fun GroupSelectorItem(
     isSelected: Boolean,
     onSelect: () -> Unit
 ) {
-
     Box(
         modifier = Modifier
             .padding(end = 5.dp)

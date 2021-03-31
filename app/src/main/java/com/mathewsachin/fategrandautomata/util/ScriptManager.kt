@@ -284,6 +284,8 @@ class ScriptManager @Inject constructor(
                 preferences.refill.shouldLimitMats = resp.limitMats != null
                 resp.limitMats?.let { preferences.refill.limitMats = it }
 
+                preferences.waitAPRegen = resp.waitApRegen
+
                 ScriptModeEnum.Battle
             }
         }

@@ -137,7 +137,6 @@
     <string name="p_battle_config_cmd_text_summary">显示以文字输入脚本的对话框(关闭以跳过，将直接进入生成器)</string>
 
     <string name="p_wait_ap_regen_text">等待体力回复</string>
-    <string name="p_wait_ap_regen_text_summary">AP用完之后FGA将不会立刻退出，而是会持续确认体力是否回复并重新开始关卡</string>
 
     <string name="p_storage">文件存放位置</string>
     <string name="p_folder">更改存放助战图片、掉落截图等的文件夹位置</string>

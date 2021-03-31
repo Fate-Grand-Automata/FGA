@@ -493,10 +493,8 @@ open class AutoBattle @Inject constructor(
             3.seconds.wait()
         } else if (prefs.waitAPRegen) {
             game.staminaCloseClick.click()
-            for (i in prefs.waitAPRegenMinutes downTo 1) {
-                toast(messages.waitAPToast(i))
-                60.seconds.wait()
-            }
+            toast(messages.waitAPToast(1))
+            60.seconds.wait()
         } else throw ScriptExitException(messages.apRanOut)
     }
 

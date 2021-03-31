@@ -38,7 +38,6 @@ class PrefsCore @Inject constructor(
     val refill = RefillPrefsCore(maker)
 
     val waitAPRegen = maker.bool("wait_for_ap_regeneration")
-    val waitAPRegenMinutes = maker.int("wait_for_ap_regeneration_minutes", 1)
 
     val gudaFinal = maker.bool("guda_final")
 

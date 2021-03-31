@@ -59,9 +59,7 @@ class PreferencesImpl @Inject constructor(
     override val refill: IRefillPreferences =
         RefillPreferences(prefs.refill)
 
-    override val waitAPRegen by prefs.waitAPRegen
-
-    override val waitAPRegenMinutes by prefs.waitAPRegenMinutes
+    override var waitAPRegen by prefs.waitAPRegen
 
     override val ignoreNotchCalculation by prefs.ignoreNotchCalculation
 

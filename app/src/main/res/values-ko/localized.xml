@@ -137,9 +137,6 @@
     <string name="p_battle_config_cmd_text_summary">오트 스킬 커맨드를 수정하기 위해 텍스트 박스 보이기</string>
 
     <string name="p_wait_ap_regen_text">AP 회복 대기</string>
-    <string name="p_wait_ap_regen_text_summary">AP가 소모된 후에도 페그오를 켜주세요. AP가 자연적으로 회복되면 현재 스크립트를 반복합니다.</string>
-    <string name="p_wait_ap_regen_minutes_text">재확인 시간 (분)</string>
-    <string name="p_wait_ap_regen_minutes_text_summary">화면 꺼짐 시간을 재확인 시간보다 길게 설정해주세요.</string>
     <string name="wait_ap_regen_toast_message">AP회복 확인중.  %d분 후 재확인.</string>
 
     <string name="p_storage">저장소</string>

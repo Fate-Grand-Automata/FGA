@@ -21,7 +21,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.ui.FgaTheme
 import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
 import com.mathewsachin.fategrandautomata.ui.Heading
-import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
@@ -50,7 +49,7 @@ class MoreSettingsFragment : Fragment() {
                         Heading(stringResource(R.string.p_more_options)) {
                             items(MoreSettingsGroup.values().toList()) {
                                 GroupSelectorItem(
-                                    item = it.toString(),
+                                    item = stringResource(it.displayStringRes),
                                     isSelected = selectedGroup == it,
                                     onSelect = { selectedGroup = it }
                                 )
@@ -59,18 +58,10 @@ class MoreSettingsFragment : Fragment() {
 
                         Divider()
 
-                        var waitEnabled by prefs.waitAPRegen.remember()
-
                         LazyColumn {
                             when (selectedGroup) {
                                 MoreSettingsGroup.Battle -> {
                                     battleGroup(prefs)
-
-                                    WaitForAPRegenGroup(
-                                        prefs,
-                                        waitEnabled = waitEnabled,
-                                        onWaitEnabledChange = { waitEnabled = it }
-                                    )
                                 }
                                 MoreSettingsGroup.Storage -> {
                                     item {

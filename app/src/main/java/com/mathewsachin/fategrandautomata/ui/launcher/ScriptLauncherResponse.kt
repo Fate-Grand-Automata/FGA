@@ -14,7 +14,8 @@ sealed class ScriptLauncherResponse {
         val refillResources: Set<RefillResourceEnum>,
         val refillCount: Int,
         val limitRuns: Int?,
-        val limitMats: Int?
+        val limitMats: Int?,
+        val waitApRegen: Boolean
     ): ScriptLauncherResponse()
 }
 
