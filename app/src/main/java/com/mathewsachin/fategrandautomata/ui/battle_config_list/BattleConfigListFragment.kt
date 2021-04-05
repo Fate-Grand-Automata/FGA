@@ -115,7 +115,7 @@ class BattleConfigListFragment : Fragment() {
                                         onClick = {
                                             deleteSelectedConfigs()
                                         },
-                                        color = MaterialTheme.colors.error,
+                                        isDanger = true,
                                         icon = icon(Icons.Default.Delete)
                                     )
                                 }

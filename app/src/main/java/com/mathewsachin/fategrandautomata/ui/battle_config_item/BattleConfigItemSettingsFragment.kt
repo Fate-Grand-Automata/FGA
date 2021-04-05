@@ -236,7 +236,7 @@ fun BattleConfigItemView(
 
                 HeadingButton(
                     text = stringResource(R.string.battle_config_item_delete),
-                    color = MaterialTheme.colors.error,
+                    isDanger = true,
                     icon = icon(Icons.Default.Delete),
                     onClick = {
                         AlertDialog.Builder(context)

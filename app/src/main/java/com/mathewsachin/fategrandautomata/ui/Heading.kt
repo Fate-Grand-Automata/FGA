@@ -55,15 +55,18 @@ fun HeadingButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
-    color: Color = MaterialTheme.colors.primary
+    isDanger: Boolean = false
 ) {
     val shape = RoundedCornerShape(50)
 
     Surface(
-        border = BorderStroke(1.dp, color),
+        border = BorderStroke(
+            1.dp,
+            if (isDanger) MaterialTheme.colors.error else MaterialTheme.colors.primary
+        ),
         shape = shape,
-        color = Color.Transparent,
-        contentColor = color,
+        color = if (isDanger) MaterialTheme.colors.error else Color.Transparent,
+        contentColor = if (isDanger) MaterialTheme.colors.onError else MaterialTheme.colors.primary,
         modifier = modifier
             .padding(end = 5.dp)
             .animateContentSize()
