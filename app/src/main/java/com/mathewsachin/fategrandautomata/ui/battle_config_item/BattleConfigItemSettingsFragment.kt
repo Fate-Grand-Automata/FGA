@@ -378,6 +378,21 @@ fun Pref<Set<MaterialEnum>>.Materials() {
 }
 
 @Composable
+fun Material(mat: MaterialEnum) {
+    Image(
+        painterResource(mat.drawable),
+        contentDescription = stringResource(mat.stringRes),
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .padding(3.dp)
+            .size(20.dp)
+            .clip(CircleShape)
+            .border(0.5.dp, MaterialTheme.colors.onSurface, CircleShape)
+            .alpha(0.8f)
+    )
+}
+
+@Composable
 fun MaterialsSummary(materials: List<MaterialEnum>) {
     if (materials.isNotEmpty()) {
         Row(
@@ -391,17 +406,7 @@ fun MaterialsSummary(materials: List<MaterialEnum>) {
                     contentPadding = PaddingValues(7.dp, 5.dp)
                 ) {
                     items(materials) { mat ->
-                        Image(
-                            painterResource(mat.drawable),
-                            contentDescription = stringResource(mat.stringRes),
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .padding(3.dp)
-                                .size(20.dp)
-                                .clip(CircleShape)
-                                .border(0.5.dp, MaterialTheme.colors.onSurface, CircleShape)
-                                .alpha(0.8f)
-                        )
+                        Material(mat)
                     }
                 }
             }

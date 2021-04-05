@@ -11,10 +11,16 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -23,8 +29,12 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,11 +45,14 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.*
+import com.mathewsachin.fategrandautomata.ui.BackHandler
+import com.mathewsachin.fategrandautomata.ui.FgaScaffold
+import com.mathewsachin.fategrandautomata.ui.HeadingButton
+import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.activity.compose.registerForActivityResult as activityResult
@@ -76,14 +89,7 @@ class BattleConfigListFragment : Fragment() {
                     importBattleConfigs(uris)
                 }
 
-                // TODO: This hack feels bad
-                val configsStateList = mutableStateListOf<BattleConfigCore>()
-                val configs by vm.battleConfigItems
-                    .onEach {
-                        configsStateList.clear()
-                        configsStateList.addAll(it)
-                    }
-                    .collectAsState(emptyList())
+                val configs by vm.battleConfigItems.collectAsState(emptyList())
 
                 FgaScaffold(
                     stringResource(R.string.p_battle_config),
@@ -134,13 +140,12 @@ class BattleConfigListFragment : Fragment() {
                             }
                         }
                         else {
-                            itemsIndexed(
-                                configsStateList,
-                                key = { _, it -> it.id }
-                            ) { index, it ->
+                            items(
+                                configs,
+                                key = { it.id }
+                            ) {
                                 BattleConfigListItem(
                                     it,
-                                    index,
                                     onClick = {
                                         if (selectionMode) {
                                             vm.toggleSelected(it.id)
@@ -153,6 +158,7 @@ class BattleConfigListFragment : Fragment() {
                                             vm.startSelection(it.id)
                                         }
                                     },
+                                    isSelectionMode = selectionMode,
                                     isSelected = selectionMode && it.id in selectedConfigs
                                 )
                             }
@@ -237,40 +243,85 @@ class BattleConfigListFragment : Fragment() {
 }
 
 @Composable
+fun BattleConfigItemSelected(
+    isSelectionMode: Boolean,
+    isSelected: Boolean
+) {
+    AnimatedVisibility(isSelectionMode) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .border(
+                    1.dp,
+                    if (isSelected) Color.Transparent else MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
+                    CircleShape
+                )
+                .background(
+                    shape = CircleShape,
+                    color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent
+                )
+                .size(15.dp)
+        ) {
+            AnimatedVisibility(isSelected) {
+                Icon(
+                    rememberVectorPainter(Icons.Default.Check),
+                    contentDescription = "Select",
+                    tint = MaterialTheme.colors.onSecondary,
+                    modifier = Modifier
+                        .size(10.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun BattleConfigListItem(
     it: BattleConfigCore,
-    index: Int,
+    isSelectionMode: Boolean,
     isSelected: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
     val name by it.name.remember()
+    val materialsSet by it.materials.remember()
+    val mats = materialsSet.take(3)
 
-    if (index != 0) {
-        Divider()
-    }
+    val shape = RoundedCornerShape(50)
 
-    ListItem(
+    // Without this, holding a list item would leave it highlighted because of recomposition happening before ripple ending
+    val longClickState = rememberUpdatedState(onLongClick)
+
+    Card(
+        shape = shape,
+        elevation = if (isSelected) 50.dp else 1.dp,
         modifier = Modifier
+            .padding(5.dp)
+            .clip(shape)
             .combinedClickable(
                 onClick = onClick,
-                onLongClick = onLongClick
-            ),
-        trailing = {
-            AnimatedVisibility (isSelected) {
-                DimmedIcon(
-                    icon(Icons.Default.Check),
-                    contentDescription = "Select",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .padding(7.dp)
-                )
+                onLongClick = { longClickState.value.invoke() }
+            )
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(16.dp, 5.dp)
+        ) {
+            BattleConfigItemSelected(
+                isSelectionMode = isSelectionMode,
+                isSelected = isSelected
+            )
+
+            Text(
+                name,
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier.weight(1f)
+            )
+
+            mats.forEach {
+                Material(it)
             }
         }
-    ) {
-        Text(
-            name,
-            style = MaterialTheme.typography.body2
-        )
     }
 }
