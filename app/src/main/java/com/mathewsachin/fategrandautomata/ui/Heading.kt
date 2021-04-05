@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import java.util.*
@@ -60,13 +58,9 @@ fun HeadingButton(
     val shape = RoundedCornerShape(50)
 
     Surface(
-        border = BorderStroke(
-            1.dp,
-            if (isDanger) MaterialTheme.colors.error else MaterialTheme.colors.primary
-        ),
         shape = shape,
-        color = if (isDanger) MaterialTheme.colors.error else Color.Transparent,
-        contentColor = if (isDanger) MaterialTheme.colors.onError else MaterialTheme.colors.primary,
+        color = if (isDanger) MaterialTheme.colors.error else MaterialTheme.colors.primary,
+        contentColor = if (isDanger) MaterialTheme.colors.onError else MaterialTheme.colors.onPrimary,
         modifier = modifier
             .padding(end = 5.dp)
             .animateContentSize()

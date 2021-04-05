@@ -48,12 +48,13 @@ private val DarkColorPalette = darkColors(
     primaryVariant = blueDarker,
     secondary = tealLighter,
     background = grayDarker,
-    surface = grayDarker
+    surface = grayDarker,
+    onError = Color.White
 )
 
 private val LightColorPalette = lightColors(
-    primary = blueNeutral,
-    primaryVariant = blueDarker,
+    primary = blueDarker,
+    primaryVariant = blueNeutral,
     secondary = tealNeutral,
     secondaryVariant = tealDarker,
     surface = grayLighter,
