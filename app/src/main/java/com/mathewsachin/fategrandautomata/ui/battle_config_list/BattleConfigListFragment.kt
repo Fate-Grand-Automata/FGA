@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,17 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,9 +29,11 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -45,11 +43,8 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.BackHandler
-import com.mathewsachin.fategrandautomata.ui.FgaScaffold
-import com.mathewsachin.fategrandautomata.ui.HeadingButton
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
-import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,91 +84,120 @@ class BattleConfigListFragment : Fragment() {
                     importBattleConfigs(uris)
                 }
 
+                val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+
                 val configs by vm.battleConfigItems.collectAsState(emptyList())
 
-                FgaScaffold(
-                    stringResource(R.string.p_battle_config),
-                    subheading = {
-                        item {
-                            HeadingButton(
-                                text = stringResource(
-                                    if (selectionMode)
-                                        R.string.battle_config_item_export
-                                    else R.string.battle_config_list_export_all
-                                ),
-                                onClick = {
-                                    battleConfigsExport.launch(Uri.EMPTY)
-                                }
-                            )
-                        }
-
-                        item {
-                            Crossfade(selectionMode) {
-                                if (it) {
+                FgaTheme {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            Heading(
+                                stringResource(R.string.p_battle_config)
+                            ) {
+                                item {
                                     HeadingButton(
-                                        text = stringResource(R.string.battle_config_list_delete),
+                                        text = stringResource(
+                                            if (selectionMode)
+                                                R.string.battle_config_item_export
+                                            else R.string.battle_config_list_export_all
+                                        ),
                                         onClick = {
-                                            deleteSelectedConfigs()
-                                        },
-                                        isDanger = true,
-                                        icon = icon(Icons.Default.Delete)
+                                            battleConfigsExport.launch(Uri.EMPTY)
+                                        }
                                     )
+                                }
+
+                                item {
+                                    Crossfade(selectionMode) {
+                                        if (it) {
+                                            HeadingButton(
+                                                text = stringResource(R.string.battle_config_list_delete),
+                                                onClick = {
+                                                    deleteSelectedConfigs()
+                                                },
+                                                isDanger = true,
+                                                icon = icon(Icons.Default.Delete)
+                                            )
+                                        }
+                                        else {
+                                            HeadingButton(
+                                                text = stringResource(R.string.battle_config_list_import),
+                                                onClick = {
+                                                    battleConfigImport.launch("*/*")
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+
+                            LazyColumn(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                if (configs.isEmpty()) {
+                                    item {
+                                        Text(
+                                            stringResource(R.string.battle_config_list_no_items),
+                                            modifier = Modifier.padding(16.dp)
+                                        )
+                                    }
                                 }
                                 else {
-                                    HeadingButton(
-                                        text = stringResource(R.string.battle_config_list_import),
-                                        onClick = {
-                                            battleConfigImport.launch("*/*")
-                                        }
-                                    )
+                                    items(
+                                        configs,
+                                        key = { it.id }
+                                    ) {
+                                        BattleConfigListItem(
+                                            it,
+                                            onClick = {
+                                                if (selectionMode) {
+                                                    vm.toggleSelected(it.id)
+                                                } else {
+                                                    editItem(vm.prefs.forBattleConfig(it.id))
+                                                }
+                                            },
+                                            onLongClick = {
+                                                if (!selectionMode) {
+                                                    vm.startSelection(it.id)
+                                                }
+                                            },
+                                            isSelectionMode = selectionMode,
+                                            isSelected = selectionMode && it.id in selectedConfigs
+                                        )
+                                    }
                                 }
                             }
                         }
-                    },
-                    content = {
-                        if (configs.isEmpty()) {
-                            item {
-                                Text(
-                                    stringResource(R.string.battle_config_list_no_items),
-                                    modifier = Modifier.padding(16.dp)
-                                )
-                            }
-                        }
-                        else {
-                            items(
-                                configs,
-                                key = { it.id }
-                            ) {
-                                BattleConfigListItem(
-                                    it,
-                                    onClick = {
-                                        if (selectionMode) {
-                                            vm.toggleSelected(it.id)
-                                        } else {
-                                            editItem(vm.prefs.forBattleConfig(it.id))
-                                        }
-                                    },
-                                    onLongClick = {
-                                        if (!selectionMode) {
-                                            vm.startSelection(it.id)
-                                        }
-                                    },
-                                    isSelectionMode = selectionMode,
-                                    isSelected = selectionMode && it.id in selectedConfigs
-                                )
-                            }
-                        }
-                    },
-                    fab = {
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .align(if (isLandscape) Alignment.TopEnd else Alignment.BottomEnd)
+                            .padding(16.dp)
+                    ) {
+                        val enterAnimation = if (isLandscape)
+                            slideInHorizontally(initialOffsetX = { it / 2 })
+                        else slideInVertically(initialOffsetY = { it / 2 })
+
+                        val exitAnimation = if (isLandscape)
+                            slideOutHorizontally(targetOffsetX = { it * 2 })
+                        else slideOutVertically(targetOffsetY = { it * 2 })
+
                         AnimatedVisibility(
                             !selectionMode,
-                            enter = slideInVertically(initialOffsetY = { it / 2 }),
-                            exit = slideOutVertically(
-                                targetOffsetY = { it * 2 }
-                            )
+                            enter = enterAnimation,
+                            exit = exitAnimation
                         ) {
                             FloatingActionButton(
-                                onClick = { addNewConfig() }
+                                onClick = { addNewConfig() },
+                                modifier = Modifier
+                                    .scale(if (isLandscape) 0.7f else 1f)
                             ) {
                                 Icon(
                                     Icons.Default.Add,
@@ -185,7 +209,7 @@ class BattleConfigListFragment : Fragment() {
                             }
                         }
                     }
-                )
+                }
             }
         }
 
