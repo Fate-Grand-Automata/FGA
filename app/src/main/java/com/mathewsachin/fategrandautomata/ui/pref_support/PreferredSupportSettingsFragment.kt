@@ -3,15 +3,10 @@ package com.mathewsachin.fategrandautomata.ui.pref_support
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -83,71 +78,77 @@ fun PreferredSupport(
                 config.friendsOnly.SwitchPreference(
                     title = stringResource(R.string.p_battle_config_support_friends_only)
                 )
-
-                Divider()
             }
 
             item {
-                PreferenceGroupHeader(
-                    title = stringResource(R.string.p_battle_config_support_pref_servants)
-                )
-            }
-
-            item {
-                config.preferredServants.SupportSelectPreference(
-                    title = stringResource(R.string.p_battle_config_support_pref_servants),
-                    entries = vm.servants
-                )
-            }
-
-            if (prefServants.isNotEmpty()) {
-                item {
-                    config.maxAscended.SwitchPreference(
-                        title = stringResource(R.string.p_battle_config_support_max_ascended)
-                    )
-                }
-
-                item {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(16.dp)
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(bottom = 16.dp)
                     ) {
-                        Text(
-                            stringResource(R.string.p_max_skills),
-                            modifier = Modifier.weight(1f)
+                        PreferenceGroupHeader(
+                            title = stringResource(R.string.p_battle_config_support_pref_servants)
                         )
 
-                        MaxSkills(
-                            skills = listOf(
-                                config.skill1Max,
-                                config.skill2Max,
-                                config.skill3Max
-                            )
+                        config.preferredServants.SupportSelectPreference(
+                            title = stringResource(R.string.p_battle_config_support_pref_servants),
+                            entries = vm.servants
                         )
+
+                        if (prefServants.isNotEmpty()) {
+                            config.maxAscended.SwitchPreference(
+                                title = stringResource(R.string.p_battle_config_support_max_ascended)
+                            )
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Text(
+                                    stringResource(R.string.p_max_skills),
+                                    modifier = Modifier.weight(1f)
+                                )
+
+                                MaxSkills(
+                                    skills = listOf(
+                                        config.skill1Max,
+                                        config.skill2Max,
+                                        config.skill3Max
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }
 
-            item { Divider() }
-
             item {
-                PreferenceGroupHeader(
-                    title = stringResource(R.string.p_battle_config_support_pref_ces)
-                )
-            }
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(bottom = 16.dp)
+                    ) {
+                        PreferenceGroupHeader(
+                            title = stringResource(R.string.p_battle_config_support_pref_ces)
+                        )
 
-            item {
-                config.preferredCEs.SupportSelectPreference(
-                    title = stringResource(R.string.p_battle_config_support_pref_ces),
-                    entries = vm.ces
-                )
-            }
+                        config.preferredCEs.SupportSelectPreference(
+                            title = stringResource(R.string.p_battle_config_support_pref_ces),
+                            entries = vm.ces
+                        )
 
-            if (prefCEs.isNotEmpty()) {
-                item {
-                    config.mlb.SwitchPreference(
-                        title = stringResource(R.string.p_battle_config_support_mlb)
-                    )
+                        if (prefCEs.isNotEmpty()) {
+                            config.mlb.SwitchPreference(
+                                title = stringResource(R.string.p_battle_config_support_mlb)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -174,11 +175,10 @@ fun MaxSkills(
 
             var max by pref.remember()
 
-            val backgroundColor by animateColorAsState(
+            val backgroundColor =
                 if (max)
                     MaterialTheme.colors.secondary
-                else MaterialTheme.colors.surface,
-            )
+                else MaterialTheme.colors.surface
 
             val foregroundColor =
                 if (max)
