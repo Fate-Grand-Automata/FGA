@@ -67,7 +67,13 @@ class FineTuneSettingsFragment : Fragment() {
                                 contentPadding = PaddingValues(bottom = 90.dp)
                             ) {
                                 items(selectedGroup.items) {
-                                    it.FineTuneSeekBar()
+                                    Card(
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                            .padding(bottom = 16.dp)
+                                    ) {
+                                        it.FineTuneSeekBar()
+                                    }
                                 }
                             }
 

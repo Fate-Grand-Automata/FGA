@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Card
 import androidx.compose.material.Checkbox
 import androidx.compose.material.ListItem
 import androidx.compose.material.Text
@@ -26,42 +27,47 @@ fun CardPriorityListItem.Render() {
     ) {
         CardPriorityDragSort(scores)
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = 5.dp)
+        Card(
+            modifier = Modifier
+                .padding(16.dp)
+                .padding(top = 16.dp)
         ) {
-            var braveChains by braveChains
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                var braveChains by braveChains
 
-            val braveChainDialog = listDialog(
-                selected = braveChains,
-                selectedChange = { braveChains = it },
-                entries = BraveChainEnum.values()
-                    .associateWith { stringResource(it.stringRes) },
-                title = stringResource(R.string.p_brave_chains)
-            )
+                val braveChainDialog = listDialog(
+                    selected = braveChains,
+                    selectedChange = { braveChains = it },
+                    entries = BraveChainEnum.values()
+                        .associateWith { stringResource(it.stringRes) },
+                    title = stringResource(R.string.p_brave_chains)
+                )
 
-            ListItem(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { braveChainDialog.show() },
-                text = { Text(stringResource(R.string.p_brave_chains)) },
-                secondaryText = { Text(stringResource(braveChains.stringRes)) }
-            )
+                ListItem(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { braveChainDialog.show() },
+                    text = { Text(stringResource(R.string.p_brave_chains)) },
+                    secondaryText = { Text(stringResource(braveChains.stringRes)) }
+                )
 
-            var rearrange by rearrangeCards
+                var rearrange by rearrangeCards
 
-            ListItem(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { rearrange = !rearrange },
-                text = { Text(stringResource(R.string.p_rearrange_cards)) },
-                trailing = {
-                    Checkbox(
-                        checked = rearrange,
-                        onCheckedChange = { rearrange = it }
-                    )
-                }
-            )
+                ListItem(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { rearrange = !rearrange },
+                    text = { Text(stringResource(R.string.p_rearrange_cards)) },
+                    trailing = {
+                        Checkbox(
+                            checked = rearrange,
+                            onCheckedChange = { rearrange = it }
+                        )
+                    }
+                )
+            }
         }
     }
 }

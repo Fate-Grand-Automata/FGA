@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -58,31 +62,38 @@ class MoreSettingsFragment : Fragment() {
 
                         Divider()
 
-                        LazyColumn {
-                            when (selectedGroup) {
-                                MoreSettingsGroup.Battle -> {
-                                    battleGroup(prefs)
-                                }
-                                MoreSettingsGroup.Storage -> {
-                                    item {
-                                        val summary by storageSummary
+                        Card(
+                            modifier = Modifier
+                                .padding(16.dp)
+                        ) {
+                            LazyColumn(
+                                contentPadding = PaddingValues(bottom = 16.dp)
+                            ) {
+                                when (selectedGroup) {
+                                    MoreSettingsGroup.Battle -> {
+                                        battleGroup(prefs)
+                                    }
+                                    MoreSettingsGroup.Storage -> {
+                                        item {
+                                            val summary by storageSummary
 
-                                        StorageGroup(
-                                            directoryName = summary ?: "",
-                                            onPickDirectory = { pickDir.launch(Uri.EMPTY) }
+                                            StorageGroup(
+                                                directoryName = summary ?: "",
+                                                onPickDirectory = { pickDir.launch(Uri.EMPTY) }
+                                            )
+                                        }
+                                    }
+                                    MoreSettingsGroup.Advanced -> {
+                                        advancedGroup(
+                                            prefs,
+                                            goToFineTune = {
+                                                val action = MoreSettingsFragmentDirections
+                                                    .actionMoreSettingsFragmentToFineTuneSettingsFragment()
+
+                                                nav(action)
+                                            }
                                         )
                                     }
-                                }
-                                MoreSettingsGroup.Advanced -> {
-                                    advancedGroup(
-                                        prefs,
-                                        goToFineTune = {
-                                            val action = MoreSettingsFragmentDirections
-                                                .actionMoreSettingsFragmentToFineTuneSettingsFragment()
-
-                                            nav(action)
-                                        }
-                                    )
                                 }
                             }
                         }

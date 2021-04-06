@@ -10,10 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
-import androidx.compose.material.ListItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -134,7 +131,9 @@ private fun NpSpamView(
     spamConfig: SpamSettingsViewModel.NpSpamState
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
     ) {
         Text("NP:")
 
@@ -163,7 +162,9 @@ private fun SkillSpamView(
     skillConfig: SpamSettingsViewModel.SkillSpamState
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
     ) {
         Text("S${index + 1}:")
 
@@ -197,16 +198,25 @@ private fun SkillSpamView(
 private fun SpamView(
     selectedConfig: SpamSettingsViewModel.SpamState
 ) {
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        NpSpamView(spamConfig = selectedConfig.np)
+    Column {
+        Card(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            NpSpamView(spamConfig = selectedConfig.np)
+        }
 
         selectedConfig.skills.mapIndexed { index, skillConfig ->
-            SkillSpamView(
-                index = index,
-                skillConfig = skillConfig
-            )
+            Card(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp)
+            ) {
+                SkillSpamView(
+                    index = index,
+                    skillConfig = skillConfig
+                )
+            }
         }
     }
 }
