@@ -206,16 +206,21 @@ private fun SpamView(
             NpSpamView(spamConfig = selectedConfig.np)
         }
 
-        selectedConfig.skills.mapIndexed { index, skillConfig ->
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
-            ) {
-                SkillSpamView(
-                    index = index,
-                    skillConfig = skillConfig
-                )
+        Card(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        ) {
+            Column {
+                selectedConfig.skills.mapIndexed { index, skillConfig ->
+                    if (index != 0) {
+                        Divider()
+                    }
+
+                    SkillSpamView(
+                        index = index,
+                        skillConfig = skillConfig
+                    )
+                }
             }
         }
     }
