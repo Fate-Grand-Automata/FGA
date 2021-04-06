@@ -62,9 +62,9 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun FgaTheme(
+fun FGATheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
         DarkColorPalette
@@ -75,8 +75,16 @@ fun FgaTheme(
     MaterialTheme(
         colors = colors,
         typography = typography,
-        shapes = shapes
-    ) {
+        shapes = shapes,
+        content = content
+    )
+}
+
+@Composable
+fun FgaScreen(
+    content: @Composable BoxScope.() -> Unit
+) {
+    FGATheme {
         Surface(
             color = MaterialTheme.colors.background
         ) {

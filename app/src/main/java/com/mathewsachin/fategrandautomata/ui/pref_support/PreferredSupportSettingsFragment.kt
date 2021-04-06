@@ -65,7 +65,7 @@ fun PreferredSupport(
     config: SupportPrefsCore,
     vm: PreferredSupportViewModel
 ) {
-    FgaTheme {
+    FgaScreen {
         val prefServants by config.preferredServants.remember()
         val prefCEs by config.preferredCEs.remember()
 

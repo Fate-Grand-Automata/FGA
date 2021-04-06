@@ -86,7 +86,7 @@ class BattleConfigListFragment : Fragment() {
 
                 val configs by vm.battleConfigItems.collectAsState(emptyList())
 
-                FgaTheme {
+                FgaScreen {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()

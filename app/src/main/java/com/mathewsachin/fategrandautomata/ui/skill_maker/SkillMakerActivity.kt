@@ -12,7 +12,7 @@ import androidx.core.view.WindowCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
-import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.PreventRtl
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +26,7 @@ class SkillMakerActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            FgaTheme {
+            FgaScreen {
                 PreventRtl {
                     SkillMakerUI(
                         vm = vm,

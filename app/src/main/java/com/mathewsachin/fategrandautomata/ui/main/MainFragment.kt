@@ -10,13 +10,11 @@ import android.view.ViewGroup
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExtendedFloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,7 +69,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         ComposeView(requireContext()).apply {
             setContent {
-                FgaTheme {
+                FgaScreen {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
@@ -109,29 +107,36 @@ class MainFragment : Fragment() {
                         }
 
                         item {
-                            Preference(
-                                title = stringResource(R.string.p_battle_config),
-                                summary = stringResource(R.string.p_battle_config_summary),
-                                icon = icon(R.drawable.ic_formation),
-                                onClick = {
-                                    if (vm.ensureRootDir(pickDir, requireContext())) {
-                                        goToBattleConfigList()
-                                    }
-                                }
-                            )
-                        }
+                            Card(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                            ) {
+                                Column {
+                                    Preference(
+                                        title = stringResource(R.string.p_battle_config),
+                                        summary = stringResource(R.string.p_battle_config_summary),
+                                        icon = icon(R.drawable.ic_formation),
+                                        onClick = {
+                                            if (vm.ensureRootDir(pickDir, requireContext())) {
+                                                goToBattleConfigList()
+                                            }
+                                        }
+                                    )
 
-                        item {
-                            Preference(
-                                title = stringResource(R.string.p_more_options),
-                                icon = icon(R.drawable.ic_dots_horizontal),
-                                onClick = {
-                                    val action = MainFragmentDirections
-                                        .actionMainFragmentToMoreSettingsFragment()
+                                    Divider()
 
-                                    nav(action)
+                                    Preference(
+                                        title = stringResource(R.string.p_more_options),
+                                        icon = icon(R.drawable.ic_dots_horizontal),
+                                        onClick = {
+                                            val action = MainFragmentDirections
+                                                .actionMainFragmentToMoreSettingsFragment()
+
+                                            nav(action)
+                                        }
+                                    )
                                 }
-                            )
+                            }
                         }
                     }
 

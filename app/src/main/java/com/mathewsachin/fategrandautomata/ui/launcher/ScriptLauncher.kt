@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.Stepper
 
 @Composable
@@ -182,7 +182,7 @@ fun ScriptLauncher(
     onResponse: (ScriptLauncherResponse) -> Unit,
     prefs: IPreferences
 ) {
-    FgaTheme {
+    FgaScreen {
         Column(
             modifier = Modifier
                 .fillMaxSize()

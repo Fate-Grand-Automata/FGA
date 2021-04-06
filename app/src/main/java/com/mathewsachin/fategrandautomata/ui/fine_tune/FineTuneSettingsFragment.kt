@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.ui.FgaTheme
+import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
 import com.mathewsachin.fategrandautomata.ui.Heading
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +38,7 @@ class FineTuneSettingsFragment : Fragment() {
             setContent {
                 val vm: FineTuneSettingsViewModel = viewModel()
 
-                FgaTheme {
+                FgaScreen {
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
