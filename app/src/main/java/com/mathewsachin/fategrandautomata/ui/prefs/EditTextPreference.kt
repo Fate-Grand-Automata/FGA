@@ -31,6 +31,7 @@ fun PreferenceTextEditor(
     prefill: String,
     onSubmit: (String) -> Unit,
     onCancel: () -> Unit,
+    modifier: Modifier = Modifier,
     validate: (String) -> Boolean = { true },
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
@@ -50,7 +51,7 @@ fun PreferenceTextEditor(
         value = textFieldValue,
         onValueChange = { textFieldValue = it },
         label = { Text(label, color = MaterialTheme.colors.onBackground.copy(0.8f)) },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .focusRequester(focusRequester),
         isError = !valid,
@@ -103,6 +104,7 @@ fun PreferenceTextEditor(
 @Composable
 fun Pref<String>.EditTextPreference(
     title: String,
+    modifier: Modifier = Modifier,
     singleLineTitle: Boolean = false,
     singleLine: Boolean = false,
     icon: VectorIcon? = null,
@@ -139,7 +141,8 @@ fun Pref<String>.EditTextPreference(
             icon = icon,
             enabled = enabled,
             hint = hint,
-            onClick = { editing = true }
+            onClick = { editing = true },
+            modifier = modifier
         )
     }
 }

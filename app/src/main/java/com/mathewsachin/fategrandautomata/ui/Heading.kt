@@ -7,12 +7,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import java.util.*
@@ -55,21 +54,18 @@ fun HeadingButton(
     icon: VectorIcon? = null,
     isDanger: Boolean = false
 ) {
-    val shape = RoundedCornerShape(50)
-
-    Surface(
-        shape = shape,
-        color = if (isDanger) MaterialTheme.colors.error else MaterialTheme.colors.primary,
+    Card(
+        shape = CircleShape,
+        backgroundColor = if (isDanger) MaterialTheme.colors.error else MaterialTheme.colors.primary,
         contentColor = if (isDanger) MaterialTheme.colors.onError else MaterialTheme.colors.onPrimary,
         modifier = modifier
             .padding(end = 5.dp)
             .animateContentSize()
-            .clip(shape)
-            .clickable(onClick = onClick)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
+                .clickable(onClick = onClick)
                 .padding(10.dp, 4.dp)
         ) {
             if (icon != null) {

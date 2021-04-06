@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
@@ -210,9 +209,6 @@ fun BattleConfigItemView(
     openPreferredSupport: () -> Unit,
     vm: BattleConfigItemViewModel = viewModel()
 ) {
-    val maxSkillText by vm.maxSkillText.collectAsState("")
-    val supportMode by config.support.selectionMode.remember()
-
     FgaScaffold(
         stringResource(R.string.p_nav_battle_config_edit),
         subheading = {
@@ -258,86 +254,111 @@ fun BattleConfigItemView(
         },
         content = {
             item {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
                 ) {
-                    Box(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        config.name.EditTextPreference(
-                            title = stringResource(R.string.p_battle_config_name),
-                            validate = { it.isNotBlank() },
-                            singleLine = true
+                    Column {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                config.name.EditTextPreference(
+                                    title = stringResource(R.string.p_battle_config_name),
+                                    validate = { it.isNotBlank() },
+                                    singleLine = true
+                                )
+                            }
+
+                            PartySelection(config)
+                        }
+
+                        Divider()
+
+                        config.notes.EditTextPreference(
+                            title = stringResource(R.string.p_battle_config_notes)
                         )
                     }
-
-                    PartySelection(config)
                 }
-
-                Divider()
             }
 
             item {
-                SkillCommandGroup(
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp)
+                ) {
+                    Column {
+                        SkillCommandGroup(
+                            config = config,
+                            vm = vm,
+                            openSkillMaker = openSkillMaker
+                        )
+                    }
+                }
+            }
+
+            item {
+                Card(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp)
+                ) {
+                    Column {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(modifier = Modifier.weight(1f)) {
+                                config.materials.Materials()
+                            }
+
+                            Card(
+                                elevation = 3.dp,
+                                shape = CircleShape,
+                                modifier = Modifier
+                                    .padding(end = 16.dp)
+                            ) {
+                                Text(
+                                    stringResource(R.string.p_spam_spam),
+                                    modifier = Modifier
+                                        .clickable(onClick = openSpam)
+                                        .padding(16.dp, 5.dp)
+                                )
+                            }
+                        }
+
+                        Divider()
+
+                        val cardPriority by vm.cardPriority.collectAsState(null)
+
+                        cardPriority?.let {
+                            Preference(
+                                title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
+                                summary = { CardPrioritySummary(it) },
+                                onClick = openCardPriority
+                            )
+                        }
+                    }
+                }
+            }
+
+            item {
+                val maxSkillText by vm.maxSkillText.collectAsState("")
+
+                SupportGroup(
                     config = config,
-                    vm = vm,
-                    openSkillMaker = openSkillMaker
+                    goToPreferred = openPreferredSupport,
+                    maxSkillText = maxSkillText,
+                    friendEntries = friendEntries
                 )
-
-                Divider()
             }
 
             item {
-                config.materials.Materials()
-
-                Divider()
+                ShuffleCardsGroup(config)
             }
-
-            item {
-                config.notes.EditTextPreference(
-                    title = stringResource(R.string.p_battle_config_notes)
-                )
-
-                Divider()
-            }
-
-            item {
-                val cardPriority by vm.cardPriority.collectAsState(null)
-
-                cardPriority?.let {
-                    Preference(
-                        title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
-                        summary = { CardPrioritySummary(it) },
-                        onClick = openCardPriority
-                    )
-                }
-
-                Divider()
-            }
-
-            item {
-                Preference(
-                    title = stringResource(R.string.p_spam_spam),
-                    onClick = openSpam
-                )
-
-                Divider()
-            }
-
-            SupportGroup(
-                config = config,
-                goToPreferred = openPreferredSupport,
-                supportMode = supportMode,
-                maxSkillText = maxSkillText,
-                friendEntries = friendEntries
-            )
-
-            item {
-                Divider()
-            }
-
-            ShuffleCardsGroup(config)
         }
     )
 }
@@ -400,7 +421,8 @@ fun MaterialsSummary(materials: List<MaterialEnum>) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Card(
-                shape = RoundedCornerShape(50)
+                shape = CircleShape,
+                elevation = 2.dp
             ) {
                 LazyRow(
                     contentPadding = PaddingValues(7.dp, 5.dp)
@@ -485,20 +507,27 @@ fun PartySelection(config: BattleConfigCore) {
         title = stringResource(R.string.p_battle_config_party)
     )
 
-    Column(
+    Card(
+        elevation = 3.dp,
+        shape = CircleShape,
         modifier = Modifier
-            .clickable { dialog.show() }
-            .padding(16.dp, 5.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = 16.dp)
     ) {
-        Text(
-            stringResource(R.string.p_battle_config_party)
-                .toUpperCase(Locale.ROOT),
-            style = MaterialTheme.typography.caption
-        )
+        Column(
+            modifier = Modifier
+                .clickable { dialog.show() }
+                .padding(16.dp, 7.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                stringResource(R.string.p_battle_config_party)
+                    .toUpperCase(Locale.ROOT),
+                style = MaterialTheme.typography.caption
+            )
 
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Text(if (party == -1) "-" else (party + 1).toString())
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                Text(if (party == -1) "-" else (party + 1).toString())
+            }
         }
     }
 }

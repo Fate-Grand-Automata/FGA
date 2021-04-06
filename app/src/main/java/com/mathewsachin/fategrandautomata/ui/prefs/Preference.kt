@@ -47,6 +47,7 @@ fun <T> Pref<T>.remember(): MutableState<T> {
 @Composable
 fun Preference(
     title: String,
+    modifier: Modifier = Modifier,
     summary: String = "",
     singleLineTitle: Boolean = false,
     icon: VectorIcon? = null,
@@ -72,13 +73,15 @@ fun Preference(
         enabled = enabled,
         hint = hint,
         onClick = onClick,
-        trailing = trailing
+        trailing = trailing,
+        modifier = modifier
     )
 }
 
 @Composable
 fun Preference(
     title: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     summary: @Composable (() -> Unit)? = null,
     icon: VectorIcon? = null,
     enabled: Boolean = true,
@@ -110,11 +113,10 @@ fun Preference(
                     )
                 }
             },
-            modifier = Modifier.let{
-                if (onClick != null)
-                    it.clickable(onClick = { if (enabled) onClick() })
-                else it
-            },
+            modifier = modifier.clickable(
+                enabled = onClick != null && enabled,
+                onClick = { onClick?.invoke() }
+            ),
             trailing = {
                 Row {
                     trailing?.invoke(Modifier.align(Alignment.CenterVertically))

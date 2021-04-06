@@ -7,12 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 
 @Composable
 fun Pref<Int>.StepperPreference(
     title: String,
+    modifier: Modifier = Modifier,
     icon: VectorIcon? = null,
     valueRange: IntRange = 0..100,
     enabled: Boolean = true,
@@ -44,6 +46,7 @@ fun Pref<Int>.StepperPreference(
             }
         },
         icon = icon,
-        enabled = enabled
+        enabled = enabled,
+        modifier = modifier
     )
 }

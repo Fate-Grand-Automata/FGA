@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
@@ -8,7 +9,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
@@ -43,106 +43,107 @@ import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.stringRes
 
-fun LazyListScope.SupportGroup(
+@Composable
+fun SupportGroup(
     config: BattleConfigCore,
-    supportMode: SupportSelectionModeEnum,
     maxSkillText: String,
     friendEntries: Map<String, String>,
     goToPreferred: () -> Unit
 ) {
-    item {
-        PreferenceGroupHeader(
-            title = stringResource(R.string.p_battle_config_support)
-        )
-    }
+    val supportMode by config.support.selectionMode.remember()
 
-    item {
-        var supportClass by config.support.supportClass.remember()
+    Card(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+        ) {
+            PreferenceGroupHeader(
+                title = stringResource(R.string.p_battle_config_support)
+            )
 
-        SupportClassPicker(
-            selected = supportClass,
-            onSelectedChange = { supportClass = it }
-        )
-    }
+            var supportClass by config.support.supportClass.remember()
 
-    val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
-    val friendMode = supportMode == SupportSelectionModeEnum.Friend
+            SupportClassPicker(
+                selected = supportClass,
+                onSelectedChange = { supportClass = it }
+            )
 
-    item {
-        Row {
-            Box(
-                modifier = Modifier.weight(1f)
-            ) {
+            val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
+            val friendMode = supportMode == SupportSelectionModeEnum.Friend
+
+            Row {
                 config.support.selectionMode.ListPreference(
                     title = stringResource(R.string.p_battle_config_support_selection_mode),
                     entries = SupportSelectionModeEnum.values()
-                        .associateWith { stringResource(it.stringRes) }
-                )
-            }
-
-            if (preferredMode || friendMode) {
-                Box(
+                        .associateWith { stringResource(it.stringRes) },
                     modifier = Modifier.weight(1f)
-                ) {
+                )
+
+                if (preferredMode || friendMode) {
                     config.support.fallbackTo.ListPreference(
                         title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
                         entries = listOf(
                             SupportSelectionModeEnum.First,
                             SupportSelectionModeEnum.Manual
-                        ).associateWith { stringResource(it.stringRes) }
+                        ).associateWith { stringResource(it.stringRes) },
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }
-        }
-    }
 
-    if (preferredMode) {
-        item {
-            val servants by config.support.preferredServants.remember()
-            val ces by config.support.preferredCEs.remember()
+            AnimatedVisibility (preferredMode) {
+                val servants by config.support.preferredServants.remember()
+                val ces by config.support.preferredCEs.remember()
 
-            Preference(
-                title = { Text(stringResource(R.string.p_support_mode_preferred)) },
-                summary = {
-                    PreferredSummary(
-                        config = config,
-                        maxSkillText = maxSkillText,
-                        servants = servants,
-                        ces = ces
+                Column {
+                    Preference(
+                        title = { Text(stringResource(R.string.p_support_mode_preferred)) },
+                        summary = {
+                            PreferredSummary(
+                                config = config,
+                                maxSkillText = maxSkillText,
+                                servants = servants,
+                                ces = ces
+                            )
+                        },
+                        onClick = goToPreferred
                     )
-                },
-                onClick = goToPreferred
-            )
 
-            if (servants.isEmpty() && ces.isEmpty()) {
-                PreferenceError(
-                    stringResource(R.string.support_selection_preferred_not_set)
-                )
-            }
-        }
-    }
-
-    if (friendMode) {
-        item {
-            if (friendEntries.isNotEmpty()) {
-                config.support.friendNames.SupportSelectPreference(
-                    title = stringResource(R.string.p_battle_config_support_friend_names),
-                    entries = friendEntries
-                )
-            } else {
-                Preference(
-                    icon = icon(R.drawable.ic_info),
-                    title = stringResource(R.string.p_battle_config_support_friend_names),
-                    summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
-                )
+                    AnimatedVisibility(servants.isEmpty() && ces.isEmpty()) {
+                        PreferenceError(
+                            stringResource(R.string.support_selection_preferred_not_set)
+                        )
+                    }
+                }
             }
 
-            val friendNames by config.support.friendNames.remember()
+            AnimatedVisibility (friendMode) {
+                Column {
+                    if (friendEntries.isNotEmpty()) {
+                        config.support.friendNames.SupportSelectPreference(
+                            title = stringResource(R.string.p_battle_config_support_friend_names),
+                            entries = friendEntries
+                        )
+                    } else {
+                        Preference(
+                            icon = icon(R.drawable.ic_info),
+                            title = stringResource(R.string.p_battle_config_support_friend_names),
+                            summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
+                        )
+                    }
 
-            if (friendNames.isEmpty()) {
-                PreferenceError(
-                    stringResource(R.string.support_selection_friend_not_set)
-                )
+                    val friendNames by config.support.friendNames.remember()
+
+                    AnimatedVisibility(friendNames.isEmpty()) {
+                        PreferenceError(
+                            stringResource(R.string.support_selection_friend_not_set)
+                        )
+                    }
+                }
             }
         }
     }
@@ -154,6 +155,7 @@ fun SupportClassPicker(
     onSelectedChange: (SupportClass) -> Unit
 ) {
     Card(
+        elevation = 2.dp,
         modifier = Modifier
             .padding(16.dp, 5.dp)
             .fillMaxWidth()
@@ -247,7 +249,9 @@ fun PreferredSummary(
             )
 
             if (servants.isNotEmpty()) {
-                Card {
+                Card(
+                    elevation = 2.dp
+                ) {
                     Text(
                         maxSkillText,
                         style = MaterialTheme.typography.caption,

@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.vanpra.composematerialdialogs.MaterialDialog
@@ -42,6 +43,7 @@ fun <T> listDialog(
 @Composable
 fun <T> Pref<T>.ListPreference(
     title: String,
+    modifier: Modifier = Modifier,
     summary: String = "",
     singleLineTitle: Boolean = false,
     icon: VectorIcon? = null,
@@ -66,5 +68,6 @@ fun <T> Pref<T>.ListPreference(
         enabled = enabled,
         hint = hint,
         onClick = { dialog.show() },
+        modifier = modifier
     )
 }

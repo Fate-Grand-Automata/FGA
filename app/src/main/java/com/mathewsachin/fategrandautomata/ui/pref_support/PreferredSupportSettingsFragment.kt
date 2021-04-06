@@ -186,14 +186,15 @@ fun MaxSkills(
                 else MaterialTheme.colors.onSurface
 
             Card(
-                modifier = Modifier
-                    .clickable { max = !max }
-                    .size(40.dp),
+                elevation = 5.dp,
                 backgroundColor = backgroundColor,
                 contentColor = foregroundColor
             ) {
                 Box(
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .clickable { max = !max }
+                        .size(40.dp)
                 ) {
                     Text(skillText(max))
                 }

@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -28,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -312,25 +310,25 @@ private fun BattleConfigListItem(
     val materialsSet by it.materials.remember()
     val mats = materialsSet.take(3)
 
-    val shape = RoundedCornerShape(50)
+    val shape = CircleShape
 
     // Without this, holding a list item would leave it highlighted because of recomposition happening before ripple ending
     val longClickState = rememberUpdatedState(onLongClick)
 
     Card(
         shape = shape,
-        elevation = if (isSelected) 50.dp else 1.dp,
+        elevation = if (isSelected) 5.dp else 1.dp,
         modifier = Modifier
             .padding(5.dp)
-            .clip(shape)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = { longClickState.value.invoke() }
-            )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp, 5.dp)
+            modifier = Modifier
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = { longClickState.value.invoke() }
+                )
+                .padding(16.dp, 5.dp)
         ) {
             BattleConfigItemSelected(
                 isSelectionMode = isSelectionMode,
