@@ -9,40 +9,62 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
-import com.vanpra.composematerialdialogs.MaterialDialog
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
 
+@Composable
+fun PartySelectionDialog(
+    show: Boolean,
+    hide: () -> Unit,
+    selected: Int,
+    onSelectedChange: (Int) -> Unit
+) {
+    val colors = MaterialTheme.colors
+    val typography = MaterialTheme.typography
+    val shapes = MaterialTheme.shapes
+
+    if (show) {
+        Dialog(onDismissRequest = hide) {
+            MaterialTheme(
+                colors = colors,
+                typography = typography,
+                shapes = shapes
+            ) {
+                PartySelectionDialogContent(
+                    selected = selected,
+                    onSelectedChange = {
+                        onSelectedChange(it)
+                        hide()
+                    }
+                )
+            }
+        }
+    }
+}
 
 @Composable
 fun PartySelection(config: BattleConfigCore) {
     var party by config.party.remember()
+    var showDialog by remember { mutableStateOf(false) }
 
-    val dialog = MaterialDialog()
-
-    // TODO: Next release of MaterialDialog will add option to specify shape on dialog.build, use CircleShape
-    dialog.build {
-        PartySelectionDialogContent(
-            selected = party,
-            onSelectedChange = {
-                party = it
-                dialog.hide()
-            }
-        )
-    }
+    PartySelectionDialog(
+        show = showDialog,
+        hide = { showDialog = false },
+        selected = party,
+        onSelectedChange = { party = it }
+    )
 
     Card(
         elevation = 3.dp,
@@ -53,7 +75,7 @@ fun PartySelection(config: BattleConfigCore) {
     ) {
         Column(
             modifier = Modifier
-                .clickable { dialog.show() }
+                .clickable { showDialog = true }
                 .padding(16.dp, 5.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -77,10 +99,26 @@ fun PartySelectionDialogContent(
     onSelectedChange: (Int) -> Unit
 ) {
     Box {
+        Surface(
+            color = MaterialTheme.colors.primary,
+            shape = CircleShape,
+            modifier = Modifier
+                .padding(40.dp)
+        ) {
+            Layout(
+                content = {}
+            ) { _, constraints ->
+                val squareSide = minOf(constraints.maxWidth, constraints.maxHeight)
+
+                layout(squareSide, squareSide) { }
+            }
+        }
+
         Layout(
             content = {
                 (1..10).forEach {
                     Card(
+                        elevation = 10.dp,
                         shape = CircleShape,
                         backgroundColor = if (selected == it - 1)
                             MaterialTheme.colors.secondary
@@ -123,28 +161,35 @@ fun PartySelectionDialogContent(
             }
         }
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Card(
+            elevation = 10.dp,
+            shape = CircleShape,
+            backgroundColor = MaterialTheme.colors.surface,
             modifier = Modifier
                 .align(Alignment.Center)
         ) {
-            Text(
-                stringResource(R.string.p_battle_config_party)
-                    .toUpperCase(Locale.ROOT),
-                style = MaterialTheme.typography.caption,
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(bottom = 12.dp)
-            )
-
-            Button(
-                onClick = { onSelectedChange(-1) },
-                shape = CircleShape
+                    .size(50.dp)
+                    .clickable(onClick = { onSelectedChange(-1) })
             ) {
                 Icon(
                     Icons.Default.Close,
+                    tint = MaterialTheme.colors.primary,
                     contentDescription = stringResource(R.string.p_not_set)
                 )
             }
         }
+
+        Text(
+            stringResource(R.string.p_battle_config_party)
+                .toUpperCase(Locale.ROOT),
+            color = MaterialTheme.colors.onPrimary,
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 100.dp)
+        )
     }
 }
