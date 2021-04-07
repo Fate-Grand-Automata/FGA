@@ -130,7 +130,8 @@ fun Pref<String>.EditTextPreference(
                 editing = false
             },
             onCancel = { editing = false },
-            keyboardOptions = keyboardOptions
+            keyboardOptions = keyboardOptions,
+            modifier = modifier
         )
     }
     else {

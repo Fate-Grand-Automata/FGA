@@ -17,6 +17,7 @@ import kotlin.math.roundToInt
 @Composable
 fun Pref<Int>.SeekBarPreference(
     title: String,
+    modifier: Modifier = Modifier,
     state: MutableState<Float> = remember { mutableStateOf(get().toFloat()) },
     summary: String = "",
     singleLineTitle: Boolean = true,
@@ -50,7 +51,8 @@ fun Pref<Int>.SeekBarPreference(
         },
         icon = icon,
         enabled = enabled,
-        hint = hint
+        hint = hint,
+        modifier = modifier
     )
 }
 

@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.fine_tune
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,17 +43,14 @@ fun FineTuneItem.FineTuneSeekBar() {
     }
 
     Row {
-        Box(
+        pref.SeekBarPreference(
+            title = stringResource(name),
+            summary = defaultString,
+            valueRange = valueRange,
+            valueRepresentation = valueRepresentation,
+            state = state,
             modifier = Modifier.weight(1f)
-        ) {
-            pref.SeekBarPreference(
-                title = stringResource(name),
-                summary = defaultString,
-                valueRange = valueRange,
-                valueRepresentation = valueRepresentation,
-                state = state
-            )
-        }
+        )
 
         DimmedIcon(
             icon(R.drawable.ic_info),

@@ -19,7 +19,10 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -55,7 +58,10 @@ import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
-import com.mathewsachin.fategrandautomata.ui.prefs.*
+import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
+import com.mathewsachin.fategrandautomata.ui.prefs.Preference
+import com.mathewsachin.fategrandautomata.ui.prefs.multiSelectListDialog
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.drawable
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.stringRes
@@ -277,15 +283,12 @@ fun BattleConfigItemView(
                                     modifier = Modifier.fillMaxSize(),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Box(
+                                    config.name.EditTextPreference(
+                                        title = stringResource(R.string.p_battle_config_name),
+                                        validate = { it.isNotBlank() },
+                                        singleLine = true,
                                         modifier = Modifier.weight(1f)
-                                    ) {
-                                        config.name.EditTextPreference(
-                                            title = stringResource(R.string.p_battle_config_name),
-                                            validate = { it.isNotBlank() },
-                                            singleLine = true
-                                        )
-                                    }
+                                    )
 
                                     PartySelection(config)
                                 }
@@ -501,48 +504,6 @@ fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                         }
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun PartySelection(config: BattleConfigCore) {
-    var party by config.party.remember()
-
-    val dialog = listDialog(
-        selected = party,
-        selectedChange = { party = it },
-        entries = (-1..9)
-            .associateWith {
-                when (it) {
-                    -1 -> stringResource(R.string.p_not_set)
-                    else -> stringResource(R.string.p_party_number, it + 1)
-                }
-            },
-        title = stringResource(R.string.p_battle_config_party)
-    )
-
-    Card(
-        elevation = 3.dp,
-        shape = CircleShape,
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .clickable { dialog.show() }
-                .padding(16.dp, 7.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                stringResource(R.string.p_battle_config_party)
-                    .toUpperCase(Locale.ROOT),
-                style = MaterialTheme.typography.caption
-            )
-
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(if (party == -1) "-" else (party + 1).toString())
             }
         }
     }
