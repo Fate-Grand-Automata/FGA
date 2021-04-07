@@ -25,32 +25,21 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Composable
-fun PartySelectionDialog(
-    show: Boolean,
-    hide: () -> Unit,
-    selected: Int,
-    onSelectedChange: (Int) -> Unit
+fun ThemedDialog(
+    onDismiss: () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val colors = MaterialTheme.colors
     val typography = MaterialTheme.typography
     val shapes = MaterialTheme.shapes
 
-    if (show) {
-        Dialog(onDismissRequest = hide) {
-            MaterialTheme(
-                colors = colors,
-                typography = typography,
-                shapes = shapes
-            ) {
-                PartySelectionDialogContent(
-                    selected = selected,
-                    onSelectedChange = {
-                        onSelectedChange(it)
-                        hide()
-                    }
-                )
-            }
-        }
+    Dialog(onDismissRequest = onDismiss) {
+        MaterialTheme(
+            colors = colors,
+            typography = typography,
+            shapes = shapes,
+            content = content
+        )
     }
 }
 
@@ -59,12 +48,19 @@ fun PartySelection(config: BattleConfigCore) {
     var party by config.party.remember()
     var showDialog by remember { mutableStateOf(false) }
 
-    PartySelectionDialog(
-        show = showDialog,
-        hide = { showDialog = false },
-        selected = party,
-        onSelectedChange = { party = it }
-    )
+    if (showDialog) {
+        ThemedDialog(
+            onDismiss = { showDialog = false }
+        ) {
+            PartySelectionDialogContent(
+                selected = party,
+                onSelectedChange = {
+                    party = it
+                    showDialog = false
+                }
+            )
+        }
+    }
 
     Card(
         elevation = 3.dp,

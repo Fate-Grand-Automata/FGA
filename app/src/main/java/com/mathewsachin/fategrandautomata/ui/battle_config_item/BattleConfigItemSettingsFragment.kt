@@ -7,13 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -25,17 +21,12 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
@@ -47,10 +38,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
-import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
@@ -63,11 +52,7 @@ import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
-import com.mathewsachin.fategrandautomata.ui.prefs.multiSelectListDialog
-import com.mathewsachin.fategrandautomata.ui.prefs.remember
-import com.mathewsachin.fategrandautomata.util.drawable
 import com.mathewsachin.fategrandautomata.util.nav
-import com.mathewsachin.fategrandautomata.util.stringRes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -374,71 +359,6 @@ fun BattleConfigItemView(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Pref<Set<MaterialEnum>>.Materials() {
-    var selected by remember()
-
-    val title = stringResource(R.string.p_mats)
-    val entries = MaterialEnum.values()
-        .associateWith { stringResource(it.stringRes) }
-
-    val dialog = multiSelectListDialog(
-        selected = selected,
-        selectedChange = { selected = it },
-        entries = entries,
-        title = title
-    )
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { dialog.show() }
-            .padding(vertical = 5.dp)
-    ) {
-        Text(
-            title.toUpperCase(Locale.ROOT),
-            style = MaterialTheme.typography.caption,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-
-        MaterialsSummary(materials = selected.toList())
-    }
-}
-
-@Composable
-fun Material(mat: MaterialEnum) {
-    Image(
-        painterResource(mat.drawable),
-        contentDescription = stringResource(mat.stringRes),
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .padding(3.dp)
-            .size(20.dp)
-            .clip(CircleShape)
-            .border(0.5.dp, MaterialTheme.colors.onSurface, CircleShape)
-            .alpha(0.8f)
-    )
-}
-
-@Composable
-fun MaterialsSummary(materials: List<MaterialEnum>) {
-    if (materials.isNotEmpty()) {
-        LazyRow(
-            contentPadding = PaddingValues(start = 16.dp, top = 5.dp, bottom = 5.dp)
-        ) {
-            items(materials) { mat ->
-                Material(mat)
-            }
-        }
-    }
-    else {
-        Text(
-            "--",
-            modifier = Modifier.padding(16.dp, 5.dp)
-        )
     }
 }
 
