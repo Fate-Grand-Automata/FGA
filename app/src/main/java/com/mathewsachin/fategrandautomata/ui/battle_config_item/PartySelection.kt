@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,13 +45,16 @@ fun PartySelection(config: BattleConfigCore) {
     }
 
     Card(
+        elevation = 3.dp,
+        shape = CircleShape,
         modifier = Modifier
+            .padding(vertical = 5.dp)
             .padding(end = 16.dp)
     ) {
         Column(
             modifier = Modifier
                 .clickable { dialog.show() }
-                .padding(5.dp),
+                .padding(16.dp, 5.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -59,9 +63,10 @@ fun PartySelection(config: BattleConfigCore) {
                 style = MaterialTheme.typography.caption
             )
 
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(if (party == -1) "-" else (party + 1).toString())
-            }
+            Text(
+                if (party == -1) "--" else (party + 1).toString(),
+                style = MaterialTheme.typography.caption
+            )
         }
     }
 }
@@ -128,14 +133,17 @@ fun PartySelectionDialogContent(
                     .toUpperCase(Locale.ROOT),
                 style = MaterialTheme.typography.caption,
                 modifier = Modifier
-                    .padding(bottom = 16.dp)
+                    .padding(bottom = 12.dp)
             )
 
             Button(
                 onClick = { onSelectedChange(-1) },
                 shape = CircleShape
             ) {
-                Text(stringResource(R.string.p_not_set))
+                Icon(
+                    Icons.Default.Close,
+                    contentDescription = stringResource(R.string.p_not_set)
+                )
             }
         }
     }

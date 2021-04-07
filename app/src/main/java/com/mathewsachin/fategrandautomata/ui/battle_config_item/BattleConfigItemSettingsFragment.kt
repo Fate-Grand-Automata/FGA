@@ -15,7 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
@@ -279,19 +282,11 @@ fun BattleConfigItemView(
                                 .padding(16.dp)
                         ) {
                             Column {
-                                Row(
-                                    modifier = Modifier.fillMaxSize(),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    config.name.EditTextPreference(
-                                        title = stringResource(R.string.p_battle_config_name),
-                                        validate = { it.isNotBlank() },
-                                        singleLine = true,
-                                        modifier = Modifier.weight(1f)
-                                    )
-
-                                    PartySelection(config)
-                                }
+                                config.name.EditTextPreference(
+                                    title = stringResource(R.string.p_battle_config_name),
+                                    validate = { it.isNotBlank() },
+                                    singleLine = true
+                                )
 
                                 Divider()
 
@@ -308,13 +303,11 @@ fun BattleConfigItemView(
                                 .padding(horizontal = 16.dp)
                                 .padding(bottom = 16.dp)
                         ) {
-                            Column {
-                                SkillCommandGroup(
-                                    config = config,
-                                    vm = vm,
-                                    openSkillMaker = openSkillMaker
-                                )
-                            }
+                            SkillCommandGroup(
+                                config = config,
+                                vm = vm,
+                                openSkillMaker = openSkillMaker
+                            )
                         }
                     }
 
@@ -336,7 +329,7 @@ fun BattleConfigItemView(
                                         elevation = 3.dp,
                                         shape = CircleShape,
                                         modifier = Modifier
-                                            .padding(end = 16.dp)
+                                            .padding(horizontal = 16.dp)
                                     ) {
                                         Text(
                                             stringResource(R.string.p_spam_spam),
@@ -345,6 +338,8 @@ fun BattleConfigItemView(
                                                 .padding(16.dp, 5.dp)
                                         )
                                     }
+
+                                    PartySelection(config)
                                 }
 
                                 Divider()
@@ -397,24 +392,20 @@ fun Pref<Set<MaterialEnum>>.Materials() {
         title = title
     )
 
-    ListItem(
-        text = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    title,
-                    modifier = Modifier.padding(end = 16.dp)
-                )
-
-                Box(modifier = Modifier.weight(1f)) {
-                    MaterialsSummary(materials = selected.toList())
-                }
-            }
-        },
+    Column(
         modifier = Modifier
+            .fillMaxWidth()
             .clickable { dialog.show() }
-    )
+            .padding(vertical = 5.dp)
+    ) {
+        Text(
+            title.toUpperCase(Locale.ROOT),
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+
+        MaterialsSummary(materials = selected.toList())
+    }
 }
 
 @Composable
@@ -435,23 +426,19 @@ fun Material(mat: MaterialEnum) {
 @Composable
 fun MaterialsSummary(materials: List<MaterialEnum>) {
     if (materials.isNotEmpty()) {
-        Row(
-            horizontalArrangement = Arrangement.End,
-            modifier = Modifier.fillMaxWidth()
+        LazyRow(
+            contentPadding = PaddingValues(start = 16.dp, top = 5.dp, bottom = 5.dp)
         ) {
-            Card(
-                shape = CircleShape,
-                elevation = 2.dp
-            ) {
-                LazyRow(
-                    contentPadding = PaddingValues(7.dp, 5.dp)
-                ) {
-                    items(materials) { mat ->
-                        Material(mat)
-                    }
-                }
+            items(materials) { mat ->
+                Material(mat)
             }
         }
+    }
+    else {
+        Text(
+            "--",
+            modifier = Modifier.padding(16.dp, 5.dp)
+        )
     }
 }
 
