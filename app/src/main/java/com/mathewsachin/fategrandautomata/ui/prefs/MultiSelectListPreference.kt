@@ -4,9 +4,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
-import com.mathewsachin.fategrandautomata.ui.battle_config_item.FgaDialog
-import com.mathewsachin.fategrandautomata.ui.battle_config_item.multiChoiceList
+import com.mathewsachin.fategrandautomata.ui.multiChoiceList
 
 @Composable
 fun <T> multiSelectListDialog(

@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
+import com.mathewsachin.fategrandautomata.ui.ThemedDialog
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,25 +27,6 @@ import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
 import kotlin.time.milliseconds
-
-@Composable
-fun ThemedDialog(
-    onDismiss: () -> Unit,
-    content: @Composable () -> Unit
-) {
-    val colors = MaterialTheme.colors
-    val typography = MaterialTheme.typography
-    val shapes = MaterialTheme.shapes
-
-    Dialog(onDismissRequest = onDismiss) {
-        MaterialTheme(
-            colors = colors,
-            typography = typography,
-            shapes = shapes,
-            content = content
-        )
-    }
-}
 
 @Composable
 fun PartySelection(config: BattleConfigCore) {

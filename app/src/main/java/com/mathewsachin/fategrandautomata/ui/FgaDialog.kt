@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.ui.battle_config_item
+package com.mathewsachin.fategrandautomata.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -175,9 +175,9 @@ fun ChoiceListItem(
                 .padding(16.dp, 5.dp)
         ) {
             Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(vertical = 2.dp)
             ) {
                 content()
             }
