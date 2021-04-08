@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,10 +20,13 @@ import androidx.compose.ui.window.Dialog
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
+import kotlin.time.milliseconds
 
 @Composable
 fun ThemedDialog(
@@ -53,7 +57,7 @@ fun PartySelection(config: BattleConfigCore) {
             onDismiss = { showDialog = false }
         ) {
             PartySelectionDialogContent(
-                selected = party,
+                party = party,
                 onSelectedChange = {
                     party = it
                     showDialog = false
@@ -91,9 +95,11 @@ fun PartySelection(config: BattleConfigCore) {
 
 @Composable
 fun PartySelectionDialogContent(
-    selected: Int,
+    party: Int,
     onSelectedChange: (Int) -> Unit
 ) {
+    var selected by remember(party) { mutableStateOf(party) }
+
     Box {
         Surface(
             color = MaterialTheme.colors.primary,
@@ -110,13 +116,41 @@ fun PartySelectionDialogContent(
             }
         }
 
+        var enabled by remember { mutableStateOf(false) }
+        val count = 10
+        val theta = (2 * Math.PI / count).toFloat()
+        val baseStartAngle = -(Math.PI / 2).toFloat()
+        var startAngle by remember { mutableStateOf(baseStartAngle - (selected.coerceAtLeast(0) + 1) * theta) }
+
+        val scope = rememberCoroutineScope()
+
+        LaunchedEffect(selected) {
+            scope.launch {
+                startAngle = baseStartAngle - selected.coerceAtLeast(0) * theta
+                delay(100.milliseconds)
+                enabled = true
+            }
+        }
+
+        fun onChange(value: Int) {
+            scope.launch {
+                enabled = false
+                selected = value
+                delay(500.milliseconds)
+                onSelectedChange(value)
+                enabled = true
+            }
+        }
+
+        val startAngleAnimated by animateFloatAsState(startAngle)
+
         Layout(
             content = {
-                (1..10).forEach {
+                repeat(count) {
                     Card(
                         elevation = 10.dp,
                         shape = CircleShape,
-                        backgroundColor = if (selected == it - 1)
+                        backgroundColor = if (selected == it)
                             MaterialTheme.colors.secondary
                         else MaterialTheme.colors.surface
                     ) {
@@ -124,9 +158,12 @@ fun PartySelectionDialogContent(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(50.dp)
-                                .clickable(onClick = { onSelectedChange(it - 1) })
+                                .clickable(
+                                    onClick = { onChange(it) },
+                                    enabled = enabled
+                                )
                         ) {
-                            Text(it.toString())
+                            Text("${it + 1}")
                         }
                     }
                 }
@@ -138,13 +175,12 @@ fun PartySelectionDialogContent(
                 )
             }
 
-            val theta = 2 * Math.PI / measurables.size
             val squareSide = minOf(constraints.maxWidth, constraints.maxHeight)
             val center = squareSide / 2f
             val radius = squareSide * 0.35
 
             layout(squareSide, squareSide) {
-                var angle = -2 * theta
+                var angle = startAngleAnimated
 
                 placeables.forEach { placeable ->
                     placeable.place(
@@ -168,7 +204,10 @@ fun PartySelectionDialogContent(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .size(50.dp)
-                    .clickable(onClick = { onSelectedChange(-1) })
+                    .clickable(
+                        onClick = { onChange(-1) },
+                        enabled = enabled
+                    )
             ) {
                 Icon(
                     Icons.Default.Close,
