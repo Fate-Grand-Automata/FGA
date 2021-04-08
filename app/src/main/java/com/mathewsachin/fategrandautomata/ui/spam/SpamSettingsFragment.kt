@@ -276,7 +276,7 @@ fun SelectWaves(
 ) {
     val dialog = multiSelectListDialog(
         selected = selected,
-        selectedChange = onSelectChange,
+        onSelectedChange = onSelectChange,
         entries = (1..3).associateWith { "Wave $it" },
         title = "Waves"
     )

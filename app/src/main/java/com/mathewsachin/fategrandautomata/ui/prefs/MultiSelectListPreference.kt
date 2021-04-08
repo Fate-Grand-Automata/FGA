@@ -1,46 +1,38 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.listItemsMultiChoice
+import com.mathewsachin.fategrandautomata.ui.battle_config_item.FgaDialog
+import com.mathewsachin.fategrandautomata.ui.battle_config_item.multiChoiceList
 
 @Composable
 fun <T> multiSelectListDialog(
     selected: Set<T>,
-    selectedChange: (Set<T>) -> Unit,
+    onSelectedChange: (Set<T>) -> Unit,
     entries: Map<T, String>,
     title: String
-): MaterialDialog {
-    val dialog = MaterialDialog()
+): FgaDialog {
+    val dialog = FgaDialog()
 
     dialog.build {
         title(text = title)
 
-        val keys = entries.keys.toList()
-        val values = entries.values.toList()
-        val selectedIndices = selected.map { keys.indexOf(it) }
+        var current by remember(selected) { mutableStateOf(selected) }
 
-        listItemsMultiChoice(
-            list = values,
-            initialSelection = selectedIndices,
-            onCheckedChange = { indices ->
-                val selectedKeys = indices
-                    .map { keys[it] }
-                    .toSet()
-
-                selectedChange(selectedKeys)
-            }
-        )
-
-        buttons {
-            positiveButton(res = android.R.string.ok)
-            negativeButton(res = android.R.string.cancel)
+        multiChoiceList(
+            selected = current,
+            onSelectedChange = { current = it },
+            items = entries.keys.toList()
+        ) {
+            Text(entries[it] ?: "--")
         }
+
+        buttons(
+            onSubmit = { onSelectedChange(current) }
+        )
     }
 
     return dialog
@@ -65,7 +57,7 @@ fun <T> Pref<Set<T>>.MultiSelectListPreference(
 
     val dialog = multiSelectListDialog(
         selected = selected,
-        selectedChange = { selected = it },
+        onSelectedChange = { selected = it },
         entries = entries,
         title = title
     )
