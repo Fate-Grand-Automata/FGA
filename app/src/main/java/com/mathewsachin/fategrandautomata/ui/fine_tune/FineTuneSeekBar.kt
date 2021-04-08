@@ -11,35 +11,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.SeekBarPreference
-import com.vanpra.composematerialdialogs.MaterialDialog
 
 @Composable
 fun FineTuneItem.FineTuneSeekBar() {
+    // TODO: Localize
     val defaultString = "Default: ${valueRepresentation(pref.defaultValue)}"
 
-    val hintDialog = MaterialDialog()
+    val hintDialog = FgaDialog()
     hintDialog.build {
-        iconTitle(
-            textRes = name,
-            icon = {
-                DimmedIcon(
-                    icon,
-                    contentDescription = "icon"
-                )
-            }
+        title(
+            text = stringResource(name),
+            icon = icon
         )
 
         message("$defaultString\n\n$hint")
 
-        buttons {
-            negativeButton(res = android.R.string.cancel)
+        buttons(
+            onSubmit = { reset() },
             // TODO: Localize 'Reset to default'
-            positiveButton("Reset to default") {
-                reset()
-            }
-        }
+            okLabel = "Reset to default"
+        )
     }
 
     Row {

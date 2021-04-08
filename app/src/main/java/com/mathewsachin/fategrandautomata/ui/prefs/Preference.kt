@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.ui.icon
-import com.vanpra.composematerialdialogs.MaterialDialog
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
@@ -89,7 +89,7 @@ fun Preference(
     hint: String = "",
     trailing: @Composable ((Modifier) -> Unit)? = null
 ) {
-    val hintDialog = MaterialDialog()
+    val hintDialog = FgaDialog()
 
     hintDialog.build {
         // TODO: Localize 'Hint'

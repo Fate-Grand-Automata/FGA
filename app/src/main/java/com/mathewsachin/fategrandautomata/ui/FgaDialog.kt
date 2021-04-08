@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.util.toggle
 
+// Simplified form of https://github.com/vanpra/compose-material-dialogs
+
 @SuppressLint("ComposableNaming")
 class FgaDialog private constructor() {
     companion object {
@@ -37,12 +39,35 @@ class FgaDialog private constructor() {
     }
 
     @Composable
-    fun title(text: String) {
+    fun title(text: String, icon: VectorIcon? = null) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(24.dp, 16.dp)
+        ) {
+            if (icon != null) {
+                DimmedIcon(
+                    icon,
+                    contentDescription = "heading icon",
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                )
+            }
+
+            Text(
+                text,
+                style = MaterialTheme.typography.h6
+            )
+        }
+    }
+
+    @Composable
+    fun message(text: String) {
         Text(
             text,
-            style = MaterialTheme.typography.h6,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(24.dp, 16.dp)
+                .padding(bottom = 12.dp)
         )
     }
 
@@ -51,20 +76,21 @@ class FgaDialog private constructor() {
         onSubmit: () -> Unit,
         showOk: Boolean = true,
         showCancel: Boolean = true,
-        okEnabled: Boolean = true
+        okEnabled: Boolean = true,
+        okLabel: String = stringResource(android.R.string.ok),
+        cancelLabel: String = stringResource(android.R.string.cancel)
     ) {
-        if (showOk || showCancel) {
-            Row(
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-            ) {
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 5.dp)
+        ) {
                 if (showCancel) {
                     TextButton(
                         onClick = { hide() }
                     ) {
-                        Text(stringResource(android.R.string.cancel))
+                        Text(cancelLabel)
                     }
                 }
 
@@ -76,11 +102,10 @@ class FgaDialog private constructor() {
                         },
                         enabled = okEnabled
                     ) {
-                        Text(stringResource(android.R.string.ok))
+                        Text(okLabel)
                     }
                 }
             }
-        }
     }
 
     @Composable
@@ -95,6 +120,7 @@ class FgaDialog private constructor() {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(bottom = 8.dp)
                     ) {
                         this@FgaDialog.content()
                     }
