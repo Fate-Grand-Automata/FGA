@@ -1,40 +1,37 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.listItemsSingleChoice
+import com.mathewsachin.fategrandautomata.ui.battle_config_item.FgaDialog
+import com.mathewsachin.fategrandautomata.ui.battle_config_item.singleChoiceList
 
 @Composable
 fun <T> listDialog(
     selected: T,
-    selectedChange: (T) -> Unit,
+    onSelectedChange: (T) -> Unit,
     entries: Map<T, String>,
     title: String
-): MaterialDialog {
-    val dialog = MaterialDialog()
+): FgaDialog {
+    val dialog = FgaDialog()
 
     dialog.build {
         title(text = title)
 
-        val keys = entries.keys.toList()
-        val values = entries.values.toList()
-        val selectedIndex = keys.indexOf(selected)
-
-        listItemsSingleChoice(
-            list = values,
-            initialSelection = selectedIndex,
-            onChoiceChange = {
-                selectedChange(keys[it])
-
+        singleChoiceList(
+            selected = selected,
+            onSelectedChange = {
+                onSelectedChange(it)
                 hide()
             },
-            waitForPositiveButton = false
-        )
+            items = entries.keys.toList()
+        ) {
+            Text(entries[it] ?: "--")
+        }
     }
 
     return dialog
@@ -55,7 +52,7 @@ fun <T> Pref<T>.ListPreference(
 
     val dialog = listDialog(
         selected = selected,
-        selectedChange = { selected = it },
+        onSelectedChange = { selected = it },
         entries = entries,
         title = title
     )

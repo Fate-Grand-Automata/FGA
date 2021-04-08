@@ -134,47 +134,86 @@ fun <T> FgaDialog.multiChoiceList(
                 .fillMaxWidth()
         ) {
             items(items) {
-                val isSelected = it in selected
-
-                val background =
-                    if (isSelected)
-                        MaterialTheme.colors.secondary
-                    else MaterialTheme.colors.surface
-
-                val foreground =
-                    if (isSelected)
-                        MaterialTheme.colors.onSecondary
-                    else MaterialTheme.colors.onSurface
-
-                Card(
-                    shape = CircleShape,
-                    backgroundColor = background,
-                    contentColor = foreground,
-                    modifier = Modifier
-                        .padding(bottom = 5.dp)
+                ChoiceListItem(
+                    isSelected = it in selected,
+                    onClick = { onSelectedChange(selected.toggle(it)) }
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .clickable {
-                                onSelectedChange(selected.toggle(it))
-                            }
-                            .padding(16.dp, 5.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .weight(1f)
-                        ) {
-                            template(it)
-                        }
+                    template(it)
+                }
+            }
+        }
+    }
+}
 
-                        if (isSelected) {
-                            Icon(
-                                rememberVectorPainter(Icons.Default.Check),
-                                contentDescription = "check"
-                            )
-                        }
-                    }
+@Composable
+fun ChoiceListItem(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    content: @Composable RowScope.() -> Unit
+) {
+    val background =
+        if (isSelected)
+            MaterialTheme.colors.secondary
+        else MaterialTheme.colors.surface
+
+    val foreground =
+        if (isSelected)
+            MaterialTheme.colors.onSecondary
+        else MaterialTheme.colors.onSurface
+
+    Card(
+        shape = CircleShape,
+        backgroundColor = background,
+        contentColor = foreground,
+        modifier = Modifier
+            .padding(bottom = 7.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .clickable(onClick = onClick)
+                .padding(16.dp, 5.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = 2.dp)
+            ) {
+                content()
+            }
+
+            if (isSelected) {
+                Icon(
+                    rememberVectorPainter(Icons.Default.Check),
+                    contentDescription = "check"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+@SuppressLint("ComposableNaming")
+fun <T> FgaDialog.singleChoiceList(
+    selected: T,
+    items: List<T>,
+    onSelectedChange: (T) -> Unit,
+    template: @Composable RowScope.(T) -> Unit = {
+        Text(it.toString())
+    }
+) {
+    constrained { modifier ->
+        LazyColumn(
+            contentPadding = PaddingValues(16.dp, 0.dp),
+            modifier = modifier
+                .fillMaxWidth()
+        ) {
+            items(items) {
+                ChoiceListItem(
+                    isSelected = it == selected,
+                    onClick = { onSelectedChange(it) }
+                ) {
+                    template(it)
                 }
             }
         }

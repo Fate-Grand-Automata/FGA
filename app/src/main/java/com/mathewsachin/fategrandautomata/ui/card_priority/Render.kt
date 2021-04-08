@@ -39,7 +39,7 @@ fun CardPriorityListItem.Render() {
 
                 val braveChainDialog = listDialog(
                     selected = braveChains,
-                    selectedChange = { braveChains = it },
+                    onSelectedChange = { braveChains = it },
                     entries = BraveChainEnum.values()
                         .associateWith { stringResource(it.stringRes) },
                     title = stringResource(R.string.p_brave_chains)
