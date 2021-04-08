@@ -4,22 +4,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,75 +23,42 @@ import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.drawable
 import com.mathewsachin.fategrandautomata.util.stringRes
-import com.mathewsachin.fategrandautomata.util.toggle
-import com.vanpra.composematerialdialogs.bottomPadding
 import java.util.*
 
 @Composable
 fun Pref<Set<MaterialEnum>>.Materials() {
     var selected by remember()
-    var showDialog by androidx.compose.runtime.remember { mutableStateOf(false) }
 
-    if (showDialog) {
-        ThemedDialog(
-            onDismiss = { showDialog = false }
-        ) {
-            Surface {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        stringResource(R.string.p_mats),
-                        style = MaterialTheme.typography.h6,
-                        modifier = Modifier
-                            .padding(16.dp)
-                    )
+    val dialog = FgaDialog()
 
-                    var current by androidx.compose.runtime.remember(selected) { mutableStateOf(selected) }
+    dialog.build {
+        title(stringResource(R.string.p_mats))
 
-                    BoxWithConstraints {
-                        val modifier = Modifier
-                            .heightIn(max = maxHeight * 0.6f)
-                            .then(bottomPadding)
+        var current by remember(selected) { mutableStateOf(selected) }
 
-                        MaterialsPickerContent(
-                            selected = current,
-                            onSelectedChange = { current = it },
-                            modifier = modifier
-                        )
-                    }
+        multiChoiceList(
+            selected = current,
+            onSelectedChange = { current = it },
+            items = MaterialEnum.values().toList()
+        ) { mat ->
+            Material(mat)
 
-                    Row(
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp)
-                    ) {
-                        TextButton(
-                            onClick = { showDialog = false }
-                        ) {
-                            Text(stringResource(android.R.string.cancel))
-                        }
-
-                        TextButton(
-                            onClick = {
-                                selected = current
-                                showDialog = false
-                            }
-                        ) {
-                            Text(stringResource(android.R.string.ok))
-                        }
-                    }
-                }
-            }
+            Text(
+                stringResource(mat.stringRes),
+                modifier = Modifier
+                    .padding(start = 16.dp)
+            )
         }
+
+        buttons(
+            onSubmit = { selected = current }
+        )
     }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { showDialog = true }
+            .clickable { dialog.show() }
             .padding(vertical = 5.dp)
     ) {
         Text(
@@ -143,61 +103,5 @@ fun MaterialsSummary(materials: List<MaterialEnum>) {
             "--",
             modifier = Modifier.padding(16.dp, 5.dp)
         )
-    }
-}
-
-@Composable
-fun MaterialsPickerContent(
-    selected: Set<MaterialEnum>,
-    onSelectedChange: (Set<MaterialEnum>) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        contentPadding = PaddingValues(16.dp, 0.dp),
-        modifier = modifier
-            .fillMaxWidth()
-    ) {
-        items(MaterialEnum.values()) { mat ->
-            val isSelected = mat in selected
-
-            Card(
-                shape = CircleShape,
-                backgroundColor =
-                    if (isSelected)
-                        MaterialTheme.colors.secondary
-                    else MaterialTheme.colors.surface,
-                contentColor =
-                    if (isSelected)
-                        MaterialTheme.colors.onSecondary
-                    else MaterialTheme.colors.onSurface,
-                modifier = Modifier
-                    .padding(bottom = 5.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .clickable {
-                            onSelectedChange(selected.toggle(mat))
-                        }
-                        .padding(16.dp, 5.dp)
-                ) {
-                    Material(mat)
-
-                    Text(
-                        stringResource(mat.stringRes),
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(start = 16.dp)
-                    )
-
-                    if (isSelected) {
-                        Icon(
-                            rememberVectorPainter(Icons.Default.Check),
-                            contentDescription = "check"
-                        )
-                    }
-                }
-            }
-        }
     }
 }
