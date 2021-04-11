@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.util.toggle
+import java.util.*
 
 // Simplified form of https://github.com/vanpra/compose-material-dialogs
 
@@ -90,7 +91,7 @@ class FgaDialog private constructor() {
                     TextButton(
                         onClick = { hide() }
                     ) {
-                        Text(cancelLabel)
+                        Text(cancelLabel.toUpperCase(Locale.ROOT))
                     }
                 }
 
@@ -102,7 +103,7 @@ class FgaDialog private constructor() {
                         },
                         enabled = okEnabled
                     ) {
-                        Text(okLabel)
+                        Text(okLabel.toUpperCase(Locale.ROOT))
                     }
                 }
             }
