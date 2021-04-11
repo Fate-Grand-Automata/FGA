@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.animation.*
@@ -48,7 +49,6 @@ import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.activity.compose.registerForActivityResult as activityResult
 
 @AndroidEntryPoint
 class BattleConfigListFragment : Fragment() {
@@ -70,13 +70,13 @@ class BattleConfigListFragment : Fragment() {
                     vm.endSelection()
                 }
 
-                val battleConfigsExport = activityResult(
+                val battleConfigsExport = rememberLauncherForActivityResult(
                     ActivityResultContracts.OpenDocumentTree()
                 ) { dirUri ->
                     exportBattleConfigs(dirUri)
                 }
 
-                val battleConfigImport = activityResult(
+                val battleConfigImport = rememberLauncherForActivityResult(
                     ActivityResultContracts.GetMultipleContents()
                 ) { uris ->
                     importBattleConfigs(uris)

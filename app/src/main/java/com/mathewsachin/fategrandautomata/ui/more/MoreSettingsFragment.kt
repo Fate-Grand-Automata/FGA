@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -26,9 +27,13 @@ import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.util.StorageProvider
+import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
 import com.mathewsachin.fategrandautomata.util.nav
 import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import timber.log.error
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -76,10 +81,19 @@ class MoreSettingsFragment : Fragment() {
                                     MoreSettingsGroup.Storage -> {
                                         item {
                                             val summary by storageSummary
+                                            var extractSummary by remember { mutableStateOf("--") }
 
                                             StorageGroup(
                                                 directoryName = summary ?: "",
-                                                onPickDirectory = { pickDir.launch(Uri.EMPTY) }
+                                                onPickDirectory = { pickDir.launch(Uri.EMPTY) },
+                                                extractSupportImages = {
+                                                    lifecycleScope.launch {
+                                                        performSupportImageExtraction {
+                                                            extractSummary = it
+                                                        }
+                                                    }
+                                                },
+                                                extractSummary = extractSummary
                                             )
                                         }
                                     }
@@ -108,6 +122,25 @@ class MoreSettingsFragment : Fragment() {
         storageProvider.setRoot(it)
 
         storageSummary.value = storageProvider.rootDirName
+    }
+
+    private suspend fun performSupportImageExtraction(
+        updateSummary: (String) -> Unit
+    ) {
+        // TODO: Translate
+        updateSummary("Extracting ...")
+
+        val msg = try {
+            SupportImageExtractor(requireContext(), storageProvider).extract()
+
+            getString(R.string.support_imgs_extracted)
+        } catch (e: Exception) {
+            getString(R.string.support_imgs_extract_failed).also { msg ->
+                Timber.error(e) { msg }
+            }
+        }
+
+        updateSummary(msg)
     }
 }
 

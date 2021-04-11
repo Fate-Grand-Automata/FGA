@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.clickable
@@ -59,7 +60,6 @@ import timber.log.Timber
 import timber.log.error
 import java.util.*
 import javax.inject.Inject
-import androidx.activity.compose.registerForActivityResult as activityResult
 
 @AndroidEntryPoint
 class BattleConfigItemSettingsFragment : Fragment() {
@@ -102,7 +102,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
             val config = prefsCore.forBattleConfig(args.key)
 
             setContent {
-                val battleConfigExport = activityResult(ActivityResultContracts.CreateDocument()) { uri ->
+                val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
                     exportBattleConfig(uri)
                 }
 
@@ -112,11 +112,6 @@ class BattleConfigItemSettingsFragment : Fragment() {
                     onExport = { battleConfigExport.launch("${battleConfig.name}.fga") },
                     onCopy = { copy() },
                     onDelete = { deleteItem(battleConfig.id) },
-                    onExtractDefaultSupportImages = {
-                        lifecycleScope.launch {
-                            performSupportImageExtraction()
-                        }
-                    },
                     openSkillMaker = {
                         val action = BattleConfigItemSettingsFragmentDirections
                             .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
@@ -198,7 +193,6 @@ fun BattleConfigItemView(
     onExport: () -> Unit,
     onCopy: () -> Unit,
     onDelete: () -> Unit,
-    onExtractDefaultSupportImages: () -> Unit,
     openSkillMaker: () -> Unit,
     openCardPriority: () -> Unit,
     openSpam: () -> Unit,
@@ -247,13 +241,6 @@ fun BattleConfigItemView(
                                     .setNegativeButton(android.R.string.cancel, null)
                                     .show()
                             }
-                        )
-                    }
-
-                    item {
-                        HeadingButton(
-                            text = stringResource(R.string.support_menu_extract_default_support_images),
-                            onClick = onExtractDefaultSupportImages
                         )
                     }
                 }
