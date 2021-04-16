@@ -48,10 +48,10 @@ class BattleState {
 
     private var runState = RunState()
 
-    var hasChosenTarget
-        get() = runState.stageState.hasChosenTarget
+    var chosenTarget
+        get() = runState.stageState.chosenTarget
         set(value) {
-            runState.stageState.hasChosenTarget = value
+            runState.stageState.chosenTarget = value
         }
 
     var hasClickedAttack

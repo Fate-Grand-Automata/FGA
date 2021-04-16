@@ -114,7 +114,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     fun canSpam(spam: SpamEnum): Boolean {
         val weCanSpam = spam == SpamEnum.Spam
         val weAreInDanger = spam == SpamEnum.Danger
-                && battle.state.hasChosenTarget
+                && battle.state.chosenTarget != null
 
         return weCanSpam || weAreInDanger
     }

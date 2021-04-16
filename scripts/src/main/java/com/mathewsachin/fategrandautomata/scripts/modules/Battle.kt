@@ -73,8 +73,6 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         0.5.seconds.wait()
 
         game.battleExtraInfoWindowCloseClick.click()
-
-        state.hasChosenTarget = true
     }
 
     private fun autoChooseTarget() {
@@ -82,9 +80,14 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
         // that's why the table is iterated backwards.
 
-        EnemyTarget.list
+        val dangerTarget = EnemyTarget.list
             .lastOrNull { isPriorityTarget(it) }
-            ?.let { chooseTarget(it) }
+
+        if (dangerTarget != null && state.chosenTarget != dangerTarget) {
+            chooseTarget(dangerTarget)
+        }
+
+        state.chosenTarget = dangerTarget
     }
 
     fun performBattle() {
@@ -110,7 +113,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         state.nextTurn()
 
-        if (!state.hasChosenTarget && prefs.selectedBattleConfig.autoChooseTarget) {
+        if (prefs.selectedBattleConfig.autoChooseTarget) {
             autoChooseTarget()
         }
     }
