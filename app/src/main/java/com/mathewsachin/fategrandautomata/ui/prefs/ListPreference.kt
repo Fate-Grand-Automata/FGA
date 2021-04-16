@@ -45,8 +45,7 @@ fun <T> Pref<T>.ListPreference(
     singleLineTitle: Boolean = false,
     icon: VectorIcon? = null,
     entries: Map<T, String> = emptyMap(),
-    enabled: Boolean = true,
-    hint: String = ""
+    enabled: Boolean = true
 ) {
     var selected by remember()
 
@@ -63,7 +62,6 @@ fun <T> Pref<T>.ListPreference(
         singleLineTitle = singleLineTitle,
         icon = icon,
         enabled = enabled,
-        hint = hint,
         onClick = { dialog.show() },
         modifier = modifier
     )

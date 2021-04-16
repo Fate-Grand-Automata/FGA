@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
@@ -46,8 +45,7 @@ fun <T> Pref<Set<T>>.MultiSelectListPreference(
     icon: VectorIcon? = null,
     entries: Map<T, String>,
     enabled: Boolean = true,
-    hint: String = "",
-    trailing: @Composable ((Modifier) -> Unit)? = null
+    trailing: @Composable (() -> Unit)? = null
 ) {
     var selected by remember()
 
@@ -69,7 +67,6 @@ fun <T> Pref<Set<T>>.MultiSelectListPreference(
         icon = icon,
         enabled = enabled,
         onClick = { dialog.show() },
-        hint = hint,
         trailing = trailing
     )
 }

@@ -31,9 +31,9 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
 import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectChip
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
-import com.mathewsachin.fategrandautomata.ui.prefs.multiSelectListDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -274,17 +274,11 @@ fun SelectWaves(
     onSelectChange: (Set<Int>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val dialog = multiSelectListDialog(
+    MultiSelectChip(
+        title = "Waves",
         selected = selected,
         onSelectedChange = onSelectChange,
-        entries = (1..3).associateWith { "Wave $it" },
-        title = "Waves"
-    )
-
-    ListItem(
-        text = { Text("Waves") },
-        secondaryText = { Text(selected.sorted().joinToString()) },
+        entries = (1..3).associateWith { "$it" },
         modifier = modifier
-            .clickable { dialog.show() }
     )
 }

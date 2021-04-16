@@ -148,7 +148,7 @@ class MoreSettingsFragment : Fragment() {
 fun Int.boostItemString() = when (this) {
     -1 -> stringResource(R.string.p_boost_item_disabled)
     0 -> stringResource(R.string.p_boost_item_skip)
-    else -> stringResource(R.string.p_boost_item_number, this)
+    else -> toString()
 }
 
 val GameServerEnum.displayStringRes

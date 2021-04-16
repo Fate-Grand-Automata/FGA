@@ -24,8 +24,7 @@ fun Pref<Int>.SeekBarPreference(
     icon: VectorIcon? = null,
     valueRange: IntRange = 0..100,
     enabled: Boolean = true,
-    valueRepresentation: (Int) -> String = { it.toString() },
-    hint: String = ""
+    valueRepresentation: (Int) -> String = { it.toString() }
 ) {
     Preference(
         title = {
@@ -51,7 +50,6 @@ fun Pref<Int>.SeekBarPreference(
         },
         icon = icon,
         enabled = enabled,
-        hint = hint,
         modifier = modifier
     )
 }

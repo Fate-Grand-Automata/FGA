@@ -11,7 +11,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.ui.icon
-import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
+import com.mathewsachin.fategrandautomata.ui.prefs.SingleSelectChipPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 
 fun LazyListScope.battleGroup(
@@ -25,7 +25,7 @@ fun LazyListScope.battleGroup(
     }
 
     item {
-        prefs.gameServerRaw.ListPreference(
+        prefs.gameServerRaw.SingleSelectChipPreference(
             title = stringResource(R.string.p_game_server),
             icon = icon(Icons.Default.Public),
             entries =
@@ -76,7 +76,7 @@ fun LazyListScope.battleGroup(
     }
 
     item {
-        prefs.boostItemSelectionMode.ListPreference(
+        prefs.boostItemSelectionMode.SingleSelectChipPreference(
             title = stringResource(R.string.p_boost_item),
             icon = icon(Icons.Default.OfflineBolt),
             entries = (-1..3).associateWith { it.boostItemString() }

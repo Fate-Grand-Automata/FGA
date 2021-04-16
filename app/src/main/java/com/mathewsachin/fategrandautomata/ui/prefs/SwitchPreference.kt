@@ -13,8 +13,7 @@ fun Pref<Boolean>.SwitchPreference(
     summary: String = "",
     singleLineTitle: Boolean = true,
     icon: VectorIcon? = null,
-    enabled: Boolean = true,
-    hint: String = ""
+    enabled: Boolean = true
 ) {
     var state by remember()
 
@@ -24,14 +23,12 @@ fun Pref<Boolean>.SwitchPreference(
         singleLineTitle = singleLineTitle,
         icon = icon,
         enabled = enabled,
-        onClick = { state = !state },
-        hint = hint
-    ) { modifier ->
+        onClick = { state = !state }
+    ) {
         Switch(
             checked = state,
             onCheckedChange = { state = it },
-            enabled = enabled,
-            modifier = modifier
+            enabled = enabled
         )
     }
 }

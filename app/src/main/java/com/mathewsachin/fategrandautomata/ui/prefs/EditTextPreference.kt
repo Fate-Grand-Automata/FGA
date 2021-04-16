@@ -109,7 +109,6 @@ fun Pref<String>.EditTextPreference(
     singleLine: Boolean = false,
     icon: VectorIcon? = null,
     enabled: Boolean = true,
-    hint: String = "",
     summary: (String) -> String = { it },
     validate: (String) -> Boolean = { true}
 ) {
@@ -141,7 +140,6 @@ fun Pref<String>.EditTextPreference(
             singleLineTitle = singleLineTitle,
             icon = icon,
             enabled = enabled,
-            hint = hint,
             onClick = { editing = true },
             modifier = modifier
         )

@@ -37,10 +37,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportSelectPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
-import com.mathewsachin.fategrandautomata.ui.prefs.Preference
-import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
-import com.mathewsachin.fategrandautomata.ui.prefs.remember
+import com.mathewsachin.fategrandautomata.ui.prefs.*
 import com.mathewsachin.fategrandautomata.util.stringRes
 
 @Composable
@@ -84,7 +81,7 @@ fun SupportGroup(
                 )
 
                 if (preferredMode || friendMode) {
-                    config.support.fallbackTo.ListPreference(
+                    config.support.fallbackTo.SingleSelectChipPreference(
                         title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
                         entries = listOf(
                             SupportSelectionModeEnum.First,
