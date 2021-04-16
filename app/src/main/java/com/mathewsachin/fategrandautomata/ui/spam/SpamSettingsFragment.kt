@@ -133,7 +133,7 @@ private fun NpSpamView(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(start = 16.dp)
     ) {
         Text("NP:")
 
@@ -164,7 +164,7 @@ private fun SkillSpamView(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(start = 16.dp)
     ) {
         Text("S${index + 1}:")
 
@@ -283,7 +283,7 @@ fun SelectWaves(
 
     ListItem(
         text = { Text("Waves") },
-        secondaryText = { Text(selected.joinToString()) },
+        secondaryText = { Text(selected.sorted().joinToString()) },
         modifier = modifier
             .clickable { dialog.show() }
     )
