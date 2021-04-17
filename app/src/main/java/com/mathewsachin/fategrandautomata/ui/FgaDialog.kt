@@ -14,6 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -111,13 +113,20 @@ class FgaDialog private constructor() {
 
     @Composable
     fun build(
+        shape: Shape = MaterialTheme.shapes.medium,
+        color: Color = MaterialTheme.colors.surface,
+        contentColor: Color = contentColorFor(color),
         content: @Composable FgaDialog.() -> Unit
     ) {
         if (visible.value) {
             ThemedDialog(
                 onDismiss = { hide() }
             ) {
-                Surface {
+                Surface(
+                    shape = shape,
+                    color = color,
+                    contentColor = contentColor
+                ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()

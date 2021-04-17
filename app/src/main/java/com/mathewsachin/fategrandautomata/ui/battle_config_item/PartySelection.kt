@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,33 +17,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
-import com.mathewsachin.fategrandautomata.ui.ThemedDialog
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
-import kotlin.time.milliseconds
 
 @Composable
 fun PartySelection(config: BattleConfigCore) {
     var party by config.party.remember()
-    var showDialog by remember { mutableStateOf(false) }
 
-    if (showDialog) {
-        ThemedDialog(
-            onDismiss = { showDialog = false }
-        ) {
-            PartySelectionDialogContent(
-                party = party,
-                onSelectedChange = {
-                    party = it
-                    showDialog = false
-                }
-            )
-        }
+    val dialog = FgaDialog()
+
+    dialog.build(
+        color = MaterialTheme.colors.background
+    ) {
+        title(stringResource(R.string.p_battle_config_party))
+
+        var currentParty by remember(party) { mutableStateOf(party) }
+
+        PartySelectionDialogContent(
+            selected = currentParty,
+            onSelectedChange = { currentParty = it }
+        )
+
+        buttons(
+            onSubmit = { party = currentParty }
+        )
     }
 
     Card(
@@ -56,7 +56,7 @@ fun PartySelection(config: BattleConfigCore) {
     ) {
         Column(
             modifier = Modifier
-                .clickable { showDialog = true }
+                .clickable(onClick = { dialog.show() })
                 .padding(16.dp, 5.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -76,11 +76,9 @@ fun PartySelection(config: BattleConfigCore) {
 
 @Composable
 fun PartySelectionDialogContent(
-    party: Int,
+    selected: Int,
     onSelectedChange: (Int) -> Unit
 ) {
-    var selected by remember(party) { mutableStateOf(party) }
-
     Box {
         Surface(
             color = MaterialTheme.colors.primary,
@@ -97,33 +95,9 @@ fun PartySelectionDialogContent(
             }
         }
 
-        var enabled by remember { mutableStateOf(false) }
         val count = 10
         val theta = (2 * Math.PI / count).toFloat()
-        val baseStartAngle = -(Math.PI / 2).toFloat()
-        var startAngle by remember { mutableStateOf(baseStartAngle - (selected.coerceAtLeast(0) + 1) * theta) }
-
-        val scope = rememberCoroutineScope()
-
-        LaunchedEffect(selected) {
-            scope.launch {
-                startAngle = baseStartAngle - selected.coerceAtLeast(0) * theta
-                delay(100.milliseconds)
-                enabled = true
-            }
-        }
-
-        fun onChange(value: Int) {
-            scope.launch {
-                enabled = false
-                selected = value
-                delay(500.milliseconds)
-                onSelectedChange(value)
-                enabled = true
-            }
-        }
-
-        val startAngleAnimated by animateFloatAsState(startAngle)
+        val startAngle = -(Math.PI / 2).toFloat()
 
         Layout(
             content = {
@@ -133,16 +107,16 @@ fun PartySelectionDialogContent(
                         shape = CircleShape,
                         backgroundColor = if (selected == it)
                             MaterialTheme.colors.secondary
-                        else MaterialTheme.colors.surface
+                        else MaterialTheme.colors.surface,
+                        contentColor = if (selected == it)
+                            MaterialTheme.colors.onSecondary
+                        else MaterialTheme.colors.onSurface
                     ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(50.dp)
-                                .clickable(
-                                    onClick = { onChange(it) },
-                                    enabled = enabled
-                                )
+                                .clickable { onSelectedChange(it) }
                         ) {
                             Text("${it + 1}")
                         }
@@ -161,7 +135,7 @@ fun PartySelectionDialogContent(
             val radius = squareSide * 0.35
 
             layout(squareSide, squareSide) {
-                var angle = startAngleAnimated
+                var angle = startAngle
 
                 placeables.forEach { placeable ->
                     placeable.place(
@@ -177,7 +151,12 @@ fun PartySelectionDialogContent(
         Card(
             elevation = 10.dp,
             shape = CircleShape,
-            backgroundColor = MaterialTheme.colors.surface,
+            backgroundColor = if (selected == -1)
+                MaterialTheme.colors.secondary
+            else MaterialTheme.colors.surface,
+            contentColor = if (selected == -1)
+                MaterialTheme.colors.onSecondary
+            else MaterialTheme.colors.onSurface,
             modifier = Modifier
                 .align(Alignment.Center)
         ) {
@@ -185,27 +164,13 @@ fun PartySelectionDialogContent(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .size(50.dp)
-                    .clickable(
-                        onClick = { onChange(-1) },
-                        enabled = enabled
-                    )
+                    .clickable { onSelectedChange(-1) }
             ) {
                 Icon(
                     Icons.Default.Close,
-                    tint = MaterialTheme.colors.primary,
                     contentDescription = stringResource(R.string.p_not_set)
                 )
             }
         }
-
-        Text(
-            stringResource(R.string.p_battle_config_party)
-                .toUpperCase(Locale.ROOT),
-            color = MaterialTheme.colors.onPrimary,
-            style = MaterialTheme.typography.caption,
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 100.dp)
-        )
     }
 }
