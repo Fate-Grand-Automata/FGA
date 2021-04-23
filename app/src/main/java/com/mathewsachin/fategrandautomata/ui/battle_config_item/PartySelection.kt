@@ -1,18 +1,16 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
@@ -20,9 +18,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import java.util.*
-import kotlin.math.cos
-import kotlin.math.roundToInt
-import kotlin.math.sin
 
 @Composable
 fun PartySelection(config: BattleConfigCore) {
@@ -35,15 +30,19 @@ fun PartySelection(config: BattleConfigCore) {
     ) {
         title(stringResource(R.string.p_battle_config_party))
 
-        var currentParty by remember(party) { mutableStateOf(party) }
-
         PartySelectionDialogContent(
-            selected = currentParty,
-            onSelectedChange = { currentParty = it }
+            selected = party,
+            onSelectedChange = {
+                party = it
+                dialog.hide()
+            }
         )
 
         buttons(
-            onSubmit = { party = currentParty }
+            showCancel = false,
+            // TODO: Localize
+            okLabel = "CLEAR",
+            onSubmit = { party = -1 }
         )
     }
 
@@ -75,102 +74,55 @@ fun PartySelection(config: BattleConfigCore) {
 }
 
 @Composable
+private fun PartySelectionItem(
+    text: String,
+    isSelected: Boolean,
+    onSelectedChange: () -> Unit
+) {
+    val background = if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.surface
+    val foreground = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
+
+    Card(
+        elevation = 10.dp,
+        shape = CircleShape,
+        backgroundColor = background,
+        contentColor = foreground,
+        modifier = Modifier
+            .padding(5.dp)
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(40.dp)
+                .clickable(onClick = onSelectedChange)
+        ) {
+            Text(text)
+        }
+    }
+}
+
+@Composable
 fun PartySelectionDialogContent(
     selected: Int,
     onSelectedChange: (Int) -> Unit
 ) {
-    Box {
-        Surface(
-            color = MaterialTheme.colors.primary,
-            shape = CircleShape,
-            modifier = Modifier
-                .padding(40.dp)
-        ) {
-            Layout(
-                content = {}
-            ) { _, constraints ->
-                val squareSide = minOf(constraints.maxWidth, constraints.maxHeight)
-
-                layout(squareSide, squareSide) { }
-            }
-        }
-
-        val count = 10
-        val theta = (2 * Math.PI / count).toFloat()
-        val startAngle = -(Math.PI / 2).toFloat()
-
-        Layout(
-            content = {
-                repeat(count) {
-                    Card(
-                        elevation = 10.dp,
-                        shape = CircleShape,
-                        backgroundColor = if (selected == it)
-                            MaterialTheme.colors.secondary
-                        else MaterialTheme.colors.surface,
-                        contentColor = if (selected == it)
-                            MaterialTheme.colors.onSecondary
-                        else MaterialTheme.colors.onSurface
-                    ) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(50.dp)
-                                .clickable { onSelectedChange(it) }
-                        ) {
-                            Text("${it + 1}")
-                        }
+    Column {
+        (0..9)
+            .chunked(5)
+            .forEach { chunk ->
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    chunk.forEach {
+                        PartySelectionItem(
+                            text = "${it + 1}",
+                            isSelected = selected == it,
+                            onSelectedChange = { onSelectedChange(it) }
+                        )
                     }
                 }
             }
-        ) { measurables, constraints ->
-            val placeables = measurables.map { measurable ->
-                measurable.measure(
-                    constraints.copy(minHeight = 0, minWidth = 0)
-                )
-            }
-
-            val squareSide = minOf(constraints.maxWidth, constraints.maxHeight)
-            val center = squareSide / 2f
-            val radius = squareSide * 0.35
-
-            layout(squareSide, squareSide) {
-                var angle = startAngle
-
-                placeables.forEach { placeable ->
-                    placeable.place(
-                        x = (center + radius * cos(angle) - placeable.width / 2).roundToInt(),
-                        y = (center + radius * sin(angle) - placeable.height / 2).roundToInt()
-                    )
-
-                    angle += theta
-                }
-            }
-        }
-
-        Card(
-            elevation = 10.dp,
-            shape = CircleShape,
-            backgroundColor = if (selected == -1)
-                MaterialTheme.colors.secondary
-            else MaterialTheme.colors.surface,
-            contentColor = if (selected == -1)
-                MaterialTheme.colors.onSecondary
-            else MaterialTheme.colors.onSurface,
-            modifier = Modifier
-                .align(Alignment.Center)
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(50.dp)
-                    .clickable { onSelectedChange(-1) }
-            ) {
-                Icon(
-                    Icons.Default.Close,
-                    contentDescription = stringResource(R.string.p_not_set)
-                )
-            }
-        }
     }
 }
