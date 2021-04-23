@@ -1,13 +1,12 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -77,14 +76,14 @@ fun SkillCommandGroup(
             } else null,
             onClick = openSkillMaker
         ) {
-            DimmedIcon(
-                icon(R.drawable.ic_terminal),
-                contentDescription = "Show Textbox for editing Skill command",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable { editing = true }
-                    .padding(7.dp)
-            )
+            IconButton(
+                onClick = { editing = true }
+            ) {
+                DimmedIcon(
+                    icon(R.drawable.ic_terminal),
+                    contentDescription = "Show Textbox for editing Skill command"
+                )
+            }
         }
     }
 }

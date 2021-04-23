@@ -1,9 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.fine_tune
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,15 +45,16 @@ fun FineTuneItem.FineTuneSeekBar() {
             modifier = Modifier.weight(1f)
         )
 
-        DimmedIcon(
-            icon(R.drawable.ic_info),
-            contentDescription = "Info",
+        IconButton(
+            onClick = { hintDialog.show() },
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(end = 16.dp)
-                .size(40.dp)
-                .clickable(onClick = { hintDialog.show() })
-                .padding(7.dp)
-        )
+        ) {
+            DimmedIcon(
+                icon(R.drawable.ic_info),
+                contentDescription = "Info"
+            )
+        }
     }
 }
