@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -42,8 +43,11 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.*
+import com.mathewsachin.fategrandautomata.ui.FgaScreen
+import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,11 +68,9 @@ class BattleConfigListFragment : Fragment() {
                 val selectedConfigs by vm.selectedConfigs.collectAsState()
 
                 BackHandler(
-                    backDispatcher = requireActivity().onBackPressedDispatcher,
-                    enabled = selectionMode
-                ) {
-                    vm.endSelection()
-                }
+                    enabled = selectionMode,
+                    onBack = { vm.endSelection() }
+                )
 
                 val battleConfigsExport = rememberLauncherForActivityResult(
                     ActivityResultContracts.OpenDocumentTree()
