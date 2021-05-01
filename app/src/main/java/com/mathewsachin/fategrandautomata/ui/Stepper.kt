@@ -2,14 +2,20 @@ package com.mathewsachin.fategrandautomata.ui
 
 import android.view.ViewConfiguration
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
@@ -50,12 +56,23 @@ private fun DeltaButton(
     val repeatIntervalDelta = 2.milliseconds
     val minRepeatInterval = 10.milliseconds
 
+    val interactionSource = remember { MutableInteractionSource() }
+    var pressedInteraction by remember { mutableStateOf<PressInteraction.Press?>(null) }
+    DisposableEffect(interactionSource) {
+        onDispose {
+            pressedInteraction?.let {
+                interactionSource.tryEmit(PressInteraction.Cancel(it))
+            }
+        }
+    }
+
     Surface(
         color = Color.Transparent,
         contentColor = MaterialTheme.colors.onBackground,
         modifier = Modifier
+            .clip(CircleShape)
             .pointerInput(true) {
-                detectTapGestures(onPress = {
+                detectTapGestures(onPress = { offset ->
                     if (rememberedIsEnabled) {
                         val currentJob = scope.launch {
                             var first = false
@@ -82,7 +99,21 @@ private fun DeltaButton(
                             }
                         }
 
-                        tryAwaitRelease()
+                        val pressInteraction = PressInteraction.Press(offset)
+                        interactionSource.emit(pressInteraction)
+                        pressedInteraction = pressInteraction
+
+                        val success = tryAwaitRelease()
+
+                        val endInteraction =
+                            if (success) {
+                                PressInteraction.Release(pressInteraction)
+                            } else {
+                                PressInteraction.Cancel(pressInteraction)
+                            }
+
+                        interactionSource.emit(endInteraction)
+                        pressedInteraction = null
 
                         currentJob.cancel()
                         currentJob.join()
@@ -94,6 +125,10 @@ private fun DeltaButton(
                     }
                 })
             }
+            .indication(
+                interactionSource = interactionSource,
+                indication = rememberRipple()
+            )
     ) {
         StatusWrapper(enabled = isEnabled) {
             Text(
