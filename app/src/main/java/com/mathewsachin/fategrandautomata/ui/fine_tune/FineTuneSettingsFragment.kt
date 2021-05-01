@@ -72,7 +72,7 @@ class FineTuneSettingsFragment : Fragment() {
                                             .padding(horizontal = 16.dp)
                                             .padding(bottom = 16.dp)
                                     ) {
-                                        it.FineTuneSeekBar()
+                                        it.FineTuneSetter()
                                     }
                                 }
                             }

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.onEach
 fun <T> Pref<T>.remember(): MutableState<T> {
     var state by remember { mutableStateOf(defaultValue) }
 
-    LaunchedEffect(true) {
+    LaunchedEffect(this) {
         asFlow()
             .onEach { state = it }
             .collect()
