@@ -1,14 +1,12 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
+import com.mathewsachin.fategrandautomata.ui.Stepper
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 
 @Composable
@@ -25,25 +23,12 @@ fun Pref<Int>.StepperPreference(
     Preference(
         title = { Text(title) },
         summary = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextButton(
-                    onClick = { state = (state - 1).coerceIn(valueRange) },
-                    enabled = enabled && state > valueRange.first
-                ) {
-                    Text("-")
-                }
-
-                Text(valueRepresentation(state))
-
-                TextButton(
-                    onClick = { state = (state + 1).coerceIn(valueRange) },
-                    enabled = enabled && state < valueRange.last
-                ) {
-                    Text("+")
-                }
-            }
+            Stepper(
+                value = state,
+                onValueChange = { state = it },
+                valueRange = valueRange,
+                valueRepresentation = valueRepresentation
+            )
         },
         icon = icon,
         enabled = enabled,

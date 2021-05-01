@@ -110,7 +110,9 @@ fun Stepper(
     value: Int,
     onValueChange: (Int) -> Unit,
     valueRange: IntRange,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    delta: Int = 1,
+    valueRepresentation: (Int) -> String = { it.toString() }
 ) {
     var currentValue by remember(value) { mutableStateOf(value) }
 
@@ -122,14 +124,14 @@ fun Stepper(
             onCurrentValueChange = { currentValue = it },
             onCommit = onValueChange,
             valueRange = valueRange,
-            delta = -1,
+            delta = -delta,
             text = "-",
             enabled = enabled
         )
 
         StatusWrapper(enabled = enabled) {
             Text(
-                currentValue.toString(),
+                valueRepresentation(currentValue),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
@@ -141,7 +143,7 @@ fun Stepper(
             onCurrentValueChange = { currentValue = it },
             onCommit = onValueChange,
             valueRange = valueRange,
-            delta = 1,
+            delta = delta,
             text = "+",
             enabled = enabled
         )
