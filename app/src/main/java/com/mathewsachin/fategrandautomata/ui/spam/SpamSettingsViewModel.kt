@@ -57,6 +57,36 @@ class SpamSettingsViewModel @Inject constructor(
             )
         }
 
+    data class SpamPreset(val name: String, val action: (List<SpamState>) -> Unit)
+
+    private fun applyPreset(state: List<SpamState>, spamMode: SpamEnum) {
+        val allWaves = setOf(1, 2, 3)
+
+        state.forEach { servant ->
+            servant.np.spamMode.value = spamMode
+            servant.np.waves.value = allWaves
+
+            servant.skills.forEach { skill ->
+                skill.spamMode.value = spamMode
+                skill.target.value = SkillSpamTarget.Self
+                skill.waves.value = allWaves
+            }
+        }
+    }
+
+    // TODO: Localize
+    val presets = listOf(
+        SpamPreset("SPAM ALL") {
+            applyPreset(it, SpamEnum.Spam)
+        },
+        SpamPreset("SPAM ALL DANGER") {
+            applyPreset(it, SpamEnum.Danger)
+        },
+        SpamPreset("NO SPAM") {
+            applyPreset(it, SpamEnum.None)
+        }
+    )
+
     fun save() {
         battleConfig.spam = spamStates.map {
             ServantSpamConfig(

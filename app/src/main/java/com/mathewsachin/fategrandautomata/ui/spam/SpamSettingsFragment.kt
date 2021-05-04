@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -31,6 +30,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
 import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectChip
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
@@ -121,6 +121,31 @@ fun SpamView(
                 SpamView(
                     selectedConfig = selectedConfig
                 )
+            }
+
+            item {
+                Divider(
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
+
+                Text(
+                    "PRESETS",
+                    modifier = Modifier
+                        .padding(16.dp, 5.dp)
+                )
+            }
+
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(16.dp, 5.dp)
+                ) {
+                    items(vm.presets) { preset ->
+                        HeadingButton(
+                            text = preset.name,
+                            onClick = { preset.action(vm.spamStates) }
+                        )
+                    }
+                }
             }
         }
     }
