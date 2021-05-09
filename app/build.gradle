@@ -6,7 +6,7 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     ndkVersion "21.3.6528147"
 
     compileOptions {
@@ -35,7 +35,7 @@ android {
     defaultConfig {
         applicationId "com.mathewsachin.fategrandautomata"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode Integer.valueOf(System.env.FGA_VERSION_CODE ?: 1)
         versionName(System.env.FGA_VERSION_NAME ?: "0.1.0")
 
