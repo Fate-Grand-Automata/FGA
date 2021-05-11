@@ -336,11 +336,7 @@ open class AutoBattle @Inject constructor(
         storageProvider.dropScreenshot(drops)
     }
 
-    private fun isRepeatScreen() =
-        // Not yet on TW
-        if (prefs.gameServer != GameServerEnum.Tw) {
-            images.confirm in game.continueRegion
-        } else false
+    private fun isRepeatScreen() = images.confirm in game.continueRegion
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
