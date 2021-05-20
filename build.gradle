@@ -4,15 +4,15 @@ buildscript {
     ext {
         kotlin_version = '1.4.32'
         nav_version = '2.3.5'
-        hilt_version = '2.33-beta'
-        compose_version = '1.0.0-beta05'
+        hilt_version = '2.35'
+        compose_version = '1.0.0-beta07'
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha15'
+        classpath 'com.android.tools.build:gradle:7.0.0-beta01'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
@@ -25,7 +25,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://dl.bintray.com/vanpra/maven" }
         maven { url "https://kotlin.bintray.com/kotlinx" }
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
