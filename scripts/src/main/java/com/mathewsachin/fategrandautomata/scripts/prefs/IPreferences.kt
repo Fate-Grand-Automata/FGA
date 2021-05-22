@@ -41,3 +41,5 @@ interface IPreferences {
     fun addBattleConfig(id: String): IBattleConfig
     fun removeBattleConfig(id: String)
 }
+
+val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots

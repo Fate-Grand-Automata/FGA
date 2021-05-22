@@ -21,8 +21,11 @@
 
         <service
             android:name=".accessibility.ScriptRunnerService"
+            android:foregroundServiceType="mediaProjection" />
+
+        <service
+            android:name=".accessibility.TapperService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:foregroundServiceType="mediaProjection"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
@@ -30,7 +33,7 @@
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/script_runner_service" />
+                android:resource="@xml/tapper_service" />
         </service>
 
         <activity

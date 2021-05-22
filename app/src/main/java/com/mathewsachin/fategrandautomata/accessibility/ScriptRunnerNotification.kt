@@ -72,11 +72,14 @@ class ScriptRunnerNotification @Inject constructor(
         }
     }
 
-    fun hide() = service.stopForeground(true)
-
     private fun startBuildNotification(): NotificationCompat.Builder {
         val activityIntent = PendingIntent
-            .getActivity(service, 0, Intent(service, MainActivity::class.java), 0)
+            .getActivity(
+                service,
+                0,
+                Intent(service, MainActivity::class.java),
+                PendingIntent.FLAG_IMMUTABLE
+            )
 
         val stopIntent = PendingIntent.getBroadcast(
             service,
@@ -84,7 +87,7 @@ class ScriptRunnerNotification @Inject constructor(
             Intent(service, NotificationReceiver::class.java).apply {
                 putExtra(keyAction, actionStop)
             },
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val stopAction = NotificationCompat.Action.Builder(
@@ -160,7 +163,7 @@ class ScriptRunnerNotification @Inject constructor(
 
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.getStringExtra(keyAction)) {
-                actionStop -> ScriptRunnerService.stopService()
+                actionStop -> ScriptRunnerService.stopService(context)
             }
         }
     }

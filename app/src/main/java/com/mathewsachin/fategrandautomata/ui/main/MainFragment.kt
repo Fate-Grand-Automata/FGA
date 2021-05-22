@@ -27,8 +27,9 @@ import androidx.fragment.app.activityViewModels
 import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
-import com.mathewsachin.fategrandautomata.accessibility.ServiceState
+import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.StorageProvider
@@ -41,10 +42,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
-    companion object {
-        private var mediaProjectionToken: Intent? = null
-    }
-
     val vm: MainSettingsViewModel by activityViewModels()
 
     @Inject
@@ -177,28 +174,17 @@ class MainFragment : Fragment() {
             }
         }
 
-    private fun startWithMediaProjection() {
-        mediaProjectionToken.let {
-            if (it != null) {
-                // Cloning the Intent allows reuse.
-                // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
-                ScriptRunnerService.startService(it.clone() as Intent)
-            } else startMediaProjection.launch()
-        }
-    }
-
     val startMediaProjection = registerForActivityResult(StartMediaProjection()) { intent ->
         if (intent == null) {
             Timber.info { "MediaProjection cancelled by user" }
-            ScriptRunnerService.Instance?.notification?.hide()
+            ScriptRunnerService.stopService(requireContext())
         } else {
-            mediaProjectionToken = intent
-            startWithMediaProjection()
+            ScriptRunnerService.mediaProjectionToken = intent
         }
     }
 
     private fun checkAccessibilityService(): Boolean {
-        if (ScriptRunnerService.isAccessibilityServiceRunning())
+        if (TapperService.isRunning)
             return true
 
         AlertDialog.Builder(requireContext())
@@ -254,18 +240,14 @@ class MainFragment : Fragment() {
             return
         }
 
-        val instance = ScriptRunnerService.Instance
-            ?: return
+        if (ScriptRunnerService.serviceStarted.value) {
+            ScriptRunnerService.stopService(requireContext())
+        } else {
+            ScriptRunnerService.startService(requireContext())
 
-        when (instance.serviceState) {
-            is ServiceState.Started -> ScriptRunnerService.stopService()
-            is ServiceState.Stopped -> {
-                if (instance.wantsMediaProjectionToken) {
-                    instance.notification.show()
-
-                    startWithMediaProjection()
-                } else if (ScriptRunnerService.startService()) {
-                    instance.notification.show()
+            if (prefs.wantsMediaProjectionToken) {
+                if (ScriptRunnerService.mediaProjectionToken == null) {
+                    startMediaProjection.launch()
                 }
             }
         }
@@ -274,7 +256,7 @@ class MainFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        if (toggling || (vm.autoStartService && !ScriptRunnerService.isServiceStarted())) {
+        if (toggling || (vm.autoStartService && !ScriptRunnerService.serviceStarted.value)) {
             serviceToggleBtnOnClick()
         }
     }

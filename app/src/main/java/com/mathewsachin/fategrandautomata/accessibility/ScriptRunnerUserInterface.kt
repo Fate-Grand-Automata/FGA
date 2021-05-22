@@ -103,7 +103,9 @@ class ScriptRunnerUserInterface @Inject constructor(
         inflater.inflate(R.layout.script_runner, scriptCtrlBtnLayout)
 
         scriptCtrlBtnLayout.findViewById<LinearLayout>(R.id.script_ctrl_container).let { container ->
-            val ratio = mediaProjectionMetrics.widthPixels / mediaProjectionMetrics.heightPixels.toDouble()
+            val ratio = (metrics.widthPixels / metrics.heightPixels.toDouble()).let {
+                if (it > 1) it else 1 / it
+            }
 
             // If 17:9 or wider, we have enough space to show PLAY and PAUSE buttons vertically
             container.orientation = if (ratio > 17 / 9.0) {
