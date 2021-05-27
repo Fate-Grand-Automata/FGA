@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_runner_description">这个服务实际上运行脚本。如果要在没有root权限的情况下执行单击和滑动，则需要辅助功能服务。</string>
-
     <string name="battle_config_item_copy">复制</string>
     <string name="battle_config_item_delete">删除</string>
     <string name="battle_config_item_export">导出</string>
@@ -235,7 +233,6 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">混合职介 (Mix)</string>
 
-    <string name="notification_text">无障碍服务运行中</string>
     <string name="notification_stop">停止</string>
 
     <string name="accessibility_disabled_title">无障碍服务已关闭</string>

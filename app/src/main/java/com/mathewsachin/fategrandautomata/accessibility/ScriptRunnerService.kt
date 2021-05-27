@@ -41,6 +41,10 @@ class ScriptRunnerService: Service() {
         val serviceStarted: State<Boolean> = mServiceStarted
 
         private var instance: ScriptRunnerService? = null
+            set(value) {
+                field = value
+                mServiceStarted.value = value != null
+            }
 
         fun startService(context: Context) {
             val intent = makeServiceIntent(context)
@@ -112,7 +116,6 @@ class ScriptRunnerService: Service() {
         userInterface.hide()
 
         screenOffReceiver.unregister(this)
-        mServiceStarted.value = false
         instance = null
 
         super.onDestroy()
@@ -184,8 +187,6 @@ class ScriptRunnerService: Service() {
         if (isLandscape()) {
             userInterface.show()
         }
-
-        mServiceStarted.value = true
 
         prepareScreenshotService()
     }

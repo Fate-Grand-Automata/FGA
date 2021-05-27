@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_runner_description">這是讓FGA可以使用腳本的設定，FGA需要開啟無障礙服務以在沒有root的情況下查看及控制螢幕，包含點按跟捲動等</string>
-
     <string name="battle_config_item_copy">複製</string>
     <string name="battle_config_item_delete">刪除</string>
     <string name="battle_config_item_export">匯出</string>
@@ -238,7 +236,6 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">混合職階 (Mix)</string>
 
-    <string name="notification_text">無障礙服務執行中</string>
     <string name="notification_stop">停止</string>
 
     <string name="accessibility_disabled_title">無障礙服務已關閉</string>

@@ -3,6 +3,8 @@ package com.mathewsachin.fategrandautomata.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.view.accessibility.AccessibilityEvent
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import timber.log.Timber
 import timber.log.debug
@@ -10,10 +12,14 @@ import timber.log.info
 
 class TapperService: AccessibilityService() {
     companion object {
-        var instance: TapperService? = null
-            private set
+        private val mServiceStarted = mutableStateOf(false)
+        val serviceStarted: State<Boolean> = mServiceStarted
 
-        val isRunning get() = instance != null
+        var instance: TapperService? = null
+            private set(value) {
+                field = value
+                mServiceStarted.value = value != null
+            }
     }
 
     override fun onServiceConnected() {

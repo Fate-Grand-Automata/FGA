@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,123 +57,51 @@ class MainFragment : Fragment() {
         serviceToggleBtnOnClick()
     }
 
-    fun goToBattleConfigList() {
-        val action = MainFragmentDirections
-            .actionMainFragmentToBattleConfigListFragment()
-
-        nav(action)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         ComposeView(requireContext()).apply {
             setContent {
-                FgaScreen {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        item {
-                            Heading(stringResource(R.string.app_name)) {
-                                item {
-                                    HeadingButton(
-                                        text = "Build: ${BuildConfig.VERSION_CODE}",
-                                        onClick = {
-                                            val intent = Intent(
-                                                Intent.ACTION_VIEW,
-                                                Uri.parse(getString(R.string.link_releases))
-                                            )
-
-                                            startActivity(intent)
-                                        }
-                                    )
-                                }
-
-                                item {
-                                    HeadingButton(
-                                        text = stringResource(R.string.p_nav_troubleshoot),
-                                        onClick = {
-                                            val intent = Intent(
-                                                Intent.ACTION_VIEW,
-                                                Uri.parse(getString(R.string.link_troubleshoot))
-                                            )
-
-                                            startActivity(intent)
-                                        }
-                                    )
-                                }
-                            }
-                        }
-
-                        item {
-                            Card(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                            ) {
-                                Column {
-                                    Preference(
-                                        title = stringResource(R.string.p_battle_config),
-                                        summary = stringResource(R.string.p_battle_config_summary),
-                                        icon = icon(R.drawable.ic_formation),
-                                        onClick = {
-                                            if (vm.ensureRootDir(pickDir, requireContext())) {
-                                                goToBattleConfigList()
-                                            }
-                                        }
-                                    )
-
-                                    Divider()
-
-                                    Preference(
-                                        title = stringResource(R.string.p_more_options),
-                                        icon = icon(R.drawable.ic_dots_horizontal),
-                                        onClick = {
-                                            val action = MainFragmentDirections
-                                                .actionMainFragmentToMoreSettingsFragment()
-
-                                            nav(action)
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    val serviceStarted by vm.serviceStarted
-
-                    val backgroundColor by animateColorAsState(
-                        if (serviceStarted)
-                            MaterialTheme.colors.error
-                        else MaterialTheme.colors.secondary
-                    )
-
-                    val foregroundColor =
-                        if (serviceStarted)
-                            MaterialTheme.colors.onError
-                        else MaterialTheme.colors.onSecondary
-
-                    ExtendedFloatingActionButton(
-                        text = {
-                            Text(
-                                stringResource(if (serviceStarted) R.string.stop_service else R.string.start_service),
-                                color = foregroundColor
-                            )
-                        },
-                        onClick = { serviceToggleBtnOnClick() },
-                        icon = {
-                            Icon(
-                                painterResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch),
-                                contentDescription = "Toggle service",
-                                tint = foregroundColor
-                            )
-                        },
-                        backgroundColor = backgroundColor,
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp)
-                    )
-                }
+                MainFragmentContent(
+                    navigate = { navigate(it) },
+                    serviceStarted = vm.serviceStarted.value,
+                    toggleService = { serviceToggleBtnOnClick() }
+                )
             }
         }
+
+    private fun navigate(it: MainFragmentDestinations) {
+        when (it) {
+            MainFragmentDestinations.BattleConfigs -> {
+                if (vm.ensureRootDir(pickDir, requireContext())) {
+                    val action = MainFragmentDirections
+                        .actionMainFragmentToBattleConfigListFragment()
+
+                    nav(action)
+                }
+            }
+            MainFragmentDestinations.MoreOptions -> {
+                val action = MainFragmentDirections
+                    .actionMainFragmentToMoreSettingsFragment()
+
+                nav(action)
+            }
+            MainFragmentDestinations.Releases -> {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.link_releases))
+                )
+
+                startActivity(intent)
+            }
+            MainFragmentDestinations.TroubleshootingGuide -> {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.link_troubleshoot))
+                )
+
+                startActivity(intent)
+            }
+        }
+    }
 
     val startMediaProjection = registerForActivityResult(StartMediaProjection()) { intent ->
         if (intent == null) {
@@ -184,7 +113,7 @@ class MainFragment : Fragment() {
     }
 
     private fun checkAccessibilityService(): Boolean {
-        if (TapperService.isRunning)
+        if (TapperService.serviceStarted.value)
             return true
 
         AlertDialog.Builder(requireContext())
@@ -259,5 +188,100 @@ class MainFragment : Fragment() {
         if (toggling || (vm.autoStartService && !ScriptRunnerService.serviceStarted.value)) {
             serviceToggleBtnOnClick()
         }
+    }
+}
+
+private sealed class MainFragmentDestinations {
+    object Releases: MainFragmentDestinations()
+    object TroubleshootingGuide: MainFragmentDestinations()
+    object BattleConfigs: MainFragmentDestinations()
+    object MoreOptions: MainFragmentDestinations()
+}
+
+@Composable
+private fun MainFragmentContent(
+    navigate: (MainFragmentDestinations) -> Unit,
+    serviceStarted: Boolean,
+    toggleService: () -> Unit
+) {
+    FgaScreen {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            item {
+                Heading(stringResource(R.string.app_name)) {
+                    item {
+                        HeadingButton(
+                            text = "Build: ${BuildConfig.VERSION_CODE}",
+                            onClick = { navigate(MainFragmentDestinations.Releases) }
+                        )
+                    }
+
+                    item {
+                        HeadingButton(
+                            text = stringResource(R.string.p_nav_troubleshoot),
+                            onClick = { navigate(MainFragmentDestinations.TroubleshootingGuide) }
+                        )
+                    }
+                }
+            }
+
+            item {
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    Column {
+                        Preference(
+                            title = stringResource(R.string.p_battle_config),
+                            summary = stringResource(R.string.p_battle_config_summary),
+                            icon = icon(R.drawable.ic_formation),
+                            onClick = { navigate(MainFragmentDestinations.BattleConfigs) }
+                        )
+
+                        Divider()
+
+                        Preference(
+                            title = stringResource(R.string.p_more_options),
+                            icon = icon(R.drawable.ic_dots_horizontal),
+                            onClick = { navigate(MainFragmentDestinations.MoreOptions) }
+                        )
+                    }
+                }
+            }
+        }
+
+        val backgroundColor by animateColorAsState(
+            if (serviceStarted)
+                MaterialTheme.colors.error
+            else MaterialTheme.colors.secondary
+        )
+
+        val foregroundColor =
+            if (serviceStarted)
+                MaterialTheme.colors.onError
+            else MaterialTheme.colors.onSecondary
+
+        ExtendedFloatingActionButton(
+            text = {
+                Text(
+                    stringResource(if (serviceStarted) R.string.stop_service else R.string.start_service),
+                    color = foregroundColor
+                )
+            },
+            onClick = toggleService,
+            icon = {
+                Icon(
+                    painterResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch),
+                    contentDescription = "Toggle service",
+                    tint = foregroundColor
+                )
+            },
+            backgroundColor = backgroundColor,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        )
     }
 }

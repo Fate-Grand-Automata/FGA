@@ -5,4 +5,4 @@
     android:accessibilityFlags="flagDefault"
     android:canPerformGestures="true"
     android:canRetrieveWindowContent="true"
-    android:description="@string/service_runner_description" />
+    android:description="@string/tapper_service_description" />

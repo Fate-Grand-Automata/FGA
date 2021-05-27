@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_runner_description">This service actually runs the scripts. An accessibility service is required if clicks and swipes are to be performed without root.</string>
-
     <string name="battle_config_item_copy">복사</string>
     <string name="battle_config_item_delete">삭제</string>
     <string name="battle_config_item_export">내보내기</string>
@@ -236,7 +234,6 @@
     <string name="p_support_class_extra">엑스트라</string>
     <string name="p_support_class_mix">혼합</string>
 
-    <string name="notification_text">접근성 서비스 실행중</string>
     <string name="notification_stop">멈춤</string>
 
     <string name="accessibility_disabled_title">접근성 비활성화</string>
