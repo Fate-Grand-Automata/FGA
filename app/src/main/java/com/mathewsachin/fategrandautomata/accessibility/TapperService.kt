@@ -43,7 +43,7 @@ class TapperService: AccessibilityService() {
         private set
 
     /**
-     * This method is called on any subscribed [AccessibilityEvent] in script_runner_service.xml.
+     * This method is called on any subscribed [AccessibilityEvent] in tapper_service.xml.
      *
      * When the app in the foreground changes, this method will check if the foreground app is one
      * of the FGO APKs.

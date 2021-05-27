@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
 import android.app.Activity
-import android.app.AlarmManager
 import android.app.Service
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -92,9 +91,6 @@ class ScriptRunnerService: Service() {
     lateinit var scriptComponentBuilder: ScriptComponentBuilder
 
     @Inject
-    lateinit var alarmManager: AlarmManager
-
-    @Inject
     lateinit var clipboardManager: ClipboardManager
 
     @Inject
@@ -129,22 +125,7 @@ class ScriptRunnerService: Service() {
             when (scriptManager.scriptState) {
                 is ScriptState.Started -> scriptManager.stopScript()
                 is ScriptState.Stopped -> {
-                    val server = prefsCore.gameServerRaw.get()
-
-                    prefs.gameServer =
-                        if (server == PrefsCore.GameServerAutoDetect)
-                            (TapperService.instance?.detectedFgoServer ?: GameServerEnum.En).also {
-                                Timber.debug { "Using auto-detected Game Server: $it" }
-                            }
-                        else try {
-                            enumValueOf<GameServerEnum>(server).also {
-                                Timber.debug { "Using Game Server: $it" }
-                            }
-                        } catch (e: Exception) {
-                            Timber.error(e) { "Game Server: Falling back to NA" }
-
-                            GameServerEnum.En
-                        }
+                    updateGameServer()
 
                     screenshotService?.let {
                         scriptManager.startScript(this, it, scriptComponentBuilder)
@@ -155,6 +136,25 @@ class ScriptRunnerService: Service() {
                 }
             }
         }
+    }
+
+    private fun updateGameServer() {
+        val server = prefsCore.gameServerRaw.get()
+
+        prefs.gameServer =
+            if (server == PrefsCore.GameServerAutoDetect)
+                (TapperService.instance?.detectedFgoServer ?: GameServerEnum.En).also {
+                    Timber.debug { "Using auto-detected Game Server: $it" }
+                }
+            else try {
+                enumValueOf<GameServerEnum>(server).also {
+                    Timber.debug { "Using Game Server: $it" }
+                }
+            } catch (e: Exception) {
+                Timber.error(e) { "Game Server: Falling back to NA" }
+
+                GameServerEnum.En
+            }
     }
 
     fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) =
