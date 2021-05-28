@@ -54,7 +54,7 @@ class MainFragment : Fragment() {
     private val pickDir = registerPersistableDirPicker {
         storageProvider.setRoot(it)
 
-        serviceToggleBtnOnClick()
+        toggleOverlayService()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -62,8 +62,8 @@ class MainFragment : Fragment() {
             setContent {
                 MainFragmentContent(
                     navigate = { navigate(it) },
-                    serviceStarted = vm.serviceStarted.value,
-                    toggleService = { serviceToggleBtnOnClick() }
+                    overlayServiceStarted = vm.serviceStarted.value,
+                    toggleOverlayService = { toggleOverlayService() }
                 )
             }
         }
@@ -157,7 +157,7 @@ class MainFragment : Fragment() {
 
     private var toggling = false
 
-    private fun serviceToggleBtnOnClick() {
+    private fun toggleOverlayService() {
         toggling = false
 
         if (!checkCanUseOverlays()
@@ -186,7 +186,7 @@ class MainFragment : Fragment() {
         super.onResume()
 
         if (toggling || (vm.autoStartService && !ScriptRunnerService.serviceStarted.value)) {
-            serviceToggleBtnOnClick()
+            toggleOverlayService()
         }
     }
 }
@@ -201,8 +201,8 @@ private sealed class MainFragmentDestinations {
 @Composable
 private fun MainFragmentContent(
     navigate: (MainFragmentDestinations) -> Unit,
-    serviceStarted: Boolean,
-    toggleService: () -> Unit
+    overlayServiceStarted: Boolean,
+    toggleOverlayService: () -> Unit
 ) {
     FgaScreen {
         LazyColumn(
@@ -252,36 +252,49 @@ private fun MainFragmentContent(
             }
         }
 
-        val backgroundColor by animateColorAsState(
-            if (serviceStarted)
-                MaterialTheme.colors.error
-            else MaterialTheme.colors.secondary
-        )
-
-        val foregroundColor =
-            if (serviceStarted)
-                MaterialTheme.colors.onError
-            else MaterialTheme.colors.onSecondary
-
-        ExtendedFloatingActionButton(
-            text = {
-                Text(
-                    stringResource(if (serviceStarted) R.string.stop_service else R.string.start_service),
-                    color = foregroundColor
-                )
-            },
-            onClick = toggleService,
-            icon = {
-                Icon(
-                    painterResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch),
-                    contentDescription = "Toggle service",
-                    tint = foregroundColor
-                )
-            },
-            backgroundColor = backgroundColor,
+        OverlayServiceToggleButton(
+            serviceStarted = overlayServiceStarted,
+            toggleService = toggleOverlayService,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(16.dp)
         )
     }
+}
+
+@Composable
+private fun OverlayServiceToggleButton(
+    serviceStarted: Boolean,
+    toggleService: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor by animateColorAsState(
+        if (serviceStarted)
+            MaterialTheme.colors.error
+        else MaterialTheme.colors.secondary
+    )
+
+    val foregroundColor =
+        if (serviceStarted)
+            MaterialTheme.colors.onError
+        else MaterialTheme.colors.onSecondary
+
+    ExtendedFloatingActionButton(
+        text = {
+            Text(
+                stringResource(if (serviceStarted) R.string.stop_service else R.string.start_service),
+                color = foregroundColor
+            )
+        },
+        onClick = toggleService,
+        icon = {
+            Icon(
+                painterResource(if (serviceStarted) R.drawable.ic_close else R.drawable.ic_launch),
+                contentDescription = "Toggle service",
+                tint = foregroundColor
+            )
+        },
+        backgroundColor = backgroundColor,
+        modifier = modifier
+            .padding(16.dp)
+    )
 }
