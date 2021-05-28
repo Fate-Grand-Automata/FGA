@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.launch
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -20,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -63,7 +62,15 @@ class MainFragment : Fragment() {
                 MainFragmentContent(
                     navigate = { navigate(it) },
                     overlayServiceStarted = vm.serviceStarted.value,
-                    toggleOverlayService = { toggleOverlayService() }
+                    toggleOverlayService = { toggleOverlayService() },
+                    accessibilityServiceStarted = TapperService.serviceStarted.value,
+                    toggleAccessibilityService = {
+                        if (TapperService.serviceStarted.value) {
+                            TapperService.instance?.disableSelf()
+                        } else {
+                            goToAccessibilitySettings()
+                        }
+                    }
                 )
             }
         }
@@ -112,6 +119,11 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun goToAccessibilitySettings() {
+        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+        startActivity(intent)
+    }
+
     private fun checkAccessibilityService(): Boolean {
         if (TapperService.serviceStarted.value)
             return true
@@ -120,10 +132,8 @@ class MainFragment : Fragment() {
             .setTitle(R.string.accessibility_disabled_title)
             .setMessage(R.string.accessibility_disabled_message)
             .setPositiveButton(R.string.accessibility_disabled_go_to_settings) { _, _ ->
-                // Open Accessibility Settings
-                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                 toggling = true
-                startActivity(intent)
+                goToAccessibilitySettings()
             }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
@@ -202,7 +212,9 @@ private sealed class MainFragmentDestinations {
 private fun MainFragmentContent(
     navigate: (MainFragmentDestinations) -> Unit,
     overlayServiceStarted: Boolean,
-    toggleOverlayService: () -> Unit
+    toggleOverlayService: () -> Unit,
+    accessibilityServiceStarted: Boolean,
+    toggleAccessibilityService: () -> Unit
 ) {
     FgaScreen {
         LazyColumn(
@@ -249,6 +261,14 @@ private fun MainFragmentContent(
                         )
                     }
                 }
+            }
+
+            item {
+                AccessibilityServiceBlock(
+                    serviceStarted = accessibilityServiceStarted,
+                    toggleService = toggleAccessibilityService,
+                    overlayServiceStarted = overlayServiceStarted
+                )
             }
         }
 
@@ -297,4 +317,44 @@ private fun OverlayServiceToggleButton(
         modifier = modifier
             .padding(16.dp)
     )
+}
+
+@Composable
+private fun AccessibilityServiceBlock(
+    serviceStarted: Boolean,
+    toggleService: () -> Unit,
+    overlayServiceStarted: Boolean
+) {
+    Card(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp, 5.dp)
+        ) {
+            Row {
+                Text("Accessibility Service: ")
+
+                Text(
+                    if (serviceStarted) "ENABLED" else "DISABLED",
+                    modifier = Modifier
+                        .padding(start = 5.dp),
+                    color = colorResource(if (serviceStarted) R.color.colorQuickResist else R.color.colorBusterResist),
+                    style = MaterialTheme.typography.subtitle1
+                )
+            }
+
+            TextButton(
+                onClick = toggleService,
+                // Don't allow (at least from the UI) turning OFF accessibility service when overlay service is running
+                enabled = !serviceStarted || !overlayServiceStarted
+            ) {
+                Text(
+                    if (serviceStarted) "DISABLE" else "ENABLE IN SETTINGS"
+                )
+            }
+        }
+    }
 }
