@@ -47,8 +47,8 @@ class SkillMakerActivity : ComponentActivity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.skill_maker_confirm_clear_title)
             .setMessage(R.string.skill_maker_confirm_clear_message)
-            .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes) { _, _ -> vm.clearAll() }
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(android.R.string.ok) { _, _ -> vm.clearAll() }
             .show()
     }
 
@@ -57,8 +57,8 @@ class SkillMakerActivity : ComponentActivity() {
             AlertDialog.Builder(this)
                 .setMessage(R.string.skill_maker_confirm_exit_message)
                 .setTitle(R.string.skill_maker_confirm_exit_title)
-                .setPositiveButton(android.R.string.yes) { _, _ -> super.onBackPressed() }
-                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.ok) { _, _ -> super.onBackPressed() }
+                .setNegativeButton(android.R.string.cancel, null)
                 .show()
         }
         else vm.navigation.value = SkillMakerNav.Main
