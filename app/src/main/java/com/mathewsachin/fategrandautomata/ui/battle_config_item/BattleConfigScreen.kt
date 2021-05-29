@@ -1,10 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -22,6 +20,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,171 +32,134 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
-import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.FgaScreen
-import com.mathewsachin.fategrandautomata.ui.Heading
-import com.mathewsachin.fategrandautomata.ui.HeadingButton
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
-import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.nav
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import timber.log.error
-import java.util.*
-import javax.inject.Inject
+
+@Composable
+fun BattleConfigScreen(
+    vm: BattleConfigScreenViewModel = viewModel(),
+    supportVm: PreferredSupportViewModel = viewModel(),
+    navigate: (BattleConfigDestination) -> Unit
+) {
+    val context = LocalContext.current
+
+    val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+        vm.export(context, uri)
+    }
+
+    BattleConfigContent(
+        config = vm.battleConfigCore,
+        friendEntries = supportVm.friends,
+        onExport = { battleConfigExport.launch("${vm.battleConfig.name}.fga") },
+        onCopy = {
+            val id = vm.createCopyAndReturnId(context)
+            navigate(BattleConfigDestination.Other(id))
+        },
+        onDelete = {
+            vm.delete()
+            navigate(BattleConfigDestination.Back)
+        },
+        navigate = navigate
+    )
+
+    val scope = rememberCoroutineScope()
+
+    OnResume {
+        scope.launch {
+            if (supportVm.shouldExtractSupportImages) {
+                supportVm.performSupportImageExtraction(context)
+            } else supportVm.refresh(context)
+        }
+    }
+}
 
 @AndroidEntryPoint
 class BattleConfigItemSettingsFragment : Fragment() {
-    @Inject
-    lateinit var preferences: IPreferences
-
-    @Inject
-    lateinit var prefsCore: PrefsCore
-
-    val vm: BattleConfigItemViewModel by viewModels()
-    val supportViewModel: PreferredSupportViewModel by activityViewModels()
-
     val args: BattleConfigItemSettingsFragmentArgs by navArgs()
-
-    private fun exportBattleConfig(uri: Uri?) {
-        if (uri != null) {
-            try {
-                requireContext().contentResolver.openOutputStream(uri)?.use { outStream ->
-                    vm.export(outStream)
-                }
-            } catch (e: Exception) {
-                Timber.error(e) { "Failed to export" }
-
-                val msg = getString(R.string.battle_config_item_export_failed)
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private lateinit var battleConfig: IBattleConfig
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        battleConfig = preferences.forBattleConfig(args.key)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
-            val config = prefsCore.forBattleConfig(args.key)
+            val vm: BattleConfigScreenViewModel by viewModels()
+            val supportViewModel: PreferredSupportViewModel by activityViewModels()
 
             setContent {
-                val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
-                    exportBattleConfig(uri)
-                }
-
-                BattleConfigItemView(
-                    config = config,
-                    friendEntries = supportViewModel.friends,
-                    onExport = { battleConfigExport.launch("${battleConfig.name}.fga") },
-                    onCopy = { copy() },
-                    onDelete = { deleteItem(battleConfig.id) },
-                    openSkillMaker = {
-                        val action = BattleConfigItemSettingsFragmentDirections
-                            .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
-
-                        nav(action)
-                    },
-                    openCardPriority = {
-                        val action = BattleConfigItemSettingsFragmentDirections
-                            .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
-
-                        nav(action)
-                    },
-                    openSpam = {
-                        val action = BattleConfigItemSettingsFragmentDirections
-                            .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
-
-                        nav(action)
-                    },
-                    openPreferredSupport = {
-                        val action = BattleConfigItemSettingsFragmentDirections
-                            .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
-
-                        nav(action)
-                    }
+                BattleConfigScreen(
+                    vm = vm,
+                    supportVm = supportViewModel,
+                    navigate = { navigate(it) }
                 )
             }
         }
 
-    private fun copy() {
-        val guid = UUID.randomUUID().toString()
-        preferences.addBattleConfig(guid)
-        val newConfig = preferences.forBattleConfig(guid)
+    private fun navigate(destination: BattleConfigDestination) {
+        when (destination) {
+            BattleConfigDestination.CardPriority -> {
+                val action = BattleConfigItemSettingsFragmentDirections
+                    .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
 
-        val map = battleConfig.export()
-        newConfig.import(map)
-        newConfig.name = getString(R.string.battle_config_item_copy_name, newConfig.name)
+                nav(action)
+            }
+            BattleConfigDestination.PreferredSupport -> {
+                val action = BattleConfigItemSettingsFragmentDirections
+                    .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
 
-        val action = BattleConfigItemSettingsFragmentDirections
-            .actionBattleConfigItemSettingsFragmentSelf(guid)
+                nav(action)
+            }
+            BattleConfigDestination.SkillMaker -> {
+                val action = BattleConfigItemSettingsFragmentDirections
+                    .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
 
-        nav(action)
-    }
+                nav(action)
+            }
+            BattleConfigDestination.Spam -> {
+                val action = BattleConfigItemSettingsFragmentDirections
+                    .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
 
-    override fun onResume() {
-        super.onResume()
+                nav(action)
+            }
+            BattleConfigDestination.Back -> findNavController().popBackStack()
+            is BattleConfigDestination.Other -> {
+                val action = BattleConfigItemSettingsFragmentDirections
+                    .actionBattleConfigItemSettingsFragmentSelf(destination.id)
 
-        lifecycleScope.launch {
-            if (supportViewModel.shouldExtractSupportImages) {
-                performSupportImageExtraction()
-            } else supportViewModel.refresh(requireContext())
-        }
-    }
-
-    private suspend fun performSupportImageExtraction() {
-        val msg = try {
-            supportViewModel.extract(requireContext())
-
-            getString(R.string.support_imgs_extracted)
-        } catch (e: Exception) {
-            getString(R.string.support_imgs_extract_failed).also { msg ->
-                Timber.error(e) { msg }
+                nav(action)
             }
         }
-
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun deleteItem(battleConfigKey: String) {
-        preferences.removeBattleConfig(battleConfigKey)
-
-        findNavController().popBackStack()
     }
 }
 
+sealed class BattleConfigDestination {
+    object SkillMaker: BattleConfigDestination()
+    object CardPriority: BattleConfigDestination()
+    object Spam: BattleConfigDestination()
+    object PreferredSupport: BattleConfigDestination()
+    object Back: BattleConfigDestination()
+    class Other(val id: String): BattleConfigDestination()
+}
+
 @Composable
-fun BattleConfigItemView(
+private fun BattleConfigContent(
     config: BattleConfigCore,
     friendEntries: Map<String, String>,
     onExport: () -> Unit,
     onCopy: () -> Unit,
     onDelete: () -> Unit,
-    openSkillMaker: () -> Unit,
-    openCardPriority: () -> Unit,
-    openSpam: () -> Unit,
-    openPreferredSupport: () -> Unit,
-    vm: BattleConfigItemViewModel = viewModel()
+    navigate: (BattleConfigDestination) -> Unit,
+    vm: BattleConfigScreenViewModel = viewModel()
 ) {
     FgaScreen {
         Box(
@@ -278,7 +240,7 @@ fun BattleConfigItemView(
                             SkillCommandGroup(
                                 config = config,
                                 vm = vm,
-                                openSkillMaker = openSkillMaker
+                                openSkillMaker = { navigate(BattleConfigDestination.SkillMaker) }
                             )
                         }
                     }
@@ -306,7 +268,7 @@ fun BattleConfigItemView(
                                         Text(
                                             stringResource(R.string.p_spam_spam),
                                             modifier = Modifier
-                                                .clickable(onClick = openSpam)
+                                                .clickable(onClick = { navigate(BattleConfigDestination.Spam) })
                                                 .padding(16.dp, 5.dp)
                                         )
                                     }
@@ -322,7 +284,7 @@ fun BattleConfigItemView(
                                     Preference(
                                         title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
                                         summary = { CardPrioritySummary(it) },
-                                        onClick = openCardPriority
+                                        onClick = { navigate(BattleConfigDestination.CardPriority) }
                                     )
                                 }
                             }
@@ -334,7 +296,7 @@ fun BattleConfigItemView(
 
                         SupportGroup(
                             config = config,
-                            goToPreferred = openPreferredSupport,
+                            goToPreferred = { navigate(BattleConfigDestination.PreferredSupport) },
                             maxSkillText = maxSkillText,
                             friendEntries = friendEntries
                         )
@@ -349,7 +311,7 @@ fun BattleConfigItemView(
     }
 }
 
-val CardScore.color: Color
+private val CardScore.color: Color
     @Composable get() {
         // Dark colors won't be visible in dark theme
         val score = if (MaterialTheme.colors.isLight)
@@ -360,7 +322,7 @@ val CardScore.color: Color
     }
 
 @Composable
-fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
+private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
     Column(
         modifier = Modifier
             .padding(vertical = 5.dp)

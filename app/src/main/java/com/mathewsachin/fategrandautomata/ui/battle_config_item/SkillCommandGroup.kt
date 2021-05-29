@@ -30,7 +30,7 @@ import com.mathewsachin.fategrandautomata.ui.skill_maker.colorRes
 @Composable
 fun SkillCommandGroup(
     config: BattleConfigCore,
-    vm: BattleConfigItemViewModel,
+    vm: BattleConfigScreenViewModel,
     openSkillMaker: () -> Unit
 ) {
     var cmd by config.skillCommand.remember()

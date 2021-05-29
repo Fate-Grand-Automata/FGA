@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
@@ -68,4 +69,18 @@ class PreferredSupportViewModel @Inject constructor(
 
     val shouldExtractSupportImages get() =
         storageProvider.shouldExtractSupportImages
+
+    suspend fun performSupportImageExtraction(context: Context) {
+        val msg = try {
+            extract(context)
+
+            context.getString(R.string.support_imgs_extracted)
+        } catch (e: Exception) {
+            context.getString(R.string.support_imgs_extract_failed).also { msg ->
+                Timber.error(e) { msg }
+            }
+        }
+
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
 }
