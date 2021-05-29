@@ -15,10 +15,3 @@ class OpenDocTreePersistable : ActivityResultContracts.OpenDocumentTree() {
             addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
         }
 }
-
-fun Fragment.registerPersistableDirPicker(callback: (Uri) -> Unit) =
-    registerForActivityResult(OpenDocTreePersistable()) {
-        if (it != null) {
-            callback(it)
-        }
-    }

@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,91 +8,163 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.launch
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.TapperService
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
-import com.mathewsachin.fategrandautomata.util.StorageProvider
+import com.mathewsachin.fategrandautomata.util.OpenDocTreePersistable
 import com.mathewsachin.fategrandautomata.util.nav
-import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
-import timber.log.info
-import javax.inject.Inject
+
+@Composable
+fun MainScreen(
+    vm: MainScreenViewModel = viewModel(),
+    navigate: (MainScreenDestinations) -> Unit
+) {
+    var dirPicker: ActivityResultLauncher<Uri>? by remember { mutableStateOf(null) }
+
+    var toggling by rememberSaveable { mutableStateOf(false) }
+
+    val accessibilityDisabledDialog = FgaDialog()
+    FGATheme {
+        accessibilityDisabledDialog.build {
+            title(stringResource(R.string.accessibility_disabled_title))
+            message(stringResource(R.string.accessibility_disabled_message))
+
+            buttons(
+                okLabel = stringResource(R.string.accessibility_disabled_go_to_settings),
+                onSubmit = {
+                    navigate(MainScreenDestinations.AccessibilitySettings)
+                    toggling = true
+                }
+            )
+        }
+    }
+
+    val overlayDisabledDialog = FgaDialog()
+    FGATheme {
+        overlayDisabledDialog.build {
+            title(stringResource(R.string.draw_overlay_disabled_title))
+            message(stringResource(R.string.draw_overlay_disabled_message))
+
+            buttons(
+                okLabel = stringResource(R.string.accessibility_disabled_go_to_settings),
+                onSubmit = {
+                    navigate(MainScreenDestinations.OverlaySettings)
+                    toggling = true
+                }
+            )
+        }
+    }
+
+    val context = LocalContext.current
+
+    val startMediaProjection = rememberLauncherForActivityResult(StartMediaProjection()) {
+        vm.onStartMediaProjectionResult(context, it)
+    }
+
+    val pickDirectory: () -> Unit = { dirPicker?.launch(Uri.EMPTY) }
+
+    fun toggleOverlayService() {
+        toggling = false
+
+        toggleOverlayService(
+            context = context,
+            vm = vm,
+            pickDirectory = pickDirectory,
+            showOverlayDisabled = { overlayDisabledDialog.show() },
+            showAccessibilityDisabled = { accessibilityDisabledDialog.show() },
+            startMediaProjection = { startMediaProjection.launch() }
+        )
+    }
+
+    dirPicker = rememberLauncherForActivityResult(OpenDocTreePersistable()) {
+        if (it != null) {
+            vm.storageProvider.setRoot(it)
+
+            toggleOverlayService()
+        }
+    }
+
+    OnResume {
+        if (toggling || vm.autoStartService) {
+            toggleOverlayService()
+        }
+    }
+
+    MainScreenContent(
+        navigate = {
+            if (it is MainScreenDestinations.BattleConfigs) {
+                if (vm.ensureRootDir(context, pickDirectory)) {
+                    navigate(it)
+                }
+            } else navigate(it)
+        },
+        overlayServiceStarted = ScriptRunnerService.serviceStarted.value,
+        toggleOverlayService = { toggleOverlayService() },
+        accessibilityServiceStarted = TapperService.serviceStarted.value,
+        toggleAccessibilityService = {
+            if (TapperService.serviceStarted.value) {
+                TapperService.instance?.disableSelf()
+            } else {
+                navigate(MainScreenDestinations.AccessibilitySettings)
+            }
+        }
+    )
+}
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
-    val vm: MainSettingsViewModel by activityViewModels()
-
-    @Inject
-    lateinit var storageProvider: StorageProvider
-
-    @Inject
-    lateinit var prefs: IPreferences
-
-    private val pickDir = registerPersistableDirPicker {
-        storageProvider.setRoot(it)
-
-        toggleOverlayService()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         ComposeView(requireContext()).apply {
+            val vm: MainScreenViewModel by activityViewModels()
+
             setContent {
-                MainFragmentContent(
-                    navigate = { navigate(it) },
-                    overlayServiceStarted = vm.serviceStarted.value,
-                    toggleOverlayService = { toggleOverlayService() },
-                    accessibilityServiceStarted = TapperService.serviceStarted.value,
-                    toggleAccessibilityService = {
-                        if (TapperService.serviceStarted.value) {
-                            TapperService.instance?.disableSelf()
-                        } else {
-                            goToAccessibilitySettings()
-                        }
-                    }
+                MainScreen(
+                    vm = vm,
+                    navigate = { navigate(it) }
                 )
             }
         }
 
-    private fun navigate(it: MainFragmentDestinations) {
+    private fun navigate(it: MainScreenDestinations) {
         when (it) {
-            MainFragmentDestinations.BattleConfigs -> {
-                if (vm.ensureRootDir(pickDir, requireContext())) {
-                    val action = MainFragmentDirections
-                        .actionMainFragmentToBattleConfigListFragment()
+            MainScreenDestinations.BattleConfigs -> {
+                val action = MainFragmentDirections
+                    .actionMainFragmentToBattleConfigListFragment()
 
-                    nav(action)
-                }
+                nav(action)
             }
-            MainFragmentDestinations.MoreOptions -> {
+            MainScreenDestinations.MoreOptions -> {
                 val action = MainFragmentDirections
                     .actionMainFragmentToMoreSettingsFragment()
 
                 nav(action)
             }
-            MainFragmentDestinations.Releases -> {
+            MainScreenDestinations.Releases -> {
                 val intent = Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(getString(R.string.link_releases))
@@ -99,7 +172,7 @@ class MainFragment : Fragment() {
 
                 startActivity(intent)
             }
-            MainFragmentDestinations.TroubleshootingGuide -> {
+            MainScreenDestinations.TroubleshootingGuide -> {
                 val intent = Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(getString(R.string.link_troubleshoot))
@@ -107,110 +180,69 @@ class MainFragment : Fragment() {
 
                 startActivity(intent)
             }
-        }
-    }
-
-    val startMediaProjection = registerForActivityResult(StartMediaProjection()) { intent ->
-        if (intent == null) {
-            Timber.info { "MediaProjection cancelled by user" }
-            ScriptRunnerService.stopService(requireContext())
-        } else {
-            ScriptRunnerService.mediaProjectionToken = intent
-        }
-    }
-
-    private fun goToAccessibilitySettings() {
-        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-        startActivity(intent)
-    }
-
-    private fun checkAccessibilityService(): Boolean {
-        if (TapperService.serviceStarted.value)
-            return true
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(R.string.accessibility_disabled_title)
-            .setMessage(R.string.accessibility_disabled_message)
-            .setPositiveButton(R.string.accessibility_disabled_go_to_settings) { _, _ ->
-                toggling = true
-                goToAccessibilitySettings()
+            MainScreenDestinations.AccessibilitySettings -> {
+                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                startActivity(intent)
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+            MainScreenDestinations.OverlaySettings -> {
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:${requireContext().packageName}")
+                )
 
-        return false
-    }
-
-    private fun checkCanUseOverlays(): Boolean {
-        val context = requireContext()
-
-        if (!Settings.canDrawOverlays(context)) {
-            AlertDialog.Builder(requireContext())
-                .setTitle(R.string.draw_overlay_disabled_title)
-                .setMessage(R.string.draw_overlay_disabled_message)
-                .setPositiveButton(R.string.draw_overlay_disabled_go_to_settings) { _, _ ->
-                    // Open overlay settings
-                    val intent = Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:${context.packageName}")
-                    )
-                    toggling = true
-                    startActivity(intent)
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .show()
-            return false
-        }
-
-        return true
-    }
-
-    private var toggling = false
-
-    private fun toggleOverlayService() {
-        toggling = false
-
-        if (!checkCanUseOverlays()
-            || !checkAccessibilityService()
-        )
-            return
-
-        if (!vm.ensureRootDir(pickDir, requireContext())) {
-            return
-        }
-
-        if (ScriptRunnerService.serviceStarted.value) {
-            ScriptRunnerService.stopService(requireContext())
-        } else {
-            ScriptRunnerService.startService(requireContext())
-
-            if (prefs.wantsMediaProjectionToken) {
-                if (ScriptRunnerService.mediaProjectionToken == null) {
-                    startMediaProjection.launch()
-                }
+                startActivity(intent)
             }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (toggling || (vm.autoStartService && !ScriptRunnerService.serviceStarted.value)) {
-            toggleOverlayService()
         }
     }
 }
 
-private sealed class MainFragmentDestinations {
-    object Releases: MainFragmentDestinations()
-    object TroubleshootingGuide: MainFragmentDestinations()
-    object BattleConfigs: MainFragmentDestinations()
-    object MoreOptions: MainFragmentDestinations()
+private fun toggleOverlayService(
+    context: Context,
+    vm: MainScreenViewModel,
+    pickDirectory: () -> Unit,
+    showOverlayDisabled: () -> Unit,
+    showAccessibilityDisabled: () -> Unit,
+    startMediaProjection: () -> Unit
+) {
+    if (!Settings.canDrawOverlays(context)) {
+        showOverlayDisabled()
+        return
+    }
+
+    if (!TapperService.serviceStarted.value) {
+        showAccessibilityDisabled()
+        return
+    }
+
+    if (!vm.ensureRootDir(context, pickDirectory)) {
+        return
+    }
+
+    if (ScriptRunnerService.serviceStarted.value) {
+        ScriptRunnerService.stopService(context)
+    } else {
+        ScriptRunnerService.startService(context)
+
+        if (vm.prefs.wantsMediaProjectionToken) {
+            if (ScriptRunnerService.mediaProjectionToken == null) {
+                startMediaProjection()
+            }
+        }
+    }
+}
+
+sealed class MainScreenDestinations {
+    object Releases: MainScreenDestinations()
+    object TroubleshootingGuide: MainScreenDestinations()
+    object BattleConfigs: MainScreenDestinations()
+    object MoreOptions: MainScreenDestinations()
+    object AccessibilitySettings: MainScreenDestinations()
+    object OverlaySettings: MainScreenDestinations()
 }
 
 @Composable
-private fun MainFragmentContent(
-    navigate: (MainFragmentDestinations) -> Unit,
+private fun MainScreenContent(
+    navigate: (MainScreenDestinations) -> Unit,
     overlayServiceStarted: Boolean,
     toggleOverlayService: () -> Unit,
     accessibilityServiceStarted: Boolean,
@@ -226,14 +258,14 @@ private fun MainFragmentContent(
                     item {
                         HeadingButton(
                             text = "Build: ${BuildConfig.VERSION_CODE}",
-                            onClick = { navigate(MainFragmentDestinations.Releases) }
+                            onClick = { navigate(MainScreenDestinations.Releases) }
                         )
                     }
 
                     item {
                         HeadingButton(
                             text = stringResource(R.string.p_nav_troubleshoot),
-                            onClick = { navigate(MainFragmentDestinations.TroubleshootingGuide) }
+                            onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
                         )
                     }
                 }
@@ -249,7 +281,7 @@ private fun MainFragmentContent(
                             title = stringResource(R.string.p_battle_config),
                             summary = stringResource(R.string.p_battle_config_summary),
                             icon = icon(R.drawable.ic_formation),
-                            onClick = { navigate(MainFragmentDestinations.BattleConfigs) }
+                            onClick = { navigate(MainScreenDestinations.BattleConfigs) }
                         )
 
                         Divider()
@@ -257,7 +289,7 @@ private fun MainFragmentContent(
                         Preference(
                             title = stringResource(R.string.p_more_options),
                             icon = icon(R.drawable.ic_dots_horizontal),
-                            onClick = { navigate(MainFragmentDestinations.MoreOptions) }
+                            onClick = { navigate(MainScreenDestinations.MoreOptions) }
                         )
                     }
                 }

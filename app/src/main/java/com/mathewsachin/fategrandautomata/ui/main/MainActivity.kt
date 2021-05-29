@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        val vm: MainSettingsViewModel by viewModels()
+        val vm: MainScreenViewModel by viewModels()
         vm.activityStarted()
     }
 }

@@ -26,10 +26,10 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
 import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.util.OpenDocTreePersistable
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
 import com.mathewsachin.fategrandautomata.util.nav
-import com.mathewsachin.fategrandautomata.util.registerPersistableDirPicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -118,10 +118,12 @@ class MoreSettingsFragment : Fragment() {
             storageSummary.value = storageProvider.rootDirName
         }
 
-    private val pickDir = registerPersistableDirPicker {
-        storageProvider.setRoot(it)
+    private val pickDir = registerForActivityResult(OpenDocTreePersistable()) {
+        if (it != null) {
+            storageProvider.setRoot(it)
 
-        storageSummary.value = storageProvider.rootDirName
+            storageSummary.value = storageProvider.rootDirName
+        }
     }
 
     private suspend fun performSupportImageExtraction(
