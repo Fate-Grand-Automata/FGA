@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,55 +15,58 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
-import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.SupportPrefsCore
-import com.mathewsachin.fategrandautomata.ui.*
-import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectListPreference
+import com.mathewsachin.fategrandautomata.ui.FgaScreen
+import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.OnResume
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class PreferredSupportSettingsFragment : Fragment() {
-    val args: PreferredSupportSettingsFragmentArgs by navArgs()
+@Composable
+fun PreferredSupportScreen(
+    vm: PreferredSupportViewModel = viewModel(),
+    supportVm: SupportViewModel = viewModel()
+) {
+    PreferredSupport(
+        config = vm.supportPrefs,
+        vm = supportVm
+    )
 
-    @Inject
-    lateinit var prefsCore: PrefsCore
+    val context = LocalContext.current
 
-    val vm: PreferredSupportViewModel by activityViewModels()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            val config = prefsCore.forBattleConfig(args.key).support
-
-            setContent {
-                PreferredSupport(
-                    config = config,
-                    vm = vm
-                )
-            }
-        }
-
-    override fun onResume() {
-        super.onResume()
-
-        vm.refresh(requireContext())
+    OnResume {
+        supportVm.refresh(context)
     }
 }
 
+@AndroidEntryPoint
+class PreferredSupportSettingsFragment : Fragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        ComposeView(requireContext()).apply {
+            val supportVm: SupportViewModel by activityViewModels()
+
+            setContent {
+                PreferredSupportScreen(
+                    supportVm = supportVm
+                )
+            }
+        }
+}
+
 @Composable
-fun PreferredSupport(
+private fun PreferredSupport(
     config: SupportPrefsCore,
-    vm: PreferredSupportViewModel
+    vm: SupportViewModel
 ) {
     FgaScreen {
         val prefServants by config.preferredServants.remember()
@@ -157,7 +159,7 @@ fun PreferredSupport(
 }
 
 @Composable
-fun MaxSkills(
+private fun MaxSkills(
     skills: List<Pref<Boolean>>
 ) {
     Row(
@@ -199,37 +201,6 @@ fun MaxSkills(
                 ) {
                     Text(skillText(max))
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun Pref<Set<String>>.SupportSelectPreference(
-    title: String,
-    entries: Map<String, String>,
-    icon: VectorIcon? = null
-) {
-    val value by remember()
-
-    MultiSelectListPreference(
-        title = title,
-        entries = entries,
-        icon = icon,
-        summary = {
-            if (it.isEmpty())
-                stringResource(R.string.p_not_set)
-            else it.joinToString()
-        }
-    ) {
-        if (value.isNotEmpty()) {
-            IconButton(
-                onClick = { resetToDefault() }
-            ) {
-                DimmedIcon(
-                    icon(R.drawable.ic_close),
-                    contentDescription = "Clear"
-                )
             }
         }
     }

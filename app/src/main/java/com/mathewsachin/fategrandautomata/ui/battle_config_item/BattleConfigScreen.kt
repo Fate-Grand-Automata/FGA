@@ -42,7 +42,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
-import com.mathewsachin.fategrandautomata.ui.pref_support.PreferredSupportViewModel
+import com.mathewsachin.fategrandautomata.ui.pref_support.SupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.nav
@@ -52,7 +52,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun BattleConfigScreen(
     vm: BattleConfigScreenViewModel = viewModel(),
-    supportVm: PreferredSupportViewModel = viewModel(),
+    supportVm: SupportViewModel = viewModel(),
     navigate: (BattleConfigDestination) -> Unit
 ) {
     val context = LocalContext.current
@@ -94,7 +94,7 @@ class BattleConfigItemSettingsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
             val vm: BattleConfigScreenViewModel by viewModels()
-            val supportViewModel: PreferredSupportViewModel by activityViewModels()
+            val supportViewModel: SupportViewModel by activityViewModels()
 
             setContent {
                 BattleConfigScreen(
