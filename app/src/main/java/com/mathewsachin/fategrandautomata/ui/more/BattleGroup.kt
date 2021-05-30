@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.material.icons.filled.OfflineBolt
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.RadioButtonChecked
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -83,3 +84,19 @@ fun LazyListScope.battleGroup(
         )
     }
 }
+
+@Composable
+private fun Int.boostItemString() = when (this) {
+    -1 -> stringResource(R.string.p_boost_item_disabled)
+    0 -> stringResource(R.string.p_boost_item_skip)
+    else -> toString()
+}
+
+private val GameServerEnum.displayStringRes
+    get() = when (this) {
+        GameServerEnum.En -> R.string.game_server_na
+        GameServerEnum.Jp -> R.string.game_server_jp
+        GameServerEnum.Cn -> R.string.game_server_cn
+        GameServerEnum.Tw -> R.string.game_server_tw
+        GameServerEnum.Kr -> R.string.game_server_kr
+    }
