@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.pref_support
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,12 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
@@ -30,7 +24,6 @@ import com.mathewsachin.fategrandautomata.ui.OnResume
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
-import dagger.hilt.android.AndroidEntryPoint
 
 @Composable
 fun PreferredSupportScreen(
@@ -47,20 +40,6 @@ fun PreferredSupportScreen(
     OnResume {
         supportVm.refresh(context)
     }
-}
-
-@AndroidEntryPoint
-class PreferredSupportSettingsFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            val supportVm: SupportViewModel by activityViewModels()
-
-            setContent {
-                PreferredSupportScreen(
-                    supportVm = supportVm
-                )
-            }
-        }
 }
 
 @Composable

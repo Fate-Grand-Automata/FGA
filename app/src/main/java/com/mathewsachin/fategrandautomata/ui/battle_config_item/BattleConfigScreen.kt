@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -24,17 +21,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
@@ -45,8 +36,6 @@ import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
-import com.mathewsachin.fategrandautomata.util.nav
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @Composable
@@ -83,61 +72,6 @@ fun BattleConfigScreen(
             if (supportVm.shouldExtractSupportImages) {
                 supportVm.performSupportImageExtraction(context)
             } else supportVm.refresh(context)
-        }
-    }
-}
-
-@AndroidEntryPoint
-class BattleConfigItemSettingsFragment : Fragment() {
-    val args: BattleConfigItemSettingsFragmentArgs by navArgs()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            val vm: BattleConfigScreenViewModel by viewModels()
-            val supportViewModel: SupportViewModel by activityViewModels()
-
-            setContent {
-                BattleConfigScreen(
-                    vm = vm,
-                    supportVm = supportViewModel,
-                    navigate = { navigate(it) }
-                )
-            }
-        }
-
-    private fun navigate(destination: BattleConfigDestination) {
-        when (destination) {
-            BattleConfigDestination.CardPriority -> {
-                val action = BattleConfigItemSettingsFragmentDirections
-                    .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
-
-                nav(action)
-            }
-            BattleConfigDestination.PreferredSupport -> {
-                val action = BattleConfigItemSettingsFragmentDirections
-                    .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
-
-                nav(action)
-            }
-            BattleConfigDestination.SkillMaker -> {
-                val action = BattleConfigItemSettingsFragmentDirections
-                    .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
-
-                nav(action)
-            }
-            BattleConfigDestination.Spam -> {
-                val action = BattleConfigItemSettingsFragmentDirections
-                    .actionBattleConfigItemSettingsFragmentToSpamSettingsFragment(args.key)
-
-                nav(action)
-            }
-            BattleConfigDestination.Back -> findNavController().popBackStack()
-            is BattleConfigDestination.Other -> {
-                val action = BattleConfigItemSettingsFragmentDirections
-                    .actionBattleConfigItemSettingsFragmentSelf(destination.id)
-
-                nav(action)
-            }
         }
     }
 }

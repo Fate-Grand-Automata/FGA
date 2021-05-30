@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.fine_tune
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,17 +12,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
 import com.mathewsachin.fategrandautomata.ui.Heading
-import dagger.hilt.android.AndroidEntryPoint
 
 @Composable
 fun FineTuneScreen(
@@ -93,14 +87,4 @@ fun FineTuneScreen(
             }
         }
     }
-}
-
-@AndroidEntryPoint
-class FineTuneSettingsFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setContent {
-                FineTuneScreen()
-            }
-        }
 }

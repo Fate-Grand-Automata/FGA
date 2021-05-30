@@ -1,8 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.spam
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,10 +14,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
@@ -31,17 +26,6 @@ import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectChip
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class SpamSettingsFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setContent {
-                SpamScreen()
-            }
-        }
-}
 
 @Composable
 fun SpamScreen(

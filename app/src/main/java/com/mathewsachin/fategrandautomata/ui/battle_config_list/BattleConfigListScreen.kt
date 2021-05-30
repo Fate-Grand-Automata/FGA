@@ -2,9 +2,6 @@ package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
 import android.content.res.Configuration
 import android.net.Uri
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,21 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
-import com.mathewsachin.fategrandautomata.util.nav
-import dagger.hilt.android.AndroidEntryPoint
 
 @Composable
 fun BattleConfigListScreen(
@@ -103,28 +95,6 @@ fun BattleConfigListScreen(
             }
         }
     )
-}
-
-@AndroidEntryPoint
-class BattleConfigListFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            val vm: BattleConfigListViewModel by viewModels()
-
-            setContent {
-                BattleConfigListScreen(
-                    vm = vm,
-                    navigate = { navigate(it) }
-                )
-            }
-        }
-
-    private fun navigate(id: String) {
-        val action = BattleConfigListFragmentDirections
-            .actionBattleConfigListFragmentToBattleConfigItemSettingsFragment(id)
-
-        nav(action)
-    }
 }
 
 private sealed class BattleConfigListAction {

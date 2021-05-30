@@ -1,13 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.main
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.launch
@@ -19,14 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.R
@@ -36,8 +28,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToke
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.OpenDocTreePersistable
-import com.mathewsachin.fategrandautomata.util.nav
-import dagger.hilt.android.AndroidEntryPoint
 
 @Composable
 fun MainScreen(
@@ -134,66 +124,6 @@ fun MainScreen(
             }
         }
     )
-}
-
-@AndroidEntryPoint
-class MainFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-        ComposeView(requireContext()).apply {
-            val vm: MainScreenViewModel by activityViewModels()
-
-            setContent {
-                MainScreen(
-                    vm = vm,
-                    navigate = { navigate(it) }
-                )
-            }
-        }
-
-    private fun navigate(it: MainScreenDestinations) {
-        when (it) {
-            MainScreenDestinations.BattleConfigs -> {
-                val action = MainFragmentDirections
-                    .actionMainFragmentToBattleConfigListFragment()
-
-                nav(action)
-            }
-            MainScreenDestinations.MoreOptions -> {
-                val action = MainFragmentDirections
-                    .actionMainFragmentToMoreSettingsFragment()
-
-                nav(action)
-            }
-            MainScreenDestinations.Releases -> {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(getString(R.string.link_releases))
-                )
-
-                startActivity(intent)
-            }
-            MainScreenDestinations.TroubleshootingGuide -> {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(getString(R.string.link_troubleshoot))
-                )
-
-                startActivity(intent)
-            }
-            MainScreenDestinations.AccessibilitySettings -> {
-                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                startActivity(intent)
-            }
-            MainScreenDestinations.OverlaySettings -> {
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:${requireContext().packageName}")
-                )
-
-                startActivity(intent)
-            }
-        }
-    }
 }
 
 private fun toggleOverlayService(
