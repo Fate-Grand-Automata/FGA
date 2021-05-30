@@ -22,10 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.fragment.navArgs
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
-import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
 import com.mathewsachin.fategrandautomata.ui.FgaScreen
@@ -35,31 +32,20 @@ import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectChip
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SpamSettingsFragment : Fragment() {
-    val args: SpamSettingsFragmentArgs by navArgs()
-
-    @Inject
-    lateinit var prefsCore: PrefsCore
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         ComposeView(requireContext()).apply {
-            val config = prefsCore.forBattleConfig(args.key)
-
             setContent {
-                SpamView(
-                    config = config
-                )
+                SpamScreen()
             }
         }
 }
 
 @Composable
-fun SpamView(
-    config: BattleConfigCore,
-    vm: SpamSettingsViewModel = viewModel()
+fun SpamScreen(
+    vm: SpamScreenViewModel = viewModel()
 ) {
     DisposableEffect(vm) {
         onDispose {
@@ -74,7 +60,7 @@ fun SpamView(
             }
 
             item {
-                config.autoChooseTarget.SwitchPreference(
+                vm.battleConfigCore.autoChooseTarget.SwitchPreference(
                     title = stringResource(R.string.p_auto_choose_target),
                     summary = stringResource(R.string.p_spam_summary)
                 )
@@ -153,7 +139,7 @@ fun SpamView(
 
 @Composable
 private fun NpSpamView(
-    spamConfig: SpamSettingsViewModel.NpSpamState
+    spamConfig: SpamScreenViewModel.NpSpamState
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -184,7 +170,7 @@ private fun NpSpamView(
 @Composable
 private fun SkillSpamView(
     index: Int,
-    skillConfig: SpamSettingsViewModel.SkillSpamState
+    skillConfig: SpamScreenViewModel.SkillSpamState
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -221,7 +207,7 @@ private fun SkillSpamView(
 
 @Composable
 private fun SpamView(
-    selectedConfig: SpamSettingsViewModel.SpamState
+    selectedConfig: SpamScreenViewModel.SpamState
 ) {
     Column {
         Card(
@@ -252,7 +238,7 @@ private fun SpamView(
 }
 
 @Composable
-fun SelectSpamMode(
+private fun SelectSpamMode(
     selected: SpamEnum,
     onSelectChange: (SpamEnum) -> Unit,
     modifier: Modifier = Modifier
@@ -273,7 +259,7 @@ fun SelectSpamMode(
 }
 
 @Composable
-fun SelectTarget(
+private fun SelectTarget(
     selected: SkillSpamTarget,
     onSelectChange: (SkillSpamTarget) -> Unit,
     modifier: Modifier = Modifier
@@ -294,7 +280,7 @@ fun SelectTarget(
 }
 
 @Composable
-fun SelectWaves(
+private fun SelectWaves(
     selected: Set<Int>,
     onSelectChange: (Set<Int>) -> Unit,
     modifier: Modifier = Modifier

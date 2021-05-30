@@ -5,20 +5,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.NpSpamConfig
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamConfig
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SpamSettingsViewModel @Inject constructor(
-    val preferences: IPreferences,
-    val battleConfig: IBattleConfig
+class SpamScreenViewModel @Inject constructor(
+    val battleConfig: IBattleConfig,
+    val battleConfigCore: BattleConfigCore
 ): ViewModel() {
     private val spamConfig = battleConfig.spam
 
