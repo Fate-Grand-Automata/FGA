@@ -20,7 +20,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
-import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectChip
@@ -37,84 +36,82 @@ fun SpamScreen(
         }
     }
 
-    FgaScreen {
-        LazyColumn {
-            item {
-                Heading(stringResource(R.string.p_spam_spam))
-            }
+    LazyColumn {
+        item {
+            Heading(stringResource(R.string.p_spam_spam))
+        }
 
-            item {
-                vm.battleConfigCore.autoChooseTarget.SwitchPreference(
-                    title = stringResource(R.string.p_auto_choose_target),
-                    summary = stringResource(R.string.p_spam_summary)
-                )
+        item {
+            vm.battleConfigCore.autoChooseTarget.SwitchPreference(
+                title = stringResource(R.string.p_auto_choose_target),
+                summary = stringResource(R.string.p_spam_summary)
+            )
 
-                Divider()
-            }
+            Divider()
+        }
 
-            item {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(16.dp, 5.dp)
-                ) {
-                    Text(
-                        "Servant:",
-                        modifier = Modifier.padding(end = 16.dp)
-                    )
-
-                    (1..vm.spamStates.size).map {
-                        val isSelected = vm.selectedServant == it - 1
-
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
-                                    shape = MaterialTheme.shapes.medium
-                                )
-                                .clickable { vm.selectedServant = it - 1 }
-                                .padding(14.dp, 5.dp)
-                        ) {
-                            Text(
-                                it.toString(),
-                                color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
-                            )
-                        }
-                    }
-                }
-
-                Divider()
-            }
-
-            item {
-                val selectedConfig = vm.spamStates[vm.selectedServant]
-
-                SpamView(
-                    selectedConfig = selectedConfig
-                )
-            }
-
-            item {
-                Divider(
-                    modifier = Modifier.padding(vertical = 16.dp)
-                )
-
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(16.dp, 5.dp)
+            ) {
                 Text(
-                    "PRESETS",
-                    modifier = Modifier
-                        .padding(16.dp, 5.dp)
+                    "Servant:",
+                    modifier = Modifier.padding(end = 16.dp)
                 )
-            }
 
-            item {
-                LazyRow(
-                    contentPadding = PaddingValues(16.dp, 5.dp)
-                ) {
-                    items(vm.presets) { preset ->
-                        HeadingButton(
-                            text = preset.name,
-                            onClick = { preset.action(vm.spamStates) }
+                (1..vm.spamStates.size).map {
+                    val isSelected = vm.selectedServant == it - 1
+
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
+                                shape = MaterialTheme.shapes.medium
+                            )
+                            .clickable { vm.selectedServant = it - 1 }
+                            .padding(14.dp, 5.dp)
+                    ) {
+                        Text(
+                            it.toString(),
+                            color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
                         )
                     }
+                }
+            }
+
+            Divider()
+        }
+
+        item {
+            val selectedConfig = vm.spamStates[vm.selectedServant]
+
+            SpamView(
+                selectedConfig = selectedConfig
+            )
+        }
+
+        item {
+            Divider(
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
+
+            Text(
+                "PRESETS",
+                modifier = Modifier
+                    .padding(16.dp, 5.dp)
+            )
+        }
+
+        item {
+            LazyRow(
+                contentPadding = PaddingValues(16.dp, 5.dp)
+            ) {
+                items(vm.presets) { preset ->
+                    HeadingButton(
+                        text = preset.name,
+                        onClick = { preset.action(vm.spamStates) }
+                    )
                 }
             }
         }

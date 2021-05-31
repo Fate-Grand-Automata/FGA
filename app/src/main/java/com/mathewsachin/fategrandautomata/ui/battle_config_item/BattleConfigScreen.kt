@@ -31,8 +31,11 @@ import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.ui.*
+import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.HeadingButton
+import com.mathewsachin.fategrandautomata.ui.OnResume
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
@@ -95,11 +98,10 @@ private fun BattleConfigContent(
     navigate: (BattleConfigDestination) -> Unit,
     vm: BattleConfigScreenViewModel = viewModel()
 ) {
-    FgaScreen {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -242,7 +244,6 @@ private fun BattleConfigContent(
                 }
             }
         }
-    }
 }
 
 private val CardScore.color: Color

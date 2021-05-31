@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
 import com.mathewsachin.fategrandautomata.ui.Heading
 
@@ -25,10 +24,9 @@ import com.mathewsachin.fategrandautomata.ui.Heading
 fun FineTuneScreen(
     vm: FineTuneSettingsViewModel = viewModel()
 ) {
-    FgaScreen {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
             var selectedIndex by rememberSaveable { mutableStateOf(0) }
 
             Heading(stringResource(R.string.p_fine_tune)) {
@@ -86,5 +84,4 @@ fun FineTuneScreen(
                 )
             }
         }
-    }
 }

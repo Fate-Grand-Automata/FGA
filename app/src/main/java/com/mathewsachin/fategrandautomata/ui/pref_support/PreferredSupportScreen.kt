@@ -18,7 +18,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.SupportPrefsCore
-import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.OnResume
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
@@ -47,11 +46,10 @@ private fun PreferredSupport(
     config: SupportPrefsCore,
     vm: SupportViewModel
 ) {
-    FgaScreen {
-        val prefServants by config.preferredServants.remember()
-        val prefCEs by config.preferredCEs.remember()
+    val prefServants by config.preferredServants.remember()
+    val prefCEs by config.preferredCEs.remember()
 
-        LazyColumn {
+    LazyColumn {
             item {
                 Heading(stringResource(R.string.p_support_mode_preferred))
             }
@@ -134,7 +132,6 @@ private fun PreferredSupport(
                 }
             }
         }
-    }
 }
 
 @Composable

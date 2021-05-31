@@ -39,35 +39,31 @@ fun MainScreen(
     var toggling by rememberSaveable { mutableStateOf(false) }
 
     val accessibilityDisabledDialog = FgaDialog()
-    FGATheme {
-        accessibilityDisabledDialog.build {
-            title(stringResource(R.string.accessibility_disabled_title))
-            message(stringResource(R.string.accessibility_disabled_message))
+    accessibilityDisabledDialog.build {
+        title(stringResource(R.string.accessibility_disabled_title))
+        message(stringResource(R.string.accessibility_disabled_message))
 
-            buttons(
-                okLabel = stringResource(R.string.accessibility_disabled_go_to_settings),
-                onSubmit = {
-                    navigate(MainScreenDestinations.AccessibilitySettings)
-                    toggling = true
-                }
-            )
-        }
+        buttons(
+            okLabel = stringResource(R.string.accessibility_disabled_go_to_settings),
+            onSubmit = {
+                navigate(MainScreenDestinations.AccessibilitySettings)
+                toggling = true
+            }
+        )
     }
 
     val overlayDisabledDialog = FgaDialog()
-    FGATheme {
-        overlayDisabledDialog.build {
-            title(stringResource(R.string.draw_overlay_disabled_title))
-            message(stringResource(R.string.draw_overlay_disabled_message))
+    overlayDisabledDialog.build {
+        title(stringResource(R.string.draw_overlay_disabled_title))
+        message(stringResource(R.string.draw_overlay_disabled_message))
 
-            buttons(
-                okLabel = stringResource(R.string.accessibility_disabled_go_to_settings),
-                onSubmit = {
-                    navigate(MainScreenDestinations.OverlaySettings)
-                    toggling = true
-                }
-            )
-        }
+        buttons(
+            okLabel = stringResource(R.string.accessibility_disabled_go_to_settings),
+            onSubmit = {
+                navigate(MainScreenDestinations.OverlaySettings)
+                toggling = true
+            }
+        )
     }
 
     val context = LocalContext.current
@@ -178,7 +174,7 @@ private fun MainScreenContent(
     accessibilityServiceStarted: Boolean,
     toggleAccessibilityService: () -> Unit
 ) {
-    FgaScreen {
+    Box {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

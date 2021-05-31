@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.ui.FgaScreen
 import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.util.OpenDocTreePersistable
@@ -48,10 +47,9 @@ private fun MoreOptionsContent(
     goToFineTune: () -> Unit,
     pickDirectory: () -> Unit
 ) {
-    FgaScreen {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
             var selectedGroup by rememberSaveable { mutableStateOf(MoreSettingsGroup.Battle) }
 
             Heading(stringResource(R.string.p_more_options)) {
@@ -101,7 +99,6 @@ private fun MoreOptionsContent(
                 }
             }
         }
-    }
 }
 
 private enum class MoreSettingsGroup {

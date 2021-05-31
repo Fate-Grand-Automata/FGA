@@ -34,8 +34,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
-import com.mathewsachin.fategrandautomata.ui.*
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
+import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 
 @Composable
@@ -66,15 +69,13 @@ fun BattleConfigListScreen(
     }
 
     val deleteConfirmDialog = FgaDialog()
-    FGATheme {
-        deleteConfirmDialog.build {
-            title(stringResource(R.string.battle_config_list_delete_confirm_title))
-            message(stringResource(R.string.battle_config_list_delete_confirm_message, selectedConfigs.size))
+    deleteConfirmDialog.build {
+        title(stringResource(R.string.battle_config_list_delete_confirm_title))
+        message(stringResource(R.string.battle_config_list_delete_confirm_message, selectedConfigs.size))
 
-            buttons(
-                onSubmit = { vm.deleteSelected() }
-            )
-        }
+        buttons(
+            onSubmit = { vm.deleteSelected() }
+        )
     }
 
     val configs by vm.battleConfigItems.collectAsState(emptyList())
@@ -116,7 +117,7 @@ private fun BattleConfigListContent(
 ) {
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    FgaScreen {
+    Box {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -148,8 +149,7 @@ private fun BattleConfigListContent(
                                     isDanger = true,
                                     icon = icon(Icons.Default.Delete)
                                 )
-                            }
-                            else {
+                            } else {
                                 HeadingButton(
                                     text = stringResource(R.string.battle_config_list_import),
                                     onClick = { action(BattleConfigListAction.Import) }
@@ -169,8 +169,7 @@ private fun BattleConfigListContent(
                                 modifier = Modifier.padding(16.dp)
                             )
                         }
-                    }
-                    else {
+                    } else {
                         items(
                             configs,
                             key = { it.id }
