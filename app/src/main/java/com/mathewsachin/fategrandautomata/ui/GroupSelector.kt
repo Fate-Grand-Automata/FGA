@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
@@ -17,13 +18,16 @@ fun GroupSelectorItem(
     isSelected: Boolean,
     onSelect: () -> Unit
 ) {
+    val shape = MaterialTheme.shapes.medium
+
     Box(
         modifier = Modifier
             .padding(end = 5.dp)
             .background(
                 color = if (isSelected) MaterialTheme.colors.primary else Color.Transparent,
-                shape = MaterialTheme.shapes.medium
+                shape = shape
             )
+            .clip(shape)
             .clickable { onSelect() }
     ) {
         Text(
