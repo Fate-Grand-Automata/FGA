@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.ScriptExitException
 import javax.inject.Inject
 import kotlin.time.seconds
 
@@ -14,11 +13,18 @@ class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    sealed class ExitReason {
+        object InventoryFull: ExitReason()
+        class Limit(val count: Int): ExitReason()
+    }
+
+    class ExitException(val reason: ExitReason): Exception()
+
     private var count = 0
 
     private fun countNext() {
         if (prefs.shouldLimitFP && count >= prefs.limitFP) {
-            throw ScriptExitException(messages.timesRolled(count))
+            throw ExitException(ExitReason.Limit(count))
         }
 
         ++count
@@ -34,7 +40,9 @@ class AutoFriendGacha @Inject constructor(
         }
 
         while (true) {
-            stopIfInventoryFull()
+            if (isInventoryFull()) {
+                throw ExitException(ExitReason.InventoryFull)
+            }
 
             if (images.fpSummonContinue in game.fpContinueSummonRegion) {
                 countNext()

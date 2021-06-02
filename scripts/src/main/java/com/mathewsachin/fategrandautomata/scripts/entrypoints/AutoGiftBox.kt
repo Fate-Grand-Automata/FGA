@@ -5,7 +5,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.ScriptExitException
 import javax.inject.Inject
 import kotlin.time.seconds
 
@@ -13,6 +12,8 @@ class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    class ExitException(val pickedStacks: Int): Exception()
+
     companion object {
         const val maxClickCount = 99
         const val maxNullStreak = 3
@@ -67,7 +68,7 @@ class AutoGiftBox @Inject constructor(
            clickCount can be higher than maxClickCount when the script is close to the limit and
            finds multiple collectible stacks on the screen. FGO will not register the extra clicks.
          */
-        throw ScriptExitException(messages.pickedExpStack(clickCount.coerceAtMost(maxClickCount)))
+        throw ExitException(clickCount.coerceAtMost(maxClickCount))
     }
 
     // Return picked count

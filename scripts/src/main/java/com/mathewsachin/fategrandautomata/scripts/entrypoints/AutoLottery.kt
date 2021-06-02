@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.ScriptExitException
 import javax.inject.Inject
 import kotlin.time.seconds
 
@@ -14,6 +13,13 @@ class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    sealed class ExitReason {
+        object ResetDisabled: ExitReason()
+        object PresentBoxFull: ExitReason()
+    }
+
+    class ExitException(val reason: ExitReason): Exception()
+
     private fun spin() {
         // Don't increase this too much or you'll regret when you're not able to stop the script
         // And your phone won't let you press anything
@@ -22,7 +28,7 @@ class AutoLottery @Inject constructor(
 
     private fun reset() {
         if (prefs.preventLotteryBoxReset) {
-            throw ScriptExitException(messages.lotteryBoxResetIsDisabled)
+            throw ExitException(ExitReason.ResetDisabled)
         }
 
         game.lotteryResetClick.click()
@@ -41,7 +47,7 @@ class AutoLottery @Inject constructor(
                 when {
                     images.finishedLotteryBox in game.lotteryFinishedRegion -> reset()
                     images.presentBoxFull in game.lotteryFullPresentBoxRegion -> {
-                        throw ScriptExitException(messages.lotteryPresentBoxFull)
+                        throw ExitException(ExitReason.PresentBoxFull)
                     }
                     else -> spin()
                 }

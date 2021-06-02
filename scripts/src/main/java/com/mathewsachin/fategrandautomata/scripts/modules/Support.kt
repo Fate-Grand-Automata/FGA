@@ -2,11 +2,15 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.Size
 import timber.log.Timber
 import timber.log.debug
 import kotlin.streams.asStream
@@ -54,7 +58,7 @@ class Support(
     }
 
     private fun selectManual(): Boolean {
-        throw ScriptExitException(messages.supportSelectionManual)
+        throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionManual)
     }
 
     private var lastSupportRefreshTimestamp: TimeMark? = null
@@ -157,7 +161,7 @@ class Support(
             return selectPreferred { findFriendName() }
         }
 
-        throw ScriptExitException(messages.supportSelectionFriendNotSet)
+        throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionFriendNotSet)
     }
 
     private fun selectPreferred(SearchMethod: SearchFunction): Boolean {
@@ -228,7 +232,7 @@ class Support(
                     .map { SearchFunctionResult.Found(it.region) }
                     .firstOrNull() ?: SearchFunctionResult.NotFound
             }
-            else -> throw ScriptExitException(messages.supportSelectionPreferredNotSet)
+            else -> throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionPreferredNotSet)
         }
     }
 

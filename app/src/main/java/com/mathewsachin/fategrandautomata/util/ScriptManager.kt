@@ -9,7 +9,7 @@ import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncher
@@ -82,21 +82,49 @@ class ScriptManager @Inject constructor(
 
         when (e) {
             is SupportImageMaker.ExitException -> {
-                showSupportImageNamer(userInterface, storageProvider)
+                when (e.reason) {
+                    SupportImageMaker.ExitReason.NotFound -> {
+                        val msg = messages.supportImageMakerNotFound
+
+                        platformImpl.notify(msg)
+                        message(messages.scriptExited, msg)
+                    }
+                    SupportImageMaker.ExitReason.Success -> showSupportImageNamer(userInterface, storageProvider)
+                }
+            }
+            is AutoLottery.ExitException -> {
+                val msg = when (e.reason) {
+                    AutoLottery.ExitReason.PresentBoxFull -> messages.lotteryPresentBoxFull
+                    AutoLottery.ExitReason.ResetDisabled -> messages.lotteryBoxResetIsDisabled
+                }
+
+                platformImpl.notify(msg)
+                message(messages.scriptExited, msg)
+            }
+            is AutoGiftBox.ExitException -> {
+                val msg = messages.pickedExpStack(e.pickedStacks)
+
+                platformImpl.notify(msg)
+                message(messages.scriptExited, msg)
+            }
+            is AutoFriendGacha.ExitException -> {
+                val msg = when (val reason = e.reason) {
+                    AutoFriendGacha.ExitReason.InventoryFull -> messages.inventoryFull
+                    is AutoFriendGacha.ExitReason.Limit -> messages.timesRolled(reason.count)
+                }
+
+                platformImpl.notify(msg)
+                message(messages.scriptExited, msg)
+            }
+            is AutoBattle.ExitException -> {
+                if (e.reason != AutoBattle.ExitReason.Abort) {
+                    platformImpl.notify(messages.scriptExited)
+                }
+
+                message(messages.scriptExited, e.msg)
             }
             is ScriptAbortException -> {
-                if (e.message.isNotBlank()) {
-                    message(messages.scriptExited, e.message)
-                }
-            }
-            is ScriptExitException -> {
-                // Show the message box only if there is some message
-                if (e.message.isNotBlank()) {
-                    val msg = messages.scriptExited
-                    platformImpl.notify(msg)
-
-                    message(msg, e.message)
-                }
+                // user aborted. do nothing
             }
             else -> {
                 println(e.messageAndStackTrace)

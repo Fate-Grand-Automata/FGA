@@ -21,14 +21,10 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
     return game.supportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
 }
 
-fun IFgoAutomataApi.stopIfInventoryFull() {
-    // Inventory full. Stop script. We only have images for JP and NA
-    if (prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)) {
-        if (images.inventoryFull in game.inventoryFullRegion) {
-            throw ScriptExitException(messages.inventoryFull)
-        }
-    }
-}
+fun IFgoAutomataApi.isInventoryFull() =
+    // We only have images for JP and NA
+    prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)
+            && images.inventoryFull in game.inventoryFullRegion
 
 /**
  * Script for starting quests, selecting the support and doing battles.
@@ -38,6 +34,27 @@ open class AutoBattle @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     val storageProvider: IStorageProvider
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    sealed class ExitReason {
+        object Abort: ExitReason()
+        class Unexpected(val e: Exception): ExitReason()
+        object CEGet: ExitReason()
+        object CEDropped: ExitReason()
+        class LimitMaterials(val count: Int): ExitReason()
+        object WithdrawDisabled: ExitReason()
+        object APRanOut: ExitReason()
+        object InventoryFull: ExitReason()
+        class LimitRuns(val count: Int): ExitReason()
+        object SupportSelectionManual: ExitReason()
+        object SupportSelectionFriendNotSet: ExitReason()
+        object SupportSelectionPreferredNotSet: ExitReason()
+        class SkillCommandParseError(val e: Exception): ExitReason()
+        class CardPriorityParseError(val msg: String): ExitReason()
+    }
+
+    internal class BattleExitException(val reason: ExitReason): Exception()
+
+    class ExitException(val reason: ExitReason, val msg: String): Exception()
+
     private val support = Support(fgAutomataApi)
     private val card = Card(fgAutomataApi)
     private val battle = Battle(fgAutomataApi)
@@ -55,18 +72,16 @@ open class AutoBattle @Inject constructor(
 
         try {
             loop()
-        } catch (e: ScriptExitException) {
-            throw ScriptExitException(makeExitMessage(e.message))
+        } catch (e: BattleExitException) {
+            throw ExitException(e.reason, makeExitMessage(e.reason))
         } catch (e: ScriptAbortException) {
-            val msg = makeExitMessage(
-                if (e.message.isBlank())
-                    messages.stoppedByUser
-                else e.message
-            )
+            val msg = makeExitMessage(ExitReason.Abort)
 
-            throw ScriptAbortException(msg)
+            throw ExitException(ExitReason.Abort, msg)
         } catch (e: Exception) {
-            throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
+            val reason = ExitReason.Unexpected(e)
+
+            throw ExitException(reason, makeExitMessage(reason))
         } finally {
             val refill = prefs.refill
 
@@ -97,8 +112,25 @@ open class AutoBattle @Inject constructor(
         }
     }
 
-    private fun makeExitMessage(reason: String) = buildString {
-        appendLine(reason)
+    private fun ExitReason.text(): String = when (this) {
+        ExitReason.Abort -> messages.stoppedByUser
+        is ExitReason.Unexpected -> "${messages.unexpectedError}: ${e.message}"
+        ExitReason.CEGet -> messages.ceGet
+        ExitReason.CEDropped -> messages.ceDropped
+        is ExitReason.LimitMaterials -> messages.farmedMaterials(count)
+        ExitReason.WithdrawDisabled -> messages.withdrawDisabled
+        ExitReason.APRanOut -> messages.apRanOut
+        ExitReason.InventoryFull -> messages.inventoryFull
+        is ExitReason.LimitRuns -> messages.timesRan(count)
+        ExitReason.SupportSelectionManual -> messages.supportSelectionManual
+        ExitReason.SupportSelectionFriendNotSet -> messages.supportSelectionFriendNotSet
+        ExitReason.SupportSelectionPreferredNotSet -> messages.supportSelectionPreferredNotSet
+        is ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
+        is ExitReason.CardPriorityParseError -> msg
+    }
+
+    private fun makeExitMessage(reason: ExitReason) = buildString {
+        appendLine(reason.text())
         appendLine()
 
         makeRefillAndRunsMessage().let { msg ->
@@ -246,7 +278,7 @@ open class AutoBattle @Inject constructor(
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
-            throw ScriptExitException(messages.ceGet)
+            throw BattleExitException(ExitReason.CEGet)
         } else notify(messages.ceGet)
 
         game.resultCeRewardCloseClick.click()
@@ -286,10 +318,9 @@ open class AutoBattle @Inject constructor(
         if (ceDropped > 0) {
             ceDropCount += ceDropped
 
-            val msg = messages.ceDropped
             if (prefs.stopOnCEDrop) {
-                throw ScriptExitException(msg)
-            } else notify(msg)
+                throw BattleExitException(ExitReason.CEDropped)
+            } else notify(messages.ceDropped)
         }
     }
 
@@ -312,7 +343,7 @@ open class AutoBattle @Inject constructor(
                 .sum()
 
             if (totalMats >= prefs.refill.limitMats) {
-                throw ScriptExitException(messages.farmedMaterials(totalMats))
+                throw BattleExitException(ExitReason.LimitMaterials(totalMats))
             }
         }
     }
@@ -411,7 +442,7 @@ open class AutoBattle @Inject constructor(
      */
     private fun withdraw() {
         if (!prefs.withdrawEnabled) {
-            throw ScriptExitException(messages.withdrawDisabled)
+            throw BattleExitException(ExitReason.WithdrawDisabled)
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
@@ -468,7 +499,7 @@ open class AutoBattle @Inject constructor(
             game.staminaCloseClick.click()
             toast(messages.waitAPToast(1))
             60.seconds.wait()
-        } else throw ScriptExitException(messages.apRanOut)
+        } else throw BattleExitException(ExitReason.APRanOut)
     }
 
     /**
@@ -579,7 +610,10 @@ open class AutoBattle @Inject constructor(
 
     private fun afterSelectingQuest() {
         1.5.seconds.wait()
-        stopIfInventoryFull()
+
+        if (isInventoryFull()) {
+            throw BattleExitException(ExitReason.InventoryFull)
+        }
 
         // Auto refill
         while (images.stamina in game.staminaScreenRegion) {
