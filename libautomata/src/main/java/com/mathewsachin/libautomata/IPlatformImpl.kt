@@ -20,11 +20,6 @@ interface IPlatformImpl {
     fun getResizableBlankPattern(): IPattern
 
     /**
-     * Shows a message box with the given title and message.
-     */
-    fun messageBox(Title: String, Message: String, Error: Exception? = null, onDismiss: () -> Unit = { })
-
-    /**
      * Adds borders around the given [Region].
      *
      * @param Region a [Region] on the screen

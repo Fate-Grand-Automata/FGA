@@ -179,7 +179,7 @@ class ScriptRunnerService: Service() {
                     val title = getString(R.string.script_paused)
                     val msg = getString(R.string.screen_turned_off)
                     platformImpl.notify(msg)
-                    platformImpl.messageBox(title, msg)
+                    showMessageBox(title, msg)
                 }
             }
         }
@@ -220,20 +220,25 @@ class ScriptRunnerService: Service() {
         }
     }
 
-    fun showMessageBox(Title: String, Message: String, Error: Exception?, onDismiss: () -> Unit) {
+    fun showMessageBox(
+        title: String,
+        message: String,
+        error: Exception? = null,
+        onDismiss: () -> Unit = { }
+    ) {
         showOverlayDialog(this) {
-            setTitle(Title)
-                .setMessage(Message)
+            setTitle(title)
+                .setMessage(message)
                 .setPositiveButton(android.R.string.ok) { _, _ -> }
                 .setOnDismissListener {
                     notification.hideMessage()
                     onDismiss()
                 }
                 .let {
-                    if (Error != null) {
+                    if (error != null) {
                         // TODO: Translate
                         it.setNeutralButton("Copy") { _, _ ->
-                            val clipData = ClipData.newPlainText("Error", Error.messageAndStackTrace)
+                            val clipData = ClipData.newPlainText("Error", error.messageAndStackTrace)
 
                             clipboardManager.setPrimaryClip(clipData)
                         }

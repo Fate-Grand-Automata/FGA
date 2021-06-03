@@ -1,9 +1,11 @@
 package com.mathewsachin.fategrandautomata.util
 
+import android.app.Service
 import android.content.Context
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
@@ -30,6 +32,7 @@ import kotlin.time.milliseconds
 
 @ServiceScoped
 class ScriptManager @Inject constructor(
+    service: Service,
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
@@ -38,12 +41,14 @@ class ScriptManager @Inject constructor(
     val platformImpl: IPlatformImpl,
     val messages: IScriptMessages
 ) {
+    private val service = service as ScriptRunnerService
+
     var scriptState: ScriptState = ScriptState.Stopped
         private set
 
     // Show message box synchronously
     suspend fun message(Title: String, Message: String, Error: Exception? = null): Boolean = suspendCancellableCoroutine {
-        platformImpl.messageBox(Title, Message, Error) {
+        service.showMessageBox(Title, Message, Error) {
             it.resume(true)
         }
     }

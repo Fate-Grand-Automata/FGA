@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
@@ -21,13 +20,12 @@ import javax.inject.Inject
 import kotlin.time.Duration
 
 class AndroidImpl @Inject constructor(
-    service: Service,
+    val service: Service,
     val notification: ScriptRunnerNotification,
     val preferences: IPreferences,
     val cutoutManager: CutoutManager,
     val highlightManager: HighlightManager
 ) : IPlatformImpl {
-    val service = service as ScriptRunnerService
 
     override val windowRegion get() = cutoutManager.getCutoutAppliedRegion()
 
@@ -47,18 +45,10 @@ class AndroidImpl @Inject constructor(
 
     override fun notify(message: String) = notification.message(message)
 
-    override fun getResizableBlankPattern(): IPattern {
-        return DroidCvPattern()
-    }
+    override fun getResizableBlankPattern(): IPattern = DroidCvPattern()
 
     private val handler by lazy {
         Handler(Looper.getMainLooper())
-    }
-
-    override fun messageBox(Title: String, Message: String, Error: Exception?, onDismiss: () -> Unit) {
-        handler.post {
-            service.showMessageBox(Title, Message, Error, onDismiss)
-        }
     }
 
     override fun highlight(Region: Region, Duration: Duration, success: Boolean) {
