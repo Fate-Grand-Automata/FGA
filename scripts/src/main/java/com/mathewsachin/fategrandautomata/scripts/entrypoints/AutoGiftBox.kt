@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
@@ -24,7 +25,7 @@ class AutoGiftBox @Inject constructor(
         var aroundEnd = false
         var nullStreak = 0
 
-        val xpOffsetX = (game.scriptArea.find(images.goldXP) ?: game.scriptArea.find(images.silverXP))
+        val xpOffsetX = (game.scriptArea.find(images[Images.GoldXP]) ?: game.scriptArea.find(images[Images.SilverXP]))
             ?.Region?.center?.X
             ?: throw Exception("Couldn't find Embers on screen. This shouldn't happen.")
 
@@ -36,7 +37,7 @@ class AutoGiftBox @Inject constructor(
                 if (!aroundEnd) {
                     // The scrollbar end position matches before completely at end
                     // a few items can be left off if we're not careful
-                    aroundEnd = images.giftBoxScrollEnd in scrollEndRegion
+                    aroundEnd = images[Images.GiftBoxScrollEnd] in scrollEndRegion
                 }
 
                 pickGifts(checkRegion)
@@ -75,7 +76,7 @@ class AutoGiftBox @Inject constructor(
     private fun pickGifts(checkRegion: Region): Int {
         var clickCount = 0
 
-        for (gift in checkRegion.findAll(images.giftBoxCheck).sorted()) {
+        for (gift in checkRegion.findAll(images[Images.GiftBoxCheck]).sorted()) {
             val countRegion = when (prefs.gameServer) {
                 GameServerEnum.Jp, GameServerEnum.Tw, GameServerEnum.Cn -> -940
                 GameServerEnum.En -> -830
@@ -84,16 +85,16 @@ class AutoGiftBox @Inject constructor(
 
             val iconRegion = Region(-1480, -116, 300, 240) + gift.Region.location
 
-            val gold = images.goldXP in iconRegion
-            val silver = !gold && images.silverXP in iconRegion
+            val gold = images[Images.GoldXP] in iconRegion
+            val silver = !gold && images[Images.SilverXP] in iconRegion
 
             if (gold || silver) {
                 if (gold) {
                     val count = mapOf(
-                        1 to images.x1,
-                        2 to images.x2,
-                        3 to images.x3,
-                        4 to images.x4
+                        1 to images[Images.ExpX1],
+                        2 to images[Images.ExpX2],
+                        3 to images[Images.ExpX3],
+                        4 to images[Images.ExpX4]
                     ).entries.firstOrNull { (_, pattern) ->
                         countRegion.exists(pattern, Similarity = 0.87)
                     }?.key

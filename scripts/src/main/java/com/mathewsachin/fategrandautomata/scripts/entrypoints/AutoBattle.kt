@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
@@ -18,13 +19,13 @@ import kotlin.time.seconds
  * Checks if Support Selection menu is up
  */
 fun IFgoAutomataApi.isInSupport(): Boolean {
-    return game.supportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
+    return game.supportScreenRegion.exists(images[Images.SupportScreen], Similarity = 0.85)
 }
 
 fun IFgoAutomataApi.isInventoryFull() =
     // We only have images for JP and NA
     prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)
-            && images.inventoryFull in game.inventoryFullRegion
+            && images[Images.InventoryFull] in game.inventoryFullRegion
 
 /**
  * Script for starting quests, selecting the support and doing battles.
@@ -223,7 +224,7 @@ open class AutoBattle @Inject constructor(
     /**
      *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
      */
-    private fun isInMenu() = images.menu in game.menuScreenRegion
+    private fun isInMenu() = images[Images.Menu] in game.menuScreenRegion
 
     /**
      * Resets the battle state, clicks on the quest and refills the AP if needed.
@@ -255,17 +256,17 @@ open class AutoBattle @Inject constructor(
      */
     private fun isInResult(): Boolean {
         val cases = sequenceOf(
-            images.result to game.resultScreenRegion,
-            images.bond to game.resultBondRegion,
-            images.masterLvlUp to game.resultMasterLvlUpRegion,
-            images.masterExp to game.resultMasterExpRegion
+            images[Images.Result] to game.resultScreenRegion,
+            images[Images.Bond] to game.resultBondRegion,
+            images[Images.MasterLevelUp] to game.resultMasterLvlUpRegion,
+            images[Images.MasterExp] to game.resultMasterExpRegion
         )
 
         return cases.any { (image, region) -> image in region }
     }
 
     private fun isBond10CEReward() =
-        game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = 0.75)
+        game.resultCeRewardRegion.exists(images[Images.Bond10Reward], Similarity = 0.75)
 
     /**
      * It seems like we need to click on CE (center of screen) to accept them
@@ -274,7 +275,7 @@ open class AutoBattle @Inject constructor(
         game.scriptArea.center.click()
 
     private fun isCeRewardDetails() =
-        images.ceDetails in game.resultCeRewardDetailsRegion
+        images[Images.CEDetails] in game.resultCeRewardDetailsRegion
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
@@ -291,7 +292,7 @@ open class AutoBattle @Inject constructor(
         game.resultClick.click(15)
 
     private fun isInDropsScreen() =
-        images.matRewards in game.resultMatRewardsRegion
+        images[Images.MatRewards] in game.resultMatRewardsRegion
 
     private fun dropScreen() {
         checkCEDrops()
@@ -309,11 +310,11 @@ open class AutoBattle @Inject constructor(
         val starsRegion = Region(40, -40, 80, 40)
 
         val ceDropped = game.scriptArea
-            .findAll(images.dropCE)
+            .findAll(images[Images.DropCE])
             .map { (region, _) ->
                 starsRegion + region.location
             }
-            .count { images.dropCEStars in it }
+            .count { images[Images.DropCEStars] in it }
 
         if (ceDropped > 0) {
             ceDropCount += ceDropped
@@ -326,7 +327,7 @@ open class AutoBattle @Inject constructor(
 
     private fun trackMaterials() {
         for (material in prefs.selectedBattleConfig.materials) {
-            val pattern = images.material(material)
+            val pattern = images.loadMaterial(material)
 
             // TODO: Make the search region smaller
             val count = game.scriptArea
@@ -355,7 +356,7 @@ open class AutoBattle @Inject constructor(
             drops.add(takeColorScreenshot())
 
             // check if we need to scroll to see more drops
-            if (i == 0 && images.dropScrollbar in game.resultDropScrollbarRegion) {
+            if (i == 0 && images[Images.DropScrollbar] in game.resultDropScrollbarRegion) {
                 // scroll to end
                 game.resultDropScrollEndClick.click()
             } else break
@@ -364,7 +365,7 @@ open class AutoBattle @Inject constructor(
         storageProvider.dropScreenshot(drops)
     }
 
-    private fun isRepeatScreen() = images.confirm in game.continueRegion
+    private fun isRepeatScreen() = images[Images.Repeat] in game.continueRegion
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
@@ -373,7 +374,7 @@ open class AutoBattle @Inject constructor(
         // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
 
-        val region = game.continueRegion.find(images.confirm)?.Region
+        val region = game.continueRegion.find(images[Images.Repeat])?.Region
             ?: return
 
         // If Boost items are usable, Continue button shifts to the right
@@ -395,7 +396,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isFriendRequestScreen() =
-        images.supportExtra in game.resultFriendRequestRegion
+        images[Images.SupportExtra] in game.resultFriendRequestRegion
 
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
@@ -406,7 +407,7 @@ open class AutoBattle @Inject constructor(
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
     private fun isInQuestRewardScreen() =
-        images.questReward in game.resultQuestRewardRegion
+        images[Images.QuestReward] in game.resultQuestRewardRegion
 
     /**
      * Handles the quest rewards screen.
@@ -434,7 +435,7 @@ open class AutoBattle @Inject constructor(
      * Checks if the window for withdrawing from the battle exists.
      */
     private fun needsToWithdraw() =
-        images.withdraw in game.withdrawRegion
+        images[Images.Withdraw] in game.withdrawRegion
 
     /**
      * Handles withdrawing from battle. Depending on [IPreferences.withdrawEnabled], the script either
@@ -446,7 +447,7 @@ open class AutoBattle @Inject constructor(
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
-        val withdrawRegion = game.withdrawRegion.find(images.withdraw)
+        val withdrawRegion = game.withdrawRegion.find(images[Images.Withdraw])
             ?: return
 
         withdrawRegion.Region.click()
@@ -468,7 +469,7 @@ open class AutoBattle @Inject constructor(
      * Checks if the SKIP button exists on the screen.
      */
     private fun needsToStorySkip() =
-        prefs.storySkip && game.menuStorySkipRegion.exists(images.storySkip, Similarity = 0.7)
+        prefs.storySkip && game.menuStorySkipRegion.exists(images[Images.StorySkip], Similarity = 0.7)
 
     private fun skipStory() {
         game.menuStorySkipClick.click()
@@ -517,7 +518,7 @@ open class AutoBattle @Inject constructor(
 
         if (!partySelected && party in game.partySelectionArray.indices) {
             val currentParty = game.selectedPartyRegion
-                .find(images.selectedParty)
+                .find(images[Images.SelectedParty])
                 ?.let { match ->
                     // Find party with min distance from center of matched region
                     game.partySelectionArray.withIndex().minByOrNull {
@@ -616,7 +617,7 @@ open class AutoBattle @Inject constructor(
         }
 
         // Auto refill
-        while (images.stamina in game.staminaScreenRegion) {
+        while (images[Images.Stamina] in game.staminaScreenRegion) {
             refillStamina()
         }
     }

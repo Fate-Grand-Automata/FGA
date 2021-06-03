@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import javax.inject.Inject
@@ -31,7 +32,7 @@ class AutoFriendGacha @Inject constructor(
     }
 
     override fun script(): Nothing {
-        if (images.fpSummonContinue !in game.fpContinueSummonRegion) {
+        if (images[Images.FPSummonContinue] !in game.fpContinueSummonRegion) {
             game.fpFirst10SummonClick.click()
             0.3.seconds.wait()
             game.fpOkClick.click()
@@ -44,7 +45,7 @@ class AutoFriendGacha @Inject constructor(
                 throw ExitException(ExitReason.InventoryFull)
             }
 
-            if (images.fpSummonContinue in game.fpContinueSummonRegion) {
+            if (images[Images.FPSummonContinue] in game.fpContinueSummonRegion) {
                 countNext()
 
                 game.fpContinueSummonClick.click()

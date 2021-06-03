@@ -6,7 +6,7 @@ import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 
 interface IFgoAutomataApi : IAutomataExtensions {
     val prefs: IPreferences
-    val images: ImageLocator
+    val images: IImageLoader
     val game: Game
     val messages: IScriptMessages
 }

@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import javax.inject.Inject
 
@@ -13,13 +14,13 @@ class AutoDetect @Inject constructor(
         }
 
         when {
-            images.friendSummon in game.fpSummonCheck || images.fpSummonContinue in game.fpContinueSummonRegion ->
+            images[Images.FriendSummon] in game.fpSummonCheck || images[Images.FPSummonContinue] in game.fpContinueSummonRegion ->
                 ScriptModeEnum.FP
-            images.finishedLotteryBox in game.lotteryCheckRegion || images.finishedLotteryBox in game.lotteryFinishedRegion ->
+            images[Images.LotteryBoxFinished] in game.lotteryCheckRegion || images[Images.LotteryBoxFinished] in game.lotteryFinishedRegion ->
                 ScriptModeEnum.Lottery
-            images.goldXP in emberSearchRegion || images.silverXP in emberSearchRegion ->
+            images[Images.GoldXP] in emberSearchRegion || images[Images.SilverXP] in emberSearchRegion ->
                 ScriptModeEnum.PresentBox
-            images.supportRegionTool in game.supportRegionToolSearchRegion ->
+            images[Images.SupportRegionTool] in game.supportRegionToolSearchRegion ->
                 ScriptModeEnum.SupportImageMaker
             else -> ScriptModeEnum.Battle
         }

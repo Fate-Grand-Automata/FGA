@@ -6,6 +6,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.IImageLoader
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -37,7 +38,63 @@ class ImageLoader @Inject constructor(
         GameServerEnum.En
     private var regionCachedPatterns = mutableMapOf<String, IPattern>()
 
-    override fun loadRegionPattern(path: String): IPattern = synchronized(regionCachedPatterns) {
+    fun Images.fileName(): String = when (this) {
+        Images.BattleScreen -> "battle.png"
+        Images.TargetDanger -> "target_danger.png"
+        Images.TargetServant -> "target_servant.png"
+        Images.Buster -> "buster.png"
+        Images.Arts -> "art.png"
+        Images.Quick -> "quick.png"
+        Images.Weak -> "weak.png"
+        Images.Resist -> "resist.png"
+        Images.Friend -> "friend.png"
+        Images.Guest -> "guest.png"
+        Images.Follow -> "follow.png"
+        Images.LimitBroken -> "limitbroken.png"
+        Images.SupportScreen -> "support_screen.png"
+        Images.SupportRegionTool -> "support_region_tool.png"
+        Images.StorySkip -> "storyskip.png"
+        Images.Menu -> "menu.png"
+        Images.Stamina -> "stamina.png"
+        Images.Result -> "result.png"
+        Images.Bond -> "bond.png"
+        Images.Bond10Reward -> "bond10.png"
+        Images.CEDetails -> "ce_details.png"
+        Images.Repeat -> "confirm.png"
+        Images.QuestReward -> "questreward.png"
+        Images.Retry -> "retry.png"
+        Images.Withdraw -> "withdraw.png"
+        Images.LotteryBoxFinished -> "lottery.png"
+        Images.PresentBoxFull -> "StopGifts.png"
+        Images.MasterExp -> "master_exp.png"
+        Images.MasterLevelUp -> "master_lvl_up.png"
+        Images.MatRewards -> "mat_rewards.png"
+        Images.InventoryFull -> "inven_full.png"
+        Images.FPSummonContinue -> "fp_continue.png"
+        Images.SkillTen -> "skill_ten.png"
+        Images.Stun -> "stun.png"
+        Images.SelectedParty -> "selected_party.png"
+        Images.SilverXP -> "SilverXP.png"
+        Images.GoldXP -> "GoldXP.png"
+        Images.GiftBoxCheck -> "gift_box_check.png"
+        Images.GiftBoxScrollEnd -> "gift_box_scroll_end.png"
+        Images.DropCE -> "drop_ce.png"
+        Images.DropCEStars -> "drop_ce_star.png"
+        Images.FriendSummon -> "friend_summon.png"
+        Images.DropScrollbar -> "drop_scrollbar.png"
+        Images.SupportExtra -> "support_extra.png"
+        Images.SupportNotFound -> "support_not_found.png"
+        Images.Support -> "support.png"
+        Images.BattleMenu -> "battle_menu.png"
+        Images.ExpX1 -> "x1.png"
+        Images.ExpX2 -> "x2.png"
+        Images.ExpX3 -> "x3.png"
+        Images.ExpX4 -> "x4.png"
+    }
+
+    override operator fun get(img: Images): IPattern = synchronized(regionCachedPatterns) {
+        val path = img.fileName()
+
         val server = prefs.gameServer
 
         // Reload Patterns on Server change

@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.models.OrderChangeMember
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSlot
 import com.mathewsachin.fategrandautomata.scripts.models.skills
@@ -67,7 +68,7 @@ class ServantTracker(
         )
 
         if (supportSlot == null
-            && images.support in game.servantChangeSupportCheckRegion(slot)) {
+            && images[Images.Support] in game.servantChangeSupportCheckRegion(slot)) {
             supportSlot = teamSlot
         }
     }
@@ -81,7 +82,7 @@ class ServantTracker(
             }
             else if (
                 it.checkImage !in game.servantChangeCheckRegion(slot)
-                || ((supportSlot == teamSlot) != (images.support in game.servantChangeSupportCheckRegion(slot)))
+                || ((supportSlot == teamSlot) != (images[Images.Support] in game.servantChangeSupportCheckRegion(slot)))
             ) {
                 val newTeamSlot = servantQueue.removeFirstOrNull()
                 deployed[slot] = newTeamSlot

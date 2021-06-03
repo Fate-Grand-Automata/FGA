@@ -1,7 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.ImageLocator
+import com.mathewsachin.fategrandautomata.scripts.IImageLoader
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
@@ -21,7 +22,7 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.time.seconds
 
-fun IFgoAutomataApi.needsToRetry() = images.retry in game.retryRegion
+fun IFgoAutomataApi.needsToRetry() = images[Images.Retry] in game.retryRegion
 
 fun IFgoAutomataApi.retry() {
     game.retryRegion.click()
@@ -33,7 +34,7 @@ fun IFgoAutomataApi.retry() {
 class Game @Inject constructor(
     platformImpl: IPlatformImpl,
     val prefs: IPreferences,
-    val images: ImageLocator,
+    val images: IImageLoader,
     transformationExtensions: ITransformationExtensions,
     gameAreaManager: GameAreaManager,
     val automataApi: IAutomataExtensions
@@ -71,7 +72,7 @@ class Game @Inject constructor(
         automataApi.run {
             Region(-400, 360, 400, 80)
                 .xFromRight()
-                .find(images.battleMenu)
+                .find(images[Images.BattleMenu])
                 ?.Region
                 ?.center
                 ?.copy(Y = 0)

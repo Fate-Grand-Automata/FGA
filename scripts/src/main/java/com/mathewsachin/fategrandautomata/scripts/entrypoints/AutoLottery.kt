@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import javax.inject.Inject
@@ -45,8 +46,8 @@ class AutoLottery @Inject constructor(
         while (true) {
             useSameSnapIn {
                 when {
-                    images.finishedLotteryBox in game.lotteryFinishedRegion -> reset()
-                    images.presentBoxFull in game.lotteryFullPresentBoxRegion -> {
+                    images[Images.LotteryBoxFinished] in game.lotteryFinishedRegion -> reset()
+                    images[Images.PresentBoxFull] in game.lotteryFullPresentBoxRegion -> {
                         throw ExitException(ExitReason.PresentBoxFull)
                     }
                     else -> spin()

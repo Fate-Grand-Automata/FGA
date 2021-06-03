@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
@@ -39,7 +40,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         }
     }
 
-    fun isIdle() = images.battle in game.battleScreenRegion
+    fun isIdle() = images[Images.BattleScreen] in game.battleScreenRegion
 
     fun clickAttack() {
         if (state.hasClickedAttack) {
@@ -49,7 +50,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         game.battleAttackClick.click()
 
         // Wait for Attack button to disappear
-        game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
+        game.battleScreenRegion.waitVanish(images[Images.BattleScreen], 5.seconds)
 
         prefs.waitBeforeCards.wait()
 
@@ -61,8 +62,8 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
         val region = game.dangerRegion(enemy)
 
-        val isDanger = images.targetDanger in region
-        val isServant = images.targetServant in region
+        val isDanger = images[Images.TargetDanger] in region
+        val isServant = images[Images.TargetServant] in region
 
         return isDanger || isServant
     }

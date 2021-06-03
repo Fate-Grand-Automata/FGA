@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import kotlin.time.Duration
@@ -11,7 +12,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     private lateinit var card: Card
 
     private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
-        val img = images.battle
+        val img = images[Images.BattleScreen]
 
         // slow devices need this. do not remove.
         game.battleScreenRegion.waitVanish(img, 2.seconds)

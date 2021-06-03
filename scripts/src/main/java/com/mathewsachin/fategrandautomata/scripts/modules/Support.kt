@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
@@ -93,17 +94,17 @@ class Support(
             when {
                 needsToRetry() -> retry()
                 // wait for dialogs to close
-                images.supportExtra !in game.supportExtraRegion -> 1.seconds.wait()
-                images.supportNotFound in game.supportNotFoundRegion -> {
+                images[Images.SupportExtra] !in game.supportExtraRegion -> 1.seconds.wait()
+                images[Images.SupportNotFound] in game.supportNotFoundRegion -> {
                     updateLastSupportRefreshTimestamp()
                     refreshSupportList()
                     return
                 }
                 game.supportRegionToolSearchRegion.exists(
-                    images.supportRegionTool,
+                    images[Images.SupportRegionTool],
                     Similarity = supportRegionToolSimilarity
                 ) -> return
-                images.guest in game.supportFriendRegion -> return
+                images[Images.Guest] in game.supportFriendRegion -> return
             }
         }
     }
@@ -116,7 +117,7 @@ class Support(
 
             // Handle the case of a friend not having set a support servant
             if (game.supportScreenRegion.waitVanish(
-                    images.supportScreen,
+                    images[Images.SupportScreen],
                     Similarity = 0.85,
                     Timeout = 10.seconds
                 )
@@ -326,7 +327,7 @@ class Support(
     private fun findSupportBounds(Support: Region) =
         game.supportRegionToolSearchRegion
             .findAll(
-                images.supportRegionTool,
+                images[Images.SupportRegionTool],
                 supportRegionToolSimilarity
             )
             .map {
@@ -346,15 +347,15 @@ class Support(
             return true
 
         return sequenceOf(
-            images.friend,
-            images.guest,
-            images.follow
+            images[Images.Friend],
+            images[Images.Guest],
+            images[Images.Follow]
         ).any { it in Region }
     }
 
     private fun isStarPresent(region: Region): Boolean {
         val mlbSimilarity = prefs.support.mlbSimilarity
-        return region.exists(images.limitBroken, Similarity = mlbSimilarity)
+        return region.exists(images[Images.LimitBroken], Similarity = mlbSimilarity)
     }
 
     private fun isMaxAscended(servant: Region): Boolean {
@@ -388,7 +389,7 @@ class Support(
                     true
                 else {
                     val skillRegion = Region(location, Size(35, 45))
-                    skillRegion.exists(images.skillTen, Similarity = 0.68)
+                    skillRegion.exists(images[Images.SkillTen], Similarity = 0.68)
                 }
             }
 
