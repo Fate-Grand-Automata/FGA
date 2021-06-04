@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,20 +30,19 @@ private fun DeltaButton(
     Surface(
         color = Color.Transparent,
         contentColor = MaterialTheme.colors.onBackground,
-        modifier = Modifier
-            .clip(CircleShape)
-            .holdRepeatClickable(
-                onRepeat = {
-                    onCurrentValueChange((currentValue + delta).coerceIn(valueRange))
-                },
-                onEnd = { onCommit(currentValue.coerceIn(valueRange)) },
-                enabled = isEnabled
-            )
+        shape = CircleShape
     ) {
         StatusWrapper(enabled = isEnabled) {
             Text(
                 text,
                 modifier = Modifier
+                    .holdRepeatClickable(
+                        onRepeat = {
+                            onCurrentValueChange((currentValue + delta).coerceIn(valueRange))
+                        },
+                        onEnd = { onCommit(currentValue.coerceIn(valueRange)) },
+                        enabled = isEnabled
+                    )
                     .padding(20.dp, 10.dp)
             )
         }
