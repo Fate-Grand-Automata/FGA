@@ -8,7 +8,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.launch
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -101,6 +102,9 @@ fun MainScreen(
         }
     }
 
+    val overlayServiceStarted by ScriptRunnerService.serviceStarted
+    val accessibilityServiceStarted by TapperService.serviceStarted
+
     MainScreenContent(
         navigate = {
             if (it is MainScreenDestinations.BattleConfigs) {
@@ -109,11 +113,11 @@ fun MainScreen(
                 }
             } else navigate(it)
         },
-        overlayServiceStarted = ScriptRunnerService.serviceStarted.value,
+        overlayServiceStarted = overlayServiceStarted,
         toggleOverlayService = { toggleOverlayService() },
-        accessibilityServiceStarted = TapperService.serviceStarted.value,
+        accessibilityServiceStarted = accessibilityServiceStarted,
         toggleAccessibilityService = {
-            if (TapperService.serviceStarted.value) {
+            if (accessibilityServiceStarted) {
                 TapperService.instance?.disableSelf()
             } else {
                 navigate(MainScreenDestinations.AccessibilitySettings)
@@ -175,59 +179,56 @@ private fun MainScreenContent(
     toggleAccessibilityService: () -> Unit
 ) {
     Box {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
+                // TODO: Compose is sadly still pretty buggy.
+                // After beta08, the accessibility status view wasn't updating in LazyColumn, so using a scrollable Column for now
+                .verticalScroll(rememberScrollState())
         ) {
-            item {
-                Heading(stringResource(R.string.app_name)) {
-                    item {
-                        HeadingButton(
-                            text = "Build: ${BuildConfig.VERSION_CODE}",
-                            onClick = { navigate(MainScreenDestinations.Releases) }
-                        )
-                    }
+            Heading(stringResource(R.string.app_name)) {
+                item {
+                    HeadingButton(
+                        text = "Build: ${BuildConfig.VERSION_CODE}",
+                        onClick = { navigate(MainScreenDestinations.Releases) }
+                    )
+                }
 
-                    item {
-                        HeadingButton(
-                            text = stringResource(R.string.p_nav_troubleshoot),
-                            onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
-                        )
-                    }
+                item {
+                    HeadingButton(
+                        text = stringResource(R.string.p_nav_troubleshoot),
+                        onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
+                    )
                 }
             }
 
-            item {
-                Card(
-                    modifier = Modifier
-                        .padding(16.dp)
-                ) {
-                    Column {
-                        Preference(
-                            title = stringResource(R.string.p_battle_config),
-                            summary = stringResource(R.string.p_battle_config_summary),
-                            icon = icon(R.drawable.ic_formation),
-                            onClick = { navigate(MainScreenDestinations.BattleConfigs) }
-                        )
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Column {
+                    Preference(
+                        title = stringResource(R.string.p_battle_config),
+                        summary = stringResource(R.string.p_battle_config_summary),
+                        icon = icon(R.drawable.ic_formation),
+                        onClick = { navigate(MainScreenDestinations.BattleConfigs) }
+                    )
 
-                        Divider()
+                    Divider()
 
-                        Preference(
-                            title = stringResource(R.string.p_more_options),
-                            icon = icon(R.drawable.ic_dots_horizontal),
-                            onClick = { navigate(MainScreenDestinations.MoreOptions) }
-                        )
-                    }
+                    Preference(
+                        title = stringResource(R.string.p_more_options),
+                        icon = icon(R.drawable.ic_dots_horizontal),
+                        onClick = { navigate(MainScreenDestinations.MoreOptions) }
+                    )
                 }
             }
 
-            item {
-                AccessibilityServiceBlock(
-                    serviceStarted = accessibilityServiceStarted,
-                    toggleService = toggleAccessibilityService,
-                    overlayServiceStarted = overlayServiceStarted
-                )
-            }
+            AccessibilityServiceBlock(
+                serviceStarted = accessibilityServiceStarted,
+                toggleService = toggleAccessibilityService,
+                overlayServiceStarted = overlayServiceStarted
+            )
         }
 
         OverlayServiceToggleButton(
