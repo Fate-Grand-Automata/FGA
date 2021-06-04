@@ -182,8 +182,7 @@ private fun MainScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                // TODO: Compose is sadly still pretty buggy.
-                // After beta08, the accessibility status view wasn't updating in LazyColumn, so using a scrollable Column for now
+                // FIXME: Change back to LazyColumn when compose is fixed. After beta08, the accessibility status view wasn't updating in LazyColumn, so using a scrollable Column for now
                 .verticalScroll(rememberScrollState())
         ) {
             Heading(stringResource(R.string.app_name)) {

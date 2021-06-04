@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -61,8 +60,8 @@ private fun SelectNps(
                     colorResource(selectedColor)
                 else MaterialTheme.colors.surface,
                 modifier = Modifier
-                    .padding(5.dp)
-                    .clickable { onClick() }
+                    .padding(5.dp),
+                onClick = onClick
             ) {
                 Text(
                     stringResource(R.string.skill_maker_atk_servant_np, it),
@@ -98,8 +97,8 @@ private fun CardsBeforeNp(
                         colorResource(R.color.colorAccent)
                     else MaterialTheme.colors.surface,
                     modifier = Modifier
-                        .padding(5.dp)
-                        .clickable { onCardsBeforeNpChange(it) }
+                        .padding(5.dp),
+                    onClick = { onCardsBeforeNpChange(it) }
                 ) {
                     Text(
                         it.toString(),

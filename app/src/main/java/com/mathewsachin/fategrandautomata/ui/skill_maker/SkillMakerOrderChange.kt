@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -108,8 +107,8 @@ fun OrderChangeSide(
                         colorResource(selectedColor)
                     else MaterialTheme.colors.surface,
                 modifier = Modifier
-                    .padding(5.dp)
-                    .clickable { onSelectedChange(it) }
+                    .padding(5.dp),
+                onClick = { onSelectedChange(it) }
             ) {
                 Text(
                     stringResource(R.string.skill_maker_order_change_servant, it),

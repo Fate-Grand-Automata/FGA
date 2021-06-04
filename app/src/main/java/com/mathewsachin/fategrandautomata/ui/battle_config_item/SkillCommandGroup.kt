@@ -88,6 +88,7 @@ fun SkillCommandGroup(
     }
 }
 
+// FIXME: Scrolling commands crashes the app (new bug in compose beta08) -> https://issuetracker.google.com/issues/189965769
 @Composable
 fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
     LazyRow(

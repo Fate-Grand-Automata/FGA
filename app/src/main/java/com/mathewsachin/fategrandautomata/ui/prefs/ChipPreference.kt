@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,6 +16,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.util.toggle
 
+// FIXME: ChipPreferences no longer work as of compose beta08
 @Composable
 private fun ChipPreferenceItem(
     text: String,
@@ -29,13 +29,13 @@ private fun ChipPreferenceItem(
         elevation = 2.dp,
         modifier = Modifier
             .padding(vertical = 5.dp)
-            .padding(end = 5.dp)
+            .padding(end = 5.dp),
+        onClick = onSelect
     ) {
         Text(
             text,
             style = MaterialTheme.typography.caption,
             modifier = Modifier
-                .clickable(onClick = onSelect)
                 .padding(5.dp, 2.dp)
         )
     }

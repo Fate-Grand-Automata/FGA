@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -76,8 +75,8 @@ fun SkillButton(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .padding(5.dp)
-            .clickable(onClick = onClick)
-            .size(40.dp)
+            .size(40.dp),
+        onClick = onClick
     ) {
         Box {
             Text(
