@@ -20,14 +20,14 @@ import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 fun IFgoAutomataApi.needsToRetry() = images[Images.Retry] in game.retryRegion
 
 fun IFgoAutomataApi.retry() {
     game.retryRegion.click()
 
-    2.seconds.wait()
+    Duration.seconds(2).wait()
 }
 
 @ScriptScope

@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     val state = BattleState()
@@ -50,7 +50,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         game.battleAttackClick.click()
 
         // Wait for Attack button to disappear
-        game.battleScreenRegion.waitVanish(images[Images.BattleScreen], 5.seconds)
+        game.battleScreenRegion.waitVanish(images[Images.BattleScreen], Duration.seconds(5))
 
         prefs.waitBeforeCards.wait()
 
@@ -71,7 +71,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     private fun chooseTarget(enemy: EnemyTarget) {
         game.locate(enemy).click()
 
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
 
         game.battleExtraInfoWindowCloseClick.click()
     }
@@ -106,7 +106,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         card.clickCommandCards()
 
-        5.seconds.wait()
+        Duration.seconds(5).wait()
     }
 
     private fun onTurnStarted() {
@@ -135,7 +135,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         return !game.battleStageCountRegion.exists(
             snapshot,
-            Similarity = prefs.stageCounterSimilarity
+            similarity = prefs.stageCounterSimilarity
         )
     }
 

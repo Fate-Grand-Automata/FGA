@@ -22,7 +22,6 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
-import kotlin.time.milliseconds
 
 @ServiceScoped
 class ScriptRunnerUserInterface @Inject constructor(
@@ -190,7 +189,7 @@ class ScriptRunnerUserInterface @Inject constructor(
     }
 
     fun postDelayed(Delay: Duration, Action: () -> Unit) {
-        scriptCtrlBtn.postDelayed(Delay.toLongMilliseconds(), Action)
+        scriptCtrlBtn.postDelayed(Delay.inWholeMilliseconds, Action)
     }
 
     /**
@@ -226,7 +225,9 @@ class ScriptRunnerUserInterface @Inject constructor(
                 val newX = Event.rawX + dX
                 val newY = Event.rawY + dY
 
-                if (dragTimeMark.elapsedNow() > ViewConfiguration.getLongPressTimeout().milliseconds) {
+                val timeout = Duration.milliseconds(ViewConfiguration.getLongPressTimeout())
+
+                if (dragTimeMark.elapsedNow() > timeout) {
                     scriptCtrlBtnLayoutParams.x = newX.roundToInt().coerceIn(0, dragMaxLoc.X)
                     scriptCtrlBtnLayoutParams.y = newY.roundToInt().coerceIn(0, dragMaxLoc.Y)
 

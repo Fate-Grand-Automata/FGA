@@ -34,9 +34,6 @@ subprojects {
         kotlinOptions {
             freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
             freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
-            freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
-            freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
-            freeCompilerArgs += "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi"
 
             // Set JVM target to 1.8
             jvmTarget = "1.8"

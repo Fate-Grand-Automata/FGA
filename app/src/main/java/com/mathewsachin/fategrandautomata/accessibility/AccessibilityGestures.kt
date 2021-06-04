@@ -44,7 +44,7 @@ class AccessibilityGestures @Inject constructor(
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
             0,
-            gesturePrefs.swipeDuration.toLongMilliseconds()
+            gesturePrefs.swipeDuration.inWholeMilliseconds
         )
         performGesture(swipeStroke)
 
@@ -68,7 +68,7 @@ class AccessibilityGestures @Inject constructor(
         val swipeDelay = 1L
         val swipeDuration = 1L
 
-        val timesToSwipe = gesturePrefs.swipeDuration.toLongMilliseconds() / (swipeDelay + swipeDuration)
+        val timesToSwipe = gesturePrefs.swipeDuration.inWholeMilliseconds / (swipeDelay + swipeDuration)
         val thresholdDistance = distanceLeft / timesToSwipe
 
         var from = start
@@ -132,8 +132,8 @@ class AccessibilityGestures @Inject constructor(
 
         val stroke = GestureDescription.StrokeDescription(
             swipePath,
-            gesturePrefs.clickDelay.toLongMilliseconds(),
-            gesturePrefs.clickDuration.toLongMilliseconds()
+            gesturePrefs.clickDelay.inWholeMilliseconds,
+            gesturePrefs.clickDuration.inWholeMilliseconds
         )
 
         Timber.debug { "click $Location x$Times" }

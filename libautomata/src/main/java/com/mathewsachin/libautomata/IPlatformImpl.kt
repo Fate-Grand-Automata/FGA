@@ -10,7 +10,7 @@ interface IPlatformImpl {
     /**
      * Shows a toast with the given message.
      */
-    fun toast(Message: String)
+    fun toast(message: String)
 
     fun notify(message: String)
 
@@ -22,8 +22,8 @@ interface IPlatformImpl {
     /**
      * Adds borders around the given [Region].
      *
-     * @param Region a [Region] on the screen
-     * @param Duration how long the borders should be displayed
+     * @param region a [Region] on the screen
+     * @param duration how long the borders should be displayed
      */
-    fun highlight(Region: Region, Duration: Duration, success: Boolean)
+    fun highlight(region: Region, duration: Duration, success: Boolean)
 }

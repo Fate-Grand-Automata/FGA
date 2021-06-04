@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import javax.inject.Inject
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 /**
  * Continually triggers 10x Summon, intended for FP summons, but could also be used for SQ summons.
@@ -34,7 +34,7 @@ class AutoFriendGacha @Inject constructor(
     override fun script(): Nothing {
         if (images[Images.FPSummonContinue] !in game.fpContinueSummonRegion) {
             game.fpFirst10SummonClick.click()
-            0.3.seconds.wait()
+            Duration.seconds(0.3).wait()
             game.fpOkClick.click()
 
             countNext()
@@ -49,9 +49,9 @@ class AutoFriendGacha @Inject constructor(
                 countNext()
 
                 game.fpContinueSummonClick.click()
-                0.3.seconds.wait()
+                Duration.seconds(0.3).wait()
                 game.fpOkClick.click()
-                3.seconds.wait()
+                Duration.seconds(3).wait()
             } else game.fpSkipRapidClick.click(15)
         }
     }

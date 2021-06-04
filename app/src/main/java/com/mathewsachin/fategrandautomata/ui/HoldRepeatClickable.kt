@@ -12,7 +12,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.time.milliseconds
+import kotlin.time.Duration
 
 fun Modifier.holdRepeatClickable(
     onRepeat: () -> Unit,
@@ -35,9 +35,9 @@ fun Modifier.holdRepeatClickable(
         }
     }
 
-    val longPressTimeout = ViewConfiguration.getLongPressTimeout().milliseconds
-    val repeatIntervalDelta = 2.milliseconds
-    val minRepeatInterval = 10.milliseconds
+    val longPressTimeout = Duration.milliseconds(ViewConfiguration.getLongPressTimeout())
+    val repeatIntervalDelta = Duration.milliseconds(2)
+    val minRepeatInterval = Duration.milliseconds(10)
 
     val scope = rememberCoroutineScope()
 
@@ -50,7 +50,7 @@ fun Modifier.holdRepeatClickable(
 
                         try {
                             delay(longPressTimeout)
-                            var repeatInterval = 100.milliseconds
+                            var repeatInterval = Duration.milliseconds(100)
 
                             while (true) {
                                 rememberedOnRepeat()
@@ -91,7 +91,7 @@ fun Modifier.holdRepeatClickable(
                     currentJob.join()
 
                     // Some delay otherwise value won't update on every other single tap
-                    delay(10.milliseconds)
+                    delay(Duration.milliseconds(10))
 
                     rememberedOnEnd()
                 }

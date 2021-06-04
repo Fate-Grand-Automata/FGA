@@ -17,7 +17,6 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
-import java.util.*
 
 @Composable
 fun PartySelection(config: BattleConfigCore) {
@@ -60,8 +59,7 @@ fun PartySelection(config: BattleConfigCore) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                stringResource(R.string.p_battle_config_party)
-                    .toUpperCase(Locale.ROOT),
+                stringResource(R.string.p_battle_config_party).uppercase(),
                 style = MaterialTheme.typography.caption
             )
 

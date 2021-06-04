@@ -13,13 +13,13 @@ import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 import kotlin.math.absoluteValue
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 /**
  * Checks if Support Selection menu is up
  */
 fun IFgoAutomataApi.isInSupport(): Boolean {
-    return game.supportScreenRegion.exists(images[Images.SupportScreen], Similarity = 0.85)
+    return game.supportScreenRegion.exists(images[Images.SupportScreen], similarity = 0.85)
 }
 
 fun IFgoAutomataApi.isInventoryFull() =
@@ -198,7 +198,7 @@ open class AutoBattle @Inject constructor(
 
             actor?.invoke()
 
-            1.seconds.wait()
+            Duration.seconds(1).wait()
         }
     }
 
@@ -266,7 +266,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isBond10CEReward() =
-        game.resultCeRewardRegion.exists(images[Images.Bond10Reward], Similarity = 0.75)
+        game.resultCeRewardRegion.exists(images[Images.Bond10Reward], similarity = 0.75)
 
     /**
      * It seems like we need to click on CE (center of screen) to accept them
@@ -421,13 +421,13 @@ open class AutoBattle @Inject constructor(
             support.selectSupport(prefs.selectedBattleConfig.support.selectionMode, isContinuing)
 
         if (hasSelectedSupport && !isContinuing) {
-            4.seconds.wait()
+            Duration.seconds(4).wait()
             startQuest()
 
             // Wait timer till battle starts.
             // Uses less battery to wait than to search for images for a few seconds.
             // Adjust according to device.
-            5.seconds.wait()
+            Duration.seconds(5).wait()
         }
     }
 
@@ -452,12 +452,12 @@ open class AutoBattle @Inject constructor(
 
         withdrawRegion.Region.click()
 
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
 
         // Click the "Accept" button after choosing to withdraw
         game.withdrawAcceptClick.click()
 
-        1.seconds.wait()
+        Duration.seconds(1).wait()
 
         // Click the "Close" button after accepting the withdrawal
         game.withdrawCloseClick.click()
@@ -469,11 +469,11 @@ open class AutoBattle @Inject constructor(
      * Checks if the SKIP button exists on the screen.
      */
     private fun needsToStorySkip() =
-        prefs.storySkip && game.menuStorySkipRegion.exists(images[Images.StorySkip], Similarity = 0.7)
+        prefs.storySkip && game.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
 
     private fun skipStory() {
         game.menuStorySkipClick.click()
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
         game.menuStorySkipYesClick.click()
     }
 
@@ -491,15 +491,15 @@ open class AutoBattle @Inject constructor(
                 .map { game.locate(it) }
                 .forEach { it.click() }
 
-            1.seconds.wait()
+            Duration.seconds(1).wait()
             game.staminaOkClick.click()
             ++stonesUsed
 
-            3.seconds.wait()
+            Duration.seconds(3).wait()
         } else if (prefs.waitAPRegen) {
             game.staminaCloseClick.click()
             toast(messages.waitAPToast(1))
-            60.seconds.wait()
+            Duration.seconds(60).wait()
         } else throw BattleExitException(ExitReason.APRanOut)
     }
 
@@ -535,14 +535,14 @@ open class AutoBattle @Inject constructor(
                 val tempParty = if (party == 0) 1 else 0
                 game.partySelectionArray[tempParty].click()
 
-                1.seconds.wait()
+                Duration.seconds(1).wait()
             }
 
             // Switch to the configured party
             if (currentParty != party) {
                 game.partySelectionArray[party].click()
 
-                1.2.seconds.wait()
+                Duration.seconds(1.2).wait()
             }
 
             /* If we select the party once, the same party will be used by the game for next fight.
@@ -562,7 +562,7 @@ open class AutoBattle @Inject constructor(
 
         game.menuStartQuestClick.click()
 
-        2.seconds.wait()
+        Duration.seconds(2).wait()
 
         useBoostItem()
     }
@@ -610,7 +610,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun afterSelectingQuest() {
-        1.5.seconds.wait()
+        Duration.seconds(1.5).wait()
 
         if (isInventoryFull()) {
             throw BattleExitException(ExitReason.InventoryFull)

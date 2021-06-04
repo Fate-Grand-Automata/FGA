@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.scripts.models
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
-import java.util.*
 
 class CardPriority private constructor(scores: List<CardScore>) : List<CardScore> by scores {
     override fun toString() = joinToString()
@@ -23,7 +22,7 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
         fun of(priority: String): CardPriority {
             val scores = priority
                 .splitToSequence(',')
-                .map { it.trim().toUpperCase(Locale.US) }
+                .map { it.trim().uppercase() }
                 .map {
                     when (it.length) {
                         1 -> "$dummyNormalAffinityChar$it"

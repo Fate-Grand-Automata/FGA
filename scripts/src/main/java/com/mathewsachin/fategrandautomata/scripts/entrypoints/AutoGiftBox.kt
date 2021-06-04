@@ -7,7 +7,7 @@ import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.Region
 import javax.inject.Inject
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
@@ -61,7 +61,7 @@ class AutoGiftBox @Inject constructor(
                 }
 
                 // Longer animations. At the end, items pulled up and released.
-                1.seconds.wait()
+                Duration.seconds(1).wait()
             }
         }
 
@@ -96,7 +96,7 @@ class AutoGiftBox @Inject constructor(
                         3 to images[Images.ExpX3],
                         4 to images[Images.ExpX4]
                     ).entries.firstOrNull { (_, pattern) ->
-                        countRegion.exists(pattern, Similarity = 0.87)
+                        countRegion.exists(pattern, similarity = 0.87)
                     }?.key
 
                     if (count == null || count > prefs.maxGoldEmberSetSize) {

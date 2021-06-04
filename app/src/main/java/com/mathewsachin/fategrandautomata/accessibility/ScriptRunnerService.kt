@@ -32,7 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.*
 import javax.inject.Inject
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 @AndroidEntryPoint
 class ScriptRunnerService: Service() {
@@ -208,7 +208,7 @@ class ScriptRunnerService: Service() {
             // Pause if script is running
             GlobalScope.launch {
                 // This delay is to avoid race-condition with screen turn OFF listener
-                delay(1.seconds)
+                delay(Duration.seconds(1))
 
                 scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
                     if (success) {

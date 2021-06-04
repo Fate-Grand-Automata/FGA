@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import javax.inject.Inject
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 /**
  * Continually opens lottery boxes until either the present box is full or there is no currency left.
@@ -33,13 +33,13 @@ class AutoLottery @Inject constructor(
         }
 
         game.lotteryResetClick.click()
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
 
         game.lotteryResetConfirmationClick.click()
-        3.seconds.wait()
+        Duration.seconds(3).wait()
 
         game.lotteryResetCloseClick.click()
-        2.seconds.wait()
+        Duration.seconds(2).wait()
     }
 
     override fun script(): Nothing {

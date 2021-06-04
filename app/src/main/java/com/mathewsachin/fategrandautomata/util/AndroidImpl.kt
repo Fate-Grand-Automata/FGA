@@ -35,10 +35,10 @@ class AndroidImpl @Inject constructor(
     override val prefs: IPlatformPrefs
         get() = preferences.platformPrefs
 
-    override fun toast(Message: String) {
+    override fun toast(message: String) {
         handler.post {
             Toast
-                .makeText(service, Message, Toast.LENGTH_SHORT)
+                .makeText(service, message, Toast.LENGTH_SHORT)
                 .show()
         }
     }
@@ -51,14 +51,14 @@ class AndroidImpl @Inject constructor(
         Handler(Looper.getMainLooper())
     }
 
-    override fun highlight(Region: Region, Duration: Duration, success: Boolean) {
+    override fun highlight(region: Region, duration: Duration, success: Boolean) {
         // We can't draw over the notch area
-        val region = Region - cutoutManager.getCutoutAppliedRegion().location
+        val drawRegion = region - cutoutManager.getCutoutAppliedRegion().location
 
         GlobalScope.launch {
-            highlightManager.add(region, success)
-            delay(Duration.toLongMilliseconds())
-            highlightManager.remove(region)
+            highlightManager.add(drawRegion, success)
+            delay(duration.inWholeMilliseconds)
+            highlightManager.remove(drawRegion)
         }
     }
 }

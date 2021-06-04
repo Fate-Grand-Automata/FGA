@@ -11,8 +11,8 @@ class HighlightExtensions @Inject constructor(
     val platformImpl: IPlatformImpl,
     transformationExtensions: ITransformationExtensions
 ) : IHighlightExtensions, ITransformationExtensions by transformationExtensions {
-    override fun Region.highlight(Duration: Duration, success: Boolean) {
+    override fun Region.highlight(duration: Duration, success: Boolean) {
         exitManager.checkExitRequested()
-        platformImpl.highlight(this.transform(), Duration, success)
+        platformImpl.highlight(this.transform(), duration, success)
     }
 }

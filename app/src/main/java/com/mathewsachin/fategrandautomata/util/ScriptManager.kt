@@ -28,7 +28,7 @@ import timber.log.Timber
 import timber.log.error
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.time.milliseconds
+import kotlin.time.Duration
 
 @ServiceScoped
 class ScriptManager @Inject constructor(
@@ -73,7 +73,7 @@ class ScriptManager @Inject constructor(
 
             if (recording != null) {
                 // A little bit of delay so the exit message can be recorded
-                userInterface.postDelayed(500.milliseconds) {
+                userInterface.postDelayed(Duration.milliseconds(500)) {
                     try {
                         recording.close()
                     } catch (e: Exception) {
@@ -142,7 +142,7 @@ class ScriptManager @Inject constructor(
         }
 
         scriptState = ScriptState.Stopped
-        delay(250.milliseconds)
+        delay(Duration.milliseconds(250))
         userInterface.isPlayButtonEnabled = true
     }
 
@@ -324,7 +324,7 @@ class ScriptManager @Inject constructor(
         }
 
         if (resp !is ScriptLauncherResponse.Cancel) {
-            userInterface.postDelayed(500.milliseconds) {
+            userInterface.postDelayed(Duration.milliseconds(500)) {
                 entryPointRunner()
             }
         }

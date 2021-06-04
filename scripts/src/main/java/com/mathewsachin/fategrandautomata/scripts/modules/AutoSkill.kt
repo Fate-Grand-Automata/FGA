@@ -5,19 +5,18 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import kotlin.time.Duration
-import kotlin.time.seconds
 
 class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
     private lateinit var card: Card
 
-    private fun waitForAnimationToFinish(Timeout: Duration = 5.seconds) {
+    private fun waitForAnimationToFinish(timeout: Duration = Duration.seconds(5)) {
         val img = images[Images.BattleScreen]
 
         // slow devices need this. do not remove.
-        game.battleScreenRegion.waitVanish(img, 2.seconds)
+        game.battleScreenRegion.waitVanish(img, Duration.seconds(2))
 
-        game.battleScreenRegion.exists(img, Timeout)
+        game.battleScreenRegion.exists(img, timeout)
     }
 
     private fun confirmSkillUse() {
@@ -49,7 +48,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     private fun selectSkillTarget(target: ServantTarget) {
         game.locate(target).click()
 
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
 
         // Exit any extra menu
         game.battleExtraInfoWindowCloseClick.click()
@@ -58,7 +57,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     private fun openMasterSkillMenu() {
         game.battleMasterSkillOpenClick.click()
 
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
     }
 
     fun castMasterSkill(skill: Skill.Master, target: ServantTarget? = null) {
@@ -75,22 +74,22 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
 
         confirmSkillUse()
 
-        0.3.seconds.wait()
+        Duration.seconds(0.3).wait()
 
         game.locate(action.starting).click()
         game.locate(action.sub).click()
 
-        0.3.seconds.wait()
+        Duration.seconds(0.3).wait()
 
         game.battleOrderChangeOkClick.click()
 
         // Extra wait to allow order change dialog to close
-        1.seconds.wait()
+        Duration.seconds(1).wait()
 
-        waitForAnimationToFinish(15.seconds)
+        waitForAnimationToFinish(Duration.seconds(15))
 
         // Extra wait for the lag introduced by Order change
-        1.seconds.wait()
+        Duration.seconds(1).wait()
 
         battle.servantTracker.orderChanged(action.starting, action.sub)
     }
@@ -98,7 +97,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     private fun selectEnemyTarget(enemy: EnemyTarget) {
         game.locate(enemy).click()
 
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
 
         // Exit any extra menu
         game.battleExtraInfoWindowCloseClick.click()
@@ -120,7 +119,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         return weCanSpam || weAreInDanger
     }
 
-    val skillSpamDelay = 0.25.seconds
+    val skillSpamDelay = Duration.seconds(0.25)
 
     private fun skillSpam() {
         ServantSlot.list.forEach { servantSlot ->

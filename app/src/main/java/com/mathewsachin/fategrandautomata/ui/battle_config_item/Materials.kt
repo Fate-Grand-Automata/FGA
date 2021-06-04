@@ -25,7 +25,6 @@ import com.mathewsachin.fategrandautomata.ui.multiChoiceList
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.drawable
 import com.mathewsachin.fategrandautomata.util.stringRes
-import java.util.*
 
 @Composable
 fun Pref<Set<MaterialEnum>>.Materials() {
@@ -64,8 +63,7 @@ fun Pref<Set<MaterialEnum>>.Materials() {
             .padding(vertical = 5.dp)
     ) {
         Text(
-            stringResource(R.string.p_mats)
-                .toUpperCase(Locale.ROOT),
+            stringResource(R.string.p_mats).uppercase(),
             style = MaterialTheme.typography.caption,
             modifier = Modifier.padding(start = 16.dp)
         )

@@ -93,7 +93,7 @@ class FgaDialog private constructor() {
                     TextButton(
                         onClick = { hide() }
                     ) {
-                        Text(cancelLabel.toUpperCase(Locale.ROOT))
+                        Text(cancelLabel.uppercase())
                     }
                 }
 
@@ -105,7 +105,7 @@ class FgaDialog private constructor() {
                         },
                         enabled = okEnabled
                     ) {
-                        Text(okLabel.toUpperCase(Locale.ROOT))
+                        Text(okLabel.uppercase())
                     }
                 }
             }

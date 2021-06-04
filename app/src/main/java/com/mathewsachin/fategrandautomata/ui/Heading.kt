@@ -4,17 +4,18 @@ import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import java.util.*
 
 @Composable
 fun Heading(
@@ -28,7 +29,7 @@ fun Heading(
         val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
         Text(
-            if (landscape) text.toUpperCase(Locale.ROOT) else text,
+            if (landscape) text.uppercase() else text,
             style = if (landscape) MaterialTheme.typography.subtitle2 else MaterialTheme.typography.h4,
             modifier = Modifier
                 .padding(start = 16.dp)
@@ -79,7 +80,7 @@ fun HeadingButton(
             }
 
             Text(
-                text.toUpperCase(Locale.ROOT),
+                text.uppercase(),
                 style = MaterialTheme.typography.subtitle2
             )
         }

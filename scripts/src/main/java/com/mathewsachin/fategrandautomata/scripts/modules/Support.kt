@@ -16,9 +16,9 @@ import timber.log.Timber
 import timber.log.debug
 import kotlin.streams.asStream
 import kotlin.streams.toList
+import kotlin.time.Duration
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
-import kotlin.time.seconds
 
 private typealias SearchFunction = () -> SearchFunctionResult
 
@@ -44,7 +44,7 @@ class Support(
         if (!continuing && autoSkillPrefs.supportClass != SupportClass.None) {
             game.locate(autoSkillPrefs.supportClass).click()
 
-            0.5.seconds.wait()
+            Duration.seconds(0.5).wait()
         }
 
         return when (SelectionMode) {
@@ -63,7 +63,7 @@ class Support(
     }
 
     private var lastSupportRefreshTimestamp: TimeMark? = null
-    private val supportRefreshThreshold = 10.seconds
+    private val supportRefreshThreshold = Duration.seconds(10)
 
     private fun refreshSupportList() {
         lastSupportRefreshTimestamp?.elapsedNow()?.let { elapsed ->
@@ -77,7 +77,7 @@ class Support(
         }
 
         game.supportUpdateClick.click()
-        1.seconds.wait()
+        Duration.seconds(1).wait()
 
         game.supportUpdateYesClick.click()
 
@@ -94,7 +94,7 @@ class Support(
             when {
                 needsToRetry() -> retry()
                 // wait for dialogs to close
-                images[Images.SupportExtra] !in game.supportExtraRegion -> 1.seconds.wait()
+                images[Images.SupportExtra] !in game.supportExtraRegion -> Duration.seconds(1).wait()
                 images[Images.SupportNotFound] in game.supportNotFoundRegion -> {
                     updateLastSupportRefreshTimestamp()
                     refreshSupportList()
@@ -102,7 +102,7 @@ class Support(
                 }
                 game.supportRegionToolSearchRegion.exists(
                     images[Images.SupportRegionTool],
-                    Similarity = supportRegionToolSimilarity
+                    similarity = supportRegionToolSimilarity
                 ) -> return
                 images[Images.Guest] in game.supportFriendRegion -> return
             }
@@ -111,15 +111,15 @@ class Support(
 
     private fun selectFirst(): Boolean {
         while (true) {
-            0.5.seconds.wait()
+            Duration.seconds(0.5).wait()
 
             game.supportFirstSupportClick.click()
 
             // Handle the case of a friend not having set a support servant
             if (game.supportScreenRegion.waitVanish(
                     images[Images.SupportScreen],
-                    Similarity = 0.85,
-                    Timeout = 10.seconds
+                    similarity = 0.85,
+                    timeout = Duration.seconds(10)
                 )
             ) {
                 return true
@@ -186,7 +186,7 @@ class Support(
                     )
 
                     ++numberOfSwipes
-                    0.3.seconds.wait()
+                    Duration.seconds(0.3).wait()
                 }
                 numberOfUpdates < prefs.support.maxUpdates -> {
                     refreshSupportList()
@@ -355,7 +355,7 @@ class Support(
 
     private fun isStarPresent(region: Region): Boolean {
         val mlbSimilarity = prefs.support.mlbSimilarity
-        return region.exists(images[Images.LimitBroken], Similarity = mlbSimilarity)
+        return region.exists(images[Images.LimitBroken], similarity = mlbSimilarity)
     }
 
     private fun isMaxAscended(servant: Region): Boolean {
@@ -389,7 +389,7 @@ class Support(
                     true
                 else {
                     val skillRegion = Region(location, Size(35, 45))
-                    skillRegion.exists(images[Images.SkillTen], Similarity = 0.68)
+                    skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
                 }
             }
 
