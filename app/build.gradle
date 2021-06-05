@@ -132,7 +132,7 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha01"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha02'
 
-    implementation "com.google.accompanist:accompanist-insets:0.10.0"
+    implementation "com.google.accompanist:accompanist-insets:0.11.1"
 }
 
 kapt {
