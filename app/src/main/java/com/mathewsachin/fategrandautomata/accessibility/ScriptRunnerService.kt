@@ -8,7 +8,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.media.projection.MediaProjectionManager
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.widget.ImageButton
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -220,30 +222,36 @@ class ScriptRunnerService: Service() {
         }
     }
 
+    private val handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
+
     fun showMessageBox(
         title: String,
         message: String,
         error: Exception? = null,
         onDismiss: () -> Unit = { }
     ) {
-        showOverlayDialog(this) {
-            setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok) { _, _ -> }
-                .setOnDismissListener {
-                    notification.hideMessage()
-                    onDismiss()
-                }
-                .let {
-                    if (error != null) {
-                        // TODO: Translate
-                        it.setNeutralButton("Copy") { _, _ ->
-                            val clipData = ClipData.newPlainText("Error", error.messageAndStackTrace)
+        handler.post {
+            showOverlayDialog(this) {
+                setTitle(title)
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.ok) { _, _ -> }
+                    .setOnDismissListener {
+                        notification.hideMessage()
+                        onDismiss()
+                    }
+                    .let {
+                        if (error != null) {
+                            // TODO: Translate
+                            it.setNeutralButton("Copy") { _, _ ->
+                                val clipData = ClipData.newPlainText("Error", error.messageAndStackTrace)
 
-                            clipboardManager.setPrimaryClip(clipData)
+                                clipboardManager.setPrimaryClip(clipData)
+                            }
                         }
                     }
-                }
+            }
         }
     }
 
