@@ -134,6 +134,11 @@ val MaterialEnum.drawable
         MaterialEnum.EternalIce -> R.drawable.mat_ice
         MaterialEnum.GiantRing -> R.drawable.mat_giant_ring
         MaterialEnum.AuroraSteel -> R.drawable.mat_steel
+        MaterialEnum.SoundlessBell -> R.drawable.mat_bell
+        MaterialEnum.Arrowhead -> R.drawable.mat_arrow
+        MaterialEnum.Tiara -> R.drawable.mat_tiara
+        MaterialEnum.DivineSpiritParticle -> R.drawable.mat_particle
+        MaterialEnum.RainbowThreadBall -> R.drawable.mat_thread
         MaterialEnum.Claw -> R.drawable.mat_claw
         MaterialEnum.Heart -> R.drawable.mat_heart
         MaterialEnum.DragonScale -> R.drawable.mat_scale
@@ -146,4 +151,10 @@ val MaterialEnum.drawable
         MaterialEnum.Lanugo -> R.drawable.mat_lanugo
         MaterialEnum.Gallstone -> R.drawable.mat_gallstone
         MaterialEnum.MysteriousWine -> R.drawable.mat_mysterious_wine
+        MaterialEnum.ReactorCore -> R.drawable.mat_core
+        MaterialEnum.TsukumoMirror -> R.drawable.mat_mirror
+        MaterialEnum.EggOfTruth -> R.drawable.mat_egg
+        MaterialEnum.StarShard -> R.drawable.mat_star_shard
+        MaterialEnum.FruitOfEternity -> R.drawable.mat_fruit
+        MaterialEnum.DemonFlameLantern -> R.drawable.mat_demon_lantern
     }

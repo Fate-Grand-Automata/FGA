@@ -93,4 +93,15 @@ val MaterialEnum.stringRes
         MaterialEnum.Stinger -> R.string.mat_stinger
         MaterialEnum.EternalIce -> R.string.mat_eternal_ice
         MaterialEnum.AuroraSteel -> R.string.mat_steel
+        MaterialEnum.ReactorCore -> R.string.mat_core
+        MaterialEnum.SoundlessBell -> R.string.mat_bell
+        MaterialEnum.Arrowhead -> R.string.mat_arrow
+        MaterialEnum.Tiara -> R.string.mat_tiara
+        MaterialEnum.DivineSpiritParticle -> R.string.mat_particle
+        MaterialEnum.RainbowThreadBall -> R.string.mat_thread
+        MaterialEnum.TsukumoMirror -> R.string.mat_mirror
+        MaterialEnum.EggOfTruth -> R.string.mat_egg
+        MaterialEnum.StarShard -> R.string.mat_star_shard
+        MaterialEnum.FruitOfEternity -> R.string.mat_fruit
+        MaterialEnum.DemonFlameLantern -> R.string.mat_demon_lantern
     }
