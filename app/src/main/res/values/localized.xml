@@ -334,6 +334,17 @@
     <string name="mat_stinger">Deadly Poisonous Needle</string>
     <string name="mat_eternal_ice">Eternal Ice</string>
     <string name="mat_steel">Aurora Steel</string>
+    <string name="mat_core">Reactor Core of Dawn</string>
+    <string name="mat_bell">Soundless Bell</string>
+    <string name="mat_arrow">Arrowhead of Malice</string>
+    <string name="mat_tiara">Moonlit Tiara</string>
+    <string name="mat_particle">Divine Spirit Particle</string>
+    <string name="mat_thread">Rainbow Thread Ball</string>
+    <string name="mat_mirror">Tsukumo Mirror</string>
+    <string name="mat_egg">Egg of Truth</string>
+    <string name="mat_star_shard">Glittering Star Shard</string>
+    <string name="mat_fruit">Fruit of Eternity</string>
+    <string name="mat_demon_lantern">Demon Flame Lantern</string>
 
     <string name="p_shuffle_cards">Shuffle cards</string>
     <string name="p_shuffle_cards_wave">Wave</string>
