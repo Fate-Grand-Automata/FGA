@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
@@ -26,6 +27,28 @@ fun IFgoAutomataApi.isInventoryFull() =
     // We only have images for JP and NA
     prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)
             && images[Images.InventoryFull] in game.inventoryFullRegion
+
+fun makeRefillAndRunsMessage(
+    prefs: IPreferences,
+    messages: IScriptMessages,
+    timesRan: Int,
+    timesRefilled: Int
+) = buildString {
+    val refill = prefs.refill
+
+    if (refill.shouldLimitRuns && refill.limitRuns > 0) {
+        appendLine(messages.timesRanOutOf(timesRan, refill.limitRuns))
+    } else if (timesRan > 0) {
+        appendLine(messages.timesRan(timesRan))
+    }
+
+    if (refill.resources.isNotEmpty()) {
+        val refillRepetitions = refill.repetitions
+        if (refillRepetitions > 0) {
+            appendLine(messages.refillsUsedOutOf(timesRefilled, refillRepetitions))
+        }
+    }
+}.trimEnd()
 
 /**
  * Script for starting quests, selecting the support and doing battles.
@@ -54,7 +77,7 @@ open class AutoBattle @Inject constructor(
 
     internal class BattleExitException(val reason: ExitReason): Exception()
 
-    class ExitException(val reason: ExitReason, val msg: String): Exception()
+    class ExitException(val reason: ExitReason, val state: ExitState): Exception()
 
     private val support = Support(fgAutomataApi)
     private val card = Card(fgAutomataApi)
@@ -74,15 +97,13 @@ open class AutoBattle @Inject constructor(
         try {
             loop()
         } catch (e: BattleExitException) {
-            throw ExitException(e.reason, makeExitMessage(e.reason))
+            throw ExitException(e.reason, makeExitState())
         } catch (e: ScriptAbortException) {
-            val msg = makeExitMessage(ExitReason.Abort)
-
-            throw ExitException(ExitReason.Abort, msg)
+            throw ExitException(ExitReason.Abort, makeExitState())
         } catch (e: Exception) {
             val reason = ExitReason.Unexpected(e)
 
-            throw ExitException(reason, makeExitMessage(reason))
+            throw ExitException(reason, makeExitState())
         } finally {
             val refill = prefs.refill
 
@@ -113,59 +134,45 @@ open class AutoBattle @Inject constructor(
         }
     }
 
-    private fun ExitReason.text(): String = when (this) {
-        ExitReason.Abort -> messages.stoppedByUser
-        is ExitReason.Unexpected -> "${messages.unexpectedError}: ${e.message}"
-        ExitReason.CEGet -> messages.ceGet
-        ExitReason.CEDropped -> messages.ceDropped
-        is ExitReason.LimitMaterials -> messages.farmedMaterials(count)
-        ExitReason.WithdrawDisabled -> messages.withdrawDisabled
-        ExitReason.APRanOut -> messages.apRanOut
-        ExitReason.InventoryFull -> messages.inventoryFull
-        is ExitReason.LimitRuns -> messages.timesRan(count)
-        ExitReason.SupportSelectionManual -> messages.supportSelectionManual
-        ExitReason.SupportSelectionFriendNotSet -> messages.supportSelectionFriendNotSet
-        ExitReason.SupportSelectionPreferredNotSet -> messages.supportSelectionPreferredNotSet
-        is ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
-        is ExitReason.CardPriorityParseError -> msg
+    private fun useBoostItem() {
+        val boostItem = BoostItem.of(prefs.boostItemSelectionMode)
+        if (boostItem is BoostItem.Enabled) {
+            game.locate(boostItem).click()
+
+            // in case you run out of items
+            if (boostItem !is BoostItem.Enabled.Skip) {
+                game.locate(BoostItem.Enabled.Skip).click()
+            }
+        }
     }
 
-    private fun makeExitMessage(reason: ExitReason) = buildString {
-        appendLine(reason.text())
-        appendLine()
+    class ExitState(
+        val timesRan: Int,
+        val timesRefilled: Int,
+        val ceDropCount: Int,
+        val materials: Map<MaterialEnum, Int>,
+        val withdrawCount: Int,
+        val totalTime: Duration,
+        val averageTimePerRun: Duration,
+        val minTurnsPerRun: Int,
+        val maxTurnsPerRun: Int,
+        val averageTurnsPerRun: Int
+    )
 
-        makeRefillAndRunsMessage().let { msg ->
-            if (msg.isNotBlank()) {
-                appendLine(msg)
-            }
-        }
-
-        if (!prefs.stopOnCEDrop && ceDropCount > 0) {
-            appendLine("$ceDropCount ${messages.ceDropped}")
-            appendLine()
-        }
-
-        if (prefs.selectedBattleConfig.materials.isNotEmpty()) {
-            appendLine(messages.materials(matsGot))
-            appendLine()
-        }
-
-        appendLine(messages.time(battle.state.totalBattleTime))
-
-        if (battle.state.runs > 1) {
-            appendLine(messages.avgTimePerRun(battle.state.averageRunTime))
-
-            with(battle.state) {
-                appendLine(messages.turns(minTurns, averageTurns, maxTurns))
-            }
-        } else if (battle.state.runs == 1) {
-            appendLine(messages.turns(battle.state.totalTurns))
-        }
-
-        if (withdrawCount > 0) {
-            appendLine(messages.timesWithdrew(withdrawCount))
-        }
-    }.trimEnd()
+    private fun makeExitState(): ExitState {
+        return ExitState(
+            timesRan = battle.state.runs,
+            timesRefilled = stonesUsed,
+            ceDropCount = ceDropCount,
+            materials = matsGot,
+            withdrawCount = withdrawCount,
+            totalTime = battle.state.totalBattleTime,
+            averageTimePerRun = battle.state.averageTimePerRun,
+            minTurnsPerRun = battle.state.minTurnsPerRun,
+            maxTurnsPerRun = battle.state.maxTurnsPerRun,
+            averageTurnsPerRun = battle.state.averageTurnsPerRun
+        )
+    }
 
     private fun loop(): Nothing {
         // a map of validators and associated actions
@@ -567,42 +574,16 @@ open class AutoBattle @Inject constructor(
         useBoostItem()
     }
 
-    private fun useBoostItem() {
-        val boostItem = BoostItem.of(prefs.boostItemSelectionMode)
-        if (boostItem is BoostItem.Enabled) {
-            game.locate(boostItem).click()
-
-            // in case you run out of items
-            if (boostItem !is BoostItem.Enabled.Skip) {
-                game.locate(BoostItem.Enabled.Skip).click()
-            }
-        }
-    }
-
-    private fun makeRefillAndRunsMessage() = buildString {
-        val refill = prefs.refill
-
-        val runs = battle.state.runs
-
-        if (refill.shouldLimitRuns && refill.limitRuns > 0) {
-            appendLine(messages.timesRanOutOf(runs, refill.limitRuns))
-        } else if (runs > 0) {
-            appendLine(messages.timesRan(runs))
-        }
-
-        if (refill.resources.isNotEmpty()) {
-            val refillRepetitions = refill.repetitions
-            if (refillRepetitions > 0) {
-                appendLine(messages.refillsUsedOutOf(stonesUsed, refillRepetitions))
-            }
-        }
-    }.trimEnd()
-
     /**
      * Will show a toast informing the user of number of runs and how many apples have been used so far.
      */
     private fun showRefillsAndRunsMessage() {
-        val message = makeRefillAndRunsMessage()
+        val message = makeRefillAndRunsMessage(
+            prefs = prefs,
+            messages = messages,
+            timesRan = battle.state.runs,
+            timesRefilled = stonesUsed
+        )
 
         if (message.isNotBlank()) {
             toast(message)

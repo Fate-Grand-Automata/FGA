@@ -53,6 +53,70 @@ class ScriptManager @Inject constructor(
         }
     }
 
+    private fun AutoBattle.ExitReason.text(): String = when (this) {
+        AutoBattle.ExitReason.Abort -> messages.stoppedByUser
+        is AutoBattle.ExitReason.Unexpected -> "${messages.unexpectedError}: ${e.message}"
+        AutoBattle.ExitReason.CEGet -> messages.ceGet
+        AutoBattle.ExitReason.CEDropped -> messages.ceDropped
+        is AutoBattle.ExitReason.LimitMaterials -> messages.farmedMaterials(count)
+        AutoBattle.ExitReason.WithdrawDisabled -> messages.withdrawDisabled
+        AutoBattle.ExitReason.APRanOut -> messages.apRanOut
+        AutoBattle.ExitReason.InventoryFull -> messages.inventoryFull
+        is AutoBattle.ExitReason.LimitRuns -> messages.timesRan(count)
+        AutoBattle.ExitReason.SupportSelectionManual -> messages.supportSelectionManual
+        AutoBattle.ExitReason.SupportSelectionFriendNotSet -> messages.supportSelectionFriendNotSet
+        AutoBattle.ExitReason.SupportSelectionPreferredNotSet -> messages.supportSelectionPreferredNotSet
+        is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
+        is AutoBattle.ExitReason.CardPriorityParseError -> msg
+    }
+
+    // Making the exit message in the UI side will allow us to go for a custom UI later if needed
+    private fun makeExitMessage(reason: AutoBattle.ExitReason, state: AutoBattle.ExitState) = buildString {
+        appendLine(reason.text())
+        appendLine()
+
+        makeRefillAndRunsMessage(
+            prefs = preferences,
+            messages = messages,
+            timesRan = state.timesRan,
+            timesRefilled = state.timesRefilled
+        ).let { msg ->
+            if (msg.isNotBlank()) {
+                appendLine(msg)
+            }
+        }
+
+        if (!preferences.stopOnCEDrop && state.ceDropCount > 0) {
+            appendLine("${state.ceDropCount} ${messages.ceDropped}")
+            appendLine()
+        }
+
+        if (preferences.selectedBattleConfig.materials.isNotEmpty()) {
+            appendLine(messages.materials(state.materials))
+            appendLine()
+        }
+
+        appendLine(messages.time(state.totalTime))
+
+        if (state.timesRan > 1) {
+            appendLine(messages.avgTimePerRun(state.averageTimePerRun))
+
+            appendLine(
+                messages.turns(
+                    min = state.minTurnsPerRun,
+                    avg = state.averageTurnsPerRun,
+                    max = state.maxTurnsPerRun
+                )
+            )
+        } else if (state.timesRan == 1) {
+            appendLine(messages.turns(state.minTurnsPerRun))
+        }
+
+        if (state.withdrawCount > 0) {
+            appendLine(messages.timesWithdrew(state.withdrawCount))
+        }
+    }.trimEnd()
+
     private fun onScriptExit(e: Exception) = GlobalScope.launch {
         userInterface.setPlayIcon()
         userInterface.isPlayButtonEnabled = false
@@ -126,7 +190,8 @@ class ScriptManager @Inject constructor(
                     platformImpl.notify(messages.scriptExited)
                 }
 
-                message(messages.scriptExited, e.msg)
+                val msg = makeExitMessage(e.reason, e.state)
+                message(messages.scriptExited, msg)
             }
             is ScriptAbortException -> {
                 // user aborted. do nothing
