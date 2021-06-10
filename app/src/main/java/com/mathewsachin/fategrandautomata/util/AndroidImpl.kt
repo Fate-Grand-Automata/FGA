@@ -2,10 +2,6 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.app.Service
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
@@ -23,7 +19,6 @@ import kotlin.time.Duration
 @ServiceScoped
 class AndroidImpl @Inject constructor(
     val service: Service,
-    val notification: ScriptRunnerNotification,
     val preferences: IPreferences,
     val cutoutManager: CutoutManager,
     val highlightManager: HighlightManager
@@ -37,23 +32,7 @@ class AndroidImpl @Inject constructor(
     override val prefs: IPlatformPrefs
         get() = preferences.platformPrefs
 
-    override fun toast(message: String) {
-        if (message.isNotBlank()) {
-            handler.post {
-                Toast
-                    .makeText(service, message, Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
-
-    override fun notify(message: String) = notification.message(message)
-
     override fun getResizableBlankPattern(): IPattern = DroidCvPattern()
-
-    private val handler by lazy {
-        Handler(Looper.getMainLooper())
-    }
 
     override fun highlight(region: Region, duration: Duration, success: Boolean) {
         // We can't draw over the notch area

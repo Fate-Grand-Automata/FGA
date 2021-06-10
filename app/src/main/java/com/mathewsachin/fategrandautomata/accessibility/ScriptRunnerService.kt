@@ -102,6 +102,9 @@ class ScriptRunnerService: Service() {
     @Inject
     lateinit var mediaProjectionManager: MediaProjectionManager
 
+    @Inject
+    lateinit var messages: ScriptMessages
+
     private val screenOffReceiver = ScreenOffReceiver()
 
     private var screenshotService: IScreenshotService? = null
@@ -180,7 +183,7 @@ class ScriptRunnerService: Service() {
                 if (success) {
                     val title = getString(R.string.script_paused)
                     val msg = getString(R.string.screen_turned_off)
-                    platformImpl.notify(msg)
+                    messages.notify(msg)
                     showMessageBox(title, msg)
                 }
             }
@@ -215,7 +218,7 @@ class ScriptRunnerService: Service() {
                 scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
                     if (success) {
                         val msg = getString(R.string.script_paused)
-                        platformImpl.toast(msg)
+                        messages.toast(msg)
                     }
                 }
             }

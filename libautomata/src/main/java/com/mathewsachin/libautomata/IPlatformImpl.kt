@@ -8,13 +8,6 @@ interface IPlatformImpl {
     val prefs: IPlatformPrefs
 
     /**
-     * Shows a toast with the given message.
-     */
-    fun toast(message: String)
-
-    fun notify(message: String)
-
-    /**
      * Creates a new [IPattern] without any image data.
      */
     fun getResizableBlankPattern(): IPattern

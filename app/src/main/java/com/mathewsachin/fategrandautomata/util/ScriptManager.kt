@@ -16,7 +16,10 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncher
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncherResponse
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.ScriptAbortException
+import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.GlobalScope
@@ -37,7 +40,6 @@ class ScriptManager @Inject constructor(
     val preferences: IPreferences,
     val prefsCore: PrefsCore,
     val storageProvider: StorageProvider,
-    val platformImpl: IPlatformImpl,
     val messages: ScriptMessages
 ) {
     private val service = service as ScriptRunnerService
@@ -152,7 +154,7 @@ class ScriptManager @Inject constructor(
                     SupportImageMaker.ExitReason.NotFound -> {
                         val msg = messages.supportImageMakerNotFound
 
-                        platformImpl.notify(msg)
+                        messages.notify(msg)
                         message(messages.scriptExited, msg)
                     }
                     SupportImageMaker.ExitReason.Success -> showSupportImageNamer(userInterface, storageProvider)
@@ -164,13 +166,13 @@ class ScriptManager @Inject constructor(
                     AutoLottery.ExitReason.ResetDisabled -> messages.lotteryBoxResetIsDisabled
                 }
 
-                platformImpl.notify(msg)
+                messages.notify(msg)
                 message(messages.scriptExited, msg)
             }
             is AutoGiftBox.ExitException -> {
                 val msg = messages.pickedExpStack(e.pickedStacks)
 
-                platformImpl.notify(msg)
+                messages.notify(msg)
                 message(messages.scriptExited, msg)
             }
             is AutoFriendGacha.ExitException -> {
@@ -179,12 +181,12 @@ class ScriptManager @Inject constructor(
                     is AutoFriendGacha.ExitReason.Limit -> messages.timesRolled(reason.count)
                 }
 
-                platformImpl.notify(msg)
+                messages.notify(msg)
                 message(messages.scriptExited, msg)
             }
             is AutoBattle.ExitException -> {
                 if (e.reason != AutoBattle.ExitReason.Abort) {
-                    platformImpl.notify(messages.scriptExited)
+                    messages.notify(messages.scriptExited)
                 }
 
                 val msg = makeExitMessage(e.reason, e.state)
@@ -197,7 +199,7 @@ class ScriptManager @Inject constructor(
                 println(e.messageAndStackTrace)
 
                 val msg = messages.unexpectedError
-                platformImpl.notify(msg)
+                messages.notify(msg)
 
                 message(msg, e.messageAndStackTrace, e)
             }

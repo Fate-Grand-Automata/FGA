@@ -2,13 +2,16 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.app.Service
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.IPlatformImpl
 import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
 import timber.log.debug
@@ -18,27 +21,43 @@ import kotlin.time.Duration
 @ServiceScoped
 class ScriptMessages @Inject constructor(
     service: Service,
-    private val prefs: IPreferences,
-    private val platformImpl: IPlatformImpl
+    private val notification: ScriptRunnerNotification,
+    private val prefs: IPreferences
 ) : IScriptMessages {
     private val context: Context = service
 
+    private val handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
+
+    fun toast(message: String) {
+        if (message.isNotBlank()) {
+            handler.post {
+                Toast
+                    .makeText(context, message, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    fun notify(message: String) = notification.message(message)
+
     override fun notify(action: ScriptNotify) =
         when (action) {
-            ScriptNotify.CEDropped -> platformImpl.notify(ceDropped)
-            ScriptNotify.CEGet -> platformImpl.notify(ceGet)
+            ScriptNotify.CEDropped -> notify(ceDropped)
+            ScriptNotify.CEGet -> notify(ceGet)
             is ScriptNotify.FailedToDetermineCards -> {
                 val msg = failedToDetermineCardType(action.cards)
 
-                platformImpl.toast(msg)
+                toast(msg)
 
                 Timber.debug { msg }
             }
             is ScriptNotify.SupportListUpdatingIn -> {
-                platformImpl.toast(supportListUpdatedIn(action.time))
+                toast(supportListUpdatedIn(action.time))
             }
             is ScriptNotify.WaitForAPRegen -> {
-                platformImpl.toast(waitAPToast(action.minutes))
+                toast(waitAPToast(action.minutes))
             }
             is ScriptNotify.BetweenRuns -> {
                 val msg = makeRefillAndRunsMessage(
@@ -46,7 +65,7 @@ class ScriptMessages @Inject constructor(
                     timesRan = action.runs
                 )
 
-                platformImpl.toast(msg)
+                toast(msg)
             }
         }
 

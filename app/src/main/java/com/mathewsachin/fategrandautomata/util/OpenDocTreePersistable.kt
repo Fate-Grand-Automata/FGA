@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 
 class OpenDocTreePersistable : ActivityResultContracts.OpenDocumentTree() {
     override fun createIntent(context: Context, input: Uri?) =

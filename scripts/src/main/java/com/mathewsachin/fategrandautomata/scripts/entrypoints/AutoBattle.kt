@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
