@@ -10,7 +10,6 @@ import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterfac
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -39,7 +38,7 @@ class ScriptManager @Inject constructor(
     val prefsCore: PrefsCore,
     val storageProvider: StorageProvider,
     val platformImpl: IPlatformImpl,
-    val messages: IScriptMessages
+    val messages: ScriptMessages
 ) {
     private val service = service as ScriptRunnerService
 
@@ -75,9 +74,7 @@ class ScriptManager @Inject constructor(
         appendLine(reason.text())
         appendLine()
 
-        makeRefillAndRunsMessage(
-            prefs = preferences,
-            messages = messages,
+        messages.makeRefillAndRunsMessage(
             timesRan = state.timesRan,
             timesRefilled = state.timesRefilled
         ).let { msg ->

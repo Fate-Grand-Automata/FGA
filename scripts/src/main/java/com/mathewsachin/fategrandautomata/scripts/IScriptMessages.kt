@@ -1,50 +1,17 @@
 package com.mathewsachin.fategrandautomata.scripts
 
-import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import kotlin.time.Duration
 
+sealed class ScriptNotify {
+    object CEGet: ScriptNotify()
+    object CEDropped: ScriptNotify()
+    class WaitForAPRegen(val minutes: Int = 1): ScriptNotify()
+    class FailedToDetermineCards(val cards: List<CommandCard.Face>): ScriptNotify()
+    class SupportListUpdatingIn(val time: Duration): ScriptNotify()
+    class BetweenRuns(val refills: Int, val runs: Int): ScriptNotify()
+}
+
 interface IScriptMessages {
-    val apRanOut: String
-    val inventoryFull: String
-    val lotteryPresentBoxFull: String
-    val supportImageMakerNotFound: String
-    val supportSelectionManual: String
-    val supportSelectionFriendNotSet: String
-    val supportSelectionPreferredNotSet: String
-    val ceDropped: String
-    val ceGet: String
-    val withdrawDisabled: String
-    val stoppedByUser: String
-    val unexpectedError: String
-    val scriptExited: String
-    val lotteryBoxResetIsDisabled: String
-
-    fun timesRan(times: Int): String
-    fun timesRanOutOf(times: Int, outOf: Int): String
-    fun farmedMaterials(count: Int): String
-
-    fun timesRolled(times: Int): String
-
-    fun materials(mats: Map<MaterialEnum, Int>): String
-
-    fun refillsUsedOutOf(used: Int, outOf: Int): String
-
-    fun failedToDetermineCardType(cards: List<CommandCard.Face>): String
-
-    fun supportListUpdatedIn(duration: Duration): String
-
-    fun timesWithdrew(times: Int): String
-
-    fun time(duration: Duration): String
-
-    fun avgTimePerRun(duration: Duration): String
-
-    fun turns(min: Int, avg: Int, max: Int): String
-
-    fun turns(turns: Int): String
-
-    fun pickedExpStack(stacks: Int): String
-
-    fun waitAPToast(minutes: Int): String
+    fun notify(action: ScriptNotify)
 }

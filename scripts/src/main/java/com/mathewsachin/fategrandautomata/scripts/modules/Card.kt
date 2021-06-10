@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
@@ -101,10 +102,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             .map { it.card }
 
         if (failedToDetermine.isNotEmpty()) {
-            val msg = messages.failedToDetermineCardType(failedToDetermine)
-            toast(msg)
-
-            Timber.debug { msg }
+            messages.notify(
+                ScriptNotify.FailedToDetermineCards(failedToDetermine)
+            )
         }
 
         return cards

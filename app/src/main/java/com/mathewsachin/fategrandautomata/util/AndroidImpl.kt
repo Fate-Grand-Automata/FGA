@@ -13,12 +13,14 @@ import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IPlatformPrefs
 import com.mathewsachin.libautomata.Region
+import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration
 
+@ServiceScoped
 class AndroidImpl @Inject constructor(
     val service: Service,
     val notification: ScriptRunnerNotification,
@@ -36,10 +38,12 @@ class AndroidImpl @Inject constructor(
         get() = preferences.platformPrefs
 
     override fun toast(message: String) {
-        handler.post {
-            Toast
-                .makeText(service, message, Toast.LENGTH_SHORT)
-                .show()
+        if (message.isNotBlank()) {
+            handler.post {
+                Toast
+                    .makeText(service, message, Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 

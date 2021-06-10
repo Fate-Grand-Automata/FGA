@@ -1,14 +1,12 @@
 package com.mathewsachin.libautomata.extensions
 
 import com.mathewsachin.libautomata.IColorScreenshotProvider
-import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.ScreenshotManager
 import javax.inject.Inject
 
 class AutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
-    val platformImpl: IPlatformImpl,
     durationExtensions: IDurationExtensions,
     gestureExtensions: IGestureExtensions,
     highlightExtensions: IHighlightExtensions,
@@ -33,9 +31,5 @@ class AutomataApi @Inject constructor(
         if (screenshotManager.screenshotService is IColorScreenshotProvider)
             screenshotManager.screenshotService.takeColorScreenshot()
         else screenshotManager.getScreenshot().copy()
-
-    override fun toast(msg: String) = platformImpl.toast(msg)
-
-    override fun notify(msg: String) = platformImpl.notify(msg)
 }
 

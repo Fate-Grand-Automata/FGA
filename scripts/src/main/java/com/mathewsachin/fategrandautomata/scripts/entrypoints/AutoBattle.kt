@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
@@ -27,28 +28,6 @@ fun IFgoAutomataApi.isInventoryFull() =
     // We only have images for JP and NA
     prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)
             && images[Images.InventoryFull] in game.inventoryFullRegion
-
-fun makeRefillAndRunsMessage(
-    prefs: IPreferences,
-    messages: IScriptMessages,
-    timesRan: Int,
-    timesRefilled: Int
-) = buildString {
-    val refill = prefs.refill
-
-    if (refill.shouldLimitRuns && refill.limitRuns > 0) {
-        appendLine(messages.timesRanOutOf(timesRan, refill.limitRuns))
-    } else if (timesRan > 0) {
-        appendLine(messages.timesRan(timesRan))
-    }
-
-    if (refill.resources.isNotEmpty()) {
-        val refillRepetitions = refill.repetitions
-        if (refillRepetitions > 0) {
-            appendLine(messages.refillsUsedOutOf(timesRefilled, refillRepetitions))
-        }
-    }
-}.trimEnd()
 
 /**
  * Script for starting quests, selecting the support and doing battles.
@@ -287,7 +266,7 @@ open class AutoBattle @Inject constructor(
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
             throw BattleExitException(ExitReason.CEGet)
-        } else notify(messages.ceGet)
+        } else messages.notify(ScriptNotify.CEGet)
 
         game.resultCeRewardCloseClick.click()
     }
@@ -328,7 +307,7 @@ open class AutoBattle @Inject constructor(
 
             if (prefs.stopOnCEDrop) {
                 throw BattleExitException(ExitReason.CEDropped)
-            } else notify(messages.ceDropped)
+            } else messages.notify(ScriptNotify.CEDropped)
         }
     }
 
@@ -505,7 +484,9 @@ open class AutoBattle @Inject constructor(
             Duration.seconds(3).wait()
         } else if (prefs.waitAPRegen) {
             game.staminaCloseClick.click()
-            toast(messages.waitAPToast(1))
+
+            messages.notify(ScriptNotify.WaitForAPRegen())
+
             Duration.seconds(60).wait()
         } else throw BattleExitException(ExitReason.APRanOut)
     }
@@ -577,18 +558,13 @@ open class AutoBattle @Inject constructor(
     /**
      * Will show a toast informing the user of number of runs and how many apples have been used so far.
      */
-    private fun showRefillsAndRunsMessage() {
-        val message = makeRefillAndRunsMessage(
-            prefs = prefs,
-            messages = messages,
-            timesRan = battle.state.runs,
-            timesRefilled = stonesUsed
+    private fun showRefillsAndRunsMessage() =
+        messages.notify(
+            ScriptNotify.BetweenRuns(
+                refills = stonesUsed,
+                runs = battle.state.runs
+            )
         )
-
-        if (message.isNotBlank()) {
-            toast(message)
-        }
-    }
 
     private fun afterSelectingQuest() {
         Duration.seconds(1.5).wait()

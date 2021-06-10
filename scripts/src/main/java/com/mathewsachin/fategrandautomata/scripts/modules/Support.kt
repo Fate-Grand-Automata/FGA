@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
@@ -70,7 +71,7 @@ class Support(
             val toWait = supportRefreshThreshold - elapsed
 
             if (toWait.isPositive()) {
-                toast(messages.supportListUpdatedIn(toWait))
+                messages.notify(ScriptNotify.SupportListUpdatingIn(toWait))
 
                 toWait.wait()
             }
