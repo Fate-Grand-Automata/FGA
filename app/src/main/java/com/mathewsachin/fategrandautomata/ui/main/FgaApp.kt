@@ -121,8 +121,8 @@ fun FgaApp(
                             BattleConfigDestination.Back -> navController.popBackStack()
                             BattleConfigDestination.CardPriority -> navigate(NavConstants.cardPriority, id)
                             is BattleConfigDestination.Other -> {
-                                navigate(NavConstants.battleConfigItem, id) {
-                                    launchSingleTop = true
+                                navigate(NavConstants.battleConfigItem, it.id) {
+                                    popUpTo(NavConstants.battleConfigs)
                                 }
                             }
                             BattleConfigDestination.PreferredSupport -> navigate(NavConstants.preferredSupport, id)
