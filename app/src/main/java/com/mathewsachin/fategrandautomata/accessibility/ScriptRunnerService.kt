@@ -246,16 +246,19 @@ class ScriptRunnerService: Service() {
                     }
                     .let {
                         if (error != null) {
-                            // TODO: Translate
-                            it.setNeutralButton("Copy") { _, _ ->
-                                val clipData = ClipData.newPlainText("Error", error.messageAndStackTrace)
-
-                                clipboardManager.setPrimaryClip(clipData)
+                            it.setNeutralButton(R.string.unexpected_error_copy) { _, _ ->
+                                copyToClipboard(error)
                             }
                         }
                     }
             }
         }
+    }
+
+    fun copyToClipboard(exception: Exception) {
+        val clipData = ClipData.newPlainText(getString(R.string.unexpected_error), exception.messageAndStackTrace)
+
+        clipboardManager.setPrimaryClip(clipData)
     }
 
     fun prepareScreenshotService() {

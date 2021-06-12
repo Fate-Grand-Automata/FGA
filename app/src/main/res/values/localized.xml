@@ -258,6 +258,7 @@
     <string name="draw_overlay_disabled_go_to_settings">Go To Settings</string>
     <string name="cannot_start_recording">Couldn\'t start recording</string>
     <string name="select_script">Select Script</string>
+    <string name="unexpected_error_copy">Copy</string>
 
     <string name="script_msg_ap_ran_out">AP ran out!</string>
     <string name="stopped_by_user">Script stopped by user</string>

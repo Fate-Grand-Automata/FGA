@@ -75,9 +75,14 @@ fun FGATheme(
     MaterialTheme(
         colors = colors,
         typography = typography,
-        shapes = shapes,
-        content = content
-    )
+        shapes = shapes
+    ) {
+        Surface(
+            color = MaterialTheme.colors.background
+        ) {
+            content()
+        }
+    }
 }
 
 @Composable
@@ -85,18 +90,14 @@ fun FgaScreen(
     content: @Composable BoxScope.() -> Unit
 ) {
     FGATheme {
-        Surface(
-            color = MaterialTheme.colors.background
-        ) {
-            ProvideWindowInsets {
-                PreventRtl {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .systemBarsPadding()
-                    ) {
-                        content()
-                    }
+        ProvideWindowInsets {
+            PreventRtl {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .systemBarsPadding()
+                ) {
+                    content()
                 }
             }
         }

@@ -13,6 +13,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.exit.BattleExit
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncher
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncherResponse
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
@@ -22,10 +23,7 @@ import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.*
 import timber.log.Timber
 import timber.log.error
 import javax.inject.Inject
@@ -54,67 +52,32 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private fun AutoBattle.ExitReason.text(): String = when (this) {
-        AutoBattle.ExitReason.Abort -> messages.stoppedByUser
-        is AutoBattle.ExitReason.Unexpected -> "${messages.unexpectedError}: ${e.message}"
-        AutoBattle.ExitReason.CEGet -> messages.ceGet
-        AutoBattle.ExitReason.CEDropped -> messages.ceDropped
-        is AutoBattle.ExitReason.LimitMaterials -> messages.farmedMaterials(count)
-        AutoBattle.ExitReason.WithdrawDisabled -> messages.withdrawDisabled
-        AutoBattle.ExitReason.APRanOut -> messages.apRanOut
-        AutoBattle.ExitReason.InventoryFull -> messages.inventoryFull
-        is AutoBattle.ExitReason.LimitRuns -> messages.timesRan(count)
-        AutoBattle.ExitReason.SupportSelectionManual -> messages.supportSelectionManual
-        AutoBattle.ExitReason.SupportSelectionFriendNotSet -> messages.supportSelectionFriendNotSet
-        AutoBattle.ExitReason.SupportSelectionPreferredNotSet -> messages.supportSelectionPreferredNotSet
-        is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
-        is AutoBattle.ExitReason.CardPriorityParseError -> msg
-    }
+    private suspend fun showBattleExit(
+        context: Context,
+        exception: AutoBattle.ExitException
+    ) = withContext(Dispatchers.Main) {
+        suspendCancellableCoroutine<Unit> { continuation ->
+            var dialog: AlertDialog? = null
 
-    // Making the exit message in the UI side will allow us to go for a custom UI later if needed
-    private fun makeExitMessage(reason: AutoBattle.ExitReason, state: AutoBattle.ExitState) = buildString {
-        appendLine(reason.text())
-        appendLine()
+            val composeView = FakedComposeView(context) {
+                BattleExit(
+                    exception = exception,
+                    prefs = preferences,
+                    onClose = { dialog?.dismiss() },
+                    onCopy = { service.copyToClipboard(exception) }
+                )
+            }
 
-        messages.makeRefillAndRunsMessage(
-            timesRan = state.timesRan,
-            timesRefilled = state.timesRefilled
-        ).let { msg ->
-            if (msg.isNotBlank()) {
-                appendLine(msg)
+            dialog = showOverlayDialog(context) {
+                setView(composeView.view)
+
+                setOnDismissListener {
+                    composeView.close()
+                    continuation.resume(Unit)
+                }
             }
         }
-
-        if (!preferences.stopOnCEDrop && state.ceDropCount > 0) {
-            appendLine("${state.ceDropCount} ${messages.ceDropped}")
-            appendLine()
-        }
-
-        if (preferences.selectedBattleConfig.materials.isNotEmpty()) {
-            appendLine(messages.materials(state.materials))
-            appendLine()
-        }
-
-        appendLine(messages.time(state.totalTime))
-
-        if (state.timesRan > 1) {
-            appendLine(messages.avgTimePerRun(state.averageTimePerRun))
-
-            appendLine(
-                messages.turns(
-                    min = state.minTurnsPerRun,
-                    avg = state.averageTurnsPerRun,
-                    max = state.maxTurnsPerRun
-                )
-            )
-        } else if (state.timesRan == 1) {
-            appendLine(messages.turns(state.minTurnsPerRun))
-        }
-
-        if (state.withdrawCount > 0) {
-            appendLine(messages.timesWithdrew(state.withdrawCount))
-        }
-    }.trimEnd()
+    }
 
     private fun onScriptExit(e: Exception) = GlobalScope.launch {
         userInterface.setPlayIcon()
@@ -141,56 +104,53 @@ class ScriptManager @Inject constructor(
                         recording.close()
                     } catch (e: Exception) {
                         val msg = "Failed to stop recording"
-                        Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
                         Timber.error(e) { msg }
                     }
                 }
             }
         }
 
+        val scriptExitedString by lazy { service.getString(R.string.script_exited) }
+
         when (e) {
             is SupportImageMaker.ExitException -> {
                 when (e.reason) {
                     SupportImageMaker.ExitReason.NotFound -> {
-                        val msg = messages.supportImageMakerNotFound
+                        val msg = service.getString(R.string.support_img_maker_not_found)
 
                         messages.notify(msg)
-                        message(messages.scriptExited, msg)
+                        message(scriptExitedString, msg)
                     }
                     SupportImageMaker.ExitReason.Success -> showSupportImageNamer(userInterface, storageProvider)
                 }
             }
             is AutoLottery.ExitException -> {
                 val msg = when (e.reason) {
-                    AutoLottery.ExitReason.PresentBoxFull -> messages.lotteryPresentBoxFull
-                    AutoLottery.ExitReason.ResetDisabled -> messages.lotteryBoxResetIsDisabled
+                    AutoLottery.ExitReason.PresentBoxFull -> service.getString(R.string.present_box_full)
+                    AutoLottery.ExitReason.ResetDisabled -> service.getString(R.string.lottery_reset_disabled)
                 }
 
                 messages.notify(msg)
-                message(messages.scriptExited, msg)
+                message(scriptExitedString, msg)
             }
             is AutoGiftBox.ExitException -> {
-                val msg = messages.pickedExpStack(e.pickedStacks)
+                val msg = service.getString(R.string.picked_exp_stacks, e.pickedStacks)
 
                 messages.notify(msg)
-                message(messages.scriptExited, msg)
+                message(scriptExitedString, msg)
             }
             is AutoFriendGacha.ExitException -> {
                 val msg = when (val reason = e.reason) {
-                    AutoFriendGacha.ExitReason.InventoryFull -> messages.inventoryFull
-                    is AutoFriendGacha.ExitReason.Limit -> messages.timesRolled(reason.count)
+                    AutoFriendGacha.ExitReason.InventoryFull -> service.getString(R.string.inventory_full)
+                    is AutoFriendGacha.ExitReason.Limit -> service.getString(R.string.times_rolled, reason.count)
                 }
 
                 messages.notify(msg)
-                message(messages.scriptExited, msg)
+                message(scriptExitedString, msg)
             }
             is AutoBattle.ExitException -> {
-                if (e.reason != AutoBattle.ExitReason.Abort) {
-                    messages.notify(messages.scriptExited)
-                }
-
-                val msg = makeExitMessage(e.reason, e.state)
-                message(messages.scriptExited, msg)
+                showBattleExit(service, e)
             }
             is ScriptAbortException -> {
                 // user aborted. do nothing
@@ -198,7 +158,7 @@ class ScriptManager @Inject constructor(
             else -> {
                 println(e.messageAndStackTrace)
 
-                val msg = messages.unexpectedError
+                val msg = service.getString(R.string.unexpected_error)
                 messages.notify(msg)
 
                 message(msg, e.messageAndStackTrace, e)
@@ -293,9 +253,9 @@ class ScriptManager @Inject constructor(
                 screenshotService.startRecording()
             } else null
         } catch (e: Exception) {
-            val msg = userInterface.Service.getString(R.string.cannot_start_recording)
+            val msg = service.getString(R.string.cannot_start_recording)
             Timber.error(e) { msg }
-            Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
+            Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
 
             null
         }
@@ -330,7 +290,7 @@ class ScriptManager @Inject constructor(
             ScriptLauncher(
                 scriptMode = detectedMode,
                 onResponse = {
-                    dialog?.hide()
+                    dialog?.dismiss()
                     onScriptLauncherResponse(it, entryPointRunner)
                 },
                 prefs = preferences

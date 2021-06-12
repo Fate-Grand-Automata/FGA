@@ -126,9 +126,12 @@ open class AutoBattle @Inject constructor(
 
     class ExitState(
         val timesRan: Int,
+        val runLimit: Int?,
         val timesRefilled: Int,
+        val refillLimit: Int,
         val ceDropCount: Int,
         val materials: Map<MaterialEnum, Int>,
+        val matLimit: Int?,
         val withdrawCount: Int,
         val totalTime: Duration,
         val averageTimePerRun: Duration,
@@ -140,9 +143,12 @@ open class AutoBattle @Inject constructor(
     private fun makeExitState(): ExitState {
         return ExitState(
             timesRan = battle.state.runs,
+            runLimit = if (prefs.refill.shouldLimitRuns) prefs.refill.limitRuns else null,
             timesRefilled = stonesUsed,
+            refillLimit = prefs.refill.repetitions,
             ceDropCount = ceDropCount,
             materials = matsGot,
+            matLimit = if (prefs.refill.shouldLimitMats) prefs.refill.limitMats else null,
             withdrawCount = withdrawCount,
             totalTime = battle.state.totalBattleTime,
             averageTimePerRun = battle.state.averageTimePerRun,
