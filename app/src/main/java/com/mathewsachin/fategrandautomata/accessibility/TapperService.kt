@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.view.accessibility.AccessibilityEvent
+import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -24,6 +25,7 @@ class TapperService: AccessibilityService() {
 
     override fun onServiceConnected() {
         Timber.info { "Accessibility Service bound to system" }
+        Toast.makeText(this, "FGA Accessibility started", Toast.LENGTH_SHORT).show()
 
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {
@@ -40,6 +42,7 @@ class TapperService: AccessibilityService() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         Timber.info { "Accessibility Service unbind" }
+        Toast.makeText(this, "FGA Accessibility stopped", Toast.LENGTH_SHORT).show()
         instance = null
 
         return super.onUnbind(intent)
