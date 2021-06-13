@@ -339,6 +339,8 @@
     <string name="mat_star_shard">Glittering Star Shard</string>
     <string name="mat_fruit">Fruit of Eternity</string>
     <string name="mat_demon_lantern">Demon Flame Lantern</string>
+    <string name="mat_amnesty_bell">Tiny Bell of Amnesty</string>
+    <string name="mat_fantasy_scales">Scales of Fantasies</string>
 
     <string name="p_shuffle_cards">Shuffle cards</string>
     <string name="p_shuffle_cards_wave">Wave</string>

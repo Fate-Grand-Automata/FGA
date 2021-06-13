@@ -10,6 +10,7 @@ enum class MaterialEnum {
     Fluid,
     Stake,
     Gunpowder,
+    AmnestyBell,
 
     Seed,
     GhostLantern,
@@ -31,6 +32,7 @@ enum class MaterialEnum {
     Tiara,
     DivineSpiritParticle,
     RainbowThreadBall,
+    FantasyScales,
 
     Claw,
     Heart,

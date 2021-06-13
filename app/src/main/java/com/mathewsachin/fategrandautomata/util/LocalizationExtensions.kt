@@ -104,4 +104,6 @@ val MaterialEnum.stringRes
         MaterialEnum.StarShard -> R.string.mat_star_shard
         MaterialEnum.FruitOfEternity -> R.string.mat_fruit
         MaterialEnum.DemonFlameLantern -> R.string.mat_demon_lantern
+        MaterialEnum.AmnestyBell -> R.string.mat_amnesty_bell
+        MaterialEnum.FantasyScales -> R.string.mat_fantasy_scales
     }
