@@ -73,7 +73,7 @@ private fun LazyListScope.battleExitContent(
             style = MaterialTheme.typography.h6,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp, top = 5.dp)
         )
     }
 
@@ -307,9 +307,7 @@ fun BattleExit(
 @Composable
 fun PreviewBattleExitContent() {
     FGATheme {
-        LazyColumn(
-            contentPadding = PaddingValues(16.dp)
-        ) {
+        LazyColumn {
             battleExitContent(
                 reason = AutoBattle.ExitReason.CEGet,
                 state = AutoBattle.ExitState(
