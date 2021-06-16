@@ -80,7 +80,9 @@ fun FGATheme(
         Surface(
             color = MaterialTheme.colors.background
         ) {
-            content()
+            PreventRtl {
+                content()
+            }
         }
     }
 }
@@ -91,14 +93,12 @@ fun FgaScreen(
 ) {
     FGATheme {
         ProvideWindowInsets {
-            PreventRtl {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .systemBarsPadding()
-                ) {
-                    content()
-                }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .systemBarsPadding()
+            ) {
+                content()
             }
         }
     }
