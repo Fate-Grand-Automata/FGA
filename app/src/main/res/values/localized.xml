@@ -137,6 +137,7 @@
     <string name="p_enable_withdraw">Enable Withdraw</string>
     <string name="p_stop_on_ce_drop">Stop on CE drop</string>
     <string name="p_stop_on_ce_get">Stop on CE GET</string>
+    <string name="p_stop_on_first_clear_rewards">Stop on first-clear rewards</string>
     <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
     <string name="p_experimental">Experimental</string>
     <string name="p_screenshot_drops">Screenshot Drops</string>
@@ -275,6 +276,7 @@
     <string name="support_selection_preferred_not_set">When using \'preferred\' support selection mode, specify at least one Servant or Craft Essence.</string>
     <string name="ce_dropped">CE Dropped!</string>
     <string name="ce_get">CE GET!</string>
+    <string name="first_clear_rewards">First-clear rewards!</string>
     <string name="withdraw_disabled">All servants have been defeated and auto-withdrawing is disabled.</string>
     <string name="times_ran">Ran %d time(s)</string>
     <string name="times_ran_out_of">Ran %1$d out of %2$d time(s)</string>

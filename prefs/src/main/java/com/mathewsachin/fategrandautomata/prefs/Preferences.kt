@@ -54,6 +54,8 @@ class PreferencesImpl @Inject constructor(
 
     override val stopOnCEGet by prefs.stopOnCEGet
 
+    override val stopOnFirstClearRewards by prefs.stopOnFirstClearRewards
+
     override val boostItemSelectionMode by prefs.boostItemSelectionMode
 
     override val refill: IRefillPreferences =

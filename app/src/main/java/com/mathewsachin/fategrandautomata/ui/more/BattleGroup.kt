@@ -69,6 +69,13 @@ fun LazyListScope.battleGroup(
     }
 
     item {
+        prefs.stopOnFirstClearRewards.SwitchPreference(
+            title = stringResource(R.string.p_stop_on_first_clear_rewards),
+            icon = icon(R.drawable.ic_gift)
+        )
+    }
+
+    item {
         prefs.screenshotDrops.SwitchPreference(
             title = stringResource(R.string.p_screenshot_drops),
             summary = stringResource(R.string.p_screenshot_drops_summary),

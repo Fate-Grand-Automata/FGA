@@ -41,6 +41,7 @@ open class AutoBattle @Inject constructor(
         class Unexpected(val e: Exception): ExitReason()
         object CEGet: ExitReason()
         object CEDropped: ExitReason()
+        object FirstClearRewards: ExitReason()
         class LimitMaterials(val count: Int): ExitReason()
         object WithdrawDisabled: ExitReason()
         object APRanOut: ExitReason()
@@ -403,7 +404,13 @@ open class AutoBattle @Inject constructor(
     /**
      * Handles the quest rewards screen.
      */
-    private fun questReward() = game.resultClick.click()
+    private fun questReward() {
+        if (prefs.stopOnFirstClearRewards) {
+            throw BattleExitException(ExitReason.FirstClearRewards)
+        }
+
+        game.resultClick.click()
+    }
 
     // Selections Support option
     private fun support() {

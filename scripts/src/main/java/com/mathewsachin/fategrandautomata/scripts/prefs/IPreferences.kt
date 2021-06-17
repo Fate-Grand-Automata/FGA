@@ -15,6 +15,7 @@ interface IPreferences {
     val withdrawEnabled: Boolean
     val stopOnCEDrop: Boolean
     val stopOnCEGet: Boolean
+    val stopOnFirstClearRewards: Boolean
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
     var waitAPRegen: Boolean

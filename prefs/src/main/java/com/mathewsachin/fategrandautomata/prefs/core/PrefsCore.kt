@@ -32,6 +32,7 @@ class PrefsCore @Inject constructor(
 
     val stopOnCEDrop = maker.bool("stop_on_ce_drop")
     val stopOnCEGet = maker.bool("stop_on_ce_get")
+    val stopOnFirstClearRewards = maker.bool("stop_on_first_clear_rewards")
 
     val boostItemSelectionMode = maker.stringAsInt("selected_boost_item", -1)
 

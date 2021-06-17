@@ -47,6 +47,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.SupportSelectionPreferredNotSet -> stringResource(R.string.support_selection_preferred_not_set)
     is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
     is AutoBattle.ExitReason.CardPriorityParseError -> msg
+    AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
 }
 
 @Composable
