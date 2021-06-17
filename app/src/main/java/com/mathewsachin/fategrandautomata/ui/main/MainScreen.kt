@@ -8,8 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.launch
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -179,55 +178,59 @@ private fun MainScreenContent(
     toggleAccessibilityService: () -> Unit
 ) {
     Box {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                // FIXME: Change back to LazyColumn when compose is fixed. After beta08, the accessibility status view wasn't updating in LazyColumn, so using a scrollable Column for now
-                .verticalScroll(rememberScrollState())
         ) {
-            Heading(stringResource(R.string.app_name)) {
-                item {
-                    HeadingButton(
-                        text = "Build: ${BuildConfig.VERSION_CODE}",
-                        onClick = { navigate(MainScreenDestinations.Releases) }
-                    )
-                }
+            item {
+                Heading(stringResource(R.string.app_name)) {
+                    item {
+                        HeadingButton(
+                            text = "Build: ${BuildConfig.VERSION_CODE}",
+                            onClick = { navigate(MainScreenDestinations.Releases) }
+                        )
+                    }
 
-                item {
-                    HeadingButton(
-                        text = stringResource(R.string.p_nav_troubleshoot),
-                        onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
-                    )
-                }
-            }
-
-            Card(
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                Column {
-                    Preference(
-                        title = stringResource(R.string.p_battle_config),
-                        summary = stringResource(R.string.p_battle_config_summary),
-                        icon = icon(R.drawable.ic_formation),
-                        onClick = { navigate(MainScreenDestinations.BattleConfigs) }
-                    )
-
-                    Divider()
-
-                    Preference(
-                        title = stringResource(R.string.p_more_options),
-                        icon = icon(R.drawable.ic_dots_horizontal),
-                        onClick = { navigate(MainScreenDestinations.MoreOptions) }
-                    )
+                    item {
+                        HeadingButton(
+                            text = stringResource(R.string.p_nav_troubleshoot),
+                            onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
+                        )
+                    }
                 }
             }
 
-            AccessibilityServiceBlock(
-                serviceStarted = accessibilityServiceStarted,
-                toggleService = toggleAccessibilityService,
-                overlayServiceStarted = overlayServiceStarted
-            )
+            item {
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    Column {
+                        Preference(
+                            title = stringResource(R.string.p_battle_config),
+                            summary = stringResource(R.string.p_battle_config_summary),
+                            icon = icon(R.drawable.ic_formation),
+                            onClick = { navigate(MainScreenDestinations.BattleConfigs) }
+                        )
+
+                        Divider()
+
+                        Preference(
+                            title = stringResource(R.string.p_more_options),
+                            icon = icon(R.drawable.ic_dots_horizontal),
+                            onClick = { navigate(MainScreenDestinations.MoreOptions) }
+                        )
+                    }
+                }
+            }
+
+            item {
+                AccessibilityServiceBlock(
+                    serviceStarted = accessibilityServiceStarted,
+                    toggleService = toggleAccessibilityService,
+                    overlayServiceStarted = overlayServiceStarted
+                )
+            }
         }
 
         OverlayServiceToggleButton(

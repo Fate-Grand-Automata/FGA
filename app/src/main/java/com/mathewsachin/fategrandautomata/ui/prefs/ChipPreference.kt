@@ -16,7 +16,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.util.toggle
 
-// FIXME: ChipPreferences no longer work as of compose beta08
 @Composable
 private fun ChipPreferenceItem(
     text: String,
