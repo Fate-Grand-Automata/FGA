@@ -125,4 +125,10 @@ jobs:
           asset_path: ./apk/app-ci.apk
           asset_name: com.mathewsachin.fategrandautomata.apk
           asset_content_type: application/vnd.android.package-archive
-      
+
+      - name: Publish release
+        uses: StuYarrow/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          id: ${{ steps.create_release.outputs.id }}
