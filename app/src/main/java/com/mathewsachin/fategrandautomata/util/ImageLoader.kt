@@ -85,6 +85,7 @@ class ImageLoader @Inject constructor(
         Images.SupportExtra -> "support_extra.png"
         Images.SupportNotFound -> "support_not_found.png"
         Images.Support -> "support.png"
+        Images.ServantCheckSupport -> "servant_check_support.png"
         Images.BattleMenu -> "battle_menu.png"
         Images.ExpX1 -> "x1.png"
         Images.ExpX2 -> "x2.png"

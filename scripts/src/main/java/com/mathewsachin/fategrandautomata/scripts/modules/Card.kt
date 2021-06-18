@@ -137,6 +137,8 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 .filter { images[Images.Support] in game.supportCheckRegion(it) }
             commandCardGroups = groupByFaceCard(supportGroup)
             commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
+
+            battle.servantTracker.logFaceCardForServants()
         }
     }
 

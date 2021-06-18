@@ -94,11 +94,8 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     fun performBattle() {
         prefs.waitBeforeTurn.wait()
 
-        useSameSnapIn {
-            onTurnStarted()
-
-            servantTracker.beginTurn()
-        }
+        onTurnStarted()
+        servantTracker.beginTurn()
 
         autoSkill.execute()
 
@@ -109,7 +106,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         Duration.seconds(5).wait()
     }
 
-    private fun onTurnStarted() {
+    private fun onTurnStarted() = useSameSnapIn {
         checkCurrentStage()
 
         state.nextTurn()

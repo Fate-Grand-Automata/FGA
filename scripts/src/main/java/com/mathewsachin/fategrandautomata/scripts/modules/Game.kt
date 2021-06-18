@@ -398,6 +398,15 @@ class Game @Inject constructor(
         is CommandCard.NP -> (servantMatchRegion(card) + Location(110, -30)).copy(Height = 170)
     }
 
+    fun servantOpenDetailsClick(slot: ServantSlot) =
+        when (slot) {
+            ServantSlot.A -> Skill.Servant.A2
+            ServantSlot.B -> Skill.Servant.B2
+            ServantSlot.C -> Skill.Servant.C2
+        }.let {
+            Location(locate(it).X, 810)
+        }
+
     fun servantChangeCheckRegion(slot: ServantSlot) =
         when (slot) {
             ServantSlot.A -> Skill.Servant.A2
@@ -406,7 +415,7 @@ class Game @Inject constructor(
         }.let {
             val x = locate(it).X
 
-            Region(x - 55, 810, 100, 100)
+            Region(x + 20, 930, 40, 80)
         }
 
     fun servantChangeSupportCheckRegion(slot: ServantSlot) =
@@ -417,9 +426,12 @@ class Game @Inject constructor(
         }.let {
             val x = locate(it).X
 
-            Region(x + 25, 710, 290, 115)
+            Region(x + 25, 710, 300, 170)
         }
 
     fun imageRegion(skill: Skill.Servant) =
         Region(30, 30, 30, 30) + locate(skill)
+
+    val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
+    val servantDetailsFaceCardRegion = Region(-685, 280, 110, 80).xFromCenter()
 }

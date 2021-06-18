@@ -47,6 +47,7 @@ enum class Images {
     SupportExtra,
     SupportNotFound,
     Support,
+    ServantCheckSupport,
     BattleMenu,
     ExpX1,
     ExpX2,
