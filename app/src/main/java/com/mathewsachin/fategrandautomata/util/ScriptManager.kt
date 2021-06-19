@@ -156,7 +156,9 @@ class ScriptManager @Inject constructor(
                 // user aborted. do nothing
             }
             is AutoCEBomb.ExitException -> {
-                val msg = "No Level 1 target CE found"
+                val msg = when (e.reason) {
+                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> "No suitable target CE found"
+                }
 
                 messages.notify(msg)
                 message(scriptExitedString, msg)
@@ -337,7 +339,7 @@ class ScriptManager @Inject constructor(
             }
             ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
             is ScriptLauncherResponse.CEBomb -> {
-                preferences.ceBombTarget = resp.target
+                preferences.ceBombTargetRarity = resp.targetRarity
 
                 ScriptModeEnum.CEBomb
             }

@@ -74,7 +74,7 @@ class PrefsCore @Inject constructor(
 
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
 
-    val ceBombTarget = maker.enum("ce_bomb_target", AutoCEBomb.Target.Gloom)
+    val ceBombTargetRarity = maker.int("ce_bomb_target_rarity", 1)
 
     var dirRoot = maker.string("dir_root")
 

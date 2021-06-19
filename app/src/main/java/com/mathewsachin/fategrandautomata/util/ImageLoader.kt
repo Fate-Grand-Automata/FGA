@@ -94,6 +94,14 @@ class ImageLoader @Inject constructor(
         Images.CEEnhance -> "ce_enhance.png"
         Images.CEGloomLv1 -> "gloom_0.png"
         Images.CEStarvationLv1 -> "starvation_0.png"
+        Images.CEAwakeningLv1 -> "awakening_0.png"
+        Images.CEBarrierLv1 -> "barrier_0.png"
+        Images.CECombatLv1 -> "combat_0.png"
+        Images.CEDeceptionLv1 -> "deception_0.png"
+        Images.CELinkageLv1 -> "linkage_0.png"
+        Images.CEMercyLv1 -> "mercy_0.png"
+        Images.CEProsperityLv1 -> "prosperity_0.png"
+        Images.CESynchronizationLv1 -> "synchronization_0.png"
     }
 
     override operator fun get(img: Images): IPattern = synchronized(regionCachedPatterns) {

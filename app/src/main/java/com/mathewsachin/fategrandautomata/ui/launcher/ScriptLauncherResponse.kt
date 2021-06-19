@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.launcher
 
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoCEBomb
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 
@@ -9,7 +8,7 @@ sealed class ScriptLauncherResponse {
     data class FP(val limit: Int?): ScriptLauncherResponse()
     data class Lottery(val preventBoxReset: Boolean): ScriptLauncherResponse()
     data class GiftBox(val maxGoldEmberStackSize: Int): ScriptLauncherResponse()
-    data class CEBomb(val target: AutoCEBomb.Target): ScriptLauncherResponse()
+    data class CEBomb(val targetRarity: Int): ScriptLauncherResponse()
     object SupportImageMaker: ScriptLauncherResponse()
     data class Battle(
         val config: IBattleConfig,

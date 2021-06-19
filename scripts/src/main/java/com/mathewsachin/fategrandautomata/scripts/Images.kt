@@ -55,5 +55,13 @@ enum class Images {
     ExpX4,
     CEEnhance,
     CEGloomLv1,
-    CEStarvationLv1
+    CEStarvationLv1,
+    CEAwakeningLv1,
+    CEBarrierLv1,
+    CECombatLv1,
+    CEDeceptionLv1,
+    CELinkageLv1,
+    CEMercyLv1,
+    CEProsperityLv1,
+    CESynchronizationLv1,
 }

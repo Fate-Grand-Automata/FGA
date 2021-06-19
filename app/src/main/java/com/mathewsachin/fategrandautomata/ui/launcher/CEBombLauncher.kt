@@ -10,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoCEBomb
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.ChoiceListItem
 
@@ -19,7 +18,7 @@ fun ceBombLauncher(
     prefs: IPreferences,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
-    var target by remember { mutableStateOf(prefs.ceBombTarget) }
+    var target by remember { mutableStateOf(prefs.ceBombTargetRarity) }
 
     Column(
         modifier = modifier
@@ -38,12 +37,12 @@ fun ceBombLauncher(
         )
 
         LazyColumn {
-            items(AutoCEBomb.Target.values()) {
+            items((1..2).toList()) {
                 ChoiceListItem(
                     isSelected = target == it,
                     onClick = { target = it }
                 ) {
-                    Text(it.toString())
+                    Text("$it\u2605 CEs")
                 }
             }
         }
@@ -53,7 +52,7 @@ fun ceBombLauncher(
         canBuild = { true },
         build = {
             ScriptLauncherResponse.CEBomb(
-                target = target
+                targetRarity = target
             )
         }
     )

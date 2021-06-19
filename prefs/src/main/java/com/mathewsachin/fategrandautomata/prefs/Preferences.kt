@@ -81,7 +81,7 @@ class PreferencesImpl @Inject constructor(
 
     override var maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
 
-    override var ceBombTarget by prefs.ceBombTarget
+    override var ceBombTargetRarity by prefs.ceBombTargetRarity
 
     override var shouldLimitFP by prefs.shouldLimitFP
     override var limitFP by prefs.limitFP

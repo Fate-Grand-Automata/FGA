@@ -2,36 +2,62 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.libautomata.EntryPoint
-import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.*
 import javax.inject.Inject
 import kotlin.time.Duration
 
+/**
+ * CE bomb maker script with caveats.
+ * This script isn't much tested. Use at your own risk.
+ *
+ * - Can only be started from CE enhancement screen with no CE selected.
+ * - In the CE picking screens, the item sizes must be set to lowest.
+ * - Base CE pickup screen should be filtered to correct rarity and sorted in Ascending order by Level.
+ * - Enhancement material pickup screen should be filtered to correct rarity and sorted in Descending order by Level.
+ */
 class AutoCEBomb @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
-        object NoLvl1TargetCEFound: ExitReason()
+        object NoSuitableTargetCEFound: ExitReason()
     }
 
-    enum class Target {
-        Gloom,
-        Starvation
+    private fun imagesForSelectedRarity() = when (prefs.ceBombTargetRarity) {
+        1 -> listOf(
+            Images.CEStarvationLv1,
+            Images.CEAwakeningLv1,
+            Images.CEBarrierLv1,
+            Images.CELinkageLv1,
+            Images.CECombatLv1
+        )
+        2 -> listOf(
+            Images.CEGloomLv1,
+            Images.CESynchronizationLv1,
+            Images.CEDeceptionLv1,
+            Images.CEProsperityLv1,
+            Images.CEMercyLv1
+        )
+        else -> emptyList()
     }
-
-    fun Target.pattern() = when (this) {
-        Target.Gloom -> Images.CEGloomLv1
-        Target.Starvation -> Images.CEStarvationLv1
-    }.let { images[it] }
 
     class ExitException(val reason: ExitReason): Exception()
 
-    fun level1CE(img: IPattern = prefs.ceBombTarget.pattern()) =
-        game.levelOneCERegion.find(img)
-            ?: throw ExitException(ExitReason.NoLvl1TargetCEFound)
+    private fun findBaseCE(): Match {
+        for (img in imagesForSelectedRarity()) {
+            val matches = game.levelOneCERegion
+                .findAll(images[img])
+                .toList()
+                .sorted()
+
+            // At least 2 copies are needed to merge
+            if (matches.size > 1) {
+                return matches[0]
+            }
+        }
+
+        throw ExitException(ExitReason.NoSuitableTargetCEFound)
+    }
 
     override fun script(): Nothing {
         game.ceEnhanceClick.click()
@@ -39,9 +65,7 @@ class AutoCEBomb @Inject constructor(
         while (true) {
             Duration.seconds(2).wait()
 
-            val baseCERegion = level1CE().Region
-
-            // This would help if we later make it able to recognize multiple CEs later.
+            val baseCERegion = findBaseCE().Region
             val img = baseCERegion.getPattern()
 
             img.use {
@@ -69,7 +93,10 @@ class AutoCEBomb @Inject constructor(
     }
 
     private fun pickMatchingCE(img: IPattern) {
-        level1CE(img).Region.click()
+        val matchingCE = game.levelOneCERegion.find(img)
+            ?: throw ExitException(ExitReason.NoSuitableTargetCEFound)
+
+        matchingCE.Region.click()
         Duration.seconds(1).wait()
     }
 
