@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.Context
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoCEBomb
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -72,6 +73,8 @@ class PrefsCore @Inject constructor(
     val swipeMultiplier = maker.int("swipe_multiplier", 100)
 
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
+
+    val ceBombTarget = maker.enum("ce_bomb_target", AutoCEBomb.Target.Gloom)
 
     var dirRoot = maker.string("dir_root")
 

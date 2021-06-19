@@ -155,6 +155,12 @@ class ScriptManager @Inject constructor(
             is ScriptAbortException -> {
                 // user aborted. do nothing
             }
+            is AutoCEBomb.ExitException -> {
+                val msg = "No Level 1 target CE found"
+
+                messages.notify(msg)
+                message(scriptExitedString, msg)
+            }
             else -> {
                 println(e.messageAndStackTrace)
 
@@ -177,6 +183,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.Lottery -> entryPoint.lottery()
             ScriptModeEnum.PresentBox -> entryPoint.giftBox()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
+            ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
         }
 
     enum class PauseAction {
@@ -329,6 +336,11 @@ class ScriptManager @Inject constructor(
                 ScriptModeEnum.PresentBox
             }
             ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
+            is ScriptLauncherResponse.CEBomb -> {
+                preferences.ceBombTarget = resp.target
+
+                ScriptModeEnum.CEBomb
+            }
             is ScriptLauncherResponse.Battle -> {
                 preferences.selectedBattleConfig = resp.config
 
@@ -354,13 +366,3 @@ class ScriptManager @Inject constructor(
         }
     }
 }
-
-val ScriptModeEnum.stringRes
-    get() =
-        when (this) {
-            ScriptModeEnum.Battle -> R.string.p_script_mode_battle
-            ScriptModeEnum.FP -> R.string.p_script_mode_fp
-            ScriptModeEnum.Lottery -> R.string.p_script_mode_lottery
-            ScriptModeEnum.PresentBox -> R.string.p_script_mode_gift_box
-            ScriptModeEnum.SupportImageMaker -> R.string.p_script_mode_support_image_maker
-        }

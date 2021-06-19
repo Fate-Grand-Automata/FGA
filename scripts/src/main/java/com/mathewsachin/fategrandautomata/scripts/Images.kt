@@ -53,4 +53,7 @@ enum class Images {
     ExpX2,
     ExpX3,
     ExpX4,
+    CEEnhance,
+    CEGloomLv1,
+    CEStarvationLv1
 }

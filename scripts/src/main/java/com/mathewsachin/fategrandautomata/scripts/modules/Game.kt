@@ -434,4 +434,8 @@ class Game @Inject constructor(
 
     val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
     val servantDetailsFaceCardRegion = Region(-685, 280, 110, 80).xFromCenter()
+
+    val ceEnhanceRegion = Region(200, 600, 400, 400)
+    val ceEnhanceClick = Location(200, 600)
+    val levelOneCERegion = Region(160, 380, 1840, 900)
 }

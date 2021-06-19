@@ -5,5 +5,6 @@ enum class ScriptModeEnum {
     FP,
     Lottery,
     PresentBox,
-    SupportImageMaker
+    SupportImageMaker,
+    CEBomb
 }

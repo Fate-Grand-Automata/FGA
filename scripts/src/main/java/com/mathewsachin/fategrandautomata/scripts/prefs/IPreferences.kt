@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoCEBomb
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.libautomata.IPlatformPrefs
@@ -37,6 +38,8 @@ interface IPreferences {
     val support: ISupportPreferencesCommon
     val platformPrefs: IPlatformPrefs
     val gestures: IGesturesPreferences
+
+    var ceBombTarget: AutoCEBomb.Target
 
     fun forBattleConfig(id: String): IBattleConfig
     fun addBattleConfig(id: String): IBattleConfig

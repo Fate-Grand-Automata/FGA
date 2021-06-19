@@ -22,6 +22,8 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.PresentBox
             images[Images.SupportRegionTool] in game.supportRegionToolSearchRegion ->
                 ScriptModeEnum.SupportImageMaker
+            images[Images.CEEnhance] in game.ceEnhanceRegion ->
+                ScriptModeEnum.CEBomb
             else -> ScriptModeEnum.Battle
         }
     }
