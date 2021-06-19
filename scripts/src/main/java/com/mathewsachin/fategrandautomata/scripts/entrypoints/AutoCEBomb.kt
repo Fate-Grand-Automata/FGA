@@ -8,7 +8,7 @@ import kotlin.time.Duration
 
 /**
  * CE bomb maker script with caveats.
- * This script isn't much tested. Use at your own risk.
+ * This script isn't much tested. Use at your own risk. This code isn't calibrated for FGO JP.
  *
  * - Can only be started from CE enhancement screen with no CE selected.
  * - In the CE picking screens, the item sizes must be set to lowest.
@@ -75,8 +75,9 @@ class AutoCEBomb @Inject constructor(
                 Location(900, 500).click()
                 Duration.seconds(2).wait()
 
-                pickMatchingCE(img)
+                // Picking the matching CE later allows more CE to be picked
                 pickCEs()
+                pickMatchingCE(img)
 
                 repeat(2) {
                     Location(2300, 1300).click()
@@ -93,6 +94,10 @@ class AutoCEBomb @Inject constructor(
     }
 
     private fun pickMatchingCE(img: IPattern) {
+        // Scroll to top
+        Location(2040, 400).click()
+        Duration.seconds(2).wait()
+
         val matchingCE = game.levelOneCERegion.find(img)
             ?: throw ExitException(ExitReason.NoSuitableTargetCEFound)
 
@@ -101,6 +106,7 @@ class AutoCEBomb @Inject constructor(
     }
 
     private fun pickCEs() {
+        // Scroll to bottom
         Location(2040, 1400).click()
         Duration.seconds(2).wait()
 
