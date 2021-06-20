@@ -271,9 +271,11 @@ open class AutoBattle @Inject constructor(
         images[Images.CEDetails] in game.resultCeRewardDetailsRegion
 
     private fun isDeathAnimation() =
-        ((if (images[Images.ServantExist] in game.battleServant1Region) 1 else 0) +
-                (if (images[Images.ServantExist] in game.battleServant2Region) 1 else 0) +
-                (if (images[Images.ServantExist] in game.battleServant3Region) 1 else 0)) in 1..2
+        listOf(
+            game.battleServant1Region,
+            game.battleServant2Region,
+            game.battleServant3Region
+        ).count { images[Images.ServantExist] in it } in 1..2
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
