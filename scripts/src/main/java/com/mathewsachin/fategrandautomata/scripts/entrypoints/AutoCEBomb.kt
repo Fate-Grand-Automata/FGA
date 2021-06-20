@@ -108,7 +108,7 @@ class AutoCEBomb @Inject constructor(
     private fun pickCEs() {
         // Scroll to bottom
         Location(2040, 1400).click()
-        Duration.seconds(2).wait()
+        Duration.seconds(1).wait()
 
         for (y in 0..3) {
             for (x in 0..6) {
