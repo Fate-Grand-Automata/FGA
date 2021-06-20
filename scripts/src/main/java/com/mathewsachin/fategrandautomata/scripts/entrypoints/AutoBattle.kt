@@ -176,8 +176,7 @@ open class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to {
-                game.scriptArea.center.click() }
+            { isDeathAnimation() } to { game.scriptArea.center.click() }
         )
 
         // Loop through SCREENS until a Validator returns true
