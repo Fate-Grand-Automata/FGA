@@ -119,25 +119,16 @@ class Game @Inject constructor(
     val withdrawAcceptClick = Location(485, 720).xFromCenter()
     val withdrawCloseClick = Location(-10, 1140).xFromCenter()
 
-    val supportScreenRegion =
-        if (isWide)
-            Region(150, 0, 200, 400)
-        else Region(0, 0, 200, 400)
+    val supportScreenRegion = Region(if (isWide) 150 else 0, 0, 200, 400)
 
-    val supportExtraRegion =
-        if (isWide)
-            Region(1380, 200, 130, 130)
-        else Region(1200, 200, 130, 130)
+    val supportExtraRegion = Region(if (isWide) 1380 else 1200, 200, 130, 130)
 
     val supportUpdateClick =
         if (isWide)
             Location(1870, 260)
         else Location(1670, 250)
 
-    val supportListTopClick =
-        (if (isWide)
-            Location(-218, 360)
-        else Location(-80, 360)).xFromRight()
+    val supportListTopClick = Location(if (isWide) -218 else -80, 360).xFromRight()
 
     val supportFirstSupportClick = Location(0, 500).xFromCenter()
 
@@ -193,42 +184,44 @@ class Game @Inject constructor(
     }.xFromCenter()
 
     fun locate(orderChangeMember: OrderChangeMember) = when (orderChangeMember) {
-        OrderChangeMember.Starting.A -> Location(-1000, 700)
-        OrderChangeMember.Starting.B -> Location(-600, 700)
-        OrderChangeMember.Starting.C -> Location(-200, 700)
-        OrderChangeMember.Sub.A -> Location(200, 700)
-        OrderChangeMember.Sub.B -> Location(600, 700)
-        OrderChangeMember.Sub.C -> Location(1000, 700)
-    }.xFromCenter()
+        OrderChangeMember.Starting.A -> -1000
+        OrderChangeMember.Starting.B -> -600
+        OrderChangeMember.Starting.C -> -200
+        OrderChangeMember.Sub.A -> 200
+        OrderChangeMember.Sub.B -> 600
+        OrderChangeMember.Sub.C -> 1000
+    }.let { x -> Location(x, 700) }.xFromCenter()
 
     fun locate(servantTarget: ServantTarget) = when (servantTarget) {
-        ServantTarget.A -> Location(-580, 880)
-        ServantTarget.B -> Location(0, 880)
-        ServantTarget.C -> Location(660, 880)
-        ServantTarget.Left -> Location(-290, 880)
-        ServantTarget.Right -> Location(330, 880)
-    }.xFromCenter()
+        ServantTarget.A -> -580
+        ServantTarget.B -> 0
+        ServantTarget.C -> 660
+        ServantTarget.Left -> -290
+        ServantTarget.Right -> 330
+    }.let { x -> Location(x, 880) }.xFromCenter()
 
     fun locate(skill: Skill.Servant) = when (skill) {
-        Skill.Servant.A1 -> Location(140, 1155)
-        Skill.Servant.A2 -> Location(328, 1155)
-        Skill.Servant.A3 -> Location(514, 1155)
-        Skill.Servant.B1 -> Location(775, 1155)
-        Skill.Servant.B2 -> Location(963, 1155)
-        Skill.Servant.B3 -> Location(1150, 1155)
-        Skill.Servant.C1 -> Location(1413, 1155)
-        Skill.Servant.C2 -> Location(1600, 1155)
-        Skill.Servant.C3 -> Location(1788, 1155)
-    } + Location(if (isWide) 108 else 0, if (isWide) -22 else 0)
+        Skill.Servant.A1 -> 140
+        Skill.Servant.A2 -> 328
+        Skill.Servant.A3 -> 514
+        Skill.Servant.B1 -> 775
+        Skill.Servant.B2 -> 963
+        Skill.Servant.B3 -> 1150
+        Skill.Servant.C1 -> 1413
+        Skill.Servant.C2 -> 1600
+        Skill.Servant.C3 -> 1788
+    }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1155) }
 
     fun locate(skill: Skill.Master) = when (skill) {
-        Skill.Master.A -> Location(-740, 620)
-        Skill.Master.B -> Location(-560, 620)
-        Skill.Master.C -> Location(-400, 620)
-    }.let {
+        Skill.Master.A -> -740
+        Skill.Master.B -> -560
+        Skill.Master.C -> -400
+    }.let { x ->
+        val location = Location(x, 620)
+
         if (isJp)
-            it + Location(178, 0) + masterOffsetJp
-        else it.xFromRight()
+            location + Location(178, 0) + masterOffsetJp
+        else location.xFromRight()
     }
 
     fun locate(skill: Skill) = when (skill) {
@@ -237,24 +230,24 @@ class Game @Inject constructor(
     }
 
     fun locate(supportClass: SupportClass) = when (supportClass) {
-        SupportClass.None -> Location()
-        SupportClass.All -> Location(184, 256)
-        SupportClass.Saber -> Location(320, 256)
-        SupportClass.Archer -> Location(454, 256)
-        SupportClass.Lancer -> Location(568, 256)
-        SupportClass.Rider -> Location(724, 256)
-        SupportClass.Caster -> Location(858, 256)
-        SupportClass.Assassin -> Location(994, 256)
-        SupportClass.Berserker -> Location(1130, 256)
-        SupportClass.Extra -> Location(1264, 256)
-        SupportClass.Mix -> Location(1402, 256)
-    } + Location(if (isWide) 171 else 0, 0)
+        SupportClass.None -> 0
+        SupportClass.All -> 184
+        SupportClass.Saber -> 320
+        SupportClass.Archer -> 454
+        SupportClass.Lancer -> 568
+        SupportClass.Rider -> 724
+        SupportClass.Caster -> 858
+        SupportClass.Assassin -> 994
+        SupportClass.Berserker -> 1130
+        SupportClass.Extra -> 1264
+        SupportClass.Mix -> 1402
+    }.let { x -> Location(x + if (isWide) 171 else 0, 256) }
 
     fun locate(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A -> Location(90, 80)
-        EnemyTarget.B -> Location(570, 80)
-        EnemyTarget.C -> Location(1050, 80)
-    } + Location(if (isWide) 183 else 0, 0)
+        EnemyTarget.A -> 90
+        EnemyTarget.B -> 570
+        EnemyTarget.C -> 1050
+    }.let { x -> Location(x + if (isWide) 183 else 0, 80) }
 
     fun dangerRegion(enemy: EnemyTarget) = when (enemy) {
         EnemyTarget.A -> Region(0, 0, 485, 220)
@@ -284,9 +277,25 @@ class Game @Inject constructor(
             .xFromRight()
             .yFromBottom()
 
-    val battleServant1Region = Region(-1980, -190, 60, 60).xFromRight().yFromBottom()
-    val battleServant2Region = Region(-1350, -190, 60, 60).xFromRight().yFromBottom()
-    val battleServant3Region = Region(-720, -190, 60, 60).xFromRight().yFromBottom()
+    val servantDeathCheckRegions =
+        ServantSlot.list
+            .map {
+                when (it) {
+                    ServantSlot.A -> Skill.Servant.A3
+                    ServantSlot.B -> Skill.Servant.B3
+                    ServantSlot.C -> Skill.Servant.C3
+                }
+            }
+            .map {
+                val skill3Location = locate(it)
+
+                Region(
+                    skill3Location.X + 35,
+                    skill3Location.Y + 67,
+                    120,
+                    120
+                )
+            }
 
     val battleAttackClick =
         (if (isWide)
@@ -304,6 +313,8 @@ class Game @Inject constructor(
     val battleSkillOkClick = Location(400, 850).xFromCenter()
     val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
     val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
+
+    val skipDeathAnimationClick = Location(-860, 200).xFromRight()
 
     val battleBack =
         (if (isWide)
@@ -348,54 +359,74 @@ class Game @Inject constructor(
     val lotteryResetConfirmationClick = Location(494, 1122).xFromCenter()
     val lotteryResetCloseClick = Location(-10, 1120).xFromCenter()
 
+    private fun clickLocation(card: CommandCard.Face) = when (card) {
+        CommandCard.Face.A -> -980
+        CommandCard.Face.B -> -530
+        CommandCard.Face.C -> 20
+        CommandCard.Face.D -> 520
+        CommandCard.Face.E -> 1070
+    }.let { x -> Location(x, 1000) }
+
     fun clickLocation(card: CommandCard) = when (card) {
-        CommandCard.Face.A -> Location(-980, 1000)
-        CommandCard.Face.B -> Location(-530, 1000)
-        CommandCard.Face.C -> Location(20, 1000)
-        CommandCard.Face.D -> Location(520, 1000)
-        CommandCard.Face.E -> Location(1070, 1000)
+        is CommandCard.Face -> clickLocation(card)
         CommandCard.NP.A -> Location(-280, 220)
         CommandCard.NP.B -> Location(20, 400)
         CommandCard.NP.C -> Location(460, 400)
     }.xFromCenter()
 
     fun affinityRegion(card: CommandCard.Face) = when (card) {
-        CommandCard.Face.A -> Region(-985, 650, 250, 200)
-        CommandCard.Face.B -> Region(-470, 650, 250, 200)
-        CommandCard.Face.C -> Region(41, 650, 250, 200)
-        CommandCard.Face.D -> Region(554, 650, 250, 200)
-        CommandCard.Face.E -> Region(1068, 650, 250, 200)
-    }.xFromCenter()
+        CommandCard.Face.A -> -985
+        CommandCard.Face.B -> -470
+        CommandCard.Face.C -> 41
+        CommandCard.Face.D -> 554
+        CommandCard.Face.E -> 1068
+    }.let { x -> Region(x, 650, 250, 200) }.xFromCenter()
 
     fun typeRegion(card: CommandCard.Face) = when (card) {
-        CommandCard.Face.A -> Region(-1280, 1060, 512, 200)
-        CommandCard.Face.B -> Region(-768, 1060, 512, 200)
-        CommandCard.Face.C -> Region(-256, 1060, 512, 200)
-        CommandCard.Face.D -> Region(256, 1060, 512, 200)
-        CommandCard.Face.E -> Region(768, 1060, 512, 200)
-    }.xFromCenter()
+        CommandCard.Face.A -> -1280
+        CommandCard.Face.B -> -768
+        CommandCard.Face.C -> -256
+        CommandCard.Face.D -> 256
+        CommandCard.Face.E -> 768
+    }.let { x -> Region(x, 1060, 512, 200) }.xFromCenter()
+
+    private fun servantMatchRegion(card: CommandCard.Face) = when (card) {
+        CommandCard.Face.A -> -1174
+        CommandCard.Face.B -> -660
+        CommandCard.Face.C -> -150
+        CommandCard.Face.D -> 364
+        CommandCard.Face.E -> 880
+    }.let { x -> Region(x, 800, 300, 200) }.xFromCenter()
+
+    private fun servantMatchRegion(card: CommandCard.NP) = when (card) {
+        CommandCard.NP.A -> -602
+        CommandCard.NP.B -> -142
+        CommandCard.NP.C -> 326
+    }.let { x -> Region(x, 190, 300, 200) }.xFromCenter()
 
     fun servantMatchRegion(card: CommandCard) = when (card) {
-        CommandCard.Face.A -> Region(-1174, 800, 300, 200)
-        CommandCard.Face.B -> Region(-660, 800, 300, 200)
-        CommandCard.Face.C -> Region(-150, 800, 300, 200)
-        CommandCard.Face.D -> Region(364, 800, 300, 200)
-        CommandCard.Face.E -> Region(880, 800, 300, 200)
-        CommandCard.NP.A -> Region(-602, 190, 300, 200)
-        CommandCard.NP.B -> Region(-142, 190, 300, 200)
-        CommandCard.NP.C -> Region(326, 190, 300, 200)
-    }.xFromCenter()
+        is CommandCard.Face -> servantMatchRegion(card)
+        is CommandCard.NP -> servantMatchRegion(card)
+    }
+
+    private fun servantCropRegion(card: CommandCard.Face) = when (card) {
+        CommandCard.Face.A -> -1080
+        CommandCard.Face.B -> -566
+        CommandCard.Face.C -> -56
+        CommandCard.Face.D -> 458
+        CommandCard.Face.E -> 974
+    }.let { x -> Region(x, 890, 115, 85) }.xFromCenter()
+
+    private fun servantCropRegion(card: CommandCard.NP) = when (card) {
+        CommandCard.NP.A -> -518
+        CommandCard.NP.B -> -50
+        CommandCard.NP.C -> 414
+    }.let { x -> Region(x, 290, 115, 65) }.xFromCenter()
 
     fun servantCropRegion(card: CommandCard) = when (card) {
-        CommandCard.Face.A -> Region(-1080, 890, 115, 85)
-        CommandCard.Face.B -> Region(-566, 890, 115, 85)
-        CommandCard.Face.C -> Region(-56, 890, 115, 85)
-        CommandCard.Face.D -> Region(458, 890, 115, 85)
-        CommandCard.Face.E -> Region(974, 890, 115, 85)
-        CommandCard.NP.A -> Region(-518, 290, 115, 65)
-        CommandCard.NP.B -> Region(-50, 290, 115, 65)
-        CommandCard.NP.C -> Region(414, 290, 115, 65)
-    }.xFromCenter()
+        is CommandCard.Face -> servantCropRegion(card)
+        is CommandCard.NP -> servantCropRegion(card)
+    }
 
     fun supportCheckRegion(card: CommandCard) = when (card) {
         is CommandCard.Face -> affinityRegion(card) + Location(-50, 100)

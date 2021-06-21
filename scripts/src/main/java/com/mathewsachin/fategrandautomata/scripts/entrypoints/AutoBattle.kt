@@ -176,7 +176,7 @@ open class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to { game.scriptArea.center.click() }
+            { isDeathAnimation() } to { game.skipDeathAnimationClick.click() }
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -271,11 +271,8 @@ open class AutoBattle @Inject constructor(
         images[Images.CEDetails] in game.resultCeRewardDetailsRegion
 
     private fun isDeathAnimation() =
-        listOf(
-            game.battleServant1Region,
-            game.battleServant2Region,
-            game.battleServant3Region
-        ).count { images[Images.ServantExist] in it } in 1..2
+        game.servantDeathCheckRegions
+            .count { images[Images.ServantExist] in it } in 1..2
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
