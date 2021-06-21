@@ -284,6 +284,10 @@ class Game @Inject constructor(
             .xFromRight()
             .yFromBottom()
 
+    val battleServant1Region = Region(-1980, -190, 60, 60).xFromRight().yFromBottom()
+    val battleServant2Region = Region(-1350, -190, 60, 60).xFromRight().yFromBottom()
+    val battleServant3Region = Region(-720, -190, 60, 60).xFromRight().yFromBottom()
+
     val battleAttackClick =
         (if (isWide)
             Location(-460, -230)

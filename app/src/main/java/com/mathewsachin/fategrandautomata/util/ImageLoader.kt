@@ -40,6 +40,7 @@ class ImageLoader @Inject constructor(
 
     fun Images.fileName(): String = when (this) {
         Images.BattleScreen -> "battle.png"
+        Images.ServantExist -> "servant_exist.png"
         Images.TargetDanger -> "target_danger.png"
         Images.TargetServant -> "target_servant.png"
         Images.Buster -> "buster.png"

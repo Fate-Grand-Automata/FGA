@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts
 
 enum class Images {
     BattleScreen,
+    ServantExist,
     TargetDanger,
     TargetServant,
     Buster,
