@@ -276,6 +276,9 @@ open class AutoBattle @Inject constructor(
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
+            // Count the current run
+            battle.state.nextRun()
+
             throw BattleExitException(ExitReason.CEGet)
         } else messages.notify(ScriptNotify.CEGet)
 
@@ -317,6 +320,9 @@ open class AutoBattle @Inject constructor(
             ceDropCount += ceDropped
 
             if (prefs.stopOnCEDrop) {
+                // Count the current run
+                battle.state.nextRun()
+
                 throw BattleExitException(ExitReason.CEDropped)
             } else messages.notify(ScriptNotify.CEDropped)
         }
@@ -341,6 +347,9 @@ open class AutoBattle @Inject constructor(
                 .sum()
 
             if (totalMats >= prefs.refill.limitMats) {
+                // Count the current run
+                battle.state.nextRun()
+
                 throw BattleExitException(ExitReason.LimitMaterials(totalMats))
             }
         }
@@ -411,6 +420,9 @@ open class AutoBattle @Inject constructor(
      */
     private fun questReward() {
         if (prefs.stopOnFirstClearRewards) {
+            // Count the current run
+            battle.state.nextRun()
+
             throw BattleExitException(ExitReason.FirstClearRewards)
         }
 
