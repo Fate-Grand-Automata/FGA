@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.fine_tune
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -48,16 +49,20 @@ fun FineTuneScreen(
             ) {
                 val selectedGroup = vm.groups[selectedIndex]
 
-                LazyColumn(
-                    contentPadding = PaddingValues(bottom = 90.dp)
-                ) {
-                    items(selectedGroup.items) {
-                        Card(
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .padding(bottom = 16.dp)
-                        ) {
-                            it.FineTuneSetter()
+                AnimatedContent(
+                    targetState = selectedGroup
+                ) { state ->
+                    LazyColumn(
+                        contentPadding = PaddingValues(bottom = 90.dp)
+                    ) {
+                        items(state.items) {
+                            Card(
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .padding(bottom = 16.dp)
+                            ) {
+                                it.FineTuneSetter()
+                            }
                         }
                     }
                 }

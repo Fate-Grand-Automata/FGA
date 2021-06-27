@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.spam
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -86,9 +87,13 @@ fun SpamScreen(
         item {
             val selectedConfig = vm.spamStates[vm.selectedServant]
 
-            SpamView(
-                selectedConfig = selectedConfig
-            )
+            AnimatedContent(
+                targetState = selectedConfig
+            ) {
+                SpamView(
+                    selectedConfig = it
+                )
+            }
         }
 
         item {

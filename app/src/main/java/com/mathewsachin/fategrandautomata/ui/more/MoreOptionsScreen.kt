@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.ui.more
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,32 +69,36 @@ private fun MoreOptionsContent(
                 modifier = Modifier
                     .padding(16.dp)
             ) {
-                LazyColumn(
-                    contentPadding = PaddingValues(bottom = 16.dp)
+                AnimatedContent(
+                    targetState = selectedGroup
                 ) {
-                    when (selectedGroup) {
-                        MoreSettingsGroup.Battle -> {
-                            battleGroup(vm.prefsCore)
-                        }
-                        MoreSettingsGroup.Storage -> {
-                            item {
-                                val summary by vm.storageSummary
-                                val extractSummary by vm.extractSummary
-                                val context = LocalContext.current
+                    LazyColumn(
+                        contentPadding = PaddingValues(bottom = 16.dp)
+                    ) {
+                        when (it) {
+                            MoreSettingsGroup.Battle -> {
+                                battleGroup(vm.prefsCore)
+                            }
+                            MoreSettingsGroup.Storage -> {
+                                item {
+                                    val summary by vm.storageSummary
+                                    val extractSummary by vm.extractSummary
+                                    val context = LocalContext.current
 
-                                StorageGroup(
-                                    directoryName = summary ?: "",
-                                    onPickDirectory = pickDirectory,
-                                    extractSupportImages = { vm.performSupportImageExtraction(context) },
-                                    extractSummary = extractSummary
+                                    StorageGroup(
+                                        directoryName = summary ?: "",
+                                        onPickDirectory = pickDirectory,
+                                        extractSupportImages = { vm.performSupportImageExtraction(context) },
+                                        extractSummary = extractSummary
+                                    )
+                                }
+                            }
+                            MoreSettingsGroup.Advanced -> {
+                                advancedGroup(
+                                    vm.prefsCore,
+                                    goToFineTune = goToFineTune
                                 )
                             }
-                        }
-                        MoreSettingsGroup.Advanced -> {
-                            advancedGroup(
-                                vm.prefsCore,
-                                goToFineTune = goToFineTune
-                            )
                         }
                     }
                 }

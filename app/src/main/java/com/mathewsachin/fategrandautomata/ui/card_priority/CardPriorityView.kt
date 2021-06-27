@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -45,6 +46,12 @@ fun CardPriorityView(
             Text(stringResource(R.string.card_priority_low))
         }
 
-        items.getOrNull(selectedWave)?.Render()
+        val selected = items.getOrNull(selectedWave)
+
+        AnimatedContent(
+            targetState = selected
+        ) {
+            it?.Render()
+        }
     }
 }
