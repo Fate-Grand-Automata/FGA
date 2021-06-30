@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUIState
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
@@ -80,9 +81,8 @@ class ScriptManager @Inject constructor(
     }
 
     private fun onScriptExit(e: Exception) = GlobalScope.launch {
-        userInterface.setPlayIcon()
+        userInterface.uiState = ScriptRunnerUIState.Idle
         userInterface.isPlayButtonEnabled = false
-        userInterface.isPauseButtonVisible = false
         imageLoader.clearSupportCache()
 
         // Stop recording
@@ -107,6 +107,8 @@ class ScriptManager @Inject constructor(
                         Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
                         Timber.error(e) { msg }
                     }
+
+                    userInterface.isRecording = false
                 }
             }
         }
@@ -196,14 +198,14 @@ class ScriptManager @Inject constructor(
         scriptState.let { state ->
             if (state is ScriptState.Started) {
                 if (state.paused && action != PauseAction.Pause) {
-                    userInterface.setPauseIcon()
+                    userInterface.uiState = ScriptRunnerUIState.Running
                     state.entryPoint.exitManager.resume()
 
                     state.paused = false
 
                     return true
                 } else if (!state.paused && action != PauseAction.Resume) {
-                    userInterface.setResumeIcon()
+                    userInterface.uiState = ScriptRunnerUIState.Paused
                     state.entryPoint.exitManager.pause()
 
                     state.paused = true
@@ -244,7 +246,6 @@ class ScriptManager @Inject constructor(
     fun stopScript() {
         scriptState.let { state ->
             if (state is ScriptState.Started) {
-                userInterface.isPauseButtonVisible = false
                 userInterface.isPlayButtonEnabled = false
                 scriptState = ScriptState.Stopping(state)
                 state.entryPoint.stop()
@@ -276,12 +277,10 @@ class ScriptManager @Inject constructor(
         entryPoint.scriptExitListener = { onScriptExit(it) }
 
         userInterface.apply {
-            setStopIcon()
-            setPauseIcon()
-            isPauseButtonVisible = true
+            userInterface.uiState = ScriptRunnerUIState.Running
 
             if (recording != null) {
-                showAsRecording()
+                userInterface.isRecording = true
             }
         }
 

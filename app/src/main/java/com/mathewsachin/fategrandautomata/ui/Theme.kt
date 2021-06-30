@@ -64,6 +64,7 @@ private val LightColorPalette = lightColors(
 @Composable
 fun FGATheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    background: Color = Color.Unspecified,
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
@@ -78,7 +79,7 @@ fun FGATheme(
         shapes = shapes
     ) {
         Surface(
-            color = MaterialTheme.colors.background
+            color = if (background == Color.Unspecified) MaterialTheme.colors.background else background
         ) {
             PreventRtl {
                 content()

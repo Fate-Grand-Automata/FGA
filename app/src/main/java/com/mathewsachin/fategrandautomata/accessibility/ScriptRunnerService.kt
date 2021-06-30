@@ -11,7 +11,6 @@ import android.media.projection.MediaProjectionManager
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.widget.ImageButton
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
@@ -128,19 +127,23 @@ class ScriptRunnerService: Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    fun registerScriptCtrlBtnListeners(scriptCtrlBtn: ImageButton) {
-        scriptCtrlBtn.setOnClickListener {
-            when (scriptManager.scriptState) {
-                is ScriptState.Started -> scriptManager.stopScript()
-                is ScriptState.Stopped -> {
+    fun act(action: ScriptRunnerUIAction) {
+        when (action) {
+            ScriptRunnerUIAction.Pause, ScriptRunnerUIAction.Resume -> {
+                scriptManager.pause(ScriptManager.PauseAction.Toggle)
+            }
+            ScriptRunnerUIAction.Start -> {
+                if (scriptManager.scriptState is ScriptState.Stopped) {
                     updateGameServer()
 
                     screenshotService?.let {
                         scriptManager.startScript(this, it, scriptComponentBuilder)
                     }
                 }
-                is ScriptState.Stopping -> {
-                    Timber.debug { "Already stopping ..." }
+            }
+            ScriptRunnerUIAction.Stop -> {
+                if (scriptManager.scriptState is ScriptState.Started) {
+                    scriptManager.stopScript()
                 }
             }
         }
@@ -164,11 +167,6 @@ class ScriptRunnerService: Service() {
                 GameServerEnum.En
             }
     }
-
-    fun registerScriptPauseBtnListeners(scriptPauseBtn: ImageButton) =
-        scriptPauseBtn.setOnClickListener {
-            scriptManager.pause(ScriptManager.PauseAction.Toggle)
-        }
 
     override fun onCreate() {
         Timber.info { "Script runner service created" }
