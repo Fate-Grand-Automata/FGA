@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.Surface
 import android.view.WindowManager
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.Region
 import timber.log.Timber
 import timber.log.debug
@@ -70,8 +71,11 @@ class CutoutManager @Inject constructor(
         Timber.debug { "Detected display cutout: $cutoutValue" }
     }
 
+    private fun shouldIgnoreNotch() =
+        prefs.isNewUI || prefs.ignoreNotchCalculation
+
     private fun getCutout(Rotation: Int): Cutout {
-        if (prefs.ignoreNotchCalculation || cutoutValue == Cutout.NoCutouts) {
+        if (shouldIgnoreNotch() || cutoutValue == Cutout.NoCutouts) {
             return Cutout.NoCutouts
         }
 

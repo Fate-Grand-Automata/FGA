@@ -9,6 +9,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.Location
@@ -45,8 +46,7 @@ class Game @Inject constructor(
             gameAreaManager.gameArea.size * (1 / transformationExtensions.scriptToScreenScale())
         )
 
-    private val isJp = prefs.gameServer == GameServerEnum.Jp
-    val isWide = isJp && scriptArea.isWide()
+    val isWide = prefs.isNewUI && scriptArea.isWide()
 
     fun Location.xFromCenter() =
         this + Location(scriptArea.center.X, 0)
@@ -68,7 +68,7 @@ class Game @Inject constructor(
 
     // Master Skills and Stage counter are right-aligned differently,
     // so we use locations relative to a matched location
-    private val masterOffsetJp: Location by lazy {
+    private val masterOffsetNewUI: Location by lazy {
         automataApi.run {
             Region(-400, 360, 400, 80)
                 .xFromRight()
@@ -219,8 +219,8 @@ class Game @Inject constructor(
     }.let { x ->
         val location = Location(x, 620)
 
-        if (isJp)
-            location + Location(178, 0) + masterOffsetJp
+        if (prefs.isNewUI)
+            location + Location(178, 0) + masterOffsetNewUI
         else location.xFromRight()
     }
 
@@ -264,9 +264,9 @@ class Game @Inject constructor(
     }
 
     val battleStageCountRegion
-        get() = when (prefs.gameServer) {
-            GameServerEnum.Tw -> Region(1710, 25, 55, 60)
-            GameServerEnum.Jp -> Region(if (isWide) -571 else -638, 23, 33, 53) + masterOffsetJp
+        get() = when {
+            prefs.isNewUI -> Region(if (isWide) -571 else -638, 23, 33, 53) + masterOffsetNewUI
+            prefs.gameServer == GameServerEnum.Tw -> Region(1710, 25, 55, 60)
             else -> Region(1722, 25, 46, 53)
         }
 
@@ -306,8 +306,8 @@ class Game @Inject constructor(
 
     val battleMasterSkillOpenClick
         get() =
-            if (isJp)
-                Location(0, 640) + masterOffsetJp
+            if (prefs.isNewUI)
+                Location(0, 640) + masterOffsetNewUI
             else Location(-180, 640).xFromRight()
 
     val battleSkillOkClick = Location(400, 850).xFromCenter()
@@ -327,7 +327,7 @@ class Game @Inject constructor(
 
     val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
     val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
-    val resultMatRewardsRegion = Region(800, if (isJp) 1220 else 1290, 280, 130).xFromCenter()
+    val resultMatRewardsRegion = Region(800, if (prefs.isNewUI) 1220 else 1290, 280, 130).xFromCenter()
     val resultClick = Location(320, 1350).xFromCenter()
     val resultQuestRewardRegion = Region(350, 140, 370, 250).xFromCenter()
     val resultDropScrollbarRegion = Region(980, 230, 100, 88).xFromCenter()
