@@ -134,6 +134,7 @@ class ScriptRunnerNotification @Inject constructor(
                 )
             )
         } else {
+            @Suppress("DEPRECATION")
             vibrator.vibrate(Duration.toLongMilliseconds())
         }
     }

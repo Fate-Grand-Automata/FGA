@@ -8,8 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +17,7 @@ import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
 import com.mathewsachin.fategrandautomata.util.stringRes
 
 class CardPriorityListAdapter(
-    private val Items: List<CardPriorityListItem>,
-    private val experimental: LiveData<Boolean>,
-    private val lifecycleOwner: LifecycleOwner
+    private val Items: List<CardPriorityListItem>
 ) :
     RecyclerView.Adapter<CardPriorityListAdapter.ViewHolder>() {
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
@@ -31,8 +27,6 @@ class CardPriorityListAdapter(
 
         val rearrangeCardsSwitchView: SwitchCompat = ItemView.findViewById(R.id.rearrange_cards)
 
-        val braveChainsLabel: TextView = ItemView.findViewById(R.id.brave_chains_label)
-
         val braveChainsSpinner: Spinner = ItemView.findViewById(R.id.brave_chains)
     }
 
@@ -41,13 +35,6 @@ class CardPriorityListAdapter(
             .inflate(R.layout.card_priority_list_item, parent, false)
 
         return ViewHolder(view).also { holder ->
-            experimental.observe(lifecycleOwner) {
-                val visible = if (it) View.VISIBLE else View.GONE
-                holder.rearrangeCardsSwitchView.visibility = visible
-                holder.braveChainsLabel.visibility = visible
-                holder.braveChainsSpinner.visibility = visible
-            }
-
             val context = holder.itemView.context
             val items = enumValues<BraveChainEnum>()
                 .map {
@@ -83,8 +70,6 @@ class CardPriorityListAdapter(
                 val value = BraveChainEnum.values()[pos]
 
                 Items[position].braveChains = value
-
-                holder.rearrangeCardsSwitchView.isEnabled = value != BraveChainEnum.Avoid
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

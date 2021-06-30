@@ -1,21 +1,16 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
-import com.mathewsachin.fategrandautomata.prefs.R
-
 class RefillPrefsCore(maker: PrefMaker) {
-    val enabled = maker.bool(R.string.pref_refill_enabled)
+    val enabled = maker.bool("refill_enabled")
+    val repetitions = maker.stringAsInt("refill_repetitions")
+    val resources = maker.stringSet("refill_resource_x")
+    val autoDecrement = maker.bool("refill_decrement")
 
-    val repetitions = maker.stringAsInt(R.string.pref_refill_repetitions)
+    val shouldLimitRuns = maker.bool("should_limit_runs")
+    val limitRuns = maker.stringAsInt("limit_runs", 1)
+    val autoDecrementRuns = maker.bool("limit_runs_decrement")
 
-    val resources = maker.stringSet(R.string.pref_refill_resource)
-
-    val autoDecrement = maker.bool(R.string.pref_refill_decrement)
-
-    val shouldLimitRuns = maker.bool(R.string.pref_should_limit_runs)
-
-    val limitRuns = maker.stringAsInt(R.string.pref_limit_runs, 1)
-
-    val shouldLimitMats = maker.bool(R.string.pref_should_limit_mats)
-
-    val limitMats = maker.stringAsInt(R.string.pref_limit_mats, 1)
+    val shouldLimitMats = maker.bool("should_limit_mats")
+    val limitMats = maker.stringAsInt("limit_mats", 1)
+    val autoDecrementMats = maker.bool("limit_mats_decrement")
 }

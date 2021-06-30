@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.util
 
 import android.app.Service
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
@@ -29,6 +30,9 @@ class AndroidImpl @Inject constructor(
     val service = service as ScriptRunnerService
 
     override val windowRegion get() = cutoutManager.getCutoutAppliedRegion()
+
+    override val canLongSwipe =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
     override val prefs: IPlatformPrefs
         get() = preferences.platformPrefs

@@ -54,7 +54,6 @@ class AppProvidesModule {
     @Provides
     fun providePrefMaker(@ApplicationContext context: Context) =
         PrefMaker(
-            PreferenceManager.getDefaultSharedPreferences(context),
-            context
+            PreferenceManager.getDefaultSharedPreferences(context)
         )
 }

@@ -27,7 +27,6 @@ import timber.log.Timber
 import timber.log.error
 import java.util.*
 import javax.inject.Inject
-import com.mathewsachin.fategrandautomata.prefs.R.string as prefKeys
 
 @AndroidEntryPoint
 class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
@@ -63,8 +62,11 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
     private lateinit var battleConfig: IBattleConfig
 
-    private fun findFriendNamesList(): MultiSelectListPreference? =
-        findPreference(getString(prefKeys.pref_support_friend_names))
+    private lateinit var friendNamesList: MultiSelectListPreference
+    private lateinit var fallbackMode: ListPreference
+    private lateinit var prefCmd: EditTextPreference
+    private lateinit var navCardPriority: Preference
+    private lateinit var navPreferred: Preference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.sharedPreferencesName = args.key
@@ -72,92 +74,165 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
         setHasOptionsMenu(true)
 
-        setPreferencesFromResource(R.xml.battle_config_preferences, rootKey)
+        val config = prefsCore.forBattleConfig(args.key)
 
-        findFriendNamesList()?.summaryProvider = SupportMultiSelectSummaryProvider()
-
-        findPreference<EditTextPreference>(getString(R.string.pref_battle_config_notes))?.makeMultiLine()
-
-        findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
-            it.setOnPreferenceClickListener {
-                val action = BattleConfigItemSettingsFragmentDirections
-                    .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
-
-                nav(action)
-
-                true
-            }
-        }
-
-        findPreference<EditTextPreference>(getString(prefKeys.pref_battle_config_cmd))?.let {
-            it.setOnPreferenceClickListener {
-                if (!prefsCore.showTextBoxForSkillCmd.get()) {
-                    val action = BattleConfigItemSettingsFragmentDirections
-                        .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
-
-                    nav(action)
-                }
-
-                true
-            }
-        }
-
-        findPreference<Preference>(getString(R.string.pref_nav_preferred_support))?.let {
-            it.setOnPreferenceClickListener {
-                val action = BattleConfigItemSettingsFragmentDirections
-                    .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
-
-                nav(action)
-
-                true
-            }
-        }
-
-        listOf(R.string.pref_spam_np, R.string.pref_spam_skill)
-            .mapNotNull { findPreference<ListPreference>(getString(it)) }
-            .forEach { pref ->
-                pref.initWith<SpamEnum> { it.stringRes }
+        prefScreen {
+            config.name.text {
+                title = R.string.p_battle_config_name
+                icon = R.drawable.ic_text_short
             }
 
-        findPreference<ListPreference>(getString(R.string.pref_battle_config_support_class))
-            ?.initWith<SupportClass> { it.stringRes }
+            prefCmd = config.skillCommand.text {
+                title = R.string.p_battle_config_cmd
+                icon = R.drawable.ic_terminal
+            }.also {
+                it.setOnPreferenceClickListener {
+                    if (!prefsCore.showTextBoxForSkillCmd.get()) {
+                        val action = BattleConfigItemSettingsFragmentDirections
+                            .actionBattleConfigItemSettingsFragmentToBattleConfigMakerActivity(args.key)
 
-        findPreference<ListPreference>(getString(R.string.pref_battle_config_party))?.apply {
-            entries = arrayOf(getString(R.string.p_not_set)) +
-                    (1..10).map {
-                        context.getString(R.string.p_party_number, it)
+                        nav(action)
                     }
 
-            entryValues = (-1..9)
-                .map { it.toString() }
-                .toTypedArray()
+                    true
+                }
+            }
+
+            config.notes.text {
+                title = R.string.p_battle_config_notes
+                icon = R.drawable.ic_note
+            }.also {
+                it.makeMultiLine()
+            }
+
+            config.party.list {
+                title = R.string.p_battle_config_party
+                icon = R.drawable.ic_flag
+            }.apply {
+                entries = arrayOf(getString(R.string.p_not_set)) +
+                        (1..10).map {
+                            getString(R.string.p_party_number, it)
+                        }
+
+                entryValues = (-1..9)
+                    .map { it.toString() }
+                    .toTypedArray()
+            }
+
+            navCardPriority = blank {
+                title = R.string.p_battle_config_card_priority
+                icon = R.drawable.ic_sort
+            }.also {
+                it.setOnPreferenceClickListener {
+                    val action = BattleConfigItemSettingsFragmentDirections
+                        .actionBattleConfigItemSettingsFragmentToCardPriorityFragment(args.key)
+
+                    nav(action)
+
+                    true
+                }
+            }
+
+            config.materials.multiSelect {
+                title = R.string.p_mats
+                icon = R.drawable.ic_fang
+            }.apply {
+                initWith<MaterialEnum> { it.stringRes }
+                summaryProvider = MultiSelectSummaryProvider()
+            }
+
+            category {
+                key = "support_category"
+                title = R.string.p_battle_config_support
+
+                config.support.supportClass.list {
+                    title = R.string.p_battle_config_support_class
+                    icon = R.drawable.ic_diamond
+                }.initWith<SupportClass> { it.stringRes }
+
+                config.support.selectionMode.list {
+                    title = R.string.p_battle_config_support_selection_mode
+                    icon = R.drawable.ic_dots_vertical
+                }.initWith<SupportSelectionModeEnum> { it.stringRes }
+
+                navPreferred = blank {
+                    title = R.string.p_support_mode_preferred
+                    icon = R.drawable.ic_card
+                }.also {
+                    it.setOnPreferenceClickListener {
+                        val action = BattleConfigItemSettingsFragmentDirections
+                            .actionBattleConfigItemSettingsFragmentToPreferredSupportSettingsFragment(args.key)
+
+                        nav(action)
+
+                        true
+                    }
+                }
+
+                friendNamesList = config.support.friendNames.multiSelect {
+                    title = R.string.p_battle_config_support_friend_names
+                    icon = R.drawable.ic_friend
+                }.also {
+                    it.summaryProvider = SupportMultiSelectSummaryProvider()
+                }
+
+                fallbackMode = config.support.fallbackTo.list {
+                    title = R.string.p_battle_config_support_fallback_selection_mode
+                    icon = R.drawable.ic_dots_vertical
+                }.apply {
+                    val values = listOf(
+                        SupportSelectionModeEnum.First,
+                        SupportSelectionModeEnum.Manual
+                    )
+
+                    entryValues = values
+                        .map { it.toString() }
+                        .toTypedArray()
+
+                    entries = values
+                        .map { getString(it.stringRes) }
+                        .toTypedArray()
+                }
+            }
+
+            category {
+                key = "spam_category"
+                title = R.string.p_spam_spam
+                summary = R.string.p_spam_summary
+
+                config.autoChooseTarget.switch {
+                    title = R.string.p_auto_choose_target
+                    icon = R.drawable.ic_target
+                }
+
+                config.npSpam.list {
+                    title = R.string.p_spam_np
+                    icon = R.drawable.ic_star
+                }.initWith<SpamEnum> { it.stringRes }
+
+                config.skillSpam.list {
+                    title = R.string.p_spam_skill
+                    icon = R.drawable.ic_wand
+                }.initWith<SpamEnum> { it.stringRes }
+            }
+
+            category {
+                key = "shuffle_category"
+                title = R.string.p_shuffle_cards
+
+                config.shuffleCardsWave.seekBar {
+                    title = R.string.p_shuffle_cards_wave
+                    min = 1
+                    max = 3
+                    icon = R.drawable.ic_counter
+                }
+
+                config.shuffleCards.list {
+                    title = R.string.p_shuffle_cards_when
+                    icon = R.drawable.ic_refresh
+                }.initWith<ShuffleCardsEnum> { it.stringRes }
+            }
         }
-
-        findPreference<ListPreference>(getString(R.string.pref_support_mode))
-            ?.initWith<SupportSelectionModeEnum> { it.stringRes }
-
-        findPreference<ListPreference>(getString(R.string.pref_support_fallback))?.apply {
-            val values = listOf(
-                SupportSelectionModeEnum.First,
-                SupportSelectionModeEnum.Manual
-            )
-
-            entryValues = values
-                .map { it.toString() }
-                .toTypedArray()
-
-            entries = values
-                .map { context.getString(it.stringRes) }
-                .toTypedArray()
-        }
-
-        findPreference<MultiSelectListPreference>(getString(R.string.pref_battle_config_mat))?.apply {
-            initWith<MaterialEnum> { it.stringRes }
-            summaryProvider = MultiSelectSummaryProvider()
-        }
-
-        findPreference<ListPreference>(getString(R.string.pref_shuffle_cards))
-            ?.initWith<ShuffleCardsEnum> { it.stringRes }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -165,33 +240,25 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
         val vm: BattleConfigItemViewModel by viewModels()
 
-        findPreference<Preference>(getString(prefKeys.pref_card_priority))?.let {
-            vm.cardPriority.observe(viewLifecycleOwner) { priority ->
-                it.summary = priority
-            }
+        vm.cardPriority.observe(viewLifecycleOwner) {
+            navCardPriority.summary = it
         }
 
-        findPreference<EditTextPreference>(getString(R.string.pref_battle_config_cmd))?.let {
-            vm.skillCommand.observe(viewLifecycleOwner) { cmd ->
-                it.text = cmd
-            }
+        vm.skillCommand.observe(viewLifecycleOwner) {
+            prefCmd.text = it
         }
 
-        val navPreferred = findPreference<Preference>(getString(R.string.pref_nav_preferred_support))
-        val friendNames = findFriendNamesList()
-        val fallback = findPreference<Preference>(getString(prefKeys.pref_support_fallback))
-
-        vm.preferredMessage.observe(viewLifecycleOwner) { msg ->
-            navPreferred?.summary = msg
+        vm.preferredMessage.observe(viewLifecycleOwner) {
+            navPreferred.summary = it
         }
 
         vm.supportSelectionMode.observe(viewLifecycleOwner) {
             val preferred = it == SupportSelectionModeEnum.Preferred
             val friend = it == SupportSelectionModeEnum.Friend
 
-            friendNames?.isVisible = friend
-            fallback?.isVisible = preferred || friend
-            navPreferred?.isVisible = preferred
+            friendNamesList.isVisible = friend
+            fallbackMode.isVisible = preferred || friend
+            navPreferred.isVisible = preferred
         }
     }
 
@@ -206,8 +273,12 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private suspend fun populateFriendNames() {
-        findFriendNamesList()?.apply {
+        friendNamesList.apply {
             populateFriendOrCe(storageProvider, SupportImageKind.Friend)
+
+            this.dialogMessage = if (entries.isEmpty()) {
+                getString(R.string.p_battle_config_support_friend_name_hint)
+            } else null
         }
     }
 
@@ -232,8 +303,8 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
             R.id.action_support_extract_defaults -> {
                 lifecycleScope.launch {
                     performSupportImageExtraction()
@@ -271,7 +342,6 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
 
     private fun deleteItem(battleConfigKey: String) {
         preferences.removeBattleConfig(battleConfigKey)
@@ -281,20 +351,21 @@ class BattleConfigItemSettingsFragment : PreferenceFragmentCompat() {
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
         fun prepare(dialogFragment: PreferenceDialogFragmentCompat) {
+            @Suppress("DEPRECATION")
             dialogFragment.setTargetFragment(this, 0)
             dialogFragment.show(parentFragmentManager, null)
         }
 
         when (preference.key) {
-            getString(R.string.pref_support_friend_names) -> {
+            friendNamesList.key -> {
                 ClearMultiSelectListPreferenceDialog().apply {
                     setKey(preference.key)
                     prepare(this)
                 }
             }
-            getString(R.string.pref_battle_config_cmd) -> {
+            prefCmd.key -> {
                 if (prefsCore.showTextBoxForSkillCmd.get()) {
-                    SkillCmdPreferenceDialogFragment().apply {
+                    SkillCmdPreferenceDialogFragment(prefCmd.key).apply {
                         battleConfigKey = args.key
                         prepare(this)
                     }

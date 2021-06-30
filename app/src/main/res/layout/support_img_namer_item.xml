@@ -32,7 +32,8 @@
         app:layout_constraintStart_toEndOf="@+id/support_img"
         android:layout_marginStart="16dp"
         app:layout_constraintTop_toTopOf="@+id/support_img"
-        app:layout_constraintBottom_toBottomOf="@+id/support_img" />
+        app:layout_constraintBottom_toBottomOf="@+id/support_img"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/support_img_error"

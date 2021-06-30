@@ -111,8 +111,11 @@ class ScriptManager @Inject constructor(
 
     private fun getEntryPoint(entryPoint: ScriptEntryPoint): EntryPoint =
         when (preferences.scriptMode) {
-            ScriptModeEnum.Other -> entryPoint.other()
             ScriptModeEnum.Battle -> entryPoint.battle()
+            ScriptModeEnum.FP -> entryPoint.fp()
+            ScriptModeEnum.Lottery -> entryPoint.lottery()
+            ScriptModeEnum.PresentBox -> entryPoint.giftBox()
+            ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
         }
 
     enum class PauseAction {
@@ -161,7 +164,9 @@ class ScriptManager @Inject constructor(
         val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
         val entryPointProvider = { getEntryPoint(hiltEntryPoint) }
 
-        scriptPicker(context) {
+        val otherMode = hiltEntryPoint.autoDetect().get()
+
+        scriptPicker(context, otherMode) {
             runEntryPoint(screenshotService, entryPointProvider)
         }
     }
@@ -216,22 +221,58 @@ class ScriptManager @Inject constructor(
     sealed class PickerItem(val name: String) {
         class Other(name: String) : PickerItem(name)
         class Battle(val battleConfig: IBattleConfig) : PickerItem(battleConfig.name)
+        class PresentBox(val maxGoldEmberSetSize: Int) : PickerItem(maxGoldEmberSetSize.toString())
     }
 
-    private fun scriptPicker(context: Context, entryPointRunner: () -> Unit) {
-        val selectedBattleConfig = preferences.selectedBattleConfig
-        val battleConfigs = preferences.battleConfigs
-        val initialSelectedIndex =
-            if (preferences.scriptMode == ScriptModeEnum.Battle)
-                battleConfigs.indexOfFirst { it.id == selectedBattleConfig.id } + 1
-            else 0
+    val ScriptModeEnum.display
+        get() =
+            when (this) {
+                ScriptModeEnum.Battle -> R.string.p_script_mode_battle
+                ScriptModeEnum.FP -> R.string.p_script_mode_fp
+                ScriptModeEnum.Lottery -> R.string.p_script_mode_lottery
+                ScriptModeEnum.PresentBox -> R.string.p_script_mode_gift_box
+                ScriptModeEnum.SupportImageMaker -> R.string.p_script_mode_support_image_maker
+            }
 
-        val other = PickerItem.Other(context.getString(R.string.other_scripts))
-        val pickerItems = listOf(other) + battleConfigs.map { PickerItem.Battle(it) }
+    private fun scriptPicker(
+        context: Context,
+        otherMode: ScriptModeEnum,
+        entryPointRunner: () -> Unit
+    ) {
+        val pickerItems = preferences.battleConfigs
+            .map { PickerItem.Battle(it) }
+            .let {
+                val other = listOf(PickerItem.Other(context.getString(otherMode.display)))
+
+                when (otherMode) {
+                    ScriptModeEnum.Battle -> it
+                    ScriptModeEnum.PresentBox ->
+                        (1..4).map { m -> PickerItem.PresentBox(m) }
+                    ScriptModeEnum.FP, ScriptModeEnum.Lottery ->
+                        other
+                    ScriptModeEnum.SupportImageMaker -> other + it
+                }
+            }
+
+        val selectedBattleConfig = preferences.selectedBattleConfig
+
+        val initialSelectedIndex =
+            when (otherMode) {
+                ScriptModeEnum.SupportImageMaker, ScriptModeEnum.Battle ->
+                    pickerItems.indexOfFirst { it is PickerItem.Battle && it.battleConfig.id == selectedBattleConfig.id }
+                ScriptModeEnum.FP, ScriptModeEnum.Lottery -> 0
+                ScriptModeEnum.PresentBox ->
+                    pickerItems.indexOfFirst { it is PickerItem.PresentBox && it.maxGoldEmberSetSize == preferences.maxGoldEmberSetSize }
+            }.coerceIn(pickerItems.indices)
+
         var selected = pickerItems[initialSelectedIndex]
 
+        val dialogTitle = if (otherMode == ScriptModeEnum.PresentBox)
+            R.string.p_max_gold_ember_set_size
+        else R.string.select_script
+
         showOverlayDialog(context) {
-            setTitle(R.string.select_script)
+            setTitle(dialogTitle)
                 .apply {
                     setSingleChoiceItems(
                         pickerItems.map { it.name }.toTypedArray(),
@@ -241,7 +282,12 @@ class ScriptManager @Inject constructor(
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
                     preferences.scriptMode = when (val s = selected) {
-                        is PickerItem.Other -> ScriptModeEnum.Other
+                        is PickerItem.Other -> otherMode
+                        is PickerItem.PresentBox -> {
+                            preferences.maxGoldEmberSetSize = s.maxGoldEmberSetSize
+
+                            ScriptModeEnum.PresentBox
+                        }
                         is PickerItem.Battle -> {
                             preferences.selectedBattleConfig = s.battleConfig
 
@@ -249,7 +295,9 @@ class ScriptManager @Inject constructor(
                         }
                     }
 
-                    entryPointRunner()
+                    userInterface.postDelayed(500.milliseconds) {
+                        entryPointRunner()
+                    }
                 }
                 .setOnDismissListener {
                     userInterface.isPlayButtonEnabled = true

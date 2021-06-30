@@ -33,6 +33,7 @@ class ScriptRunnerUserInterface @Inject constructor(
     companion object {
         val overlayType: Int
             get() {
+                @Suppress("DEPRECATION")
                 return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
                 } else WindowManager.LayoutParams.TYPE_PHONE
@@ -208,7 +209,7 @@ class ScriptRunnerUserInterface @Inject constructor(
     private var dragTimeMark = Monotonic.markNow()
     private var dragMaxLoc = Location()
 
-    private fun scriptCtrlBtnOnTouch(_View: View, Event: MotionEvent): Boolean {
+    private fun scriptCtrlBtnOnTouch(@Suppress("UNUSED_PARAMETER") _View: View, Event: MotionEvent): Boolean {
         return when (Event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 dragMaxLoc = getMaxBtnCoordinates()

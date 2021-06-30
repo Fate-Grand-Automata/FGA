@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.skill_maker
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
 import com.mathewsachin.fategrandautomata.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,8 +13,11 @@ class SkillMakerActivity : AppCompatActivity(R.layout.skill_maker) {
     val vm: SkillMakerViewModel by viewModels()
     val args: SkillMakerActivityArgs by navArgs()
 
-    fun isMainScreen() = findNavController(R.id.nav_host_fragment_skill_maker)
-        .currentDestination?.id == R.id.main_skill_maker
+    val navHostFragment by lazy {
+        supportFragmentManager.findFragmentById(R.id.nav_host_fragment_skill_maker) as NavHostFragment
+    }
+    val navController get() = navHostFragment.navController
+    fun isMainScreen() = navController.currentDestination?.id == R.id.main_skill_maker
 
     override fun onBackPressed() {
         if (isMainScreen()) {

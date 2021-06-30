@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.ISwipeLocations
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
@@ -21,8 +20,7 @@ private typealias SearchFunction = () -> SearchFunctionResult
 const val supportRegionToolSimilarity = 0.75
 
 class Support(
-    fgAutomataApi: IFgoAutomataApi,
-    val swipeLocations: ISwipeLocations
+    fgAutomataApi: IFgoAutomataApi
 ) : IFgoAutomataApi by fgAutomataApi {
     private var preferredServantArray = listOf<String>()
     private var friendNameArray = listOf<String>()
@@ -39,7 +37,7 @@ class Support(
         waitForSupportScreenToLoad()
 
         if (!continuing && autoSkillPrefs.supportClass != SupportClass.None) {
-            autoSkillPrefs.supportClass.clickLocation.click()
+            game.locate(autoSkillPrefs.supportClass).click()
 
             0.5.seconds.wait()
         }
@@ -73,7 +71,7 @@ class Support(
             }
         }
 
-        Game.supportUpdateClick.click()
+        game.supportUpdateClick.click()
         1.seconds.wait()
 
         game.supportUpdateYesClick.click()
@@ -91,17 +89,17 @@ class Support(
             when {
                 needsToRetry() -> retry()
                 // wait for dialogs to close
-                images.supportExtra !in Game.supportExtraRegion -> 1.seconds.wait()
-                images.supportNotFound in Game.supportNotFoundRegion -> {
+                images.supportExtra !in game.supportExtraRegion -> 1.seconds.wait()
+                images.supportNotFound in game.supportNotFoundRegion -> {
                     updateLastSupportRefreshTimestamp()
                     refreshSupportList()
                     return
                 }
-                Game.supportRegionToolSearchRegion.exists(
+                game.supportRegionToolSearchRegion.exists(
                     images.supportRegionTool,
                     Similarity = supportRegionToolSimilarity
                 ) -> return
-                images.guest in Game.supportFriendRegion -> return
+                images.guest in game.supportFriendRegion -> return
             }
         }
     }
@@ -110,10 +108,10 @@ class Support(
         while (true) {
             0.5.seconds.wait()
 
-            Game.supportFirstSupportClick.click()
+            game.supportFirstSupportClick.click()
 
             // Handle the case of a friend not having set a support servant
-            if (Game.supportScreenRegion.waitVanish(
+            if (game.supportScreenRegion.waitVanish(
                     images.supportScreen,
                     Similarity = 0.85,
                     Timeout = 10.seconds
@@ -128,7 +126,7 @@ class Support(
 
     private fun searchVisible(SearchMethod: SearchFunction) =
         useSameSnapIn(fun(): SearchVisibleResult {
-            if (!isFriend(Game.supportFriendRegion)) {
+            if (!isFriend(game.supportFriendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SearchVisibleResult.NoFriendsFound
             }
@@ -168,7 +166,6 @@ class Support(
 
         while (true) {
             val result = searchVisible(SearchMethod)
-            val swipeLocation = swipeLocations.supportList
 
             when {
                 result is SearchVisibleResult.Found -> {
@@ -178,7 +175,10 @@ class Support(
                 result is SearchVisibleResult.NotFound
                         && numberOfSwipes < prefs.support.swipesPerUpdate -> {
 
-                    swipe(swipeLocation.start, swipeLocation.end)
+                    swipe(
+                        game.supportListSwipeStart,
+                        game.supportListSwipeEnd
+                    )
 
                     ++numberOfSwipes
                     0.3.seconds.wait()
@@ -191,7 +191,7 @@ class Support(
                 }
                 else -> {
                     // -- okay, we have run out of options, let's give up
-                    Game.supportListTopClick.click()
+                    game.supportListTopClick.click()
                     return selectSupport(autoSkillPrefs.fallbackTo, true)
                 }
             }
@@ -208,7 +208,7 @@ class Support(
                     else -> findSupportBounds(it.Support)
                 }
 
-                val ceBounds = Game.supportDefaultCeBounds + Location(0, supportBounds.Y)
+                val ceBounds = game.supportDefaultCeBounds + Location(0, supportBounds.Y)
                 findCraftEssences(ceBounds).firstOrNull()
                     ?.let { ce -> FoundServantAndCE(supportBounds, ce) }
             }
@@ -224,7 +224,7 @@ class Support(
             hasServants && hasCraftEssences -> { -> searchServantAndCE() }
             hasServants -> { -> findServants().firstOrNull() ?: SearchFunctionResult.NotFound }
             hasCraftEssences -> { ->
-                findCraftEssences(Game.supportListRegion)
+                findCraftEssences(game.supportListRegion)
                     .map { SearchFunctionResult.Found(it.region) }
                     .firstOrNull() ?: SearchFunctionResult.NotFound
             }
@@ -238,7 +238,7 @@ class Support(
             val patterns = images.loadSupportPattern(SupportImageKind.Friend, friendName)
 
             patterns.forEach { pattern ->
-                for (theFriend in Game.supportFriendsRegion.findAll(pattern).sorted()) {
+                for (theFriend in game.supportFriendsRegion.findAll(pattern).sorted()) {
                     return SearchFunctionResult.Found(theFriend.Region)
                 }
             }
@@ -260,7 +260,7 @@ class Support(
                 val skillCheckNeeded = needMaxedSkills.any { it }
 
                 cropFriendLock(pattern).use { cropped ->
-                    Game.supportListRegion
+                    game.supportListRegion
                         .findAll(cropped)
                         .filter { !autoSkillPrefs.maxAscended || isMaxAscended(it.Region) }
                         .map {
@@ -320,17 +320,17 @@ class Support(
             .sorted()
 
     private fun findSupportBounds(Support: Region) =
-        Game.supportRegionToolSearchRegion
+        game.supportRegionToolSearchRegion
             .findAll(
                 images.supportRegionTool,
                 supportRegionToolSimilarity
             )
             .map {
-                Game.supportDefaultBounds
+                game.supportDefaultBounds
                     .copy(Y = it.Region.Y - 70)
             }
             .firstOrNull { Support in it }
-            ?: Game.supportDefaultBounds.also {
+            ?: game.supportDefaultBounds.also {
                 Timber.debug { "Default Region being returned" }
             }
 
@@ -354,14 +354,14 @@ class Support(
     }
 
     private fun isMaxAscended(servant: Region): Boolean {
-        val maxAscendedRegion = Game.supportMaxAscendedRegion
+        val maxAscendedRegion = game.supportMaxAscendedRegion
             .copy(Y = servant.Y)
 
         return isStarPresent(maxAscendedRegion)
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
-        val limitBreakRegion = Game.supportLimitBreakRegion
+        val limitBreakRegion = game.supportLimitBreakRegion
             .copy(Y = CraftEssence.Y)
 
         return isStarPresent(limitBreakRegion)

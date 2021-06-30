@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.imaging
 
+import android.annotation.SuppressLint
 import android.graphics.PixelFormat
 import android.hardware.display.VirtualDisplay
 import android.media.Image
@@ -34,6 +35,7 @@ class MediaProjectionScreenshotService(
         val screenWidth = DisplayMetrics.widthPixels
         val screenHeight = DisplayMetrics.heightPixels
 
+        @SuppressLint("WrongConstant")
         imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 2)
 
         virtualDisplay = MediaProjection.createVirtualDisplay(

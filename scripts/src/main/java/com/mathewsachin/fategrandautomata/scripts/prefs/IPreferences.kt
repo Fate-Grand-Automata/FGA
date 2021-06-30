@@ -18,13 +18,14 @@ interface IPreferences {
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
     val waitAPRegen: Boolean
+    val waitAPRegenMinutes: Int
     val ignoreNotchCalculation: Boolean
     val useRootForScreenshots: Boolean
     val gudaFinal: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
     val screenshotDrops: Boolean
-    val maxGoldEmberSetSize: Int
+    var maxGoldEmberSetSize: Int
 
     val stageCounterSimilarity: Double
     val waitBeforeTurn: Duration

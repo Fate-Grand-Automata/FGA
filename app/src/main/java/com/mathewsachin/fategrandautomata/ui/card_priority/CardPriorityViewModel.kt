@@ -4,7 +4,6 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
@@ -44,13 +43,6 @@ class CardPriorityViewModel @ViewModelInject constructor(
             .toMutableList()
     }
 
-    val experimental = battleConfig
-        .experimental
-        .asFlow()
-        .asLiveData()
-
-    fun setExperimental(value: Boolean) = battleConfig.experimental.set(value)
-
     fun save() {
         val value = CardPriorityPerWave.from(
             cardPriorityItems.map {
@@ -59,12 +51,7 @@ class CardPriorityViewModel @ViewModelInject constructor(
         ).toString()
 
         battleConfig.cardPriority.set(value)
-        battleConfig.rearrangeCards = if (experimental.value == true)
-            cardPriorityItems.map { it.rearrangeCards }
-        else emptyList()
-
-        battleConfig.braveChains = if (experimental.value == true)
-            cardPriorityItems.map { it.braveChains }
-        else emptyList()
+        battleConfig.rearrangeCards = cardPriorityItems.map { it.rearrangeCards }
+        battleConfig.braveChains = cardPriorityItems.map { it.braveChains }
     }
 }

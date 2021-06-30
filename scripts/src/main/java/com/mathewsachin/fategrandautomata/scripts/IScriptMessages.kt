@@ -15,7 +15,6 @@ interface IScriptMessages {
     val ceDropped: String
     val ceGet: String
     val withdrawDisabled: String
-    val cannotDetectScriptType: String
     val stoppedByUser: String
     val unexpectedError: String
     val scriptExited: String
@@ -43,4 +42,6 @@ interface IScriptMessages {
     fun turns(turns: Int): String
 
     fun pickedExpStack(stacks: Int): String
+
+    fun waitAPToast(minutes: Int): String
 }

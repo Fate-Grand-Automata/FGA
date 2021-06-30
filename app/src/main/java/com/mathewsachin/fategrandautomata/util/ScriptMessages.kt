@@ -49,9 +49,6 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
     override val withdrawDisabled: String
         get() = context.getString(R.string.withdraw_disabled)
 
-    override val cannotDetectScriptType: String
-        get() = context.getString(R.string.cannot_detect_script_type)
-
     override fun timesRan(times: Int) =
         context.getString(R.string.times_ran, times)
 
@@ -101,4 +98,7 @@ class ScriptMessages @Inject constructor(@ApplicationContext val context: Contex
 
     override fun pickedExpStack(stacks: Int) =
         context.getString(R.string.picked_exp_stacks, stacks)
+
+    override fun waitAPToast(minutes: Int) =
+        context.getString(R.string.wait_ap_regen_toast_message, minutes)
 }

@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.prefs
 
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.map
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.IPlatformPrefs
 import javax.inject.Inject
@@ -12,7 +13,7 @@ class PreferencesImpl @Inject constructor(
 ) : IPreferences {
     override var scriptMode by prefs.scriptMode
 
-    override var gameServer by prefs.gameServer
+    override var gameServer = GameServerEnum.En
 
     override val skillConfirmation by prefs.skillConfirmation
 
@@ -60,6 +61,8 @@ class PreferencesImpl @Inject constructor(
 
     override val waitAPRegen by prefs.waitAPRegen
 
+    override val waitAPRegenMinutes by prefs.waitAPRegenMinutes
+
     override val ignoreNotchCalculation by prefs.ignoreNotchCalculation
 
     override val useRootForScreenshots by prefs.useRootForScreenshots
@@ -78,7 +81,7 @@ class PreferencesImpl @Inject constructor(
 
     override val waitBeforeCards by prefs.waitBeforeCards.map { it.milliseconds }
 
-    override val maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
+    override var maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
 
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 
@@ -99,7 +102,7 @@ class PreferencesImpl @Inject constructor(
     }
 
     override fun removeBattleConfig(id: String) {
-        prefs.maker.context.deleteSharedPreferences(id)
+        prefs.context.deleteSharedPreferences(id)
         autoSkillMap.remove(id)
         prefs.removeBattleConfig(id)
 

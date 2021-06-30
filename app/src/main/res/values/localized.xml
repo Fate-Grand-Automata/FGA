@@ -16,7 +16,6 @@
 
     <string name="support_imgs_extracted">Support Images Extracted Successfully</string>
     <string name="support_imgs_extract_failed">Couldn\'t extract support images</string>
-    <string name="support_img_not_found">Unable to load image: %1$s. Put images in %2$s folder</string>
 
     <string name="battle_config_list_no_items">No configs</string>
     <string name="battle_config_list_import">Import</string>
@@ -33,7 +32,6 @@
     <string name="skill_maker_confirm_exit_message">Are you sure you want to exit? Skill command will be lost.</string>
     <string name="skill_maker_confirm_clear_title">Confirm Clear</string>
     <string name="skill_maker_confirm_clear_message">This will clear the Skill command. Are you sure?</string>
-    <string name="skill_maker_confirm_np_deletion_title">Confirm NP deletion</string>
     <string name="skill_maker_atk_header">Attack</string>
     <string name="skill_maker_atk_servant_np">Servant\n%d\n\nNP</string>
     <string name="skill_maker_atk_cards_before_np">Cards before NP</string>
@@ -43,13 +41,11 @@
 
     <string name="skill_maker_main_enemy">Enemy %d</string>
     <string name="skill_maker_main_battle">Battle: %d</string>
-    <string name="skill_maker_main_turn">Turn: %d</string>
     <string name="skill_maker_main_master_skills">Master\n Skills</string>
     <string name="skill_maker_main_undo">Undo</string>
     <string name="skill_maker_main_clear">Clear</string>
     <string name="skill_maker_main_servant">Servant %d</string>
     <string name="skill_maker_main_attack">Attack</string>
-    <string name="skill_maker_cannot_select">To edit NP/Cards before NP, undo on the Turn/Wave separator</string>
 
     <string name="skill_maker_master_skills_header">Master Skills</string>
     <string name="skill_maker_master_skills_order_change">Order Change / Plug-suit</string>
@@ -77,7 +73,6 @@
     <string name="card_priority_low">LOW</string>
     <string name="card_priority_add_wave">Add Wave</string>
     <string name="card_priority_remove_last_wave">Remove Last Wave</string>
-    <string name="card_priority_experimental">Enable experimental features</string>
 
     <string name="start_service">Start Service</string>
     <string name="stop_service">Stop Service</string>
@@ -95,10 +90,8 @@
     <string name="support_img_namer_title">Pick what you want</string>
     <string name="support_img_namer_done">Done</string>
     <string name="support_img_namer_blank_file_name">One of the names is still empty. Either uncheck the unnamed Servant/CE or specify a name.</string>
-    <string name="support_img_namer_file_name_already_exists">\'%s\' already exists. Specify another name.</string>
     <string name="support_img_namer_file_rename_failed">Failed to rename to: \'%s\'</string>
 
-    <string name="p_script_mode">Script Mode</string>
     <string name="p_refill">Refill</string>
     <string name="p_refill_off">OFF</string>
     <string name="p_refill_summary">Manage AP refill</string>
@@ -127,17 +120,18 @@
     <string name="p_battle_config_support_fallback_selection_mode">Fallback Selection Mode</string>
     <string name="p_battle_config_support_pref_servants">Preferred Servants</string>
     <string name="p_battle_config_support_max_ascended">Max-ascended</string>
-    <string name="p_battle_config_support_skill_levels">Skill Levels</string>
     <string name="p_battle_config_support_pref_ces">Preferred CEs</string>
     <string name="p_battle_config_support_mlb">Max-limit broken</string>
     <string name="p_battle_config_support_friend_names">Friend names</string>
     <string name="p_battle_config_support_friends_only">Friends Only</string>
+    <string name="p_battle_config_support_friend_name_hint">Friend name images can be added using \'Support Image Maker\' script</string>
 
     <string name="p_max_skill_1">Max Skill 1</string>
     <string name="p_max_skill_2">Max Skill 2</string>
     <string name="p_max_skill_3">Max Skill 3</string>
 
     <string name="p_game_server">Game Server</string>
+    <string name="p_game_server_auto_detect">Auto-detect</string>
     <string name="p_spam_summary">Danger mode requires Auto-targeting</string>
     <string name="p_spam_np">NP Spam</string>
     <string name="p_spam_skill">Skill Spam</string>
@@ -158,7 +152,10 @@
     <string name="p_battle_config_cmd_text_summary">Show text-box for editing Skill commands</string>
 
     <string name="p_wait_ap_regen_text">Wait for AP Regeneration</string>
-    <string name="p_wait_ap_regen_text_summary">Keeps FGA running even when AP runs out, and automatically restart node once enough AP has regenerated.</string>
+    <string name="p_wait_ap_regen_text_summary">Keep FGO active after the AP have run out. The current node will be repeated once enough AP have regenerated naturally.</string>
+    <string name="p_wait_ap_regen_minutes_text">Minutes Before Rechecking</string>
+    <string name="p_wait_ap_regen_minutes_text_summary">Please set your screen timeout to be longer than the duration.</string>
+    <string name="wait_ap_regen_toast_message">Waiting for AP regeneration. Rechecking in %d minute(s).</string>
 
     <string name="p_storage">Storage</string>
     <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
@@ -235,8 +232,8 @@
 
     <string name="p_script_mode_battle">Battle</string>
     <string name="p_script_mode_lottery">Lottery</string>
-    <string name="p_script_mode_friend_gacha">Friend Gacha</string>
-    <string name="p_script_mode_support_img_maker">Support Image Maker</string>
+    <string name="p_script_mode_fp">Friend Gacha</string>
+    <string name="p_script_mode_support_image_maker">Support Image Maker</string>
     <string name="p_script_mode_gift_box">Gift Box</string>
 
     <string name="p_max_gold_ember_set_size">Max Gold ember set size</string>
@@ -268,8 +265,6 @@
     <string name="draw_overlay_disabled_go_to_settings">Go To Settings</string>
     <string name="cannot_start_recording">Couldn\'t start recording</string>
     <string name="select_script">Select Script</string>
-    <string name="other_scripts">Lottery/FP/GiftBox/\nSupport Image Maker</string>
-    <string name="cannot_detect_script_type">Couldn\'t detect Script type</string>
 
     <string name="script_msg_ap_ran_out">AP ran out!</string>
     <string name="stopped_by_user">Script stopped by user</string>
@@ -339,6 +334,19 @@
     <string name="mat_stinger">Deadly Poisonous Needle</string>
     <string name="mat_eternal_ice">Eternal Ice</string>
     <string name="mat_steel">Aurora Steel</string>
+    <string name="mat_core">Reactor Core of Dawn</string>
+    <string name="mat_bell">Soundless Bell</string>
+    <string name="mat_arrow">Arrowhead of Malice</string>
+    <string name="mat_tiara">Moonlit Tiara</string>
+    <string name="mat_particle">Divine Spirit Particle</string>
+    <string name="mat_thread">Rainbow Thread Ball</string>
+    <string name="mat_mirror">Tsukumo Mirror</string>
+    <string name="mat_egg">Egg of Truth</string>
+    <string name="mat_star_shard">Glittering Star Shard</string>
+    <string name="mat_fruit">Fruit of Eternity</string>
+    <string name="mat_demon_lantern">Demon Flame Lantern</string>
+    <string name="mat_amnesty_bell">Tiny Bell of Amnesty</string>
+    <string name="mat_fantasy_scales">Scales of Fantasies</string>
 
     <string name="p_shuffle_cards">Shuffle cards</string>
     <string name="p_shuffle_cards_wave">Wave</string>
