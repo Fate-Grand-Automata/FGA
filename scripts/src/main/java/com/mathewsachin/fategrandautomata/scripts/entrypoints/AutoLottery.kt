@@ -14,7 +14,8 @@ import kotlin.time.Duration
  */
 class AutoLottery @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi
+    fgAutomataApi: IFgoAutomataApi,
+    private val giftBox: AutoGiftBox
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object ResetDisabled: ExitReason()
@@ -44,18 +45,36 @@ class AutoLottery @Inject constructor(
         Duration.seconds(2).wait()
     }
 
+    private fun presentBoxFull() {
+        if (prefs.receiveEmbersWhenGiftBoxFull) {
+            val moveToPresentBox = game.lotteryFullPresentBoxRegion
+                .find(images[Images.PresentBoxFull])
+
+            moveToPresentBox?.Region?.click()
+
+            giftBox.script()
+        }
+
+        throw ExitException(ExitReason.PresentBoxFull)
+    }
+
     override fun script(): Nothing {
+        val screens: Map<() -> Boolean, () -> Unit> = mapOf(
+            { images[Images.LotteryBoxFinished] in game.lotteryFinishedRegion } to { reset() },
+            { needsToRetry() } to { retry() },
+            { images[Images.PresentBoxFull] in game.lotteryFullPresentBoxRegion } to { presentBoxFull() }
+        )
+
         while (true) {
-            useSameSnapIn {
-                when {
-                    images[Images.LotteryBoxFinished] in game.lotteryFinishedRegion -> reset()
-                    images[Images.PresentBoxFull] in game.lotteryFullPresentBoxRegion -> {
-                        throw ExitException(ExitReason.PresentBoxFull)
-                    }
-                    needsToRetry() -> retry()
-                    else -> spin()
-                }
-            }
+            val actor = useSameSnapIn {
+                screens
+                    .asSequence()
+                    .filter { (validator, _) -> validator() }
+                    .map { (_, actor) -> actor }
+                    .firstOrNull()
+            } ?: { spin() }
+
+            actor.invoke()
         }
     }
 }

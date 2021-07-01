@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.Context
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoCEBomb
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -51,6 +50,7 @@ class PrefsCore @Inject constructor(
     val shouldLimitFP = maker.bool("should_fp_limit")
     val limitFP = maker.int("fp_limit", 1)
     val preventLotteryBoxReset = maker.bool("prevent_lottery_reset")
+    val receiveEmbersWhenGiftBoxFull = maker.bool("receive_embers_when_gift_box_full")
 
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
     val supportMaxUpdates = maker.int("support_max_updates_x", 5)

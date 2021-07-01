@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -20,17 +21,40 @@ class AutoGiftBox @Inject constructor(
         const val maxNullStreak = 3
     }
 
-    override fun script(): Nothing {
-        var clickCount = 0
-        var aroundEnd = false
-        var nullStreak = 0
+    private var totalReceived = 0
 
+    override fun script(): Nothing {
         val xpOffsetX = (game.scriptArea.find(images[Images.GoldXP]) ?: game.scriptArea.find(images[Images.SilverXP]))
             ?.Region?.center?.X
             ?: throw Exception("Couldn't find Embers on screen. This shouldn't happen.")
 
         val checkRegion = Region(xpOffsetX + 1320, 350, 140, 1500)
         val scrollEndRegion = Region(100 + checkRegion.X, 1421, 320, 19)
+        val receiveSelectedClick = Location(1890 + xpOffsetX, 750)
+
+        while (true) {
+            val picked = iteration(checkRegion, scrollEndRegion)
+            totalReceived += picked
+
+            if (picked > 0) {
+                receiveSelectedClick.click()
+            }
+            else break
+
+            // TODO: Runs only once right now
+            break
+        }
+
+        throw ExitException(totalReceived)
+    }
+
+    private fun iteration(
+        checkRegion: Region,
+        scrollEndRegion: Region
+    ): Int {
+        var clickCount = 0
+        var aroundEnd = false
+        var nullStreak = 0
 
         while (clickCount < maxClickCount) {
             val picked = useSameSnapIn {
@@ -69,7 +93,7 @@ class AutoGiftBox @Inject constructor(
            clickCount can be higher than maxClickCount when the script is close to the limit and
            finds multiple collectible stacks on the screen. FGO will not register the extra clicks.
          */
-        throw ExitException(clickCount.coerceAtMost(maxClickCount))
+        return clickCount.coerceAtMost(maxClickCount)
     }
 
     // Return picked count
