@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
+import com.mathewsachin.fategrandautomata.scripts.modules.retry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import javax.inject.Inject
@@ -50,6 +52,7 @@ class AutoLottery @Inject constructor(
                     images[Images.PresentBoxFull] in game.lotteryFullPresentBoxRegion -> {
                         throw ExitException(ExitReason.PresentBoxFull)
                     }
+                    needsToRetry() -> retry()
                     else -> spin()
                 }
             }
