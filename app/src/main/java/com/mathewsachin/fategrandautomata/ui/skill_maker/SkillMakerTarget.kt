@@ -64,15 +64,24 @@ fun SkillMakerTarget(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            if (showEmiya) {
-                Button(onClick = onEmiya) {
-                    Text(stringResource(R.string.skill_maker_emiya))
+            when {
+                showEmiya -> {
+                    Button(onClick = onEmiya) {
+                        Text(stringResource(R.string.skill_maker_emiya))
+                    }
                 }
-            }
-
-            if (showSpaceIshtar) {
-                Button(onClick = onSpaceIshtar) {
-                    Text(stringResource(R.string.skill_maker_space_ishtar))
+                showSpaceIshtar -> {
+                    Button(onClick = onSpaceIshtar) {
+                        Text(stringResource(R.string.skill_maker_space_ishtar))
+                    }
+                }
+                else -> {
+                    Button(
+                        enabled = false,
+                        onClick = { }
+                    ) {
+                        Text("--")
+                    }
                 }
             }
 

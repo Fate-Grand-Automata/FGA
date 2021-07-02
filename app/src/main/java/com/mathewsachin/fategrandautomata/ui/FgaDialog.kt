@@ -125,7 +125,9 @@ class FgaDialog private constructor() {
                 Surface(
                     shape = shape,
                     color = color,
-                    contentColor = contentColor
+                    contentColor = contentColor,
+                    modifier = Modifier
+                        .padding(16.dp)
                 ) {
                     Column(
                         modifier = Modifier
