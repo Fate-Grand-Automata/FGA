@@ -44,7 +44,7 @@ class AutoGiftBox @Inject constructor(
                 receiveSelectedClick.click()
                 while (true) {
                     Duration.seconds(2).wait()
-                    if(needsToRetry()) retry() else break
+                    if (needsToRetry()) retry() else break
                 }
                 receiveSelectedClick.click()
             }
