@@ -6,11 +6,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,6 +20,8 @@ fun lotteryLauncher(
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
     var preventReset by remember { mutableStateOf(prefs.preventLotteryBoxReset) }
+    var receiveEmbers by remember { mutableStateOf(prefs.receiveEmbersWhenGiftBoxFull) }
+    var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberSetSize) }
 
     Column(
         modifier = modifier
@@ -59,12 +57,42 @@ fun lotteryLauncher(
                 onCheckedChange = { preventReset = it }
             )
         }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp)
+                .clickable { receiveEmbers = !receiveEmbers }
+        ) {
+            Text(
+                "Receive embers",
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.secondary
+            )
+
+            Switch(
+                checked = receiveEmbers,
+                onCheckedChange = { receiveEmbers = it }
+            )
+        }
+
+        if (receiveEmbers) {
+            GiftBoxLauncherContent(
+                maxGoldEmberStackSize = maxGoldEmberStackSize,
+                changeMaxEmberStackSize = { maxGoldEmberStackSize = it }
+            )
+        }
     }
 
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
         build = {
-            ScriptLauncherResponse.Lottery(preventReset)
+            ScriptLauncherResponse.Lottery(
+                preventReset,
+                if (receiveEmbers) ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize) else null
+            )
         }
     )
 }

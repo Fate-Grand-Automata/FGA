@@ -88,6 +88,8 @@ class PreferencesImpl @Inject constructor(
 
     override var preventLotteryBoxReset by prefs.preventLotteryBoxReset
 
+    override var receiveEmbersWhenGiftBoxFull by prefs.receiveEmbersWhenGiftBoxFull
+
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 
     override fun forBattleConfig(id: String): IBattleConfig =

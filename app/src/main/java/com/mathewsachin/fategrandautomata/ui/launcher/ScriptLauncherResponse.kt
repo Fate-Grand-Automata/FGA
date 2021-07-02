@@ -6,7 +6,10 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 sealed class ScriptLauncherResponse {
     object Cancel: ScriptLauncherResponse()
     data class FP(val limit: Int?): ScriptLauncherResponse()
-    data class Lottery(val preventBoxReset: Boolean): ScriptLauncherResponse()
+    data class Lottery(
+        val preventBoxReset: Boolean,
+        val giftBox: GiftBox?
+    ): ScriptLauncherResponse()
     data class GiftBox(val maxGoldEmberStackSize: Int): ScriptLauncherResponse()
     data class CEBomb(val targetRarity: Int): ScriptLauncherResponse()
     object SupportImageMaker: ScriptLauncherResponse()

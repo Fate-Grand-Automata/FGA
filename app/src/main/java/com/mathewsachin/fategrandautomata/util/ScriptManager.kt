@@ -315,6 +315,10 @@ class ScriptManager @Inject constructor(
         }
     }
 
+    private fun handleGiftBoxResponse(resp: ScriptLauncherResponse.GiftBox) {
+        preferences.maxGoldEmberSetSize = resp.maxGoldEmberStackSize
+    }
+
     private fun onScriptLauncherResponse(resp: ScriptLauncherResponse, entryPointRunner: () -> Unit) {
         userInterface.isPlayButtonEnabled = true
 
@@ -328,11 +332,15 @@ class ScriptManager @Inject constructor(
             }
             is ScriptLauncherResponse.Lottery -> {
                 preferences.preventLotteryBoxReset = resp.preventBoxReset
+                val giftBoxResp = resp.giftBox
+                preferences.receiveEmbersWhenGiftBoxFull = giftBoxResp != null
+
+                giftBoxResp?.let { handleGiftBoxResponse(it) }
 
                 ScriptModeEnum.Lottery
             }
             is ScriptLauncherResponse.GiftBox -> {
-                preferences.maxGoldEmberSetSize = resp.maxGoldEmberStackSize
+                handleGiftBoxResponse(resp)
 
                 ScriptModeEnum.PresentBox
             }

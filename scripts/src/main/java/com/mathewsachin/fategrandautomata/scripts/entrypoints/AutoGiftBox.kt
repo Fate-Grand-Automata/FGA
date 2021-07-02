@@ -3,8 +3,11 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
+import com.mathewsachin.fategrandautomata.scripts.modules.retry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -20,17 +23,46 @@ class AutoGiftBox @Inject constructor(
         const val maxNullStreak = 3
     }
 
-    override fun script(): Nothing {
-        var clickCount = 0
-        var aroundEnd = false
-        var nullStreak = 0
+    private var totalReceived = 0
 
+    override fun script(): Nothing {
         val xpOffsetX = (game.scriptArea.find(images[Images.GoldXP]) ?: game.scriptArea.find(images[Images.SilverXP]))
             ?.Region?.center?.X
             ?: throw Exception("Couldn't find Embers on screen. This shouldn't happen.")
 
         val checkRegion = Region(xpOffsetX + 1320, 350, 140, 1500)
         val scrollEndRegion = Region(100 + checkRegion.X, 1421, 320, 19)
+        val receiveSelectedClick = Location(1890 + xpOffsetX, 750)
+        val receiveEnabledRegion = Region(1755 + xpOffsetX, 410, 290, 60)
+
+        while (true) {
+            val receiveEnabledPattern = receiveEnabledRegion.getPattern()
+            val picked = iteration(checkRegion, scrollEndRegion)
+            totalReceived += picked
+
+            if (picked > 0) {
+                receiveSelectedClick.click()
+                while (true) {
+                    Duration.seconds(2).wait()
+                    if (needsToRetry()) retry() else break
+                }
+                receiveSelectedClick.click()
+            }
+            else break
+
+            if (receiveEnabledPattern !in receiveEnabledRegion) break
+        }
+
+        throw ExitException(totalReceived)
+    }
+
+    private fun iteration(
+        checkRegion: Region,
+        scrollEndRegion: Region
+    ): Int {
+        var clickCount = 0
+        var aroundEnd = false
+        var nullStreak = 0
 
         while (clickCount < maxClickCount) {
             val picked = useSameSnapIn {
@@ -69,7 +101,7 @@ class AutoGiftBox @Inject constructor(
            clickCount can be higher than maxClickCount when the script is close to the limit and
            finds multiple collectible stacks on the screen. FGO will not register the extra clicks.
          */
-        throw ExitException(clickCount.coerceAtMost(maxClickCount))
+        return clickCount.coerceAtMost(maxClickCount)
     }
 
     // Return picked count

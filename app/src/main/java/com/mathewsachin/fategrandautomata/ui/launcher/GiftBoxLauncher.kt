@@ -2,15 +2,12 @@ package com.mathewsachin.fategrandautomata.ui.launcher
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,6 +15,28 @@ import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.Stepper
+
+@Composable
+fun ColumnScope.GiftBoxLauncherContent(
+    maxGoldEmberStackSize: Int,
+    changeMaxEmberStackSize: (Int) -> Unit
+) {
+    Text(
+        stringResource(R.string.p_max_gold_ember_set_size),
+        style = MaterialTheme.typography.body2,
+        color = MaterialTheme.colors.secondary
+    )
+
+    Box(
+        modifier = Modifier.align(Alignment.End)
+    ) {
+        Stepper(
+            value = maxGoldEmberStackSize,
+            onValueChange = changeMaxEmberStackSize,
+            valueRange = 0..4
+        )
+    }
+}
 
 @Composable
 fun giftBoxLauncher(
@@ -42,21 +61,10 @@ fun giftBoxLauncher(
                 .padding(bottom = 16.dp)
         )
 
-        Text(
-            stringResource(R.string.p_max_gold_ember_set_size),
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.secondary
+        GiftBoxLauncherContent(
+            maxGoldEmberStackSize = maxGoldEmberStackSize,
+            changeMaxEmberStackSize = { maxGoldEmberStackSize = it }
         )
-
-        Box(
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Stepper(
-                value = maxGoldEmberStackSize,
-                onValueChange = { maxGoldEmberStackSize = it },
-                valueRange = 0..4
-            )
-        }
     }
 
     return ScriptLauncherResponseBuilder(
