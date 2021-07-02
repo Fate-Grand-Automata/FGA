@@ -3,6 +3,8 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
+import com.mathewsachin.fategrandautomata.scripts.modules.retry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.Location
@@ -31,18 +33,24 @@ class AutoGiftBox @Inject constructor(
         val checkRegion = Region(xpOffsetX + 1320, 350, 140, 1500)
         val scrollEndRegion = Region(100 + checkRegion.X, 1421, 320, 19)
         val receiveSelectedClick = Location(1890 + xpOffsetX, 750)
+        val receiveEnabledRegion = Region(2000, 400, 300, 100)
 
         while (true) {
+            val receiveEnabledPattern = receiveEnabledRegion.getPattern()
             val picked = iteration(checkRegion, scrollEndRegion)
             totalReceived += picked
 
             if (picked > 0) {
                 receiveSelectedClick.click()
+                while (true) {
+                    Duration.seconds(2).wait()
+                    if(needsToRetry()) retry() else break
+                }
+                receiveSelectedClick.click()
             }
             else break
 
-            // TODO: Runs only once right now
-            break
+            if (!receiveEnabledRegion.exists(receiveEnabledPattern)) break
         }
 
         throw ExitException(totalReceived)
