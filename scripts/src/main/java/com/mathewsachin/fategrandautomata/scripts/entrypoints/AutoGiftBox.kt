@@ -33,7 +33,7 @@ class AutoGiftBox @Inject constructor(
         val checkRegion = Region(xpOffsetX + 1320, 350, 140, 1500)
         val scrollEndRegion = Region(100 + checkRegion.X, 1421, 320, 19)
         val receiveSelectedClick = Location(1890 + xpOffsetX, 750)
-        val receiveEnabledRegion = Region(2000, 400, 300, 100)
+        val receiveEnabledRegion = Region(1755 + xpOffsetX, 410, 290, 60)
 
         while (true) {
             val receiveEnabledPattern = receiveEnabledRegion.getPattern()
