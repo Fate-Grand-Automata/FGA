@@ -50,7 +50,7 @@ class AutoGiftBox @Inject constructor(
             }
             else break
 
-            if (!receiveEnabledRegion.exists(receiveEnabledPattern)) break
+            if (receiveEnabledPattern !in receiveEnabledRegion) break
         }
 
         throw ExitException(totalReceived)
