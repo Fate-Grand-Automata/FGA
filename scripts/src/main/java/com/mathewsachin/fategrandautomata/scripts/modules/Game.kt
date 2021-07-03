@@ -355,7 +355,7 @@ class Game @Inject constructor(
     val lotteryCheckRegion = Region(-1130, 800, 340, 230).xFromCenter()
     val lotterySpinClick = Location(-446, 860).xFromCenter()
     val lotteryFullPresentBoxRegion = Region(20, 860, 1000, 500).xFromCenter()
-    val lotteryResetClick = Location(920, 480).xFromCenter()
+    val lotteryResetClick = Location(if (isWide) 1160 else 920, 480).xFromCenter()
     val lotteryResetConfirmationClick = Location(494, 1122).xFromCenter()
     val lotteryResetCloseClick = Location(-10, 1120).xFromCenter()
 

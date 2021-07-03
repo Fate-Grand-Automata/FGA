@@ -112,6 +112,7 @@
     <string name="p_battle_config_support_mlb">최대해방 / 풀돌</string>
     <string name="p_battle_config_support_friend_names">친구 이름</string>
     <string name="p_battle_config_support_friends_only">친구 한정</string>
+    <string name="p_battle_config_support_friend_name_hint">친구 이름 이미지는 \'서포트 이미지 메이커\' 스크립트를 사용하여 만들 수 있습니다</string>
 
     <string name="p_game_server">게임 서버</string>
     <string name="p_game_server_auto_detect">자동 감지</string>
@@ -239,7 +240,6 @@
     <string name="accessibility_disabled_title">접근성 비활성화</string>
     <string name="accessibility_disabled_message">시스템 설정에서 접근성 서비스 사용을 활성화 하십시오. 이미 활성화 되어 있다면 비활성화 후 다시 활성화 하십시오.</string>
     <string name="accessibility_disabled_go_to_settings">설정으로 가기</string>
-
     <string name="draw_overlay_disabled_title">오버레이 권한 없음</string>
     <string name="draw_overlay_disabled_message">다른 앱 위에 그리기를 허용해주세요. 재생 버튼을 활성화하기 위해 쓰입니다.</string>
     <string name="draw_overlay_disabled_go_to_settings">설정으로 가기</string>
@@ -305,13 +305,18 @@
     <string name="mat_lanugo">원초의 산모</string>
     <string name="mat_gallstone">주수담석</string>
     <string name="mat_wine">기기신주</string>
-    <string name="mat_stake">소곡의 철항(못)</string>
+    <string name="mat_stake">소곡의 철항</string>
     <string name="mat_gunpowder">여진화약</string>
     <string name="mat_medal">대기사 훈장</string>
     <string name="mat_lamp_evil_sealing">봉마의 램프</string>
     <string name="mat_stinger">만사의 독침</string>
     <string name="mat_eternal_ice">영원결빙</string>
     <string name="mat_steel">오로라강</string>
+    <string name="mat_core">효광노심</string>
+    <string name="mat_bell">한고령</string>
+    <string name="mat_arrow">재난의 화살촉</string>
+    <string name="mat_mirror">구십구경</string>
+    <string name="mat_egg">진리의 알</string>
 
     <string name="p_shuffle_cards">카드 셔플</string>
     <string name="p_shuffle_cards_wave">웨이브</string>
