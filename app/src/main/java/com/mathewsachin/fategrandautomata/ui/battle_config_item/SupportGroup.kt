@@ -19,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,6 +40,7 @@ import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportSelectPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.*
 import com.mathewsachin.fategrandautomata.util.stringRes
+import java.io.File
 
 @Composable
 fun SupportGroup(
@@ -95,6 +97,11 @@ fun SupportGroup(
             AnimatedVisibility (preferredMode) {
                 val servants by config.support.preferredServants.remember()
                 val ces by config.support.preferredCEs.remember()
+                val cesFormatted by derivedStateOf {
+                    ces
+                        .map { File(it).nameWithoutExtension }
+                        .toSet()
+                }
 
                 Column {
                     Preference(
@@ -104,7 +111,7 @@ fun SupportGroup(
                                 config = config,
                                 maxSkillText = maxSkillText,
                                 servants = servants,
-                                ces = ces
+                                ces = cesFormatted
                             )
                         },
                         onClick = goToPreferred
