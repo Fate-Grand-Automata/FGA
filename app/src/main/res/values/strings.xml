@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">FGA (Debug)</string>
+    <string name="app_name" translatable="false">FGA (L式)</string>
 
     <string name="count_0" translatable="false">0</string>
     <string name="count_1" translatable="false">1</string>
