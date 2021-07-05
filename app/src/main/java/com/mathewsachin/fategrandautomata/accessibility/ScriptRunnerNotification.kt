@@ -95,10 +95,10 @@ class ScriptRunnerNotification @Inject constructor(
 
         return NotificationCompat.Builder(service, Channels.service)
             .setOngoing(true)
-            .setContentTitle(service.getString(R.string.app_name))
-            .setContentText(service.getString(R.string.notification_text))
+//            .setContentTitle(service.getString(R.string.app_name))
+//            .setContentText(service.getString(R.string.notification_text))
             .setSmallIcon(R.mipmap.notification_icon)
-            .setColor(service.getColor(R.color.colorBusterWeak))
+//            .setColor(service.getColor(R.color.colorBusterWeak))
             .setPriority(NotificationManager.IMPORTANCE_LOW)
             .setContentIntent(activityIntent)
             .addAction(stopAction)
@@ -112,7 +112,7 @@ class ScriptRunnerNotification @Inject constructor(
 
     fun message(msg: String) {
         val notification = NotificationCompat.Builder(service, Channels.message)
-            .setContentTitle(service.getString(R.string.app_name))
+//            .setContentTitle(service.getString(R.string.app_name))
             .setContentText(msg)
             .setSmallIcon(R.mipmap.notification_icon)
             .setDefaults(Notification.DEFAULT_SOUND)

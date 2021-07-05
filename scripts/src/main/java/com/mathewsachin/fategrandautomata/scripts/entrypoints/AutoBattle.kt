@@ -12,6 +12,7 @@ import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 import kotlin.math.absoluteValue
+import kotlin.time.milliseconds
 import kotlin.time.seconds
 
 /**
@@ -148,11 +149,11 @@ open class AutoBattle @Inject constructor(
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
-            { needsToWithdraw() } to { withdraw() },
-            { needsToStorySkip() } to { skipStory() },
-            { isFriendRequestScreen() } to { skipFriendRequestScreen() },
-            { isBond10CEReward() } to { bond10CEReward() },
-            { isCeRewardDetails() } to { ceRewardDetails() }
+//            { needsToWithdraw() } to { withdraw() },
+//            { needsToStorySkip() } to { skipStory() },
+//            { isFriendRequestScreen() } to { skipFriendRequestScreen() },
+//            { isBond10CEReward() } to { bond10CEReward() },
+//            { isCeRewardDetails() } to { ceRewardDetails() }
             //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
         )
 
@@ -166,9 +167,13 @@ open class AutoBattle @Inject constructor(
                     .firstOrNull()
             }
 
-            actor?.invoke()
+            if (actor == null) {
+                Location(2850, 1350).click(10)
+            } else {
+                actor?.invoke()
 
-            1.seconds.wait()
+                500.milliseconds.wait()
+            }
         }
     }
 

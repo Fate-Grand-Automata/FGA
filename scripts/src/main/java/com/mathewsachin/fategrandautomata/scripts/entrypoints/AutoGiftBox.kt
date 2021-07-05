@@ -15,7 +15,7 @@ class AutoGiftBox @Inject constructor(
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     companion object {
         const val maxClickCount = 99
-        const val maxNullStreak = 3
+        const val maxNullStreak = 4
     }
 
     override fun script(): Nothing {
