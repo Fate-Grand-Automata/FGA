@@ -50,88 +50,88 @@ private fun PreferredSupport(
     val prefCEs by config.preferredCEs.remember()
 
     LazyColumn {
-            item {
-                Heading(stringResource(R.string.p_support_mode_preferred))
-            }
+        item {
+            Heading(stringResource(R.string.p_support_mode_preferred))
+        }
 
-            item {
-                config.friendsOnly.SwitchPreference(
-                    title = stringResource(R.string.p_battle_config_support_friends_only)
-                )
-            }
+        item {
+            config.friendsOnly.SwitchPreference(
+                title = stringResource(R.string.p_battle_config_support_friends_only)
+            )
+        }
 
-            item {
-                Card(
+        item {
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Column(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(bottom = 16.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(bottom = 16.dp)
-                    ) {
-                        PreferenceGroupHeader(
-                            title = stringResource(R.string.p_battle_config_support_pref_servants)
+                    PreferenceGroupHeader(
+                        title = stringResource(R.string.p_battle_config_support_pref_servants)
+                    )
+
+                    config.preferredServants.SupportSelectPreference(
+                        title = stringResource(R.string.p_battle_config_support_pref_servants),
+                        entries = vm.servants
+                    )
+
+                    if (prefServants.isNotEmpty()) {
+                        config.maxAscended.SwitchPreference(
+                            title = stringResource(R.string.p_battle_config_support_max_ascended)
                         )
 
-                        config.preferredServants.SupportSelectPreference(
-                            title = stringResource(R.string.p_battle_config_support_pref_servants),
-                            entries = vm.servants
-                        )
-
-                        if (prefServants.isNotEmpty()) {
-                            config.maxAscended.SwitchPreference(
-                                title = stringResource(R.string.p_battle_config_support_max_ascended)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                stringResource(R.string.p_max_skills),
+                                modifier = Modifier.weight(1f)
                             )
 
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(16.dp)
-                            ) {
-                                Text(
-                                    stringResource(R.string.p_max_skills),
-                                    modifier = Modifier.weight(1f)
+                            MaxSkills(
+                                skills = listOf(
+                                    config.skill1Max,
+                                    config.skill2Max,
+                                    config.skill3Max
                                 )
-
-                                MaxSkills(
-                                    skills = listOf(
-                                        config.skill1Max,
-                                        config.skill2Max,
-                                        config.skill3Max
-                                    )
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            item {
-                Card(
-                    modifier = Modifier
-                        .padding(16.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(bottom = 16.dp)
-                    ) {
-                        PreferenceGroupHeader(
-                            title = stringResource(R.string.p_battle_config_support_pref_ces)
-                        )
-
-                        config.preferredCEs.SupportSelectPreference(
-                            title = stringResource(R.string.p_battle_config_support_pref_ces),
-                            entries = vm.ces
-                        )
-
-                        if (prefCEs.isNotEmpty()) {
-                            config.mlb.SwitchPreference(
-                                title = stringResource(R.string.p_battle_config_support_mlb)
                             )
                         }
                     }
                 }
             }
         }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                ) {
+                    PreferenceGroupHeader(
+                        title = stringResource(R.string.p_battle_config_support_pref_ces)
+                    )
+
+                    config.preferredCEs.SupportSelectPreference(
+                        title = stringResource(R.string.p_battle_config_support_pref_ces),
+                        entries = vm.ces
+                    )
+
+                    if (prefCEs.isNotEmpty()) {
+                        config.mlb.SwitchPreference(
+                            title = stringResource(R.string.p_battle_config_support_mlb)
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
