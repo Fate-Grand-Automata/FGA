@@ -49,9 +49,8 @@ fun <T> Pref<Set<T>>.MultiSelectListPreference(
 ) {
     var selected by remember()
 
-    val itemNames = entries
-        .filter { selected.contains(it.key) }
-        .map { it.value }
+    val selectedItemNames = selected
+        .map { entries.getOrDefault(it, it.toString()) }
 
     val dialog = multiSelectListDialog(
         selected = selected,
@@ -62,7 +61,7 @@ fun <T> Pref<Set<T>>.MultiSelectListPreference(
 
     Preference(
         title = title,
-        summary = summary(itemNames),
+        summary = summary(selectedItemNames),
         singleLineTitle = singleLineTitle,
         icon = icon,
         enabled = enabled,
