@@ -1,104 +1,98 @@
 package com.mathewsachin.fategrandautomata.util
 
+import android.app.Service
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
-import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
-import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import dagger.hilt.android.scopes.ServiceScoped
+import timber.log.Timber
+import timber.log.debug
 import javax.inject.Inject
-import kotlin.time.Duration
 
-class ScriptMessages @Inject constructor(@ApplicationContext val context: Context) : IScriptMessages {
-    override val apRanOut: String
-        get() = context.getString(R.string.script_msg_ap_ran_out)
+@ServiceScoped
+class ScriptMessages @Inject constructor(
+    service: Service,
+    private val notification: ScriptRunnerNotification,
+    private val prefs: IPreferences
+) : IScriptMessages {
+    private val context: Context = service
 
-    override val stoppedByUser: String
-        get() = context.getString(R.string.stopped_by_user)
+    private val handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
 
-    override val unexpectedError: String
-        get() = context.getString(R.string.unexpected_error)
+    fun toast(message: String) {
+        if (message.isNotBlank()) {
+            handler.post {
+                Toast
+                    .makeText(context, message, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
 
-    override val scriptExited: String
-        get() = context.getString(R.string.script_exited)
+    fun notify(message: String) = notification.message(message)
 
-    override val inventoryFull: String
-        get() = context.getString(R.string.inventory_full)
+    override fun notify(action: ScriptNotify) =
+        when (action) {
+            ScriptNotify.CEDropped -> notify(context.getString(R.string.ce_dropped))
+            ScriptNotify.CEGet -> notify(context.getString(R.string.ce_get))
+            is ScriptNotify.FailedToDetermineCards -> {
+                val msg = context.getString(R.string.failed_to_determine_card_type, action.cards)
 
-    override val lotteryPresentBoxFull: String
-        get() = context.getString(R.string.present_box_full)
+                toast(msg)
 
-    override val supportImageMakerNotFound: String
-        get() = context.getString(R.string.support_img_maker_not_found)
+                Timber.debug { msg }
+            }
+            is ScriptNotify.SupportListUpdatingIn -> {
+                toast(
+                    context.getString(R.string.support_list_updated_in, action.time.toString())
+                )
+            }
+            is ScriptNotify.WaitForAPRegen -> {
+                toast(
+                    context.getString(R.string.wait_ap_regen_toast_message, action.minutes)
+                )
+            }
+            is ScriptNotify.BetweenRuns -> {
+                val msg = makeRefillAndRunsMessage(
+                    timesRefilled = action.refills,
+                    timesRan = action.runs
+                )
 
-    override val supportSelectionManual: String
-        get() = context.getString(R.string.support_selection_manual)
-
-    override val supportSelectionFriendNotSet: String
-        get() = context.getString(R.string.support_selection_friend_not_set)
-
-    override val supportSelectionPreferredNotSet: String
-        get() = context.getString(R.string.support_selection_preferred_not_set)
-
-    override val ceDropped: String
-        get() = context.getString(R.string.ce_dropped)
-
-    override val ceGet: String
-        get() = context.getString(R.string.ce_get)
-
-    override val withdrawDisabled: String
-        get() = context.getString(R.string.withdraw_disabled)
-
-    override fun timesRan(times: Int) =
-        context.getString(R.string.times_ran, times)
-
-    override fun timesRanOutOf(times: Int, outOf: Int) =
-        context.getString(R.string.times_ran_out_of, times, outOf)
-
-    override fun farmedMaterials(count: Int) =
-        context.getString(R.string.mats_farmed, count)
-
-    override fun materials(mats: Map<MaterialEnum, Int>) =
-        mats.entries.joinToString { (mat, count) ->
-            "${context.getString(mat.stringRes)}: $count"
+                toast(msg)
+            }
         }
 
-    override fun refillsUsedOutOf(used: Int, outOf: Int) =
-        context.getString(R.string.refills_used_out_of, used, outOf)
+    private fun makeRefillAndRunsMessage(
+        timesRan: Int,
+        timesRefilled: Int
+    ) = buildString {
+        val refill = prefs.refill
 
-    override fun failedToDetermineCardType(cards: List<CommandCard.Face>) =
-        context.getString(R.string.failed_to_determine_card_type, cards)
+        if (refill.shouldLimitRuns && refill.limitRuns > 0) {
+            appendLine(
+                context.getString(R.string.times_ran_out_of, timesRan, refill.limitRuns)
+            )
+        } else if (timesRan > 0) {
+            appendLine(
+                context.getString(R.string.times_ran, timesRan)
+            )
+        }
 
-    override fun supportListUpdatedIn(duration: Duration) =
-        context.getString(R.string.support_list_updated_in, duration.toString())
-
-    override fun timesWithdrew(times: Int) =
-        context.getString(R.string.times_withdrew, times)
-
-    private val Duration.stringify: String
-        get() =
-            toComponents { hours, minutes, seconds, _ ->
-                (if (hours > 0)
-                    listOf(hours, minutes, seconds)
-                else listOf(minutes, seconds))
-                    .joinToString(":") { "%02d".format(it) }
+        if (refill.resources.isNotEmpty()) {
+            val refillRepetitions = refill.repetitions
+            if (refillRepetitions > 0) {
+                appendLine(
+                    context.getString(R.string.refills_used_out_of, timesRefilled, refillRepetitions)
+                )
             }
-
-    override fun time(duration: Duration) =
-        context.getString(R.string.battle_time, duration.stringify)
-
-    override fun avgTimePerRun(duration: Duration) =
-        context.getString(R.string.avg_time_per_run, duration.stringify)
-
-    override fun turns(min: Int, avg: Int, max: Int) =
-        context.getString(R.string.turns_stats, min, avg, max)
-
-    override fun turns(turns: Int) =
-        context.getString(R.string.turns_count, turns)
-
-    override fun pickedExpStack(stacks: Int) =
-        context.getString(R.string.picked_exp_stacks, stacks)
-
-    override fun waitAPToast(minutes: Int) =
-        context.getString(R.string.wait_ap_regen_toast_message, minutes)
+        }
+    }.trimEnd()
 }

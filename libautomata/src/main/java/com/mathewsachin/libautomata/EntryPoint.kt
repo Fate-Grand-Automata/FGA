@@ -37,7 +37,6 @@ abstract class EntryPoint(val exitManager: ExitManager) {
      * condition is reached.
      *
      * @throws ScriptAbortException when the user stopped the script
-     * @throws ScriptExitException when an exit condition was reached
      */
     abstract fun script(): Nothing
 

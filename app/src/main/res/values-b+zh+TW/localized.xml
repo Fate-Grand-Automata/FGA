@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_runner_description">這是讓FGA可以使用腳本的設定，FGA需要開啟無障礙服務以在沒有root的情況下查看及控制螢幕，包含點按跟捲動等</string>
-
     <string name="battle_config_item_copy">複製</string>
     <string name="battle_config_item_delete">刪除</string>
     <string name="battle_config_item_export">匯出</string>
@@ -93,20 +91,10 @@
     <string name="support_img_namer_file_rename_failed">重新命名成 \'%s\' 失敗</string>
 
     <string name="p_refill">自動回體</string>
-    <string name="p_refill_off">關閉</string>
-    <string name="p_refill_summary">設定自動回體</string>
     <string name="p_battle_config">周回腳本</string>
     <string name="p_battle_config_summary">設定周回腳本</string>
     <string name="p_more_options">更多選項</string>
 
-    <string name="p_enable_refill">啟動自動回體</string>
-    <string name="p_refill_none">未選擇果實或聖晶石</string>
-    <string name="p_repetitions">自動回體次數</string>
-    <string name="p_auto_decrement">追蹤消耗</string>
-    <string name="p_auto_decrement_summary">自動追蹤已使用的果實以減少自動回體次數</string>
-    <string name="p_resource">自動回體資源</string>
-    <string name="p_run_limit">次數限制</string>
-    <string name="p_limit_no_of_runs">設定回體次數上限</string>
     <string name="p_runs">上限</string>
 
     <string name="p_battle_config_name">腳本名稱</string>
@@ -125,10 +113,6 @@
     <string name="p_battle_config_support_friend_names">好友名稱</string>
     <string name="p_battle_config_support_friends_only">只選擇好友從者</string>
     <string name="p_battle_config_support_friend_name_hint">請使用「支援圖片截取器」腳本加入好友名稱的圖片</string>
-
-    <string name="p_max_skill_1">一技滿等</string>
-    <string name="p_max_skill_2">二技滿等</string>
-    <string name="p_max_skill_3">三技滿等</string>
 
     <string name="p_game_server">伺服器</string>
     <string name="p_game_server_auto_detect">自動偵測</string>
@@ -152,9 +136,6 @@
     <string name="p_battle_config_cmd_text_summary">顯示以文字輸入腳本的對話框(關閉以跳過，將直接進入產生器)</string>
 
     <string name="p_wait_ap_regen_text">等待AP恢復</string>
-    <string name="p_wait_ap_regen_text_summary">AP用完之後FGA將不會立刻退出，而是會持續確認AP是否恢復並重新開始關卡</string>
-    <string name="p_wait_ap_regen_minutes_text">重新檢查時間(分鐘)</string>
-    <string name="p_wait_ap_regen_minutes_text_summary">需比螢幕自動關閉時間短</string>
     <string name="wait_ap_regen_toast_message">等待AP恢復中，%d 分鐘後重新檢查</string>
 
     <string name="p_storage">資料存放位置</string>
@@ -255,7 +236,6 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">混合職階 (Mix)</string>
 
-    <string name="notification_text">無障礙服務執行中</string>
     <string name="notification_stop">停止</string>
 
     <string name="accessibility_disabled_title">無障礙服務已關閉</string>
@@ -296,8 +276,6 @@
 
     <string name="p_mats">追縱掉落素材</string>
     <string name="mats_farmed">已獲得 %d 個素材</string>
-    <string name="p_mat_limit">依獲得素材數量限制</string>
-    <string name="p_mat_limit_count">數量</string>
 
     <string name="mat_proof">英雄之證</string>
     <string name="mat_bone">凶骨</string>

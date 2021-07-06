@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_runner_description">This service actually runs the scripts. An accessibility service is required if clicks and swipes are to be performed without root.</string>
+    <string name="tapper_service_description">
+        This accessibility service is used to perform clicks and swipes without root.
+        It also enables automatic detection of FGO version (NA/JP/CN/TW/KR) by checking the APK name of the foreground app.
+        In case you see the service malfunctioning, try turning it OFF and then turn ON again.
+        If it still doesn\'t work, you might have to adjust your device\'s Battery optimization settings for the app.
+    </string>
 
     <string name="battle_config_item_copy">Copy</string>
     <string name="battle_config_item_delete">Delete</string>
@@ -93,21 +98,14 @@
     <string name="support_img_namer_file_rename_failed">Failed to rename to: \'%s\'</string>
 
     <string name="p_refill">Refill</string>
-    <string name="p_refill_off">OFF</string>
-    <string name="p_refill_summary">Manage AP refill</string>
     <string name="p_battle_config">Battle Configs</string>
     <string name="p_battle_config_summary">Manage configs for Battle script</string>
     <string name="p_more_options">More options</string>
 
-    <string name="p_enable_refill">Enable Refill</string>
-    <string name="p_refill_none">None</string>
-    <string name="p_repetitions">Repetitions</string>
-    <string name="p_auto_decrement">Auto-decrement</string>
-    <string name="p_auto_decrement_summary">Automatically decrease the refill amount by number of apples used</string>
-    <string name="p_resource">Resource</string>
-    <string name="p_run_limit">Run limit</string>
-    <string name="p_limit_no_of_runs">Limit number of runs</string>
+    <string name="p_limit">Limit</string>
     <string name="p_runs">Runs</string>
+    <string name="p_roll_limit">Limit number of rolls</string>
+    <string name="p_prevent_lottery_box_reset">Prevent box reset</string>
 
     <string name="p_battle_config_name">Name</string>
     <string name="p_battle_config_cmd">Command</string>
@@ -117,7 +115,7 @@
     <string name="p_battle_config_card_priority">Card Priority</string>
     <string name="p_battle_config_support">Support</string>
     <string name="p_battle_config_support_selection_mode">Selection Mode</string>
-    <string name="p_battle_config_support_fallback_selection_mode">Fallback Selection Mode</string>
+    <string name="p_battle_config_support_fallback_selection_mode">Fallback</string>
     <string name="p_battle_config_support_pref_servants">Preferred Servants</string>
     <string name="p_battle_config_support_max_ascended">Max-ascended</string>
     <string name="p_battle_config_support_pref_ces">Preferred CEs</string>
@@ -126,9 +124,7 @@
     <string name="p_battle_config_support_friends_only">Friends Only</string>
     <string name="p_battle_config_support_friend_name_hint">Friend name images can be added using \'Support Image Maker\' script</string>
 
-    <string name="p_max_skill_1">Max Skill 1</string>
-    <string name="p_max_skill_2">Max Skill 2</string>
-    <string name="p_max_skill_3">Max Skill 3</string>
+    <string name="p_max_skills">Max Skills</string>
 
     <string name="p_game_server">Game Server</string>
     <string name="p_game_server_auto_detect">Auto-detect</string>
@@ -141,6 +137,7 @@
     <string name="p_enable_withdraw">Enable Withdraw</string>
     <string name="p_stop_on_ce_drop">Stop on CE drop</string>
     <string name="p_stop_on_ce_get">Stop on CE GET</string>
+    <string name="p_stop_on_first_clear_rewards">Stop on first-clear rewards</string>
     <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
     <string name="p_experimental">Experimental</string>
     <string name="p_screenshot_drops">Screenshot Drops</string>
@@ -152,9 +149,6 @@
     <string name="p_battle_config_cmd_text_summary">Show text-box for editing Skill commands</string>
 
     <string name="p_wait_ap_regen_text">Wait for AP Regeneration</string>
-    <string name="p_wait_ap_regen_text_summary">Keep FGO active after the AP have run out. The current node will be repeated once enough AP have regenerated naturally.</string>
-    <string name="p_wait_ap_regen_minutes_text">Minutes Before Rechecking</string>
-    <string name="p_wait_ap_regen_minutes_text_summary">Please set your screen timeout to be longer than the duration.</string>
     <string name="wait_ap_regen_toast_message">Waiting for AP regeneration. Rechecking in %d minute(s).</string>
 
     <string name="p_storage">Storage</string>
@@ -183,22 +177,22 @@
     <string name="p_fine_tune_support_swipes_per_update">Swipes per Update</string>
     <string name="p_fine_tune_support_max_updates">Max Updates</string>
     <string name="p_fine_tune_similarity">Similarity</string>
-    <string name="p_fine_tune_min_similarity">Min Similarity (%)</string>
-    <string name="p_fine_tune_mlb_similarity">MLB Similarity (%)</string>
-    <string name="p_fine_tune_stage_counter_similarity">Stage Counter Similarity (%)</string>
+    <string name="p_fine_tune_min_similarity">Min Similarity</string>
+    <string name="p_fine_tune_mlb_similarity">MLB Similarity</string>
+    <string name="p_fine_tune_stage_counter_similarity">Stage Counter Similarity</string>
     <string name="p_fine_tune_clicks">Clicks</string>
-    <string name="p_fine_tune_wait_after_clicking">Wait after clicking (ms)</string>
-    <string name="p_fine_tune_click_duration">Click duration (ms)</string>
-    <string name="p_fine_tune_click_delay">Multi-Click Interval (ms)</string>
+    <string name="p_fine_tune_wait_after_clicking">Wait after clicking</string>
+    <string name="p_fine_tune_click_duration">Click duration</string>
+    <string name="p_fine_tune_click_delay">Multi-Click Interval</string>
     <string name="p_fine_tune_swipes">Swipes</string>
-    <string name="p_fine_tune_wait_after_swiping">Wait after swiping (ms)</string>
-    <string name="p_fine_tune_swipe_duration">Swipe duration (ms)</string>
-    <string name="p_fine_tune_swipe_multiplier">Swipe Multiplier (%)</string>
+    <string name="p_fine_tune_wait_after_swiping">Wait after swiping</string>
+    <string name="p_fine_tune_swipe_duration">Swipe duration</string>
+    <string name="p_fine_tune_swipe_multiplier">Swipe Multiplier</string>
     <string name="p_fine_tune_wait">Wait</string>
-    <string name="p_fine_tune_skill_delay">Skill Delay (ms)</string>
-    <string name="p_fine_tune_wait_before_turn">Wait before Turn (ms)</string>
-    <string name="p_fine_tune_wait_before_cards">Wait before Cards (ms)</string>
-    <string name="p_fine_tune_wait_multiplier">Wait Multiplier (%)</string>
+    <string name="p_fine_tune_skill_delay">Skill Delay</string>
+    <string name="p_fine_tune_wait_before_turn">Wait before Turn</string>
+    <string name="p_fine_tune_wait_before_cards">Wait before Cards</string>
+    <string name="p_fine_tune_wait_multiplier">Wait Multiplier</string>
 
     <string name="p_nav_refill">Refill</string>
     <string name="p_nav_more_options">More options</string>
@@ -254,7 +248,7 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">Mix</string>
 
-    <string name="notification_text">Accessibility Service Running</string>
+    <string name="overlay_notification_text">Overlay service running</string>
     <string name="notification_stop">Stop</string>
 
     <string name="accessibility_disabled_title">Accessibility Disabled</string>
@@ -265,6 +259,7 @@
     <string name="draw_overlay_disabled_go_to_settings">Go To Settings</string>
     <string name="cannot_start_recording">Couldn\'t start recording</string>
     <string name="select_script">Select Script</string>
+    <string name="unexpected_error_copy">Copy</string>
 
     <string name="script_msg_ap_ran_out">AP ran out!</string>
     <string name="stopped_by_user">Script stopped by user</string>
@@ -272,6 +267,7 @@
     <string name="screen_turned_off">Script paused due to screen turning off</string>
     <string name="unexpected_error">Unexpected Error</string>
     <string name="script_exited">Script Exited</string>
+    <string name="lottery_reset_disabled">Lottery box reset is disabled</string>
     <string name="inventory_full">Inventory Full</string>
     <string name="present_box_full">Present Box Full</string>
     <string name="support_img_maker_not_found">No support images were found on the current screen. Are you on Support selection or Friend list screen?</string>
@@ -280,6 +276,7 @@
     <string name="support_selection_preferred_not_set">When using \'preferred\' support selection mode, specify at least one Servant or Craft Essence.</string>
     <string name="ce_dropped">CE Dropped!</string>
     <string name="ce_get">CE GET!</string>
+    <string name="first_clear_rewards">First-clear rewards!</string>
     <string name="withdraw_disabled">All servants have been defeated and auto-withdrawing is disabled.</string>
     <string name="times_ran">Ran %d time(s)</string>
     <string name="times_ran_out_of">Ran %1$d out of %2$d time(s)</string>
@@ -295,8 +292,8 @@
 
     <string name="p_mats">Materials</string>
     <string name="mats_farmed">Farmed %d material(s)</string>
-    <string name="p_mat_limit">Limit by Materials</string>
-    <string name="p_mat_limit_count">Count</string>
+
+    <string name="times_rolled">Rolled %d time(s)</string>
 
     <string name="mat_proof">Proof of Hero</string>
     <string name="mat_bone">Evil Bone</string>

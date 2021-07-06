@@ -2,8 +2,12 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Region
 import java.io.File
 import javax.inject.Inject
 
@@ -24,7 +28,12 @@ class SupportImageMaker @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
-    class ExitException : Exception()
+    sealed class ExitReason {
+        object Success: ExitReason()
+        object NotFound: ExitReason()
+    }
+
+    class ExitException(val reason: ExitReason) : Exception()
 
     private val dir = storageProvider.supportImageTempDir
 
@@ -36,7 +45,7 @@ class SupportImageMaker @Inject constructor(
         // At max two Servant+CE are completely on screen, so only use those
         val regionArray = game.scriptArea
             .findAll(
-                images.supportRegionTool,
+                images[Images.SupportRegionTool],
                 supportRegionToolSimilarity
             )
             .map {
@@ -62,10 +71,10 @@ class SupportImageMaker @Inject constructor(
         }
 
         if (regionArray.isEmpty()) {
-            throw ScriptExitException(messages.supportImageMakerNotFound)
+            throw ExitException(ExitReason.NotFound)
         }
 
-        throw ExitException()
+        throw ExitException(ExitReason.Success)
     }
 
     private fun cleanExtractFolder() {

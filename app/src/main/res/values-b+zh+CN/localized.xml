@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_runner_description">这个服务实际上运行脚本。如果要在没有root权限的情况下执行单击和滑动，则需要辅助功能服务。</string>
-
     <string name="battle_config_item_copy">复制</string>
     <string name="battle_config_item_delete">删除</string>
     <string name="battle_config_item_export">导出</string>
@@ -93,20 +91,10 @@
     <string name="support_img_namer_file_rename_failed">重新命名成 \'%s\' 失败</string>
 
     <string name="p_refill">自动回体</string>
-    <string name="p_refill_off">关闭</string>
-    <string name="p_refill_summary">设定自动回体</string>
     <string name="p_battle_config">周回脚本</string>
     <string name="p_battle_config_summary">设定周回脚本</string>
     <string name="p_more_options">更多选项</string>
 
-    <string name="p_enable_refill">启动自动回体</string>
-    <string name="p_refill_none">未选择果实或圣晶石</string>
-    <string name="p_repetitions">自动回体次数</string>
-    <string name="p_auto_decrement">追踪消耗</string>
-    <string name="p_auto_decrement_summary">自动追踪已使用的果实以减少自动回体次数</string>
-    <string name="p_resource">自动回体资源</string>
-    <string name="p_run_limit">次数限制</string>
-    <string name="p_limit_no_of_runs">设定回体次数上限</string>
     <string name="p_runs">上限</string>
 
     <string name="p_battle_config_name">脚本名称</string>
@@ -124,10 +112,6 @@
     <string name="p_battle_config_support_mlb">满破礼装</string>
     <string name="p_battle_config_support_friend_names">好友名称</string>
     <string name="p_battle_config_support_friends_only">只选择好友从者</string>
-
-    <string name="p_max_skill_1">一技能满级</string>
-    <string name="p_max_skill_2">二技能满级</string>
-    <string name="p_max_skill_3">三技能满级</string>
 
     <string name="p_game_server">服务器</string>
     <string name="p_game_server_auto_detect">自动检测</string>
@@ -151,7 +135,6 @@
     <string name="p_battle_config_cmd_text_summary">显示以文字输入脚本的对话框(关闭以跳过，将直接进入生成器)</string>
 
     <string name="p_wait_ap_regen_text">等待体力回复</string>
-    <string name="p_wait_ap_regen_text_summary">AP用完之后FGA将不会立刻退出，而是会持续确认体力是否回复并重新开始关卡</string>
 
     <string name="p_storage">文件存放位置</string>
     <string name="p_folder">更改存放助战图片、掉落截图等的文件夹位置</string>
@@ -250,7 +233,6 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">混合职介 (Mix)</string>
 
-    <string name="notification_text">无障碍服务运行中</string>
     <string name="notification_stop">停止</string>
 
     <string name="accessibility_disabled_title">无障碍服务已关闭</string>
@@ -291,8 +273,6 @@
 
     <string name="p_mats">追踪掉落素材</string>
     <string name="mats_farmed">已获得 %d 个素材</string>
-    <string name="p_mat_limit">依获得素材数量限制</string>
-    <string name="p_mat_limit_count">数量</string>
 
     <string name="mat_proof">英雄之证</string>
     <string name="mat_bone">凶骨</string>

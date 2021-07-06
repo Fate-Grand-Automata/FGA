@@ -32,15 +32,13 @@ class PrefsCore @Inject constructor(
 
     val stopOnCEDrop = maker.bool("stop_on_ce_drop")
     val stopOnCEGet = maker.bool("stop_on_ce_get")
+    val stopOnFirstClearRewards = maker.bool("stop_on_first_clear_rewards")
 
     val boostItemSelectionMode = maker.stringAsInt("selected_boost_item", -1)
 
     val refill = RefillPrefsCore(maker)
 
     val waitAPRegen = maker.bool("wait_for_ap_regeneration")
-    val waitAPRegenMinutes = maker.int("wait_for_ap_regeneration_minutes", 1)
-
-    val gudaFinal = maker.bool("guda_final")
 
     val ignoreNotchCalculation = maker.bool("ignore_notch")
     val useRootForScreenshots = maker.bool("use_root_screenshot")
@@ -48,6 +46,11 @@ class PrefsCore @Inject constructor(
     val screenshotDrops = maker.bool("screenshot_drops")
     val debugMode = maker.bool("debug_mode")
     val autoStartService = maker.bool("auto_start_service")
+
+    val shouldLimitFP = maker.bool("should_fp_limit")
+    val limitFP = maker.int("fp_limit", 1)
+    val preventLotteryBoxReset = maker.bool("prevent_lottery_reset")
+    val receiveEmbersWhenGiftBoxFull = maker.bool("receive_embers_when_gift_box_full")
 
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
     val supportMaxUpdates = maker.int("support_max_updates_x", 5)
@@ -69,9 +72,9 @@ class PrefsCore @Inject constructor(
     val swipeDuration = maker.int("swipe_duration", 300)
     val swipeMultiplier = maker.int("swipe_multiplier", 100)
 
-    val showTextBoxForSkillCmd = maker.bool("auto_skill_cmd_text")
-
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
+
+    val ceBombTargetRarity = maker.int("ce_bomb_target_rarity", 1)
 
     var dirRoot = maker.string("dir_root")
 

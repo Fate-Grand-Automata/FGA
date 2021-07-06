@@ -4,7 +4,6 @@ import com.mathewsachin.libautomata.*
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
-import kotlin.time.milliseconds
 
 class ImageMatchingExtensions @Inject constructor(
     val exitManager: ExitManager,
@@ -58,7 +57,7 @@ class ImageMatchingExtensions @Inject constructor(
 
             /* Wait a bit before checking again.
                If invocationDuration is greater than the scanInterval, we don't wait. */
-            val scanInterval = 330.milliseconds
+            val scanInterval = Duration.milliseconds(330)
             val timeToWait = scanInterval - scanStart.elapsedNow()
 
             if (timeToWait.isPositive()) {
@@ -70,38 +69,39 @@ class ImageMatchingExtensions @Inject constructor(
     }
 
     override fun Region.exists(
-        Image: IPattern,
-        Timeout: Duration,
-        Similarity: Double?
+        image: IPattern,
+        timeout: Duration,
+        similarity: Double?
     ): Boolean {
         exitManager.checkExitRequested()
         return checkConditionLoop(
-            { existsNow(this, Image, Similarity) },
-            Timeout
+            { existsNow(this, image, similarity) },
+            timeout
         )
     }
 
     override fun Region.waitVanish(
-        Image: IPattern,
-        Timeout: Duration,
-        Similarity: Double?
+        image: IPattern,
+        timeout: Duration,
+        similarity: Double?
     ): Boolean {
         exitManager.checkExitRequested()
         return checkConditionLoop(
-            { !existsNow(this, Image, Similarity) },
-            Timeout
+            { !existsNow(this, image, similarity) },
+            timeout
         )
     }
 
     override fun Region.findAll(
-        Pattern: IPattern,
-        Similarity: Double?
+        pattern: IPattern,
+        similarity: Double?
     ): Sequence<Match> {
-        val similarity = Similarity ?: platformImpl.prefs.minSimilarity
-
         return screenshotManager.getScreenshot()
             .crop(this.transformToImage())
-            .findMatches(Pattern, similarity)
+            .findMatches(
+                pattern,
+                similarity ?: platformImpl.prefs.minSimilarity
+            )
             .map {
                 exitManager.checkExitRequested()
 

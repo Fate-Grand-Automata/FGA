@@ -17,26 +17,30 @@
         <activity
             android:name=".ui.skill_maker.SkillMakerActivity"
             android:label="Skill Maker"
-            android:screenOrientation="userLandscape"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="sensorLandscape" />
 
         <service
             android:name=".accessibility.ScriptRunnerService"
+            android:foregroundServiceType="mediaProjection" />
+
+        <service
+            android:name=".accessibility.TapperService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:foregroundServiceType="mediaProjection">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/script_runner_service" />
+                android:resource="@xml/tapper_service" />
         </service>
 
         <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
+            android:name=".ui.main.MainActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

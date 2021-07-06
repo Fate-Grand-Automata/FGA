@@ -12,20 +12,19 @@ class BattleState {
 
     val totalBattleTime get() = timestamp.elapsedNow()
 
-    var maxRunTime = Duration.ZERO
+    var maxTimePerRun = Duration.ZERO
         private set
-    var minRunTime = Duration.INFINITE
+    var minTimePerRun = Duration.INFINITE
         private set
-    var averageRunTime = Duration.ZERO
+    var averageTimePerRun = Duration.ZERO
         private set
 
-    var totalTurns = 0
+    private var totalTurns = 0
+    var maxTurnsPerRun = 0
         private set
-    var maxTurns = 0
+    var minTurnsPerRun = Int.MAX_VALUE
         private set
-    var minTurns = Int.MAX_VALUE
-        private set
-    var averageTurns = 0
+    var averageTurnsPerRun = 0
         private set
 
     var runs = 0
@@ -34,24 +33,24 @@ class BattleState {
 
             val runTime = runState.runTime
 
-            maxRunTime = maxOf(runTime, maxRunTime)
-            minRunTime = minOf(runTime, minRunTime)
-            averageRunTime = totalBattleTime / runs
+            maxTimePerRun = maxOf(runTime, maxTimePerRun)
+            minTimePerRun = minOf(runTime, minTimePerRun)
+            averageTimePerRun = totalBattleTime / runs
 
             totalTurns += runState.totalTurns
-            maxTurns = maxOf(maxTurns, runState.totalTurns)
-            minTurns = minOf(minTurns, runState.totalTurns)
-            averageTurns = (totalTurns / runs.toDouble()).roundToInt()
+            maxTurnsPerRun = maxOf(maxTurnsPerRun, runState.totalTurns)
+            minTurnsPerRun = minOf(minTurnsPerRun, runState.totalTurns)
+            averageTurnsPerRun = (totalTurns / runs.toDouble()).roundToInt()
 
             runState = RunState()
         }
 
     private var runState = RunState()
 
-    var hasChosenTarget
-        get() = runState.stageState.hasChosenTarget
+    var chosenTarget
+        get() = runState.stageState.chosenTarget
         set(value) {
-            runState.stageState.hasChosenTarget = value
+            runState.stageState.chosenTarget = value
         }
 
     var hasClickedAttack

@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts
 
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.*
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
@@ -78,8 +78,7 @@ class FgoGameAreaManager(
         is ScaleBy.Height -> CompareBy.Height(imageSize.Height)
     }
 
-    val isWide = prefs.gameServer == GameServerEnum.Jp
-            && platformImpl.windowRegion.isWide()
+    val isWide = prefs.isNewUI && platformImpl.windowRegion.isWide()
 
     override val gameArea
         get() =

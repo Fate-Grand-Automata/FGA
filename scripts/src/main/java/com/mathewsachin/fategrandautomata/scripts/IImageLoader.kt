@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.libautomata.IPattern
 
 interface IImageLoader {
-    fun loadRegionPattern(path: String): IPattern
+    operator fun get(img: Images): IPattern
 
     fun loadSupportPattern(kind: SupportImageKind, name: String): List<IPattern>
 

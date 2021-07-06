@@ -1,53 +1,88 @@
 package com.mathewsachin.fategrandautomata.util
 
+import android.app.Service
 import android.content.Context
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUIState
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
-import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.ui.exit.BattleExit
+import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncher
+import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncherResponse
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.ScriptAbortException
+import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.*
 import timber.log.Timber
 import timber.log.error
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.time.milliseconds
+import kotlin.time.Duration
 
 @ServiceScoped
 class ScriptManager @Inject constructor(
+    service: Service,
     val userInterface: ScriptRunnerUserInterface,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
+    val prefsCore: PrefsCore,
     val storageProvider: StorageProvider,
-    val platformImpl: IPlatformImpl,
-    val messages: IScriptMessages
+    val messages: ScriptMessages
 ) {
+    private val service = service as ScriptRunnerService
+
     var scriptState: ScriptState = ScriptState.Stopped
         private set
 
     // Show message box synchronously
-    suspend fun message(Title: String, Message: String, Error: Exception? = null): Unit = suspendCancellableCoroutine {
-        platformImpl.messageBox(Title, Message, Error) {
-            it.resume(Unit)
+    suspend fun message(Title: String, Message: String, Error: Exception? = null): Boolean = suspendCancellableCoroutine {
+        service.showMessageBox(Title, Message, Error) {
+            it.resume(true)
+        }
+    }
+
+    private suspend fun showBattleExit(
+        context: Context,
+        exception: AutoBattle.ExitException
+    ) = withContext(Dispatchers.Main) {
+        suspendCancellableCoroutine<Unit> { continuation ->
+            var dialog: AlertDialog? = null
+
+            val composeView = FakedComposeView(context) {
+                BattleExit(
+                    exception = exception,
+                    prefs = preferences,
+                    onClose = { dialog?.dismiss() },
+                    onCopy = { service.copyToClipboard(exception) }
+                )
+            }
+
+            dialog = showOverlayDialog(context) {
+                setView(composeView.view)
+
+                setOnDismissListener {
+                    composeView.close()
+                    continuation.resume(Unit)
+                }
+            }
         }
     }
 
     private fun onScriptExit(e: Exception) = GlobalScope.launch {
-        userInterface.setPlayIcon()
+        userInterface.uiState = ScriptRunnerUIState.Idle
         userInterface.isPlayButtonEnabled = false
-        userInterface.isPauseButtonVisible = false
         imageLoader.clearSupportCache()
 
         // Stop recording
@@ -64,48 +99,84 @@ class ScriptManager @Inject constructor(
 
             if (recording != null) {
                 // A little bit of delay so the exit message can be recorded
-                userInterface.postDelayed(500.milliseconds) {
+                userInterface.postDelayed(Duration.milliseconds(500)) {
                     try {
                         recording.close()
                     } catch (e: Exception) {
                         val msg = "Failed to stop recording"
-                        Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
                         Timber.error(e) { msg }
                     }
+
+                    userInterface.isRecording = false
                 }
             }
         }
 
+        val scriptExitedString by lazy { service.getString(R.string.script_exited) }
+
         when (e) {
             is SupportImageMaker.ExitException -> {
-                showSupportImageNamer(userInterface, storageProvider)
+                when (e.reason) {
+                    SupportImageMaker.ExitReason.NotFound -> {
+                        val msg = service.getString(R.string.support_img_maker_not_found)
+
+                        messages.notify(msg)
+                        message(scriptExitedString, msg)
+                    }
+                    SupportImageMaker.ExitReason.Success -> showSupportImageNamer(userInterface, storageProvider)
+                }
+            }
+            is AutoLottery.ExitException -> {
+                val msg = when (e.reason) {
+                    AutoLottery.ExitReason.PresentBoxFull -> service.getString(R.string.present_box_full)
+                    AutoLottery.ExitReason.ResetDisabled -> service.getString(R.string.lottery_reset_disabled)
+                }
+
+                messages.notify(msg)
+                message(scriptExitedString, msg)
+            }
+            is AutoGiftBox.ExitException -> {
+                val msg = service.getString(R.string.picked_exp_stacks, e.pickedStacks)
+
+                messages.notify(msg)
+                message(scriptExitedString, msg)
+            }
+            is AutoFriendGacha.ExitException -> {
+                val msg = when (val reason = e.reason) {
+                    AutoFriendGacha.ExitReason.InventoryFull -> service.getString(R.string.inventory_full)
+                    is AutoFriendGacha.ExitReason.Limit -> service.getString(R.string.times_rolled, reason.count)
+                }
+
+                messages.notify(msg)
+                message(scriptExitedString, msg)
+            }
+            is AutoBattle.ExitException -> {
+                showBattleExit(service, e)
             }
             is ScriptAbortException -> {
-                if (e.message.isNotBlank()) {
-                    message(messages.scriptExited, e.message)
-                }
+                // user aborted. do nothing
             }
-            is ScriptExitException -> {
-                // Show the message box only if there is some message
-                if (e.message.isNotBlank()) {
-                    val msg = messages.scriptExited
-                    platformImpl.notify(msg)
-
-                    message(msg, e.message)
+            is AutoCEBomb.ExitException -> {
+                val msg = when (e.reason) {
+                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> "No suitable target CE found"
                 }
+
+                messages.notify(msg)
+                message(scriptExitedString, msg)
             }
             else -> {
                 println(e.messageAndStackTrace)
 
-                val msg = messages.unexpectedError
-                platformImpl.notify(msg)
+                val msg = service.getString(R.string.unexpected_error)
+                messages.notify(msg)
 
                 message(msg, e.messageAndStackTrace, e)
             }
         }
 
         scriptState = ScriptState.Stopped
-        delay(250.milliseconds)
+        delay(Duration.milliseconds(250))
         userInterface.isPlayButtonEnabled = true
     }
 
@@ -116,6 +187,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.Lottery -> entryPoint.lottery()
             ScriptModeEnum.PresentBox -> entryPoint.giftBox()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
+            ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
         }
 
     enum class PauseAction {
@@ -126,14 +198,14 @@ class ScriptManager @Inject constructor(
         scriptState.let { state ->
             if (state is ScriptState.Started) {
                 if (state.paused && action != PauseAction.Pause) {
-                    userInterface.setPauseIcon()
+                    userInterface.uiState = ScriptRunnerUIState.Running
                     state.entryPoint.exitManager.resume()
 
                     state.paused = false
 
                     return true
                 } else if (!state.paused && action != PauseAction.Resume) {
-                    userInterface.setResumeIcon()
+                    userInterface.uiState = ScriptRunnerUIState.Paused
                     state.entryPoint.exitManager.pause()
 
                     state.paused = true
@@ -174,7 +246,6 @@ class ScriptManager @Inject constructor(
     fun stopScript() {
         scriptState.let { state ->
             if (state is ScriptState.Started) {
-                userInterface.isPauseButtonVisible = false
                 userInterface.isPlayButtonEnabled = false
                 scriptState = ScriptState.Stopping(state)
                 state.entryPoint.stop()
@@ -192,9 +263,9 @@ class ScriptManager @Inject constructor(
                 screenshotService.startRecording()
             } else null
         } catch (e: Exception) {
-            val msg = userInterface.Service.getString(R.string.cannot_start_recording)
+            val msg = service.getString(R.string.cannot_start_recording)
             Timber.error(e) { msg }
-            Toast.makeText(userInterface.Service, msg, Toast.LENGTH_SHORT).show()
+            Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
 
             null
         }
@@ -206,102 +277,101 @@ class ScriptManager @Inject constructor(
         entryPoint.scriptExitListener = { onScriptExit(it) }
 
         userInterface.apply {
-            setStopIcon()
-            setPauseIcon()
-            isPauseButtonVisible = true
+            userInterface.uiState = ScriptRunnerUIState.Running
 
             if (recording != null) {
-                showAsRecording()
+                userInterface.isRecording = true
             }
         }
 
         entryPoint.run()
     }
 
-    sealed class PickerItem(val name: String) {
-        class Other(name: String) : PickerItem(name)
-        class Battle(val battleConfig: IBattleConfig) : PickerItem(battleConfig.name)
-        class PresentBox(val maxGoldEmberSetSize: Int) : PickerItem(maxGoldEmberSetSize.toString())
-    }
-
-    val ScriptModeEnum.display
-        get() =
-            when (this) {
-                ScriptModeEnum.Battle -> R.string.p_script_mode_battle
-                ScriptModeEnum.FP -> R.string.p_script_mode_fp
-                ScriptModeEnum.Lottery -> R.string.p_script_mode_lottery
-                ScriptModeEnum.PresentBox -> R.string.p_script_mode_gift_box
-                ScriptModeEnum.SupportImageMaker -> R.string.p_script_mode_support_image_maker
-            }
-
     private fun scriptPicker(
         context: Context,
-        otherMode: ScriptModeEnum,
+        detectedMode: ScriptModeEnum,
         entryPointRunner: () -> Unit
     ) {
-        val pickerItems = preferences.battleConfigs
-            .map { PickerItem.Battle(it) }
-            .let {
-                val other = listOf(PickerItem.Other(context.getString(otherMode.display)))
+        var dialog: AlertDialog? = null
 
-                when (otherMode) {
-                    ScriptModeEnum.Battle -> it
-                    ScriptModeEnum.PresentBox ->
-                        (1..4).map { m -> PickerItem.PresentBox(m) }
-                    ScriptModeEnum.FP, ScriptModeEnum.Lottery ->
-                        other
-                    ScriptModeEnum.SupportImageMaker -> other + it
-                }
+        val composeView = FakedComposeView(context) {
+            ScriptLauncher(
+                scriptMode = detectedMode,
+                onResponse = {
+                    dialog?.dismiss()
+                    onScriptLauncherResponse(it, entryPointRunner)
+                },
+                prefs = preferences
+            )
+        }
+
+        dialog = showOverlayDialog(context) {
+            setView(composeView.view)
+
+            setOnDismissListener {
+                userInterface.isPlayButtonEnabled = true
+                composeView.close()
             }
+        }
+    }
 
-        val selectedBattleConfig = preferences.selectedBattleConfig
+    private fun handleGiftBoxResponse(resp: ScriptLauncherResponse.GiftBox) {
+        preferences.maxGoldEmberSetSize = resp.maxGoldEmberStackSize
+    }
 
-        val initialSelectedIndex =
-            when (otherMode) {
-                ScriptModeEnum.SupportImageMaker, ScriptModeEnum.Battle ->
-                    pickerItems.indexOfFirst { it is PickerItem.Battle && it.battleConfig.id == selectedBattleConfig.id }
-                ScriptModeEnum.FP, ScriptModeEnum.Lottery -> 0
-                ScriptModeEnum.PresentBox ->
-                    pickerItems.indexOfFirst { it is PickerItem.PresentBox && it.maxGoldEmberSetSize == preferences.maxGoldEmberSetSize }
-            }.coerceIn(pickerItems.indices)
+    private fun onScriptLauncherResponse(resp: ScriptLauncherResponse, entryPointRunner: () -> Unit) {
+        userInterface.isPlayButtonEnabled = true
 
-        var selected = pickerItems[initialSelectedIndex]
+        preferences.scriptMode = when (resp) {
+            ScriptLauncherResponse.Cancel -> return
+            is ScriptLauncherResponse.FP -> {
+                preferences.shouldLimitFP = resp.limit != null
+                resp.limit?.let { preferences.limitFP = it }
 
-        val dialogTitle = if (otherMode == ScriptModeEnum.PresentBox)
-            R.string.p_max_gold_ember_set_size
-        else R.string.select_script
+                ScriptModeEnum.FP
+            }
+            is ScriptLauncherResponse.Lottery -> {
+                preferences.preventLotteryBoxReset = resp.preventBoxReset
+                val giftBoxResp = resp.giftBox
+                preferences.receiveEmbersWhenGiftBoxFull = giftBoxResp != null
 
-        showOverlayDialog(context) {
-            setTitle(dialogTitle)
-                .apply {
-                    setSingleChoiceItems(
-                        pickerItems.map { it.name }.toTypedArray(),
-                        initialSelectedIndex
-                    ) { _, choice -> selected = pickerItems[choice] }
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    preferences.scriptMode = when (val s = selected) {
-                        is PickerItem.Other -> otherMode
-                        is PickerItem.PresentBox -> {
-                            preferences.maxGoldEmberSetSize = s.maxGoldEmberSetSize
+                giftBoxResp?.let { handleGiftBoxResponse(it) }
 
-                            ScriptModeEnum.PresentBox
-                        }
-                        is PickerItem.Battle -> {
-                            preferences.selectedBattleConfig = s.battleConfig
+                ScriptModeEnum.Lottery
+            }
+            is ScriptLauncherResponse.GiftBox -> {
+                handleGiftBoxResponse(resp)
 
-                            ScriptModeEnum.Battle
-                        }
-                    }
+                ScriptModeEnum.PresentBox
+            }
+            ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
+            is ScriptLauncherResponse.CEBomb -> {
+                preferences.ceBombTargetRarity = resp.targetRarity
 
-                    userInterface.postDelayed(500.milliseconds) {
-                        entryPointRunner()
-                    }
-                }
-                .setOnDismissListener {
-                    userInterface.isPlayButtonEnabled = true
-                }
+                ScriptModeEnum.CEBomb
+            }
+            is ScriptLauncherResponse.Battle -> {
+                preferences.selectedBattleConfig = resp.config
+
+                preferences.refill.updateResources(resp.refillResources)
+                preferences.refill.repetitions = resp.refillCount
+
+                preferences.refill.shouldLimitRuns = resp.limitRuns != null
+                resp.limitRuns?.let { preferences.refill.limitRuns = it }
+
+                preferences.refill.shouldLimitMats = resp.limitMats != null
+                resp.limitMats?.let { preferences.refill.limitMats = it }
+
+                preferences.waitAPRegen = resp.waitApRegen
+
+                ScriptModeEnum.Battle
+            }
+        }
+
+        if (resp !is ScriptLauncherResponse.Cancel) {
+            userInterface.postDelayed(Duration.milliseconds(500)) {
+                entryPointRunner()
+            }
         }
     }
 }

@@ -6,6 +6,6 @@ sealed class EnemyTarget(val autoSkillCode: Char) {
     object C : EnemyTarget('3')
 
     companion object {
-        val list = listOf(A, B, C)
+        val list by lazy { listOf(A, B, C) }
     }
 }

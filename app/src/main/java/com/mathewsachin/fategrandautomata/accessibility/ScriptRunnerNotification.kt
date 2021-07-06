@@ -11,13 +11,12 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.ui.MainActivity
+import com.mathewsachin.fategrandautomata.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
 import kotlin.time.Duration
-import kotlin.time.milliseconds
 
 @ServiceScoped
 class ScriptRunnerNotification @Inject constructor(
@@ -72,11 +71,14 @@ class ScriptRunnerNotification @Inject constructor(
         }
     }
 
-    fun hide() = service.stopForeground(true)
-
     private fun startBuildNotification(): NotificationCompat.Builder {
         val activityIntent = PendingIntent
-            .getActivity(service, 0, Intent(service, MainActivity::class.java), 0)
+            .getActivity(
+                service,
+                0,
+                Intent(service, MainActivity::class.java),
+                PendingIntent.FLAG_IMMUTABLE
+            )
 
         val stopIntent = PendingIntent.getBroadcast(
             service,
@@ -84,7 +86,7 @@ class ScriptRunnerNotification @Inject constructor(
             Intent(service, NotificationReceiver::class.java).apply {
                 putExtra(keyAction, actionStop)
             },
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val stopAction = NotificationCompat.Action.Builder(
@@ -96,7 +98,7 @@ class ScriptRunnerNotification @Inject constructor(
         return NotificationCompat.Builder(service, Channels.service)
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
-            .setContentText(service.getString(R.string.notification_text))
+            .setContentText(service.getString(R.string.overlay_notification_text))
             .setSmallIcon(R.mipmap.notification_icon)
             .setColor(service.getColor(R.color.colorBusterWeak))
             .setPriority(NotificationManager.IMPORTANCE_LOW)
@@ -122,20 +124,20 @@ class ScriptRunnerNotification @Inject constructor(
         NotificationManagerCompat.from(service)
             .notify(Ids.messageNotification, notification)
 
-        vibrate(100.milliseconds)
+        vibrate(Duration.milliseconds(100))
     }
 
     private fun vibrate(Duration: Duration) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(
                 VibrationEffect.createOneShot(
-                    Duration.toLongMilliseconds(),
+                    Duration.inWholeMilliseconds,
                     VibrationEffect.DEFAULT_AMPLITUDE
                 )
             )
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(Duration.toLongMilliseconds())
+            vibrator.vibrate(Duration.inWholeMilliseconds)
         }
     }
 
@@ -160,7 +162,7 @@ class ScriptRunnerNotification @Inject constructor(
 
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.getStringExtra(keyAction)) {
-                actionStop -> ScriptRunnerService.stopService()
+                actionStop -> ScriptRunnerService.stopService(context)
             }
         }
     }

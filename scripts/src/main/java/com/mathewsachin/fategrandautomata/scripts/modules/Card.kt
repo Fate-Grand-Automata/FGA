@@ -1,7 +1,12 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.enums.*
+import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import timber.log.Timber
 import timber.log.debug
@@ -26,11 +31,11 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
         val region = game.affinityRegion(this)
 
-        if (images.weak in region) {
+        if (images[Images.Weak] in region) {
             return CardAffinityEnum.Weak
         }
 
-        if (images.resist in region) {
+        if (images[Images.Resist] in region) {
             return CardAffinityEnum.Resist
         }
 
@@ -44,21 +49,21 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             Height = 188
         )
 
-        return images.stun in stunRegion
+        return images[Images.Stun] in stunRegion
     }
 
     private fun CommandCard.Face.type(): CardTypeEnum {
         val region = game.typeRegion(this)
 
-        if (images.buster in region) {
+        if (images[Images.Buster] in region) {
             return CardTypeEnum.Buster
         }
 
-        if (images.art in region) {
+        if (images[Images.Arts] in region) {
             return CardTypeEnum.Arts
         }
 
-        if (images.quick in region) {
+        if (images[Images.Quick] in region) {
             return CardTypeEnum.Quick
         }
 
@@ -97,10 +102,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             .map { it.card }
 
         if (failedToDetermine.isNotEmpty()) {
-            val msg = messages.failedToDetermineCardType(failedToDetermine)
-            toast(msg)
-
-            Timber.debug { msg }
+            messages.notify(
+                ScriptNotify.FailedToDetermineCards(failedToDetermine)
+            )
         }
 
         return cards
@@ -130,17 +134,27 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             commandCards = getCommandCards()
 
             val supportGroup = CommandCard.Face.list
-                .filter { images.support in game.supportCheckRegion(it) }
+                .filter { images[Images.Support] in game.supportCheckRegion(it) }
             commandCardGroups = groupByFaceCard(supportGroup)
             commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
+
+            battle.servantTracker.logFaceCardForServants()
         }
     }
 
-    private val spamNps: Set<CommandCard.NP>
-        get() =
-            if (autoSkill.canSpam(prefs.selectedBattleConfig.npSpam)) {
-                CommandCard.NP.list.toSet()
-            } else emptySet()
+    private val spamNps: Set<CommandCard.NP> get() =
+        (ServantSlot.list.zip(CommandCard.NP.list))
+            .mapNotNull { (servantSlot, np) ->
+                val teamSlot = battle.servantTracker.deployed[servantSlot] ?: ServantTracker.TeamSlot.A
+                val npSpamConfig = battle.spamConfig
+                    .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
+                    .np
+
+                if (autoSkill.canSpam(npSpamConfig.spam) && (battle.state.stage + 1) in npSpamConfig.waves)
+                    np
+                else null
+            }
+            .toSet()
 
     private fun CommandCard.NP.pick() {
         game.clickLocation(this).click()
@@ -273,8 +287,6 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
         if (rearrangeCardsThisTurn
-            // Skip if NP spamming because we don't know how many NPs might've been used
-            && prefs.selectedBattleConfig.npSpam == SpamEnum.None
             // If there are cards before NP, at max there's only 1 card after NP
             && atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
@@ -383,7 +395,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         val npGroups = mutableMapOf<CommandCard.NP, List<CommandCard.Face>>()
 
         val supportNp = CommandCard.NP.list.firstOrNull {
-            images.support in game.supportCheckRegion(it)
+            images[Images.Support] in game.supportCheckRegion(it)
         }
 
         if (supportNp != null) {

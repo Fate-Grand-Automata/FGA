@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
-import android.app.Service
 import android.graphics.Path
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -22,12 +21,9 @@ import kotlin.math.*
  * Class to perform gestures using Android's [AccessibilityService].
  */
 class AccessibilityGestures @Inject constructor(
-    service: Service,
     val gesturePrefs: IGesturesPreferences,
     durationExtensions: IDurationExtensions
 ) : IGestureService, IDurationExtensions by durationExtensions {
-    val service = service as AccessibilityService
-
     fun Path.moveTo(location: Location) = apply {
         moveTo(location.X.toFloat(), location.Y.toFloat())
     }
@@ -48,7 +44,7 @@ class AccessibilityGestures @Inject constructor(
         val swipeStroke = GestureDescription.StrokeDescription(
             swipePath,
             0,
-            gesturePrefs.swipeDuration.toLongMilliseconds()
+            gesturePrefs.swipeDuration.inWholeMilliseconds
         )
         performGesture(swipeStroke)
 
@@ -72,7 +68,7 @@ class AccessibilityGestures @Inject constructor(
         val swipeDelay = 1L
         val swipeDuration = 1L
 
-        val timesToSwipe = gesturePrefs.swipeDuration.toLongMilliseconds() / (swipeDelay + swipeDuration)
+        val timesToSwipe = gesturePrefs.swipeDuration.inWholeMilliseconds / (swipeDelay + swipeDuration)
         val thresholdDistance = distanceLeft / timesToSwipe
 
         var from = start
@@ -136,8 +132,8 @@ class AccessibilityGestures @Inject constructor(
 
         val stroke = GestureDescription.StrokeDescription(
             swipePath,
-            gesturePrefs.clickDelay.toLongMilliseconds(),
-            gesturePrefs.clickDuration.toLongMilliseconds()
+            gesturePrefs.clickDelay.inWholeMilliseconds,
+            gesturePrefs.clickDuration.inWholeMilliseconds
         )
 
         Timber.debug { "click $Location x$Times" }
@@ -149,22 +145,22 @@ class AccessibilityGestures @Inject constructor(
         gesturePrefs.clickWaitTime.wait()
     }
 
-    private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Unit = suspendCancellableCoroutine {
+    private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Boolean = suspendCancellableCoroutine {
         val gestureDesc = GestureDescription.Builder()
             .addStroke(StrokeDesc)
             .build()
 
         val callback = object : AccessibilityService.GestureResultCallback() {
             override fun onCompleted(gestureDescription: GestureDescription?) {
-                it.resume(Unit)
+                it.resume(true)
             }
 
             override fun onCancelled(gestureDescription: GestureDescription?) {
-                it.resume(Unit)
+                it.resume(false)
             }
         }
 
-        service.dispatchGesture(gestureDesc, callback, null)
+        TapperService.instance?.dispatchGesture(gestureDesc, callback, null)
     }
 
     override fun close() {}

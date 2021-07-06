@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
@@ -12,23 +14,19 @@ import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 import kotlin.math.absoluteValue
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 /**
  * Checks if Support Selection menu is up
  */
 fun IFgoAutomataApi.isInSupport(): Boolean {
-    return game.supportScreenRegion.exists(images.supportScreen, Similarity = 0.85)
+    return game.supportScreenRegion.exists(images[Images.SupportScreen], similarity = 0.85)
 }
 
-fun IFgoAutomataApi.stopIfInventoryFull() {
-    // Inventory full. Stop script. We only have images for JP and NA
-    if (prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)) {
-        if (images.inventoryFull in game.inventoryFullRegion) {
-            throw ScriptExitException(messages.inventoryFull)
-        }
-    }
-}
+fun IFgoAutomataApi.isInventoryFull() =
+    // We only have images for JP and NA
+    prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)
+            && images[Images.InventoryFull] in game.inventoryFullRegion
 
 /**
  * Script for starting quests, selecting the support and doing battles.
@@ -38,6 +36,28 @@ open class AutoBattle @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     val storageProvider: IStorageProvider
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    sealed class ExitReason {
+        object Abort: ExitReason()
+        class Unexpected(val e: Exception): ExitReason()
+        object CEGet: ExitReason()
+        object CEDropped: ExitReason()
+        object FirstClearRewards: ExitReason()
+        class LimitMaterials(val count: Int): ExitReason()
+        object WithdrawDisabled: ExitReason()
+        object APRanOut: ExitReason()
+        object InventoryFull: ExitReason()
+        class LimitRuns(val count: Int): ExitReason()
+        object SupportSelectionManual: ExitReason()
+        object SupportSelectionFriendNotSet: ExitReason()
+        object SupportSelectionPreferredNotSet: ExitReason()
+        class SkillCommandParseError(val e: Exception): ExitReason()
+        class CardPriorityParseError(val msg: String): ExitReason()
+    }
+
+    internal class BattleExitException(val reason: ExitReason): Exception()
+
+    class ExitException(val reason: ExitReason, val state: ExitState): Exception()
+
     private val support = Support(fgAutomataApi)
     private val card = Card(fgAutomataApi)
     private val battle = Battle(fgAutomataApi)
@@ -55,28 +75,22 @@ open class AutoBattle @Inject constructor(
 
         try {
             loop()
-        } catch (e: ScriptExitException) {
-            throw ScriptExitException(makeExitMessage(e.message))
+        } catch (e: BattleExitException) {
+            throw ExitException(e.reason, makeExitState())
         } catch (e: ScriptAbortException) {
-            val msg = makeExitMessage(
-                if (e.message.isBlank())
-                    messages.stoppedByUser
-                else e.message
-            )
-
-            throw ScriptAbortException(msg)
+            throw ExitException(ExitReason.Abort, makeExitState())
         } catch (e: Exception) {
-            throw Exception(makeExitMessage("${messages.unexpectedError}: ${e.message}"), e)
+            val reason = ExitReason.Unexpected(e)
+
+            throw ExitException(reason, makeExitState())
         } finally {
             val refill = prefs.refill
 
             // Auto-decrement apples
-            if (refill.autoDecrement) {
-                refill.repetitions -= stonesUsed
-            }
+            refill.repetitions -= stonesUsed
 
             // Auto-decrement runs
-            if (refill.shouldLimitRuns && refill.autoDecrementRuns) {
+            if (refill.shouldLimitRuns) {
                 refill.limitRuns -= battle.state.runs
 
                 // Turn off run limit when done
@@ -87,7 +101,7 @@ open class AutoBattle @Inject constructor(
             }
 
             // Auto-decrement materials
-            if (refill.shouldLimitMats && refill.autoDecrementMats) {
+            if (refill.shouldLimitMats) {
                 refill.limitMats -= matsGot.values.sum()
 
                 // Turn off limit by materials when done
@@ -99,42 +113,51 @@ open class AutoBattle @Inject constructor(
         }
     }
 
-    private fun makeExitMessage(reason: String) = buildString {
-        appendLine(reason)
-        appendLine()
+    private fun useBoostItem() {
+        val boostItem = BoostItem.of(prefs.boostItemSelectionMode)
+        if (boostItem is BoostItem.Enabled) {
+            game.locate(boostItem).click()
 
-        makeRefillAndRunsMessage().let { msg ->
-            if (msg.isNotBlank()) {
-                appendLine(msg)
+            // in case you run out of items
+            if (boostItem !is BoostItem.Enabled.Skip) {
+                game.locate(BoostItem.Enabled.Skip).click()
             }
         }
+    }
 
-        if (!prefs.stopOnCEDrop && ceDropCount > 0) {
-            appendLine("$ceDropCount ${messages.ceDropped}")
-            appendLine()
-        }
+    class ExitState(
+        val timesRan: Int,
+        val runLimit: Int?,
+        val timesRefilled: Int,
+        val refillLimit: Int,
+        val ceDropCount: Int,
+        val materials: Map<MaterialEnum, Int>,
+        val matLimit: Int?,
+        val withdrawCount: Int,
+        val totalTime: Duration,
+        val averageTimePerRun: Duration,
+        val minTurnsPerRun: Int,
+        val maxTurnsPerRun: Int,
+        val averageTurnsPerRun: Int
+    )
 
-        if (prefs.selectedBattleConfig.materials.isNotEmpty()) {
-            appendLine(messages.materials(matsGot))
-            appendLine()
-        }
-
-        appendLine(messages.time(battle.state.totalBattleTime))
-
-        if (battle.state.runs > 1) {
-            appendLine(messages.avgTimePerRun(battle.state.averageRunTime))
-
-            with(battle.state) {
-                appendLine(messages.turns(minTurns, averageTurns, maxTurns))
-            }
-        } else if (battle.state.runs == 1) {
-            appendLine(messages.turns(battle.state.totalTurns))
-        }
-
-        if (withdrawCount > 0) {
-            appendLine(messages.timesWithdrew(withdrawCount))
-        }
-    }.trimEnd()
+    private fun makeExitState(): ExitState {
+        return ExitState(
+            timesRan = battle.state.runs,
+            runLimit = if (prefs.refill.shouldLimitRuns) prefs.refill.limitRuns else null,
+            timesRefilled = stonesUsed,
+            refillLimit = prefs.refill.repetitions,
+            ceDropCount = ceDropCount,
+            materials = matsGot,
+            matLimit = if (prefs.refill.shouldLimitMats) prefs.refill.limitMats else null,
+            withdrawCount = withdrawCount,
+            totalTime = battle.state.totalBattleTime,
+            averageTimePerRun = battle.state.averageTimePerRun,
+            minTurnsPerRun = battle.state.minTurnsPerRun,
+            maxTurnsPerRun = battle.state.maxTurnsPerRun,
+            averageTurnsPerRun = battle.state.averageTurnsPerRun
+        )
+    }
 
     private fun loop(): Nothing {
         // a map of validators and associated actions
@@ -152,8 +175,8 @@ open class AutoBattle @Inject constructor(
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
-            { isCeRewardDetails() } to { ceRewardDetails() }
-            //{ isGudaFinalRewardsScreen() } to { gudaFinalReward() }
+            { isCeRewardDetails() } to { ceRewardDetails() },
+            { isDeathAnimation() } to { game.skipDeathAnimationClick.click() }
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -168,7 +191,7 @@ open class AutoBattle @Inject constructor(
 
             actor?.invoke()
 
-            1.seconds.wait()
+            Duration.seconds(1).wait()
         }
     }
 
@@ -194,7 +217,7 @@ open class AutoBattle @Inject constructor(
     /**
      *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
      */
-    private fun isInMenu() = images.menu in game.menuScreenRegion
+    private fun isInMenu() = images[Images.Menu] in game.menuScreenRegion
 
     /**
      * Resets the battle state, clicks on the quest and refills the AP if needed.
@@ -226,17 +249,17 @@ open class AutoBattle @Inject constructor(
      */
     private fun isInResult(): Boolean {
         val cases = sequenceOf(
-            images.result to game.resultScreenRegion,
-            images.bond to game.resultBondRegion,
-            images.masterLvlUp to game.resultMasterLvlUpRegion,
-            images.masterExp to game.resultMasterExpRegion
+            images[Images.Result] to game.resultScreenRegion,
+            images[Images.Bond] to game.resultBondRegion,
+            images[Images.MasterLevelUp] to game.resultMasterLvlUpRegion,
+            images[Images.MasterExp] to game.resultMasterExpRegion
         )
 
         return cases.any { (image, region) -> image in region }
     }
 
     private fun isBond10CEReward() =
-        game.resultCeRewardRegion.exists(images.bond10Reward, Similarity = 0.75)
+        game.resultCeRewardRegion.exists(images[Images.Bond10Reward], similarity = 0.75)
 
     /**
      * It seems like we need to click on CE (center of screen) to accept them
@@ -245,12 +268,19 @@ open class AutoBattle @Inject constructor(
         game.scriptArea.center.click()
 
     private fun isCeRewardDetails() =
-        images.ceDetails in game.resultCeRewardDetailsRegion
+        images[Images.CEDetails] in game.resultCeRewardDetailsRegion
+
+    private fun isDeathAnimation() =
+        game.servantDeathCheckRegions
+            .count { images[Images.ServantExist] in it } in 1..2
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
-            throw ScriptExitException(messages.ceGet)
-        } else notify(messages.ceGet)
+            // Count the current run
+            battle.state.nextRun()
+
+            throw BattleExitException(ExitReason.CEGet)
+        } else messages.notify(ScriptNotify.CEGet)
 
         game.resultCeRewardCloseClick.click()
     }
@@ -262,7 +292,7 @@ open class AutoBattle @Inject constructor(
         game.resultClick.click(15)
 
     private fun isInDropsScreen() =
-        images.matRewards in game.resultMatRewardsRegion
+        images[Images.MatRewards] in game.resultMatRewardsRegion
 
     private fun dropScreen() {
         checkCEDrops()
@@ -280,25 +310,27 @@ open class AutoBattle @Inject constructor(
         val starsRegion = Region(40, -40, 80, 40)
 
         val ceDropped = game.scriptArea
-            .findAll(images.dropCE)
+            .findAll(images[Images.DropCE])
             .map { (region, _) ->
                 starsRegion + region.location
             }
-            .count { images.dropCEStars in it }
+            .count { images[Images.DropCEStars] in it }
 
         if (ceDropped > 0) {
             ceDropCount += ceDropped
 
-            val msg = messages.ceDropped
             if (prefs.stopOnCEDrop) {
-                throw ScriptExitException(msg)
-            } else notify(msg)
+                // Count the current run
+                battle.state.nextRun()
+
+                throw BattleExitException(ExitReason.CEDropped)
+            } else messages.notify(ScriptNotify.CEDropped)
         }
     }
 
     private fun trackMaterials() {
         for (material in prefs.selectedBattleConfig.materials) {
-            val pattern = images.material(material)
+            val pattern = images.loadMaterial(material)
 
             // TODO: Make the search region smaller
             val count = game.scriptArea
@@ -315,7 +347,10 @@ open class AutoBattle @Inject constructor(
                 .sum()
 
             if (totalMats >= prefs.refill.limitMats) {
-                throw ScriptExitException(messages.farmedMaterials(totalMats))
+                // Count the current run
+                battle.state.nextRun()
+
+                throw BattleExitException(ExitReason.LimitMaterials(totalMats))
             }
         }
     }
@@ -327,7 +362,7 @@ open class AutoBattle @Inject constructor(
             drops.add(takeColorScreenshot())
 
             // check if we need to scroll to see more drops
-            if (i == 0 && images.dropScrollbar in game.resultDropScrollbarRegion) {
+            if (i == 0 && images[Images.DropScrollbar] in game.resultDropScrollbarRegion) {
                 // scroll to end
                 game.resultDropScrollEndClick.click()
             } else break
@@ -336,7 +371,7 @@ open class AutoBattle @Inject constructor(
         storageProvider.dropScreenshot(drops)
     }
 
-    private fun isRepeatScreen() = images.confirm in game.continueRegion
+    private fun isRepeatScreen() = images[Images.Repeat] in game.continueRegion
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
@@ -345,7 +380,7 @@ open class AutoBattle @Inject constructor(
         // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
 
-        val region = game.continueRegion.find(images.confirm)?.Region
+        val region = game.continueRegion.find(images[Images.Repeat])?.Region
             ?: return
 
         // If Boost items are usable, Continue button shifts to the right
@@ -367,7 +402,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun isFriendRequestScreen() =
-        images.supportExtra in game.resultFriendRequestRegion
+        images[Images.SupportExtra] in game.resultFriendRequestRegion
 
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
@@ -378,12 +413,21 @@ open class AutoBattle @Inject constructor(
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
     private fun isInQuestRewardScreen() =
-        images.questReward in game.resultQuestRewardRegion
+        images[Images.QuestReward] in game.resultQuestRewardRegion
 
     /**
      * Handles the quest rewards screen.
      */
-    private fun questReward() = game.resultClick.click()
+    private fun questReward() {
+        if (prefs.stopOnFirstClearRewards) {
+            // Count the current run
+            battle.state.nextRun()
+
+            throw BattleExitException(ExitReason.FirstClearRewards)
+        }
+
+        game.resultClick.click()
+    }
 
     // Selections Support option
     private fun support() {
@@ -392,13 +436,13 @@ open class AutoBattle @Inject constructor(
             support.selectSupport(prefs.selectedBattleConfig.support.selectionMode, isContinuing)
 
         if (hasSelectedSupport && !isContinuing) {
-            4.seconds.wait()
+            Duration.seconds(4).wait()
             startQuest()
 
             // Wait timer till battle starts.
             // Uses less battery to wait than to search for images for a few seconds.
             // Adjust according to device.
-            5.seconds.wait()
+            Duration.seconds(5).wait()
         }
     }
 
@@ -406,7 +450,7 @@ open class AutoBattle @Inject constructor(
      * Checks if the window for withdrawing from the battle exists.
      */
     private fun needsToWithdraw() =
-        images.withdraw in game.withdrawRegion
+        images[Images.Withdraw] in game.withdrawRegion
 
     /**
      * Handles withdrawing from battle. Depending on [IPreferences.withdrawEnabled], the script either
@@ -414,21 +458,21 @@ open class AutoBattle @Inject constructor(
      */
     private fun withdraw() {
         if (!prefs.withdrawEnabled) {
-            throw ScriptExitException(messages.withdrawDisabled)
+            throw BattleExitException(ExitReason.WithdrawDisabled)
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
-        val withdrawRegion = game.withdrawRegion.find(images.withdraw)
+        val withdrawRegion = game.withdrawRegion.find(images[Images.Withdraw])
             ?: return
 
         withdrawRegion.Region.click()
 
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
 
         // Click the "Accept" button after choosing to withdraw
         game.withdrawAcceptClick.click()
 
-        1.seconds.wait()
+        Duration.seconds(1).wait()
 
         // Click the "Close" button after accepting the withdrawal
         game.withdrawCloseClick.click()
@@ -437,36 +481,14 @@ open class AutoBattle @Inject constructor(
     }
 
     /**
-     * Special result screen check for GudaGuda Final Honnouji.
-     *
-     * The check only runs if `GudaFinal` is activated in the preferences and if the GameServer is
-     * set to Japanese.
-     *
-     * When this event comes to other regions, the GameServer condition needs to be extended and image should be added.
-     */
-    private fun isGudaFinalRewardsScreen(): Boolean {
-        return false
-//        if (!prefs.GudaFinal || prefs.GameServer != GameServerEnum.Jp)
-//            return false
-//
-//        return game.GudaFinalRewardsRegion.exists(images.GudaFinalRewards)
-    }
-
-    /**
-     * Clicks on the Close button for the special GudaGuda Final Honnouji reward window if it was
-     * detected.
-     */
-    private fun gudaFinalReward() = game.gudaFinalRewardsRegion.click()
-
-    /**
      * Checks if the SKIP button exists on the screen.
      */
     private fun needsToStorySkip() =
-        prefs.storySkip && game.menuStorySkipRegion.exists(images.storySkip, Similarity = 0.7)
+        prefs.storySkip && game.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
 
     private fun skipStory() {
         game.menuStorySkipClick.click()
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
         game.menuStorySkipYesClick.click()
     }
 
@@ -475,28 +497,27 @@ open class AutoBattle @Inject constructor(
      * Otherwise if [IPreferences.waitAPRegen] is true, loops and wait for AP regeneration
      */
     private fun refillStamina() {
-        val refillPrefs = prefs.refill
+        val refill = prefs.refill
 
-        if (refillPrefs.enabled
-            && stonesUsed < refillPrefs.repetitions
-            && refillPrefs.resources.isNotEmpty()
+        if (refill.resources.isNotEmpty()
+            && stonesUsed < refill.repetitions
         ) {
-            refillPrefs.resources
+            refill.resources
                 .map { game.locate(it) }
                 .forEach { it.click() }
 
-            1.seconds.wait()
+            Duration.seconds(1).wait()
             game.staminaOkClick.click()
             ++stonesUsed
 
-            3.seconds.wait()
+            Duration.seconds(3).wait()
         } else if (prefs.waitAPRegen) {
             game.staminaCloseClick.click()
-            for (i in prefs.waitAPRegenMinutes downTo 1) {
-                toast(messages.waitAPToast(i))
-                60.seconds.wait()
-            }
-        } else throw ScriptExitException(messages.apRanOut)
+
+            messages.notify(ScriptNotify.WaitForAPRegen())
+
+            Duration.seconds(60).wait()
+        } else throw BattleExitException(ExitReason.APRanOut)
     }
 
     /**
@@ -514,7 +535,7 @@ open class AutoBattle @Inject constructor(
 
         if (!partySelected && party in game.partySelectionArray.indices) {
             val currentParty = game.selectedPartyRegion
-                .find(images.selectedParty)
+                .find(images[Images.SelectedParty])
                 ?.let { match ->
                     // Find party with min distance from center of matched region
                     game.partySelectionArray.withIndex().minByOrNull {
@@ -531,14 +552,14 @@ open class AutoBattle @Inject constructor(
                 val tempParty = if (party == 0) 1 else 0
                 game.partySelectionArray[tempParty].click()
 
-                1.seconds.wait()
+                Duration.seconds(1).wait()
             }
 
             // Switch to the configured party
             if (currentParty != party) {
                 game.partySelectionArray[party].click()
 
-                1.2.seconds.wait()
+                Duration.seconds(1.2).wait()
             }
 
             /* If we select the party once, the same party will be used by the game for next fight.
@@ -558,59 +579,31 @@ open class AutoBattle @Inject constructor(
 
         game.menuStartQuestClick.click()
 
-        2.seconds.wait()
+        Duration.seconds(2).wait()
 
         useBoostItem()
     }
 
-    private fun useBoostItem() {
-        val boostItem = BoostItem.of(prefs.boostItemSelectionMode)
-        if (boostItem is BoostItem.Enabled) {
-            game.locate(boostItem).click()
-
-            // in case you run out of items
-            if (boostItem !is BoostItem.Enabled.Skip) {
-                game.locate(BoostItem.Enabled.Skip).click()
-            }
-        }
-    }
-
-    private fun makeRefillAndRunsMessage() = buildString {
-        val refill = prefs.refill
-
-        val runs = battle.state.runs
-
-        if (refill.shouldLimitRuns && refill.limitRuns > 0) {
-            appendLine(messages.timesRanOutOf(runs, refill.limitRuns))
-        } else if (runs > 0) {
-            appendLine(messages.timesRan(runs))
-        }
-
-        if (refill.enabled) {
-            val refillRepetitions = refill.repetitions
-            if (refillRepetitions > 0) {
-                appendLine(messages.refillsUsedOutOf(stonesUsed, refillRepetitions))
-            }
-        }
-    }.trimEnd()
-
     /**
      * Will show a toast informing the user of number of runs and how many apples have been used so far.
      */
-    private fun showRefillsAndRunsMessage() {
-        val message = makeRefillAndRunsMessage()
-
-        if (message.isNotBlank()) {
-            toast(message)
-        }
-    }
+    private fun showRefillsAndRunsMessage() =
+        messages.notify(
+            ScriptNotify.BetweenRuns(
+                refills = stonesUsed,
+                runs = battle.state.runs
+            )
+        )
 
     private fun afterSelectingQuest() {
-        1.5.seconds.wait()
-        stopIfInventoryFull()
+        Duration.seconds(1.5).wait()
+
+        if (isInventoryFull()) {
+            throw BattleExitException(ExitReason.InventoryFull)
+        }
 
         // Auto refill
-        while (images.stamina in game.staminaScreenRegion) {
+        while (images[Images.Stamina] in game.staminaScreenRegion) {
             refillStamina()
         }
     }
