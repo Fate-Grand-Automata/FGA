@@ -1,20 +1,23 @@
 package com.mathewsachin.fategrandautomata.accessibility
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.FGATheme
 
@@ -40,60 +43,74 @@ fun ScriptRunnerUI(
     isRecording: Boolean
 ) {
     FGATheme(
+        darkTheme = true,
         background = Color.Transparent
     ) {
         Row(
             modifier = Modifier
                 .padding(5.dp)
         ) {
-            Button(
+            val dragModifier = Modifier
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consumeAllChanges()
+                        onDrag(dragAmount.x, dragAmount.y)
+                    }
+                }
+
+            Surface(
+                color = MaterialTheme.colors.surface,
+                contentColor = if (isRecording) MaterialTheme.colors.error else Color.White,
+                elevation = 5.dp,
+                shape = CircleShape,
                 onClick = {
                     val action = when (state) {
                         ScriptRunnerUIState.Idle -> ScriptRunnerUIAction.Start
-                        ScriptRunnerUIState.Paused -> ScriptRunnerUIAction.Stop
+                        ScriptRunnerUIState.Paused -> ScriptRunnerUIAction.Resume
                         ScriptRunnerUIState.Running -> ScriptRunnerUIAction.Pause
                     }
 
                     updateState(action)
                 },
                 enabled = enabled,
-                modifier = Modifier
-                    .pointerInput(Unit) {
-                        detectDragGestures { change, dragAmount ->
-                            change.consumeAllChanges()
-                            onDrag(dragAmount.x, dragAmount.y)
-                        }
-                    }
+                modifier = dragModifier
             ) {
-                val tint = if (isRecording)
-                    MaterialTheme.colors.error
-                else LocalContentColor.current
-
-                CompositionLocalProvider(LocalContentColor provides tint) {
-                    Icon(
-                        painter = when (state) {
-                            ScriptRunnerUIState.Idle -> painterResource(R.drawable.ic_play)
-                            ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_stop)
-                            ScriptRunnerUIState.Running -> painterResource(R.drawable.ic_pause)
-                        },
-                        contentDescription = when (state) {
-                            ScriptRunnerUIState.Idle -> "start"
-                            ScriptRunnerUIState.Paused -> "stop"
-                            ScriptRunnerUIState.Running -> "pause"
-                        }
-                    )
-                }
+                Icon(
+                    painter = when (state) {
+                        ScriptRunnerUIState.Idle, ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
+                        ScriptRunnerUIState.Running -> painterResource(R.drawable.ic_pause)
+                    },
+                    contentDescription = when (state) {
+                        ScriptRunnerUIState.Idle -> "start"
+                        ScriptRunnerUIState.Paused -> "resume"
+                        ScriptRunnerUIState.Running -> "pause"
+                    },
+                    modifier = Modifier
+                        .padding(18.dp, 10.dp)
+                )
             }
 
-            if (state is ScriptRunnerUIState.Paused) {
-                Button(
-                    onClick = { updateState(ScriptRunnerUIAction.Resume) },
-                    modifier = Modifier
-                        .padding(start = 5.dp)
+            AnimatedVisibility (
+                state is ScriptRunnerUIState.Paused,
+                enter = fadeIn() + slideInHorizontally(),
+                exit = fadeOut() + slideOutHorizontally(),
+                modifier = Modifier
+                    .offset(x = (-18).dp)
+                    .zIndex(-1f)
+            ) {
+                Surface(
+                    color = Color(0xFFCF6679),
+                    contentColor = Color.White,
+                    shape = RoundedCornerShape(0, 50, 50, 0),
+                    onClick = { updateState(ScriptRunnerUIAction.Stop) },
+                    modifier = dragModifier
                 ) {
                     Icon(
-                        painterResource(R.drawable.ic_play),
-                        contentDescription = "resume"
+                        painterResource(R.drawable.ic_stop),
+                        contentDescription = "stop",
+                        modifier = Modifier
+                            .padding(18.dp, 10.dp)
+                            .padding(start = 8.dp)
                     )
                 }
             }
