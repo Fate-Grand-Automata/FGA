@@ -115,7 +115,7 @@ class Game @Inject constructor(
     val staminaOkClick = Location(370, 1120).xFromCenter()
     val staminaCloseClick = Location(0, 1240).xFromCenter()
 
-    val withdrawRegion = Region(-880, 540, 1800, 190).xFromCenter()
+    val withdrawRegion = Region(-880, 540, 1800, 333).xFromCenter()
     val withdrawAcceptClick = Location(485, 720).xFromCenter()
     val withdrawCloseClick = Location(-10, 1140).xFromCenter()
 
