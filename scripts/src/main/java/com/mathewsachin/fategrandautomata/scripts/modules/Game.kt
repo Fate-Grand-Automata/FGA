@@ -163,7 +163,7 @@ class Game @Inject constructor(
     val supportRegionToolSearchRegion = Region(2006, 0, 370, 1440) + supportOffset
     val supportDefaultBounds = Region(-18, 0, 2356, 428) + supportOffset
     val supportDefaultCeBounds = Region(-18, 270, 378, 150) + supportOffset
-    val supportNotFoundRegion = Region(374, 708, 100, 90) + supportOffset
+    val supportNotFoundRegion = Region(324, 708, 150, 90) + supportOffset
 
     private val canLongSwipe = platformImpl.canLongSwipe
     val supportListSwipeStart = Location(-59, if (canLongSwipe) 1000 else 1190) + supportOffset
