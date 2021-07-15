@@ -18,7 +18,7 @@ import com.mathewsachin.fategrandautomata.ui.prefs.StatusWrapper
 private fun DeltaButton(
     currentValue: Int,
     onCurrentValueChange: (Int) -> Unit,
-    onCommit: (Int) -> Unit,
+    onCommit: () -> Unit,
     valueRange: IntRange,
     delta: Int,
     text: String,
@@ -40,7 +40,7 @@ private fun DeltaButton(
                         onRepeat = {
                             onCurrentValueChange((currentValue + delta).coerceIn(valueRange))
                         },
-                        onEnd = { onCommit(currentValue.coerceIn(valueRange)) },
+                        onEnd = onCommit,
                         enabled = isEnabled
                     )
                     .padding(20.dp, 10.dp)
@@ -60,13 +60,15 @@ fun Stepper(
 ) {
     var currentValue by remember(value) { mutableStateOf(value) }
 
+    val onCommit = { onValueChange(currentValue.coerceIn(valueRange)) }
+
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         DeltaButton(
             currentValue = currentValue,
             onCurrentValueChange = { currentValue = it },
-            onCommit = onValueChange,
+            onCommit = onCommit,
             valueRange = valueRange,
             delta = -delta,
             text = "-",
@@ -85,7 +87,7 @@ fun Stepper(
         DeltaButton(
             currentValue = currentValue,
             onCurrentValueChange = { currentValue = it },
-            onCommit = onValueChange,
+            onCommit = onCommit,
             valueRange = valueRange,
             delta = delta,
             text = "+",

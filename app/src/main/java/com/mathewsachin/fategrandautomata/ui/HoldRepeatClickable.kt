@@ -90,9 +90,6 @@ fun Modifier.holdRepeatClickable(
                     currentJob.cancel()
                     currentJob.join()
 
-                    // Some delay otherwise value won't update on every other single tap
-                    delay(Duration.milliseconds(10))
-
                     rememberedOnEnd()
                 }
             })
