@@ -75,6 +75,8 @@ class PreferencesImpl @Inject constructor(
 
     override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
 
+    override val stageCounterNew by prefs.stageCounterNew
+
     override val waitBeforeTurn by prefs.waitBeforeTurn.map { Duration.milliseconds(it) }
 
     override val waitBeforeCards by prefs.waitBeforeCards.map { Duration.milliseconds(it) }

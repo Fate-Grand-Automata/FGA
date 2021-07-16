@@ -35,7 +35,7 @@ class ScreenshotManager @Inject constructor(
                 resizeTarget = platformImpl.getResizableBlankPattern()
             }
 
-            sshot.resize(resizeTarget!!, sshot.Size * scale)
+            sshot.resize(resizeTarget!!, sshot.size * scale)
 
             return resizeTarget!!
         }

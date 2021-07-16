@@ -63,4 +63,11 @@ fun LazyListScope.advancedGroup(
             icon = icon(R.drawable.ic_launch)
         )
     }
+
+    item {
+        prefs.stageCounterNew.SwitchPreference(
+            title = "Thresholded stage counter detection",
+            icon = icon(R.drawable.ic_counter)
+        )
+    }
 }

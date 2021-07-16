@@ -125,19 +125,49 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     }
 
     fun didStageChange(): Boolean {
-        // Alternative fix for different font of stage count number among different regions, worked pretty damn well tho.
-        // This will compare last screenshot with current screen, effectively get to know if stage changed or not.
-        val snapshot = state.stageCountSnaphot
+        // Font of stage count number is different per region
+        val snapshot = state.stageCountSnapshot
             ?: return true
 
-        return !game.battleStageCountRegion.exists(
-            snapshot,
-            similarity = prefs.stageCounterSimilarity
-        )
+        val matched = if (prefs.stageCounterNew) {
+            // Take a screenshot of stage counter region on current screen and extract white pixels
+            val current = game.battleStageCountRegion
+                .getPattern()
+                .tag("STAGE-COUNTER")
+
+            current.use {
+                val currentWithThreshold = current
+                    .threshold(stageCounterThreshold)
+
+                currentWithThreshold.use {
+                    // Matching the images which have background filtered out
+                    snapshot
+                        .findMatches(currentWithThreshold, prefs.platformPrefs.minSimilarity)
+                        .any()
+                }
+            }
+        }
+        else {
+            // Compare last screenshot with current screen to determine if stage changed or not.
+            game.battleStageCountRegion.exists(
+                snapshot,
+                similarity = prefs.stageCounterSimilarity
+            )
+        }
+
+        return !matched
     }
 
+    private val stageCounterThreshold = 0.67
+
     fun takeStageSnapshot() {
-        state.stageCountSnaphot =
-            game.battleStageCountRegion.getPattern()
+        state.stageCountSnapshot =
+            game.battleStageCountRegion.getPattern().tag("WAVE:${state.stage}")
+
+        if (prefs.stageCounterNew) {
+            // Extract white pixels from the image which gets rid of the background.
+            state.stageCountSnapshot =
+                state.stageCountSnapshot?.threshold(stageCounterThreshold)
+        }
     }
 }

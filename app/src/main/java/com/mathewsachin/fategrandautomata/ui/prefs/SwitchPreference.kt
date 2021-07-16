@@ -11,7 +11,7 @@ import com.mathewsachin.fategrandautomata.ui.VectorIcon
 fun Pref<Boolean>.SwitchPreference(
     title: String,
     summary: String = "",
-    singleLineTitle: Boolean = true,
+    singleLineTitle: Boolean = false,
     icon: VectorIcon? = null,
     enabled: Boolean = true
 ) {

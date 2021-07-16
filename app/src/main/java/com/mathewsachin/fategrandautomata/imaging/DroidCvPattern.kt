@@ -168,4 +168,13 @@ class DroidCvPattern(
     override fun copy() = DroidCvPattern(Mat?.clone()).tag(tag)
 
     override fun tag(tag: String) = apply { this.tag = tag }
+
+    override fun threshold(value: Double): IPattern {
+        val result = Mat()
+
+        Imgproc.threshold(Mat, result, value * 255, 255.0, Imgproc.THRESH_BINARY)
+
+        return DroidCvPattern(result)
+            .tag("$tag[threshold=$value]")
+    }
 }

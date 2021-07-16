@@ -52,9 +52,11 @@ interface IPattern : AutoCloseable {
     fun copy(): IPattern
 
     fun tag(tag: String): IPattern
+
+    fun threshold(value: Double): IPattern
 }
 
 /**
  * Gets the width and height in the form of a [Size] object.
  */
-val IPattern.Size get() = Size(width, height)
+val IPattern.size get() = Size(width, height)

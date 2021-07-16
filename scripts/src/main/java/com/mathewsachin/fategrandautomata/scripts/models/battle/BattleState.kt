@@ -59,10 +59,10 @@ class BattleState {
             runState.turnState.hasClickedAttack = value
         }
 
-    var stageCountSnaphot
-        get() = runState.stageState.stageCountSnaphot
+    var stageCountSnapshot
+        get() = runState.stageState.stageCountSnapshot
         set(value) {
-            runState.stageState.stageCountSnaphot = value
+            runState.stageState.stageCountSnapshot = value
         }
 
     var shuffled

@@ -32,6 +32,7 @@ interface IPreferences {
     var receiveEmbersWhenGiftBoxFull: Boolean
 
     val stageCounterSimilarity: Double
+    val stageCounterNew: Boolean
     val waitBeforeTurn: Duration
     val waitBeforeCards: Duration
 

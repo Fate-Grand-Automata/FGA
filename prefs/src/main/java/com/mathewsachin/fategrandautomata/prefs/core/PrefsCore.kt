@@ -58,6 +58,7 @@ class PrefsCore @Inject constructor(
     val minSimilarity = maker.int("min_similarity", 80)
     val mlbSimilarity = maker.int("mlb_similarity", 70)
     val stageCounterSimilarity = maker.int("stage_counter_similarity", 85)
+    val stageCounterNew = maker.bool("stage_counter_new")
 
     val skillDelay = maker.int("skill_delay", 500)
     val waitMultiplier = maker.int("wait_multiplier", 100)
