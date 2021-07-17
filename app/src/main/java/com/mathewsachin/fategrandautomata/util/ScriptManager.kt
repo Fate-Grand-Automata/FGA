@@ -2,8 +2,8 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.app.Service
 import android.content.Context
+import android.content.DialogInterface
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUIState
@@ -57,7 +57,7 @@ class ScriptManager @Inject constructor(
         exception: AutoBattle.ExitException
     ) = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine<Unit> { continuation ->
-            var dialog: AlertDialog? = null
+            var dialog: DialogInterface? = null
 
             val composeView = FakedComposeView(context) {
                 BattleExit(
@@ -291,7 +291,7 @@ class ScriptManager @Inject constructor(
         detectedMode: ScriptModeEnum,
         entryPointRunner: () -> Unit
     ) {
-        var dialog: AlertDialog? = null
+        var dialog: DialogInterface? = null
 
         val composeView = FakedComposeView(context) {
             ScriptLauncher(
