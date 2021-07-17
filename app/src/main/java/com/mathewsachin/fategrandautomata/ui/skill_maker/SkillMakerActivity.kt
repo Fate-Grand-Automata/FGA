@@ -2,17 +2,20 @@ package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.FgaScreen
+import com.mathewsachin.fategrandautomata.ui.OnPause
 import com.mathewsachin.fategrandautomata.ui.PreventRtl
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,53 +33,50 @@ class SkillMakerActivity : ComponentActivity() {
                 PreventRtl {
                     SkillMakerUI(
                         vm = vm,
-                        onClear = { onClear() },
-                        onDone = { onDone() }
+                        exit = { finish() }
                     )
                 }
             }
         }
-    }
-
-    private fun onDone() {
-        vm.battleConfig.skillCommand = vm.finish()
-        finish()
-    }
-
-    private fun onClear() {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.skill_maker_confirm_clear_title)
-            .setMessage(R.string.skill_maker_confirm_clear_message)
-            .setNegativeButton(android.R.string.cancel, null)
-            .setPositiveButton(android.R.string.ok) { _, _ -> vm.clearAll() }
-            .show()
-    }
-
-    override fun onBackPressed() {
-        if (vm.navigation.value is SkillMakerNav.Main) {
-            AlertDialog.Builder(this)
-                .setMessage(R.string.skill_maker_confirm_exit_message)
-                .setTitle(R.string.skill_maker_confirm_exit_title)
-                .setPositiveButton(android.R.string.ok) { _, _ -> super.onBackPressed() }
-                .setNegativeButton(android.R.string.cancel, null)
-                .show()
-        }
-        else vm.navigation.value = SkillMakerNav.Main
-    }
-
-    override fun onPause() {
-        vm.saveState()
-
-        super.onPause()
     }
 }
 
 @Composable
 fun SkillMakerUI(
     vm: SkillMakerViewModel,
-    onClear: () -> Unit,
-    onDone: () -> Unit
+    exit: () -> Unit
 ) {
+    OnPause {
+        vm.saveState()
+    }
+
+    val exitConfirmDialog = FgaDialog()
+    exitConfirmDialog.build {
+        title(stringResource(R.string.skill_maker_confirm_exit_title))
+        message(stringResource(R.string.skill_maker_confirm_exit_message))
+
+        buttons(
+            onSubmit = exit
+        )
+    }
+
+    val clearConfirmDialog = FgaDialog()
+    clearConfirmDialog.build {
+        title(stringResource(R.string.skill_maker_confirm_clear_title))
+        message(stringResource(R.string.skill_maker_confirm_clear_message))
+
+        buttons(
+            onSubmit = { vm.clearAll() }
+        )
+    }
+
+    BackHandler {
+        if (vm.navigation.value is SkillMakerNav.Main) {
+            exitConfirmDialog.show()
+        }
+        else vm.navigation.value = SkillMakerNav.Main
+    }
+
     val (current, navigate) = vm.navigation
 
     Crossfade(
@@ -102,8 +102,11 @@ fun SkillMakerUI(
                     onMasterSkills = { navigate(SkillMakerNav.MasterSkills) },
                     onAtk = { navigate(SkillMakerNav.Atk) },
                     onSkill = { vm.initSkill(it) },
-                    onClear = onClear,
-                    onDone = onDone
+                    onClear = { clearConfirmDialog.show() },
+                    onDone = {
+                        vm.battleConfig.skillCommand = vm.finish()
+                        exit()
+                    }
                 )
             }
             SkillMakerNav.MasterSkills -> {

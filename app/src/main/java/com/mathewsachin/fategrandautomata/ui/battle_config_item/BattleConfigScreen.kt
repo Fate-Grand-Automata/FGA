@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui.battle_config_item
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,11 +30,8 @@ import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.ui.Heading
-import com.mathewsachin.fategrandautomata.ui.HeadingButton
-import com.mathewsachin.fategrandautomata.ui.OnResume
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
-import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
@@ -106,6 +102,17 @@ private fun BattleConfigContent(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
+                val deleteConfirmDialog = FgaDialog()
+                deleteConfirmDialog.build {
+                    title(stringResource(R.string.battle_config_item_delete_confirm_title))
+                    message(stringResource(R.string.battle_config_item_delete_confirm_message))
+
+                    buttons(
+                        onSubmit = onDelete,
+                        okLabel = stringResource(R.string.battle_config_item_delete_confirm_ok)
+                    )
+                }
+
                 Heading(
                     stringResource(R.string.p_nav_battle_config_edit)
                 ) {
@@ -131,14 +138,7 @@ private fun BattleConfigContent(
                             text = stringResource(R.string.battle_config_item_delete),
                             isDanger = true,
                             icon = icon(Icons.Default.Delete),
-                            onClick = {
-                                AlertDialog.Builder(context)
-                                    .setMessage(R.string.battle_config_item_delete_confirm_message)
-                                    .setTitle(R.string.battle_config_item_delete_confirm_title)
-                                    .setPositiveButton(R.string.battle_config_item_delete_confirm_ok) { _, _ -> onDelete() }
-                                    .setNegativeButton(android.R.string.cancel, null)
-                                    .show()
-                            }
+                            onClick = { deleteConfirmDialog.show() }
                         )
                     }
                 }
