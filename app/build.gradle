@@ -78,7 +78,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':libautomata')
     implementation project(':scripts')
     implementation project(':prefs')
