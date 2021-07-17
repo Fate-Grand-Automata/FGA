@@ -9,28 +9,28 @@ class GestureExtensions @Inject constructor(
     val platformImpl: IPlatformImpl,
     transformationExtensions: ITransformationExtensions
 ) : IGestureExtensions, ITransformationExtensions by transformationExtensions {
-    override fun Location.click(Times: Int) {
+    override fun Location.click(times: Int) {
         exitManager.checkExitRequested()
-        gestureService.click(this.transform(), Times)
+        gestureService.click(this.transform(), times)
     }
 
-    override fun Region.click(Times: Int) = center.click(Times)
+    override fun Region.click(times: Int) = center.click(times)
 
-    override fun swipe(Start: Location, End: Location) {
+    override fun swipe(start: Location, end: Location) {
         val endX = lerp(
-            Start.X,
-            End.X,
+            start.x,
+            end.x,
             platformImpl.prefs.swipeMultiplier
         ).coerceAtLeast(0)
 
         val endY = lerp(
-            Start.Y,
-            End.Y,
+            start.y,
+            end.y,
             platformImpl.prefs.swipeMultiplier
         ).coerceAtLeast(0)
 
         gestureService.swipe(
-            Start.transform(),
+            start.transform(),
             Location(endX, endY).transform()
         )
     }

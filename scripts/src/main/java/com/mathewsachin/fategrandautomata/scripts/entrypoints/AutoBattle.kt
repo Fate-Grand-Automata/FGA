@@ -380,11 +380,11 @@ open class AutoBattle @Inject constructor(
         // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
 
-        val region = game.continueRegion.find(images[Images.Repeat])?.Region
+        val region = game.continueRegion.find(images[Images.Repeat])?.region
             ?: return
 
         // If Boost items are usable, Continue button shifts to the right
-        val useBoost = if (region.X > 1630) {
+        val useBoost = if (region.x > 1630) {
             val boost = BoostItem.of(prefs.boostItemSelectionMode)
 
             boost is BoostItem.Enabled && boost != BoostItem.Enabled.Skip
@@ -465,7 +465,7 @@ open class AutoBattle @Inject constructor(
         val withdrawRegion = game.withdrawRegion.find(images[Images.Withdraw])
             ?: return
 
-        withdrawRegion.Region.click()
+        withdrawRegion.region.click()
 
         Duration.seconds(0.5).wait()
 
@@ -539,7 +539,7 @@ open class AutoBattle @Inject constructor(
                 ?.let { match ->
                     // Find party with min distance from center of matched region
                     game.partySelectionArray.withIndex().minByOrNull {
-                        (it.value.X - match.Region.center.X).absoluteValue
+                        (it.value.x - match.region.center.x).absoluteValue
                     }?.index
                 }
 

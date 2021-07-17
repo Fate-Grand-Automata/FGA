@@ -21,7 +21,6 @@ import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageN
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.ScriptAbortException
-import com.mathewsachin.libautomata.messageAndStackTrace
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.*

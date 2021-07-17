@@ -27,11 +27,11 @@ class AutoGiftBox @Inject constructor(
 
     override fun script(): Nothing {
         val xpOffsetX = (game.scriptArea.find(images[Images.GoldXP]) ?: game.scriptArea.find(images[Images.SilverXP]))
-            ?.Region?.center?.X
+            ?.region?.center?.x
             ?: throw Exception("Couldn't find Embers on screen. This shouldn't happen.")
 
         val checkRegion = Region(xpOffsetX + 1320, 350, 140, 1500)
-        val scrollEndRegion = Region(100 + checkRegion.X, 1421, 320, 19)
+        val scrollEndRegion = Region(100 + checkRegion.x, 1421, 320, 19)
         val receiveSelectedClick = Location(1890 + xpOffsetX, 750)
         val receiveEnabledRegion = Region(1755 + xpOffsetX, 410, 290, 60)
 
@@ -113,9 +113,9 @@ class AutoGiftBox @Inject constructor(
                 GameServerEnum.Jp, GameServerEnum.Tw, GameServerEnum.Cn -> -940
                 GameServerEnum.En -> -830
                 GameServerEnum.Kr -> -960
-            }.let { x -> Region(x, -120, 300, 100) } + gift.Region.location
+            }.let { x -> Region(x, -120, 300, 100) } + gift.region.location
 
-            val iconRegion = Region(-1480, -116, 300, 240) + gift.Region.location
+            val iconRegion = Region(-1480, -116, 300, 240) + gift.region.location
 
             val gold = images[Images.GoldXP] in iconRegion
             val silver = !gold && images[Images.SilverXP] in iconRegion
@@ -136,7 +136,7 @@ class AutoGiftBox @Inject constructor(
                     }
                 }
 
-                gift.Region.click()
+                gift.region.click()
                 ++clickCount
             }
         }

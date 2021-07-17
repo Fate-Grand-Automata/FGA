@@ -50,7 +50,7 @@ class AutoLottery @Inject constructor(
             val moveToPresentBox = game.lotteryFullPresentBoxRegion
                 .find(images[Images.PresentBoxFull])
 
-            moveToPresentBox?.Region?.click()
+            moveToPresentBox?.region?.click()
 
             Duration.seconds(1).wait()
             giftBox.script()

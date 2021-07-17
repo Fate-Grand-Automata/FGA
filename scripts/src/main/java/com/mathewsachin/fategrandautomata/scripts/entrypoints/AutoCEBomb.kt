@@ -65,7 +65,7 @@ class AutoCEBomb @Inject constructor(
         while (true) {
             Duration.seconds(2).wait()
 
-            val baseCERegion = findBaseCE().Region
+            val baseCERegion = findBaseCE().region
             val img = baseCERegion.getPattern()
 
             img.use {
@@ -101,7 +101,7 @@ class AutoCEBomb @Inject constructor(
         val matchingCE = game.levelOneCERegion.find(img)
             ?: throw ExitException(ExitReason.NoSuitableTargetCEFound)
 
-        matchingCE.Region.click()
+        matchingCE.region.click()
         Duration.seconds(1).wait()
     }
 

@@ -55,7 +55,7 @@ class SupportImageMaker @Inject constructor(
                     if (isInSupport) 66 else 82,
                     284,
                     220
-                ) + it.Region.location
+                ) + it.region.location
             }
             .filter { it in game.scriptArea }
             .take(2)
@@ -101,8 +101,8 @@ class SupportImageMaker @Inject constructor(
 
     private fun extractFriendNameImage(supportBound: Region, isInSupport: Boolean, i: Int) {
         // the friend name is further to the left in the friend screen
-        val friendNameX = supportBound.X + (if (isInSupport) 364 else 344)
-        val friendBound = Region(friendNameX, supportBound.Y - 95, 400, 110)
+        val friendNameX = supportBound.x + (if (isInSupport) 364 else 344)
+        val friendBound = Region(friendNameX, supportBound.y - 95, 400, 110)
 
         val friendPattern = friendBound.getPattern()
         friendPattern.save(getFriendImgPath(dir, i))

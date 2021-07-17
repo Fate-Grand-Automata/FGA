@@ -12,37 +12,37 @@ interface IPattern : AutoCloseable {
     /**
      * Creates a resized image with the specified size.
      *
-     * @param Size the size of the new image
+     * @param size the size of the new image
      */
-    fun resize(Size: Size): IPattern
+    fun resize(size: Size): IPattern
 
     /**
      * Creates a resized image with the specified size and writes it into the target.
      *
-     * @param Target the image to write the resized image data to
-     * @param Size the size of the new image
+     * @param target the image to write the resized image data to
+     * @param size the size of the new image
      */
-    fun resize(Target: IPattern, Size: Size)
+    fun resize(target: IPattern, size: Size)
 
     /**
      * Finds all image matches with high enough similarity values.
      *
-     * @param Template the image to match with
-     * @param Similarity the minimum similarity
+     * @param template the image to match with
+     * @param similarity the minimum similarity
      *
      * @return a list of [Match] objects
      */
-    fun findMatches(Template: IPattern, Similarity: Double): Sequence<Match>
+    fun findMatches(template: IPattern, similarity: Double): Sequence<Match>
 
     /**
-     * Crops the image to be within the bounds of the given [Region].
+     * Crops the image to be within the bounds of the given [region].
      *
-     * Note that the resulting [IPattern] can have a smaller size than the [Region] if the [Region]
+     * Note that the resulting [IPattern] can have a smaller size than the [region] if the [region]
      * is not fully contained in the area of the image.
      *
-     * @param Region a [Region] in image coordinates, see [Region.transformToImage]
+     * @param region a [Region] in image coordinates, see [Region.transformToImage]
      */
-    fun crop(Region: Region): IPattern
+    fun crop(region: Region): IPattern
 
     fun save(stream: OutputStream)
 

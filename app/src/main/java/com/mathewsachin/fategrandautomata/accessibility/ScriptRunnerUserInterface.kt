@@ -118,8 +118,8 @@ class ScriptRunnerUserInterface @Inject constructor(
 
         val dragMaxLoc = getMaxBtnCoordinates()
 
-        scriptCtrlBtnLayoutParams.x = targetX.coerceIn(0, dragMaxLoc.X)
-        scriptCtrlBtnLayoutParams.y = targetY.coerceIn(0, dragMaxLoc.Y)
+        scriptCtrlBtnLayoutParams.x = targetX.coerceIn(0, dragMaxLoc.x)
+        scriptCtrlBtnLayoutParams.y = targetY.coerceIn(0, dragMaxLoc.y)
 
         windowManager.updateViewLayout(layout, scriptCtrlBtnLayoutParams)
     }

@@ -7,22 +7,22 @@ interface IGestureExtensions {
     /**
      * Clicks on the [Location].
      *
-     * @param Times the amount of times to click
+     * @param times the amount of times to click
      */
-    fun Location.click(Times: Int = 1)
+    fun Location.click(times: Int = 1)
 
     /**
      * Clicks on the center of this Region.
      *
-     * @param Times the amount of times to click
+     * @param times the amount of times to click
      */
-    fun Region.click(Times: Int = 1)
+    fun Region.click(times: Int = 1)
 
     /**
      * Swipes from one [Location] to another [Location].
      *
-     * @param Start the [Location] where the swipe should start
-     * @param End the [Location] where the swipe should end
+     * @param start the [Location] where the swipe should start
+     * @param end the [Location] where the swipe should end
      */
-    fun swipe(Start: Location, End: Location)
+    fun swipe(start: Location, end: Location)
 }

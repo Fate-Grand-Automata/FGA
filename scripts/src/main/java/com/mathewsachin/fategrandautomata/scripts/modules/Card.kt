@@ -44,9 +44,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private fun CommandCard.Face.isStunned(): Boolean {
         val stunRegion = game.typeRegion(this).copy(
-            Y = 930,
-            Width = 248,
-            Height = 188
+            y = 930,
+            width = 248,
+            height = 188
         )
 
         return images[Images.Stun] in stunRegion

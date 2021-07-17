@@ -49,10 +49,10 @@ class Game @Inject constructor(
     val isWide = prefs.isNewUI && scriptArea.isWide()
 
     fun Location.xFromCenter() =
-        this + Location(scriptArea.center.X, 0)
+        this + Location(scriptArea.center.x, 0)
 
     fun Region.xFromCenter() =
-        this + Location(scriptArea.center.X, 0)
+        this + Location(scriptArea.center.x, 0)
 
     fun Location.xFromRight() =
         this + Location(scriptArea.right, 0)
@@ -73,9 +73,9 @@ class Game @Inject constructor(
             Region(-400, 360, 400, 80)
                 .xFromRight()
                 .find(images[Images.BattleMenu])
-                ?.Region
+                ?.region
                 ?.center
-                ?.copy(Y = 0)
+                ?.copy(y = 0)
                 ?: Location(-298, 0).xFromRight().also {
                     Timber.debug { "Defaulting master offset" }
                 }
@@ -140,7 +140,7 @@ class Game @Inject constructor(
     val supportOffset =
         if (isWide) {
             val width = 2560 - 94 - 145
-            val total = scriptArea.Width - 305 - 270
+            val total = scriptArea.width - 305 - 270
             val border = ((total - width) / 2.0).roundToInt()
 
             Location(305 + border, 0)
@@ -150,9 +150,9 @@ class Game @Inject constructor(
 
     val supportFriendRegion = Region(
         2140,
-        supportListRegion.Y,
+        supportListRegion.y,
         120,
-        supportListRegion.Height
+        supportListRegion.height
     ) + supportOffset
 
     val supportFriendsRegion = Region(354, 332, 1210, 1091) + supportOffset
@@ -290,8 +290,8 @@ class Game @Inject constructor(
                 val skill3Location = locate(it)
 
                 Region(
-                    skill3Location.X + 35,
-                    skill3Location.Y + 67,
+                    skill3Location.x + 35,
+                    skill3Location.y + 67,
                     120,
                     120
                 )
@@ -430,7 +430,7 @@ class Game @Inject constructor(
 
     fun supportCheckRegion(card: CommandCard) = when (card) {
         is CommandCard.Face -> affinityRegion(card) + Location(-50, 100)
-        is CommandCard.NP -> (servantMatchRegion(card) + Location(110, -30)).copy(Height = 170)
+        is CommandCard.NP -> (servantMatchRegion(card) + Location(110, -30)).copy(height = 170)
     }
 
     fun servantOpenDetailsClick(slot: ServantSlot) =
@@ -439,7 +439,7 @@ class Game @Inject constructor(
             ServantSlot.B -> Skill.Servant.B2
             ServantSlot.C -> Skill.Servant.C2
         }.let {
-            Location(locate(it).X, 810)
+            Location(locate(it).x, 810)
         }
 
     fun servantChangeCheckRegion(slot: ServantSlot) =
@@ -448,7 +448,7 @@ class Game @Inject constructor(
             ServantSlot.B -> Skill.Servant.B2
             ServantSlot.C -> Skill.Servant.C2
         }.let {
-            val x = locate(it).X
+            val x = locate(it).x
 
             Region(x + 20, 930, 40, 80)
         }
@@ -459,7 +459,7 @@ class Game @Inject constructor(
             ServantSlot.B -> Skill.Servant.B2
             ServantSlot.C -> Skill.Servant.C2
         }.let {
-            val x = locate(it).X
+            val x = locate(it).x
 
             Region(x + 25, 710, 300, 170)
         }

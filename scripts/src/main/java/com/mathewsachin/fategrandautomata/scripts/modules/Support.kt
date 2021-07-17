@@ -214,7 +214,7 @@ class Support(
                     else -> findSupportBounds(it.Support)
                 }
 
-                val ceBounds = game.supportDefaultCeBounds + Location(0, supportBounds.Y)
+                val ceBounds = game.supportDefaultCeBounds + Location(0, supportBounds.y)
                 findCraftEssences(ceBounds).firstOrNull()
                     ?.let { ce -> FoundServantAndCE(supportBounds, ce) }
             }
@@ -245,7 +245,7 @@ class Support(
 
             patterns.forEach { pattern ->
                 for (theFriend in game.supportFriendsRegion.findAll(pattern).sorted()) {
-                    return SearchFunctionResult.Found(theFriend.Region)
+                    return SearchFunctionResult.Found(theFriend.region)
                 }
             }
         }
@@ -268,11 +268,11 @@ class Support(
                 cropFriendLock(pattern).use { cropped ->
                     game.supportListRegion
                         .findAll(cropped)
-                        .filter { !autoSkillPrefs.maxAscended || isMaxAscended(it.Region) }
+                        .filter { !autoSkillPrefs.maxAscended || isMaxAscended(it.region) }
                         .map {
                             if (skillCheckNeeded)
-                                SearchFunctionResult.FoundWithBounds(it.Region, findSupportBounds(it.Region))
-                            else SearchFunctionResult.Found(it.Region)
+                                SearchFunctionResult.FoundWithBounds(it.region, findSupportBounds(it.region))
+                            else SearchFunctionResult.Found(it.region)
                         }
                         .filter {
                             it !is SearchFunctionResult.FoundWithBounds || checkMaxedSkills(it.Bounds, needMaxedSkills)
@@ -319,7 +319,7 @@ class Support(
                 SearchRegion
                     .findAll(pattern)
                     .asStream()
-                    .map { FoundCE(it.Region, isLimitBroken(it.Region)) }
+                    .map { FoundCE(it.region, isLimitBroken(it.region)) }
                     .filter { !autoSkillPrefs.mlb || it.mlb }
             }
             .toList()
@@ -333,7 +333,7 @@ class Support(
             )
             .map {
                 game.supportDefaultBounds
-                    .copy(Y = it.Region.Y - 70)
+                    .copy(y = it.region.y - 70)
             }
             .firstOrNull { Support in it }
             ?: game.supportDefaultBounds.also {
@@ -361,21 +361,21 @@ class Support(
 
     private fun isMaxAscended(servant: Region): Boolean {
         val maxAscendedRegion = game.supportMaxAscendedRegion
-            .copy(Y = servant.Y)
+            .copy(y = servant.y)
 
         return isStarPresent(maxAscendedRegion)
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
         val limitBreakRegion = game.supportLimitBreakRegion
-            .copy(Y = CraftEssence.Y)
+            .copy(y = CraftEssence.y)
 
         return isStarPresent(limitBreakRegion)
     }
 
     private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {
-        val y = bounds.Y + 325
-        val x = bounds.X + 1627
+        val y = bounds.y + 325
+        val x = bounds.x + 1627
 
         val skillLoc = listOf(
             Location(x, y),

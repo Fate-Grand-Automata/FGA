@@ -10,7 +10,7 @@ class AutoDetect @Inject constructor(
 ) : IFgoAutomataApi by fgAutomataApi {
     fun get() = useSameSnapIn {
         val emberSearchRegion = game.scriptArea.let {
-            it.copy(Width = it.Width / 3)
+            it.copy(width = it.width / 3)
         }
 
         when {

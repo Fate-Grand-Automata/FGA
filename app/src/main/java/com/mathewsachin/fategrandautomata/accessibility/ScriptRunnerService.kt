@@ -26,7 +26,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToke
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
-import com.mathewsachin.libautomata.messageAndStackTrace
+import com.mathewsachin.fategrandautomata.util.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay

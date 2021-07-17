@@ -28,8 +28,8 @@ class HighlightView(
 
         for ((region, success) in regionsToHighlight) {
             canvas?.drawRect(
-                region.X.toFloat(),
-                region.Y.toFloat(),
+                region.x.toFloat(),
+                region.y.toFloat(),
                 region.right.toFloat(),
                 region.bottom.toFloat(),
                 if (success) green else red

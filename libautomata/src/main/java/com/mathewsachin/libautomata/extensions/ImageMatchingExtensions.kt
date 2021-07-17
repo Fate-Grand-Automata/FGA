@@ -18,35 +18,33 @@ class ImageMatchingExtensions @Inject constructor(
     /**
      * Checks if the [Region] contains the provided image.
      *
-     * @param Region the search region
-     * @param Image the image to look for
-     * @param Similarity the minimum similarity for this search
+     * @param image the image to look for
+     * @param similarity the minimum similarity for this search
      */
-    private fun existsNow(
-        Region: Region,
-        Image: IPattern,
-        Similarity: Double?
-    ) = Region.findAll(Image, Similarity).any()
+    private fun Region.existsNow(
+        image: IPattern,
+        similarity: Double?
+    ) = findAll(image, similarity).any()
 
     /**
      * Repeats the invocation of the Condition until it returns `true` or until the timeout has
      * been reached.
      *
-     * @param Condition a function with a [Boolean] return value
-     * @param Timeout how long to wait for before giving up
+     * @param condition a function with a [Boolean] return value
+     * @param timeout how long to wait for before giving up
      * @return `true` if the function returned `true` at some point, `false` if the timeout was
      * reached
      */
     private fun checkConditionLoop(
-        Condition: () -> Boolean,
-        Timeout: Duration = Duration.ZERO
+        condition: () -> Boolean,
+        timeout: Duration = Duration.ZERO
     ): Boolean {
-        val endTimeMark = Monotonic.markNow() + Timeout
+        val endTimeMark = Monotonic.markNow() + timeout
 
         while (true) {
             val scanStart = Monotonic.markNow()
 
-            if (Condition.invoke()) {
+            if (condition.invoke()) {
                 return true
             }
 
@@ -75,7 +73,7 @@ class ImageMatchingExtensions @Inject constructor(
     ): Boolean {
         exitManager.checkExitRequested()
         return checkConditionLoop(
-            { existsNow(this, image, similarity) },
+            { existsNow(image, similarity) },
             timeout
         )
     }
@@ -87,7 +85,7 @@ class ImageMatchingExtensions @Inject constructor(
     ): Boolean {
         exitManager.checkExitRequested()
         return checkConditionLoop(
-            { !existsNow(this, image, similarity) },
+            { !existsNow(image, similarity) },
             timeout
         )
     }
@@ -105,7 +103,7 @@ class ImageMatchingExtensions @Inject constructor(
             .map {
                 exitManager.checkExitRequested()
 
-                var region = it.Region.transformFromImage()
+                var region = it.region.transformFromImage()
 
                 // convert the relative position in the region to the absolute position on the screen
                 region += this.location

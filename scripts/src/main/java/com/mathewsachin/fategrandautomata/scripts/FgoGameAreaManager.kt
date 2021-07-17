@@ -16,8 +16,8 @@ private sealed class ScaleBy(val rate: Double) : Comparable<ScaleBy> {
 
 private fun decideScaleMethod(OriginalSize: Size, DesiredSize: Size) =
     minOf(
-        ScaleBy.Width(DesiredSize.Width / OriginalSize.Width.toDouble()),
-        ScaleBy.Height(DesiredSize.Height / OriginalSize.Height.toDouble())
+        ScaleBy.Width(DesiredSize.width / OriginalSize.width.toDouble()),
+        ScaleBy.Height(DesiredSize.height / OriginalSize.height.toDouble())
     )
 
 private fun calculateBorderThickness(Outer: Int, Inner: Int) =
@@ -32,22 +32,22 @@ private fun calculateGameAreaWithoutBorders(
 
     return Region(
         calculateBorderThickness(
-            ScreenSize.Width,
-            scaledScriptSize.Width
+            ScreenSize.width,
+            scaledScriptSize.width
         ), // Offset(X)
         calculateBorderThickness(
-            ScreenSize.Height,
-            scaledScriptSize.Height
+            ScreenSize.height,
+            scaledScriptSize.height
         ), // Offset(Y)
-        scaledScriptSize.Width, // Game Width (without borders)
-        scaledScriptSize.Height // Game Height (without borders)
+        scaledScriptSize.width, // Game Width (without borders)
+        scaledScriptSize.height // Game Height (without borders)
     )
 }
 
 // Looks like only wider than 18:9 uses dynamic scaling, rest stays in 16:9
 // Thanks to SeibahMaster from GamePress
 fun Region.isWide() =
-    Width / Height.toDouble() > 18.0 / 9
+    width / height.toDouble() > 18.0 / 9
 
 class FgoGameAreaManager(
     val platformImpl: IPlatformImpl,
@@ -69,13 +69,13 @@ class FgoGameAreaManager(
         )
 
     override val scriptDimension = when (scaleBy) {
-        is ScaleBy.Width -> CompareBy.Width(scriptSize.Width)
-        is ScaleBy.Height -> CompareBy.Height(scriptSize.Height)
+        is ScaleBy.Width -> CompareBy.Width(scriptSize.width)
+        is ScaleBy.Height -> CompareBy.Height(scriptSize.height)
     }
 
     override val compareDimension = when (scaleBy) {
-        is ScaleBy.Width -> CompareBy.Width(imageSize.Width)
-        is ScaleBy.Height -> CompareBy.Height(imageSize.Height)
+        is ScaleBy.Width -> CompareBy.Width(imageSize.width)
+        is ScaleBy.Height -> CompareBy.Height(imageSize.height)
     }
 
     val isWide = prefs.isNewUI && platformImpl.windowRegion.isWide()

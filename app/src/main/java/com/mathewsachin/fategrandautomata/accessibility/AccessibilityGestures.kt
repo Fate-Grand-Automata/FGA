@@ -25,11 +25,11 @@ class AccessibilityGestures @Inject constructor(
     durationExtensions: IDurationExtensions
 ) : IGestureService, IDurationExtensions by durationExtensions {
     fun Path.moveTo(location: Location) = apply {
-        moveTo(location.X.toFloat(), location.Y.toFloat())
+        moveTo(location.x.toFloat(), location.y.toFloat())
     }
 
     fun Path.lineTo(location: Location) = apply {
-        lineTo(location.X.toFloat(), location.Y.toFloat())
+        lineTo(location.x.toFloat(), location.y.toFloat())
     }
 
     /**
@@ -60,8 +60,8 @@ class AccessibilityGestures @Inject constructor(
      */
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun swipe8(start: Location, end: Location) {
-        val xDiff = (end.X - start.X).toFloat()
-        val yDiff = (end.Y - start.Y).toFloat()
+        val xDiff = (end.x - start.x).toFloat()
+        val yDiff = (end.y - start.y).toFloat()
         val direction = atan2(xDiff, yDiff)
         var distanceLeft = sqrt(xDiff.pow(2) + yDiff.pow(2))
 
@@ -86,8 +86,8 @@ class AccessibilityGestures @Inject constructor(
         while (distanceLeft > 0) {
             val distanceToScroll = minOf(thresholdDistance, distanceLeft)
 
-            val x = (from.X + distanceToScroll * sin(direction)).roundToInt()
-            val y = (from.Y + distanceToScroll * cos(direction)).roundToInt()
+            val x = (from.x + distanceToScroll * sin(direction)).roundToInt()
+            val y = (from.y + distanceToScroll * cos(direction)).roundToInt()
             val to = Location(x, y)
 
             val swipePath = Path()
@@ -119,16 +119,16 @@ class AccessibilityGestures @Inject constructor(
         }
     }
 
-    override fun swipe(Start: Location, End: Location) = runBlocking {
-        Timber.debug { "swipe $Start, $End" }
+    override fun swipe(start: Location, end: Location) = runBlocking {
+        Timber.debug { "swipe $start, $end" }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            swipe8(Start, End)
-        } else swipe7(Start, End)
+            swipe8(start, end)
+        } else swipe7(start, end)
     }
 
-    override fun click(Location: Location, Times: Int) = runBlocking {
-        val swipePath = Path().moveTo(Location)
+    override fun click(location: Location, times: Int) = runBlocking {
+        val swipePath = Path().moveTo(location)
 
         val stroke = GestureDescription.StrokeDescription(
             swipePath,
@@ -136,9 +136,9 @@ class AccessibilityGestures @Inject constructor(
             gesturePrefs.clickDuration.inWholeMilliseconds
         )
 
-        Timber.debug { "click $Location x$Times" }
+        Timber.debug { "click $location x$times" }
 
-        repeat(Times) {
+        repeat(times) {
             performGesture(stroke)
         }
 

@@ -1,4 +1,4 @@
-package com.mathewsachin.libautomata
+package com.mathewsachin.fategrandautomata.util
 
 import java.io.PrintWriter
 import java.io.StringWriter
