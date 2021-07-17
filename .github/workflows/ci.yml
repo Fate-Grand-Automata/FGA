@@ -39,56 +39,11 @@ jobs:
           name: apk
           path: app/build/outputs/apk/ci/app-ci.apk
 
-      - name: Decrypt keystore (GPG)
-        env:
-          GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
-        working-directory: ./app
-        if: startsWith(github.ref, 'refs/tags/')
-        run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
-
-      - name: Build Bundle
-        if: startsWith(github.ref, 'refs/tags/')
-        env:
-          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-        run: ./gradlew bundleRelease
-
-      - name: Upload Bundle
-        uses: actions/upload-artifact@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          name: bundle
-          path: app/build/outputs/bundle/release/app-release.aab
-
       - name: Upload De-obfuscation mapping file
         uses: actions/upload-artifact@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           name: mapping
-          path: app/build/outputs/mapping/release/mapping.txt
-
-  play_store:
-    needs: build
-    runs-on: macos-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    steps:
-      - name: Download Bundle
-        uses: actions/download-artifact@v1
-        with:
-          name: bundle
-
-      - name: Download mapping file
-        uses: actions/download-artifact@v1
-        with:
-          name: mapping
-
-      - name: Deploy to Play Store
-        uses: r0adkll/upload-google-play@v1
-        with:
-          track: production
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
-          packageName: com.mathewsachin.fategrandautomata
-          releaseFile: ./bundle/app-release.aab
-          mappingFile: ./mapping/mapping.txt
+          path: app/build/outputs/mapping/ci/mapping.txt
 
   # Release master branch
   canary:
