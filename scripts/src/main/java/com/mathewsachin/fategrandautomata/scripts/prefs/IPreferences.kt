@@ -49,4 +49,4 @@ interface IPreferences {
 
 val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots
 
-val IPreferences.isNewUI get() = gameServer == GameServerEnum.Jp
+val IPreferences.isNewUI get() = gameServer == GameServerEnum.Jp || gameServer == GameServerEnum.Kr
