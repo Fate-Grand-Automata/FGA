@@ -7,16 +7,16 @@ interface IGestureService : AutoCloseable {
     /**
      * Swipes from one [Location] to another [Location].
      *
-     * @param Start the [Location] where the swipe should start
-     * @param End the [Location] where the swipe should end
+     * @param start the [Location] where the swipe should start
+     * @param end the [Location] where the swipe should end
      */
-    fun swipe(Start: Location, End: Location)
+    fun swipe(start: Location, end: Location)
 
     /**
-     * Clicks on a given [Location].
+     * Clicks on a given [location].
      *
-     * @param Location the location to click on
-     * @param Times the number of times to click
+     * @param location the location to click on
+     * @param times the number of times to click
      */
-    fun click(Location: Location, Times: Int = 1)
+    fun click(location: Location, times: Int = 1)
 }

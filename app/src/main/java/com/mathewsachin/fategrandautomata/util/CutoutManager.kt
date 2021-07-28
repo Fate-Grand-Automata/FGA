@@ -6,15 +6,20 @@ import android.util.DisplayMetrics
 import android.view.Surface
 import android.view.WindowManager
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.Region
+import timber.log.Timber
+import timber.log.debug
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CutoutManager @Inject constructor(
-    val windowManager: WindowManager,
+    windowManager: WindowManager,
     val prefs: IPreferences
 ) {
+    private val display = windowManager.defaultDisplay
+
     private data class Cutout(val L: Int = 0, val T: Int = 0, val R: Int = 0, val B: Int = 0) {
         companion object {
             val NoCutouts = Cutout()
@@ -50,7 +55,7 @@ class CutoutManager @Inject constructor(
 
         // Check if there is a cutout
         if (cutout != Cutout.NoCutouts) {
-            val rotation = windowManager.defaultDisplay.rotation
+            val rotation = display.rotation
 
             // Store the cutout for Portrait orientation of device
             val (l, t, r, b) = cutout
@@ -63,10 +68,14 @@ class CutoutManager @Inject constructor(
         }
 
         cutoutFound = true
+        Timber.debug { "Detected display cutout: $cutoutValue" }
     }
 
+    private fun shouldIgnoreNotch() =
+        prefs.isNewUI || prefs.ignoreNotchCalculation
+
     private fun getCutout(Rotation: Int): Cutout {
-        if (prefs.ignoreNotchCalculation || cutoutValue == Cutout.NoCutouts) {
+        if (shouldIgnoreNotch() || cutoutValue == Cutout.NoCutouts) {
             return Cutout.NoCutouts
         }
 
@@ -83,12 +92,12 @@ class CutoutManager @Inject constructor(
 
     fun getCutoutAppliedRegion(): Region {
         val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getRealMetrics(metrics)
+        display.getRealMetrics(metrics)
 
         var w = metrics.widthPixels
         var h = metrics.heightPixels
 
-        val cutout = getCutout(windowManager.defaultDisplay.rotation)
+        val cutout = getCutout(display.rotation)
         val (l, t, r, b) = cutout
 
         // remove notch from dimensions

@@ -10,6 +10,6 @@ sealed class ServantTarget(val autoSkillCode: Char) {
     object Right : ServantTarget('8')
 
     companion object {
-        val list = listOf(A, B, C, Left, Right)
+        val list by lazy { listOf(A, B, C, Left, Right) }
     }
 }

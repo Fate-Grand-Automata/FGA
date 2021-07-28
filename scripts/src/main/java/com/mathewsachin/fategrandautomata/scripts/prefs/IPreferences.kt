@@ -15,19 +15,24 @@ interface IPreferences {
     val withdrawEnabled: Boolean
     val stopOnCEDrop: Boolean
     val stopOnCEGet: Boolean
+    val stopOnFirstClearRewards: Boolean
     val boostItemSelectionMode: Int
     val refill: IRefillPreferences
-    val waitAPRegen: Boolean
-    val waitAPRegenMinutes: Int
+    var waitAPRegen: Boolean
     val ignoreNotchCalculation: Boolean
     val useRootForScreenshots: Boolean
-    val gudaFinal: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
     val screenshotDrops: Boolean
-    val maxGoldEmberSetSize: Int
+    var maxGoldEmberSetSize: Int
+
+    var shouldLimitFP: Boolean
+    var limitFP: Int
+    var preventLotteryBoxReset: Boolean
+    var receiveEmbersWhenGiftBoxFull: Boolean
 
     val stageCounterSimilarity: Double
+    val stageCounterNew: Boolean
     val waitBeforeTurn: Duration
     val waitBeforeCards: Duration
 
@@ -35,7 +40,13 @@ interface IPreferences {
     val platformPrefs: IPlatformPrefs
     val gestures: IGesturesPreferences
 
+    var ceBombTargetRarity: Int
+
     fun forBattleConfig(id: String): IBattleConfig
     fun addBattleConfig(id: String): IBattleConfig
     fun removeBattleConfig(id: String)
 }
+
+val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots
+
+val IPreferences.isNewUI get() = gameServer == GameServerEnum.Jp || gameServer == GameServerEnum.Kr

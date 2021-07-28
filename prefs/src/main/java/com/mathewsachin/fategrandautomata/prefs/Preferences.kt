@@ -6,7 +6,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.IPlatformPrefs
 import javax.inject.Inject
-import kotlin.time.milliseconds
+import kotlin.time.Duration
 
 class PreferencesImpl @Inject constructor(
     val prefs: PrefsCore,
@@ -54,34 +54,43 @@ class PreferencesImpl @Inject constructor(
 
     override val stopOnCEGet by prefs.stopOnCEGet
 
+    override val stopOnFirstClearRewards by prefs.stopOnFirstClearRewards
+
     override val boostItemSelectionMode by prefs.boostItemSelectionMode
 
     override val refill: IRefillPreferences =
         RefillPreferences(prefs.refill)
 
-    override val waitAPRegen by prefs.waitAPRegen
-
-    override val waitAPRegenMinutes by prefs.waitAPRegenMinutes
+    override var waitAPRegen by prefs.waitAPRegen
 
     override val ignoreNotchCalculation by prefs.ignoreNotchCalculation
 
     override val useRootForScreenshots by prefs.useRootForScreenshots
 
-    override val gudaFinal by prefs.gudaFinal
-
     override val recordScreen by prefs.recordScreen
 
-    override val skillDelay by prefs.skillDelay.map { it.milliseconds }
+    override val skillDelay by prefs.skillDelay.map { Duration.milliseconds(it) }
 
     override val screenshotDrops by prefs.screenshotDrops
 
     override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
 
-    override val waitBeforeTurn by prefs.waitBeforeTurn.map { it.milliseconds }
+    override val stageCounterNew by prefs.stageCounterNew
 
-    override val waitBeforeCards by prefs.waitBeforeCards.map { it.milliseconds }
+    override val waitBeforeTurn by prefs.waitBeforeTurn.map { Duration.milliseconds(it) }
 
-    override val maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
+    override val waitBeforeCards by prefs.waitBeforeCards.map { Duration.milliseconds(it) }
+
+    override var maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
+
+    override var ceBombTargetRarity by prefs.ceBombTargetRarity
+
+    override var shouldLimitFP by prefs.shouldLimitFP
+    override var limitFP by prefs.limitFP
+
+    override var preventLotteryBoxReset by prefs.preventLotteryBoxReset
+
+    override var receiveEmbersWhenGiftBoxFull by prefs.receiveEmbersWhenGiftBoxFull
 
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 
@@ -102,7 +111,7 @@ class PreferencesImpl @Inject constructor(
     }
 
     override fun removeBattleConfig(id: String) {
-        prefs.maker.context.deleteSharedPreferences(id)
+        prefs.context.deleteSharedPreferences(id)
         autoSkillMap.remove(id)
         prefs.removeBattleConfig(id)
 
@@ -139,17 +148,17 @@ class PreferencesImpl @Inject constructor(
     override val gestures = object :
         IGesturesPreferences {
         override val clickWaitTime by prefs.clickWaitTime
-            .map { it.milliseconds }
+            .map { Duration.milliseconds(it) }
 
         override val clickDuration by prefs.clickDuration
-            .map { it.milliseconds }
+            .map { Duration.milliseconds(it) }
 
-        override val clickDelay by prefs.clickDelay.map { it.milliseconds }
+        override val clickDelay by prefs.clickDelay.map { Duration.milliseconds(it) }
 
         override val swipeWaitTime by prefs.swipeWaitTime
-            .map { it.milliseconds }
+            .map { Duration.milliseconds(it) }
 
         override val swipeDuration by prefs.swipeDuration
-            .map { it.milliseconds }
+            .map { Duration.milliseconds(it) }
     }
 }

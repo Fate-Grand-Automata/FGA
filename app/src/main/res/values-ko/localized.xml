@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_runner_description">This service actually runs the scripts. An accessibility service is required if clicks and swipes are to be performed without root.</string>
-
     <string name="battle_config_item_copy">복사</string>
     <string name="battle_config_item_delete">삭제</string>
     <string name="battle_config_item_export">내보내기</string>
@@ -10,8 +8,6 @@
     <string name="battle_config_item_delete_confirm_title">삭제 확인</string>
     <string name="battle_config_item_delete_confirm_ok">삭제</string>
     <string name="battle_config_item_delete_confirm_message">이 설정을 정말로 지우시겠습니까?</string>
-    <string name="battle_config_item_clear_preferred">초기화</string>
-    <string name="battle_config_item_open_maker">메이커</string>
     <string name="battle_config_support_any">아무거나</string>
 
     <string name="support_imgs_extracted">서포트 이미지가 성공적으로 추출되었습니다</string>
@@ -21,11 +17,9 @@
     <string name="battle_config_list_import">불러오기</string>
     <string name="battle_config_list_export_all">모두 내보내기</string>
     <string name="battle_config_list_delete">삭제</string>
-    <string name="battle_config_list_selected_count">%d 선택됨</string>
     <string name="battle_config_list_export_failed">%d 아이템(들)을 내보내기 실패</string>
     <string name="battle_config_list_import_failed">%d 아이템(들)을 불러오기 실패</string>
     <string name="battle_config_list_delete_confirm_title">삭제 확인</string>
-    <string name="battle_config_list_delete_confirm_ok">삭제</string>
     <string name="battle_config_list_delete_confirm_message">%d 설정(들)을 정말로 지우시겠습니까?</string>
 
     <string name="skill_maker_confirm_exit_title">나가기 확인</string>
@@ -66,18 +60,11 @@
     <string name="skill_maker_buster">Buster</string>
 
     <string name="card_priority_wave_number">웨이브 %d</string>
-    <string name="card_priority_menu_info">정보</string>
-    <string name="card_priority_info_title">정보</string>
-    <string name="card_priority_info_content">W: 약함 (상성우위)\nR: 상성불리\n\nB: 버스터\nA: 아츠\nQ: 퀵</string>
     <string name="card_priority_high">높음</string>
     <string name="card_priority_low">낮음</string>
-    <string name="card_priority_add_wave">웨이브 추가</string>
-    <string name="card_priority_remove_last_wave">마지막 웨이브 제거</string>
-    <string name="card_priority_experimental">실험적 기능 활성화</string>
 
     <string name="start_service">서비스 시작</string>
     <string name="stop_service">서비스 중지</string>
-    <string name="start_service_toast">스크립트를 재생하려면 페그오를 실행하세요</string>
     <string name="fine_tune_menu_reset_to_defaults">기본값으로 리셋</string>
     <string name="support_menu_extract_default_support_images">기본 서포트 이미지 추출</string>
 
@@ -94,27 +81,16 @@
     <string name="support_img_namer_file_rename_failed">\'%s\'로 이름 변경 실패</string>
 
     <string name="p_refill">사과 사용</string>
-    <string name="p_refill_off">끔</string>
-    <string name="p_refill_summary">사과 사용 관리</string>
     <string name="p_battle_config">오토 스킬</string>
     <string name="p_battle_config_summary">오토 스킬 설정관리</string>
     <string name="p_more_options">더 많은 옵션</string>
 
-    <string name="p_enable_refill">사과 사용 활성화</string>
-    <string name="p_refill_none">없음</string>
-    <string name="p_repetitions">반복</string>
-    <string name="p_auto_decrement">자동 감소</string>
-    <string name="p_auto_decrement_summary">사과 갯수 사용에 따라 자동으로 사과 갯수 사용량 줄이기</string>
-    <string name="p_resource">리소스</string>
-    <string name="p_run_limit">반복 제한</string>
-    <string name="p_limit_no_of_runs">반복 횟수 제한</string>
     <string name="p_runs">반복</string>
 
     <string name="p_battle_config_name">이름</string>
     <string name="p_battle_config_cmd">커맨드</string>
     <string name="p_battle_config_notes">메모</string>
     <string name="p_battle_config_party">파티</string>
-    <string name="p_battle_config_support_class">클래스</string>
     <string name="p_battle_config_card_priority">카드 우선</string>
     <string name="p_battle_config_support">서포트</string>
     <string name="p_battle_config_support_selection_mode">선택 모드</string>
@@ -125,16 +101,11 @@
     <string name="p_battle_config_support_mlb">최대해방 / 풀돌</string>
     <string name="p_battle_config_support_friend_names">친구 이름</string>
     <string name="p_battle_config_support_friends_only">친구 한정</string>
-
-    <string name="p_max_skill_1">1 스킬 만렙</string>
-    <string name="p_max_skill_2">2 스킬 만렙</string>
-    <string name="p_max_skill_3">3 스킬 만렙</string>
+    <string name="p_battle_config_support_friend_name_hint">친구 이름 이미지는 \'서포트 이미지 메이커\' 스크립트를 사용하여 만들 수 있습니다</string>
 
     <string name="p_game_server">게임 서버</string>
     <string name="p_game_server_auto_detect">자동 감지</string>
     <string name="p_spam_summary">위험 모드는 자동 표적 활성화가 필요합니다</string>
-    <string name="p_spam_np">보구 연속 사용</string>
-    <string name="p_spam_skill">스킬 연속 사용</string>
     <string name="p_auto_choose_target">대상 자동 선택</string>
     <string name="p_story_skip">스토리 스킵</string>
     <string name="p_skill_confirmation">스킬 사용 확인</string>
@@ -142,17 +113,14 @@
     <string name="p_stop_on_ce_drop">예장 드롭시 정지</string>
     <string name="p_stop_on_ce_get">예장 획득시 정지</string>
     <string name="p_stop_on_ce_get_summary">첫번째 퀘스트 클리어 보상과 인연예장(실험적 기능)</string>
-    <string name="p_experimental">실험적 기능</string>
     <string name="p_screenshot_drops">드롭 아이템 스크린샷</string>
     <string name="p_screenshot_drops_summary">\'drops\' 폴더에 저장되었습니다</string>
     <string name="p_boost_item">부스트 아이템</string>
     <string name="p_brave_chains">브레이브 체인</string>
     <string name="p_rearrange_cards">카드 재배열</string>
-    <string name="p_battle_config_cmd_text">오토 스킬 커맨드 텍스트 박스</string>
-    <string name="p_battle_config_cmd_text_summary">오트 스킬 커맨드를 수정하기 위해 텍스트 박스 보이기</string>
 
     <string name="p_wait_ap_regen_text">AP 회복 대기</string>
-    <string name="p_wait_ap_regen_text_summary">AP가 다 소모되어도 FGA앱을 실행시키며, AP가 충분히 회복되면 스크립트를 자동으로 재실행합니다.</string>
+    <string name="wait_ap_regen_toast_message">AP회복 확인중.  %d분 후 재확인.</string>
 
     <string name="p_storage">저장소</string>
     <string name="p_folder">서포트 이미지, 드롭 이미지 등의 폴더를 변경합니다.</string>
@@ -175,7 +143,6 @@
     <string name="p_auto_start_service">서비스 자동시작</string>
 
     <string name="p_fine_tune">미세 조정</string>
-    <string name="p_fine_tune_default">기본값: %d</string>
     <string name="p_fine_tune_support">서포트</string>
     <string name="p_fine_tune_support_swipes_per_update">갱신당 스와이프 수</string>
     <string name="p_fine_tune_support_max_updates">최대 갱신 수</string>
@@ -197,11 +164,7 @@
     <string name="p_fine_tune_wait_before_cards">카드 뜨기 전 딜레이 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">딜레이 배율기 (%)</string>
 
-    <string name="p_nav_refill">사과 사용</string>
-    <string name="p_nav_more_options">더 많은 옵션</string>
     <string name="p_nav_troubleshoot">문제 해결</string>
-    <string name="p_nav_fine_tune">미세 조정</string>
-    <string name="p_nav_battle_config_list">오토 스킬 목록</string>
     <string name="p_nav_battle_config_edit">설정 파일 수정</string>
     <string name="p_nav_card_priority">카드 우선</string>
 
@@ -216,7 +179,6 @@
 
     <string name="p_boost_item_disabled">비활성화</string>
     <string name="p_boost_item_skip">스킵</string>
-    <string name="p_boost_item_number">아이템 %d</string>
 
     <string name="p_spam_none">없음</string>
     <string name="p_spam_spam">반복</string>
@@ -228,13 +190,14 @@
     <string name="p_support_mode_friend">친구</string>
 
     <string name="p_script_mode_battle">배틀</string>
+    <string name="p_script_mode_lottery">룰렛</string>
+    <string name="p_script_mode_fp">친구 포인트 가챠</string>
+    <string name="p_script_mode_support_image_maker">서포트 이미지 메이커</string>
     <string name="p_script_mode_gift_box">선물함</string>
 
     <string name="p_max_gold_ember_set_size">4성 경험치 카드 개수</string>
 
     <string name="p_not_set">설정 안함</string>
-
-    <string name="p_party_number">Party %d</string>
 
     <string name="p_support_class_none">없음</string>
     <string name="p_support_class_all">모두</string>
@@ -248,20 +211,14 @@
     <string name="p_support_class_extra">엑스트라</string>
     <string name="p_support_class_mix">혼합</string>
 
-    <string name="notification_text">접근성 서비스 실행중</string>
     <string name="notification_stop">멈춤</string>
 
     <string name="accessibility_disabled_title">접근성 비활성화</string>
     <string name="accessibility_disabled_message">시스템 설정에서 접근성 서비스 사용을 활성화 하십시오. 이미 활성화 되어 있다면 비활성화 후 다시 활성화 하십시오.</string>
     <string name="accessibility_disabled_go_to_settings">설정으로 가기</string>
-
     <string name="draw_overlay_disabled_title">오버레이 권한 없음</string>
     <string name="draw_overlay_disabled_message">다른 앱 위에 그리기를 허용해주세요. 재생 버튼을 활성화하기 위해 쓰입니다.</string>
-    <string name="draw_overlay_disabled_go_to_settings">설정으로 가기</string>
     <string name="cannot_start_recording">화면 녹화를 시작할 수 없음</string>
-    <string name="select_script">스크립트 선택</string>
-    <string name="other_scripts">룰렛/프포/선물함/\n서포트 이미지 메이커</string>
-    <string name="cannot_detect_script_type">스크립트 유형을 감지할 수 없습니다</string>
 
     <string name="script_msg_ap_ran_out">AP를 모두 소비하였습니다!</string>
     <string name="stopped_by_user">사용자에 의해 스크립트 중지됨</string>
@@ -284,7 +241,6 @@
     <string name="failed_to_determine_card_type">카드 유형 확인 실패: %s</string>
     <string name="support_list_updated_in">서포트 리스트가 %s 안에 갱신됩니다</string>
     <string name="times_withdrew">%d번 철수함</string>
-    <string name="battle_time">시간: %s</string>
     <string name="avg_time_per_run">반복 평균 시간: %s</string>
     <string name="turns_count">턴: %d</string>
     <string name="turns_stats">턴: %1$d (최단), %2$d (평균), %3$d (최장)</string>
@@ -292,8 +248,6 @@
 
     <string name="p_mats">재료</string>
     <string name="mats_farmed">%d개의 재료 파밍됨</string>
-    <string name="p_mat_limit">재료 종류로 제한하기</string>
-    <string name="p_mat_limit_count">개수</string>
 
     <string name="mat_proof">영웅의 증표</string>
     <string name="mat_bone">흉골</string>
@@ -324,13 +278,18 @@
     <string name="mat_lanugo">원초의 산모</string>
     <string name="mat_gallstone">주수담석</string>
     <string name="mat_wine">기기신주</string>
-    <string name="mat_stake">소곡의 철항(못)</string>
+    <string name="mat_stake">소곡의 철항</string>
     <string name="mat_gunpowder">여진화약</string>
     <string name="mat_medal">대기사 훈장</string>
     <string name="mat_lamp_evil_sealing">봉마의 램프</string>
     <string name="mat_stinger">만사의 독침</string>
     <string name="mat_eternal_ice">영원결빙</string>
     <string name="mat_steel">오로라강</string>
+    <string name="mat_core">효광노심</string>
+    <string name="mat_bell">한고령</string>
+    <string name="mat_arrow">재난의 화살촉</string>
+    <string name="mat_mirror">구십구경</string>
+    <string name="mat_egg">진리의 알</string>
 
     <string name="p_shuffle_cards">카드 셔플</string>
     <string name="p_shuffle_cards_wave">웨이브</string>

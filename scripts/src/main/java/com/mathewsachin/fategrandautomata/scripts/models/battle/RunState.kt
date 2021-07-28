@@ -11,7 +11,7 @@ class RunState {
     var stage = -1
         private set(value) {
             field = value
-            stageState.stageCountSnaphot?.close()
+            stageState.stageCountSnapshot?.close()
             stageState = StageState()
             turn = -1
         }

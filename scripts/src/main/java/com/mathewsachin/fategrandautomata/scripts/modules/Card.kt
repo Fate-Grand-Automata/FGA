@@ -1,7 +1,12 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.enums.*
+import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import timber.log.Timber
 import timber.log.debug
@@ -26,11 +31,11 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
         val region = game.affinityRegion(this)
 
-        if (images.weak in region) {
+        if (images[Images.Weak] in region) {
             return CardAffinityEnum.Weak
         }
 
-        if (images.resist in region) {
+        if (images[Images.Resist] in region) {
             return CardAffinityEnum.Resist
         }
 
@@ -39,26 +44,26 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private fun CommandCard.Face.isStunned(): Boolean {
         val stunRegion = game.typeRegion(this).copy(
-            Y = 930,
-            Width = 248,
-            Height = 188
+            y = 930,
+            width = 248,
+            height = 188
         )
 
-        return images.stun in stunRegion
+        return images[Images.Stun] in stunRegion
     }
 
     private fun CommandCard.Face.type(): CardTypeEnum {
         val region = game.typeRegion(this)
 
-        if (images.buster in region) {
+        if (images[Images.Buster] in region) {
             return CardTypeEnum.Buster
         }
 
-        if (images.art in region) {
+        if (images[Images.Arts] in region) {
             return CardTypeEnum.Arts
         }
 
-        if (images.quick in region) {
+        if (images[Images.Quick] in region) {
             return CardTypeEnum.Quick
         }
 
@@ -97,10 +102,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             .map { it.card }
 
         if (failedToDetermine.isNotEmpty()) {
-            val msg = messages.failedToDetermineCardType(failedToDetermine)
-            toast(msg)
-
-            Timber.debug { msg }
+            messages.notify(
+                ScriptNotify.FailedToDetermineCards(failedToDetermine)
+            )
         }
 
         return cards
@@ -130,17 +134,27 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             commandCards = getCommandCards()
 
             val supportGroup = CommandCard.Face.list
-                .filter { images.support in game.supportCheckRegion(it) }
+                .filter { images[Images.Support] in game.supportCheckRegion(it) }
             commandCardGroups = groupByFaceCard(supportGroup)
             commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
+
+            battle.servantTracker.logFaceCardForServants()
         }
     }
 
-    private val spamNps: Set<CommandCard.NP>
-        get() =
-            if (autoSkill.canSpam(prefs.selectedBattleConfig.npSpam)) {
-                CommandCard.NP.list.toSet()
-            } else emptySet()
+    private val spamNps: Set<CommandCard.NP> get() =
+        (ServantSlot.list.zip(CommandCard.NP.list))
+            .mapNotNull { (servantSlot, np) ->
+                val teamSlot = battle.servantTracker.deployed[servantSlot] ?: ServantTracker.TeamSlot.A
+                val npSpamConfig = battle.spamConfig
+                    .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
+                    .np
+
+                if (autoSkill.canSpam(npSpamConfig.spam) && (battle.state.stage + 1) in npSpamConfig.waves)
+                    np
+                else null
+            }
+            .toSet()
 
     private fun CommandCard.NP.pick() {
         game.clickLocation(this).click()
@@ -158,26 +172,22 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             .mapNotNull { commandCards[it] }
             .flatten()
 
+        fun addToClickList(vararg cards: CommandCard.Face) = cards.apply {
+            toClick.addAll(cards)
+            remainingCards.removeAll(cards)
+            clicksLeft -= cards.size
+        }
+
         fun pickCardsOrderedByPriority(
             clicks: Int = clicksLeft,
             filter: (CommandCard.Face) -> Boolean = { true }
-        ): List<CommandCard.Face> {
-            fun Sequence<CommandCard.Face>.addToClickList(): List<CommandCard.Face> {
-                val asList = toList()
-
-                toClick.addAll(asList)
-                remainingCards.removeAll(asList)
-                clicksLeft -= asList.size
-
-                return asList
-            }
-
-            return cardsOrderedByPriority
+        ) =
+            cardsOrderedByPriority
                 .asSequence()
                 .filter { it in remainingCards && filter(it) }
                 .take(clicks)
-                .addToClickList()
-        }
+                .toList()
+                .let { addToClickList(*(it.toTypedArray())) }
 
         return when (braveChainsThisTurn) {
             BraveChainEnum.WithNP -> {
@@ -205,13 +215,61 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                     && remainingCards.isNotEmpty()
                     && clicksLeft > 1
                 ) {
-                    var lastGroup = emptyList<CommandCard.Face>()
+                    if (rearrangeCardsThisTurn) {
+                        // Top 3 priority cards grouped by servant
+                        val topGrouped = cardsOrderedByPriority
+                            .take(clicksLeft)
+                            .groupBy { commandCardGroups.indexOfFirst { group -> it in group } }
+                            .map { it.value }
 
-                    do {
-                        lastGroup = pickCardsOrderedByPriority(1) { it !in lastGroup }
-                            .map { m -> commandCardGroups.firstOrNull { m in it } }
-                            .firstOrNull() ?: emptyList()
-                    } while (clicksLeft > 0 && lastGroup.isNotEmpty())
+                        when (topGrouped.size) {
+                            // All 3 cards of same servant
+                            1 -> {
+                                val group = commandCardGroups.first { topGrouped[0][0] in it }
+
+                                // Check if there's another servant
+                                val otherCard = cardsOrderedByPriority
+                                    .firstOrNull { it !in group }
+
+                                // If there's no other servant, this will fallback to default card picker
+                                if (otherCard != null) {
+                                    addToClickList(
+                                        topGrouped[0][0],
+                                        otherCard,
+                                        topGrouped[0][1]
+                                    )
+                                }
+                            }
+                            // Ideal case. 2 servant cards
+                            2 -> {
+                                // servant with 2 cards in first place
+                                val topSorted = topGrouped
+                                    .sortedByDescending { it.size }
+
+                                addToClickList(
+                                    topSorted[0][0],
+                                    topSorted[1][0],
+                                    topSorted[0][1]
+                                )
+                            }
+                            // Brave chain will already be avoided, but we can rearrange to optimize
+                            3 -> {
+                                addToClickList(
+                                    topGrouped[0][0],
+                                    topGrouped[2][0],
+                                    topGrouped[1][0]
+                                )
+                            }
+                        }
+                    } else {
+                        var lastGroup = emptyList<CommandCard.Face>()
+
+                        do {
+                            lastGroup = pickCardsOrderedByPriority(1) { it !in lastGroup }
+                                .map { m -> commandCardGroups.firstOrNull { m in it } }
+                                .firstOrNull() ?: emptyList()
+                        } while (clicksLeft > 0 && lastGroup.isNotEmpty())
+                    }
                 }
 
                 // Pick more cards if needed
@@ -229,8 +287,6 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
         if (rearrangeCardsThisTurn
-            // Skip if NP spamming because we don't know how many NPs might've been used
-            && prefs.selectedBattleConfig.npSpam == SpamEnum.None
             // If there are cards before NP, at max there's only 1 card after NP
             && atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
@@ -339,7 +395,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         val npGroups = mutableMapOf<CommandCard.NP, List<CommandCard.Face>>()
 
         val supportNp = CommandCard.NP.list.firstOrNull {
-            images.support in game.supportCheckRegion(it)
+            images[Images.Support] in game.supportCheckRegion(it)
         }
 
         if (supportNp != null) {

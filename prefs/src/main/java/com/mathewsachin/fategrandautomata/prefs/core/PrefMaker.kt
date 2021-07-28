@@ -1,27 +1,25 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
-import android.content.Context
 import android.content.SharedPreferences
-import androidx.annotation.StringRes
 import com.tfcporciuncula.flow.FlowSharedPreferences
 import com.tfcporciuncula.flow.Serializer
 
 class PrefMaker(
-    val prefs: SharedPreferences,
-    val context: Context
+    val prefs: SharedPreferences
 ) {
     val flowPrefs = FlowSharedPreferences(prefs)
 
-    fun k(@StringRes key: Int) = context.getString(key)
+    fun int(key: String, default: Int = 0): Pref<Int> =
+        PrefImpl(flowPrefs.getInt(key, default))
 
-    fun int(@StringRes key: Int, default: Int = 0) =
-        Pref(flowPrefs.getInt(k(key), default))
+    fun bool(key: String, default: Boolean = false): Pref<Boolean> =
+        PrefImpl(flowPrefs.getBoolean(key, default))
 
-    fun bool(@StringRes key: Int, default: Boolean = false) =
-        Pref(flowPrefs.getBoolean(k(key), default))
+    fun string(key: String, default: String = ""): Pref<String> =
+        PrefImpl(flowPrefs.getString(key, default))
 
-    fun string(@StringRes key: Int, default: String = "") =
-        Pref(flowPrefs.getString(k(key), default))
+    fun <T: Any> serialized(key: String, serializer: Serializer<T>, default: T): Pref<T> =
+        PrefImpl(flowPrefs.getObject(key, serializer, default))
 
     private fun stringAsIntSerializer(default: Int) =
         object : Serializer<Int> {
@@ -29,11 +27,11 @@ class PrefMaker(
             override fun serialize(value: Int) = value.toString()
         }
 
-    fun stringAsInt(@StringRes key: Int, default: Int = 0) =
-        Pref(flowPrefs.getObject(k(key), stringAsIntSerializer(default), default))
+    fun stringAsInt(key: String, default: Int = 0) =
+        serialized(key, stringAsIntSerializer(default), default)
 
     inline fun <reified T : Enum<T>> enum(
-        @StringRes key: Int,
+        key: String,
         default: T
     ): Pref<T> {
         val serializer = object : Serializer<T> {
@@ -47,9 +45,9 @@ class PrefMaker(
             override fun serialize(value: T) = value.name
         }
 
-        return Pref(flowPrefs.getObject(k(key), serializer, default))
+        return serialized(key, serializer, default)
     }
 
-    fun stringSet(@StringRes key: Int) =
-        Pref(flowPrefs.getStringSet(k(key)))
+    fun stringSet(key: String): Pref<Set<String>> =
+        PrefImpl(flowPrefs.getStringSet(key))
 }

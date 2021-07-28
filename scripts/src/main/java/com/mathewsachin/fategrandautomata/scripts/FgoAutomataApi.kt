@@ -8,7 +8,7 @@ import javax.inject.Inject
 class FgoAutomataApi @Inject constructor(
     automataApi: IAutomataExtensions,
     override val prefs: IPreferences,
-    override val images: ImageLocator,
+    override val images: IImageLoader,
     override val game: Game,
     override val messages: IScriptMessages
 ) : IFgoAutomataApi, IAutomataExtensions by automataApi

@@ -1,13 +1,17 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
-import com.mathewsachin.libautomata.ScriptExitException
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     val state = BattleState()
+    var servantTracker = ServantTracker(fgAutomataApi)
+        private set
+    val spamConfig = prefs.selectedBattleConfig.spam
 
     private lateinit var autoSkill: AutoSkill
     private lateinit var card: Card
@@ -22,20 +26,21 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     }
 
     fun resetState() {
-        autoSkill.resetState()
-
         // Don't increment no. of runs if we're just clicking on quest again and again
         // This can happen due to lags introduced during some events
         if (state.stage != -1) {
             state.nextRun()
 
-            if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
-                throw ScriptExitException(messages.timesRan(state.runs))
-            }
+            servantTracker.close()
+            servantTracker = ServantTracker(this)
+        }
+
+        if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.LimitRuns(state.runs))
         }
     }
 
-    fun isIdle() = images.battle in game.battleScreenRegion
+    fun isIdle() = images[Images.BattleScreen] in game.battleScreenRegion
 
     fun clickAttack() {
         if (state.hasClickedAttack) {
@@ -45,7 +50,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         game.battleAttackClick.click()
 
         // Wait for Attack button to disappear
-        game.battleScreenRegion.waitVanish(images.battle, 5.seconds)
+        game.battleScreenRegion.waitVanish(images[Images.BattleScreen], Duration.seconds(5))
 
         prefs.waitBeforeCards.wait()
 
@@ -57,8 +62,8 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
         val region = game.dangerRegion(enemy)
 
-        val isDanger = images.targetDanger in region
-        val isServant = images.targetServant in region
+        val isDanger = images[Images.TargetDanger] in region
+        val isServant = images[Images.TargetServant] in region
 
         return isDanger || isServant
     }
@@ -66,11 +71,9 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     private fun chooseTarget(enemy: EnemyTarget) {
         game.locate(enemy).click()
 
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
 
         game.battleExtraInfoWindowCloseClick.click()
-
-        state.hasChosenTarget = true
     }
 
     private fun autoChooseTarget() {
@@ -78,14 +81,21 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
         // that's why the table is iterated backwards.
 
-        EnemyTarget.list
+        val dangerTarget = EnemyTarget.list
             .lastOrNull { isPriorityTarget(it) }
-            ?.let { chooseTarget(it) }
+
+        if (dangerTarget != null && state.chosenTarget != dangerTarget) {
+            chooseTarget(dangerTarget)
+        }
+
+        state.chosenTarget = dangerTarget
     }
 
     fun performBattle() {
-        useSameSnapIn { onTurnStarted() }
         prefs.waitBeforeTurn.wait()
+
+        onTurnStarted()
+        servantTracker.beginTurn()
 
         autoSkill.execute()
 
@@ -93,15 +103,15 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
 
         card.clickCommandCards()
 
-        5.seconds.wait()
+        Duration.seconds(5).wait()
     }
 
-    private fun onTurnStarted() {
+    private fun onTurnStarted() = useSameSnapIn {
         checkCurrentStage()
 
         state.nextTurn()
 
-        if (!state.hasChosenTarget && prefs.selectedBattleConfig.autoChooseTarget) {
+        if (prefs.selectedBattleConfig.autoChooseTarget) {
             autoChooseTarget()
         }
     }
@@ -115,19 +125,49 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
     }
 
     fun didStageChange(): Boolean {
-        // Alternative fix for different font of stage count number among different regions, worked pretty damn well tho.
-        // This will compare last screenshot with current screen, effectively get to know if stage changed or not.
-        val snapshot = state.stageCountSnaphot
+        // Font of stage count number is different per region
+        val snapshot = state.stageCountSnapshot
             ?: return true
 
-        return !game.battleStageCountRegion.exists(
-            snapshot,
-            Similarity = prefs.stageCounterSimilarity
-        )
+        val matched = if (prefs.stageCounterNew) {
+            // Take a screenshot of stage counter region on current screen and extract white pixels
+            val current = game.battleStageCountRegion
+                .getPattern()
+                .tag("STAGE-COUNTER")
+
+            current.use {
+                val currentWithThreshold = current
+                    .threshold(stageCounterThreshold)
+
+                currentWithThreshold.use {
+                    // Matching the images which have background filtered out
+                    snapshot
+                        .findMatches(currentWithThreshold, prefs.platformPrefs.minSimilarity)
+                        .any()
+                }
+            }
+        }
+        else {
+            // Compare last screenshot with current screen to determine if stage changed or not.
+            game.battleStageCountRegion.exists(
+                snapshot,
+                similarity = prefs.stageCounterSimilarity
+            )
+        }
+
+        return !matched
     }
 
+    private val stageCounterThreshold = 0.67
+
     fun takeStageSnapshot() {
-        state.stageCountSnaphot =
-            game.battleStageCountRegion.getPattern()
+        state.stageCountSnapshot =
+            game.battleStageCountRegion.getPattern().tag("WAVE:${state.stage}")
+
+        if (prefs.stageCounterNew) {
+            // Extract white pixels from the image which gets rid of the background.
+            state.stageCountSnapshot =
+                state.stageCountSnapshot?.threshold(stageCounterThreshold)
+        }
     }
 }

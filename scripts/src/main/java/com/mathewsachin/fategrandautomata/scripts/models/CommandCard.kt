@@ -9,7 +9,7 @@ sealed class CommandCard {
         object E : Face(5)
 
         companion object {
-            val list = listOf(A, B, C, D, E)
+            val list by lazy { listOf(A, B, C, D, E) }
         }
 
         override fun toString() = "$index"
@@ -21,7 +21,7 @@ sealed class CommandCard {
         object C : NP('6')
 
         companion object {
-            val list = listOf(A, B, C)
+            val list by lazy { listOf(A, B, C) }
         }
 
         override fun toString() = "$autoSkillCode"

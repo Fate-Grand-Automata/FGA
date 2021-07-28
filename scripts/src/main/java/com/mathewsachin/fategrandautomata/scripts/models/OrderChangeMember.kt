@@ -7,7 +7,7 @@ sealed class OrderChangeMember(val autoSkillCode: Char) {
         object C : Starting('3')
 
         companion object {
-            val list = listOf(A, B, C)
+            val list by lazy { listOf(A, B, C) }
         }
     }
 
@@ -17,7 +17,7 @@ sealed class OrderChangeMember(val autoSkillCode: Char) {
         object C : Sub('3')
 
         companion object {
-            val list = listOf(A, B, C)
+            val list by lazy { listOf(A, B, C) }
         }
     }
 }

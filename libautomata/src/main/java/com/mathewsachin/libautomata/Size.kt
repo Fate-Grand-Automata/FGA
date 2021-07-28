@@ -3,12 +3,12 @@ package com.mathewsachin.libautomata
 import kotlin.math.roundToInt
 
 /**
- * A class for storing the width and height of something.
+ * A class for storing the [width] and [height] of something.
  */
-data class Size(val Width: Int, val Height: Int) {
+data class Size(val width: Int, val height: Int) {
     init {
-        require(Width > 0) { "Width must be positive" }
-        require(Height > 0) { "Height must be positive" }
+        require(width > 0) { "width must be positive" }
+        require(height > 0) { "height must be positive" }
     }
 
     /**
@@ -16,8 +16,8 @@ data class Size(val Width: Int, val Height: Int) {
      */
     operator fun times(scale: Double): Size {
         return Size(
-            (Width * scale).roundToInt(),
-            (Height * scale).roundToInt()
+            (width * scale).roundToInt(),
+            (height * scale).roundToInt()
         )
     }
 }

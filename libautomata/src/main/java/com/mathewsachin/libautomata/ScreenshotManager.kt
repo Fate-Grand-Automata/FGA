@@ -5,7 +5,7 @@ import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 
 /**
- * A static class responsible for taking screenshots via a [IScreenshotService]. The screenshots are
+ * Responsible for taking screenshots via a [IScreenshotService]. The screenshots are
  * scaled and cropped and can be cached for a while using [snapshot].
  */
 @ScriptScope
@@ -35,7 +35,7 @@ class ScreenshotManager @Inject constructor(
                 resizeTarget = platformImpl.getResizableBlankPattern()
             }
 
-            sshot.resize(resizeTarget!!, sshot.Size * scale)
+            sshot.resize(resizeTarget!!, sshot.size * scale)
 
             return resizeTarget!!
         }

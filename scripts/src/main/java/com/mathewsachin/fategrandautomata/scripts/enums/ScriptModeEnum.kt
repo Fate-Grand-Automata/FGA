@@ -2,5 +2,9 @@ package com.mathewsachin.fategrandautomata.scripts.enums
 
 enum class ScriptModeEnum {
     Battle,
-    Other
+    FP,
+    Lottery,
+    PresentBox,
+    SupportImageMaker,
+    CEBomb
 }

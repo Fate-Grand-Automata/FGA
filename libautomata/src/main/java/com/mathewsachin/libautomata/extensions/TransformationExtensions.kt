@@ -21,14 +21,14 @@ class TransformationExtensions @Inject constructor(
 
         return when (targetDimensions) {
             is CompareBy.Width -> {
-                if (targetDimensions.width == gameArea.Width) {
+                if (targetDimensions.width == gameArea.width) {
                     null
-                } else targetDimensions.width / gameArea.Width.toDouble()
+                } else targetDimensions.width / gameArea.width.toDouble()
             }
             is CompareBy.Height -> {
-                if (targetDimensions.height == gameArea.Height) {
+                if (targetDimensions.height == gameArea.height) {
                     null
-                } else targetDimensions.height / gameArea.Height.toDouble()
+                } else targetDimensions.height / gameArea.height.toDouble()
             }
             CompareBy.None -> null
         }
@@ -41,14 +41,14 @@ class TransformationExtensions @Inject constructor(
 
         return when (sourceRegion) {
             is CompareBy.Width -> {
-                if (targetRegion.Width == sourceRegion.width) {
+                if (targetRegion.width == sourceRegion.width) {
                     noScaling
-                } else targetRegion.Width / sourceRegion.width.toDouble()
+                } else targetRegion.width / sourceRegion.width.toDouble()
             }
             is CompareBy.Height -> {
-                if (targetRegion.Height == sourceRegion.height) {
+                if (targetRegion.height == sourceRegion.height) {
                     noScaling
-                } else targetRegion.Height / sourceRegion.height.toDouble()
+                } else targetRegion.height / sourceRegion.height.toDouble()
             }
             CompareBy.None -> noScaling
         }

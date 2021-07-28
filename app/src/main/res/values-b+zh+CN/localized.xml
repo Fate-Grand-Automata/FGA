@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="service_runner_description">这个服务实际上运行脚本。如果要在没有root权限的情况下执行单击和滑动，则需要辅助功能服务。</string>
-
     <string name="battle_config_item_copy">复制</string>
     <string name="battle_config_item_delete">删除</string>
     <string name="battle_config_item_export">导出</string>
@@ -10,8 +8,6 @@
     <string name="battle_config_item_delete_confirm_title">确认删除</string>
     <string name="battle_config_item_delete_confirm_ok">刪除</string>
     <string name="battle_config_item_delete_confirm_message">确定要刪除此脚本吗?</string>
-    <string name="battle_config_item_clear_preferred">清除选择</string>
-    <string name="battle_config_item_open_maker">生成器</string>
     <string name="battle_config_support_any">任何</string>
 
     <string name="support_imgs_extracted">助战图片提取成功</string>
@@ -21,11 +17,9 @@
     <string name="battle_config_list_import">导入脚本</string>
     <string name="battle_config_list_export_all">导出脚本</string>
     <string name="battle_config_list_delete">刪除</string>
-    <string name="battle_config_list_selected_count">已选择 %d 个脚本</string>
     <string name="battle_config_list_export_failed">导出 %d 个脚本失败</string>
     <string name="battle_config_list_import_failed">导入 %d 个脚本失败</string>
     <string name="battle_config_list_delete_confirm_title">确认刪除</string>
-    <string name="battle_config_list_delete_confirm_ok">刪除</string>
     <string name="battle_config_list_delete_confirm_message">确认刪除 %d 个脚本?</string>
 
     <string name="skill_maker_confirm_exit_title">确认离开</string>
@@ -66,18 +60,11 @@
     <string name="skill_maker_buster">力击</string>
 
     <string name="card_priority_wave_number">战斗 %d</string>
-    <string name="card_priority_menu_info">备注</string>
-    <string name="card_priority_info_title">备注</string>
-    <string name="card_priority_info_content">W: 红字伤害(克制)\nR: 蓝字伤害(抵抗)\n\nB: 力击\nA: 技击\nQ: 讯击</string>
     <string name="card_priority_high">优先选出</string>
     <string name="card_priority_low">尽量不选出</string>
-    <string name="card_priority_add_wave">新增战斗</string>
-    <string name="card_priority_remove_last_wave">移除战斗</string>
-    <string name="card_priority_experimental">开启实验功能</string>
 
     <string name="start_service">开始服务</string>
     <string name="stop_service">停止服务</string>
-    <string name="start_service_toast">开启FGO以执行脚本</string>
     <string name="fine_tune_menu_reset_to_defaults">还原设定</string>
     <string name="support_menu_extract_default_support_images">复制预设助战图片</string>
 
@@ -94,27 +81,16 @@
     <string name="support_img_namer_file_rename_failed">重新命名成 \'%s\' 失败</string>
 
     <string name="p_refill">自动回体</string>
-    <string name="p_refill_off">关闭</string>
-    <string name="p_refill_summary">设定自动回体</string>
     <string name="p_battle_config">周回脚本</string>
     <string name="p_battle_config_summary">设定周回脚本</string>
     <string name="p_more_options">更多选项</string>
 
-    <string name="p_enable_refill">启动自动回体</string>
-    <string name="p_refill_none">未选择果实或圣晶石</string>
-    <string name="p_repetitions">自动回体次数</string>
-    <string name="p_auto_decrement">追踪消耗</string>
-    <string name="p_auto_decrement_summary">自动追踪已使用的果实以减少自动回体次数</string>
-    <string name="p_resource">自动回体资源</string>
-    <string name="p_run_limit">次数限制</string>
-    <string name="p_limit_no_of_runs">设定回体次数上限</string>
     <string name="p_runs">上限</string>
 
     <string name="p_battle_config_name">脚本名称</string>
     <string name="p_battle_config_cmd">技能顺序</string>
     <string name="p_battle_config_notes">备注</string>
     <string name="p_battle_config_party">队伍编号</string>
-    <string name="p_battle_config_support_class">助战从者职介</string>
     <string name="p_battle_config_card_priority">偏好指令卡</string>
     <string name="p_battle_config_support">助战从者</string>
     <string name="p_battle_config_support_selection_mode">助战从者选取方式</string>
@@ -126,15 +102,9 @@
     <string name="p_battle_config_support_friend_names">好友名称</string>
     <string name="p_battle_config_support_friends_only">只选择好友从者</string>
 
-    <string name="p_max_skill_1">一技能满级</string>
-    <string name="p_max_skill_2">二技能满级</string>
-    <string name="p_max_skill_3">三技能满级</string>
-
     <string name="p_game_server">服务器</string>
     <string name="p_game_server_auto_detect">自动检测</string>
     <string name="p_spam_summary">选择危险敌人时施放选项需开启自动选取敌人</string>
-    <string name="p_spam_np">自动宝具</string>
-    <string name="p_spam_skill">自动施放技能</string>
     <string name="p_auto_choose_target">自动选取敌人</string>
     <string name="p_story_skip">跳过剧情</string>
     <string name="p_skill_confirmation">技能确认</string>
@@ -142,17 +112,13 @@
     <string name="p_stop_on_ce_drop">礼装掉落自动停止</string>
     <string name="p_stop_on_ce_get">礼装获得自动停止</string>
     <string name="p_stop_on_ce_get_summary">首次通关及羁绊礼装获得时自动停止脚本</string>
-    <string name="p_experimental">实验功能</string>
     <string name="p_screenshot_drops">掉落截图</string>
     <string name="p_screenshot_drops_summary">存至 \'drops\' 文件夹</string>
     <string name="p_boost_item">加速道具</string>
     <string name="p_brave_chains">追击连携</string>
     <string name="p_rearrange_cards">调换顺序\n(优先性高的卡后出)</string>
-    <string name="p_battle_config_cmd_text">脚本对话框</string>
-    <string name="p_battle_config_cmd_text_summary">显示以文字输入脚本的对话框(关闭以跳过，将直接进入生成器)</string>
 
     <string name="p_wait_ap_regen_text">等待体力回复</string>
-    <string name="p_wait_ap_regen_text_summary">AP用完之后FGA将不会立刻退出，而是会持续确认体力是否回复并重新开始关卡</string>
 
     <string name="p_storage">文件存放位置</string>
     <string name="p_folder">更改存放助战图片、掉落截图等的文件夹位置</string>
@@ -175,7 +141,6 @@
     <string name="p_auto_start_service">自动开启服务</string>
 
     <string name="p_fine_tune">微调</string>
-    <string name="p_fine_tune_default">预设: %d</string>
     <string name="p_fine_tune_support">助战从者列表</string>
     <string name="p_fine_tune_support_swipes_per_update">助战列表更新后滑动次数</string>
     <string name="p_fine_tune_support_max_updates">助战列表更新次数限制</string>
@@ -197,11 +162,7 @@
     <string name="p_fine_tune_wait_before_cards">选择指令卡前等待时间 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">等待时间加乘 (%)</string>
 
-    <string name="p_nav_refill">自动回体</string>
-    <string name="p_nav_more_options">更多选项</string>
     <string name="p_nav_troubleshoot">FGA有问题请先点这 (GitHub链接)</string>
-    <string name="p_nav_fine_tune">微调</string>
-    <string name="p_nav_battle_config_list">周回脚本</string>
     <string name="p_nav_battle_config_edit">编辑脚本</string>
     <string name="p_nav_card_priority">偏好指令卡</string>
 
@@ -216,7 +177,6 @@
 
     <string name="p_boost_item_disabled">关闭</string>
     <string name="p_boost_item_skip">跳过</string>
-    <string name="p_boost_item_number">道具 %d</string>
 
     <string name="p_spam_none">无</string>
     <string name="p_spam_spam">能放就放</string>
@@ -228,13 +188,14 @@
     <string name="p_support_mode_friend">好友从者</string>
 
     <string name="p_script_mode_battle">战斗</string>
+    <string name="p_script_mode_lottery">抽无限池</string>
+    <string name="p_script_mode_fp">友情点数召唤</string>
+    <string name="p_script_mode_support_image_maker">助战图片截取器</string>
     <string name="p_script_mode_gift_box">礼物盒</string>
 
     <string name="p_max_gold_ember_set_size">金种火最大领取数</string>
 
     <string name="p_not_set">未设定</string>
-
-    <string name="p_party_number">队伍 %d</string>
 
     <string name="p_support_class_none">无</string>
     <string name="p_support_class_all">全部职介 (All)</string>
@@ -248,7 +209,6 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">混合职介 (Mix)</string>
 
-    <string name="notification_text">无障碍服务运行中</string>
     <string name="notification_stop">停止</string>
 
     <string name="accessibility_disabled_title">无障碍服务已关闭</string>
@@ -256,11 +216,7 @@
     <string name="accessibility_disabled_go_to_settings">前往设定</string>
     <string name="draw_overlay_disabled_title">无法显示在其他应用程序上层</string>
     <string name="draw_overlay_disabled_message">请让此程序显示在其他应用程序上层，FGA需要启用此设定以显示控制按钮</string>
-    <string name="draw_overlay_disabled_go_to_settings">前往设定</string>
-    <string name="select_script">选择脚本</string>
-    <string name="other_scripts">抽无限池/友情点数召唤/领取礼物盒种火/\n助战图片截取器</string>
     <string name="cannot_start_recording">无法开启屏幕录影</string>
-    <string name="cannot_detect_script_type">无法检测脚本类型</string>
 
     <string name="script_msg_ap_ran_out">体力用尽！</string>
     <string name="stopped_by_user">使用者停止脚本</string>
@@ -283,7 +239,6 @@
     <string name="failed_to_determine_card_type">辨认卡色失败: %s</string>
     <string name="support_list_updated_in">助战清单在 %s 后刷新</string>
     <string name="times_withdrew">已撤退 %d 次</string>
-    <string name="battle_time">周回时间: %s</string>
     <string name="avg_time_per_run">平均一场时间: %s</string>
     <string name="turns_count">回合 %d</string>
     <string name="turns_stats">回合: %1$d (最少), %2$d (平均), %3$d (最多)</string>
@@ -291,8 +246,6 @@
 
     <string name="p_mats">追踪掉落素材</string>
     <string name="mats_farmed">已获得 %d 个素材</string>
-    <string name="p_mat_limit">依获得素材数量限制</string>
-    <string name="p_mat_limit_count">数量</string>
 
     <string name="mat_proof">英雄之证</string>
     <string name="mat_bone">凶骨</string>

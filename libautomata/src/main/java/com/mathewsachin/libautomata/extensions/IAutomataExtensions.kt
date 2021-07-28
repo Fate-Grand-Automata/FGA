@@ -18,8 +18,4 @@ interface IAutomataExtensions : IDurationExtensions,
     fun <T> useSameSnapIn(block: () -> T): T
 
     fun takeColorScreenshot(): IPattern
-
-    fun toast(msg: String)
-
-    fun notify(msg: String)
 }

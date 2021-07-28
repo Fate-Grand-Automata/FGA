@@ -1,19 +1,2 @@
 <resources>
-
-    <style name="skill_maker_servant_skill_btn">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minWidth">50dp</item>
-        <item name="android:minHeight">50dp</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="skill_maker_view">
-        <item name="android:background">?android:colorBackground</item>
-        <item name="android:clickable">true</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:padding">16dp</item>
-        <item name="layout_behavior">@string/appbar_scrolling_view_behavior</item>
-    </style>
 </resources>

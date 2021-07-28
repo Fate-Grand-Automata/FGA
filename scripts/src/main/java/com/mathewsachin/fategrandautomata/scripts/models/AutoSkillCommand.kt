@@ -1,13 +1,11 @@
 package com.mathewsachin.fategrandautomata.scripts.models
 
-import com.mathewsachin.libautomata.ScriptExitException
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import java.util.*
 
 class AutoSkillCommand private constructor(
     val stages: List<List<List<AutoSkillAction>>>
 ) {
-    val lastStage = stages.lastIndex
-
     operator fun get(stage: Int, turn: Int): List<AutoSkillAction> {
         if (stage < stages.size) {
             val turns = stages[stage]
@@ -73,10 +71,10 @@ class AutoSkillCommand private constructor(
                         AutoSkillAction.OrderChange(starting, sub)
                     }
                     '0' -> AutoSkillAction.Atk.noOp()
-                    else -> throw ScriptExitException("Unknown character: $c")
+                    else -> throw Exception("Unknown character: $c")
                 }
             } catch (e: Exception) {
-                throw ScriptExitException("AutoSkill Parse error:\n\n${e.message}")
+                throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SkillCommandParseError(e))
             }
         }
 

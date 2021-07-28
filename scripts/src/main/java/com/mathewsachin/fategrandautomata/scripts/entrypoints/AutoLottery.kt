@@ -1,19 +1,29 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
+import com.mathewsachin.fategrandautomata.scripts.modules.retry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.ScriptExitException
 import javax.inject.Inject
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 /**
  * Continually opens lottery boxes until either the present box is full or there is no currency left.
  */
 class AutoLottery @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi
+    fgAutomataApi: IFgoAutomataApi,
+    private val giftBox: AutoGiftBox
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    sealed class ExitReason {
+        object ResetDisabled: ExitReason()
+        object PresentBoxFull: ExitReason()
+    }
+
+    class ExitException(val reason: ExitReason): Exception()
+
     private fun spin() {
         // Don't increase this too much or you'll regret when you're not able to stop the script
         // And your phone won't let you press anything
@@ -21,27 +31,51 @@ class AutoLottery @Inject constructor(
     }
 
     private fun reset() {
+        if (prefs.preventLotteryBoxReset) {
+            throw ExitException(ExitReason.ResetDisabled)
+        }
+
         game.lotteryResetClick.click()
-        0.5.seconds.wait()
+        Duration.seconds(0.5).wait()
 
         game.lotteryResetConfirmationClick.click()
-        3.seconds.wait()
+        Duration.seconds(3).wait()
 
         game.lotteryResetCloseClick.click()
-        2.seconds.wait()
+        Duration.seconds(2).wait()
+    }
+
+    private fun presentBoxFull() {
+        if (prefs.receiveEmbersWhenGiftBoxFull) {
+            val moveToPresentBox = game.lotteryFullPresentBoxRegion
+                .find(images[Images.PresentBoxFull])
+
+            moveToPresentBox?.region?.click()
+
+            Duration.seconds(1).wait()
+            giftBox.script()
+        }
+
+        throw ExitException(ExitReason.PresentBoxFull)
     }
 
     override fun script(): Nothing {
+        val screens: Map<() -> Boolean, () -> Unit> = mapOf(
+            { images[Images.LotteryBoxFinished] in game.lotteryFinishedRegion } to { reset() },
+            { needsToRetry() } to { retry() },
+            { images[Images.PresentBoxFull] in game.lotteryFullPresentBoxRegion } to { presentBoxFull() }
+        )
+
         while (true) {
-            useSameSnapIn {
-                when {
-                    images.finishedLotteryBox in game.lotteryFinishedRegion -> reset()
-                    images.presentBoxFull in game.lotteryFullPresentBoxRegion -> {
-                        throw ScriptExitException(messages.lotteryPresentBoxFull)
-                    }
-                    else -> spin()
-                }
-            }
+            val actor = useSameSnapIn {
+                screens
+                    .asSequence()
+                    .filter { (validator, _) -> validator() }
+                    .map { (_, actor) -> actor }
+                    .firstOrNull()
+            } ?: { spin() }
+
+            actor.invoke()
         }
     }
 }

@@ -5,25 +5,21 @@ import com.mathewsachin.fategrandautomata.prefs.core.map
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IRefillPreferences
 
-internal class RefillPreferences(val prefs: RefillPrefsCore) :
-    IRefillPreferences {
-    override val enabled by prefs.enabled
-
+internal class RefillPreferences(
+    val prefs: RefillPrefsCore
+): IRefillPreferences {
     override var repetitions by prefs.repetitions
 
     override val resources by prefs.resources.map { set ->
-        set.map {
-            enumValueOf<RefillResourceEnum>(it)
-        }.sortedBy { it.ordinal }
+        set.sortedBy { it.ordinal }
     }
 
-    override val autoDecrement by prefs.autoDecrement
+    override fun updateResources(resources: Set<RefillResourceEnum>) =
+        prefs.resources.set(resources)
 
-    override val shouldLimitRuns by prefs.shouldLimitRuns
+    override var shouldLimitRuns by prefs.shouldLimitRuns
+    override var limitRuns by prefs.limitRuns
 
-    override val limitRuns by prefs.limitRuns
-
-    override val shouldLimitMats by prefs.shouldLimitMats
-
-    override val limitMats by prefs.limitMats
+    override var shouldLimitMats by prefs.shouldLimitMats
+    override var limitMats by prefs.limitMats
 }

@@ -8,8 +8,6 @@ import android.media.projection.MediaProjectionManager
 import android.os.PowerManager
 import android.os.Vibrator
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import com.mathewsachin.fategrandautomata.prefs.core.PrefMaker
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.Module
@@ -44,7 +42,7 @@ class AppProvidesModule {
 
     @Provides
     fun providePowerManager(@ApplicationContext context: Context) =
-        context.getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
+        context.getSystemService(Context.POWER_SERVICE) as PowerManager
 
     @Singleton
     @Provides
@@ -54,7 +52,9 @@ class AppProvidesModule {
     @Provides
     fun providePrefMaker(@ApplicationContext context: Context) =
         PrefMaker(
-            PreferenceManager.getDefaultSharedPreferences(context),
-            context
+            context.getSharedPreferences(
+                "${context.packageName}_preferences",
+                Context.MODE_PRIVATE
+            )
         )
 }
