@@ -21,7 +21,7 @@
     <string name="battle_config_support_any">아무거나</string>
 
     <string name="support_imgs_extracted">서포트 이미지가 성공적으로 추출되었습니다</string>
-    <string name="support_imgs_extract_failed">서포트 이미지 추출을 실패했습니다</string															
+    <string name="support_imgs_extract_failed">서포트 이미지 추출을 실패했습니다</string>															
 
     <string name="battle_config_list_no_items">오토 스킬 아이템 없음</string>
     <string name="battle_config_list_import">불러오기</string>
