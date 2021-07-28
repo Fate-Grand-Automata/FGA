@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="tapper_service_description">
+        This accessibility service is used to perform clicks and swipes without root.
+        It also enables automatic detection of FGO version (NA/JP/CN/TW/KR) by checking the APK name of the foreground app.
+        In case you see the service malfunctioning, try turning it OFF and then turn ON again.
+        If it still doesn\'t work, you might have to adjust your device\'s Battery optimization settings for the app.
+																				 
+																	   
+																													
+    </string>
+
     <string name="battle_config_item_copy">복사</string>
     <string name="battle_config_item_delete">삭제</string>
     <string name="battle_config_item_export">내보내기</string>
@@ -11,7 +21,7 @@
     <string name="battle_config_support_any">아무거나</string>
 
     <string name="support_imgs_extracted">서포트 이미지가 성공적으로 추출되었습니다</string>
-    <string name="support_imgs_extract_failed">서포트 이미지 추출을 실패했습니다</string>
+    <string name="support_imgs_extract_failed">서포트 이미지 추출을 실패했습니다</string															
 
     <string name="battle_config_list_no_items">오토 스킬 아이템 없음</string>
     <string name="battle_config_list_import">불러오기</string>
@@ -21,6 +31,8 @@
     <string name="battle_config_list_import_failed">%d 아이템(들)을 불러오기 실패</string>
     <string name="battle_config_list_delete_confirm_title">삭제 확인</string>
     <string name="battle_config_list_delete_confirm_message">%d 설정(들)을 정말로 지우시겠습니까?</string>
+
+
 
     <string name="skill_maker_confirm_exit_title">나가기 확인</string>
     <string name="skill_maker_confirm_exit_message">정말로 나가시겠습니까? 오토 스킬 커맨드가 사라집니다.</string>
@@ -40,10 +52,9 @@
     <string name="skill_maker_main_clear">초기화</string>
     <string name="skill_maker_main_servant">서번트 %d</string>
     <string name="skill_maker_main_attack">공격</string>
-
-    <string name="skill_maker_master_skills_header">마스터 스킬</string>
+    <string name="skill_maker_master_skills_header">마스터 스킬</string>															  
     <string name="skill_maker_master_skills_order_change">오더 체인지 / 전투복</string>
-
+															   
     <string name="skill_maker_order_change_header">오더 체인지</string>
     <string name="skill_maker_order_change_starting_member">스타팅 멤버</string>
     <string name="skill_maker_order_change_sub_member">서브 멤버</string>
@@ -52,8 +63,8 @@
     <string name="skill_maker_target_header">대상 선택</string>
     <string name="skill_maker_target_none">대상 없음</string>
     <string name="skill_maker_target_servant">서번트\n\n%d</string>
-
-    <string name="skill_maker_space_ishtar">스페이스 이슈타르</string>
+																		  
+    <string name="skill_maker_space_ishtar">스페이스 이슈타르</string>																 
     <string name="skill_maker_emiya">에미야</string>
     <string name="skill_maker_quick">Quick</string>
     <string name="skill_maker_arts">Arts</string>
@@ -85,8 +96,10 @@
     <string name="p_battle_config_summary">오토 스킬 설정관리</string>
     <string name="p_more_options">더 많은 옵션</string>
 
+    <string name="p_limit">제한</string>
     <string name="p_runs">반복</string>
-
+    <string name="p_roll_limit">뽑기 횟수 제한</string>
+    <string name="p_prevent_lottery_box_reset">룰렛 초기화 방지</string>
     <string name="p_battle_config_name">이름</string>
     <string name="p_battle_config_cmd">커맨드</string>
     <string name="p_battle_config_notes">메모</string>
@@ -103,6 +116,22 @@
     <string name="p_battle_config_support_friends_only">친구 한정</string>
     <string name="p_battle_config_support_friend_name_hint">친구 이름 이미지는 \'서포트 이미지 메이커\' 스크립트를 사용하여 만들 수 있습니다</string>
 
+    <string name="p_max_skills">스킬 최대 레벨</string>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     <string name="p_game_server">게임 서버</string>
     <string name="p_game_server_auto_detect">자동 감지</string>
     <string name="p_spam_summary">위험 모드는 자동 표적 활성화가 필요합니다</string>
@@ -112,6 +141,7 @@
     <string name="p_enable_withdraw">퇴각 활성화</string>
     <string name="p_stop_on_ce_drop">예장 드롭시 정지</string>
     <string name="p_stop_on_ce_get">예장 획득시 정지</string>
+    <string name="p_stop_on_first_clear_rewards">초회 클리어 보상 수령시 정지</string>
     <string name="p_stop_on_ce_get_summary">첫번째 퀘스트 클리어 보상과 인연예장(실험적 기능)</string>
     <string name="p_screenshot_drops">드롭 아이템 스크린샷</string>
     <string name="p_screenshot_drops_summary">\'drops\' 폴더에 저장되었습니다</string>
@@ -121,14 +151,22 @@
 
     <string name="p_wait_ap_regen_text">AP 회복 대기</string>
     <string name="wait_ap_regen_toast_message">AP회복 확인중.  %d분 후 재확인.</string>
-
+	
     <string name="p_storage">저장소</string>
     <string name="p_folder">서포트 이미지, 드롭 이미지 등의 폴더를 변경합니다.</string>
+
+
+
 
     <string name="p_choose_folder_title">폴더 선택</string>
     <string name="p_choose_folder_message">서포트 이미지, 드롭 이미지 등을 저장할 폴더를 선택하세요. \n\n참고: 파일 탐색기의 \'내부 저장소 보기\'를 활성화 해야 할 수도 있습니다.</string>
     <string name="p_choose_folder_not_exist_title">다른 폴더를 선택하세요</string>
     <string name="p_choose_folder_not_exist_message">서포트 이미지, 드롭 이미지 등을 저장하는 폴더에 접근할 수 없습니다.</string>
+	
+	
+	
+	
+	
     <string name="p_choose_folder_action">선택</string>
 
     <string name="p_advanced">고급</string>
@@ -136,10 +174,21 @@
     <string name="p_debug_mode_summary">대조되고 있는 부분 표시하기</string>
     <string name="p_ignore_notch">노치(카메라 구멍) 계산 무시</string>
     <string name="p_ignore_notch_summary">페그오에서 노치 부분이 검정색으로 나오지 않을 경우 활성화 하세요.</string>
+	
+	
+	
+	
     <string name="p_record_screen">화면 녹화</string>
     <string name="p_record_screen_summary">\'record.mp4\'라는 파일이 지정된 폴더에 저장됩니다.\n저장하려면 복사하거나 이름을 바꿔주세요.</string>
     <string name="p_root_screenshot">루트 권한으로 스크린샷 하기</string>
     <string name="p_root_screenshot_summary">녹스(안드로이드 7)에서 유용. 해당 부분 활성화 후 서비스 ON.</string>
+	
+	
+	
+	
+	
+	
+	
     <string name="p_auto_start_service">서비스 자동시작</string>
 
     <string name="p_fine_tune">미세 조정</string>
@@ -167,7 +216,6 @@
     <string name="p_nav_troubleshoot">문제 해결</string>
     <string name="p_nav_battle_config_edit">설정 파일 수정</string>
     <string name="p_nav_card_priority">카드 우선</string>
-
     <string name="p_refill_type_gold">금</string>
     <string name="p_refill_type_silver">은</string>
     <string name="p_refill_type_bronze">동</string>
@@ -196,8 +244,20 @@
     <string name="p_script_mode_gift_box">선물함</string>
 
     <string name="p_max_gold_ember_set_size">4성 경험치 카드 개수</string>
-
+	
     <string name="p_not_set">설정 안함</string>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <string name="p_support_class_none">없음</string>
     <string name="p_support_class_all">모두</string>
@@ -211,14 +271,33 @@
     <string name="p_support_class_extra">엑스트라</string>
     <string name="p_support_class_mix">혼합</string>
 
+    <string name="overlay_notification_text">오버레이 서비스 실행중</string>
     <string name="notification_stop">멈춤</string>
-
     <string name="accessibility_disabled_title">접근성 비활성화</string>
     <string name="accessibility_disabled_message">시스템 설정에서 접근성 서비스 사용을 활성화 하십시오. 이미 활성화 되어 있다면 비활성화 후 다시 활성화 하십시오.</string>
     <string name="accessibility_disabled_go_to_settings">설정으로 가기</string>
     <string name="draw_overlay_disabled_title">오버레이 권한 없음</string>
     <string name="draw_overlay_disabled_message">다른 앱 위에 그리기를 허용해주세요. 재생 버튼을 활성화하기 위해 쓰입니다.</string>
     <string name="cannot_start_recording">화면 녹화를 시작할 수 없음</string>
+    <string name="unexpected_error_copy">복사</string>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
     <string name="script_msg_ap_ran_out">AP를 모두 소비하였습니다!</string>
     <string name="stopped_by_user">사용자에 의해 스크립트 중지됨</string>
@@ -226,6 +305,7 @@
     <string name="screen_turned_off">화면 꺼짐으로인해 스크립트 중지됨</string>
     <string name="unexpected_error">예상 밖의 오류</string>
     <string name="script_exited">스크립트 빠져나옴</string>
+    <string name="lottery_reset_disabled">룰렛 초기화 비활성화</string>
     <string name="inventory_full">인벤토리 꽉 참</string>
     <string name="present_box_full">선물함 꽉 참</string>
     <string name="support_img_maker_not_found">현재 화면에서 서포트 이미지를 찾을 수 없습니다. 서포트 창이나 친구 목록에 계신가요?</string>
@@ -234,6 +314,7 @@
     <string name="support_selection_preferred_not_set">\'선호\' 서포트 선택 모드를 사용할 경우, 최소 하나의 서번트 또는 개념예장을 지정해주십시오.</string>
     <string name="ce_dropped">개념예장 드롭함!</string>
     <string name="ce_get">개념예장 획득!</string>
+    <string name="first_clear_rewards">초회 클리어 보상!</string>
     <string name="withdraw_disabled">모든 서번트가 패배하였으며 자동 철수는 비활성화 상태입니다.</string>
     <string name="times_ran">%d번 반복함</string>
     <string name="times_ran_out_of">%2$d번 중 %1$d번 반복함</string>
@@ -248,6 +329,22 @@
 
     <string name="p_mats">재료</string>
     <string name="mats_farmed">%d개의 재료 파밍됨</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <string name="times_rolled">Rolled %d time(s)</string>
 
     <string name="mat_proof">영웅의 증표</string>
     <string name="mat_bone">흉골</string>
@@ -288,9 +385,16 @@
     <string name="mat_core">효광노심</string>
     <string name="mat_bell">한고령</string>
     <string name="mat_arrow">재난의 화살촉</string>
+    <string name="mat_tiara">광은의 관</string>
+    <string name="mat_particle">신맥령자</string>
+    <string name="mat_thread">무지개 실구슬</string>
     <string name="mat_mirror">구십구경</string>
     <string name="mat_egg">진리의 알</string>
-
+    <string name="mat_star_shard">황성의 조각</string>
+    <string name="mat_fruit">유구의 열매</string>
+    <string name="mat_demon_lantern">귀염귀등</string>
+    <string name="mat_amnesty_bell">사면의 작은 종</string>
+    <string name="mat_fantasy_scales">몽환의 인분</string>
     <string name="p_shuffle_cards">카드 셔플</string>
     <string name="p_shuffle_cards_wave">웨이브</string>
     <string name="p_shuffle_cards_when">웨이브 </string>
