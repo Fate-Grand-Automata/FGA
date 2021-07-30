@@ -132,8 +132,6 @@ private fun BattleConfigContent(
                     }
 
                     item {
-                        val context = LocalContext.current
-
                         HeadingButton(
                             text = stringResource(R.string.battle_config_item_delete),
                             isDanger = true,
