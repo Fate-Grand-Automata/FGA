@@ -4,7 +4,7 @@
         This accessibility service is used to perform clicks and swipes without root.
         It also enables automatic detection of FGO version (NA/JP/CN/TW/KR) by checking the APK name of the foreground app.
         In case you see the service malfunctioning, try turning it OFF and then turn ON again.
-        If it still doesn\'t work, you might have to adjust your device\'s Battery optimization settings for the app																													
+        If it still doesn\'t work, you might have to adjust your device\'s Battery optimization settings for the app.
     </string>
     <string name="battle_config_item_copy">복사</string>
     <string name="battle_config_item_delete">삭제</string>
@@ -16,7 +16,7 @@
     <string name="battle_config_item_delete_confirm_message">이 설정을 정말로 지우시겠습니까?</string>
     <string name="battle_config_support_any">아무거나</string>
     <string name="support_imgs_extracted">서포트 이미지가 성공적으로 추출되었습니다</string>
-    <string name="support_imgs_extract_failed">서포트 이미지 추출을 실패했습니다</string>															
+    <string name="support_imgs_extract_failed">서포트 이미지 추출을 실패했습니다</string>
     <string name="battle_config_list_no_items">오토 스킬 아이템 없음</string>
     <string name="battle_config_list_import">불러오기</string>
     <string name="battle_config_list_export_all">모두 내보내기</string>
@@ -42,16 +42,16 @@
     <string name="skill_maker_main_clear">초기화</string>
     <string name="skill_maker_main_servant">서번트 %d</string>
     <string name="skill_maker_main_attack">공격</string>
-    <string name="skill_maker_master_skills_header">마스터 스킬</string>															  
+    <string name="skill_maker_master_skills_header">마스터 스킬</string>
     <string name="skill_maker_master_skills_order_change">오더 체인지 / 전투복</string>
-	<string name="skill_maker_order_change_header">오더 체인지</string>
+    <string name="skill_maker_order_change_header">오더 체인지</string>
     <string name="skill_maker_order_change_starting_member">스타팅 멤버</string>
     <string name="skill_maker_order_change_sub_member">서브 멤버</string>
     <string name="skill_maker_order_change_servant">서번트\n\n%d</string>
     <string name="skill_maker_target_header">대상 선택</string>
     <string name="skill_maker_target_none">대상 없음</string>
     <string name="skill_maker_target_servant">서번트\n\n%d</string>
-	<string name="skill_maker_space_ishtar">스페이스 이슈타르</string>																 
+    <string name="skill_maker_space_ishtar">스페이스 이슈타르</string>
     <string name="skill_maker_emiya">에미야</string>
     <string name="skill_maker_quick">Quick</string>
     <string name="skill_maker_arts">Arts</string>
@@ -118,7 +118,7 @@
     <string name="wait_ap_regen_toast_message">AP회복 확인중.  %d분 후 재확인.</string>
     <string name="p_storage">저장소</string>
     <string name="p_folder">서포트 이미지, 드롭 이미지 등의 폴더를 변경합니다.</string>
-<string name="p_choose_folder_title">폴더 선택</string>
+    <string name="p_choose_folder_title">폴더 선택</string>
     <string name="p_choose_folder_message">서포트 이미지, 드롭 이미지 등을 저장할 폴더를 선택하세요. \n\n참고: 파일 탐색기의 \'내부 저장소 보기\'를 활성화 해야 할 수도 있습니다.</string>
     <string name="p_choose_folder_not_exist_title">다른 폴더를 선택하세요</string>
     <string name="p_choose_folder_not_exist_message">서포트 이미지, 드롭 이미지 등을 저장하는 폴더에 접근할 수 없습니다.</string>
@@ -128,11 +128,11 @@
     <string name="p_debug_mode_summary">대조되고 있는 부분 표시하기</string>
     <string name="p_ignore_notch">노치(카메라 구멍) 계산 무시</string>
     <string name="p_ignore_notch_summary">페그오에서 노치 부분이 검정색으로 나오지 않을 경우 활성화 하세요.</string>
-	<string name="p_record_screen">화면 녹화</string>
+    <string name="p_record_screen">화면 녹화</string>
     <string name="p_record_screen_summary">\'record.mp4\'라는 파일이 지정된 폴더에 저장됩니다.\n저장하려면 복사하거나 이름을 바꿔주세요.</string>
     <string name="p_root_screenshot">루트 권한으로 스크린샷 하기</string>
     <string name="p_root_screenshot_summary">녹스(안드로이드 7)에서 유용. 해당 부분 활성화 후 서비스 ON.</string>
-	<string name="p_auto_start_service">서비스 자동시작</string>
+    <string name="p_auto_start_service">서비스 자동시작</string>
     <string name="p_fine_tune">미세 조정</string>
     <string name="p_fine_tune_support">서포트</string>
     <string name="p_fine_tune_support_swipes_per_update">갱신당 스와이프 수</string>
@@ -178,7 +178,7 @@
     <string name="p_script_mode_fp">친구 포인트 가챠</string>
     <string name="p_script_mode_support_image_maker">서포트 이미지 메이커</string>
     <string name="p_script_mode_gift_box">선물함</string>
-    <string name="p_max_gold_ember_set_size">4성 경험치 카드 개수</string>	
+    <string name="p_max_gold_ember_set_size">4성 경험치 카드 개수</string>    
     <string name="p_not_set">설정 안함</string>
     <string name="p_support_class_none">없음</string>
     <string name="p_support_class_all">모두</string>
