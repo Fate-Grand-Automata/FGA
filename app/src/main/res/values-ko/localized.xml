@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tapper_service_description">
-        This accessibility service is used to perform clicks and swipes without root.
-        It also enables automatic detection of FGO version (NA/JP/CN/TW/KR) by checking the APK name of the foreground app.
-        In case you see the service malfunctioning, try turning it OFF and then turn ON again.
-        If it still doesn\'t work, you might have to adjust your device\'s Battery optimization settings for the app.
+        이 접근성 서비스는 루트 권한 없이 터치와 스와이프를 실행하기 위해 사용됩니다.
+        또한 실행중인 앱의 APK명을 확인하여 FGO의 버전(NA/JP/CN/TW/KR)을 자동으로 확인합니다.
+        서비스가 제대로 실행되고 있지 않으면 서비스를 끄고 다시 켜보시길 바랍니다.
+        그럼에도 불구하고 제대로 실행되지 않는다면, 해당 어플리케이션의 배터리 사용량 최적화 설정을 조정해야 할 수도 있습니다.
     </string>
     <string name="battle_config_item_copy">복사</string>
     <string name="battle_config_item_delete">삭제</string>
