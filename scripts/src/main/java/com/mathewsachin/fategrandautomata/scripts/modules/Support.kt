@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -14,8 +15,6 @@ import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
-import timber.log.Timber
-import timber.log.debug
 import kotlin.streams.asStream
 import kotlin.streams.toList
 import kotlin.time.Duration
@@ -338,7 +337,7 @@ class Support(
             }
             .firstOrNull { Support in it }
             ?: game.supportDefaultBounds.also {
-                Timber.debug { "Default Region being returned" }
+                messages.log(ScriptLog.DefaultSupportBounds)
             }
 
     private fun isFriend(Region: Region): Boolean {
@@ -400,18 +399,12 @@ class Support(
                 }
             }
 
-        Timber.debug {
-            // Detected skill levels as string for debugging
-            result
-                .zip(needMaxedSkills)
-                .joinToString("/") { (success, shouldBeMaxed) ->
-                    when {
-                        !shouldBeMaxed -> "x"
-                        success -> "10"
-                        else -> "f"
-                    }
-                }
-        }
+        messages.log(
+            ScriptLog.MaxSkills(
+                needMaxedSkills = needMaxedSkills,
+                isSkillMaxed = result
+            )
+        )
 
         return result.all { it }
     }

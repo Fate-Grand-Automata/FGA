@@ -2,13 +2,12 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.models.OrderChangeMember
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSlot
 import com.mathewsachin.fategrandautomata.scripts.models.skills
 import com.mathewsachin.libautomata.IPattern
-import timber.log.Timber
-import timber.log.debug
 import kotlin.time.Duration
 
 class ServantTracker(
@@ -65,7 +64,12 @@ class ServantTracker(
     }
 
     private fun init(teamSlot: TeamSlot, slot: ServantSlot) {
-        Timber.debug { "Servant: $teamSlot in Slot: $slot" }
+        messages.log(
+            ScriptLog.ServantEnteredSlot(
+                servant = teamSlot,
+                slot = slot
+            )
+        )
 
         useSameSnapIn {
             checkImages[teamSlot] = TeamSlotData(
@@ -167,14 +171,21 @@ class ServantTracker(
                     images[Images.Support] in game.supportCheckRegion(card)
                 }
 
-                Timber.debug { "$matched belong to Support $supportSlot" }
+                messages.log(
+                    ScriptLog.CardsBelongToServant(
+                        cards = matched,
+                        servant = supportSlot,
+                        isSupport = true
+                    )
+                )
+
                 cardsRemaining -= matched
 
                 result[supportSlot] = matched
             }
         }
 
-        deployed.forEach { (slot, teamSlot) ->
+        deployed.forEach { (_, teamSlot) ->
             if (supportSlot != teamSlot && teamSlot != null) {
                 val img = faceCardImages[teamSlot] ?: return@forEach
 
@@ -182,7 +193,13 @@ class ServantTracker(
                     img in game.servantMatchRegion(card)
                 }
 
-                Timber.debug { "$matched belong to $slot" }
+                messages.log(
+                    ScriptLog.CardsBelongToServant(
+                        cards = matched,
+                        servant = teamSlot
+                    )
+                )
+
                 cardsRemaining -= matched
 
                 result[teamSlot] = matched

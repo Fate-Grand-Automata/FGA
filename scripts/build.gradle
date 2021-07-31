@@ -9,8 +9,6 @@ dependencies {
 
     implementation "com.google.dagger:hilt-core:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
-
-    implementation 'com.jakewharton.timber:timber-jdk:5.0.0-SNAPSHOT'
 }
 
 java {
