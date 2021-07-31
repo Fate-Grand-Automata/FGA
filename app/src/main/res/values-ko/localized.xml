@@ -229,7 +229,7 @@
     <string name="picked_exp_stacks">%d개의 경험치 묶음 획득</string>
     <string name="p_mats">재료</string>
     <string name="mats_farmed">%d개의 재료 파밍됨</string>
-    <string name="times_rolled">Rolled %d time(s)</string>
+    <string name="times_rolled"> %d번 돌림(s)</string>
     <string name="mat_proof">영웅의 증표</string>
     <string name="mat_bone">흉골</string>
     <string name="mat_fang">용의 송곳니</string>
