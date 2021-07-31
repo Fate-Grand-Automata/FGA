@@ -151,6 +151,12 @@ class ScriptManager @Inject constructor(
                 message(scriptExitedString, msg)
             }
             is AutoBattle.ExitException -> {
+                if (e.reason !is AutoBattle.ExitReason.Abort) {
+                    val msg = service.getString(R.string.script_exited)
+
+                    messages.notify(msg)
+                }
+
                 showBattleExit(service, e)
             }
             is ScriptAbortException -> {
