@@ -5,14 +5,12 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
 import com.mathewsachin.fategrandautomata.scripts.models.SearchVisibleResult
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.Size
+import com.mathewsachin.libautomata.*
 import timber.log.Timber
 import timber.log.debug
 import kotlin.streams.asStream
@@ -375,12 +373,17 @@ class Support(
 
     private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {
         val y = bounds.y + 325
-        val x = bounds.x + 1627
+        val x = bounds.x + 1617
+
+        val skillMargin = when(prefs.gameServer) {
+            GameServerEnum.Jp -> 90
+            else -> 155
+        }
 
         val skillLoc = listOf(
             Location(x, y),
-            Location(x + 156, y),
-            Location(x + 310, y)
+            Location(x + skillMargin, y),
+            Location(x + 2 * skillMargin, y)
         )
 
         val result = skillLoc
@@ -389,7 +392,7 @@ class Support(
                 if (!shouldBeMaxed)
                     true
                 else {
-                    val skillRegion = Region(location, Size(35, 45))
+                    val skillRegion = Region(location, Size(45, 45))
                     skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
                 }
             }
