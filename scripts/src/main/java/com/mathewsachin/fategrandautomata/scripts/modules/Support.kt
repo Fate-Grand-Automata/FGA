@@ -396,7 +396,7 @@ class Support(
                     true
                 else {
                     val skillRegion = Region(location, Size(70, 50))
-                    skillRegion.exists(images[Images.SkillTen])
+                    skillRegion.exists(images[Images.SkillTen], similarity = 0.8)
                 }
             }
 
