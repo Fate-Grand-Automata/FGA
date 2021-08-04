@@ -341,9 +341,9 @@ class Game @Inject constructor(
     val resultCeRewardDetailsRegion = Region(if (isWide) 193 else 0, 512, 135, 115)
     val resultCeRewardCloseClick = Location(if (isWide) 265 else 80, 60)
 
-    val fpSummonCheck = Region(100, 1220, 75, 75).xFromCenter()
+    val fpSummonCheck = Region(100, 1152, 75, 143).xFromCenter()
     val fpContinueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
-    val fpFirst10SummonClick = Location(120, 1120).xFromCenter()
+    val fpFirst10SummonClick = Location(120, 1062).xFromCenter()
     val fpOkClick = Location(320, 1120).xFromCenter()
     val fpContinueSummonClick = Location(320, 1325).xFromCenter()
     val fpSkipRapidClick = Location(1240, 1400).xFromCenter()
