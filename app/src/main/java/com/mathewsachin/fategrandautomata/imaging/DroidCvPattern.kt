@@ -51,6 +51,10 @@ class DroidCvPattern(
         alpha = matWithAlpha.alpha
     }
 
+    private constructor(mat: Mat?, alpha: Mat?) : this(mat) {
+        this.alpha = alpha
+    }
+
     constructor(stream: InputStream) : this(makeMat(stream))
 
     init {
@@ -70,23 +74,37 @@ class DroidCvPattern(
         mat = null
     }
 
-    private fun resize(target: Mat, size: Size) {
+    private fun resize(source: Mat, target: Mat, size: Size) {
         Imgproc.resize(
-            mat, target,
+            source, target,
             CvSize(size.width.toDouble(), size.height.toDouble()),
             0.0, 0.0, Imgproc.INTER_AREA
         )
     }
 
     override fun resize(size: Size): IPattern {
-        val result = Mat()
-        resize(result, size)
-        return DroidCvPattern(result).tag(tag)
+        val resizedMat = Mat()
+        resize(mat!!, resizedMat, size)
+
+        var resizedAlpha: Mat? = null
+        if (alpha != null) {
+            resizedAlpha = Mat()
+            resize(alpha!!, resizedAlpha, size)
+        }
+
+        return DroidCvPattern(resizedMat, resizedAlpha).tag(tag)
+
     }
 
     override fun resize(target: IPattern, size: Size) {
         if (target is DroidCvPattern) {
-            resize(target.mat!!, size)
+            resize(mat!!, target.mat!!, size)
+            if (alpha != null) {
+                if (target.alpha == null) {
+                    target.alpha = Mat()
+                }
+                resize(alpha!!, target.alpha!!, size)
+            }
         }
 
         target.tag(tag)
@@ -172,7 +190,7 @@ class DroidCvPattern(
 
         val rect = Rect(clippedRegion.x, clippedRegion.y, clippedRegion.width, clippedRegion.height)
 
-        return DroidCvPattern(MatWithAlpha(Mat(mat, rect), alpha?.let { Mat(alpha, rect) })).tag(tag)
+        return DroidCvPattern(Mat(mat, rect), alpha?.let { Mat(alpha, rect) }).tag(tag)
     }
 
     fun asBitmap(): Bitmap {
@@ -196,7 +214,7 @@ class DroidCvPattern(
         }
     }
 
-    override fun copy() = DroidCvPattern(mat?.clone()).tag(tag)
+    override fun copy() = DroidCvPattern(mat?.clone(), alpha?.clone()).tag(tag)
 
     override fun tag(tag: String) = apply { this.tag = tag }
 
