@@ -81,10 +81,10 @@ class DroidCvPattern(
         val resizedMat = Mat()
         resize(mat, resizedMat, size)
 
-        var resizedAlpha: Mat? = null
-        if (alpha != null) {
-            resizedAlpha = Mat()
-            resize(alpha!!, resizedAlpha, size)
+        val resizedAlpha = alpha?.let {
+            val target = Mat()
+            resize(it, target, size)
+            target
         }
 
         return DroidCvPattern(resizedMat, resizedAlpha).tag(tag)
@@ -94,11 +94,11 @@ class DroidCvPattern(
     override fun resize(target: IPattern, size: Size) {
         if (target is DroidCvPattern) {
             resize(mat, target.mat, size)
-            if (alpha != null) {
+            alpha?.let {
                 if (target.alpha == null) {
                     target.alpha = Mat()
                 }
-                resize(alpha!!, target.alpha!!, size)
+                resize(it, target.alpha!!, size)
             }
         }
 
