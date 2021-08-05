@@ -114,7 +114,7 @@ class DroidCvPattern(
                         mat,
                         template.mat,
                         result,
-                        Imgproc.TM_CCOEFF_NORMED,
+                        Imgproc.TM_CCORR_NORMED,
                         template.alpha
                     )
                 } else {
@@ -122,7 +122,7 @@ class DroidCvPattern(
                         mat,
                         template.mat,
                         result,
-                        Imgproc.TM_CCOEFF_NORMED
+                        Imgproc.TM_CCORR_NORMED
                     )
                 }
             } else {
