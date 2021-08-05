@@ -65,8 +65,9 @@ class DroidCvPattern(
 
     override fun close() {
         if (ownsMat) {
-            mat?.release()
+            mat.release()
         }
+        alpha?.release()
     }
 
     private fun resize(source: Mat, target: Mat, size: Size) {
@@ -114,7 +115,7 @@ class DroidCvPattern(
                         mat,
                         template.mat,
                         result,
-                        Imgproc.TM_CCORR_NORMED,
+                        Imgproc.TM_CCOEFF_NORMED,
                         template.alpha
                     )
                 } else {
@@ -122,16 +123,24 @@ class DroidCvPattern(
                         mat,
                         template.mat,
                         result,
-                        Imgproc.TM_CCORR_NORMED
+                        Imgproc.TM_CCOEFF_NORMED
                     )
+                }
+
+                // in some cases, NaNs and Infinite values are part of the result
+                for(row in 0 until result.rows()) {
+                    for(col in 0 until result.cols()) {
+                        val value = result.get(row, col)[0]
+                        if (!value.isFinite()) {
+                            result.put(row, col, 0.0)
+                        }
+                    }
                 }
             } else {
                 Timber.verbose { "Skipped matching $template: Region out of bounds" }
             }
         }
 
-        //in some cases, NaNs are part of the result
-        Core.patchNaNs(result, 0.0)
         return result
     }
 
@@ -175,8 +184,8 @@ class DroidCvPattern(
         }
     }
 
-    override val width get() = mat?.width() ?: 0
-    override val height get() = mat?.height() ?: 0
+    override val width get() = mat.width() ?: 0
+    override val height get() = mat.height() ?: 0
 
     override fun crop(region: Region): IPattern {
         val clippedRegion = Region(0, 0, width, height)
@@ -191,7 +200,7 @@ class DroidCvPattern(
         val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
         Mat().use {
-            val conversion = if (mat?.type() == CvType.CV_8UC1)
+            val conversion = if (mat.type() == CvType.CV_8UC1)
                 Imgproc.COLOR_GRAY2RGB
             else Imgproc.COLOR_BGR2RGBA
 
@@ -208,7 +217,7 @@ class DroidCvPattern(
         }
     }
 
-    override fun copy() = DroidCvPattern(mat?.clone(), alpha?.clone()).tag(tag)
+    override fun copy() = DroidCvPattern(mat.clone(), alpha?.clone()).tag(tag)
 
     override fun tag(tag: String) = apply { this.tag = tag }
 
