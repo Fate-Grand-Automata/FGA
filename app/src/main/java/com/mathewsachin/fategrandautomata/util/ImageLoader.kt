@@ -160,7 +160,9 @@ class ImageLoader @Inject constructor(
     private fun fileLoader(kind: SupportImageKind, name: String): List<IPattern> {
         val inputStreams = storageProvider.readSupportImage(kind, name)
         return inputStreams.withIndex().map { (i, stream) ->
-            DroidCvPattern(stream).tag("$name:$i")
+            stream.use {
+                DroidCvPattern(it).tag("$name:$i")
+            }
         }
     }
 
