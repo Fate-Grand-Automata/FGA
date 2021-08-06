@@ -27,24 +27,28 @@ class DroidCvPattern(
         fun makeMat(stream: InputStream): MatWithAlpha {
             val byteArray = stream.readBytes()
             MatOfByte(*byteArray).use {
-                val grayScale = Imgcodecs.imdecode(it, Imgcodecs.IMREAD_GRAYSCALE)
-                var alphaChannel: Mat? = null
+                Imgcodecs.imdecode(it, Imgcodecs.IMREAD_UNCHANGED).use { decoded ->
+                    val grayScale = Mat()
+                    var alphaChannel: Mat? = null
 
-                Imgcodecs.imdecode(it, Imgcodecs.IMREAD_UNCHANGED).use { original ->
-                    // RGBA, extract alpha
-                    if (original.channels() == 4) {
-                        alphaChannel =
-                            Mat().apply { Core.extractChannel(original, this, 3) }
-                        val minMax = Core.minMaxLoc(alphaChannel)
-                        if (minMax.minVal.equals(255.0)) {
-                            //every pixel has 0 transparency, alpha is useless
-                            alphaChannel?.release()
-                            alphaChannel = null
+                    when (decoded.channels()) {
+                        4 -> {
+                            // RGBA, extract alpha
+                            alphaChannel =
+                                Mat().apply { Core.extractChannel(decoded, this, 3) }
+                            val minMax = Core.minMaxLoc(alphaChannel)
+                            if (minMax.minVal.equals(255.0)) {
+                                //every pixel has 0 transparency, alpha is useless
+                                alphaChannel.release()
+                                alphaChannel = null
+                            }
+                            Imgproc.cvtColor(decoded, grayScale, Imgproc.COLOR_BGRA2GRAY)
                         }
+                        3 -> Imgproc.cvtColor(decoded, grayScale, Imgproc.COLOR_BGRA2GRAY)
                     }
-                }
 
-                return MatWithAlpha(grayScale, alphaChannel)
+                    return MatWithAlpha(grayScale, alphaChannel)
+                }
             }
         }
     }
