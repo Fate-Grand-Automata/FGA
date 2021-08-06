@@ -18,11 +18,10 @@ import org.opencv.core.Size as CvSize
 
 class DroidCvPattern(
     private var mat: Mat = Mat(),
+    private var alpha: Mat? = null,
     private val ownsMat: Boolean = true
 ) : IPattern {
     private data class MatWithAlpha(val mat: Mat, val alpha: Mat?)
-
-    var alpha: Mat? = null
 
     private companion object {
         fun makeMat(stream: InputStream): MatWithAlpha {
@@ -31,11 +30,11 @@ class DroidCvPattern(
                 val grayScale = Imgcodecs.imdecode(it, Imgcodecs.IMREAD_GRAYSCALE)
                 var alphaChannel: Mat? = null
 
-                Imgcodecs.imdecode(it, Imgcodecs.IMREAD_UNCHANGED).use {
+                Imgcodecs.imdecode(it, Imgcodecs.IMREAD_UNCHANGED).use { original ->
                     // RGBA, extract alpha
-                    if (it.channels() == 4) {
+                    if (original.channels() == 4) {
                         alphaChannel =
-                            Mat().apply { Core.extractChannel(it, this, 3) }
+                            Mat().apply { Core.extractChannel(original, this, 3) }
                         val minMax = Core.minMaxLoc(alphaChannel)
                         if (minMax.minVal.equals(255.0)) {
                             //every pixel has 0 transparency, alpha is useless
@@ -50,13 +49,7 @@ class DroidCvPattern(
         }
     }
 
-    private constructor(matWithAlpha: MatWithAlpha) : this(matWithAlpha.mat) {
-        alpha = matWithAlpha.alpha
-    }
-
-    private constructor(mat: Mat, alpha: Mat?) : this(mat) {
-        this.alpha = alpha
-    }
+    private constructor(matWithAlpha: MatWithAlpha) : this(matWithAlpha.mat, matWithAlpha.alpha)
 
     constructor(stream: InputStream) : this(makeMat(stream))
 
@@ -171,8 +164,8 @@ class DroidCvPattern(
         }
     }
 
-    override val width get() = mat.width() ?: 0
-    override val height get() = mat.height() ?: 0
+    override val width get() = mat.width()
+    override val height get() = mat.height()
 
     override fun crop(region: Region): IPattern {
         val clippedRegion = Region(0, 0, width, height)
