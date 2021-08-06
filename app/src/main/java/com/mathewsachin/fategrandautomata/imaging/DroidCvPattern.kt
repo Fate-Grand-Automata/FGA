@@ -36,6 +36,12 @@ class DroidCvPattern(
                     if (it.channels() == 4) {
                         alphaChannel =
                             Mat().apply { Core.extractChannel(it, this, 3) }
+                        val minMax = Core.minMaxLoc(alphaChannel)
+                        if (minMax.minVal.equals(255.0)) {
+                            //every pixel has 0 transparency, alpha is useless
+                            alphaChannel?.release()
+                            alphaChannel = null
+                        }
                     }
                 }
 
@@ -79,17 +85,12 @@ class DroidCvPattern(
     }
 
     override fun resize(size: Size): IPattern {
-        val resizedMat = Mat()
-        resize(mat, resizedMat, size)
-
+        val resizedMat = Mat().apply { resize(mat, this, size) }
         val resizedAlpha = alpha?.let {
-            val target = Mat()
-            resize(it, target, size)
-            target
+            Mat().apply { resize(it, this, size) }
         }
 
         return DroidCvPattern(resizedMat, resizedAlpha).tag(tag)
-
     }
 
     override fun resize(target: IPattern, size: Size) {
@@ -125,16 +126,6 @@ class DroidCvPattern(
                         result,
                         Imgproc.TM_CCOEFF_NORMED
                     )
-                }
-
-                // in some cases, NaNs and Infinite values are part of the result
-                for(row in 0 until result.rows()) {
-                    for(col in 0 until result.cols()) {
-                        val value = result.get(row, col)[0]
-                        if (!value.isFinite()) {
-                            result.put(row, col, 0.0)
-                        }
-                    }
                 }
             } else {
                 Timber.verbose { "Skipped matching $template: Region out of bounds" }
