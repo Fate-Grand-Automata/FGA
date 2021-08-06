@@ -85,11 +85,10 @@ class DroidCvPattern(
     override fun resize(target: IPattern, size: Size) {
         if (target is DroidCvPattern) {
             resize(mat, target.mat, size)
-            alpha?.let {
-                if (target.alpha == null) {
-                    target.alpha = Mat()
+            alpha?.let { originalAlpha ->
+                target.alpha = (target.alpha ?: Mat()).apply {
+                    resize(originalAlpha, this, size)
                 }
-                resize(it, target.alpha!!, size)
             }
         }
 
