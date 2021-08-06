@@ -60,10 +60,6 @@ class DroidCvPattern(
 
     constructor(stream: InputStream) : this(makeMat(stream))
 
-    init {
-        require(mat != null) { "mat should not be null" }
-    }
-
     private var tag = ""
 
     override fun toString() =
