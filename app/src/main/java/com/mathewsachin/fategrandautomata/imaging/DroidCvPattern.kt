@@ -44,7 +44,8 @@ class DroidCvPattern(
                             }
                             Imgproc.cvtColor(decoded, grayScale, Imgproc.COLOR_BGRA2GRAY)
                         }
-                        3 -> Imgproc.cvtColor(decoded, grayScale, Imgproc.COLOR_BGRA2GRAY)
+                        3 -> Imgproc.cvtColor(decoded, grayScale, Imgproc.COLOR_BGR2GRAY)
+                        1 -> decoded.copyTo(grayScale)
                     }
 
                     return MatWithAlpha(grayScale, alphaChannel)
