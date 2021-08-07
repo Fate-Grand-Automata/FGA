@@ -29,12 +29,12 @@ class StorageProvider @Inject constructor(
     fun DocumentFile?.getOrCreateDir(name: String) =
         this?.findFile(name)?.takeIf { it.isDirectory }
             ?: this?.createDirectory(name)
-            ?: throw Exception("Couldn't create dir $name")
+            ?: throw KnownException(KnownException.Reason.CouldNotCrateDirectory(name))
 
     fun DocumentFile?.getOrCreateFile(name: String, mime: String = mimeAny) =
         this?.findFile(name)?.takeIf { !it.isDirectory }
             ?: this?.createFile(mime, name)
-            ?: throw Exception("Couldn't create file $name")
+            ?: throw KnownException(KnownException.Reason.CouldNotCrateFile(name))
 
     val resolver: ContentResolver = context.contentResolver
     private var dirRoot: DocumentFile? = null
@@ -50,7 +50,7 @@ class StorageProvider @Inject constructor(
 
     val recordingFileDescriptor
         get() = resolver.openFileDescriptor(recordingFile.uri, "rw")
-            ?: throw Exception("Couldn't open recording file descriptor")
+            ?: throw KnownException(KnownException.Reason.CouldNotOpenFileForRecording)
 
     private val persistablePermission =
         Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
@@ -127,21 +127,27 @@ class StorageProvider @Inject constructor(
         }
 
         return resolver.openOutputStream(resolved.uri)
-            ?: throw Exception("Cannot open file for writing: $kind $name")
+            ?: throw KnownException(
+                KnownException.Reason.CouldNotOpenSupportFileForWriting(kind, name)
+            )
     }
 
     override fun readSupportImage(kind: SupportImageKind, name: String): List<InputStream> {
         val file = kind.imageFolder.findFile(name)
-            ?: throw Exception("Cannot open file for reading: $kind $name")
+            ?: throw KnownException(
+                KnownException.Reason.CouldNotOpenSupportFileForReading(kind, name)
+            )
 
         val files = if (file.isDirectory) {
             file.listFiles().takeUnless{ it.isEmpty() }
-                ?: throw Exception("$kind folder $name is empty!")
+                ?: throw KnownException(KnownException.Reason.SupportFolderIsEmpty(kind, name))
         } else arrayOf(file)
 
         return files.map {
             resolver.openInputStream(it.uri)
-                ?: throw Exception("Cannot open file for reading: $kind $name")
+                ?: throw KnownException(
+                    KnownException.Reason.CouldNotOpenSupportFileForReading(kind, name)
+                )
         }
     }
 
@@ -161,7 +167,7 @@ class StorageProvider @Inject constructor(
 
             pattern.use {
                 val file = dropsFolder.createFile(mimePng, dropFileName)
-                    ?: throw Exception("Failed to create drop screenshot file")
+                    ?: throw KnownException(KnownException.Reason.CouldNotCreateDropScreenshotFile)
 
                 resolver.openOutputStream(file.uri)?.use { stream ->
                     pattern.save(stream)
