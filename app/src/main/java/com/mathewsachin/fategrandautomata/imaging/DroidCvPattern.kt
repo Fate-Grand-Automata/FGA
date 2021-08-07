@@ -17,24 +17,46 @@ import kotlin.math.roundToInt
 import org.opencv.core.Size as CvSize
 
 class DroidCvPattern(
-    private var mat: Mat? = Mat(),
+    private var mat: Mat = Mat(),
+    private var alpha: Mat? = null,
     private val ownsMat: Boolean = true
 ) : IPattern {
-    private companion object {
-        fun makeMat(stream: InputStream): Mat {
-            val byteArray = stream.readBytes()
+    private data class MatWithAlpha(val mat: Mat, val alpha: Mat?)
 
-            return MatOfByte(*byteArray).use {
-                Imgcodecs.imdecode(it, Imgcodecs.IMREAD_GRAYSCALE)
+    private companion object {
+        fun makeMat(stream: InputStream): MatWithAlpha {
+            val byteArray = stream.readBytes()
+            MatOfByte(*byteArray).use {
+                Imgcodecs.imdecode(it, Imgcodecs.IMREAD_UNCHANGED).use { decoded ->
+                    val grayScale = Mat()
+                    var alphaChannel: Mat? = null
+
+                    when (decoded.channels()) {
+                        4 -> {
+                            // RGBA, extract alpha
+                            alphaChannel =
+                                Mat().apply { Core.extractChannel(decoded, this, 3) }
+                            val minMax = Core.minMaxLoc(alphaChannel)
+                            if (minMax.minVal.equals(255.0)) {
+                                //every pixel has 0 transparency, alpha is useless
+                                alphaChannel.release()
+                                alphaChannel = null
+                            }
+                            Imgproc.cvtColor(decoded, grayScale, Imgproc.COLOR_BGRA2GRAY)
+                        }
+                        3 -> Imgproc.cvtColor(decoded, grayScale, Imgproc.COLOR_BGR2GRAY)
+                        1 -> decoded.copyTo(grayScale)
+                    }
+
+                    return MatWithAlpha(grayScale, alphaChannel)
+                }
             }
         }
     }
 
-    constructor(stream: InputStream) : this(makeMat(stream))
+    private constructor(matWithAlpha: MatWithAlpha) : this(matWithAlpha.mat, matWithAlpha.alpha)
 
-    init {
-        require(mat != null) { "mat should not be null" }
-    }
+    constructor(stream: InputStream) : this(makeMat(stream))
 
     private var tag = ""
 
@@ -43,29 +65,36 @@ class DroidCvPattern(
 
     override fun close() {
         if (ownsMat) {
-            mat?.release()
+            mat.release()
         }
-
-        mat = null
+        alpha?.release()
     }
 
-    private fun resize(target: Mat, size: Size) {
+    private fun resize(source: Mat, target: Mat, size: Size) {
         Imgproc.resize(
-            mat, target,
+            source, target,
             CvSize(size.width.toDouble(), size.height.toDouble()),
             0.0, 0.0, Imgproc.INTER_AREA
         )
     }
 
     override fun resize(size: Size): IPattern {
-        val result = Mat()
-        resize(result, size)
-        return DroidCvPattern(result).tag(tag)
+        val resizedMat = Mat().apply { resize(mat, this, size) }
+        val resizedAlpha = alpha?.let {
+            Mat().apply { resize(it, this, size) }
+        }
+
+        return DroidCvPattern(resizedMat, resizedAlpha).tag(tag)
     }
 
     override fun resize(target: IPattern, size: Size) {
         if (target is DroidCvPattern) {
-            resize(target.mat!!, size)
+            resize(mat, target.mat, size)
+            alpha?.let { originalAlpha ->
+                target.alpha = (target.alpha ?: Mat()).apply {
+                    resize(originalAlpha, this, size)
+                }
+            }
         }
 
         target.tag(tag)
@@ -73,15 +102,24 @@ class DroidCvPattern(
 
     private fun match(template: IPattern): Mat {
         val result = Mat()
-
         if (template is DroidCvPattern) {
             if (template.width <= width && template.height <= height) {
-                Imgproc.matchTemplate(
-                    mat,
-                    template.mat,
-                    result,
-                    Imgproc.TM_CCOEFF_NORMED
-                )
+                if (template.alpha != null) {
+                    Imgproc.matchTemplate(
+                        mat,
+                        template.mat,
+                        result,
+                        Imgproc.TM_CCOEFF_NORMED,
+                        template.alpha
+                    )
+                } else {
+                    Imgproc.matchTemplate(
+                        mat,
+                        template.mat,
+                        result,
+                        Imgproc.TM_CCOEFF_NORMED
+                    )
+                }
             } else {
                 Timber.verbose { "Skipped matching $template: Region out of bounds" }
             }
@@ -130,8 +168,8 @@ class DroidCvPattern(
         }
     }
 
-    override val width get() = mat?.width() ?: 0
-    override val height get() = mat?.height() ?: 0
+    override val width get() = mat.width()
+    override val height get() = mat.height()
 
     override fun crop(region: Region): IPattern {
         val clippedRegion = Region(0, 0, width, height)
@@ -139,18 +177,15 @@ class DroidCvPattern(
 
         val rect = Rect(clippedRegion.x, clippedRegion.y, clippedRegion.width, clippedRegion.height)
 
-        val result = Mat(mat, rect)
-
-        return DroidCvPattern(result)
-            .tag(tag)
+        return DroidCvPattern(Mat(mat, rect), alpha?.let { Mat(alpha, rect) }).tag(tag)
     }
 
     fun asBitmap(): Bitmap {
         val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
 
         Mat().use {
-            val conversion = if (mat?.type() == CvType.CV_8UC1)
-                Imgproc.COLOR_GRAY2BGRA
+            val conversion = if (mat.type() == CvType.CV_8UC1)
+                Imgproc.COLOR_GRAY2RGB
             else Imgproc.COLOR_BGR2RGBA
 
             Imgproc.cvtColor(mat, it, conversion)
@@ -166,7 +201,7 @@ class DroidCvPattern(
         }
     }
 
-    override fun copy() = DroidCvPattern(mat?.clone()).tag(tag)
+    override fun copy() = DroidCvPattern(mat.clone(), alpha?.clone()).tag(tag)
 
     override fun tag(tag: String) = apply { this.tag = tag }
 
