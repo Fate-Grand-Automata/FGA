@@ -135,7 +135,8 @@ class StorageProvider @Inject constructor(
             ?: throw Exception("Cannot open file for reading: $kind $name")
 
         val files = if (file.isDirectory) {
-            file.listFiles()
+            file.listFiles().takeUnless{ it.isEmpty() }
+                ?: throw Exception("$kind folder $name is empty!")
         } else arrayOf(file)
 
         return files.map {
