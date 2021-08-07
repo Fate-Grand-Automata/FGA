@@ -16,7 +16,7 @@ Join us on our [GamePress thread](https://community.gamepress.gg/t/automatic-far
 
 ## Video Guide by @reconman
 
-[![Watch the video guide](https://img.youtube.com/vi/je-FSHBFGys/sddefault.jpg)](https://www.youtube.com/watch?v=je-FSHBFGys)
+[![Watch the video guide](https://img.youtube.com/vi/JOwupZ4W8AQ/sddefault.jpg)](https://youtu.be/JOwupZ4W8AQ)
 
 
 ## How to Use?
