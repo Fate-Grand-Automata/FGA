@@ -8,7 +8,7 @@ assignees: ""
 
 **Before opening an issue:**
 
-- [x] I don't know how to properly check the checkbox (Put a check in the checkbox by filling in an `x` between the `[ ]` brackets)
+- [x] I know how to properly check the checkbox (Put a check in the checkbox by filling in an `x` between the `[ ]` brackets)
 - [ ] I tested the [latest release](https://github.com/Fate-Grand-Automata/FGA/releases/tag/canary)
 - [ ] I looked at other issues (even the [closed ones](https://github.com/Fate-Grand-Automata/FGA/issues?q=is%3Aissue+is%3Aclosed))
 - [ ] I read the [Troubleshooting Guide](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting)
