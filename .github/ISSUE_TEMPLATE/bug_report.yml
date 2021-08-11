@@ -21,6 +21,7 @@ body:
       label: Describe the bug
       description: >
         A clear and concise description of what the bug is.
+        
         Include steps to reproduce the error if required.
     validations:
       required: true
@@ -30,6 +31,7 @@ body:
       label: Screenshots
       description: >
         If applicable, add screenshots to help explain your problem.
+        
         It is recommended that you at-least add one screenshot of FGO running on your device.
   - type: textarea
     id: video
@@ -37,6 +39,7 @@ body:
       label: Video
       description: >
         If relevant, include a video of the script running on your device with `Debug mode` ON.
+        
         Recording functionality is available within the app in `More options` > `Advanced` > `Fine-tune`.
   - type: markdown
     attributes:

@@ -17,6 +17,7 @@ body:
       label: Describe the feature
       description: >
         Suggest your feature here. What benefit would it bring?
+        
         Do you have any ideas on how to implement it?
     validations:
       required: true
