@@ -13,3 +13,5 @@ Before opening an issue:
 - [ ] I'm not reporting a bug/error
 
 > If you open unnecessary/dumb issues, you'll be rewarded with appropriate tags.
+
+(Delete this line and write your question here.)

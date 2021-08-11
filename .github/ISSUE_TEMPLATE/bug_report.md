@@ -14,7 +14,7 @@ assignees: ""
 - [ ] I read the [Troubleshooting Guide](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting)
 - [ ] I'll fill this template properly
 
-> Your issue will get closed/locked by the bot in case proper info isn't provided
+> Your issue will get closed/locked by the bot in case proper info isn't provided.
 > If you open unnecessary/dumb issues, you'll be rewarded with appropriate tags.
 
 **Describe the bug**
@@ -33,7 +33,7 @@ assignees: ""
 
 **Video**
 
-> If relevant, include a video of the script running on your device with `Debug mode` ON
+> If relevant, include a video of the script running on your device with `Debug mode` ON.
 > Recording functionality is available within the app in `More options` > `Advanced` > `Fine-tune`.
 
 (Delete this line and place your video here. Delete the whole section if you don't have a video.)
