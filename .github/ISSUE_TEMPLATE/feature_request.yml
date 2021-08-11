@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest an idea for this project
+labels: enhancement
+
+body:
+  - type: checkboxes
+    id: preparation
+    attributes:
+      label: Preparation
+      description: "Before you open a feature request, you should check the following:"
+      options:
+        - label: No one has asked for this feature before in other issues (even the closed ones)
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the feature
+      description: >
+        Suggest your feature here. What benefit would it bring?
+        Do you have any ideas on how to implement it?
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "If you open unnecessary/dumb issues, you'll be rewarded with appropriate tags."
