@@ -24,7 +24,7 @@ class RootScreenshotService(
 
     private var rootLoadMat: Mat? = null
     private val rootConvertMat = Mat()
-    private val pattern = DroidCvPattern(rootConvertMat, false)
+    private val pattern = DroidCvPattern(rootConvertMat, ownsMat = false)
 
     private fun screenshotIntoBuffer() {
         SuperUser.writeLine("/system/bin/screencap")

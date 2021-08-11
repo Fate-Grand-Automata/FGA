@@ -25,7 +25,7 @@ class MediaProjectionScreenshotService(
 ) : IScreenshotService, IColorScreenshotProvider {
     private val colorCorrectedMat = Mat()
 
-    private val pattern = DroidCvPattern(colorCorrectedMat, false)
+    private val pattern = DroidCvPattern(colorCorrectedMat, ownsMat = false)
 
     val imageReader: ImageReader
     val virtualDisplay: VirtualDisplay

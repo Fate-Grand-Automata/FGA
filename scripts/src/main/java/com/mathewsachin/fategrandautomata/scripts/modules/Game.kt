@@ -1,12 +1,9 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.IImageLoader
-import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.*
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
-import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
@@ -17,8 +14,6 @@ import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
-import timber.log.Timber
-import timber.log.debug
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.time.Duration
@@ -34,11 +29,12 @@ fun IFgoAutomataApi.retry() {
 @ScriptScope
 class Game @Inject constructor(
     platformImpl: IPlatformImpl,
-    val prefs: IPreferences,
-    val images: IImageLoader,
+    private val prefs: IPreferences,
+    private val images: IImageLoader,
     transformationExtensions: ITransformationExtensions,
     gameAreaManager: GameAreaManager,
-    val automataApi: IAutomataExtensions
+    private val automataApi: IAutomataExtensions,
+    private val messages: IScriptMessages
 ) {
     val scriptArea =
         Region(
@@ -77,7 +73,7 @@ class Game @Inject constructor(
                 ?.center
                 ?.copy(y = 0)
                 ?: Location(-298, 0).xFromRight().also {
-                    Timber.debug { "Defaulting master offset" }
+                    messages.log(ScriptLog.DefaultMasterOffset)
                 }
         }
     }
@@ -341,9 +337,9 @@ class Game @Inject constructor(
     val resultCeRewardDetailsRegion = Region(if (isWide) 193 else 0, 512, 135, 115)
     val resultCeRewardCloseClick = Location(if (isWide) 265 else 80, 60)
 
-    val fpSummonCheck = Region(100, 1220, 75, 75).xFromCenter()
+    val fpSummonCheck = Region(100, 1152, 75, 143).xFromCenter()
     val fpContinueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
-    val fpFirst10SummonClick = Location(120, 1120).xFromCenter()
+    val fpFirst10SummonClick = Location(120, 1062).xFromCenter()
     val fpOkClick = Location(320, 1120).xFromCenter()
     val fpContinueSummonClick = Location(320, 1325).xFromCenter()
     val fpSkipRapidClick = Location(1240, 1400).xFromCenter()

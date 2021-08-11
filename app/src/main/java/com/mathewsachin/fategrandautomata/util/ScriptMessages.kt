@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
+import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.scopes.ServiceScoped
@@ -38,6 +39,61 @@ class ScriptMessages @Inject constructor(
     }
 
     fun notify(message: String) = notification.message(message)
+
+    override fun log(item: ScriptLog) =
+        when (item) {
+            ScriptLog.DefaultSupportBounds -> {
+                Timber.debug { "Default Region being returned" }
+            }
+            is ScriptLog.CurrentParty -> {
+                Timber.debug { "Current Party: ${item.party}" }
+            }
+            ScriptLog.RearrangingCards -> {
+                Timber.debug { "Rearranging cards" }
+            }
+            is ScriptLog.MaxSkills -> {
+                Timber.debug {
+                    // Detected skill levels as string for debugging
+                    item.isSkillMaxed
+                        .zip(item.needMaxedSkills)
+                        .joinToString("/") { (success, shouldBeMaxed) ->
+                            when {
+                                !shouldBeMaxed -> "x"
+                                success -> "10"
+                                else -> "f"
+                            }
+                        }
+                }
+            }
+            ScriptLog.DefaultMasterOffset -> {
+                Timber.debug { "Defaulting master offset" }
+            }
+            is ScriptLog.ClickingNPs -> {
+                Timber.debug { "Clicking NP(s): ${item.nps}" }
+            }
+            is ScriptLog.ClickingCards -> {
+                Timber.debug { "Clicking cards: ${item.cards}" }
+            }
+            is ScriptLog.NPsGroupedByFaceCards -> {
+                Timber.debug { "NPs grouped with Face-cards: ${item.groups}" }
+            }
+            is ScriptLog.SupportFaceCardGroup -> {
+                Timber.debug { "Support group: ${item.group}" }
+            }
+            is ScriptLog.FaceCardGroups -> {
+                Timber.debug { "Face-card groups: ${item.groups}" }
+            }
+            is ScriptLog.ServantEnteredSlot -> {
+                Timber.debug { "Servant: ${item.servant} in Slot: ${item.slot}" }
+            }
+            is ScriptLog.CardsBelongToServant -> {
+                Timber.debug {
+                    val supportText = if (item.isSupport) "Support " else ""
+
+                    "${item.cards} belong to ${supportText}${item.servant}"
+                }
+            }
+        }
 
     override fun notify(action: ScriptNotify) =
         when (action) {

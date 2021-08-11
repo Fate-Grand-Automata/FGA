@@ -2,14 +2,13 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
-import timber.log.Timber
-import timber.log.debug
 import java.util.*
 
 class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
@@ -300,7 +299,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
             // Do the same when clicking 2 cards unless they're used before NPs.
             if (cardsToRearrange.size in 2..3) {
-                Timber.debug { "Rearranging cards" }
+                messages.log(ScriptLog.RearrangingCards)
 
                 return cards.toMutableList().also {
                     Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
@@ -368,7 +367,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         if (atk.cardsBeforeNP > 0) {
             cards
                 .take(atk.cardsBeforeNP)
-                .also { Timber.debug { "Clicking cards: $it" } }
+                .also { messages.log(ScriptLog.ClickingCards(it)) }
                 .forEach { game.clickLocation(it).click() }
         }
 
@@ -376,13 +375,13 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
         if (nps.isNotEmpty()) {
             nps
-                .also { Timber.debug { "Clicking NP(s): $it" } }
+                .also { messages.log(ScriptLog.ClickingNPs(it)) }
                 .forEach { it.pick() }
         }
 
         cards
             .drop(atk.cardsBeforeNP)
-            .also { Timber.debug { "Clicking cards: $it" } }
+            .also { messages.log(ScriptLog.ClickingCards(it)) }
             .forEach { game.clickLocation(it).click() }
 
         atk = AutoSkillAction.Atk.noOp()
@@ -425,7 +424,10 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             }
         }
 
-        Timber.debug { "NPs grouped with Face-cards: $npGroups" }
+        messages.log(
+            ScriptLog.NPsGroupedByFaceCards(npGroups)
+        )
+
         return npGroups
     }
 
@@ -437,7 +439,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             groups.add(supportGroup)
             remaining.removeAll(supportGroup)
 
-            Timber.debug { "Support group: $supportGroup" }
+            messages.log(
+                ScriptLog.SupportFaceCardGroup(supportGroup)
+            )
         }
 
         while (remaining.isNotEmpty()) {
@@ -465,7 +469,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             groups.add(group)
         }
 
-        Timber.debug { "Face-card groups: $groups" }
+        messages.log(
+            ScriptLog.FaceCardGroups(groups)
+        )
 
         return groups
     }

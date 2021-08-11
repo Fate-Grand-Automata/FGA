@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
@@ -10,8 +11,6 @@ import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
-import timber.log.Timber
-import timber.log.debug
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 import kotlin.time.Duration
@@ -543,7 +542,9 @@ open class AutoBattle @Inject constructor(
                     }?.index
                 }
 
-            Timber.debug { "Current Party: $currentParty" }
+            messages.log(
+                ScriptLog.CurrentParty(currentParty)
+            )
 
             /* If the currently selected party cannot be detected, we need to switch to a party
                which was not configured. The reason is that the "Start Quest" button becomes

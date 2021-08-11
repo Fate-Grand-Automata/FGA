@@ -3,8 +3,10 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SearchFunctionResult
@@ -13,8 +15,6 @@ import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
-import timber.log.Timber
-import timber.log.debug
 import kotlin.streams.asStream
 import kotlin.streams.toList
 import kotlin.time.Duration
@@ -337,7 +337,7 @@ class Support(
             }
             .firstOrNull { Support in it }
             ?: game.supportDefaultBounds.also {
-                Timber.debug { "Default Region being returned" }
+                messages.log(ScriptLog.DefaultSupportBounds)
             }
 
     private fun isFriend(Region: Region): Boolean {
@@ -375,12 +375,17 @@ class Support(
 
     private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {
         val y = bounds.y + 325
-        val x = bounds.x + 1627
+        val x = bounds.x + 1592
+
+        val skillMargin = when (prefs.gameServer) {
+            GameServerEnum.Jp -> 90
+            else -> 155
+        }
 
         val skillLoc = listOf(
             Location(x, y),
-            Location(x + 156, y),
-            Location(x + 310, y)
+            Location(x + skillMargin, y),
+            Location(x + 2 * skillMargin, y)
         )
 
         val result = skillLoc
@@ -389,23 +394,17 @@ class Support(
                 if (!shouldBeMaxed)
                     true
                 else {
-                    val skillRegion = Region(location, Size(35, 45))
-                    skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
+                    val skillRegion = Region(location, Size(70, 50))
+                    skillRegion.exists(images[Images.SkillTen], similarity = 0.8)
                 }
             }
 
-        Timber.debug {
-            // Detected skill levels as string for debugging
-            result
-                .zip(needMaxedSkills)
-                .joinToString("/") { (success, shouldBeMaxed) ->
-                    when {
-                        !shouldBeMaxed -> "x"
-                        success -> "10"
-                        else -> "f"
-                    }
-                }
-        }
+        messages.log(
+            ScriptLog.MaxSkills(
+                needMaxedSkills = needMaxedSkills,
+                isSkillMaxed = result
+            )
+        )
 
         return result.all { it }
     }

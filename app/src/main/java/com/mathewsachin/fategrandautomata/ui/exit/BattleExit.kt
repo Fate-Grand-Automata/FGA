@@ -19,6 +19,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
+import com.mathewsachin.fategrandautomata.util.KnownException
 import com.mathewsachin.fategrandautomata.util.stringRes
 import kotlin.time.Duration
 
@@ -34,7 +35,12 @@ private val Duration.stringify: String
 @Composable
 private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.Abort -> stringResource(R.string.stopped_by_user)
-    is AutoBattle.ExitReason.Unexpected -> "${stringResource(R.string.unexpected_error)}: ${e.message}"
+    is AutoBattle.ExitReason.Unexpected -> {
+        e.let {
+            if (it is KnownException) it.reason.msg
+            else "${stringResource(R.string.unexpected_error)}: ${e.message}"
+        }
+    }
     AutoBattle.ExitReason.CEGet -> stringResource(R.string.ce_get)
     AutoBattle.ExitReason.CEDropped -> stringResource(R.string.ce_dropped)
     is AutoBattle.ExitReason.LimitMaterials -> stringResource(R.string.mats_farmed, count)
@@ -285,7 +291,11 @@ fun BattleExit(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row {
-                    if (exception.reason is AutoBattle.ExitReason.Unexpected) {
+                    val allowCopy = exception.reason.let { reason ->
+                        reason is AutoBattle.ExitReason.Unexpected && reason.e !is KnownException
+                    }
+
+                    if (allowCopy) {
                         TextButton(onClick = onCopy) {
                             Text(stringResource(R.string.unexpected_error_copy))
                         }
