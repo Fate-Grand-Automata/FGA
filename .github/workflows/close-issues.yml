@@ -3,27 +3,6 @@ on:
   issues:
     types: [opened]
 jobs:
-  bugTemplateCheck:
-    if: >-
-          github.event.issue.user.id != 10654537 && github.event.issue.user.id != 12360257 &&
-          contains(github.event.issue.labels.*.name, 'bug') && 
-          (!contains(github.event.issue.body, 'Device model') || contains(github.event.issue.body, 'Device model: [e.g. Xiaomi Redmi 4]'))
-    runs-on: ubuntu-latest
-    steps:
-      - name: Close Issue
-        uses: peter-evans/close-issue@v1
-        with:
-          comment: |
-            Bug reports must use the [template](https://github.com/MathewSachin/Fate-Grand-Automata/blob/master/.github/ISSUE_TEMPLATE/bug_report.md).
-            
-            Please correct your description and then add a comment mentioning (@) the owner of this repository to reopen the issue for you.
-            
-            This action was performed automatically.
-      - name: Label Issue
-        uses: actions-ecosystem/action-add-labels@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: insufficient info
   labelCheck:
     if: >-
           github.event.issue.user.id != 10654537 && github.event.issue.user.id != 12360257 &&
