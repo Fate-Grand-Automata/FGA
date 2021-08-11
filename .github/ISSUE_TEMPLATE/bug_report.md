@@ -40,7 +40,16 @@ assignees: ""
 
 **Device Info (please fill at-least 'Device model'):**
 
-- Device model: [e.g. Xiaomi Redmi 4]
-- Screen size: [e.g. 1280x720]
-- Android Version: [e.g. Android 7.1]
-- RAM: [e.g. 3GB]
+> Example:
+>
+> - Device Model: Xiaomi Redmi 4
+> - Screen Size: 1280x720
+> - Android Version: Android 7.1
+> - RAM: 3GB
+
+(Fill in your device info below. Issues without at least the Device Model will be closed. Replace `[Your Device Model]` with your actual device model.)
+
+- **Device Model:** `[Your Device Model]`
+- **Screen Size:** `[Your Screen Size]`
+- **Android Version:** `[Your Android version]`
+- **RAM:** `[Your RAM Size]`
