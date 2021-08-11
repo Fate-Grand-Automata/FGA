@@ -6,7 +6,7 @@ labels: question
 assignees: ""
 ---
 
-Before opening an issue:
+**Before opening an issue:**
 
 - [x] I know how to properly check the checkbox (Put a check in the checkbox by filling in an `x` between the `[ ]` brackets)
 - [ ] My question isn't answered in any other issues (even the [closed ones](https://github.com/Fate-Grand-Automata/FGA/issues?q=is%3Aissue+is%3Aclosed))
