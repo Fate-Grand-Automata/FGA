@@ -7,6 +7,10 @@ on:
       - master
     tags:
       - 'v*'
+    paths-ignore:
+      - '.**'
+      - 'README'
+      - 'LICENSE'
 
 jobs:
   build:
