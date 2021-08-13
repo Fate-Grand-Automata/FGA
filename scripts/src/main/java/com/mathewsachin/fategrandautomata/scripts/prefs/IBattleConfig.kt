@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.prefs
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
@@ -20,6 +21,8 @@ interface IBattleConfig {
 
     var spam: List<ServantSpamConfig>
     val autoChooseTarget: Boolean
+
+    val server: GameServerEnum?
 
     fun export(): Map<String, *>
 

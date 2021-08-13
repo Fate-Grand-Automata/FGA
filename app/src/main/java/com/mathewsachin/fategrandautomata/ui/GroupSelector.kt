@@ -13,14 +13,16 @@ import androidx.compose.ui.unit.dp
 fun GroupSelectorItem(
     item: String,
     isSelected: Boolean,
-    onSelect: () -> Unit
+    onSelect: () -> Unit,
+    enabled: Boolean = true
 ) {
     Surface(
         color = if (isSelected) MaterialTheme.colors.primary else Color.Transparent,
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .padding(end = 5.dp),
-        onClick = onSelect
+        onClick = onSelect,
+        enabled = enabled
     ) {
         Text(
             item,

@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,9 +34,27 @@ fun Pref<Set<MaterialEnum>>.Materials() {
     val dialog = FgaDialog()
 
     dialog.build {
-        title(stringResource(R.string.p_mats))
-
         var current by remember(selected) { mutableStateOf(selected) }
+
+        Row {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .alignByBaseline()
+            ) {
+                title(stringResource(R.string.p_mats))
+            }
+
+            TextButton(
+                onClick = { current = emptySet() },
+                modifier = Modifier
+                    .padding(16.dp, 5.dp)
+                    .alignByBaseline()
+            ) {
+                // TODO: Localize
+                Text("CLEAR")
+            }
+        }
 
         multiChoiceList(
             selected = current,
@@ -60,6 +79,7 @@ fun Pref<Set<MaterialEnum>>.Materials() {
         modifier = Modifier
             .fillMaxWidth()
             .clickable { dialog.show() }
+            .heightIn(min = 70.dp)
             .padding(vertical = 5.dp)
     ) {
         Text(

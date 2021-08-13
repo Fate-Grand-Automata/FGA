@@ -99,7 +99,7 @@ private fun Int.boostItemString() = when (this) {
     else -> toString()
 }
 
-private val GameServerEnum.displayStringRes
+val GameServerEnum.displayStringRes
     get() = when (this) {
         GameServerEnum.En -> R.string.game_server_na
         GameServerEnum.Jp -> R.string.game_server_jp

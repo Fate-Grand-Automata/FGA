@@ -45,29 +45,23 @@ fun PartySelection(config: BattleConfigCore) {
         )
     }
 
-    Card(
-        elevation = 3.dp,
-        shape = CircleShape,
+    Column(
         modifier = Modifier
-            .padding(vertical = 5.dp)
-            .padding(end = 16.dp)
+            .fillMaxHeight()
+            .clickable(onClick = { dialog.show() })
+            .padding(16.dp, 5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Column(
-            modifier = Modifier
-                .clickable(onClick = { dialog.show() })
-                .padding(16.dp, 5.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                stringResource(R.string.p_battle_config_party).uppercase(),
-                style = MaterialTheme.typography.caption
-            )
+        Text(
+            stringResource(R.string.p_battle_config_party).uppercase(),
+            style = MaterialTheme.typography.caption
+        )
 
-            Text(
-                if (party == -1) "--" else (party + 1).toString(),
-                style = MaterialTheme.typography.caption
-            )
-        }
+        Text(
+            if (party == -1) "--" else (party + 1).toString(),
+            style = MaterialTheme.typography.caption
+        )
     }
 }
 

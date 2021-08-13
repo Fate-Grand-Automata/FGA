@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.prefs
 
+import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.prefs.core.map
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 
 const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
@@ -27,6 +29,17 @@ internal class BattleConfig(
     override val support = SupportPreferences(prefs.support)
 
     override val autoChooseTarget by prefs.autoChooseTarget
+
+    override val server by prefs.server.map(
+        defaultValue = null,
+        convert = { it.asGameServer() },
+        reverse = {
+            when (it) {
+                null -> BattleConfigCore.Server.NotSet
+                else -> BattleConfigCore.Server.Set(it)
+            }
+        }
+    )
 
     override var spam by prefs.spam
 
