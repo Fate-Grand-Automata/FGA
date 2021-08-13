@@ -1,0 +1,24 @@
+name: Question
+description: For asking questions or discussions
+labels: question
+
+body:
+  - type: checkboxes
+    id: preparation
+    attributes:
+      label: Preparation
+      description: "Before you open a question, you should check the following:"
+      options:
+        - label: I read the [Troubleshooting Guide](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting)
+          required: true
+        - label: My question isn't answered in any other issues (even the closed ones)
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Your question
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "If you open unnecessary/dumb issues, you'll be rewarded with appropriate tags."
