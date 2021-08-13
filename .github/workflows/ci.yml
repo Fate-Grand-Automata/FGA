@@ -2,6 +2,10 @@ name: CI
 
 on:
   pull_request:
+    paths-ignore:
+      - '.**'
+      - 'README'
+      - 'LICENSE'
   push:
     branches:
       - master
