@@ -17,26 +17,30 @@ import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.util.toggle
 
 @Composable
-private fun ChipPreferenceItem(
+fun ChipPreferenceItem(
     text: String,
     isSelected: Boolean,
-    onSelect: () -> Unit
+    onSelect: () -> Unit,
+    enabled: Boolean = true
 ) {
-    Card(
-        backgroundColor = if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.surface,
-        contentColor = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-        elevation = 2.dp,
-        modifier = Modifier
-            .padding(vertical = 5.dp)
-            .padding(end = 5.dp),
-        onClick = onSelect
-    ) {
-        Text(
-            text,
-            style = MaterialTheme.typography.caption,
+    StatusWrapper(enabled) {
+        Card(
+            backgroundColor = if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.surface,
+            contentColor = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+            elevation = 2.dp,
             modifier = Modifier
-                .padding(5.dp, 2.dp)
-        )
+                .padding(vertical = 5.dp)
+                .padding(end = 5.dp),
+            onClick = onSelect,
+            enabled = enabled
+        ) {
+            Text(
+                text,
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier
+                    .padding(5.dp, 2.dp)
+            )
+        }
     }
 }
 
@@ -60,7 +64,8 @@ fun <T> SingleSelectChip(
                     ChipPreferenceItem(
                         text = value,
                         isSelected = key == selected,
-                        onSelect = { onSelectedChange(key) }
+                        onSelect = { onSelectedChange(key) },
+                        enabled = enabled
                     )
                 }
             }

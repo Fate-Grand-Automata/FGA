@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -187,25 +186,38 @@ private fun BattleConfigContent(
                         ) {
                             Column {
                                 Row(
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .height(IntrinsicSize.Min)
                                 ) {
-                                    Box(modifier = Modifier.weight(1f)) {
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                    ) {
                                         config.materials.Materials()
                                     }
 
-                                    Card(
-                                        elevation = 3.dp,
-                                        shape = CircleShape,
+                                    VerticalDivider()
+
+                                    Box(
                                         modifier = Modifier
-                                            .padding(horizontal = 16.dp)
+                                            .fillMaxHeight()
+                                            .clickable(onClick = { navigate(BattleConfigDestination.Spam) }),
+                                        contentAlignment = Alignment.Center
                                     ) {
                                         Text(
-                                            stringResource(R.string.p_spam_spam),
+                                            stringResource(R.string.p_spam_spam).uppercase(),
+                                            style = MaterialTheme.typography.caption,
                                             modifier = Modifier
-                                                .clickable(onClick = { navigate(BattleConfigDestination.Spam) })
                                                 .padding(16.dp, 5.dp)
                                         )
                                     }
+
+                                    VerticalDivider()
+
+                                    ServerSelection(config)
+
+                                    VerticalDivider()
 
                                     PartySelection(config)
                                 }

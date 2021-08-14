@@ -27,7 +27,12 @@ fun battleLauncher(
     prefs: IPreferences,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
-    val configs = remember { prefs.battleConfigs }
+    val configs = remember {
+        prefs.battleConfigs
+            .filter {
+                it.server == null || it.server == prefs.gameServer
+            }
+    }
     var selectedConfigIndex by remember { mutableStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
     var refillResources by remember { mutableStateOf(prefs.refill.resources.toSet()) }
     var refillCount by remember { mutableStateOf(prefs.refill.repetitions) }

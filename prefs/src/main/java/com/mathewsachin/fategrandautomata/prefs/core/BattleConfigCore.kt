@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException
 import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.prefs.import
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
@@ -123,6 +124,35 @@ class BattleConfigCore(
                 .map { m -> m.name }
                 .toSet()
         }
+    )
+
+    sealed class Server {
+        class Set(val server: GameServerEnum): Server()
+        object NotSet: Server()
+
+        fun asGameServer() = when (this) {
+            NotSet -> null
+            is Set -> server
+        }
+    }
+
+    val server = maker.serialized(
+        "battle_config_server",
+        serializer = object: Serializer<Server> {
+            override fun deserialize(serialized: String) =
+                try {
+                    Server.Set(enumValueOf(serialized))
+                } catch (e: Exception) {
+                    Server.NotSet
+                }
+
+            override fun serialize(value: Server) =
+                when (value) {
+                    Server.NotSet -> ""
+                    is Server.Set -> value.server.name
+                }
+        },
+        default = Server.NotSet
     )
 
     val support = SupportPrefsCore(maker)

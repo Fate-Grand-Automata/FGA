@@ -11,6 +11,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -18,10 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -39,6 +37,8 @@ import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
 import com.mathewsachin.fategrandautomata.ui.icon
+import com.mathewsachin.fategrandautomata.ui.more.displayStringRes
+import com.mathewsachin.fategrandautomata.ui.prefs.ChipPreferenceItem
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 
 @Composable
@@ -159,10 +159,55 @@ private fun BattleConfigListContent(
                     }
                 }
 
+                val servers by derivedStateOf {
+                    configs
+                        .mapNotNull { it.server.get().asGameServer() }
+                        .distinct()
+                }
+
+                var selectedServer by remember { mutableStateOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) }
+
+                if (servers.isNotEmpty()) {
+                    LazyRow(
+                        contentPadding = PaddingValues(16.dp, 5.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        item {
+                            ChipPreferenceItem(
+                                "ALL",
+                                isSelected = selectedServer is BattleConfigCore.Server.NotSet,
+                                onSelect = { selectedServer = BattleConfigCore.Server.NotSet },
+                                enabled = !selectionMode
+                            )
+                        }
+
+                        items(servers) {
+                            ChipPreferenceItem(
+                                stringResource(it.displayStringRes),
+                                isSelected = selectedServer.asGameServer() == it,
+                                onSelect = { selectedServer = BattleConfigCore.Server.Set(it) },
+                                enabled = !selectionMode
+                            )
+                        }
+                    }
+                }
+
+                val filteredConfigs by derivedStateOf {
+                    configs
+                        .filter {
+                            val server = it.server.get().asGameServer()
+
+                            selectedServer is BattleConfigCore.Server.NotSet
+                                    || server == selectedServer.asGameServer()
+                        }
+                }
+
                 LazyColumn(
                     modifier = Modifier.weight(1f)
                 ) {
-                    if (configs.isEmpty()) {
+                    if (filteredConfigs.isEmpty()) {
                         item {
                             Text(
                                 stringResource(R.string.battle_config_list_no_items),
@@ -171,7 +216,7 @@ private fun BattleConfigListContent(
                         }
                     } else {
                         items(
-                            configs,
+                            filteredConfigs,
                             key = { it.id }
                         ) {
                             BattleConfigListItem(
