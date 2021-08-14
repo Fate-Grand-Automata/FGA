@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.Context
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
+import com.mathewsachin.libautomata.Location
+import com.tfcporciuncula.flow.Serializer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -76,6 +78,25 @@ class PrefsCore @Inject constructor(
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
 
     val ceBombTargetRarity = maker.int("ce_bomb_target_rarity", 1)
+
+    val playBtnLocation = maker.serialized(
+        "play_btn_location",
+        serializer = object: Serializer<Location> {
+            override fun deserialize(serialized: String) =
+                try {
+                    val split = serialized.split(',')
+
+                    Location(split[0].toInt(), split[1].toInt())
+                }
+                catch (e: Exception) {
+                    Location()
+                }
+
+            override fun serialize(value: Location) =
+                "${value.x},${value.y}"
+        },
+        default = Location()
+    )
 
     var dirRoot = maker.string("dir_root")
 

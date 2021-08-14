@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.postDelayed
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.fategrandautomata.util.FakedComposeView
 import com.mathewsachin.libautomata.Location
@@ -25,7 +26,8 @@ import kotlin.time.Duration
 class ScriptRunnerUserInterface @Inject constructor(
     val Service: Service,
     val highlightManager: HighlightManager,
-    val windowManager: WindowManager
+    val windowManager: WindowManager,
+    val prefsCore: PrefsCore
 ) {
     companion object {
         val overlayType: Int
@@ -112,22 +114,43 @@ class ScriptRunnerUserInterface @Inject constructor(
         scriptCtrlBtnLayoutParams.y = maxOf(m.widthPixels, m.heightPixels)
     }
 
+    private fun setPlayBtnLocation(x: Int, y: Int) {
+        val dragMaxLoc = getMaxBtnCoordinates()
+
+        scriptCtrlBtnLayoutParams.x = x.coerceIn(0, dragMaxLoc.x)
+        scriptCtrlBtnLayoutParams.y = y.coerceIn(0, dragMaxLoc.y)
+    }
+
     private fun onDrag(x: Float, y: Float) {
         val targetX = scriptCtrlBtnLayoutParams.x + x.roundToInt()
         val targetY = scriptCtrlBtnLayoutParams.y + y.roundToInt()
 
-        val dragMaxLoc = getMaxBtnCoordinates()
-
-        scriptCtrlBtnLayoutParams.x = targetX.coerceIn(0, dragMaxLoc.x)
-        scriptCtrlBtnLayoutParams.y = targetY.coerceIn(0, dragMaxLoc.y)
+        setPlayBtnLocation(targetX, targetY)
 
         windowManager.updateViewLayout(layout, scriptCtrlBtnLayoutParams)
+    }
+
+    private fun restorePlayButtonLocation() {
+        prefsCore.playBtnLocation.get().let { location ->
+            // top-left corner is fallback value. ignore
+            if (location != Location()) {
+                setPlayBtnLocation(location.x, location.y)
+            }
+        }
+    }
+
+    private fun savePlayButtonLocation() {
+        prefsCore.playBtnLocation.set(
+            Location(scriptCtrlBtnLayoutParams.x, scriptCtrlBtnLayoutParams.y)
+        )
     }
 
     private var shown = false
 
     fun show() {
         if (!shown && Settings.canDrawOverlays(Service)) {
+            restorePlayButtonLocation()
+
             windowManager.addView(highlightManager.highlightView, highlightLayoutParams)
             windowManager.addView(layout, scriptCtrlBtnLayoutParams)
 
@@ -137,6 +160,8 @@ class ScriptRunnerUserInterface @Inject constructor(
 
     fun hide() {
         if (shown && Settings.canDrawOverlays(Service)) {
+            savePlayButtonLocation()
+
             windowManager.removeView(layout)
             windowManager.removeView(highlightManager.highlightView)
 
