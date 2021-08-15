@@ -8,6 +8,7 @@ import com.mathewsachin.libautomata.Size
 import org.opencv.core.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
+import org.opencv.imgproc.Imgproc.THRESH_BINARY
 import timber.log.Timber
 import timber.log.debug
 import timber.log.verbose
@@ -35,9 +36,13 @@ class DroidCvPattern(
                         4 -> {
                             // RGBA, extract alpha
                             alphaChannel =
-                                Mat().apply { Core.extractChannel(decoded, this, 3) }
+                                Mat().apply {
+                                    Core.extractChannel(decoded, this, 3)
+                                    //half-transparent pixels mess up matching, round to 0.0 and 1.0
+                                    Imgproc.threshold(this, this, 127.0, 1.0, THRESH_BINARY)
+                                }
                             val minMax = Core.minMaxLoc(alphaChannel)
-                            if (minMax.minVal.equals(255.0)) {
+                            if (minMax.minVal.equals(1.0)) {
                                 //every pixel has 0 transparency, alpha is useless
                                 alphaChannel.release()
                                 alphaChannel = null
@@ -208,7 +213,7 @@ class DroidCvPattern(
     override fun threshold(value: Double): IPattern {
         val result = Mat()
 
-        Imgproc.threshold(mat, result, value * 255, 255.0, Imgproc.THRESH_BINARY)
+        Imgproc.threshold(mat, result, value * 255, 255.0, THRESH_BINARY)
 
         return DroidCvPattern(result)
             .tag("$tag[threshold=$value]")
