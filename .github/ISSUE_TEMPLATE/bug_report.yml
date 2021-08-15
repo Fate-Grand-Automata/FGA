@@ -26,6 +26,7 @@ body:
         - JP
         - CN
         - TW
+        - KR
     validations:
       required: true
   - type: input
