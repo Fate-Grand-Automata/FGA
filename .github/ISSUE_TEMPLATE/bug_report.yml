@@ -51,21 +51,17 @@ body:
     validations:
       required: true
   - type: textarea
-    id: screenshots
-    attributes:
-      label: Screenshots
-      description: >
-        If applicable, add screenshots to help explain your problem.
-        
-        It is recommended that you at-least add one screenshot of FGO running on your device.
-  - type: textarea
     id: video
     attributes:
       label: Video
       description: >
-        If relevant, include a video of the script running on your device with `Debug mode` ON.
+        Include a video of the script running on your device with `Debug mode` ON.
         
         Recording functionality is available within the app in `More options` > `Advanced` > `Fine-tune`.
+        
+        If the video is too large for Github, upload it to streamable.com, youtube.com or something similar.
+    validations:
+      required: true
   - type: markdown
     attributes:
       value: "Now please tell us about your device"
