@@ -15,7 +15,7 @@ class SuperUser : AutoCloseable {
     /**
      * Requests superuser rights and checks if the attempt was successful.
      *
-     * @throws Exception if the attempt was unsuccessful
+     * @throws [KnownException] if the attempt was unsuccessful
      */
     init {
         try {
