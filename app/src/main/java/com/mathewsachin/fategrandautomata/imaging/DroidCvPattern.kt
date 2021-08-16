@@ -38,8 +38,7 @@ class DroidCvPattern(
                             alphaChannel =
                                 Mat().apply {
                                     Core.extractChannel(decoded, this, 3)
-                                    //half-transparent pixels mess up matching, round to 0.0 and 1.0
-                                    Imgproc.threshold(this, this, 127.0, 1.0, THRESH_BINARY)
+                                    convertTo(this, CvType.CV_32F, 1.0/255)
                                 }
                             val minMax = Core.minMaxLoc(alphaChannel)
                             if (minMax.minVal.equals(1.0)) {
