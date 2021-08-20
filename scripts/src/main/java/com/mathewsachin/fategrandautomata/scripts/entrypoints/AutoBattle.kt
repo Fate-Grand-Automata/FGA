@@ -36,26 +36,26 @@ open class AutoBattle @Inject constructor(
     val storageProvider: IStorageProvider
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
-        object Abort: ExitReason()
-        class Unexpected(val e: Exception): ExitReason()
-        object CEGet: ExitReason()
-        object CEDropped: ExitReason()
-        object FirstClearRewards: ExitReason()
-        class LimitMaterials(val count: Int): ExitReason()
-        object WithdrawDisabled: ExitReason()
-        object APRanOut: ExitReason()
-        object InventoryFull: ExitReason()
-        class LimitRuns(val count: Int): ExitReason()
-        object SupportSelectionManual: ExitReason()
-        object SupportSelectionFriendNotSet: ExitReason()
-        object SupportSelectionPreferredNotSet: ExitReason()
-        class SkillCommandParseError(val e: Exception): ExitReason()
-        class CardPriorityParseError(val msg: String): ExitReason()
+        object Abort : ExitReason()
+        class Unexpected(val e: Exception) : ExitReason()
+        object CEGet : ExitReason()
+        object CEDropped : ExitReason()
+        object FirstClearRewards : ExitReason()
+        class LimitMaterials(val count: Int) : ExitReason()
+        object WithdrawDisabled : ExitReason()
+        object APRanOut : ExitReason()
+        object InventoryFull : ExitReason()
+        class LimitRuns(val count: Int) : ExitReason()
+        object SupportSelectionManual : ExitReason()
+        object SupportSelectionFriendNotSet : ExitReason()
+        object SupportSelectionPreferredNotSet : ExitReason()
+        class SkillCommandParseError(val e: Exception) : ExitReason()
+        class CardPriorityParseError(val msg: String) : ExitReason()
     }
 
-    internal class BattleExitException(val reason: ExitReason): Exception()
+    internal class BattleExitException(val reason: ExitReason) : Exception()
 
-    class ExitException(val reason: ExitReason, val state: ExitState): Exception()
+    class ExitException(val reason: ExitReason, val state: ExitState) : Exception()
 
     private val support = Support(fgAutomataApi)
     private val card = Card(fgAutomataApi)
@@ -379,11 +379,11 @@ open class AutoBattle @Inject constructor(
         // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
 
-        val region = game.continueRegion.find(images[Images.Repeat])?.region
+        val continueButtonRegion = game.continueRegion.find(images[Images.Repeat])?.region
             ?: return
 
         // If Boost items are usable, Continue button shifts to the right
-        val useBoost = if (region.x > 1630) {
+        val useBoost = if (continueButtonRegion.x > game.boostDetectionX) {
             val boost = BoostItem.of(prefs.boostItemSelectionMode)
 
             boost is BoostItem.Enabled && boost != BoostItem.Enabled.Skip
@@ -392,7 +392,7 @@ open class AutoBattle @Inject constructor(
         if (useBoost) {
             game.continueBoostClick.click()
             useBoostItem()
-        } else game.continueClick.click()
+        } else continueButtonRegion.click()
 
         showRefillsAndRunsMessage()
 

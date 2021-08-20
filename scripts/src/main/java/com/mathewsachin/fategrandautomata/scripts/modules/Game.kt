@@ -80,7 +80,9 @@ class Game @Inject constructor(
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
-    val continueClick = Location(370, 1120).xFromCenter()
+
+    // if boost is possible, the continue button will be to the right of this coordinate
+    val boostDetectionX = Location(350, 0).xFromCenter().x
 
     val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
 
