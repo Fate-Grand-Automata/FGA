@@ -35,9 +35,12 @@ class DroidCvPattern(
                         4 -> {
                             // RGBA, extract alpha
                             alphaChannel =
-                                Mat().apply { Core.extractChannel(decoded, this, 3) }
+                                Mat().apply {
+                                    Core.extractChannel(decoded, this, 3)
+                                    convertTo(this, CvType.CV_32F, 1.0/255)
+                                }
                             val minMax = Core.minMaxLoc(alphaChannel)
-                            if (minMax.minVal.equals(255.0)) {
+                            if (minMax.minVal.equals(1.0)) {
                                 //every pixel has 0 transparency, alpha is useless
                                 alphaChannel.release()
                                 alphaChannel = null
