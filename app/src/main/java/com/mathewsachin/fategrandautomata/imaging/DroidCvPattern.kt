@@ -8,7 +8,6 @@ import com.mathewsachin.libautomata.Size
 import org.opencv.core.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
-import org.opencv.imgproc.Imgproc.THRESH_BINARY
 import timber.log.Timber
 import timber.log.debug
 import timber.log.verbose
@@ -212,7 +211,7 @@ class DroidCvPattern(
     override fun threshold(value: Double): IPattern {
         val result = Mat()
 
-        Imgproc.threshold(mat, result, value * 255, 255.0, THRESH_BINARY)
+        Imgproc.threshold(mat, result, value * 255, 255.0, Imgproc.THRESH_BINARY)
 
         return DroidCvPattern(result)
             .tag("$tag[threshold=$value]")
