@@ -35,13 +35,10 @@ class AndroidImpl @Inject constructor(
     override fun getResizableBlankPattern(): IPattern = DroidCvPattern()
 
     override fun highlight(region: Region, duration: Duration, success: Boolean) {
-        // We can't draw over the notch area
-        val drawRegion = region - cutoutManager.getCutoutAppliedRegion().location
-
         GlobalScope.launch {
-            highlightManager.add(drawRegion, success)
+            highlightManager.add(region, success)
             delay(duration.inWholeMilliseconds)
-            highlightManager.remove(drawRegion)
+            highlightManager.remove(region)
         }
     }
 }
