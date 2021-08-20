@@ -383,7 +383,7 @@ open class AutoBattle @Inject constructor(
             ?: return
 
         // If Boost items are usable, Continue button shifts to the right
-        val useBoost = if (continueButtonRegion.x > game.boostDetectionX) {
+        val useBoost = if (continueButtonRegion.x > game.scriptArea.center.x + 350) {
             val boost = BoostItem.of(prefs.boostItemSelectionMode)
 
             boost is BoostItem.Enabled && boost != BoostItem.Enabled.Skip
