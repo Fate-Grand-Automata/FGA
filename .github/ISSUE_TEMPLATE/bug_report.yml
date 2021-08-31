@@ -72,11 +72,17 @@ body:
       placeholder: "Xiaomi Redmi 4"
     validations:
       required: true
-  - type: input
+  - type: dropdown
     id: android-version
     attributes:
       label: Android version
-      placeholder: "Android 10"
+      options:
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
     validations:
       required: true
   - type: input
