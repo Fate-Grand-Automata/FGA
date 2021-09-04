@@ -12,7 +12,8 @@ It doesn't tamper with the game in anyway and works by looking at the screen and
 It's not made to do the story for you, but to automate the mundane farming.
 
 Having Trouble? See the [Troubleshooting Guide](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting) first.  
-Join us on our [GamePress thread](https://community.gamepress.gg/t/automatic-farming-app-fate-grand-automata/72155) for discussions.
+Join us on our [GamePress thread Part 2](https://community.gamepress.gg/t/fate-grand-autamata-discussion-and-help-thread-round-2/107040) for discussions.  
+Old Gamepress thread: [GamePress thread](https://community.gamepress.gg/t/automatic-farming-app-fate-grand-automata/72155)
 
 ## Video Guide by @reconman
 
