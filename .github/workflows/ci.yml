@@ -4,7 +4,7 @@ on:
   pull_request:
     paths-ignore:
       - '.**'
-      - 'README'
+      - 'README.md'
       - 'LICENSE'
   push:
     branches:
