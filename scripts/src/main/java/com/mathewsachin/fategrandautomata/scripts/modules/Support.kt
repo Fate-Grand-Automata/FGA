@@ -375,12 +375,10 @@ class Support(
 
     private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {
         val y = bounds.y + 325
-        val x = bounds.x + 1592
+        val x = bounds.x + 1620
 
-        val skillMargin = when (prefs.gameServer) {
-            GameServerEnum.Jp -> 90
-            else -> 155
-        }
+        val appendSkillsIntroduced = prefs.gameServer == GameServerEnum.Jp
+        val skillMargin = if (appendSkillsIntroduced) 90 else 155
 
         val skillLoc = listOf(
             Location(x, y),
@@ -394,8 +392,9 @@ class Support(
                 if (!shouldBeMaxed)
                     true
                 else {
-                    val skillRegion = Region(location, Size(70, 50))
-                    skillRegion.exists(images[Images.SkillTen], similarity = 0.8)
+                    val skillRegion = Region(location, Size(50, 50))
+
+                    skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
                 }
             }
 
