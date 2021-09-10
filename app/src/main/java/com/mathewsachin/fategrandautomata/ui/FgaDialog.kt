@@ -129,6 +129,7 @@ class FgaDialog private constructor() {
                     modifier = Modifier
                         .padding(16.dp)
                         .widthIn(max = 450.dp)
+                        .fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier
