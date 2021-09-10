@@ -15,7 +15,7 @@ class ItemTouchHelperCallback(private val Adapter: IItemTouchHelperAdapter,
     override fun isItemViewSwipeEnabled() = false
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        Adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+        Adapter.onItemMove(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
         return true
     }
 
