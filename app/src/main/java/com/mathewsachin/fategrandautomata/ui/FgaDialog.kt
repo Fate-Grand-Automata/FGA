@@ -128,6 +128,7 @@ class FgaDialog private constructor() {
                     contentColor = contentColor,
                     modifier = Modifier
                         .padding(16.dp)
+                        .widthIn(max = 450.dp)
                 ) {
                     Column(
                         modifier = Modifier
