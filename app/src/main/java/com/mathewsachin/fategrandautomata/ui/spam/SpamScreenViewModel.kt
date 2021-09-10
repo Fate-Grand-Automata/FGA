@@ -1,9 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.spam
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
@@ -21,8 +19,6 @@ class SpamScreenViewModel @Inject constructor(
     val battleConfigCore: BattleConfigCore
 ): ViewModel() {
     private val spamConfig = battleConfig.spam
-
-    var selectedServant by mutableStateOf(0)
 
     data class NpSpamState(
         val spamMode: MutableState<SpamEnum>,

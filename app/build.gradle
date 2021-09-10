@@ -24,6 +24,7 @@ android {
         freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
         freeCompilerArgs += "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi"
         freeCompilerArgs += "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi"
+        freeCompilerArgs += "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi"
     }
 
     composeOptions {
@@ -117,6 +118,8 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
 
     implementation "com.google.accompanist:accompanist-insets:0.18.0"
+    implementation "com.google.accompanist:accompanist-pager:0.18.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.18.0"
 }
 
 kapt {
