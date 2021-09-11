@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     ndkVersion "21.3.6528147"
 
     compileOptions {
@@ -24,6 +24,7 @@ android {
         freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
         freeCompilerArgs += "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi"
         freeCompilerArgs += "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi"
+        freeCompilerArgs += "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi"
     }
 
     composeOptions {
@@ -113,10 +114,12 @@ dependencies {
 
     implementation 'androidx.activity:activity-compose:1.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07'
-    implementation "androidx.navigation:navigation-compose:2.4.0-alpha06"
+    implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
 
-    implementation "com.google.accompanist:accompanist-insets:0.16.1"
+    implementation "com.google.accompanist:accompanist-insets:0.18.0"
+    implementation "com.google.accompanist:accompanist-pager:0.18.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.18.0"
 }
 
 kapt {

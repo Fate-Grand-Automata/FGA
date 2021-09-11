@@ -11,7 +11,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -32,13 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
-import com.mathewsachin.fategrandautomata.ui.FgaDialog
-import com.mathewsachin.fategrandautomata.ui.Heading
-import com.mathewsachin.fategrandautomata.ui.HeadingButton
+import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
-import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.more.displayStringRes
-import com.mathewsachin.fategrandautomata.ui.prefs.ChipPreferenceItem
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 
 @Composable
@@ -165,79 +160,47 @@ private fun BattleConfigListContent(
                         .distinct()
                 }
 
-                var selectedServer by remember { mutableStateOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) }
-
-                if (servers.isNotEmpty()) {
-                    LazyRow(
-                        contentPadding = PaddingValues(16.dp, 5.dp),
-                        horizontalArrangement = Arrangement.Center,
+                if (servers.isEmpty()) {
+                    ConfigList(
+                        configs = configs,
+                        selectionMode = selectionMode,
+                        action = action,
+                        selectedConfigs = selectedConfigs,
                         modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        item {
-                            ChipPreferenceItem(
-                                "ALL",
-                                isSelected = selectedServer is BattleConfigCore.Server.NotSet,
-                                onSelect = { selectedServer = BattleConfigCore.Server.NotSet },
-                                enabled = !selectionMode
-                            )
-                        }
-
-                        items(servers) {
-                            ChipPreferenceItem(
-                                stringResource(it.displayStringRes),
-                                isSelected = selectedServer.asGameServer() == it,
-                                onSelect = { selectedServer = BattleConfigCore.Server.Set(it) },
-                                enabled = !selectionMode
-                            )
-                        }
-                    }
-                }
-
-                val filteredConfigs by derivedStateOf {
-                    configs
-                        .filter {
-                            val server = it.server.get().asGameServer()
-
-                            selectedServer is BattleConfigCore.Server.NotSet
-                                    || server == selectedServer.asGameServer()
-                        }
-                }
-
-                LazyColumn(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    if (filteredConfigs.isEmpty()) {
-                        item {
+                            .weight(1f)
+                    )
+                } else {
+                    Tabbed(
+                        items = listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) + servers.map { BattleConfigCore.Server.Set(it) },
+                        heading = {
                             Text(
-                                stringResource(R.string.battle_config_list_no_items),
-                                modifier = Modifier.padding(16.dp)
+                                when (it) {
+                                    BattleConfigCore.Server.NotSet -> "ALL"
+                                    is BattleConfigCore.Server.Set -> stringResource(it.server.displayStringRes)
+                                }
                             )
-                        }
-                    } else {
-                        items(
-                            filteredConfigs,
-                            key = { it.id }
-                        ) {
-                            BattleConfigListItem(
-                                it,
-                                onClick = {
-                                    if (selectionMode) {
-                                        action(BattleConfigListAction.ToggleSelected(it.id))
-                                    } else {
-                                        action(BattleConfigListAction.Edit(it.id))
+                        },
+                        content = { current ->
+                            val filteredConfigs by derivedStateOf {
+                                configs
+                                    .filter {
+                                        val server = it.server.get().asGameServer()
+
+                                        current is BattleConfigCore.Server.NotSet
+                                                || server == current.asGameServer()
                                     }
-                                },
-                                onLongClick = {
-                                    if (!selectionMode) {
-                                        action(BattleConfigListAction.StartSelection(it.id))
-                                    }
-                                },
-                                isSelectionMode = selectionMode,
-                                isSelected = selectionMode && it.id in selectedConfigs
+                            }
+
+                            ConfigList(
+                                configs = filteredConfigs,
+                                selectionMode = selectionMode,
+                                action = action,
+                                selectedConfigs = selectedConfigs
                             )
-                        }
-                    }
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                    )
                 }
             }
         }
@@ -273,6 +236,52 @@ private fun BattleConfigListContent(
                             .padding(7.dp)
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConfigList(
+    configs: List<BattleConfigCore>,
+    selectionMode: Boolean,
+    action: (BattleConfigListAction) -> Unit,
+    selectedConfigs: Set<String>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(top = 16.dp)
+    ) {
+        if (configs.isEmpty()) {
+            item {
+                Text(
+                    stringResource(R.string.battle_config_list_no_items),
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        } else {
+            items(
+                configs,
+                key = { it.id }
+            ) {
+                BattleConfigListItem(
+                    it,
+                    onClick = {
+                        if (selectionMode) {
+                            action(BattleConfigListAction.ToggleSelected(it.id))
+                        } else {
+                            action(BattleConfigListAction.Edit(it.id))
+                        }
+                    },
+                    onLongClick = {
+                        if (!selectionMode) {
+                            action(BattleConfigListAction.StartSelection(it.id))
+                        }
+                    },
+                    isSelectionMode = selectionMode,
+                    isSelected = selectionMode && it.id in selectedConfigs
+                )
             }
         }
     }
