@@ -74,9 +74,8 @@ class CutoutManager @Inject constructor(
 
     private fun shouldIgnoreNotch() =
         when {
-            // CN doesn't cover notch area, but has wide-screen update
-            prefs.gameServer == GameServerEnum.Cn -> false
-            prefs.isNewUI -> true
+            // CN may or may not cover notch area
+            prefs.isNewUI && prefs.gameServer != GameServerEnum.Cn -> true
             else -> prefs.ignoreNotchCalculation
         }
 
