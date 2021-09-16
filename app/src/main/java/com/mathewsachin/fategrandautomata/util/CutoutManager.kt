@@ -5,6 +5,7 @@ import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Surface
 import android.view.WindowManager
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.Region
@@ -72,7 +73,11 @@ class CutoutManager @Inject constructor(
     }
 
     private fun shouldIgnoreNotch() =
-        prefs.isNewUI || prefs.ignoreNotchCalculation
+        when {
+            // CN may or may not cover notch area
+            prefs.isNewUI && prefs.gameServer != GameServerEnum.Cn -> true
+            else -> prefs.ignoreNotchCalculation
+        }
 
     private fun getCutout(Rotation: Int): Cutout {
         if (shouldIgnoreNotch() || cutoutValue == Cutout.NoCutouts) {

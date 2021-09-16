@@ -369,13 +369,19 @@ class Game @Inject constructor(
         CommandCard.NP.C -> Location(460, 400)
     }.xFromCenter()
 
+    private val faceCardDeltaY =
+        if (prefs.gameServer == GameServerEnum.Cn && isWide) -42 else 0
+
+    private val npDeltaY =
+        if (prefs.gameServer == GameServerEnum.Cn && isWide) -33 else 0
+
     fun affinityRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -985
         CommandCard.Face.B -> -470
         CommandCard.Face.C -> 41
         CommandCard.Face.D -> 554
         CommandCard.Face.E -> 1068
-    }.let { x -> Region(x, 650, 250, 200) }.xFromCenter()
+    }.let { x -> Region(x, 650 + faceCardDeltaY, 250, 200) }.xFromCenter()
 
     fun typeRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -1280
@@ -383,7 +389,7 @@ class Game @Inject constructor(
         CommandCard.Face.C -> -256
         CommandCard.Face.D -> 256
         CommandCard.Face.E -> 768
-    }.let { x -> Region(x, 1060, 512, 200) }.xFromCenter()
+    }.let { x -> Region(x, 1060 + faceCardDeltaY, 512, 200) }.xFromCenter()
 
     private fun servantMatchRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -1174
@@ -391,13 +397,13 @@ class Game @Inject constructor(
         CommandCard.Face.C -> -150
         CommandCard.Face.D -> 364
         CommandCard.Face.E -> 880
-    }.let { x -> Region(x, 800, 300, 200) }.xFromCenter()
+    }.let { x -> Region(x, 800 + faceCardDeltaY, 300, 200) }.xFromCenter()
 
     private fun servantMatchRegion(card: CommandCard.NP) = when (card) {
         CommandCard.NP.A -> -602
         CommandCard.NP.B -> -142
         CommandCard.NP.C -> 326
-    }.let { x -> Region(x, 190, 300, 200) }.xFromCenter()
+    }.let { x -> Region(x, 190 + npDeltaY, 300, 200) }.xFromCenter()
 
     fun servantMatchRegion(card: CommandCard) = when (card) {
         is CommandCard.Face -> servantMatchRegion(card)
@@ -410,13 +416,13 @@ class Game @Inject constructor(
         CommandCard.Face.C -> -56
         CommandCard.Face.D -> 458
         CommandCard.Face.E -> 974
-    }.let { x -> Region(x, 890, 115, 85) }.xFromCenter()
+    }.let { x -> Region(x, 890 + faceCardDeltaY, 115, 85) }.xFromCenter()
 
     private fun servantCropRegion(card: CommandCard.NP) = when (card) {
         CommandCard.NP.A -> -518
         CommandCard.NP.B -> -50
         CommandCard.NP.C -> 414
-    }.let { x -> Region(x, 290, 115, 65) }.xFromCenter()
+    }.let { x -> Region(x, 290 + npDeltaY, 115, 65) }.xFromCenter()
 
     fun servantCropRegion(card: CommandCard) = when (card) {
         is CommandCard.Face -> servantCropRegion(card)
