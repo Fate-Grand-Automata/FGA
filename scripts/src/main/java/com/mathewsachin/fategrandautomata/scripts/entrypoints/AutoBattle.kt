@@ -51,6 +51,7 @@ open class AutoBattle @Inject constructor(
         object SupportSelectionPreferredNotSet : ExitReason()
         class SkillCommandParseError(val e: Exception) : ExitReason()
         class CardPriorityParseError(val msg: String) : ExitReason()
+        object Paused : ExitReason()
     }
 
     internal class BattleExitException(val reason: ExitReason) : Exception()
@@ -111,6 +112,9 @@ open class AutoBattle @Inject constructor(
             }
         }
     }
+
+    override fun pausedStatus() =
+        ExitException(ExitReason.Paused, makeExitState())
 
     private fun useBoostItem() {
         val boostItem = BoostItem.of(prefs.boostItemSelectionMode)

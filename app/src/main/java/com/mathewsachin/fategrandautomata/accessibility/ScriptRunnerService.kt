@@ -26,7 +26,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToke
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
-import com.mathewsachin.fategrandautomata.util.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -145,6 +144,9 @@ class ScriptRunnerService: Service() {
                 if (scriptManager.scriptState is ScriptState.Started) {
                     scriptManager.stopScript()
                 }
+            }
+            ScriptRunnerUIAction.Status -> {
+                scriptManager.showStatus()
             }
         }
     }

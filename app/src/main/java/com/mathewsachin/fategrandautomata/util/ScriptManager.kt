@@ -8,12 +8,10 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUIState
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
-import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.exit.BattleExit
@@ -42,6 +40,7 @@ class ScriptManager @Inject constructor(
     val storageProvider: StorageProvider,
     val messages: ScriptMessages
 ) {
+    private val scope = CoroutineScope(Dispatchers.Default)
     private val service = service as ScriptRunnerService
 
     var scriptState: ScriptState = ScriptState.Stopped
@@ -81,7 +80,7 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private fun onScriptExit(e: Exception) = GlobalScope.launch {
+    private fun onScriptExit(e: Exception) = scope.launch {
         userInterface.uiState = ScriptRunnerUIState.Idle
         userInterface.isPlayButtonEnabled = false
         imageLoader.clearSupportCache()
@@ -381,6 +380,18 @@ class ScriptManager @Inject constructor(
         if (resp !is ScriptLauncherResponse.Cancel) {
             userInterface.postDelayed(Duration.milliseconds(500)) {
                 entryPointRunner()
+            }
+        }
+    }
+
+    fun showStatus() {
+        scriptState.let {
+            if (it is ScriptState.Started) {
+                val status = it.entryPoint.pausedStatus()
+
+                if (status is AutoBattle.ExitException) {
+                    scope.launch { showBattleExit(service, status) }
+                }
             }
         }
     }

@@ -32,6 +32,7 @@ sealed class ScriptRunnerUIAction {
     object Pause: ScriptRunnerUIAction()
     object Resume: ScriptRunnerUIAction()
     object Stop: ScriptRunnerUIAction()
+    object Status: ScriptRunnerUIAction()
 }
 
 @Composable
@@ -98,20 +99,43 @@ fun ScriptRunnerUI(
                     .offset(x = (-18).dp)
                     .zIndex(-1f)
             ) {
-                Surface(
-                    color = Color(0xFFCF6679),
-                    contentColor = Color.White,
-                    shape = RoundedCornerShape(0, 50, 50, 0),
-                    onClick = { updateState(ScriptRunnerUIAction.Stop) },
-                    modifier = dragModifier
-                ) {
-                    Icon(
-                        painterResource(R.drawable.ic_stop),
-                        contentDescription = "stop",
-                        modifier = Modifier
-                            .padding(18.dp, 10.dp)
-                            .padding(start = 8.dp)
-                    )
+                Row {
+                    val shape = RoundedCornerShape(0, 50, 50, 0)
+
+                    Surface(
+                        color = Color(0xFFCF6679),
+                        contentColor = Color.White,
+                        shape = shape,
+                        onClick = { updateState(ScriptRunnerUIAction.Stop) },
+                        modifier = dragModifier
+                    ) {
+                        Icon(
+                            painterResource(R.drawable.ic_stop),
+                            contentDescription = "stop",
+                            modifier = Modifier
+                                .padding(18.dp, 10.dp)
+                                .padding(start = 8.dp)
+                        )
+                    }
+
+                    Surface(
+                        color = MaterialTheme.colors.surface,
+                        contentColor = Color.White,
+                        elevation = 5.dp,
+                        shape = shape,
+                        onClick = { updateState(ScriptRunnerUIAction.Status) },
+                        modifier = dragModifier
+                            .offset(x = (-18).dp)
+                            .zIndex(-2f)
+                    ) {
+                        Icon(
+                            painterResource(R.drawable.ic_info),
+                            contentDescription = "status",
+                            modifier = Modifier
+                                .padding(18.dp, 10.dp)
+                                .padding(start = 8.dp)
+                        )
+                    }
                 }
             }
         }
