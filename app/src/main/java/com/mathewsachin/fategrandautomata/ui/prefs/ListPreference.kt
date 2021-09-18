@@ -40,11 +40,11 @@ fun <T> listDialog(
 @Composable
 fun <T> Pref<T>.ListPreference(
     title: String,
+    entries: Map<T, String>,
     modifier: Modifier = Modifier,
     summary: String = "",
     singleLineTitle: Boolean = false,
     icon: VectorIcon? = null,
-    entries: Map<T, String> = emptyMap(),
     enabled: Boolean = true
 ) {
     var selected by remember()
