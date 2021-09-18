@@ -42,7 +42,7 @@ class Game @Inject constructor(
             gameAreaManager.gameArea.size * (1 / transformationExtensions.scriptToScreenScale())
         )
 
-    val isWide = prefs.isNewUI && scriptArea.isWide()
+    val isWide = prefs.isNewUI && scriptArea.size.isWide()
 
     fun Location.xFromCenter() =
         this + Location(scriptArea.center.x, 0)

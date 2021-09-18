@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.IPlatformImpl
@@ -20,5 +21,9 @@ class ScriptProvidesModule {
     @ScriptScope
     @Provides
     fun provideGameAreaManager(platformImpl: IPlatformImpl, prefs: IPreferences): GameAreaManager =
-        FgoGameAreaManager(platformImpl, prefs)
+        FgoGameAreaManager(
+            gameSizeWithBorders = platformImpl.windowRegion.size,
+            offset = { platformImpl.windowRegion.location },
+            isNewUI = prefs.isNewUI
+        )
 }
