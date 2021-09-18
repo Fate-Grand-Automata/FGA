@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.postDelayed
+import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.fategrandautomata.util.FakedComposeView
@@ -56,12 +57,24 @@ class ScriptRunnerUserInterface @Inject constructor(
         get() {
             val res = metrics
 
-            // Retrieve images in Landscape
-            if (res.heightPixels > res.widthPixels) {
-                res.let {
-                    val temp = it.widthPixels
-                    it.widthPixels = it.heightPixels
-                    it.heightPixels = temp
+            fun DisplayMetrics.swapWidthAndHeight() = apply {
+                val temp = widthPixels
+                widthPixels = heightPixels
+                heightPixels = temp
+            }
+
+            when (prefsCore.gameAreaMode.get()) {
+                GameAreaMode.LowerHalf, GameAreaMode.UpperHalf -> {
+                    // Retrieve images in Portrait
+                    if (res.heightPixels < res.widthPixels) {
+                        res.swapWidthAndHeight()
+                    }
+                }
+                else -> {
+                    // Retrieve images in Landscape
+                    if (res.heightPixels > res.widthPixels) {
+                        res.swapWidthAndHeight()
+                    }
                 }
             }
 
