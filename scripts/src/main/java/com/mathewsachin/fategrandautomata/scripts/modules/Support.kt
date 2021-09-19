@@ -15,35 +15,35 @@ const val supportRegionToolSimilarity = 0.75
 class Support(
     fgAutomataApi: IFgoAutomataApi
 ) : IFgoAutomataApi by fgAutomataApi {
-    private var preferredServantArray = listOf<String>()
-    private var friendNameArray = listOf<String>()
-    private var preferredCEArray = listOf<String>()
-    private val autoSkillPrefs get() = prefs.selectedBattleConfig.support
+    private var servants = listOf<String>()
+    private var friendNames = listOf<String>()
+    private var ces = listOf<String>()
+    private val supportPrefs get() = prefs.selectedBattleConfig.support
 
     private val firstSupportSelection = FirstSupportSelection(this)
     private val friendSupportSelection by lazy {
         FriendSupportSelection(
-            friendNames = friendNameArray,
-            supportPrefs = autoSkillPrefs,
+            friendNames = friendNames,
+            supportPrefs = supportPrefs,
             fgAutomataApi = this
         )
     }
     private val preferredSupportSelection by lazy {
         PreferredSupportSelection(
-            servants = preferredServantArray,
-            ces = preferredCEArray,
-            supportPrefs = autoSkillPrefs,
+            servants = servants,
+            ces = ces,
+            supportPrefs = supportPrefs,
             fgAutomataApi = this
         )
     }
 
     fun init() {
-        friendNameArray = autoSkillPrefs.friendNames
-        preferredServantArray = autoSkillPrefs.preferredServants
-        preferredCEArray = autoSkillPrefs.preferredCEs
+        friendNames = supportPrefs.friendNames
+        servants = supportPrefs.preferredServants
+        ces = supportPrefs.preferredCEs
     }
 
-    private fun selectSupportClass(supportClass: SupportClass = autoSkillPrefs.supportClass) {
+    private fun selectSupportClass(supportClass: SupportClass = supportPrefs.supportClass) {
         if (supportClass == SupportClass.None)
             return
 
@@ -73,6 +73,9 @@ class Support(
         var numberOfSwipes = 0
         var numberOfUpdates = 0
 
+        val alsoCheckAll = supportPrefs.alsoCheckAll
+                && supportPrefs.supportClass !in listOf(SupportClass.None, SupportClass.All, SupportClass.Mix)
+
         while (true) {
             val result = provider.select()
 
@@ -98,7 +101,7 @@ class Support(
                 else -> {
                     // -- okay, we have run out of options, let's give up
                     game.supportListTopClick.click()
-                    selectSupport(autoSkillPrefs.fallbackTo, true)
+                    selectSupport(supportPrefs.fallbackTo, true)
                     return
                 }
             }
