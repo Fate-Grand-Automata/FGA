@@ -152,6 +152,8 @@ class Support(
                 ) -> return
                 images[Images.Guest] in game.supportFriendRegion -> return
             }
+
+            Duration.milliseconds(100).wait()
         }
     }
 }
