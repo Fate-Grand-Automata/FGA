@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.postDelayed
-import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.fategrandautomata.util.FakedComposeView
@@ -53,7 +52,7 @@ class ScriptRunnerUserInterface @Inject constructor(
      * Used with MediaProjection so that we only get landscape images,
      * since the frame size can't be changed during a projection.
      */
-    val mediaProjectionMetrics: DisplayMetrics
+    val landscapeMetrics: DisplayMetrics
         get() {
             val res = metrics
 
@@ -63,19 +62,9 @@ class ScriptRunnerUserInterface @Inject constructor(
                 heightPixels = temp
             }
 
-            when (prefsCore.gameAreaMode.get()) {
-                GameAreaMode.LowerHalf, GameAreaMode.UpperHalf -> {
-                    // Retrieve images in Portrait
-                    if (res.heightPixels < res.widthPixels) {
-                        res.swapWidthAndHeight()
-                    }
-                }
-                else -> {
-                    // Retrieve images in Landscape
-                    if (res.heightPixels > res.widthPixels) {
-                        res.swapWidthAndHeight()
-                    }
-                }
+            // Retrieve images in Landscape
+            if (res.heightPixels > res.widthPixels) {
+                res.swapWidthAndHeight()
             }
 
             return res

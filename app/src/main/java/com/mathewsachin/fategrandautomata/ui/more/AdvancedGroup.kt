@@ -72,7 +72,7 @@ fun LazyListScope.advancedGroup(
         prefs.gameAreaMode.ListPreference(
             title = "Game Area Mode",
             icon = icon(Icons.Default.Fullscreen),
-            entries = GameAreaMode.values().associateWith { it.stringify }
+            entries = GameAreaMode.values().associateWith { it.name }
         )
     }
 
@@ -82,10 +82,4 @@ fun LazyListScope.advancedGroup(
             icon = icon(R.drawable.ic_counter)
         )
     }
-}
-
-val GameAreaMode.stringify get() = when (this) {
-    GameAreaMode.LowerHalf -> "Surface Duo (Lower screen)"
-    GameAreaMode.UpperHalf -> "Surface Duo (Upper screen)"
-    else -> name
 }

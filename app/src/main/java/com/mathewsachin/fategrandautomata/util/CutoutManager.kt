@@ -130,8 +130,7 @@ class CutoutManager @Inject constructor(
 
                 Region((w * leftRatio).roundToInt(), 0, (w * fgoRatio).roundToInt(), h)
             }
-            GameAreaMode.LowerHalf -> Region(0, h / 2, w, h / 2)
-            GameAreaMode.UpperHalf -> Region(0, 0, w, h / 2)
+            GameAreaMode.Duo -> Region(192, 0, 2400, 1766)
         }
     }
 }
