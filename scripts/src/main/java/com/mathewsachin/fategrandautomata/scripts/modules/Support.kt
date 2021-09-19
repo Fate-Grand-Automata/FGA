@@ -39,7 +39,7 @@ class Support(
         preferredCEArray = autoSkillPrefs.preferredCEs
     }
 
-    fun selectSupport(SelectionMode: SupportSelectionModeEnum, continuing: Boolean): Boolean {
+    fun selectSupport(SelectionMode: SupportSelectionModeEnum, continuing: Boolean) {
         waitForSupportScreenToLoad()
 
         if (!continuing && autoSkillPrefs.supportClass != SupportClass.None) {
@@ -59,7 +59,7 @@ class Support(
         }
     }
 
-    private fun selectManual(): Boolean {
+    private fun selectManual() {
         throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionManual)
     }
 
@@ -110,21 +110,20 @@ class Support(
         }
     }
 
-    private fun selectFirst(): Boolean {
+    private fun selectFirst() {
         while (true) {
             Duration.seconds(0.5).wait()
 
             game.supportFirstSupportClick.click()
 
             // Handle the case of a friend not having set a support servant
-            if (game.supportScreenRegion.waitVanish(
-                    images[Images.SupportScreen],
-                    similarity = 0.85,
-                    timeout = Duration.seconds(10)
-                )
-            ) {
-                return true
-            }
+            val supportPicked = game.supportScreenRegion.waitVanish(
+                images[Images.SupportScreen],
+                similarity = 0.85,
+                timeout = Duration.seconds(10)
+            )
+
+            if (supportPicked) return
 
             refreshSupportList()
         }
@@ -158,15 +157,15 @@ class Support(
             return SearchVisibleResult.NotFound
         })
 
-    private fun selectFriend(): Boolean {
+    private fun selectFriend() {
         if (friendNameArray.isNotEmpty()) {
-            return selectPreferred { findFriendName() }
+            selectPreferred { findFriendName() }
+        } else {
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionFriendNotSet)
         }
-
-        throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionFriendNotSet)
     }
 
-    private fun selectPreferred(SearchMethod: SearchFunction): Boolean {
+    private fun selectPreferred(SearchMethod: SearchFunction) {
         var numberOfSwipes = 0
         var numberOfUpdates = 0
 
@@ -176,7 +175,7 @@ class Support(
             when {
                 result is SearchVisibleResult.Found -> {
                     result.support.click()
-                    return true
+                    return
                 }
                 result is SearchVisibleResult.NotFound
                         && numberOfSwipes < prefs.support.swipesPerUpdate -> {
@@ -198,7 +197,8 @@ class Support(
                 else -> {
                     // -- okay, we have run out of options, let's give up
                     game.supportListTopClick.click()
-                    return selectSupport(autoSkillPrefs.fallbackTo, true)
+                    selectSupport(autoSkillPrefs.fallbackTo, true)
+                    return
                 }
             }
         }
