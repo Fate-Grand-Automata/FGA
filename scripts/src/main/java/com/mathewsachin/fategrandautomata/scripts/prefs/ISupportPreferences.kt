@@ -12,7 +12,7 @@ interface ISupportPreferences {
     val selectionMode: SupportSelectionModeEnum
     val fallbackTo: SupportSelectionModeEnum
     val supportClass: SupportClass
-    val alsoCheckAll: Boolean get() = false
+    val alsoCheckAll: Boolean
 
     val maxAscended: Boolean
 

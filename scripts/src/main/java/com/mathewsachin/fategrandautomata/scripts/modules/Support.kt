@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
 import com.mathewsachin.fategrandautomata.scripts.supportSelection.*
 import kotlin.time.Duration
 import kotlin.time.TimeMark
@@ -55,10 +56,6 @@ class Support(
     fun selectSupport(selectionMode: SupportSelectionModeEnum, continuing: Boolean) {
         waitForSupportScreenToLoad()
 
-        if (!continuing) {
-            selectSupportClass()
-        }
-
         val provider = when (selectionMode) {
             SupportSelectionModeEnum.First -> firstSupportSelection
             SupportSelectionModeEnum.Manual -> ManualSupportSelection
@@ -66,21 +63,25 @@ class Support(
             SupportSelectionModeEnum.Preferred -> preferredSupportSelection
         }
 
-        execute(provider)
+        execute(provider, continuing)
     }
 
-    private fun execute(provider: SupportSelectionProvider) {
+    private fun execute(provider: SupportSelectionProvider, continuing: Boolean) {
         var numberOfSwipes = 0
         var numberOfUpdates = 0
+        var onAllList = false
 
-        val alsoCheckAll = supportPrefs.alsoCheckAll
-                && supportPrefs.supportClass !in listOf(SupportClass.None, SupportClass.All, SupportClass.Mix)
+        val alsoCheckAll = supportPrefs.alsoCheckAll && supportPrefs.supportClass.canAlsoCheckAll
+        if (alsoCheckAll || !continuing) {
+            selectSupportClass()
+        }
 
         while (true) {
             val result = provider.select()
 
             when {
                 result is SupportSelectionResult.Done -> return
+                // Scroll down as long as we don't exceed max swipes
                 result is SupportSelectionResult.ScrollDown
                         && numberOfSwipes < prefs.support.swipesPerUpdate -> {
 
@@ -92,14 +93,27 @@ class Support(
                     ++numberOfSwipes
                     Duration.seconds(0.3).wait()
                 }
+                // Switch to All if user asked to
+                alsoCheckAll && !onAllList -> {
+                    selectSupportClass(SupportClass.All)
+                    onAllList = true
+                    numberOfSwipes = 0
+                }
+                // Refresh support list if not exceeded max refreshes
                 numberOfUpdates < prefs.support.maxUpdates -> {
                     refreshSupportList()
+
+                    if (onAllList) {
+                        Duration.seconds(0.5).wait()
+                        selectSupportClass()
+                        onAllList = false
+                    }
 
                     ++numberOfUpdates
                     numberOfSwipes = 0
                 }
+                // Not found after retries, use fallback
                 else -> {
-                    // -- okay, we have run out of options, let's give up
                     game.supportListTopClick.click()
                     selectSupport(supportPrefs.fallbackTo, true)
                     return

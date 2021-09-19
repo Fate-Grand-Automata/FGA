@@ -35,6 +35,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportSelectPreference
@@ -70,6 +71,14 @@ fun SupportGroup(
                 selected = supportClass,
                 onSelectedChange = { supportClass = it }
             )
+
+            val canAlsoCheckAll = supportClass.canAlsoCheckAll && supportMode != SupportSelectionModeEnum.Manual
+
+            AnimatedVisibility(canAlsoCheckAll) {
+                config.support.alsoCheckAll.SwitchPreference(
+                    title = "Also check All"
+                )
+            }
 
             val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
             val friendMode = supportMode == SupportSelectionModeEnum.Friend

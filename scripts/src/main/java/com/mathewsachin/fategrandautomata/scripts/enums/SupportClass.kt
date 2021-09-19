@@ -13,3 +13,6 @@ enum class SupportClass {
     Extra,
     Mix
 }
+
+val SupportClass.canAlsoCheckAll get() =
+    this !in listOf(SupportClass.None, SupportClass.All, SupportClass.Mix)
