@@ -43,13 +43,20 @@ class Support(
         preferredCEArray = autoSkillPrefs.preferredCEs
     }
 
+    private fun selectSupportClass(supportClass: SupportClass = autoSkillPrefs.supportClass) {
+        if (supportClass == SupportClass.None)
+            return
+
+        game.locate(supportClass).click()
+
+        Duration.seconds(0.5).wait()
+    }
+
     fun selectSupport(selectionMode: SupportSelectionModeEnum, continuing: Boolean) {
         waitForSupportScreenToLoad()
 
-        if (autoSkillPrefs.alsoCheckAll || (!continuing && autoSkillPrefs.supportClass != SupportClass.None)) {
-            game.locate(autoSkillPrefs.supportClass).click()
-
-            Duration.seconds(0.5).wait()
+        if (!continuing) {
+            selectSupportClass()
         }
 
         val provider = when (selectionMode) {
