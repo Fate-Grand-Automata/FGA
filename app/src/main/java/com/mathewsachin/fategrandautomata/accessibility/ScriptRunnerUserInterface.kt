@@ -52,17 +52,19 @@ class ScriptRunnerUserInterface @Inject constructor(
      * Used with MediaProjection so that we only get landscape images,
      * since the frame size can't be changed during a projection.
      */
-    val mediaProjectionMetrics: DisplayMetrics
+    val landscapeMetrics: DisplayMetrics
         get() {
             val res = metrics
 
+            fun DisplayMetrics.swapWidthAndHeight() = apply {
+                val temp = widthPixels
+                widthPixels = heightPixels
+                heightPixels = temp
+            }
+
             // Retrieve images in Landscape
             if (res.heightPixels > res.widthPixels) {
-                res.let {
-                    val temp = it.widthPixels
-                    it.widthPixels = it.heightPixels
-                    it.heightPixels = temp
-                }
+                res.swapWidthAndHeight()
             }
 
             return res

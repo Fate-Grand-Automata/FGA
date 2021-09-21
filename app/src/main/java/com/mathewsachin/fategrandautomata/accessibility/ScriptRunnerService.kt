@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
+import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
@@ -26,7 +27,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToke
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
-import com.mathewsachin.fategrandautomata.util.messageAndStackTrace
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -187,25 +187,26 @@ class ScriptRunnerService: Service() {
             }
         }
 
-        if (isLandscape()) {
+        if (shouldDisplayPlayButton()) {
             userInterface.show()
         }
 
         prepareScreenshotService()
     }
 
-    private fun isLandscape() =
-        userInterface.metrics.let { it.widthPixels >= it.heightPixels }
+    private fun shouldDisplayPlayButton(): Boolean {
+        val isLandscape = userInterface.metrics.let { it.widthPixels >= it.heightPixels }
+
+        Timber.verbose { if (isLandscape) "LANDSCAPE" else "PORTRAIT" }
+
+        // Hide overlay in Portrait orientation (unless Surface Duo)
+        return isLandscape || prefsCore.gameAreaMode.get() == GameAreaMode.Duo
+    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        // Hide overlay in Portrait orientation
-        if (isLandscape()) {
-            Timber.verbose { "LANDSCAPE" }
-
+        if (shouldDisplayPlayButton()) {
             userInterface.show()
         } else {
-            Timber.verbose { "PORTRAIT" }
-
             userInterface.hide()
 
             // Pause if script is running
@@ -270,7 +271,7 @@ class ScriptRunnerService: Service() {
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
-                    userInterface.mediaProjectionMetrics,
+                    userInterface.landscapeMetrics,
                     storageProvider
                 )
             } else RootScreenshotService(SuperUser(), storageProvider)

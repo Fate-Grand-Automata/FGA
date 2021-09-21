@@ -1,11 +1,15 @@
 package com.mathewsachin.fategrandautomata.ui.more
 
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.icon
+import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
@@ -61,6 +65,14 @@ fun LazyListScope.advancedGroup(
         prefs.autoStartService.SwitchPreference(
             title = stringResource(R.string.p_auto_start_service),
             icon = icon(R.drawable.ic_launch)
+        )
+    }
+
+    item {
+        prefs.gameAreaMode.ListPreference(
+            title = "Game Area Mode",
+            icon = icon(Icons.Default.Fullscreen),
+            entries = GameAreaMode.values().associateWith { it.name }
         )
     }
 

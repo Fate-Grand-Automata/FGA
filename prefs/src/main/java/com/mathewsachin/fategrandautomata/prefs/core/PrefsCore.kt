@@ -98,7 +98,9 @@ class PrefsCore @Inject constructor(
         default = Location()
     )
 
-    var dirRoot = maker.string("dir_root")
+    val gameAreaMode = maker.enum("game_area_mode", GameAreaMode.Default)
+
+    val dirRoot = maker.string("dir_root")
 
     private val battleConfigMap = mutableMapOf<String, BattleConfigCore>()
 
