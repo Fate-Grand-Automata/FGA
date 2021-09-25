@@ -113,6 +113,7 @@
     <string name="p_battle_config_support_friend_names">Friend names</string>
     <string name="p_battle_config_support_friends_only">Friends Only</string>
     <string name="p_battle_config_support_friend_name_hint">Friend name images can be added using \'Support Image Maker\' script</string>
+    <string name="p_battle_config_support_also_check_all">Also check All</string>
 
     <string name="p_max_skills">Max Skills</string>
 

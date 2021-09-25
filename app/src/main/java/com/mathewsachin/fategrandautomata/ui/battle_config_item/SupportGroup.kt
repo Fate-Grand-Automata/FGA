@@ -76,7 +76,7 @@ fun SupportGroup(
 
             AnimatedVisibility(canAlsoCheckAll) {
                 config.support.alsoCheckAll.SwitchPreference(
-                    title = "Also check All"
+                    title = stringResource(R.string.p_battle_config_support_also_check_all)
                 )
             }
 
