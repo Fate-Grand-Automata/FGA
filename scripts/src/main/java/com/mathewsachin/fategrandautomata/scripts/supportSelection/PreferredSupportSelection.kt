@@ -15,11 +15,12 @@ import kotlin.streams.asStream
 import kotlin.streams.toList
 
 class PreferredSupportSelection(
-    val servants: List<String>,
-    val ces: List<String>,
     supportPrefs: ISupportPreferences,
     fgAutomataApi: IFgoAutomataApi
 ): SpecificSupportSelection(supportPrefs, fgAutomataApi) {
+    private val servants = supportPrefs.preferredServants
+    private val ces = supportPrefs.preferredCEs
+
     private enum class Mode {
         Servants, CEs, Both, None
     }

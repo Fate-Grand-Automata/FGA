@@ -6,10 +6,11 @@ import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
 
 class FriendSupportSelection(
-    val friendNames: List<String>,
     supportPrefs: ISupportPreferences,
     fgAutomataApi: IFgoAutomataApi
 ): SpecificSupportSelection(supportPrefs, fgAutomataApi) {
+    private val friendNames = supportPrefs.friendNames
+
     override fun search(): SpecificSupportSearchResult {
         if (friendNames.isEmpty()) {
             throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionFriendNotSet)

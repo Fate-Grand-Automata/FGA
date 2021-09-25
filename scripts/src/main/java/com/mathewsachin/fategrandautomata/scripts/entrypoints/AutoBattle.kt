@@ -205,8 +205,6 @@ open class AutoBattle @Inject constructor(
         battle.init(autoSkill, card)
         card.init(autoSkill, battle)
 
-        support.init()
-
         // Set all Materials to 0
         prefs.selectedBattleConfig
             .materials

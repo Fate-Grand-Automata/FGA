@@ -16,32 +16,20 @@ const val supportRegionToolSimilarity = 0.75
 class Support(
     fgAutomataApi: IFgoAutomataApi
 ) : IFgoAutomataApi by fgAutomataApi {
-    private var servants = listOf<String>()
-    private var friendNames = listOf<String>()
-    private var ces = listOf<String>()
     private val supportPrefs get() = prefs.selectedBattleConfig.support
 
     private val firstSupportSelection = FirstSupportSelection(this)
     private val friendSupportSelection by lazy {
         FriendSupportSelection(
-            friendNames = friendNames,
             supportPrefs = supportPrefs,
             fgAutomataApi = this
         )
     }
     private val preferredSupportSelection by lazy {
         PreferredSupportSelection(
-            servants = servants,
-            ces = ces,
             supportPrefs = supportPrefs,
             fgAutomataApi = this
         )
-    }
-
-    fun init() {
-        friendNames = supportPrefs.friendNames
-        servants = supportPrefs.preferredServants
-        ces = supportPrefs.preferredCEs
     }
 
     private fun selectSupportClass(supportClass: SupportClass = supportPrefs.supportClass) {
