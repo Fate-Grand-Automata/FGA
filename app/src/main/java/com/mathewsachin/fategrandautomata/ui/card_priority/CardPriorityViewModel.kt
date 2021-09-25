@@ -6,7 +6,6 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
@@ -19,17 +18,12 @@ class CardPriorityViewModel @Inject constructor(
     val battleConfig: BattleConfigCore
 ) : ViewModel() {
     val cardPriorityItems: SnapshotStateList<CardPriorityListItem> by lazy {
-        var cardPriority = battleConfig.cardPriority.get()
-
-        // Handle simple mode and empty string
-        if (cardPriority.length == 3 || cardPriority.isBlank()) {
-            cardPriority = defaultCardPriority
-        }
+        val cardPriority = battleConfig.cardPriority.get()
 
         val rearrangeCards = battleConfig.rearrangeCards
         val braveChains = battleConfig.braveChains
 
-        CardPriorityPerWave.of(cardPriority)
+        cardPriority
             .take(3)
             .map { it.toMutableList() }
             .withIndex()
@@ -48,7 +42,7 @@ class CardPriorityViewModel @Inject constructor(
             cardPriorityItems.map {
                 CardPriority.from(it.scores)
             }
-        ).toString()
+        )
 
         battleConfig.cardPriority.set(value)
         battleConfig.rearrangeCards.set(cardPriorityItems.map { it.rearrangeCards.value })

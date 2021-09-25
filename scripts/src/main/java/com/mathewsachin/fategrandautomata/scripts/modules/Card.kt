@@ -22,9 +22,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         autoSkill = AutoSkillModule
         battle = BattleModule
 
-        cardPriority = CardPriorityPerWave.of(
-            prefs.selectedBattleConfig.cardPriority
-        )
+        cardPriority = prefs.selectedBattleConfig.cardPriority
     }
 
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
