@@ -68,8 +68,7 @@
     <string name="support_img_namer_ce">개념예장(들)</string>
     <string name="support_img_namer_friend_names">친구 이름(들)</string>
     <string name="support_img_namer_item_name">이름</string>
-    <string name="support_img_namer_servant_invalid_message">폴더를 하나 이상 지정할 수 없으며 파일명은 온점이나 스페이스로 시작할 수 없습니다. 그리고 이 기호는 사용할 수 없습니다: %s</string>
-    <string name="support_img_namer_ce_or_friend_invalid_message">폴더를 지정하면 안되며 파일명은 온점이나 스페이스로 시작할 수 없습니다. 그리고 이 기호는 사용할 수 없습니다: %s</string>
+    <string name="support_img_namer_invalid_message">폴더를 하나 이상 지정할 수 없으며 파일명은 온점이나 스페이스로 시작할 수 없습니다. 그리고 이 기호는 사용할 수 없습니다: %s</string>
     <string name="support_img_namer_title">원하는 걸로 하세요</string>
     <string name="support_img_namer_done">완료</string>
     <string name="support_img_namer_blank_file_name">이름 중에 하나가 아직 공백입니다. 서번트나 개념예장을 체크 해제 하시거나 이름을 지정해주세요.</string>

@@ -18,24 +18,11 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 
-// *, ?, \, |, / are special characters in Regex and need to be escaped using \
-private const val InvalidChars = """<>"\|:\*\?\\\/"""
-private const val FileNameRegex = """[^\.\s$InvalidChars][^$InvalidChars]*"""
-
-val ServantRegex = Regex("""$FileNameRegex(/$FileNameRegex)?""")
-val CeRegex = Regex(FileNameRegex)
-
-private const val InvalidCharsMsg = "<, >, \", |, :, *, ?, \\, /"
-
 private fun getSupportEntries(
-    Frame: View,
+    frame: View,
     storageProvider: StorageProvider
 ): List<SupportImgEntry> {
     val tempDir = storageProvider.supportImageTempDir
-
-    val context = Frame.context
-    val servantInvalidMsg = context.getString(R.string.support_img_namer_servant_invalid_message, InvalidCharsMsg)
-    val ceOrFriendInvalidMsg = context.getString(R.string.support_img_namer_ce_or_friend_invalid_message, InvalidCharsMsg)
 
     val servant0 = SupportImgEntry(
         getServantImgPath(
@@ -43,8 +30,7 @@ private fun getSupportEntries(
             0
         ),
         SupportImageKind.Servant,
-        Frame.findViewById(R.id.support_img_servant_0),
-        ServantRegex, servantInvalidMsg
+        frame.findViewById(R.id.support_img_servant_0)
     )
     val servant1 = SupportImgEntry(
         getServantImgPath(
@@ -52,8 +38,7 @@ private fun getSupportEntries(
             1
         ),
         SupportImageKind.Servant,
-        Frame.findViewById(R.id.support_img_servant_1),
-        ServantRegex, servantInvalidMsg
+        frame.findViewById(R.id.support_img_servant_1)
     )
 
     val ce0 = SupportImgEntry(
@@ -62,8 +47,7 @@ private fun getSupportEntries(
             0
         ),
         SupportImageKind.CE,
-        Frame.findViewById(R.id.support_img_ce_0),
-        CeRegex, ceOrFriendInvalidMsg
+        frame.findViewById(R.id.support_img_ce_0)
     )
     val ce1 = SupportImgEntry(
         getCeImgPath(
@@ -71,8 +55,7 @@ private fun getSupportEntries(
             1
         ),
         SupportImageKind.CE,
-        Frame.findViewById(R.id.support_img_ce_1),
-        CeRegex, ceOrFriendInvalidMsg
+        frame.findViewById(R.id.support_img_ce_1)
     )
 
     val friend0 = SupportImgEntry(
@@ -81,8 +64,7 @@ private fun getSupportEntries(
             0
         ),
         SupportImageKind.Friend,
-        Frame.findViewById(R.id.support_img_friend_0),
-        CeRegex, ceOrFriendInvalidMsg
+        frame.findViewById(R.id.support_img_friend_0)
     )
     val friend1 = SupportImgEntry(
         getFriendImgPath(
@@ -90,8 +72,7 @@ private fun getSupportEntries(
             1
         ),
         SupportImageKind.Friend,
-        Frame.findViewById(R.id.support_img_friend_1),
-        CeRegex, ceOrFriendInvalidMsg
+        frame.findViewById(R.id.support_img_friend_1)
     )
 
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)

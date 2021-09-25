@@ -12,22 +12,31 @@ import com.mathewsachin.fategrandautomata.util.StorageProvider
 import java.io.File
 
 class SupportImgEntry(
-    val ImgPath: File,
+    val imgPath: File,
     val kind: SupportImageKind,
-    val Frame: View,
-    val regex: Regex,
-    val invalidMsg: String
+    val frame: View,
 ) {
-    val checkBox: CheckBox = Frame.findViewById(R.id.support_img_check)
-    val imgView: ImageView = Frame.findViewById(R.id.support_img)
-    val textBox: EditText = Frame.findViewById(R.id.support_img_txt)
-    val errorTxt: TextView = Frame.findViewById(R.id.support_img_error)
+    val checkBox: CheckBox = frame.findViewById(R.id.support_img_check)
+    val imgView: ImageView = frame.findViewById(R.id.support_img)
+    val textBox: EditText = frame.findViewById(R.id.support_img_txt)
+    val errorTxt: TextView = frame.findViewById(R.id.support_img_error)
+
+    companion object {
+        // *, ?, \, |, / are special characters in Regex and need to be escaped using \
+        private const val InvalidChars = """<>"\|:\*\?\\\/"""
+        private const val FileNameRegex = """[^\.\s$InvalidChars][^$InvalidChars]*"""
+
+        val regex = Regex("""$FileNameRegex(/$FileNameRegex)?""")
+        private const val InvalidCharsMsg = "<, >, \", |, :, *, ?, \\, /"
+    }
+
+    private val invalidMsg = frame.context.getString(R.string.support_img_namer_invalid_message, InvalidCharsMsg)
 
     init {
-        if (!ImgPath.exists()) {
+        if (!imgPath.exists()) {
             hide()
         } else {
-            imgView.setImageURI(Uri.parse(ImgPath.absolutePath))
+            imgView.setImageURI(Uri.parse(imgPath.absolutePath))
 
             // Allow clicking the image to toggle the checkbox too for convenience
             imgView.setOnClickListener {
@@ -49,7 +58,7 @@ class SupportImgEntry(
     }
 
     fun hide() {
-        Frame.visibility = View.GONE
+        frame.visibility = View.GONE
     }
 
     private fun showAlert(Msg: String) {
@@ -62,7 +71,7 @@ class SupportImgEntry(
             return true
         }
 
-        val oldPath = ImgPath
+        val oldPath = imgPath
         val newFileName = textBox.text.toString()
 
         if (!oldPath.exists()) {
@@ -70,7 +79,7 @@ class SupportImgEntry(
             return true
         }
 
-        val context = Frame.context
+        val context = frame.context
 
         if (newFileName.isBlank()) {
             showAlert(context.getString(R.string.support_img_namer_blank_file_name))
@@ -92,7 +101,7 @@ class SupportImgEntry(
             return true
         }
 
-        val oldPath = ImgPath
+        val oldPath = imgPath
         val newFileName = textBox.text.toString()
 
         if (!oldPath.exists()) {
@@ -109,7 +118,7 @@ class SupportImgEntry(
 
             oldPath.delete()
         } catch (e: Exception) {
-            val context = Frame.context
+            val context = frame.context
             showAlert(context.getString(R.string.support_img_namer_file_rename_failed, newFileName))
             return false
         }

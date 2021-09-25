@@ -73,8 +73,7 @@
     <string name="support_img_namer_ce">概念禮裝</string>
     <string name="support_img_namer_friend_names">好友名稱</string>
     <string name="support_img_namer_item_name">名稱</string>
-    <string name="support_img_namer_servant_invalid_message">檔案名稱不可以句號或空格開頭、不可使用特殊字元: %s</string>
-    <string name="support_img_namer_ce_or_friend_invalid_message">檔案名稱不可以句號或空格開頭、不可使用特殊字元: %s</string>
+    <string name="support_img_namer_invalid_message">檔案名稱不可以句號或空格開頭、不可使用特殊字元: %s</string>
     <string name="support_img_namer_title">請選擇</string>
     <string name="support_img_namer_done">完成</string>
     <string name="support_img_namer_blank_file_name">名稱不可為空白，請取消勾選或是加上名稱</string>
