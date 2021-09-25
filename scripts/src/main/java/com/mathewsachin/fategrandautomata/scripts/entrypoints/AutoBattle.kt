@@ -205,8 +205,6 @@ open class AutoBattle @Inject constructor(
         battle.init(autoSkill, card)
         card.init(autoSkill, battle)
 
-        support.init()
-
         // Set all Materials to 0
         prefs.selectedBattleConfig
             .materials
@@ -430,11 +428,9 @@ open class AutoBattle @Inject constructor(
 
     // Selections Support option
     private fun support() {
-        // Friend selection
-        val hasSelectedSupport =
-            support.selectSupport(prefs.selectedBattleConfig.support.selectionMode, isContinuing)
+        support.selectSupport(prefs.selectedBattleConfig.support.selectionMode, isContinuing)
 
-        if (hasSelectedSupport && !isContinuing) {
+        if (!isContinuing) {
             Duration.seconds(4).wait()
             startQuest()
 

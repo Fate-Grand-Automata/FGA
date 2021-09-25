@@ -26,6 +26,8 @@ internal class SupportPreferences(
 
     override val supportClass by prefs.supportClass
 
+    override val alsoCheckAll by prefs.alsoCheckAll
+
     override val maxAscended by prefs.maxAscended
 
     override val skill1Max by prefs.skill1Max
