@@ -307,7 +307,7 @@ class Game @Inject constructor(
 
     val battleSkillOkClick = Location(400, 850).xFromCenter()
     val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
-    val battleExtraInfoWindowCloseClick = Location(-10, 10).xFromRight()
+    val battleExtraInfoWindowCloseClick = Location(-20, 20).xFromRight()
 
     val skipDeathAnimationClick = Location(-860, 200).xFromRight()
 
