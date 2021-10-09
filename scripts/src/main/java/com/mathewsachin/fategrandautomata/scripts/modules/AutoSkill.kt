@@ -168,11 +168,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
             }
         }
 
-        npChargingSkills.forEach {
-            detectNps()
-
-            spam(it)
-        }
+        spamNPChargingSkills(npChargingSkills)
 
         regularSkills.forEach { spam(it) }
 
@@ -183,6 +179,17 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         }
     }
 
+    private fun spamNPChargingSkills(entries: List<SkillSpamEntry>) {
+        var lastSpammed = true
+        for (entry in entries) {
+            if (lastSpammed) {
+                detectNps()
+            }
+
+            lastSpammed = spam(entry)
+        }
+    }
+
     class SkillSpamEntry(
         val skill: Skill.Servant,
         val config: SkillSpamConfig,
@@ -190,7 +197,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         val teamSlot: ServantTracker.TeamSlot
     )
 
-    private fun spam(entry: SkillSpamEntry) {
+    private fun spam(entry: SkillSpamEntry): Boolean {
         if (canSpam(entry.config, slot = entry.slot)) {
             val skillImage = battle.servantTracker
                 .checkImages[entry.teamSlot]
@@ -205,9 +212,12 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
                     val target = entry.config.determineTarget(entry.slot)
 
                     castSkill(entry.skill, target)
+                    return true
                 }
             }
         }
+
+        return false
     }
 
     private fun SkillSpamConfig.determineTarget(servantSlot: ServantSlot) =
