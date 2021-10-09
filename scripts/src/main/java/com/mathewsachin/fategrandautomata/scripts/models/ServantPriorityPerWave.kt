@@ -10,7 +10,11 @@ class ServantPriorityPerWave private constructor(
 
     override fun toString() =
         scoresPerWave
-            .joinToString(stageSeparator) { it.joinToString(separator) }
+            .joinToString(stageSeparator) {
+                it.joinToString(separator) {  m ->
+                    m.position.toString()
+                }
+            }
 
     companion object {
         val default = from(listOf(ServantTracker.TeamSlot.list))

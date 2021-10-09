@@ -98,8 +98,6 @@ class BattleConfigCore(
     val servantPriority = maker.serialized(
         "servant_priority",
         serializer = object: Serializer<ServantPriorityPerWave> {
-            private val separator = ","
-
             override fun deserialize(serialized: String): ServantPriorityPerWave =
                 try {
                     ServantPriorityPerWave.of(serialized)

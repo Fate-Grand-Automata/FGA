@@ -8,7 +8,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun CardPriorityScreen(
     vm: CardPriorityViewModel = viewModel()
 ) {
-    CardPriorityView(items = vm.cardPriorityItems)
+    CardPriorityView(
+        items = vm.cardPriorityItems,
+        useServantPriority = vm.useServantPriority
+    )
 
     DisposableEffect(vm) {
         onDispose {
