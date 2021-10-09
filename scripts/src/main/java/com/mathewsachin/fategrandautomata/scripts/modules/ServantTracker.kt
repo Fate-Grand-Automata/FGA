@@ -30,17 +30,29 @@ class ServantTracker(
         }
     }
 
-    private val servantQueue = mutableListOf(
-        TeamSlot.D,
-        TeamSlot.E,
-        TeamSlot.F
-    )
+    private val servantQueue = mutableListOf<TeamSlot>()
 
-    val deployed = mutableMapOf<ServantSlot, TeamSlot?>(
-        ServantSlot.A to TeamSlot.A,
-        ServantSlot.B to TeamSlot.B,
-        ServantSlot.C to TeamSlot.C
-    )
+    val deployed = mutableMapOf<ServantSlot, TeamSlot?>()
+
+    fun nextRun() {
+        servantQueue.clear()
+        servantQueue.addAll(
+            listOf(TeamSlot.D, TeamSlot.E, TeamSlot.F)
+        )
+
+        deployed.clear()
+        deployed.putAll(
+            mapOf(
+                ServantSlot.A to TeamSlot.A,
+                ServantSlot.B to TeamSlot.B,
+                ServantSlot.C to TeamSlot.C
+            )
+        )
+    }
+
+    init {
+        nextRun()
+    }
 
     class TeamSlotData(
         val checkImage: IPattern,
@@ -71,17 +83,19 @@ class ServantTracker(
             )
         )
 
-        useSameSnapIn {
-            checkImages[teamSlot] = TeamSlotData(
-                checkImage = game.servantChangeCheckRegion(slot)
-                    .getPattern()
-                    .tag("Servant $teamSlot"),
-                skills = slot.skills().mapIndexed { index, it ->
-                    game.imageRegion(it)
+        if (teamSlot !in checkImages) {
+            useSameSnapIn {
+                checkImages[teamSlot] = TeamSlotData(
+                    checkImage = game.servantChangeCheckRegion(slot)
                         .getPattern()
-                        .tag("Servant $teamSlot S${index + 1}")
-                }
-            )
+                        .tag("Servant $teamSlot"),
+                    skills = slot.skills().mapIndexed { index, it ->
+                        game.imageRegion(it)
+                            .getPattern()
+                            .tag("Servant $teamSlot S${index + 1}")
+                    }
+                )
+            }
         }
 
         if (supportSlot == null

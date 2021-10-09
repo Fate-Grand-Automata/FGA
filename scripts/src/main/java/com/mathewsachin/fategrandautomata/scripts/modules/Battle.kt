@@ -31,8 +31,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         if (state.stage != -1) {
             state.nextRun()
 
-            servantTracker.close()
-            servantTracker = ServantTracker(this)
+            servantTracker.nextRun()
         }
 
         if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
