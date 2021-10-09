@@ -93,10 +93,8 @@ class ServantTracker(
         }
     }
 
-    private val trackFaceCards = false
-
     private fun initFaceCard(teamSlot: TeamSlot, slot: ServantSlot) {
-        if (!trackFaceCards || teamSlot in faceCardImages)
+        if (teamSlot in faceCardImages)
             return
 
         // Open details dialog and click on INFO
@@ -158,10 +156,7 @@ class ServantTracker(
         }
     }
 
-    fun logFaceCardForServants(): Map<TeamSlot, List<CommandCard.Face>> {
-        if (!trackFaceCards)
-            return mapOf()
-
+    fun faceCardsGroupedByServant(): Map<TeamSlot, List<CommandCard.Face>> {
         val cardsRemaining = CommandCard.Face.list.toMutableSet()
         val result = mutableMapOf<TeamSlot, List<CommandCard.Face>>()
 

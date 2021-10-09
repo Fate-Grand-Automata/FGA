@@ -130,12 +130,24 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         useSameSnapIn {
             commandCards = getCommandCards()
 
-            val supportGroup = CommandCard.Face.list
-                .filter { images[Images.Support] in game.supportCheckRegion(it) }
-            commandCardGroups = groupByFaceCard(supportGroup)
-            commandCardGroupedWithNp = groupNpsWithFaceCards(commandCardGroups, supportGroup)
+            val faceCardsGroupedByServant = battle.servantTracker.faceCardsGroupedByServant()
 
-            battle.servantTracker.logFaceCardForServants()
+            commandCardGroups = faceCardsGroupedByServant.values.toList()
+            commandCardGroupedWithNp =
+                CommandCard.NP.list
+                    .associateWith { np ->
+                        val slot = when (np) {
+                            CommandCard.NP.A -> ServantSlot.A
+                            CommandCard.NP.B -> ServantSlot.B
+                            CommandCard.NP.C -> ServantSlot.C
+                        }
+
+                        val teamSlot = battle.servantTracker.deployed[slot]
+
+                        if (teamSlot == null)
+                            listOf()
+                        else faceCardsGroupedByServant[teamSlot] ?: listOf()
+                    }
         }
     }
 
@@ -383,94 +395,5 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
             .forEach { game.clickLocation(it).click() }
 
         atk = AutoSkillAction.Atk.noOp()
-    }
-
-    private fun groupNpsWithFaceCards(
-        groups: List<List<CommandCard.Face>>,
-        supportGroup: List<CommandCard.Face>
-    ): Map<CommandCard.NP, List<CommandCard.Face>> {
-        val npGroups = mutableMapOf<CommandCard.NP, List<CommandCard.Face>>()
-
-        val supportNp = CommandCard.NP.list.firstOrNull {
-            images[Images.Support] in game.supportCheckRegion(it)
-        }
-
-        if (supportNp != null) {
-            npGroups[supportNp] = supportGroup
-        }
-
-        val otherNps = if (supportNp != null) {
-            CommandCard.NP.list - supportNp
-        } else CommandCard.NP.list
-
-        val otherGroups = if (supportNp != null) {
-            groups.minusElement(supportGroup)
-        } else groups
-
-        otherNps.associateWithTo(npGroups) {
-            game.servantCropRegion(it).getPattern().tag("NP:$it").use { npCropped ->
-                otherGroups
-                    .associateWith { group ->
-                        game.servantMatchRegion(group.first())
-                            .find(npCropped, 0.65)
-                            ?.score
-                    }
-                    .filter { (_, score) -> score != null }
-                    .maxByOrNull { (_, score) -> score ?: 0.0 }
-                    ?.key
-                    ?: emptyList()
-            }
-        }
-
-        messages.log(
-            ScriptLog.NPsGroupedByFaceCards(npGroups)
-        )
-
-        return npGroups
-    }
-
-    private fun groupByFaceCard(supportGroup: List<CommandCard.Face>): List<List<CommandCard.Face>> {
-        val remaining = CommandCard.Face.list.toMutableSet()
-        val groups = mutableListOf<List<CommandCard.Face>>()
-
-        if (supportGroup.isNotEmpty()) {
-            groups.add(supportGroup)
-            remaining.removeAll(supportGroup)
-
-            messages.log(
-                ScriptLog.SupportFaceCardGroup(supportGroup)
-            )
-        }
-
-        while (remaining.isNotEmpty()) {
-            val u = remaining.first()
-            remaining.remove(u)
-
-            val group = mutableListOf<CommandCard.Face>()
-            group.add(u)
-
-            if (remaining.isNotEmpty()) {
-                val me = game.servantCropRegion(u)
-                    .getPattern()
-                    .tag("Card:$u")
-
-                me.use {
-                    val matched = remaining.filter {
-                        me in game.servantMatchRegion(it)
-                    }
-
-                    remaining.removeAll(matched)
-                    group.addAll(matched)
-                }
-            }
-
-            groups.add(group)
-        }
-
-        messages.log(
-            ScriptLog.FaceCardGroups(groups)
-        )
-
-        return groups
     }
 }
