@@ -280,7 +280,18 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
 
         skillSpam()
 
-        // TODO: Do this only if NP spam is ON for any of the servants on field
-        detectNps()
+        if (npSpamThisWave()) {
+            detectNps()
+        }
     }
+
+    private fun npSpamThisWave() =
+        battle.servantTracker.deployed
+            .values
+            .filterNotNull()
+            .any { teamSlot ->
+                val spamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
+
+                spamConfig.np.spam != NPSpamEnum.None
+            }
 }
