@@ -15,14 +15,17 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 
-    private lateinit var cardPriority: CardPriorityPerWave
+    private val cardPriority: CardPriorityPerWave by lazy { prefs.selectedBattleConfig.cardPriority }
+    private val servantPriority: ServantPriorityPerWave? by lazy {
+        if (prefs.selectedBattleConfig.useServantPriority)
+            prefs.selectedBattleConfig.servantPriority
+        else null
+    }
     private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
 
     fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
         autoSkill = AutoSkillModule
         battle = BattleModule
-
-        cardPriority = prefs.selectedBattleConfig.cardPriority
     }
 
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
@@ -67,6 +70,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         return CardTypeEnum.Unknown
     }
 
+    private var faceCardsGroupedByServant: Map<ServantTracker.TeamSlot, List<CommandCard.Face>> = emptyMap()
     private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
     var atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp()
@@ -130,7 +134,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         useSameSnapIn {
             commandCards = getCommandCards()
 
-            val faceCardsGroupedByServant = battle.servantTracker.faceCardsGroupedByServant()
+            faceCardsGroupedByServant = battle.servantTracker.faceCardsGroupedByServant()
 
             commandCardGroups = faceCardsGroupedByServant.values.toList()
             commandCardGroupedWithNp =
@@ -171,15 +175,47 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         game.battleExtraInfoWindowCloseClick.click()
     }
 
+    private fun cardsOrderedByPriority(): List<CommandCard.Face> {
+        fun applyPriority(cards: Map<CardScore, List<CommandCard.Face>>) =
+            cardPriority
+                .atWave(battle.state.stage)
+                .mapNotNull { cards[it] }
+                .flatten()
+
+        servantPriority?.let { servantPriority ->
+            return servantPriority
+                .atWave(battle.state.stage)
+                .mapNotNull { faceCardsGroupedByServant[it] }
+                .map { cards ->
+                    val cardsGroupedByScore = cards
+                        .groupBy { card ->
+                            commandCards
+                                .filterValues { it.contains(card) }
+                                .map { (score, _) -> score }
+                                .first()
+                        }
+                        .filterKeys { it.CardType != CardTypeEnum.Unknown } // Stunned cards at the end
+
+                    applyPriority(cardsGroupedByScore)
+                }
+                .plus(
+                    // Stunned cards
+                    commandCards
+                        .filterKeys { it.CardType == CardTypeEnum.Unknown }
+                        .map { it.value }
+                )
+                .flatten()
+        }
+
+        return applyPriority(commandCards)
+    }
+
     private fun pickCards(clicks: Int = 3): List<CommandCard.Face> {
         var clicksLeft = clicks.coerceAtLeast(0)
         val toClick = mutableListOf<CommandCard.Face>()
         val remainingCards = CommandCard.Face.list.toMutableSet()
 
-        val cardsOrderedByPriority = cardPriority
-            .atWave(battle.state.stage)
-            .mapNotNull { commandCards[it] }
-            .flatten()
+        val cardsOrderedByPriority = cardsOrderedByPriority()
 
         fun addToClickList(vararg cards: CommandCard.Face) = cards.apply {
             toClick.addAll(cards)
