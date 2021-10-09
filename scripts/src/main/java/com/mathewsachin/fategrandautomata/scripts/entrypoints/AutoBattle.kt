@@ -356,7 +356,9 @@ open class AutoBattle @Inject constructor(
         val drops = mutableListOf<IPattern>()
 
         for (i in 0..1) {
-            drops.add(takeColorScreenshot())
+            useColor {
+                drops.add(game.scriptArea.getPattern())
+            }
 
             // check if we need to scroll to see more drops
             if (i == 0 && images[Images.DropScrollbar] in game.resultDropScrollbarRegion) {

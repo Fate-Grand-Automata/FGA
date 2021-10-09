@@ -25,6 +25,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.util.*
+import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import dagger.hilt.android.AndroidEntryPoint
@@ -103,6 +104,9 @@ class ScriptRunnerService: Service() {
 
     @Inject
     lateinit var messages: ScriptMessages
+
+    @Inject
+    lateinit var colorManager: ColorManager
 
     private val screenOffReceiver = ScreenOffReceiver()
 
@@ -272,9 +276,10 @@ class ScriptRunnerService: Service() {
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
                     userInterface.landscapeMetrics,
-                    storageProvider
+                    storageProvider,
+                    colorManager
                 )
-            } else RootScreenshotService(SuperUser(), storageProvider)
+            } else RootScreenshotService(SuperUser(), storageProvider, colorManager)
         } catch (e: Exception) {
             Timber.error(e) { "Error preparing screenshot service" }
             null

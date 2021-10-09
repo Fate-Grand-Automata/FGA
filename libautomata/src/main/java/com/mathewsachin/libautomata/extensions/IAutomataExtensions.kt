@@ -17,5 +17,5 @@ interface IAutomataExtensions : IDurationExtensions,
 
     fun <T> useSameSnapIn(block: () -> T): T
 
-    fun takeColorScreenshot(): IPattern
+    fun <T> useColor(block: () -> T): T
 }
