@@ -196,16 +196,16 @@ class Game @Inject constructor(
     }.let { x -> Location(x, 880) }.xFromCenter()
 
     fun locate(skill: Skill.Servant) = when (skill) {
-        Skill.Servant.A1 -> 140
-        Skill.Servant.A2 -> 328
-        Skill.Servant.A3 -> 514
-        Skill.Servant.B1 -> 775
-        Skill.Servant.B2 -> 963
-        Skill.Servant.B3 -> 1150
-        Skill.Servant.C1 -> 1413
-        Skill.Servant.C2 -> 1600
-        Skill.Servant.C3 -> 1788
-    }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1155) }
+        Skill.Servant.A1 -> 148
+        Skill.Servant.A2 -> 324
+        Skill.Servant.A3 -> 500
+        Skill.Servant.B1 -> 784
+        Skill.Servant.B2 -> 960
+        Skill.Servant.B3 -> 1136
+        Skill.Servant.C1 -> 1418
+        Skill.Servant.C2 -> 1594
+        Skill.Servant.C3 -> 1770
+    }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1158) }
 
     fun locate(skill: Skill.Master) = when (skill) {
         Skill.Master.A -> -740
