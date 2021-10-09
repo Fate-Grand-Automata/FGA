@@ -4,7 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.NPSpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SkillSpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.NpSpamConfig
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamConfig
@@ -21,12 +22,12 @@ class SpamScreenViewModel @Inject constructor(
     private val spamConfig = battleConfig.spam
 
     data class NpSpamState(
-        val spamMode: MutableState<SpamEnum>,
+        val spamMode: MutableState<NPSpamEnum>,
         val waves: MutableState<Set<Int>>
     )
 
     data class SkillSpamState(
-        val spamMode: MutableState<SpamEnum>,
+        val spamMode: MutableState<SkillSpamEnum>,
         val target: MutableState<SkillSpamTarget>,
         val waves: MutableState<Set<Int>>
     )
@@ -55,15 +56,15 @@ class SpamScreenViewModel @Inject constructor(
 
     data class SpamPreset(val name: String, val action: (List<SpamState>) -> Unit)
 
-    private fun applyPreset(state: List<SpamState>, spamMode: SpamEnum) {
+    private fun applyPreset(state: List<SpamState>, npSpamMode: NPSpamEnum, skillSpamMode: SkillSpamEnum) {
         val allWaves = setOf(1, 2, 3)
 
         state.forEach { servant ->
-            servant.np.spamMode.value = spamMode
+            servant.np.spamMode.value = npSpamMode
             servant.np.waves.value = allWaves
 
             servant.skills.forEach { skill ->
-                skill.spamMode.value = spamMode
+                skill.spamMode.value = skillSpamMode
                 skill.target.value = SkillSpamTarget.Self
                 skill.waves.value = allWaves
             }
@@ -73,13 +74,13 @@ class SpamScreenViewModel @Inject constructor(
     // TODO: Localize
     val presets = listOf(
         SpamPreset("SPAM ALL") {
-            applyPreset(it, SpamEnum.Spam)
+            applyPreset(it, NPSpamEnum.Spam, SkillSpamEnum.Spam)
         },
         SpamPreset("SPAM ALL DANGER") {
-            applyPreset(it, SpamEnum.Danger)
+            applyPreset(it, NPSpamEnum.Danger, SkillSpamEnum.Danger)
         },
         SpamPreset("NO SPAM") {
-            applyPreset(it, SpamEnum.None)
+            applyPreset(it, NPSpamEnum.None, SkillSpamEnum.None)
         }
     )
 

@@ -197,6 +197,8 @@
     <string name="p_spam_none">None</string>
     <string name="p_spam_spam">Spam</string>
     <string name="p_spam_danger">Danger</string>
+    <string name="p_spam_with_np">With NP</string>
+    <string name="p_spam_charge_np">Charge NP</string>
 
     <string name="p_support_mode_first">First</string>
     <string name="p_support_mode_manual">Manual</string>

@@ -147,7 +147,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                     .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
                     .np
 
-                if (autoSkill.canSpam(npSpamConfig.spam) && (battle.state.stage + 1) in npSpamConfig.waves)
+                if (autoSkill.canSpam(npSpamConfig, servantSlot))
                     np
                 else null
             }

@@ -16,14 +16,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.NPSpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SkillSpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectChip
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
+import com.mathewsachin.fategrandautomata.util.stringRes
 import kotlinx.coroutines.launch
 
 @Composable
@@ -138,13 +141,13 @@ private fun NpSpamView(
         var selectedSpamMode by spamConfig.spamMode
         var selectedWaves by spamConfig.waves
 
-        SelectSpamMode(
+        SelectNPSpamMode(
             selected = selectedSpamMode,
             onSelectChange = { selectedSpamMode = it },
             modifier = Modifier.weight(1f)
         )
 
-        if (selectedSpamMode != SpamEnum.None) {
+        if (selectedSpamMode != NPSpamEnum.None) {
             SelectWaves(
                 selected = selectedWaves,
                 onSelectChange = { selectedWaves = it },
@@ -170,13 +173,13 @@ private fun SkillSpamView(
         var selectedTarget by skillConfig.target
         var selectedWaves by skillConfig.waves
 
-        SelectSpamMode(
+        SelectSkillSpamMode(
             selected = selectedSpamMode,
             onSelectChange = { selectedSpamMode = it },
             modifier = Modifier.weight(1f)
         )
 
-        if (selectedSpamMode != SpamEnum.None) {
+        if (selectedSpamMode != SkillSpamEnum.None) {
             SelectTarget(
                 selected = selectedTarget,
                 onSelectChange = { selectedTarget = it },
@@ -225,21 +228,54 @@ private fun SpamView(
 }
 
 @Composable
-private fun SelectSpamMode(
-    selected: SpamEnum,
-    onSelectChange: (SpamEnum) -> Unit,
+private fun SelectNPSpamMode(
+    selected: NPSpamEnum,
+    onSelectChange: (NPSpamEnum) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    SelectSpamMode(
+        entries = NPSpamEnum.values().associateWith { stringResource(it.stringRes) },
+        selected = selected,
+        onSelectChange = onSelectChange,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun SelectSkillSpamMode(
+    selected: SkillSpamEnum,
+    onSelectChange: (SkillSpamEnum) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val items = if (BuildConfig.DEBUG)
+        SkillSpamEnum.values().toList()
+    else listOf(SkillSpamEnum.None, SkillSpamEnum.Spam, SkillSpamEnum.Danger)
+
+    SelectSpamMode(
+        entries = items.associateWith { stringResource(it.stringRes) },
+        selected = selected,
+        onSelectChange = onSelectChange,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun <T> SelectSpamMode(
+    entries: Map<T, String>,
+    selected: T,
+    onSelectChange: (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val dialog = listDialog(
         selected = selected,
         onSelectedChange = onSelectChange,
-        entries = SpamEnum.values().associateWith { it.toString() },
+        entries = entries,
         title = "Spam mode"
     )
 
     ListItem(
         text = { Text("Mode") },
-        secondaryText = { Text(selected.toString()) },
+        secondaryText = { Text(entries[selected] ?: selected.toString()) },
         modifier = modifier
             .clickable { dialog.show() }
     )

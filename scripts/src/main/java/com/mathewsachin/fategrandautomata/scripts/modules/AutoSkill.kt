@@ -2,7 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.NPSpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SkillSpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import kotlin.time.Duration
 
@@ -111,13 +112,29 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         is AutoSkillAction.OrderChange -> orderChange(action)
     }
 
-    fun canSpam(spam: SpamEnum): Boolean {
-        val weCanSpam = spam == SpamEnum.Spam
-        val weAreInDanger = spam == SpamEnum.Danger
-                && battle.state.chosenTarget != null
+    private fun isDanger() = battle.state.chosenTarget != null
 
-        return weCanSpam || weAreInDanger
-    }
+    private fun isTargetNPAvailable(config: SkillSpamConfig, slot: ServantSlot) =
+        npsAvailable[config.determineTargetSlot(slot).position - 1]
+
+    fun canSpam(config: SkillSpamConfig, slot: ServantSlot) =
+        when (config.spam) {
+            SkillSpamEnum.None -> false
+            SkillSpamEnum.Spam -> true
+            SkillSpamEnum.Danger -> isDanger()
+            SkillSpamEnum.WithNP -> isTargetNPAvailable(config, slot)
+            SkillSpamEnum.ChargeNP -> !isTargetNPAvailable(config, slot)
+        }
+                && (battle.state.stage + 1) in config.waves
+
+    fun canSpam(config: NpSpamConfig, slot: ServantSlot) =
+        when (config.spam) {
+            NPSpamEnum.None -> false
+            NPSpamEnum.Spam -> true
+            NPSpamEnum.Danger -> isDanger()
+        }
+                && (battle.state.stage + 1) in config.waves
+                && npsAvailable[slot.position - 1]
 
     val skillSpamDelay = Duration.seconds(0.25)
 
@@ -128,7 +145,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
             val servantSpamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
 
             servantSpamConfig.skills.forEachIndexed { skillIndex, skillSpamConfig ->
-                if (canSpam(skillSpamConfig.spam) && (battle.state.stage + 1) in skillSpamConfig.waves) {
+                if (canSpam(skillSpamConfig, slot = servantSlot)) {
                     val skill = skills[skillIndex]
                     val skillImage = battle.servantTracker
                         .checkImages[teamSlot]
@@ -165,6 +182,14 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
             SkillSpamTarget.Right -> ServantTarget.Right
         }
 
+    private fun SkillSpamConfig.determineTargetSlot(servantSlot: ServantSlot) =
+        when (target) {
+            SkillSpamTarget.None, SkillSpamTarget.Left, SkillSpamTarget.Right, SkillSpamTarget.Self -> servantSlot
+            SkillSpamTarget.Slot1 -> ServantSlot.A
+            SkillSpamTarget.Slot2 -> ServantSlot.B
+            SkillSpamTarget.Slot3 -> ServantSlot.C
+        }
+
     lateinit var commandTable: AutoSkillCommand
 
     fun init(BattleModule: Battle, CardModule: Card) {
@@ -174,6 +199,28 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         commandTable = AutoSkillCommand.parse(
             prefs.selectedBattleConfig.skillCommand
         )
+    }
+
+    private var npsAvailable = (1..3).map { false }
+
+    private fun detectNps() {
+        infix fun List<Boolean>.and(other: List<Boolean>) =
+            zip(other) { a, b -> a && b }
+
+        npsAvailable = (1..7)
+            .map {
+                Duration.milliseconds(150).wait()
+
+                useColor {
+                    useSameSnapIn {
+                        game.servantNPCheckRegions.map {
+                            images[Images.ServantExist] in it
+                        }
+                    }
+                }
+            }
+            .reduce { acc, list -> acc and list }
+            .map { !it }
     }
 
     fun execute() {
@@ -187,6 +234,8 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
                 act(action)
             }
         }
+
+        detectNps()
 
         skillSpam()
     }

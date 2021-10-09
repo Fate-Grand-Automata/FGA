@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.models
 
-import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.NPSpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SkillSpamEnum
 
 enum class SkillSpamTarget {
     None,
@@ -14,13 +15,13 @@ enum class SkillSpamTarget {
 
 data class SkillSpamConfig(
     val waves: Set<Int> = (1..3).toSet(),
-    val spam: SpamEnum = SpamEnum.None,
+    val spam: SkillSpamEnum = SkillSpamEnum.None,
     val target: SkillSpamTarget = SkillSpamTarget.None
 )
 
 data class NpSpamConfig(
     val waves: Set<Int> = (1..3).toSet(),
-    val spam: SpamEnum = SpamEnum.None
+    val spam: NPSpamEnum = NPSpamEnum.None
 )
 
 data class ServantSpamConfig(

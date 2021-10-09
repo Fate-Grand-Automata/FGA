@@ -292,6 +292,10 @@ class Game @Inject constructor(
                 )
             }
 
+    val servantNPCheckRegions =
+        servantDeathCheckRegions
+            .map { it + Location(0, 100) }
+
     val battleAttackClick =
         (if (isWide)
             Location(-460, -230)

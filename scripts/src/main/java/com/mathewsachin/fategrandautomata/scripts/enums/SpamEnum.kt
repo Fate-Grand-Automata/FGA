@@ -1,5 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.enums
 
-enum class SpamEnum {
+enum class NPSpamEnum {
     None, Spam, Danger
+}
+
+enum class SkillSpamEnum {
+    None, Spam, Danger,
+    WithNP, ChargeNP
 }

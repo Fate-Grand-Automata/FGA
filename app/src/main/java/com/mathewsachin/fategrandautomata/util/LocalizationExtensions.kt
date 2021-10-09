@@ -18,11 +18,20 @@ val BraveChainEnum.stringRes
         BraveChainEnum.Avoid -> R.string.p_brave_chains_avoid
     }
 
-val SpamEnum.stringRes
+val NPSpamEnum.stringRes
     get() = when (this) {
-        SpamEnum.None -> R.string.p_spam_none
-        SpamEnum.Spam -> R.string.p_spam_spam
-        SpamEnum.Danger -> R.string.p_spam_danger
+        NPSpamEnum.None -> R.string.p_spam_none
+        NPSpamEnum.Spam -> R.string.p_spam_spam
+        NPSpamEnum.Danger -> R.string.p_spam_danger
+    }
+
+val SkillSpamEnum.stringRes
+    get() = when (this) {
+        SkillSpamEnum.None -> R.string.p_spam_none
+        SkillSpamEnum.Spam -> R.string.p_spam_spam
+        SkillSpamEnum.Danger -> R.string.p_spam_danger
+        SkillSpamEnum.WithNP -> R.string.p_spam_with_np
+        SkillSpamEnum.ChargeNP -> R.string.p_spam_charge_np
     }
 
 val SupportClass.stringRes
