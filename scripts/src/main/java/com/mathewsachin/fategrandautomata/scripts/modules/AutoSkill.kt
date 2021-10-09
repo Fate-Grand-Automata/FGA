@@ -139,29 +139,72 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     val skillSpamDelay = Duration.seconds(0.25)
 
     private fun skillSpam() {
+        val npChargingSkills = mutableListOf<SkillSpamEntry>()
+        val regularSkills = mutableListOf<SkillSpamEntry>()
+        val withNPSkills = mutableListOf<SkillSpamEntry>()
+
         ServantSlot.list.forEach { servantSlot ->
             val skills = servantSlot.skills()
             val teamSlot = battle.servantTracker.deployed[servantSlot] ?: ServantTracker.TeamSlot.A
             val servantSpamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
 
-            servantSpamConfig.skills.forEachIndexed { skillIndex, skillSpamConfig ->
-                if (canSpam(skillSpamConfig, slot = servantSlot)) {
-                    val skill = skills[skillIndex]
-                    val skillImage = battle.servantTracker
-                        .checkImages[teamSlot]
-                        ?.skills
-                        ?.getOrNull(skillIndex)
+            val entries = servantSpamConfig.skills.zip(skills) { spamConfig, skill ->
+                SkillSpamEntry(
+                    skill = skill,
+                    config = spamConfig,
+                    slot = servantSlot,
+                    teamSlot = teamSlot
+                )
+            }
 
-                    if (skillImage != null) {
-                        // Some delay for skill icon to be loaded
-                        skillSpamDelay.wait()
+            for (entry in entries) {
+                val listToAddTo = when (entry.config.spam) {
+                    SkillSpamEnum.None -> null
+                    SkillSpamEnum.Spam, SkillSpamEnum.Danger -> regularSkills
+                    SkillSpamEnum.WithNP -> withNPSkills
+                    SkillSpamEnum.ChargeNP -> npChargingSkills
+                }
+                listToAddTo?.add(entry)
+            }
+        }
 
-                        if (skillImage in game.imageRegion(skill)) {
-                            val target = skillSpamConfig.determineTarget(servantSlot)
+        npChargingSkills.forEach {
+            detectNps()
 
-                            castSkill(skill, target)
-                        }
-                    }
+            spam(it)
+        }
+
+        regularSkills.forEach { spam(it) }
+
+        if (withNPSkills.isNotEmpty()) {
+            detectNps()
+
+            withNPSkills.forEach { spam(it) }
+        }
+    }
+
+    class SkillSpamEntry(
+        val skill: Skill.Servant,
+        val config: SkillSpamConfig,
+        val slot: ServantSlot,
+        val teamSlot: ServantTracker.TeamSlot
+    )
+
+    private fun spam(entry: SkillSpamEntry) {
+        if (canSpam(entry.config, slot = entry.slot)) {
+            val skillImage = battle.servantTracker
+                .checkImages[entry.teamSlot]
+                ?.skills
+                ?.getOrNull(entry.skill.index)
+
+            if (skillImage != null) {
+                // Some delay for skill icon to be loaded
+                skillSpamDelay.wait()
+
+                if (skillImage in game.imageRegion(entry.skill)) {
+                    val target = entry.config.determineTarget(entry.slot)
+
+                    castSkill(entry.skill, target)
                 }
             }
         }
@@ -235,8 +278,9 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
             }
         }
 
-        detectNps()
-
         skillSpam()
+
+        // TODO: Do this only if NP spam is ON for any of the servants on field
+        detectNps()
     }
 }
