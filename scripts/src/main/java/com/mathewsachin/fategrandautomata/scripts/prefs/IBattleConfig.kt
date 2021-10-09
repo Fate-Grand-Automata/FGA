@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.ServantPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
 
 interface IBattleConfig {
@@ -12,6 +13,8 @@ interface IBattleConfig {
     var name: String
     var skillCommand: String
     var cardPriority: CardPriorityPerWave
+    val useServantPriority: Boolean
+    val servantPriority: ServantPriorityPerWave
     val rearrangeCards: List<Boolean>
     val braveChains: List<BraveChainEnum>
     val party: Int
