@@ -119,9 +119,11 @@ class Game @Inject constructor(
     val supportExtraRegion = Region(if (isWide) 1380 else 1200, 200, 130, 130)
 
     val supportUpdateClick =
-        if (isWide)
-            Location(1870, 260)
-        else Location(1670, 250)
+        when {
+            prefs.gameServer == GameServerEnum.Jp -> Location(2060, 260)
+            isWide -> Location(1870, 260)
+            else -> Location(1670, 250)
+        }
 
     val supportListTopClick = Location(if (isWide) -218 else -80, 360).xFromRight()
 
