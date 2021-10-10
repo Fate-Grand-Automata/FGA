@@ -9,8 +9,7 @@ import kotlin.time.Duration
 
 class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     val state = BattleState()
-    var servantTracker = ServantTracker(fgAutomataApi)
-        private set
+    val servantTracker = ServantTracker(fgAutomataApi)
     val spamConfig = prefs.selectedBattleConfig.spam
 
     private lateinit var autoSkill: AutoSkill

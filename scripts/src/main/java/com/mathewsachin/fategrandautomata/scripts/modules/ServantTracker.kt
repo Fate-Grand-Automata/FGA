@@ -31,8 +31,7 @@ class ServantTracker(
     }
 
     private val servantQueue = mutableListOf<TeamSlot>()
-
-    val deployed = mutableMapOf<ServantSlot, TeamSlot?>()
+    val deployed = mutableMapOf<ServantSlot, TeamSlot>()
 
     fun nextRun() {
         servantQueue.clear()
@@ -126,6 +125,13 @@ class ServantTracker(
     }
 
     private fun check(slot: ServantSlot) {
+        // If a servant is not present, that means none are left in the backline
+        if (images[Images.ServantExist] !in game.servantPresentRegion(slot)) {
+            deployed.remove(slot)
+            servantQueue.clear()
+            return
+        }
+
         val teamSlot = deployed[slot] ?: return
 
         checkImages[teamSlot].let {
@@ -138,11 +144,11 @@ class ServantTracker(
                 || ((supportSlot == teamSlot) != (images[Images.ServantCheckSupport] in game.servantChangeSupportCheckRegion(slot)))
             ) {
                 val newTeamSlot = servantQueue.removeFirstOrNull()
-                deployed[slot] = newTeamSlot
 
                 if (newTeamSlot != null) {
+                    deployed[slot] = newTeamSlot
                     init(newTeamSlot, slot)
-                }
+                } else deployed.remove(slot)
             }
         }
     }
@@ -194,9 +200,9 @@ class ServantTracker(
             }
         }
 
-        deployed.forEach { (_, teamSlot) ->
-            if (supportSlot != teamSlot && teamSlot != null) {
-                val img = faceCardImages[teamSlot] ?: return@forEach
+        for (teamSlot in deployed.values) {
+            if (supportSlot != teamSlot) {
+                val img = faceCardImages[teamSlot] ?: continue
 
                 val matched = cardsRemaining.filter { card ->
                     img in game.servantMatchRegion(card)

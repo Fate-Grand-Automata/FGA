@@ -158,7 +158,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private val spamNps: Set<CommandCard.NP> get() =
         (ServantSlot.list.zip(CommandCard.NP.list))
             .mapNotNull { (servantSlot, np) ->
-                val teamSlot = battle.servantTracker.deployed[servantSlot] ?: ServantTracker.TeamSlot.A
+                val teamSlot = battle.servantTracker.deployed[servantSlot] ?: return@mapNotNull null
                 val npSpamConfig = battle.spamConfig
                     .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
                     .np
