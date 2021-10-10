@@ -8,6 +8,7 @@ import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
+import com.mathewsachin.fategrandautomata.scripts.models.ServantSlot
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
@@ -268,7 +269,8 @@ open class AutoBattle @Inject constructor(
         images[Images.CEDetails] in game.resultCeRewardDetailsRegion
 
     private fun isDeathAnimation() =
-        game.servantDeathCheckRegions
+        ServantSlot.list
+            .map { game.servantPresentRegion(it) }
             .count { images[Images.ServantExist] in it } in 1..2
 
     private fun ceRewardDetails() {

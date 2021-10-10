@@ -274,25 +274,21 @@ class Game @Inject constructor(
             .xFromRight()
             .yFromBottom()
 
-    val servantDeathCheckRegions =
-        ServantSlot.list
-            .map {
-                when (it) {
-                    ServantSlot.A -> Skill.Servant.A3
-                    ServantSlot.B -> Skill.Servant.B3
-                    ServantSlot.C -> Skill.Servant.C3
-                }
-            }
-            .map {
-                val skill3Location = locate(it)
+    fun servantPresentRegion(slot: ServantSlot) =
+        when (slot) {
+            ServantSlot.A -> Skill.Servant.A3
+            ServantSlot.B -> Skill.Servant.B3
+            ServantSlot.C -> Skill.Servant.C3
+        }.let {
+            val skill3Location = locate(it)
 
-                Region(
-                    skill3Location.x + 35,
-                    skill3Location.y + 67,
-                    120,
-                    120
-                )
-            }
+            Region(
+                skill3Location.x + 35,
+                skill3Location.y + 67,
+                120,
+                120
+            )
+        }
 
     val battleAttackClick =
         (if (isWide)
@@ -410,25 +406,6 @@ class Game @Inject constructor(
     fun servantMatchRegion(card: CommandCard) = when (card) {
         is CommandCard.Face -> servantMatchRegion(card)
         is CommandCard.NP -> servantMatchRegion(card)
-    }
-
-    private fun servantCropRegion(card: CommandCard.Face) = when (card) {
-        CommandCard.Face.A -> -1080
-        CommandCard.Face.B -> -566
-        CommandCard.Face.C -> -56
-        CommandCard.Face.D -> 458
-        CommandCard.Face.E -> 974
-    }.let { x -> Region(x, 890 + faceCardDeltaY, 115, 85) }.xFromCenter()
-
-    private fun servantCropRegion(card: CommandCard.NP) = when (card) {
-        CommandCard.NP.A -> -518
-        CommandCard.NP.B -> -50
-        CommandCard.NP.C -> 414
-    }.let { x -> Region(x, 290 + npDeltaY, 115, 65) }.xFromCenter()
-
-    fun servantCropRegion(card: CommandCard) = when (card) {
-        is CommandCard.Face -> servantCropRegion(card)
-        is CommandCard.NP -> servantCropRegion(card)
     }
 
     fun supportCheckRegion(card: CommandCard) = when (card) {

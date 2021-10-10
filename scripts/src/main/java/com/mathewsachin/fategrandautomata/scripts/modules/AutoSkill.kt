@@ -122,9 +122,9 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     val skillSpamDelay = Duration.seconds(0.25)
 
     private fun skillSpam() {
-        ServantSlot.list.forEach { servantSlot ->
+        for (servantSlot in ServantSlot.list) {
             val skills = servantSlot.skills()
-            val teamSlot = battle.servantTracker.deployed[servantSlot] ?: ServantTracker.TeamSlot.A
+            val teamSlot = battle.servantTracker.deployed[servantSlot] ?: continue
             val servantSpamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
 
             servantSpamConfig.skills.forEachIndexed { skillIndex, skillSpamConfig ->

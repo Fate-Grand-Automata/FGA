@@ -11,6 +11,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.ServantPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
 import com.tfcporciuncula.flow.Serializer
 
@@ -92,6 +93,23 @@ class BattleConfigCore(
 
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
     val shuffleCardsWave = maker.int("shuffle_cards_wave", 3)
+
+    val useServantPriority = maker.bool("use_servant_priority")
+    val servantPriority = maker.serialized(
+        "servant_priority",
+        serializer = object: Serializer<ServantPriorityPerWave> {
+            override fun deserialize(serialized: String): ServantPriorityPerWave =
+                try {
+                    ServantPriorityPerWave.of(serialized)
+                } catch (e: Exception) {
+                    ServantPriorityPerWave.default
+                }
+
+            override fun serialize(value: ServantPriorityPerWave) =
+                value.toString()
+        },
+        default = ServantPriorityPerWave.default
+    )
 
     private val gson = Gson()
     private val defaultSpamConfig = (1..6).map { ServantSpamConfig() }

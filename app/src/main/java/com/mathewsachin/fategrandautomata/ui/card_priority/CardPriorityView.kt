@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -13,12 +14,16 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import kotlinx.coroutines.launch
 
 @Composable
 fun CardPriorityView(
-    items: SnapshotStateList<CardPriorityListItem>
+    items: SnapshotStateList<CardPriorityListItem>,
+    useServantPriority: Pref<Boolean>
 ) {
     val pagerState = rememberPagerState(pageCount = items.size)
     val scope = rememberCoroutineScope()
@@ -29,10 +34,17 @@ fun CardPriorityView(
     ) {
         Heading(stringResource(R.string.p_nav_card_priority))
 
+        val servantPriority by useServantPriority.remember()
+        useServantPriority.SwitchPreference(
+            title = "Use Servant Priority",
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+        )
+
         CardPriorityWaveSelector(
             items = items,
             selectedWave = pagerState.currentPage,
-            onSelectedWaveChange = { scope.launch { pagerState.animateScrollToPage(it) } }
+            onSelectedWaveChange = { scope.launch { pagerState.animateScrollToPage(it) } },
         )
 
         Divider()
@@ -55,7 +67,9 @@ fun CardPriorityView(
                     Text(stringResource(R.string.card_priority_low))
                 }
 
-                items.getOrNull(it)?.Render()
+                items.getOrNull(it)?.Render(
+                    useServantPriority = servantPriority
+                )
             }
         }
     }
