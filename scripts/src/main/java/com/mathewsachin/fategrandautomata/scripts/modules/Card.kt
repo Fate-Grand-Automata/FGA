@@ -189,10 +189,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 .map { cards ->
                     val cardsGroupedByScore = cards
                         .groupBy { card ->
-                            commandCards
-                                .filterValues { it.contains(card) }
-                                .map { (score, _) -> score }
-                                .first()
+                            commandCards.entries
+                                .first { (_, list) -> list.contains(card) }
+                                .key // score
                         }
                         .filterKeys { it.CardType != CardTypeEnum.Unknown } // Stunned cards at the end
 
