@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts
 
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import com.mathewsachin.fategrandautomata.scripts.models.ServantSlot
+import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
 import com.mathewsachin.fategrandautomata.scripts.modules.ServantTracker
 import kotlin.time.Duration
 
@@ -30,7 +30,7 @@ sealed class ScriptLog {
     class FaceCardGroups(val groups: List<List<CommandCard.Face>>): ScriptLog()
     class ServantEnteredSlot(
         val servant: ServantTracker.TeamSlot,
-        val slot: ServantSlot
+        val slot: FieldSlot
     ): ScriptLog()
     class CardsBelongToServant(
         val cards: List<CommandCard.Face>,

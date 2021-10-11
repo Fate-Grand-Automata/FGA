@@ -60,8 +60,8 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
                             ServantTarget.C -> ServantTarget.Right
                             ServantTarget.B -> {
                                 when (null) {
-                                    deployed[ServantSlot.A] -> ServantTarget.Left
-                                    deployed[ServantSlot.C] -> ServantTarget.Right
+                                    deployed[FieldSlot.A] -> ServantTarget.Left
+                                    deployed[FieldSlot.C] -> ServantTarget.Right
                                     else -> ServantTarget.Left // Assume Left when Slot B is empty
                                 }
                             }
@@ -149,7 +149,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     val skillSpamDelay = Duration.seconds(0.25)
 
     private fun skillSpam() {
-        for (servantSlot in ServantSlot.list) {
+        for (servantSlot in FieldSlot.list) {
             val skills = servantSlot.skills()
             val teamSlot = battle.servantTracker.deployed[servantSlot] ?: continue
             val servantSpamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
@@ -177,13 +177,13 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         }
     }
 
-    private fun SkillSpamConfig.determineTarget(servantSlot: ServantSlot) =
+    private fun SkillSpamConfig.determineTarget(fieldSlot: FieldSlot) =
         when (target) {
             SkillSpamTarget.None -> null
-            SkillSpamTarget.Self -> when (servantSlot) {
-                ServantSlot.A -> ServantTarget.A
-                ServantSlot.B -> ServantTarget.B
-                ServantSlot.C -> ServantTarget.C
+            SkillSpamTarget.Self -> when (fieldSlot) {
+                FieldSlot.A -> ServantTarget.A
+                FieldSlot.B -> ServantTarget.B
+                FieldSlot.C -> ServantTarget.C
             }
             SkillSpamTarget.Slot1 -> ServantTarget.A
             SkillSpamTarget.Slot2 -> ServantTarget.B

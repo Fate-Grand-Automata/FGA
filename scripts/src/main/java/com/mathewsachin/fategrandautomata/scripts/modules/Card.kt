@@ -141,9 +141,9 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                 CommandCard.NP.list
                     .associateWith { np ->
                         val slot = when (np) {
-                            CommandCard.NP.A -> ServantSlot.A
-                            CommandCard.NP.B -> ServantSlot.B
-                            CommandCard.NP.C -> ServantSlot.C
+                            CommandCard.NP.A -> FieldSlot.A
+                            CommandCard.NP.B -> FieldSlot.B
+                            CommandCard.NP.C -> FieldSlot.C
                         }
 
                         val teamSlot = battle.servantTracker.deployed[slot]
@@ -156,7 +156,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     }
 
     private val spamNps: Set<CommandCard.NP> get() =
-        (ServantSlot.list.zip(CommandCard.NP.list))
+        (FieldSlot.list.zip(CommandCard.NP.list))
             .mapNotNull { (servantSlot, np) ->
                 val teamSlot = battle.servantTracker.deployed[servantSlot] ?: return@mapNotNull null
                 val npSpamConfig = battle.spamConfig

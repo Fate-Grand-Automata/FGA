@@ -275,11 +275,11 @@ class Game @Inject constructor(
             .xFromRight()
             .yFromBottom()
 
-    fun servantPresentRegion(slot: ServantSlot) =
+    fun servantPresentRegion(slot: FieldSlot) =
         when (slot) {
-            ServantSlot.A -> Skill.Servant.A3
-            ServantSlot.B -> Skill.Servant.B3
-            ServantSlot.C -> Skill.Servant.C3
+            FieldSlot.A -> Skill.Servant.A3
+            FieldSlot.B -> Skill.Servant.B3
+            FieldSlot.C -> Skill.Servant.C3
         }.let {
             val skill3Location = locate(it)
 
@@ -398,31 +398,31 @@ class Game @Inject constructor(
     fun supportCheckRegion(card: CommandCard.Face) =
         affinityRegion(card) + Location(-50, 100)
 
-    fun servantOpenDetailsClick(slot: ServantSlot) =
+    fun servantOpenDetailsClick(slot: FieldSlot) =
         when (slot) {
-            ServantSlot.A -> Skill.Servant.A2
-            ServantSlot.B -> Skill.Servant.B2
-            ServantSlot.C -> Skill.Servant.C2
+            FieldSlot.A -> Skill.Servant.A2
+            FieldSlot.B -> Skill.Servant.B2
+            FieldSlot.C -> Skill.Servant.C2
         }.let {
             Location(locate(it).x, 810)
         }
 
-    fun servantChangeCheckRegion(slot: ServantSlot) =
+    fun servantChangeCheckRegion(slot: FieldSlot) =
         when (slot) {
-            ServantSlot.A -> Skill.Servant.A2
-            ServantSlot.B -> Skill.Servant.B2
-            ServantSlot.C -> Skill.Servant.C2
+            FieldSlot.A -> Skill.Servant.A2
+            FieldSlot.B -> Skill.Servant.B2
+            FieldSlot.C -> Skill.Servant.C2
         }.let {
             val x = locate(it).x
 
             Region(x + 20, 930, 40, 80)
         }
 
-    fun servantChangeSupportCheckRegion(slot: ServantSlot) =
+    fun servantChangeSupportCheckRegion(slot: FieldSlot) =
         when (slot) {
-            ServantSlot.A -> Skill.Servant.A2
-            ServantSlot.B -> Skill.Servant.B2
-            ServantSlot.C -> Skill.Servant.C2
+            FieldSlot.A -> Skill.Servant.A2
+            FieldSlot.B -> Skill.Servant.B2
+            FieldSlot.C -> Skill.Servant.C2
         }.let {
             val x = locate(it).x
 

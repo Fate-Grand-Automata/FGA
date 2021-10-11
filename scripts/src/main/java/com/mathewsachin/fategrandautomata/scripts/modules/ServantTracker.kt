@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.models.OrderChangeMember
-import com.mathewsachin.fategrandautomata.scripts.models.ServantSlot
+import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
 import com.mathewsachin.fategrandautomata.scripts.models.skills
 import com.mathewsachin.libautomata.IPattern
 import kotlin.time.Duration
@@ -31,7 +31,7 @@ class ServantTracker(
     }
 
     private val servantQueue = mutableListOf<TeamSlot>()
-    val deployed = mutableMapOf<ServantSlot, TeamSlot>()
+    val deployed = mutableMapOf<FieldSlot, TeamSlot>()
 
     fun nextRun() {
         servantQueue.clear()
@@ -42,9 +42,9 @@ class ServantTracker(
         deployed.clear()
         deployed.putAll(
             mapOf(
-                ServantSlot.A to TeamSlot.A,
-                ServantSlot.B to TeamSlot.B,
-                ServantSlot.C to TeamSlot.C
+                FieldSlot.A to TeamSlot.A,
+                FieldSlot.B to TeamSlot.B,
+                FieldSlot.C to TeamSlot.C
             )
         )
     }
@@ -74,7 +74,7 @@ class ServantTracker(
         checkImages.clear()
     }
 
-    private fun init(teamSlot: TeamSlot, slot: ServantSlot) {
+    private fun init(teamSlot: TeamSlot, slot: FieldSlot) {
         messages.log(
             ScriptLog.ServantEnteredSlot(
                 servant = teamSlot,
@@ -106,7 +106,7 @@ class ServantTracker(
         }
     }
 
-    private fun initFaceCard(teamSlot: TeamSlot, slot: ServantSlot) {
+    private fun initFaceCard(teamSlot: TeamSlot, slot: FieldSlot) {
         if (teamSlot in faceCardImages)
             return
 
@@ -124,7 +124,7 @@ class ServantTracker(
         faceCardImages[teamSlot] = image
     }
 
-    private fun check(slot: ServantSlot) {
+    private fun check(slot: FieldSlot) {
         // If a servant is not present, that means none are left in the backline
         if (images[Images.ServantExist] !in game.servantPresentRegion(slot)) {
             deployed.remove(slot)
@@ -154,15 +154,15 @@ class ServantTracker(
     }
 
     fun beginTurn() =
-        ServantSlot.list.forEach {
+        FieldSlot.list.forEach {
             check(it)
         }
 
     fun orderChanged(starting: OrderChangeMember.Starting, sub: OrderChangeMember.Sub) {
         val startingSlot = when (starting) {
-            OrderChangeMember.Starting.A -> ServantSlot.A
-            OrderChangeMember.Starting.B -> ServantSlot.B
-            OrderChangeMember.Starting.C -> ServantSlot.C
+            OrderChangeMember.Starting.A -> FieldSlot.A
+            OrderChangeMember.Starting.B -> FieldSlot.B
+            OrderChangeMember.Starting.C -> FieldSlot.C
         }
         val subIndex = sub.autoSkillCode - OrderChangeMember.Sub.A.autoSkillCode
 
