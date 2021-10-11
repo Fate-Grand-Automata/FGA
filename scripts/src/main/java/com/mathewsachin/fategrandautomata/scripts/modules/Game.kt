@@ -369,10 +369,7 @@ class Game @Inject constructor(
     }.xFromCenter()
 
     private val faceCardDeltaY =
-        if (prefs.gameServer == GameServerEnum.Cn && isWide) -42 else 0
-
-    private val npDeltaY =
-        if (prefs.gameServer == GameServerEnum.Cn && isWide) -33 else 0
+        Location(0, if (prefs.gameServer == GameServerEnum.Cn && isWide) -42 else 0)
 
     fun affinityRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -985
@@ -380,7 +377,7 @@ class Game @Inject constructor(
         CommandCard.Face.C -> 41
         CommandCard.Face.D -> 554
         CommandCard.Face.E -> 1068
-    }.let { x -> Region(x, 650 + faceCardDeltaY, 250, 200) }.xFromCenter()
+    }.let { x -> Region(x, 650, 250, 200) + faceCardDeltaY }.xFromCenter()
 
     fun typeRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -1280
@@ -388,31 +385,18 @@ class Game @Inject constructor(
         CommandCard.Face.C -> -256
         CommandCard.Face.D -> 256
         CommandCard.Face.E -> 768
-    }.let { x -> Region(x, 1060 + faceCardDeltaY, 512, 200) }.xFromCenter()
+    }.let { x -> Region(x, 1060, 512, 200) + faceCardDeltaY }.xFromCenter()
 
-    private fun servantMatchRegion(card: CommandCard.Face) = when (card) {
+    fun servantMatchRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -1174
         CommandCard.Face.B -> -660
         CommandCard.Face.C -> -150
         CommandCard.Face.D -> 364
         CommandCard.Face.E -> 880
-    }.let { x -> Region(x, 800 + faceCardDeltaY, 300, 200) }.xFromCenter()
+    }.let { x -> Region(x - 100, 700, 500, 400) + faceCardDeltaY }.xFromCenter()
 
-    private fun servantMatchRegion(card: CommandCard.NP) = when (card) {
-        CommandCard.NP.A -> -602
-        CommandCard.NP.B -> -142
-        CommandCard.NP.C -> 326
-    }.let { x -> Region(x, 190 + npDeltaY, 300, 200) }.xFromCenter()
-
-    fun servantMatchRegion(card: CommandCard) = when (card) {
-        is CommandCard.Face -> servantMatchRegion(card)
-        is CommandCard.NP -> servantMatchRegion(card)
-    }
-
-    fun supportCheckRegion(card: CommandCard) = when (card) {
-        is CommandCard.Face -> affinityRegion(card) + Location(-50, 100)
-        is CommandCard.NP -> (servantMatchRegion(card) + Location(110, -30)).copy(height = 170)
-    }
+    fun supportCheckRegion(card: CommandCard.Face) =
+        affinityRegion(card) + Location(-50, 100)
 
     fun servantOpenDetailsClick(slot: ServantSlot) =
         when (slot) {
