@@ -46,7 +46,34 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     }
 
     private fun selectSkillTarget(target: ServantTarget) {
-        game.locate(target).click()
+        val actualTarget = when (target) {
+            ServantTarget.Left, ServantTarget.Right -> target
+            else -> {
+                val deployed = battle.servantTracker.deployed
+
+                // How many servants on field?
+                when (deployed.size) {
+                    1 -> ServantTarget.B
+                    2 -> {
+                        when (target) {
+                            ServantTarget.A -> ServantTarget.Left
+                            ServantTarget.C -> ServantTarget.Right
+                            ServantTarget.B -> {
+                                when (null) {
+                                    deployed[ServantSlot.A] -> ServantTarget.Left
+                                    deployed[ServantSlot.C] -> ServantTarget.Right
+                                    else -> ServantTarget.Left // Assume Left when Slot B is empty
+                                }
+                            }
+                            else -> target
+                        }
+                    }
+                    else -> target
+                }
+            }
+        }
+
+        game.locate(actualTarget).click()
 
         Duration.seconds(0.5).wait()
 
