@@ -114,16 +114,17 @@ class Game @Inject constructor(
     val withdrawAcceptClick = Location(485, 720).xFromCenter()
     val withdrawCloseClick = Location(-10, 1140).xFromCenter()
 
-    val supportScreenRegion = Region(if (isWide) 150 else 0, 0, 200, 400)
+    val supportHeaderOffset = Location(if (isWide) 171 else 0, 0)
 
-    val supportExtraRegion = Region(if (isWide) 1380 else 1200, 200, 130, 130)
+    val supportScreenRegion = Region(0, 0, 200, 400) + supportHeaderOffset
+
+    val supportExtraRegion = Region(1200, 200, 130, 130) + supportHeaderOffset
 
     val supportUpdateClick =
-        when {
-            prefs.gameServer == GameServerEnum.Jp -> Location(2060, 260)
-            isWide -> Location(1870, 260)
-            else -> Location(1670, 250)
-        }
+        when (prefs.gameServer) {
+            GameServerEnum.Jp -> 1865
+            else -> 1700
+        }.let { x -> Location(x, 260) + supportHeaderOffset }
 
     val supportListTopClick = Location(if (isWide) -218 else -80, 360).xFromRight()
 
@@ -238,7 +239,7 @@ class Game @Inject constructor(
         SupportClass.Berserker -> 1130
         SupportClass.Extra -> 1264
         SupportClass.Mix -> 1402
-    }.let { x -> Location(x + if (isWide) 171 else 0, 256) }
+    }.let { x -> Location(x, 256) + supportHeaderOffset }
 
     fun locate(enemy: EnemyTarget) = when (enemy) {
         EnemyTarget.A -> 90
