@@ -4,8 +4,8 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import com.mathewsachin.fategrandautomata.scripts.models.OrderChangeMember
 import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
+import com.mathewsachin.fategrandautomata.scripts.models.OrderChangeMember
 import com.mathewsachin.fategrandautomata.scripts.models.skills
 import com.mathewsachin.libautomata.IPattern
 import kotlin.time.Duration
@@ -82,7 +82,9 @@ class ServantTracker(
             )
         )
 
-        if (teamSlot !in checkImages) {
+        val isSupport = images[Images.ServantCheckSupport] in game.servantChangeSupportCheckRegion(slot)
+
+        if (teamSlot !in checkImages || isSupport) {
             useSameSnapIn {
                 checkImages[teamSlot] = TeamSlotData(
                     checkImage = game.servantChangeCheckRegion(slot)
@@ -97,10 +99,9 @@ class ServantTracker(
             }
         }
 
-        if (supportSlot == null
-            && images[Images.ServantCheckSupport] in game.servantChangeSupportCheckRegion(slot)) {
+        if (supportSlot == null && isSupport) {
             supportSlot = teamSlot
-        } else {
+        } else if (!isSupport) {
             // Don't useSameSnapIn here, since we open a dialog
             initFaceCard(teamSlot, slot)
         }
@@ -133,23 +134,28 @@ class ServantTracker(
         }
 
         val teamSlot = deployed[slot] ?: return
+        val checkImage = checkImages[teamSlot]?.checkImage
 
-        checkImages[teamSlot].let {
-            if (it == null) {
-                init(teamSlot, slot)
-            }
-            else if (
-                it.checkImage !in game.servantChangeCheckRegion(slot)
-                // In case of dual-servant comps, identify between support and our servant with SUPPORT marker.
-                || ((supportSlot == teamSlot) != (images[Images.ServantCheckSupport] in game.servantChangeSupportCheckRegion(slot)))
-            ) {
-                val newTeamSlot = servantQueue.removeFirstOrNull()
+        if (checkImage == null) {
+            init(teamSlot, slot)
+            return
+        }
 
-                if (newTeamSlot != null) {
-                    deployed[slot] = newTeamSlot
-                    init(newTeamSlot, slot)
-                } else deployed.remove(slot)
-            }
+        val isDifferentServant = checkImage !in game.servantChangeCheckRegion(slot)
+        val isSupport = images[Images.ServantCheckSupport] in game.servantChangeSupportCheckRegion(slot)
+        val wasSupport = supportSlot == teamSlot
+
+        // New run with different support
+        if (wasSupport && isSupport && isDifferentServant) {
+            init(teamSlot, slot)
+        }
+        else if (isDifferentServant || (wasSupport != isSupport)) {
+            val newTeamSlot = servantQueue.removeFirstOrNull()
+
+            if (newTeamSlot != null) {
+                deployed[slot] = newTeamSlot
+                init(newTeamSlot, slot)
+            } else deployed.remove(slot)
         }
     }
 
