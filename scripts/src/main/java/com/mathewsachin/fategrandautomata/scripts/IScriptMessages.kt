@@ -37,6 +37,9 @@ sealed class ScriptLog {
         val servant: ServantTracker.TeamSlot,
         val isSupport: Boolean = false
     ): ScriptLog()
+    class CardsNotPickedByServantPriority(
+        val cards: List<CommandCard.Face>
+    ): ScriptLog()
 }
 
 interface IScriptMessages {

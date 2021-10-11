@@ -197,13 +197,16 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
 
                     applyPriority(cardsGroupedByScore)
                 }
-                .plus(
-                    // Stunned cards
-                    commandCards
-                        .filterKeys { it.CardType == CardTypeEnum.Unknown }
-                        .map { it.value }
-                )
                 .flatten()
+                .let { picked ->
+                    // In case less than 3 cards are picked
+                    val notPicked = CommandCard.Face.list.filter { it !in picked }
+                    if (notPicked.isNotEmpty()) {
+                        messages.log(ScriptLog.CardsNotPickedByServantPriority(notPicked))
+                    }
+
+                    picked + notPicked
+                }
         }
 
         return applyPriority(commandCards)

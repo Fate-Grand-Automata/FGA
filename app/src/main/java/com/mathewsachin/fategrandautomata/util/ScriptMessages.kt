@@ -93,6 +93,9 @@ class ScriptMessages @Inject constructor(
                     "${item.cards} belong to ${supportText}${item.servant}"
                 }
             }
+            is ScriptLog.CardsNotPickedByServantPriority -> {
+                Timber.debug { "Cards not picked by servant priority ${item.cards}" }
+            }
         }
 
     override fun notify(action: ScriptNotify) =
