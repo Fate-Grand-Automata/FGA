@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
+import com.mathewsachin.fategrandautomata.scripts.models.Skill
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -16,13 +17,10 @@ class Battle @Inject constructor(
     private val servantTracker: ServantTracker,
     private val state: BattleState,
     private val battleConfig: IBattleConfig,
-    private val autoSkill: AutoSkill
+    private val autoSkill: AutoSkill,
+    private val card: Card
 ) : IFgoAutomataApi by fgAutomataApi {
-    private lateinit var card: Card
-
-    fun init(CardModule: Card) {
-        card = CardModule
-
+    init {
         state.markStartTime()
 
         resetState()
@@ -103,9 +101,24 @@ class Battle @Inject constructor(
 
         clickAttack()
 
+        shuffleCards()
         card.clickCommandCards()
 
         Duration.seconds(5).wait()
+    }
+
+    private fun shuffleCards() {
+        if (card.shouldShuffle()) {
+            game.battleBack.click()
+
+            autoSkill.castMasterSkill(Skill.Master.C)
+
+            state.hasClickedAttack = false
+
+            clickAttack()
+
+            state.shuffled = true
+        }
     }
 
     private fun onTurnStarted() = useSameSnapIn {

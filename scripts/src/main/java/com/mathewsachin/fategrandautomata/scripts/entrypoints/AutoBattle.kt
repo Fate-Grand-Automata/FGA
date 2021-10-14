@@ -10,7 +10,10 @@ import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
-import com.mathewsachin.fategrandautomata.scripts.modules.*
+import com.mathewsachin.fategrandautomata.scripts.modules.Battle
+import com.mathewsachin.fategrandautomata.scripts.modules.Support
+import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
+import com.mathewsachin.fategrandautomata.scripts.modules.retry
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
@@ -41,7 +44,6 @@ open class AutoBattle @Inject constructor(
     private val storageProvider: IStorageProvider,
     private val state: BattleState,
     private val battle: Battle,
-    private val card: Card,
     private val support: Support,
     private val battleConfig: IBattleConfig
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
@@ -71,12 +73,16 @@ open class AutoBattle @Inject constructor(
     private var withdrawCount = 0
     private var isContinuing = false
     private var partySelected = false
-    private var matsGot = mutableMapOf<MaterialEnum, Int>()
     private var ceDropCount = 0
 
-    override fun script(): Nothing {
-        init()
+    // Set all Materials to 0
+    private var matsGot =
+        battleConfig
+            .materials
+            .associateWith { 0 }
+            .toMutableMap()
 
+    override fun script(): Nothing {
         try {
             loop()
         } catch (e: BattleExitException) {
@@ -197,22 +203,6 @@ open class AutoBattle @Inject constructor(
 
             Duration.seconds(1).wait()
         }
-    }
-
-    /**
-     * Initialize Aspect Ratio adjustment for different sized screens,ask for input from user for
-     * Autoskill plus confirming Apple/Stone usage.
-     *
-     * Then initialize the AutoSkill, Battle, and Card modules in modules.
-     */
-    private fun init() {
-        battle.init(card)
-        card.init(battle)
-
-        // Set all Materials to 0
-        battleConfig
-            .materials
-            .associateWithTo(matsGot) { 0 }
     }
 
     /**

@@ -24,8 +24,6 @@ class Card @Inject constructor(
     private val spamConfig: SpamConfigPerTeamSlot,
     private val autoSkill: AutoSkill
 ) : IFgoAutomataApi by fgAutomataApi {
-    private lateinit var battle: Battle
-
     private val cardPriority: CardPriorityPerWave by lazy { battleConfig.cardPriority }
     private val servantPriority: ServantPriorityPerWave? by lazy {
         if (battleConfig.useServantPriority)
@@ -33,10 +31,6 @@ class Card @Inject constructor(
         else null
     }
     private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
-
-    fun init(BattleModule: Battle) {
-        battle = BattleModule
-    }
 
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
         val region = game.affinityRegion(this)
@@ -363,7 +357,7 @@ class Card @Inject constructor(
         return cards
     }
 
-    private fun shouldShuffle(): Boolean {
+    fun shouldShuffle(): Boolean {
         // Not this wave
         if (state.stage != (battleConfig.shuffleCardsWave - 1)) {
             return false
@@ -398,23 +392,7 @@ class Card @Inject constructor(
         }
     }
 
-    private fun shuffleCards() {
-        if (shouldShuffle()) {
-            game.battleBack.click()
-
-            autoSkill.castMasterSkill(Skill.Master.C)
-
-            state.hasClickedAttack = false
-
-            battle.clickAttack()
-
-            state.shuffled = true
-        }
-    }
-
     fun clickCommandCards() {
-        shuffleCards()
-
         val cards = pickCards()
 
         if (state.atk.cardsBeforeNP > 0) {
