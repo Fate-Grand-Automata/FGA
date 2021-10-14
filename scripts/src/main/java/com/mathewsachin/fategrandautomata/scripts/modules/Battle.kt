@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -13,9 +14,10 @@ import kotlin.time.Duration
 class Battle @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
-    private val state: BattleState
+    private val state: BattleState,
+    private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by fgAutomataApi {
-    val spamConfig = prefs.selectedBattleConfig.spam
+    val spamConfig = battleConfig.spam
 
     private lateinit var autoSkill: AutoSkill
     private lateinit var card: Card
@@ -114,7 +116,7 @@ class Battle @Inject constructor(
 
         state.nextTurn()
 
-        if (prefs.selectedBattleConfig.autoChooseTarget) {
+        if (battleConfig.autoChooseTarget) {
             autoChooseTarget()
         }
     }

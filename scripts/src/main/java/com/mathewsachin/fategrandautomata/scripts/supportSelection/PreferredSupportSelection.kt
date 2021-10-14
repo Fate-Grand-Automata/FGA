@@ -11,10 +11,13 @@ import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.streams.asStream
 import kotlin.streams.toList
 
-class PreferredSupportSelection(
+@ScriptScope
+class PreferredSupportSelection @Inject constructor(
     supportPrefs: ISupportPreferences,
     fgAutomataApi: IFgoAutomataApi
 ): SpecificSupportSelection(supportPrefs, fgAutomataApi) {

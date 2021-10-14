@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -13,7 +14,8 @@ import kotlin.time.Duration
 class AutoSkill @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
-    private val state: BattleState
+    private val state: BattleState,
+    private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
 
@@ -205,7 +207,7 @@ class AutoSkill @Inject constructor(
         battle = BattleModule
 
         commandTable = AutoSkillCommand.parse(
-            prefs.selectedBattleConfig.skillCommand
+            battleConfig.skillCommand
         )
     }
 

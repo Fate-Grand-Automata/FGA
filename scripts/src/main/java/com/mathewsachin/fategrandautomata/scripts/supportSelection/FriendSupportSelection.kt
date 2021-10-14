@@ -4,8 +4,11 @@ import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 
-class FriendSupportSelection(
+@ScriptScope
+class FriendSupportSelection @Inject constructor(
     supportPrefs: ISupportPreferences,
     fgAutomataApi: IFgoAutomataApi
 ): SpecificSupportSelection(supportPrefs, fgAutomataApi) {

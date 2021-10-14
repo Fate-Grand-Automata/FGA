@@ -10,6 +10,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.util.*
 import javax.inject.Inject
@@ -18,15 +19,16 @@ import javax.inject.Inject
 class Card @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
-    private val state: BattleState
+    private val state: BattleState,
+    private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 
-    private val cardPriority: CardPriorityPerWave by lazy { prefs.selectedBattleConfig.cardPriority }
+    private val cardPriority: CardPriorityPerWave by lazy { battleConfig.cardPriority }
     private val servantPriority: ServantPriorityPerWave? by lazy {
-        if (prefs.selectedBattleConfig.useServantPriority)
-            prefs.selectedBattleConfig.servantPriority
+        if (battleConfig.useServantPriority)
+            battleConfig.servantPriority
         else null
     }
     private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
@@ -128,13 +130,11 @@ class Card @Inject constructor(
         else default
 
     fun readCommandCards() {
-        braveChainsThisTurn = prefs
-            .selectedBattleConfig
+        braveChainsThisTurn = battleConfig
             .braveChains
             .inCurrentWave(BraveChainEnum.None)
 
-        rearrangeCardsThisTurn = prefs
-            .selectedBattleConfig
+        rearrangeCardsThisTurn = battleConfig
             .rearrangeCards
             .inCurrentWave(false)
 
@@ -367,7 +367,7 @@ class Card @Inject constructor(
 
     private fun shouldShuffle(): Boolean {
         // Not this wave
-        if (state.stage != (prefs.selectedBattleConfig.shuffleCardsWave - 1)) {
+        if (state.stage != (battleConfig.shuffleCardsWave - 1)) {
             return false
         }
 
@@ -376,7 +376,7 @@ class Card @Inject constructor(
             return false
         }
 
-        return when (prefs.selectedBattleConfig.shuffleCards) {
+        return when (battleConfig.shuffleCards) {
             ShuffleCardsEnum.None -> false
             ShuffleCardsEnum.NoEffective -> {
                 val effectiveCardCount = commandCards

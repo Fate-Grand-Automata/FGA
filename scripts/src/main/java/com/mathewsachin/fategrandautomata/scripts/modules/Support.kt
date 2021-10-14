@@ -6,6 +6,7 @@ import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
+import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
 import com.mathewsachin.fategrandautomata.scripts.supportSelection.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
@@ -18,23 +19,11 @@ const val supportRegionToolSimilarity = 0.75
 @ScriptScope
 class Support @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
-    private val firstSupportSelection: FirstSupportSelection
+    private val firstSupportSelection: FirstSupportSelection,
+    private val friendSupportSelection: FriendSupportSelection,
+    private val preferredSupportSelection: PreferredSupportSelection,
+    private val supportPrefs: ISupportPreferences
 ) : IFgoAutomataApi by fgAutomataApi {
-    private val supportPrefs get() = prefs.selectedBattleConfig.support
-
-    private val friendSupportSelection by lazy {
-        FriendSupportSelection(
-            supportPrefs = supportPrefs,
-            fgAutomataApi = this
-        )
-    }
-    private val preferredSupportSelection by lazy {
-        PreferredSupportSelection(
-            supportPrefs = supportPrefs,
-            fgAutomataApi = this
-        )
-    }
-
     private fun selectSupportClass(supportClass: SupportClass = supportPrefs.supportClass) {
         if (supportClass == SupportClass.None)
             return
@@ -44,7 +33,7 @@ class Support @Inject constructor(
         Duration.seconds(0.5).wait()
     }
 
-    fun selectSupport(selectionMode: SupportSelectionModeEnum, continuing: Boolean) {
+    fun selectSupport(continuing: Boolean, selectionMode: SupportSelectionModeEnum = supportPrefs.selectionMode) {
         waitForSupportScreenToLoad()
 
         val provider = when (selectionMode) {
@@ -106,7 +95,7 @@ class Support @Inject constructor(
                 // Not found after retries, use fallback
                 else -> {
                     game.supportListTopClick.click()
-                    selectSupport(supportPrefs.fallbackTo, true)
+                    selectSupport(true, supportPrefs.fallbackTo)
                     return
                 }
             }

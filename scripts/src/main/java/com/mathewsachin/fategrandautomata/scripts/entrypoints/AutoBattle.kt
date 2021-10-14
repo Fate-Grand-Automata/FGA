@@ -11,6 +11,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.modules.*
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -42,7 +43,8 @@ open class AutoBattle @Inject constructor(
     private val battle: Battle,
     private val card: Card,
     private val autoSkill: AutoSkill,
-    private val support: Support
+    private val support: Support,
+    private val battleConfig: IBattleConfig
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object Abort : ExitReason()
@@ -210,7 +212,7 @@ open class AutoBattle @Inject constructor(
         card.init(autoSkill, battle)
 
         // Set all Materials to 0
-        prefs.selectedBattleConfig
+        battleConfig
             .materials
             .associateWithTo(matsGot) { 0 }
     }
@@ -331,7 +333,7 @@ open class AutoBattle @Inject constructor(
     }
 
     private fun trackMaterials() {
-        for (material in prefs.selectedBattleConfig.materials) {
+        for (material in battleConfig.materials) {
             val pattern = images.loadMaterial(material)
 
             // TODO: Make the search region smaller
@@ -435,7 +437,7 @@ open class AutoBattle @Inject constructor(
 
     // Selections Support option
     private fun support() {
-        support.selectSupport(prefs.selectedBattleConfig.support.selectionMode, isContinuing)
+        support.selectSupport(isContinuing)
 
         if (!isContinuing) {
             Duration.seconds(4).wait()
@@ -533,7 +535,7 @@ open class AutoBattle @Inject constructor(
      * changed to the configured one by clicking on the little dots above the party names.
      */
     fun selectParty() {
-        val party = prefs.selectedBattleConfig.party
+        val party = battleConfig.party
 
         if (!partySelected && party in game.partySelectionArray.indices) {
             val currentParty = game.selectedPartyRegion
