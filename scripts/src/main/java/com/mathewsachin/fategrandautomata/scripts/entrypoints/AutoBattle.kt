@@ -10,10 +10,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
-import com.mathewsachin.fategrandautomata.scripts.modules.Battle
-import com.mathewsachin.fategrandautomata.scripts.modules.Support
-import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
-import com.mathewsachin.fategrandautomata.scripts.modules.retry
+import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
@@ -38,14 +35,15 @@ fun IFgoAutomataApi.isInventoryFull() =
  * Script for starting quests, selecting the support and doing battles.
  */
 @ScriptScope
-open class AutoBattle @Inject constructor(
+class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,
     private val storageProvider: IStorageProvider,
     private val state: BattleState,
     private val battle: Battle,
     private val support: Support,
-    private val battleConfig: IBattleConfig
+    private val battleConfig: IBattleConfig,
+    private val withdraw: Withdraw
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object Abort : ExitReason()
@@ -70,7 +68,6 @@ open class AutoBattle @Inject constructor(
     class ExitException(val reason: ExitReason, val state: ExitState) : Exception()
 
     private var stonesUsed = 0
-    private var withdrawCount = 0
     private var isContinuing = false
     private var partySelected = false
     private var ceDropCount = 0
@@ -160,7 +157,7 @@ open class AutoBattle @Inject constructor(
             ceDropCount = ceDropCount,
             materials = matsGot,
             matLimit = if (prefs.refill.shouldLimitMats) prefs.refill.limitMats else null,
-            withdrawCount = withdrawCount,
+            withdrawCount = withdraw.count,
             totalTime = state.totalBattleTime,
             averageTimePerRun = state.averageTimePerRun,
             minTurnsPerRun = state.minTurnsPerRun,
@@ -181,7 +178,7 @@ open class AutoBattle @Inject constructor(
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
-            { needsToWithdraw() } to { withdraw() },
+            { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
@@ -436,40 +433,6 @@ open class AutoBattle @Inject constructor(
             // Adjust according to device.
             Duration.seconds(5).wait()
         }
-    }
-
-    /**
-     * Checks if the window for withdrawing from the battle exists.
-     */
-    private fun needsToWithdraw() =
-        images[Images.Withdraw] in game.withdrawRegion
-
-    /**
-     * Handles withdrawing from battle. Depending on [IPreferences.withdrawEnabled], the script either
-     * withdraws automatically or stops completely.
-     */
-    private fun withdraw() {
-        if (!prefs.withdrawEnabled) {
-            throw BattleExitException(ExitReason.WithdrawDisabled)
-        }
-
-        // Withdraw Region can vary depending on if you have Command Spells/Quartz
-        val withdrawRegion = game.withdrawRegion.find(images[Images.Withdraw])
-            ?: return
-
-        withdrawRegion.region.click()
-
-        Duration.seconds(0.5).wait()
-
-        // Click the "Accept" button after choosing to withdraw
-        game.withdrawAcceptClick.click()
-
-        Duration.seconds(1).wait()
-
-        // Click the "Close" button after accepting the withdrawal
-        game.withdrawCloseClick.click()
-
-        ++withdrawCount
     }
 
     /**
