@@ -2,7 +2,9 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -10,8 +12,19 @@ import kotlin.time.Duration
 @ScriptScope
 class Caster @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
+    private val state: BattleState,
     private val servantTracker: ServantTracker
 ) : IFgoAutomataApi by fgAutomataApi {
+    // TODO: Shouldn't be here ideally.
+    //  Once we add more spam modes, Skill spam and NP spam can have their own variants.
+    fun canSpam(spam: SpamEnum): Boolean {
+        val weCanSpam = spam == SpamEnum.Spam
+        val weAreInDanger = spam == SpamEnum.Danger
+                && state.chosenTarget != null
+
+        return weCanSpam || weAreInDanger
+    }
+
     private fun waitForAnimationToFinish(timeout: Duration = Duration.seconds(5)) {
         val img = images[Images.BattleScreen]
 
@@ -130,5 +143,15 @@ class Caster @Inject constructor(
 
         // Exit any extra menu
         game.battleExtraInfoWindowCloseClick.click()
+    }
+
+    fun use(np: CommandCard.NP) {
+        game.clickLocation(np).click()
+
+        game.battleExtraInfoWindowCloseClick.click()
+    }
+
+    fun use(card: CommandCard.Face) {
+        game.clickLocation(card).click()
     }
 }

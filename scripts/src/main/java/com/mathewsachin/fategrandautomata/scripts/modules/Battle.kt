@@ -19,7 +19,8 @@ class Battle @Inject constructor(
     private val battleConfig: IBattleConfig,
     private val autoSkill: AutoSkill,
     private val caster: Caster,
-    private val card: Card
+    private val card: Card,
+    private val skillSpam: SkillSpam
 ) : IFgoAutomataApi by fgAutomataApi {
     init {
         state.markStartTime()
@@ -99,6 +100,7 @@ class Battle @Inject constructor(
         servantTracker.beginTurn()
 
         autoSkill.execute()
+        skillSpam.spamSkills()
 
         clickAttack()
 

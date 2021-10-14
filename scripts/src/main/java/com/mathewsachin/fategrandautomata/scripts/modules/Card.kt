@@ -22,7 +22,7 @@ class Card @Inject constructor(
     private val state: BattleState,
     private val battleConfig: IBattleConfig,
     private val spamConfig: SpamConfigPerTeamSlot,
-    private val autoSkill: AutoSkill
+    private val caster: Caster
 ) : IFgoAutomataApi by fgAutomataApi {
     private val cardPriority: CardPriorityPerWave by lazy { battleConfig.cardPriority }
     private val servantPriority: ServantPriorityPerWave? by lazy {
@@ -157,17 +157,11 @@ class Card @Inject constructor(
                 val teamSlot = servantTracker.deployed[servantSlot] ?: return@mapNotNull null
                 val npSpamConfig = spamConfig[teamSlot].np
 
-                if (autoSkill.canSpam(npSpamConfig.spam) && (state.stage + 1) in npSpamConfig.waves)
+                if (caster.canSpam(npSpamConfig.spam) && (state.stage + 1) in npSpamConfig.waves)
                     np
                 else null
             }
             .toSet()
-
-    private fun CommandCard.NP.pick() {
-        game.clickLocation(this).click()
-
-        game.battleExtraInfoWindowCloseClick.click()
-    }
 
     private fun cardsOrderedByPriority(): List<CommandCard.Face> {
         fun applyPriority(cards: Map<CardScore, List<CommandCard.Face>>) =
@@ -394,7 +388,7 @@ class Card @Inject constructor(
             cards
                 .take(state.atk.cardsBeforeNP)
                 .also { messages.log(ScriptLog.ClickingCards(it)) }
-                .forEach { game.clickLocation(it).click() }
+                .forEach { caster.use(it) }
         }
 
         val nps = state.atk.nps + spamNps
@@ -402,12 +396,12 @@ class Card @Inject constructor(
         if (nps.isNotEmpty()) {
             nps
                 .also { messages.log(ScriptLog.ClickingNPs(it)) }
-                .forEach { it.pick() }
+                .forEach { caster.use(it) }
         }
 
         cards
             .drop(state.atk.cardsBeforeNP)
             .also { messages.log(ScriptLog.ClickingCards(it)) }
-            .forEach { game.clickLocation(it).click() }
+            .forEach { caster.use(it) }
     }
 }
