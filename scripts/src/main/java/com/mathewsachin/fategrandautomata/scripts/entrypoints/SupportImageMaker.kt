@@ -11,23 +11,25 @@ import com.mathewsachin.libautomata.Region
 import java.io.File
 import javax.inject.Inject
 
-fun getServantImgPath(dir: File, Index: Int): File {
-    return File(dir, "servant_${Index}.png")
-}
-
-fun getCeImgPath(dir: File, Index: Int): File {
-    return File(dir, "ce_${Index}.png")
-}
-
-fun getFriendImgPath(dir: File, Index: Int): File {
-    return File(dir, "friend_${Index}.png")
-}
-
 class SupportImageMaker @Inject constructor(
     storageProvider: IStorageProvider,
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    companion object {
+        fun getServantImgPath(dir: File, Index: Int): File {
+            return File(dir, "servant_${Index}.png")
+        }
+
+        fun getCeImgPath(dir: File, Index: Int): File {
+            return File(dir, "ce_${Index}.png")
+        }
+
+        fun getFriendImgPath(dir: File, Index: Int): File {
+            return File(dir, "friend_${Index}.png")
+        }
+    }
+
     sealed class ExitReason {
         object Success: ExitReason()
         object NotFound: ExitReason()

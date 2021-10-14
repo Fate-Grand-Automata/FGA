@@ -7,9 +7,7 @@ import android.widget.ScrollView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.getCeImgPath
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.getFriendImgPath
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.getServantImgPath
+import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.dayNightThemed
 import com.mathewsachin.fategrandautomata.util.showOverlayDialog
@@ -25,7 +23,7 @@ private fun getSupportEntries(
     val tempDir = storageProvider.supportImageTempDir
 
     val servant0 = SupportImgEntry(
-        getServantImgPath(
+        SupportImageMaker.getServantImgPath(
             tempDir,
             0
         ),
@@ -33,7 +31,7 @@ private fun getSupportEntries(
         frame.findViewById(R.id.support_img_servant_0)
     )
     val servant1 = SupportImgEntry(
-        getServantImgPath(
+        SupportImageMaker.getServantImgPath(
             tempDir,
             1
         ),
@@ -42,7 +40,7 @@ private fun getSupportEntries(
     )
 
     val ce0 = SupportImgEntry(
-        getCeImgPath(
+        SupportImageMaker.getCeImgPath(
             tempDir,
             0
         ),
@@ -50,7 +48,7 @@ private fun getSupportEntries(
         frame.findViewById(R.id.support_img_ce_0)
     )
     val ce1 = SupportImgEntry(
-        getCeImgPath(
+        SupportImageMaker.getCeImgPath(
             tempDir,
             1
         ),
@@ -59,7 +57,7 @@ private fun getSupportEntries(
     )
 
     val friend0 = SupportImgEntry(
-        getFriendImgPath(
+        SupportImageMaker.getFriendImgPath(
             tempDir,
             0
         ),
@@ -67,7 +65,7 @@ private fun getSupportEntries(
         frame.findViewById(R.id.support_img_friend_0)
     )
     val friend1 = SupportImgEntry(
-        getFriendImgPath(
+        SupportImageMaker.getFriendImgPath(
             tempDir,
             1
         ),
