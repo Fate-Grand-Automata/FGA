@@ -4,9 +4,15 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.time.Duration
 
-class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
+@ScriptScope
+class AutoSkill @Inject constructor(
+    fgAutomataApi: IFgoAutomataApi,
+    private val servantTracker: ServantTracker
+) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
     private lateinit var card: Card
 
@@ -49,7 +55,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         val actualTarget = when (target) {
             ServantTarget.Left, ServantTarget.Right -> target
             else -> {
-                val deployed = battle.servantTracker.deployed
+                val deployed = servantTracker.deployed
 
                 // How many servants on field?
                 when (deployed.size) {
@@ -118,7 +124,7 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
         // Extra wait for the lag introduced by Order change
         Duration.seconds(1).wait()
 
-        battle.servantTracker.orderChanged(action.starting, action.sub)
+        servantTracker.orderChanged(action.starting, action.sub)
     }
 
     private fun selectEnemyTarget(enemy: EnemyTarget) {
@@ -151,13 +157,13 @@ class AutoSkill(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataA
     private fun skillSpam() {
         for (servantSlot in FieldSlot.list) {
             val skills = servantSlot.skills()
-            val teamSlot = battle.servantTracker.deployed[servantSlot] ?: continue
+            val teamSlot = servantTracker.deployed[servantSlot] ?: continue
             val servantSpamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
 
             servantSpamConfig.skills.forEachIndexed { skillIndex, skillSpamConfig ->
                 if (canSpam(skillSpamConfig.spam) && (battle.state.stage + 1) in skillSpamConfig.waves) {
                     val skill = skills[skillIndex]
-                    val skillImage = battle.servantTracker
+                    val skillImage = servantTracker
                         .checkImages[teamSlot]
                         ?.skills
                         ?.getOrNull(skillIndex)

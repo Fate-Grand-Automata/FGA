@@ -5,9 +5,12 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.time.Duration
 
-class ServantTracker(
+@ScriptScope
+class ServantTracker @Inject constructor(
     fgAutomataApi: IFgoAutomataApi
 ) : IFgoAutomataApi by fgAutomataApi, AutoCloseable {
 

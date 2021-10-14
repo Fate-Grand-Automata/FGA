@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
 
@@ -15,6 +16,7 @@ import kotlin.time.Duration
  * - Base CE pickup screen should be filtered to correct rarity and sorted in Ascending order by Level.
  * - Enhancement material pickup screen should be filtered to correct rarity and sorted in Descending order by Level.
  */
+@ScriptScope
 class AutoCEBomb @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi

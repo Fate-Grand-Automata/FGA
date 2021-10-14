@@ -12,6 +12,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.math.absoluteValue
 import kotlin.time.Duration
@@ -31,10 +32,15 @@ fun IFgoAutomataApi.isInventoryFull() =
 /**
  * Script for starting quests, selecting the support and doing battles.
  */
+@ScriptScope
 open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,
-    val storageProvider: IStorageProvider
+    private val storageProvider: IStorageProvider,
+    private val battle: Battle,
+    private val card: Card,
+    private val autoSkill: AutoSkill,
+    private val support: Support
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object Abort : ExitReason()
@@ -57,11 +63,6 @@ open class AutoBattle @Inject constructor(
     internal class BattleExitException(val reason: ExitReason) : Exception()
 
     class ExitException(val reason: ExitReason, val state: ExitState) : Exception()
-
-    private val support = Support(fgAutomataApi)
-    private val card = Card(fgAutomataApi)
-    private val battle = Battle(fgAutomataApi)
-    private val autoSkill = AutoSkill(fgAutomataApi)
 
     private var stonesUsed = 0
     private var withdrawCount = 0

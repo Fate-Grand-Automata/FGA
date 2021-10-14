@@ -6,12 +6,14 @@ import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
 import com.mathewsachin.fategrandautomata.scripts.modules.retry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
 
 /**
  * Continually opens lottery boxes until either the present box is full or there is no currency left.
  */
+@ScriptScope
 class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,

@@ -2,9 +2,12 @@ package com.mathewsachin.fategrandautomata.scripts.supportSelection
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.time.Duration
 
-class FirstSupportSelection(
+@ScriptScope
+class FirstSupportSelection @Inject constructor(
     fgAutomataApi: IFgoAutomataApi
 ): SupportSelectionProvider, IFgoAutomataApi by fgAutomataApi {
     override fun select(): SupportSelectionResult {

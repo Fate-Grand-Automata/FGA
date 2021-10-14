@@ -9,9 +9,11 @@ import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
 
+@ScriptScope
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi

@@ -4,12 +4,14 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
 
 /**
  * Continually triggers 10x Summon, intended for FP summons, but could also be used for SQ summons.
  */
+@ScriptScope
 class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi

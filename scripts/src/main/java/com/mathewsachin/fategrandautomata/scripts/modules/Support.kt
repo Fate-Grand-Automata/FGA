@@ -7,18 +7,21 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
 import com.mathewsachin.fategrandautomata.scripts.supportSelection.*
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
 const val supportRegionToolSimilarity = 0.75
 
-class Support(
-    fgAutomataApi: IFgoAutomataApi
+@ScriptScope
+class Support @Inject constructor(
+    fgAutomataApi: IFgoAutomataApi,
+    private val firstSupportSelection: FirstSupportSelection
 ) : IFgoAutomataApi by fgAutomataApi {
     private val supportPrefs get() = prefs.selectedBattleConfig.support
 
-    private val firstSupportSelection = FirstSupportSelection(this)
     private val friendSupportSelection by lazy {
         FriendSupportSelection(
             supportPrefs = supportPrefs,

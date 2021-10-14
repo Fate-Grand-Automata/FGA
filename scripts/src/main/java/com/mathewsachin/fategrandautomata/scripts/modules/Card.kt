@@ -9,9 +9,15 @@ import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.util.*
+import javax.inject.Inject
 
-class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
+@ScriptScope
+class Card @Inject constructor(
+    fgAutomataApi: IFgoAutomataApi,
+    private val servantTracker: ServantTracker
+) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 
@@ -134,7 +140,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         useSameSnapIn {
             commandCards = getCommandCards()
 
-            faceCardsGroupedByServant = battle.servantTracker.faceCardsGroupedByServant()
+            faceCardsGroupedByServant = servantTracker.faceCardsGroupedByServant()
 
             commandCardGroups = faceCardsGroupedByServant.values.toList()
             commandCardGroupedWithNp =
@@ -146,7 +152,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
                             CommandCard.NP.C -> FieldSlot.C
                         }
 
-                        val teamSlot = battle.servantTracker.deployed[slot]
+                        val teamSlot = servantTracker.deployed[slot]
 
                         if (teamSlot == null)
                             listOf()
@@ -158,7 +164,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
     private val spamNps: Set<CommandCard.NP> get() =
         (FieldSlot.list.zip(CommandCard.NP.list))
             .mapNotNull { (servantSlot, np) ->
-                val teamSlot = battle.servantTracker.deployed[servantSlot] ?: return@mapNotNull null
+                val teamSlot = servantTracker.deployed[servantSlot] ?: return@mapNotNull null
                 val npSpamConfig = battle.spamConfig
                     .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
                     .np

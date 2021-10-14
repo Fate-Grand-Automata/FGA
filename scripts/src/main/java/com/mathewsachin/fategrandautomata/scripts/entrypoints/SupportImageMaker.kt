@@ -8,9 +8,11 @@ import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.io.File
 import javax.inject.Inject
 
+@ScriptScope
 class SupportImageMaker @Inject constructor(
     storageProvider: IStorageProvider,
     exitManager: ExitManager,
