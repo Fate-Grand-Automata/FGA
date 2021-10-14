@@ -9,7 +9,6 @@ import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.modules.*
-import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
@@ -41,11 +40,12 @@ class AutoBattle @Inject constructor(
     private val state: BattleState,
     private val battle: Battle,
     private val support: Support,
-    private val battleConfig: IBattleConfig,
     private val withdraw: Withdraw,
     private val partySelection: PartySelection,
     private val screenshotDrops: ScreenshotDrops,
-    private val connectionRetry: ConnectionRetry
+    private val connectionRetry: ConnectionRetry,
+    private val refill: Refill,
+    private val matTracker: MaterialsTracker
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object Abort : ExitReason()
@@ -69,16 +69,8 @@ class AutoBattle @Inject constructor(
 
     class ExitException(val reason: ExitReason, val state: ExitState) : Exception()
 
-    private var stonesUsed = 0
     private var isContinuing = false
     private var ceDropCount = 0
-
-    // Set all Materials to 0
-    private var matsGot =
-        battleConfig
-            .materials
-            .associateWith { 0 }
-            .toMutableMap()
 
     override fun script(): Nothing {
         try {
@@ -92,10 +84,10 @@ class AutoBattle @Inject constructor(
 
             throw ExitException(reason, makeExitState())
         } finally {
-            val refill = prefs.refill
+            refill.autoDecrement()
+            matTracker.autoDecrement()
 
-            // Auto-decrement apples
-            refill.repetitions -= stonesUsed
+            val refill = prefs.refill
 
             // Auto-decrement runs
             if (refill.shouldLimitRuns) {
@@ -105,17 +97,6 @@ class AutoBattle @Inject constructor(
                 if (refill.limitRuns <= 0) {
                     refill.limitRuns = 1
                     refill.shouldLimitRuns = false
-                }
-            }
-
-            // Auto-decrement materials
-            if (refill.shouldLimitMats) {
-                refill.limitMats -= matsGot.values.sum()
-
-                // Turn off limit by materials when done
-                if (refill.limitMats <= 0) {
-                    refill.limitMats = 1
-                    refill.shouldLimitMats = false
                 }
             }
         }
@@ -153,10 +134,10 @@ class AutoBattle @Inject constructor(
         return ExitState(
             timesRan = state.runs,
             runLimit = if (prefs.refill.shouldLimitRuns) prefs.refill.limitRuns else null,
-            timesRefilled = stonesUsed,
+            timesRefilled = refill.timesRefilled,
             refillLimit = prefs.refill.repetitions,
             ceDropCount = ceDropCount,
-            materials = matsGot,
+            materials = matTracker.farmed,
             matLimit = if (prefs.refill.shouldLimitMats) prefs.refill.limitMats else null,
             withdrawCount = withdraw.count,
             totalTime = state.totalBattleTime,
@@ -286,8 +267,7 @@ class AutoBattle @Inject constructor(
 
     private fun dropScreen() {
         checkCEDrops()
-
-        trackMaterials()
+        matTracker.parseMaterials()
 
         if (prefs.screenshotDrops) {
             screenshotDrops.screenshotDrops()
@@ -315,33 +295,6 @@ class AutoBattle @Inject constructor(
 
                 throw BattleExitException(ExitReason.CEDropped)
             } else messages.notify(ScriptNotify.CEDropped)
-        }
-    }
-
-    private fun trackMaterials() {
-        for (material in battleConfig.materials) {
-            val pattern = images.loadMaterial(material)
-
-            // TODO: Make the search region smaller
-            val count = game.scriptArea
-                .findAll(pattern)
-                .count()
-
-            // Increment material count
-            matsGot.merge(material, count, Int::plus)
-        }
-
-        if (prefs.refill.shouldLimitMats) {
-            val totalMats = matsGot
-                .values
-                .sum()
-
-            if (totalMats >= prefs.refill.limitMats) {
-                // Count the current run
-                state.nextRun()
-
-                throw BattleExitException(ExitReason.LimitMaterials(totalMats))
-            }
         }
     }
 
@@ -431,34 +384,6 @@ class AutoBattle @Inject constructor(
     }
 
     /**
-     * Refills the AP with apples depending on [IPreferences.refill].
-     * Otherwise if [IPreferences.waitAPRegen] is true, loops and wait for AP regeneration
-     */
-    private fun refillStamina() {
-        val refill = prefs.refill
-
-        if (refill.resources.isNotEmpty()
-            && stonesUsed < refill.repetitions
-        ) {
-            refill.resources
-                .map { game.locate(it) }
-                .forEach { it.click() }
-
-            Duration.seconds(1).wait()
-            game.staminaOkClick.click()
-            ++stonesUsed
-
-            Duration.seconds(3).wait()
-        } else if (prefs.waitAPRegen) {
-            game.staminaCloseClick.click()
-
-            messages.notify(ScriptNotify.WaitForAPRegen())
-
-            Duration.seconds(60).wait()
-        } else throw BattleExitException(ExitReason.APRanOut)
-    }
-
-    /**
      * Starts the quest after the support has already been selected. The following features are done optionally:
      * 1. The configured party is selected if it is set in the selected AutoSkill config
      * 2. A boost item is selected if [IPreferences.boostItemSelectionMode] is set (needed in some events)
@@ -480,7 +405,7 @@ class AutoBattle @Inject constructor(
     private fun showRefillsAndRunsMessage() =
         messages.notify(
             ScriptNotify.BetweenRuns(
-                refills = stonesUsed,
+                refills = refill.timesRefilled,
                 runs = state.runs
             )
         )
@@ -492,9 +417,6 @@ class AutoBattle @Inject constructor(
             throw BattleExitException(ExitReason.InventoryFull)
         }
 
-        // Auto refill
-        while (images[Images.Stamina] in game.staminaScreenRegion) {
-            refillStamina()
-        }
+        refill.refill()
     }
 }
