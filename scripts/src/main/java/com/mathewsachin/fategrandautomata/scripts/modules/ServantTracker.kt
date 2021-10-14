@@ -3,32 +3,13 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
-import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
-import com.mathewsachin.fategrandautomata.scripts.models.OrderChangeMember
-import com.mathewsachin.fategrandautomata.scripts.models.skills
+import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.libautomata.IPattern
 import kotlin.time.Duration
 
 class ServantTracker(
     fgAutomataApi: IFgoAutomataApi
 ) : IFgoAutomataApi by fgAutomataApi, AutoCloseable {
-    sealed class TeamSlot(val position: Int) {
-        object A: TeamSlot(1)
-        object B: TeamSlot(2)
-        object C: TeamSlot(3)
-        object D: TeamSlot(4)
-        object E: TeamSlot(5)
-        object F: TeamSlot(6)
-
-        override fun toString() = "[$position]"
-
-        companion object {
-            val list by lazy {
-                listOf(A, B, C, D, E, F)
-            }
-        }
-    }
 
     private val servantQueue = mutableListOf<TeamSlot>()
     val deployed = mutableMapOf<FieldSlot, TeamSlot>()

@@ -1,10 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.models
 
-import com.mathewsachin.fategrandautomata.scripts.modules.ServantTracker
-
 class ServantPriorityPerWave private constructor(
-    private val scoresPerWave: List<List<ServantTracker.TeamSlot>>
-) : List<List<ServantTracker.TeamSlot>> by scoresPerWave {
+    private val scoresPerWave: List<List<TeamSlot>>
+) : List<List<TeamSlot>> by scoresPerWave {
     fun atWave(wave: Int) =
         scoresPerWave[wave.coerceIn(scoresPerWave.indices)]
 
@@ -17,11 +15,11 @@ class ServantPriorityPerWave private constructor(
             }
 
     companion object {
-        val default = from(listOf(ServantTracker.TeamSlot.list))
+        val default = from(listOf(TeamSlot.list))
         private const val stageSeparator = "\n"
         private const val separator = ","
 
-        fun from(scoresPerWave: List<List<ServantTracker.TeamSlot>>) =
+        fun from(scoresPerWave: List<List<TeamSlot>>) =
             ServantPriorityPerWave(scoresPerWave)
 
         fun of(priority: String): ServantPriorityPerWave =
@@ -35,7 +33,7 @@ class ServantPriorityPerWave private constructor(
                             priorityOnAWave
                                 .split(separator)
                                 .map {
-                                    ServantTracker.TeamSlot.list[it.toInt() - 1]
+                                    TeamSlot.list[it.toInt() - 1]
                                 }
                         }
                 )

@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
-import com.mathewsachin.fategrandautomata.scripts.modules.ServantTracker
+import com.mathewsachin.fategrandautomata.scripts.models.TeamSlot
 import com.mathewsachin.fategrandautomata.ui.drag_sort.DragSort
 import com.mathewsachin.fategrandautomata.ui.drag_sort.DragSortAdapter
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
@@ -87,7 +87,7 @@ fun CardPriorityListItem.Render(
 
 @Composable
 private fun ServantPriority(
-    priorities: MutableList<ServantTracker.TeamSlot>
+    priorities: MutableList<TeamSlot>
 ) {
     Text(
         "Servant Priority".uppercase(),

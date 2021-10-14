@@ -70,7 +70,7 @@ class Card(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
         return CardTypeEnum.Unknown
     }
 
-    private var faceCardsGroupedByServant: Map<ServantTracker.TeamSlot, List<CommandCard.Face>> = emptyMap()
+    private var faceCardsGroupedByServant: Map<TeamSlot, List<CommandCard.Face>> = emptyMap()
     private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
     var atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp()

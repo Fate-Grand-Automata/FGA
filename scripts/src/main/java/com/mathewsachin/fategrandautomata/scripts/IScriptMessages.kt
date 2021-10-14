@@ -2,7 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts
 
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
-import com.mathewsachin.fategrandautomata.scripts.modules.ServantTracker
+import com.mathewsachin.fategrandautomata.scripts.models.TeamSlot
 import kotlin.time.Duration
 
 sealed class ScriptNotify {
@@ -29,12 +29,12 @@ sealed class ScriptLog {
     class SupportFaceCardGroup(val group: List<CommandCard.Face>): ScriptLog()
     class FaceCardGroups(val groups: List<List<CommandCard.Face>>): ScriptLog()
     class ServantEnteredSlot(
-        val servant: ServantTracker.TeamSlot,
+        val servant: TeamSlot,
         val slot: FieldSlot
     ): ScriptLog()
     class CardsBelongToServant(
         val cards: List<CommandCard.Face>,
-        val servant: ServantTracker.TeamSlot,
+        val servant: TeamSlot,
         val isSupport: Boolean = false
     ): ScriptLog()
     class CardsNotPickedByServantPriority(
