@@ -12,7 +12,6 @@ import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
@@ -45,7 +44,8 @@ class AutoBattle @Inject constructor(
     private val screenshotDrops: ScreenshotDrops,
     private val connectionRetry: ConnectionRetry,
     private val refill: Refill,
-    private val matTracker: MaterialsTracker
+    private val matTracker: MaterialsTracker,
+    private val ceDropsTracker: CEDropsTracker
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object Abort : ExitReason()
@@ -70,7 +70,6 @@ class AutoBattle @Inject constructor(
     class ExitException(val reason: ExitReason, val state: ExitState) : Exception()
 
     private var isContinuing = false
-    private var ceDropCount = 0
 
     override fun script(): Nothing {
         try {
@@ -136,7 +135,7 @@ class AutoBattle @Inject constructor(
             runLimit = if (prefs.refill.shouldLimitRuns) prefs.refill.limitRuns else null,
             timesRefilled = refill.timesRefilled,
             refillLimit = prefs.refill.repetitions,
-            ceDropCount = ceDropCount,
+            ceDropCount = ceDropsTracker.count,
             materials = matTracker.farmed,
             matLimit = if (prefs.refill.shouldLimitMats) prefs.refill.limitMats else null,
             withdrawCount = withdraw.count,
@@ -266,36 +265,11 @@ class AutoBattle @Inject constructor(
         images[Images.MatRewards] in game.resultMatRewardsRegion
 
     private fun dropScreen() {
-        checkCEDrops()
+        ceDropsTracker.lookForCEDrops()
         matTracker.parseMaterials()
-
-        if (prefs.screenshotDrops) {
-            screenshotDrops.screenshotDrops()
-        }
+        screenshotDrops.screenshotDrops()
 
         game.resultMatRewardsRegion.click()
-    }
-
-    private fun checkCEDrops() {
-        val starsRegion = Region(40, -40, 80, 40)
-
-        val ceDropped = game.scriptArea
-            .findAll(images[Images.DropCE])
-            .map { (region, _) ->
-                starsRegion + region.location
-            }
-            .count { images[Images.DropCEStars] in it }
-
-        if (ceDropped > 0) {
-            ceDropCount += ceDropped
-
-            if (prefs.stopOnCEDrop) {
-                // Count the current run
-                state.nextRun()
-
-                throw BattleExitException(ExitReason.CEDropped)
-            } else messages.notify(ScriptNotify.CEDropped)
-        }
     }
 
     private fun isRepeatScreen() = images[Images.Repeat] in game.continueRegion

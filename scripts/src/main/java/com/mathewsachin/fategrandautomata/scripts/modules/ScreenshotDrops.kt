@@ -13,6 +13,9 @@ class ScreenshotDrops @Inject constructor(
     private val storageProvider: IStorageProvider
 ) : IFgoAutomataApi by fgAutomataApi {
     fun screenshotDrops() {
+        if (!prefs.screenshotDrops)
+            return
+
         val drops = mutableListOf<IPattern>()
 
         for (i in 0..1) {
