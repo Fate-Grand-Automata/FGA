@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -11,10 +12,10 @@ import kotlin.time.Duration
 @ScriptScope
 class AutoSkill @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
-    private val servantTracker: ServantTracker
+    private val servantTracker: ServantTracker,
+    private val state: BattleState
 ) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var battle: Battle
-    private lateinit var card: Card
 
     private fun waitForAnimationToFinish(timeout: Duration = Duration.seconds(5)) {
         val img = images[Images.BattleScreen]
@@ -137,7 +138,7 @@ class AutoSkill @Inject constructor(
     }
 
     private fun act(action: AutoSkillAction) = when (action) {
-        is AutoSkillAction.Atk -> card.atk = action
+        is AutoSkillAction.Atk -> state.atk = action
         is AutoSkillAction.ServantSkill -> castServantSkill(action.skill, action.target)
         is AutoSkillAction.MasterSkill -> castMasterSkill(action.skill, action.target)
         is AutoSkillAction.TargetEnemy -> selectEnemyTarget(action.enemy)
@@ -147,7 +148,7 @@ class AutoSkill @Inject constructor(
     fun canSpam(spam: SpamEnum): Boolean {
         val weCanSpam = spam == SpamEnum.Spam
         val weAreInDanger = spam == SpamEnum.Danger
-                && battle.state.chosenTarget != null
+                && state.chosenTarget != null
 
         return weCanSpam || weAreInDanger
     }
@@ -161,7 +162,7 @@ class AutoSkill @Inject constructor(
             val servantSpamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
 
             servantSpamConfig.skills.forEachIndexed { skillIndex, skillSpamConfig ->
-                if (canSpam(skillSpamConfig.spam) && (battle.state.stage + 1) in skillSpamConfig.waves) {
+                if (canSpam(skillSpamConfig.spam) && (state.stage + 1) in skillSpamConfig.waves) {
                     val skill = skills[skillIndex]
                     val skillImage = servantTracker
                         .checkImages[teamSlot]
@@ -200,9 +201,8 @@ class AutoSkill @Inject constructor(
 
     lateinit var commandTable: AutoSkillCommand
 
-    fun init(BattleModule: Battle, CardModule: Card) {
+    fun init(BattleModule: Battle) {
         battle = BattleModule
-        card = CardModule
 
         commandTable = AutoSkillCommand.parse(
             prefs.selectedBattleConfig.skillCommand
@@ -210,10 +210,7 @@ class AutoSkill @Inject constructor(
     }
 
     fun execute() {
-        val stage = battle.state.stage
-        val turn = battle.state.turn
-
-        val commandList = commandTable[stage, turn]
+        val commandList = commandTable[state.stage, state.turn]
 
         if (commandList.isNotEmpty()) {
             for (action in commandList) {

@@ -1,10 +1,13 @@
 package com.mathewsachin.fategrandautomata.scripts.models.battle
 
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.TimeSource
 
-class BattleState {
+@ScriptScope
+class BattleState @Inject constructor() {
     private var timestamp = TimeSource.Monotonic.markNow()
     fun markStartTime() {
         timestamp = TimeSource.Monotonic.markNow()
@@ -57,6 +60,11 @@ class BattleState {
         get() = runState.turnState.hasClickedAttack
         set(value) {
             runState.turnState.hasClickedAttack = value
+        }
+
+    var atk get() = runState.turnState.atk
+        set(value) {
+            runState.turnState.atk = value
         }
 
     var stageCountSnapshot

@@ -9,6 +9,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
+import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.*
@@ -37,6 +38,7 @@ open class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,
     private val storageProvider: IStorageProvider,
+    private val state: BattleState,
     private val battle: Battle,
     private val card: Card,
     private val autoSkill: AutoSkill,
@@ -92,7 +94,7 @@ open class AutoBattle @Inject constructor(
 
             // Auto-decrement runs
             if (refill.shouldLimitRuns) {
-                refill.limitRuns -= battle.state.runs
+                refill.limitRuns -= state.runs
 
                 // Turn off run limit when done
                 if (refill.limitRuns <= 0) {
@@ -144,7 +146,7 @@ open class AutoBattle @Inject constructor(
 
     private fun makeExitState(): ExitState {
         return ExitState(
-            timesRan = battle.state.runs,
+            timesRan = state.runs,
             runLimit = if (prefs.refill.shouldLimitRuns) prefs.refill.limitRuns else null,
             timesRefilled = stonesUsed,
             refillLimit = prefs.refill.repetitions,
@@ -152,11 +154,11 @@ open class AutoBattle @Inject constructor(
             materials = matsGot,
             matLimit = if (prefs.refill.shouldLimitMats) prefs.refill.limitMats else null,
             withdrawCount = withdrawCount,
-            totalTime = battle.state.totalBattleTime,
-            averageTimePerRun = battle.state.averageTimePerRun,
-            minTurnsPerRun = battle.state.minTurnsPerRun,
-            maxTurnsPerRun = battle.state.maxTurnsPerRun,
-            averageTurnsPerRun = battle.state.averageTurnsPerRun
+            totalTime = state.totalBattleTime,
+            averageTimePerRun = state.averageTimePerRun,
+            minTurnsPerRun = state.minTurnsPerRun,
+            maxTurnsPerRun = state.maxTurnsPerRun,
+            averageTurnsPerRun = state.averageTurnsPerRun
         )
     }
 
@@ -203,7 +205,7 @@ open class AutoBattle @Inject constructor(
      * Then initialize the AutoSkill, Battle, and Card modules in modules.
      */
     private fun init() {
-        autoSkill.init(battle, card)
+        autoSkill.init(battle)
         battle.init(autoSkill, card)
         card.init(autoSkill, battle)
 
@@ -277,7 +279,7 @@ open class AutoBattle @Inject constructor(
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {
             // Count the current run
-            battle.state.nextRun()
+            state.nextRun()
 
             throw BattleExitException(ExitReason.CEGet)
         } else messages.notify(ScriptNotify.CEGet)
@@ -321,7 +323,7 @@ open class AutoBattle @Inject constructor(
 
             if (prefs.stopOnCEDrop) {
                 // Count the current run
-                battle.state.nextRun()
+                state.nextRun()
 
                 throw BattleExitException(ExitReason.CEDropped)
             } else messages.notify(ScriptNotify.CEDropped)
@@ -348,7 +350,7 @@ open class AutoBattle @Inject constructor(
 
             if (totalMats >= prefs.refill.limitMats) {
                 // Count the current run
-                battle.state.nextRun()
+                state.nextRun()
 
                 throw BattleExitException(ExitReason.LimitMaterials(totalMats))
             }
@@ -423,7 +425,7 @@ open class AutoBattle @Inject constructor(
     private fun questReward() {
         if (prefs.stopOnFirstClearRewards) {
             // Count the current run
-            battle.state.nextRun()
+            state.nextRun()
 
             throw BattleExitException(ExitReason.FirstClearRewards)
         }
@@ -593,7 +595,7 @@ open class AutoBattle @Inject constructor(
         messages.notify(
             ScriptNotify.BetweenRuns(
                 refills = stonesUsed,
-                runs = battle.state.runs
+                runs = state.runs
             )
         )
 

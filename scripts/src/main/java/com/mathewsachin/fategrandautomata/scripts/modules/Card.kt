@@ -9,6 +9,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.util.*
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @ScriptScope
 class Card @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
-    private val servantTracker: ServantTracker
+    private val servantTracker: ServantTracker,
+    private val state: BattleState
 ) : IFgoAutomataApi by fgAutomataApi {
     private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
@@ -79,7 +81,6 @@ class Card @Inject constructor(
     private var faceCardsGroupedByServant: Map<TeamSlot, List<CommandCard.Face>> = emptyMap()
     private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
-    var atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp()
     private var braveChainsThisTurn = BraveChainEnum.None
     private var rearrangeCardsThisTurn = false
 
@@ -123,7 +124,7 @@ class Card @Inject constructor(
 
     private fun <T> List<T>.inCurrentWave(default: T) =
         if (isNotEmpty())
-            this[battle.state.stage.coerceIn(indices)]
+            this[state.stage.coerceIn(indices)]
         else default
 
     fun readCommandCards() {
@@ -169,7 +170,7 @@ class Card @Inject constructor(
                     .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
                     .np
 
-                if (autoSkill.canSpam(npSpamConfig.spam) && (battle.state.stage + 1) in npSpamConfig.waves)
+                if (autoSkill.canSpam(npSpamConfig.spam) && (state.stage + 1) in npSpamConfig.waves)
                     np
                 else null
             }
@@ -184,13 +185,13 @@ class Card @Inject constructor(
     private fun cardsOrderedByPriority(): List<CommandCard.Face> {
         fun applyPriority(cards: Map<CardScore, List<CommandCard.Face>>) =
             cardPriority
-                .atWave(battle.state.stage)
+                .atWave(state.stage)
                 .mapNotNull { cards[it] }
                 .flatten()
 
         servantPriority?.let { servantPriority ->
             return servantPriority
-                .atWave(battle.state.stage)
+                .atWave(state.stage)
                 .mapNotNull { faceCardsGroupedByServant[it] }
                 .map { cards ->
                     val cardsGroupedByScore = cards
@@ -244,7 +245,7 @@ class Card @Inject constructor(
 
         return when (braveChainsThisTurn) {
             BraveChainEnum.WithNP -> {
-                val chainFaceCount = commandCardGroupedWithNp[atk.nps.firstOrNull()]?.let { npGroup ->
+                val chainFaceCount = commandCardGroupedWithNp[state.atk.nps.firstOrNull()]?.let { npGroup ->
                     pickCardsOrderedByPriority {
                         it in npGroup
                     }.size
@@ -256,7 +257,7 @@ class Card @Inject constructor(
                 // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
                 // we want the matching face-card after NP.
                 if (rearrangeCardsThisTurn
-                    && listOf(atk.nps.size, atk.cardsBeforeNP, chainFaceCount).all { it == 1 }
+                    && listOf(state.atk.nps.size, state.atk.cardsBeforeNP, chainFaceCount).all { it == 1 }
                 ) {
                     Collections.swap(toClick, 0, 1)
                 }
@@ -341,13 +342,13 @@ class Card @Inject constructor(
     private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
         if (rearrangeCardsThisTurn
             // If there are cards before NP, at max there's only 1 card after NP
-            && atk.cardsBeforeNP == 0
+            && state.atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
-            && atk.nps.size <= 1
+            && state.atk.nps.size <= 1
         ) {
             val cardsToRearrange = cards
                 .mapIndexed { index, _ -> index }
-                .take((3 - atk.nps.size).coerceAtLeast(0))
+                .take((3 - state.atk.nps.size).coerceAtLeast(0))
                 .reversed()
 
             // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
@@ -366,12 +367,12 @@ class Card @Inject constructor(
 
     private fun shouldShuffle(): Boolean {
         // Not this wave
-        if (battle.state.stage != (prefs.selectedBattleConfig.shuffleCardsWave - 1)) {
+        if (state.stage != (prefs.selectedBattleConfig.shuffleCardsWave - 1)) {
             return false
         }
 
         // Already shuffled
-        if (battle.state.shuffled) {
+        if (state.shuffled) {
             return false
         }
 
@@ -386,10 +387,10 @@ class Card @Inject constructor(
                 effectiveCardCount == 0
             }
             ShuffleCardsEnum.NoNPMatching -> {
-                if (atk.nps.isEmpty()) {
+                if (state.atk.nps.isEmpty()) {
                     false
                 } else {
-                    val matchingCount = atk.nps
+                    val matchingCount = state.atk.nps
                         .mapNotNull { commandCardGroupedWithNp[it]?.size }
                         .sum()
 
@@ -403,13 +404,13 @@ class Card @Inject constructor(
         if (shouldShuffle()) {
             game.battleBack.click()
 
-            autoSkill.castMasterSkill(Skill.Master.list[2])
+            autoSkill.castMasterSkill(Skill.Master.C)
 
-            battle.state.hasClickedAttack = false
+            state.hasClickedAttack = false
 
             battle.clickAttack()
 
-            battle.state.shuffled = true
+            state.shuffled = true
         }
     }
 
@@ -418,14 +419,14 @@ class Card @Inject constructor(
 
         val cards = pickCards()
 
-        if (atk.cardsBeforeNP > 0) {
+        if (state.atk.cardsBeforeNP > 0) {
             cards
-                .take(atk.cardsBeforeNP)
+                .take(state.atk.cardsBeforeNP)
                 .also { messages.log(ScriptLog.ClickingCards(it)) }
                 .forEach { game.clickLocation(it).click() }
         }
 
-        val nps = atk.nps + spamNps
+        val nps = state.atk.nps + spamNps
 
         if (nps.isNotEmpty()) {
             nps
@@ -434,10 +435,8 @@ class Card @Inject constructor(
         }
 
         cards
-            .drop(atk.cardsBeforeNP)
+            .drop(state.atk.cardsBeforeNP)
             .also { messages.log(ScriptLog.ClickingCards(it)) }
             .forEach { game.clickLocation(it).click() }
-
-        atk = AutoSkillAction.Atk.noOp()
     }
 }

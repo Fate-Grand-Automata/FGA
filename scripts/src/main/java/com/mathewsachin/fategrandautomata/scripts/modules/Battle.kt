@@ -12,9 +12,9 @@ import kotlin.time.Duration
 @ScriptScope
 class Battle @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
-    private val servantTracker: ServantTracker
+    private val servantTracker: ServantTracker,
+    private val state: BattleState
 ) : IFgoAutomataApi by fgAutomataApi {
-    val state = BattleState()
     val spamConfig = prefs.selectedBattleConfig.spam
 
     private lateinit var autoSkill: AutoSkill
