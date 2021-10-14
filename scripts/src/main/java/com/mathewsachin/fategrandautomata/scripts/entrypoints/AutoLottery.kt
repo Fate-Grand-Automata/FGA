@@ -2,8 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
-import com.mathewsachin.fategrandautomata.scripts.modules.retry
+import com.mathewsachin.fategrandautomata.scripts.modules.ConnectionRetry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -17,7 +16,8 @@ import kotlin.time.Duration
 class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,
-    private val giftBox: AutoGiftBox
+    private val giftBox: AutoGiftBox,
+    private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object ResetDisabled: ExitReason()
@@ -64,7 +64,7 @@ class AutoLottery @Inject constructor(
     override fun script(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { images[Images.LotteryBoxFinished] in game.lotteryFinishedRegion } to { reset() },
-            { needsToRetry() } to { retry() },
+            { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { images[Images.PresentBoxFull] in game.lotteryFullPresentBoxRegion } to { presentBoxFull() }
         )
 

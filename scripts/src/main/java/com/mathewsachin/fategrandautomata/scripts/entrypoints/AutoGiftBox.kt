@@ -3,8 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
-import com.mathewsachin.fategrandautomata.scripts.modules.retry
+import com.mathewsachin.fategrandautomata.scripts.modules.ConnectionRetry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.Location
@@ -16,7 +15,8 @@ import kotlin.time.Duration
 @ScriptScope
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi
+    fgAutomataApi: IFgoAutomataApi,
+    private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     class ExitException(val pickedStacks: Int): Exception()
 
@@ -46,7 +46,7 @@ class AutoGiftBox @Inject constructor(
                 receiveSelectedClick.click()
                 while (true) {
                     Duration.seconds(2).wait()
-                    if (needsToRetry()) retry() else break
+                    if (connectionRetry.needsToRetry()) connectionRetry.retry() else break
                 }
                 receiveSelectedClick.click()
             }

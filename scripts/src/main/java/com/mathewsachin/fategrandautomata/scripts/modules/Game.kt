@@ -16,15 +16,6 @@ import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import kotlin.time.Duration
-
-fun IFgoAutomataApi.needsToRetry() = images[Images.Retry] in game.retryRegion
-
-fun IFgoAutomataApi.retry() {
-    game.retryRegion.click()
-
-    Duration.seconds(2).wait()
-}
 
 @ScriptScope
 class Game @Inject constructor(

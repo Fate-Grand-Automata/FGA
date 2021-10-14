@@ -11,7 +11,8 @@ import kotlin.time.TimeSource
 
 @ScriptScope
 class SupportScreenRefresher @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi
+    fgAutomataApi: IFgoAutomataApi,
+    private val connectionRetry: ConnectionRetry
 ) : IFgoAutomataApi by fgAutomataApi {
     private var lastSupportRefreshTimestamp: TimeMark? = null
     private val supportRefreshThreshold = Duration.seconds(10)
@@ -43,7 +44,7 @@ class SupportScreenRefresher @Inject constructor(
     fun waitForSupportScreenToLoad() {
         while (true) {
             when {
-                needsToRetry() -> retry()
+                connectionRetry.needsToRetry() -> connectionRetry.retry()
                 // wait for dialogs to close
                 images[Images.SupportExtra] !in game.supportExtraRegion -> Duration.seconds(1).wait()
                 images[Images.SupportNotFound] in game.supportNotFoundRegion -> {

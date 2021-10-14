@@ -44,7 +44,8 @@ class AutoBattle @Inject constructor(
     private val battleConfig: IBattleConfig,
     private val withdraw: Withdraw,
     private val partySelection: PartySelection,
-    private val screenshotDrops: ScreenshotDrops
+    private val screenshotDrops: ScreenshotDrops,
+    private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object Abort : ExitReason()
@@ -170,7 +171,7 @@ class AutoBattle @Inject constructor(
         // a map of validators and associated actions
         // if the validator function evaluates to true, the associated action function is called
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
-            { battle.needsToRetry() } to { battle.retry() },
+            { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to { battle.performBattle() },
             { isInMenu() } to { menu() },
             { isInResult() } to { result() },
