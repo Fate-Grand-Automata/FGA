@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
-import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
@@ -12,7 +11,10 @@ import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.modules.*
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -36,13 +38,13 @@ fun IFgoAutomataApi.isInventoryFull() =
 class AutoBattle @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,
-    private val storageProvider: IStorageProvider,
     private val state: BattleState,
     private val battle: Battle,
     private val support: Support,
     private val battleConfig: IBattleConfig,
     private val withdraw: Withdraw,
-    private val partySelection: PartySelection
+    private val partySelection: PartySelection,
+    private val screenshotDrops: ScreenshotDrops
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object Abort : ExitReason()
@@ -287,7 +289,7 @@ class AutoBattle @Inject constructor(
         trackMaterials()
 
         if (prefs.screenshotDrops) {
-            screenshotDrops()
+            screenshotDrops.screenshotDrops()
         }
 
         game.resultMatRewardsRegion.click()
@@ -340,24 +342,6 @@ class AutoBattle @Inject constructor(
                 throw BattleExitException(ExitReason.LimitMaterials(totalMats))
             }
         }
-    }
-
-    private fun screenshotDrops() {
-        val drops = mutableListOf<IPattern>()
-
-        for (i in 0..1) {
-            useColor {
-                drops.add(game.scriptArea.getPattern())
-            }
-
-            // check if we need to scroll to see more drops
-            if (i == 0 && images[Images.DropScrollbar] in game.resultDropScrollbarRegion) {
-                // scroll to end
-                game.resultDropScrollEndClick.click()
-            } else break
-        }
-
-        storageProvider.dropScreenshot(drops)
     }
 
     private fun isRepeatScreen() = images[Images.Repeat] in game.continueRegion
