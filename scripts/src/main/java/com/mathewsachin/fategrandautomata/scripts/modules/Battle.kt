@@ -18,6 +18,7 @@ class Battle @Inject constructor(
     private val state: BattleState,
     private val battleConfig: IBattleConfig,
     private val autoSkill: AutoSkill,
+    private val caster: Caster,
     private val card: Card
 ) : IFgoAutomataApi by fgAutomataApi {
     init {
@@ -111,7 +112,7 @@ class Battle @Inject constructor(
         if (card.shouldShuffle()) {
             game.battleBack.click()
 
-            autoSkill.castMasterSkill(Skill.Master.C)
+            caster.castMasterSkill(Skill.Master.C)
 
             state.hasClickedAttack = false
 
