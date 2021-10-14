@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
+import com.mathewsachin.fategrandautomata.scripts.modules.Support
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IPattern
@@ -50,7 +50,7 @@ class SupportImageMaker @Inject constructor(
         val regionArray = game.scriptArea
             .findAll(
                 images[Images.SupportRegionTool],
-                supportRegionToolSimilarity
+                Support.supportRegionToolSimilarity
             )
             .map {
                 Region(

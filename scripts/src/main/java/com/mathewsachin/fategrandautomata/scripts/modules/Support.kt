@@ -1,8 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
@@ -11,10 +9,6 @@ import com.mathewsachin.fategrandautomata.scripts.supportSelection.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
-import kotlin.time.TimeMark
-import kotlin.time.TimeSource
-
-const val supportRegionToolSimilarity = 0.75
 
 @ScriptScope
 class Support @Inject constructor(
@@ -22,8 +16,13 @@ class Support @Inject constructor(
     private val firstSupportSelection: FirstSupportSelection,
     private val friendSupportSelection: FriendSupportSelection,
     private val preferredSupportSelection: PreferredSupportSelection,
-    private val supportPrefs: ISupportPreferences
+    private val supportPrefs: ISupportPreferences,
+    private val refresher: SupportScreenRefresher
 ) : IFgoAutomataApi by fgAutomataApi {
+    companion object {
+        const val supportRegionToolSimilarity = 0.75
+    }
+
     private fun selectSupportClass(supportClass: SupportClass = supportPrefs.supportClass) {
         if (supportClass == SupportClass.None)
             return
@@ -34,7 +33,7 @@ class Support @Inject constructor(
     }
 
     fun selectSupport(continuing: Boolean, selectionMode: SupportSelectionModeEnum = supportPrefs.selectionMode) {
-        waitForSupportScreenToLoad()
+        refresher.waitForSupportScreenToLoad()
 
         val provider = when (selectionMode) {
             SupportSelectionModeEnum.First -> firstSupportSelection
@@ -81,7 +80,7 @@ class Support @Inject constructor(
                 }
                 // Refresh support list if not exceeded max refreshes
                 numberOfUpdates < prefs.support.maxUpdates -> {
-                    refreshSupportList()
+                    refresher.refreshSupportList()
 
                     if (onAllList) {
                         Duration.seconds(0.5).wait()
@@ -99,55 +98,6 @@ class Support @Inject constructor(
                     return
                 }
             }
-        }
-    }
-
-    private var lastSupportRefreshTimestamp: TimeMark? = null
-    private val supportRefreshThreshold = Duration.seconds(10)
-
-    private fun refreshSupportList() {
-        lastSupportRefreshTimestamp?.elapsedNow()?.let { elapsed ->
-            val toWait = supportRefreshThreshold - elapsed
-
-            if (toWait.isPositive()) {
-                messages.notify(ScriptNotify.SupportListUpdatingIn(toWait))
-
-                toWait.wait()
-            }
-        }
-
-        game.supportUpdateClick.click()
-        Duration.seconds(1).wait()
-
-        game.supportUpdateYesClick.click()
-
-        waitForSupportScreenToLoad()
-        updateLastSupportRefreshTimestamp()
-    }
-
-    private fun updateLastSupportRefreshTimestamp() {
-        lastSupportRefreshTimestamp = TimeSource.Monotonic.markNow()
-    }
-
-    private fun waitForSupportScreenToLoad() {
-        while (true) {
-            when {
-                needsToRetry() -> retry()
-                // wait for dialogs to close
-                images[Images.SupportExtra] !in game.supportExtraRegion -> Duration.seconds(1).wait()
-                images[Images.SupportNotFound] in game.supportNotFoundRegion -> {
-                    updateLastSupportRefreshTimestamp()
-                    refreshSupportList()
-                    return
-                }
-                game.supportRegionToolSearchRegion.exists(
-                    images[Images.SupportRegionTool],
-                    similarity = supportRegionToolSimilarity
-                ) -> return
-                images[Images.Guest] in game.supportFriendRegion -> return
-            }
-
-            Duration.milliseconds(100).wait()
         }
     }
 }

@@ -4,7 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
-import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
+import com.mathewsachin.fategrandautomata.scripts.modules.Support
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
 import com.mathewsachin.libautomata.Region
 
@@ -43,7 +43,7 @@ abstract class SpecificSupportSelection(
             return SupportSelectionResult.ScrollDown
         })
 
-    private fun isFriend(Region: Region): Boolean {
+    private fun isFriend(region: Region): Boolean {
         val onlySelectFriends = supportPrefs.friendsOnly
                 || supportPrefs.selectionMode == SupportSelectionModeEnum.Friend
 
@@ -54,20 +54,20 @@ abstract class SpecificSupportSelection(
             images[Images.Friend],
             images[Images.Guest],
             images[Images.Follow]
-        ).any { it in Region }
+        ).any { it in region }
     }
 
-    protected fun findSupportBounds(Support: Region) =
+    protected fun findSupportBounds(support: Region) =
         game.supportRegionToolSearchRegion
             .findAll(
                 images[Images.SupportRegionTool],
-                supportRegionToolSimilarity
+                Support.supportRegionToolSimilarity
             )
             .map {
                 game.supportDefaultBounds
                     .copy(y = it.region.y - 70)
             }
-            .firstOrNull { Support in it }
+            .firstOrNull { support in it }
             ?: game.supportDefaultBounds.also {
                 messages.log(ScriptLog.DefaultSupportBounds)
             }
