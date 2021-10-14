@@ -20,9 +20,10 @@ class Card @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
     private val state: BattleState,
-    private val battleConfig: IBattleConfig
+    private val battleConfig: IBattleConfig,
+    private val spamConfig: SpamConfigPerTeamSlot,
+    private val autoSkill: AutoSkill
 ) : IFgoAutomataApi by fgAutomataApi {
-    private lateinit var autoSkill: AutoSkill
     private lateinit var battle: Battle
 
     private val cardPriority: CardPriorityPerWave by lazy { battleConfig.cardPriority }
@@ -33,8 +34,7 @@ class Card @Inject constructor(
     }
     private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
 
-    fun init(AutoSkillModule: AutoSkill, BattleModule: Battle) {
-        autoSkill = AutoSkillModule
+    fun init(BattleModule: Battle) {
         battle = BattleModule
     }
 
@@ -166,9 +166,7 @@ class Card @Inject constructor(
         (FieldSlot.list.zip(CommandCard.NP.list))
             .mapNotNull { (servantSlot, np) ->
                 val teamSlot = servantTracker.deployed[servantSlot] ?: return@mapNotNull null
-                val npSpamConfig = battle.spamConfig
-                    .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
-                    .np
+                val npSpamConfig = spamConfig[teamSlot].np
 
                 if (autoSkill.canSpam(npSpamConfig.spam) && (state.stage + 1) in npSpamConfig.waves)
                     np

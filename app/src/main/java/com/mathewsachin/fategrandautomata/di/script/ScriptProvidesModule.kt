@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
+import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillCommand
+import com.mathewsachin.fategrandautomata.scripts.models.SpamConfigPerTeamSlot
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
@@ -38,4 +40,14 @@ class ScriptProvidesModule {
     @Provides
     fun provideSupportPrefs(battleConfig: IBattleConfig): ISupportPreferences =
         battleConfig.support
+
+    @ScriptScope
+    @Provides
+    fun provideSpamConfig(battleConfig: IBattleConfig): SpamConfigPerTeamSlot =
+        SpamConfigPerTeamSlot(battleConfig.spam)
+
+    @ScriptScope
+    @Provides
+    fun provideSkillCommand(battleConfig: IBattleConfig): AutoSkillCommand =
+        AutoSkillCommand.parse(battleConfig.skillCommand)
 }

@@ -5,7 +5,6 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
-import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -15,10 +14,9 @@ class AutoSkill @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
     private val state: BattleState,
-    private val battleConfig: IBattleConfig
+    private val skillCommand: AutoSkillCommand,
+    private val spamConfig: SpamConfigPerTeamSlot
 ) : IFgoAutomataApi by fgAutomataApi {
-    private lateinit var battle: Battle
-
     private fun waitForAnimationToFinish(timeout: Duration = Duration.seconds(5)) {
         val img = images[Images.BattleScreen]
 
@@ -161,7 +159,7 @@ class AutoSkill @Inject constructor(
         for (servantSlot in FieldSlot.list) {
             val skills = servantSlot.skills()
             val teamSlot = servantTracker.deployed[servantSlot] ?: continue
-            val servantSpamConfig = battle.spamConfig.getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
+            val servantSpamConfig = spamConfig[teamSlot]
 
             servantSpamConfig.skills.forEachIndexed { skillIndex, skillSpamConfig ->
                 if (canSpam(skillSpamConfig.spam) && (state.stage + 1) in skillSpamConfig.waves) {
@@ -201,18 +199,8 @@ class AutoSkill @Inject constructor(
             SkillSpamTarget.Right -> ServantTarget.Right
         }
 
-    lateinit var commandTable: AutoSkillCommand
-
-    fun init(BattleModule: Battle) {
-        battle = BattleModule
-
-        commandTable = AutoSkillCommand.parse(
-            battleConfig.skillCommand
-        )
-    }
-
     fun execute() {
-        val commandList = commandTable[state.stage, state.turn]
+        val commandList = skillCommand[state.stage, state.turn]
 
         if (commandList.isNotEmpty()) {
             for (action in commandList) {

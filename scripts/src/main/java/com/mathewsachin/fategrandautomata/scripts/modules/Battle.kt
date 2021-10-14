@@ -15,15 +15,12 @@ class Battle @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
     private val state: BattleState,
-    private val battleConfig: IBattleConfig
+    private val battleConfig: IBattleConfig,
+    private val autoSkill: AutoSkill
 ) : IFgoAutomataApi by fgAutomataApi {
-    val spamConfig = battleConfig.spam
-
-    private lateinit var autoSkill: AutoSkill
     private lateinit var card: Card
 
-    fun init(AutoSkillModule: AutoSkill, CardModule: Card) {
-        autoSkill = AutoSkillModule
+    fun init(CardModule: Card) {
         card = CardModule
 
         state.markStartTime()

@@ -42,7 +42,6 @@ open class AutoBattle @Inject constructor(
     private val state: BattleState,
     private val battle: Battle,
     private val card: Card,
-    private val autoSkill: AutoSkill,
     private val support: Support,
     private val battleConfig: IBattleConfig
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
@@ -207,9 +206,8 @@ open class AutoBattle @Inject constructor(
      * Then initialize the AutoSkill, Battle, and Card modules in modules.
      */
     private fun init() {
-        autoSkill.init(battle)
-        battle.init(autoSkill, card)
-        card.init(autoSkill, battle)
+        battle.init(card)
+        card.init(battle)
 
         // Set all Materials to 0
         battleConfig
