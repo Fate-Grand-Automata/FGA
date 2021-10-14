@@ -27,3 +27,10 @@ sealed class CommandCard {
         override fun toString() = "$autoSkillCode"
     }
 }
+
+fun CommandCard.NP.toFieldSlot() =
+    when (this) {
+        CommandCard.NP.A -> FieldSlot.A
+        CommandCard.NP.B -> FieldSlot.B
+        CommandCard.NP.C -> FieldSlot.C
+    }

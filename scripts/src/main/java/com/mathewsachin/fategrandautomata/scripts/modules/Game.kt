@@ -276,11 +276,7 @@ class Game @Inject constructor(
             .yFromBottom()
 
     fun servantPresentRegion(slot: FieldSlot) =
-        when (slot) {
-            FieldSlot.A -> Skill.Servant.A3
-            FieldSlot.B -> Skill.Servant.B3
-            FieldSlot.C -> Skill.Servant.C3
-        }.let {
+        slot.skill3().let {
             val skill3Location = locate(it)
 
             Region(
@@ -399,31 +395,17 @@ class Game @Inject constructor(
         affinityRegion(card) + Location(-50, 100)
 
     fun servantOpenDetailsClick(slot: FieldSlot) =
-        when (slot) {
-            FieldSlot.A -> Skill.Servant.A2
-            FieldSlot.B -> Skill.Servant.B2
-            FieldSlot.C -> Skill.Servant.C2
-        }.let {
-            Location(locate(it).x, 810)
-        }
+        Location(locate(slot.skill2()).x, 810)
 
     fun servantChangeCheckRegion(slot: FieldSlot) =
-        when (slot) {
-            FieldSlot.A -> Skill.Servant.A2
-            FieldSlot.B -> Skill.Servant.B2
-            FieldSlot.C -> Skill.Servant.C2
-        }.let {
+        slot.skill2().let {
             val x = locate(it).x
 
             Region(x + 20, 930, 40, 80)
         }
 
     fun servantChangeSupportCheckRegion(slot: FieldSlot) =
-        when (slot) {
-            FieldSlot.A -> Skill.Servant.A2
-            FieldSlot.B -> Skill.Servant.B2
-            FieldSlot.C -> Skill.Servant.C2
-        }.let {
+        slot.skill2().let {
             val x = locate(it).x
 
             Region(x + 25, 710, 300, 170)

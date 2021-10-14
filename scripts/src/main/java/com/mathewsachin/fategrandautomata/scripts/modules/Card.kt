@@ -141,12 +141,7 @@ class Card @Inject constructor(
             commandCardGroupedWithNp =
                 CommandCard.NP.list
                     .associateWith { np ->
-                        val slot = when (np) {
-                            CommandCard.NP.A -> FieldSlot.A
-                            CommandCard.NP.B -> FieldSlot.B
-                            CommandCard.NP.C -> FieldSlot.C
-                        }
-
+                        val slot = np.toFieldSlot()
                         val teamSlot = servantTracker.deployed[slot]
 
                         if (teamSlot == null)
