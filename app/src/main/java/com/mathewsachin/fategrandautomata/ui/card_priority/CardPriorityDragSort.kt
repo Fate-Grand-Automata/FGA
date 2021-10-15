@@ -29,18 +29,18 @@ fun CardPriorityDragSort(
 }
 
 fun CardScore.getColorRes(): Int {
-    return when (CardType) {
-        CardTypeEnum.Buster -> when (CardAffinity) {
+    return when (type) {
+        CardTypeEnum.Buster -> when (affinity) {
             CardAffinityEnum.Weak -> R.color.colorBusterWeak
             CardAffinityEnum.Normal -> R.color.colorBuster
             CardAffinityEnum.Resist -> R.color.colorBusterResist
         }
-        CardTypeEnum.Arts -> when (CardAffinity) {
+        CardTypeEnum.Arts -> when (affinity) {
             CardAffinityEnum.Weak -> R.color.colorArtsWeak
             CardAffinityEnum.Normal -> R.color.colorArts
             CardAffinityEnum.Resist -> R.color.colorArtsResist
         }
-        CardTypeEnum.Quick -> when (CardAffinity) {
+        CardTypeEnum.Quick -> when (affinity) {
             CardAffinityEnum.Weak -> R.color.colorQuickWeak
             CardAffinityEnum.Normal -> R.color.colorQuick
             CardAffinityEnum.Resist -> R.color.colorQuickResist

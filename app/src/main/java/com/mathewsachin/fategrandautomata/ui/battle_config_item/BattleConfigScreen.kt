@@ -261,7 +261,7 @@ private val CardScore.color: Color
         // Dark colors won't be visible in dark theme
         val score = if (MaterialTheme.colors.isLight)
             this
-        else CardScore(CardType, CardAffinityEnum.Resist)
+        else CardScore(type, CardAffinityEnum.Resist)
 
         return colorResource(score.getColorRes())
     }

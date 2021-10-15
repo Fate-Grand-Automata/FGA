@@ -181,7 +181,7 @@ class Card @Inject constructor(
                                 .first { (_, list) -> list.contains(card) }
                                 .key // score
                         }
-                        .filterKeys { it.CardType != CardTypeEnum.Unknown } // Stunned cards at the end
+                        .filterKeys { it.type != CardTypeEnum.Unknown } // Stunned cards at the end
 
                     applyPriority(cardsGroupedByScore)
                 }
@@ -361,7 +361,7 @@ class Card @Inject constructor(
             ShuffleCardsEnum.None -> false
             ShuffleCardsEnum.NoEffective -> {
                 val effectiveCardCount = commandCards
-                    .filterKeys { it.CardAffinity == CardAffinityEnum.Weak }
+                    .filterKeys { it.affinity == CardAffinityEnum.Weak }
                     .map { it.value.size }
                     .sum()
 
