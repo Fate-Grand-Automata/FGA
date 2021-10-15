@@ -4,7 +4,6 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
@@ -21,14 +20,10 @@ class Card @Inject constructor(
     private val battleConfig: IBattleConfig,
     private val spamConfig: SpamConfigPerTeamSlot,
     private val caster: Caster,
-    private val parser: CardParser
+    private val parser: CardParser,
+    private val priority: FaceCardPriority
 ) : IFgoAutomataApi by fgAutomataApi {
-    private val cardPriority: CardPriorityPerWave by lazy { battleConfig.cardPriority }
-    private val servantPriority: ServantPriorityPerWave? by lazy {
-        if (battleConfig.useServantPriority)
-            battleConfig.servantPriority
-        else null
-    }
+    private var parsedCards = emptyList<ParsedCard>()
     private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
 
     private var faceCardsGroupedByServant: Map<TeamSlot, List<CommandCard.Face>> = emptyMap()
@@ -52,7 +47,7 @@ class Card @Inject constructor(
             .inCurrentWave(false)
 
         useSameSnapIn {
-            val parsedCards = parser.parse()
+            parsedCards = parser.parse()
 
             commandCards = parsedCards.groupBy(
                 keySelector = { CardScore(it.type, it.affinity) },
@@ -91,49 +86,12 @@ class Card @Inject constructor(
             }
             .toSet()
 
-    private fun cardsOrderedByPriority(): List<CommandCard.Face> {
-        fun applyPriority(cards: Map<CardScore, List<CommandCard.Face>>) =
-            cardPriority
-                .atWave(state.stage)
-                .mapNotNull { cards[it] }
-                .flatten()
-
-        servantPriority?.let { servantPriority ->
-            return servantPriority
-                .atWave(state.stage)
-                .mapNotNull { faceCardsGroupedByServant[it] }
-                .map { cards ->
-                    val cardsGroupedByScore = cards
-                        .groupBy { card ->
-                            commandCards.entries
-                                .first { (_, list) -> list.contains(card) }
-                                .key // score
-                        }
-                        .filterKeys { it.type != CardTypeEnum.Unknown } // Stunned cards at the end
-
-                    applyPriority(cardsGroupedByScore)
-                }
-                .flatten()
-                .let { picked ->
-                    // In case less than 3 cards are picked
-                    val notPicked = CommandCard.Face.list.filter { it !in picked }
-                    if (notPicked.isNotEmpty()) {
-                        messages.log(ScriptLog.CardsNotPickedByServantPriority(notPicked))
-                    }
-
-                    picked + notPicked
-                }
-        }
-
-        return applyPriority(commandCards)
-    }
-
     private fun pickCards(clicks: Int = 3): List<CommandCard.Face> {
         var clicksLeft = clicks.coerceAtLeast(0)
         val toClick = mutableListOf<CommandCard.Face>()
         val remainingCards = CommandCard.Face.list.toMutableSet()
 
-        val cardsOrderedByPriority = cardsOrderedByPriority()
+        val cardsOrderedByPriority = priority.sort(parsedCards, state.stage)
 
         fun addToClickList(vararg cards: CommandCard.Face) = cards.apply {
             toClick.addAll(cards)

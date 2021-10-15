@@ -2,6 +2,8 @@ package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillCommand
+import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.ServantPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.SpamConfigPerTeamSlot
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -50,4 +52,14 @@ class ScriptProvidesModule {
     @Provides
     fun provideSkillCommand(battleConfig: IBattleConfig): AutoSkillCommand =
         AutoSkillCommand.parse(battleConfig.skillCommand)
+
+    @ScriptScope
+    @Provides
+    fun provideCardPriority(battleConfig: IBattleConfig): CardPriorityPerWave =
+        battleConfig.cardPriority
+
+    @ScriptScope
+    @Provides
+    fun provideServantPriority(battleConfig: IBattleConfig): ServantPriorityPerWave? =
+        if (battleConfig.useServantPriority) battleConfig.servantPriority else null
 }
