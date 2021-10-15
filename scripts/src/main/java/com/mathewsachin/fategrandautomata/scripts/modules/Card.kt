@@ -1,9 +1,7 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
-import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
@@ -22,7 +20,8 @@ class Card @Inject constructor(
     private val state: BattleState,
     private val battleConfig: IBattleConfig,
     private val spamConfig: SpamConfigPerTeamSlot,
-    private val caster: Caster
+    private val caster: Caster,
+    private val parser: CardParser
 ) : IFgoAutomataApi by fgAutomataApi {
     private val cardPriority: CardPriorityPerWave by lazy { battleConfig.cardPriority }
     private val servantPriority: ServantPriorityPerWave? by lazy {
@@ -32,91 +31,11 @@ class Card @Inject constructor(
     }
     private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
 
-    private fun CommandCard.Face.affinity(): CardAffinityEnum {
-        val region = game.affinityRegion(this)
-
-        if (images[Images.Weak] in region) {
-            return CardAffinityEnum.Weak
-        }
-
-        if (images[Images.Resist] in region) {
-            return CardAffinityEnum.Resist
-        }
-
-        return CardAffinityEnum.Normal
-    }
-
-    private fun CommandCard.Face.isStunned(): Boolean {
-        val stunRegion = game.typeRegion(this).copy(
-            y = 930,
-            width = 248,
-            height = 188
-        )
-
-        return images[Images.Stun] in stunRegion
-    }
-
-    private fun CommandCard.Face.type(): CardTypeEnum {
-        val region = game.typeRegion(this)
-
-        if (images[Images.Buster] in region) {
-            return CardTypeEnum.Buster
-        }
-
-        if (images[Images.Arts] in region) {
-            return CardTypeEnum.Arts
-        }
-
-        if (images[Images.Quick] in region) {
-            return CardTypeEnum.Quick
-        }
-
-        return CardTypeEnum.Unknown
-    }
-
     private var faceCardsGroupedByServant: Map<TeamSlot, List<CommandCard.Face>> = emptyMap()
     private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
     private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
     private var braveChainsThisTurn = BraveChainEnum.None
     private var rearrangeCardsThisTurn = false
-
-    private fun getCommandCards(): Map<CardScore, List<CommandCard.Face>> {
-        data class CardResult(
-            val card: CommandCard.Face,
-            val isStunned: Boolean,
-            val type: CardTypeEnum,
-            val affinity: CardAffinityEnum
-        )
-
-        val cards = CommandCard.Face.list
-            .map {
-                val stunned = it.isStunned()
-                val type = if (stunned)
-                    CardTypeEnum.Unknown
-                else it.type()
-                val affinity = if (type == CardTypeEnum.Unknown)
-                    CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
-                else it.affinity()
-
-                CardResult(it, stunned, type, affinity)
-            }
-
-        val failedToDetermine = cards
-            .filter { !it.isStunned && it.type == CardTypeEnum.Unknown }
-            .map { it.card }
-
-        if (failedToDetermine.isNotEmpty()) {
-            messages.notify(
-                ScriptNotify.FailedToDetermineCards(failedToDetermine)
-            )
-        }
-
-        return cards
-            .groupBy { CardScore(it.type, it.affinity) }
-            .mapValues { (_, value) ->
-                value.map { it.card }
-            }
-    }
 
     private fun <T> List<T>.inCurrentWave(default: T) =
         if (isNotEmpty())
@@ -133,20 +52,29 @@ class Card @Inject constructor(
             .inCurrentWave(false)
 
         useSameSnapIn {
-            commandCards = getCommandCards()
+            val parsedCards = parser.parse()
 
-            faceCardsGroupedByServant = servantTracker.faceCardsGroupedByServant()
+            commandCards = parsedCards.groupBy(
+                keySelector = { CardScore(it.type, it.affinity) },
+                valueTransform = { it.card }
+            )
+
+            faceCardsGroupedByServant = parsedCards.groupBy(
+                keySelector = { it.servant },
+                valueTransform = { it.card }
+            )
 
             commandCardGroups = faceCardsGroupedByServant.values.toList()
             commandCardGroupedWithNp =
                 CommandCard.NP.list
                     .associateWith { np ->
                         val slot = np.toFieldSlot()
-                        val teamSlot = servantTracker.deployed[slot]
 
-                        if (teamSlot == null)
-                            listOf()
-                        else faceCardsGroupedByServant[teamSlot] ?: listOf()
+                        servantTracker.deployed[slot]
+                            ?.let { teamSlot ->
+                                faceCardsGroupedByServant[teamSlot]
+                            }
+                            ?: emptyList()
                     }
         }
     }
