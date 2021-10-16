@@ -3,8 +3,6 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
@@ -37,7 +35,7 @@ class Card @Inject constructor(
             this[state.stage.coerceIn(indices)]
         else default
 
-    fun readCommandCards() {
+    fun readCommandCards(): List<ParsedCard> {
         braveChainsThisTurn = battleConfig
             .braveChains
             .inCurrentWave(BraveChainEnum.None)
@@ -72,6 +70,8 @@ class Card @Inject constructor(
                             ?: emptyList()
                     }
         }
+
+        return parsedCards
     }
 
     private val spamNps: Set<CommandCard.NP> get() =
@@ -232,46 +232,11 @@ class Card @Inject constructor(
         return cards
     }
 
-    fun shouldShuffle(): Boolean {
-        // Not this wave
-        if (state.stage != (battleConfig.shuffleCardsWave - 1)) {
-            return false
-        }
-
-        // Already shuffled
-        if (state.shuffled) {
-            return false
-        }
-
-        return when (battleConfig.shuffleCards) {
-            ShuffleCardsEnum.None -> false
-            ShuffleCardsEnum.NoEffective -> {
-                val effectiveCardCount = commandCards
-                    .filterKeys { it.affinity == CardAffinityEnum.Weak }
-                    .map { it.value.size }
-                    .sum()
-
-                effectiveCardCount == 0
-            }
-            ShuffleCardsEnum.NoNPMatching -> {
-                if (state.atk.nps.isEmpty()) {
-                    false
-                } else {
-                    val matchingCount = state.atk.nps
-                        .mapNotNull { commandCardGroupedWithNp[it]?.size }
-                        .sum()
-
-                    matchingCount == 0
-                }
-            }
-        }
-    }
-
-    fun clickCommandCards() {
-        val cards = pickCards()
+    fun clickCommandCards(cards: List<ParsedCard>) {
+        val pickedCards = pickCards()
 
         if (state.atk.cardsBeforeNP > 0) {
-            cards
+            pickedCards
                 .take(state.atk.cardsBeforeNP)
                 .also { messages.log(ScriptLog.ClickingCards(it)) }
                 .forEach { caster.use(it) }
@@ -285,7 +250,7 @@ class Card @Inject constructor(
                 .forEach { caster.use(it) }
         }
 
-        cards
+        pickedCards
             .drop(state.atk.cardsBeforeNP)
             .also { messages.log(ScriptLog.ClickingCards(it)) }
             .forEach { caster.use(it) }

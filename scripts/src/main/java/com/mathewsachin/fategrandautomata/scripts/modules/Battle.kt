@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
+import com.mathewsachin.fategrandautomata.scripts.models.ParsedCard
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
@@ -20,7 +21,8 @@ class Battle @Inject constructor(
     private val autoSkill: AutoSkill,
     private val caster: Caster,
     private val card: Card,
-    private val skillSpam: SkillSpam
+    private val skillSpam: SkillSpam,
+    private val shuffleChecker: ShuffleChecker
 ) : IFgoAutomataApi by fgAutomataApi {
     init {
         state.markStartTime()
@@ -44,11 +46,7 @@ class Battle @Inject constructor(
 
     fun isIdle() = images[Images.BattleScreen] in game.battleScreenRegion
 
-    fun clickAttack() {
-        if (state.hasClickedAttack) {
-            return
-        }
-
+    fun clickAttack(): List<ParsedCard> {
         game.battleAttackClick.click()
 
         // Wait for Attack button to disappear
@@ -56,9 +54,7 @@ class Battle @Inject constructor(
 
         prefs.waitBeforeCards.wait()
 
-        state.hasClickedAttack = true
-
-        card.readCommandCards()
+        return card.readCommandCards()
     }
 
     private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
@@ -102,26 +98,23 @@ class Battle @Inject constructor(
         autoSkill.execute()
         skillSpam.spamSkills()
 
-        clickAttack()
+        var cards = clickAttack()
 
-        shuffleCards()
-        card.clickCommandCards()
+        if (shuffleChecker.shouldShuffle(cards)) {
+            cards = shuffleCards()
+        }
+        card.clickCommandCards(cards)
 
         Duration.seconds(5).wait()
     }
 
-    private fun shuffleCards() {
-        if (card.shouldShuffle()) {
-            game.battleBack.click()
+    private fun shuffleCards(): List<ParsedCard> {
+        game.battleBack.click()
 
-            caster.castMasterSkill(Skill.Master.C)
+        caster.castMasterSkill(Skill.Master.C)
+        state.shuffled = true
 
-            state.hasClickedAttack = false
-
-            clickAttack()
-
-            state.shuffled = true
-        }
+        return clickAttack()
     }
 
     private fun onTurnStarted() = useSameSnapIn {
