@@ -1,6 +1,7 @@
 package com.mathewsachin.libautomata.extensions
 
 import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.HighlightColor
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.Region
 import javax.inject.Inject
@@ -11,8 +12,10 @@ class HighlightExtensions @Inject constructor(
     val platformImpl: IPlatformImpl,
     transformationExtensions: ITransformationExtensions
 ) : IHighlightExtensions, ITransformationExtensions by transformationExtensions {
-    override fun Region.highlight(duration: Duration, success: Boolean) {
+    override fun Region.highlight(color: HighlightColor, duration: Duration) {
         exitManager.checkExitRequested()
-        platformImpl.highlight(this.transform(), duration, success)
+        if (platformImpl.prefs.debugMode) {
+            platformImpl.highlight(this.transform(), duration, color)
+        }
     }
 }

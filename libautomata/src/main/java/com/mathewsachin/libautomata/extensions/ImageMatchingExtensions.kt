@@ -111,9 +111,7 @@ class ImageMatchingExtensions @Inject constructor(
                 Match(region, it.score)
             }
             .also {
-                if (platformImpl.prefs.debugMode) {
-                    this.highlight(success = it.any())
-                }
+                highlight(color = if (it.any()) HighlightColor.Success else HighlightColor.Error)
             }
     }
 }
