@@ -9,4 +9,9 @@ data class ParsedCard(
     val affinity: CardAffinityEnum,
     val isStunned: Boolean,
     val servant: TeamSlot
-)
+) {
+    override fun equals(other: Any?) =
+        other is ParsedCard && card == other.card
+
+    override fun hashCode() = card.hashCode()
+}

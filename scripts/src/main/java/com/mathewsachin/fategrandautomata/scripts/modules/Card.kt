@@ -2,10 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
-import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
-import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.util.*
 import javax.inject.Inject
@@ -15,63 +13,17 @@ class Card @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
     private val state: BattleState,
-    private val battleConfig: IBattleConfig,
     private val spamConfig: SpamConfigPerTeamSlot,
     private val caster: Caster,
     private val parser: CardParser,
-    private val priority: FaceCardPriority
+    private val priority: FaceCardPriority,
+    private val braveChains: ApplyBraveChains
 ) : IFgoAutomataApi by fgAutomataApi {
-    private var parsedCards = emptyList<ParsedCard>()
-    private var commandCards = emptyMap<CardScore, List<CommandCard.Face>>()
-
-    private var faceCardsGroupedByServant: Map<TeamSlot, List<CommandCard.Face>> = emptyMap()
-    private var commandCardGroups: List<List<CommandCard.Face>> = emptyList()
-    private var commandCardGroupedWithNp: Map<CommandCard.NP, List<CommandCard.Face>> = emptyMap()
-    private var braveChainsThisTurn = BraveChainEnum.None
-    private var rearrangeCardsThisTurn = false
-
-    private fun <T> List<T>.inCurrentWave(default: T) =
-        if (isNotEmpty())
-            this[state.stage.coerceIn(indices)]
-        else default
 
     fun readCommandCards(): List<ParsedCard> {
-        braveChainsThisTurn = battleConfig
-            .braveChains
-            .inCurrentWave(BraveChainEnum.None)
-
-        rearrangeCardsThisTurn = battleConfig
-            .rearrangeCards
-            .inCurrentWave(false)
-
-        useSameSnapIn {
-            parsedCards = parser.parse()
-
-            commandCards = parsedCards.groupBy(
-                keySelector = { CardScore(it.type, it.affinity) },
-                valueTransform = { it.card }
-            )
-
-            faceCardsGroupedByServant = parsedCards.groupBy(
-                keySelector = { it.servant },
-                valueTransform = { it.card }
-            )
-
-            commandCardGroups = faceCardsGroupedByServant.values.toList()
-            commandCardGroupedWithNp =
-                CommandCard.NP.list
-                    .associateWith { np ->
-                        val slot = np.toFieldSlot()
-
-                        servantTracker.deployed[slot]
-                            ?.let { teamSlot ->
-                                faceCardsGroupedByServant[teamSlot]
-                            }
-                            ?: emptyList()
-                    }
+        return useSameSnapIn {
+            parser.parse()
         }
-
-        return parsedCards
     }
 
     private val spamNps: Set<CommandCard.NP> get() =
@@ -86,154 +38,15 @@ class Card @Inject constructor(
             }
             .toSet()
 
-    private fun pickCards(clicks: Int = 3): List<CommandCard.Face> {
-        var clicksLeft = clicks.coerceAtLeast(0)
-        val toClick = mutableListOf<CommandCard.Face>()
-        val remainingCards = CommandCard.Face.list.toMutableSet()
+    private fun pickCards(cards: List<ParsedCard>): List<CommandCard.Face> {
+        val cardsOrderedByPriority = priority.sort(cards, state.stage)
 
-        val cardsOrderedByPriority = priority.sort(parsedCards, state.stage)
-
-        fun addToClickList(vararg cards: CommandCard.Face) = cards.apply {
-            toClick.addAll(cards)
-            remainingCards.removeAll(cards)
-            clicksLeft -= cards.size
-        }
-
-        fun pickCardsOrderedByPriority(
-            clicks: Int = clicksLeft,
-            filter: (CommandCard.Face) -> Boolean = { true }
-        ) =
-            cardsOrderedByPriority
-                .asSequence()
-                .filter { it in remainingCards && filter(it) }
-                .take(clicks)
-                .toList()
-                .let { addToClickList(*(it.toTypedArray())) }
-
-        return when (braveChainsThisTurn) {
-            BraveChainEnum.WithNP -> {
-                val chainFaceCount = commandCardGroupedWithNp[state.atk.nps.firstOrNull()]?.let { npGroup ->
-                    pickCardsOrderedByPriority {
-                        it in npGroup
-                    }.size
-                }
-
-                // Pick more cards if needed
-                pickCardsOrderedByPriority()
-
-                // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
-                // we want the matching face-card after NP.
-                if (rearrangeCardsThisTurn
-                    && listOf(state.atk.nps.size, state.atk.cardsBeforeNP, chainFaceCount).all { it == 1 }
-                ) {
-                    Collections.swap(toClick, 0, 1)
-                }
-
-                rearrange(toClick)
-            }
-            BraveChainEnum.Avoid -> {
-                if (commandCardGroups.size > 1
-                    && remainingCards.isNotEmpty()
-                    && clicksLeft > 1
-                ) {
-                    if (rearrangeCardsThisTurn) {
-                        // Top 3 priority cards grouped by servant
-                        val topGrouped = cardsOrderedByPriority
-                            .take(clicksLeft)
-                            .groupBy { commandCardGroups.indexOfFirst { group -> it in group } }
-                            .map { it.value }
-
-                        when (topGrouped.size) {
-                            // All 3 cards of same servant
-                            1 -> {
-                                val group = commandCardGroups.first { topGrouped[0][0] in it }
-
-                                // Check if there's another servant
-                                val otherCard = cardsOrderedByPriority
-                                    .firstOrNull { it !in group }
-
-                                // If there's no other servant, this will fallback to default card picker
-                                if (otherCard != null) {
-                                    addToClickList(
-                                        topGrouped[0][0],
-                                        otherCard,
-                                        topGrouped[0][1]
-                                    )
-                                }
-                            }
-                            // Ideal case. 2 servant cards
-                            2 -> {
-                                // servant with 2 cards in first place
-                                val topSorted = topGrouped
-                                    .sortedByDescending { it.size }
-
-                                addToClickList(
-                                    topSorted[0][0],
-                                    topSorted[1][0],
-                                    topSorted[0][1]
-                                )
-                            }
-                            // Brave chain will already be avoided, but we can rearrange to optimize
-                            3 -> {
-                                addToClickList(
-                                    topGrouped[0][0],
-                                    topGrouped[2][0],
-                                    topGrouped[1][0]
-                                )
-                            }
-                        }
-                    } else {
-                        var lastGroup = emptyList<CommandCard.Face>()
-
-                        do {
-                            lastGroup = pickCardsOrderedByPriority(1) { it !in lastGroup }
-                                .map { m -> commandCardGroups.firstOrNull { m in it } }
-                                .firstOrNull() ?: emptyList()
-                        } while (clicksLeft > 0 && lastGroup.isNotEmpty())
-                    }
-                }
-
-                // Pick more cards if needed
-                pickCardsOrderedByPriority()
-
-                toClick
-            }
-            BraveChainEnum.None -> {
-                pickCardsOrderedByPriority()
-
-                rearrange(toClick)
-            }
-        }
-    }
-
-    private fun rearrange(cards: List<CommandCard.Face>): List<CommandCard.Face> {
-        if (rearrangeCardsThisTurn
-            // If there are cards before NP, at max there's only 1 card after NP
-            && state.atk.cardsBeforeNP == 0
-            // If there are more than 1 NPs, only 1 card after NPs at max
-            && state.atk.nps.size <= 1
-        ) {
-            val cardsToRearrange = cards
-                .mapIndexed { index, _ -> index }
-                .take((3 - state.atk.nps.size).coerceAtLeast(0))
-                .reversed()
-
-            // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
-            // Do the same when clicking 2 cards unless they're used before NPs.
-            if (cardsToRearrange.size in 2..3) {
-                messages.log(ScriptLog.RearrangingCards)
-
-                return cards.toMutableList().also {
-                    Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
-                }
-            }
-        }
-
-        return cards
+        return braveChains.pick(cardsOrderedByPriority).map { it.card }
     }
 
     fun clickCommandCards(cards: List<ParsedCard>) {
-        val pickedCards = pickCards()
+        val pickedCards = pickCards(cards)
+            .take(3)
 
         if (state.atk.cardsBeforeNP > 0) {
             pickedCards
