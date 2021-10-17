@@ -13,17 +13,17 @@ class ApplyBraveChains @Inject constructor(
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
-        atk: AutoSkillAction.Atk
+        npUsage: NPUsage
     ): List<ParsedCard> {
         if (rearrange
             // If there are cards before NP, at max there's only 1 card after NP
-            && atk.cardsBeforeNP == 0
+            && npUsage.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
-            && atk.nps.size <= 1
+            && npUsage.nps.size <= 1
         ) {
             val cardsToRearrange = cards
                 .mapIndexed { index, _ -> index }
-                .take((3 - atk.nps.size).coerceAtLeast(0))
+                .take((3 - npUsage.nps.size).coerceAtLeast(0))
                 .reversed()
 
             // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
@@ -41,18 +41,18 @@ class ApplyBraveChains @Inject constructor(
     private fun withNp(
         cards: List<ParsedCard>,
         rearrange: Boolean,
-        atk: AutoSkillAction.Atk,
+        npUsage: NPUsage,
         deployed: Map<FieldSlot, TeamSlot>
     ): List<ParsedCard> {
         val justRearranged by lazy {
             rearrange(
                 cards = cards.take(3),
                 rearrange = rearrange,
-                atk = atk
+                npUsage = npUsage
             )
         }
 
-        val firstNp = atk.nps.firstOrNull() ?: return justRearranged
+        val firstNp = npUsage.nps.firstOrNull() ?: return justRearranged
         val fieldSlot = firstNp.toFieldSlot()
         val teamSlot = deployed[fieldSlot] ?: return justRearranged
 
@@ -63,7 +63,7 @@ class ApplyBraveChains @Inject constructor(
         // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
         // we want the matching face-card after NP.
         if (rearrange
-            && listOf(atk.nps.size, atk.cardsBeforeNP, matchingCards.size).all { it == 1 }
+            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP, matchingCards.size).all { it == 1 }
         ) {
             Collections.swap(matchingCards, 0, 1)
         }
@@ -71,7 +71,7 @@ class ApplyBraveChains @Inject constructor(
         return rearrange(
             cards = matchingCards,
             rearrange = rearrange,
-            atk = atk
+            npUsage = npUsage
         )
     }
 
@@ -157,19 +157,19 @@ class ApplyBraveChains @Inject constructor(
         cards: List<ParsedCard>,
         braveChains: BraveChainEnum,
         rearrange: Boolean = false,
-        atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp(),
+        npUsage: NPUsage = NPUsage.none,
         deployed: Map<FieldSlot, TeamSlot> = servantTracker.deployed
     ): List<ParsedCard> {
         val picked = when (braveChains) {
             BraveChainEnum.None -> rearrange(
                 cards = cards.take(3),
                 rearrange = rearrange,
-                atk = atk
+                npUsage = npUsage
             )
             BraveChainEnum.WithNP -> withNp(
                 cards = cards,
                 rearrange = rearrange,
-                atk = atk,
+                npUsage = npUsage,
                 deployed = deployed
             )
             BraveChainEnum.Avoid -> avoid(

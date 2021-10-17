@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillCommand
+import com.mathewsachin.fategrandautomata.scripts.models.NPUsage
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -20,20 +21,20 @@ class AutoSkill @Inject constructor(
         is AutoSkillAction.OrderChange -> caster.orderChange(action)
     }
 
-    fun execute(stage: Int, turn: Int): AutoSkillAction.Atk {
+    fun execute(stage: Int, turn: Int): NPUsage {
         val commandList = skillCommand[stage, turn]
-        var atk = AutoSkillAction.Atk.noOp()
+        var npUsage = NPUsage.none
 
         if (commandList.isNotEmpty()) {
             for (action in commandList) {
                 if (action is AutoSkillAction.Atk) {
-                    atk = action
+                    npUsage = action.toNPUsage()
                 }
 
                 act(action)
             }
         }
 
-        return atk
+        return npUsage
     }
 }

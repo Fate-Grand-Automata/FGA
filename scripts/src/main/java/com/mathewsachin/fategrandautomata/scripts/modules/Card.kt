@@ -43,7 +43,7 @@ class Card @Inject constructor(
 
     private fun pickCards(
         cards: List<ParsedCard>,
-        atk: AutoSkillAction.Atk
+        npUsage: NPUsage
     ): List<CommandCard.Face> {
         val cardsOrderedByPriority = priority.sort(cards, state.stage)
 
@@ -57,7 +57,7 @@ class Card @Inject constructor(
 
         return braveChains.pick(
             cards = cardsOrderedByPriority,
-            atk = atk,
+            npUsage = npUsage,
             braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
             rearrange = rearrangeCardsPerWave.inCurrentWave(false)
         ).map { it.card }
@@ -65,19 +65,19 @@ class Card @Inject constructor(
 
     fun clickCommandCards(
         cards: List<ParsedCard>,
-        atk: AutoSkillAction.Atk
+        npUsage: NPUsage
     ) {
-        val pickedCards = pickCards(cards, atk)
+        val pickedCards = pickCards(cards, npUsage)
             .take(3)
 
-        if (atk.cardsBeforeNP > 0) {
+        if (npUsage.cardsBeforeNP > 0) {
             pickedCards
-                .take(atk.cardsBeforeNP)
+                .take(npUsage.cardsBeforeNP)
                 .also { messages.log(ScriptLog.ClickingCards(it)) }
                 .forEach { caster.use(it) }
         }
 
-        val nps = atk.nps + spamNps
+        val nps = npUsage.nps + spamNps
 
         if (nps.isNotEmpty()) {
             nps
@@ -86,7 +86,7 @@ class Card @Inject constructor(
         }
 
         pickedCards
-            .drop(atk.cardsBeforeNP)
+            .drop(npUsage.cardsBeforeNP)
             .also { messages.log(ScriptLog.ClickingCards(it)) }
             .forEach { caster.use(it) }
     }

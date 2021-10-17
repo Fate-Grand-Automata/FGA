@@ -9,6 +9,9 @@ sealed class AutoSkillAction {
         operator fun plus(other: Atk) =
             Atk(nps + other.nps, cardsBeforeNP + other.cardsBeforeNP)
 
+        fun toNPUsage() =
+            NPUsage(nps, cardsBeforeNP)
+
         companion object {
             fun noOp() = Atk(emptySet(), 0)
 

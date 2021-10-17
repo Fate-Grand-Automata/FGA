@@ -1,9 +1,9 @@
 package com.mathewsachin.fategrandautomata.scripts
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
-import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
+import com.mathewsachin.fategrandautomata.scripts.models.NPUsage
 import com.mathewsachin.fategrandautomata.scripts.models.TeamSlot
 import com.mathewsachin.fategrandautomata.scripts.modules.ApplyBraveChains
 import com.mathewsachin.fategrandautomata.scripts.modules.ServantTracker
@@ -84,7 +84,7 @@ class BraveChainsTest {
         val picked = braveChains.pick(
             cards = cards,
             braveChains = BraveChainEnum.WithNP,
-            atk = AutoSkillAction.Atk.np(CommandCard.NP.A)
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
         ).map { it.card }
 
         val expected = listOf(
