@@ -46,8 +46,7 @@ class FaceCardPriority @Inject constructor(
             .flatten()
             .let { picked ->
                 // In case less than 3 cards are picked
-                val notPicked = cards
-                    .filter { it !in picked }
+                val notPicked = cards - picked
 
                 picked + notPicked
             }

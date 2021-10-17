@@ -68,8 +68,10 @@ class ApplyBraveChains @Inject constructor(
             Collections.swap(matchingCards, 0, 1)
         }
 
+        val nonMatchingCards = cards - matchingCards
+
         return rearrange(
-            cards = matchingCards,
+            cards = matchingCards + nonMatchingCards,
             rearrange = rearrange,
             npUsage = npUsage
         )
@@ -178,7 +180,7 @@ class ApplyBraveChains @Inject constructor(
             )
         }
 
-        val notPicked = cards.filter { it !in picked }
+        val notPicked = cards - picked
 
         return picked + notPicked
     }

@@ -9,6 +9,7 @@ import com.mathewsachin.fategrandautomata.scripts.modules.ApplyBraveChains
 import com.mathewsachin.fategrandautomata.scripts.modules.ServantTracker
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.Assert
 import org.junit.Test
 
 class BraveChainsTest {
@@ -36,7 +37,7 @@ class BraveChainsTest {
             braveChains = mode
         )
 
-        assert(picked == cards)
+        Assert.assertEquals(cards, picked)
     }
 
     @Test
@@ -58,7 +59,7 @@ class BraveChainsTest {
             CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E
         )
 
-        assert(picked == expected)
+        Assert.assertEquals(expected, picked)
     }
 
     @Test
@@ -91,6 +92,62 @@ class BraveChainsTest {
             CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E
         )
 
-        assert(picked == expected)
+        Assert.assertEquals(expected, picked)
+    }
+
+    @Test
+    fun braveChainsRearrangeWith1MatchingCard() {
+        val braveChains = init()
+
+        val cards = FaceCardPriorityTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNP,
+            rearrange = true,
+            npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
+        ).map { it.card }
+
+        val expected = listOf(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E
+        )
+
+        Assert.assertEquals(expected, picked)
+    }
+
+    @Test
+    fun braveChainsWith2MatchingCards() {
+        val braveChains = init()
+
+        val cards = FaceCardPriorityTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNP,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
+        ).map { it.card }
+
+        val expected = listOf(
+            CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D
+        )
+
+        Assert.assertEquals(expected, picked)
+    }
+
+    @Test
+    fun braveChainsRearrangeWith2MatchingCards() {
+        val braveChains = init()
+
+        val cards = FaceCardPriorityTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.WithNP,
+            rearrange = true,
+            npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
+        ).map { it.card }
+
+        val expected = listOf(
+            CommandCard.Face.E, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D
+        )
+
+        Assert.assertEquals(expected, picked)
     }
 }

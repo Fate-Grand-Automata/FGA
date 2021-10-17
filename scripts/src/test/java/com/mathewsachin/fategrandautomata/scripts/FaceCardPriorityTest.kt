@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.modules.FaceCardPriority
+import org.junit.Assert
 import org.junit.Test
 
 class FaceCardPriorityTest {
@@ -54,7 +55,7 @@ class FaceCardPriorityTest {
             CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D
         )
 
-        assert(sorted == expected)
+        Assert.assertEquals(expected, sorted)
     }
 
     @Test
@@ -66,6 +67,6 @@ class FaceCardPriorityTest {
             CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D
         )
 
-        assert(sorted == expected)
+        Assert.assertEquals(expected, sorted)
     }
 }
