@@ -150,4 +150,61 @@ class BraveChainsTest {
 
         Assert.assertEquals(expected, picked)
     }
+
+    @Test
+    fun avoidBraveChains3DiffCards() {
+        val braveChains = init()
+
+        val cards = FaceCardPriorityTest.lineup1
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.Avoid
+        ).map { it.card }
+
+        val expected = listOf(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.E, CommandCard.Face.D
+        )
+
+        Assert.assertEquals(expected, picked)
+    }
+
+    @Test
+    fun avoidBraveChainsRearrange3DiffCards() {
+        justRearrange(BraveChainEnum.Avoid)
+    }
+
+    @Test
+    fun avoidBraveChainsWith2DiffCards() {
+        val braveChains = init()
+
+        val cards = FaceCardPriorityTest.lineup2
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.Avoid
+        ).map { it.card }
+
+        val expected = listOf(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D
+        )
+
+        Assert.assertEquals(expected, picked)
+    }
+
+    @Test
+    fun avoidBraveChainsRearrangeWith2DiffCards() {
+        val braveChains = init()
+
+        val cards = FaceCardPriorityTest.lineup2
+        val picked = braveChains.pick(
+            cards = cards,
+            braveChains = BraveChainEnum.Avoid,
+            rearrange = true
+        ).map { it.card }
+
+        val expected = listOf(
+            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D
+        )
+
+        Assert.assertEquals(expected, picked)
+    }
 }

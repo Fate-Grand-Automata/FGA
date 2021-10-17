@@ -130,7 +130,7 @@ class ApplyBraveChains @Inject constructor(
                         )
                     }
                 }
-            } else legacyAvoidBraveChains(cards, cardsGroupedByServant)
+            } else return legacyAvoidBraveChains(cards, cardsGroupedByServant)
         }
 
         return emptyList()
@@ -148,8 +148,8 @@ class ApplyBraveChains @Inject constructor(
             val otherServantCard = remainingCards.firstOrNull { it !in lastGroup } ?: break
             lastGroup = cardsGroupedByServant.firstOrNull { otherServantCard in it } ?: break
 
-            pickedCards.add(otherServantCard)
-            remainingCards.remove(otherServantCard)
+            pickedCards += otherServantCard
+            remainingCards -= otherServantCard
         }
 
         return pickedCards

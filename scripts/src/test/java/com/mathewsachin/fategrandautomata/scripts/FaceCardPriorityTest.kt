@@ -9,41 +9,43 @@ import org.junit.Test
 
 class FaceCardPriorityTest {
     companion object {
+        val scathach1WB = ParsedCard(
+            card = CommandCard.Face.A,
+            servant = TeamSlot.B,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.Weak
+        )
+        val kama2Q = ParsedCard(
+            card = CommandCard.Face.B,
+            servant = TeamSlot.A,
+            type = CardTypeEnum.Quick
+        )
+        val nero3RA = ParsedCard(
+            card = CommandCard.Face.C,
+            servant = TeamSlot.C,
+            type = CardTypeEnum.Arts,
+            affinity = CardAffinityEnum.Resist
+        )
+        val nero4RA = ParsedCard(
+            card = CommandCard.Face.D,
+            servant = TeamSlot.C,
+            type = CardTypeEnum.Arts,
+            affinity = CardAffinityEnum.Resist
+        )
+        val scathach5WQ = ParsedCard(
+            card = CommandCard.Face.E,
+            servant = TeamSlot.B,
+            type = CardTypeEnum.Quick,
+            affinity = CardAffinityEnum.Weak
+        )
+
         /**
          * [Kama, Scathach, Nero]
          * [Scathach WB] [Kama Q] [Nero RA] [Nero RA] [Scathach WQ]
          */
-        val lineup1 = listOf(
-            ParsedCard(
-                card = CommandCard.Face.A,
-                servant = TeamSlot.B,
-                type = CardTypeEnum.Buster,
-                affinity = CardAffinityEnum.Weak
-            ),
-            ParsedCard(
-                card = CommandCard.Face.B,
-                servant = TeamSlot.A,
-                type = CardTypeEnum.Quick
-            ),
-            ParsedCard(
-                card = CommandCard.Face.C,
-                servant = TeamSlot.C,
-                type = CardTypeEnum.Arts,
-                affinity = CardAffinityEnum.Resist
-            ),
-            ParsedCard(
-                card = CommandCard.Face.D,
-                servant = TeamSlot.C,
-                type = CardTypeEnum.Arts,
-                affinity = CardAffinityEnum.Resist
-            ),
-            ParsedCard(
-                card = CommandCard.Face.E,
-                servant = TeamSlot.B,
-                type = CardTypeEnum.Quick,
-                affinity = CardAffinityEnum.Weak
-            )
-        )
+        val lineup1 = listOf(scathach1WB, kama2Q, nero3RA, nero4RA, scathach5WQ)
+
+        val lineup2 = listOf(scathach1WB, scathach5WQ, kama2Q, nero3RA, nero4RA)
     }
 
     @Test
