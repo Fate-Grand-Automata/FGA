@@ -1,11 +1,8 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
-import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
-import com.mathewsachin.fategrandautomata.scripts.models.ParsedCard
+import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
-import com.mathewsachin.fategrandautomata.scripts.models.toFieldSlot
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.util.*
@@ -13,7 +10,6 @@ import javax.inject.Inject
 
 @ScriptScope
 class ApplyBraveChains @Inject constructor(
-    private val messages: IScriptMessages,
     private val state: BattleState,
     private val servantTracker: ServantTracker,
     battleConfig: IBattleConfig
@@ -23,34 +19,28 @@ class ApplyBraveChains @Inject constructor(
             this[state.stage.coerceIn(indices)]
         else default
 
-    private val braveChains = battleConfig.braveChains
-    private val rearrangeCards = battleConfig.rearrangeCards
+    private val braveChainsPerWave = battleConfig.braveChains
+    private val rearrangeCardsPerWave = battleConfig.rearrangeCards
 
-    private val braveChainsThisTurn get() =
-        braveChains
-            .inCurrentWave(BraveChainEnum.None)
-
-    private val rearrangeCardsThisTurn get() =
-        rearrangeCards
-            .inCurrentWave(false)
-
-    private fun rearrange(cards: List<ParsedCard>): List<ParsedCard> {
-        if (rearrangeCardsThisTurn
+    private fun rearrange(
+        cards: List<ParsedCard>,
+        rearrange: Boolean,
+        atk: AutoSkillAction.Atk
+    ): List<ParsedCard> {
+        if (rearrange
             // If there are cards before NP, at max there's only 1 card after NP
-            && state.atk.cardsBeforeNP == 0
+            && atk.cardsBeforeNP == 0
             // If there are more than 1 NPs, only 1 card after NPs at max
-            && state.atk.nps.size <= 1
+            && atk.nps.size <= 1
         ) {
             val cardsToRearrange = cards
                 .mapIndexed { index, _ -> index }
-                .take((3 - state.atk.nps.size).coerceAtLeast(0))
+                .take((3 - atk.nps.size).coerceAtLeast(0))
                 .reversed()
 
             // When clicking 3 cards, move the card with 2nd highest priority to last position to amplify its effect
             // Do the same when clicking 2 cards unless they're used before NPs.
             if (cardsToRearrange.size in 2..3) {
-                messages.log(ScriptLog.RearrangingCards)
-
                 return cards.toMutableList().also {
                     Collections.swap(it, cardsToRearrange[1], cardsToRearrange[0])
                 }
@@ -60,10 +50,15 @@ class ApplyBraveChains @Inject constructor(
         return cards
     }
 
-    private fun withNp(cards: List<ParsedCard>): List<ParsedCard> {
-        val firstNp = state.atk.nps.firstOrNull() ?: return emptyList()
+    private fun withNp(
+        cards: List<ParsedCard>,
+        rearrange: Boolean,
+        atk: AutoSkillAction.Atk,
+        deployed: Map<FieldSlot, TeamSlot>
+    ): List<ParsedCard> {
+        val firstNp = atk.nps.firstOrNull() ?: return emptyList()
         val fieldSlot = firstNp.toFieldSlot()
-        val teamSlot = servantTracker.deployed[fieldSlot] ?: return emptyList()
+        val teamSlot = deployed[fieldSlot] ?: return emptyList()
 
         val matchingCards = cards
             .filter { it.servant == teamSlot }
@@ -71,20 +66,27 @@ class ApplyBraveChains @Inject constructor(
 
         // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
         // we want the matching face-card after NP.
-        if (rearrangeCardsThisTurn
-            && listOf(state.atk.nps.size, state.atk.cardsBeforeNP, matchingCards.size).all { it == 1 }
+        if (rearrange
+            && listOf(atk.nps.size, atk.cardsBeforeNP, matchingCards.size).all { it == 1 }
         ) {
             Collections.swap(matchingCards, 0, 1)
         }
 
-        return rearrange(matchingCards)
+        return rearrange(
+            cards = matchingCards,
+            rearrange = rearrange,
+            atk = atk
+        )
     }
 
-    private fun avoid(cards: List<ParsedCard>): List<ParsedCard> {
+    private fun avoid(
+        cards: List<ParsedCard>,
+        rearrange: Boolean
+    ): List<ParsedCard> {
         val cardsGroupedByServant = cards.groupBy { it.servant }.values
 
         if (cardsGroupedByServant.size > 1) {
-            if (rearrangeCardsThisTurn) {
+            if (rearrange) {
                 // Top 3 priority cards grouped by servant
                 val topGrouped = cards
                     .take(3)
@@ -155,11 +157,29 @@ class ApplyBraveChains @Inject constructor(
         return pickedCards
     }
 
-    fun pick(cards: List<ParsedCard>): List<ParsedCard> {
-        val picked = when (braveChainsThisTurn) {
-            BraveChainEnum.None -> rearrange(cards.take(3))
-            BraveChainEnum.WithNP -> withNp(cards)
-            BraveChainEnum.Avoid -> avoid(cards)
+    fun pick(
+        cards: List<ParsedCard>,
+        braveChains: BraveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
+        rearrange: Boolean = rearrangeCardsPerWave.inCurrentWave(false),
+        atk: AutoSkillAction.Atk = state.atk,
+        deployed: Map<FieldSlot, TeamSlot> = servantTracker.deployed
+    ): List<ParsedCard> {
+        val picked = when (braveChains) {
+            BraveChainEnum.None -> rearrange(
+                cards = cards.take(3),
+                rearrange = rearrange,
+                atk = atk
+            )
+            BraveChainEnum.WithNP -> withNp(
+                cards = cards,
+                rearrange = rearrange,
+                atk = atk,
+                deployed = deployed
+            )
+            BraveChainEnum.Avoid -> avoid(
+                cards = cards,
+                rearrange = rearrange
+            )
         }
 
         val notPicked = cards.filter { it !in picked }

@@ -17,7 +17,6 @@ sealed class ScriptNotify {
 sealed class ScriptLog {
     object DefaultSupportBounds: ScriptLog()
     object DefaultMasterOffset: ScriptLog()
-    object RearrangingCards: ScriptLog()
     class CurrentParty(val party: Int?): ScriptLog()
     class MaxSkills(
         val needMaxedSkills: List<Boolean>,
@@ -36,9 +35,6 @@ sealed class ScriptLog {
         val cards: List<CommandCard.Face>,
         val servant: TeamSlot,
         val isSupport: Boolean = false
-    ): ScriptLog()
-    class CardsNotPickedByServantPriority(
-        val cards: List<CommandCard.Face>
     ): ScriptLog()
 }
 

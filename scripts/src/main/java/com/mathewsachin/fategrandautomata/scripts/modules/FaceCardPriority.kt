@@ -1,7 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
-import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
@@ -12,7 +10,6 @@ import javax.inject.Inject
 
 @ScriptScope
 class FaceCardPriority @Inject constructor(
-    private val messages: IScriptMessages,
     private val cardPriority: CardPriorityPerWave,
     private val servantPriority: ServantPriorityPerWave?
 ) {
@@ -51,14 +48,6 @@ class FaceCardPriority @Inject constructor(
                 // In case less than 3 cards are picked
                 val notPicked = cards
                     .filter { it !in picked }
-
-                if (notPicked.isNotEmpty()) {
-                    messages.log(
-                        ScriptLog.CardsNotPickedByServantPriority(
-                            notPicked.map { it.card }
-                        )
-                    )
-                }
 
                 picked + notPicked
             }

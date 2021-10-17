@@ -48,9 +48,6 @@ class ScriptMessages @Inject constructor(
             is ScriptLog.CurrentParty -> {
                 Timber.debug { "Current Party: ${item.party}" }
             }
-            ScriptLog.RearrangingCards -> {
-                Timber.debug { "Rearranging cards" }
-            }
             is ScriptLog.MaxSkills -> {
                 Timber.debug {
                     // Detected skill levels as string for debugging
@@ -92,9 +89,6 @@ class ScriptMessages @Inject constructor(
 
                     "${item.cards} belong to ${supportText}${item.servant}"
                 }
-            }
-            is ScriptLog.CardsNotPickedByServantPriority -> {
-                Timber.debug { "Cards not picked by servant priority ${item.cards}" }
             }
         }
 

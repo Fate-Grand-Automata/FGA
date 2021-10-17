@@ -15,7 +15,8 @@ class ServantTracker @Inject constructor(
 ) : IFgoAutomataApi by fgAutomataApi, AutoCloseable {
 
     private val servantQueue = mutableListOf<TeamSlot>()
-    val deployed = mutableMapOf<FieldSlot, TeamSlot>()
+    private val _deployed = mutableMapOf<FieldSlot, TeamSlot>()
+    val deployed: Map<FieldSlot, TeamSlot> = _deployed
 
     fun nextRun() {
         servantQueue.clear()
@@ -23,8 +24,8 @@ class ServantTracker @Inject constructor(
             listOf(TeamSlot.D, TeamSlot.E, TeamSlot.F)
         )
 
-        deployed.clear()
-        deployed.putAll(
+        _deployed.clear()
+        _deployed.putAll(
             mapOf(
                 FieldSlot.A to TeamSlot.A,
                 FieldSlot.B to TeamSlot.B,
@@ -112,7 +113,7 @@ class ServantTracker @Inject constructor(
     private fun check(slot: FieldSlot) {
         // If a servant is not present, that means none are left in the backline
         if (images[Images.ServantExist] !in game.servantPresentRegion(slot)) {
-            deployed.remove(slot)
+            _deployed.remove(slot)
             servantQueue.clear()
             return
         }
@@ -137,9 +138,9 @@ class ServantTracker @Inject constructor(
             val newTeamSlot = servantQueue.removeFirstOrNull()
 
             if (newTeamSlot != null) {
-                deployed[slot] = newTeamSlot
+                _deployed[slot] = newTeamSlot
                 init(newTeamSlot, slot)
-            } else deployed.remove(slot)
+            } else _deployed.remove(slot)
         }
     }
 
@@ -158,7 +159,7 @@ class ServantTracker @Inject constructor(
 
         if (subIndex in servantQueue.indices) {
             deployed[startingSlot]?.let { swapOut ->
-                deployed[startingSlot] = servantQueue[subIndex]
+                _deployed[startingSlot] = servantQueue[subIndex]
                 servantQueue[subIndex] = swapOut
 
                 check(startingSlot)
