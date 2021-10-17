@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
+import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.ParsedCard
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.models.toFieldSlot
@@ -15,7 +16,10 @@ class ShuffleChecker @Inject constructor(
     private val battleConfig: IBattleConfig,
     private val servantTracker: ServantTracker
 ) {
-    fun shouldShuffle(cards: List<ParsedCard>): Boolean {
+    fun shouldShuffle(
+        cards: List<ParsedCard>,
+        atk: AutoSkillAction.Atk
+    ): Boolean {
         // Not this wave
         if (state.stage != (battleConfig.shuffleCardsWave - 1)) {
             return false
@@ -35,10 +39,10 @@ class ShuffleChecker @Inject constructor(
                 effectiveCardCount == 0
             }
             ShuffleCardsEnum.NoNPMatching -> {
-                if (state.atk.nps.isEmpty()) {
+                if (atk.nps.isEmpty()) {
                     false
                 } else {
-                    val matchingCount = state.atk.nps
+                    val matchingCount = atk.nps
                         .mapNotNull { servantTracker.deployed[it.toFieldSlot()] }
                         .sumOf { teamSlot ->
                             cards.count { card -> card.servant == teamSlot }

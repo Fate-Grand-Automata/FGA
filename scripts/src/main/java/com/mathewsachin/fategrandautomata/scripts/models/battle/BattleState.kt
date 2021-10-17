@@ -56,11 +56,6 @@ class BattleState @Inject constructor() {
             runState.stageState.chosenTarget = value
         }
 
-    var atk get() = runState.turnState.atk
-        set(value) {
-            runState.turnState.atk = value
-        }
-
     var stageCountSnapshot
         get() = runState.stageState.stageCountSnapshot
         set(value) {

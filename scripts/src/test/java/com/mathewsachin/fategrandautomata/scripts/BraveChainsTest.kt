@@ -30,7 +30,6 @@ class BraveChainsTest {
 
         val state: BattleState = mockk()
         every { state.stage } returns stage
-        every { state.atk } returns atk
 
         val servantTracker: ServantTracker = mockk()
         every { servantTracker.deployed } returns deployed

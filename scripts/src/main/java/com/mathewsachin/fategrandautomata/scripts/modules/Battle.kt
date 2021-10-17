@@ -95,15 +95,14 @@ class Battle @Inject constructor(
         onTurnStarted()
         servantTracker.beginTurn()
 
-        autoSkill.execute()
+        val atk = autoSkill.execute(state.stage, state.turn)
         skillSpam.spamSkills()
 
-        var cards = clickAttack()
+        val cards = clickAttack()
+            .takeUnless { shuffleChecker.shouldShuffle(it, atk) }
+            ?: shuffleCards()
 
-        if (shuffleChecker.shouldShuffle(cards)) {
-            cards = shuffleCards()
-        }
-        card.clickCommandCards(cards)
+        card.clickCommandCards(cards, atk)
 
         Duration.seconds(5).wait()
     }

@@ -161,7 +161,7 @@ class ApplyBraveChains @Inject constructor(
         cards: List<ParsedCard>,
         braveChains: BraveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
         rearrange: Boolean = rearrangeCardsPerWave.inCurrentWave(false),
-        atk: AutoSkillAction.Atk = state.atk,
+        atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp(),
         deployed: Map<FieldSlot, TeamSlot> = servantTracker.deployed
     ): List<ParsedCard> {
         val picked = when (braveChains) {
