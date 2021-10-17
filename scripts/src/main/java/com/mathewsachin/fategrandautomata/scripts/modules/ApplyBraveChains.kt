@@ -2,26 +2,14 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
-import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
-import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.util.*
 import javax.inject.Inject
 
 @ScriptScope
 class ApplyBraveChains @Inject constructor(
-    private val state: BattleState,
-    private val servantTracker: ServantTracker,
-    battleConfig: IBattleConfig
+    private val servantTracker: ServantTracker
 ) {
-    private fun <T> List<T>.inCurrentWave(default: T) =
-        if (isNotEmpty())
-            this[state.stage.coerceIn(indices)]
-        else default
-
-    private val braveChainsPerWave = battleConfig.braveChains
-    private val rearrangeCardsPerWave = battleConfig.rearrangeCards
-
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
@@ -56,9 +44,17 @@ class ApplyBraveChains @Inject constructor(
         atk: AutoSkillAction.Atk,
         deployed: Map<FieldSlot, TeamSlot>
     ): List<ParsedCard> {
-        val firstNp = atk.nps.firstOrNull() ?: return emptyList()
+        val justRearranged by lazy {
+            rearrange(
+                cards = cards.take(3),
+                rearrange = rearrange,
+                atk = atk
+            )
+        }
+
+        val firstNp = atk.nps.firstOrNull() ?: return justRearranged
         val fieldSlot = firstNp.toFieldSlot()
-        val teamSlot = deployed[fieldSlot] ?: return emptyList()
+        val teamSlot = deployed[fieldSlot] ?: return justRearranged
 
         val matchingCards = cards
             .filter { it.servant == teamSlot }
@@ -159,8 +155,8 @@ class ApplyBraveChains @Inject constructor(
 
     fun pick(
         cards: List<ParsedCard>,
-        braveChains: BraveChainEnum = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
-        rearrange: Boolean = rearrangeCardsPerWave.inCurrentWave(false),
+        braveChains: BraveChainEnum,
+        rearrange: Boolean = false,
         atk: AutoSkillAction.Atk = AutoSkillAction.Atk.noOp(),
         deployed: Map<FieldSlot, TeamSlot> = servantTracker.deployed
     ): List<ParsedCard> {

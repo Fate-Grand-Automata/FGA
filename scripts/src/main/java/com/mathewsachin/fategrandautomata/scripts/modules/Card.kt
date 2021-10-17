@@ -2,8 +2,10 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.util.*
 import javax.inject.Inject
@@ -17,7 +19,8 @@ class Card @Inject constructor(
     private val caster: Caster,
     private val parser: CardParser,
     private val priority: FaceCardPriority,
-    private val braveChains: ApplyBraveChains
+    private val braveChains: ApplyBraveChains,
+    private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by fgAutomataApi {
 
     fun readCommandCards(): List<ParsedCard> {
@@ -44,9 +47,19 @@ class Card @Inject constructor(
     ): List<CommandCard.Face> {
         val cardsOrderedByPriority = priority.sort(cards, state.stage)
 
+        fun <T> List<T>.inCurrentWave(default: T) =
+            if (isNotEmpty())
+                this[state.stage.coerceIn(indices)]
+            else default
+
+        val braveChainsPerWave = battleConfig.braveChains
+        val rearrangeCardsPerWave = battleConfig.rearrangeCards
+
         return braveChains.pick(
             cards = cardsOrderedByPriority,
-            atk = atk
+            atk = atk,
+            braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
+            rearrange = rearrangeCardsPerWave.inCurrentWave(false)
         ).map { it.card }
     }
 
