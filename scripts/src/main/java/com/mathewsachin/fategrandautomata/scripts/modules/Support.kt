@@ -27,7 +27,7 @@ class Support @Inject constructor(
         if (supportClass == SupportClass.None)
             return
 
-        game.locate(supportClass).click()
+        game.support.locate(supportClass).click()
 
         Duration.seconds(0.5).wait()
     }
@@ -65,8 +65,8 @@ class Support @Inject constructor(
                         && numberOfSwipes < prefs.support.swipesPerUpdate -> {
 
                     swipe(
-                        game.supportListSwipeStart,
-                        game.supportListSwipeEnd
+                        game.support.listSwipeStart,
+                        game.support.listSwipeEnd
                     )
 
                     ++numberOfSwipes
@@ -93,7 +93,7 @@ class Support @Inject constructor(
                 }
                 // Not found after retries, use fallback
                 else -> {
-                    game.supportListTopClick.click()
+                    game.support.listTopClick.click()
                     selectSupport(true, supportPrefs.fallbackTo)
                     return
                 }

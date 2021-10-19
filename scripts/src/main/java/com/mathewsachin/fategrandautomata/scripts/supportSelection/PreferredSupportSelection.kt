@@ -43,7 +43,7 @@ class PreferredSupportSelection @Inject constructor(
     override fun search() = when (mode) {
         Mode.Servants -> findServants().firstOrNull() ?: SpecificSupportSearchResult.NotFound
         Mode.CEs -> {
-            findCraftEssences(game.supportListRegion)
+            findCraftEssences(game.support.listRegion)
                 .map { SpecificSupportSearchResult.Found(it.region) }
                 .firstOrNull() ?: SpecificSupportSearchResult.NotFound
         }
@@ -59,7 +59,7 @@ class PreferredSupportSelection @Inject constructor(
                     else -> findSupportBounds(it.Support)
                 }
 
-                val ceBounds = game.supportDefaultCeBounds + Location(0, supportBounds.y)
+                val ceBounds = game.support.defaultCeBounds + Location(0, supportBounds.y)
                 findCraftEssences(ceBounds).firstOrNull()
                     ?.let { ce -> FoundServantAndCE(supportBounds, ce) }
             }
@@ -104,7 +104,7 @@ class PreferredSupportSelection @Inject constructor(
                 val skillCheckNeeded = needMaxedSkills.any { it }
 
                 cropFriendLock(pattern).use { cropped ->
-                    game.supportListRegion
+                    game.support.listRegion
                         .findAll(cropped)
                         .filter { !supportPrefs.maxAscended || isMaxAscended(it.region) }
                         .map {
@@ -146,14 +146,14 @@ class PreferredSupportSelection @Inject constructor(
     }
 
     private fun isMaxAscended(servant: Region): Boolean {
-        val maxAscendedRegion = game.supportMaxAscendedRegion
+        val maxAscendedRegion = game.support.maxAscendedRegion
             .copy(y = servant.y)
 
         return isStarPresent(maxAscendedRegion)
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
-        val limitBreakRegion = game.supportLimitBreakRegion
+        val limitBreakRegion = game.support.limitBreakRegion
             .copy(y = CraftEssence.y)
 
         return isStarPresent(limitBreakRegion)

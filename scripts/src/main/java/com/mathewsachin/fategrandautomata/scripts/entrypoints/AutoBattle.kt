@@ -21,7 +21,7 @@ import kotlin.time.Duration
  * Checks if Support Selection menu is up
  */
 fun IFgoAutomataApi.isInSupport(): Boolean {
-    return game.supportScreenRegion.exists(images[Images.SupportScreen], similarity = 0.85)
+    return game.support.screenCheckRegion.exists(images[Images.SupportScreen], similarity = 0.85)
 }
 
 fun IFgoAutomataApi.isInventoryFull() =

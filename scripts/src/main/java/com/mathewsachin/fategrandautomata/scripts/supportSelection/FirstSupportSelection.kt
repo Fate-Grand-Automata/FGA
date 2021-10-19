@@ -13,10 +13,10 @@ class FirstSupportSelection @Inject constructor(
     override fun select(): SupportSelectionResult {
         Duration.seconds(0.5).wait()
 
-        game.supportFirstSupportClick.click()
+        game.support.firstSupportClick.click()
 
         // Handle the case of a friend not having set a support servant
-        val supportPicked = game.supportScreenRegion.waitVanish(
+        val supportPicked = game.support.screenCheckRegion.waitVanish(
             images[Images.SupportScreen],
             similarity = 0.85,
             timeout = Duration.seconds(10)

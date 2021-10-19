@@ -49,7 +49,7 @@ class SupportImageMaker @Inject constructor(
         // At max two Servant+CE are completely on screen, so only use those
         val regionArray = game.scriptArea
             .findAll(
-                images[Images.SupportRegionTool],
+                images[Images.SupportConfirmSetupButton],
                 Support.supportRegionToolSimilarity
             )
             .map {

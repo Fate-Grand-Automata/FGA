@@ -2,13 +2,8 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
-import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
-import com.mathewsachin.fategrandautomata.scripts.locations.FPLocations
-import com.mathewsachin.fategrandautomata.scripts.locations.IScriptAreaTransforms
-import com.mathewsachin.fategrandautomata.scripts.locations.LotteryLocations
-import com.mathewsachin.fategrandautomata.scripts.locations.MasterLocations
+import com.mathewsachin.fategrandautomata.scripts.locations.*
 import com.mathewsachin.fategrandautomata.scripts.models.*
-import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -17,11 +12,11 @@ import kotlin.math.roundToInt
 
 @ScriptScope
 class Game @Inject constructor(
-    platformImpl: IPlatformImpl,
     scriptAreaTransforms: IScriptAreaTransforms,
     val fp: FPLocations,
     val lottery: LotteryLocations,
-    val master: MasterLocations
+    val master: MasterLocations,
+    val support: SupportScreenLocations
 ): IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
@@ -59,59 +54,6 @@ class Game @Inject constructor(
     val withdrawRegion = Region(-880, 540, 1800, 333).xFromCenter()
     val withdrawAcceptClick = Location(485, 720).xFromCenter()
     val withdrawCloseClick = Location(-10, 1140).xFromCenter()
-
-    val supportHeaderOffset = Location(if (isWide) 171 else 0, 0)
-
-    val supportScreenRegion = Region(0, 0, 200, 400) + supportHeaderOffset
-
-    val supportExtraRegion = Region(1200, 200, 130, 130) + supportHeaderOffset
-
-    val supportUpdateClick =
-        when (gameServer) {
-            GameServerEnum.Jp -> 1865
-            else -> 1700
-        }.let { x -> Location(x, 260) + supportHeaderOffset }
-
-    val supportListTopClick = Location(if (isWide) -218 else -80, 360).xFromRight()
-
-    val supportFirstSupportClick = Location(0, 500).xFromCenter()
-
-    val supportUpdateYesClick = Location(200, 1110).xFromCenter()
-
-    // Support Screen offset
-    // For wide-screen: centered in this region: 305 left to 270 right
-    // For 16:9 - 94 left to 145 right
-    val supportOffset =
-        if (isWide) {
-            val width = 2560 - 94 - 145
-            val total = scriptArea.width - 305 - 270
-            val border = ((total - width) / 2.0).roundToInt()
-
-            Location(305 + border, 0)
-        } else Location(94, 0)
-
-    val supportListRegion = Region(-24, 332, 378, 1091) + supportOffset
-
-    val supportFriendRegion = Region(
-        2140,
-        supportListRegion.y,
-        120,
-        supportListRegion.height
-    ) + supportOffset
-
-    val supportFriendsRegion = Region(354, 332, 1210, 1091) + supportOffset
-
-    val supportMaxAscendedRegion = Region(270, 0, 40, 120) + supportOffset
-    val supportLimitBreakRegion = Region(270, 0, 40, 90) + supportOffset
-
-    val supportRegionToolSearchRegion = Region(2006, 0, 370, 1440) + supportOffset
-    val supportDefaultBounds = Region(-18, 0, 2356, 428) + supportOffset
-    val supportDefaultCeBounds = Region(-18, 270, 378, 150) + supportOffset
-    val supportNotFoundRegion = Region(324, 708, 150, 90) + supportOffset
-
-    private val canLongSwipe = platformImpl.canLongSwipe
-    val supportListSwipeStart = Location(-59, if (canLongSwipe) 1000 else 1190) + supportOffset
-    val supportListSwipeEnd = Location(-89, if (canLongSwipe) 300 else 660) + supportOffset
 
     fun locate(refillResource: RefillResourceEnum) = when (refillResource) {
         RefillResourceEnum.Bronze -> 1140
@@ -155,20 +97,6 @@ class Game @Inject constructor(
         Skill.Servant.C2 -> 1594
         Skill.Servant.C3 -> 1770
     }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1158) }
-
-    fun locate(supportClass: SupportClass) = when (supportClass) {
-        SupportClass.None -> 0
-        SupportClass.All -> 184
-        SupportClass.Saber -> 320
-        SupportClass.Archer -> 454
-        SupportClass.Lancer -> 568
-        SupportClass.Rider -> 724
-        SupportClass.Caster -> 858
-        SupportClass.Assassin -> 994
-        SupportClass.Berserker -> 1130
-        SupportClass.Extra -> 1264
-        SupportClass.Mix -> 1402
-    }.let { x -> Location(x, 256) + supportHeaderOffset }
 
     fun locate(enemy: EnemyTarget) = when (enemy) {
         EnemyTarget.A -> 90

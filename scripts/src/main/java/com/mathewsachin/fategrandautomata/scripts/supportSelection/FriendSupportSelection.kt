@@ -24,7 +24,7 @@ class FriendSupportSelection @Inject constructor(
             val patterns = images.loadSupportPattern(SupportImageKind.Friend, friendName)
 
             patterns.forEach { pattern ->
-                for (friend in game.supportFriendsRegion.findAll(pattern).sorted()) {
+                for (friend in game.support.friendsRegion.findAll(pattern).sorted()) {
                     return SpecificSupportSearchResult.Found(friend.region)
                 }
             }

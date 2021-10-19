@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.GameAreaManager
+import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -14,7 +15,8 @@ import javax.inject.Inject
 class ScriptAreaTransforms @Inject constructor(
     prefs: IPreferences,
     transformationExtensions: ITransformationExtensions,
-    gameAreaManager: GameAreaManager
+    gameAreaManager: GameAreaManager,
+    platformImpl: IPlatformImpl
 ) : IScriptAreaTransforms {
     override val scriptArea =
         Region(
@@ -27,6 +29,8 @@ class ScriptAreaTransforms @Inject constructor(
     override val isNewUI = prefs.isNewUI
 
     override val gameServer = prefs.gameServer
+
+    override val canLongSwipe = platformImpl.canLongSwipe
 
     override fun Location.xFromCenter() =
         this + Location(scriptArea.center.x, 0)

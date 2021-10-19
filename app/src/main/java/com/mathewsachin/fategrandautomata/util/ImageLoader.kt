@@ -59,7 +59,7 @@ class ImageLoader @Inject constructor(
         Images.Follow -> "follow.png"
         Images.LimitBroken -> "limitbroken.png"
         Images.SupportScreen -> "support_screen.png"
-        Images.SupportRegionTool -> "support_region_tool.png"
+        Images.SupportConfirmSetupButton -> "support_region_tool.png"
         Images.StorySkip -> "storyskip.png"
         Images.Menu -> "menu.png"
         Images.Stamina -> "stamina.png"

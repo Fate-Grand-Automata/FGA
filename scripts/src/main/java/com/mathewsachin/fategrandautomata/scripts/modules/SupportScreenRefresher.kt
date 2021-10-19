@@ -28,10 +28,10 @@ class SupportScreenRefresher @Inject constructor(
             }
         }
 
-        game.supportUpdateClick.click()
+        game.support.updateClick.click()
         Duration.seconds(1).wait()
 
-        game.supportUpdateYesClick.click()
+        game.support.updateYesClick.click()
 
         waitForSupportScreenToLoad()
         updateLastSupportRefreshTimestamp()
@@ -46,17 +46,17 @@ class SupportScreenRefresher @Inject constructor(
             when {
                 connectionRetry.needsToRetry() -> connectionRetry.retry()
                 // wait for dialogs to close
-                images[Images.SupportExtra] !in game.supportExtraRegion -> Duration.seconds(1).wait()
-                images[Images.SupportNotFound] in game.supportNotFoundRegion -> {
+                images[Images.SupportExtra] !in game.support.extraRegion -> Duration.seconds(1).wait()
+                images[Images.SupportNotFound] in game.support.notFoundRegion -> {
                     updateLastSupportRefreshTimestamp()
                     refreshSupportList()
                     return
                 }
-                game.supportRegionToolSearchRegion.exists(
-                    images[Images.SupportRegionTool],
+                game.support.confirmSetupButtonRegion.exists(
+                    images[Images.SupportConfirmSetupButton],
                     similarity = Support.supportRegionToolSimilarity
                 ) -> return
-                images[Images.Guest] in game.supportFriendRegion -> return
+                images[Images.Guest] in game.support.friendRegion -> return
             }
 
             Duration.milliseconds(100).wait()

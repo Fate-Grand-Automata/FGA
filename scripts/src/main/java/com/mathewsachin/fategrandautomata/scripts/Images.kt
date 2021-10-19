@@ -15,7 +15,7 @@ enum class Images {
     Follow,
     LimitBroken,
     SupportScreen,
-    SupportRegionTool,
+    SupportConfirmSetupButton,
     StorySkip,
     Menu,
     Stamina,

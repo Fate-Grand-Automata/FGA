@@ -9,6 +9,7 @@ interface IScriptAreaTransforms {
     val isWide: Boolean
     val isNewUI: Boolean
     val gameServer: GameServerEnum
+    val canLongSwipe: Boolean
     fun Location.xFromCenter(): Location
     fun Region.xFromCenter(): Region
     fun Location.xFromRight(): Location
