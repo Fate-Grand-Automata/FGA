@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
+import com.mathewsachin.fategrandautomata.scripts.models.NPUsage
 import com.mathewsachin.fategrandautomata.scripts.models.ParsedCard
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
@@ -99,12 +100,30 @@ class Battle @Inject constructor(
         skillSpam.spamSkills()
 
         val cards = clickAttack()
-            .takeUnless { shuffleChecker.shouldShuffle(it, npUsage) }
+            .takeUnless { shouldShuffle(it, npUsage) }
             ?: shuffleCards()
 
         card.clickCommandCards(cards, npUsage)
 
         Duration.seconds(5).wait()
+    }
+
+    private fun shouldShuffle(cards: List<ParsedCard>, npUsage: NPUsage): Boolean {
+        // Not this wave
+        if (state.stage != (battleConfig.shuffleCardsWave - 1)) {
+            return false
+        }
+
+        // Already shuffled
+        if (state.shuffled) {
+            return false
+        }
+
+        return shuffleChecker.shouldShuffle(
+            mode = battleConfig.shuffleCards,
+            cards = cards,
+            npUsage = npUsage
+        )
     }
 
     private fun shuffleCards(): List<ParsedCard> {
