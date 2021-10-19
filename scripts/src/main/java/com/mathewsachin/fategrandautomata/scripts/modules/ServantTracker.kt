@@ -108,6 +108,8 @@ class ServantTracker @Inject constructor(
         locations.battle.extraInfoWindowCloseClick.click()
 
         faceCardImages[teamSlot] = image
+
+        Duration.milliseconds(250).wait()
     }
 
     private fun check(slot: FieldSlot) {
