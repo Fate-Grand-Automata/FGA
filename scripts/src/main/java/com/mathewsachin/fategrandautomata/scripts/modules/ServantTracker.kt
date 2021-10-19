@@ -174,7 +174,7 @@ class ServantTracker @Inject constructor(
         supportSlot?.let { supportSlot ->
             if (supportSlot in deployed.values) {
                 val matched = cardsRemaining.filter { card ->
-                    images[Images.Support] in game.supportCheckRegion(card)
+                    images[Images.Support] in game.attack.supportCheckRegion(card)
                 }
 
                 messages.log(
@@ -196,7 +196,7 @@ class ServantTracker @Inject constructor(
                 val img = faceCardImages[teamSlot] ?: continue
 
                 val matched = cardsRemaining.filter { card ->
-                    img in game.servantMatchRegion(card)
+                    img in game.attack.servantMatchRegion(card)
                 }
 
                 messages.log(

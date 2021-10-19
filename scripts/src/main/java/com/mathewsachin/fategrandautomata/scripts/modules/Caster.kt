@@ -150,12 +150,12 @@ class Caster @Inject constructor(
     }
 
     fun use(np: CommandCard.NP) {
-        game.clickLocation(np).click()
+        game.attack.clickLocation(np).click()
 
         game.battleExtraInfoWindowCloseClick.click()
     }
 
     fun use(card: CommandCard.Face) {
-        game.clickLocation(card).click()
+        game.attack.clickLocation(card).click()
     }
 }

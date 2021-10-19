@@ -17,7 +17,7 @@ class CardParser @Inject constructor(
 ) : IFgoAutomataApi by fgAutomataApi {
 
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
-        val region = game.affinityRegion(this)
+        val region = game.attack.affinityRegion(this)
 
         if (images[Images.Weak] in region) {
             return CardAffinityEnum.Weak
@@ -31,7 +31,7 @@ class CardParser @Inject constructor(
     }
 
     private fun CommandCard.Face.isStunned(): Boolean {
-        val stunRegion = game.typeRegion(this).copy(
+        val stunRegion = game.attack.typeRegion(this).copy(
             y = 930,
             width = 248,
             height = 188
@@ -41,7 +41,7 @@ class CardParser @Inject constructor(
     }
 
     private fun CommandCard.Face.type(): CardTypeEnum {
-        val region = game.typeRegion(this)
+        val region = game.attack.typeRegion(this)
 
         if (images[Images.Buster] in region) {
             return CardTypeEnum.Buster

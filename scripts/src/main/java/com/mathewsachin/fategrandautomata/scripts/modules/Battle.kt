@@ -127,7 +127,7 @@ class Battle @Inject constructor(
     }
 
     private fun shuffleCards(): List<ParsedCard> {
-        game.battleBack.click()
+        game.attack.backClick.click()
 
         caster.castMasterSkill(Skill.Master.C)
         state.shuffled = true

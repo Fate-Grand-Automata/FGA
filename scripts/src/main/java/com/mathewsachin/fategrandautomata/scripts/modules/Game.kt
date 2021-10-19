@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.locations.*
 import com.mathewsachin.fategrandautomata.scripts.models.*
@@ -16,7 +15,8 @@ class Game @Inject constructor(
     val fp: FPLocations,
     val lottery: LotteryLocations,
     val master: MasterLocations,
-    val support: SupportScreenLocations
+    val support: SupportScreenLocations,
+    val attack: AttackScreenLocations
 ): IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
@@ -150,12 +150,6 @@ class Game @Inject constructor(
 
     val skipDeathAnimationClick = Location(-860, 200).xFromRight()
 
-    val battleBack =
-        (if (isWide)
-            Location(-325, 1310)
-        else Location(-160, 1370))
-            .xFromRight()
-
     val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
     val menuStorySkipClick = Location(1080, 80).xFromCenter()
 
@@ -177,51 +171,6 @@ class Game @Inject constructor(
 
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
-
-    private fun clickLocation(card: CommandCard.Face) = when (card) {
-        CommandCard.Face.A -> -980
-        CommandCard.Face.B -> -530
-        CommandCard.Face.C -> 20
-        CommandCard.Face.D -> 520
-        CommandCard.Face.E -> 1070
-    }.let { x -> Location(x, 1000) }
-
-    fun clickLocation(card: CommandCard) = when (card) {
-        is CommandCard.Face -> clickLocation(card)
-        CommandCard.NP.A -> Location(-280, 220)
-        CommandCard.NP.B -> Location(20, 400)
-        CommandCard.NP.C -> Location(460, 400)
-    }.xFromCenter()
-
-    private val faceCardDeltaY =
-        Location(0, if (gameServer == GameServerEnum.Cn && isWide) -42 else 0)
-
-    fun affinityRegion(card: CommandCard.Face) = when (card) {
-        CommandCard.Face.A -> -985
-        CommandCard.Face.B -> -470
-        CommandCard.Face.C -> 41
-        CommandCard.Face.D -> 554
-        CommandCard.Face.E -> 1068
-    }.let { x -> Region(x, 650, 250, 200) + faceCardDeltaY }.xFromCenter()
-
-    fun typeRegion(card: CommandCard.Face) = when (card) {
-        CommandCard.Face.A -> -1280
-        CommandCard.Face.B -> -768
-        CommandCard.Face.C -> -256
-        CommandCard.Face.D -> 256
-        CommandCard.Face.E -> 768
-    }.let { x -> Region(x, 1060, 512, 200) + faceCardDeltaY }.xFromCenter()
-
-    fun servantMatchRegion(card: CommandCard.Face) = when (card) {
-        CommandCard.Face.A -> -1174
-        CommandCard.Face.B -> -660
-        CommandCard.Face.C -> -150
-        CommandCard.Face.D -> 364
-        CommandCard.Face.E -> 880
-    }.let { x -> Region(x - 100, 700, 500, 400) + faceCardDeltaY }.xFromCenter()
-
-    fun supportCheckRegion(card: CommandCard.Face) =
-        affinityRegion(card) + Location(-50, 100)
 
     fun servantOpenDetailsClick(slot: FieldSlot) =
         Location(locate(slot.skill2()).x, 810)
