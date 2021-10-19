@@ -9,9 +9,7 @@ import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
-class ShuffleChecker @Inject constructor(
-    private val servantTracker: ServantTracker
-) {
+class ShuffleChecker @Inject constructor() {
     fun shouldShuffle(
         mode: ShuffleCardsEnum,
         cards: List<ParsedCard>,
@@ -29,9 +27,9 @@ class ShuffleChecker @Inject constructor(
                 false
             } else {
                 val matchingCount = npUsage.nps
-                    .mapNotNull { servantTracker.deployed[it.toFieldSlot()] }
-                    .sumOf { teamSlot ->
-                        cards.count { card -> card.servant == teamSlot }
+                    .map { it.toFieldSlot() }
+                    .sumOf { fieldSlot ->
+                        cards.count { card -> card.fieldSlot == fieldSlot }
                     }
 
                 matchingCount == 0

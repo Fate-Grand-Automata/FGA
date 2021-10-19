@@ -12,29 +12,34 @@ class FaceCardPriorityTest {
         val scathach1WB = ParsedCard(
             card = CommandCard.Face.A,
             servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
             type = CardTypeEnum.Buster,
             affinity = CardAffinityEnum.Weak
         )
         val kama2Q = ParsedCard(
             card = CommandCard.Face.B,
             servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
             type = CardTypeEnum.Quick
         )
         val nero3RA = ParsedCard(
             card = CommandCard.Face.C,
             servant = TeamSlot.C,
+            fieldSlot = FieldSlot.C,
             type = CardTypeEnum.Arts,
             affinity = CardAffinityEnum.Resist
         )
         val nero4RA = ParsedCard(
             card = CommandCard.Face.D,
             servant = TeamSlot.C,
+            fieldSlot = FieldSlot.C,
             type = CardTypeEnum.Arts,
             affinity = CardAffinityEnum.Resist
         )
         val scathach5WQ = ParsedCard(
             card = CommandCard.Face.E,
             servant = TeamSlot.B,
+            fieldSlot = FieldSlot.B,
             type = CardTypeEnum.Quick,
             affinity = CardAffinityEnum.Weak
         )

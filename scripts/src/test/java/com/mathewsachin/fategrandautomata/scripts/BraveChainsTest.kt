@@ -2,34 +2,14 @@ package com.mathewsachin.fategrandautomata.scripts
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
-import com.mathewsachin.fategrandautomata.scripts.models.FieldSlot
 import com.mathewsachin.fategrandautomata.scripts.models.NPUsage
-import com.mathewsachin.fategrandautomata.scripts.models.TeamSlot
 import com.mathewsachin.fategrandautomata.scripts.modules.ApplyBraveChains
-import com.mathewsachin.fategrandautomata.scripts.modules.ServantTracker
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Test
 
 class BraveChainsTest {
-    private fun init(
-        deployed: Map<FieldSlot, TeamSlot> = mapOf(
-            FieldSlot.A to TeamSlot.A,
-            FieldSlot.B to TeamSlot.B,
-            FieldSlot.C to TeamSlot.C
-        )
-    ): ApplyBraveChains {
-        val servantTracker: ServantTracker = mockk()
-        every { servantTracker.deployed } returns deployed
-
-        return ApplyBraveChains(
-            servantTracker = servantTracker
-        )
-    }
-
     private fun shouldReturnSame(mode: BraveChainEnum) {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
         val picked = braveChains.pick(
@@ -46,7 +26,7 @@ class BraveChainsTest {
     }
 
     private fun justRearrange(mode: BraveChainEnum) {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
         val picked = braveChains.pick(
@@ -79,7 +59,7 @@ class BraveChainsTest {
 
     @Test
     fun braveChainsWith1MatchingCard() {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
         val picked = braveChains.pick(
@@ -97,7 +77,7 @@ class BraveChainsTest {
 
     @Test
     fun braveChainsRearrangeWith1MatchingCard() {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
         val picked = braveChains.pick(
@@ -116,7 +96,7 @@ class BraveChainsTest {
 
     @Test
     fun braveChainsWith2MatchingCards() {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
         val picked = braveChains.pick(
@@ -134,7 +114,7 @@ class BraveChainsTest {
 
     @Test
     fun braveChainsRearrangeWith2MatchingCards() {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
         val picked = braveChains.pick(
@@ -153,7 +133,7 @@ class BraveChainsTest {
 
     @Test
     fun avoidBraveChains3DiffCards() {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup1
         val picked = braveChains.pick(
@@ -175,7 +155,7 @@ class BraveChainsTest {
 
     @Test
     fun avoidBraveChainsWith2DiffCards() {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup2
         val picked = braveChains.pick(
@@ -192,7 +172,7 @@ class BraveChainsTest {
 
     @Test
     fun avoidBraveChainsRearrangeWith2DiffCards() {
-        val braveChains = init()
+        val braveChains = ApplyBraveChains()
 
         val cards = FaceCardPriorityTest.lineup2
         val picked = braveChains.pick(

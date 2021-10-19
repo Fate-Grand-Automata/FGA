@@ -1,15 +1,15 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
-import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.fategrandautomata.scripts.models.NPUsage
+import com.mathewsachin.fategrandautomata.scripts.models.ParsedCard
+import com.mathewsachin.fategrandautomata.scripts.models.toFieldSlot
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.util.*
 import javax.inject.Inject
 
 @ScriptScope
-class ApplyBraveChains @Inject constructor(
-    private val servantTracker: ServantTracker
-) {
+class ApplyBraveChains @Inject constructor() {
     private fun rearrange(
         cards: List<ParsedCard>,
         rearrange: Boolean,
@@ -41,8 +41,7 @@ class ApplyBraveChains @Inject constructor(
     private fun withNp(
         cards: List<ParsedCard>,
         rearrange: Boolean,
-        npUsage: NPUsage,
-        deployed: Map<FieldSlot, TeamSlot>
+        npUsage: NPUsage
     ): List<ParsedCard> {
         val justRearranged by lazy {
             rearrange(
@@ -54,10 +53,9 @@ class ApplyBraveChains @Inject constructor(
 
         val firstNp = npUsage.nps.firstOrNull() ?: return justRearranged
         val fieldSlot = firstNp.toFieldSlot()
-        val teamSlot = deployed[fieldSlot] ?: return justRearranged
 
         val matchingCards = cards
-            .filter { it.servant == teamSlot }
+            .filter { it.fieldSlot == fieldSlot }
             .toMutableList()
 
         // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
@@ -159,8 +157,7 @@ class ApplyBraveChains @Inject constructor(
         cards: List<ParsedCard>,
         braveChains: BraveChainEnum,
         rearrange: Boolean = false,
-        npUsage: NPUsage = NPUsage.none,
-        deployed: Map<FieldSlot, TeamSlot> = servantTracker.deployed
+        npUsage: NPUsage = NPUsage.none
     ): List<ParsedCard> {
         val picked = when (braveChains) {
             BraveChainEnum.None -> rearrange(
@@ -171,8 +168,7 @@ class ApplyBraveChains @Inject constructor(
             BraveChainEnum.WithNP -> withNp(
                 cards = cards,
                 rearrange = rearrange,
-                npUsage = npUsage,
-                deployed = deployed
+                npUsage = npUsage
             )
             BraveChainEnum.Avoid -> avoid(
                 cards = cards,

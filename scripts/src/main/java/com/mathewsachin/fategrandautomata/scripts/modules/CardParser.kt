@@ -71,15 +71,23 @@ class CardParser @Inject constructor(
                     CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
                 else it.affinity()
 
+                val servant = cardsGroupedByServant
+                    .filterValues { cards -> it in cards }
+                    .keys
+                    .first()
+
+                val fieldSlot = servantTracker.deployed
+                    .entries
+                    .firstOrNull { (_, teamSlot) -> teamSlot == servant }
+                    ?.key
+
                 ParsedCard(
                     card = it,
                     isStunned = stunned,
                     type = type,
                     affinity = affinity,
-                    servant = cardsGroupedByServant
-                        .filterValues { cards -> it in cards }
-                        .keys
-                        .first()
+                    servant = servant,
+                    fieldSlot = fieldSlot
                 )
             }
 
