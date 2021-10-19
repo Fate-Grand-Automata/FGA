@@ -3,6 +3,8 @@ package com.mathewsachin.fategrandautomata.di.script
 import com.mathewsachin.fategrandautomata.accessibility.AccessibilityGestures
 import com.mathewsachin.fategrandautomata.scripts.FgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
+import com.mathewsachin.fategrandautomata.scripts.locations.IScriptAreaTransforms
+import com.mathewsachin.fategrandautomata.scripts.locations.ScriptAreaTransforms
 import com.mathewsachin.libautomata.IGestureService
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.*
@@ -44,4 +46,8 @@ interface ScriptBindsModule {
     @ScriptScope
     @Binds
     fun bindDurationExtensions(durationExtensions: DurationExtensions): IDurationExtensions
+
+    @ScriptScope
+    @Binds
+    fun bindScriptAreaTransforms(scriptAreaTransforms: ScriptAreaTransforms): IScriptAreaTransforms
 }

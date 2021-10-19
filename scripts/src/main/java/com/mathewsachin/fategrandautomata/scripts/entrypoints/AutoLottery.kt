@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.locations.LotteryLocations
 import com.mathewsachin.fategrandautomata.scripts.modules.ConnectionRetry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
@@ -17,7 +18,8 @@ class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,
     private val giftBox: AutoGiftBox,
-    private val connectionRetry: ConnectionRetry
+    private val connectionRetry: ConnectionRetry,
+    private val locations: LotteryLocations
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object ResetDisabled: ExitReason()
@@ -29,7 +31,7 @@ class AutoLottery @Inject constructor(
     private fun spin() {
         // Don't increase this too much or you'll regret when you're not able to stop the script
         // And your phone won't let you press anything
-        game.lotterySpinClick.click(25)
+        locations.spinClick.click(25)
     }
 
     private fun reset() {
@@ -37,19 +39,19 @@ class AutoLottery @Inject constructor(
             throw ExitException(ExitReason.ResetDisabled)
         }
 
-        game.lotteryResetClick.click()
+        locations.resetClick.click()
         Duration.seconds(0.5).wait()
 
-        game.lotteryResetConfirmationClick.click()
+        locations.resetConfirmationClick.click()
         Duration.seconds(3).wait()
 
-        game.lotteryResetCloseClick.click()
+        locations.resetCloseClick.click()
         Duration.seconds(2).wait()
     }
 
     private fun presentBoxFull() {
         if (prefs.receiveEmbersWhenGiftBoxFull) {
-            val moveToPresentBox = game.lotteryFullPresentBoxRegion
+            val moveToPresentBox = locations.fullPresentBoxRegion
                 .find(images[Images.PresentBoxFull])
 
             moveToPresentBox?.region?.click()
@@ -63,9 +65,9 @@ class AutoLottery @Inject constructor(
 
     override fun script(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
-            { images[Images.LotteryBoxFinished] in game.lotteryFinishedRegion } to { reset() },
+            { images[Images.LotteryBoxFinished] in locations.finishedRegion } to { reset() },
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
-            { images[Images.PresentBoxFull] in game.lotteryFullPresentBoxRegion } to { presentBoxFull() }
+            { images[Images.PresentBoxFull] in locations.fullPresentBoxRegion } to { presentBoxFull() }
         )
 
         while (true) {

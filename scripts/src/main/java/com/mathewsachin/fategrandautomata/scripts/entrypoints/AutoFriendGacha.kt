@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.locations.FPLocations
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -14,7 +15,8 @@ import kotlin.time.Duration
 @ScriptScope
 class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi
+    fgAutomataApi: IFgoAutomataApi,
+    private val locations: FPLocations
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object InventoryFull: ExitReason()
@@ -34,10 +36,10 @@ class AutoFriendGacha @Inject constructor(
     }
 
     override fun script(): Nothing {
-        if (images[Images.FPSummonContinue] !in game.fpContinueSummonRegion) {
-            game.fpFirst10SummonClick.click()
+        if (images[Images.FPSummonContinue] !in locations.continueSummonRegion) {
+            locations.first10SummonClick.click()
             Duration.seconds(0.3).wait()
-            game.fpOkClick.click()
+            locations.okClick.click()
 
             countNext()
         }
@@ -47,14 +49,14 @@ class AutoFriendGacha @Inject constructor(
                 throw ExitException(ExitReason.InventoryFull)
             }
 
-            if (images[Images.FPSummonContinue] in game.fpContinueSummonRegion) {
+            if (images[Images.FPSummonContinue] in locations.continueSummonRegion) {
                 countNext()
 
-                game.fpContinueSummonClick.click()
+                locations.continueSummonClick.click()
                 Duration.seconds(0.3).wait()
-                game.fpOkClick.click()
+                locations.okClick.click()
                 Duration.seconds(3).wait()
-            } else game.fpSkipRapidClick.click(15)
+            } else locations.skipRapidClick.click(15)
         }
     }
 }

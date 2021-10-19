@@ -1,73 +1,28 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.*
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
+import com.mathewsachin.fategrandautomata.scripts.locations.FPLocations
+import com.mathewsachin.fategrandautomata.scripts.locations.IScriptAreaTransforms
+import com.mathewsachin.fategrandautomata.scripts.locations.LotteryLocations
+import com.mathewsachin.fategrandautomata.scripts.locations.MasterLocations
 import com.mathewsachin.fategrandautomata.scripts.models.*
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
-import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
-import com.mathewsachin.libautomata.extensions.IAutomataExtensions
-import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @ScriptScope
 class Game @Inject constructor(
     platformImpl: IPlatformImpl,
-    private val prefs: IPreferences,
-    private val images: IImageLoader,
-    transformationExtensions: ITransformationExtensions,
-    gameAreaManager: GameAreaManager,
-    private val automataApi: IAutomataExtensions,
-    private val messages: IScriptMessages
-) {
-    val scriptArea =
-        Region(
-            Location(),
-            gameAreaManager.gameArea.size * (1 / transformationExtensions.scriptToScreenScale())
-        )
-
-    val isWide = prefs.isNewUI && scriptArea.size.isWide()
-
-    fun Location.xFromCenter() =
-        this + Location(scriptArea.center.x, 0)
-
-    fun Region.xFromCenter() =
-        this + Location(scriptArea.center.x, 0)
-
-    fun Location.xFromRight() =
-        this + Location(scriptArea.right, 0)
-
-    fun Region.xFromRight() =
-        this + Location(scriptArea.right, 0)
-
-    fun Location.yFromBottom() =
-        this + Location(0, scriptArea.bottom)
-
-    fun Region.yFromBottom() =
-        this + Location(0, scriptArea.bottom)
-
-    // Master Skills and Stage counter are right-aligned differently,
-    // so we use locations relative to a matched location
-    private val masterOffsetNewUI: Location by lazy {
-        automataApi.run {
-            Region(-400, 360, 400, 80)
-                .xFromRight()
-                .find(images[Images.BattleMenu])
-                ?.region
-                ?.center
-                ?.copy(y = 0)
-                ?: Location(-298, 0).xFromRight().also {
-                    messages.log(ScriptLog.DefaultMasterOffset)
-                }
-        }
-    }
+    scriptAreaTransforms: IScriptAreaTransforms,
+    val fp: FPLocations,
+    val lottery: LotteryLocations,
+    val master: MasterLocations
+): IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
@@ -112,7 +67,7 @@ class Game @Inject constructor(
     val supportExtraRegion = Region(1200, 200, 130, 130) + supportHeaderOffset
 
     val supportUpdateClick =
-        when (prefs.gameServer) {
+        when (gameServer) {
             GameServerEnum.Jp -> 1865
             else -> 1700
         }.let { x -> Location(x, 260) + supportHeaderOffset }
@@ -201,23 +156,6 @@ class Game @Inject constructor(
         Skill.Servant.C3 -> 1770
     }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1158) }
 
-    fun locate(skill: Skill.Master) = when (skill) {
-        Skill.Master.A -> -740
-        Skill.Master.B -> -560
-        Skill.Master.C -> -400
-    }.let { x ->
-        val location = Location(x, 620)
-
-        if (prefs.isNewUI)
-            location + Location(178, 0) + masterOffsetNewUI
-        else location.xFromRight()
-    }
-
-    fun locate(skill: Skill) = when (skill) {
-        is Skill.Servant -> locate(skill)
-        is Skill.Master -> locate(skill)
-    }
-
     fun locate(supportClass: SupportClass) = when (supportClass) {
         SupportClass.None -> 0
         SupportClass.All -> 184
@@ -252,13 +190,6 @@ class Game @Inject constructor(
         Location(x, 100).xFromCenter()
     }
 
-    val battleStageCountRegion
-        get() = when {
-            prefs.isNewUI -> Region(if (isWide) -571 else -638, 23, 33, 53) + masterOffsetNewUI
-            prefs.gameServer == GameServerEnum.Tw -> Region(1710, 25, 55, 60)
-            else -> Region(1722, 25, 46, 53)
-        }
-
     val battleScreenRegion =
         (if (isWide)
             Region(-660, -210, 400, 175)
@@ -285,12 +216,6 @@ class Game @Inject constructor(
             .xFromRight()
             .yFromBottom()
 
-    val battleMasterSkillOpenClick
-        get() =
-            if (prefs.isNewUI)
-                Location(0, 640) + masterOffsetNewUI
-            else Location(-180, 640).xFromRight()
-
     val battleSkillOkClick = Location(400, 850).xFromCenter()
     val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
     val battleExtraInfoWindowCloseClick = Location(-50, 50).xFromRight()
@@ -308,7 +233,7 @@ class Game @Inject constructor(
 
     val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
     val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
-    val resultMatRewardsRegion = Region(800, if (prefs.isNewUI) 1220 else 1290, 280, 130).xFromCenter()
+    val resultMatRewardsRegion = Region(800, if (isNewUI) 1220 else 1290, 280, 130).xFromCenter()
     val resultClick = Location(320, 1350).xFromCenter()
     val resultQuestRewardRegion = Region(350, 140, 370, 250).xFromCenter()
     val resultDropScrollbarRegion = Region(980, 230, 100, 88).xFromCenter()
@@ -322,23 +247,8 @@ class Game @Inject constructor(
     val resultCeRewardDetailsRegion = Region(if (isWide) 193 else 0, 512, 135, 115)
     val resultCeRewardCloseClick = Location(if (isWide) 265 else 80, 60)
 
-    val fpSummonCheck = Region(100, 1152, 75, 143).xFromCenter()
-    val fpContinueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
-    val fpFirst10SummonClick = Location(120, 1062).xFromCenter()
-    val fpOkClick = Location(320, 1120).xFromCenter()
-    val fpContinueSummonClick = Location(320, 1325).xFromCenter()
-    val fpSkipRapidClick = Location(1240, 1400).xFromCenter()
-
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
-
-    val lotteryFinishedRegion = Region(-780, 860, 180, 100).xFromCenter()
-    val lotteryCheckRegion = Region(-1130, 800, 340, 230).xFromCenter()
-    val lotterySpinClick = Location(-446, 860).xFromCenter()
-    val lotteryFullPresentBoxRegion = Region(20, 860, 1000, 500).xFromCenter()
-    val lotteryResetClick = Location(if (isWide) 1160 else 920, 480).xFromCenter()
-    val lotteryResetConfirmationClick = Location(494, 1122).xFromCenter()
-    val lotteryResetCloseClick = Location(-10, 1120).xFromCenter()
 
     private fun clickLocation(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -980
@@ -356,7 +266,7 @@ class Game @Inject constructor(
     }.xFromCenter()
 
     private val faceCardDeltaY =
-        Location(0, if (prefs.gameServer == GameServerEnum.Cn && isWide) -42 else 0)
+        Location(0, if (gameServer == GameServerEnum.Cn && isWide) -42 else 0)
 
     fun affinityRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -985

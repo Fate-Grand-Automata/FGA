@@ -160,7 +160,7 @@ class Battle @Inject constructor(
 
         val matched = if (prefs.stageCounterNew) {
             // Take a screenshot of stage counter region on current screen and extract white pixels
-            val current = game.battleStageCountRegion
+            val current = game.master.stageCountRegion
                 .getPattern()
                 .tag("STAGE-COUNTER")
 
@@ -178,7 +178,7 @@ class Battle @Inject constructor(
         }
         else {
             // Compare last screenshot with current screen to determine if stage changed or not.
-            game.battleStageCountRegion.exists(
+            game.master.stageCountRegion.exists(
                 snapshot,
                 similarity = prefs.stageCounterSimilarity
             )
@@ -191,7 +191,7 @@ class Battle @Inject constructor(
 
     fun takeStageSnapshot() {
         state.stageCountSnapshot =
-            game.battleStageCountRegion.getPattern().tag("WAVE:${state.stage}")
+            game.master.stageCountRegion.getPattern().tag("WAVE:${state.stage}")
 
         if (prefs.stageCounterNew) {
             // Extract white pixels from the image which gets rid of the background.

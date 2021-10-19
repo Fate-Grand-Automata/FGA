@@ -41,7 +41,11 @@ class Caster @Inject constructor(
     }
 
     private fun castSkill(skill: Skill, target: ServantTarget?) {
-        game.locate(skill).click()
+        when (skill) {
+            is Skill.Master -> game.master.locate(skill)
+            is Skill.Servant -> game.locate(skill)
+        }.click()
+
         confirmSkillUse()
 
         if (target != null) {
@@ -97,7 +101,7 @@ class Caster @Inject constructor(
     }
 
     private fun openMasterSkillMenu() {
-        game.battleMasterSkillOpenClick.click()
+        game.master.masterSkillOpenClick.click()
 
         Duration.seconds(0.5).wait()
     }
@@ -112,7 +116,7 @@ class Caster @Inject constructor(
         openMasterSkillMenu()
 
         // Click on order change skill
-        game.locate(Skill.Master.C).click()
+        game.master.locate(Skill.Master.C).click()
 
         confirmSkillUse()
 
