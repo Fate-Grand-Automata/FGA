@@ -1,7 +1,6 @@
-package com.mathewsachin.fategrandautomata.scripts.modules
+package com.mathewsachin.fategrandautomata.scripts.locations
 
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
-import com.mathewsachin.fategrandautomata.scripts.locations.*
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
@@ -10,7 +9,7 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @ScriptScope
-class Game @Inject constructor(
+class Locations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms,
     val fp: FPLocations,
     val lottery: LotteryLocations,
