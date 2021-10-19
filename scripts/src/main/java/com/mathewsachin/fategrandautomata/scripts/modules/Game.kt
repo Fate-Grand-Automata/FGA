@@ -2,7 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.locations.*
-import com.mathewsachin.fategrandautomata.scripts.models.*
+import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -14,9 +14,9 @@ class Game @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms,
     val fp: FPLocations,
     val lottery: LotteryLocations,
-    val master: MasterLocations,
     val support: SupportScreenLocations,
-    val attack: AttackScreenLocations
+    val attack: AttackScreenLocations,
+    val battle: BattleScreenLocations
 ): IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
@@ -69,47 +69,6 @@ class Game @Inject constructor(
         BoostItem.Enabled.BoostItem3 -> Location(1280, 1000)
     }.xFromCenter()
 
-    fun locate(orderChangeMember: OrderChangeMember) = when (orderChangeMember) {
-        OrderChangeMember.Starting.A -> -1000
-        OrderChangeMember.Starting.B -> -600
-        OrderChangeMember.Starting.C -> -200
-        OrderChangeMember.Sub.A -> 200
-        OrderChangeMember.Sub.B -> 600
-        OrderChangeMember.Sub.C -> 1000
-    }.let { x -> Location(x, 700) }.xFromCenter()
-
-    fun locate(servantTarget: ServantTarget) = when (servantTarget) {
-        ServantTarget.A -> -580
-        ServantTarget.B -> 0
-        ServantTarget.C -> 660
-        ServantTarget.Left -> -290
-        ServantTarget.Right -> 330
-    }.let { x -> Location(x, 880) }.xFromCenter()
-
-    fun locate(skill: Skill.Servant) = when (skill) {
-        Skill.Servant.A1 -> 148
-        Skill.Servant.A2 -> 324
-        Skill.Servant.A3 -> 500
-        Skill.Servant.B1 -> 784
-        Skill.Servant.B2 -> 960
-        Skill.Servant.B3 -> 1136
-        Skill.Servant.C1 -> 1418
-        Skill.Servant.C2 -> 1594
-        Skill.Servant.C3 -> 1770
-    }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1158) }
-
-    fun locate(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A -> 90
-        EnemyTarget.B -> 570
-        EnemyTarget.C -> 1050
-    }.let { x -> Location(x + if (isWide) 183 else 0, 80) }
-
-    fun dangerRegion(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A -> Region(0, 0, 485, 220)
-        EnemyTarget.B -> Region(485, 0, 482, 220)
-        EnemyTarget.C -> Region(967, 0, 476, 220)
-    } + Location(if (isWide) 150 else 0, 0)
-
     val selectedPartyRegion = Region(-270, 62, 550, 72).xFromCenter()
     val partySelectionArray = (0..9).map {
         // Party indicators are center-aligned
@@ -117,38 +76,6 @@ class Game @Inject constructor(
 
         Location(x, 100).xFromCenter()
     }
-
-    val battleScreenRegion =
-        (if (isWide)
-            Region(-660, -210, 400, 175)
-        else Region(-455, -181, 336, 116))
-            .xFromRight()
-            .yFromBottom()
-
-    fun servantPresentRegion(slot: FieldSlot) =
-        slot.skill3().let {
-            val skill3Location = locate(it)
-
-            Region(
-                skill3Location.x + 35,
-                skill3Location.y + 67,
-                120,
-                120
-            )
-        }
-
-    val battleAttackClick =
-        (if (isWide)
-            Location(-460, -230)
-        else Location(-260, -240))
-            .xFromRight()
-            .yFromBottom()
-
-    val battleSkillOkClick = Location(400, 850).xFromCenter()
-    val battleOrderChangeOkClick = Location(0, 1260).xFromCenter()
-    val battleExtraInfoWindowCloseClick = Location(-50, 50).xFromRight()
-
-    val skipDeathAnimationClick = Location(-860, 200).xFromRight()
 
     val menuStorySkipRegion = Region(960, 20, 300, 120).xFromCenter()
     val menuStorySkipClick = Location(1080, 80).xFromCenter()
@@ -171,29 +98,6 @@ class Game @Inject constructor(
 
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
-
-    fun servantOpenDetailsClick(slot: FieldSlot) =
-        Location(locate(slot.skill2()).x, 810)
-
-    fun servantChangeCheckRegion(slot: FieldSlot) =
-        slot.skill2().let {
-            val x = locate(it).x
-
-            Region(x + 20, 930, 40, 80)
-        }
-
-    fun servantChangeSupportCheckRegion(slot: FieldSlot) =
-        slot.skill2().let {
-            val x = locate(it).x
-
-            Region(x + 25, 710, 300, 170)
-        }
-
-    fun imageRegion(skill: Skill.Servant) =
-        Region(30, 30, 30, 30) + locate(skill)
-
-    val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
-    val servantDetailsFaceCardRegion = Region(-685, 280, 110, 80).xFromCenter()
 
     val ceEnhanceRegion = Region(200, 600, 400, 400)
     val ceEnhanceClick = Location(200, 600)

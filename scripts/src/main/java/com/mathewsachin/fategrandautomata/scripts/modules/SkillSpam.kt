@@ -37,7 +37,7 @@ class SkillSpam @Inject constructor(
                         // Some delay for skill icon to be loaded
                         skillSpamDelay.wait()
 
-                        if (skillImage in game.imageRegion(skill)) {
+                        if (skillImage in game.battle.imageRegion(skill)) {
                             val target = skillSpamConfig.determineTarget(servantSlot)
 
                             caster.castServantSkill(skill, target)

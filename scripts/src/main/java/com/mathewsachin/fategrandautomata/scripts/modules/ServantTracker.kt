@@ -67,16 +67,16 @@ class ServantTracker @Inject constructor(
             )
         )
 
-        val isSupport = images[Images.ServantCheckSupport] in game.servantChangeSupportCheckRegion(slot)
+        val isSupport = images[Images.ServantCheckSupport] in game.battle.servantChangeSupportCheckRegion(slot)
 
         if (teamSlot !in checkImages || isSupport) {
             useSameSnapIn {
                 checkImages[teamSlot] = TeamSlotData(
-                    checkImage = game.servantChangeCheckRegion(slot)
+                    checkImage = game.battle.servantChangeCheckRegion(slot)
                         .getPattern()
                         .tag("Servant $teamSlot"),
                     skills = slot.skills().mapIndexed { index, it ->
-                        game.imageRegion(it)
+                        game.battle.imageRegion(it)
                             .getPattern()
                             .tag("Servant $teamSlot S${index + 1}")
                     }
@@ -97,22 +97,22 @@ class ServantTracker @Inject constructor(
             return
 
         // Open details dialog and click on INFO
-        game.servantOpenDetailsClick(slot).click()
-        game.servantDetailsInfoClick.click()
+        game.battle.servantOpenDetailsClick(slot).click()
+        game.battle.servantDetailsInfoClick.click()
 
         Duration.milliseconds(250).wait()
 
-        val image = game.servantDetailsFaceCardRegion.getPattern().tag("Face $teamSlot")
+        val image = game.battle.servantDetailsFaceCardRegion.getPattern().tag("Face $teamSlot")
 
         // Close dialog
-        game.battleExtraInfoWindowCloseClick.click()
+        game.battle.extraInfoWindowCloseClick.click()
 
         faceCardImages[teamSlot] = image
     }
 
     private fun check(slot: FieldSlot) {
         // If a servant is not present, that means none are left in the backline
-        if (images[Images.ServantExist] !in game.servantPresentRegion(slot)) {
+        if (images[Images.ServantExist] !in game.battle.servantPresentRegion(slot)) {
             _deployed.remove(slot)
             servantQueue.clear()
             return
@@ -126,8 +126,8 @@ class ServantTracker @Inject constructor(
             return
         }
 
-        val isDifferentServant = checkImage !in game.servantChangeCheckRegion(slot)
-        val isSupport = images[Images.ServantCheckSupport] in game.servantChangeSupportCheckRegion(slot)
+        val isDifferentServant = checkImage !in game.battle.servantChangeCheckRegion(slot)
+        val isSupport = images[Images.ServantCheckSupport] in game.battle.servantChangeSupportCheckRegion(slot)
         val wasSupport = supportSlot == teamSlot
 
         // New run with different support

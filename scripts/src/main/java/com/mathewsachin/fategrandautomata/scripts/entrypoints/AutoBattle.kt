@@ -164,7 +164,7 @@ class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to { game.skipDeathAnimationClick.click() }
+            { isDeathAnimation() } to { game.battle.skipDeathAnimationClick.click() }
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -241,7 +241,7 @@ class AutoBattle @Inject constructor(
 
     private fun isDeathAnimation() =
         FieldSlot.list
-            .map { game.servantPresentRegion(it) }
+            .map { game.battle.servantPresentRegion(it) }
             .count { images[Images.ServantExist] in it } in 1..2
 
     private fun ceRewardDetails() {

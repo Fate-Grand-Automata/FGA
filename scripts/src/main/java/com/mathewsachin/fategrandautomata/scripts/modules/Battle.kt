@@ -45,13 +45,13 @@ class Battle @Inject constructor(
         }
     }
 
-    fun isIdle() = images[Images.BattleScreen] in game.battleScreenRegion
+    fun isIdle() = images[Images.BattleScreen] in game.battle.screenCheckRegion
 
     fun clickAttack(): List<ParsedCard> {
-        game.battleAttackClick.click()
+        game.battle.attackClick.click()
 
         // Wait for Attack button to disappear
-        game.battleScreenRegion.waitVanish(images[Images.BattleScreen], Duration.seconds(5))
+        game.battle.screenCheckRegion.waitVanish(images[Images.BattleScreen], Duration.seconds(5))
 
         prefs.waitBeforeCards.wait()
 
@@ -59,7 +59,7 @@ class Battle @Inject constructor(
     }
 
     private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
-        val region = game.dangerRegion(enemy)
+        val region = game.battle.dangerRegion(enemy)
 
         val isDanger = images[Images.TargetDanger] in region
         val isServant = images[Images.TargetServant] in region
@@ -68,11 +68,11 @@ class Battle @Inject constructor(
     }
 
     private fun chooseTarget(enemy: EnemyTarget) {
-        game.locate(enemy).click()
+        game.battle.locate(enemy).click()
 
         Duration.seconds(0.5).wait()
 
-        game.battleExtraInfoWindowCloseClick.click()
+        game.battle.extraInfoWindowCloseClick.click()
     }
 
     private fun autoChooseTarget() {
@@ -160,7 +160,7 @@ class Battle @Inject constructor(
 
         val matched = if (prefs.stageCounterNew) {
             // Take a screenshot of stage counter region on current screen and extract white pixels
-            val current = game.master.stageCountRegion
+            val current = game.battle.master.stageCountRegion
                 .getPattern()
                 .tag("STAGE-COUNTER")
 
@@ -178,7 +178,7 @@ class Battle @Inject constructor(
         }
         else {
             // Compare last screenshot with current screen to determine if stage changed or not.
-            game.master.stageCountRegion.exists(
+            game.battle.master.stageCountRegion.exists(
                 snapshot,
                 similarity = prefs.stageCounterSimilarity
             )
@@ -191,7 +191,7 @@ class Battle @Inject constructor(
 
     fun takeStageSnapshot() {
         state.stageCountSnapshot =
-            game.master.stageCountRegion.getPattern().tag("WAVE:${state.stage}")
+            game.battle.master.stageCountRegion.getPattern().tag("WAVE:${state.stage}")
 
         if (prefs.stageCounterNew) {
             // Extract white pixels from the image which gets rid of the background.
