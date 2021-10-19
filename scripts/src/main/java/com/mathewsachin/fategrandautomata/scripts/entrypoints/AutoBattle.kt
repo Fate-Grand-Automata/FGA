@@ -21,13 +21,13 @@ import kotlin.time.Duration
  * Checks if Support Selection menu is up
  */
 fun IFgoAutomataApi.isInSupport(): Boolean {
-    return game.support.screenCheckRegion.exists(images[Images.SupportScreen], similarity = 0.85)
+    return locations.support.screenCheckRegion.exists(images[Images.SupportScreen], similarity = 0.85)
 }
 
 fun IFgoAutomataApi.isInventoryFull() =
     // We only have images for JP and NA
     prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp)
-            && images[Images.InventoryFull] in game.inventoryFullRegion
+            && images[Images.InventoryFull] in locations.inventoryFullRegion
 
 /**
  * Script for starting quests, selecting the support and doing battles.
@@ -104,11 +104,11 @@ class AutoBattle @Inject constructor(
     private fun useBoostItem() {
         val boostItem = BoostItem.of(prefs.boostItemSelectionMode)
         if (boostItem is BoostItem.Enabled) {
-            game.locate(boostItem).click()
+            locations.locate(boostItem).click()
 
             // in case you run out of items
             if (boostItem !is BoostItem.Enabled.Skip) {
-                game.locate(BoostItem.Enabled.Skip).click()
+                locations.locate(BoostItem.Enabled.Skip).click()
             }
         }
     }
@@ -164,7 +164,7 @@ class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to { game.battle.skipDeathAnimationClick.click() }
+            { isDeathAnimation() } to { locations.battle.skipDeathAnimationClick.click() }
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -186,7 +186,7 @@ class AutoBattle @Inject constructor(
     /**
      *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
      */
-    private fun isInMenu() = images[Images.Menu] in game.menuScreenRegion
+    private fun isInMenu() = images[Images.Menu] in locations.menuScreenRegion
 
     /**
      * Resets the battle state, clicks on the quest and refills the AP if needed.
@@ -200,7 +200,7 @@ class AutoBattle @Inject constructor(
         showRefillsAndRunsMessage()
 
         // Click uppermost quest
-        game.menuSelectQuestClick.click()
+        locations.menuSelectQuestClick.click()
 
         afterSelectingQuest()
     }
@@ -218,30 +218,30 @@ class AutoBattle @Inject constructor(
      */
     private fun isInResult(): Boolean {
         val cases = sequenceOf(
-            images[Images.Result] to game.resultScreenRegion,
-            images[Images.Bond] to game.resultBondRegion,
-            images[Images.MasterLevelUp] to game.resultMasterLvlUpRegion,
-            images[Images.MasterExp] to game.resultMasterExpRegion
+            images[Images.Result] to locations.resultScreenRegion,
+            images[Images.Bond] to locations.resultBondRegion,
+            images[Images.MasterLevelUp] to locations.resultMasterLvlUpRegion,
+            images[Images.MasterExp] to locations.resultMasterExpRegion
         )
 
         return cases.any { (image, region) -> image in region }
     }
 
     private fun isBond10CEReward() =
-        game.resultCeRewardRegion.exists(images[Images.Bond10Reward], similarity = 0.75)
+        locations.resultCeRewardRegion.exists(images[Images.Bond10Reward], similarity = 0.75)
 
     /**
      * It seems like we need to click on CE (center of screen) to accept them
      */
     private fun bond10CEReward() =
-        game.scriptArea.center.click()
+        locations.scriptArea.center.click()
 
     private fun isCeRewardDetails() =
-        images[Images.CEDetails] in game.resultCeRewardDetailsRegion
+        images[Images.CEDetails] in locations.resultCeRewardDetailsRegion
 
     private fun isDeathAnimation() =
         FieldSlot.list
-            .map { game.battle.servantPresentRegion(it) }
+            .map { locations.battle.servantPresentRegion(it) }
             .count { images[Images.ServantExist] in it } in 1..2
 
     private fun ceRewardDetails() {
@@ -252,27 +252,27 @@ class AutoBattle @Inject constructor(
             throw BattleExitException(ExitReason.CEGet)
         } else messages.notify(ScriptNotify.CEGet)
 
-        game.resultCeRewardCloseClick.click()
+        locations.resultCeRewardCloseClick.click()
     }
 
     /**
      * Clicks through the reward screens.
      */
     private fun result() =
-        game.resultClick.click(15)
+        locations.resultClick.click(15)
 
     private fun isInDropsScreen() =
-        images[Images.MatRewards] in game.resultMatRewardsRegion
+        images[Images.MatRewards] in locations.resultMatRewardsRegion
 
     private fun dropScreen() {
         ceDropsTracker.lookForCEDrops()
         matTracker.parseMaterials()
         screenshotDrops.screenshotDrops()
 
-        game.resultMatRewardsRegion.click()
+        locations.resultMatRewardsRegion.click()
     }
 
-    private fun isRepeatScreen() = images[Images.Repeat] in game.continueRegion
+    private fun isRepeatScreen() = images[Images.Repeat] in locations.continueRegion
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
@@ -281,18 +281,18 @@ class AutoBattle @Inject constructor(
         // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
 
-        val continueButtonRegion = game.continueRegion.find(images[Images.Repeat])?.region
+        val continueButtonRegion = locations.continueRegion.find(images[Images.Repeat])?.region
             ?: return
 
         // If Boost items are usable, Continue button shifts to the right
-        val useBoost = if (continueButtonRegion.x > game.scriptArea.center.x + 350) {
+        val useBoost = if (continueButtonRegion.x > locations.scriptArea.center.x + 350) {
             val boost = BoostItem.of(prefs.boostItemSelectionMode)
 
             boost is BoostItem.Enabled && boost != BoostItem.Enabled.Skip
         } else false
 
         if (useBoost) {
-            game.continueBoostClick.click()
+            locations.continueBoostClick.click()
             useBoostItem()
         } else continueButtonRegion.click()
 
@@ -303,18 +303,18 @@ class AutoBattle @Inject constructor(
     }
 
     private fun isFriendRequestScreen() =
-        images[Images.SupportExtra] in game.resultFriendRequestRegion
+        images[Images.SupportExtra] in locations.resultFriendRequestRegion
 
     private fun skipFriendRequestScreen() {
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
-        game.resultFriendRequestRejectClick.click()
+        locations.resultFriendRequestRejectClick.click()
     }
 
     /**
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
      */
     private fun isInQuestRewardScreen() =
-        images[Images.QuestReward] in game.resultQuestRewardRegion
+        images[Images.QuestReward] in locations.resultQuestRewardRegion
 
     /**
      * Handles the quest rewards screen.
@@ -327,7 +327,7 @@ class AutoBattle @Inject constructor(
             throw BattleExitException(ExitReason.FirstClearRewards)
         }
 
-        game.resultClick.click()
+        locations.resultClick.click()
     }
 
     // Selections Support option
@@ -349,12 +349,12 @@ class AutoBattle @Inject constructor(
      * Checks if the SKIP button exists on the screen.
      */
     private fun needsToStorySkip() =
-        prefs.storySkip && game.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
+        prefs.storySkip && locations.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
 
     private fun skipStory() {
-        game.menuStorySkipClick.click()
+        locations.menuStorySkipClick.click()
         Duration.seconds(0.5).wait()
-        game.menuStorySkipYesClick.click()
+        locations.menuStorySkipYesClick.click()
     }
 
     /**
@@ -366,7 +366,7 @@ class AutoBattle @Inject constructor(
     private fun startQuest() {
         partySelection.selectParty()
 
-        game.menuStartQuestClick.click()
+        locations.menuStartQuestClick.click()
 
         Duration.seconds(2).wait()
 

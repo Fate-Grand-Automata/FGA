@@ -9,6 +9,6 @@ class FgoAutomataApi @Inject constructor(
     automataApi: IAutomataExtensions,
     override val prefs: IPreferences,
     override val images: IImageLoader,
-    override val game: Locations,
+    override val locations: Locations,
     override val messages: IScriptMessages
 ) : IFgoAutomataApi, IAutomataExtensions by automataApi

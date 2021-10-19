@@ -16,7 +16,7 @@ abstract class SpecificSupportSelection(
 
     override fun select() =
         useSameSnapIn(fun(): SupportSelectionResult {
-            if (!isFriend(game.support.friendRegion)) {
+            if (!isFriend(locations.support.friendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SupportSelectionResult.Refresh
             }
@@ -58,17 +58,17 @@ abstract class SpecificSupportSelection(
     }
 
     protected fun findSupportBounds(support: Region) =
-        game.support.confirmSetupButtonRegion
+        locations.support.confirmSetupButtonRegion
             .findAll(
                 images[Images.SupportConfirmSetupButton],
                 Support.supportRegionToolSimilarity
             )
             .map {
-                game.support.defaultBounds
+                locations.support.defaultBounds
                     .copy(y = it.region.y - 70)
             }
             .firstOrNull { support in it }
-            ?: game.support.defaultBounds.also {
+            ?: locations.support.defaultBounds.also {
                 messages.log(ScriptLog.DefaultSupportBounds)
             }
 }

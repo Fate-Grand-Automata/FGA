@@ -29,12 +29,12 @@ class PartySelection @Inject constructor(
     fun selectParty() {
         val party = battleConfig.party
 
-        if (!partySelected && party in game.partySelectionArray.indices) {
-            val currentParty = game.selectedPartyRegion
+        if (!partySelected && party in locations.partySelectionArray.indices) {
+            val currentParty = locations.selectedPartyRegion
                 .find(images[Images.SelectedParty])
                 ?.let { match ->
                     // Find party with min distance from center of matched region
-                    game.partySelectionArray.withIndex().minByOrNull {
+                    locations.partySelectionArray.withIndex().minByOrNull {
                         (it.value.x - match.region.center.x).absoluteValue
                     }?.index
                 }
@@ -48,14 +48,14 @@ class PartySelection @Inject constructor(
                unresponsive if you switch from a party to the same one. */
             if (currentParty == null) {
                 val tempParty = if (party == 0) 1 else 0
-                game.partySelectionArray[tempParty].click()
+                locations.partySelectionArray[tempParty].click()
 
                 Duration.seconds(1).wait()
             }
 
             // Switch to the configured party
             if (currentParty != party) {
-                game.partySelectionArray[party].click()
+                locations.partySelectionArray[party].click()
 
                 Duration.seconds(1.2).wait()
             }

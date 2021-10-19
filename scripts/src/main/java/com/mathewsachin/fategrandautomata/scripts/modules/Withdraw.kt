@@ -18,7 +18,7 @@ class Withdraw @Inject constructor(
      * Checks if the window for withdrawing from the battle exists.
      */
     fun needsToWithdraw() =
-        images[Images.Withdraw] in game.withdrawRegion
+        images[Images.Withdraw] in locations.withdrawRegion
 
     /**
      * Handles withdrawing from battle. Depending on whether withdraw is enabled, the script either
@@ -30,7 +30,7 @@ class Withdraw @Inject constructor(
         }
 
         // Withdraw Region can vary depending on if you have Command Spells/Quartz
-        val withdrawRegion = game.withdrawRegion.find(images[Images.Withdraw])
+        val withdrawRegion = locations.withdrawRegion.find(images[Images.Withdraw])
             ?: return
 
         withdrawRegion.region.click()
@@ -38,12 +38,12 @@ class Withdraw @Inject constructor(
         Duration.seconds(0.5).wait()
 
         // Click the "Accept" button after choosing to withdraw
-        game.withdrawAcceptClick.click()
+        locations.withdrawAcceptClick.click()
 
         Duration.seconds(1).wait()
 
         // Click the "Close" button after accepting the withdrawal
-        game.withdrawCloseClick.click()
+        locations.withdrawCloseClick.click()
 
         ++count
     }

@@ -43,7 +43,7 @@ class PreferredSupportSelection @Inject constructor(
     override fun search() = when (mode) {
         Mode.Servants -> findServants().firstOrNull() ?: SpecificSupportSearchResult.NotFound
         Mode.CEs -> {
-            findCraftEssences(game.support.listRegion)
+            findCraftEssences(locations.support.listRegion)
                 .map { SpecificSupportSearchResult.Found(it.region) }
                 .firstOrNull() ?: SpecificSupportSearchResult.NotFound
         }
@@ -59,7 +59,7 @@ class PreferredSupportSelection @Inject constructor(
                     else -> findSupportBounds(it.Support)
                 }
 
-                val ceBounds = game.support.defaultCeBounds + Location(0, supportBounds.y)
+                val ceBounds = locations.support.defaultCeBounds + Location(0, supportBounds.y)
                 findCraftEssences(ceBounds).firstOrNull()
                     ?.let { ce -> FoundServantAndCE(supportBounds, ce) }
             }
@@ -104,7 +104,7 @@ class PreferredSupportSelection @Inject constructor(
                 val skillCheckNeeded = needMaxedSkills.any { it }
 
                 cropFriendLock(pattern).use { cropped ->
-                    game.support.listRegion
+                    locations.support.listRegion
                         .findAll(cropped)
                         .filter { !supportPrefs.maxAscended || isMaxAscended(it.region) }
                         .map {
@@ -146,14 +146,14 @@ class PreferredSupportSelection @Inject constructor(
     }
 
     private fun isMaxAscended(servant: Region): Boolean {
-        val maxAscendedRegion = game.support.maxAscendedRegion
+        val maxAscendedRegion = locations.support.maxAscendedRegion
             .copy(y = servant.y)
 
         return isStarPresent(maxAscendedRegion)
     }
 
     private fun isLimitBroken(CraftEssence: Region): Boolean {
-        val limitBreakRegion = game.support.limitBreakRegion
+        val limitBreakRegion = locations.support.limitBreakRegion
             .copy(y = CraftEssence.y)
 
         return isStarPresent(limitBreakRegion)

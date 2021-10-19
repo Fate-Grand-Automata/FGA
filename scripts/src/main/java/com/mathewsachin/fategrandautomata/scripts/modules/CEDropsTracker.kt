@@ -20,7 +20,7 @@ class CEDropsTracker @Inject constructor(
     fun lookForCEDrops() {
         val starsRegion = Region(40, -40, 80, 40)
 
-        val ceDropped = game.scriptArea
+        val ceDropped = locations.scriptArea
             .findAll(images[Images.DropCE])
             .map { (region, _) ->
                 starsRegion + region.location

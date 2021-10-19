@@ -29,21 +29,21 @@ class Caster @Inject constructor(
         val img = images[Images.BattleScreen]
 
         // slow devices need this. do not remove.
-        game.battle.screenCheckRegion.waitVanish(img, Duration.seconds(2))
+        locations.battle.screenCheckRegion.waitVanish(img, Duration.seconds(2))
 
-        game.battle.screenCheckRegion.exists(img, timeout)
+        locations.battle.screenCheckRegion.exists(img, timeout)
     }
 
     private fun confirmSkillUse() {
         if (prefs.skillConfirmation) {
-            game.battle.skillOkClick.click()
+            locations.battle.skillOkClick.click()
         }
     }
 
     private fun castSkill(skill: Skill, target: ServantTarget?) {
         when (skill) {
-            is Skill.Master -> game.battle.master.locate(skill)
-            is Skill.Servant -> game.battle.locate(skill)
+            is Skill.Master -> locations.battle.master.locate(skill)
+            is Skill.Servant -> locations.battle.locate(skill)
         }.click()
 
         confirmSkillUse()
@@ -54,7 +54,7 @@ class Caster @Inject constructor(
             selectSkillTarget(target)
         } else {
             // Close the window that opens up if skill is on cool-down
-            game.battle.extraInfoWindowCloseClick.click()
+            locations.battle.extraInfoWindowCloseClick.click()
         }
 
         waitForAnimationToFinish()
@@ -92,16 +92,16 @@ class Caster @Inject constructor(
             }
         }
 
-        game.battle.locate(actualTarget).click()
+        locations.battle.locate(actualTarget).click()
 
         Duration.seconds(0.5).wait()
 
         // Exit any extra menu
-        game.battle.extraInfoWindowCloseClick.click()
+        locations.battle.extraInfoWindowCloseClick.click()
     }
 
     private fun openMasterSkillMenu() {
-        game.battle.master.masterSkillOpenClick.click()
+        locations.battle.master.masterSkillOpenClick.click()
 
         Duration.seconds(0.5).wait()
     }
@@ -116,18 +116,18 @@ class Caster @Inject constructor(
         openMasterSkillMenu()
 
         // Click on order change skill
-        game.battle.master.locate(Skill.Master.C).click()
+        locations.battle.master.locate(Skill.Master.C).click()
 
         confirmSkillUse()
 
         Duration.seconds(0.3).wait()
 
-        game.battle.locate(action.starting).click()
-        game.battle.locate(action.sub).click()
+        locations.battle.locate(action.starting).click()
+        locations.battle.locate(action.sub).click()
 
         Duration.seconds(0.3).wait()
 
-        game.battle.orderChangeOkClick.click()
+        locations.battle.orderChangeOkClick.click()
 
         // Extra wait to allow order change dialog to close
         Duration.seconds(1).wait()
@@ -141,21 +141,21 @@ class Caster @Inject constructor(
     }
 
     fun selectEnemyTarget(enemy: EnemyTarget) {
-        game.battle.locate(enemy).click()
+        locations.battle.locate(enemy).click()
 
         Duration.seconds(0.5).wait()
 
         // Exit any extra menu
-        game.battle.extraInfoWindowCloseClick.click()
+        locations.battle.extraInfoWindowCloseClick.click()
     }
 
     fun use(np: CommandCard.NP) {
-        game.attack.clickLocation(np).click()
+        locations.attack.clickLocation(np).click()
 
-        game.battle.extraInfoWindowCloseClick.click()
+        locations.battle.extraInfoWindowCloseClick.click()
     }
 
     fun use(card: CommandCard.Face) {
-        game.attack.clickLocation(card).click()
+        locations.attack.clickLocation(card).click()
     }
 }

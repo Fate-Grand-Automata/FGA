@@ -47,7 +47,7 @@ class SupportImageMaker @Inject constructor(
         val isInSupport = isInSupport()
 
         // At max two Servant+CE are completely on screen, so only use those
-        val regionArray = game.scriptArea
+        val regionArray = locations.scriptArea
             .findAll(
                 images[Images.SupportConfirmSetupButton],
                 Support.supportRegionToolSimilarity
@@ -61,7 +61,7 @@ class SupportImageMaker @Inject constructor(
                     220
                 ) + it.region.location
             }
-            .filter { it in game.scriptArea }
+            .filter { it in locations.scriptArea }
             .take(2)
             .toList()
             .sorted()

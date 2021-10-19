@@ -43,7 +43,7 @@ class MaterialsTracker @Inject constructor(
             val pattern = images.loadMaterial(material)
 
             // TODO: Make the search region smaller
-            val count = game.scriptArea
+            val count = locations.scriptArea
                 .findAll(pattern)
                 .count()
 

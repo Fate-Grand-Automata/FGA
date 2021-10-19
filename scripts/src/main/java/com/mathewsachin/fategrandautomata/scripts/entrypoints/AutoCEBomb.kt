@@ -47,7 +47,7 @@ class AutoCEBomb @Inject constructor(
 
     private fun findBaseCE(): Match {
         for (img in imagesForSelectedRarity()) {
-            val matches = game.levelOneCERegion
+            val matches = locations.levelOneCERegion
                 .findAll(images[img])
                 .toList()
                 .sorted()
@@ -62,7 +62,7 @@ class AutoCEBomb @Inject constructor(
     }
 
     override fun script(): Nothing {
-        game.ceEnhanceClick.click()
+        locations.ceEnhanceClick.click()
 
         while (true) {
             Duration.seconds(2).wait()
@@ -90,7 +90,7 @@ class AutoCEBomb @Inject constructor(
                 Duration.seconds(1).wait()
 
                 Location(2000, 1000).click(70)
-                game.ceEnhanceClick.click()
+                locations.ceEnhanceClick.click()
             }
         }
     }
@@ -100,7 +100,7 @@ class AutoCEBomb @Inject constructor(
         Location(2040, 400).click()
         Duration.seconds(2).wait()
 
-        val matchingCE = game.levelOneCERegion.find(img)
+        val matchingCE = locations.levelOneCERegion.find(img)
             ?: throw ExitException(ExitReason.NoSuitableTargetCEFound)
 
         matchingCE.region.click()

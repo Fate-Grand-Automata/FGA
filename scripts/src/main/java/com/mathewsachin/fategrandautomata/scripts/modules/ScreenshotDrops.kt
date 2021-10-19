@@ -20,13 +20,13 @@ class ScreenshotDrops @Inject constructor(
 
         for (i in 0..1) {
             useColor {
-                drops.add(game.scriptArea.getPattern())
+                drops.add(locations.scriptArea.getPattern())
             }
 
             // check if we need to scroll to see more drops
-            if (i == 0 && images[Images.DropScrollbar] in game.resultDropScrollbarRegion) {
+            if (i == 0 && images[Images.DropScrollbar] in locations.resultDropScrollbarRegion) {
                 // scroll to end
-                game.resultDropScrollEndClick.click()
+                locations.resultDropScrollEndClick.click()
             } else break
         }
 

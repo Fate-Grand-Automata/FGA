@@ -11,20 +11,20 @@ class AutoDetect @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
 ) : IFgoAutomataApi by fgAutomataApi {
     fun get() = useSameSnapIn {
-        val emberSearchRegion = game.scriptArea.let {
+        val emberSearchRegion = locations.scriptArea.let {
             it.copy(width = it.width / 3)
         }
 
         when {
-            images[Images.FriendSummon] in game.fp.summonCheck || images[Images.FPSummonContinue] in game.fp.continueSummonRegion ->
+            images[Images.FriendSummon] in locations.fp.summonCheck || images[Images.FPSummonContinue] in locations.fp.continueSummonRegion ->
                 ScriptModeEnum.FP
-            images[Images.LotteryBoxFinished] in game.lottery.checkRegion || images[Images.LotteryBoxFinished] in game.lottery.finishedRegion ->
+            images[Images.LotteryBoxFinished] in locations.lottery.checkRegion || images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion ->
                 ScriptModeEnum.Lottery
             images[Images.GoldXP] in emberSearchRegion || images[Images.SilverXP] in emberSearchRegion ->
                 ScriptModeEnum.PresentBox
-            images[Images.SupportConfirmSetupButton] in game.support.confirmSetupButtonRegion ->
+            images[Images.SupportConfirmSetupButton] in locations.support.confirmSetupButtonRegion ->
                 ScriptModeEnum.SupportImageMaker
-            images[Images.CEEnhance] in game.ceEnhanceRegion ->
+            images[Images.CEEnhance] in locations.ceEnhanceRegion ->
                 ScriptModeEnum.CEBomb
             else -> ScriptModeEnum.Battle
         }

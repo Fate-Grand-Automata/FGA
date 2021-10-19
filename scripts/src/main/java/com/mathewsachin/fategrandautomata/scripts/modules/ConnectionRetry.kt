@@ -11,10 +11,10 @@ class ConnectionRetry @Inject constructor(
     fgAutomataApi: IFgoAutomataApi
 ) : IFgoAutomataApi by fgAutomataApi {
     fun needsToRetry() =
-        images[Images.Retry] in game.retryRegion
+        images[Images.Retry] in locations.retryRegion
 
     fun retry() {
-        game.retryRegion.click()
+        locations.retryRegion.click()
 
         Duration.seconds(2).wait()
     }

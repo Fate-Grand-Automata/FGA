@@ -28,7 +28,7 @@ class AutoGiftBox @Inject constructor(
     private var totalReceived = 0
 
     override fun script(): Nothing {
-        val xpOffsetX = (game.scriptArea.find(images[Images.GoldXP]) ?: game.scriptArea.find(images[Images.SilverXP]))
+        val xpOffsetX = (locations.scriptArea.find(images[Images.GoldXP]) ?: locations.scriptArea.find(images[Images.SilverXP]))
             ?.region?.center?.x
             ?: throw Exception("Couldn't find Embers on screen. This shouldn't happen.")
 
@@ -80,8 +80,8 @@ class AutoGiftBox @Inject constructor(
             clickCount += picked
 
             swipe(
-                game.giftBoxSwipeStart,
-                game.giftBoxSwipeEnd
+                locations.giftBoxSwipeStart,
+                locations.giftBoxSwipeEnd
             )
 
             if (aroundEnd) {

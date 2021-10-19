@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.locations.FPLocations
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -15,8 +14,7 @@ import kotlin.time.Duration
 @ScriptScope
 class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi,
-    private val locations: FPLocations
+    fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object InventoryFull: ExitReason()
@@ -36,10 +34,10 @@ class AutoFriendGacha @Inject constructor(
     }
 
     override fun script(): Nothing {
-        if (images[Images.FPSummonContinue] !in locations.continueSummonRegion) {
-            locations.first10SummonClick.click()
+        if (images[Images.FPSummonContinue] !in locations.fp.continueSummonRegion) {
+            locations.fp.first10SummonClick.click()
             Duration.seconds(0.3).wait()
-            locations.okClick.click()
+            locations.fp.okClick.click()
 
             countNext()
         }
@@ -49,14 +47,14 @@ class AutoFriendGacha @Inject constructor(
                 throw ExitException(ExitReason.InventoryFull)
             }
 
-            if (images[Images.FPSummonContinue] in locations.continueSummonRegion) {
+            if (images[Images.FPSummonContinue] in locations.fp.continueSummonRegion) {
                 countNext()
 
-                locations.continueSummonClick.click()
+                locations.fp.continueSummonClick.click()
                 Duration.seconds(0.3).wait()
-                locations.okClick.click()
+                locations.fp.okClick.click()
                 Duration.seconds(3).wait()
-            } else locations.skipRapidClick.click(15)
+            } else locations.fp.skipRapidClick.click(15)
         }
     }
 }

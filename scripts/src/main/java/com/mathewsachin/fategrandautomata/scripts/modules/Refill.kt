@@ -26,16 +26,16 @@ class Refill @Inject constructor(
             && timesRefilled < refill.repetitions
         ) {
             refill.resources
-                .map { game.locate(it) }
+                .map { locations.locate(it) }
                 .forEach { it.click() }
 
             Duration.seconds(1).wait()
-            game.staminaOkClick.click()
+            locations.staminaOkClick.click()
             ++timesRefilled
 
             Duration.seconds(3).wait()
         } else if (prefs.waitAPRegen) {
-            game.staminaCloseClick.click()
+            locations.staminaCloseClick.click()
 
             messages.notify(ScriptNotify.WaitForAPRegen())
 
@@ -44,7 +44,7 @@ class Refill @Inject constructor(
     }
 
     fun refill() {
-        while (images[Images.Stamina] in game.staminaScreenRegion) {
+        while (images[Images.Stamina] in locations.staminaScreenRegion) {
             refillOnce()
         }
     }
