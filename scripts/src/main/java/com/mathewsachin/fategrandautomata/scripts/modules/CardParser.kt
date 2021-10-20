@@ -7,6 +7,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
 import com.mathewsachin.fategrandautomata.scripts.models.ParsedCard
+import com.mathewsachin.fategrandautomata.scripts.models.TeamSlot
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -74,7 +75,8 @@ class CardParser @Inject constructor(
                 val servant = cardsGroupedByServant
                     .filterValues { cards -> it in cards }
                     .keys
-                    .first()
+                    .firstOrNull()
+                    ?: TeamSlot.Unknown
 
                 val fieldSlot = servantTracker.deployed
                     .entries
@@ -92,7 +94,14 @@ class CardParser @Inject constructor(
             }
 
         val failedToDetermine = cards
-            .filter { !it.isStunned && it.type == CardTypeEnum.Unknown }
+            .filter {
+                when {
+                    it.isStunned -> false
+                    it.type == CardTypeEnum.Unknown -> true
+                    it.servant is TeamSlot.Unknown -> true
+                    else -> false
+                }
+            }
             .map { it.card }
 
         if (failedToDetermine.isNotEmpty()) {

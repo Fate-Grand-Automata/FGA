@@ -8,6 +8,8 @@ sealed class TeamSlot(val position: Int) {
     object E: TeamSlot(5)
     object F: TeamSlot(6)
 
+    object Unknown: TeamSlot(0)
+
     override fun toString() = "[$position]"
 
     companion object {
