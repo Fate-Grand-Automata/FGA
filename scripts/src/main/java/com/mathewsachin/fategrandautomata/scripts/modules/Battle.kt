@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
-import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.NPUsage
 import com.mathewsachin.fategrandautomata.scripts.models.ParsedCard
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
@@ -23,7 +22,9 @@ class Battle @Inject constructor(
     private val caster: Caster,
     private val card: Card,
     private val skillSpam: SkillSpam,
-    private val shuffleChecker: ShuffleChecker
+    private val shuffleChecker: ShuffleChecker,
+    private val stageTracker: StageTracker,
+    private val autoChooseTarget: AutoChooseTarget
 ) : IFgoAutomataApi by fgAutomataApi {
     init {
         state.markStartTime()
@@ -56,38 +57,6 @@ class Battle @Inject constructor(
         prefs.waitBeforeCards.wait()
 
         return card.readCommandCards()
-    }
-
-    private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
-        val region = locations.battle.dangerRegion(enemy)
-
-        val isDanger = images[Images.TargetDanger] in region
-        val isServant = images[Images.TargetServant] in region
-
-        return isDanger || isServant
-    }
-
-    private fun chooseTarget(enemy: EnemyTarget) {
-        locations.battle.locate(enemy).click()
-
-        Duration.seconds(0.5).wait()
-
-        locations.battle.extraInfoWindowCloseClick.click()
-    }
-
-    private fun autoChooseTarget() {
-        // from my experience, most boss stages are ordered like(Servant 1)(Servant 2)(Servant 3),
-        // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
-        // that's why the table is iterated backwards.
-
-        val dangerTarget = EnemyTarget.list
-            .lastOrNull { isPriorityTarget(it) }
-
-        if (dangerTarget != null && state.chosenTarget != dangerTarget) {
-            chooseTarget(dangerTarget)
-        }
-
-        state.chosenTarget = dangerTarget
     }
 
     fun performBattle() {
@@ -136,67 +105,12 @@ class Battle @Inject constructor(
     }
 
     private fun onTurnStarted() = useSameSnapIn {
-        checkCurrentStage()
+        stageTracker.checkCurrentStage()
 
         state.nextTurn()
 
         if (battleConfig.autoChooseTarget) {
-            autoChooseTarget()
-        }
-    }
-
-    private fun checkCurrentStage() {
-        if (didStageChange()) {
-            state.nextStage()
-
-            takeStageSnapshot()
-        }
-    }
-
-    fun didStageChange(): Boolean {
-        // Font of stage count number is different per region
-        val snapshot = state.stageCountSnapshot
-            ?: return true
-
-        val matched = if (prefs.stageCounterNew) {
-            // Take a screenshot of stage counter region on current screen and extract white pixels
-            val current = locations.battle.master.stageCountRegion
-                .getPattern()
-                .tag("STAGE-COUNTER")
-
-            current.use {
-                val currentWithThreshold = current
-                    .threshold(stageCounterThreshold)
-
-                currentWithThreshold.use {
-                    // Matching the images which have background filtered out
-                    snapshot
-                        .findMatches(currentWithThreshold, prefs.platformPrefs.minSimilarity)
-                        .any()
-                }
-            }
-        }
-        else {
-            // Compare last screenshot with current screen to determine if stage changed or not.
-            locations.battle.master.stageCountRegion.exists(
-                snapshot,
-                similarity = prefs.stageCounterSimilarity
-            )
-        }
-
-        return !matched
-    }
-
-    private val stageCounterThreshold = 0.67
-
-    fun takeStageSnapshot() {
-        state.stageCountSnapshot =
-            locations.battle.master.stageCountRegion.getPattern().tag("WAVE:${state.stage}")
-
-        if (prefs.stageCounterNew) {
-            // Extract white pixels from the image which gets rid of the background.
-            state.stageCountSnapshot =
-                state.stageCountSnapshot?.threshold(stageCounterThreshold)
+            autoChooseTarget.choose()
         }
     }
 }

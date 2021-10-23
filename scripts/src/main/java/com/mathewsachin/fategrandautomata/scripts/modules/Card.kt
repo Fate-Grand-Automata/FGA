@@ -23,10 +23,8 @@ class Card @Inject constructor(
     private val battleConfig: IBattleConfig
 ) : IFgoAutomataApi by fgAutomataApi {
 
-    fun readCommandCards(): List<ParsedCard> {
-        return useSameSnapIn {
-            parser.parse()
-        }
+    fun readCommandCards(): List<ParsedCard> = useSameSnapIn {
+        parser.parse()
     }
 
     private val spamNps: Set<CommandCard.NP> get() =
