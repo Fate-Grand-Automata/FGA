@@ -1,7 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts
 
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.*
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
@@ -44,29 +42,29 @@ private fun calculateGameAreaWithoutBorders(
     )
 }
 
+/**
+ * Checks if a region is wider than x:y
+ */
+fun Size.widerThan(x: Int, y: Int) =
+    width / height.toDouble() > x.toDouble() / y
+
 // Looks like only wider than 18:9 uses dynamic scaling, rest stays in 16:9
 // Thanks to SeibahMaster from GamePress
-fun Region.isWide() =
-    width / height.toDouble() > 18.0 / 9
+fun Size.isWide() =
+    widerThan(18, 9)
 
 class FgoGameAreaManager(
-    val platformImpl: IPlatformImpl,
-    val prefs: IPreferences
+    private val gameSizeWithBorders: Size,
+    private val offset: () -> Location,
+    isNewUI: Boolean
 ) : GameAreaManager {
     private val imageSize = Size(1280, 720)
     private val scriptSize = Size(2560, 1440)
 
-    private val gameWithBorders = platformImpl.windowRegion
     private val scaleBy = decideScaleMethod(
         scriptSize,
-        gameWithBorders.size
+        gameSizeWithBorders
     )
-    private val gameAreaIgnoringNotch =
-        calculateGameAreaWithoutBorders(
-            scriptSize,
-            gameWithBorders.size,
-            scaleBy.rate
-        )
 
     override val scriptDimension = when (scaleBy) {
         is ScaleBy.Width -> CompareBy.Width(scriptSize.width)
@@ -78,11 +76,26 @@ class FgoGameAreaManager(
         is ScaleBy.Height -> CompareBy.Height(imageSize.height)
     }
 
-    val isWide = prefs.isNewUI && platformImpl.windowRegion.isWide()
+    private val isWide = isNewUI && gameSizeWithBorders.isWide()
+    private val isUltraWide = isNewUI && gameSizeWithBorders.widerThan(21, 9)
+
+    private val gameAreaIgnoringNotch by lazy {
+        when {
+            // For wider than 21:9 screens, blue borders appear on sides
+            isUltraWide -> calculateGameAreaWithoutBorders(
+                Size(3360, 1440),
+                gameSizeWithBorders,
+                scaleBy.rate
+            )
+            isWide -> Region(Location(), gameSizeWithBorders)
+            else -> calculateGameAreaWithoutBorders(
+                scriptSize,
+                gameSizeWithBorders,
+                scaleBy.rate
+            )
+        }
+    }
 
     override val gameArea
-        get() =
-            if (isWide) {
-                platformImpl.windowRegion
-            } else gameAreaIgnoringNotch + platformImpl.windowRegion.location
+        get() = gameAreaIgnoringNotch + offset()
 }

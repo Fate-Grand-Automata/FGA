@@ -1,6 +1,7 @@
 package com.mathewsachin.libautomata.extensions
 
-import com.mathewsachin.libautomata.IColorScreenshotProvider
+import com.mathewsachin.libautomata.ColorManager
+import com.mathewsachin.libautomata.HighlightColor
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.ScreenshotManager
 import javax.inject.Inject
@@ -11,7 +12,8 @@ class AutomataApi @Inject constructor(
     gestureExtensions: IGestureExtensions,
     highlightExtensions: IHighlightExtensions,
     imageMatchingExtensions: IImageMatchingExtensions,
-    transformationExtensions: ITransformationExtensions
+    transformationExtensions: ITransformationExtensions,
+    private val colorManager: ColorManager
 ) : IAutomataExtensions,
     IDurationExtensions by durationExtensions,
     IGestureExtensions by gestureExtensions,
@@ -22,14 +24,13 @@ class AutomataApi @Inject constructor(
     override fun Region.getPattern() =
         screenshotManager.getScreenshot()
             .crop(this.transformToImage())
+            .also { highlight(HighlightColor.Info) }
             .copy() // It is important that the image gets cloned here.
 
     override fun <T> useSameSnapIn(block: () -> T) =
         screenshotManager.useSameSnapIn(block)
 
-    override fun takeColorScreenshot() =
-        if (screenshotManager.screenshotService is IColorScreenshotProvider)
-            screenshotManager.screenshotService.takeColorScreenshot()
-        else screenshotManager.getScreenshot().copy()
+    override fun <T> useColor(block: () -> T): T =
+        colorManager.useColor(block)
 }
 

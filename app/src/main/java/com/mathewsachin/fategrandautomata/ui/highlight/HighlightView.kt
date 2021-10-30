@@ -1,38 +1,42 @@
 package com.mathewsachin.fategrandautomata.ui.highlight
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.view.View
+import com.mathewsachin.libautomata.HighlightColor
 import com.mathewsachin.libautomata.Region
 
+@SuppressLint("ViewConstructor")
 class HighlightView(
     Context: Context,
-    val regionsToHighlight: Map<Region, Boolean>
+    val regionsToHighlight: Map<Region, HighlightColor>
 ) : View(Context) {
-    private val red = Paint().apply {
-        color = Color.RED
-        strokeWidth = 5f
-        style = Paint.Style.STROKE
-    }
-
-    private val green = Paint().apply {
-        color = Color.GREEN
-        strokeWidth = 5f
-        style = Paint.Style.STROKE
+    private val colors = HighlightColor.values().associateWith {
+        Paint().apply {
+            color = when (it) {
+                HighlightColor.Error -> Color.RED
+                HighlightColor.Success -> Color.GREEN
+                HighlightColor.Warning -> Color.YELLOW
+                HighlightColor.Info -> Color.BLUE
+            }
+            strokeWidth = 5f
+            style = Paint.Style.STROKE
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        for ((region, success) in regionsToHighlight) {
+        for ((region, color) in regionsToHighlight) {
             canvas?.drawRect(
                 region.x.toFloat(),
                 region.y.toFloat(),
                 region.right.toFloat(),
                 region.bottom.toFloat(),
-                if (success) green else red
+                colors[color] ?: continue
             )
         }
     }

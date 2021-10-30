@@ -2,20 +2,22 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.modules.needsToRetry
-import com.mathewsachin.fategrandautomata.scripts.modules.retry
+import com.mathewsachin.fategrandautomata.scripts.modules.ConnectionRetry
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
 
 /**
  * Continually opens lottery boxes until either the present box is full or there is no currency left.
  */
+@ScriptScope
 class AutoLottery @Inject constructor(
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi,
-    private val giftBox: AutoGiftBox
+    private val giftBox: AutoGiftBox,
+    private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
     sealed class ExitReason {
         object ResetDisabled: ExitReason()
@@ -27,7 +29,7 @@ class AutoLottery @Inject constructor(
     private fun spin() {
         // Don't increase this too much or you'll regret when you're not able to stop the script
         // And your phone won't let you press anything
-        game.lotterySpinClick.click(25)
+        locations.lottery.spinClick.click(25)
     }
 
     private fun reset() {
@@ -35,19 +37,19 @@ class AutoLottery @Inject constructor(
             throw ExitException(ExitReason.ResetDisabled)
         }
 
-        game.lotteryResetClick.click()
+        locations.lottery.resetClick.click()
         Duration.seconds(0.5).wait()
 
-        game.lotteryResetConfirmationClick.click()
+        locations.lottery.resetConfirmationClick.click()
         Duration.seconds(3).wait()
 
-        game.lotteryResetCloseClick.click()
+        locations.lottery.resetCloseClick.click()
         Duration.seconds(2).wait()
     }
 
     private fun presentBoxFull() {
         if (prefs.receiveEmbersWhenGiftBoxFull) {
-            val moveToPresentBox = game.lotteryFullPresentBoxRegion
+            val moveToPresentBox = locations.lottery.fullPresentBoxRegion
                 .find(images[Images.PresentBoxFull])
 
             moveToPresentBox?.region?.click()
@@ -61,9 +63,9 @@ class AutoLottery @Inject constructor(
 
     override fun script(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
-            { images[Images.LotteryBoxFinished] in game.lotteryFinishedRegion } to { reset() },
-            { needsToRetry() } to { retry() },
-            { images[Images.PresentBoxFull] in game.lotteryFullPresentBoxRegion } to { presentBoxFull() }
+            { images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion } to { reset() },
+            { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
+            { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() }
         )
 
         while (true) {

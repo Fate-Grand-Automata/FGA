@@ -27,6 +27,8 @@ class SupportPrefsCore(
         SupportClass.None
     )
 
+    val alsoCheckAll = maker.bool("also_check_all")
+
     val maxAscended = maker.bool("support_max_ascended")
 
     val skill1Max = maker.bool("support_skill_max_1")

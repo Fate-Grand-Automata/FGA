@@ -4,12 +4,14 @@ import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 
 @Composable
 fun Pref<Boolean>.SwitchPreference(
     title: String,
+    modifier: Modifier = Modifier,
     summary: String = "",
     singleLineTitle: Boolean = false,
     icon: VectorIcon? = null,
@@ -23,7 +25,8 @@ fun Pref<Boolean>.SwitchPreference(
         singleLineTitle = singleLineTitle,
         icon = icon,
         enabled = enabled,
-        onClick = { state = !state }
+        onClick = { state = !state },
+        modifier = modifier
     ) {
         Switch(
             checked = state,

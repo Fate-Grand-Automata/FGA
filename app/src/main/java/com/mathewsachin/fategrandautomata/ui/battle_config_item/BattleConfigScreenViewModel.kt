@@ -8,7 +8,6 @@ import com.google.gson.Gson
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.skill_maker.SkillMakerModel
@@ -32,9 +31,6 @@ class BattleConfigScreenViewModel @Inject constructor(
     val cardPriority =
         battleConfigCore.cardPriority
             .asFlow()
-            .map {
-                CardPriorityPerWave.of(it)
-            }
 
     val skillCommand =
         battleConfigCore.skillCommand

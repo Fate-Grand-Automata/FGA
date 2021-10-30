@@ -5,12 +5,13 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.prefs.import
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
+import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.ServantPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
 import com.tfcporciuncula.flow.Serializer
 
@@ -36,7 +37,17 @@ class BattleConfigCore(
     val skillCommand = maker.string("autoskill_cmd")
     val notes = maker.string("autoskill_notes")
 
-    val cardPriority = maker.string("card_priority", defaultCardPriority)
+    val cardPriority = maker.serialized(
+        "card_priority",
+        serializer = object: Serializer<CardPriorityPerWave> {
+            override fun deserialize(serialized: String) =
+                CardPriorityPerWave.of(serialized)
+
+            override fun serialize(value: CardPriorityPerWave) =
+                value.toString()
+        },
+        default = CardPriorityPerWave.default
+    )
 
     val rearrangeCards = maker.serialized(
         "auto_skill_rearrange_cards",
@@ -82,6 +93,23 @@ class BattleConfigCore(
 
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
     val shuffleCardsWave = maker.int("shuffle_cards_wave", 3)
+
+    val useServantPriority = maker.bool("use_servant_priority")
+    val servantPriority = maker.serialized(
+        "servant_priority",
+        serializer = object: Serializer<ServantPriorityPerWave> {
+            override fun deserialize(serialized: String): ServantPriorityPerWave =
+                try {
+                    ServantPriorityPerWave.of(serialized)
+                } catch (e: Exception) {
+                    ServantPriorityPerWave.default
+                }
+
+            override fun serialize(value: ServantPriorityPerWave) =
+                value.toString()
+        },
+        default = ServantPriorityPerWave.default
+    )
 
     private val gson = Gson()
     private val defaultSpamConfig = (1..6).map { ServantSpamConfig() }

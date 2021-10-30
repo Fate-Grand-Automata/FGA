@@ -5,10 +5,7 @@ import android.os.Build
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.IPlatformImpl
-import com.mathewsachin.libautomata.IPlatformPrefs
-import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.*
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -34,9 +31,9 @@ class AndroidImpl @Inject constructor(
 
     override fun getResizableBlankPattern(): IPattern = DroidCvPattern()
 
-    override fun highlight(region: Region, duration: Duration, success: Boolean) {
+    override fun highlight(region: Region, duration: Duration, color: HighlightColor) {
         GlobalScope.launch {
-            highlightManager.add(region, success)
+            highlightManager.add(region, color)
             delay(duration.inWholeMilliseconds)
             highlightManager.remove(region)
         }

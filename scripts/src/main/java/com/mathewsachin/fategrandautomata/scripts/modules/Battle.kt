@@ -3,23 +3,30 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
-import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
+import com.mathewsachin.fategrandautomata.scripts.models.NPUsage
+import com.mathewsachin.fategrandautomata.scripts.models.ParsedCard
+import com.mathewsachin.fategrandautomata.scripts.models.Skill
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
+import com.mathewsachin.libautomata.dagger.ScriptScope
+import javax.inject.Inject
 import kotlin.time.Duration
 
-class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi {
-    val state = BattleState()
-    var servantTracker = ServantTracker(fgAutomataApi)
-        private set
-    val spamConfig = prefs.selectedBattleConfig.spam
-
-    private lateinit var autoSkill: AutoSkill
-    private lateinit var card: Card
-
-    fun init(AutoSkillModule: AutoSkill, CardModule: Card) {
-        autoSkill = AutoSkillModule
-        card = CardModule
-
+@ScriptScope
+class Battle @Inject constructor(
+    fgAutomataApi: IFgoAutomataApi,
+    private val servantTracker: ServantTracker,
+    private val state: BattleState,
+    private val battleConfig: IBattleConfig,
+    private val autoSkill: AutoSkill,
+    private val caster: Caster,
+    private val card: Card,
+    private val skillSpam: SkillSpam,
+    private val shuffleChecker: ShuffleChecker,
+    private val stageTracker: StageTracker,
+    private val autoChooseTarget: AutoChooseTarget
+) : IFgoAutomataApi by fgAutomataApi {
+    init {
         state.markStartTime()
 
         resetState()
@@ -31,8 +38,7 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         if (state.stage != -1) {
             state.nextRun()
 
-            servantTracker.close()
-            servantTracker = ServantTracker(this)
+            servantTracker.nextRun()
         }
 
         if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
@@ -40,55 +46,17 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         }
     }
 
-    fun isIdle() = images[Images.BattleScreen] in game.battleScreenRegion
+    fun isIdle() = images[Images.BattleScreen] in locations.battle.screenCheckRegion
 
-    fun clickAttack() {
-        if (state.hasClickedAttack) {
-            return
-        }
-
-        game.battleAttackClick.click()
+    fun clickAttack(): List<ParsedCard> {
+        locations.battle.attackClick.click()
 
         // Wait for Attack button to disappear
-        game.battleScreenRegion.waitVanish(images[Images.BattleScreen], Duration.seconds(5))
+        locations.battle.screenCheckRegion.waitVanish(images[Images.BattleScreen], Duration.seconds(5))
 
         prefs.waitBeforeCards.wait()
 
-        state.hasClickedAttack = true
-
-        card.readCommandCards()
-    }
-
-    private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
-        val region = game.dangerRegion(enemy)
-
-        val isDanger = images[Images.TargetDanger] in region
-        val isServant = images[Images.TargetServant] in region
-
-        return isDanger || isServant
-    }
-
-    private fun chooseTarget(enemy: EnemyTarget) {
-        game.locate(enemy).click()
-
-        Duration.seconds(0.5).wait()
-
-        game.battleExtraInfoWindowCloseClick.click()
-    }
-
-    private fun autoChooseTarget() {
-        // from my experience, most boss stages are ordered like(Servant 1)(Servant 2)(Servant 3),
-        // where(Servant 3) is the most powerful one. see docs/ boss_stage.png
-        // that's why the table is iterated backwards.
-
-        val dangerTarget = EnemyTarget.list
-            .lastOrNull { isPriorityTarget(it) }
-
-        if (dangerTarget != null && state.chosenTarget != dangerTarget) {
-            chooseTarget(dangerTarget)
-        }
-
-        state.chosenTarget = dangerTarget
+        return card.readCommandCards()
     }
 
     fun performBattle() {
@@ -97,77 +65,52 @@ class Battle(fgAutomataApi: IFgoAutomataApi) : IFgoAutomataApi by fgAutomataApi 
         onTurnStarted()
         servantTracker.beginTurn()
 
-        autoSkill.execute()
+        val npUsage = autoSkill.execute(state.stage, state.turn)
+        skillSpam.spamSkills()
 
-        clickAttack()
+        val cards = clickAttack()
+            .takeUnless { shouldShuffle(it, npUsage) }
+            ?: shuffleCards()
 
-        card.clickCommandCards()
+        card.clickCommandCards(cards, npUsage)
 
         Duration.seconds(5).wait()
     }
 
+    private fun shouldShuffle(cards: List<ParsedCard>, npUsage: NPUsage): Boolean {
+        // Not this wave
+        if (state.stage != (battleConfig.shuffleCardsWave - 1)) {
+            return false
+        }
+
+        // Already shuffled
+        if (state.shuffled) {
+            return false
+        }
+
+        return shuffleChecker.shouldShuffle(
+            mode = battleConfig.shuffleCards,
+            cards = cards,
+            npUsage = npUsage
+        )
+    }
+
+    private fun shuffleCards(): List<ParsedCard> {
+        locations.attack.backClick.click()
+
+        caster.castMasterSkill(Skill.Master.C)
+        state.shuffled = true
+
+        return clickAttack()
+    }
+
     private fun onTurnStarted() = useSameSnapIn {
-        checkCurrentStage()
+        stageTracker.checkCurrentStage()
 
         state.nextTurn()
 
-        if (prefs.selectedBattleConfig.autoChooseTarget) {
-            autoChooseTarget()
-        }
-    }
-
-    private fun checkCurrentStage() {
-        if (didStageChange()) {
-            state.nextStage()
-
-            takeStageSnapshot()
-        }
-    }
-
-    fun didStageChange(): Boolean {
-        // Font of stage count number is different per region
-        val snapshot = state.stageCountSnapshot
-            ?: return true
-
-        val matched = if (prefs.stageCounterNew) {
-            // Take a screenshot of stage counter region on current screen and extract white pixels
-            val current = game.battleStageCountRegion
-                .getPattern()
-                .tag("STAGE-COUNTER")
-
-            current.use {
-                val currentWithThreshold = current
-                    .threshold(stageCounterThreshold)
-
-                currentWithThreshold.use {
-                    // Matching the images which have background filtered out
-                    snapshot
-                        .findMatches(currentWithThreshold, prefs.platformPrefs.minSimilarity)
-                        .any()
-                }
-            }
-        }
-        else {
-            // Compare last screenshot with current screen to determine if stage changed or not.
-            game.battleStageCountRegion.exists(
-                snapshot,
-                similarity = prefs.stageCounterSimilarity
-            )
-        }
-
-        return !matched
-    }
-
-    private val stageCounterThreshold = 0.67
-
-    fun takeStageSnapshot() {
-        state.stageCountSnapshot =
-            game.battleStageCountRegion.getPattern().tag("WAVE:${state.stage}")
-
-        if (prefs.stageCounterNew) {
-            // Extract white pixels from the image which gets rid of the background.
-            state.stageCountSnapshot =
-                state.stageCountSnapshot?.threshold(stageCounterThreshold)
+        if (battleConfig.autoChooseTarget) {
+            autoChooseTarget.choose()
         }
     }
 }

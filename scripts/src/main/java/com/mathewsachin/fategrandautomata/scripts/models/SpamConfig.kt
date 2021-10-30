@@ -27,3 +27,11 @@ data class ServantSpamConfig(
     val skills: List<SkillSpamConfig> = (1..3).map { SkillSpamConfig() },
     val np: NpSpamConfig = NpSpamConfig()
 )
+
+class SpamConfigPerTeamSlot(
+    private val config: List<ServantSpamConfig>
+) {
+    operator fun get(teamSlot: TeamSlot): ServantSpamConfig =
+        config
+            .getOrElse(teamSlot.position - 1) { ServantSpamConfig() }
+}

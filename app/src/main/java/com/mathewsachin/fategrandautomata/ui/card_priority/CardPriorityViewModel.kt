@@ -6,10 +6,10 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.prefs.defaultCardPriority
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriority
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
+import com.mathewsachin.fategrandautomata.scripts.models.ServantPriorityPerWave
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,38 +19,42 @@ class CardPriorityViewModel @Inject constructor(
     val battleConfig: BattleConfigCore
 ) : ViewModel() {
     val cardPriorityItems: SnapshotStateList<CardPriorityListItem> by lazy {
-        var cardPriority = battleConfig.cardPriority.get()
+        val cardPriority = battleConfig.cardPriority.get()
+        val servantPriority = battleConfig.servantPriority.get()
 
-        // Handle simple mode and empty string
-        if (cardPriority.length == 3 || cardPriority.isBlank()) {
-            cardPriority = defaultCardPriority
-        }
+        val rearrangeCards = battleConfig.rearrangeCards.get()
+        val braveChains = battleConfig.braveChains.get()
 
-        val rearrangeCards = battleConfig.rearrangeCards
-        val braveChains = battleConfig.braveChains
-
-        CardPriorityPerWave.of(cardPriority)
+        cardPriority
             .take(3)
             .map { it.toMutableList() }
             .withIndex()
             .map {
                 CardPriorityListItem(
                     it.value,
-                    mutableStateOf(rearrangeCards.get().getOrElse(it.index) { false }),
-                    mutableStateOf(braveChains.get().getOrElse(it.index) { BraveChainEnum.None })
+                    servantPriority.atWave(it.index).toMutableList(),
+                    mutableStateOf(rearrangeCards.getOrElse(it.index) { false }),
+                    mutableStateOf(braveChains.getOrElse(it.index) { BraveChainEnum.None })
                 )
             }
             .toMutableStateList()
     }
 
-    fun save() {
-        val value = CardPriorityPerWave.from(
-            cardPriorityItems.map {
-                CardPriority.from(it.scores)
-            }
-        ).toString()
+    val useServantPriority = battleConfig.useServantPriority
 
-        battleConfig.cardPriority.set(value)
+    fun save() {
+        battleConfig.cardPriority.set(
+            CardPriorityPerWave.from(
+                cardPriorityItems.map { CardPriority.from(it.scores) }
+            )
+        )
+
+        battleConfig.servantPriority.set(
+            ServantPriorityPerWave.from(
+                cardPriorityItems.map { it.servantPriority }
+            )
+        )
+
         battleConfig.rearrangeCards.set(cardPriorityItems.map { it.rearrangeCards.value })
         battleConfig.braveChains.set(cardPriorityItems.map { it.braveChains.value })
     }

@@ -48,9 +48,6 @@ class ScriptMessages @Inject constructor(
             is ScriptLog.CurrentParty -> {
                 Timber.debug { "Current Party: ${item.party}" }
             }
-            ScriptLog.RearrangingCards -> {
-                Timber.debug { "Rearranging cards" }
-            }
             is ScriptLog.MaxSkills -> {
                 Timber.debug {
                     // Detected skill levels as string for debugging

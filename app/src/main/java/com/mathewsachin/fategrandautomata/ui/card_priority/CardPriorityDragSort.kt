@@ -1,31 +1,50 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
+import android.graphics.Color
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.compose.ui.platform.LocalContext
+import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.util.ItemTouchHelperCallback
+import com.mathewsachin.fategrandautomata.ui.drag_sort.DragSort
+import com.mathewsachin.fategrandautomata.ui.drag_sort.DragSortAdapter
 
 @Composable
-fun CardPriorityDragSort(scores: MutableList<CardScore>) {
-    AndroidView(
-        factory = { context ->
-            RecyclerView(context).apply {
-                setHasFixedSize(true)
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            }
-        },
-        update = {
-            it.adapter = CardPriorityAdapter(scores).also { adapter ->
-                val callback = ItemTouchHelperCallback(adapter)
-                val itemTouchHelper = ItemTouchHelper(callback)
-                itemTouchHelper.attachToRecyclerView(it)
+fun CardPriorityDragSort(
+    scores: MutableList<CardScore>
+) {
+    val context = LocalContext.current
 
-                adapter.itemTouchHelper = itemTouchHelper
-            }
+    DragSort(
+        items = scores,
+        viewConfigGrabber = {
+            DragSortAdapter.ItemViewConfig(
+                foregroundColor = Color.WHITE,
+                backgroundColor = context.getColor(it.getColorRes()),
+                text = it.toString()
+            )
         }
     )
+}
+
+fun CardScore.getColorRes(): Int {
+    return when (type) {
+        CardTypeEnum.Buster -> when (affinity) {
+            CardAffinityEnum.Weak -> R.color.colorBusterWeak
+            CardAffinityEnum.Normal -> R.color.colorBuster
+            CardAffinityEnum.Resist -> R.color.colorBusterResist
+        }
+        CardTypeEnum.Arts -> when (affinity) {
+            CardAffinityEnum.Weak -> R.color.colorArtsWeak
+            CardAffinityEnum.Normal -> R.color.colorArts
+            CardAffinityEnum.Resist -> R.color.colorArtsResist
+        }
+        CardTypeEnum.Quick -> when (affinity) {
+            CardAffinityEnum.Weak -> R.color.colorQuickWeak
+            CardAffinityEnum.Normal -> R.color.colorQuick
+            CardAffinityEnum.Resist -> R.color.colorQuickResist
+        }
+        CardTypeEnum.Unknown -> R.color.colorPrimaryDark
+    }
 }

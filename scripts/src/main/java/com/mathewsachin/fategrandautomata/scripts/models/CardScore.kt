@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.models
 import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.CardTypeEnum
 
-data class CardScore(val CardType: CardTypeEnum, val CardAffinity: CardAffinityEnum) {
+data class CardScore(val type: CardTypeEnum, val affinity: CardAffinityEnum) {
     private fun String.filterCapitals(): String {
         return this
             .asSequence()
@@ -14,11 +14,11 @@ data class CardScore(val CardType: CardTypeEnum, val CardAffinity: CardAffinityE
     override fun toString(): String {
         var result = ""
 
-        if (CardAffinity != CardAffinityEnum.Normal) {
-            result += "$CardAffinity "
+        if (affinity != CardAffinityEnum.Normal) {
+            result += "$affinity "
         }
 
-        result += CardType
+        result += type
 
         return result.filterCapitals()
     }

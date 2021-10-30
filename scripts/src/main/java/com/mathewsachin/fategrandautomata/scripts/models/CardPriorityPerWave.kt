@@ -20,16 +20,24 @@ class CardPriorityPerWave private constructor(
         scoresPerWave.joinToString(cardPriorityStageSeparator)
 
     companion object {
+        private const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
         private const val cardPriorityStageSeparator = "\n"
+
+        val default get() =
+            of(defaultCardPriority)
 
         fun from(scoresPerWave: List<CardPriority>) =
             CardPriorityPerWave(scoresPerWave)
 
         fun of(priority: String): CardPriorityPerWave =
-            CardPriorityPerWave(
-                priority
-                    .split(cardPriorityStageSeparator)
-                    .map { CardPriority.of(it) }
-            )
+            if (priority.isBlank()) {
+                default
+            } else {
+                CardPriorityPerWave(
+                    priority
+                        .split(cardPriorityStageSeparator)
+                        .map { CardPriority.of(it) }
+                )
+            }
     }
 }

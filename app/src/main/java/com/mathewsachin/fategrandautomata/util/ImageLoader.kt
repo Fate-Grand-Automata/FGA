@@ -10,6 +10,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.IPattern
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.opencv.android.Utils
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class ImageLoader @Inject constructor(
     val storageProvider: IStorageProvider,
     val prefs: IPreferences,
-    @ApplicationContext val context: Context
+    @ApplicationContext val context: Context,
+    private val colorManager: ColorManager
 ) : IImageLoader {
     private fun createPattern(gameServer: GameServerEnum, FileName: String): IPattern {
         val filePath = "$gameServer/${FileName}"
@@ -30,13 +32,17 @@ class ImageLoader @Inject constructor(
         val inputStream = assets.open(filePath)
 
         inputStream.use {
-            return DroidCvPattern(it).tag(filePath)
+            return DroidCvPattern(it, colorManager.isColor).tag(filePath)
         }
     }
 
+    private data class CacheKey(val name: String, val isColor: Boolean)
+
+    private fun key(name: String) = CacheKey(name, colorManager.isColor)
+
     private var currentGameServer: GameServerEnum =
         GameServerEnum.En
-    private var regionCachedPatterns = mutableMapOf<String, IPattern>()
+    private var regionCachedPatterns = mutableMapOf<CacheKey, IPattern>()
 
     fun Images.fileName(): String = when (this) {
         Images.BattleScreen -> "battle.png"
@@ -53,7 +59,7 @@ class ImageLoader @Inject constructor(
         Images.Follow -> "follow.png"
         Images.LimitBroken -> "limitbroken.png"
         Images.SupportScreen -> "support_screen.png"
-        Images.SupportRegionTool -> "support_region_tool.png"
+        Images.SupportConfirmSetupButton -> "support_region_tool.png"
         Images.StorySkip -> "storyskip.png"
         Images.Menu -> "menu.png"
         Images.Stamina -> "stamina.png"
@@ -117,7 +123,7 @@ class ImageLoader @Inject constructor(
             currentGameServer = server
         }
 
-        return regionCachedPatterns.getOrPut(path) {
+        return regionCachedPatterns.getOrPut(key(path)) {
             loadPatternWithFallback(path)
         }
     }
@@ -147,7 +153,7 @@ class ImageLoader @Inject constructor(
         clearSupportCache()
     }
 
-    private var supportCachedPatterns = mutableMapOf<String, List<IPattern>>()
+    private var supportCachedPatterns = mutableMapOf<CacheKey, List<IPattern>>()
 
     override fun clearSupportCache() = synchronized(supportCachedPatterns) {
         for (patterns in supportCachedPatterns.values) {
@@ -161,19 +167,19 @@ class ImageLoader @Inject constructor(
         val inputStreams = storageProvider.readSupportImage(kind, name)
         return inputStreams.withIndex().map { (i, stream) ->
             stream.use {
-                DroidCvPattern(it).tag("$name:$i")
+                DroidCvPattern(it, colorManager.isColor).tag("$name:$i")
             }
         }
     }
 
     override fun loadSupportPattern(kind: SupportImageKind, name: String): List<IPattern> = synchronized(supportCachedPatterns) {
-        return supportCachedPatterns.getOrPut("$kind:$name") {
+        return supportCachedPatterns.getOrPut(key("$kind:$name")) {
             fileLoader(kind, name)
         }
     }
 
     override fun loadMaterial(material: MaterialEnum) =
-        regionCachedPatterns.getOrPut("materials/$material") {
+        regionCachedPatterns.getOrPut(key("materials/$material")) {
             DroidCvPattern(
                 Utils.loadResource(context, material.drawable, Imgcodecs.IMREAD_GRAYSCALE)
             ).tag("MAT:$material")

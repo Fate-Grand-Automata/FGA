@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
+import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
@@ -24,6 +25,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.util.*
+import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import dagger.hilt.android.AndroidEntryPoint
@@ -102,6 +104,9 @@ class ScriptRunnerService: Service() {
 
     @Inject
     lateinit var messages: ScriptMessages
+
+    @Inject
+    lateinit var colorManager: ColorManager
 
     private val screenOffReceiver = ScreenOffReceiver()
 
@@ -189,25 +194,26 @@ class ScriptRunnerService: Service() {
             }
         }
 
-        if (isLandscape()) {
+        if (shouldDisplayPlayButton()) {
             userInterface.show()
         }
 
         prepareScreenshotService()
     }
 
-    private fun isLandscape() =
-        userInterface.metrics.let { it.widthPixels >= it.heightPixels }
+    private fun shouldDisplayPlayButton(): Boolean {
+        val isLandscape = userInterface.metrics.let { it.widthPixels >= it.heightPixels }
+
+        Timber.verbose { if (isLandscape) "LANDSCAPE" else "PORTRAIT" }
+
+        // Hide overlay in Portrait orientation (unless Surface Duo)
+        return isLandscape || prefsCore.gameAreaMode.get() == GameAreaMode.Duo
+    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        // Hide overlay in Portrait orientation
-        if (isLandscape()) {
-            Timber.verbose { "LANDSCAPE" }
-
+        if (shouldDisplayPlayButton()) {
             userInterface.show()
         } else {
-            Timber.verbose { "PORTRAIT" }
-
             userInterface.hide()
 
             // Pause if script is running
@@ -272,10 +278,11 @@ class ScriptRunnerService: Service() {
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
-                    userInterface.mediaProjectionMetrics,
-                    storageProvider
+                    userInterface.landscapeMetrics,
+                    storageProvider,
+                    colorManager
                 )
-            } else RootScreenshotService(SuperUser(), storageProvider)
+            } else RootScreenshotService(SuperUser(), storageProvider, colorManager)
         } catch (e: Exception) {
             Timber.error(e) { "Error preparing screenshot service" }
             null

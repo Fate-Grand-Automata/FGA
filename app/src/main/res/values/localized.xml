@@ -80,8 +80,7 @@
     <string name="support_img_namer_ce">Craft Essence(s)</string>
     <string name="support_img_namer_friend_names">Friend Name(s)</string>
     <string name="support_img_namer_item_name">Name</string>
-    <string name="support_img_namer_servant_invalid_message">You\'re not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: %s</string>
-    <string name="support_img_namer_ce_or_friend_invalid_message">You\'re not allowed to specify folders, files cannot start with a period or space, and these symbols cannot be used: %s</string>
+    <string name="support_img_namer_invalid_message">You\'re not allowed to specify more than 1 folder, files cannot start with a period or space, and these symbols cannot be used: %s</string>
     <string name="support_img_namer_title">Pick what you want</string>
     <string name="support_img_namer_done">Done</string>
     <string name="support_img_namer_blank_file_name">One of the names is still empty. Either uncheck the unnamed Servant/CE or specify a name.</string>
@@ -113,6 +112,7 @@
     <string name="p_battle_config_support_friend_names">Friend names</string>
     <string name="p_battle_config_support_friends_only">Friends Only</string>
     <string name="p_battle_config_support_friend_name_hint">Friend name images can be added using \'Support Image Maker\' script</string>
+    <string name="p_battle_config_support_also_check_all">Also check All</string>
 
     <string name="p_max_skills">Max Skills</string>
 

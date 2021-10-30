@@ -3,31 +3,35 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.modules.supportRegionToolSimilarity
+import com.mathewsachin.fategrandautomata.scripts.modules.Support
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.io.File
 import javax.inject.Inject
 
-fun getServantImgPath(dir: File, Index: Int): File {
-    return File(dir, "servant_${Index}.png")
-}
-
-fun getCeImgPath(dir: File, Index: Int): File {
-    return File(dir, "ce_${Index}.png")
-}
-
-fun getFriendImgPath(dir: File, Index: Int): File {
-    return File(dir, "friend_${Index}.png")
-}
-
+@ScriptScope
 class SupportImageMaker @Inject constructor(
     storageProvider: IStorageProvider,
     exitManager: ExitManager,
     fgAutomataApi: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    companion object {
+        fun getServantImgPath(dir: File, Index: Int): File {
+            return File(dir, "servant_${Index}.png")
+        }
+
+        fun getCeImgPath(dir: File, Index: Int): File {
+            return File(dir, "ce_${Index}.png")
+        }
+
+        fun getFriendImgPath(dir: File, Index: Int): File {
+            return File(dir, "friend_${Index}.png")
+        }
+    }
+
     sealed class ExitReason {
         object Success: ExitReason()
         object NotFound: ExitReason()
@@ -43,10 +47,10 @@ class SupportImageMaker @Inject constructor(
         val isInSupport = isInSupport()
 
         // At max two Servant+CE are completely on screen, so only use those
-        val regionArray = game.scriptArea
+        val regionArray = locations.scriptArea
             .findAll(
-                images[Images.SupportRegionTool],
-                supportRegionToolSimilarity
+                images[Images.SupportConfirmSetupButton],
+                Support.supportRegionToolSimilarity
             )
             .map {
                 Region(
@@ -57,7 +61,7 @@ class SupportImageMaker @Inject constructor(
                     220
                 ) + it.region.location
             }
-            .filter { it in game.scriptArea }
+            .filter { it in locations.scriptArea }
             .take(2)
             .toList()
             .sorted()

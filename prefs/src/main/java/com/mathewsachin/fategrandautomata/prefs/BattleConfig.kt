@@ -5,8 +5,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.map
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 
-const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
-
 internal class BattleConfig(
     override val id: String,
     prefsCore: PrefsCore
@@ -19,6 +17,9 @@ internal class BattleConfig(
     override var cardPriority by prefs.cardPriority
     override val rearrangeCards by prefs.rearrangeCards
     override val braveChains by prefs.braveChains
+
+    override val servantPriority by prefs.servantPriority
+    override val useServantPriority by prefs.useServantPriority
 
     override val party by prefs.party
     override val materials by prefs.materials
