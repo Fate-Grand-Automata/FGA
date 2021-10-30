@@ -48,8 +48,6 @@ class SupportScreenRefresher @Inject constructor(
                 // wait for dialogs to close
                 images[Images.SupportExtra] !in locations.support.extraRegion -> Duration.seconds(1).wait()
                 images[Images.SupportNotFound] in locations.support.notFoundRegion -> {
-                    updateLastSupportRefreshTimestamp()
-                    refreshSupportList()
                     return
                 }
                 locations.support.confirmSetupButtonRegion.exists(

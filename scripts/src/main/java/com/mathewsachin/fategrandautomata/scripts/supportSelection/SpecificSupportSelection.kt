@@ -11,11 +11,15 @@ import com.mathewsachin.libautomata.Region
 abstract class SpecificSupportSelection(
     protected val supportPrefs: ISupportPreferences,
     fgAutomataApi: IFgoAutomataApi
-): SupportSelectionProvider, IFgoAutomataApi by fgAutomataApi {
+) : SupportSelectionProvider, IFgoAutomataApi by fgAutomataApi {
     protected abstract fun search(): SpecificSupportSearchResult
 
     override fun select() =
         useSameSnapIn(fun(): SupportSelectionResult {
+            if (images[Images.SupportNotFound] in locations.support.notFoundRegion) {
+                return SupportSelectionResult.Refresh;
+            }
+
             if (!isFriend(locations.support.friendRegion)) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SupportSelectionResult.Refresh

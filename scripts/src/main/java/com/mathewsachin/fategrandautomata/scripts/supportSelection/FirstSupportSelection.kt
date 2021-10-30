@@ -9,9 +9,13 @@ import kotlin.time.Duration
 @ScriptScope
 class FirstSupportSelection @Inject constructor(
     fgAutomataApi: IFgoAutomataApi
-): SupportSelectionProvider, IFgoAutomataApi by fgAutomataApi {
+) : SupportSelectionProvider, IFgoAutomataApi by fgAutomataApi {
     override fun select(): SupportSelectionResult {
         Duration.seconds(0.5).wait()
+
+        if (images[Images.SupportNotFound] in locations.support.notFoundRegion) {
+            return SupportSelectionResult.Refresh;
+        }
 
         locations.support.firstSupportClick.click()
 
