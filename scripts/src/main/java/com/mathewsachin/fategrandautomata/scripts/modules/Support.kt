@@ -32,7 +32,7 @@ class Support @Inject constructor(
         Duration.seconds(0.5).wait()
     }
 
-    fun selectSupport(continuing: Boolean, selectionMode: SupportSelectionModeEnum = supportPrefs.selectionMode) {
+    fun selectSupport(selectionMode: SupportSelectionModeEnum = supportPrefs.selectionMode) {
         refresher.waitForSupportScreenToLoad()
 
         val provider = when (selectionMode) {
@@ -42,18 +42,17 @@ class Support @Inject constructor(
             SupportSelectionModeEnum.Preferred -> preferredSupportSelection
         }
 
-        execute(provider, continuing)
+        execute(provider)
     }
 
-    private fun execute(provider: SupportSelectionProvider, continuing: Boolean) {
+    private fun execute(provider: SupportSelectionProvider) {
         var numberOfSwipes = 0
         var numberOfUpdates = 0
         var onAllList = false
 
         val alsoCheckAll = supportPrefs.alsoCheckAll && supportPrefs.supportClass.canAlsoCheckAll
-        if (alsoCheckAll || !continuing) {
-            selectSupportClass()
-        }
+
+        selectSupportClass()
 
         while (true) {
             val result = provider.select()
@@ -94,7 +93,7 @@ class Support @Inject constructor(
                 // Not found after retries, use fallback
                 else -> {
                     locations.support.listTopClick.click()
-                    selectSupport(true, supportPrefs.fallbackTo)
+                    selectSupport(supportPrefs.fallbackTo)
                     return
                 }
             }

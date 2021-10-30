@@ -336,7 +336,7 @@ class AutoBattle @Inject constructor(
 
     // Selections Support option
     private fun support() {
-        support.selectSupport(isContinuing)
+        support.selectSupport()
 
         if (!isContinuing) {
             Duration.seconds(4).wait()

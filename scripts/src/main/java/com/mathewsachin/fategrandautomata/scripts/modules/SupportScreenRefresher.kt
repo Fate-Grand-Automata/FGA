@@ -41,22 +41,30 @@ class SupportScreenRefresher @Inject constructor(
         lastSupportRefreshTimestamp = TimeSource.Monotonic.markNow()
     }
 
+    private fun isAnyDialogOpen() =
+        images[Images.SupportExtra] !in locations.support.extraRegion
+
+    private fun noMatchingSupportsPresent() =
+        images[Images.SupportNotFound] in locations.support.notFoundRegion
+
+    private fun someSupportsPresent() =
+        locations.support.confirmSetupButtonRegion.exists(
+            images[Images.SupportConfirmSetupButton],
+            similarity = Support.supportRegionToolSimilarity
+        ) || images[Images.Guest] in locations.support.friendRegion
+
     fun waitForSupportScreenToLoad() {
         while (true) {
             when {
                 connectionRetry.needsToRetry() -> connectionRetry.retry()
                 // wait for dialogs to close
-                images[Images.SupportExtra] !in locations.support.extraRegion -> Duration.seconds(1).wait()
-                images[Images.SupportNotFound] in locations.support.notFoundRegion -> {
+                isAnyDialogOpen() -> Duration.seconds(1).wait()
+                noMatchingSupportsPresent() -> {
                     updateLastSupportRefreshTimestamp()
                     refreshSupportList()
                     return
                 }
-                locations.support.confirmSetupButtonRegion.exists(
-                    images[Images.SupportConfirmSetupButton],
-                    similarity = Support.supportRegionToolSimilarity
-                ) -> return
-                images[Images.Guest] in locations.support.friendRegion -> return
+                someSupportsPresent() -> return
             }
 
             Duration.milliseconds(100).wait()
