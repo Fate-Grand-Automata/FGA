@@ -18,6 +18,12 @@ class SupportScreenRefresher @Inject constructor(
     private val supportRefreshThreshold = Duration.seconds(10)
 
     fun refreshSupportList() {
+        performRefresh()
+
+        waitForSupportScreenToLoad()
+    }
+
+    private fun performRefresh() {
         lastSupportRefreshTimestamp?.elapsedNow()?.let { elapsed ->
             val toWait = supportRefreshThreshold - elapsed
 
@@ -32,9 +38,6 @@ class SupportScreenRefresher @Inject constructor(
         Duration.seconds(1).wait()
 
         locations.support.updateYesClick.click()
-
-        waitForSupportScreenToLoad()
-        updateLastSupportRefreshTimestamp()
     }
 
     private fun updateLastSupportRefreshTimestamp() {
@@ -54,20 +57,23 @@ class SupportScreenRefresher @Inject constructor(
         ) || images[Images.Guest] in locations.support.friendRegion
 
     fun waitForSupportScreenToLoad() {
-        while (true) {
-            when {
-                connectionRetry.needsToRetry() -> connectionRetry.retry()
-                // wait for dialogs to close
-                isAnyDialogOpen() -> Duration.seconds(1).wait()
-                noMatchingSupportsPresent() -> {
-                    updateLastSupportRefreshTimestamp()
-                    refreshSupportList()
-                    return
+        try {
+            while (true) {
+                when {
+                    connectionRetry.needsToRetry() -> connectionRetry.retry()
+                    // wait for dialogs to close
+                    isAnyDialogOpen() -> Duration.seconds(1).wait()
+                    noMatchingSupportsPresent() -> {
+                        updateLastSupportRefreshTimestamp()
+                        performRefresh()
+                    }
+                    someSupportsPresent() -> return
                 }
-                someSupportsPresent() -> return
-            }
 
-            Duration.milliseconds(100).wait()
+                Duration.milliseconds(100).wait()
+            }
+        } finally {
+            updateLastSupportRefreshTimestamp()
         }
     }
 }
