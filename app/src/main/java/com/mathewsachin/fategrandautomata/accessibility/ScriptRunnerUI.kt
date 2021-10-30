@@ -23,7 +23,7 @@ import com.mathewsachin.fategrandautomata.ui.FGATheme
 
 sealed class ScriptRunnerUIState {
     object Running: ScriptRunnerUIState()
-    object Paused: ScriptRunnerUIState()
+    class Paused(val pausedStatus: Exception?): ScriptRunnerUIState()
     object Idle: ScriptRunnerUIState()
 }
 
@@ -32,7 +32,7 @@ sealed class ScriptRunnerUIAction {
     object Pause: ScriptRunnerUIAction()
     object Resume: ScriptRunnerUIAction()
     object Stop: ScriptRunnerUIAction()
-    object Status: ScriptRunnerUIAction()
+    class Status(val status: Exception): ScriptRunnerUIAction()
 }
 
 @Composable
@@ -67,7 +67,7 @@ fun ScriptRunnerUI(
                 onClick = {
                     val action = when (state) {
                         ScriptRunnerUIState.Idle -> ScriptRunnerUIAction.Start
-                        ScriptRunnerUIState.Paused -> ScriptRunnerUIAction.Resume
+                        is ScriptRunnerUIState.Paused -> ScriptRunnerUIAction.Resume
                         ScriptRunnerUIState.Running -> ScriptRunnerUIAction.Pause
                     }
 
@@ -78,12 +78,12 @@ fun ScriptRunnerUI(
             ) {
                 Icon(
                     painter = when (state) {
-                        ScriptRunnerUIState.Idle, ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
+                        ScriptRunnerUIState.Idle, is ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
                         ScriptRunnerUIState.Running -> painterResource(R.drawable.ic_pause)
                     },
                     contentDescription = when (state) {
                         ScriptRunnerUIState.Idle -> "start"
-                        ScriptRunnerUIState.Paused -> "resume"
+                        is ScriptRunnerUIState.Paused -> "resume"
                         ScriptRunnerUIState.Running -> "pause"
                     },
                     modifier = Modifier
@@ -118,23 +118,27 @@ fun ScriptRunnerUI(
                         )
                     }
 
-                    Surface(
-                        color = MaterialTheme.colors.surface,
-                        contentColor = Color.White,
-                        elevation = 5.dp,
-                        shape = shape,
-                        onClick = { updateState(ScriptRunnerUIAction.Status) },
-                        modifier = dragModifier
-                            .offset(x = (-18).dp)
-                            .zIndex(-2f)
-                    ) {
-                        Icon(
-                            painterResource(R.drawable.ic_info),
-                            contentDescription = "status",
-                            modifier = Modifier
-                                .padding(18.dp, 10.dp)
-                                .padding(start = 8.dp)
-                        )
+                    state.let {
+                        if (it is ScriptRunnerUIState.Paused && it.pausedStatus != null) {
+                            Surface(
+                                color = MaterialTheme.colors.secondary,
+                                contentColor = MaterialTheme.colors.onSecondary,
+                                elevation = 5.dp,
+                                shape = shape,
+                                onClick = { updateState(ScriptRunnerUIAction.Status(it.pausedStatus)) },
+                                modifier = dragModifier
+                                    .offset(x = (-18).dp)
+                                    .zIndex(-2f)
+                            ) {
+                                Icon(
+                                    painterResource(R.drawable.ic_info),
+                                    contentDescription = "status",
+                                    modifier = Modifier
+                                        .padding(18.dp, 10.dp)
+                                        .padding(start = 8.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }

@@ -214,8 +214,8 @@ class ScriptManager @Inject constructor(
 
                     return true
                 } else if (!state.paused && action != PauseAction.Resume) {
-                    userInterface.uiState = ScriptRunnerUIState.Paused
                     state.entryPoint.exitManager.pause()
+                    userInterface.uiState = ScriptRunnerUIState.Paused(state.entryPoint.pausedStatus())
 
                     state.paused = true
 
@@ -384,15 +384,9 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    fun showStatus() {
-        scriptState.let {
-            if (it is ScriptState.Started) {
-                val status = it.entryPoint.pausedStatus()
-
-                if (status is AutoBattle.ExitException) {
-                    scope.launch { showBattleExit(service, status) }
-                }
-            }
+    fun showStatus(status: Exception) {
+        if (status is AutoBattle.ExitException) {
+            scope.launch { showBattleExit(service, status) }
         }
     }
 }
