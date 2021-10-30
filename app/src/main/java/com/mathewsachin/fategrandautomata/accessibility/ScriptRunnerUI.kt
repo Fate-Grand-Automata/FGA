@@ -23,7 +23,7 @@ import com.mathewsachin.fategrandautomata.ui.FGATheme
 
 sealed class ScriptRunnerUIState {
     object Running: ScriptRunnerUIState()
-    object Paused: ScriptRunnerUIState()
+    class Paused(val pausedStatus: Exception?): ScriptRunnerUIState()
     object Idle: ScriptRunnerUIState()
 }
 
@@ -32,6 +32,7 @@ sealed class ScriptRunnerUIAction {
     object Pause: ScriptRunnerUIAction()
     object Resume: ScriptRunnerUIAction()
     object Stop: ScriptRunnerUIAction()
+    class Status(val status: Exception): ScriptRunnerUIAction()
 }
 
 @Composable
@@ -66,7 +67,7 @@ fun ScriptRunnerUI(
                 onClick = {
                     val action = when (state) {
                         ScriptRunnerUIState.Idle -> ScriptRunnerUIAction.Start
-                        ScriptRunnerUIState.Paused -> ScriptRunnerUIAction.Resume
+                        is ScriptRunnerUIState.Paused -> ScriptRunnerUIAction.Resume
                         ScriptRunnerUIState.Running -> ScriptRunnerUIAction.Pause
                     }
 
@@ -77,12 +78,12 @@ fun ScriptRunnerUI(
             ) {
                 Icon(
                     painter = when (state) {
-                        ScriptRunnerUIState.Idle, ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
+                        ScriptRunnerUIState.Idle, is ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
                         ScriptRunnerUIState.Running -> painterResource(R.drawable.ic_pause)
                     },
                     contentDescription = when (state) {
                         ScriptRunnerUIState.Idle -> "start"
-                        ScriptRunnerUIState.Paused -> "resume"
+                        is ScriptRunnerUIState.Paused -> "resume"
                         ScriptRunnerUIState.Running -> "pause"
                     },
                     modifier = Modifier
@@ -98,20 +99,47 @@ fun ScriptRunnerUI(
                     .offset(x = (-18).dp)
                     .zIndex(-1f)
             ) {
-                Surface(
-                    color = Color(0xFFCF6679),
-                    contentColor = Color.White,
-                    shape = RoundedCornerShape(0, 50, 50, 0),
-                    onClick = { updateState(ScriptRunnerUIAction.Stop) },
-                    modifier = dragModifier
-                ) {
-                    Icon(
-                        painterResource(R.drawable.ic_stop),
-                        contentDescription = "stop",
-                        modifier = Modifier
-                            .padding(18.dp, 10.dp)
-                            .padding(start = 8.dp)
-                    )
+                Row {
+                    val shape = RoundedCornerShape(0, 50, 50, 0)
+
+                    Surface(
+                        color = Color(0xFFCF6679),
+                        contentColor = Color.White,
+                        shape = shape,
+                        onClick = { updateState(ScriptRunnerUIAction.Stop) },
+                        modifier = dragModifier
+                    ) {
+                        Icon(
+                            painterResource(R.drawable.ic_stop),
+                            contentDescription = "stop",
+                            modifier = Modifier
+                                .padding(18.dp, 10.dp)
+                                .padding(start = 8.dp)
+                        )
+                    }
+
+                    state.let {
+                        if (it is ScriptRunnerUIState.Paused && it.pausedStatus != null) {
+                            Surface(
+                                color = MaterialTheme.colors.secondary,
+                                contentColor = MaterialTheme.colors.onSecondary,
+                                elevation = 5.dp,
+                                shape = shape,
+                                onClick = { updateState(ScriptRunnerUIAction.Status(it.pausedStatus)) },
+                                modifier = dragModifier
+                                    .offset(x = (-18).dp)
+                                    .zIndex(-2f)
+                            ) {
+                                Icon(
+                                    painterResource(R.drawable.ic_info),
+                                    contentDescription = "status",
+                                    modifier = Modifier
+                                        .padding(18.dp, 10.dp)
+                                        .padding(start = 8.dp)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }

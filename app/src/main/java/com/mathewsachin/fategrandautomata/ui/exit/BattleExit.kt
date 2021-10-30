@@ -54,6 +54,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
     is AutoBattle.ExitReason.CardPriorityParseError -> msg
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
+    AutoBattle.ExitReason.Paused -> "PAUSED"
 }
 
 @Composable

@@ -150,6 +150,9 @@ class ScriptRunnerService: Service() {
                     scriptManager.stopScript()
                 }
             }
+            is ScriptRunnerUIAction.Status -> {
+                scriptManager.showStatus(action.status)
+            }
         }
     }
 

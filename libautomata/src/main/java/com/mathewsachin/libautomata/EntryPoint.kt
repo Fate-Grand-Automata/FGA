@@ -45,4 +45,6 @@ abstract class EntryPoint(val exitManager: ExitManager) {
      * unexpected error occurred.
      */
     var scriptExitListener: (Exception) -> Unit = { }
+
+    open fun pausedStatus(): Exception? = null
 }
