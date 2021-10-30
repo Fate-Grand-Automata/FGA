@@ -15,6 +15,7 @@ import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
+import kotlin.time.DurationUnit
 
 @ServiceScoped
 class ScriptMessages @Inject constructor(
@@ -105,7 +106,7 @@ class ScriptMessages @Inject constructor(
             }
             is ScriptNotify.SupportListUpdatingIn -> {
                 toast(
-                    context.getString(R.string.support_list_updated_in, action.time.toString())
+                    context.getString(R.string.support_list_updated_in, action.time.toString(DurationUnit.SECONDS, 2))
                 )
             }
             is ScriptNotify.WaitForAPRegen -> {
