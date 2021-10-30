@@ -64,6 +64,7 @@ class ScriptManager @Inject constructor(
                 BattleExit(
                     exception = exception,
                     prefs = preferences,
+                    prefsCore = prefsCore,
                     onClose = { dialog?.dismiss() },
                     onCopy = { service.copyToClipboard(exception) }
                 )
