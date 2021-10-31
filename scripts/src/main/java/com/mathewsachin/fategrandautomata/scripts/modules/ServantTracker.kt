@@ -142,7 +142,17 @@ class ServantTracker @Inject constructor(
             if (newTeamSlot != null) {
                 _deployed[slot] = newTeamSlot
                 init(newTeamSlot, slot)
-            } else _deployed.remove(slot)
+            } else {
+                // Something has gone wrong with matching servants, a servant is present but we don't know which one
+                _deployed[slot] = TeamSlot.Unknown
+
+                messages.log(
+                    ScriptLog.ServantEnteredSlot(
+                        servant = TeamSlot.Unknown,
+                        slot = slot
+                    )
+                )
+            }
         }
     }
 
