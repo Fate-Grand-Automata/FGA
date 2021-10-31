@@ -121,6 +121,8 @@ class ServantTracker @Inject constructor(
         }
 
         val teamSlot = deployed[slot] ?: return
+        if (teamSlot is TeamSlot.Unknown) return
+
         val checkImage = checkImages[teamSlot]?.checkImage
 
         if (checkImage == null) {
