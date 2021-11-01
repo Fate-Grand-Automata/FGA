@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -12,15 +13,16 @@ import kotlin.time.TimeSource
 @ScriptScope
 class SupportScreenRefresher @Inject constructor(
     fgAutomataApi: IFgoAutomataApi,
-    private val connectionRetry: ConnectionRetry
+    private val connectionRetry: ConnectionRetry,
+    private val supportClassPicker: SupportClassPicker
 ) : IFgoAutomataApi by fgAutomataApi {
     private var lastSupportRefreshTimestamp: TimeMark? = null
     private val supportRefreshThreshold = Duration.seconds(10)
 
-    fun refreshSupportList() {
+    fun refreshSupportList(): Result {
         performRefresh()
 
-        waitForSupportScreenToLoad()
+        return waitForSupportScreenToLoad()
     }
 
     private fun performRefresh() {
@@ -47,7 +49,7 @@ class SupportScreenRefresher @Inject constructor(
     private fun isAnyDialogOpen() =
         images[Images.SupportExtra] !in locations.support.extraRegion
 
-    private fun noMatchingSupportsPresent() =
+    private fun noSupportsPresent() =
         images[Images.SupportNotFound] in locations.support.notFoundRegion
 
     private fun someSupportsPresent() =
@@ -56,24 +58,49 @@ class SupportScreenRefresher @Inject constructor(
             similarity = Support.supportRegionToolSimilarity
         ) || images[Images.Guest] in locations.support.friendRegion
 
-    fun waitForSupportScreenToLoad() {
+    private fun isListLoaded() =
+        useSameSnapIn { noSupportsPresent() || someSupportsPresent() }
+
+    private fun waitTillListLoads() {
         try {
             while (true) {
                 when {
                     connectionRetry.needsToRetry() -> connectionRetry.retry()
                     // wait for dialogs to close
                     isAnyDialogOpen() -> Duration.seconds(1).wait()
-                    noMatchingSupportsPresent() -> {
-                        updateLastSupportRefreshTimestamp()
-                        performRefresh()
-                    }
-                    someSupportsPresent() -> return
+                    isListLoaded() -> return
                 }
 
                 Duration.milliseconds(100).wait()
             }
         } finally {
             updateLastSupportRefreshTimestamp()
+        }
+    }
+
+    enum class Result {
+        Loaded, SwitchedToAll
+    }
+
+    fun waitForSupportScreenToLoad(): Result {
+        while (true) {
+            waitTillListLoads()
+            supportClassPicker.selectSupportClass()
+
+            if (!noSupportsPresent()) {
+                return Result.Loaded
+            } else {
+                if (supportClassPicker.shouldAlsoCheckAll()) {
+                    supportClassPicker.selectSupportClass(SupportClass.All)
+
+                    if (!noSupportsPresent()) {
+                        return Result.SwitchedToAll
+                    }
+                }
+            }
+
+            // Nothing matched, refresh
+            performRefresh()
         }
     }
 }
