@@ -2,15 +2,11 @@ package com.mathewsachin.fategrandautomata.runner
 
 import android.app.Activity
 import android.app.Service
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.media.projection.MediaProjectionManager
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
@@ -30,7 +26,8 @@ import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.IScreenshotService
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.*
@@ -95,9 +92,6 @@ class ScriptRunnerService: Service() {
     lateinit var scriptComponentBuilder: ScriptComponentBuilder
 
     @Inject
-    lateinit var clipboardManager: ClipboardManager
-
-    @Inject
     lateinit var mediaProjectionManager: MediaProjectionManager
 
     @Inject
@@ -106,9 +100,14 @@ class ScriptRunnerService: Service() {
     @Inject
     lateinit var colorManager: ColorManager
 
+    @Inject
+    lateinit var messageBox: ScriptRunnerMessageBox
+
     private val screenOffReceiver = ScreenOffReceiver()
 
     private var screenshotService: IScreenshotService? = null
+
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     override fun onDestroy() {
         Timber.info { "Script runner service destroyed" }
@@ -187,7 +186,10 @@ class ScriptRunnerService: Service() {
                     val title = getString(R.string.script_paused)
                     val msg = getString(R.string.screen_turned_off)
                     messages.notify(msg)
-                    showMessageBox(title, msg)
+
+                    scope.launch {
+                        messageBox.show(title, msg)
+                    }
                 }
             }
         }
@@ -215,7 +217,7 @@ class ScriptRunnerService: Service() {
             overlay.hide()
 
             // Pause if script is running
-            GlobalScope.launch {
+            scope.launch {
                 // This delay is to avoid race-condition with screen turn OFF listener
                 delay(Duration.seconds(1))
 
@@ -227,42 +229,6 @@ class ScriptRunnerService: Service() {
                 }
             }
         }
-    }
-
-    private val handler by lazy {
-        Handler(Looper.getMainLooper())
-    }
-
-    fun showMessageBox(
-        title: String,
-        message: String,
-        error: Exception? = null,
-        onDismiss: () -> Unit = { }
-    ) {
-        handler.post {
-            showOverlayDialog(this) {
-                setTitle(title)
-                    .setMessage(message)
-                    .setPositiveButton(android.R.string.ok) { _, _ -> }
-                    .setOnDismissListener {
-                        notification.hideMessage()
-                        onDismiss()
-                    }
-                    .let {
-                        if (error != null) {
-                            it.setNeutralButton(R.string.unexpected_error_copy) { _, _ ->
-                                copyToClipboard(error)
-                            }
-                        }
-                    }
-            }
-        }
-    }
-
-    fun copyToClipboard(exception: Exception) {
-        val clipData = ClipData.newPlainText(getString(R.string.unexpected_error), exception.messageAndStackTrace)
-
-        clipboardManager.setPrimaryClip(clipData)
     }
 
     fun prepareScreenshotService() {

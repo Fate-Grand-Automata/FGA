@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.runner
 
 import android.app.Service
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.widget.Toast
@@ -33,27 +34,21 @@ import kotlin.time.Duration
 
 @ServiceScoped
 class ScriptManager @Inject constructor(
-    service: Service,
+    private val service: Service,
     @ApplicationContext private val context: Context,
     private val imageLoader: ImageLoader,
     private val preferences: IPreferences,
     private val prefsCore: PrefsCore,
     private val storageProvider: StorageProvider,
     private val messages: ScriptMessages,
-    private val uiStateHolder: ScriptRunnerUIStateHolder
+    private val uiStateHolder: ScriptRunnerUIStateHolder,
+    private val clipboardManager: ClipboardManager,
+    private val messageBox: ScriptRunnerMessageBox
 ) {
     private val scope = CoroutineScope(Dispatchers.Default)
-    private val service = service as ScriptRunnerService
 
     var scriptState: ScriptState = ScriptState.Stopped
         private set
-
-    // Show message box synchronously
-    private suspend fun message(Title: String, Message: String, Error: Exception? = null): Boolean = suspendCancellableCoroutine {
-        service.showMessageBox(Title, Message, Error) {
-            it.resume(true)
-        }
-    }
 
     private fun runDelayedOnUiThread(
         delay: Duration = Duration.milliseconds(500),
@@ -81,7 +76,7 @@ class ScriptManager @Inject constructor(
                     prefs = preferences,
                     prefsCore = prefsCore,
                     onClose = { dialog?.dismiss() },
-                    onCopy = { service.copyToClipboard(exception) }
+                    onCopy = { clipboardManager.set(context, exception) }
                 )
             }
 
@@ -138,7 +133,7 @@ class ScriptManager @Inject constructor(
                         val msg = context.getString(R.string.support_img_maker_not_found)
 
                         messages.notify(msg)
-                        message(scriptExitedString, msg)
+                        messageBox.show(scriptExitedString, msg)
                     }
                     SupportImageMaker.ExitReason.Success -> showSupportImageNamer(context, storageProvider)
                 }
@@ -150,13 +145,13 @@ class ScriptManager @Inject constructor(
                 }
 
                 messages.notify(msg)
-                message(scriptExitedString, msg)
+                messageBox.show(scriptExitedString, msg)
             }
             is AutoGiftBox.ExitException -> {
                 val msg = context.getString(R.string.picked_exp_stacks, e.pickedStacks)
 
                 messages.notify(msg)
-                message(scriptExitedString, msg)
+                messageBox.show(scriptExitedString, msg)
             }
             is AutoFriendGacha.ExitException -> {
                 val msg = when (val reason = e.reason) {
@@ -165,7 +160,7 @@ class ScriptManager @Inject constructor(
                 }
 
                 messages.notify(msg)
-                message(scriptExitedString, msg)
+                messageBox.show(scriptExitedString, msg)
             }
             is AutoBattle.ExitException -> {
                 if (e.reason !is AutoBattle.ExitReason.Abort) {
@@ -183,12 +178,12 @@ class ScriptManager @Inject constructor(
                 }
 
                 messages.notify(msg)
-                message(scriptExitedString, msg)
+                messageBox.show(scriptExitedString, msg)
             }
             is KnownException -> {
                 messages.notify(scriptExitedString)
 
-                message(scriptExitedString, e.reason.msg)
+                messageBox.show(scriptExitedString, e.reason.msg)
             }
             else -> {
                 println(e.messageAndStackTrace)
@@ -196,7 +191,7 @@ class ScriptManager @Inject constructor(
                 val msg = context.getString(R.string.unexpected_error)
                 messages.notify(msg)
 
-                message(msg, e.messageAndStackTrace, e)
+                messageBox.show(msg, e.messageAndStackTrace, e)
             }
         }
 
