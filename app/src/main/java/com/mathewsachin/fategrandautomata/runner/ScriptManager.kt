@@ -9,6 +9,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
+import com.mathewsachin.fategrandautomata.di.service.ServiceCoroutineScope
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -46,10 +47,9 @@ class ScriptManager @Inject constructor(
     private val messages: ScriptMessages,
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val clipboardManager: ClipboardManager,
-    private val messageBox: ScriptRunnerMessageBox
+    private val messageBox: ScriptRunnerMessageBox,
+    @ServiceCoroutineScope private val scope: CoroutineScope
 ) {
-    private val scope = CoroutineScope(Dispatchers.Default)
-
     var scriptState: ScriptState = ScriptState.Stopped
         private set
 

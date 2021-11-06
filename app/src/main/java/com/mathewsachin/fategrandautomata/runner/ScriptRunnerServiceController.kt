@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.runner
 import android.app.Service
 import android.content.Context
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.di.service.ServiceCoroutineScope
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.util.DisplayHelper
@@ -11,7 +12,10 @@ import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
 import com.mathewsachin.fategrandautomata.util.ScriptMessages
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.info
 import timber.log.verbose
@@ -30,9 +34,9 @@ class ScriptRunnerServiceController @Inject constructor(
     private val notification: ScriptRunnerNotification,
     private val displayHelper: DisplayHelper,
     private val messages: ScriptMessages,
-    private val messageBox: ScriptRunnerMessageBox
+    private val messageBox: ScriptRunnerMessageBox,
+    @ServiceCoroutineScope private val scope: CoroutineScope
 ) {
-    private val scope = CoroutineScope(Dispatchers.Default)
     private val screenOffReceiver = ScreenOffReceiver()
 
     fun onDestroy() {
