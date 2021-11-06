@@ -20,9 +20,8 @@ import kotlin.time.Duration
 
 @ServiceScoped
 class ScriptRunnerNotification @Inject constructor(
-    val service: Service,
-    val prefs: IPreferences,
-    val vibrator: Vibrator
+    private val service: Service,
+    private val vibrator: Vibrator
 ) {
 
     private object Channels {

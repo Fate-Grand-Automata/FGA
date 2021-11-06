@@ -76,8 +76,8 @@ private fun getSupportEntries(
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
 }
 
-suspend fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageProvider: StorageProvider) = withContext(Dispatchers.Main) {
-    val context = UI.Service.applicationContext
+suspend fun showSupportImageNamer(ui: ScriptRunnerUserInterface, storageProvider: StorageProvider) = withContext(Dispatchers.Main) {
+    val context = ui.service.applicationContext
     val themedContext = context.dayNightThemed()
     val frame = FrameLayout(themedContext)
 
@@ -94,9 +94,9 @@ suspend fun showSupportImageNamer(UI: ScriptRunnerUserInterface, storageProvider
     suspendCancellableCoroutine<Unit> { coroutine ->
         showOverlayDialog(context) {
             setCancelable(false)
-                .setTitle(UI.Service.getString(R.string.support_img_namer_title))
+                .setTitle(ui.service.getString(R.string.support_img_namer_title))
                 .setView(content)
-                .setPositiveButton(UI.Service.getString(R.string.support_img_namer_done)) { dialog, _ ->
+                .setPositiveButton(ui.service.getString(R.string.support_img_namer_done)) { dialog, _ ->
                     if (entryList.all { it.isValid() }) {
                         if (entryList.all { it.rename(storageProvider) }) {
                             dialog.dismiss()

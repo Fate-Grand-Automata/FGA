@@ -24,10 +24,10 @@ import kotlin.time.Duration
 
 @ServiceScoped
 class ScriptRunnerUserInterface @Inject constructor(
-    val Service: Service,
-    val highlightManager: HighlightManager,
-    val windowManager: WindowManager,
-    val prefsCore: PrefsCore
+    val service: Service,
+    private val windowManager: WindowManager,
+    private val highlightManager: HighlightManager,
+    private val prefsCore: PrefsCore
 ) {
     companion object {
         val overlayType: Int
@@ -89,8 +89,12 @@ class ScriptRunnerUserInterface @Inject constructor(
         windowAnimations = android.R.style.Animation_Toast
     }
 
+    private val accessibilityWindowManager = TapperService.instance
+        ?.getSystemService(WindowManager::class.java)
+        ?: throw IllegalStateException("Accessibility service not running")
+
     private var highlightLayoutParams = WindowManager.LayoutParams().apply {
-        type = overlayType
+        type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
         format = PixelFormat.TRANSLUCENT
         flags =
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -102,12 +106,12 @@ class ScriptRunnerUserInterface @Inject constructor(
     }
 
     init {
-        require(Service is ScriptRunnerService)
+        require(service is ScriptRunnerService)
 
-        layout = FakedComposeView(Service) {
+        layout = FakedComposeView(service) {
             ScriptRunnerUI(
                 state = uiState,
-                updateState = { Service.act(it) },
+                updateState = { service.act(it) },
                 isRecording = isRecording,
                 enabled = isPlayButtonEnabled,
                 onDrag = { x, y -> onDrag(x, y) }
@@ -153,10 +157,10 @@ class ScriptRunnerUserInterface @Inject constructor(
     private var shown = false
 
     fun show() {
-        if (!shown && Settings.canDrawOverlays(Service)) {
+        if (!shown && Settings.canDrawOverlays(service)) {
             restorePlayButtonLocation()
 
-            windowManager.addView(highlightManager.highlightView, highlightLayoutParams)
+            accessibilityWindowManager.addView(highlightManager.highlightView, highlightLayoutParams)
             windowManager.addView(layout, scriptCtrlBtnLayoutParams)
 
             shown = true
@@ -164,10 +168,10 @@ class ScriptRunnerUserInterface @Inject constructor(
     }
 
     fun hide() {
-        if (shown && Settings.canDrawOverlays(Service)) {
+        if (shown && Settings.canDrawOverlays(service)) {
             savePlayButtonLocation()
 
-            windowManager.removeView(layout)
+            accessibilityWindowManager.removeView(layout)
             windowManager.removeView(highlightManager.highlightView)
 
             shown = false

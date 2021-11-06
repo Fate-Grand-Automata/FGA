@@ -1,20 +1,22 @@
 package com.mathewsachin.fategrandautomata.ui.highlight
 
-import android.content.Context
 import android.view.View
+import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.libautomata.HighlightColor
 import com.mathewsachin.libautomata.Region
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class HighlightManager @Inject constructor(
-    @ApplicationContext context: Context
-) {
+@ServiceScoped
+class HighlightManager @Inject constructor() {
     private val regionsToHighlight = mutableMapOf<Region, HighlightColor>()
 
-    val highlightView: View by lazy { HighlightView(context, regionsToHighlight) }
+    val highlightView: View by lazy {
+        HighlightView(
+            Context = TapperService.instance ?: throw IllegalStateException("Accessibility service not running"),
+            regionsToHighlight = regionsToHighlight
+        )
+    }
 
     fun add(Region: Region, color: HighlightColor) {
         highlightView.post {
