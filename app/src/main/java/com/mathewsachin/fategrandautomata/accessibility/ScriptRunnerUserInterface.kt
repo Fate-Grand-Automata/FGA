@@ -26,7 +26,7 @@ import kotlin.time.Duration
 
 @ServiceScoped
 class ScriptRunnerUserInterface @Inject constructor(
-    val service: Service,
+    private val service: Service,
     private val windowManager: WindowManager,
     private val highlightManager: HighlightManager,
     private val prefsCore: PrefsCore

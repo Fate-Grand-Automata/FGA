@@ -125,7 +125,7 @@ class ScriptManager @Inject constructor(
                         messages.notify(msg)
                         message(scriptExitedString, msg)
                     }
-                    SupportImageMaker.ExitReason.Success -> showSupportImageNamer(userInterface, storageProvider)
+                    SupportImageMaker.ExitReason.Success -> showSupportImageNamer(service, storageProvider)
                 }
             }
             is AutoLottery.ExitException -> {

@@ -1,12 +1,12 @@
 package com.mathewsachin.fategrandautomata.ui.support_img_namer
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ScrollView
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.SupportImageKind
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.SupportImageMaker
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.dayNightThemed
@@ -76,8 +76,7 @@ private fun getSupportEntries(
     return listOf(servant0, servant1, ce0, ce1, friend0, friend1)
 }
 
-suspend fun showSupportImageNamer(ui: ScriptRunnerUserInterface, storageProvider: StorageProvider) = withContext(Dispatchers.Main) {
-    val context = ui.service.applicationContext
+suspend fun showSupportImageNamer(context: Context, storageProvider: StorageProvider) = withContext(Dispatchers.Main) {
     val themedContext = context.dayNightThemed()
     val frame = FrameLayout(themedContext)
 
@@ -94,9 +93,9 @@ suspend fun showSupportImageNamer(ui: ScriptRunnerUserInterface, storageProvider
     suspendCancellableCoroutine<Unit> { coroutine ->
         showOverlayDialog(context) {
             setCancelable(false)
-                .setTitle(ui.service.getString(R.string.support_img_namer_title))
+                .setTitle(context.getString(R.string.support_img_namer_title))
                 .setView(content)
-                .setPositiveButton(ui.service.getString(R.string.support_img_namer_done)) { dialog, _ ->
+                .setPositiveButton(context.getString(R.string.support_img_namer_done)) { dialog, _ ->
                     if (entryList.all { it.isValid() }) {
                         if (entryList.all { it.rename(storageProvider) }) {
                             dialog.dismiss()
