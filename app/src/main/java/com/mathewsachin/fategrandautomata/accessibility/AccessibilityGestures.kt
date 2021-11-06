@@ -21,7 +21,7 @@ import kotlin.math.*
  * Class to perform gestures using Android's [AccessibilityService].
  */
 class AccessibilityGestures @Inject constructor(
-    val gesturePrefs: IGesturesPreferences,
+    private val gesturePrefs: IGesturesPreferences,
     durationExtensions: IDurationExtensions
 ) : IGestureService, IDurationExtensions by durationExtensions {
     fun Path.moveTo(location: Location) = apply {
