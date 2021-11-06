@@ -7,14 +7,11 @@ import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.WindowManager
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUI
-import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIState
+import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIStateHolder
 import com.mathewsachin.fategrandautomata.util.FakedComposeView
 import com.mathewsachin.fategrandautomata.util.overlayType
 import com.mathewsachin.libautomata.Location
@@ -27,7 +24,8 @@ class ScriptRunnerOverlay @Inject constructor(
     private val service: Service,
     private val windowManager: WindowManager,
     private val highlightManager: HighlightManager,
-    private val prefsCore: PrefsCore
+    private val prefsCore: PrefsCore,
+    private val uiStateHolder: ScriptRunnerUIStateHolder
 ) {
     val displayMetrics: DisplayMetrics
         get() {
@@ -39,9 +37,6 @@ class ScriptRunnerOverlay @Inject constructor(
         }
 
     private val layout: ComposeView
-    var uiState by mutableStateOf<ScriptRunnerUIState>(ScriptRunnerUIState.Idle)
-    var isRecording by mutableStateOf(false)
-    var isPlayButtonEnabled by mutableStateOf(true)
 
     private val scriptCtrlBtnLayoutParams = WindowManager.LayoutParams().apply {
         type = overlayType
@@ -62,10 +57,10 @@ class ScriptRunnerOverlay @Inject constructor(
 
         layout = FakedComposeView(service) {
             ScriptRunnerUI(
-                state = uiState,
+                state = uiStateHolder.uiState,
                 updateState = { service.act(it) },
-                isRecording = isRecording,
-                enabled = isPlayButtonEnabled,
+                isRecording = uiStateHolder.isRecording,
+                enabled = uiStateHolder.isPlayButtonEnabled,
                 onDrag = { x, y -> onDrag(x, y) }
             )
         }.view
