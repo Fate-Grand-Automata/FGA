@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.accessibility
+package com.mathewsachin.fategrandautomata.runner
 
 import android.app.Activity
 import android.app.Service
@@ -15,6 +15,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode

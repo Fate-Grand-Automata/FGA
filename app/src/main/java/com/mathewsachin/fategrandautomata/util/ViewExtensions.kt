@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.util
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerOverlay
+import com.mathewsachin.fategrandautomata.runner.ScriptRunnerOverlay
 
 fun Context.dayNightThemed() = ContextThemeWrapper(this, androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog)
 

@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerNotification
+import com.mathewsachin.fategrandautomata.runner.ScriptRunnerNotification
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify

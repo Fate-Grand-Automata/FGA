@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.accessibility
+package com.mathewsachin.fategrandautomata.runner
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -164,8 +164,8 @@ class ScriptRunnerOverlay @Inject constructor(
         }
     }
 
-    fun postDelayed(Delay: Duration, Action: () -> Unit) {
-        layout.postDelayed(Delay.inWholeMilliseconds, Action)
+    fun postDelayed(delay: Duration, action: () -> Unit) {
+        layout.postDelayed(delay.inWholeMilliseconds, action)
     }
 
     /**

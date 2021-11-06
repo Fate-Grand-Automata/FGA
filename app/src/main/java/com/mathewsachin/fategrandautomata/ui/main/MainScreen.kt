@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
+import com.mathewsachin.fategrandautomata.runner.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.ui.*

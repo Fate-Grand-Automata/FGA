@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.accessibility
+package com.mathewsachin.fategrandautomata.runner
 
 import android.app.*
 import android.content.BroadcastReceiver

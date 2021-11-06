@@ -1,13 +1,11 @@
-package com.mathewsachin.fategrandautomata.util
+package com.mathewsachin.fategrandautomata.runner
 
 import android.app.Service
 import android.content.Context
 import android.content.DialogInterface
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIState
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerOverlay
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -18,6 +16,7 @@ import com.mathewsachin.fategrandautomata.ui.exit.BattleExit
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncher
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncherResponse
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
+import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.ScriptAbortException

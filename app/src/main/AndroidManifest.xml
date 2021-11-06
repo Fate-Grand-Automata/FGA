@@ -20,7 +20,7 @@
             android:screenOrientation="sensorLandscape" />
 
         <service
-            android:name=".accessibility.ScriptRunnerService"
+            android:name=".runner.ScriptRunnerService"
             android:foregroundServiceType="mediaProjection" />
 
         <service
@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".accessibility.ScriptRunnerNotification$NotificationReceiver" />
+        <receiver android:name=".runner.ScriptRunnerNotification$NotificationReceiver" />
     </application>
 
 </manifest>
