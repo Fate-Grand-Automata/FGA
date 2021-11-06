@@ -91,22 +91,6 @@ class ScriptRunnerUserInterface @Inject constructor(
         windowAnimations = android.R.style.Animation_Toast
     }
 
-    private val accessibilityWindowManager = TapperService.instance
-        ?.getSystemService(WindowManager::class.java)
-        ?: throw IllegalStateException("Accessibility service not running")
-
-    private var highlightLayoutParams = WindowManager.LayoutParams().apply {
-        type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
-        format = PixelFormat.TRANSLUCENT
-        flags =
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        width = WindowManager.LayoutParams.MATCH_PARENT
-        height = WindowManager.LayoutParams.MATCH_PARENT
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-        }
-    }
-
     init {
         require(service is ScriptRunnerService)
 
@@ -162,7 +146,7 @@ class ScriptRunnerUserInterface @Inject constructor(
         if (!shown && Settings.canDrawOverlays(service)) {
             restorePlayButtonLocation()
 
-            accessibilityWindowManager.addView(highlightManager.highlightView, highlightLayoutParams)
+            highlightManager.show()
             windowManager.addView(layout, scriptCtrlBtnLayoutParams)
 
             shown = true
@@ -173,8 +157,8 @@ class ScriptRunnerUserInterface @Inject constructor(
         if (shown && Settings.canDrawOverlays(service)) {
             savePlayButtonLocation()
 
-            accessibilityWindowManager.removeView(layout)
-            windowManager.removeView(highlightManager.highlightView)
+            windowManager.removeView(layout)
+            highlightManager.hide()
 
             shown = false
         }

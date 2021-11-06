@@ -7,7 +7,8 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.libautomata.*
 import dagger.hilt.android.scopes.ServiceScoped
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class AndroidImpl @Inject constructor(
     val cutoutManager: CutoutManager,
     val highlightManager: HighlightManager
 ) : IPlatformImpl {
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     override val windowRegion get() = cutoutManager.getCutoutAppliedRegion()
 
@@ -32,7 +34,7 @@ class AndroidImpl @Inject constructor(
     override fun getResizableBlankPattern(): IPattern = DroidCvPattern()
 
     override fun highlight(region: Region, duration: Duration, color: HighlightColor) {
-        GlobalScope.launch {
+        scope.launch {
             highlightManager.add(region, color)
             delay(duration.inWholeMilliseconds)
             highlightManager.remove(region)
