@@ -6,7 +6,7 @@ import android.content.DialogInterface
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUIState
+import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIState
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint

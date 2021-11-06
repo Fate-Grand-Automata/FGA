@@ -1,4 +1,4 @@
-package com.mathewsachin.fategrandautomata.accessibility
+package com.mathewsachin.fategrandautomata.ui.runner
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -20,20 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.ui.FGATheme
-
-sealed class ScriptRunnerUIState {
-    object Running: ScriptRunnerUIState()
-    class Paused(val pausedStatus: Exception?): ScriptRunnerUIState()
-    object Idle: ScriptRunnerUIState()
-}
-
-sealed class ScriptRunnerUIAction {
-    object Start: ScriptRunnerUIAction()
-    object Pause: ScriptRunnerUIAction()
-    object Resume: ScriptRunnerUIAction()
-    object Stop: ScriptRunnerUIAction()
-    class Status(val status: Exception): ScriptRunnerUIAction()
-}
 
 @Composable
 fun ScriptRunnerUI(
