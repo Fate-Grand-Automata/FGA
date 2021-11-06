@@ -27,6 +27,7 @@ class Battle @Inject constructor(
     private val autoChooseTarget: AutoChooseTarget
 ) : IFgoAutomataApi by fgAutomataApi {
     init {
+        prefs.stopAfterThisRun = false
         state.markStartTime()
 
         resetState()
@@ -39,6 +40,11 @@ class Battle @Inject constructor(
             state.nextRun()
 
             servantTracker.nextRun()
+        }
+
+        if (prefs.stopAfterThisRun) {
+            prefs.stopAfterThisRun = false
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.StopAfterThisRun)
         }
 
         if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {

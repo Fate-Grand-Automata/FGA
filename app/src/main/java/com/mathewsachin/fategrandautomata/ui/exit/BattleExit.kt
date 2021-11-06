@@ -8,17 +8,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
+import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.KnownException
 import com.mathewsachin.fategrandautomata.util.stringRes
 import kotlin.time.Duration
@@ -55,6 +59,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     is AutoBattle.ExitReason.CardPriorityParseError -> msg
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
     AutoBattle.ExitReason.Paused -> "PAUSED"
+    AutoBattle.ExitReason.StopAfterThisRun -> "Stop after this run"
 }
 
 @Composable
@@ -266,6 +271,7 @@ private fun SmallChip(
 fun BattleExit(
     exception: AutoBattle.ExitException,
     prefs: IPreferences,
+    prefsCore: PrefsCore,
     onClose: () -> Unit,
     onCopy: () -> Unit
 ) {
@@ -283,6 +289,31 @@ fun BattleExit(
                     state = exception.state,
                     refillEnabled = prefs.refill.resources.isNotEmpty()
                 )
+            }
+
+            if (exception.reason is AutoBattle.ExitReason.Paused) {
+                Divider()
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp, 5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "Stop after this run",
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.secondary
+                    )
+
+                    var stopAfterThisRun by prefsCore.stopAfterThisRun.remember()
+
+                    Switch(
+                        checked = stopAfterThisRun,
+                        onCheckedChange = { stopAfterThisRun = true }
+                    )
+                }
             }
 
             Divider()

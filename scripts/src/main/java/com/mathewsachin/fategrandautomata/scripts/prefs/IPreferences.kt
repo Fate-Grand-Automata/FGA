@@ -25,6 +25,7 @@ interface IPreferences {
     val skillDelay: Duration
     val screenshotDrops: Boolean
     var maxGoldEmberSetSize: Int
+    var stopAfterThisRun: Boolean
 
     var shouldLimitFP: Boolean
     var limitFP: Int

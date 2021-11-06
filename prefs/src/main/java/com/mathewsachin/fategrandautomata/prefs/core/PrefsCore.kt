@@ -79,6 +79,8 @@ class PrefsCore @Inject constructor(
 
     val ceBombTargetRarity = maker.int("ce_bomb_target_rarity", 1)
 
+    val stopAfterThisRun = maker.bool("stop_after_this_run")
+
     val playBtnLocation = maker.serialized(
         "play_btn_location",
         serializer = object: Serializer<Location> {
