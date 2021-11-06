@@ -25,7 +25,7 @@ import kotlin.math.roundToInt
 import kotlin.time.Duration
 
 @ServiceScoped
-class ScriptRunnerUserInterface @Inject constructor(
+class ScriptRunnerOverlay @Inject constructor(
     private val service: Service,
     private val windowManager: WindowManager,
     private val highlightManager: HighlightManager,

@@ -7,7 +7,7 @@ import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIState
-import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerUserInterface
+import com.mathewsachin.fategrandautomata.accessibility.ScriptRunnerOverlay
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -33,7 +33,7 @@ import kotlin.time.Duration
 @ServiceScoped
 class ScriptManager @Inject constructor(
     service: Service,
-    val userInterface: ScriptRunnerUserInterface,
+    val overlay: ScriptRunnerOverlay,
     val imageLoader: ImageLoader,
     val preferences: IPreferences,
     val prefsCore: PrefsCore,
@@ -82,8 +82,8 @@ class ScriptManager @Inject constructor(
     }
 
     private fun onScriptExit(e: Exception) = scope.launch {
-        userInterface.uiState = ScriptRunnerUIState.Idle
-        userInterface.isPlayButtonEnabled = false
+        overlay.uiState = ScriptRunnerUIState.Idle
+        overlay.isPlayButtonEnabled = false
         imageLoader.clearSupportCache()
 
         // Stop recording
@@ -100,7 +100,7 @@ class ScriptManager @Inject constructor(
 
             if (recording != null) {
                 // A little bit of delay so the exit message can be recorded
-                userInterface.postDelayed(Duration.milliseconds(500)) {
+                overlay.postDelayed(Duration.milliseconds(500)) {
                     try {
                         recording.close()
                     } catch (e: Exception) {
@@ -109,7 +109,7 @@ class ScriptManager @Inject constructor(
                         Timber.error(e) { msg }
                     }
 
-                    userInterface.isRecording = false
+                    overlay.isRecording = false
                 }
             }
         }
@@ -187,7 +187,7 @@ class ScriptManager @Inject constructor(
 
         scriptState = ScriptState.Stopped
         delay(Duration.milliseconds(250))
-        userInterface.isPlayButtonEnabled = true
+        overlay.isPlayButtonEnabled = true
     }
 
     private fun getEntryPoint(entryPoint: ScriptEntryPoint): EntryPoint =
@@ -208,7 +208,7 @@ class ScriptManager @Inject constructor(
         scriptState.let { state ->
             if (state is ScriptState.Started) {
                 if (state.paused && action != PauseAction.Pause) {
-                    userInterface.uiState = ScriptRunnerUIState.Running
+                    overlay.uiState = ScriptRunnerUIState.Running
                     state.entryPoint.exitManager.resume()
 
                     state.paused = false
@@ -216,7 +216,7 @@ class ScriptManager @Inject constructor(
                     return true
                 } else if (!state.paused && action != PauseAction.Resume) {
                     state.entryPoint.exitManager.pause()
-                    userInterface.uiState = ScriptRunnerUIState.Paused(state.entryPoint.pausedStatus())
+                    overlay.uiState = ScriptRunnerUIState.Paused(state.entryPoint.pausedStatus())
 
                     state.paused = true
 
@@ -237,7 +237,7 @@ class ScriptManager @Inject constructor(
             return
         }
 
-        userInterface.isPlayButtonEnabled = false
+        overlay.isPlayButtonEnabled = false
 
         val scriptComponent = componentBuilder
             .screenshotService(screenshotService)
@@ -256,7 +256,7 @@ class ScriptManager @Inject constructor(
     fun stopScript() {
         scriptState.let { state ->
             if (state is ScriptState.Started) {
-                userInterface.isPlayButtonEnabled = false
+                overlay.isPlayButtonEnabled = false
                 scriptState = ScriptState.Stopping(state)
                 state.entryPoint.stop()
             }
@@ -286,11 +286,11 @@ class ScriptManager @Inject constructor(
 
         entryPoint.scriptExitListener = { onScriptExit(it) }
 
-        userInterface.apply {
-            userInterface.uiState = ScriptRunnerUIState.Running
+        overlay.apply {
+            overlay.uiState = ScriptRunnerUIState.Running
 
             if (recording != null) {
-                userInterface.isRecording = true
+                overlay.isRecording = true
             }
         }
 
@@ -319,7 +319,7 @@ class ScriptManager @Inject constructor(
             setView(composeView.view)
 
             setOnDismissListener {
-                userInterface.isPlayButtonEnabled = true
+                overlay.isPlayButtonEnabled = true
                 composeView.close()
             }
         }
@@ -330,7 +330,7 @@ class ScriptManager @Inject constructor(
     }
 
     private fun onScriptLauncherResponse(resp: ScriptLauncherResponse, entryPointRunner: () -> Unit) {
-        userInterface.isPlayButtonEnabled = true
+        overlay.isPlayButtonEnabled = true
 
         preferences.scriptMode = when (resp) {
             ScriptLauncherResponse.Cancel -> return
@@ -379,7 +379,7 @@ class ScriptManager @Inject constructor(
         }
 
         if (resp !is ScriptLauncherResponse.Cancel) {
-            userInterface.postDelayed(Duration.milliseconds(500)) {
+            overlay.postDelayed(Duration.milliseconds(500)) {
                 entryPointRunner()
             }
         }

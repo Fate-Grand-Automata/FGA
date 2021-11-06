@@ -83,7 +83,7 @@ class ScriptRunnerService: Service() {
     lateinit var storageProvider: StorageProvider
 
     @Inject
-    lateinit var userInterface: ScriptRunnerUserInterface
+    lateinit var overlay: ScriptRunnerOverlay
 
     @Inject
     lateinit var scriptManager: ScriptManager
@@ -122,7 +122,7 @@ class ScriptRunnerService: Service() {
 
         imageLoader.clearImageCache()
 
-        userInterface.hide()
+        overlay.hide()
 
         screenOffReceiver.unregister(this)
         instance = null
@@ -196,14 +196,14 @@ class ScriptRunnerService: Service() {
         }
 
         if (shouldDisplayPlayButton()) {
-            userInterface.show()
+            overlay.show()
         }
 
         prepareScreenshotService()
     }
 
     private fun shouldDisplayPlayButton(): Boolean {
-        val isLandscape = userInterface.metrics.let { it.widthPixels >= it.heightPixels }
+        val isLandscape = overlay.metrics.let { it.widthPixels >= it.heightPixels }
 
         Timber.verbose { if (isLandscape) "LANDSCAPE" else "PORTRAIT" }
 
@@ -213,9 +213,9 @@ class ScriptRunnerService: Service() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         if (shouldDisplayPlayButton()) {
-            userInterface.show()
+            overlay.show()
         } else {
-            userInterface.hide()
+            overlay.hide()
 
             // Pause if script is running
             GlobalScope.launch {
@@ -279,7 +279,7 @@ class ScriptRunnerService: Service() {
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
-                    userInterface.landscapeMetrics,
+                    overlay.landscapeMetrics,
                     storageProvider,
                     colorManager
                 )
