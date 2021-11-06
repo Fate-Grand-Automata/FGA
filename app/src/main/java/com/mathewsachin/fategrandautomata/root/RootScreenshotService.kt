@@ -2,11 +2,11 @@ package com.mathewsachin.fategrandautomata.root
 
 import android.os.Build
 import com.mathewsachin.fategrandautomata.imaging.DroidCvPattern
-import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.readIntLE
 import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.IPattern
 import com.mathewsachin.libautomata.IScreenshotService
+import dagger.hilt.android.scopes.ServiceScoped
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
@@ -14,13 +14,14 @@ import timber.log.Timber
 import timber.log.debug
 import timber.log.error
 import java.io.DataInputStream
+import javax.inject.Inject
 
-class RootScreenshotService(
-    private val SuperUser: SuperUser,
-    val storageProvider: StorageProvider,
+@ServiceScoped
+class RootScreenshotService @Inject constructor(
+    private val superUser: SuperUser,
     private val colorManager: ColorManager
 ) : IScreenshotService {
-    private var reader: DataInputStream = SuperUser.inStream
+    private var reader: DataInputStream = superUser.inStream
     private var buffer: ByteArray? = null
 
     private var bufferMat: Mat? = null
@@ -30,7 +31,7 @@ class RootScreenshotService(
     private val colorPattern = DroidCvPattern(colorMat, ownsMat = false)
 
     private fun screenshotIntoBuffer() {
-        SuperUser.writeLine("/system/bin/screencap")
+        superUser.writeLine("/system/bin/screencap")
 
         val w = reader.readIntLE()
         val h = reader.readIntLE()
@@ -79,7 +80,7 @@ class RootScreenshotService(
         colorMat.release()
 
         try {
-            SuperUser.close()
+            superUser.close()
         } catch (e: Exception) {
             Timber.error(e) { "Error closing super user" }
         }
