@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.runner
 import android.annotation.SuppressLint
 import android.app.Service
 import android.graphics.PixelFormat
-import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -12,17 +11,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
-import androidx.core.view.postDelayed
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUI
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIState
 import com.mathewsachin.fategrandautomata.util.FakedComposeView
+import com.mathewsachin.fategrandautomata.util.overlayType
 import com.mathewsachin.libautomata.Location
 import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import kotlin.time.Duration
 
 @ServiceScoped
 class ScriptRunnerOverlay @Inject constructor(
@@ -31,43 +29,11 @@ class ScriptRunnerOverlay @Inject constructor(
     private val highlightManager: HighlightManager,
     private val prefsCore: PrefsCore
 ) {
-    companion object {
-        val overlayType: Int
-            get() {
-                @Suppress("DEPRECATION")
-                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                } else WindowManager.LayoutParams.TYPE_PHONE
-            }
-    }
-
-    val metrics: DisplayMetrics
+    val displayMetrics: DisplayMetrics
         get() {
             val res = DisplayMetrics()
 
             windowManager.defaultDisplay.getRealMetrics(res)
-
-            return res
-        }
-
-    /**
-     * Used with MediaProjection so that we only get landscape images,
-     * since the frame size can't be changed during a projection.
-     */
-    val landscapeMetrics: DisplayMetrics
-        get() {
-            val res = metrics
-
-            fun DisplayMetrics.swapWidthAndHeight() = apply {
-                val temp = widthPixels
-                widthPixels = heightPixels
-                heightPixels = temp
-            }
-
-            // Retrieve images in Landscape
-            if (res.heightPixels > res.widthPixels) {
-                res.swapWidthAndHeight()
-            }
 
             return res
         }
@@ -105,7 +71,7 @@ class ScriptRunnerOverlay @Inject constructor(
         }.view
 
         // By default put the button on bottom-left corner
-        val m = metrics
+        val m = displayMetrics
         scriptCtrlBtnLayoutParams.y = maxOf(m.widthPixels, m.heightPixels)
     }
 
@@ -164,15 +130,11 @@ class ScriptRunnerOverlay @Inject constructor(
         }
     }
 
-    fun postDelayed(delay: Duration, action: () -> Unit) {
-        layout.postDelayed(delay.inWholeMilliseconds, action)
-    }
-
     /**
      * Returns the maximum values of (X, Y) coordinates the [layout] can take.
      */
     private fun getMaxBtnCoordinates(): Location {
-        val m = metrics
+        val m = displayMetrics
 
         val x = m.widthPixels - layout.measuredWidth
         val y = m.heightPixels - layout.measuredHeight

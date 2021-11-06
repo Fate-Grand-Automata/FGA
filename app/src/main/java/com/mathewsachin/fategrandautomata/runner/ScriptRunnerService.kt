@@ -204,7 +204,7 @@ class ScriptRunnerService: Service() {
     }
 
     private fun shouldDisplayPlayButton(): Boolean {
-        val isLandscape = overlay.metrics.let { it.widthPixels >= it.heightPixels }
+        val isLandscape = overlay.displayMetrics.let { it.widthPixels >= it.heightPixels }
 
         Timber.verbose { if (isLandscape) "LANDSCAPE" else "PORTRAIT" }
 
@@ -280,7 +280,7 @@ class ScriptRunnerService: Service() {
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
                 MediaProjectionScreenshotService(
                     mediaProjection!!,
-                    overlay.landscapeMetrics,
+                    overlay.displayMetrics.makeLandscape(),
                     storageProvider,
                     colorManager
                 )

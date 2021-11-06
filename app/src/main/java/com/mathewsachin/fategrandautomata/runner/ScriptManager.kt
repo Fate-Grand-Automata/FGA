@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIState
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
@@ -15,6 +14,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.exit.BattleExit
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncher
 import com.mathewsachin.fategrandautomata.ui.launcher.ScriptLauncherResponse
+import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIState
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.EntryPoint
@@ -49,6 +49,19 @@ class ScriptManager @Inject constructor(
     suspend fun message(Title: String, Message: String, Error: Exception? = null): Boolean = suspendCancellableCoroutine {
         service.showMessageBox(Title, Message, Error) {
             it.resume(true)
+        }
+    }
+
+    private fun runDelayedOnUiThread(
+        delay: Duration = Duration.milliseconds(500),
+        action: suspend () -> Unit
+    ) {
+        scope.launch {
+            delay(500)
+
+            withContext(Dispatchers.Main) {
+                action()
+            }
         }
     }
 
@@ -99,7 +112,7 @@ class ScriptManager @Inject constructor(
 
             if (recording != null) {
                 // A little bit of delay so the exit message can be recorded
-                overlay.postDelayed(Duration.milliseconds(500)) {
+                runDelayedOnUiThread {
                     try {
                         recording.close()
                     } catch (e: Exception) {
@@ -378,7 +391,7 @@ class ScriptManager @Inject constructor(
         }
 
         if (resp !is ScriptLauncherResponse.Cancel) {
-            overlay.postDelayed(Duration.milliseconds(500)) {
+            runDelayedOnUiThread {
                 entryPointRunner()
             }
         }
