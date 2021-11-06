@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
+import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
@@ -21,6 +22,7 @@ import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.IScreenshotService
 import com.mathewsachin.libautomata.ScriptAbortException
 import dagger.hilt.EntryPoints
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -32,8 +34,10 @@ import kotlin.time.Duration
 @ServiceScoped
 class ScriptManager @Inject constructor(
     service: Service,
+    @ApplicationContext private val context: Context,
     private val imageLoader: ImageLoader,
     private val preferences: IPreferences,
+    private val prefsCore: PrefsCore,
     private val storageProvider: StorageProvider,
     private val messages: ScriptMessages,
     private val uiStateHolder: ScriptRunnerUIStateHolder
@@ -45,7 +49,7 @@ class ScriptManager @Inject constructor(
         private set
 
     // Show message box synchronously
-    suspend fun message(Title: String, Message: String, Error: Exception? = null): Boolean = suspendCancellableCoroutine {
+    private suspend fun message(Title: String, Message: String, Error: Exception? = null): Boolean = suspendCancellableCoroutine {
         service.showMessageBox(Title, Message, Error) {
             it.resume(true)
         }
@@ -125,39 +129,39 @@ class ScriptManager @Inject constructor(
             }
         }
 
-        val scriptExitedString by lazy { service.getString(R.string.script_exited) }
+        val scriptExitedString by lazy { context.getString(R.string.script_exited) }
 
         when (e) {
             is SupportImageMaker.ExitException -> {
                 when (e.reason) {
                     SupportImageMaker.ExitReason.NotFound -> {
-                        val msg = service.getString(R.string.support_img_maker_not_found)
+                        val msg = context.getString(R.string.support_img_maker_not_found)
 
                         messages.notify(msg)
                         message(scriptExitedString, msg)
                     }
-                    SupportImageMaker.ExitReason.Success -> showSupportImageNamer(service, storageProvider)
+                    SupportImageMaker.ExitReason.Success -> showSupportImageNamer(context, storageProvider)
                 }
             }
             is AutoLottery.ExitException -> {
                 val msg = when (e.reason) {
-                    AutoLottery.ExitReason.PresentBoxFull -> service.getString(R.string.present_box_full)
-                    AutoLottery.ExitReason.ResetDisabled -> service.getString(R.string.lottery_reset_disabled)
+                    AutoLottery.ExitReason.PresentBoxFull -> context.getString(R.string.present_box_full)
+                    AutoLottery.ExitReason.ResetDisabled -> context.getString(R.string.lottery_reset_disabled)
                 }
 
                 messages.notify(msg)
                 message(scriptExitedString, msg)
             }
             is AutoGiftBox.ExitException -> {
-                val msg = service.getString(R.string.picked_exp_stacks, e.pickedStacks)
+                val msg = context.getString(R.string.picked_exp_stacks, e.pickedStacks)
 
                 messages.notify(msg)
                 message(scriptExitedString, msg)
             }
             is AutoFriendGacha.ExitException -> {
                 val msg = when (val reason = e.reason) {
-                    AutoFriendGacha.ExitReason.InventoryFull -> service.getString(R.string.inventory_full)
-                    is AutoFriendGacha.ExitReason.Limit -> service.getString(R.string.times_rolled, reason.count)
+                    AutoFriendGacha.ExitReason.InventoryFull -> context.getString(R.string.inventory_full)
+                    is AutoFriendGacha.ExitReason.Limit -> context.getString(R.string.times_rolled, reason.count)
                 }
 
                 messages.notify(msg)
@@ -189,7 +193,7 @@ class ScriptManager @Inject constructor(
             else -> {
                 println(e.messageAndStackTrace)
 
-                val msg = service.getString(R.string.unexpected_error)
+                val msg = context.getString(R.string.unexpected_error)
                 messages.notify(msg)
 
                 message(msg, e.messageAndStackTrace, e)
@@ -284,7 +288,7 @@ class ScriptManager @Inject constructor(
                 screenshotService.startRecording()
             } else null
         } catch (e: Exception) {
-            val msg = service.getString(R.string.cannot_start_recording)
+            val msg = context.getString(R.string.cannot_start_recording)
             Timber.error(e) { msg }
             Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
 

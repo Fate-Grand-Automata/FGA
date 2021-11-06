@@ -28,7 +28,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToke
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIAction
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.ColorManager
-import com.mathewsachin.libautomata.IPlatformImpl
 import com.mathewsachin.libautomata.IScreenshotService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -91,9 +90,6 @@ class ScriptRunnerService: Service() {
 
     @Inject
     lateinit var notification: ScriptRunnerNotification
-
-    @Inject
-    lateinit var platformImpl: IPlatformImpl
 
     @Inject
     lateinit var scriptComponentBuilder: ScriptComponentBuilder
