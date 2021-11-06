@@ -2,9 +2,7 @@ package com.mathewsachin.fategrandautomata.util
 
 import android.app.Activity
 import android.os.Build
-import android.util.DisplayMetrics
 import android.view.Surface
-import android.view.WindowManager
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
@@ -20,12 +18,10 @@ import kotlin.math.roundToInt
 
 @Singleton
 class CutoutManager @Inject constructor(
-    windowManager: WindowManager,
-    val prefs: IPreferences,
-    val prefsCore: PrefsCore,
+    private val display: DisplayHelper,
+    private val prefs: IPreferences,
+    private val prefsCore: PrefsCore,
 ) {
-    private val display = windowManager.defaultDisplay
-
     private data class Cutout(val L: Int = 0, val T: Int = 0, val R: Int = 0, val B: Int = 0) {
         companion object {
             val NoCutouts = Cutout()
@@ -101,8 +97,7 @@ class CutoutManager @Inject constructor(
     }
 
     private fun getScreenSize(): Size {
-        val metrics = DisplayMetrics()
-        display.getRealMetrics(metrics)
+        val metrics = display.metrics
 
         return Size(metrics.widthPixels, metrics.heightPixels)
     }

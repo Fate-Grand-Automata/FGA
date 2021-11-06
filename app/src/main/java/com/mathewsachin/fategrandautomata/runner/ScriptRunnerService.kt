@@ -1,37 +1,29 @@
 package com.mathewsachin.fategrandautomata.runner
 
-import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.media.projection.MediaProjectionManager
 import android.os.IBinder
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.accessibility.TapperService
-import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
-import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.root.RootScreenshotService
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
-import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIAction
-import com.mathewsachin.fategrandautomata.util.*
-import com.mathewsachin.libautomata.ColorManager
-import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.fategrandautomata.util.DisplayHelper
+import com.mathewsachin.fategrandautomata.util.ImageLoader
+import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
+import com.mathewsachin.fategrandautomata.util.ScriptMessages
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.*
+import timber.log.Timber
+import timber.log.info
+import timber.log.verbose
 import javax.inject.Inject
-import javax.inject.Provider
 import kotlin.time.Duration
 
 @AndroidEntryPoint
@@ -63,7 +55,7 @@ class ScriptRunnerService: Service() {
         var mediaProjectionToken: Intent? = null
             set(value) {
                 field = value
-                instance?.prepareScreenshotService()
+                instance?.screenshotServiceHolder?.prepareScreenshotService()
             }
     }
 
@@ -71,13 +63,7 @@ class ScriptRunnerService: Service() {
     lateinit var imageLoader: ImageLoader
 
     @Inject
-    lateinit var prefs: IPreferences
-
-    @Inject
     lateinit var prefsCore: PrefsCore
-
-    @Inject
-    lateinit var storageProvider: StorageProvider
 
     @Inject
     lateinit var overlay: ScriptRunnerOverlay
@@ -89,26 +75,18 @@ class ScriptRunnerService: Service() {
     lateinit var notification: ScriptRunnerNotification
 
     @Inject
-    lateinit var scriptComponentBuilder: ScriptComponentBuilder
-
-    @Inject
-    lateinit var mediaProjectionManager: MediaProjectionManager
-
-    @Inject
     lateinit var messages: ScriptMessages
-
-    @Inject
-    lateinit var colorManager: ColorManager
 
     @Inject
     lateinit var messageBox: ScriptRunnerMessageBox
 
     @Inject
-    lateinit var rootScreenshotServiceProvider: Provider<RootScreenshotService>
+    lateinit var screenshotServiceHolder: ScreenshotServiceHolder
+
+    @Inject
+    lateinit var displayHelper: DisplayHelper
 
     private val screenOffReceiver = ScreenOffReceiver()
-
-    private var screenshotService: IScreenshotService? = null
 
     private val scope = CoroutineScope(Dispatchers.Default)
 
@@ -116,8 +94,7 @@ class ScriptRunnerService: Service() {
         Timber.info { "Script runner service destroyed" }
 
         scriptManager.stopScript()
-        screenshotService?.close()
-        screenshotService = null
+        screenshotServiceHolder.close()
 
         imageLoader.clearImageCache()
 
@@ -130,50 +107,6 @@ class ScriptRunnerService: Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
-
-    fun act(action: ScriptRunnerUIAction) {
-        when (action) {
-            ScriptRunnerUIAction.Pause, ScriptRunnerUIAction.Resume -> {
-                scriptManager.pause(ScriptManager.PauseAction.Toggle)
-            }
-            ScriptRunnerUIAction.Start -> {
-                if (scriptManager.scriptState is ScriptState.Stopped) {
-                    updateGameServer()
-
-                    screenshotService?.let {
-                        scriptManager.startScript(this, it, scriptComponentBuilder)
-                    }
-                }
-            }
-            ScriptRunnerUIAction.Stop -> {
-                if (scriptManager.scriptState is ScriptState.Started) {
-                    scriptManager.stopScript()
-                }
-            }
-            is ScriptRunnerUIAction.Status -> {
-                scriptManager.showStatus(action.status)
-            }
-        }
-    }
-
-    private fun updateGameServer() {
-        val server = prefsCore.gameServerRaw.get()
-
-        prefs.gameServer =
-            if (server == PrefsCore.GameServerAutoDetect)
-                (TapperService.instance?.detectedFgoServer ?: GameServerEnum.En).also {
-                    Timber.debug { "Using auto-detected Game Server: $it" }
-                }
-            else try {
-                enumValueOf<GameServerEnum>(server).also {
-                    Timber.debug { "Using Game Server: $it" }
-                }
-            } catch (e: Exception) {
-                Timber.error(e) { "Game Server: Falling back to NA" }
-
-                GameServerEnum.En
-            }
-    }
 
     override fun onCreate() {
         Timber.info { "Script runner service created" }
@@ -201,11 +134,11 @@ class ScriptRunnerService: Service() {
             overlay.show()
         }
 
-        prepareScreenshotService()
+        screenshotServiceHolder.prepareScreenshotService()
     }
 
     private fun shouldDisplayPlayButton(): Boolean {
-        val isLandscape = overlay.displayMetrics.let { it.widthPixels >= it.heightPixels }
+        val isLandscape = displayHelper.metrics.let { it.widthPixels >= it.heightPixels }
 
         Timber.verbose { if (isLandscape) "LANDSCAPE" else "PORTRAIT" }
 
@@ -231,28 +164,6 @@ class ScriptRunnerService: Service() {
                     }
                 }
             }
-        }
-    }
-
-    fun prepareScreenshotService() {
-        screenshotService = try {
-            if (prefs.wantsMediaProjectionToken) {
-                // Cloning the Intent allows reuse.
-                // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
-                val token = mediaProjectionToken?.clone() as Intent
-
-                val mediaProjection =
-                    mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
-                MediaProjectionScreenshotService(
-                    mediaProjection!!,
-                    overlay.displayMetrics.makeLandscape(),
-                    storageProvider,
-                    colorManager
-                )
-            } else rootScreenshotServiceProvider.get()
-        } catch (e: Exception) {
-            Timber.error(e) { "Error preparing screenshot service" }
-            null
         }
     }
 }

@@ -4,15 +4,18 @@ import android.annotation.SuppressLint
 import android.app.Service
 import android.graphics.PixelFormat
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.WindowManager
 import androidx.compose.ui.platform.ComposeView
+import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUI
+import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIAction
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIStateHolder
+import com.mathewsachin.fategrandautomata.util.DisplayHelper
 import com.mathewsachin.fategrandautomata.util.FakedComposeView
+import com.mathewsachin.fategrandautomata.util.ScriptState
 import com.mathewsachin.fategrandautomata.util.overlayType
 import com.mathewsachin.libautomata.Location
 import dagger.hilt.android.scopes.ServiceScoped
@@ -22,20 +25,15 @@ import kotlin.math.roundToInt
 @ServiceScoped
 class ScriptRunnerOverlay @Inject constructor(
     private val service: Service,
+    private val display: DisplayHelper,
     private val windowManager: WindowManager,
     private val highlightManager: HighlightManager,
     private val prefsCore: PrefsCore,
-    private val uiStateHolder: ScriptRunnerUIStateHolder
+    private val uiStateHolder: ScriptRunnerUIStateHolder,
+    private val scriptManager: ScriptManager,
+    private val screenshotServiceHolder: ScreenshotServiceHolder,
+    private val scriptComponentBuilder: ScriptComponentBuilder
 ) {
-    val displayMetrics: DisplayMetrics
-        get() {
-            val res = DisplayMetrics()
-
-            windowManager.defaultDisplay.getRealMetrics(res)
-
-            return res
-        }
-
     private val layout: ComposeView
 
     private val scriptCtrlBtnLayoutParams = WindowManager.LayoutParams().apply {
@@ -58,7 +56,7 @@ class ScriptRunnerOverlay @Inject constructor(
         layout = FakedComposeView(service) {
             ScriptRunnerUI(
                 state = uiStateHolder.uiState,
-                updateState = { service.act(it) },
+                updateState = { act(it) },
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,
                 onDrag = { x, y -> onDrag(x, y) }
@@ -66,7 +64,7 @@ class ScriptRunnerOverlay @Inject constructor(
         }.view
 
         // By default put the button on bottom-left corner
-        val m = displayMetrics
+        val m = display.metrics
         scriptCtrlBtnLayoutParams.y = maxOf(m.widthPixels, m.heightPixels)
     }
 
@@ -129,11 +127,34 @@ class ScriptRunnerOverlay @Inject constructor(
      * Returns the maximum values of (X, Y) coordinates the [layout] can take.
      */
     private fun getMaxBtnCoordinates(): Location {
-        val m = displayMetrics
+        val m = display.metrics
 
         val x = m.widthPixels - layout.measuredWidth
         val y = m.heightPixels - layout.measuredHeight
 
         return Location(x, y)
+    }
+
+    private fun act(action: ScriptRunnerUIAction) {
+        when (action) {
+            ScriptRunnerUIAction.Pause, ScriptRunnerUIAction.Resume -> {
+                scriptManager.pause(ScriptManager.PauseAction.Toggle)
+            }
+            ScriptRunnerUIAction.Start -> {
+                if (scriptManager.scriptState is ScriptState.Stopped) {
+                    screenshotServiceHolder.screenshotService?.let {
+                        scriptManager.startScript(service, it, scriptComponentBuilder)
+                    }
+                }
+            }
+            ScriptRunnerUIAction.Stop -> {
+                if (scriptManager.scriptState is ScriptState.Started) {
+                    scriptManager.stopScript()
+                }
+            }
+            is ScriptRunnerUIAction.Status -> {
+                scriptManager.showStatus(action.status)
+            }
+        }
     }
 }

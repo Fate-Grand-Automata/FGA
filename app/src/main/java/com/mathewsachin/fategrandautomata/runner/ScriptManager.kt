@@ -6,10 +6,12 @@ import android.content.Context
 import android.content.DialogInterface
 import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
 import com.mathewsachin.fategrandautomata.di.script.ScriptEntryPoint
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.*
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.exit.BattleExit
@@ -27,6 +29,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.*
 import timber.log.Timber
+import timber.log.debug
 import timber.log.error
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -238,11 +241,32 @@ class ScriptManager @Inject constructor(
         return false
     }
 
+    private fun updateGameServer() {
+        val server = prefsCore.gameServerRaw.get()
+
+        preferences.gameServer =
+            if (server == PrefsCore.GameServerAutoDetect)
+                (TapperService.instance?.detectedFgoServer ?: GameServerEnum.En).also {
+                    Timber.debug { "Using auto-detected Game Server: $it" }
+                }
+            else try {
+                enumValueOf<GameServerEnum>(server).also {
+                    Timber.debug { "Using Game Server: $it" }
+                }
+            } catch (e: Exception) {
+                Timber.error(e) { "Game Server: Falling back to NA" }
+
+                GameServerEnum.En
+            }
+    }
+
     fun startScript(
         context: Context,
         screenshotService: IScreenshotService,
         componentBuilder: ScriptComponentBuilder
     ) {
+        updateGameServer()
+
         if (scriptState !is ScriptState.Stopped) {
             return
         }
