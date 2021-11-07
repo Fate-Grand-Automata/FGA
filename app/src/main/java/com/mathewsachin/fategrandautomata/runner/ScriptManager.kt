@@ -55,19 +55,6 @@ class ScriptManager @Inject constructor(
     var scriptState: ScriptState = ScriptState.Stopped
         private set
 
-    private fun runDelayedOnUiThread(
-        delay: Duration = Duration.milliseconds(500),
-        action: suspend () -> Unit
-    ) {
-        scope.launch {
-            delay(500)
-
-            withContext(Dispatchers.Main) {
-                action()
-            }
-        }
-    }
-
     private suspend fun showBattleExit(
         context: Context,
         exception: AutoBattle.ExitException
@@ -115,9 +102,12 @@ class ScriptManager @Inject constructor(
 
             if (recording != null) {
                 // A little bit of delay so the exit message can be recorded
-                runDelayedOnUiThread {
+                launch {
                     try {
-                        recording.close()
+                        delay(500)
+                        withContext(Dispatchers.Main) {
+                            recording.close()
+                        }
                     } catch (e: Exception) {
                         val msg = "Failed to stop recording"
                         Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
@@ -289,12 +279,11 @@ class ScriptManager @Inject constructor(
             launcherResponseHandler.handle(resp)
 
             if (resp !is ScriptLauncherResponse.Cancel) {
-                runDelayedOnUiThread {
-                    runEntryPoint(
-                        screenshotService = screenshotService,
-                        entryPointProvider = { getEntryPoint(hiltEntryPoint) }
-                    )
-                }
+                delay(500)
+                runEntryPoint(
+                    screenshotService = screenshotService,
+                    entryPointProvider = { getEntryPoint(hiltEntryPoint) }
+                )
             }
         }
     }
@@ -309,14 +298,16 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private fun runEntryPoint(screenshotService: IScreenshotService, entryPointProvider: () -> EntryPoint) {
+    private suspend fun runEntryPoint(screenshotService: IScreenshotService, entryPointProvider: () -> EntryPoint) {
         if (scriptState !is ScriptState.Stopped) {
             return
         }
 
         val recording = try {
             if (preferences.recordScreen) {
-                screenshotService.startRecording()
+                withContext(Dispatchers.Main) {
+                    screenshotService.startRecording()
+                }
             } else null
         } catch (e: Exception) {
             val msg = context.getString(R.string.cannot_start_recording)
