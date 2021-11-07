@@ -34,6 +34,7 @@ import timber.log.debug
 import timber.log.error
 import javax.inject.Inject
 import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration
 
 @ServiceScoped
@@ -279,12 +280,22 @@ class ScriptManager @Inject constructor(
             .build()
 
         val hiltEntryPoint = EntryPoints.get(scriptComponent, ScriptEntryPoint::class.java)
-        val entryPointProvider = { getEntryPoint(hiltEntryPoint) }
+        val detectedMode = hiltEntryPoint.autoDetect().get()
 
-        val otherMode = hiltEntryPoint.autoDetect().get()
+        scope.launch {
+            val resp = scriptPicker(context, detectedMode)
 
-        scriptPicker(context, otherMode) {
-            runEntryPoint(screenshotService, entryPointProvider)
+            uiStateHolder.isPlayButtonEnabled = true
+            launcherResponseHandler.handle(resp)
+
+            if (resp !is ScriptLauncherResponse.Cancel) {
+                runDelayedOnUiThread {
+                    runEntryPoint(
+                        screenshotService = screenshotService,
+                        entryPointProvider = { getEntryPoint(hiltEntryPoint) }
+                    )
+                }
+            }
         }
     }
 
@@ -315,12 +326,11 @@ class ScriptManager @Inject constructor(
             null
         }
 
-        val entryPoint = entryPointProvider()
+        val entryPoint = entryPointProvider().apply {
+            scriptExitListener = { onScriptExit(it) }
+        }
 
         scriptState = ScriptState.Started(entryPoint, recording)
-
-        entryPoint.scriptExitListener = { onScriptExit(it) }
-
         uiStateHolder.uiState = ScriptRunnerUIState.Running
 
         if (recording != null) {
@@ -330,42 +340,37 @@ class ScriptManager @Inject constructor(
         entryPoint.run()
     }
 
-    private fun scriptPicker(
+    private suspend fun scriptPicker(
         context: Context,
-        detectedMode: ScriptModeEnum,
-        entryPointRunner: () -> Unit
-    ) {
-        var dialog: DialogInterface? = null
+        detectedMode: ScriptModeEnum
+    ) = withContext(Dispatchers.Main) {
+        suspendCoroutine<ScriptLauncherResponse> { continuation ->
 
-        val composeView = FakedComposeView(context) {
-            ScriptLauncher(
-                scriptMode = detectedMode,
-                onResponse = {
-                    dialog?.dismiss()
-                    onScriptLauncherResponse(it, entryPointRunner)
-                },
-                prefs = preferences
-            )
-        }
+            var dialog: DialogInterface? = null
 
-        dialog = showOverlayDialog(context) {
-            setView(composeView.view)
-
-            setOnDismissListener {
-                uiStateHolder.isPlayButtonEnabled = true
-                composeView.close()
+            val composeView = FakedComposeView(context) {
+                ScriptLauncher(
+                    scriptMode = detectedMode,
+                    onResponse = {
+                        continuation.resume(it)
+                        dialog?.dismiss()
+                    },
+                    prefs = preferences
+                )
             }
-        }
-    }
 
-    private fun onScriptLauncherResponse(resp: ScriptLauncherResponse, entryPointRunner: () -> Unit) {
-        uiStateHolder.isPlayButtonEnabled = true
+            dialog = showOverlayDialog(context) {
+                setView(composeView.view)
 
-        launcherResponseHandler.handle(resp)
-
-        if (resp !is ScriptLauncherResponse.Cancel) {
-            runDelayedOnUiThread {
-                entryPointRunner()
+                setOnDismissListener {
+                    uiStateHolder.isPlayButtonEnabled = true
+                    composeView.close()
+                    try {
+                        continuation.resume(ScriptLauncherResponse.Cancel)
+                    } catch (e: IllegalStateException) {
+                        // Ignore exception on resuming twice
+                    }
+                }
             }
         }
     }
