@@ -48,7 +48,8 @@ class ScriptManager @Inject constructor(
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val clipboardManager: ClipboardManager,
     private val messageBox: ScriptRunnerMessageBox,
-    @ServiceCoroutineScope private val scope: CoroutineScope
+    @ServiceCoroutineScope private val scope: CoroutineScope,
+    private val launcherResponseHandler: ScriptLauncherResponseHandler
 ) {
     var scriptState: ScriptState = ScriptState.Stopped
         private set
@@ -357,58 +358,10 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private fun handleGiftBoxResponse(resp: ScriptLauncherResponse.GiftBox) {
-        preferences.maxGoldEmberSetSize = resp.maxGoldEmberStackSize
-    }
-
     private fun onScriptLauncherResponse(resp: ScriptLauncherResponse, entryPointRunner: () -> Unit) {
         uiStateHolder.isPlayButtonEnabled = true
 
-        preferences.scriptMode = when (resp) {
-            ScriptLauncherResponse.Cancel -> return
-            is ScriptLauncherResponse.FP -> {
-                preferences.shouldLimitFP = resp.limit != null
-                resp.limit?.let { preferences.limitFP = it }
-
-                ScriptModeEnum.FP
-            }
-            is ScriptLauncherResponse.Lottery -> {
-                preferences.preventLotteryBoxReset = resp.preventBoxReset
-                val giftBoxResp = resp.giftBox
-                preferences.receiveEmbersWhenGiftBoxFull = giftBoxResp != null
-
-                giftBoxResp?.let { handleGiftBoxResponse(it) }
-
-                ScriptModeEnum.Lottery
-            }
-            is ScriptLauncherResponse.GiftBox -> {
-                handleGiftBoxResponse(resp)
-
-                ScriptModeEnum.PresentBox
-            }
-            ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
-            is ScriptLauncherResponse.CEBomb -> {
-                preferences.ceBombTargetRarity = resp.targetRarity
-
-                ScriptModeEnum.CEBomb
-            }
-            is ScriptLauncherResponse.Battle -> {
-                preferences.selectedBattleConfig = resp.config
-
-                preferences.refill.updateResources(resp.refillResources)
-                preferences.refill.repetitions = resp.refillCount
-
-                preferences.refill.shouldLimitRuns = resp.limitRuns != null
-                resp.limitRuns?.let { preferences.refill.limitRuns = it }
-
-                preferences.refill.shouldLimitMats = resp.limitMats != null
-                resp.limitMats?.let { preferences.refill.limitMats = it }
-
-                preferences.waitAPRegen = resp.waitApRegen
-
-                ScriptModeEnum.Battle
-            }
-        }
+        launcherResponseHandler.handle(resp)
 
         if (resp !is ScriptLauncherResponse.Cancel) {
             runDelayedOnUiThread {
