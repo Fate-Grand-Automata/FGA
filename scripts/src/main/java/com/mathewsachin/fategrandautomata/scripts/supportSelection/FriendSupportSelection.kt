@@ -11,8 +11,9 @@ import javax.inject.Inject
 class FriendSupportSelection @Inject constructor(
     supportPrefs: ISupportPreferences,
     boundsFinder: SupportBoundsFinder,
+    friendChecker: SupportFriendChecker,
     api: IFgoAutomataApi
-): SpecificSupportSelection(supportPrefs, boundsFinder, api) {
+): SpecificSupportSelection(supportPrefs, boundsFinder, friendChecker, api) {
     private val friendNames = supportPrefs.friendNames
 
     override fun search(): SpecificSupportSearchResult {

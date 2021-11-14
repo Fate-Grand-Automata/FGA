@@ -1,21 +1,19 @@
 package com.mathewsachin.fategrandautomata.scripts.supportSelection
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
-import com.mathewsachin.libautomata.Region
 
 abstract class SpecificSupportSelection(
     protected val supportPrefs: ISupportPreferences,
     protected val boundsFinder: SupportBoundsFinder,
+    private val friendChecker: SupportFriendChecker,
     api: IFgoAutomataApi
 ): SupportSelectionProvider, IFgoAutomataApi by api {
     protected abstract fun search(): SpecificSupportSearchResult
 
     override fun select() =
         useSameSnapIn(fun(): SupportSelectionResult {
-            if (!isFriend(locations.support.friendRegion)) {
+            if (!friendChecker.isFriend()) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return SupportSelectionResult.Refresh
             }
@@ -29,7 +27,7 @@ abstract class SpecificSupportSelection(
                     else -> boundsFinder.findSupportBounds(result.Support)
                 }
 
-                if (!isFriend(bounds)) {
+                if (!friendChecker.isFriend(bounds)) {
                     // found something, but it doesn't belong to a friend. keep scrolling
                     return SupportSelectionResult.ScrollDown
                 }
@@ -41,18 +39,4 @@ abstract class SpecificSupportSelection(
             // nope, not found this time. keep scrolling
             return SupportSelectionResult.ScrollDown
         })
-
-    private fun isFriend(region: Region): Boolean {
-        val onlySelectFriends = supportPrefs.friendsOnly
-                || supportPrefs.selectionMode == SupportSelectionModeEnum.Friend
-
-        if (!onlySelectFriends)
-            return true
-
-        return sequenceOf(
-            images[Images.Friend],
-            images[Images.Guest],
-            images[Images.Follow]
-        ).any { it in region }
-    }
 }

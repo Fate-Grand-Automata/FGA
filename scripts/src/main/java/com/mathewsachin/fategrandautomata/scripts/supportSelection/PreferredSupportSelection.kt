@@ -13,9 +13,10 @@ class PreferredSupportSelection @Inject constructor(
     supportPrefs: ISupportPreferences,
     api: IFgoAutomataApi,
     boundsFinder: SupportBoundsFinder,
+    friendChecker: SupportFriendChecker,
     private val servantSelection: ServantSelection,
     private val ceSelection: CESelection
-): SpecificSupportSelection(supportPrefs, boundsFinder, api) {
+): SpecificSupportSelection(supportPrefs, boundsFinder, friendChecker, api) {
     private val servants = supportPrefs.preferredServants
     private val ces = supportPrefs.preferredCEs
 
