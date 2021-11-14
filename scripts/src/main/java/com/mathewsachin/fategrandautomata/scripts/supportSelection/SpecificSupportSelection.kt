@@ -2,14 +2,13 @@ package com.mathewsachin.fategrandautomata.scripts.supportSelection
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
-import com.mathewsachin.fategrandautomata.scripts.modules.Support
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
 import com.mathewsachin.libautomata.Region
 
 abstract class SpecificSupportSelection(
     protected val supportPrefs: ISupportPreferences,
+    protected val boundsFinder: SupportBoundsFinder,
     api: IFgoAutomataApi
 ): SupportSelectionProvider, IFgoAutomataApi by api {
     protected abstract fun search(): SpecificSupportSearchResult
@@ -27,7 +26,7 @@ abstract class SpecificSupportSelection(
                 val bounds = when (result) {
                     is SpecificSupportSearchResult.FoundWithBounds -> result.Bounds
                     // bounds are not returned by all methods
-                    else -> findSupportBounds(result.Support)
+                    else -> boundsFinder.findSupportBounds(result.Support)
                 }
 
                 if (!isFriend(bounds)) {
@@ -56,19 +55,4 @@ abstract class SpecificSupportSelection(
             images[Images.Follow]
         ).any { it in region }
     }
-
-    protected fun findSupportBounds(support: Region) =
-        locations.support.confirmSetupButtonRegion
-            .findAll(
-                images[Images.SupportConfirmSetupButton],
-                Support.supportRegionToolSimilarity
-            )
-            .map {
-                locations.support.defaultBounds
-                    .copy(y = it.region.y - 70)
-            }
-            .firstOrNull { support in it }
-            ?: locations.support.defaultBounds.also {
-                messages.log(ScriptLog.DefaultSupportBounds)
-            }
 }

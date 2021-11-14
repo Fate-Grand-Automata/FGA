@@ -10,8 +10,9 @@ import javax.inject.Inject
 @ScriptScope
 class FriendSupportSelection @Inject constructor(
     supportPrefs: ISupportPreferences,
+    boundsFinder: SupportBoundsFinder,
     api: IFgoAutomataApi
-): SpecificSupportSelection(supportPrefs, api) {
+): SpecificSupportSelection(supportPrefs, boundsFinder, api) {
     private val friendNames = supportPrefs.friendNames
 
     override fun search(): SpecificSupportSearchResult {
