@@ -9,10 +9,10 @@ import javax.inject.Inject
 
 @ScriptScope
 class AutoSkill @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val skillCommand: AutoSkillCommand,
     private val caster: Caster
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     private fun act(action: AutoSkillAction) = when (action) {
         is AutoSkillAction.Atk -> { }
         is AutoSkillAction.ServantSkill -> caster.castServantSkill(action.skill, action.target)

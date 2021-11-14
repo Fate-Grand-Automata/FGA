@@ -10,9 +10,9 @@ import kotlin.time.Duration
 
 @ScriptScope
 class SupportClassPicker @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val supportPrefs: ISupportPreferences
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     fun selectSupportClass(supportClass: SupportClass = supportPrefs.supportClass) {
         if (supportClass == SupportClass.None)
             return

@@ -10,8 +10,8 @@ import com.mathewsachin.libautomata.Region
 
 abstract class SpecificSupportSelection(
     protected val supportPrefs: ISupportPreferences,
-    fgAutomataApi: IFgoAutomataApi
-): SupportSelectionProvider, IFgoAutomataApi by fgAutomataApi {
+    api: IFgoAutomataApi
+): SupportSelectionProvider, IFgoAutomataApi by api {
     protected abstract fun search(): SpecificSupportSearchResult
 
     override fun select() =

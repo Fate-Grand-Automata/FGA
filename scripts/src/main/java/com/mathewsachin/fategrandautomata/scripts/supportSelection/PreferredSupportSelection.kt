@@ -19,8 +19,8 @@ import kotlin.streams.toList
 @ScriptScope
 class PreferredSupportSelection @Inject constructor(
     supportPrefs: ISupportPreferences,
-    fgAutomataApi: IFgoAutomataApi
-): SpecificSupportSelection(supportPrefs, fgAutomataApi) {
+    api: IFgoAutomataApi
+): SpecificSupportSelection(supportPrefs, api) {
     private val servants = supportPrefs.preferredServants
     private val ces = supportPrefs.preferredCEs
 

@@ -10,8 +10,8 @@ import kotlin.time.Duration
 
 @ScriptScope
 class Refill @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi
-) : IFgoAutomataApi by fgAutomataApi {
+    api: IFgoAutomataApi
+) : IFgoAutomataApi by api {
     var timesRefilled = 0
         private set
 

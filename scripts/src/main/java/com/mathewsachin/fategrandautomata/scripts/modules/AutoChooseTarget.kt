@@ -10,9 +10,9 @@ import kotlin.time.Duration
 
 @ScriptScope
 class AutoChooseTarget @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val state: BattleState
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
         val region = locations.battle.dangerRegion(enemy)
 

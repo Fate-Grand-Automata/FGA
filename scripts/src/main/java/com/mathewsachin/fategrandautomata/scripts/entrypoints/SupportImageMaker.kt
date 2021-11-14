@@ -16,8 +16,8 @@ import javax.inject.Inject
 class SupportImageMaker @Inject constructor(
     storageProvider: IStorageProvider,
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi
-) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    api: IFgoAutomataApi
+) : EntryPoint(exitManager), IFgoAutomataApi by api {
     companion object {
         fun getServantImgPath(dir: File, Index: Int): File {
             return File(dir, "servant_${Index}.png")

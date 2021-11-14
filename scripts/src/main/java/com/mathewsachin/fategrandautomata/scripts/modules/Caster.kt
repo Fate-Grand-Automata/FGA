@@ -11,10 +11,10 @@ import kotlin.time.Duration
 
 @ScriptScope
 class Caster @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val state: BattleState,
     private val servantTracker: ServantTracker
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     // TODO: Shouldn't be here ideally.
     //  Once we add more spam modes, Skill spam and NP spam can have their own variants.
     fun canSpam(spam: SpamEnum): Boolean {

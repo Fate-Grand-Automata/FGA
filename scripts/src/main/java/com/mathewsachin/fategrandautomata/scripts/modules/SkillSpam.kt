@@ -9,12 +9,12 @@ import kotlin.time.Duration
 
 @ScriptScope
 class SkillSpam @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
     private val state: BattleState,
     private val spamConfig: SpamConfigPerTeamSlot,
     private val caster: Caster
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     companion object {
         val skillSpamDelay = Duration.seconds(0.25)
     }

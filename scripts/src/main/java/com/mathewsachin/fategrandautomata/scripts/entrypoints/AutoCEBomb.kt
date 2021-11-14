@@ -19,8 +19,8 @@ import kotlin.time.Duration
 @ScriptScope
 class AutoCEBomb @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi
-) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+    api: IFgoAutomataApi
+) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
         object NoSuitableTargetCEFound: ExitReason()
     }

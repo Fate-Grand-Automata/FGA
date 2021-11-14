@@ -11,9 +11,9 @@ import kotlin.time.Duration
 
 @ScriptScope
 class PartySelection @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val battleConfig: IBattleConfig
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     private var partySelected = false
 
     /**

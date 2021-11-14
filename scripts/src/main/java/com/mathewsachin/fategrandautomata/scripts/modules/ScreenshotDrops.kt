@@ -9,9 +9,9 @@ import javax.inject.Inject
 
 @ScriptScope
 class ScreenshotDrops @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val storageProvider: IStorageProvider
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     fun screenshotDrops() {
         if (!prefs.screenshotDrops)
             return

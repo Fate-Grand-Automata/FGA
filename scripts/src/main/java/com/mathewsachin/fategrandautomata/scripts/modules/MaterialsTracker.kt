@@ -10,10 +10,10 @@ import javax.inject.Inject
 
 @ScriptScope
 class MaterialsTracker @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val battleConfig: IBattleConfig,
     private val state: BattleState
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     // Set all Materials to 0
     private var matsGot =
         battleConfig

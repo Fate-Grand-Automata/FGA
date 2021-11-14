@@ -12,10 +12,10 @@ import kotlin.time.TimeSource
 
 @ScriptScope
 class SupportScreenRefresher @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val connectionRetry: ConnectionRetry,
     private val supportClassPicker: SupportClassPicker
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     private var lastSupportRefreshTimestamp: TimeMark? = null
     private val supportRefreshThreshold = Duration.seconds(10)
 

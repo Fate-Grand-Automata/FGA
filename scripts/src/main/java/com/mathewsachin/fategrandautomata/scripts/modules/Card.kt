@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @ScriptScope
 class Card @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
     private val state: BattleState,
     private val spamConfig: SpamConfigPerTeamSlot,
@@ -21,7 +21,7 @@ class Card @Inject constructor(
     private val priority: FaceCardPriority,
     private val braveChains: ApplyBraveChains,
     private val battleConfig: IBattleConfig
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
 
     fun readCommandCards(): List<ParsedCard> = useSameSnapIn {
         parser.parse()

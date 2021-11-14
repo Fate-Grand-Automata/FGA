@@ -35,7 +35,7 @@ fun IFgoAutomataApi.isInventoryFull() =
 @ScriptScope
 class AutoBattle @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val state: BattleState,
     private val battle: Battle,
     private val support: Support,
@@ -46,7 +46,7 @@ class AutoBattle @Inject constructor(
     private val refill: Refill,
     private val matTracker: MaterialsTracker,
     private val ceDropsTracker: CEDropsTracker
-) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
         object Abort : ExitReason()
         class Unexpected(val e: Exception) : ExitReason()

@@ -11,8 +11,8 @@ import kotlin.time.Duration
 
 @ScriptScope
 class ServantTracker @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi
-) : IFgoAutomataApi by fgAutomataApi, AutoCloseable {
+    api: IFgoAutomataApi
+) : IFgoAutomataApi by api, AutoCloseable {
 
     private val servantQueue = mutableListOf<TeamSlot>()
     private val _deployed = mutableMapOf<FieldSlot, TeamSlot>()

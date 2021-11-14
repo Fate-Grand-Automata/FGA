@@ -14,7 +14,7 @@ import kotlin.time.Duration
 
 @ScriptScope
 class Battle @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val servantTracker: ServantTracker,
     private val state: BattleState,
     private val battleConfig: IBattleConfig,
@@ -25,7 +25,7 @@ class Battle @Inject constructor(
     private val shuffleChecker: ShuffleChecker,
     private val stageTracker: StageTracker,
     private val autoChooseTarget: AutoChooseTarget
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     init {
         prefs.stopAfterThisRun = false
         state.markStartTime()

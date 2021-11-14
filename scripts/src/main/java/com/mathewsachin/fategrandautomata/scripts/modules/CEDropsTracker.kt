@@ -11,9 +11,9 @@ import javax.inject.Inject
 
 @ScriptScope
 class CEDropsTracker @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val state: BattleState
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     var count = 0
         private set
 

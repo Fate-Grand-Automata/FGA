@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 @ScriptScope
 class AutoDetect @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
-) : IFgoAutomataApi by fgAutomataApi {
+    api: IFgoAutomataApi,
+) : IFgoAutomataApi by api {
     fun get() = useSameSnapIn {
         val emberSearchRegion = locations.scriptArea.let {
             it.copy(width = it.width / 3)

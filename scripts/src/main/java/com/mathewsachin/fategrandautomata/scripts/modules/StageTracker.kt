@@ -7,9 +7,9 @@ import javax.inject.Inject
 
 @ScriptScope
 class StageTracker @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val state: BattleState
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     fun checkCurrentStage() {
         if (didStageChange()) {
             state.nextStage()

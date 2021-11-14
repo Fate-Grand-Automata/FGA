@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 @ScriptScope
 class CardParser @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val servantTracker: ServantTracker
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
 
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
         val region = locations.attack.affinityRegion(this)

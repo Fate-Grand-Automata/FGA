@@ -15,9 +15,9 @@ import kotlin.time.Duration
 @ScriptScope
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val connectionRetry: ConnectionRetry
-) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by api {
     class ExitException(val pickedStacks: Int): Exception()
 
     companion object {

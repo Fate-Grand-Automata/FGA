@@ -9,8 +9,8 @@ import kotlin.time.Duration
 
 @ScriptScope
 class Withdraw @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi
-) : IFgoAutomataApi by fgAutomataApi {
+    api: IFgoAutomataApi
+) : IFgoAutomataApi by api {
     var count = 0
         private set
 

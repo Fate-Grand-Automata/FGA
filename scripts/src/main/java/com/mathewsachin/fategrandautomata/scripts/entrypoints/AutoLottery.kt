@@ -15,10 +15,10 @@ import kotlin.time.Duration
 @ScriptScope
 class AutoLottery @Inject constructor(
     exitManager: ExitManager,
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val giftBox: AutoGiftBox,
     private val connectionRetry: ConnectionRetry
-) : EntryPoint(exitManager), IFgoAutomataApi by fgAutomataApi {
+) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
         object ResetDisabled: ExitReason()
         object PresentBoxFull: ExitReason()

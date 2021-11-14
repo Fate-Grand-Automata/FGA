@@ -8,8 +8,8 @@ import kotlin.time.Duration
 
 @ScriptScope
 class FirstSupportSelection @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi
-): SupportSelectionProvider, IFgoAutomataApi by fgAutomataApi {
+    api: IFgoAutomataApi
+): SupportSelectionProvider, IFgoAutomataApi by api {
     override fun select(): SupportSelectionResult {
         Duration.seconds(0.5).wait()
 

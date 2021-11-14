@@ -11,14 +11,14 @@ import kotlin.time.Duration
 
 @ScriptScope
 class Support @Inject constructor(
-    fgAutomataApi: IFgoAutomataApi,
+    api: IFgoAutomataApi,
     private val firstSupportSelection: FirstSupportSelection,
     private val friendSupportSelection: FriendSupportSelection,
     private val preferredSupportSelection: PreferredSupportSelection,
     private val supportPrefs: ISupportPreferences,
     private val refresher: SupportScreenRefresher,
     private val supportClassPicker: SupportClassPicker
-) : IFgoAutomataApi by fgAutomataApi {
+) : IFgoAutomataApi by api {
     companion object {
         const val supportRegionToolSimilarity = 0.75
     }
