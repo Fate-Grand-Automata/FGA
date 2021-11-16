@@ -31,7 +31,7 @@ class Locations @Inject constructor(
 
     val menuSelectQuestClick =
         (if (isWide)
-            Location(-600, 440)
+            Location(-460, 440)
         else Location(-270, 440))
             .xFromRight()
 
