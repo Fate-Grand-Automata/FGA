@@ -26,6 +26,7 @@ interface IPreferences {
     val screenshotDrops: Boolean
     var maxGoldEmberSetSize: Int
     var stopAfterThisRun: Boolean
+    val skipServantFaceCardCheck: Boolean
 
     var shouldLimitFP: Boolean
     var limitFP: Int

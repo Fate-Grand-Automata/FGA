@@ -2,10 +2,7 @@ package com.mathewsachin.fategrandautomata.ui.more
 
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FastForward
-import androidx.compose.material.icons.filled.OfflineBolt
-import androidx.compose.material.icons.filled.Public
-import androidx.compose.material.icons.filled.RadioButtonChecked
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.mathewsachin.fategrandautomata.R
@@ -88,6 +85,14 @@ fun LazyListScope.battleGroup(
             title = stringResource(R.string.p_boost_item),
             icon = icon(Icons.Default.OfflineBolt),
             entries = (-1..3).associateWith { it.boostItemString() }
+        )
+    }
+
+    item {
+        prefs.skipServantFaceCardCheck.SwitchPreference(
+            title = "Skip servant face-card checks",
+            summary = "Brave chains, servant priority, NP-matching card shuffle, etc. won't work",
+            icon = icon(Icons.Default.NoAccounts)
         )
     }
 }

@@ -51,7 +51,7 @@ class ServantTracker @Inject constructor(
     val checkImages = mutableMapOf<TeamSlot, TeamSlotData>()
     private var supportSlot: TeamSlot? = null
 
-    val faceCardImages = mutableMapOf<TeamSlot, IPattern>()
+    private val faceCardImages = mutableMapOf<TeamSlot, IPattern>()
 
     override fun close() {
         checkImages.values.forEach { it.close() }
@@ -93,7 +93,7 @@ class ServantTracker @Inject constructor(
     }
 
     private fun initFaceCard(teamSlot: TeamSlot, slot: FieldSlot) {
-        if (teamSlot in faceCardImages)
+        if (prefs.skipServantFaceCardCheck || teamSlot in faceCardImages)
             return
 
         // Open details dialog and click on INFO
@@ -182,6 +182,10 @@ class ServantTracker @Inject constructor(
     }
 
     fun faceCardsGroupedByServant(): Map<TeamSlot, List<CommandCard.Face>> {
+        if (prefs.skipServantFaceCardCheck) {
+            return emptyMap()
+        }
+
         val cardsRemaining = CommandCard.Face.list.toMutableSet()
         val result = mutableMapOf<TeamSlot, List<CommandCard.Face>>()
 

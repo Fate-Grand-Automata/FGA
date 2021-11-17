@@ -98,7 +98,7 @@ class CardParser @Inject constructor(
                 when {
                     it.isStunned -> false
                     it.type == CardTypeEnum.Unknown -> true
-                    it.servant is TeamSlot.Unknown -> true
+                    it.servant is TeamSlot.Unknown -> !prefs.skipServantFaceCardCheck
                     else -> false
                 }
             }
