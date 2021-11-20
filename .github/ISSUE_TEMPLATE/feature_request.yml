@@ -15,7 +15,7 @@ body:
     id: description
     attributes:
       label: Describe the feature
-      description: >
+      description: |
         Suggest your feature here. What benefit would it bring?
         
         Do you have any ideas on how to implement it?
