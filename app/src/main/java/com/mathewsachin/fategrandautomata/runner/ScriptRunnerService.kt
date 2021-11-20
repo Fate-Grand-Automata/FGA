@@ -23,8 +23,12 @@ class ScriptRunnerService: Service() {
                 mServiceStarted.value = value != null
             }
 
-        fun startService(context: Context) {
-            val intent = makeServiceIntent(context)
+        private const val REFRESH_PLAY_BUTTON = "REFRESH_PLAY_BUTTON"
+
+        fun startService(context: Context, refreshPlayButton: Boolean) {
+            val intent = makeServiceIntent(context).apply {
+                putExtra(REFRESH_PLAY_BUTTON, refreshPlayButton)
+            }
 
             ContextCompat.startForegroundService(context, intent)
         }
@@ -40,7 +44,7 @@ class ScriptRunnerService: Service() {
         var mediaProjectionToken: Intent? = null
             set(value) {
                 field = value
-                instance?.controller?.onNewMediaProjectionToken()
+                instance?.controller?.refreshPlayButton()
             }
     }
 
@@ -59,6 +63,15 @@ class ScriptRunnerService: Service() {
         super.onCreate()
         instance = this
         controller.onCreate()
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val shouldRefreshPlayButton = intent?.getBooleanExtra(REFRESH_PLAY_BUTTON, false) ?: false
+
+        if (shouldRefreshPlayButton)
+            controller.refreshPlayButton()
+
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

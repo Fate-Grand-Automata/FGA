@@ -27,15 +27,13 @@ class ScreenshotServiceHolder @Inject constructor(
     private val rootScreenshotServiceProvider: Provider<RootScreenshotService>,
     private val mediaProjectionManager: MediaProjectionManager
 ) : AutoCloseable {
-    var screenshotService: IScreenshotService? = null
-        private set
-
-    fun prepareScreenshotService() {
-        screenshotService = try {
+    val screenshotService: IScreenshotService? by lazy {
+        try {
             if (prefs.wantsMediaProjectionToken) {
                 // Cloning the Intent allows reuse.
                 // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
-                val token = ScriptRunnerService.mediaProjectionToken?.clone() as Intent
+                val token = ScriptRunnerService.mediaProjectionToken?.clone() as? Intent
+                    ?: throw IllegalStateException("MediaProjection token is null")
 
                 val mediaProjection =
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
@@ -54,6 +52,5 @@ class ScreenshotServiceHolder @Inject constructor(
 
     override fun close() {
         screenshotService?.close()
-        screenshotService = null
     }
 }

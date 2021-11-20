@@ -6,10 +6,7 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.di.service.ServiceCoroutineScope
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.fategrandautomata.util.DisplayHelper
-import com.mathewsachin.fategrandautomata.util.ImageLoader
-import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
-import com.mathewsachin.fategrandautomata.util.ScriptMessages
+import com.mathewsachin.fategrandautomata.util.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.CoroutineScope
@@ -72,29 +69,29 @@ class ScriptRunnerServiceController @Inject constructor(
                 }
             }
         }
-
-        if (shouldDisplayPlayButton()) {
-            overlay.show()
-        }
-
-        screenshotServiceHolder.prepareScreenshotService()
     }
 
     fun onScreenConfigChanged() {
+        refreshPlayButton()
+    }
+
+    fun refreshPlayButton() {
         if (shouldDisplayPlayButton()) {
             overlay.show()
         } else {
             overlay.hide()
 
-            // Pause if script is running
-            scope.launch {
-                // This delay is to avoid race-condition with screen turn OFF listener
-                delay(Duration.seconds(1))
+            if (scriptManager.scriptState is ScriptState.Started) {
+                // Pause if script is running
+                scope.launch {
+                    // This delay is to avoid race-condition with screen turn OFF listener
+                    delay(Duration.seconds(1))
 
-                scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
-                    if (success) {
-                        val msg = context.getString(R.string.script_paused)
-                        messages.toast(msg)
+                    scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
+                        if (success) {
+                            val msg = context.getString(R.string.script_paused)
+                            messages.toast(msg)
+                        }
                     }
                 }
             }
@@ -108,9 +105,5 @@ class ScriptRunnerServiceController @Inject constructor(
 
         // Hide overlay in Portrait orientation (unless Surface Duo)
         return isLandscape || prefsCore.gameAreaMode.get() == GameAreaMode.Duo
-    }
-
-    fun onNewMediaProjectionToken() {
-        screenshotServiceHolder.prepareScreenshotService()
     }
 }

@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.runner.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.TapperService
+import com.mathewsachin.fategrandautomata.runner.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
@@ -150,12 +150,16 @@ private fun toggleOverlayService(
     if (ScriptRunnerService.serviceStarted.value) {
         ScriptRunnerService.stopService(context)
     } else {
-        ScriptRunnerService.startService(context)
+        val askForMediaProjectionToken = vm.prefs.wantsMediaProjectionToken
+                && ScriptRunnerService.mediaProjectionToken == null
 
-        if (vm.prefs.wantsMediaProjectionToken) {
-            if (ScriptRunnerService.mediaProjectionToken == null) {
-                startMediaProjection()
-            }
+        ScriptRunnerService.startService(
+            context,
+            refreshPlayButton = !askForMediaProjectionToken
+        )
+
+        if (askForMediaProjectionToken) {
+            startMediaProjection()
         }
     }
 }
