@@ -54,9 +54,8 @@ class MediaProjectionScreenshotService(
             Imgproc.cvtColor(bufferMat, colorMat, Imgproc.COLOR_RGBA2BGR)
 
             colorPattern
-        }
-        else {
-            Imgproc.cvtColor(bufferMat, grayscaleMat, Imgproc.COLOR_BGRA2GRAY)
+        } else {
+            Imgproc.cvtColor(bufferMat, grayscaleMat, Imgproc.COLOR_RGBA2GRAY)
 
             grayscalePattern
         }
