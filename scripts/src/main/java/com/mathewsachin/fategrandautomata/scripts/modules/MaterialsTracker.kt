@@ -40,22 +40,24 @@ class MaterialsTracker @Inject constructor(
         }
     }
 
-    fun parseMaterials() = runBlocking {
-        MaterialEnum.values().map { material ->
-            async {
-                val pattern = images.loadMaterial(material)
+    fun parseMaterials() = useSameSnapIn {
+        runBlocking {
+            MaterialEnum.values().map { material ->
+                async {
+                    val pattern = images.loadMaterial(material)
 
-                // TODO: Make the search region smaller
-                val count = locations.scriptArea
-                    .findAll(pattern)
-                    .count()
+                    // TODO: Make the search region smaller
+                    val count = locations.scriptArea
+                        .findAll(pattern)
+                        .count()
 
-                // Increment material count
-                if (count > 0) {
-                    matsGot.merge(material, count, Int::plus)
+                    // Increment material count
+                    if (count > 0) {
+                        matsGot.merge(material, count, Int::plus)
+                    }
                 }
-            }
-        }.awaitAll();
+            }.awaitAll();
+        }
 
         if (prefs.refill.shouldLimitMats) {
             val totalMats = wantedMats.values.sum()
