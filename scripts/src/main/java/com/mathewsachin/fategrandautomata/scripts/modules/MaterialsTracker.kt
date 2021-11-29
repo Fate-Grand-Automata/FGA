@@ -14,13 +14,12 @@ class MaterialsTracker @Inject constructor(
     private val battleConfig: IBattleConfig,
     private val state: BattleState
 ) : IFgoAutomataApi by api {
-    // Set all Materials to 0
-    private var matsGot =
-        battleConfig
-            .materials
-            .associateWith { 0 }
-            .toMutableMap()
-
+    // Set all wanted Materials to 0, additional drops are added on demand
+    private var matsGot = battleConfig
+        .materials
+        .associateWith { 0 }
+        .toMutableMap()
+    val wantedMats get() = matsGot.filterKeys(battleConfig.materials::contains)
     val farmed: Map<MaterialEnum, Int> get() = matsGot
 
     fun autoDecrement() {
@@ -28,7 +27,7 @@ class MaterialsTracker @Inject constructor(
 
         // Auto-decrement materials
         if (refill.shouldLimitMats) {
-            refill.limitMats -= matsGot.values.sum()
+            refill.limitMats -= wantedMats.values.sum()
 
             // Turn off limit by materials when done
             if (refill.limitMats <= 0) {
@@ -39,7 +38,7 @@ class MaterialsTracker @Inject constructor(
     }
 
     fun parseMaterials() {
-        for (material in battleConfig.materials) {
+        for (material in MaterialEnum.values()) {
             val pattern = images.loadMaterial(material)
 
             // TODO: Make the search region smaller
@@ -48,13 +47,13 @@ class MaterialsTracker @Inject constructor(
                 .count()
 
             // Increment material count
-            matsGot.merge(material, count, Int::plus)
+            if (count > 0) {
+                matsGot.merge(material, count, Int::plus)
+            }
         }
 
         if (prefs.refill.shouldLimitMats) {
-            val totalMats = matsGot
-                .values
-                .sum()
+            val totalMats = wantedMats.values.sum()
 
             if (totalMats >= prefs.refill.limitMats) {
                 // Count the current run
