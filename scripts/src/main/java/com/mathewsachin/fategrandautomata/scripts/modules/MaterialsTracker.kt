@@ -6,6 +6,9 @@ import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @ScriptScope
@@ -37,20 +40,22 @@ class MaterialsTracker @Inject constructor(
         }
     }
 
-    fun parseMaterials() {
-        for (material in MaterialEnum.values()) {
-            val pattern = images.loadMaterial(material)
+    fun parseMaterials() = runBlocking {
+        MaterialEnum.values().map { material ->
+            async {
+                val pattern = images.loadMaterial(material)
 
-            // TODO: Make the search region smaller
-            val count = locations.scriptArea
-                .findAll(pattern)
-                .count()
+                // TODO: Make the search region smaller
+                val count = locations.scriptArea
+                    .findAll(pattern)
+                    .count()
 
-            // Increment material count
-            if (count > 0) {
-                matsGot.merge(material, count, Int::plus)
+                // Increment material count
+                if (count > 0) {
+                    matsGot.merge(material, count, Int::plus)
+                }
             }
-        }
+        }.awaitAll();
 
         if (prefs.refill.shouldLimitMats) {
             val totalMats = wantedMats.values.sum()
