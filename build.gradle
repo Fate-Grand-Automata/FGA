@@ -1,5 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+if (hasProperty('buildScan')) {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}
+
 buildscript {
     ext {
         kotlin_version = '1.5.21'
