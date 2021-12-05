@@ -11,7 +11,7 @@ import kotlin.math.roundToInt
 @ScriptScope
 class SupportScreenLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
-): IScriptAreaTransforms by scriptAreaTransforms {
+) : IScriptAreaTransforms by scriptAreaTransforms {
     private val headerOffset = Location(if (isWide) 171 else 0, 0)
 
     val screenCheckRegion = Region(0, 0, 200, 400) + headerOffset
@@ -59,7 +59,7 @@ class SupportScreenLocations @Inject constructor(
     val confirmSetupButtonRegion = Region(2006, 0, 370, 1440) + supportOffset
     val defaultBounds = Region(-18, 0, 2356, 428) + supportOffset
     val defaultCeBounds = Region(-18, 270, 378, 150) + supportOffset
-    val notFoundRegion = Region(324, 708, 150, 90) + supportOffset
+    val notFoundRegion = Region(274, 708, 150, 140) + supportOffset
 
     val listSwipeStart = Location(-59, if (canLongSwipe) 1000 else 1190) + supportOffset
     val listSwipeEnd = Location(-89, if (canLongSwipe) 300 else 660) + supportOffset
