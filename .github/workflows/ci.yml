@@ -39,10 +39,7 @@ jobs:
           echo "FGA_VERSION_NAME=$VERSION_NAME" >> $env:GITHUB_ENV
 
       - name: Build Android Package
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          job-id: jdk11
-          arguments: --scan assembleCi
+        run: ./gradlew assembleCi --scan --parallel
 
       - name: Upload APK
         uses: actions/upload-artifact@v1
