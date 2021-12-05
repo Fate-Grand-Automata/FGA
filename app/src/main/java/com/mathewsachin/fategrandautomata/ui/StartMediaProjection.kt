@@ -7,14 +7,14 @@ import android.media.projection.MediaProjectionManager
 import androidx.activity.result.contract.ActivityResultContract
 
 class StartMediaProjection : ActivityResultContract<Unit, Intent?>() {
-    override fun createIntent(context: Context, input: Unit?): Intent {
+    override fun createIntent(context: Context, input: Unit): Intent {
         val mediaProjectionManager = context.getSystemService(MediaProjectionManager::class.java)
 
         return mediaProjectionManager.createScreenCaptureIntent()
     }
 
-    override fun parseResult(resultCode: Int, result: Intent?) =
+    override fun parseResult(resultCode: Int, intent: Intent?) =
         if (resultCode != Activity.RESULT_OK)
             null
-        else result
+        else intent
 }

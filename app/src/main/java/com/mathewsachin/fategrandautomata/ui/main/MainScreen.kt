@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.runner.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.accessibility.TapperService
+import com.mathewsachin.fategrandautomata.runner.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
@@ -34,7 +34,7 @@ fun MainScreen(
     vm: MainScreenViewModel = viewModel(),
     navigate: (MainScreenDestinations) -> Unit
 ) {
-    var dirPicker: ActivityResultLauncher<Uri>? by remember { mutableStateOf(null) }
+    var dirPicker: ActivityResultLauncher<Uri?>? by remember { mutableStateOf(null) }
 
     var toggling by rememberSaveable { mutableStateOf(false) }
 
@@ -161,12 +161,12 @@ private fun toggleOverlayService(
 }
 
 sealed class MainScreenDestinations {
-    object Releases: MainScreenDestinations()
-    object TroubleshootingGuide: MainScreenDestinations()
-    object BattleConfigs: MainScreenDestinations()
-    object MoreOptions: MainScreenDestinations()
-    object AccessibilitySettings: MainScreenDestinations()
-    object OverlaySettings: MainScreenDestinations()
+    object Releases : MainScreenDestinations()
+    object TroubleshootingGuide : MainScreenDestinations()
+    object BattleConfigs : MainScreenDestinations()
+    object MoreOptions : MainScreenDestinations()
+    object AccessibilitySettings : MainScreenDestinations()
+    object OverlaySettings : MainScreenDestinations()
 }
 
 @Composable
