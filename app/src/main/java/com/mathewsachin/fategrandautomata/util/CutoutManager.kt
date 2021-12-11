@@ -14,7 +14,6 @@ import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.math.roundToInt
 
 @Singleton
 class CutoutManager @Inject constructor(
@@ -31,6 +30,8 @@ class CutoutManager @Inject constructor(
     private var cutoutFound = false
     private var cutoutValue = Cutout.NoCutouts
 
+    private var systemBarCutouts = Cutout.NoCutouts
+
     fun applyCutout(activity: Activity) {
         if (cutoutFound) {
             return
@@ -40,6 +41,14 @@ class CutoutManager @Inject constructor(
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             cutoutFound = true
             return
+        }
+
+        // measure the status and navigation bar for Xperia
+        activity.window.decorView.rootWindowInsets.let {
+            systemBarCutouts = Cutout(
+                it.systemWindowInsetLeft, it.systemWindowInsetTop,
+                it.systemWindowInsetRight, it.systemWindowInsetBottom
+            )
         }
 
         val displayCutout = activity.window.decorView.rootWindowInsets.displayCutout
@@ -80,19 +89,19 @@ class CutoutManager @Inject constructor(
             else -> prefs.ignoreNotchCalculation
         }
 
-    private fun getCutout(rotation: Int): Cutout {
-        if (shouldIgnoreNotch() || cutoutValue == Cutout.NoCutouts) {
+    private fun adjustCutoutForRotation(cutout: Cutout, rotation: Int): Cutout {
+        if (shouldIgnoreNotch() || cutout == Cutout.NoCutouts) {
             return Cutout.NoCutouts
         }
 
-        val (l, t, r, b) = cutoutValue
+        val (l, t, r, b) = cutout
 
         // Consider current orientation of screen
         return when (rotation) {
             Surface.ROTATION_90 -> Cutout(t, r, b, l)
             Surface.ROTATION_180 -> Cutout(r, b, l, t)
             Surface.ROTATION_270 -> Cutout(b, l, t, r)
-            else -> cutoutValue
+            else -> cutout
         }
     }
 
@@ -105,27 +114,15 @@ class CutoutManager @Inject constructor(
     fun getCutoutAppliedRegion(): Region {
         var (w, h) = getScreenSize()
 
-        return when (prefsCore.gameAreaMode.get()) {
-            GameAreaMode.Default -> {
-                val cutout = getCutout(display.rotation)
-                val (l, t, r, b) = cutout
-
-                // remove notch from dimensions
-                w -= l + r
-                h -= t + b
-
-                Region(l, t, w, h)
-            }
-            GameAreaMode.Xperia -> {
-                val fgoRatio = 0.9
-                val barRatio = 0.026
-                val navRatio = 1 - (fgoRatio + barRatio)
-
-                val leftRatio = if (display.rotation == Surface.ROTATION_270) navRatio else barRatio
-
-                Region((w * leftRatio).roundToInt(), 0, (w * fgoRatio).roundToInt(), h)
-            }
-            GameAreaMode.Duo -> Region(192, 0, 2400, h)
+        val (l, t, r, b) = when (prefsCore.gameAreaMode.get()) {
+            GameAreaMode.Default -> adjustCutoutForRotation(cutoutValue, display.rotation)
+            GameAreaMode.Xperia -> adjustCutoutForRotation(systemBarCutouts, display.rotation)
+            GameAreaMode.Duo -> Cutout(192, 0, 192, 0)
         }
+        // remove notch from dimensions
+        w -= l + r
+        h -= t + b
+
+        return Region(l, t, w, h)
     }
 }
