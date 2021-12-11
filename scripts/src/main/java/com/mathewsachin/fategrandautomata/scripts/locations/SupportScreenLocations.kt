@@ -12,7 +12,12 @@ import kotlin.math.roundToInt
 class SupportScreenLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
-    private val headerOffset = Location(if (isWide) 171 else 0, 0)
+    private val headerOffset =
+        when (gameServer) {
+            // JP is centered with equal margins, see #943
+            GameServerEnum.Jp -> Location(-1280, 0).xFromCenter()
+            else -> Location(if (isWide) 171 else 0, 0)
+        }
 
     val screenCheckRegion = Region(0, 0, 200, 400) + headerOffset
 
