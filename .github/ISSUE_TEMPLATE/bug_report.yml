@@ -72,6 +72,10 @@ body:
     attributes:
       label: Device model
       placeholder: "Xiaomi Redmi 4"
+      description: |
+        The name of your phone model.
+        
+        If you are using an emulator, use its name and version instead.
     validations:
       required: true
   - type: dropdown
