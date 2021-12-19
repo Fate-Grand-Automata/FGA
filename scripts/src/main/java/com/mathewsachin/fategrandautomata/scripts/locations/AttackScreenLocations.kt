@@ -51,7 +51,7 @@ class AttackScreenLocations @Inject constructor(
         CommandCard.Face.C -> -150
         CommandCard.Face.D -> 364
         CommandCard.Face.E -> 880
-    }.let { x -> Region(x - 100, 730, 500, 400) + faceCardDeltaY }.xFromCenter()
+    }.let { x -> Region(x - 100, 700, 500, 400) + faceCardDeltaY }.xFromCenter()
 
     fun supportCheckRegion(card: CommandCard.Face) =
         affinityRegion(card) + Location(-50, 100)

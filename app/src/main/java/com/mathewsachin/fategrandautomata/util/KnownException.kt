@@ -4,7 +4,7 @@ import com.mathewsachin.fategrandautomata.SupportImageKind
 
 class KnownException(val reason: Reason) : Exception(reason.msg) {
     sealed class Reason(val msg: String) {
-        class CouldNotCrateDirectory(name: String) : Reason("Couldn't create directory: '$name'")
+        class CouldNotCreateDirectory(name: String) : Reason("Couldn't create directory: '$name'")
         class CouldNotCreateFile(name: String) : Reason("Couldn't create file: '$name'")
         object CouldNotOpenFileForRecording : Reason("Couldn't open file for recording")
         class CouldNotOpenSupportFileForReading(

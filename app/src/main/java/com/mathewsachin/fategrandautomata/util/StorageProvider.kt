@@ -29,7 +29,7 @@ class StorageProvider @Inject constructor(
     fun DocumentFile?.getOrCreateDir(name: String) =
         this?.findFile(name)?.takeIf { it.isDirectory }
             ?: this?.createDirectory(name)
-            ?: throw KnownException(KnownException.Reason.CouldNotCrateDirectory(name))
+            ?: throw KnownException(KnownException.Reason.CouldNotCreateDirectory(name))
 
     fun DocumentFile?.getOrCreateFile(name: String, mime: String = mimeAny) =
         this?.findFile(name)?.takeIf { !it.isDirectory }
