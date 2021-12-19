@@ -37,12 +37,12 @@ class Support @Inject constructor(
     private fun execute(provider: SupportSelectionProvider) {
         var numberOfSwipes = 0
         var numberOfUpdates = 0
-        var onAllList = refresher.waitForSupportScreenToLoad() == SupportScreenRefresher.Result.SwitchedToAll
-
+        var onAllList = false
         val alsoCheckAll = supportClassPicker.shouldAlsoCheckAll()
+        refresher.waitForSupportScreenToLoad()
 
         while (true) {
-            val result = provider.select()
+            val result = if (refresher.noSupportsPresent()) SupportSelectionResult.Refresh else provider.select()
 
             when {
                 result is SupportSelectionResult.Done -> return
@@ -66,7 +66,8 @@ class Support @Inject constructor(
                 }
                 // Refresh support list if not exceeded max refreshes
                 numberOfUpdates < prefs.support.maxUpdates -> {
-                    onAllList = refresher.refreshSupportList() == SupportScreenRefresher.Result.SwitchedToAll
+                    refresher.refreshSupportList()
+                    onAllList = false
 
                     ++numberOfUpdates
                     numberOfSwipes = 0

@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
-import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -19,10 +18,10 @@ class SupportScreenRefresher @Inject constructor(
     private var lastSupportRefreshTimestamp: TimeMark? = null
     private val supportRefreshThreshold = Duration.seconds(10)
 
-    fun refreshSupportList(): Result {
+    fun refreshSupportList() {
         performRefresh()
 
-        return waitForSupportScreenToLoad()
+        waitForSupportScreenToLoad()
     }
 
     private fun performRefresh() {
@@ -49,7 +48,7 @@ class SupportScreenRefresher @Inject constructor(
     private fun isAnyDialogOpen() =
         images[Images.SupportExtra] !in locations.support.extraRegion
 
-    private fun noSupportsPresent() =
+    fun noSupportsPresent() =
         images[Images.SupportNotFound] in locations.support.notFoundRegion
 
     private fun someSupportsPresent() =
@@ -78,29 +77,8 @@ class SupportScreenRefresher @Inject constructor(
         }
     }
 
-    enum class Result {
-        Loaded, SwitchedToAll
-    }
-
-    fun waitForSupportScreenToLoad(): Result {
-        while (true) {
-            waitTillListLoads()
-            supportClassPicker.selectSupportClass()
-
-            if (!noSupportsPresent()) {
-                return Result.Loaded
-            } else {
-                if (supportClassPicker.shouldAlsoCheckAll()) {
-                    supportClassPicker.selectSupportClass(SupportClass.All)
-
-                    if (!noSupportsPresent()) {
-                        return Result.SwitchedToAll
-                    }
-                }
-            }
-
-            // Nothing matched, refresh
-            performRefresh()
-        }
+    fun waitForSupportScreenToLoad() {
+        waitTillListLoads()
+        supportClassPicker.selectSupportClass()
     }
 }
