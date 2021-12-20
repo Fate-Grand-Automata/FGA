@@ -41,7 +41,7 @@ class ServantTracker @Inject constructor(
     class TeamSlotData(
         val checkImage: IPattern,
         val skills: List<IPattern>
-    ): AutoCloseable {
+    ) : AutoCloseable {
         override fun close() {
             checkImage.close()
             skills.forEach { it.close() }
@@ -137,8 +137,7 @@ class ServantTracker @Inject constructor(
         // New run with different support
         if (wasSupport && isSupport && isDifferentServant) {
             init(teamSlot, slot)
-        }
-        else if (isDifferentServant || (wasSupport != isSupport)) {
+        } else if (isDifferentServant || (wasSupport != isSupport)) {
             val newTeamSlot = servantQueue.removeFirstOrNull()
 
             if (newTeamSlot != null) {
@@ -181,27 +180,19 @@ class ServantTracker @Inject constructor(
         }
     }
 
-    fun faceCardsGroupedByServant(): Map<TeamSlot, List<CommandCard.Face>> {
+    fun faceCardsGroupedByServant(): Map<TeamSlot, Collection<CommandCard.Face>> {
         if (prefs.skipServantFaceCardCheck) {
             return emptyMap()
         }
 
         val cardsRemaining = CommandCard.Face.list.toMutableSet()
-        val result = mutableMapOf<TeamSlot, List<CommandCard.Face>>()
+        val result = mutableMapOf<TeamSlot, MutableSet<CommandCard.Face>>()
 
         supportSlot?.let { supportSlot ->
             if (supportSlot in deployed.values) {
                 val matched = cardsRemaining.filter { card ->
                     images[Images.Support] in locations.attack.supportCheckRegion(card)
-                }
-
-                messages.log(
-                    ScriptLog.CardsBelongToServant(
-                        cards = matched,
-                        servant = supportSlot,
-                        isSupport = true
-                    )
-                )
+                }.toMutableSet()
 
                 cardsRemaining -= matched
 
@@ -209,25 +200,31 @@ class ServantTracker @Inject constructor(
             }
         }
 
-        for (teamSlot in deployed.values) {
-            if (supportSlot != teamSlot) {
-                val img = faceCardImages[teamSlot] ?: continue
+        val ownedServants = faceCardImages
+            .filterKeys { it != supportSlot && it in deployed.values }
+        for (card in cardsRemaining) {
+            // find the best matching Servant which isn't the support
+            val matchedServants = ownedServants.mapValues { (_, image) ->
+                locations.attack.servantMatchRegion(card)
+                    .find(image, 0.5)?.score ?: 0.0
+            }.filterValues { it > 0.0 }
 
-                val matched = cardsRemaining.filter { card ->
-                    img in locations.attack.servantMatchRegion(card)
+            matchedServants
+                .maxByOrNull { it.value }
+                ?.let { (teamSlot, _) ->
+                    // add the card to the matched Servant
+                    result.getOrPut(teamSlot, { mutableSetOf() }) += card
                 }
+        }
 
-                messages.log(
-                    ScriptLog.CardsBelongToServant(
-                        cards = matched,
-                        servant = teamSlot
-                    )
+        result.forEach { (servant, cards) ->
+            messages.log(
+                ScriptLog.CardsBelongToServant(
+                    cards,
+                    servant,
+                    isSupport = servant == supportSlot
                 )
-
-                cardsRemaining -= matched
-
-                result[teamSlot] = matched
-            }
+            )
         }
 
         return result
