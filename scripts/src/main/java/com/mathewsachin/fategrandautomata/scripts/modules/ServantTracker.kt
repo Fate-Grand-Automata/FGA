@@ -186,36 +186,34 @@ class ServantTracker @Inject constructor(
         }
 
         val cardsRemaining = CommandCard.Face.list.toMutableSet()
-        val result = mutableMapOf<TeamSlot, MutableSet<CommandCard.Face>>()
+        val result = mutableMapOf<TeamSlot, Set<CommandCard.Face>>()
 
         supportSlot?.let { supportSlot ->
             if (supportSlot in deployed.values) {
                 val matched = cardsRemaining.filter { card ->
                     images[Images.Support] in locations.attack.supportCheckRegion(card)
-                }.toMutableSet()
+                }.toSet()
 
                 cardsRemaining -= matched
-
                 result[supportSlot] = matched
             }
         }
 
         val ownedServants = faceCardImages
             .filterKeys { it != supportSlot && it in deployed.values }
-        for (card in cardsRemaining) {
+        cardsRemaining.groupBy { card ->
             // find the best matching Servant which isn't the support
-            val matchedServants = ownedServants.mapValues { (_, image) ->
+            ownedServants.mapValues { (_, image) ->
                 locations.attack.servantMatchRegion(card)
                     .find(image, 0.5)?.score ?: 0.0
-            }.filterValues { it > 0.0 }
-
-            matchedServants
+            }
+                .filterValues { it > 0.0 }
                 .maxByOrNull { it.value }
-                ?.let { (teamSlot, _) ->
-                    // add the card to the matched Servant
-                    result.getOrPut(teamSlot, { mutableSetOf() }) += card
-                }
+                ?.key
         }
+            .filterKeys { it != null }
+            .entries
+            .associateTo(result) { (key, value) -> key!! to value.toSet() }
 
         result.forEach { (servant, cards) ->
             messages.log(
