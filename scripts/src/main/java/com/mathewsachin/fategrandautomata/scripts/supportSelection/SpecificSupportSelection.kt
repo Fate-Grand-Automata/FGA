@@ -8,7 +8,7 @@ abstract class SpecificSupportSelection(
     protected val boundsFinder: SupportBoundsFinder,
     private val friendChecker: SupportFriendChecker,
     api: IFgoAutomataApi
-): SupportSelectionProvider, IFgoAutomataApi by api {
+) : SupportSelectionProvider, IFgoAutomataApi by api {
     protected abstract fun search(): SpecificSupportSearchResult
 
     override fun select() =
