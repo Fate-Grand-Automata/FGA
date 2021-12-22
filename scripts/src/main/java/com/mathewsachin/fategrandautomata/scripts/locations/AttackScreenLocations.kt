@@ -10,7 +10,7 @@ import javax.inject.Inject
 @ScriptScope
 class AttackScreenLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
-): IScriptAreaTransforms by scriptAreaTransforms {
+) : IScriptAreaTransforms by scriptAreaTransforms {
     private fun clickLocation(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -980
         CommandCard.Face.B -> -530
@@ -35,7 +35,7 @@ class AttackScreenLocations @Inject constructor(
         CommandCard.Face.C -> 41
         CommandCard.Face.D -> 554
         CommandCard.Face.E -> 1068
-    }.let { x -> Region(x, 650, 250, 200) + faceCardDeltaY }.xFromCenter()
+    }.let { x -> Region(x, 620, 250, 230) + faceCardDeltaY }.xFromCenter()
 
     fun typeRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -1280

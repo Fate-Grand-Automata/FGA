@@ -143,7 +143,10 @@ class ScriptManager @Inject constructor(
                 messageBox.show(scriptExitedString, msg)
             }
             is AutoGiftBox.ExitException -> {
-                val msg = context.getString(R.string.picked_exp_stacks, e.pickedStacks)
+                val msg = when (val reason = e.reason) {
+                    is AutoGiftBox.ExitReason.CannotSelectAnyMore -> context.getString(R.string.picked_exp_stacks, reason.pickedStacks)
+                    AutoGiftBox.ExitReason.NoEmbersFound -> context.getString(R.string.no_embers_found)
+                }
 
                 messages.notify(msg)
                 messageBox.show(scriptExitedString, msg)

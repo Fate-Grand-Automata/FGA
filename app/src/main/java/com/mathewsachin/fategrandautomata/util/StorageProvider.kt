@@ -29,12 +29,12 @@ class StorageProvider @Inject constructor(
     fun DocumentFile?.getOrCreateDir(name: String) =
         this?.findFile(name)?.takeIf { it.isDirectory }
             ?: this?.createDirectory(name)
-            ?: throw KnownException(KnownException.Reason.CouldNotCrateDirectory(name))
+            ?: throw KnownException(KnownException.Reason.CouldNotCreateDirectory(name))
 
     fun DocumentFile?.getOrCreateFile(name: String, mime: String = mimeAny) =
         this?.findFile(name)?.takeIf { !it.isDirectory }
             ?: this?.createFile(mime, name)
-            ?: throw KnownException(KnownException.Reason.CouldNotCrateFile(name))
+            ?: throw KnownException(KnownException.Reason.CouldNotCreateFile(name))
 
     val resolver: ContentResolver = context.contentResolver
     private var dirRoot: DocumentFile? = null
@@ -139,7 +139,7 @@ class StorageProvider @Inject constructor(
             )
 
         val files = if (file.isDirectory) {
-            file.listFiles().takeUnless{ it.isEmpty() }
+            file.listFiles().takeUnless { it.isEmpty() }
                 ?: throw KnownException(KnownException.Reason.SupportFolderIsEmpty(kind, name))
         } else arrayOf(file)
 

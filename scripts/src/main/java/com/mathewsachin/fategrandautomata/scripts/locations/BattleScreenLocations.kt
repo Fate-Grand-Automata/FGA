@@ -10,7 +10,7 @@ import javax.inject.Inject
 class BattleScreenLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms,
     val master: MasterLocations
-): IScriptAreaTransforms by scriptAreaTransforms {
+) : IScriptAreaTransforms by scriptAreaTransforms {
     fun locate(orderChangeMember: OrderChangeMember) = when (orderChangeMember) {
         OrderChangeMember.Starting.A -> -1000
         OrderChangeMember.Starting.B -> -600
@@ -105,5 +105,5 @@ class BattleScreenLocations @Inject constructor(
         Region(30, 30, 30, 30) + locate(skill)
 
     val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
-    val servantDetailsFaceCardRegion = Region(-685, 300, 110, 60).xFromCenter()
+    val servantDetailsFaceCardRegion = Region(-685, 330, 110, 60).xFromCenter()
 }

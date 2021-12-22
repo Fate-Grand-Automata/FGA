@@ -18,7 +18,12 @@ class AutoGiftBox @Inject constructor(
     api: IFgoAutomataApi,
     private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
-    class ExitException(val pickedStacks: Int): Exception()
+    sealed class ExitReason {
+        object NoEmbersFound : ExitReason()
+        class CannotSelectAnyMore(val pickedStacks: Int) : ExitReason()
+    }
+
+    class ExitException(val reason: ExitReason) : Exception()
 
     companion object {
         const val maxClickCount = 99
@@ -30,7 +35,7 @@ class AutoGiftBox @Inject constructor(
     override fun script(): Nothing {
         val xpOffsetX = (locations.scriptArea.find(images[Images.GoldXP]) ?: locations.scriptArea.find(images[Images.SilverXP]))
             ?.region?.center?.x
-            ?: throw Exception("Couldn't find Embers on screen. This shouldn't happen.")
+            ?: throw ExitException(ExitReason.NoEmbersFound)
 
         val checkRegion = Region(xpOffsetX + 1320, 350, 140, 1500)
         val scrollEndRegion = Region(100 + checkRegion.x, 1421, 320, 19)
@@ -49,13 +54,12 @@ class AutoGiftBox @Inject constructor(
                     if (connectionRetry.needsToRetry()) connectionRetry.retry() else break
                 }
                 receiveSelectedClick.click()
-            }
-            else break
+            } else break
 
             if (receiveEnabledPattern !in receiveEnabledRegion) break
         }
 
-        throw ExitException(totalReceived)
+        throw ExitException(ExitReason.CannotSelectAnyMore(totalReceived))
     }
 
     private fun iteration(
