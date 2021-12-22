@@ -204,10 +204,11 @@ class ServantTracker @Inject constructor(
         cardsRemaining
             .groupBy { card ->
                 // find the best matching Servant which isn't the support
-                ownedServants.mapValues { (_, image) ->
-                    locations.attack.servantMatchRegion(card)
-                        .find(image, 0.5)?.score ?: 0.0
-                }
+                ownedServants
+                    .mapValues { (_, image) ->
+                        locations.attack.servantMatchRegion(card)
+                            .find(image, 0.5)?.score ?: 0.0
+                    }
                     .filterValues { it > 0.0 }
                     .maxByOrNull { it.value }
                     ?.key
