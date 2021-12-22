@@ -201,16 +201,17 @@ class ServantTracker @Inject constructor(
 
         val ownedServants = faceCardImages
             .filterKeys { it != supportSlot && it in deployed.values }
-        cardsRemaining.groupBy { card ->
-            // find the best matching Servant which isn't the support
-            ownedServants.mapValues { (_, image) ->
-                locations.attack.servantMatchRegion(card)
-                    .find(image, 0.5)?.score ?: 0.0
+        cardsRemaining
+            .groupBy { card ->
+                // find the best matching Servant which isn't the support
+                ownedServants.mapValues { (_, image) ->
+                    locations.attack.servantMatchRegion(card)
+                        .find(image, 0.5)?.score ?: 0.0
+                }
+                    .filterValues { it > 0.0 }
+                    .maxByOrNull { it.value }
+                    ?.key
             }
-                .filterValues { it > 0.0 }
-                .maxByOrNull { it.value }
-                ?.key
-        }
             .filterKeys { it != null }
             .entries
             .associateTo(result) { (key, value) -> key!! to value.toSet() }
