@@ -13,7 +13,7 @@ class ScreenshotManager @Inject constructor(
     val gameAreaManager: GameAreaManager,
     val screenshotService: ScreenshotService,
     val platformImpl: PlatformImpl,
-    val transformationExtensions: ITransformationExtensions
+    val transformations: ITransformationExtensions
 ) : AutoCloseable {
     var usePreviousSnap = false
 
@@ -28,7 +28,7 @@ class ScreenshotManager @Inject constructor(
         val sshot = screenshotService.takeScreenshot()
             .crop(gameAreaManager.gameArea)
 
-        val scale = transformationExtensions.screenToImageScale()
+        val scale = transformations.screenToImageScale()
 
         if (scale != null) {
             if (resizeTarget == null) {

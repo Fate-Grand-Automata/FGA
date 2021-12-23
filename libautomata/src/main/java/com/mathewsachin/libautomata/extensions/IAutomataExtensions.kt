@@ -5,9 +5,7 @@ import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import kotlin.time.Duration
 
-interface IAutomataExtensions
-    : IImageMatchingExtensions,
-    ITransformationExtensions {
+interface IAutomataExtensions : IImageMatchingExtensions {
     /**
      * Gets the image content of this Region.
      *

@@ -9,12 +9,12 @@ class AutomataApi @Inject constructor(
     private val highlight: Highlighter,
     private val click: Clicker,
     imageMatchingExtensions: IImageMatchingExtensions,
-    transformationExtensions: ITransformationExtensions,
+    transformations: ITransformationExtensions,
     private val colorManager: ColorManager,
     private val wait: Waiter
 ) : IAutomataExtensions,
     IImageMatchingExtensions by imageMatchingExtensions,
-    ITransformationExtensions by transformationExtensions {
+    ITransformationExtensions by transformations {
 
     override fun Region.getPattern() =
         screenshotManager.getScreenshot()

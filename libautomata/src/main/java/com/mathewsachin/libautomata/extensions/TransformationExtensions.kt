@@ -9,7 +9,9 @@ import javax.inject.Inject
 class TransformationExtensions @Inject constructor(
     val gameAreaManager: GameAreaManager
 ) : ITransformationExtensions {
-    val noScaling = 1.0
+    companion object {
+        private const val NoScaling = 1.0
+    }
 
     override fun screenToImageScale(): Double? {
         val targetDimensions =
@@ -42,15 +44,15 @@ class TransformationExtensions @Inject constructor(
         return when (sourceRegion) {
             is CompareBy.Width -> {
                 if (targetRegion.width == sourceRegion.width) {
-                    noScaling
+                    NoScaling
                 } else targetRegion.width / sourceRegion.width.toDouble()
             }
             is CompareBy.Height -> {
                 if (targetRegion.height == sourceRegion.height) {
-                    noScaling
+                    NoScaling
                 } else targetRegion.height / sourceRegion.height.toDouble()
             }
-            CompareBy.None -> noScaling
+            CompareBy.None -> NoScaling
         }
     }
 
@@ -76,7 +78,7 @@ class TransformationExtensions @Inject constructor(
         val scale1 = scriptToScreenScale()
 
         // Screen -> Image
-        val scale2 = screenToImageScale() ?: noScaling
+        val scale2 = screenToImageScale() ?: NoScaling
 
         return scale1 * scale2
     }
