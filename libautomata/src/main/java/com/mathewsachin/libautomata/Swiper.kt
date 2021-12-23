@@ -1,6 +1,5 @@
 package com.mathewsachin.libautomata
 
-import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 
 interface Swiper {
@@ -16,8 +15,8 @@ interface Swiper {
 class RealSwiper @Inject constructor(
     private val gestureService: GestureService,
     private val platformImpl: PlatformImpl,
-    transformations: ITransformationExtensions
-): Swiper, ITransformationExtensions by transformations {
+    private val transform: Transformer
+): Swiper {
     override fun invoke(start: Location, end: Location) {
         val endX = lerp(
             start.x,
@@ -32,8 +31,8 @@ class RealSwiper @Inject constructor(
         ).coerceAtLeast(0)
 
         gestureService.swipe(
-            start.transform(),
-            Location(endX, endY).transform()
+            transform.toScreen(start),
+            transform.toScreen(Location(endX, endY))
         )
     }
 

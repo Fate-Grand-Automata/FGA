@@ -2,7 +2,10 @@ package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
-import com.mathewsachin.libautomata.extensions.*
+import com.mathewsachin.libautomata.extensions.AutomataApi
+import com.mathewsachin.libautomata.extensions.IAutomataExtensions
+import com.mathewsachin.libautomata.extensions.IImageMatchingExtensions
+import com.mathewsachin.libautomata.extensions.ImageMatchingExtensions
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -39,13 +42,13 @@ abstract class LibAutomataModule {
 
     @ScriptScope
     @Binds
+    abstract fun transformer(transformer: RealTransformer): Transformer
+
+    @ScriptScope
+    @Binds
     abstract fun automataApi(automataApi: AutomataApi): IAutomataExtensions
 
     @ScriptScope
     @Binds
     abstract fun imageMatchingExtensions(imageMatchingExtensions: ImageMatchingExtensions): IImageMatchingExtensions
-
-    @ScriptScope
-    @Binds
-    abstract fun transformationExtensions(transformationExtensions: TransformationExtensions): ITransformationExtensions
 }

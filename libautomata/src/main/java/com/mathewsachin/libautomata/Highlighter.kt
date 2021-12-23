@@ -1,6 +1,5 @@
 package com.mathewsachin.libautomata
 
-import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 import kotlin.time.Duration
 
@@ -13,14 +12,14 @@ interface Highlighter {
 }
 
 class RealHighlighter @Inject constructor(
-    val exitManager: ExitManager,
-    val platformImpl: PlatformImpl,
-    transformations: ITransformationExtensions
-): Highlighter, ITransformationExtensions by transformations {
+    private val exitManager: ExitManager,
+    private val platformImpl: PlatformImpl,
+    private val transform: Transformer
+): Highlighter {
     override fun invoke(region: Region, color: HighlightColor, duration: Duration) {
         exitManager.checkExitRequested()
         if (platformImpl.prefs.debugMode) {
-            platformImpl.highlight(region.transform(), duration, color)
+            platformImpl.highlight(transform.toScreen(region), duration, color)
         }
     }
 }

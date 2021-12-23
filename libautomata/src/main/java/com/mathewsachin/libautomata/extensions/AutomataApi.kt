@@ -9,16 +9,15 @@ class AutomataApi @Inject constructor(
     private val highlight: Highlighter,
     private val click: Clicker,
     imageMatchingExtensions: IImageMatchingExtensions,
-    transformations: ITransformationExtensions,
+    private val transform: Transformer,
     private val colorManager: ColorManager,
     private val wait: Waiter
 ) : IAutomataExtensions,
-    IImageMatchingExtensions by imageMatchingExtensions,
-    ITransformationExtensions by transformations {
+    IImageMatchingExtensions by imageMatchingExtensions {
 
     override fun Region.getPattern() =
         screenshotManager.getScreenshot()
-            .crop(this.transformToImage())
+            .crop(transform.toImage(this))
             .also { highlight(this, HighlightColor.Info) }
             .copy() // It is important that the image gets cloned here.
 

@@ -11,9 +11,8 @@ class ImageMatchingExtensions @Inject constructor(
     private val platformImpl: PlatformImpl,
     private val wait: Waiter,
     private val highlight: Highlighter,
-    transformationExtensions: ITransformationExtensions
-) : IImageMatchingExtensions,
-    ITransformationExtensions by transformationExtensions {
+    private val transform: Transformer
+) : IImageMatchingExtensions {
     /**
      * Checks if the [Region] contains the provided image.
      *
@@ -94,7 +93,7 @@ class ImageMatchingExtensions @Inject constructor(
         similarity: Double?
     ): Sequence<Match> {
         return screenshotManager.getScreenshot()
-            .crop(this.transformToImage())
+            .crop(transform.toImage(this))
             .findMatches(
                 pattern,
                 similarity ?: platformImpl.prefs.minSimilarity
@@ -102,7 +101,7 @@ class ImageMatchingExtensions @Inject constructor(
             .map {
                 exitManager.checkExitRequested()
 
-                var region = it.region.transformFromImage()
+                var region = transform.fromImage(it.region)
 
                 // convert the relative position in the region to the absolute position on the screen
                 region += this.location
