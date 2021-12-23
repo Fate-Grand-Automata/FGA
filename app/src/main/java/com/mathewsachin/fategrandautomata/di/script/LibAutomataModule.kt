@@ -4,8 +4,6 @@ import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.AutomataApi
 import com.mathewsachin.libautomata.extensions.IAutomataExtensions
-import com.mathewsachin.libautomata.extensions.IImageMatchingExtensions
-import com.mathewsachin.libautomata.extensions.ImageMatchingExtensions
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -46,9 +44,9 @@ abstract class LibAutomataModule {
 
     @ScriptScope
     @Binds
-    abstract fun automataApi(automataApi: AutomataApi): IAutomataExtensions
+    abstract fun imageMatcher(imageMatcher: RealImageMatcher): ImageMatcher
 
     @ScriptScope
     @Binds
-    abstract fun imageMatchingExtensions(imageMatchingExtensions: ImageMatchingExtensions): IImageMatchingExtensions
+    abstract fun api(api: AutomataApi): IAutomataExtensions
 }

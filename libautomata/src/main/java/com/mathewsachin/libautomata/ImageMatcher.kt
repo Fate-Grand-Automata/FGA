@@ -1,18 +1,61 @@
-package com.mathewsachin.libautomata.extensions
+package com.mathewsachin.libautomata
 
-import com.mathewsachin.libautomata.*
 import javax.inject.Inject
 import kotlin.time.Duration
-import kotlin.time.TimeSource.Monotonic
+import kotlin.time.TimeSource
 
-class ImageMatchingExtensions @Inject constructor(
+interface ImageMatcher {
+    /**
+     * Checks if the [Region] contains the provided image.
+     *
+     * @param image the image to look for
+     * @param timeout how long to search for before giving up
+     * @param similarity the minimum similarity for this search
+     */
+    fun exists(
+        region: Region,
+        image: Pattern,
+        timeout: Duration = Duration.ZERO,
+        similarity: Double? = null
+    ): Boolean
+
+    /**
+     * Waits until the given image cannot be found in the [Region] anymore.
+     *
+     * @param image the image to search for
+     * @param timeout how long to wait for before giving up
+     * @param similarity the minimum similarity for this search
+     */
+    fun waitVanish(
+        region: Region,
+        image: Pattern,
+        timeout: Duration,
+        similarity: Double? = null
+    ): Boolean
+
+    /**
+     * Searches for all occurrences of a given image in the [Region].
+     *
+     * @param pattern the image to search for
+     * @param similarity the minimum similarity for this search
+     *
+     * @return a list of all matches in the form of [Match] objects
+     */
+    fun findAll(
+        region: Region,
+        pattern: Pattern,
+        similarity: Double? = null
+    ): Sequence<Match>
+}
+
+class RealImageMatcher @Inject constructor(
     private val exitManager: ExitManager,
     private val screenshotManager: ScreenshotManager,
     private val platformImpl: PlatformImpl,
     private val wait: Waiter,
     private val highlight: Highlighter,
     private val transform: Transformer
-) : IImageMatchingExtensions {
+) : ImageMatcher {
     /**
      * Checks if the [Region] contains the provided image.
      *
@@ -22,7 +65,7 @@ class ImageMatchingExtensions @Inject constructor(
     private fun Region.existsNow(
         image: Pattern,
         similarity: Double?
-    ) = findAll(image, similarity).any()
+    ) = findAll(this, image, similarity).any()
 
     /**
      * Repeats the invocation of the Condition until it returns `true` or until the timeout has
@@ -37,10 +80,10 @@ class ImageMatchingExtensions @Inject constructor(
         condition: () -> Boolean,
         timeout: Duration = Duration.ZERO
     ): Boolean {
-        val endTimeMark = Monotonic.markNow() + timeout
+        val endTimeMark = TimeSource.Monotonic.markNow() + timeout
 
         while (true) {
-            val scanStart = Monotonic.markNow()
+            val scanStart = TimeSource.Monotonic.markNow()
 
             if (condition.invoke()) {
                 return true
@@ -64,36 +107,25 @@ class ImageMatchingExtensions @Inject constructor(
         return false
     }
 
-    override fun Region.exists(
-        image: Pattern,
-        timeout: Duration,
-        similarity: Double?
-    ): Boolean {
+    override fun exists(region: Region, image: Pattern, timeout: Duration, similarity: Double?): Boolean {
         exitManager.checkExitRequested()
         return checkConditionLoop(
-            { existsNow(image, similarity) },
+            { region.existsNow(image, similarity) },
             timeout
         )
     }
 
-    override fun Region.waitVanish(
-        image: Pattern,
-        timeout: Duration,
-        similarity: Double?
-    ): Boolean {
+    override fun waitVanish(region: Region, image: Pattern, timeout: Duration, similarity: Double?): Boolean {
         exitManager.checkExitRequested()
         return checkConditionLoop(
-            { !existsNow(image, similarity) },
+            { !region.existsNow(image, similarity) },
             timeout
         )
     }
 
-    override fun Region.findAll(
-        pattern: Pattern,
-        similarity: Double?
-    ): Sequence<Match> {
-        return screenshotManager.getScreenshot()
-            .crop(transform.toImage(this))
+    override fun findAll(region: Region, pattern: Pattern, similarity: Double?) =
+        screenshotManager.getScreenshot()
+            .crop(transform.toImage(region))
             .findMatches(
                 pattern,
                 similarity ?: platformImpl.prefs.minSimilarity
@@ -101,18 +133,15 @@ class ImageMatchingExtensions @Inject constructor(
             .map {
                 exitManager.checkExitRequested()
 
-                var region = transform.fromImage(it.region)
-
                 // convert the relative position in the region to the absolute position on the screen
-                region += this.location
+                val matchedRegion = transform.fromImage(it.region) + region.location
 
-                Match(region, it.score)
+                Match(matchedRegion, it.score)
             }
             .also {
                 highlight(
-                    this,
+                    region,
                     color = if (it.any()) HighlightColor.Success else HighlightColor.Error
                 )
             }
-    }
 }

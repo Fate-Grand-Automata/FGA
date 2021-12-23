@@ -6,7 +6,7 @@ import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import kotlin.time.Duration
 
-interface IAutomataExtensions : IImageMatchingExtensions {
+interface IAutomataExtensions {
     /**
      * Gets the image content of this Region.
      *
@@ -30,4 +30,21 @@ interface IAutomataExtensions : IImageMatchingExtensions {
         pattern: Pattern,
         similarity: Double? = null
     ): Match? = findAll(pattern, similarity).firstOrNull()
+
+    fun Region.exists(
+        image: Pattern,
+        timeout: Duration = Duration.ZERO,
+        similarity: Double? = null
+    ): Boolean
+
+    fun Region.waitVanish(
+        image: Pattern,
+        timeout: Duration,
+        similarity: Double? = null
+    ): Boolean
+
+    fun Region.findAll(
+        pattern: Pattern,
+        similarity: Double? = null
+    ): Sequence<Match>
 }
