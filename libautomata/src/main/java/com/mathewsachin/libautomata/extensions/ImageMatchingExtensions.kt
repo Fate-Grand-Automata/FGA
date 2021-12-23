@@ -10,10 +10,9 @@ class ImageMatchingExtensions @Inject constructor(
     private val screenshotManager: ScreenshotManager,
     private val platformImpl: PlatformImpl,
     private val wait: Waiter,
-    highlightExtensions: IHighlightExtensions,
+    private val highlight: Highlighter,
     transformationExtensions: ITransformationExtensions
 ) : IImageMatchingExtensions,
-    IHighlightExtensions by highlightExtensions,
     ITransformationExtensions by transformationExtensions {
     /**
      * Checks if the [Region] contains the provided image.
@@ -111,7 +110,10 @@ class ImageMatchingExtensions @Inject constructor(
                 Match(region, it.score)
             }
             .also {
-                highlight(color = if (it.any()) HighlightColor.Success else HighlightColor.Error)
+                highlight(
+                    this,
+                    color = if (it.any()) HighlightColor.Success else HighlightColor.Error
+                )
             }
     }
 }

@@ -7,21 +7,20 @@ import kotlin.time.Duration
 class AutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
     gestureExtensions: IGestureExtensions,
-    highlightExtensions: IHighlightExtensions,
+    private val highlight: Highlighter,
     imageMatchingExtensions: IImageMatchingExtensions,
     transformationExtensions: ITransformationExtensions,
     private val colorManager: ColorManager,
     private val wait: Waiter
 ) : IAutomataExtensions,
     IGestureExtensions by gestureExtensions,
-    IHighlightExtensions by highlightExtensions,
     IImageMatchingExtensions by imageMatchingExtensions,
     ITransformationExtensions by transformationExtensions {
 
     override fun Region.getPattern() =
         screenshotManager.getScreenshot()
             .crop(this.transformToImage())
-            .also { highlight(HighlightColor.Info) }
+            .also { highlight(this, HighlightColor.Info) }
             .copy() // It is important that the image gets cloned here.
 
     override fun <T> useSameSnapIn(block: () -> T) =

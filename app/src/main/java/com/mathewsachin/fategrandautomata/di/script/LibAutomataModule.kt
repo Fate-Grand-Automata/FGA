@@ -27,15 +27,15 @@ abstract class LibAutomataModule {
 
     @ScriptScope
     @Binds
+    abstract fun highlighter(highlighter: RealHighlighter): Highlighter
+
+    @ScriptScope
+    @Binds
     abstract fun automataApi(automataApi: AutomataApi): IAutomataExtensions
 
     @ScriptScope
     @Binds
     abstract fun gestureExtensions(gestureExtensions: GestureExtensions): IGestureExtensions
-
-    @ScriptScope
-    @Binds
-    abstract fun highlightExtensions(highlightExtensions: HighlightExtensions): IHighlightExtensions
 
     @ScriptScope
     @Binds

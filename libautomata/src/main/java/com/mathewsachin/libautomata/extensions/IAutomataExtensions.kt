@@ -6,7 +6,6 @@ import kotlin.time.Duration
 
 interface IAutomataExtensions
     : IGestureExtensions,
-    IHighlightExtensions,
     IImageMatchingExtensions,
     ITransformationExtensions {
     /**
