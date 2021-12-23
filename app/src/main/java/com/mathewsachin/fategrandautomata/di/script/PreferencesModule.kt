@@ -7,6 +7,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.SpamConfigPerTeamSlot
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferencesCommon
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import dagger.Module
 import dagger.Provides
@@ -24,6 +25,11 @@ class PreferencesModule {
     @Provides
     fun provideSupportPrefs(battleConfig: IBattleConfig): ISupportPreferences =
         battleConfig.support
+
+    @ScriptScope
+    @Provides
+    fun provideCommonSupportPrefs(prefs: IPreferences): ISupportPreferencesCommon =
+        prefs.support
 
     @ScriptScope
     @Provides

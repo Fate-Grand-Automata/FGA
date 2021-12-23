@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts.modules
 
-import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
@@ -10,16 +9,16 @@ import kotlin.time.Duration
 
 @ScriptScope
 class SupportClassPicker @Inject constructor(
-    api: IFgoAutomataApi,
+    private val screen: SupportScreen,
     private val supportPrefs: ISupportPreferences
-) : IFgoAutomataApi by api {
+) {
     fun selectSupportClass(supportClass: SupportClass = supportPrefs.supportClass) {
         if (supportClass == SupportClass.None)
             return
 
-        locations.support.locate(supportClass).click()
+        screen.click(supportClass)
 
-        Duration.seconds(0.5).wait()
+        screen.delay(Duration.seconds(0.5))
     }
 
     fun shouldAlsoCheckAll() =
