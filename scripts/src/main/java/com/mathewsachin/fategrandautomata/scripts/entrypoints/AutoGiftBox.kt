@@ -4,10 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.modules.ConnectionRetry
-import com.mathewsachin.libautomata.EntryPoint
-import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.Region
+import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -16,6 +13,7 @@ import kotlin.time.Duration
 class AutoGiftBox @Inject constructor(
     exitManager: ExitManager,
     api: IFgoAutomataApi,
+    private val swipe: Swiper,
     private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {

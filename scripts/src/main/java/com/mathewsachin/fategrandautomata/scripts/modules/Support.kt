@@ -5,6 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
 import com.mathewsachin.fategrandautomata.scripts.supportSelection.*
+import com.mathewsachin.libautomata.Swiper
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -12,6 +13,7 @@ import kotlin.time.Duration
 @ScriptScope
 class Support @Inject constructor(
     api: IFgoAutomataApi,
+    private val swipe: Swiper,
     private val firstSupportSelection: FirstSupportSelection,
     private val friendSupportSelection: FriendSupportSelection,
     private val preferredSupportSelection: PreferredSupportSelection,

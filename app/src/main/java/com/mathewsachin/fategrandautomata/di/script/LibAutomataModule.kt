@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.RealSwiper
+import com.mathewsachin.libautomata.Swiper
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.*
 import dagger.Binds
@@ -16,6 +18,10 @@ abstract class LibAutomataModule {
         @Provides
         fun exitManager() = ExitManager()
     }
+
+    @ScriptScope
+    @Binds
+    abstract fun swiper(swiper: RealSwiper): Swiper
 
     @ScriptScope
     @Binds
