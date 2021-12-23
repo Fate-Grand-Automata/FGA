@@ -8,46 +8,58 @@ import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
 
+interface SupportScreen {
+    fun scrollDown()
+    fun scrollToTop()
+    fun click(supportClass: SupportClass)
+    fun delay(duration: Duration)
+    fun refresh()
+    fun isAnyDialogOpen(): Boolean
+    fun noSupportsPresent(): Boolean
+    fun someSupportsPresent(): Boolean
+    fun isListLoaded(): Boolean
+}
+
 @ScriptScope
-class SupportScreen @Inject constructor(
+class RealSupportScreen @Inject constructor(
     api: IFgoAutomataApi,
     private val swipe: Swiper
-) : IFgoAutomataApi by api {
-    fun scrollDown() {
+) : IFgoAutomataApi by api, SupportScreen {
+    override fun scrollDown() {
         swipe(
             locations.support.listSwipeStart,
             locations.support.listSwipeEnd
         )
     }
 
-    fun scrollToTop() {
+    override fun scrollToTop() {
         locations.support.listTopClick.click()
     }
 
-    fun click(supportClass: SupportClass) =
+    override fun click(supportClass: SupportClass) =
         locations.support.locate(supportClass).click()
 
-    fun delay(duration: Duration) = duration.wait()
+    override fun delay(duration: Duration) = duration.wait()
 
-    fun refresh() {
+    override fun refresh() {
         locations.support.updateClick.click()
         Duration.seconds(1).wait()
 
         locations.support.updateYesClick.click()
     }
 
-    fun isAnyDialogOpen() =
+    override fun isAnyDialogOpen() =
         images[Images.SupportExtra] !in locations.support.extraRegion
 
-    fun noSupportsPresent() =
+    override fun noSupportsPresent() =
         images[Images.SupportNotFound] in locations.support.notFoundRegion
 
-    private fun someSupportsPresent() =
+    override fun someSupportsPresent() =
         locations.support.confirmSetupButtonRegion.exists(
             images[Images.SupportConfirmSetupButton],
             similarity = Support.supportRegionToolSimilarity
         ) || images[Images.Guest] in locations.support.friendRegion
 
-    fun isListLoaded() =
+    override fun isListLoaded() =
         useSameSnapIn { noSupportsPresent() || someSupportsPresent() }
 }

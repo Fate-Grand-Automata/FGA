@@ -6,6 +6,8 @@ import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.locations.IScriptAreaTransforms
 import com.mathewsachin.fategrandautomata.scripts.locations.ScriptAreaTransforms
+import com.mathewsachin.fategrandautomata.scripts.modules.RealSupportScreen
+import com.mathewsachin.fategrandautomata.scripts.modules.SupportScreen
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.GameAreaManager
@@ -42,4 +44,8 @@ abstract class ScriptsModule {
     @ScriptScope
     @Binds
     abstract fun scriptAreaTransforms(scriptAreaTransforms: ScriptAreaTransforms): IScriptAreaTransforms
+
+    @ScriptScope
+    @Binds
+    abstract fun supportScreen(screen: RealSupportScreen): SupportScreen
 }
