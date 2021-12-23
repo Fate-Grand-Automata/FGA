@@ -5,26 +5,26 @@ import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 
 /**
- * Responsible for taking screenshots via a [IScreenshotService]. The screenshots are
+ * Responsible for taking screenshots via a [ScreenshotService]. The screenshots are
  * scaled and cropped and can be cached for a while using [snapshot].
  */
 @ScriptScope
 class ScreenshotManager @Inject constructor(
     val gameAreaManager: GameAreaManager,
-    val screenshotService: IScreenshotService,
-    val platformImpl: IPlatformImpl,
+    val screenshotService: ScreenshotService,
+    val platformImpl: PlatformImpl,
     val transformationExtensions: ITransformationExtensions
 ) : AutoCloseable {
     var usePreviousSnap = false
 
-    private var previousPattern: IPattern? = null
-    private var resizeTarget: IPattern? = null
+    private var previousPattern: Pattern? = null
+    private var resizeTarget: Pattern? = null
 
     /**
      * Takes a screenshot, crops it to the game area and then scales it to the image scale so
      * it can be used for image comparisons.
      */
-    private fun getScaledScreenshot(): IPattern {
+    private fun getScaledScreenshot(): Pattern {
         val sshot = screenshotService.takeScreenshot()
             .crop(gameAreaManager.gameArea)
 
@@ -60,9 +60,9 @@ class ScreenshotManager @Inject constructor(
      *
      * If [usePreviousSnap] is set to true, a cached screenshot is returned instead.
      *
-     * @return an [IPattern] with the screenshot image data
+     * @return an [Pattern] with the screenshot image data
      */
-    fun getScreenshot(): IPattern {
+    fun getScreenshot(): Pattern {
         if (usePreviousSnap) {
             previousPattern?.let { return it }
         }

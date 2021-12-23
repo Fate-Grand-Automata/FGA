@@ -11,7 +11,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.ColorManager
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.opencv.android.Utils
 import org.opencv.imgcodecs.Imgcodecs
@@ -24,7 +24,7 @@ class ImageLoader @Inject constructor(
     @ApplicationContext val context: Context,
     private val colorManager: ColorManager
 ) : IImageLoader {
-    private fun createPattern(gameServer: GameServerEnum, FileName: String): IPattern {
+    private fun createPattern(gameServer: GameServerEnum, FileName: String): Pattern {
         val filePath = "$gameServer/${FileName}"
 
         val assets = context.assets
@@ -42,7 +42,7 @@ class ImageLoader @Inject constructor(
 
     private var currentGameServer: GameServerEnum =
         GameServerEnum.En
-    private var regionCachedPatterns = mutableMapOf<CacheKey, IPattern>()
+    private var regionCachedPatterns = mutableMapOf<CacheKey, Pattern>()
 
     fun Images.fileName(): String = when (this) {
         Images.BattleScreen -> "battle.png"
@@ -111,7 +111,7 @@ class ImageLoader @Inject constructor(
         Images.CESynchronizationLv1 -> "synchronization_0.png"
     }
 
-    override operator fun get(img: Images): IPattern = synchronized(regionCachedPatterns) {
+    override operator fun get(img: Images): Pattern = synchronized(regionCachedPatterns) {
         val path = img.fileName()
 
         val server = prefs.gameServer
@@ -131,7 +131,7 @@ class ImageLoader @Inject constructor(
     /**
      * When image is not available for the current server, use the image from NA server.
      */
-    private fun loadPatternWithFallback(path: String): IPattern {
+    private fun loadPatternWithFallback(path: String): Pattern {
         if (currentGameServer != GameServerEnum.En) {
             return try {
                 createPattern(currentGameServer, path)
@@ -153,7 +153,7 @@ class ImageLoader @Inject constructor(
         clearSupportCache()
     }
 
-    private var supportCachedPatterns = mutableMapOf<CacheKey, List<IPattern>>()
+    private var supportCachedPatterns = mutableMapOf<CacheKey, List<Pattern>>()
 
     override fun clearSupportCache() = synchronized(supportCachedPatterns) {
         for (patterns in supportCachedPatterns.values) {
@@ -163,7 +163,7 @@ class ImageLoader @Inject constructor(
         supportCachedPatterns.clear()
     }
 
-    private fun fileLoader(kind: SupportImageKind, name: String): List<IPattern> {
+    private fun fileLoader(kind: SupportImageKind, name: String): List<Pattern> {
         val inputStreams = storageProvider.readSupportImage(kind, name)
         return inputStreams.withIndex().map { (i, stream) ->
             stream.use {
@@ -172,7 +172,7 @@ class ImageLoader @Inject constructor(
         }
     }
 
-    override fun loadSupportPattern(kind: SupportImageKind, name: String): List<IPattern> = synchronized(supportCachedPatterns) {
+    override fun loadSupportPattern(kind: SupportImageKind, name: String): List<Pattern> = synchronized(supportCachedPatterns) {
         return supportCachedPatterns.getOrPut(key("$kind:$name")) {
             fileLoader(kind, name)
         }

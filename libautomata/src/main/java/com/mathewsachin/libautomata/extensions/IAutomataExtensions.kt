@@ -1,6 +1,6 @@
 package com.mathewsachin.libautomata.extensions
 
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 
 interface IAutomataExtensions : IDurationExtensions,
@@ -11,9 +11,9 @@ interface IAutomataExtensions : IDurationExtensions,
     /**
      * Gets the image content of this Region.
      *
-     * @return an [IPattern] object with the image data
+     * @return an [Pattern] object with the image data
      */
-    fun Region.getPattern(): IPattern
+    fun Region.getPattern(): Pattern
 
     fun <T> useSameSnapIn(block: () -> T): T
 

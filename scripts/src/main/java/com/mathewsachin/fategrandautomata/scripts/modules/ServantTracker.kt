@@ -4,7 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.models.*
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -39,8 +39,8 @@ class ServantTracker @Inject constructor(
     }
 
     class TeamSlotData(
-        val checkImage: IPattern,
-        val skills: List<IPattern>
+        val checkImage: Pattern,
+        val skills: List<Pattern>
     ) : AutoCloseable {
         override fun close() {
             checkImage.close()
@@ -51,7 +51,7 @@ class ServantTracker @Inject constructor(
     val checkImages = mutableMapOf<TeamSlot, TeamSlotData>()
     private var supportSlot: TeamSlot? = null
 
-    private val faceCardImages = mutableMapOf<TeamSlot, IPattern>()
+    private val faceCardImages = mutableMapOf<TeamSlot, Pattern>()
 
     override fun close() {
         checkImages.values.forEach { it.close() }

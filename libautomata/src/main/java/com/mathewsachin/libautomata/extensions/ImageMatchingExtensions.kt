@@ -8,7 +8,7 @@ import kotlin.time.TimeSource.Monotonic
 class ImageMatchingExtensions @Inject constructor(
     val exitManager: ExitManager,
     val screenshotManager: ScreenshotManager,
-    val platformImpl: IPlatformImpl,
+    val platformImpl: PlatformImpl,
     durationExtensions: IDurationExtensions,
     highlightExtensions: IHighlightExtensions,
     transformationExtensions: ITransformationExtensions
@@ -22,7 +22,7 @@ class ImageMatchingExtensions @Inject constructor(
      * @param similarity the minimum similarity for this search
      */
     private fun Region.existsNow(
-        image: IPattern,
+        image: Pattern,
         similarity: Double?
     ) = findAll(image, similarity).any()
 
@@ -67,7 +67,7 @@ class ImageMatchingExtensions @Inject constructor(
     }
 
     override fun Region.exists(
-        image: IPattern,
+        image: Pattern,
         timeout: Duration,
         similarity: Double?
     ): Boolean {
@@ -79,7 +79,7 @@ class ImageMatchingExtensions @Inject constructor(
     }
 
     override fun Region.waitVanish(
-        image: IPattern,
+        image: Pattern,
         timeout: Duration,
         similarity: Double?
     ): Boolean {
@@ -91,7 +91,7 @@ class ImageMatchingExtensions @Inject constructor(
     }
 
     override fun Region.findAll(
-        pattern: IPattern,
+        pattern: Pattern,
         similarity: Double?
     ): Sequence<Match> {
         return screenshotManager.getScreenshot()

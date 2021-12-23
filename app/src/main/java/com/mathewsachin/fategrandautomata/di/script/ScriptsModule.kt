@@ -9,8 +9,8 @@ import com.mathewsachin.fategrandautomata.scripts.locations.ScriptAreaTransforms
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.GameAreaManager
-import com.mathewsachin.libautomata.IGestureService
-import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.GestureService
+import com.mathewsachin.libautomata.PlatformImpl
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import dagger.Binds
 import dagger.Module
@@ -23,7 +23,7 @@ abstract class ScriptsModule {
     companion object {
         @ScriptScope
         @Provides
-        fun provideGameAreaManager(platformImpl: IPlatformImpl, prefs: IPreferences): GameAreaManager =
+        fun provideGameAreaManager(platformImpl: PlatformImpl, prefs: IPreferences): GameAreaManager =
             FgoGameAreaManager(
                 gameSizeWithBorders = platformImpl.windowRegion.size,
                 offset = { platformImpl.windowRegion.location },
@@ -37,7 +37,7 @@ abstract class ScriptsModule {
 
     @ScriptScope
     @Binds
-    abstract fun gestures(gestures: AccessibilityGestures): IGestureService
+    abstract fun gestures(gestures: AccessibilityGestures): GestureService
 
     @ScriptScope
     @Binds

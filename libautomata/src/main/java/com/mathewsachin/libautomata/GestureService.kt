@@ -3,7 +3,7 @@ package com.mathewsachin.libautomata
 /**
  * Interface for classes which can perform gestures.
  */
-interface IGestureService : AutoCloseable {
+interface GestureService : AutoCloseable {
     /**
      * Swipes from one [Location] to another [Location].
      *

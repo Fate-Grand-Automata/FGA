@@ -19,16 +19,16 @@ class AndroidImpl @Inject constructor(
     private val cutoutManager: CutoutManager,
     private val highlightManager: HighlightManager,
     @ServiceCoroutineScope private val scope: CoroutineScope
-) : IPlatformImpl {
+) : PlatformImpl {
     override val windowRegion get() = cutoutManager.getCutoutAppliedRegion()
 
     override val canLongSwipe =
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
-    override val prefs: IPlatformPrefs
+    override val prefs: PlatformPrefs
         get() = preferences.platformPrefs
 
-    override fun getResizableBlankPattern(): IPattern = DroidCvPattern()
+    override fun getResizableBlankPattern(): Pattern = DroidCvPattern()
 
     override fun highlight(region: Region, duration: Duration, color: HighlightColor) {
         scope.launch {

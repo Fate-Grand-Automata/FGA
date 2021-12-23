@@ -6,7 +6,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.modules.Support
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import java.io.File
@@ -87,18 +87,18 @@ class SupportImageMaker @Inject constructor(
         }
     }
 
-    private fun IPattern.save(path: File) = use {
+    private fun Pattern.save(path: File) = use {
         path.outputStream().use { stream ->
             save(stream)
         }
     }
 
-    private fun extractServantImage(supportBoundImage: IPattern, i: Int) {
+    private fun extractServantImage(supportBoundImage: Pattern, i: Int) {
         val servant = supportBoundImage.crop(Region(0, 0, 125, 44))
         servant.save(getServantImgPath(dir, i))
     }
 
-    private fun extractCeImage(supportRegionImage: IPattern, i: Int) {
+    private fun extractCeImage(supportRegionImage: Pattern, i: Int) {
         val ce = supportRegionImage.crop(Region(0, 80, supportRegionImage.width, 25))
         ce.save(getCeImgPath(dir, i))
     }

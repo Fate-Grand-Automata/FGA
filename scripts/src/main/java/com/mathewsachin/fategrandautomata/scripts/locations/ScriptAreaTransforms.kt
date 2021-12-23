@@ -4,7 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.GameAreaManager
-import com.mathewsachin.libautomata.IPlatformImpl
+import com.mathewsachin.libautomata.PlatformImpl
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -16,7 +16,7 @@ class ScriptAreaTransforms @Inject constructor(
     prefs: IPreferences,
     transformationExtensions: ITransformationExtensions,
     gameAreaManager: GameAreaManager,
-    platformImpl: IPlatformImpl
+    platformImpl: PlatformImpl
 ) : IScriptAreaTransforms {
     override val scriptArea =
         Region(

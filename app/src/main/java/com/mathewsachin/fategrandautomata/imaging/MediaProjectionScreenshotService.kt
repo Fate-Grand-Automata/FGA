@@ -8,8 +8,8 @@ import android.media.projection.MediaProjection
 import android.util.DisplayMetrics
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.libautomata.ColorManager
-import com.mathewsachin.libautomata.IPattern
-import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.Pattern
+import com.mathewsachin.libautomata.ScreenshotService
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
@@ -22,7 +22,7 @@ class MediaProjectionScreenshotService(
     private val DisplayMetrics: DisplayMetrics,
     private val storageProvider: StorageProvider,
     private val colorManager: ColorManager
-) : IScreenshotService {
+) : ScreenshotService {
     private val bufferMat = Mat()
     private val grayscaleMat = Mat()
     private val grayscalePattern = DroidCvPattern(grayscaleMat, ownsMat = false)
@@ -47,7 +47,7 @@ class MediaProjectionScreenshotService(
         )
     }
 
-    override fun takeScreenshot(): IPattern {
+    override fun takeScreenshot(): Pattern {
         screenshotIntoBuffer()
 
         return if (colorManager.isColor) {

@@ -4,9 +4,9 @@ import com.mathewsachin.libautomata.*
 import javax.inject.Inject
 
 class GestureExtensions @Inject constructor(
-    val gestureService: IGestureService,
+    val gestureService: GestureService,
     val exitManager: ExitManager,
-    val platformImpl: IPlatformImpl,
+    val platformImpl: PlatformImpl,
     transformationExtensions: ITransformationExtensions
 ) : IGestureExtensions, ITransformationExtensions by transformationExtensions {
     override fun Location.click(times: Int) {

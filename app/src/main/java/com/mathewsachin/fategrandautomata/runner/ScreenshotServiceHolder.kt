@@ -11,7 +11,7 @@ import com.mathewsachin.fategrandautomata.util.DisplayHelper
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.makeLandscape
 import com.mathewsachin.libautomata.ColorManager
-import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.ScreenshotService
 import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
 import timber.log.error
@@ -27,7 +27,7 @@ class ScreenshotServiceHolder @Inject constructor(
     private val rootScreenshotServiceProvider: Provider<RootScreenshotService>,
     private val mediaProjectionManager: MediaProjectionManager
 ) : AutoCloseable {
-    var screenshotService: IScreenshotService? = null
+    var screenshotService: ScreenshotService? = null
         private set
 
     fun prepareScreenshotService() {

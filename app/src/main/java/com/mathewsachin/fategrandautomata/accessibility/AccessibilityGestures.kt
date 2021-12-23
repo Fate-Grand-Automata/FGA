@@ -6,7 +6,7 @@ import android.graphics.Path
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
-import com.mathewsachin.libautomata.IGestureService
+import com.mathewsachin.libautomata.GestureService
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.extensions.IDurationExtensions
 import kotlinx.coroutines.runBlocking
@@ -23,7 +23,7 @@ import kotlin.math.*
 class AccessibilityGestures @Inject constructor(
     private val gesturePrefs: IGesturesPreferences,
     durationExtensions: IDurationExtensions
-) : IGestureService, IDurationExtensions by durationExtensions {
+) : GestureService, IDurationExtensions by durationExtensions {
     fun Path.moveTo(location: Location) = apply {
         moveTo(location.x.toFloat(), location.y.toFloat())
     }

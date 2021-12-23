@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.imaging
 
 import android.graphics.Bitmap
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Match
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
@@ -19,7 +19,7 @@ import org.opencv.core.Size as CvSize
 class DroidCvPattern(
     private var mat: Mat = Mat(),
     private val ownsMat: Boolean = true
-) : IPattern {
+) : Pattern {
     private companion object {
         fun makeMat(
             stream: InputStream,
@@ -57,13 +57,13 @@ class DroidCvPattern(
         )
     }
 
-    override fun resize(size: Size): IPattern {
+    override fun resize(size: Size): Pattern {
         val resizedMat = Mat().apply { resize(mat, this, size) }
 
         return DroidCvPattern(resizedMat).tag(tag)
     }
 
-    override fun resize(target: IPattern, size: Size) {
+    override fun resize(target: Pattern, size: Size) {
         if (target is DroidCvPattern) {
             resize(mat, target.mat, size)
         }
@@ -71,7 +71,7 @@ class DroidCvPattern(
         target.tag(tag)
     }
 
-    private fun match(template: IPattern): Mat {
+    private fun match(template: Pattern): Mat {
         val result = Mat()
         if (template is DroidCvPattern) {
             if (template.width <= width && template.height <= height) {
@@ -89,7 +89,7 @@ class DroidCvPattern(
         return result
     }
 
-    override fun findMatches(template: IPattern, similarity: Double) = sequence {
+    override fun findMatches(template: Pattern, similarity: Double) = sequence {
         val result = match(template)
 
         result.use {
@@ -132,7 +132,7 @@ class DroidCvPattern(
     override val width get() = mat.width()
     override val height get() = mat.height()
 
-    override fun crop(region: Region): IPattern {
+    override fun crop(region: Region): Pattern {
         val clippedRegion = Region(0, 0, width, height)
             .clip(region)
 
@@ -166,7 +166,7 @@ class DroidCvPattern(
 
     override fun tag(tag: String) = apply { this.tag = tag }
 
-    override fun threshold(value: Double): IPattern {
+    override fun threshold(value: Double): Pattern {
         val result = Mat()
 
         Imgproc.threshold(mat, result, value * 255, 255.0, Imgproc.THRESH_BINARY)

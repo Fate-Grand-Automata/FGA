@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata
 
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
@@ -14,10 +14,10 @@ interface IStorageProvider {
 
     fun list(kind: SupportImageKind): List<String>
 
-    fun dropScreenshot(patterns: List<IPattern>)
+    fun dropScreenshot(patterns: List<Pattern>)
 
     /**
      * For debugging images
      */
-    fun dump(name: String, image: IPattern)
+    fun dump(name: String, image: Pattern)
 }

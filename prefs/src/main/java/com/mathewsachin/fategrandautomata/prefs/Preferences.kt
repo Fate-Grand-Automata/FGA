@@ -4,7 +4,7 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.map
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
-import com.mathewsachin.libautomata.IPlatformPrefs
+import com.mathewsachin.libautomata.PlatformPrefs
 import javax.inject.Inject
 import kotlin.time.Duration
 
@@ -137,7 +137,7 @@ class PreferencesImpl @Inject constructor(
         override val maxUpdates by prefs.supportMaxUpdates
     }
 
-    override val platformPrefs = object : IPlatformPrefs {
+    override val platformPrefs = object : PlatformPrefs {
         override val debugMode by prefs.debugMode
 
         override val minSimilarity by prefs.minSimilarity.map { it / 100.0 }

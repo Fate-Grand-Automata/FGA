@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.scripts.modules
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class ScreenshotDrops @Inject constructor(
         if (!prefs.screenshotDrops)
             return
 
-        val drops = mutableListOf<IPattern>()
+        val drops = mutableListOf<Pattern>()
 
         for (i in 0..1) {
             useColor {
