@@ -6,17 +6,17 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
+import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
-import com.mathewsachin.libautomata.extensions.IAutomataExtensions
 import javax.inject.Inject
 
 @ScriptScope
 class MasterLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms,
     private val images: IImageLoader,
-    private val automataApi: IAutomataExtensions,
+    private val automataApi: AutomataApi,
     private val messages: IScriptMessages,
 ): IScriptAreaTransforms by scriptAreaTransforms {
     // Master Skills and Stage counter are right-aligned differently,

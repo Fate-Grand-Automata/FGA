@@ -2,8 +2,8 @@ package com.mathewsachin.fategrandautomata.di.script
 
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
-import com.mathewsachin.libautomata.extensions.AutomataApi
-import com.mathewsachin.libautomata.extensions.IAutomataExtensions
+import com.mathewsachin.libautomata.StandardAutomataApi
+import com.mathewsachin.libautomata.AutomataApi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -48,5 +48,5 @@ abstract class LibAutomataModule {
 
     @ScriptScope
     @Binds
-    abstract fun api(api: AutomataApi): IAutomataExtensions
+    abstract fun api(api: StandardAutomataApi): AutomataApi
 }

@@ -1,10 +1,9 @@
-package com.mathewsachin.libautomata.extensions
+package com.mathewsachin.libautomata
 
-import com.mathewsachin.libautomata.*
 import javax.inject.Inject
 import kotlin.time.Duration
 
-class AutomataApi @Inject constructor(
+class StandardAutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
     private val highlight: Highlighter,
     private val click: Clicker,
@@ -12,7 +11,7 @@ class AutomataApi @Inject constructor(
     private val transform: Transformer,
     private val colorManager: ColorManager,
     private val wait: Waiter
-) : IAutomataExtensions {
+) : AutomataApi {
 
     override fun Region.getPattern() =
         screenshotManager.getScreenshot()

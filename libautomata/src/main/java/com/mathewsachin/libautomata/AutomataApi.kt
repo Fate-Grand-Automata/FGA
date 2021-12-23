@@ -1,12 +1,8 @@
-package com.mathewsachin.libautomata.extensions
+package com.mathewsachin.libautomata
 
-import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.Match
-import com.mathewsachin.libautomata.Pattern
-import com.mathewsachin.libautomata.Region
 import kotlin.time.Duration
 
-interface IAutomataExtensions {
+interface AutomataApi {
     /**
      * Gets the image content of this Region.
      *
