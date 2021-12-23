@@ -1,7 +1,7 @@
 package com.mathewsachin.libautomata.extensions
 
-import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Match
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import kotlin.time.Duration
 
@@ -18,8 +18,6 @@ interface IImageMatchingExtensions {
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null
     ): Boolean
-
-    operator fun Region.contains(image: Pattern) = exists(image)
 
     /**
      * Waits until the given image cannot be found in the [Region] anymore.
@@ -46,9 +44,4 @@ interface IImageMatchingExtensions {
         pattern: Pattern,
         similarity: Double? = null
     ): Sequence<Match>
-
-    fun Region.find(
-        pattern: Pattern,
-        similarity: Double? = null
-    ): Match? = findAll(pattern, similarity).firstOrNull()
 }

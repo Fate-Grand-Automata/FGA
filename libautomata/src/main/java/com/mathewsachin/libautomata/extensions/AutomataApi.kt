@@ -30,7 +30,5 @@ class AutomataApi @Inject constructor(
     override fun Duration.wait() = wait(this)
 
     override fun Location.click(times: Int) = click(this, times)
-
-    override fun Region.click(times: Int) = center.click(times)
 }
 
