@@ -15,8 +15,8 @@ interface Highlighter {
 class RealHighlighter @Inject constructor(
     val exitManager: ExitManager,
     val platformImpl: PlatformImpl,
-    transformationExtensions: ITransformationExtensions
-): Highlighter, ITransformationExtensions by transformationExtensions {
+    transformations: ITransformationExtensions
+): Highlighter, ITransformationExtensions by transformations {
     override fun invoke(region: Region, color: HighlightColor, duration: Duration) {
         exitManager.checkExitRequested()
         if (platformImpl.prefs.debugMode) {

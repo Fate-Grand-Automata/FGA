@@ -1,12 +1,12 @@
 package com.mathewsachin.libautomata.extensions
 
+import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import kotlin.time.Duration
 
 interface IAutomataExtensions
-    : IGestureExtensions,
-    IImageMatchingExtensions,
+    : IImageMatchingExtensions,
     ITransformationExtensions {
     /**
      * Gets the image content of this Region.
@@ -20,4 +20,8 @@ interface IAutomataExtensions
     fun <T> useColor(block: () -> T): T
 
     fun Duration.wait()
+
+    fun Location.click(times: Int = 1)
+
+    fun Region.click(times: Int = 1)
 }

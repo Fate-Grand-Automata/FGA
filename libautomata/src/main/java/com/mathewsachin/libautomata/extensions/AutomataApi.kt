@@ -6,14 +6,13 @@ import kotlin.time.Duration
 
 class AutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
-    gestureExtensions: IGestureExtensions,
     private val highlight: Highlighter,
+    private val click: Clicker,
     imageMatchingExtensions: IImageMatchingExtensions,
     transformationExtensions: ITransformationExtensions,
     private val colorManager: ColorManager,
     private val wait: Waiter
 ) : IAutomataExtensions,
-    IGestureExtensions by gestureExtensions,
     IImageMatchingExtensions by imageMatchingExtensions,
     ITransformationExtensions by transformationExtensions {
 
@@ -30,5 +29,9 @@ class AutomataApi @Inject constructor(
         colorManager.useColor(block)
 
     override fun Duration.wait() = wait(this)
+
+    override fun Location.click(times: Int) = click(this, times)
+
+    override fun Region.click(times: Int) = center.click(times)
 }
 

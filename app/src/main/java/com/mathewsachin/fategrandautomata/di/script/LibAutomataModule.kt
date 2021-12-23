@@ -31,11 +31,11 @@ abstract class LibAutomataModule {
 
     @ScriptScope
     @Binds
-    abstract fun automataApi(automataApi: AutomataApi): IAutomataExtensions
+    abstract fun clicker(clicker: RealClicker): Clicker
 
     @ScriptScope
     @Binds
-    abstract fun gestureExtensions(gestureExtensions: GestureExtensions): IGestureExtensions
+    abstract fun automataApi(automataApi: AutomataApi): IAutomataExtensions
 
     @ScriptScope
     @Binds
