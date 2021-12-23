@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi
 import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
 import com.mathewsachin.libautomata.GestureService
 import com.mathewsachin.libautomata.Location
-import com.mathewsachin.libautomata.extensions.IDurationExtensions
+import com.mathewsachin.libautomata.Waiter
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
@@ -22,8 +22,8 @@ import kotlin.math.*
  */
 class AccessibilityGestures @Inject constructor(
     private val gesturePrefs: IGesturesPreferences,
-    durationExtensions: IDurationExtensions
-) : GestureService, IDurationExtensions by durationExtensions {
+    private val wait: Waiter
+) : GestureService {
     fun Path.moveTo(location: Location) = apply {
         moveTo(location.x.toFloat(), location.y.toFloat())
     }
@@ -48,7 +48,7 @@ class AccessibilityGestures @Inject constructor(
         )
         performGesture(swipeStroke)
 
-        gesturePrefs.swipeWaitTime.wait()
+        wait(gesturePrefs.swipeWaitTime)
     }
 
     /**
@@ -142,7 +142,7 @@ class AccessibilityGestures @Inject constructor(
             performGesture(stroke)
         }
 
-        gesturePrefs.clickWaitTime.wait()
+        wait(gesturePrefs.clickWaitTime)
     }
 
     private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Boolean = suspendCancellableCoroutine {

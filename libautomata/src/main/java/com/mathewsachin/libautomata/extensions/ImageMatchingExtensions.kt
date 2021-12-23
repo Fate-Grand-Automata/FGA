@@ -6,13 +6,13 @@ import kotlin.time.Duration
 import kotlin.time.TimeSource.Monotonic
 
 class ImageMatchingExtensions @Inject constructor(
-    val exitManager: ExitManager,
-    val screenshotManager: ScreenshotManager,
-    val platformImpl: PlatformImpl,
-    durationExtensions: IDurationExtensions,
+    private val exitManager: ExitManager,
+    private val screenshotManager: ScreenshotManager,
+    private val platformImpl: PlatformImpl,
+    private val wait: Waiter,
     highlightExtensions: IHighlightExtensions,
     transformationExtensions: ITransformationExtensions
-) : IImageMatchingExtensions, IDurationExtensions by durationExtensions,
+) : IImageMatchingExtensions,
     IHighlightExtensions by highlightExtensions,
     ITransformationExtensions by transformationExtensions {
     /**
@@ -59,7 +59,7 @@ class ImageMatchingExtensions @Inject constructor(
             val timeToWait = scanInterval - scanStart.elapsedNow()
 
             if (timeToWait.isPositive()) {
-                timeToWait.wait()
+                wait(timeToWait)
             }
         }
 

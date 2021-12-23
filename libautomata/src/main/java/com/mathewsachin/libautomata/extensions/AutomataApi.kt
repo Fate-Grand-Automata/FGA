@@ -1,21 +1,18 @@
 package com.mathewsachin.libautomata.extensions
 
-import com.mathewsachin.libautomata.ColorManager
-import com.mathewsachin.libautomata.HighlightColor
-import com.mathewsachin.libautomata.Region
-import com.mathewsachin.libautomata.ScreenshotManager
+import com.mathewsachin.libautomata.*
 import javax.inject.Inject
+import kotlin.time.Duration
 
 class AutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
-    durationExtensions: IDurationExtensions,
     gestureExtensions: IGestureExtensions,
     highlightExtensions: IHighlightExtensions,
     imageMatchingExtensions: IImageMatchingExtensions,
     transformationExtensions: ITransformationExtensions,
-    private val colorManager: ColorManager
+    private val colorManager: ColorManager,
+    private val wait: Waiter
 ) : IAutomataExtensions,
-    IDurationExtensions by durationExtensions,
     IGestureExtensions by gestureExtensions,
     IHighlightExtensions by highlightExtensions,
     IImageMatchingExtensions by imageMatchingExtensions,
@@ -32,5 +29,7 @@ class AutomataApi @Inject constructor(
 
     override fun <T> useColor(block: () -> T): T =
         colorManager.useColor(block)
+
+    override fun Duration.wait() = wait(this)
 }
 

@@ -2,9 +2,10 @@ package com.mathewsachin.libautomata.extensions
 
 import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
+import kotlin.time.Duration
 
-interface IAutomataExtensions : IDurationExtensions,
-    IGestureExtensions,
+interface IAutomataExtensions
+    : IGestureExtensions,
     IHighlightExtensions,
     IImageMatchingExtensions,
     ITransformationExtensions {
@@ -18,4 +19,6 @@ interface IAutomataExtensions : IDurationExtensions,
     fun <T> useSameSnapIn(block: () -> T): T
 
     fun <T> useColor(block: () -> T): T
+
+    fun Duration.wait()
 }

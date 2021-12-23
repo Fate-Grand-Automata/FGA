@@ -1,8 +1,6 @@
 package com.mathewsachin.fategrandautomata.di.script
 
-import com.mathewsachin.libautomata.ExitManager
-import com.mathewsachin.libautomata.RealSwiper
-import com.mathewsachin.libautomata.Swiper
+import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import com.mathewsachin.libautomata.extensions.*
 import dagger.Binds
@@ -25,6 +23,10 @@ abstract class LibAutomataModule {
 
     @ScriptScope
     @Binds
+    abstract fun waiter(waiter: RealWaiter): Waiter
+
+    @ScriptScope
+    @Binds
     abstract fun automataApi(automataApi: AutomataApi): IAutomataExtensions
 
     @ScriptScope
@@ -42,8 +44,4 @@ abstract class LibAutomataModule {
     @ScriptScope
     @Binds
     abstract fun transformationExtensions(transformationExtensions: TransformationExtensions): ITransformationExtensions
-
-    @ScriptScope
-    @Binds
-    abstract fun durationExtensions(durationExtensions: DurationExtensions): IDurationExtensions
 }
