@@ -1,7 +1,6 @@
 package com.mathewsachin.libautomata
 
 import com.mathewsachin.libautomata.dagger.ScriptScope
-import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 
 /**
@@ -10,10 +9,10 @@ import javax.inject.Inject
  */
 @ScriptScope
 class ScreenshotManager @Inject constructor(
-    val gameAreaManager: GameAreaManager,
-    val screenshotService: ScreenshotService,
-    val platformImpl: PlatformImpl,
-    val transformations: ITransformationExtensions
+    private val gameAreaManager: GameAreaManager,
+    private val screenshotService: ScreenshotService,
+    private val platformImpl: PlatformImpl,
+    private val scale: Scale
 ) : AutoCloseable {
     var usePreviousSnap = false
 
@@ -28,7 +27,7 @@ class ScreenshotManager @Inject constructor(
         val sshot = screenshotService.takeScreenshot()
             .crop(gameAreaManager.gameArea)
 
-        val scale = transformations.screenToImageScale()
+        val scale = scale.screenToImage
 
         if (scale != null) {
             if (resizeTarget == null) {

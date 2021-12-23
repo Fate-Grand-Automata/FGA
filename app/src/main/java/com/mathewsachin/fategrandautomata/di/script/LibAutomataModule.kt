@@ -35,6 +35,10 @@ abstract class LibAutomataModule {
 
     @ScriptScope
     @Binds
+    abstract fun scale(scale: RealScale): Scale
+
+    @ScriptScope
+    @Binds
     abstract fun automataApi(automataApi: AutomataApi): IAutomataExtensions
 
     @ScriptScope

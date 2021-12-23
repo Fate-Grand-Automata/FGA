@@ -5,18 +5,6 @@ import com.mathewsachin.libautomata.Region
 
 interface ITransformationExtensions {
     /**
-     * Calculates the ratio between the screen resolution and the image resolution.
-     *
-     * @return the ratio or `null` if the resolution is the same
-     */
-    fun screenToImageScale(): Double?
-
-    /**
-     * Calculates the ratio between the script resolution and the screen resolution.
-     */
-    fun scriptToScreenScale(): Double
-
-    /**
      * Transforms the current [Location] in script coordinates to a new one in screen coordinates.
      *
      * @return a new [Location] in screen coordinates
@@ -29,11 +17,6 @@ interface ITransformationExtensions {
      * @return a new [Region] in screen coordinates
      */
     fun Region.transform(): Region
-
-    /**
-     * Calculates the ratio between the script resolution and the image resolution.
-     */
-    fun scriptToImageScale(): Double
 
     /**
      * Transforms the [Region] from script coordinates to image coordinates.
