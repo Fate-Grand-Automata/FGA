@@ -95,7 +95,7 @@ class AutoCEBomb @Inject constructor(
         }
     }
 
-    private fun pickMatchingCE(img: IPattern) {
+    private fun pickMatchingCE(img: Pattern) {
         // Scroll to top
         Location(2040, 400).click()
         Duration.seconds(2).wait()

@@ -9,7 +9,7 @@ import com.mathewsachin.fategrandautomata.BuildConfig
 import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import timber.log.error
@@ -29,12 +29,12 @@ class StorageProvider @Inject constructor(
     fun DocumentFile?.getOrCreateDir(name: String) =
         this?.findFile(name)?.takeIf { it.isDirectory }
             ?: this?.createDirectory(name)
-            ?: throw KnownException(KnownException.Reason.CouldNotCrateDirectory(name))
+            ?: throw KnownException(KnownException.Reason.CouldNotCreateDirectory(name))
 
     fun DocumentFile?.getOrCreateFile(name: String, mime: String = mimeAny) =
         this?.findFile(name)?.takeIf { !it.isDirectory }
             ?: this?.createFile(mime, name)
-            ?: throw KnownException(KnownException.Reason.CouldNotCrateFile(name))
+            ?: throw KnownException(KnownException.Reason.CouldNotCreateFile(name))
 
     val resolver: ContentResolver = context.contentResolver
     private var dirRoot: DocumentFile? = null
@@ -139,7 +139,7 @@ class StorageProvider @Inject constructor(
             )
 
         val files = if (file.isDirectory) {
-            file.listFiles().takeUnless{ it.isEmpty() }
+            file.listFiles().takeUnless { it.isEmpty() }
                 ?: throw KnownException(KnownException.Reason.SupportFolderIsEmpty(kind, name))
         } else arrayOf(file)
 
@@ -158,7 +158,7 @@ class StorageProvider @Inject constructor(
     private val dropsFolder
         get() = dirRoot.getOrCreateDir("drops")
 
-    override fun dropScreenshot(patterns: List<IPattern>) {
+    override fun dropScreenshot(patterns: List<Pattern>) {
         val sdf = SimpleDateFormat("dd-M-yyyy-hh-mm-ss", Locale.US)
         val timeString = sdf.format(Date())
 
@@ -176,7 +176,7 @@ class StorageProvider @Inject constructor(
         }
     }
 
-    override fun dump(name: String, image: IPattern) {
+    override fun dump(name: String, image: Pattern) {
         image.use {
             if (BuildConfig.DEBUG) {
                 val file = dirRoot

@@ -23,7 +23,7 @@ import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUIStateHolder
 import com.mathewsachin.fategrandautomata.ui.support_img_namer.showSupportImageNamer
 import com.mathewsachin.fategrandautomata.util.*
 import com.mathewsachin.libautomata.EntryPoint
-import com.mathewsachin.libautomata.IScreenshotService
+import com.mathewsachin.libautomata.ScreenshotService
 import com.mathewsachin.libautomata.ScriptAbortException
 import dagger.hilt.EntryPoints
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -143,7 +143,10 @@ class ScriptManager @Inject constructor(
                 messageBox.show(scriptExitedString, msg)
             }
             is AutoGiftBox.ExitException -> {
-                val msg = context.getString(R.string.picked_exp_stacks, e.pickedStacks)
+                val msg = when (val reason = e.reason) {
+                    is AutoGiftBox.ExitReason.CannotSelectAnyMore -> context.getString(R.string.picked_exp_stacks, reason.pickedStacks)
+                    AutoGiftBox.ExitReason.NoEmbersFound -> context.getString(R.string.no_embers_found)
+                }
 
                 messages.notify(msg)
                 messageBox.show(scriptExitedString, msg)
@@ -254,7 +257,7 @@ class ScriptManager @Inject constructor(
 
     fun startScript(
         context: Context,
-        screenshotService: IScreenshotService,
+        screenshotService: ScreenshotService,
         componentBuilder: ScriptComponentBuilder
     ) {
         updateGameServer()
@@ -298,7 +301,7 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private suspend fun runEntryPoint(screenshotService: IScreenshotService, entryPointProvider: () -> EntryPoint) {
+    private suspend fun runEntryPoint(screenshotService: ScreenshotService, entryPointProvider: () -> EntryPoint) {
         if (scriptState !is ScriptState.Stopped) {
             return
         }

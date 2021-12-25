@@ -12,29 +12,29 @@ private sealed class ScaleBy(val rate: Double) : Comparable<ScaleBy> {
         rate.compareTo(other.rate)
 }
 
-private fun decideScaleMethod(OriginalSize: Size, DesiredSize: Size) =
+private fun decideScaleMethod(originalSize: Size, desiredSize: Size) =
     minOf(
-        ScaleBy.Width(DesiredSize.width / OriginalSize.width.toDouble()),
-        ScaleBy.Height(DesiredSize.height / OriginalSize.height.toDouble())
+        ScaleBy.Width(desiredSize.width / originalSize.width.toDouble()),
+        ScaleBy.Height(desiredSize.height / originalSize.height.toDouble())
     )
 
-private fun calculateBorderThickness(Outer: Int, Inner: Int) =
-    ((Outer - Inner).absoluteValue / 2.0).roundToInt()
+private fun calculateBorderThickness(outer: Int, inner: Int) =
+    ((outer - inner).absoluteValue / 2.0).roundToInt()
 
 private fun calculateGameAreaWithoutBorders(
-    ScriptSize: Size,
-    ScreenSize: Size,
-    ScaleRate: Double
+    scriptSize: Size,
+    screenSize: Size,
+    scaleRate: Double
 ): Region {
-    val scaledScriptSize = ScriptSize * ScaleRate
+    val scaledScriptSize = scriptSize * scaleRate
 
     return Region(
         calculateBorderThickness(
-            ScreenSize.width,
+            screenSize.width,
             scaledScriptSize.width
         ), // Offset(X)
         calculateBorderThickness(
-            ScreenSize.height,
+            screenSize.height,
             scaledScriptSize.height
         ), // Offset(Y)
         scaledScriptSize.width, // Game Width (without borders)
@@ -58,8 +58,10 @@ class FgoGameAreaManager(
     private val offset: () -> Location,
     isNewUI: Boolean
 ) : GameAreaManager {
-    private val imageSize = Size(1280, 720)
-    private val scriptSize = Size(2560, 1440)
+    companion object {
+        private val imageSize = Size(1280, 720)
+        private val scriptSize = Size(2560, 1440)
+    }
 
     private val scaleBy = decideScaleMethod(
         scriptSize,

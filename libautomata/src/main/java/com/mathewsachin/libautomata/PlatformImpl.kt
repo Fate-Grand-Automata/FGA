@@ -2,15 +2,15 @@ package com.mathewsachin.libautomata
 
 import kotlin.time.Duration
 
-interface IPlatformImpl {
+interface PlatformImpl {
     val windowRegion: Region
     val canLongSwipe: Boolean
-    val prefs: IPlatformPrefs
+    val prefs: PlatformPrefs
 
     /**
-     * Creates a new [IPattern] without any image data.
+     * Creates a new [Pattern] without any image data.
      */
-    fun getResizableBlankPattern(): IPattern
+    fun getResizableBlankPattern(): Pattern
 
     /**
      * Adds borders around the given [Region].

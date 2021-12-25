@@ -33,7 +33,7 @@ body:
     id: build
     attributes:
       label: FGA build number
-      description: >
+      description: |
         The build number can be found on FGA's main screen at the top, it says BUILD:xxxx.
         
         Entering the number is enough.
@@ -44,7 +44,7 @@ body:
     id: description
     attributes:
       label: Describe the bug
-      description: >
+      description: |
         A clear and concise description of what the bug is.
         
         Include steps to reproduce the error if required.
@@ -54,12 +54,14 @@ body:
     id: video
     attributes:
       label: Video
-      description: >
+      description: |
         Include a video of the script running on your device with `Debug mode` ON.
         
         Recording functionality is available within the app in `More options` > `Advanced` > `Fine-tune`.
+
+        :warning: **Do not use Android or 3rd party apps for recording, FGA will not be able to see anything on the screen anymore until you restart the FGA service.** The only exception is when you have set FGA to record the screen using `Root Mode`.
         
-        If the video is too large for Github, upload it to streamable.com, youtube.com or something similar.
+        If the video is too large for Github, upload it to youtube.com or something similar.
     validations:
       required: true
   - type: markdown
@@ -70,6 +72,10 @@ body:
     attributes:
       label: Device model
       placeholder: "Xiaomi Redmi 4"
+      description: |
+        The name of your phone model.
+        
+        If you are using an emulator, use its name and version instead.
     validations:
       required: true
   - type: dropdown

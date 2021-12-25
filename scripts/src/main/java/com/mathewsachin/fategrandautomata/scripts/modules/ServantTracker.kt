@@ -4,7 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.models.*
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -39,9 +39,9 @@ class ServantTracker @Inject constructor(
     }
 
     class TeamSlotData(
-        val checkImage: IPattern,
-        val skills: List<IPattern>
-    ): AutoCloseable {
+        val checkImage: Pattern,
+        val skills: List<Pattern>
+    ) : AutoCloseable {
         override fun close() {
             checkImage.close()
             skills.forEach { it.close() }
@@ -51,7 +51,7 @@ class ServantTracker @Inject constructor(
     val checkImages = mutableMapOf<TeamSlot, TeamSlotData>()
     private var supportSlot: TeamSlot? = null
 
-    private val faceCardImages = mutableMapOf<TeamSlot, IPattern>()
+    private val faceCardImages = mutableMapOf<TeamSlot, Pattern>()
 
     override fun close() {
         checkImages.values.forEach { it.close() }
@@ -137,8 +137,7 @@ class ServantTracker @Inject constructor(
         // New run with different support
         if (wasSupport && isSupport && isDifferentServant) {
             init(teamSlot, slot)
-        }
-        else if (isDifferentServant || (wasSupport != isSupport)) {
+        } else if (isDifferentServant || (wasSupport != isSupport)) {
             val newTeamSlot = servantQueue.removeFirstOrNull()
 
             if (newTeamSlot != null) {
@@ -181,53 +180,51 @@ class ServantTracker @Inject constructor(
         }
     }
 
-    fun faceCardsGroupedByServant(): Map<TeamSlot, List<CommandCard.Face>> {
+    fun faceCardsGroupedByServant(): Map<TeamSlot, Collection<CommandCard.Face>> {
         if (prefs.skipServantFaceCardCheck) {
             return emptyMap()
         }
 
         val cardsRemaining = CommandCard.Face.list.toMutableSet()
-        val result = mutableMapOf<TeamSlot, List<CommandCard.Face>>()
+        val result = mutableMapOf<TeamSlot, Set<CommandCard.Face>>()
 
         supportSlot?.let { supportSlot ->
             if (supportSlot in deployed.values) {
                 val matched = cardsRemaining.filter { card ->
                     images[Images.Support] in locations.attack.supportCheckRegion(card)
-                }
-
-                messages.log(
-                    ScriptLog.CardsBelongToServant(
-                        cards = matched,
-                        servant = supportSlot,
-                        isSupport = true
-                    )
-                )
+                }.toSet()
 
                 cardsRemaining -= matched
-
                 result[supportSlot] = matched
             }
         }
 
-        for (teamSlot in deployed.values) {
-            if (supportSlot != teamSlot) {
-                val img = faceCardImages[teamSlot] ?: continue
-
-                val matched = cardsRemaining.filter { card ->
-                    img in locations.attack.servantMatchRegion(card)
-                }
-
-                messages.log(
-                    ScriptLog.CardsBelongToServant(
-                        cards = matched,
-                        servant = teamSlot
-                    )
-                )
-
-                cardsRemaining -= matched
-
-                result[teamSlot] = matched
+        val ownedServants = faceCardImages
+            .filterKeys { it != supportSlot && it in deployed.values }
+        cardsRemaining
+            .groupBy { card ->
+                // find the best matching Servant which isn't the support
+                ownedServants
+                    .mapValues { (_, image) ->
+                        locations.attack.servantMatchRegion(card)
+                            .find(image, 0.5)?.score ?: 0.0
+                    }
+                    .filterValues { it > 0.0 }
+                    .maxByOrNull { it.value }
+                    ?.key
             }
+            .filterKeys { it != null }
+            .entries
+            .associateTo(result) { (key, value) -> key!! to value.toSet() }
+
+        result.forEach { (servant, cards) ->
+            messages.log(
+                ScriptLog.CardsBelongToServant(
+                    cards,
+                    servant,
+                    isSupport = servant == supportSlot
+                )
+            )
         }
 
         return result

@@ -1,47 +1,29 @@
 package com.mathewsachin.libautomata
 
 import com.mathewsachin.libautomata.dagger.ScriptScope
-import com.mathewsachin.libautomata.extensions.ITransformationExtensions
 import javax.inject.Inject
 
 /**
- * Responsible for taking screenshots via a [IScreenshotService]. The screenshots are
+ * Responsible for taking screenshots via a [ScreenshotService]. The screenshots are
  * scaled and cropped and can be cached for a while using [snapshot].
  */
 @ScriptScope
 class ScreenshotManager @Inject constructor(
-    val gameAreaManager: GameAreaManager,
-    val screenshotService: IScreenshotService,
-    val platformImpl: IPlatformImpl,
-    val transformationExtensions: ITransformationExtensions
+    private val gameAreaManager: GameAreaManager,
+    private val screenshotService: ScreenshotService,
+    private val scale: Scale
 ) : AutoCloseable {
     var usePreviousSnap = false
 
-    private var previousPattern: IPattern? = null
-    private var resizeTarget: IPattern? = null
+    private var previousPattern: Pattern? = null
 
     /**
      * Takes a screenshot, crops it to the game area and then scales it to the image scale so
      * it can be used for image comparisons.
      */
-    private fun getScaledScreenshot(): IPattern {
-        val sshot = screenshotService.takeScreenshot()
-            .crop(gameAreaManager.gameArea)
-
-        val scale = transformationExtensions.screenToImageScale()
-
-        if (scale != null) {
-            if (resizeTarget == null) {
-                resizeTarget = platformImpl.getResizableBlankPattern()
-            }
-
-            sshot.resize(resizeTarget!!, sshot.size * scale)
-
-            return resizeTarget!!
-        }
-
-        return sshot
-    }
+    private fun getScaledScreenshot(): Pattern =
+        screenshotService.takeScreenshot()
+            .crop(gameAreaManager.gameArea * (scale.screenToImage ?: 1.0))
 
     /**
      * Takes a screenshot and sets [usePreviousSnap] to `true`. All following [getScreenshot]
@@ -60,9 +42,9 @@ class ScreenshotManager @Inject constructor(
      *
      * If [usePreviousSnap] is set to true, a cached screenshot is returned instead.
      *
-     * @return an [IPattern] with the screenshot image data
+     * @return an [Pattern] with the screenshot image data
      */
-    fun getScreenshot(): IPattern {
+    fun getScreenshot(): Pattern {
         if (usePreviousSnap) {
             previousPattern?.let { return it }
         }
@@ -94,8 +76,5 @@ class ScreenshotManager @Inject constructor(
     override fun close() {
         previousPattern?.close()
         previousPattern = null
-
-        resizeTarget?.close()
-        resizeTarget = null
     }
 }

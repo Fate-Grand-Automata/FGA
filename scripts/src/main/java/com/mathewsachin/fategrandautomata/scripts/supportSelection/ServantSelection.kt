@@ -6,7 +6,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
-import com.mathewsachin.libautomata.IPattern
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
@@ -64,7 +64,7 @@ class ServantSelection @Inject constructor(
      * which would need everyone to regenerate their images,
      * crop out the part which can potentially have the lock.
      */
-    private fun cropFriendLock(servant: IPattern): IPattern {
+    private fun cropFriendLock(servant: Pattern): Pattern {
         val lockCropLeft = 15
         val lockCropRegion = Region(
             lockCropLeft, 0,

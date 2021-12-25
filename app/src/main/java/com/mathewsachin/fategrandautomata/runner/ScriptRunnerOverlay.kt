@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.WindowManager
 import androidx.compose.ui.platform.ComposeView
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
+import com.mathewsachin.fategrandautomata.di.service.ServiceCoroutineScope
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.ui.highlight.HighlightManager
 import com.mathewsachin.fategrandautomata.ui.runner.ScriptRunnerUI
@@ -19,6 +20,10 @@ import com.mathewsachin.fategrandautomata.util.ScriptState
 import com.mathewsachin.fategrandautomata.util.overlayType
 import com.mathewsachin.libautomata.Location
 import dagger.hilt.android.scopes.ServiceScoped
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import timber.log.error
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -32,7 +37,9 @@ class ScriptRunnerOverlay @Inject constructor(
     private val uiStateHolder: ScriptRunnerUIStateHolder,
     private val scriptManager: ScriptManager,
     private val screenshotServiceHolder: ScreenshotServiceHolder,
-    private val scriptComponentBuilder: ScriptComponentBuilder
+    private val scriptComponentBuilder: ScriptComponentBuilder,
+    private val messageBox: ScriptRunnerMessageBox,
+    @ServiceCoroutineScope private val scope: CoroutineScope,
 ) {
     private val layout: ComposeView
 
@@ -142,9 +149,19 @@ class ScriptRunnerOverlay @Inject constructor(
             }
             ScriptRunnerUIAction.Start -> {
                 if (scriptManager.scriptState is ScriptState.Stopped) {
-                    screenshotServiceHolder.screenshotService?.let {
-                        scriptManager.startScript(service, it, scriptComponentBuilder)
+                    val screenshotService = try {
+                        screenshotServiceHolder.ensureScreenshotService()
+                    } catch (e: Exception) {
+                        val msg = "Failed to start screen capture"
+                        Timber.error(e) { msg }
+
+                        scope.launch {
+                            messageBox.show(msg, e.message ?: msg, e)
+                        }
+                        return
                     }
+
+                    scriptManager.startScript(service, screenshotService, scriptComponentBuilder)
                 }
             }
             ScriptRunnerUIAction.Stop -> {

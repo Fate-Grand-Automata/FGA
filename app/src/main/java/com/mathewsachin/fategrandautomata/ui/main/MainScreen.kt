@@ -34,7 +34,7 @@ fun MainScreen(
     vm: MainScreenViewModel = viewModel(),
     navigate: (MainScreenDestinations) -> Unit
 ) {
-    var dirPicker: ActivityResultLauncher<Uri>? by remember { mutableStateOf(null) }
+    var dirPicker: ActivityResultLauncher<Uri?>? by remember { mutableStateOf(null) }
 
     var toggling by rememberSaveable { mutableStateOf(false) }
 
@@ -165,12 +165,12 @@ private fun toggleOverlayService(
 }
 
 sealed class MainScreenDestinations {
-    object Releases: MainScreenDestinations()
-    object TroubleshootingGuide: MainScreenDestinations()
-    object BattleConfigs: MainScreenDestinations()
-    object MoreOptions: MainScreenDestinations()
-    object AccessibilitySettings: MainScreenDestinations()
-    object OverlaySettings: MainScreenDestinations()
+    object Releases : MainScreenDestinations()
+    object TroubleshootingGuide : MainScreenDestinations()
+    object BattleConfigs : MainScreenDestinations()
+    object MoreOptions : MainScreenDestinations()
+    object AccessibilitySettings : MainScreenDestinations()
+    object OverlaySettings : MainScreenDestinations()
 }
 
 @Composable

@@ -5,7 +5,7 @@ import java.io.OutputStream
 /**
  * Interface for image objects.
  */
-interface IPattern : AutoCloseable {
+interface Pattern : AutoCloseable {
     val width: Int
     val height: Int
 
@@ -14,7 +14,7 @@ interface IPattern : AutoCloseable {
      *
      * @param size the size of the new image
      */
-    fun resize(size: Size): IPattern
+    fun resize(size: Size): Pattern
 
     /**
      * Creates a resized image with the specified size and writes it into the target.
@@ -22,7 +22,7 @@ interface IPattern : AutoCloseable {
      * @param target the image to write the resized image data to
      * @param size the size of the new image
      */
-    fun resize(target: IPattern, size: Size)
+    fun resize(target: Pattern, size: Size)
 
     /**
      * Finds all image matches with high enough similarity values.
@@ -32,31 +32,31 @@ interface IPattern : AutoCloseable {
      *
      * @return a list of [Match] objects
      */
-    fun findMatches(template: IPattern, similarity: Double): Sequence<Match>
+    fun findMatches(template: Pattern, similarity: Double): Sequence<Match>
 
     /**
      * Crops the image to be within the bounds of the given [region].
      *
-     * Note that the resulting [IPattern] can have a smaller size than the [region] if the [region]
+     * Note that the resulting [Pattern] can have a smaller size than the [region] if the [region]
      * is not fully contained in the area of the image.
      *
      * @param region a [Region] in image coordinates, see [Region.transformToImage]
      */
-    fun crop(region: Region): IPattern
+    fun crop(region: Region): Pattern
 
     fun save(stream: OutputStream)
 
     /**
      * Makes a copy of the image.
      */
-    fun copy(): IPattern
+    fun copy(): Pattern
 
-    fun tag(tag: String): IPattern
+    fun tag(tag: String): Pattern
 
-    fun threshold(value: Double): IPattern
+    fun threshold(value: Double): Pattern
 }
 
 /**
  * Gets the width and height in the form of a [Size] object.
  */
-val IPattern.size get() = Size(width, height)
+val Pattern.size get() = Size(width, height)

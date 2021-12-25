@@ -3,13 +3,13 @@ package com.mathewsachin.libautomata
 /**
  * Interface for classes which can take screenshots.
  */
-interface IScreenshotService : AutoCloseable {
+interface ScreenshotService : AutoCloseable {
     /**
      * Takes a screenshot.
      *
-     * @return an [IPattern] with the image data
+     * @return an [Pattern] with the image data
      */
-    fun takeScreenshot(): IPattern
+    fun takeScreenshot(): Pattern
 
     /**
      * Starts recording

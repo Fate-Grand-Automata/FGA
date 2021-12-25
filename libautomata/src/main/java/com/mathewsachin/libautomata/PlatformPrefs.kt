@@ -1,6 +1,6 @@
 package com.mathewsachin.libautomata
 
-interface IPlatformPrefs {
+interface PlatformPrefs {
     val debugMode: Boolean
 
     /**
