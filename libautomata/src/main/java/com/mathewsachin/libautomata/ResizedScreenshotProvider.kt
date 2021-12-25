@@ -3,9 +3,9 @@ package com.mathewsachin.libautomata
 class ResizedScreenshotProvider(
     private val original: ScreenshotService,
     private val scale: Double,
-    private val platformImpl: PlatformImpl
+    platformImpl: PlatformImpl
 ): ScreenshotService {
-    private val resizeTarget: Pattern by lazy { platformImpl.getResizableBlankPattern() }
+    private val resizeTarget = platformImpl.getResizableBlankPattern()
 
     override fun takeScreenshot(): Pattern {
         val shot = original.takeScreenshot()
