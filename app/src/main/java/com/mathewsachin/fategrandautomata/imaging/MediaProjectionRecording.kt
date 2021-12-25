@@ -4,55 +4,40 @@ import android.hardware.display.VirtualDisplay
 import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
-import android.util.DisplayMetrics
 import com.mathewsachin.fategrandautomata.util.StorageProvider
+import com.mathewsachin.libautomata.Size
 
 /**
  * This class is responsible for creating video recordings of the screen using [MediaProjection].
  */
 class MediaProjectionRecording(
-    MediaProjection: MediaProjection,
-    DisplayMetrics: DisplayMetrics,
+    mediaProjection: MediaProjection,
+    imageSize: Size,
+    screenDensity: Int,
     storageProvider: StorageProvider
 ) : AutoCloseable {
-
-    private val virtualDisplay: VirtualDisplay
-    private val mediaRecorder: MediaRecorder
-
-    init {
-        val screenDensity = DisplayMetrics.densityDpi
-        var screenWidth = DisplayMetrics.widthPixels
-        var screenHeight = DisplayMetrics.heightPixels
-
-        // we only want landscape images, since the frame size can't be changed during a projection
-        if (screenHeight > screenWidth) {
-            val temp = screenHeight
-            screenHeight = screenWidth
-            screenWidth = temp
-        }
-
-        mediaRecorder = MediaRecorder()
-        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
-
-        val profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH)
+    private val mediaRecorder = MediaRecorder().apply {
+        setVideoSource(MediaRecorder.VideoSource.SURFACE)
 
         // Copy properties not related to audio
-        mediaRecorder.setOutputFormat(profile.fileFormat)
-        mediaRecorder.setVideoEncoder(profile.videoCodec)
-        mediaRecorder.setVideoEncodingBitRate(profile.videoBitRate)
-        mediaRecorder.setVideoFrameRate(profile.videoFrameRate)
-        mediaRecorder.setVideoSize(screenWidth, screenHeight)
+        val profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH)
+        setOutputFormat(profile.fileFormat)
+        setVideoEncoder(profile.videoCodec)
+        setVideoEncodingBitRate(profile.videoBitRate)
+        setVideoFrameRate(profile.videoFrameRate)
+        setVideoSize(imageSize.width, imageSize.height)
 
-        mediaRecorder.setOutputFile(storageProvider.recordingFileDescriptor.fileDescriptor)
+        setOutputFile(storageProvider.recordingFileDescriptor.fileDescriptor)
+        prepare()
+    }
 
-        mediaRecorder.prepare()
+    private val virtualDisplay: VirtualDisplay = mediaProjection.createVirtualDisplay(
+        "ScreenRecord",
+        imageSize.width, imageSize.height, screenDensity,
+        0, mediaRecorder.surface, null, null
+    )
 
-        virtualDisplay = MediaProjection.createVirtualDisplay(
-            "ScreenRecord",
-            screenWidth, screenHeight, screenDensity,
-            0, mediaRecorder.surface, null, null
-        )
-
+    init {
         mediaRecorder.start()
     }
 
