@@ -11,36 +11,19 @@ import javax.inject.Inject
 class ScreenshotManager @Inject constructor(
     private val gameAreaManager: GameAreaManager,
     private val screenshotService: ScreenshotService,
-    private val platformImpl: PlatformImpl,
     private val scale: Scale
 ) : AutoCloseable {
     var usePreviousSnap = false
 
     private var previousPattern: Pattern? = null
-    private var resizeTarget: Pattern? = null
 
     /**
      * Takes a screenshot, crops it to the game area and then scales it to the image scale so
      * it can be used for image comparisons.
      */
-    private fun getScaledScreenshot(): Pattern {
-        val sshot = screenshotService.takeScreenshot()
-            .crop(gameAreaManager.gameArea)
-
-        val scale = scale.screenToImage
-
-        if (scale != null) {
-            if (resizeTarget == null) {
-                resizeTarget = platformImpl.getResizableBlankPattern()
-            }
-
-            sshot.resize(resizeTarget!!, sshot.size * scale)
-
-            return resizeTarget!!
-        }
-
-        return sshot
-    }
+    private fun getScaledScreenshot(): Pattern =
+        screenshotService.takeScreenshot()
+            .crop(gameAreaManager.gameArea * (scale.screenToImage ?: 1.0))
 
     /**
      * Takes a screenshot and sets [usePreviousSnap] to `true`. All following [getScreenshot]
@@ -93,8 +76,5 @@ class ScreenshotManager @Inject constructor(
     override fun close() {
         previousPattern?.close()
         previousPattern = null
-
-        resizeTarget?.close()
-        resizeTarget = null
     }
 }
