@@ -1,13 +1,17 @@
 package com.mathewsachin.fategrandautomata.ui.more
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.Switch
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fullscreen
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
+import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
@@ -54,11 +58,7 @@ fun LazyListScope.advancedGroup(
     }
 
     item {
-        prefs.useRootForScreenshots.SwitchPreference(
-            title = stringResource(R.string.p_root_screenshot),
-            summary = stringResource(R.string.p_root_screenshot_summary),
-            icon = icon(R.drawable.ic_key)
-        )
+        RootForScreenshots(prefs.useRootForScreenshots)
     }
 
     item {
@@ -81,5 +81,51 @@ fun LazyListScope.advancedGroup(
             title = "Thresholded stage counter detection",
             icon = icon(R.drawable.ic_counter)
         )
+    }
+}
+
+private fun hasRootAccess() = try {
+    SuperUser().close()
+    true
+} catch (e: Exception) {
+    false
+}
+
+@Composable
+private fun RootForScreenshots(
+    pref: Pref<Boolean>
+) {
+    var state by pref.remember()
+    var enabled by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf(false) }
+
+    val action: (Boolean) -> Unit = {
+        error = false
+        enabled = false
+        try {
+            when {
+                !it -> state = false
+                hasRootAccess() -> state = true
+                else -> error = true
+            }
+        } finally {
+            enabled = true
+        }
+    }
+
+    Column {
+        Preference(
+            title = stringResource(R.string.p_root_screenshot),
+            summary = if (error) "Failed to get root access" else stringResource(R.string.p_root_screenshot_summary),
+            icon = icon(R.drawable.ic_key),
+            enabled = enabled,
+            onClick = { action(!state) },
+        ) {
+            Switch(
+                checked = state,
+                onCheckedChange = action,
+                enabled = enabled
+            )
+        }
     }
 }
