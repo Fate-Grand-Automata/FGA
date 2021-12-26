@@ -3,10 +3,9 @@ package com.mathewsachin.fategrandautomata.ui.pref_support
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -130,6 +129,34 @@ private fun PreferredSupport(
                     }
                 }
             }
+        }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                PreferredSupportHelp()
+            }
+        }
+    }
+}
+
+@Composable
+private fun PreferredSupportHelp() {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+    ) {
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(
+                """
+                1. You can add more images using 'Support Image Maker' script by clicking the PLAY button on support or friend list screens.
+                
+                2. For event CEs, it is better to use the in-game filters in FGO for CEs and MLB setting.
+                """.trimIndent(),
+                style = MaterialTheme.typography.body2
+            )
         }
     }
 }
