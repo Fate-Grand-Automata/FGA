@@ -6,7 +6,6 @@ import com.mathewsachin.fategrandautomata.util.readIntLE
 import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.ScreenshotService
-import dagger.hilt.android.scopes.ServiceScoped
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
@@ -14,10 +13,8 @@ import timber.log.Timber
 import timber.log.debug
 import timber.log.error
 import java.io.DataInputStream
-import javax.inject.Inject
 
-@ServiceScoped
-class RootScreenshotService @Inject constructor(
+class RootScreenshotService(
     private val superUser: SuperUser,
     private val colorManager: ColorManager
 ) : ScreenshotService {

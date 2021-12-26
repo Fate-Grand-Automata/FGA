@@ -5,6 +5,7 @@ import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
+import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
@@ -17,7 +18,6 @@ import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
 import timber.log.error
 import javax.inject.Inject
-import javax.inject.Provider
 import kotlin.math.roundToInt
 
 @ServiceScoped
@@ -26,7 +26,6 @@ class ScreenshotServiceHolder @Inject constructor(
     private val storageProvider: StorageProvider,
     private val display: DisplayHelper,
     private val colorManager: ColorManager,
-    private val rootScreenshotServiceProvider: Provider<RootScreenshotService>,
     private val mediaProjectionManager: MediaProjectionManager,
     private val platformImpl: PlatformImpl
 ) : AutoCloseable {
@@ -64,7 +63,10 @@ class ScreenshotServiceHolder @Inject constructor(
                     colorManager
                 )
             } else {
-                val rootSS = rootScreenshotServiceProvider.get()
+                val rootSS = RootScreenshotService(
+                    SuperUser(),
+                    colorManager
+                )
 
                 if (scale != null) {
                     ResizedScreenshotProvider(

@@ -1,16 +1,13 @@
 package com.mathewsachin.fategrandautomata.root
 
 import com.mathewsachin.fategrandautomata.util.KnownException
-import dagger.hilt.android.scopes.ServiceScoped
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import javax.inject.Inject
 
 /**
  * This class can execute shell commands with superuser rights.
  */
-@ServiceScoped
-class SuperUser @Inject constructor() : AutoCloseable {
+class SuperUser : AutoCloseable {
     private val superUser: Process
     private val outStream: DataOutputStream
     val inStream: DataInputStream
