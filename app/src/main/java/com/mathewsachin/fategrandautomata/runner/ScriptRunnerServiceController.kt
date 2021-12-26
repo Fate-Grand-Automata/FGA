@@ -6,6 +6,8 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.di.service.ServiceCoroutineScope
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.util.DisplayHelper
 import com.mathewsachin.fategrandautomata.util.ImageLoader
 import com.mathewsachin.fategrandautomata.util.ScreenOffReceiver
@@ -30,6 +32,7 @@ class ScriptRunnerServiceController @Inject constructor(
     private val screenshotServiceHolder: ScreenshotServiceHolder,
     private val imageLoader: ImageLoader,
     private val overlay: ScriptRunnerOverlay,
+    private val prefs: IPreferences,
     private val prefsCore: PrefsCore,
     private val notification: ScriptRunnerNotification,
     private val displayHelper: DisplayHelper,
@@ -73,11 +76,16 @@ class ScriptRunnerServiceController @Inject constructor(
             }
         }
 
-        if (shouldDisplayPlayButton()) {
-            overlay.show()
-        }
+        val willAskForToken = prefs.wantsMediaProjectionToken
+                && ScriptRunnerService.mediaProjectionToken == null
 
-        screenshotServiceHolder.prepareScreenshotService()
+        if (!willAskForToken) {
+            if (shouldDisplayPlayButton()) {
+                overlay.show()
+            }
+
+            screenshotServiceHolder.prepareScreenshotService()
+        }
     }
 
     fun onScreenConfigChanged() {
@@ -112,5 +120,9 @@ class ScriptRunnerServiceController @Inject constructor(
 
     fun onNewMediaProjectionToken() {
         screenshotServiceHolder.prepareScreenshotService()
+
+        if (shouldDisplayPlayButton()) {
+            overlay.show()
+        }
     }
 }
