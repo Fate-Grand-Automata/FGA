@@ -111,14 +111,14 @@ fun Material(mat: MaterialEnum) {
 fun MaterialsSummary(materials: List<MaterialEnum>) {
     if (materials.isNotEmpty()) {
         LazyRow(
-            contentPadding = PaddingValues(start = 16.dp, top = 5.dp, bottom = 5.dp)
+            contentPadding = PaddingValues(start = 16.dp, top = 5.dp, bottom = 5.dp),
+            modifier = Modifier.height(40.dp)
         ) {
             items(materials) { mat ->
                 Material(mat)
             }
         }
-    }
-    else {
+    } else {
         Text(
             "--",
             modifier = Modifier.padding(16.dp, 5.dp)
