@@ -93,7 +93,7 @@ dependencies {
     implementation "androidx.documentfile:documentfile:1.0.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
-    implementation 'com.github.iamareebjamal:opencv-android:4.4.0'
+    implementation 'com.github.iamareebjamal:opencv-android:4.5.1'
 
     // ViewModel, LiveData
     def lifecycle_version = "2.4.0"
@@ -121,9 +121,10 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.4.0-rc01"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
 
-    implementation "com.google.accompanist:accompanist-insets:0.18.0"
-    implementation "com.google.accompanist:accompanist-pager:0.18.0"
-    implementation "com.google.accompanist:accompanist-pager-indicators:0.18.0"
+    def accompanist_version = "0.22.0-rc"
+    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
 }
 
 kapt {
