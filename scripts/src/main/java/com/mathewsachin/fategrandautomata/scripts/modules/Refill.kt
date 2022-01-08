@@ -6,7 +6,7 @@ import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class Refill @Inject constructor(
@@ -29,17 +29,17 @@ class Refill @Inject constructor(
                 .map { locations.locate(it) }
                 .forEach { it.click() }
 
-            Duration.seconds(1).wait()
+            1.seconds.wait()
             locations.staminaOkClick.click()
             ++timesRefilled
 
-            Duration.seconds(3).wait()
+            3.seconds.wait()
         } else if (prefs.waitAPRegen) {
             locations.staminaCloseClick.click()
 
             messages.notify(ScriptNotify.WaitForAPRegen())
 
-            Duration.seconds(60).wait()
+            60.seconds.wait()
         } else throw AutoBattle.BattleExitException(AutoBattle.ExitReason.APRanOut)
     }
 

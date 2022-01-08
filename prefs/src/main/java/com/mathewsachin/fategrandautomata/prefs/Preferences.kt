@@ -7,6 +7,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.PlatformPrefs
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 class PreferencesImpl @Inject constructor(
     val prefs: PrefsCore,
@@ -69,7 +70,7 @@ class PreferencesImpl @Inject constructor(
 
     override val recordScreen by prefs.recordScreen
 
-    override val skillDelay by prefs.skillDelay.map { Duration.milliseconds(it) }
+    override val skillDelay by prefs.skillDelay.map { it.milliseconds }
 
     override val screenshotDrops by prefs.screenshotDrops
 
@@ -77,9 +78,9 @@ class PreferencesImpl @Inject constructor(
 
     override val stageCounterNew by prefs.stageCounterNew
 
-    override val waitBeforeTurn by prefs.waitBeforeTurn.map { Duration.milliseconds(it) }
+    override val waitBeforeTurn by prefs.waitBeforeTurn.map { it.milliseconds }
 
-    override val waitBeforeCards by prefs.waitBeforeCards.map { Duration.milliseconds(it) }
+    override val waitBeforeCards by prefs.waitBeforeCards.map { it.milliseconds }
 
     override var maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
 
@@ -152,17 +153,17 @@ class PreferencesImpl @Inject constructor(
     override val gestures = object :
         IGesturesPreferences {
         override val clickWaitTime by prefs.clickWaitTime
-            .map { Duration.milliseconds(it) }
+            .map { it.milliseconds }
 
         override val clickDuration by prefs.clickDuration
-            .map { Duration.milliseconds(it) }
+            .map { it.milliseconds }
 
-        override val clickDelay by prefs.clickDelay.map { Duration.milliseconds(it) }
+        override val clickDelay by prefs.clickDelay.map { it.milliseconds }
 
         override val swipeWaitTime by prefs.swipeWaitTime
-            .map { Duration.milliseconds(it) }
+            .map { it.milliseconds }
 
         override val swipeDuration by prefs.swipeDuration
-            .map { Duration.milliseconds(it) }
+            .map { it.milliseconds }
     }
 }

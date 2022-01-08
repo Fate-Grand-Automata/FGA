@@ -26,6 +26,7 @@ import com.mathewsachin.fategrandautomata.ui.prefs.remember
 import com.mathewsachin.fategrandautomata.util.KnownException
 import com.mathewsachin.fategrandautomata.util.stringRes
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 private val Duration.stringify: String
     get() =
@@ -366,8 +367,8 @@ fun PreviewBattleExitContent() {
 //                    ),
                     matLimit = 6,
                     withdrawCount = 1,
-                    totalTime = Duration.seconds(1880),
-                    averageTimePerRun = Duration.seconds(75),
+                    totalTime = 1880.seconds,
+                    averageTimePerRun = 75.seconds,
                     minTurnsPerRun = 3,
                     maxTurnsPerRun = 4,
                     averageTurnsPerRun = 6

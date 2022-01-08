@@ -7,7 +7,7 @@ import com.mathewsachin.fategrandautomata.scripts.modules.ConnectionRetry
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class AutoGiftBox @Inject constructor(
@@ -48,7 +48,7 @@ class AutoGiftBox @Inject constructor(
             if (picked > 0) {
                 receiveSelectedClick.click()
                 while (true) {
-                    Duration.seconds(2).wait()
+                    2.seconds.wait()
                     if (connectionRetry.needsToRetry()) connectionRetry.retry() else break
                 }
                 receiveSelectedClick.click()
@@ -97,7 +97,7 @@ class AutoGiftBox @Inject constructor(
                 }
 
                 // Longer animations. At the end, items pulled up and released.
-                Duration.seconds(1).wait()
+                1.seconds.wait()
             }
         }
 

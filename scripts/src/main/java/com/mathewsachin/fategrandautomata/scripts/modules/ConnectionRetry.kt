@@ -4,7 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class ConnectionRetry @Inject constructor(
@@ -16,6 +16,6 @@ class ConnectionRetry @Inject constructor(
     fun retry() {
         locations.retryRegion.click()
 
-        Duration.seconds(2).wait()
+        2.seconds.wait()
     }
 }

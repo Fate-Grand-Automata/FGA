@@ -5,6 +5,8 @@ import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
@@ -16,7 +18,7 @@ class SupportScreenRefresher @Inject constructor(
     private val supportClassPicker: SupportClassPicker
 ) {
     private var lastSupportRefreshTimestamp: TimeMark? = null
-    private val supportRefreshThreshold = Duration.seconds(10)
+    private val supportRefreshThreshold = 10.seconds
 
     fun refreshSupportList() {
         performRefresh()
@@ -48,11 +50,11 @@ class SupportScreenRefresher @Inject constructor(
                 when {
                     connectionRetry.needsToRetry() -> connectionRetry.retry()
                     // wait for dialogs to close
-                    screen.isAnyDialogOpen() -> screen.delay(Duration.seconds(1))
+                    screen.isAnyDialogOpen() -> screen.delay(1.seconds)
                     screen.isListLoaded() -> return
                 }
 
-                screen.delay(Duration.milliseconds(100))
+                screen.delay(100.milliseconds)
             }
         } finally {
             updateLastSupportRefreshTimestamp()

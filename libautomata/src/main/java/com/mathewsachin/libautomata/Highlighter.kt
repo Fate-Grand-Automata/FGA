@@ -2,12 +2,13 @@ package com.mathewsachin.libautomata
 
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 interface Highlighter {
     operator fun invoke(
         region: Region,
         color: HighlightColor,
-        duration: Duration = Duration.seconds(0.3)
+        duration: Duration = 0.3.seconds
     )
 }
 
@@ -15,7 +16,7 @@ class RealHighlighter @Inject constructor(
     private val exitManager: ExitManager,
     private val platformImpl: PlatformImpl,
     private val transform: Transformer
-): Highlighter {
+) : Highlighter {
     override fun invoke(region: Region, color: HighlightColor, duration: Duration) {
         exitManager.checkExitRequested()
         if (platformImpl.prefs.debugMode) {
