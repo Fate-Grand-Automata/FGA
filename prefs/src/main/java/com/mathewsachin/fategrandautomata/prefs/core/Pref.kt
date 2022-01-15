@@ -1,13 +1,13 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
-import com.tfcporciuncula.flow.Preference
+import com.fredporciuncula.flow.preferences.Preference
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.map
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-interface Pref<T>: ReadWriteProperty<Any, T>, Preference<T> {
+interface Pref<T> : ReadWriteProperty<Any, T>, Preference<T> {
     fun resetToDefault()
 }
 
@@ -43,7 +43,7 @@ internal class MappedPref<T, R>(
     override val defaultValue: R,
     private val convert: (T) -> R,
     private val reverse: (R) -> T
-): Pref<R> {
+) : Pref<R> {
     override fun getValue(thisRef: Any, property: KProperty<*>) = get()
     override fun setValue(thisRef: Any, property: KProperty<*>, value: R) = set(value)
     override val key get() = pref.key
@@ -51,7 +51,7 @@ internal class MappedPref<T, R>(
     override suspend fun deleteAndCommit() = pref.deleteAndCommit()
     override fun isNotSet() = pref.isNotSet()
     override fun isSet() = pref.isSet()
-    override fun resetToDefault() =  pref.resetToDefault()
+    override fun resetToDefault() = pref.resetToDefault()
 
     override fun asCollector() =
         object : FlowCollector<R> {
