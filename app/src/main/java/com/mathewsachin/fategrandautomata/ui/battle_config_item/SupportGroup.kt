@@ -32,7 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
+import com.mathewsachin.fategrandautomata.prefs.core.SupportPrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
@@ -44,11 +44,11 @@ import java.io.File
 
 @Composable
 fun SupportGroup(
-    config: BattleConfigCore,
+    config: SupportPrefsCore,
     maxSkillText: String,
     goToPreferred: () -> Unit
 ) {
-    val supportMode by config.support.selectionMode.remember()
+    val supportMode by config.selectionMode.remember()
 
     Card(
         modifier = Modifier
@@ -63,7 +63,7 @@ fun SupportGroup(
                 title = stringResource(R.string.p_battle_config_support)
             )
 
-            var supportClass by config.support.supportClass.remember()
+            var supportClass by config.supportClass.remember()
 
             SupportClassPicker(
                 selected = supportClass,
@@ -73,7 +73,7 @@ fun SupportGroup(
             val canAlsoCheckAll = supportClass.canAlsoCheckAll && supportMode != SupportSelectionModeEnum.Manual
 
             AnimatedVisibility(canAlsoCheckAll) {
-                config.support.alsoCheckAll.SwitchPreference(
+                config.alsoCheckAll.SwitchPreference(
                     title = stringResource(R.string.p_battle_config_support_also_check_all)
                 )
             }
@@ -81,7 +81,7 @@ fun SupportGroup(
             val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
 
             Row {
-                config.support.selectionMode.ListPreference(
+                config.selectionMode.ListPreference(
                     title = stringResource(R.string.p_battle_config_support_selection_mode),
                     entries = SupportSelectionModeEnum.values()
                         .associateWith { stringResource(it.stringRes) },
@@ -89,7 +89,7 @@ fun SupportGroup(
                 )
 
                 if (preferredMode) {
-                    config.support.fallbackTo.SingleSelectChipPreference(
+                    config.fallbackTo.SingleSelectChipPreference(
                         title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
                         entries = listOf(
                             SupportSelectionModeEnum.First,
@@ -101,14 +101,14 @@ fun SupportGroup(
             }
 
             AnimatedVisibility (preferredMode) {
-                val servants by config.support.preferredServants.remember()
-                val ces by config.support.preferredCEs.remember()
+                val servants by config.preferredServants.remember()
+                val ces by config.preferredCEs.remember()
                 val cesFormatted by derivedStateOf {
                     ces
                         .map { File(it).nameWithoutExtension }
                         .toSet()
                 }
-                val friendNames by config.support.friendNames.remember()
+                val friendNames by config.friendNames.remember()
                 val friendNamesFormatted by derivedStateOf {
                     friendNames
                         .map { File(it).nameWithoutExtension }
@@ -210,7 +210,7 @@ val DiamondShape = CutCornerShape(50)
 
 @Composable
 fun PreferredSummary(
-    config: BattleConfigCore,
+    config: SupportPrefsCore,
     maxSkillText: String,
     servants: Set<String>,
     ces: Set<String>,
@@ -277,7 +277,7 @@ fun PreferredSummary(
             )
 
             if (ces.isNotEmpty()) {
-                val mlb by config.support.mlb.remember()
+                val mlb by config.mlb.remember()
 
                 if (mlb) {
                     Icon(
@@ -290,7 +290,9 @@ fun PreferredSummary(
             }
         }
 
-        if (friendNames.isNotEmpty()) {
+        val requireFriends by config.requireFriends.remember()
+
+        if (requireFriends) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -301,8 +303,12 @@ fun PreferredSummary(
                     contentDescription = "friend"
                 )
 
+                val text = if (friendNames.isNotEmpty())
+                    friendNames.joinToString()
+                else stringResource(R.string.battle_config_support_any)
+
                 Text(
-                    friendNames.joinToString(),
+                    text,
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 16.dp)

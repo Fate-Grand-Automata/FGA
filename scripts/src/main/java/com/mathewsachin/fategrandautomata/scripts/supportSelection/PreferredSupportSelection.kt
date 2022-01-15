@@ -30,7 +30,7 @@ class PreferredSupportSelection @Inject constructor(
             throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionPreferredNotSet)
         }
 
-        if (supportPrefs.friendsOnly && !friendChecker.isFriend()) {
+        if (supportPrefs.requireFriends && !friendChecker.isFriend()) {
             // no friends on screen, so there's no point in scrolling anymore
             return SupportSelectionResult.Refresh
         }
@@ -83,16 +83,14 @@ class PreferredSupportSelection @Inject constructor(
     }
 
     private suspend fun isMatch(bounds: SupportBounds): SupportMatched? {
-        val needFriend = supportPrefs.friendsOnly || friendNames.isNotEmpty()
-
-        if (needFriend && !friendChecker.isFriend(bounds)) {
+        if (supportPrefs.requireFriends && !friendChecker.isFriend(bounds)) {
             return null
         }
 
         return coroutineScope {
             val servantCheck = async { servantSelection.check(servants, bounds) }
             val ceCheck = async { ceSelection.check(ces, bounds) }
-            val friendPassed = async { friendSelection.check(friendNames, bounds) }
+            val friendPassed = async { !supportPrefs.requireFriends || friendSelection.check(friendNames, bounds) }
 
             val ceCheckResult = ceCheck.await()
             val servantCheckResult = servantCheck.await()

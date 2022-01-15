@@ -111,11 +111,8 @@ class ServantSelection @Inject constructor(
 
     private fun checkMaxedSkills(expectedSkills: List<Boolean>, actualSkills: List<Boolean>): Boolean {
         val result = expectedSkills
-            .zip(actualSkills)
-            .map { (expected, actual) ->
-                if (!expected)
-                    true
-                else actual
+            .zip(actualSkills) { expected, actual ->
+                !expected || actual
             }
 
         messages.log(

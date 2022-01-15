@@ -18,7 +18,7 @@ internal class SupportPreferences(
     override val preferredCEs by prefs.preferredCEs
         .map { it.toList() }
 
-    override val friendsOnly by prefs.friendsOnly
+    override val requireFriends by prefs.requireFriends
 
     override val selectionMode by prefs.selectionMode
 

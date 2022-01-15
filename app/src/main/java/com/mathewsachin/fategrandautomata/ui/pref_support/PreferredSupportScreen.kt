@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.pref_support
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -141,21 +142,25 @@ private fun PreferredSupport(
                         title = stringResource(R.string.p_support_mode_friend)
                     )
 
-                    config.friendsOnly.SwitchPreference(
+                    config.requireFriends.SwitchPreference(
                         title = stringResource(R.string.p_battle_config_support_friends_only)
                     )
 
-                    if (vm.friends.isNotEmpty()) {
-                        config.friendNames.SupportSelectPreference(
-                            title = stringResource(R.string.p_battle_config_support_friend_names),
-                            entries = vm.friends
-                        )
-                    } else {
-                        Preference(
-                            icon = icon(R.drawable.ic_info),
-                            title = stringResource(R.string.p_battle_config_support_friend_names),
-                            summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
-                        )
+                    val requireFriends by config.requireFriends.remember()
+
+                    AnimatedVisibility (requireFriends) {
+                        if (vm.friends.isNotEmpty()) {
+                            config.friendNames.SupportSelectPreference(
+                                title = stringResource(R.string.p_battle_config_support_friend_names),
+                                entries = vm.friends
+                            )
+                        } else {
+                            Preference(
+                                icon = icon(R.drawable.ic_info),
+                                title = stringResource(R.string.p_battle_config_support_friend_names),
+                                summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
+                            )
+                        }
                     }
                 }
             }

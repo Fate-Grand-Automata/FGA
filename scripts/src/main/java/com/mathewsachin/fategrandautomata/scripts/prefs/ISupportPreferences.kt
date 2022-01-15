@@ -8,7 +8,7 @@ interface ISupportPreferences {
     val preferredServants: List<String>
     val mlb: Boolean
     val preferredCEs: List<String>
-    val friendsOnly: Boolean
+    val requireFriends: Boolean
     val selectionMode: SupportSelectionModeEnum
     val fallbackTo: SupportSelectionModeEnum
     val supportClass: SupportClass

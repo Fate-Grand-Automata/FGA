@@ -10,7 +10,7 @@ class SupportPrefsCore(
     val preferredServants = maker.stringSet("support_pref_servant_list")
     val mlb = maker.bool("support_pref_ce_mlb")
     val preferredCEs = maker.stringSet("support_pref_ce_list")
-    val friendsOnly = maker.bool("support_friends_only")
+    val requireFriends = maker.bool("support_friends_only")
 
     val selectionMode = maker.enum(
         "support_mode",

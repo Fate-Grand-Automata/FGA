@@ -225,7 +225,7 @@ private fun BattleConfigContent(
                         val maxSkillText by vm.maxSkillText.collectAsState("")
 
                         SupportGroup(
-                            config = config,
+                            config = config.support,
                             goToPreferred = { navigate(BattleConfigDestination.PreferredSupport) },
                             maxSkillText = maxSkillText
                         )
