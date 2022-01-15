@@ -110,7 +110,7 @@
     <string name="p_battle_config_support_pref_ces">Preferred CEs</string>
     <string name="p_battle_config_support_mlb">Max-limit broken</string>
     <string name="p_battle_config_support_friend_names">Friend names</string>
-    <string name="p_battle_config_support_friends_only">Friends Only</string>
+    <string name="p_battle_config_support_friends_only">Require friend</string>
     <string name="p_battle_config_support_friend_name_hint">Friend name images can be added using \'Support Image Maker\' script</string>
     <string name="p_battle_config_support_also_check_all">Also check All</string>
 
@@ -247,7 +247,6 @@
     <string name="present_box_full">Present Box Full</string>
     <string name="support_img_maker_not_found">No support images were found on the current screen. Are you on Support selection or Friend list screen?</string>
     <string name="support_selection_manual">Support selection set to Manual</string>
-    <string name="support_selection_friend_not_set">When using \'friend\' support selection mode, specify at least one friend name.</string>
     <string name="support_selection_preferred_not_set">When using \'preferred\' support selection mode, specify at least one Servant or Craft Essence.</string>
     <string name="ce_dropped">CE Dropped!</string>
     <string name="ce_get">CE GET!</string>

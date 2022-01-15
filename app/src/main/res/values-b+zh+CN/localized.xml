@@ -227,7 +227,6 @@
     <string name="present_box_full">礼物盒已满</string>
     <string name="support_img_maker_not_found">无法侦测助战，请到好友选择画面或助战选择画面再执行</string>
     <string name="support_selection_manual">已切换至手动选择助战从者</string>
-    <string name="support_selection_friend_not_set">使用「好友助战」时请设定偏好好友</string>
     <string name="support_selection_preferred_not_set">使用「偏好助战」时请设定偏好从者或偏好礼装</string>
     <string name="ce_dropped">礼装掉落!</string>
     <string name="ce_get">获得礼装!</string>

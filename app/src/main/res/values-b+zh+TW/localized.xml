@@ -230,7 +230,6 @@
     <string name="present_box_full">禮物盒已滿</string>
     <string name="support_img_maker_not_found">無法偵測支援，請到好友選擇畫面或支援選擇畫面再執行</string>
     <string name="support_selection_manual">已切換至手動選擇支援從者</string>
-    <string name="support_selection_friend_not_set">使用「好友支援」時請設定偏好好友</string>
     <string name="support_selection_preferred_not_set">使用「偏好支援」時請設定偏好從者或偏好禮裝</string>
     <string name="ce_dropped">禮裝掉落!</string>
     <string name="ce_get">獲得禮裝!</string>

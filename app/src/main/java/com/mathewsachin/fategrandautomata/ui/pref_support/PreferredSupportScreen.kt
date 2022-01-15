@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.ui.pref_support
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +16,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.SupportPrefsCore
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.OnResume
-import com.mathewsachin.fategrandautomata.ui.battle_config_item.PreferenceError
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
@@ -59,12 +57,6 @@ private fun PreferredSupport(
     LazyColumn {
         item {
             Heading(stringResource(R.string.p_support_mode_preferred))
-        }
-
-        item {
-            config.friendsOnly.SwitchPreference(
-                title = stringResource(R.string.p_battle_config_support_friends_only)
-            )
         }
 
         item {
@@ -145,6 +137,14 @@ private fun PreferredSupport(
                     .padding(16.dp)
             ) {
                 Column {
+                    PreferenceGroupHeader(
+                        title = stringResource(R.string.p_support_mode_friend)
+                    )
+
+                    config.friendsOnly.SwitchPreference(
+                        title = stringResource(R.string.p_battle_config_support_friends_only)
+                    )
+
                     if (vm.friends.isNotEmpty()) {
                         config.friendNames.SupportSelectPreference(
                             title = stringResource(R.string.p_battle_config_support_friend_names),
@@ -155,14 +155,6 @@ private fun PreferredSupport(
                             icon = icon(R.drawable.ic_info),
                             title = stringResource(R.string.p_battle_config_support_friend_names),
                             summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
-                        )
-                    }
-
-                    val friendNames by config.friendNames.remember()
-
-                    AnimatedVisibility(friendNames.isEmpty()) {
-                        PreferenceError(
-                            stringResource(R.string.support_selection_friend_not_set)
                         )
                     }
                 }
