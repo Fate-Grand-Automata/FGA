@@ -1,7 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.supportSelection
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
-import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -26,10 +25,6 @@ class PreferredSupportSelection @Inject constructor(
     private val friendNames = supportPrefs.friendNames
 
     override fun select(): SupportSelectionResult {
-        if (servants.isEmpty() && ces.isEmpty() && friendNames.isEmpty()) {
-            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionPreferredNotSet)
-        }
-
         if (supportPrefs.requireFriends && !friendChecker.isFriend()) {
             // no friends on screen, so there's no point in scrolling anymore
             return SupportSelectionResult.Refresh

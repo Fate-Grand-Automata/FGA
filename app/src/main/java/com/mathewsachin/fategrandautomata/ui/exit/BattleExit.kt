@@ -53,7 +53,6 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.InventoryFull -> stringResource(R.string.inventory_full)
     is AutoBattle.ExitReason.LimitRuns -> stringResource(R.string.times_ran, count)
     AutoBattle.ExitReason.SupportSelectionManual -> stringResource(R.string.support_selection_manual)
-    AutoBattle.ExitReason.SupportSelectionPreferredNotSet -> stringResource(R.string.support_selection_preferred_not_set)
     is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
     is AutoBattle.ExitReason.CardPriorityParseError -> msg
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)

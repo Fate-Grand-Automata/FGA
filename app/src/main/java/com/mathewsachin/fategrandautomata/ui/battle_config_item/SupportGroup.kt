@@ -101,24 +101,24 @@ fun SupportGroup(
             }
 
             AnimatedVisibility (preferredMode) {
-                val servants by config.preferredServants.remember()
-                val ces by config.preferredCEs.remember()
-                val cesFormatted by derivedStateOf {
-                    ces
-                        .map { File(it).nameWithoutExtension }
-                        .toSet()
-                }
-                val friendNames by config.friendNames.remember()
-                val friendNamesFormatted by derivedStateOf {
-                    friendNames
-                        .map { File(it).nameWithoutExtension }
-                        .toSet()
-                }
-
                 Column {
                     Preference(
                         title = { Text(stringResource(R.string.p_support_mode_preferred)) },
                         summary = {
+                            val servants by config.preferredServants.remember()
+                            val ces by config.preferredCEs.remember()
+                            val cesFormatted by derivedStateOf {
+                                ces
+                                    .map { File(it).nameWithoutExtension }
+                                    .toSet()
+                            }
+                            val friendNames by config.friendNames.remember()
+                            val friendNamesFormatted by derivedStateOf {
+                                friendNames
+                                    .map { File(it).nameWithoutExtension }
+                                    .toSet()
+                            }
+
                             PreferredSummary(
                                 config = config,
                                 maxSkillText = maxSkillText,
@@ -129,12 +129,6 @@ fun SupportGroup(
                         },
                         onClick = goToPreferred
                     )
-
-                    AnimatedVisibility(servants.isEmpty() && ces.isEmpty()) {
-                        PreferenceError(
-                            stringResource(R.string.support_selection_preferred_not_set)
-                        )
-                    }
                 }
             }
         }

@@ -59,7 +59,6 @@ class AutoBattle @Inject constructor(
         object InventoryFull : ExitReason()
         class LimitRuns(val count: Int) : ExitReason()
         object SupportSelectionManual : ExitReason()
-        object SupportSelectionPreferredNotSet : ExitReason()
         class SkillCommandParseError(val e: Exception) : ExitReason()
         class CardPriorityParseError(val msg: String) : ExitReason()
         object Paused : ExitReason()
