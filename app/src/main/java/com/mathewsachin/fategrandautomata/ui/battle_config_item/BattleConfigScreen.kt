@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,15 +30,12 @@ import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
-import com.mathewsachin.fategrandautomata.ui.pref_support.SupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
-import kotlinx.coroutines.launch
 
 @Composable
 fun BattleConfigScreen(
     vm: BattleConfigScreenViewModel = viewModel(),
-    supportVm: SupportViewModel = viewModel(),
     navigate: (BattleConfigDestination) -> Unit
 ) {
     val context = LocalContext.current
@@ -50,7 +46,6 @@ fun BattleConfigScreen(
 
     BattleConfigContent(
         config = vm.battleConfigCore,
-        friendEntries = supportVm.friends,
         onExport = { battleConfigExport.launch("${vm.battleConfig.name}.fga") },
         onCopy = {
             val id = vm.createCopyAndReturnId(context)
@@ -62,16 +57,6 @@ fun BattleConfigScreen(
         },
         navigate = navigate
     )
-
-    val scope = rememberCoroutineScope()
-
-    OnResume {
-        scope.launch {
-            if (supportVm.shouldExtractSupportImages) {
-                supportVm.performSupportImageExtraction(context)
-            } else supportVm.refresh(context)
-        }
-    }
 }
 
 sealed class BattleConfigDestination {
@@ -86,7 +71,6 @@ sealed class BattleConfigDestination {
 @Composable
 private fun BattleConfigContent(
     config: BattleConfigCore,
-    friendEntries: Map<String, String>,
     onExport: () -> Unit,
     onCopy: () -> Unit,
     onDelete: () -> Unit,
@@ -243,8 +227,7 @@ private fun BattleConfigContent(
                         SupportGroup(
                             config = config,
                             goToPreferred = { navigate(BattleConfigDestination.PreferredSupport) },
-                            maxSkillText = maxSkillText,
-                            friendEntries = friendEntries
+                            maxSkillText = maxSkillText
                         )
                     }
 

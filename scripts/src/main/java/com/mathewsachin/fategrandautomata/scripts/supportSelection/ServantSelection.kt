@@ -6,55 +6,63 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
-import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
 import com.mathewsachin.libautomata.dagger.ScriptScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
-import kotlin.streams.toList
 
 @ScriptScope
 class ServantSelection @Inject constructor(
     api: IFgoAutomataApi,
     private val supportPrefs: ISupportPreferences,
-    private val starChecker: SupportSelectionStarChecker,
-    private val boundsFinder: SupportBoundsFinder
+    private val starChecker: SupportSelectionStarChecker
 ): IFgoAutomataApi by api {
-    fun findServants(servants: List<String>): List<SpecificSupportSearchResult.Found> =
-        servants
-            .flatMap { entry -> images.loadSupportPattern(SupportImageKind.Servant, entry) }
-            .parallelStream()
-            .flatMap { pattern ->
-                val needMaxedSkills = listOf(
-                    supportPrefs.skill1Max,
-                    supportPrefs.skill2Max,
-                    supportPrefs.skill3Max
-                )
-                val skillCheckNeeded = needMaxedSkills.any { it }
+    class FoundServant(val maxedSkills: List<Boolean>, val maxAscended: Boolean)
 
-                cropFriendLock(pattern).use { cropped ->
-                    locations.support.listRegion
-                        .findAll(cropped)
-                        .filter { !supportPrefs.maxAscended || isMaxAscended(it.region) }
-                        .map {
-                            if (skillCheckNeeded)
-                                SpecificSupportSearchResult.FoundWithBounds(
-                                    it.region,
-                                    boundsFinder.findSupportBounds(it.region)
-                                )
-                            else SpecificSupportSearchResult.Found(it.region)
+    suspend fun check(servants: List<String>, bounds: SupportBounds): FoundServant? {
+        // TODO: Only check the upper part (excluding CE)
+        val searchRegion = bounds.region intersect locations.support.listRegion ?: return null
+
+        val maxAscended = isMaxAscended(searchRegion)
+
+        if (supportPrefs.maxAscended && !maxAscended) {
+            return null
+        }
+
+        val needMaxedSkills = listOf(
+            supportPrefs.skill1Max,
+            supportPrefs.skill2Max,
+            supportPrefs.skill3Max
+        )
+        val skillCheckNeeded = needMaxedSkills.any { it }
+        val maxedSkills = whichSkillsAreMaxed(bounds.region)
+
+        if (skillCheckNeeded && !checkMaxedSkills(needMaxedSkills, maxedSkills)) {
+            return null
+        }
+
+        if (servants.isEmpty())
+            return FoundServant(maxedSkills, maxAscended)
+
+        val matched = coroutineScope {
+            servants
+                .flatMap { entry -> images.loadSupportPattern(SupportImageKind.Servant, entry) }
+                .map {
+                    async {
+                        cropFriendLock(it).use { cropped ->
+                            cropped in searchRegion
                         }
-                        .filter {
-                            it !is SpecificSupportSearchResult.FoundWithBounds || checkMaxedSkills(it.Bounds, needMaxedSkills)
-                        }
-                        // We want the processing to be finished before cropped pattern is released
-                        .toList()
-                        .stream()
+                    }
                 }
-            }
-            .toList()
-            .sortedBy { it.Support }
+                .any { it.await() }
+        }
+
+        return FoundServant(maxedSkills, maxAscended).takeIf { matched }
+    }
 
     /**
      * If you lock your friends, a lock icon shows on the left of servant image,
@@ -80,7 +88,7 @@ class ServantSelection @Inject constructor(
         return starChecker.isStarPresent(maxAscendedRegion)
     }
 
-    private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {
+    private fun whichSkillsAreMaxed(bounds: Region): List<Boolean> {
         val y = bounds.y + 325
         val x = bounds.x + 1620
 
@@ -93,21 +101,26 @@ class ServantSelection @Inject constructor(
             Location(x + 2 * skillMargin, y)
         )
 
-        val result = skillLoc
-            .zip(needMaxedSkills)
-            .map { (location, shouldBeMaxed) ->
-                if (!shouldBeMaxed)
-                    true
-                else {
-                    val skillRegion = Region(location, Size(50, 50))
+        return skillLoc
+            .map {
+                val skillRegion = Region(it, Size(50, 50))
 
-                    skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
-                }
+                skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
+            }
+    }
+
+    private fun checkMaxedSkills(expectedSkills: List<Boolean>, actualSkills: List<Boolean>): Boolean {
+        val result = expectedSkills
+            .zip(actualSkills)
+            .map { (expected, actual) ->
+                if (!expected)
+                    true
+                else actual
             }
 
         messages.log(
             ScriptLog.MaxSkills(
-                needMaxedSkills = needMaxedSkills,
+                needMaxedSkills = expectedSkills,
                 isSkillMaxed = result
             )
         )

@@ -38,7 +38,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
 import com.mathewsachin.fategrandautomata.ui.icon
-import com.mathewsachin.fategrandautomata.ui.pref_support.SupportSelectPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.*
 import com.mathewsachin.fategrandautomata.util.stringRes
 import java.io.File
@@ -47,7 +46,6 @@ import java.io.File
 fun SupportGroup(
     config: BattleConfigCore,
     maxSkillText: String,
-    friendEntries: Map<String, String>,
     goToPreferred: () -> Unit
 ) {
     val supportMode by config.support.selectionMode.remember()
@@ -81,7 +79,6 @@ fun SupportGroup(
             }
 
             val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
-            val friendMode = supportMode == SupportSelectionModeEnum.Friend
 
             Row {
                 config.support.selectionMode.ListPreference(
@@ -91,7 +88,7 @@ fun SupportGroup(
                     modifier = Modifier.weight(1f)
                 )
 
-                if (preferredMode || friendMode) {
+                if (preferredMode) {
                     config.support.fallbackTo.SingleSelectChipPreference(
                         title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
                         entries = listOf(
@@ -111,6 +108,12 @@ fun SupportGroup(
                         .map { File(it).nameWithoutExtension }
                         .toSet()
                 }
+                val friendNames by config.support.friendNames.remember()
+                val friendNamesFormatted by derivedStateOf {
+                    friendNames
+                        .map { File(it).nameWithoutExtension }
+                        .toSet()
+                }
 
                 Column {
                     Preference(
@@ -120,7 +123,8 @@ fun SupportGroup(
                                 config = config,
                                 maxSkillText = maxSkillText,
                                 servants = servants,
-                                ces = cesFormatted
+                                ces = cesFormatted,
+                                friendNames = friendNamesFormatted
                             )
                         },
                         onClick = goToPreferred
@@ -129,31 +133,6 @@ fun SupportGroup(
                     AnimatedVisibility(servants.isEmpty() && ces.isEmpty()) {
                         PreferenceError(
                             stringResource(R.string.support_selection_preferred_not_set)
-                        )
-                    }
-                }
-            }
-
-            AnimatedVisibility (friendMode) {
-                Column {
-                    if (friendEntries.isNotEmpty()) {
-                        config.support.friendNames.SupportSelectPreference(
-                            title = stringResource(R.string.p_battle_config_support_friend_names),
-                            entries = friendEntries
-                        )
-                    } else {
-                        Preference(
-                            icon = icon(R.drawable.ic_info),
-                            title = stringResource(R.string.p_battle_config_support_friend_names),
-                            summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
-                        )
-                    }
-
-                    val friendNames by config.support.friendNames.remember()
-
-                    AnimatedVisibility(friendNames.isEmpty()) {
-                        PreferenceError(
-                            stringResource(R.string.support_selection_friend_not_set)
                         )
                     }
                 }
@@ -234,7 +213,8 @@ fun PreferredSummary(
     config: BattleConfigCore,
     maxSkillText: String,
     servants: Set<String>,
-    ces: Set<String>
+    ces: Set<String>,
+    friendNames: Set<String>
 ) {
     Column(
         modifier = Modifier
@@ -307,6 +287,26 @@ fun PreferredSummary(
                         modifier = Modifier.size(20.dp)
                     )
                 }
+            }
+        }
+
+        if (friendNames.isNotEmpty()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(vertical = 2.dp)
+            ) {
+                DimmedIcon(
+                    icon(R.drawable.ic_friend),
+                    contentDescription = "friend"
+                )
+
+                Text(
+                    friendNames.joinToString(),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 16.dp)
+                )
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.mathewsachin.libautomata
 
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
@@ -98,4 +100,17 @@ data class Region(val x: Int, val y: Int, val width: Int, val height: Int) : Com
 
     override fun compareTo(other: Region) =
         location.compareTo(other.location)
+
+    infix fun intersect(other: Region): Region? {
+        if (other.x > right || other.right < x || other.y > bottom || other.bottom < y) {
+            return null
+        }
+
+        return Region(
+            max(x, other.x),
+            max(y, other.y),
+            min(right, other.right),
+            min(bottom, other.bottom)
+        )
+    }
 }

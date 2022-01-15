@@ -1,13 +1,11 @@
 package com.mathewsachin.fategrandautomata.ui.pref_support
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,9 +17,13 @@ import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.SupportPrefsCore
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.OnResume
+import com.mathewsachin.fategrandautomata.ui.battle_config_item.PreferenceError
+import com.mathewsachin.fategrandautomata.ui.icon
+import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.ui.prefs.PreferenceGroupHeader
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
+import kotlinx.coroutines.launch
 
 @Composable
 fun PreferredSupportScreen(
@@ -35,8 +37,14 @@ fun PreferredSupportScreen(
 
     val context = LocalContext.current
 
+    val scope = rememberCoroutineScope()
+
     OnResume {
-        supportVm.refresh(context)
+        scope.launch {
+            if (supportVm.shouldExtractSupportImages) {
+                supportVm.performSupportImageExtraction(context)
+            } else supportVm.refresh(context)
+        }
     }
 }
 
@@ -125,6 +133,36 @@ private fun PreferredSupport(
                     if (prefCEs.isNotEmpty()) {
                         config.mlb.SwitchPreference(
                             title = stringResource(R.string.p_battle_config_support_mlb)
+                        )
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Column {
+                    if (vm.friends.isNotEmpty()) {
+                        config.friendNames.SupportSelectPreference(
+                            title = stringResource(R.string.p_battle_config_support_friend_names),
+                            entries = vm.friends
+                        )
+                    } else {
+                        Preference(
+                            icon = icon(R.drawable.ic_info),
+                            title = stringResource(R.string.p_battle_config_support_friend_names),
+                            summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
+                        )
+                    }
+
+                    val friendNames by config.friendNames.remember()
+
+                    AnimatedVisibility(friendNames.isEmpty()) {
+                        PreferenceError(
+                            stringResource(R.string.support_selection_friend_not_set)
                         )
                     }
                 }
