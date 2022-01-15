@@ -15,7 +15,6 @@ class SupportFriendChecker @Inject constructor(
 
         return sequenceOf(
             images[Images.Friend],
-            images[Images.Guest],
             images[Images.Follow]
         ).any { it in friendRegion }
     }
