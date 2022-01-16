@@ -1,17 +1,24 @@
 package com.mathewsachin.fategrandautomata.ui.more
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.Card
 import androidx.compose.material.Switch
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.root.SuperUser
+import com.mathewsachin.fategrandautomata.ui.Stepper
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.ListPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
@@ -69,17 +76,54 @@ fun LazyListScope.advancedGroup(
     }
 
     item {
-        prefs.gameAreaMode.ListPreference(
-            title = "Game Area Mode",
-            icon = icon(Icons.Default.Fullscreen),
-            entries = GameAreaMode.values().associateWith { it.name }
-        )
+        Column {
+            prefs.gameAreaMode.ListPreference(
+                title = "Game Area Mode",
+                icon = icon(Icons.Default.Fullscreen),
+                entries = GameAreaMode.values().associateWith { it.name }
+            )
+
+            val gameAreaMode by prefs.gameAreaMode.remember()
+
+            AnimatedVisibility (gameAreaMode == GameAreaMode.Custom) {
+                Card(
+                    modifier = Modifier.padding(5.dp),
+                    elevation = 5.dp
+                ) {
+                    Column(
+                        modifier = Modifier.scale(0.9f)
+                    ) {
+                        prefs.gameOffsetLeft.customOffset("Left")
+                        prefs.gameOffsetRight.customOffset("Right")
+                        prefs.gameOffsetTop.customOffset("Top")
+                        prefs.gameOffsetBottom.customOffset("Bottom")
+                    }
+                }
+            }
+        }
     }
 
     item {
         prefs.stageCounterNew.SwitchPreference(
             title = "Thresholded stage counter detection",
             icon = icon(R.drawable.ic_counter)
+        )
+    }
+}
+
+@Composable
+private fun Pref<Int>.customOffset(text: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        var value by remember()
+
+        Text(text)
+        Stepper(
+            value = value,
+            onValueChange = { value = it },
+            valueRange = 0..999
         )
     }
 }
