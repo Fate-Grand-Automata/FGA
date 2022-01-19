@@ -7,6 +7,7 @@ import com.mathewsachin.libautomata.Swiper
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 interface SupportScreen {
     fun scrollDown()
@@ -43,7 +44,7 @@ class RealSupportScreen @Inject constructor(
 
     override fun refresh() {
         locations.support.updateClick.click()
-        Duration.seconds(1).wait()
+        1.seconds.wait()
 
         locations.support.updateYesClick.click()
     }

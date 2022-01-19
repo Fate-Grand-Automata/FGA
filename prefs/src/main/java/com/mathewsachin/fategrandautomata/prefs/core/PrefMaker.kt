@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.SharedPreferences
-import com.tfcporciuncula.flow.FlowSharedPreferences
-import com.tfcporciuncula.flow.Serializer
+import com.fredporciuncula.flow.preferences.FlowSharedPreferences
+import com.fredporciuncula.flow.preferences.Serializer
 
 class PrefMaker(
     val prefs: SharedPreferences
@@ -18,7 +18,7 @@ class PrefMaker(
     fun string(key: String, default: String = ""): Pref<String> =
         PrefImpl(flowPrefs.getString(key, default))
 
-    fun <T: Any> serialized(key: String, serializer: Serializer<T>, default: T): Pref<T> =
+    fun <T : Any> serialized(key: String, serializer: Serializer<T>, default: T): Pref<T> =
         PrefImpl(flowPrefs.getObject(key, serializer, default))
 
     private fun stringAsIntSerializer(default: Int) =

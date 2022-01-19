@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class SkillSpam @Inject constructor(
@@ -16,7 +16,7 @@ class SkillSpam @Inject constructor(
     private val caster: Caster
 ) : IFgoAutomataApi by api {
     companion object {
-        val skillSpamDelay = Duration.seconds(0.25)
+        val skillSpamDelay = 0.25.seconds
     }
 
     fun spamSkills() {

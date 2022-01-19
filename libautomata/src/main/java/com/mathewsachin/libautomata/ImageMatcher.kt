@@ -2,6 +2,7 @@ package com.mathewsachin.libautomata
 
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.TimeSource
 
 interface ImageMatcher {
@@ -96,7 +97,7 @@ class RealImageMatcher @Inject constructor(
 
             /* Wait a bit before checking again.
                If invocationDuration is greater than the scanInterval, we don't wait. */
-            val scanInterval = Duration.milliseconds(330)
+            val scanInterval = 330.milliseconds
             val timeToWait = scanInterval - scanStart.elapsedNow()
 
             if (timeToWait.isPositive()) {

@@ -10,7 +10,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class Battle @Inject constructor(
@@ -58,7 +58,7 @@ class Battle @Inject constructor(
         locations.battle.attackClick.click()
 
         // Wait for Attack button to disappear
-        locations.battle.screenCheckRegion.waitVanish(images[Images.BattleScreen], Duration.seconds(5))
+        locations.battle.screenCheckRegion.waitVanish(images[Images.BattleScreen], 5.seconds)
 
         prefs.waitBeforeCards.wait()
 
@@ -80,7 +80,7 @@ class Battle @Inject constructor(
 
         card.clickCommandCards(cards, npUsage)
 
-        Duration.seconds(5).wait()
+        5.seconds.wait()
     }
 
     private fun shouldShuffle(cards: List<ParsedCard>, npUsage: NPUsage): Boolean {

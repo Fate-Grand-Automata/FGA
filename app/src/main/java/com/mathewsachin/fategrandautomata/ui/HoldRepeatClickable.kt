@@ -17,6 +17,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 fun Modifier.holdRepeatClickable(
     onRepeat: () -> Unit,
@@ -31,9 +32,9 @@ fun Modifier.holdRepeatClickable(
 
     val interactionSource = remember { MutableInteractionSource() }
 
-    val longPressTimeout = Duration.milliseconds(ViewConfiguration.getLongPressTimeout())
-    val repeatIntervalDelta = Duration.milliseconds(2)
-    val minRepeatInterval = Duration.milliseconds(10)
+    val longPressTimeout = ViewConfiguration.getLongPressTimeout().milliseconds
+    val repeatIntervalDelta = 2.milliseconds
+    val minRepeatInterval = 10.milliseconds
 
     val scope = rememberCoroutineScope()
 
@@ -47,7 +48,7 @@ fun Modifier.holdRepeatClickable(
 
                             try {
                                 delay(longPressTimeout)
-                                var repeatInterval = Duration.milliseconds(100)
+                                var repeatInterval = 100.milliseconds
 
                                 while (rememberedIsEnabled) {
                                     rememberedOnRepeat()
@@ -80,8 +81,7 @@ fun Modifier.holdRepeatClickable(
                         interactionSource.emit(endInteraction)
 
                         currentJob.cancelAndJoin()
-                    }
-                    finally {
+                    } finally {
                         rememberedOnEnd()
                     }
                 }

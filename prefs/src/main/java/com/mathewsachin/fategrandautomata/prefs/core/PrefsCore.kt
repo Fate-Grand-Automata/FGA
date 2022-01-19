@@ -1,9 +1,9 @@
 package com.mathewsachin.fategrandautomata.prefs.core
 
 import android.content.Context
+import com.fredporciuncula.flow.preferences.Serializer
 import com.mathewsachin.fategrandautomata.scripts.enums.ScriptModeEnum
 import com.mathewsachin.libautomata.Location
-import com.tfcporciuncula.flow.Serializer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -84,14 +84,13 @@ class PrefsCore @Inject constructor(
 
     val playBtnLocation = maker.serialized(
         "play_btn_location",
-        serializer = object: Serializer<Location> {
+        serializer = object : Serializer<Location> {
             override fun deserialize(serialized: String) =
                 try {
                     val split = serialized.split(',')
 
                     Location(split[0].toInt(), split[1].toInt())
-                }
-                catch (e: Exception) {
+                } catch (e: Exception) {
                     Location()
                 }
 

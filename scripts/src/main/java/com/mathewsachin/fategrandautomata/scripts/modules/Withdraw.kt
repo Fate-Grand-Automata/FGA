@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.entrypoints.AutoBattle
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class Withdraw @Inject constructor(
@@ -35,12 +35,12 @@ class Withdraw @Inject constructor(
 
         withdrawRegion.region.click()
 
-        Duration.seconds(0.5).wait()
+        0.5.seconds.wait()
 
         // Click the "Accept" button after choosing to withdraw
         locations.withdrawAcceptClick.click()
 
-        Duration.seconds(1).wait()
+        1.seconds.wait()
 
         // Click the "Close" button after accepting the withdrawal
         locations.withdrawCloseClick.click()

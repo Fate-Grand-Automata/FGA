@@ -16,6 +16,7 @@ import com.mathewsachin.libautomata.ScriptAbortException
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Checks if Support Selection menu is up
@@ -184,7 +185,7 @@ class AutoBattle @Inject constructor(
 
             actor?.invoke()
 
-            Duration.seconds(1).wait()
+            1.seconds.wait()
         }
     }
 
@@ -340,13 +341,13 @@ class AutoBattle @Inject constructor(
         support.selectSupport()
 
         if (!isContinuing) {
-            Duration.seconds(4).wait()
+            4.seconds.wait()
             startQuest()
 
             // Wait timer till battle starts.
             // Uses less battery to wait than to search for images for a few seconds.
             // Adjust according to device.
-            Duration.seconds(5).wait()
+            5.seconds.wait()
         }
     }
 
@@ -358,7 +359,7 @@ class AutoBattle @Inject constructor(
 
     private fun skipStory() {
         locations.menuStorySkipClick.click()
-        Duration.seconds(0.5).wait()
+        0.5.seconds.wait()
         locations.menuStorySkipYesClick.click()
     }
 
@@ -373,7 +374,7 @@ class AutoBattle @Inject constructor(
 
         locations.menuStartQuestClick.click()
 
-        Duration.seconds(2).wait()
+        2.seconds.wait()
 
         useBoostItem()
     }
@@ -390,7 +391,7 @@ class AutoBattle @Inject constructor(
         )
 
     private fun afterSelectingQuest() {
-        Duration.seconds(1.5).wait()
+        1.5.seconds.wait()
 
         if (isInventoryFull()) {
             throw BattleExitException(ExitReason.InventoryFull)

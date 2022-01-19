@@ -35,7 +35,7 @@ import timber.log.error
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 @ServiceScoped
 class ScriptManager @Inject constructor(
@@ -194,7 +194,7 @@ class ScriptManager @Inject constructor(
         }
 
         scriptState = ScriptState.Stopped
-        delay(Duration.milliseconds(250))
+        delay(250.milliseconds)
         uiStateHolder.isPlayButtonEnabled = true
     }
 

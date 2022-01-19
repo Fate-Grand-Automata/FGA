@@ -17,6 +17,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 @ServiceScoped
 class ScriptRunnerNotification @Inject constructor(
@@ -123,7 +124,7 @@ class ScriptRunnerNotification @Inject constructor(
         NotificationManagerCompat.from(service)
             .notify(Ids.messageNotification, notification)
 
-        vibrate(Duration.milliseconds(100))
+        vibrate(100.milliseconds)
     }
 
     private fun vibrate(Duration: Duration) {

@@ -36,7 +36,7 @@ fun SpamScreen(
         }
     }
 
-    val pagerState = rememberPagerState(pageCount = vm.spamStates.size)
+    val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
     LazyColumn {
@@ -89,7 +89,8 @@ fun SpamScreen(
         item {
             HorizontalPager(
                 state = pagerState,
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.Top,
+                count = vm.spamStates.size
             ) {
                 SpamView(
                     selectedConfig = vm.spamStates[it]
