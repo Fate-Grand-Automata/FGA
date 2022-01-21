@@ -103,7 +103,7 @@ class CutoutManager @Inject constructor(
     }
 
     fun getCutoutAppliedRegion(): Region {
-        var (w, h) = getScreenSize()
+        val (w, h) = getScreenSize()
 
         return when (prefsCore.gameAreaMode.get()) {
             GameAreaMode.Default -> {
@@ -111,10 +111,7 @@ class CutoutManager @Inject constructor(
                 val (l, t, r, b) = cutout
 
                 // remove notch from dimensions
-                w -= l + r
-                h -= t + b
-
-                Region(l, t, w, h)
+                Region(l, t, w - l - r, h - t - b)
             }
             GameAreaMode.Xperia -> {
                 val fgoRatio = 0.9
@@ -126,6 +123,14 @@ class CutoutManager @Inject constructor(
                 Region((w * leftRatio).roundToInt(), 0, (w * fgoRatio).roundToInt(), h)
             }
             GameAreaMode.Duo -> Region(192, 0, 2400, h)
+            GameAreaMode.Custom -> {
+                val l = prefsCore.gameOffsetLeft.get()
+                val t = prefsCore.gameOffsetTop.get()
+                val r = prefsCore.gameOffsetRight.get()
+                val b = prefsCore.gameOffsetBottom.get()
+
+                Region(l, t, w - l - r, h - t - b)
+            }
         }
     }
 }
