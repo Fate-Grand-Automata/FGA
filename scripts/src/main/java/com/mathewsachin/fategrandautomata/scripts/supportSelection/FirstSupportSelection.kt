@@ -4,14 +4,14 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class FirstSupportSelection @Inject constructor(
     api: IFgoAutomataApi
-): SupportSelectionProvider, IFgoAutomataApi by api {
+) : SupportSelectionProvider, IFgoAutomataApi by api {
     override fun select(): SupportSelectionResult {
-        Duration.seconds(0.5).wait()
+        0.5.seconds.wait()
 
         locations.support.firstSupportClick.click()
 
@@ -19,7 +19,7 @@ class FirstSupportSelection @Inject constructor(
         val supportPicked = locations.support.screenCheckRegion.waitVanish(
             images[Images.SupportScreen],
             similarity = 0.85,
-            timeout = Duration.seconds(10)
+            timeout = 10.seconds
         )
 
         return if (supportPicked)

@@ -7,7 +7,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.math.absoluteValue
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class PartySelection @Inject constructor(
@@ -50,14 +50,14 @@ class PartySelection @Inject constructor(
                 val tempParty = if (party == 0) 1 else 0
                 locations.partySelectionArray[tempParty].click()
 
-                Duration.seconds(1).wait()
+                1.seconds.wait()
             }
 
             // Switch to the configured party
             if (currentParty != party) {
                 locations.partySelectionArray[party].click()
 
-                Duration.seconds(1.2).wait()
+                1.2.seconds.wait()
             }
 
             /* If we select the party once, the same party will be used by the game for next fight.

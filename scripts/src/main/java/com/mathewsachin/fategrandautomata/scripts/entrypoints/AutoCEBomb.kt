@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * CE bomb maker script with caveats.
@@ -22,7 +22,7 @@ class AutoCEBomb @Inject constructor(
     api: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
-        object NoSuitableTargetCEFound: ExitReason()
+        object NoSuitableTargetCEFound : ExitReason()
     }
 
     private fun imagesForSelectedRarity() = when (prefs.ceBombTargetRarity) {
@@ -43,7 +43,7 @@ class AutoCEBomb @Inject constructor(
         else -> emptyList()
     }
 
-    class ExitException(val reason: ExitReason): Exception()
+    class ExitException(val reason: ExitReason) : Exception()
 
     private fun findBaseCE(): Match {
         for (img in imagesForSelectedRarity()) {
@@ -65,17 +65,17 @@ class AutoCEBomb @Inject constructor(
         locations.ceEnhanceClick.click()
 
         while (true) {
-            Duration.seconds(2).wait()
+            2.seconds.wait()
 
             val baseCERegion = findBaseCE().region
             val img = baseCERegion.getPattern()
 
             img.use {
                 baseCERegion.click()
-                Duration.seconds(2).wait()
+                2.seconds.wait()
 
                 Location(900, 500).click()
-                Duration.seconds(2).wait()
+                2.seconds.wait()
 
                 // Picking the matching CE later allows more CE to be picked
                 pickCEs()
@@ -83,11 +83,11 @@ class AutoCEBomb @Inject constructor(
 
                 repeat(2) {
                     Location(2300, 1300).click()
-                    Duration.seconds(1).wait()
+                    1.seconds.wait()
                 }
 
                 Location(1600, 1200).click()
-                Duration.seconds(1).wait()
+                1.seconds.wait()
 
                 Location(2000, 1000).click(70)
                 locations.ceEnhanceClick.click()
@@ -98,19 +98,19 @@ class AutoCEBomb @Inject constructor(
     private fun pickMatchingCE(img: Pattern) {
         // Scroll to top
         Location(2040, 400).click()
-        Duration.seconds(2).wait()
+        2.seconds.wait()
 
         val matchingCE = locations.levelOneCERegion.find(img)
             ?: throw ExitException(ExitReason.NoSuitableTargetCEFound)
 
         matchingCE.region.click()
-        Duration.seconds(1).wait()
+        1.seconds.wait()
     }
 
     private fun pickCEs() {
         // Scroll to bottom
         Location(2040, 1400).click()
-        Duration.seconds(1).wait()
+        1.seconds.wait()
 
         for (y in 0..3) {
             for (x in 0..6) {

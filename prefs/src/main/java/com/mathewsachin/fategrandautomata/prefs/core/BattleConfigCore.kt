@@ -3,6 +3,7 @@ package com.mathewsachin.fategrandautomata.prefs.core
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.fredporciuncula.flow.preferences.Serializer
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.mathewsachin.fategrandautomata.prefs.import
@@ -13,7 +14,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.ServantPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.ServantSpamConfig
-import com.tfcporciuncula.flow.Serializer
 
 class BattleConfigCore(
     val id: String,
@@ -39,7 +39,7 @@ class BattleConfigCore(
 
     val cardPriority = maker.serialized(
         "card_priority",
-        serializer = object: Serializer<CardPriorityPerWave> {
+        serializer = object : Serializer<CardPriorityPerWave> {
             override fun deserialize(serialized: String) =
                 CardPriorityPerWave.of(serialized)
 
@@ -51,7 +51,7 @@ class BattleConfigCore(
 
     val rearrangeCards = maker.serialized(
         "auto_skill_rearrange_cards",
-        serializer = object: Serializer<List<Boolean>> {
+        serializer = object : Serializer<List<Boolean>> {
             private val separator = ","
             private val Yes = "T"
             private val No = "F"
@@ -70,7 +70,7 @@ class BattleConfigCore(
 
     var braveChains = maker.serialized(
         "auto_skill_brave_chains",
-        serializer = object: Serializer<List<BraveChainEnum>> {
+        serializer = object : Serializer<List<BraveChainEnum>> {
             private val separator = ","
 
             override fun deserialize(serialized: String) =
@@ -97,7 +97,7 @@ class BattleConfigCore(
     val useServantPriority = maker.bool("use_servant_priority")
     val servantPriority = maker.serialized(
         "servant_priority",
-        serializer = object: Serializer<ServantPriorityPerWave> {
+        serializer = object : Serializer<ServantPriorityPerWave> {
             override fun deserialize(serialized: String): ServantPriorityPerWave =
                 try {
                     ServantPriorityPerWave.of(serialized)
@@ -116,14 +116,13 @@ class BattleConfigCore(
 
     val spam = maker.serialized(
         "spam_x",
-        serializer = object: Serializer<List<ServantSpamConfig>> {
+        serializer = object : Serializer<List<ServantSpamConfig>> {
             override fun deserialize(serialized: String) =
                 try {
                     gson
                         .fromJson(serialized, Array<ServantSpamConfig>::class.java)
                         ?.toList() ?: defaultSpamConfig
-                }
-                catch (e: JsonSyntaxException) {
+                } catch (e: JsonSyntaxException) {
                     defaultSpamConfig
                 }
 
@@ -155,8 +154,8 @@ class BattleConfigCore(
     )
 
     sealed class Server {
-        class Set(val server: GameServerEnum): Server()
-        object NotSet: Server()
+        class Set(val server: GameServerEnum) : Server()
+        object NotSet : Server()
 
         fun asGameServer() = when (this) {
             NotSet -> null
@@ -166,7 +165,7 @@ class BattleConfigCore(
 
     val server = maker.serialized(
         "battle_config_server",
-        serializer = object: Serializer<Server> {
+        serializer = object : Serializer<Server> {
             override fun deserialize(serialized: String) =
                 try {
                     Server.Set(enumValueOf(serialized))

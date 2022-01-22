@@ -7,7 +7,7 @@ import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Continually opens lottery boxes until either the present box is full or there is no currency left.
@@ -20,11 +20,11 @@ class AutoLottery @Inject constructor(
     private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
-        object ResetDisabled: ExitReason()
-        object PresentBoxFull: ExitReason()
+        object ResetDisabled : ExitReason()
+        object PresentBoxFull : ExitReason()
     }
 
-    class ExitException(val reason: ExitReason): Exception()
+    class ExitException(val reason: ExitReason) : Exception()
 
     private fun spin() {
         // Don't increase this too much or you'll regret when you're not able to stop the script
@@ -38,13 +38,13 @@ class AutoLottery @Inject constructor(
         }
 
         locations.lottery.resetClick.click()
-        Duration.seconds(0.5).wait()
+        0.5.seconds.wait()
 
         locations.lottery.resetConfirmationClick.click()
-        Duration.seconds(3).wait()
+        3.seconds.wait()
 
         locations.lottery.resetCloseClick.click()
-        Duration.seconds(2).wait()
+        2.seconds.wait()
     }
 
     private fun presentBoxFull() {
@@ -54,7 +54,7 @@ class AutoLottery @Inject constructor(
 
             moveToPresentBox?.region?.click()
 
-            Duration.seconds(1).wait()
+            1.seconds.wait()
             giftBox.script()
         }
 

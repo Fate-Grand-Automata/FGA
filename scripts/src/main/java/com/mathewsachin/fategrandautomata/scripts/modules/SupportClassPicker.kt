@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.canAlsoCheckAll
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class SupportClassPicker @Inject constructor(
@@ -18,7 +18,7 @@ class SupportClassPicker @Inject constructor(
 
         screen.click(supportClass)
 
-        screen.delay(Duration.seconds(0.5))
+        screen.delay(0.5.seconds)
     }
 
     fun shouldAlsoCheckAll() =

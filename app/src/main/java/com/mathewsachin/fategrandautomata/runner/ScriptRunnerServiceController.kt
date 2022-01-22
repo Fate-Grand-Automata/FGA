@@ -22,7 +22,7 @@ import timber.log.Timber
 import timber.log.info
 import timber.log.verbose
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ServiceScoped
 class ScriptRunnerServiceController @Inject constructor(
@@ -97,7 +97,7 @@ class ScriptRunnerServiceController @Inject constructor(
             // Pause if script is running
             scope.launch {
                 // This delay is to avoid race-condition with screen turn OFF listener
-                delay(Duration.seconds(1))
+                delay(1.seconds)
 
                 scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
                     if (success) {

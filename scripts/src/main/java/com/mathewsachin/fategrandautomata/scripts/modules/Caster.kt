@@ -8,6 +8,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class Caster @Inject constructor(
@@ -25,11 +26,11 @@ class Caster @Inject constructor(
         return weCanSpam || weAreInDanger
     }
 
-    private fun waitForAnimationToFinish(timeout: Duration = Duration.seconds(5)) {
+    private fun waitForAnimationToFinish(timeout: Duration = 5.seconds) {
         val img = images[Images.BattleScreen]
 
         // slow devices need this. do not remove.
-        locations.battle.screenCheckRegion.waitVanish(img, Duration.seconds(2))
+        locations.battle.screenCheckRegion.waitVanish(img, 2.seconds)
 
         locations.battle.screenCheckRegion.exists(img, timeout)
     }
@@ -94,7 +95,7 @@ class Caster @Inject constructor(
 
         locations.battle.locate(actualTarget).click()
 
-        Duration.seconds(0.5).wait()
+        0.5.seconds.wait()
 
         // Exit any extra menu
         locations.battle.extraInfoWindowCloseClick.click()
@@ -103,7 +104,7 @@ class Caster @Inject constructor(
     private fun openMasterSkillMenu() {
         locations.battle.master.masterSkillOpenClick.click()
 
-        Duration.seconds(0.5).wait()
+        0.5.seconds.wait()
     }
 
     fun castMasterSkill(skill: Skill.Master, target: ServantTarget? = null) {
@@ -120,22 +121,22 @@ class Caster @Inject constructor(
 
         confirmSkillUse()
 
-        Duration.seconds(0.3).wait()
+        0.3.seconds.wait()
 
         locations.battle.locate(action.starting).click()
         locations.battle.locate(action.sub).click()
 
-        Duration.seconds(0.3).wait()
+        0.3.seconds.wait()
 
         locations.battle.orderChangeOkClick.click()
 
         // Extra wait to allow order change dialog to close
-        Duration.seconds(1).wait()
+        1.seconds.wait()
 
-        waitForAnimationToFinish(Duration.seconds(15))
+        waitForAnimationToFinish(15.seconds)
 
         // Extra wait for the lag introduced by Order change
-        Duration.seconds(1).wait()
+        1.seconds.wait()
 
         servantTracker.orderChanged(action.starting, action.sub)
     }
@@ -143,7 +144,7 @@ class Caster @Inject constructor(
     fun selectEnemyTarget(enemy: EnemyTarget) {
         locations.battle.locate(enemy).click()
 
-        Duration.seconds(0.5).wait()
+        0.5.seconds.wait()
 
         // Exit any extra menu
         locations.battle.extraInfoWindowCloseClick.click()

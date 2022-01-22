@@ -7,7 +7,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 @ScriptScope
 class ServantTracker @Inject constructor(
@@ -100,7 +100,7 @@ class ServantTracker @Inject constructor(
         locations.battle.servantOpenDetailsClick(slot).click()
         locations.battle.servantDetailsInfoClick.click()
 
-        Duration.milliseconds(250).wait()
+        250.milliseconds.wait()
 
         val image = locations.battle.servantDetailsFaceCardRegion.getPattern().tag("Face $teamSlot")
 
@@ -109,7 +109,7 @@ class ServantTracker @Inject constructor(
 
         faceCardImages[teamSlot] = image
 
-        Duration.milliseconds(250).wait()
+        250.milliseconds.wait()
     }
 
     private fun check(slot: FieldSlot) {

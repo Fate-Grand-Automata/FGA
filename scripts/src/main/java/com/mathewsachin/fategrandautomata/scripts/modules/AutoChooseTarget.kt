@@ -6,7 +6,7 @@ import com.mathewsachin.fategrandautomata.scripts.models.EnemyTarget
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class AutoChooseTarget @Inject constructor(
@@ -25,7 +25,7 @@ class AutoChooseTarget @Inject constructor(
     private fun chooseTarget(enemy: EnemyTarget) {
         locations.battle.locate(enemy).click()
 
-        Duration.seconds(0.5).wait()
+        0.5.seconds.wait()
 
         locations.battle.extraInfoWindowCloseClick.click()
     }

@@ -5,7 +5,7 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferencesCommo
 import com.mathewsachin.fategrandautomata.scripts.supportSelection.SupportSelectionProvider
 import com.mathewsachin.fategrandautomata.scripts.supportSelection.SupportSelectionResult
 import javax.inject.Inject
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 class SupportSelectionLoop @Inject constructor(
     private val screen: SupportScreen,
@@ -32,7 +32,7 @@ class SupportSelectionLoop @Inject constructor(
                     screen.scrollDown()
 
                     ++numberOfSwipes
-                    screen.delay(Duration.seconds(0.3))
+                    screen.delay(0.3.seconds)
                 }
                 // Switch to All if user asked to
                 alsoCheckAll && !onAllList -> {
