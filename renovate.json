@@ -10,6 +10,8 @@
   "github-actions": {
     "extends": ["group:all"],
     "enabled": true,
-    "automerge": true
+    "automerge": true,
+    "branchTopic": "github-actions",
+    "commitMessageTopic": "github-actions"
   }
 }
