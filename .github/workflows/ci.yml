@@ -87,6 +87,11 @@ jobs:
         with:
           name: apk
 
+      - name: List files
+        run: |
+          ls .
+          ls ./apk
+
       - name: Upload APK to GitHub Releases
         uses: actions/upload-release-asset@v1
         env:
