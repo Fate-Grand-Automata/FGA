@@ -3,7 +3,10 @@ name: CI
 on:
   pull_request:
     paths-ignore:
-      - '.**'
+      - '.idea'
+      - '.github/ISSUE_TEMPLATE'
+      - '.gitattributes'
+      - '.gitignore'
       - 'README.md'
       - 'LICENSE'
   push:
@@ -12,7 +15,10 @@ on:
     tags:
       - 'v*'
     paths-ignore:
-      - '.**'
+      - '.idea'
+      - '.github'
+      - '.gitattributes'
+      - '.gitignore'
       - 'README'
       - 'LICENSE'
       - 'renovate.json'
