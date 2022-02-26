@@ -4,11 +4,11 @@
   ],
   "timezone": "Europe/Berlin",
   "gradle": {
-    "extends": ["schedule:monthly"]
+    "extends": ["schedule:monthly"],
     "enabled": true
   }
   "github-actions": {
-    "extends": ["group:all"]
+    "extends": ["group:all"],
     "enabled": true,
     "automerge": true,
     "automergeType": "branch"
