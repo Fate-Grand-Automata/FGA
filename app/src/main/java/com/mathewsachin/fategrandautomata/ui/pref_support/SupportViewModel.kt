@@ -16,14 +16,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import timber.log.error
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class SupportViewModel @Inject constructor(
     val storageProvider: StorageProvider
-): ViewModel() {
+) : ViewModel() {
     var servants: Map<String, String> by mutableStateOf(emptyMap())
     var ces: Map<String, String> by mutableStateOf(emptyMap())
     var friends: Map<String, String> by mutableStateOf(emptyMap())
@@ -40,7 +39,7 @@ class SupportViewModel @Inject constructor(
         val msg = "Couldn't access Support images ($kind)"
 
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-        Timber.error(e) { msg }
+        Timber.e(e, msg)
 
         emptyList()
     }
@@ -67,8 +66,9 @@ class SupportViewModel @Inject constructor(
         refresh(context)
     }
 
-    val shouldExtractSupportImages get() =
-        storageProvider.shouldExtractSupportImages
+    val shouldExtractSupportImages
+        get() =
+            storageProvider.shouldExtractSupportImages
 
     suspend fun performSupportImageExtraction(context: Context) {
         val msg = try {
@@ -77,7 +77,7 @@ class SupportViewModel @Inject constructor(
             context.getString(R.string.support_imgs_extracted)
         } catch (e: Exception) {
             context.getString(R.string.support_imgs_extract_failed).also { msg ->
-                Timber.error(e) { msg }
+                Timber.e(e, msg)
             }
         }
 

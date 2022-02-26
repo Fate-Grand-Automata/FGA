@@ -10,8 +10,6 @@ import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 import timber.log.Timber
-import timber.log.debug
-import timber.log.error
 import java.io.DataInputStream
 
 class RootScreenshotService(
@@ -41,10 +39,10 @@ class RootScreenshotService(
         if (buffer == null) {
             // If format is not RGBA
             if (format != 1) {
-                Timber.error { "Unexpected raw image format: $format" }
+                Timber.e("Unexpected raw image format: $format")
             }
 
-            Timber.debug { "${w}x${h} format=$format" }
+            Timber.d("${w}x${h} format=$format")
 
             buffer = ByteArray(w * h * 4)
             bufferMat = Mat(h, w, CvType.CV_8UC4)
@@ -63,8 +61,7 @@ class RootScreenshotService(
             Imgproc.cvtColor(bufferMat, colorMat, Imgproc.COLOR_RGBA2BGR)
 
             colorPattern
-        }
-        else {
+        } else {
             Imgproc.cvtColor(bufferMat, grayscaleMat, Imgproc.COLOR_RGBA2GRAY)
 
             grayscalePattern
@@ -79,7 +76,7 @@ class RootScreenshotService(
         try {
             superUser.close()
         } catch (e: Exception) {
-            Timber.error(e) { "Error closing super user" }
+            Timber.e(e, "Error closing super user")
         }
 
         grayscalePattern.close()

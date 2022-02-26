@@ -15,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
-import timber.log.error
 import java.io.OutputStream
 import java.util.*
 import javax.inject.Inject
@@ -38,8 +37,7 @@ class BattleConfigScreenViewModel @Inject constructor(
             .map {
                 try {
                     SkillMakerModel(it)
-                }
-                catch (e: Exception) {
+                } catch (e: Exception) {
                     SkillMakerModel("")
                 }
                     .skillCommand
@@ -73,7 +71,7 @@ class BattleConfigScreenViewModel @Inject constructor(
                     export(outStream)
                 }
             } catch (e: Exception) {
-                Timber.error(e) { "Failed to export" }
+                Timber.e(e, "Failed to export")
 
                 val msg = context.getString(R.string.battle_config_item_export_failed)
                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()

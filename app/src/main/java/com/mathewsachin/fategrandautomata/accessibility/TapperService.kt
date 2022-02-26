@@ -8,10 +8,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import timber.log.Timber
-import timber.log.debug
-import timber.log.info
 
-class TapperService: AccessibilityService() {
+class TapperService : AccessibilityService() {
     companion object {
         private val mServiceStarted = mutableStateOf(false)
         val serviceStarted: State<Boolean> = mServiceStarted
@@ -24,7 +22,7 @@ class TapperService: AccessibilityService() {
     }
 
     override fun onServiceConnected() {
-        Timber.info { "Accessibility Service bound to system" }
+        Timber.i("Accessibility Service bound to system")
         Toast.makeText(this, "FGA Accessibility started", Toast.LENGTH_SHORT).show()
 
         // We only want events from FGO
@@ -41,7 +39,7 @@ class TapperService: AccessibilityService() {
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        Timber.info { "Accessibility Service unbind" }
+        Timber.i("Accessibility Service unbind")
         Toast.makeText(this, "FGA Accessibility stopped", Toast.LENGTH_SHORT).show()
         instance = null
 
@@ -64,11 +62,12 @@ class TapperService: AccessibilityService() {
                     ?: return
 
                 GameServerEnum.fromPackageName(foregroundAppName)?.let { server ->
-                    Timber.debug { "Detected FGO: $server" }
+                    Timber.d("Detected FGO: $server")
 
                     detectedFgoServer = server
                 }
             }
+            else -> {}
         }
     }
 

@@ -12,7 +12,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.libautomata.Pattern
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
-import timber.log.error
 import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
@@ -62,7 +61,7 @@ class StorageProvider @Inject constructor(
                 try {
                     resolver.releasePersistableUriPermission(Uri.parse(prevDir), persistablePermission)
                 } catch (e: Exception) {
-                    Timber.error(e) { "Error on releasing persistable URI" }
+                    Timber.e(e, "Error on releasing persistable URI")
                 }
             }
         }

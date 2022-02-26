@@ -13,14 +13,13 @@ import com.mathewsachin.fategrandautomata.util.SupportImageExtractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import timber.log.error
 import javax.inject.Inject
 
 @HiltViewModel
 class MoreOptionsViewModel @Inject constructor(
     val storageProvider: StorageProvider,
     val prefsCore: PrefsCore
-): ViewModel() {
+) : ViewModel() {
     val storageSummary: MutableState<String?> = mutableStateOf(null)
     val extractSummary: MutableState<String> = mutableStateOf("")
 
@@ -38,7 +37,7 @@ class MoreOptionsViewModel @Inject constructor(
             context.getString(R.string.support_imgs_extracted)
         } catch (e: Exception) {
             context.getString(R.string.support_imgs_extract_failed).also { msg ->
-                Timber.error(e) { msg }
+                Timber.e(e, msg)
             }
         }
 

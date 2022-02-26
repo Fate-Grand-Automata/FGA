@@ -1,16 +1,14 @@
 package com.mathewsachin.fategrandautomata.imaging
 
 import android.graphics.Bitmap
-import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Match
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
 import org.opencv.core.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
 import timber.log.Timber
-import timber.log.debug
-import timber.log.verbose
 import java.io.InputStream
 import java.io.OutputStream
 import kotlin.math.roundToInt
@@ -82,7 +80,7 @@ class DroidCvPattern(
                     Imgproc.TM_CCOEFF_NORMED
                 )
             } else {
-                Timber.verbose { "Skipped matching $template: Region out of bounds" }
+                Timber.v("Skipped matching $template: Region out of bounds")
             }
         }
 
@@ -108,7 +106,7 @@ class DroidCvPattern(
 
                     val match = Match(region, score)
 
-                    Timber.debug { "Matched $template with a score of ${match.score}" }
+                    Timber.d("Matched $template with a score of ${match.score}")
                     yield(match)
 
                     Mat().use { mask ->
@@ -122,7 +120,7 @@ class DroidCvPattern(
                         )
                     }
                 } else {
-                    Timber.verbose { "Stopped matching $template at score ($score) < similarity ($similarity)" }
+                    Timber.v("Stopped matching $template at score ($score) < similarity ($similarity)")
                     break
                 }
             }

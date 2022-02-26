@@ -7,13 +7,12 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.runner.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
+import com.mathewsachin.fategrandautomata.runner.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.util.StorageProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
-import timber.log.info
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
@@ -69,7 +68,7 @@ class MainScreenViewModel @Inject constructor(
 
     fun onStartMediaProjectionResult(context: Context, intent: Intent?) {
         if (intent == null) {
-            Timber.info { "MediaProjection cancelled by user" }
+            Timber.i("MediaProjection cancelled by user")
             ScriptRunnerService.stopService(context)
         } else {
             ScriptRunnerService.mediaProjectionToken = intent

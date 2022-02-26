@@ -11,7 +11,6 @@ import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
 import timber.log.Timber
-import timber.log.debug
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.roundToInt
@@ -70,7 +69,7 @@ class CutoutManager @Inject constructor(
         }
 
         cutoutFound = true
-        Timber.debug { "Detected display cutout: $cutoutValue" }
+        Timber.d("Detected display cutout: $cutoutValue")
     }
 
     private fun shouldIgnoreNotch() =

@@ -16,7 +16,6 @@ import com.mathewsachin.fategrandautomata.util.makeLandscape
 import com.mathewsachin.libautomata.*
 import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
-import timber.log.error
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -77,7 +76,7 @@ class ScreenshotServiceHolder @Inject constructor(
                 } else rootSS
             }
         } catch (e: Exception) {
-            Timber.error(e) { "Error preparing screenshot service" }
+            Timber.e(e, "Error preparing screenshot service")
             null
         }
     }

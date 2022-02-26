@@ -19,8 +19,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import timber.log.info
-import timber.log.verbose
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -43,7 +41,7 @@ class ScriptRunnerServiceController @Inject constructor(
     private val screenOffReceiver = ScreenOffReceiver()
 
     fun onDestroy() {
-        Timber.info { "Script runner service destroyed" }
+        Timber.i("Script runner service destroyed")
 
         scriptManager.stopScript()
         screenshotServiceHolder.close()
@@ -57,11 +55,11 @@ class ScriptRunnerServiceController @Inject constructor(
     }
 
     fun onCreate() {
-        Timber.info { "Script runner service created" }
+        Timber.i("Script runner service created")
         notification.show()
 
         screenOffReceiver.register(service) {
-            Timber.verbose { "SCREEN OFF" }
+            Timber.v("SCREEN OFF")
 
             scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
                 if (success) {
@@ -112,7 +110,7 @@ class ScriptRunnerServiceController @Inject constructor(
     private fun shouldDisplayPlayButton(): Boolean {
         val isLandscape = displayHelper.metrics.let { it.widthPixels >= it.heightPixels }
 
-        Timber.verbose { if (isLandscape) "LANDSCAPE" else "PORTRAIT" }
+        Timber.v(if (isLandscape) "LANDSCAPE" else "PORTRAIT")
 
         // Hide overlay in Portrait orientation (unless Surface Duo)
         return isLandscape || prefsCore.gameAreaMode.get() == GameAreaMode.Duo

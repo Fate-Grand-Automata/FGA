@@ -30,8 +30,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.*
 import timber.log.Timber
-import timber.log.debug
-import timber.log.error
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -111,7 +109,7 @@ class ScriptManager @Inject constructor(
                     } catch (e: Exception) {
                         val msg = "Failed to stop recording"
                         Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
-                        Timber.error(e) { msg }
+                        Timber.e(e, msg)
                     }
 
                     uiStateHolder.isRecording = false
@@ -242,14 +240,14 @@ class ScriptManager @Inject constructor(
         preferences.gameServer =
             if (server == PrefsCore.GameServerAutoDetect)
                 (TapperService.instance?.detectedFgoServer ?: GameServerEnum.En).also {
-                    Timber.debug { "Using auto-detected Game Server: $it" }
+                    Timber.d("Using auto-detected Game Server: $it")
                 }
             else try {
                 enumValueOf<GameServerEnum>(server).also {
-                    Timber.debug { "Using Game Server: $it" }
+                    Timber.d("Using Game Server: $it")
                 }
             } catch (e: Exception) {
-                Timber.error(e) { "Game Server: Falling back to NA" }
+                Timber.e(e, "Game Server: Falling back to NA")
 
                 GameServerEnum.En
             }
@@ -314,7 +312,7 @@ class ScriptManager @Inject constructor(
             } else null
         } catch (e: Exception) {
             val msg = context.getString(R.string.cannot_start_recording)
-            Timber.error(e) { msg }
+            Timber.e(e, msg)
             Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
 
             null

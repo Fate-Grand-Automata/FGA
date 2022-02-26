@@ -13,7 +13,6 @@ import com.mathewsachin.fategrandautomata.scripts.ScriptNotify
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import dagger.hilt.android.scopes.ServiceScoped
 import timber.log.Timber
-import timber.log.debug
 import javax.inject.Inject
 import kotlin.time.DurationUnit
 
@@ -44,13 +43,13 @@ class ScriptMessages @Inject constructor(
     override fun log(item: ScriptLog) =
         when (item) {
             ScriptLog.DefaultSupportBounds -> {
-                Timber.debug { "Default Region being returned" }
+                Timber.d("Default Region being returned")
             }
             is ScriptLog.CurrentParty -> {
-                Timber.debug { "Current Party: ${item.party}" }
+                Timber.d("Current Party: ${item.party}")
             }
             is ScriptLog.MaxSkills -> {
-                Timber.debug {
+                Timber.d(
                     // Detected skill levels as string for debugging
                     item.isSkillMaxed
                         .zip(item.needMaxedSkills)
@@ -61,35 +60,32 @@ class ScriptMessages @Inject constructor(
                                 else -> "f"
                             }
                         }
-                }
+                )
             }
             ScriptLog.DefaultMasterOffset -> {
-                Timber.debug { "Defaulting master offset" }
+                Timber.d("Defaulting master offset")
             }
             is ScriptLog.ClickingNPs -> {
-                Timber.debug { "Clicking NP(s): ${item.nps}" }
+                Timber.d("Clicking NP(s): ${item.nps}")
             }
             is ScriptLog.ClickingCards -> {
-                Timber.debug { "Clicking cards: ${item.cards}" }
+                Timber.d("Clicking cards: ${item.cards}")
             }
             is ScriptLog.NPsGroupedByFaceCards -> {
-                Timber.debug { "NPs grouped with Face-cards: ${item.groups}" }
+                Timber.d("NPs grouped with Face-cards: ${item.groups}")
             }
             is ScriptLog.SupportFaceCardGroup -> {
-                Timber.debug { "Support group: ${item.group}" }
+                Timber.d("Support group: ${item.group}")
             }
             is ScriptLog.FaceCardGroups -> {
-                Timber.debug { "Face-card groups: ${item.groups}" }
+                Timber.d("Face-card groups: ${item.groups}")
             }
             is ScriptLog.ServantEnteredSlot -> {
-                Timber.debug { "Servant: ${item.servant} in Slot: ${item.slot}" }
+                Timber.d("Servant: ${item.servant} in Slot: ${item.slot}")
             }
             is ScriptLog.CardsBelongToServant -> {
-                Timber.debug {
-                    val supportText = if (item.isSupport) "Support " else ""
-
-                    "${item.cards} belong to ${supportText}${item.servant}"
-                }
+                val supportText = if (item.isSupport) "Support " else ""
+                Timber.d("${item.cards} belong to ${supportText}${item.servant}")
             }
         }
 
@@ -102,7 +98,7 @@ class ScriptMessages @Inject constructor(
 
                 toast(msg)
 
-                Timber.debug { msg }
+                Timber.d(msg)
             }
             is ScriptNotify.SupportListUpdatingIn -> {
                 toast(

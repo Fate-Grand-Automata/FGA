@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import timber.log.error
 import java.util.*
 import javax.inject.Inject
 
@@ -64,8 +63,7 @@ class BattleConfigListViewModel @Inject constructor(
     private fun configsToExport() =
         if (selectionMode.value) {
             selectedConfigs.value.map { prefs.forBattleConfig(it) }
-        }
-        else prefs.battleConfigs
+        } else prefs.battleConfigs
 
     fun newConfig(): IBattleConfig {
         val guid = UUID.randomUUID().toString()
@@ -98,7 +96,7 @@ class BattleConfigListViewModel @Inject constructor(
                             }
                         }
                 } catch (e: Exception) {
-                    Timber.error(e) { "Failed to export" }
+                    Timber.e(e, "Failed to export")
                     ++failed
                 }
             }
@@ -143,7 +141,7 @@ class BattleConfigListViewModel @Inject constructor(
                     }
                 } catch (e: Exception) {
                     ++failed
-                    Timber.error(e) { "Import Failed" }
+                    Timber.e(e, "Import Failed")
                 }
             }
         }

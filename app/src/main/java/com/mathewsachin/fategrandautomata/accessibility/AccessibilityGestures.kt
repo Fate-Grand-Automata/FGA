@@ -12,7 +12,6 @@ import com.mathewsachin.libautomata.Waiter
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
-import timber.log.debug
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.math.*
@@ -120,7 +119,7 @@ class AccessibilityGestures @Inject constructor(
     }
 
     override fun swipe(start: Location, end: Location) = runBlocking {
-        Timber.debug { "swipe $start, $end" }
+        Timber.d("swipe $start, $end")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             swipe8(start, end)
@@ -136,7 +135,7 @@ class AccessibilityGestures @Inject constructor(
             gesturePrefs.clickDuration.inWholeMilliseconds
         )
 
-        Timber.debug { "click $location x$times" }
+        Timber.d("click $location x$times")
 
         repeat(times) {
             performGesture(stroke)
