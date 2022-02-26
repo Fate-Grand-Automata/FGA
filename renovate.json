@@ -10,7 +10,6 @@
   "github-actions": {
     "extends": ["group:all"],
     "enabled": true,
-    "automerge": true,
-    "automergeType": "branch"
+    "automerge": true
   }
 }
