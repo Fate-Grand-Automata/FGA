@@ -3,7 +3,14 @@
     "config:base"
   ],
   "timezone": "Europe/Berlin",
-  "schedule": [
-    "monthly"
-  ]
+  "gradle": {
+    "extends": ["schedule:monthly"]
+    "enabled": true
+  }
+  "github-actions": {
+    "extends": ["group:all"]
+    "enabled": true,
+    "automerge": true,
+    "automergeType": "branch"
+  }
 }
