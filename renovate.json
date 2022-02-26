@@ -6,7 +6,7 @@
   "gradle": {
     "extends": ["schedule:monthly"],
     "enabled": true
-  }
+  },
   "github-actions": {
     "extends": ["group:all"],
     "enabled": true,
