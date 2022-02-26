@@ -88,18 +88,13 @@ jobs:
         with:
           name: apk
 
-      - name: List files
-        run: |
-          ls .
-          ls ./apk
-
       - name: Upload APK to GitHub Releases
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./apk/app-ci.apk
+          asset_path: ./app-ci.apk
           asset_name: com.mathewsachin.fategrandautomata.apk
           asset_content_type: application/vnd.android.package-archive
 
