@@ -84,7 +84,7 @@ jobs:
           release_name: 'FGA canary-${{ github.run_number }}'
           prerelease: true
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: apk
 
