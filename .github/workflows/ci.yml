@@ -51,13 +51,13 @@ jobs:
         run: ./gradlew assembleCi --scan --parallel
 
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apk
           path: app/build/outputs/apk/ci/app-ci.apk
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: mapping
           path: app/build/outputs/mapping/ci/mapping.txt
