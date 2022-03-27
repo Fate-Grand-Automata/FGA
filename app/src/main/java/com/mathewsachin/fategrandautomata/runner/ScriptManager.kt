@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.runner
 
-import android.app.Activity
 import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
@@ -110,7 +109,7 @@ class ScriptManager @Inject constructor(
                     } catch (e: Exception) {
                         val msg = "Failed to stop recording"
                         Timber.e(e, msg)
-                        (context as Activity).runOnUiThread {
+                        withContext(Dispatchers.Main) {
                             Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -316,7 +315,7 @@ class ScriptManager @Inject constructor(
         } catch (e: Exception) {
             val msg = context.getString(R.string.cannot_start_recording)
             Timber.e(e, msg)
-            (context as Activity).runOnUiThread {
+            withContext(Dispatchers.Main) {
                 Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
             }
 
