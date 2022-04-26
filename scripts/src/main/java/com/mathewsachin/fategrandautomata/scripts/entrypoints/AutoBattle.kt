@@ -170,7 +170,8 @@ class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to { locations.battle.skipDeathAnimationClick.click() }
+            { isDeathAnimation() } to { locations.battle.skipDeathAnimationClick.click() },
+            { isGudaFinal() } to { gudaFinal() }
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -362,6 +363,11 @@ class AutoBattle @Inject constructor(
         0.5.seconds.wait()
         locations.menuStorySkipYesClick.click()
     }
+
+    private fun isGudaFinal() = prefs.gameServer == GameServerEnum.En &&
+            images[Images.GudaFinalReward] in locations.gudaFinalRegion
+
+    private fun gudaFinal() = locations.gudaFinalRegion.click()
 
     /**
      * Starts the quest after the support has already been selected. The following features are done optionally:
