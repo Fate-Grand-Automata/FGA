@@ -16,7 +16,7 @@ class Locations @Inject constructor(
     val support: SupportScreenLocations,
     val attack: AttackScreenLocations,
     val battle: BattleScreenLocations
-): IScriptAreaTransforms by scriptAreaTransforms {
+) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
@@ -101,4 +101,6 @@ class Locations @Inject constructor(
     val ceEnhanceRegion = Region(200, 600, 400, 400)
     val ceEnhanceClick = Location(200, 600)
     val levelOneCERegion = Region(160, 380, 1840, 900)
+
+    val gudaFinalRegion = Region(-120, 1030, 240, 90).xFromCenter()
 }
