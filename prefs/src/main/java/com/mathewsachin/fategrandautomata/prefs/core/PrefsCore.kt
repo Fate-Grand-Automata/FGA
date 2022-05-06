@@ -46,6 +46,7 @@ class PrefsCore @Inject constructor(
     val useRootForScreenshots = maker.bool("use_root_screenshot")
     val recordScreen = maker.bool("record_screen")
     val screenshotDrops = maker.bool("screenshot_drops")
+    val screenshotDropsUnmodified = maker.bool("screenshot_drops_unmodified")
     val debugMode = maker.bool("debug_mode")
     val autoStartService = maker.bool("auto_start_service")
 

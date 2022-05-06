@@ -74,6 +74,8 @@ class PreferencesImpl @Inject constructor(
 
     override val screenshotDrops by prefs.screenshotDrops
 
+    override val screenshotDropsUnmodified by prefs.screenshotDropsUnmodified
+
     override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
 
     override val stageCounterNew by prefs.stageCounterNew

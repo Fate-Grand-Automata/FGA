@@ -24,6 +24,7 @@ interface IPreferences {
     val recordScreen: Boolean
     val skillDelay: Duration
     val screenshotDrops: Boolean
+    val screenshotDropsUnmodified: Boolean
     var maxGoldEmberSetSize: Int
     var stopAfterThisRun: Boolean
     val skipServantFaceCardCheck: Boolean
