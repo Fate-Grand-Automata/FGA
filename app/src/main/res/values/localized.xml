@@ -129,6 +129,8 @@
     <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
     <string name="p_screenshot_drops">Screenshot Drops</string>
     <string name="p_screenshot_drops_summary">Saved to \'drops\' folder</string>
+    <string name="p_screenshot_drops_unmodified">Save unmodified screenshots</string>
+    <string name="p_screenshot_drops_unmodified_summary">Save unmodified full-screen screenshots instead of cropped and rescaled screenshots</string>
     <string name="p_boost_item">Boost Item</string>
     <string name="p_brave_chains">Brave Chains</string>
     <string name="p_rearrange_cards">Rearrange Cards</string>

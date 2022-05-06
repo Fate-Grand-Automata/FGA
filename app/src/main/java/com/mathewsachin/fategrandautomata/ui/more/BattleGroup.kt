@@ -81,6 +81,14 @@ fun LazyListScope.battleGroup(
     }
 
     item {
+        prefs.screenshotDropsUnmodified.SwitchPreference(
+            title = stringResource(R.string.p_screenshot_drops_unmodified),
+            summary = stringResource(R.string.p_screenshot_drops_unmodified_summary),
+            icon = icon(R.drawable.ic_screenshot)
+        )
+    }
+
+    item {
         prefs.boostItemSelectionMode.SingleSelectChipPreference(
             title = stringResource(R.string.p_boost_item),
             icon = icon(Icons.Default.OfflineBolt),

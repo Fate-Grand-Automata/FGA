@@ -113,6 +113,8 @@
     <string name="p_stop_on_ce_get_summary">首次通关及羁绊礼装获得时自动停止脚本</string>
     <string name="p_screenshot_drops">掉落截图</string>
     <string name="p_screenshot_drops_summary">存至 \'drops\' 文件夹</string>
+    <string name="p_screenshot_drops_unmodified">Save unmodified screenshots</string>
+    <string name="p_screenshot_drops_unmodified_summary">Save unmodified full-screen screenshots instead of cropped and rescaled screenshots</string>
     <string name="p_boost_item">加速道具</string>
     <string name="p_brave_chains">追击连携</string>
     <string name="p_rearrange_cards">调换顺序\n(优先性高的卡后出)</string>

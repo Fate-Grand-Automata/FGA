@@ -114,6 +114,8 @@
     <string name="p_stop_on_ce_get_summary">首次通關及絆禮裝獲得時自動停止腳本</string>
     <string name="p_screenshot_drops">掉落截圖</string>
     <string name="p_screenshot_drops_summary">存至 \'drops\' 資料夾</string>
+    <string name="p_screenshot_drops_unmodified">Save unmodified screenshots</string>
+    <string name="p_screenshot_drops_unmodified_summary">Save unmodified full-screen screenshots instead of cropped and rescaled screenshots</string>
     <string name="p_boost_item">加速道具</string>
     <string name="p_brave_chains">Brave Chain</string>
     <string name="p_rearrange_cards">調換順序\n(優先性高的卡後出)</string>

@@ -4,12 +4,14 @@ import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.libautomata.Pattern
+import com.mathewsachin.libautomata.ScreenshotService
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
 class ScreenshotDrops @Inject constructor(
     api: IFgoAutomataApi,
+    private val screenshotService: ScreenshotService,
     private val storageProvider: IStorageProvider
 ) : IFgoAutomataApi by api {
     fun screenshotDrops() {
@@ -20,7 +22,11 @@ class ScreenshotDrops @Inject constructor(
 
         for (i in 0..1) {
             useColor {
-                drops.add(locations.scriptArea.getPattern())
+                if (prefs.screenshotDropsUnmodified) {
+                    drops.add(screenshotService.takeScreenshot())
+                } else {
+                    drops.add(locations.scriptArea.getPattern())
+                }
             }
 
             // check if we need to scroll to see more drops

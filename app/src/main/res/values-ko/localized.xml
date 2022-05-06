@@ -110,6 +110,8 @@
     <string name="p_stop_on_ce_get_summary">첫번째 퀘스트 클리어 보상과 인연예장(실험적 기능)</string>
     <string name="p_screenshot_drops">드롭 아이템 스크린샷</string>
     <string name="p_screenshot_drops_summary">\'drops\' 폴더에 저장되었습니다</string>
+    <string name="p_screenshot_drops_unmodified">Save unmodified screenshots</string>
+    <string name="p_screenshot_drops_unmodified_summary">Save unmodified full-screen screenshots instead of cropped and rescaled screenshots</string>
     <string name="p_boost_item">부스트 아이템</string>
     <string name="p_brave_chains">브레이브 체인</string>
     <string name="p_rearrange_cards">카드 재배열</string>
@@ -177,7 +179,7 @@
     <string name="p_script_mode_fp">친구 포인트 가챠</string>
     <string name="p_script_mode_support_image_maker">서포트 이미지 메이커</string>
     <string name="p_script_mode_gift_box">선물함</string>
-    <string name="p_max_gold_ember_set_size">4성 경험치 카드 개수</string>    
+    <string name="p_max_gold_ember_set_size">4성 경험치 카드 개수</string>
     <string name="p_not_set">설정 안함</string>
     <string name="p_support_class_none">없음</string>
     <string name="p_support_class_all">모두</string>
