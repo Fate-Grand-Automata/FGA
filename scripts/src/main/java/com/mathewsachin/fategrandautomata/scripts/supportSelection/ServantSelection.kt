@@ -6,8 +6,8 @@ import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
-import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Location
+import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -20,7 +20,7 @@ class ServantSelection @Inject constructor(
     private val supportPrefs: ISupportPreferences,
     private val starChecker: SupportSelectionStarChecker,
     private val boundsFinder: SupportBoundsFinder
-): IFgoAutomataApi by api {
+) : IFgoAutomataApi by api {
     fun findServants(servants: List<String>): List<SpecificSupportSearchResult.Found> =
         servants
             .flatMap { entry -> images.loadSupportPattern(SupportImageKind.Servant, entry) }
@@ -84,8 +84,10 @@ class ServantSelection @Inject constructor(
         val y = bounds.y + 325
         val x = bounds.x + 1620
 
-        val appendSkillsIntroduced = prefs.gameServer == GameServerEnum.Jp
-        val skillMargin = if (appendSkillsIntroduced) 90 else 155
+        val skillMargin = when (prefs.gameServer) {
+            GameServerEnum.Jp, GameServerEnum.En -> 90
+            else -> 155
+        }
 
         val skillLoc = listOf(
             Location(x, y),
