@@ -107,10 +107,10 @@ class ScriptManager @Inject constructor(
                             recording.close()
                         }
                     } catch (e: Exception) {
-                        val msg = "Failed to stop recording"
+                        val msg = context.getString(R.string.cannot_stop_recording)
                         Timber.e(e, msg)
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -316,7 +316,7 @@ class ScriptManager @Inject constructor(
             val msg = context.getString(R.string.cannot_start_recording)
             Timber.e(e, msg)
             withContext(Dispatchers.Main) {
-                Toast.makeText(service, msg, Toast.LENGTH_SHORT).show()
+                Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
             }
 
             null
