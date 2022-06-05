@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.Stepper
@@ -71,8 +72,7 @@ fun battleLauncher(
                     Spacer(modifier.padding(16.dp))
                 }
             }
-        }
-        else {
+        } else {
             Text(
                 stringResource(R.string.battle_config_list_no_items),
                 modifier = Modifier
@@ -117,10 +117,17 @@ fun battleLauncher(
             LazyRow(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
-                items(RefillResourceEnum.values()) {
+                //only display bronze option for JP
+                val bronzeApplesEnabled = prefs.gameServer == GameServerEnum.Jp
+                if (!bronzeApplesEnabled) {
+                    //if the game server is not JP, disable it in the settings
+                    refillResources.minus(RefillResourceEnum.Bronze)
+                }
+                val availableRefills = RefillResourceEnum.values()
+                    .filter { it -> it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+                items(availableRefills) {
                     it.RefillResource(
                         isSelected = it in refillResources,
                         toggle = {
@@ -199,7 +206,7 @@ fun LimitItem(
     onCountChange: (Int) -> Unit,
     valueRange: IntRange = 1..999
 ) {
-    Row (
+    Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
