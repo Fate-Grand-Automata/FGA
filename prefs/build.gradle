@@ -24,11 +24,12 @@ android {
             initWith release
         }
     }
+    namespace 'com.mathewsachin.fategrandautomata.prefs'
 }
 
 dependencies {
     implementation project(':scripts')
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation "com.google.code.gson:gson:$gson_version"
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
