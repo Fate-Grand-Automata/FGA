@@ -57,8 +57,8 @@ class Locations @Inject constructor(
     fun locate(refillResource: RefillResourceEnum): List<Location> {
         //scroll bar click location
         val scrollBarLoc = when (refillResource) {
-            RefillResourceEnum.Copper -> 980
-            else -> 380
+            RefillResourceEnum.Copper -> 1040
+            else -> 300
         }.let { y -> Location(750, y).xFromCenter() }
 
         val resourceLoc = when (refillResource) {
