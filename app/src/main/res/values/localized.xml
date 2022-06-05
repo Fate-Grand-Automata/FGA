@@ -235,7 +235,8 @@
     <string name="accessibility_disabled_go_to_settings">Go To Settings</string>
     <string name="draw_overlay_disabled_title">Missing overlay permission</string>
     <string name="draw_overlay_disabled_message">Please allow this app to draw over other apps. It is used to draw the control buttons.</string>
-    <string name="cannot_start_recording">Couldn\'t start recording</string>
+    <string name="cannot_start_recording">Failed to start recording</string>
+    <string name="cannot_stop_recording">Failed to stop recording</string>
     <string name="unexpected_error_copy">Copy</string>
 
     <string name="script_msg_ap_ran_out">AP ran out!</string>
