@@ -26,7 +26,7 @@ class Refill @Inject constructor(
             && timesRefilled < refill.repetitions
         ) {
             refill.resources
-                .map { locations.locate(it) }
+                .flatMap { locations.locate(it) }
                 .forEach { it.click() }
 
             1.seconds.wait()

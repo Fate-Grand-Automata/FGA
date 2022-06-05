@@ -9,6 +9,7 @@ val RefillResourceEnum.stringRes
         RefillResourceEnum.Gold -> R.string.p_refill_type_gold
         RefillResourceEnum.Silver -> R.string.p_refill_type_silver
         RefillResourceEnum.Bronze -> R.string.p_refill_type_bronze
+        RefillResourceEnum.Copper -> R.string.p_refill_type_copper
     }
 
 val BraveChainEnum.stringRes

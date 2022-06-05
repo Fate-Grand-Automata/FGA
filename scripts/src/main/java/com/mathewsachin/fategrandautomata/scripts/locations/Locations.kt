@@ -16,7 +16,7 @@ class Locations @Inject constructor(
     val support: SupportScreenLocations,
     val attack: AttackScreenLocations,
     val battle: BattleScreenLocations
-): IScriptAreaTransforms by scriptAreaTransforms {
+) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
@@ -54,12 +54,22 @@ class Locations @Inject constructor(
     val withdrawAcceptClick = Location(485, 720).xFromCenter()
     val withdrawCloseClick = Location(-10, 1140).xFromCenter()
 
-    fun locate(refillResource: RefillResourceEnum) = when (refillResource) {
-        RefillResourceEnum.Bronze -> 1140
-        RefillResourceEnum.Silver -> 922
-        RefillResourceEnum.Gold -> 634
-        RefillResourceEnum.SQ -> 345
-    }.let { y -> Location(-530, y).xFromCenter() }
+    fun locate(refillResource: RefillResourceEnum): List<Location> {
+        //scroll bar click location
+        val scrollBarLoc = when (refillResource) {
+            RefillResourceEnum.Copper -> 1040
+            else -> 300
+        }.let { y -> Location(750, y).xFromCenter() }
+
+        val resourceLoc = when (refillResource) {
+            RefillResourceEnum.Copper -> 980
+            RefillResourceEnum.Bronze -> 1140
+            RefillResourceEnum.Silver -> 922
+            RefillResourceEnum.Gold -> 634
+            RefillResourceEnum.SQ -> 345
+        }.let { y -> Location(-530, y).xFromCenter() }
+        return listOf(scrollBarLoc, resourceLoc)
+    }
 
     fun locate(boost: BoostItem.Enabled) = when (boost) {
         BoostItem.Enabled.Skip -> Location(1652, 1304)

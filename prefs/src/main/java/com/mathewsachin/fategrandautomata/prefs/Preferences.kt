@@ -6,7 +6,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.*
 import com.mathewsachin.libautomata.PlatformPrefs
 import javax.inject.Inject
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 class PreferencesImpl @Inject constructor(

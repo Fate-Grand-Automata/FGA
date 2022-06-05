@@ -160,7 +160,8 @@
     <string name="p_nav_card_priority">카드 우선</string>
     <string name="p_refill_type_gold">금</string>
     <string name="p_refill_type_silver">은</string>
-    <string name="p_refill_type_bronze">동</string>
+    <string name="p_refill_type_bronze">청동</string>
+    <string name="p_refill_type_copper">동</string>
     <string name="p_refill_type_sq">성정석</string>
     <string name="p_brave_chains_don_t_care">상관 없음</string>
     <string name="p_brave_chains_with_np">보구랑 같이</string>

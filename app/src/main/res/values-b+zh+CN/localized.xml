@@ -169,7 +169,8 @@
 
     <string name="p_refill_type_gold">黃金果实</string>
     <string name="p_refill_type_silver">白银果实</string>
-    <string name="p_refill_type_bronze">赤铜果实</string>
+    <string name="p_refill_type_bronze">青铜果实</string>
+    <string name="p_refill_type_copper">赤铜果实</string>
     <string name="p_refill_type_sq">圣晶石</string>
 
     <string name="p_brave_chains_don_t_care">无偏好</string>

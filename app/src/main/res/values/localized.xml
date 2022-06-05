@@ -187,6 +187,7 @@
     <string name="p_refill_type_gold">Gold</string>
     <string name="p_refill_type_silver">Silver</string>
     <string name="p_refill_type_bronze">Bronze</string>
+    <string name="p_refill_type_copper">Copper</string>
     <string name="p_refill_type_sq">SQ</string>
 
     <string name="p_brave_chains_don_t_care">Don\'t care</string>
