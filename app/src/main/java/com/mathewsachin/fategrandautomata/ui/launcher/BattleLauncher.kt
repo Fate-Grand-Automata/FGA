@@ -21,7 +21,6 @@ import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.Stepper
 import com.mathewsachin.fategrandautomata.util.stringRes
-import com.mathewsachin.fategrandautomata.util.toggle
 
 @Composable
 fun battleLauncher(
@@ -123,15 +122,20 @@ fun battleLauncher(
                 val bronzeApplesEnabled = prefs.gameServer == GameServerEnum.Jp
                 if (!bronzeApplesEnabled) {
                     //if the game server is not JP, disable it in the settings
-                    refillResources.minus(RefillResourceEnum.Bronze)
+                    refillResources = refillResources.minus(RefillResourceEnum.Bronze)
+                }
+                //TODO remove
+                if (refillResources.size > 1) {
+                    refillResources = setOf(refillResources.first())
                 }
                 val availableRefills = RefillResourceEnum.values()
-                    .filter { it -> it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+                    .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
                 items(availableRefills) {
                     it.RefillResource(
                         isSelected = it in refillResources,
                         toggle = {
-                            refillResources = refillResources.toggle(it)
+                            // TODO change back to toggle()
+                            refillResources = setOf(it)
                         }
                     )
                 }
