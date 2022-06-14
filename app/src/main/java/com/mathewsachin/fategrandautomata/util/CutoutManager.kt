@@ -7,7 +7,6 @@ import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
 import timber.log.Timber
@@ -75,7 +74,7 @@ class CutoutManager @Inject constructor(
     private fun shouldIgnoreNotch() =
         when {
             // CN may or may not cover notch area
-            prefs.isNewUI && prefs.gameServer != GameServerEnum.Cn -> true
+            prefs.gameServer != GameServerEnum.Cn -> true
             else -> prefs.ignoreNotchCalculation
         }
 
