@@ -50,7 +50,6 @@ class MasterLocations @Inject constructor(
     val stageCountRegion
         get() = when {
             isNewUI -> Region(if (isWide) -571 else -638, 23, 33, 53) + masterOffsetNewUI
-            gameServer == GameServerEnum.Tw -> Region(1710, 25, 55, 60)
             else -> Region(1722, 25, 46, 53)
         }
 
