@@ -295,7 +295,11 @@
     <string name="p_shuffle_cards_when_none">不洗牌</string>
     <string name="p_shuffle_cards_when_no_effective">無有效(effective)指令牌</string>
     <string name="p_shuffle_cards_when_no_np_matching">無施放寶具從者的指令牌</string>
-    <string name="tapper_service_description">[...]</string>
+    <string name="tapper_service_description">
+        此無障礙服務會用來幫助未root的手機執行點擊與滑動。
+        也會藉由比對前景執行程式的 APK 名稱自動偵測 FGO 版本(NA/JP/CN/TW/KR)。
+        服務不正常運作時，可嘗試重啟無障礙服務。
+        如果服務還是無法運作的話，可能要調整裝置上關於此程式的電源最佳化設定。</string>
     <string name="p_battle_config_server">伺服器</string>
     <string name="p_battle_config_support_also_check_all">同時檢查ALL職階欄</string>
     <string name="p_max_skills">滿技</string>
