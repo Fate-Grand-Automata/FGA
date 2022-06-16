@@ -4,6 +4,7 @@ import com.mathewsachin.fategrandautomata.scripts.IImageLoader
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.Location
@@ -42,8 +43,14 @@ class MasterLocations @Inject constructor(
         Location(x + 178, 620) + masterOffsetNewUI
     }
 
-    val stageCountRegion
-        get() = Region(if (isWide) -571 else -638, 23, 33, 53) + masterOffsetNewUI
+    val stageCountRegion: Region
+        get() {
+            val baseRegion = when (gameServer) {
+                GameServerEnum.Tw -> Region(if (isWide) -583 else -650, 23, 42, 60)
+                else -> Region(if (isWide) -571 else -638, 23, 33, 53)
+            }
+            return baseRegion + masterOffsetNewUI
+        }
 
     val masterSkillOpenClick
         get() = Location(0, 640) + masterOffsetNewUI
