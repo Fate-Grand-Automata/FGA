@@ -72,10 +72,10 @@ class CutoutManager @Inject constructor(
     }
 
     private fun shouldIgnoreNotch() =
-        when {
-            // CN may or may not cover notch area
-            prefs.gameServer != GameServerEnum.Cn -> true
-            else -> prefs.ignoreNotchCalculation
+        when (prefs.gameServer) {
+            // CN and TW may or may not cover notch area
+            GameServerEnum.Cn, GameServerEnum.Tw -> prefs.ignoreNotchCalculation
+            else -> true
         }
 
     private fun getCutout(rotation: Int): Cutout {
