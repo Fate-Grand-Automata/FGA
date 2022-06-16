@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.scripts.locations
 
 import com.mathewsachin.fategrandautomata.scripts.isWide
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.libautomata.*
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
@@ -20,9 +19,7 @@ class ScriptAreaTransforms @Inject constructor(
             gameAreaManager.gameArea.size * (1 / scale.scriptToScreen)
         )
 
-    override val isWide = prefs.isNewUI && scriptArea.size.isWide()
-
-    override val isNewUI = prefs.isNewUI
+    override val isWide = scriptArea.size.isWide()
 
     override val gameServer = prefs.gameServer
 

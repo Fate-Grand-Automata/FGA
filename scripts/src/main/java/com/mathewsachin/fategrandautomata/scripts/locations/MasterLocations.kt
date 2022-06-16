@@ -4,7 +4,6 @@ import com.mathewsachin.fategrandautomata.scripts.IImageLoader
 import com.mathewsachin.fategrandautomata.scripts.IScriptMessages
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.ScriptLog
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.models.Skill
 import com.mathewsachin.libautomata.AutomataApi
 import com.mathewsachin.libautomata.Location
@@ -18,7 +17,7 @@ class MasterLocations @Inject constructor(
     private val images: IImageLoader,
     private val automataApi: AutomataApi,
     private val messages: IScriptMessages,
-): IScriptAreaTransforms by scriptAreaTransforms {
+) : IScriptAreaTransforms by scriptAreaTransforms {
     // Master Skills and Stage counter are right-aligned differently,
     // so we use locations relative to a matched location
     private val masterOffsetNewUI: Location by lazy {
@@ -40,23 +39,12 @@ class MasterLocations @Inject constructor(
         Skill.Master.B -> -560
         Skill.Master.C -> -400
     }.let { x ->
-        val location = Location(x, 620)
-
-        if (isNewUI)
-            location + Location(178, 0) + masterOffsetNewUI
-        else location.xFromRight()
+        Location(x + 178, 620) + masterOffsetNewUI
     }
 
     val stageCountRegion
-        get() = when {
-            isNewUI -> Region(if (isWide) -571 else -638, 23, 33, 53) + masterOffsetNewUI
-            gameServer == GameServerEnum.Tw -> Region(1710, 25, 55, 60)
-            else -> Region(1722, 25, 46, 53)
-        }
+        get() = Region(if (isWide) -571 else -638, 23, 33, 53) + masterOffsetNewUI
 
     val masterSkillOpenClick
-        get() =
-            if (isNewUI)
-                Location(0, 640) + masterOffsetNewUI
-            else Location(-180, 640).xFromRight()
+        get() = Location(0, 640) + masterOffsetNewUI
 }

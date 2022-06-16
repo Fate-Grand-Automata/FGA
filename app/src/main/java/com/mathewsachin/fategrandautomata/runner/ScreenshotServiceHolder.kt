@@ -8,7 +8,6 @@ import com.mathewsachin.fategrandautomata.root.RootScreenshotService
 import com.mathewsachin.fategrandautomata.root.SuperUser
 import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
-import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.util.DisplayHelper
 import com.mathewsachin.fategrandautomata.util.StorageProvider
@@ -37,8 +36,7 @@ class ScreenshotServiceHolder @Inject constructor(
         val scale = RealScale(
             gameAreaManager = FgoGameAreaManager(
                 size,
-                offset = { Location() },
-                prefs.isNewUI
+                offset = { Location() }
             )
         ).screenToImage
 

@@ -55,8 +55,7 @@ fun Size.isWide() =
 
 class FgoGameAreaManager(
     private val gameSizeWithBorders: Size,
-    private val offset: () -> Location,
-    isNewUI: Boolean
+    private val offset: () -> Location
 ) : GameAreaManager {
     companion object {
         private val imageSize = Size(1280, 720)
@@ -78,8 +77,8 @@ class FgoGameAreaManager(
         is ScaleBy.Height -> CompareBy.Height(imageSize.height)
     }
 
-    private val isWide = isNewUI && gameSizeWithBorders.isWide()
-    private val isUltraWide = isNewUI && gameSizeWithBorders.widerThan(21, 9)
+    private val isWide = gameSizeWithBorders.isWide()
+    private val isUltraWide = gameSizeWithBorders.widerThan(21, 9)
 
     private val gameAreaIgnoringNotch by lazy {
         when {
