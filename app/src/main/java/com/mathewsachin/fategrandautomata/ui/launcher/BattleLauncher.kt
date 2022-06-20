@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.launcher
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.Checkbox
@@ -20,6 +22,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.ui.Stepper
+import com.mathewsachin.fategrandautomata.ui.scrollbar
 import com.mathewsachin.fategrandautomata.util.stringRes
 
 @Composable
@@ -56,7 +59,14 @@ fun battleLauncher(
             }
 
             LazyColumn(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .scrollbar(
+                        state = configListState,
+                        hiddenAlpha = 0.3f,
+                        horizontal = false,
+                        knobColor = MaterialTheme.colors.secondary
+                    ),
                 state = configListState
             ) {
                 itemsIndexed(configs) { index, item ->
@@ -65,10 +75,6 @@ fun battleLauncher(
                         isSelected = selectedConfigIndex == index,
                         onSelected = { selectedConfigIndex = index }
                     )
-                }
-
-                item {
-                    Spacer(modifier.padding(16.dp))
                 }
             }
         } else {
@@ -88,101 +94,122 @@ fun battleLauncher(
                 .width(1.dp)
         ) { }
 
-        Column(
+        val mainConfigState = rememberLazyListState()
+        LazyColumn(
             modifier = Modifier
                 .weight(1.5f)
-                .verticalScroll(rememberScrollState())
-                .padding(start = 5.dp)
+                .scrollbar(
+                    state = mainConfigState,
+                    hiddenAlpha = 0.3f,
+                    horizontal = false,
+                    knobColor = MaterialTheme.colors.secondary,
+                    // needs to be adjusted when adding new items
+                    fixedKnobRatio = 0.86f
+                )
+                .padding(start = 5.dp),
+            state = mainConfigState
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "${stringResource(R.string.p_refill)}:",
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.secondary
-                )
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        "${stringResource(R.string.p_refill)}:",
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.secondary
+                    )
 
-                Stepper(
-                    value = refillCount,
-                    onValueChange = { refillCount = it },
-                    valueRange = 0..999,
-                    enabled = refillResources.isNotEmpty()
-                )
-            }
-
-            LazyRow(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                //only display bronze option for JP
-                val bronzeApplesEnabled = prefs.gameServer == GameServerEnum.Jp
-                if (!bronzeApplesEnabled) {
-                    //if the game server is not JP, disable it in the settings
-                    refillResources = refillResources.minus(RefillResourceEnum.Bronze)
-                }
-                //TODO remove
-                if (refillResources.size > 1) {
-                    refillResources = setOf(refillResources.first())
-                }
-                val availableRefills = RefillResourceEnum.values()
-                    .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
-                items(availableRefills) {
-                    it.RefillResource(
-                        isSelected = it in refillResources,
-                        toggle = {
-                            // TODO change back to toggle()
-                            refillResources = setOf(it)
-                        }
+                    Stepper(
+                        value = refillCount,
+                        onValueChange = { refillCount = it },
+                        valueRange = 0..999,
+                        enabled = refillResources.isNotEmpty()
                     )
                 }
             }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .clickable { waitApRegen = !waitApRegen }
-            ) {
-                Checkbox(
-                    checked = waitApRegen,
-                    onCheckedChange = { waitApRegen = it },
-                    modifier = Modifier
-                        .alpha(if (waitApRegen) 1f else 0.7f)
-                        .padding(end = 5.dp)
-                )
+            item {
+                LazyRow(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    //only display bronze option for JP
+                    val bronzeApplesEnabled = prefs.gameServer == GameServerEnum.Jp
+                    if (!bronzeApplesEnabled) {
+                        //if the game server is not JP, disable it in the settings
+                        refillResources = refillResources.minus(RefillResourceEnum.Bronze)
+                    }
+                    //TODO remove
+                    if (refillResources.size > 1) {
+                        refillResources = setOf(refillResources.first())
+                    }
+                    val availableRefills = RefillResourceEnum.values()
+                        .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+                    items(availableRefills) {
+                        it.RefillResource(
+                            isSelected = it in refillResources,
+                            toggle = {
+                                // TODO change back to toggle()
+                                refillResources = setOf(it)
+                            }
+                        )
+                    }
+                }
+            }
 
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clickable { waitApRegen = !waitApRegen }
+                ) {
+                    Checkbox(
+                        checked = waitApRegen,
+                        onCheckedChange = { waitApRegen = it },
+                        modifier = Modifier
+                            .alpha(if (waitApRegen) 1f else 0.7f)
+                            .padding(end = 5.dp)
+                    )
+
+                    Text(
+                        stringResource(R.string.p_wait_ap_regen_text),
+                        style = MaterialTheme.typography.body2
+                    )
+                }
+
+                Divider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
+            }
+
+            item {
                 Text(
-                    stringResource(R.string.p_wait_ap_regen_text),
-                    style = MaterialTheme.typography.body2
+                    stringResource(R.string.p_limit),
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.secondary
                 )
             }
 
-            Divider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
+            item {
+                LimitItem(
+                    shouldLimit = shouldLimitRuns,
+                    onShouldLimitChange = { shouldLimitRuns = it },
+                    text = stringResource(R.string.p_runs),
+                    count = limitRuns,
+                    onCountChange = { limitRuns = it }
+                )
+            }
 
-            Text(
-                stringResource(R.string.p_limit),
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.secondary
-            )
-
-            LimitItem(
-                shouldLimit = shouldLimitRuns,
-                onShouldLimitChange = { shouldLimitRuns = it },
-                text = stringResource(R.string.p_runs),
-                count = limitRuns,
-                onCountChange = { limitRuns = it }
-            )
-
-            LimitItem(
-                shouldLimit = shouldLimitMats,
-                onShouldLimitChange = { shouldLimitMats = it },
-                text = stringResource(R.string.p_mats),
-                count = limitMats,
-                onCountChange = { limitMats = it }
-            )
+            item {
+                LimitItem(
+                    shouldLimit = shouldLimitMats,
+                    onShouldLimitChange = { shouldLimitMats = it },
+                    text = stringResource(R.string.p_mats),
+                    count = limitMats,
+                    onCountChange = { limitMats = it }
+                )
+            }
         }
     }
 
