@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.card_priority
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,49 +30,55 @@ fun CardPriorityView(
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Heading(stringResource(R.string.p_nav_card_priority))
-
-        val servantPriority by useServantPriority.remember()
-        useServantPriority.SwitchPreference(
-            title = "Use Servant Priority",
+        Column(
             modifier = Modifier
-                .padding(bottom = 16.dp)
-        )
-
-        CardPriorityWaveSelector(
-            items = items,
-            selectedWave = pagerState.currentPage,
-            onSelectedWaveChange = { scope.launch { pagerState.animateScrollToPage(it) } },
-        )
-
-        Divider()
-
-        HorizontalPager(
-            state = pagerState,
-            count = items.size,
-            verticalAlignment = Alignment.Top,
-            modifier = Modifier
-                .weight(1f)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
         ) {
-            Column {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp, 5.dp)
-                        .padding(top = 11.dp)
-                ) {
-                    Text(stringResource(R.string.card_priority_high))
-                    Text(stringResource(R.string.card_priority_low))
-                }
+            Heading(stringResource(R.string.p_nav_card_priority))
 
-                items.getOrNull(it)?.Render(
-                    useServantPriority = servantPriority
-                )
+            val servantPriority by useServantPriority.remember()
+            useServantPriority.SwitchPreference(
+                title = "Use Servant Priority",
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+            )
+
+            CardPriorityWaveSelector(
+                items = items,
+                selectedWave = pagerState.currentPage,
+                onSelectedWaveChange = { scope.launch { pagerState.animateScrollToPage(it) } },
+            )
+
+            Divider()
+
+            HorizontalPager(
+                state = pagerState,
+                count = items.size,
+                verticalAlignment = Alignment.Top,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Column {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp, 5.dp)
+                            .padding(top = 11.dp)
+                    ) {
+                        Text(stringResource(R.string.card_priority_high))
+                        Text(stringResource(R.string.card_priority_low))
+                    }
+
+                    items.getOrNull(it)?.Render(
+                        useServantPriority = servantPriority
+                    )
+                }
             }
         }
     }

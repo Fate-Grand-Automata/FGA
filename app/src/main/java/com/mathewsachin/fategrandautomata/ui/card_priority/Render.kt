@@ -37,7 +37,6 @@ fun CardPriorityListItem.Render(
         Card(
             modifier = Modifier
                 .padding(16.dp)
-                .padding(vertical = 16.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -64,7 +63,7 @@ fun CardPriorityListItem.Render(
 
                 ListItem(
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(1.1f)
                         .clickable { rearrange = !rearrange },
                     text = { Text(stringResource(R.string.p_rearrange_cards)) },
                     trailing = {
