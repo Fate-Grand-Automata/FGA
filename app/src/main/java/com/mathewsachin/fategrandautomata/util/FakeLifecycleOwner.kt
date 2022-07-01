@@ -10,9 +10,10 @@ import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.compositionContext
 import androidx.lifecycle.*
+import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
-import androidx.savedstate.ViewTreeSavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -20,6 +21,8 @@ import kotlinx.coroutines.launch
 private class FakeLifecycleOwner : SavedStateRegistryOwner {
     private var lifecycleRegistry = LifecycleRegistry(this)
     private var savedStateRegistryController = SavedStateRegistryController.create(this)
+    override val savedStateRegistry: SavedStateRegistry
+        get() = savedStateRegistryController.savedStateRegistry
 
     override fun getLifecycle() = lifecycleRegistry
 
@@ -30,9 +33,6 @@ private class FakeLifecycleOwner : SavedStateRegistryOwner {
     fun handleLifecycleEvent(event: Lifecycle.Event) {
         lifecycleRegistry.handleLifecycleEvent(event)
     }
-
-    override fun getSavedStateRegistry() =
-        savedStateRegistryController.savedStateRegistry
 
     fun performRestore(savedState: Bundle?) {
         savedStateRegistryController.performRestore(savedState)
@@ -46,7 +46,7 @@ private class FakeLifecycleOwner : SavedStateRegistryOwner {
 class FakedComposeView(
     private val context: Context,
     private val content: @Composable () -> Unit
-): AutoCloseable {
+) : AutoCloseable {
     private val viewModelStore = ViewModelStore()
     private val lifecycleOwner = FakeLifecycleOwner()
 
@@ -54,21 +54,22 @@ class FakedComposeView(
     private val runRecomposeScope = CoroutineScope(coroutineContext)
     private val recomposer = Recomposer(coroutineContext)
 
-    val view get() = ComposeView(context).also {
-        it.setContent { content() }
+    val view
+        get() = ComposeView(context).also {
+            it.setContent { content() }
 
-        // Trick The ComposeView into thinking we are tracking lifecycle
-        lifecycleOwner.performRestore(null)
-        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        ViewTreeLifecycleOwner.set(it, lifecycleOwner)
-        ViewTreeViewModelStoreOwner.set(it) { viewModelStore }
-        ViewTreeSavedStateRegistryOwner.set(it, lifecycleOwner)
+            // Trick The ComposeView into thinking we are tracking lifecycle
+            lifecycleOwner.performRestore(null)
+            lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+            ViewTreeLifecycleOwner.set(it, lifecycleOwner)
+            ViewTreeViewModelStoreOwner.set(it) { viewModelStore }
+            it.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
 
-        it.compositionContext = recomposer
-        runRecomposeScope.launch {
-            recomposer.runRecomposeAndApplyChanges()
+            it.compositionContext = recomposer
+            runRecomposeScope.launch {
+                recomposer.runRecomposeAndApplyChanges()
+            }
         }
-    }
 
     override fun close() {
         lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
