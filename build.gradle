@@ -10,7 +10,7 @@ if (hasProperty('buildScan')) {
 
 buildscript {
     ext {
-        kotlin_version = '1.7.0'
+        kotlin_version = '1.7.10'
         hilt_version = '2.42'
         compose_version = '1.2.0-rc03'
         gson_version = '2.9.0'

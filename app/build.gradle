@@ -23,6 +23,7 @@ android {
         freeCompilerArgs += "-opt-in=androidx.compose.animation.ExperimentalAnimationApi"
         freeCompilerArgs += "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
         freeCompilerArgs += "-opt-in=com.google.accompanist.pager.ExperimentalPagerApi"
+        freeCompilerArgs += ["-P", "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"]
     }
 
     composeOptions {
@@ -34,7 +35,7 @@ android {
         applicationId "com.mathewsachin.fategrandautomata"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode Integer.valueOf(System.env.FGA_VERSION_CODE ?: 1)
+        versionCode Integer.valueOf(System.env.FGA_VERSION_CODE ?: 1701)
         versionName(System.env.FGA_VERSION_NAME ?: "0.1.0")
 
         ndk {
