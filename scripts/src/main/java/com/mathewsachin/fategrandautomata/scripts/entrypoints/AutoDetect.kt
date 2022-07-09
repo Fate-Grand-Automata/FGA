@@ -22,7 +22,7 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.Lottery
             images[Images.GoldXP] in emberSearchRegion || images[Images.SilverXP] in emberSearchRegion ->
                 ScriptModeEnum.PresentBox
-            images[Images.SupportConfirmSetupButton] in locations.support.confirmSetupButtonRegion ->
+            locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
                 ScriptModeEnum.SupportImageMaker
             images[Images.CEEnhance] in locations.ceEnhanceRegion ->
                 ScriptModeEnum.CEBomb
