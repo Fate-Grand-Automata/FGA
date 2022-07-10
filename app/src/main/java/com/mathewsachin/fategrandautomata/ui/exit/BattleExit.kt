@@ -59,8 +59,8 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
     is AutoBattle.ExitReason.CardPriorityParseError -> msg
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
-    AutoBattle.ExitReason.Paused -> "PAUSED"
-    AutoBattle.ExitReason.StopAfterThisRun -> "Stop after this run"
+    AutoBattle.ExitReason.Paused -> stringResource(R.string.script_paused)
+    AutoBattle.ExitReason.StopAfterThisRun -> stringResource(R.string.stop_after_this_run)
 }
 
 @Composable
@@ -116,7 +116,7 @@ private fun LazyListScope.battleExitContent(
         }
     }
 
-    if (reason !is AutoBattle.ExitReason.CEDropped  && state.ceDropCount > 0) {
+    if (reason !is AutoBattle.ExitReason.CEDropped && state.ceDropCount > 0) {
         item {
             Text(
                 "${state.ceDropCount} ${stringResource(R.string.ce_dropped)}",
@@ -303,7 +303,7 @@ fun BattleExit(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        "Stop after this run",
+                        stringResource(R.string.stop_after_this_run),
                         style = MaterialTheme.typography.body2,
                         color = MaterialTheme.colors.secondary
                     )

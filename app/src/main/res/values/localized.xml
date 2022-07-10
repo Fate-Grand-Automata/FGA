@@ -95,6 +95,7 @@
     <string name="p_runs">Runs</string>
     <string name="p_roll_limit">Limit number of rolls</string>
     <string name="p_prevent_lottery_box_reset">Prevent box reset</string>
+    <string name="p_receive_embers">Receive embers</string>
 
     <string name="p_battle_config_name">Name</string>
     <string name="p_battle_config_cmd">Command</string>
@@ -257,6 +258,7 @@
     <string name="ce_get">CE GET!</string>
     <string name="first_clear_rewards">First-clear rewards!</string>
     <string name="withdraw_disabled">All servants have been defeated and auto-withdrawing is disabled.</string>
+    <string name="stop_after_this_run">Stop after this run</string>
     <string name="times_ran">Ran %d time(s)</string>
     <string name="times_ran_out_of">Ran %1$d out of %2$d time(s)</string>
     <string name="refills_used_out_of">%1$d refills used out of %2$d</string>
