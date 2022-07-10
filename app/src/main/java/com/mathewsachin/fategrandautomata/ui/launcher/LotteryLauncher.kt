@@ -67,7 +67,7 @@ fun lotteryLauncher(
                 .clickable { receiveEmbers = !receiveEmbers }
         ) {
             Text(
-                "Receive embers",
+                stringResource(R.string.p_receive_embers),
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colors.secondary
             )
