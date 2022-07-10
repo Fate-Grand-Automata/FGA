@@ -84,7 +84,7 @@
     <string name="p_battle_config_summary">設定周回腳本</string>
     <string name="p_more_options">更多選項</string>
 
-    <string name="p_runs">上限</string>
+    <string name="p_limit">上限</string>
 
     <string name="p_battle_config_name">腳本名稱</string>
     <string name="p_battle_config_cmd">技能順序</string>
