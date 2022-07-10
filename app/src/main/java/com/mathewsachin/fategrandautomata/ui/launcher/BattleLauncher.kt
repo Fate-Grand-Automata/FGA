@@ -152,8 +152,10 @@ fun battleLauncher(
                         it.RefillResource(
                             isSelected = it in refillResources,
                             toggle = {
-                                // TODO change back to toggle()
-                                refillResources = setOf(it)
+                                // TODO change back to refillResources.toggle()
+
+                                // if the tapped resource is the only one in the list, disable it. otherwise only select the tapped resource
+                                refillResources = if (it in refillResources) emptySet() else setOf(it)
                             }
                         )
                     }
