@@ -85,8 +85,10 @@
     <string name="p_more_options">更多选项</string>
 
     <string name="p_limit">上限</string>
-    <string name="p_runs">已完成</string>
-    <string name="p_prevent_lottery_box_reset">避免重置池子</string>
+    <string name="p_runs">已执行</string>
+    <string name="p_roll_limit">限制抽取次数</string>
+    <string name="p_prevent_lottery_box_reset">避免重置无限池</string>
+    <string name="p_receive_embers">收取种火</string>
 
     <string name="p_battle_config_name">脚本名称</string>
     <string name="p_battle_config_cmd">技能顺序</string>
@@ -176,7 +178,7 @@
     <string name="p_nav_battle_config_edit">编辑脚本</string>
     <string name="p_nav_card_priority">偏好指令卡</string>
 
-    <string name="p_refill_type_gold">黃金果实</string>
+    <string name="p_refill_type_gold">黄金果实</string>
     <string name="p_refill_type_silver">白银果实</string>
     <string name="p_refill_type_bronze">青铜果实</string>
     <string name="p_refill_type_copper">赤铜果实</string>
@@ -200,7 +202,7 @@
 
     <string name="p_script_mode_battle">战斗</string>
     <string name="p_script_mode_lottery">抽无限池</string>
-    <string name="p_script_mode_fp">友情点数召唤</string>
+    <string name="p_script_mode_fp">友情点召唤</string>
     <string name="p_script_mode_support_image_maker">助战图片截取器</string>
     <string name="p_script_mode_gift_box">礼物盒</string>
 
@@ -220,6 +222,7 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">混合职介 (Mix)</string>
 
+    <string name="overlay_notification_text">服务启动中</string>
     <string name="notification_stop">停止</string>
 
     <string name="accessibility_disabled_title">无障碍服务已关闭</string>
@@ -237,7 +240,7 @@
     <string name="screen_turned_off">脚本因屏幕关闭暂停执行</string>
     <string name="unexpected_error">未知错误</string>
     <string name="script_exited">脚本停止</string>
-    <string name="lottery_reset_disabled">已关闭重置池子</string>
+    <string name="lottery_reset_disabled">已关闭重置无限池</string>
     <string name="inventory_full">背包已满</string>
     <string name="present_box_full">礼物盒已满</string>
     <string name="support_img_maker_not_found">无法侦测助战，请到好友选择画面或助战选择画面再执行</string>
@@ -248,6 +251,7 @@
     <string name="ce_get">获得礼装!</string>
     <string name="first_clear_rewards">首通奖励!</string>
     <string name="withdraw_disabled">无设定撤退且从者全灭</string>
+    <string name="stop_after_this_run">本次执行后停止</string>
     <string name="times_ran">已执行 %d 次</string>
     <string name="times_ran_out_of">已执行 %1$d / %2$d 次</string>
     <string name="refills_used_out_of">已自动回体 %1$d / %2$d 次</string>
