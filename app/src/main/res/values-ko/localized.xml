@@ -96,6 +96,7 @@
     <string name="p_battle_config_support_friend_names">친구 이름</string>
     <string name="p_battle_config_support_friends_only">친구 한정</string>
     <string name="p_battle_config_support_friend_name_hint">친구 이름 이미지는 \'서포트 이미지 메이커\' 스크립트를 사용하여 만들 수 있습니다</string>
+    <string name="p_battle_config_support_also_check_all">전체 서포트슬롯도 확인</string>
     <string name="p_max_skills">스킬 최대 레벨</string>
     <string name="p_game_server">게임 서버</string>
     <string name="p_game_server_auto_detect">자동 감지</string>
@@ -110,8 +111,8 @@
     <string name="p_stop_on_ce_get_summary">첫번째 퀘스트 클리어 보상과 인연예장(실험적 기능)</string>
     <string name="p_screenshot_drops">드롭 아이템 스크린샷</string>
     <string name="p_screenshot_drops_summary">\'drops\' 폴더에 저장되었습니다</string>
-    <string name="p_screenshot_drops_unmodified">Save unmodified screenshots</string>
-    <string name="p_screenshot_drops_unmodified_summary">Save unmodified full-screen screenshots instead of cropped and rescaled screenshots</string>
+    <string name="p_screenshot_drops_unmodified">스크린샷을 수정하지 않고 저장</string>
+    <string name="p_screenshot_drops_unmodified_summary">스크린샷을 저장할때 배율조정과 잘라내기가 적용되지 않은 전체화면 스크린샷을 사용</string>
     <string name="p_boost_item">부스트 아이템</string>
     <string name="p_brave_chains">브레이브 체인</string>
     <string name="p_rearrange_cards">카드 재배열</string>
@@ -138,10 +139,10 @@
     <string name="p_fine_tune_support">서포트</string>
     <string name="p_fine_tune_support_swipes_per_update">갱신당 스와이프 수</string>
     <string name="p_fine_tune_support_max_updates">최대 갱신 수</string>
-    <string name="p_fine_tune_similarity">유사성</string>
-    <string name="p_fine_tune_min_similarity">최소 유사성 (%)</string>
-    <string name="p_fine_tune_mlb_similarity">최대해방 / 풀돌 유사성 (%)</string>
-    <string name="p_fine_tune_stage_counter_similarity">스테이지 카운터 유사성 (%)</string>
+    <string name="p_fine_tune_similarity">유사도</string>
+    <string name="p_fine_tune_min_similarity">최소 유사도 (%)</string>
+    <string name="p_fine_tune_mlb_similarity">최대해방 / 풀돌 유사도 (%)</string>
+    <string name="p_fine_tune_stage_counter_similarity">스테이지 카운터 유사도 (%)</string>
     <string name="p_fine_tune_clicks">터치</string>
     <string name="p_fine_tune_wait_after_clicking">터치 후 딜레이 (ms)</string>
     <string name="p_fine_tune_click_duration">터치 지속 시간 (ms)</string>
@@ -157,7 +158,7 @@
     <string name="p_fine_tune_wait_multiplier">딜레이 배율기 (%)</string>
     <string name="troubleshoot">문제 해결</string>
     <string name="battle_config_edit">설정 파일 수정</string>
-    <string name="card_priority">카드 우선</string>
+    <string name="card_priority">카드 우선순위</string>
     <string name="p_refill_type_gold">금</string>
     <string name="p_refill_type_silver">은</string>
     <string name="p_refill_type_bronze">청동</string>
@@ -201,6 +202,7 @@
     <string name="draw_overlay_disabled_title">오버레이 권한 없음</string>
     <string name="draw_overlay_disabled_message">다른 앱 위에 그리기를 허용해주세요. 재생 버튼을 활성화하기 위해 쓰입니다.</string>
     <string name="cannot_start_recording">화면 녹화를 시작할 수 없음</string>
+    <string name="cannot_stop_recording">화면 녹화를 끝낼 수 없음</string>
     <string name="unexpected_error_copy">복사</string>
     <string name="script_msg_ap_ran_out">AP를 모두 소비하였습니다!</string>
     <string name="stopped_by_user">사용자에 의해 스크립트 중지됨</string>
@@ -228,10 +230,11 @@
     <string name="avg_time_per_run">반복 평균 시간: %s</string>
     <string name="turns_count">턴: %d</string>
     <string name="turns_stats">턴: %1$d (최단), %2$d (평균), %3$d (최장)</string>
-    <string name="picked_exp_stacks">%d개의 경험치 묶음 획득</string>
+    <string name="picked_exp_stacks">%d개의 종화 묶음 획득</string>
+    <string name="no_embers_found">화면에서 종화를 찾을 수 없습니다. 종화를 필터하지 않았는지 확인바랍니다.</string>
     <string name="p_mats">재료</string>
     <string name="mats_farmed">%d개의 재료 파밍됨</string>
-    <string name="times_rolled"> %d번 돌림(s)</string>
+    <string name="times_rolled">%d번 돌림</string>
     <string name="mat_proof">영웅의 증표</string>
     <string name="mat_bone">흉골</string>
     <string name="mat_fang">용의 송곳니</string>
@@ -272,7 +275,7 @@
     <string name="mat_bell">한고령</string>
     <string name="mat_arrow">재난의 화살촉</string>
     <string name="mat_tiara">광은의 관</string>
-    <string name="mat_particle">신맥령자</string>
+    <string name="mat_particle">신맥영자</string>
     <string name="mat_thread">무지개 실구슬</string>
     <string name="mat_mirror">구십구경</string>
     <string name="mat_egg">진리의 알</string>
