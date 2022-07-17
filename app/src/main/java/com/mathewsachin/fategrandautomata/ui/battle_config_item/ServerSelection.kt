@@ -18,8 +18,8 @@ import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.ui.FgaDialog
 import com.mathewsachin.fategrandautomata.ui.GroupSelectorItem
-import com.mathewsachin.fategrandautomata.ui.more.displayStringRes
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
+import com.mathewsachin.fategrandautomata.util.stringRes
 
 @Composable
 fun ServerSelection(config: BattleConfigCore) {
@@ -38,7 +38,7 @@ fun ServerSelection(config: BattleConfigCore) {
             ) {
                 items(GameServerEnum.values()) {
                     GroupSelectorItem(
-                        stringResource(it.displayStringRes),
+                        stringResource(it.stringRes),
                         isSelected = it == server.asGameServer(),
                         onSelect = {
                             server = BattleConfigCore.Server.Set(it)
@@ -71,7 +71,7 @@ fun ServerSelection(config: BattleConfigCore) {
         )
 
         Text(
-            server.asGameServer()?.let { stringResource(it.displayStringRes) } ?: "--",
+            server.asGameServer()?.let { stringResource(it.stringRes) } ?: "--",
             style = MaterialTheme.typography.caption
         )
     }

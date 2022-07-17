@@ -75,12 +75,12 @@ fun BattleConfigScreen(
 }
 
 sealed class BattleConfigDestination {
-    object SkillMaker: BattleConfigDestination()
-    object CardPriority: BattleConfigDestination()
-    object Spam: BattleConfigDestination()
-    object PreferredSupport: BattleConfigDestination()
-    object Back: BattleConfigDestination()
-    class Other(val id: String): BattleConfigDestination()
+    object SkillMaker : BattleConfigDestination()
+    object CardPriority : BattleConfigDestination()
+    object Spam : BattleConfigDestination()
+    object PreferredSupport : BattleConfigDestination()
+    object Back : BattleConfigDestination()
+    class Other(val id: String) : BattleConfigDestination()
 }
 
 @Composable
@@ -97,163 +97,163 @@ private fun BattleConfigContent(
         modifier = Modifier
             .fillMaxSize()
     ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                val deleteConfirmDialog = FgaDialog()
-                deleteConfirmDialog.build {
-                    title(stringResource(R.string.battle_config_item_delete_confirm_title))
-                    message(stringResource(R.string.battle_config_item_delete_confirm_message))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            val deleteConfirmDialog = FgaDialog()
+            deleteConfirmDialog.build {
+                title(stringResource(R.string.battle_config_item_delete_confirm_title))
+                message(stringResource(R.string.battle_config_item_delete_confirm_message))
 
-                    buttons(
-                        onSubmit = onDelete,
-                        okLabel = stringResource(R.string.battle_config_item_delete_confirm_ok)
+                buttons(
+                    onSubmit = onDelete,
+                    okLabel = stringResource(R.string.battle_config_item_delete_confirm_ok)
+                )
+            }
+
+            Heading(
+                stringResource(R.string.battle_config_edit)
+            ) {
+                item {
+                    HeadingButton(
+                        text = stringResource(R.string.battle_config_item_export),
+                        onClick = onExport
                     )
                 }
 
-                Heading(
-                    stringResource(R.string.p_nav_battle_config_edit)
-                ) {
-                    item {
-                        HeadingButton(
-                            text = stringResource(R.string.battle_config_item_export),
-                            onClick = onExport
-                        )
-                    }
-
-                    item {
-                        HeadingButton(
-                            text = stringResource(R.string.battle_config_item_copy),
-                            icon = icon(Icons.Default.ContentCopy),
-                            onClick = onCopy
-                        )
-                    }
-
-                    item {
-                        HeadingButton(
-                            text = stringResource(R.string.battle_config_item_delete),
-                            isDanger = true,
-                            icon = icon(Icons.Default.Delete),
-                            onClick = { deleteConfirmDialog.show() }
-                        )
-                    }
+                item {
+                    HeadingButton(
+                        text = stringResource(R.string.battle_config_item_copy),
+                        icon = icon(Icons.Default.ContentCopy),
+                        onClick = onCopy
+                    )
                 }
 
-                LazyColumn(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .padding(16.dp)
-                        ) {
-                            Column {
-                                config.name.EditTextPreference(
-                                    title = stringResource(R.string.p_battle_config_name),
-                                    validate = { it.isNotBlank() },
-                                    singleLine = true
-                                )
+                item {
+                    HeadingButton(
+                        text = stringResource(R.string.battle_config_item_delete),
+                        isDanger = true,
+                        icon = icon(Icons.Default.Delete),
+                        onClick = { deleteConfirmDialog.show() }
+                    )
+                }
+            }
 
-                                Divider()
+            LazyColumn(
+                modifier = Modifier.weight(1f)
+            ) {
+                item {
+                    Card(
+                        modifier = Modifier
+                            .padding(16.dp)
+                    ) {
+                        Column {
+                            config.name.EditTextPreference(
+                                title = stringResource(R.string.p_battle_config_name),
+                                validate = { it.isNotBlank() },
+                                singleLine = true
+                            )
 
-                                config.notes.EditTextPreference(
-                                    title = stringResource(R.string.p_battle_config_notes)
-                                )
-                            }
-                        }
-                    }
+                            Divider()
 
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .padding(bottom = 16.dp)
-                        ) {
-                            SkillCommandGroup(
-                                config = config,
-                                vm = vm,
-                                openSkillMaker = { navigate(BattleConfigDestination.SkillMaker) }
+                            config.notes.EditTextPreference(
+                                title = stringResource(R.string.p_battle_config_notes)
                             )
                         }
                     }
+                }
 
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .padding(bottom = 16.dp)
-                        ) {
-                            Column {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
+                item {
+                    Card(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 16.dp)
+                    ) {
+                        SkillCommandGroup(
+                            config = config,
+                            vm = vm,
+                            openSkillMaker = { navigate(BattleConfigDestination.SkillMaker) }
+                        )
+                    }
+                }
+
+                item {
+                    Card(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 16.dp)
+                    ) {
+                        Column {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
+                                Box(
                                     modifier = Modifier
-                                        .height(IntrinsicSize.Min)
+                                        .weight(1f)
                                 ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                    ) {
-                                        config.materials.Materials()
-                                    }
-
-                                    VerticalDivider()
-
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxHeight()
-                                            .clickable(onClick = { navigate(BattleConfigDestination.Spam) }),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            stringResource(R.string.p_spam_spam).uppercase(),
-                                            style = MaterialTheme.typography.caption,
-                                            modifier = Modifier
-                                                .padding(16.dp, 5.dp)
-                                        )
-                                    }
-
-                                    VerticalDivider()
-
-                                    ServerSelection(config)
-
-                                    VerticalDivider()
-
-                                    PartySelection(config)
+                                    config.materials.Materials()
                                 }
 
-                                Divider()
+                                VerticalDivider()
 
-                                val cardPriority by vm.cardPriority.collectAsState(null)
-
-                                cardPriority?.let {
-                                    Preference(
-                                        title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
-                                        summary = { CardPrioritySummary(it) },
-                                        onClick = { navigate(BattleConfigDestination.CardPriority) }
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .clickable(onClick = { navigate(BattleConfigDestination.Spam) }),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        stringResource(R.string.p_spam_spam).uppercase(),
+                                        style = MaterialTheme.typography.caption,
+                                        modifier = Modifier
+                                            .padding(16.dp, 5.dp)
                                     )
                                 }
+
+                                VerticalDivider()
+
+                                ServerSelection(config)
+
+                                VerticalDivider()
+
+                                PartySelection(config)
+                            }
+
+                            Divider()
+
+                            val cardPriority by vm.cardPriority.collectAsState(null)
+
+                            cardPriority?.let {
+                                Preference(
+                                    title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
+                                    summary = { CardPrioritySummary(it) },
+                                    onClick = { navigate(BattleConfigDestination.CardPriority) }
+                                )
                             }
                         }
                     }
+                }
 
-                    item {
-                        val maxSkillText by vm.maxSkillText.collectAsState("")
+                item {
+                    val maxSkillText by vm.maxSkillText.collectAsState("")
 
-                        SupportGroup(
-                            config = config,
-                            goToPreferred = { navigate(BattleConfigDestination.PreferredSupport) },
-                            maxSkillText = maxSkillText,
-                            friendEntries = friendEntries
-                        )
-                    }
+                    SupportGroup(
+                        config = config,
+                        goToPreferred = { navigate(BattleConfigDestination.PreferredSupport) },
+                        maxSkillText = maxSkillText,
+                        friendEntries = friendEntries
+                    )
+                }
 
-                    item {
-                        ShuffleCardsGroup(config)
-                    }
+                item {
+                    ShuffleCardsGroup(config)
                 }
             }
         }
+    }
 }
 
 private val CardScore.color: Color

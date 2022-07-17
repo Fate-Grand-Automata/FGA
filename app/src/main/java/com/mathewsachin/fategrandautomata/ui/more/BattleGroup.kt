@@ -11,6 +11,7 @@ import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.SingleSelectChipPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
+import com.mathewsachin.fategrandautomata.util.stringRes
 
 fun LazyListScope.battleGroup(
     prefs: PrefsCore
@@ -30,7 +31,7 @@ fun LazyListScope.battleGroup(
             mapOf(PrefsCore.GameServerAutoDetect to stringResource(R.string.p_game_server_auto_detect))
                 .plus(
                     GameServerEnum.values().associate {
-                        it.name to stringResource(it.displayStringRes)
+                        it.name to stringResource(it.stringRes)
                     }
                 )
         )
@@ -98,8 +99,8 @@ fun LazyListScope.battleGroup(
 
     item {
         prefs.skipServantFaceCardCheck.SwitchPreference(
-            title = "Skip servant face-card checks",
-            summary = "Brave chains, servant priority, NP-matching card shuffle, etc. won't work",
+            title = stringResource(R.string.p_skip_servant_face_checks),
+            summary = stringResource(R.string.p_skip_servant_face_checks_summary),
             icon = icon(Icons.Default.NoAccounts)
         )
     }
@@ -111,12 +112,3 @@ private fun Int.boostItemString() = when (this) {
     0 -> stringResource(R.string.p_boost_item_skip)
     else -> toString()
 }
-
-val GameServerEnum.displayStringRes
-    get() = when (this) {
-        GameServerEnum.En -> R.string.game_server_na
-        GameServerEnum.Jp -> R.string.game_server_jp
-        GameServerEnum.Cn -> R.string.game_server_cn
-        GameServerEnum.Tw -> R.string.game_server_tw
-        GameServerEnum.Kr -> R.string.game_server_kr
-    }

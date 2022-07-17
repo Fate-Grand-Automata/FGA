@@ -165,9 +165,9 @@
     <string name="p_fine_tune_wait_before_cards">選擇指令卡前等待時間 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">等待時間加乘 (%)</string>
 
-    <string name="p_nav_troubleshoot">FGA有問題請先點這 (GitHub連結)</string>
-    <string name="p_nav_battle_config_edit">編輯腳本</string>
-    <string name="p_nav_card_priority">偏好指令卡</string>
+    <string name="troubleshoot">FGA有問題請先點這 (GitHub連結)</string>
+    <string name="battle_config_edit">編輯腳本</string>
+    <string name="card_priority">偏好指令卡</string>
 
     <string name="p_refill_type_gold">黃金果實</string>
     <string name="p_refill_type_silver">白銀果實</string>

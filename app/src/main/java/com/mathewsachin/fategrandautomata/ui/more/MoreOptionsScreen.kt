@@ -50,7 +50,7 @@ private fun MoreOptionsContent(
 
         Tabbed(
             items = MoreSettingsGroup.values().toList(),
-            heading = { Text(stringResource(it.displayStringRes)) },
+            heading = { Text(stringResource(it.stringRes)) },
             content = {
                 Card(
                     modifier = Modifier
@@ -96,9 +96,10 @@ private fun MoreOptionsContent(
 private enum class MoreSettingsGroup {
     Battle, Storage, Advanced;
 
-    val displayStringRes get() = when (this) {
-        Battle -> R.string.p_script_mode_battle
-        Storage -> R.string.p_storage
-        Advanced -> R.string.p_advanced
-    }
+    val stringRes
+        get() = when (this) {
+            Battle -> R.string.p_script_mode_battle
+            Storage -> R.string.p_storage
+            Advanced -> R.string.p_advanced
+        }
 }

@@ -103,6 +103,7 @@
     <string name="p_battle_config_party">Party</string>
     <string name="p_battle_config_server">Server</string>
     <string name="p_battle_config_card_priority">Card Priority</string>
+    <string name="p_battle_config_servant_priority">Use Servant Priority</string>
     <string name="p_battle_config_support">Support</string>
     <string name="p_battle_config_support_selection_mode">Selection Mode</string>
     <string name="p_battle_config_support_fallback_selection_mode">Fallback</string>
@@ -135,6 +136,8 @@
     <string name="p_boost_item">Boost Item</string>
     <string name="p_brave_chains">Brave Chains</string>
     <string name="p_rearrange_cards">Rearrange Cards</string>
+    <string name="p_skip_servant_face_checks">Skip servant face-card checks</string>
+    <string name="p_skip_servant_face_checks_summary">Brave chains, servant priority, NP-matching card shuffle, etc. won\'t work</string>
 
     <string name="p_wait_ap_regen_text">Wait for AP Regeneration</string>
     <string name="wait_ap_regen_toast_message">Waiting for AP regeneration. Rechecking in %d minute(s).</string>
@@ -158,6 +161,7 @@
     <string name="p_root_screenshot">Use Root for Screenshots</string>
     <string name="p_root_screenshot_summary">Useful on Nox (Android 7). Toggle service after changing this.</string>
     <string name="p_auto_start_service">Auto-start service</string>
+    <string name="p_thresholded_stage_counter">Thresholded stage counter detection</string>
 
     <string name="p_fine_tune">Fine-tune</string>
     <string name="p_fine_tune_support">Support</string>
@@ -181,9 +185,9 @@
     <string name="p_fine_tune_wait_before_cards">Wait before Cards</string>
     <string name="p_fine_tune_wait_multiplier">Wait Multiplier</string>
 
-    <string name="p_nav_troubleshoot">Troubleshooting</string>
-    <string name="p_nav_battle_config_edit">Edit config</string>
-    <string name="p_nav_card_priority">Card Priority</string>
+    <string name="troubleshoot">Troubleshooting</string>
+    <string name="battle_config_edit">Edit config</string>
+    <string name="card_priority">Card Priority</string>
 
     <string name="p_refill_type_gold">Gold</string>
     <string name="p_refill_type_silver">Silver</string>
@@ -198,6 +202,9 @@
     <string name="p_boost_item_disabled">Disabled</string>
     <string name="p_boost_item_skip">Skip</string>
 
+    <string name="spam">Spam mode</string>
+    <string name="spam_target">Target</string>
+    <string name="spam_np">NP:</string>
     <string name="p_spam_none">None</string>
     <string name="p_spam_spam">Spam</string>
     <string name="p_spam_danger">Danger</string>
@@ -232,6 +239,11 @@
     <string name="overlay_notification_text">Overlay service running</string>
     <string name="notification_stop">Stop</string>
 
+    <string name="accessibility_service">"Accessibility Service: "</string>
+    <string name="accessibility_enabled">ENABLED</string>
+    <string name="accessibility_disabled">DISABLED</string>
+    <string name="accessibility_disable">DISABLE</string>
+    <string name="accessibility_enable_in_settings">ENABLE IN SETTINGS</string>
     <string name="accessibility_disabled_title">Accessibility Disabled</string>
     <string name="accessibility_disabled_message">Turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
     <string name="accessibility_disabled_go_to_settings">Go To Settings</string>
@@ -270,6 +282,7 @@
     <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string>
     <string name="picked_exp_stacks">Picked %d EXP stacks</string>
     <string name="no_embers_found">Couldn\'t find Embers on screen. Make sure that you\'ve filtered for EXP cards.</string>
+    <string name="root_failed">Failed to get root access</string>
 
     <string name="p_mats">Materials</string>
     <string name="mats_farmed">Farmed %d material(s)</string>
@@ -332,4 +345,14 @@
     <string name="p_shuffle_cards_when_none">None</string>
     <string name="p_shuffle_cards_when_no_effective">No effective cards</string>
     <string name="p_shuffle_cards_when_no_np_matching">No cards matching NP</string>
+
+    <string name="p_game_area_mode">Game Area Mode</string>
+    <string name="p_game_area_default">Default</string>
+    <string name="p_game_area_duo">Surface Duo</string>
+    <string name="p_game_area_xperia">Sony Xperia</string>
+    <string name="p_game_area_custom">Custom</string>
+    <string name="p_game_area_custom_left">Left</string>
+    <string name="p_game_area_custom_top">Top</string>
+    <string name="p_game_area_custom_right">Right</string>
+    <string name="p_game_area_custom_bottom">Bottom</string>
 </resources>
