@@ -193,7 +193,7 @@ private fun MainScreenContent(
 
                     item {
                         HeadingButton(
-                            text = stringResource(R.string.p_nav_troubleshoot),
+                            text = stringResource(R.string.troubleshoot),
                             onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
                         )
                     }
@@ -296,10 +296,10 @@ private fun AccessibilityServiceBlock(
                 .padding(16.dp, 5.dp)
         ) {
             Row {
-                Text("Accessibility Service: ")
+                Text(stringResource(R.string.accessibility_service))
 
                 Text(
-                    if (serviceStarted) "ENABLED" else "DISABLED",
+                    stringResource(if (serviceStarted) R.string.accessibility_enabled else R.string.accessibility_disabled),
                     modifier = Modifier
                         .padding(start = 5.dp),
                     color = colorResource(if (serviceStarted) R.color.colorQuickResist else R.color.colorBusterResist),
@@ -313,7 +313,7 @@ private fun AccessibilityServiceBlock(
                 enabled = !serviceStarted || !overlayServiceStarted
             ) {
                 Text(
-                    if (serviceStarted) "DISABLE" else "ENABLE IN SETTINGS"
+                    stringResource(if (serviceStarted) R.string.accessibility_disable else R.string.accessibility_enable_in_settings)
                 )
             }
         }

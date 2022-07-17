@@ -33,8 +33,8 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.ui.*
 import com.mathewsachin.fategrandautomata.ui.battle_config_item.Material
-import com.mathewsachin.fategrandautomata.ui.more.displayStringRes
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
+import com.mathewsachin.fategrandautomata.util.stringRes
 
 @Composable
 fun BattleConfigListScreen(
@@ -94,13 +94,13 @@ fun BattleConfigListScreen(
 }
 
 private sealed class BattleConfigListAction {
-    object Export: BattleConfigListAction()
-    object Import: BattleConfigListAction()
-    object Delete: BattleConfigListAction()
-    object AddNew: BattleConfigListAction()
-    class ToggleSelected(val id: String): BattleConfigListAction()
-    class StartSelection(val id: String): BattleConfigListAction()
-    class Edit(val id: String): BattleConfigListAction()
+    object Export : BattleConfigListAction()
+    object Import : BattleConfigListAction()
+    object Delete : BattleConfigListAction()
+    object AddNew : BattleConfigListAction()
+    class ToggleSelected(val id: String) : BattleConfigListAction()
+    class StartSelection(val id: String) : BattleConfigListAction()
+    class Edit(val id: String) : BattleConfigListAction()
 }
 
 @Composable
@@ -176,7 +176,7 @@ private fun BattleConfigListContent(
                             Text(
                                 when (it) {
                                     BattleConfigCore.Server.NotSet -> "ALL"
-                                    is BattleConfigCore.Server.Set -> stringResource(it.server.displayStringRes)
+                                    is BattleConfigCore.Server.Set -> stringResource(it.server.stringRes)
                                 }
                             )
                         },

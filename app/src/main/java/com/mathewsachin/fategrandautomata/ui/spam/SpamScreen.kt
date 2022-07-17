@@ -24,6 +24,7 @@ import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectChip
 import com.mathewsachin.fategrandautomata.ui.prefs.SwitchPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
+import com.mathewsachin.fategrandautomata.util.stringRes
 import kotlinx.coroutines.launch
 
 @Composable
@@ -134,7 +135,7 @@ private fun NpSpamView(
         modifier = Modifier
             .padding(start = 16.dp)
     ) {
-        Text("NP:")
+        Text(stringResource(R.string.spam_np))
 
         var selectedSpamMode by spamConfig.spamMode
         var selectedWaves by spamConfig.waves
@@ -234,13 +235,13 @@ private fun SelectSpamMode(
     val dialog = listDialog(
         selected = selected,
         onSelectedChange = onSelectChange,
-        entries = SpamEnum.values().associateWith { it.toString() },
-        title = "Spam mode"
+        entries = SpamEnum.values().associateWith { stringResource(it.stringRes) },
+        title = stringResource(R.string.spam)
     )
 
     ListItem(
-        text = { Text("Mode") },
-        secondaryText = { Text(selected.toString()) },
+        text = { Text(stringResource(R.string.spam)) },
+        secondaryText = { Text(stringResource(selected.stringRes)) },
         modifier = modifier
             .clickable { dialog.show() }
     )
@@ -256,11 +257,11 @@ private fun SelectTarget(
         selected = selected,
         onSelectedChange = onSelectChange,
         entries = SkillSpamTarget.values().associateWith { it.toString() },
-        title = "Target"
+        title = stringResource(R.string.spam_target)
     )
 
     ListItem(
-        text = { Text("Target") },
+        text = { Text(stringResource(R.string.spam_target)) },
         secondaryText = { Text(selected.toString()) },
         modifier = modifier
             .clickable { dialog.show() }

@@ -165,9 +165,9 @@
     <string name="p_fine_tune_wait_before_cards">選擇指令卡前等待時間 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">等待時間加乘 (%)</string>
 
-    <string name="p_nav_troubleshoot">FGA有問題請先點這 (GitHub連結)</string>
-    <string name="p_nav_battle_config_edit">編輯腳本</string>
-    <string name="p_nav_card_priority">偏好指令卡</string>
+    <string name="troubleshoot">FGA有問題請先點這 (GitHub連結)</string>
+    <string name="battle_config_edit">編輯腳本</string>
+    <string name="card_priority">偏好指令卡</string>
 
     <string name="p_refill_type_gold">黃金果實</string>
     <string name="p_refill_type_silver">白銀果實</string>
@@ -312,7 +312,6 @@
     <string name="first_clear_rewards">首次通關獎勵</string>
     <string name="no_embers_found">未找到種火，請確認是否已將經驗值列為篩選條件</string>
     <string name="times_rolled">已抽取 %d 次</string>
-    <string name="p_limit">上限</string>
     <string name="p_roll_limit">限制抽卡次數</string>
     <string name="p_prevent_lottery_box_reset">取消抽箱重置</string>
     <string name="mat_core">曉光爐心</string>

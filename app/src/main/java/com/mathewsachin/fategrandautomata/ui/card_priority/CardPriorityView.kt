@@ -39,11 +39,11 @@ fun CardPriorityView(
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
         ) {
-            Heading(stringResource(R.string.p_nav_card_priority))
+            Heading(stringResource(R.string.card_priority))
 
             val servantPriority by useServantPriority.remember()
             useServantPriority.SwitchPreference(
-                title = "Use Servant Priority",
+                title = stringResource(R.string.p_battle_config_servant_priority),
                 modifier = Modifier
                     .padding(bottom = 16.dp)
             )

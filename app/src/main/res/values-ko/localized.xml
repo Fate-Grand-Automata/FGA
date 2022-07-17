@@ -155,9 +155,9 @@
     <string name="p_fine_tune_wait_before_turn">턴 시작 전 딜레이 (ms)</string>
     <string name="p_fine_tune_wait_before_cards">카드 뜨기 전 딜레이 (ms)</string>
     <string name="p_fine_tune_wait_multiplier">딜레이 배율기 (%)</string>
-    <string name="p_nav_troubleshoot">문제 해결</string>
-    <string name="p_nav_battle_config_edit">설정 파일 수정</string>
-    <string name="p_nav_card_priority">카드 우선</string>
+    <string name="troubleshoot">문제 해결</string>
+    <string name="battle_config_edit">설정 파일 수정</string>
+    <string name="card_priority">카드 우선</string>
     <string name="p_refill_type_gold">금</string>
     <string name="p_refill_type_silver">은</string>
     <string name="p_refill_type_bronze">청동</string>

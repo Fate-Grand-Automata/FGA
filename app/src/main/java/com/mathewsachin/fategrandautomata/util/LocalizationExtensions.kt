@@ -1,6 +1,7 @@
 package com.mathewsachin.fategrandautomata.util
 
 import com.mathewsachin.fategrandautomata.R
+import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
 import com.mathewsachin.fategrandautomata.scripts.enums.*
 
 val RefillResourceEnum.stringRes
@@ -107,4 +108,21 @@ val MaterialEnum.stringRes
         MaterialEnum.DemonFlameLantern -> R.string.mat_demon_lantern
         MaterialEnum.AmnestyBell -> R.string.mat_amnesty_bell
         MaterialEnum.FantasyScales -> R.string.mat_fantasy_scales
+    }
+
+val GameAreaMode.stringRes
+    get() = when (this) {
+        GameAreaMode.Default -> R.string.p_game_area_default
+        GameAreaMode.Duo -> R.string.p_game_area_duo
+        GameAreaMode.Xperia -> R.string.p_game_area_xperia
+        GameAreaMode.Custom -> R.string.p_game_area_custom
+    }
+
+val GameServerEnum.stringRes
+    get() = when (this) {
+        GameServerEnum.En -> R.string.game_server_na
+        GameServerEnum.Jp -> R.string.game_server_jp
+        GameServerEnum.Cn -> R.string.game_server_cn
+        GameServerEnum.Tw -> R.string.game_server_tw
+        GameServerEnum.Kr -> R.string.game_server_kr
     }
