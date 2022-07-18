@@ -102,7 +102,8 @@
     <string name="p_battle_config_notes">备注</string>
     <string name="p_battle_config_party">队伍编号</string>
     <string name="p_battle_config_server">区服</string>
-    <string name="p_battle_config_card_priority">偏好指令卡</string>
+    <string name="p_battle_config_card_priority">指令卡优先级</string>
+    <string name="p_battle_config_servant_priority">使用从者优先级</string>
     <string name="p_battle_config_support">助战从者</string>
     <string name="p_battle_config_support_selection_mode">助战从者选取方式</string>
     <string name="p_battle_config_support_fallback_selection_mode">备用选取方式</string>
@@ -134,7 +135,8 @@
     <string name="p_screenshot_drops_unmodified_summary">Save unmodified full-screen screenshots instead of cropped and rescaled screenshots</string>
     <string name="p_boost_item">加速道具</string>
     <string name="p_brave_chains">追击连携</string>
-    <string name="p_rearrange_cards">调换顺序\n(优先性高的卡后出)</string>
+    <string name="p_rearrange_cards">调换顺序\n(优先级高的卡后出)</string>
+    <string name="p_skip_servant_face_checks">跳过从者头像检查</string>
 
     <string name="p_wait_ap_regen_text">等待体力回复</string>
     <string name="wait_ap_regen_toast_message">等待体力回复中，%d 分钟后再次检查</string>
@@ -198,6 +200,9 @@
     <string name="p_boost_item_disabled">关闭</string>
     <string name="p_boost_item_skip">跳过</string>
 
+    <string name="spam">瞎打模式</string>
+    <string name="spam_target">目标</string>
+    <string name="spam_np">NP:</string>
     <string name="p_spam_none">无</string>
     <string name="p_spam_spam">能放就放</string>
     <string name="p_spam_danger">危险敌人时施放</string>
@@ -232,6 +237,11 @@
     <string name="overlay_notification_text">服务启动中</string>
     <string name="notification_stop">停止</string>
 
+    <string name="accessibility_service">无障碍服务：</string>
+    <string name="accessibility_enabled">已开启</string>
+    <string name="accessibility_disabled">已关闭</string>
+    <string name="accessibility_disable">关闭</string>
+    <string name="accessibility_enable_in_settings">在设置中开启</string>
     <string name="accessibility_disabled_title">无障碍服务已关闭</string>
     <string name="accessibility_disabled_message">请在系统设定中开启无障碍服务设定，如果已经开启请关闭后重新开启</string>
     <string name="accessibility_disabled_go_to_settings">前往设定</string>
@@ -270,6 +280,7 @@
     <string name="turns_stats">回合: %1$d (最少), %2$d (平均), %3$d (最多)</string>
     <string name="picked_exp_stacks">已挑选 %d 堆种火</string>
     <string name="no_embers_found">无法在屏幕上找到种火，请确保经验卡的筛选已打开</string>
+    <string name="root_failed">Root权限获取失败</string>
 
     <string name="p_mats">追踪掉落素材</string>
     <string name="mats_farmed">已获得 %d 个素材</string>
@@ -332,4 +343,14 @@
     <string name="p_shuffle_cards_when_none">不洗牌</string>
     <string name="p_shuffle_cards_when_no_effective">无有效(effective)指令牌</string>
     <string name="p_shuffle_cards_when_no_np_matching">无施放宝具从者的指令牌</string>
+
+    <string name="p_game_area_mode">游戏区域偏移（消除黑边影响）</string>
+    <string name="p_game_area_default">默认</string>
+    <string name="p_game_area_duo">Surface Duo</string>
+    <string name="p_game_area_xperia">Sony Xperia</string>
+    <string name="p_game_area_custom">自定义</string>
+    <string name="p_game_area_custom_left">左侧（像素）</string>
+    <string name="p_game_area_custom_top">顶部（像素）</string>
+    <string name="p_game_area_custom_right">右侧（像素）</string>
+    <string name="p_game_area_custom_bottom">底部（像素）</string>
 </resources>
