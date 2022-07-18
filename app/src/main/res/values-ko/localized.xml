@@ -136,7 +136,6 @@
     <string name="p_boost_item">부스트 아이템</string>
     <string name="p_brave_chains">브레이브 체인</string>
     <string name="p_rearrange_cards">카드 재배열</string>
-    <string name="p_wait_ap_regen_text">AP 회복 대기</string>
     <string name="p_skip_servant_face_checks">서번트 카드 아이콘 확인 생략</string>
     <string name="p_skip_servant_face_checks_summary">활성화시 브레이브 체인, 서번트 우선순위, 보구에 맞는 카드 셔플 등의 기능을 사용할 수 없습니다.</string>
 
