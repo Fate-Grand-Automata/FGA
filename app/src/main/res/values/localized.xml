@@ -239,7 +239,7 @@
     <string name="overlay_notification_text">Overlay service running</string>
     <string name="notification_stop">Stop</string>
 
-    <string name="accessibility_service">"Accessibility Service: "</string>
+    <string name="accessibility_service">Accessibility Service:</string>
     <string name="accessibility_enabled">ENABLED</string>
     <string name="accessibility_disabled">DISABLED</string>
     <string name="accessibility_disable">DISABLE</string>
