@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<string name="tapper_service_description">
+        此无障碍服务用于在无需root的情况下模拟点击和滑动操作。
+        通过检查前台应用的APK名称，该服务也能自动获取FGO的区服（美服/日服/国服/台服/韩服）。
+        若该服务出现故障，请尝试将其关闭后重新开启。
+        若仍然无法工作，您可能需要调整本设备的电池优化设定。
+    </string>
+
     <string name="battle_config_item_copy">复制</string>
     <string name="battle_config_item_delete">删除</string>
     <string name="battle_config_item_export">导出</string>
