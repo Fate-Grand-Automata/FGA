@@ -101,6 +101,7 @@
     <string name="p_battle_config_cmd">커맨드</string>
     <string name="p_battle_config_notes">메모</string>
     <string name="p_battle_config_party">파티</string>
+    <string name="p_battle_config_server">서버</string>
     <string name="p_battle_config_card_priority">카드 우선</string>
     <string name="p_battle_config_servant_priority">서번트 우선</string>
     <string name="p_battle_config_support">서포트</string>
