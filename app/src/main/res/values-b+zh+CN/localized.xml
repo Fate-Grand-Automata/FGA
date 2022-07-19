@@ -137,6 +137,7 @@
     <string name="p_brave_chains">追击连携</string>
     <string name="p_rearrange_cards">调换顺序\n(优先级高的卡后出)</string>
     <string name="p_skip_servant_face_checks">跳过从者头像检查</string>
+    <string name="p_skip_servant_face_checks_summary">红Chain、从者优先级、无施放宝具从者的指令牌时洗牌等功能将不会起效</string>
 
     <string name="p_wait_ap_regen_text">等待体力回复</string>
     <string name="wait_ap_regen_toast_message">等待体力回复中，%d 分钟后再次检查</string>
@@ -202,7 +203,7 @@
 
     <string name="spam">瞎打模式</string>
     <string name="spam_target">目标</string>
-    <string name="spam_np">NP:</string>
+    <string name="spam_np">宝具:</string>
     <string name="p_spam_none">无</string>
     <string name="p_spam_spam">能放就放</string>
     <string name="p_spam_danger">危险敌人时施放</string>
