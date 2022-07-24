@@ -324,4 +324,5 @@
     <string name="mat_egg">真理之卵</string>
     <string name="mat_star_shard">煌星碎片</string>
     <string name="mat_fruit">悠久果實</string>
+    <string name="p_runs">已執行次數</string>
 </resources>
