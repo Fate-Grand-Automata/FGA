@@ -84,7 +84,7 @@
     <string name="p_battle_config_summary">設定周回腳本</string>
     <string name="p_more_options">更多選項</string>
 
-    <string name="p_runs">上限</string>
+    <string name="p_runs">已執行次數</string>
 
     <string name="p_battle_config_name">腳本名稱</string>
     <string name="p_battle_config_cmd">技能順序</string>
@@ -324,5 +324,4 @@
     <string name="mat_egg">真理之卵</string>
     <string name="mat_star_shard">煌星碎片</string>
     <string name="mat_fruit">悠久果實</string>
-    <string name="p_runs">已執行次數</string>
 </resources>
