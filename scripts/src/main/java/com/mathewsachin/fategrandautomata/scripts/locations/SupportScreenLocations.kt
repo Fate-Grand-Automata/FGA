@@ -20,7 +20,7 @@ class SupportScreenLocations @Inject constructor(
 
     val updateClick =
         when (gameServer) {
-            GameServerEnum.Jp -> 1865
+            GameServerEnum.Jp, GameServerEnum.Cn -> 1865
             else -> 1700
         }.let { x -> Location(x, 260) + headerOffset }
 

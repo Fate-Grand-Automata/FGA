@@ -85,7 +85,7 @@ class ServantSelection @Inject constructor(
         val x = bounds.x + 1620
 
         val skillMargin = when (prefs.gameServer) {
-            GameServerEnum.Jp, GameServerEnum.En -> 90
+            GameServerEnum.Jp, GameServerEnum.Cn, GameServerEnum.En -> 90
             else -> 155
         }
 
