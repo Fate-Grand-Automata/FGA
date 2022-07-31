@@ -12,7 +12,7 @@ buildscript {
     ext {
         kotlin_version = '1.7.10'
         hilt_version = '2.42'
-        compose_version = '1.2.0-rc03'
+        compose_version = '1.2.0'
         gson_version = '2.9.0'
     }
     repositories {
