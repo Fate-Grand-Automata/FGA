@@ -35,5 +35,5 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    api 'com.fredporciuncula:flow-preferences:1.7.0'
+    api 'com.fredporciuncula:flow-preferences:1.8.0'
 }
