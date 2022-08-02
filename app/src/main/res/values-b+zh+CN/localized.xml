@@ -161,6 +161,7 @@
     <string name="p_root_screenshot">以root截图</string>
     <string name="p_root_screenshot_summary">对夜神模拟器(Nox with Android 7)有帮助，请在开启服务前选取此设定</string>
     <string name="p_auto_start_service">自动开启服务</string>
+    <string name="p_thresholded_stage_counter">使用二值化图像检测战斗场次</string>
 
     <string name="p_fine_tune">微调</string>
     <string name="p_fine_tune_support">助战从者列表</string>
