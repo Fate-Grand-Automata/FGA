@@ -167,9 +167,9 @@
     <string name="p_fine_tune_support_swipes_per_update">助战列表更新后滑动次数</string>
     <string name="p_fine_tune_support_max_updates">助战列表更新次数限制</string>
     <string name="p_fine_tune_similarity">图像比对</string>
-    <string name="p_fine_tune_min_similarity">最低相似度 (%)</string>
-    <string name="p_fine_tune_mlb_similarity">满破相似度 (%)</string>
-    <string name="p_fine_tune_stage_counter_similarity">关卡计数相似度 (%)</string>
+    <string name="p_fine_tune_min_similarity">全局识别阈值 (%)</string>
+    <string name="p_fine_tune_mlb_similarity">满破星识别阈值 (%)</string>
+    <string name="p_fine_tune_stage_counter_similarity">战斗场次识别阈值 (%)</string>
     <string name="p_fine_tune_clicks">点击</string>
     <string name="p_fine_tune_wait_after_clicking">点击后暂停 (ms)</string>
     <string name="p_fine_tune_click_duration">点击时间 (ms)</string>
