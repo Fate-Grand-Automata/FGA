@@ -43,4 +43,6 @@ interface AutomataApi {
         pattern: Pattern,
         similarity: Double? = null
     ): Sequence<Match>
+
+    fun Region.isWhite(): Boolean
 }

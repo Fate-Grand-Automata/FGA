@@ -54,6 +54,8 @@ interface Pattern : AutoCloseable {
     fun tag(tag: String): Pattern
 
     fun threshold(value: Double): Pattern
+
+    fun isWhite(): Boolean
 }
 
 /**

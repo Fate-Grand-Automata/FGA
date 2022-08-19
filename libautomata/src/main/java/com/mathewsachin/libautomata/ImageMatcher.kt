@@ -47,6 +47,8 @@ interface ImageMatcher {
         pattern: Pattern,
         similarity: Double? = null
     ): Sequence<Match>
+
+    fun isWhite(region: Region): Boolean
 }
 
 class RealImageMatcher @Inject constructor(
@@ -143,6 +145,17 @@ class RealImageMatcher @Inject constructor(
                 highlight(
                     region,
                     color = if (it.any()) HighlightColor.Success else HighlightColor.Error
+                )
+            }
+
+    override fun isWhite(region: Region) =
+        screenshotManager.getScreenshot()
+            .crop(transform.toImage(region))
+            .isWhite()
+            .also {
+                highlight(
+                    region,
+                    color = if (it) HighlightColor.Success else HighlightColor.Error
                 )
             }
 }

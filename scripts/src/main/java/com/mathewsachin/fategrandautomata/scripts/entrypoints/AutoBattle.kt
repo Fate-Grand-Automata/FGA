@@ -160,6 +160,7 @@ class AutoBattle @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to { battle.performBattle() },
             { isInMenu() } to { menu() },
+            { isStartingNp() } to { skipNp() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInQuestRewardScreen() } to { questReward() },
@@ -171,6 +172,7 @@ class AutoBattle @Inject constructor(
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
             { isDeathAnimation() } to { locations.battle.skipDeathAnimationClick.click() }
+
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -361,6 +363,15 @@ class AutoBattle @Inject constructor(
         locations.menuStorySkipClick.click()
         0.5.seconds.wait()
         locations.menuStorySkipYesClick.click()
+    }
+
+    private fun isStartingNp(): Boolean {
+        return prefs.skipNps && locations.npStartedRegion.isWhite()
+    }
+
+    private fun skipNp() {
+        0.6.seconds.wait()
+        locations.battle.extraInfoWindowCloseClick.click(5)
     }
 
     /**

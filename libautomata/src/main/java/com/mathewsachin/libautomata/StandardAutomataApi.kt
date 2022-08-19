@@ -45,5 +45,7 @@ class StandardAutomataApi @Inject constructor(
         pattern: Pattern,
         similarity: Double?
     ) = imageMatcher.findAll(this, pattern, similarity)
+
+    override fun Region.isWhite() = imageMatcher.isWhite(this)
 }
 

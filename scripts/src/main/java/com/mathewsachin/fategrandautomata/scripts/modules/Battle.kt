@@ -80,7 +80,7 @@ class Battle @Inject constructor(
 
         card.clickCommandCards(cards, npUsage)
 
-        5.seconds.wait()
+        1.seconds.wait()
     }
 
     private fun shouldShuffle(cards: List<ParsedCard>, npUsage: NPUsage): Boolean {

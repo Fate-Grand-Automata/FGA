@@ -172,4 +172,10 @@ class DroidCvPattern(
         return DroidCvPattern(result)
             .tag("$tag[threshold=$value]")
     }
+
+    override fun isWhite(): Boolean {
+        val minMaxLocResult = Core.minMaxLoc(mat)
+        // 0 = black, 255 = white
+        return minMaxLocResult.minVal >= 200
+    }
 }
