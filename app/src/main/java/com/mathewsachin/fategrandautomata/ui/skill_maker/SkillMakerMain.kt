@@ -125,7 +125,8 @@ fun SkillMakerMain(
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
                     modifier = Modifier
                         .padding(top = 16.dp)
-                        .size(120.dp)
+                        .size(90.dp)
+
                 ) {
                     Text(
                         stringResource(R.string.skill_maker_main_attack),
@@ -156,65 +157,64 @@ fun SkillButtons(
 
 @Composable
 fun Skills(onSkill: (Skill.Servant) -> Unit) {
-    Column {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Skill.Servant.list.chunked(3)
-                .mapIndexed { index, list ->
-                    val color = when (index) {
-                        0 -> R.color.colorServant1
-                        1 -> R.color.colorServant2
-                        2 -> R.color.colorServant3
-                        else -> R.color.colorAccent
-                    }
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        SkillButtons(
-                            list = list,
-                            color = colorResource(color),
-                            onSkill = onSkill
-                        )
-
-                        Text(stringResource(R.string.skill_maker_main_servant, index + 1))
-                    }
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Skill.Servant.list.chunked(3)
+            .mapIndexed { index, list ->
+                val color = when (index) {
+                    0 -> R.color.colorServant1
+                    1 -> R.color.colorServant2
+                    2 -> R.color.colorServant3
+                    else -> R.color.colorAccent
                 }
-        }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    SkillButtons(
+                        list = list,
+                        color = colorResource(color),
+                        onSkill = onSkill
+                    )
+
+                    Text(stringResource(R.string.skill_maker_main_servant, index + 1))
+                }
+            }
     }
 }
 
-val SkillMakerEntry?.colorRes: Int get() {
-    val defaultColor = R.color.colorAccent
+val SkillMakerEntry?.colorRes: Int
+    get() {
+        val defaultColor = R.color.colorAccent
 
-    return when (this) {
-        is SkillMakerEntry.Next -> R.color.colorStageChange
+        return when (this) {
+            is SkillMakerEntry.Next -> R.color.colorStageChange
 
-        is SkillMakerEntry.Action -> when (this.action) {
-            // Master Skill
-            is AutoSkillAction.MasterSkill -> R.color.colorMasterSkill
+            is SkillMakerEntry.Action -> when (this.action) {
+                // Master Skill
+                is AutoSkillAction.MasterSkill -> R.color.colorMasterSkill
 
-            // Enemy Target
-            is AutoSkillAction.TargetEnemy -> R.color.colorEnemyTarget
+                // Enemy Target
+                is AutoSkillAction.TargetEnemy -> R.color.colorEnemyTarget
 
-            // Servants
-            is AutoSkillAction.ServantSkill -> when (this.action.skill.autoSkillCode) {
-                'a', 'b', 'c' -> R.color.colorServant1
-                'd', 'e', 'f' -> R.color.colorServant2
-                'g', 'h', 'i' -> R.color.colorServant3
+                // Servants
+                is AutoSkillAction.ServantSkill -> when (this.action.skill.autoSkillCode) {
+                    'a', 'b', 'c' -> R.color.colorServant1
+                    'd', 'e', 'f' -> R.color.colorServant2
+                    'g', 'h', 'i' -> R.color.colorServant3
+                    else -> defaultColor
+                }
+
                 else -> defaultColor
             }
 
             else -> defaultColor
         }
-
-        else -> defaultColor
     }
-}
 
 // TODO: Scroll to latest item in History when new added?
 @Composable
@@ -276,7 +276,8 @@ fun EnemyTarget(
             Row(
                 modifier = Modifier
                     .padding(end = 10.dp)
-                    .clickable(onClick = onClick)
+                    .clickable(onClick = onClick),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
                     selected = isSelected,
