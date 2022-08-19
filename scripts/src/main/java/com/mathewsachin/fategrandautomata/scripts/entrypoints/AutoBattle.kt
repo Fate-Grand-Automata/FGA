@@ -365,10 +365,15 @@ class AutoBattle @Inject constructor(
         locations.menuStorySkipYesClick.click()
     }
 
-    private fun isStartingNp(): Boolean {
-        return prefs.skipNps && locations.npStartedRegion.isWhite()
-    }
+    /**
+     * Checks if BetterFGO is running and an NP is starting.
+     */
+    private fun isStartingNp() =
+        prefs.gameServer.betterFgo && locations.npStartedRegion.isWhite()
 
+    /**
+     * Taps in the top right a few times to trigger NP skip in BetterFGO.
+     */
     private fun skipNp() {
         0.6.seconds.wait()
         locations.battle.extraInfoWindowCloseClick.click(5)

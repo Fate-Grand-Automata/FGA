@@ -82,7 +82,6 @@ class PrefsCore @Inject constructor(
 
     val stopAfterThisRun = maker.bool("stop_after_this_run")
     val skipServantFaceCardCheck = maker.bool("skip_servant_face_card_check")
-    val skipNps = maker.bool("skip_nps")
 
     val playBtnLocation = maker.serialized(
         "play_btn_location",

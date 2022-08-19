@@ -91,8 +91,6 @@ class PreferencesImpl @Inject constructor(
 
     override var skipServantFaceCardCheck by prefs.skipServantFaceCardCheck
 
-    override var skipNps by prefs.skipNps
-
     override var shouldLimitFP by prefs.shouldLimitFP
     override var limitFP by prefs.limitFP
 

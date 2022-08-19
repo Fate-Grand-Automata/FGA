@@ -138,8 +138,6 @@
     <string name="p_rearrange_cards">Rearrange Cards</string>
     <string name="p_skip_servant_face_checks">Skip servant face-card checks</string>
     <string name="p_skip_servant_face_checks_summary">Brave chains, servant priority, NP-matching card shuffle, etc. won\'t work</string>
-    <string name="p_skip_nps">Skip NPs</string>
-    <string name="p_skip_nps_summary">Speeds up NPs in BetterFGO</string>
 
     <string name="p_wait_ap_regen_text">Wait for AP Regeneration</string>
     <string name="wait_ap_regen_toast_message">Waiting for AP regeneration. Rechecking in %d minute(s).</string>
