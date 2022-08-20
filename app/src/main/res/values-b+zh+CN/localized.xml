@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<string name="tapper_service_description">
+        此无障碍服务用于在无需root的情况下模拟点击和滑动操作。
+        通过检查前台应用的APK名称，该服务也能自动获取FGO的区服（美服/日服/国服/台服/韩服）。
+        若该服务出现故障，请尝试将其关闭后重新开启。
+        若仍然无法工作，您可能需要调整本设备的电池优化设定。
+    </string>
+
     <string name="battle_config_item_copy">复制</string>
     <string name="battle_config_item_delete">删除</string>
     <string name="battle_config_item_export">导出</string>
@@ -55,7 +62,7 @@
 
     <string name="skill_maker_space_ishtar">宇宙凛</string>
     <string name="skill_maker_emiya">卫宫</string>
-    <string name="skill_maker_quick">讯击</string>
+    <string name="skill_maker_quick">迅击</string>
     <string name="skill_maker_arts">技击</string>
     <string name="skill_maker_buster">力击</string>
 
@@ -84,13 +91,19 @@
     <string name="p_battle_config_summary">设定周回脚本</string>
     <string name="p_more_options">更多选项</string>
 
-    <string name="p_runs">上限</string>
+    <string name="p_limit">上限</string>
+    <string name="p_runs">已执行</string>
+    <string name="p_roll_limit">限制抽取次数</string>
+    <string name="p_prevent_lottery_box_reset">避免重置无限池</string>
+    <string name="p_receive_embers">收取种火</string>
 
     <string name="p_battle_config_name">脚本名称</string>
     <string name="p_battle_config_cmd">技能顺序</string>
     <string name="p_battle_config_notes">备注</string>
     <string name="p_battle_config_party">队伍编号</string>
-    <string name="p_battle_config_card_priority">偏好指令卡</string>
+    <string name="p_battle_config_server">区服</string>
+    <string name="p_battle_config_card_priority">指令卡优先级</string>
+    <string name="p_battle_config_servant_priority">使用从者优先级</string>
     <string name="p_battle_config_support">助战从者</string>
     <string name="p_battle_config_support_selection_mode">助战从者选取方式</string>
     <string name="p_battle_config_support_fallback_selection_mode">备用选取方式</string>
@@ -100,6 +113,10 @@
     <string name="p_battle_config_support_mlb">满破礼装</string>
     <string name="p_battle_config_support_friend_names">好友名称</string>
     <string name="p_battle_config_support_friends_only">只选择好友从者</string>
+    <string name="p_battle_config_support_friend_name_hint">使用「助战图片截取器」脚本添加好友名称的图片</string>
+    <string name="p_battle_config_support_also_check_all">同时检查全职阶</string>
+
+    <string name="p_max_skills">满技能</string>
 
     <string name="p_game_server">服务器</string>
     <string name="p_game_server_auto_detect">自动检测</string>
@@ -108,8 +125,9 @@
     <string name="p_story_skip">跳过剧情</string>
     <string name="p_skill_confirmation">技能确认</string>
     <string name="p_enable_withdraw">启用撤退</string>
-    <string name="p_stop_on_ce_drop">礼装掉落自动停止</string>
-    <string name="p_stop_on_ce_get">礼装获得自动停止</string>
+    <string name="p_stop_on_ce_drop">掉落礼装时自动停止</string>
+    <string name="p_stop_on_ce_get">获得礼装时自动停止</string>
+    <string name="p_stop_on_first_clear_rewards">获得首通奖励时自动停止</string>
     <string name="p_stop_on_ce_get_summary">首次通关及羁绊礼装获得时自动停止脚本</string>
     <string name="p_screenshot_drops">掉落截图</string>
     <string name="p_screenshot_drops_summary">存至 \'drops\' 文件夹</string>
@@ -117,9 +135,12 @@
     <string name="p_screenshot_drops_unmodified_summary">Save unmodified full-screen screenshots instead of cropped and rescaled screenshots</string>
     <string name="p_boost_item">加速道具</string>
     <string name="p_brave_chains">追击连携</string>
-    <string name="p_rearrange_cards">调换顺序\n(优先性高的卡后出)</string>
+    <string name="p_rearrange_cards">调换顺序\n(优先级高的卡后出)</string>
+    <string name="p_skip_servant_face_checks">跳过从者头像检查</string>
+    <string name="p_skip_servant_face_checks_summary">红Chain、从者优先级、无施放宝具从者的指令牌时洗牌等功能将不会起效</string>
 
     <string name="p_wait_ap_regen_text">等待体力回复</string>
+    <string name="wait_ap_regen_toast_message">等待体力回复中，%d 分钟后再次检查</string>
 
     <string name="p_storage">文件存放位置</string>
     <string name="p_folder">更改存放助战图片、掉落截图等的文件夹位置</string>
@@ -140,19 +161,20 @@
     <string name="p_root_screenshot">以root截图</string>
     <string name="p_root_screenshot_summary">对夜神模拟器(Nox with Android 7)有帮助，请在开启服务前选取此设定</string>
     <string name="p_auto_start_service">自动开启服务</string>
+    <string name="p_thresholded_stage_counter">使用二值化图像检测战斗场次</string>
 
     <string name="p_fine_tune">微调</string>
     <string name="p_fine_tune_support">助战从者列表</string>
     <string name="p_fine_tune_support_swipes_per_update">助战列表更新后滑动次数</string>
     <string name="p_fine_tune_support_max_updates">助战列表更新次数限制</string>
-    <string name="p_fine_tune_similarity">影像比对</string>
-    <string name="p_fine_tune_min_similarity">最低相似度 (%)</string>
-    <string name="p_fine_tune_mlb_similarity">满破相似度 (%)</string>
-    <string name="p_fine_tune_stage_counter_similarity">关卡计数相似度 (%)</string>
-    <string name="p_fine_tune_clicks">点选</string>
-    <string name="p_fine_tune_wait_after_clicking">点选后暂停 (ms)</string>
-    <string name="p_fine_tune_click_duration">点选时间 (ms)</string>
-    <string name="p_fine_tune_click_delay">连击间隔 (ms)</string>
+    <string name="p_fine_tune_similarity">图像比对</string>
+    <string name="p_fine_tune_min_similarity">全局识别阈值 (%)</string>
+    <string name="p_fine_tune_mlb_similarity">满破星识别阈值 (%)</string>
+    <string name="p_fine_tune_stage_counter_similarity">战斗场次识别阈值 (%)</string>
+    <string name="p_fine_tune_clicks">点击</string>
+    <string name="p_fine_tune_wait_after_clicking">点击后暂停 (ms)</string>
+    <string name="p_fine_tune_click_duration">点击时间 (ms)</string>
+    <string name="p_fine_tune_click_delay">双击间隔 (ms)</string>
     <string name="p_fine_tune_swipes">滑动</string>
     <string name="p_fine_tune_wait_after_swiping">滑动后暂停 (ms)</string>
     <string name="p_fine_tune_swipe_duration">滑动时间 (ms)</string>
@@ -165,9 +187,9 @@
 
     <string name="troubleshoot">FGA有问题请先点这 (GitHub链接)</string>
     <string name="battle_config_edit">编辑脚本</string>
-    <string name="card_priority">偏好指令卡</string>
+    <string name="card_priority">指令卡优先级</string>
 
-    <string name="p_refill_type_gold">黃金果实</string>
+    <string name="p_refill_type_gold">黄金果实</string>
     <string name="p_refill_type_silver">白银果实</string>
     <string name="p_refill_type_bronze">青铜果实</string>
     <string name="p_refill_type_copper">赤铜果实</string>
@@ -180,6 +202,9 @@
     <string name="p_boost_item_disabled">关闭</string>
     <string name="p_boost_item_skip">跳过</string>
 
+    <string name="spam">瞎打模式</string>
+    <string name="spam_target">目标</string>
+    <string name="spam_np">宝具:</string>
     <string name="p_spam_none">无</string>
     <string name="p_spam_spam">能放就放</string>
     <string name="p_spam_danger">危险敌人时施放</string>
@@ -191,7 +216,7 @@
 
     <string name="p_script_mode_battle">战斗</string>
     <string name="p_script_mode_lottery">抽无限池</string>
-    <string name="p_script_mode_fp">友情点数召唤</string>
+    <string name="p_script_mode_fp">友情点召唤</string>
     <string name="p_script_mode_support_image_maker">助战图片截取器</string>
     <string name="p_script_mode_gift_box">礼物盒</string>
 
@@ -211,14 +236,22 @@
     <string name="p_support_class_extra">Extra</string>
     <string name="p_support_class_mix">混合职介 (Mix)</string>
 
+    <string name="overlay_notification_text">服务启动中</string>
     <string name="notification_stop">停止</string>
 
+    <string name="accessibility_service">无障碍服务：</string>
+    <string name="accessibility_enabled">已开启</string>
+    <string name="accessibility_disabled">已关闭</string>
+    <string name="accessibility_disable">关闭</string>
+    <string name="accessibility_enable_in_settings">在设置中开启</string>
     <string name="accessibility_disabled_title">无障碍服务已关闭</string>
     <string name="accessibility_disabled_message">请在系统设定中开启无障碍服务设定，如果已经开启请关闭后重新开启</string>
     <string name="accessibility_disabled_go_to_settings">前往设定</string>
     <string name="draw_overlay_disabled_title">无法显示在其他应用程序上层</string>
     <string name="draw_overlay_disabled_message">请让此程序显示在其他应用程序上层，FGA需要启用此设定以显示控制按钮</string>
     <string name="cannot_start_recording">无法开启屏幕录影</string>
+    <string name="cannot_stop_recording">无法停止屏幕录影</string>
+    <string name="unexpected_error_copy">复制</string>
 
     <string name="script_msg_ap_ran_out">体力用尽！</string>
     <string name="stopped_by_user">使用者停止脚本</string>
@@ -226,15 +259,18 @@
     <string name="screen_turned_off">脚本因屏幕关闭暂停执行</string>
     <string name="unexpected_error">未知错误</string>
     <string name="script_exited">脚本停止</string>
+    <string name="lottery_reset_disabled">已关闭重置无限池</string>
     <string name="inventory_full">背包已满</string>
     <string name="present_box_full">礼物盒已满</string>
-    <string name="support_img_maker_not_found">无法侦测助战，请到好友选择画面或助战选择画面再执行</string>
+    <string name="support_img_maker_not_found">无法检测到助战，请到好友选择画面或助战选择画面再次执行</string>
     <string name="support_selection_manual">已切换至手动选择助战从者</string>
     <string name="support_selection_friend_not_set">使用「好友助战」时请设定偏好好友</string>
     <string name="support_selection_preferred_not_set">使用「偏好助战」时请设定偏好从者或偏好礼装</string>
     <string name="ce_dropped">礼装掉落!</string>
     <string name="ce_get">获得礼装!</string>
+    <string name="first_clear_rewards">首通奖励!</string>
     <string name="withdraw_disabled">无设定撤退且从者全灭</string>
+    <string name="stop_after_this_run">本次执行后停止</string>
     <string name="times_ran">已执行 %d 次</string>
     <string name="times_ran_out_of">已执行 %1$d / %2$d 次</string>
     <string name="refills_used_out_of">已自动回体 %1$d / %2$d 次</string>
@@ -245,9 +281,13 @@
     <string name="turns_count">回合 %d</string>
     <string name="turns_stats">回合: %1$d (最少), %2$d (平均), %3$d (最多)</string>
     <string name="picked_exp_stacks">已挑选 %d 堆种火</string>
+    <string name="no_embers_found">无法在屏幕上找到种火，请确保经验卡的筛选已打开</string>
+    <string name="root_failed">Root权限获取失败</string>
 
     <string name="p_mats">追踪掉落素材</string>
     <string name="mats_farmed">已获得 %d 个素材</string>
+
+    <string name="times_rolled">已抽取 %d 次</string>
 
     <string name="mat_proof">英雄之证</string>
     <string name="mat_bone">凶骨</string>
@@ -285,6 +325,19 @@
     <string name="mat_stinger">万死的毒针</string>
     <string name="mat_eternal_ice">永远结冰</string>
     <string name="mat_steel">极光之钢</string>
+    <string name="mat_core">晓光炉心</string>
+    <string name="mat_bell">闲古铃</string>
+    <string name="mat_arrow">祸罪之箭头</string>
+    <string name="mat_tiara">光银之冠</string>
+    <string name="mat_particle">神脉灵子</string>
+    <string name="mat_thread">虹之线球</string>
+    <string name="mat_mirror">九十九镜</string>
+    <string name="mat_egg">真理之卵</string>
+    <string name="mat_star_shard">煌星碎片</string>
+    <string name="mat_fruit">悠久果实</string>
+    <string name="mat_demon_lantern">鬼炎鬼灯</string>
+    <string name="mat_amnesty_bell">赦免的小钟</string>
+    <string name="mat_fantasy_scales">梦幻的鳞粉</string>
 
     <string name="p_shuffle_cards">洗牌</string>
     <string name="p_shuffle_cards_wave">战斗数</string>
@@ -292,4 +345,14 @@
     <string name="p_shuffle_cards_when_none">不洗牌</string>
     <string name="p_shuffle_cards_when_no_effective">无有效(effective)指令牌</string>
     <string name="p_shuffle_cards_when_no_np_matching">无施放宝具从者的指令牌</string>
+
+    <string name="p_game_area_mode">游戏区域偏移（消除黑边影响）</string>
+    <string name="p_game_area_default">默认</string>
+    <string name="p_game_area_duo">Surface Duo</string>
+    <string name="p_game_area_xperia">Sony Xperia</string>
+    <string name="p_game_area_custom">自定义</string>
+    <string name="p_game_area_custom_left">左侧（像素）</string>
+    <string name="p_game_area_custom_top">顶部（像素）</string>
+    <string name="p_game_area_custom_right">右侧（像素）</string>
+    <string name="p_game_area_custom_bottom">底部（像素）</string>
 </resources>
