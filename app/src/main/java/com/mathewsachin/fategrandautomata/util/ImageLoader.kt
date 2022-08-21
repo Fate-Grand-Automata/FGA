@@ -198,6 +198,9 @@ val MaterialEnum.drawable
         MaterialEnum.Stake -> R.drawable.mat_stake
         MaterialEnum.Gunpowder -> R.drawable.mat_gunpowder
         MaterialEnum.AmnestyBell -> R.drawable.mat_amnesty_bell
+        MaterialEnum.CeremonialBlade -> R.drawable.mat_ceremonial_blade
+        MaterialEnum.UnforgettableAshes -> R.drawable.mat_ashes
+
         MaterialEnum.Seed -> R.drawable.mat_seed
         MaterialEnum.GhostLantern -> R.drawable.mat_ghost_lantern
         MaterialEnum.OctupletCrystal -> R.drawable.mat_octuplet_crystal
@@ -219,6 +222,7 @@ val MaterialEnum.drawable
         MaterialEnum.DivineSpiritParticle -> R.drawable.mat_particle
         MaterialEnum.RainbowThreadBall -> R.drawable.mat_thread
         MaterialEnum.FantasyScales -> R.drawable.mat_fantasy_scales
+
         MaterialEnum.Claw -> R.drawable.mat_claw
         MaterialEnum.Heart -> R.drawable.mat_heart
         MaterialEnum.DragonScale -> R.drawable.mat_scale
@@ -237,4 +241,44 @@ val MaterialEnum.drawable
         MaterialEnum.StarShard -> R.drawable.mat_star_shard
         MaterialEnum.FruitOfEternity -> R.drawable.mat_fruit
         MaterialEnum.DemonFlameLantern -> R.drawable.mat_demon_lantern
+
+        MaterialEnum.MonumentSaber -> R.drawable.mat_monument_saber
+        MaterialEnum.MonumentArcher -> R.drawable.mat_monument_archer
+        MaterialEnum.MonumentLancer -> R.drawable.mat_monument_lancer
+        MaterialEnum.MonumentRider -> R.drawable.mat_monument_rider
+        MaterialEnum.MonumentCaster -> R.drawable.mat_monument_caster
+        MaterialEnum.MonumentAssassin -> R.drawable.mat_monument_assassin
+        MaterialEnum.MonumentBerserker -> R.drawable.mat_monument_berserker
+
+        MaterialEnum.PieceSaber -> R.drawable.mat_piece_saber
+        MaterialEnum.PieceArcher -> R.drawable.mat_piece_archer
+        MaterialEnum.PieceLancer -> R.drawable.mat_piece_lancer
+        MaterialEnum.PieceRider -> R.drawable.mat_piece_rider
+        MaterialEnum.PieceCaster -> R.drawable.mat_piece_caster
+        MaterialEnum.PieceAssassin -> R.drawable.mat_piece_assassin
+        MaterialEnum.PieceBerserker -> R.drawable.mat_piece_berserker
+
+        MaterialEnum.SkillGoldSaber -> R.drawable.mat_skill_gold_saber
+        MaterialEnum.SkillGoldArcher -> R.drawable.mat_skill_gold_archer
+        MaterialEnum.SkillGoldLancer -> R.drawable.mat_skill_gold_lancer
+        MaterialEnum.SkillGoldRider -> R.drawable.mat_skill_gold_rider
+        MaterialEnum.SkillGoldCaster -> R.drawable.mat_skill_gold_caster
+        MaterialEnum.SkillGoldAssassin -> R.drawable.mat_skill_gold_assassin
+        MaterialEnum.SkillGoldBerserker -> R.drawable.mat_skill_gold_berserker
+
+        MaterialEnum.SkillRedSaber -> R.drawable.mat_skill_red_saber
+        MaterialEnum.SkillRedArcher -> R.drawable.mat_skill_red_archer
+        MaterialEnum.SkillRedLancer -> R.drawable.mat_skill_red_lancer
+        MaterialEnum.SkillRedRider -> R.drawable.mat_skill_red_rider
+        MaterialEnum.SkillRedCaster -> R.drawable.mat_skill_red_caster
+        MaterialEnum.SkillRedAssassin -> R.drawable.mat_skill_red_assassin
+        MaterialEnum.SkillRedBerserker -> R.drawable.mat_skill_red_berserker
+
+        MaterialEnum.SkillBlueSaber -> R.drawable.mat_skill_blue_saber
+        MaterialEnum.SkillBlueArcher -> R.drawable.mat_skill_blue_archer
+        MaterialEnum.SkillBlueLancer -> R.drawable.mat_skill_blue_lancer
+        MaterialEnum.SkillBlueRider -> R.drawable.mat_skill_blue_rider
+        MaterialEnum.SkillBlueCaster -> R.drawable.mat_skill_blue_caster
+        MaterialEnum.SkillBlueAssassin -> R.drawable.mat_skill_blue_assassin
+        MaterialEnum.SkillBlueBerserker -> R.drawable.mat_skill_blue_berserker
     }

@@ -338,6 +338,48 @@
     <string name="mat_demon_lantern">Demon Flame Lantern</string>
     <string name="mat_amnesty_bell">Tiny Bell of Amnesty</string>
     <string name="mat_fantasy_scales">Scales of Fantasies</string>
+    <string name="mat_ceremonial_blade">Twilight Ceremonial Blade</string>
+    <string name="mat_ashes">Unforgettable Ashes</string>
+
+    <string name="mat_monument_saber">Saber Monument</string>
+    <string name="mat_monument_archer">Archer Monument</string>
+    <string name="mat_monument_lancer">Lancer Monument</string>
+    <string name="mat_monument_rider">Rider Monument</string>
+    <string name="mat_monument_caster">Caster Monument</string>
+    <string name="mat_monument_asssassin">Assassin Monument</string>
+    <string name="mat_monument_berserker">Berserker Monument</string>
+
+    <string name="mat_piece_saber">Saber Piece</string>
+    <string name="mat_piece_archer">Archer Piece</string>
+    <string name="mat_piece_lancer">Lancer Piece</string>
+    <string name="mat_piece_rider">Rider Piece</string>
+    <string name="mat_piece_caster">Caster Piece</string>
+    <string name="mat_piece_asssassin">Assassin Piece</string>
+    <string name="mat_piece_berserker">Berserker Piece</string>
+
+    <string name="mat_skill_gold_saber">Secret Gem of Saber</string>
+    <string name="mat_skill_gold_archer">Secret Gem of Archer</string>
+    <string name="mat_skill_gold_lancer">Secret Gem of Lancer</string>
+    <string name="mat_skill_gold_rider">Secret Gem of Rider</string>
+    <string name="mat_skill_gold_caster">Secret Gem of Caster</string>
+    <string name="mat_skill_gold_asssassin">Secret Gem of Assassin</string>
+    <string name="mat_skill_gold_berserker">Secret Gem of Berserker</string>
+
+    <string name="mat_skill_red_saber">Magic Gem of Saber</string>
+    <string name="mat_skill_red_archer">Magic Gem of Archer</string>
+    <string name="mat_skill_red_lancer">Magic Gem of Lancer</string>
+    <string name="mat_skill_red_rider">Magic Gem of Rider</string>
+    <string name="mat_skill_red_caster">Magic Gem of Caster</string>
+    <string name="mat_skill_red_asssassin">Magic Gem of Assassin</string>
+    <string name="mat_skill_red_berserker">Magic Gem of Berserker</string>
+
+    <string name="mat_skill_blue_saber">Gem of Saber</string>
+    <string name="mat_skill_blue_archer">Gem of Archer</string>
+    <string name="mat_skill_blue_lancer">Gem of Lancer</string>
+    <string name="mat_skill_blue_rider">Gem of Rider</string>
+    <string name="mat_skill_blue_caster">Gem of Caster</string>
+    <string name="mat_skill_blue_asssassin">Gem of Assassin</string>
+    <string name="mat_skill_blue_berserker">Gem of Berserker</string>
 
     <string name="p_shuffle_cards">Shuffle cards</string>
     <string name="p_shuffle_cards_wave">Wave</string>

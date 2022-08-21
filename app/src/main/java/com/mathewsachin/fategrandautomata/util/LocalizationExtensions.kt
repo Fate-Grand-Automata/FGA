@@ -108,6 +108,48 @@ val MaterialEnum.stringRes
         MaterialEnum.DemonFlameLantern -> R.string.mat_demon_lantern
         MaterialEnum.AmnestyBell -> R.string.mat_amnesty_bell
         MaterialEnum.FantasyScales -> R.string.mat_fantasy_scales
+        MaterialEnum.CeremonialBlade -> R.string.mat_ceremonial_blade
+        MaterialEnum.UnforgettableAshes -> R.string.mat_ashes
+
+        MaterialEnum.MonumentSaber -> R.string.mat_monument_saber
+        MaterialEnum.MonumentArcher -> R.string.mat_monument_archer
+        MaterialEnum.MonumentLancer -> R.string.mat_monument_lancer
+        MaterialEnum.MonumentRider -> R.string.mat_monument_rider
+        MaterialEnum.MonumentCaster -> R.string.mat_monument_caster
+        MaterialEnum.MonumentAssassin -> R.string.mat_monument_asssassin
+        MaterialEnum.MonumentBerserker -> R.string.mat_monument_berserker
+
+        MaterialEnum.PieceSaber -> R.string.mat_piece_saber
+        MaterialEnum.PieceArcher -> R.string.mat_piece_archer
+        MaterialEnum.PieceLancer -> R.string.mat_piece_lancer
+        MaterialEnum.PieceRider -> R.string.mat_piece_rider
+        MaterialEnum.PieceCaster -> R.string.mat_piece_caster
+        MaterialEnum.PieceAssassin -> R.string.mat_piece_asssassin
+        MaterialEnum.PieceBerserker -> R.string.mat_piece_berserker
+
+        MaterialEnum.SkillGoldSaber -> R.string.mat_skill_gold_saber
+        MaterialEnum.SkillGoldArcher -> R.string.mat_skill_gold_archer
+        MaterialEnum.SkillGoldLancer -> R.string.mat_skill_gold_lancer
+        MaterialEnum.SkillGoldRider -> R.string.mat_skill_gold_rider
+        MaterialEnum.SkillGoldCaster -> R.string.mat_skill_gold_caster
+        MaterialEnum.SkillGoldAssassin -> R.string.mat_skill_gold_asssassin
+        MaterialEnum.SkillGoldBerserker -> R.string.mat_skill_gold_berserker
+
+        MaterialEnum.SkillRedSaber -> R.string.mat_skill_red_saber
+        MaterialEnum.SkillRedArcher -> R.string.mat_skill_red_archer
+        MaterialEnum.SkillRedLancer -> R.string.mat_skill_red_lancer
+        MaterialEnum.SkillRedRider -> R.string.mat_skill_red_rider
+        MaterialEnum.SkillRedCaster -> R.string.mat_skill_red_caster
+        MaterialEnum.SkillRedAssassin -> R.string.mat_skill_red_asssassin
+        MaterialEnum.SkillRedBerserker -> R.string.mat_skill_red_berserker
+
+        MaterialEnum.SkillBlueSaber -> R.string.mat_skill_blue_saber
+        MaterialEnum.SkillBlueArcher -> R.string.mat_skill_blue_archer
+        MaterialEnum.SkillBlueLancer -> R.string.mat_skill_blue_lancer
+        MaterialEnum.SkillBlueRider -> R.string.mat_skill_blue_rider
+        MaterialEnum.SkillBlueCaster -> R.string.mat_skill_blue_caster
+        MaterialEnum.SkillBlueAssassin -> R.string.mat_skill_blue_asssassin
+        MaterialEnum.SkillBlueBerserker -> R.string.mat_skill_blue_berserker
     }
 
 val GameAreaMode.stringRes
