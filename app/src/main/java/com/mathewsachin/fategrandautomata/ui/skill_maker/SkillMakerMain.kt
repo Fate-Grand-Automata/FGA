@@ -106,6 +106,7 @@ fun SkillMakerMain(
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier
                     .padding(start = 16.dp)
+                    .width(IntrinsicSize.Max)
                     .fillMaxHeight()
             ) {
                 Button(
@@ -125,7 +126,8 @@ fun SkillMakerMain(
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
                     modifier = Modifier
                         .padding(top = 16.dp)
-                        .size(90.dp)
+                        .fillMaxSize()
+                        .aspectRatio(1f)
 
                 ) {
                     Text(
