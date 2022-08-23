@@ -74,6 +74,9 @@ class AutoBattle @Inject constructor(
 
     private var isContinuing = false
 
+    // for tracking whether the story skip button could be visible in the current screen
+    private var storySkipPossible = true
+
     override fun script(): Nothing {
         try {
             loop()
@@ -158,7 +161,10 @@ class AutoBattle @Inject constructor(
         // if the validator function evaluates to true, the associated action function is called
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
-            { battle.isIdle() } to { battle.performBattle() },
+            { battle.isIdle() } to {
+                storySkipPossible = false
+                battle.performBattle()
+            },
             { isInMenu() } to { menu() },
             { isStartingNp() } to { skipNp() },
             { isInResult() } to { result() },
@@ -266,8 +272,10 @@ class AutoBattle @Inject constructor(
     /**
      * Clicks through the reward screens.
      */
-    private fun result() =
+    private fun result() {
         locations.resultClick.click(15)
+        storySkipPossible = true
+    }
 
     private fun isInDropsScreen() =
         images[Images.MatRewards] in locations.resultMatRewardsRegion
@@ -357,7 +365,8 @@ class AutoBattle @Inject constructor(
      * Checks if the SKIP button exists on the screen.
      */
     private fun needsToStorySkip() =
-        prefs.storySkip && locations.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
+        prefs.storySkip && storySkipPossible &&
+                locations.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
 
     private fun skipStory() {
         locations.menuStorySkipClick.click()
@@ -393,6 +402,7 @@ class AutoBattle @Inject constructor(
         2.seconds.wait()
 
         useBoostItem()
+        storySkipPossible = true
     }
 
     /**

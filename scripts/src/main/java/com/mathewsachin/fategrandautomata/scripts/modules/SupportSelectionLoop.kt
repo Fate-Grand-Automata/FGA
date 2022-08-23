@@ -20,8 +20,13 @@ class SupportSelectionLoop @Inject constructor(
         val alsoCheckAll = supportClassPicker.shouldAlsoCheckAll()
         refresher.waitForSupportScreenToLoad()
 
+        var result: SupportSelectionResult? = null
         while (true) {
-            val result = if (screen.noSupportsPresent()) SupportSelectionResult.Refresh else provider.select()
+            // the no support found message can only appear on the first search or after each refresh
+            result = if (
+                (result == null || result == SupportSelectionResult.Refresh)
+                && screen.noSupportsPresent()
+            ) SupportSelectionResult.Refresh else provider.select()
 
             when {
                 result is SupportSelectionResult.Done -> return true
@@ -39,6 +44,7 @@ class SupportSelectionLoop @Inject constructor(
                     supportClassPicker.selectSupportClass(SupportClass.All)
                     onAllList = true
                     numberOfSwipes = 0
+                    result = null
                 }
                 // Refresh support list if not exceeded max refreshes
                 numberOfUpdates < commonSupportPrefs.maxUpdates -> {
