@@ -338,6 +338,48 @@
     <string name="mat_demon_lantern">귀염귀등</string>
     <string name="mat_amnesty_bell">사면의 작은 종</string>
     <string name="mat_fantasy_scales">몽환의 인분</string>
+    <string name="mat_ceremonial_blade">황혼의 의식검</string>
+    <string name="mat_ashes">잊을 수 없는 재</string>
+
+    <string name="mat_monument_saber">세이버 모뉴먼트</string>
+    <string name="mat_monument_archer">아쳐 모뉴먼트</string>
+    <string name="mat_monument_lancer">랜서 모뉴먼트</string>
+    <string name="mat_monument_rider">라이더 모뉴먼트</string>
+    <string name="mat_monument_caster">캐스터 모뉴먼트</string>
+    <string name="mat_monument_asssassin">어쌔신 모뉴먼트</string>
+    <string name="mat_monument_berserker">버서커 모뉴먼트</string>
+
+    <string name="mat_piece_saber">세이버 피스</string>
+    <string name="mat_piece_archer">아쳐 피스</string>
+    <string name="mat_piece_lancer">랜서 피스</string>
+    <string name="mat_piece_rider">라이더 피스</string>
+    <string name="mat_piece_caster">캐스터 피스</string>
+    <string name="mat_piece_asssassin">어쌔신 피스</string>
+    <string name="mat_piece_berserker">버서커 피스</string>
+
+    <string name="mat_skill_gold_saber">검의 비석</string>
+    <string name="mat_skill_gold_archer">궁의 비석</string>
+    <string name="mat_skill_gold_lancer">창의 비석</string>
+    <string name="mat_skill_gold_rider">기의 비석</string>
+    <string name="mat_skill_gold_caster">술의 비석</string>
+    <string name="mat_skill_gold_asssassin">살의 비석</string>
+    <string name="mat_skill_gold_berserker">광의 비석</string>
+
+    <string name="mat_skill_red_saber">검의 마석</string>
+    <string name="mat_skill_red_archer">궁의 마석</string>
+    <string name="mat_skill_red_lancer">창의 마석</string>
+    <string name="mat_skill_red_rider">기의 마석</string>
+    <string name="mat_skill_red_caster">술의 마석</string>
+    <string name="mat_skill_red_asssassin">살의 마석</string>
+    <string name="mat_skill_red_berserker">광의 마석</string>
+
+    <string name="mat_skill_blue_saber">검의 휘석</string>
+    <string name="mat_skill_blue_archer">궁의 휘석</string>
+    <string name="mat_skill_blue_lancer">창의 휘석</string>
+    <string name="mat_skill_blue_rider">기의 휘석</string>
+    <string name="mat_skill_blue_caster">술의 휘석</string>
+    <string name="mat_skill_blue_asssassin">살의 휘석</string>
+    <string name="mat_skill_blue_berserker">광의 휘석</string>
 
     <string name="p_shuffle_cards">카드 셔플</string>
     <string name="p_shuffle_cards_wave">웨이브</string>
