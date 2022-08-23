@@ -120,12 +120,13 @@ fun SkillMakerMain(
                     )
                 }
 
+                Spacer(Modifier.height(16.dp))
+
                 Button(
                     shape = CircleShape,
                     onClick = onAtk,
                     colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
                     modifier = Modifier
-                        .padding(top = 16.dp)
                         .fillMaxSize()
                         .aspectRatio(1f)
 
@@ -141,12 +142,14 @@ fun SkillMakerMain(
 }
 
 @Composable
-fun SkillButtons(
+fun ColumnScope.SkillButtons(
     list: List<Skill.Servant>,
     color: Color,
     onSkill: (Skill.Servant) -> Unit
 ) {
-    Row {
+    Row(
+        modifier = Modifier.weight(1f, false)
+    ) {
         list.map { skill ->
             SkillButton(
                 skill = skill,
@@ -175,7 +178,8 @@ fun Skills(onSkill: (Skill.Servant) -> Unit) {
                 }
 
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f, false)
                 ) {
                     SkillButtons(
                         list = list,
