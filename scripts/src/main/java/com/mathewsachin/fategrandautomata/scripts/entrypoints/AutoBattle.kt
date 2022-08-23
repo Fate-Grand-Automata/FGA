@@ -293,6 +293,7 @@ class AutoBattle @Inject constructor(
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
         isContinuing = true
+        storySkipPossible = false
 
         // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
