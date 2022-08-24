@@ -120,8 +120,8 @@ class CutoutManager @Inject constructor(
 
                 Region((w * leftRatio).roundToInt(), 0, (w * fgoRatio).roundToInt(), h)
             }
-            GameAreaMode.Duo -> Region(192, 0, 2400, h)
-            GameAreaMode.Custom -> {
+            //Duo 1 needs left and right offsets, Duo 2 doesn't need any
+            GameAreaMode.Duo, GameAreaMode.Custom -> {
                 val l = prefsCore.gameOffsetLeft.get()
                 val t = prefsCore.gameOffsetTop.get()
                 val r = prefsCore.gameOffsetRight.get()
