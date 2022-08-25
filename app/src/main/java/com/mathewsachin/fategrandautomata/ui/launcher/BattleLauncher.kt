@@ -43,6 +43,8 @@ fun battleLauncher(
     var limitRuns by remember { mutableStateOf(prefs.refill.limitRuns) }
     var shouldLimitMats by remember { mutableStateOf(prefs.refill.shouldLimitMats) }
     var limitMats by remember { mutableStateOf(prefs.refill.limitMats) }
+    var shouldLimitCEs by remember { mutableStateOf(prefs.refill.shouldLimitCEs) }
+    var limitCEs by remember { mutableStateOf(prefs.refill.limitCEs) }
     var waitApRegen by remember { mutableStateOf(prefs.waitAPRegen) }
 
     Row(
@@ -104,7 +106,7 @@ fun battleLauncher(
                     horizontal = false,
                     knobColor = MaterialTheme.colors.secondary,
                     // needs to be adjusted when adding new items
-                    fixedKnobRatio = 0.86f
+                    fixedKnobRatio = 0.69f
                 )
                 .padding(start = 5.dp),
             state = mainConfigState
@@ -212,6 +214,16 @@ fun battleLauncher(
                     onCountChange = { limitMats = it }
                 )
             }
+
+            item {
+                LimitItem(
+                    shouldLimit = shouldLimitCEs,
+                    onShouldLimitChange = { shouldLimitCEs = it },
+                    text = stringResource(R.string.p_ces),
+                    count = limitCEs,
+                    onCountChange = { limitCEs = it }
+                )
+            }
         }
     }
 
@@ -254,7 +266,6 @@ fun LimitItem(
                 checked = shouldLimit,
                 onCheckedChange = onShouldLimitChange,
                 modifier = Modifier
-                    .padding(end = 5.dp)
                     .alpha(if (shouldLimit) 1f else 0.7f)
             )
 

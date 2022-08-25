@@ -12,4 +12,7 @@ interface IRefillPreferences {
 
     var shouldLimitMats: Boolean
     var limitMats: Int
+
+    var shouldLimitCEs: Boolean
+    var limitCEs: Int
 }

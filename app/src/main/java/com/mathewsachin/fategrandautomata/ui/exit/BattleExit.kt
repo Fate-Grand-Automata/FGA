@@ -47,7 +47,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
         }
     }
     AutoBattle.ExitReason.CEGet -> stringResource(R.string.ce_get)
-    AutoBattle.ExitReason.CEDropped -> stringResource(R.string.ce_dropped)
+    is AutoBattle.ExitReason.LimitCEs -> stringResource(R.string.ces_farmed, count)
     is AutoBattle.ExitReason.LimitMaterials -> stringResource(R.string.mats_farmed, count)
     AutoBattle.ExitReason.WithdrawDisabled -> stringResource(R.string.withdraw_disabled)
     AutoBattle.ExitReason.APRanOut -> stringResource(R.string.script_msg_ap_ran_out)
@@ -116,10 +116,10 @@ private fun LazyListScope.battleExitContent(
         }
     }
 
-    if (reason !is AutoBattle.ExitReason.CEDropped && state.ceDropCount > 0) {
+    if (reason !is AutoBattle.ExitReason.LimitCEs && state.ceDropCount > 0) {
         item {
             Text(
-                "${state.ceDropCount} ${stringResource(R.string.ce_dropped)}",
+                stringResource(R.string.ces_farmed, state.ceDropCount),
                 color = MaterialTheme.colors.secondary,
                 modifier = Modifier
                     .padding(16.dp, 5.dp)
@@ -365,7 +365,6 @@ fun PreviewBattleExitContent() {
 //                        MaterialEnum.ShellOfReminiscence to 2,
 //                        MaterialEnum.Chain to 5
 //                    ),
-                    matLimit = 6,
                     withdrawCount = 1,
                     totalTime = 1880.seconds,
                     averageTimePerRun = 75.seconds,

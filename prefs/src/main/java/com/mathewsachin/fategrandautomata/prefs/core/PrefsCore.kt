@@ -31,8 +31,7 @@ class PrefsCore @Inject constructor(
 
     val storySkip = maker.bool("story_skip")
     val withdrawEnabled = maker.bool("withdraw_enabled")
-
-    val stopOnCEDrop = maker.bool("stop_on_ce_drop")
+    
     val stopOnCEGet = maker.bool("stop_on_ce_get")
     val stopOnFirstClearRewards = maker.bool("stop_on_first_clear_rewards")
 

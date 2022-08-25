@@ -52,7 +52,7 @@ class AutoBattle @Inject constructor(
         object Abort : ExitReason()
         class Unexpected(val e: Exception) : ExitReason()
         object CEGet : ExitReason()
-        object CEDropped : ExitReason()
+        class LimitCEs(val count: Int) : ExitReason()
         object FirstClearRewards : ExitReason()
         class LimitMaterials(val count: Int) : ExitReason()
         object WithdrawDisabled : ExitReason()
@@ -91,6 +91,7 @@ class AutoBattle @Inject constructor(
         } finally {
             refill.autoDecrement()
             matTracker.autoDecrement()
+            ceDropsTracker.autoDecrement()
 
             val refill = prefs.refill
 
@@ -129,7 +130,6 @@ class AutoBattle @Inject constructor(
         val refillLimit: Int,
         val ceDropCount: Int,
         val materials: Map<MaterialEnum, Int>,
-        val matLimit: Int?,
         val withdrawCount: Int,
         val totalTime: Duration,
         val averageTimePerRun: Duration,
@@ -146,7 +146,6 @@ class AutoBattle @Inject constructor(
             refillLimit = prefs.refill.repetitions,
             ceDropCount = ceDropsTracker.count,
             materials = matTracker.farmed,
-            matLimit = if (prefs.refill.shouldLimitMats) prefs.refill.limitMats else null,
             withdrawCount = withdraw.count,
             totalTime = state.totalBattleTime,
             averageTimePerRun = state.averageTimePerRun,

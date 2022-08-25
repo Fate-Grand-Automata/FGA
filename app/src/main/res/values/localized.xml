@@ -125,7 +125,6 @@
     <string name="p_story_skip">Story Skip</string>
     <string name="p_skill_confirmation">Skill Confirmation</string>
     <string name="p_enable_withdraw">Enable Withdraw</string>
-    <string name="p_stop_on_ce_drop">Stop on CE drop</string>
     <string name="p_stop_on_ce_get">Stop on CE GET</string>
     <string name="p_stop_on_first_clear_rewards">Stop on first-clear rewards</string>
     <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
@@ -286,6 +285,9 @@
 
     <string name="p_mats">Materials</string>
     <string name="mats_farmed">Farmed %d material(s)</string>
+
+    <string name="p_ces">CEs</string>
+    <string name="ces_farmed">Farmed %d CE(s)</string>
 
     <string name="times_rolled">Rolled %d time(s)</string>
 

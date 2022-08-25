@@ -50,8 +50,6 @@ class PreferencesImpl @Inject constructor(
 
     override val withdrawEnabled by prefs.withdrawEnabled
 
-    override val stopOnCEDrop by prefs.stopOnCEDrop
-
     override val stopOnCEGet by prefs.stopOnCEGet
 
     override val stopOnFirstClearRewards by prefs.stopOnFirstClearRewards

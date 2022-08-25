@@ -52,13 +52,6 @@ fun LazyListScope.battleGroup(
     }
 
     item {
-        prefs.stopOnCEDrop.SwitchPreference(
-            title = stringResource(R.string.p_stop_on_ce_drop),
-            icon = icon(R.drawable.ic_card)
-        )
-    }
-
-    item {
         prefs.stopOnCEGet.SwitchPreference(
             title = stringResource(R.string.p_stop_on_ce_get),
             summary = stringResource(R.string.p_stop_on_ce_get_summary),

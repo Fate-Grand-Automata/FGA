@@ -17,6 +17,21 @@ class CEDropsTracker @Inject constructor(
     var count = 0
         private set
 
+    fun autoDecrement() {
+        val refill = prefs.refill
+
+        // Auto-decrement CEs
+        if (refill.shouldLimitCEs) {
+            refill.limitCEs -= count
+
+            // Turn off limit by CEs when done
+            if (refill.limitCEs <= 0) {
+                refill.limitCEs = 1
+                refill.shouldLimitCEs = false
+            }
+        }
+    }
+
     fun lookForCEDrops() {
         val starsRegion = Region(40, -40, 80, 40)
 
@@ -30,11 +45,11 @@ class CEDropsTracker @Inject constructor(
         if (ceDropped > 0) {
             count += ceDropped
 
-            if (prefs.stopOnCEDrop) {
+            if (prefs.refill.shouldLimitCEs && count >= prefs.refill.limitCEs) {
                 // Count the current run
                 state.nextRun()
 
-                throw AutoBattle.BattleExitException(AutoBattle.ExitReason.CEDropped)
+                throw AutoBattle.BattleExitException(AutoBattle.ExitReason.LimitCEs(count))
             } else messages.notify(ScriptNotify.CEDropped)
         }
     }

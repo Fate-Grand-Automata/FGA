@@ -22,4 +22,7 @@ internal class RefillPreferences(
 
     override var shouldLimitMats by prefs.shouldLimitMats
     override var limitMats by prefs.limitMats
+
+    override var shouldLimitCEs by prefs.shouldLimitCEs
+    override var limitCEs by prefs.limitCEs
 }

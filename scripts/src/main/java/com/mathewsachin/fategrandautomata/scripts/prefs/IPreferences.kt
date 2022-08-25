@@ -13,7 +13,6 @@ interface IPreferences {
     var selectedBattleConfig: IBattleConfig
     val storySkip: Boolean
     val withdrawEnabled: Boolean
-    val stopOnCEDrop: Boolean
     val stopOnCEGet: Boolean
     val stopOnFirstClearRewards: Boolean
     val boostItemSelectionMode: Int
