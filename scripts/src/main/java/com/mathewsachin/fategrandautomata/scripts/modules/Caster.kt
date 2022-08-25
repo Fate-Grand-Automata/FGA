@@ -30,14 +30,13 @@ class Caster @Inject constructor(
     private fun waitForAnimationToFinish(timeout: Duration = 5.seconds) {
         val img = images[Images.BattleScreen]
 
-        if (prefs.gameServer == GameServerEnum.Kr) {
+        if (prefs.gameServer in listOf(GameServerEnum.Jp, GameServerEnum.Kr)) {
             // Skip Skill Animation. See #1319
             locations.battle.skipAnimationClick.click()
-        } else {
-            // slow devices need this. do not remove.
-            locations.battle.screenCheckRegion.waitVanish(img, 2.seconds)
         }
-
+        
+        // slow devices need this. do not remove.
+        locations.battle.screenCheckRegion.waitVanish(img, 2.seconds)
         locations.battle.screenCheckRegion.exists(img, timeout)
     }
 
