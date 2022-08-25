@@ -32,7 +32,7 @@ class Caster @Inject constructor(
 
         if (prefs.gameServer == GameServerEnum.Kr) {
             // KR server supports skip for skill effect animation. check PR
-            location.battle.skipAnimationClick.click()
+            locations.battle.skipAnimationClick.click()
         }
 
         // slow devices need this. do not remove.
