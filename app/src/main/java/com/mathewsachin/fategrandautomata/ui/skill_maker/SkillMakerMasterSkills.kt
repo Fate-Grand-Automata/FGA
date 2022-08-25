@@ -65,7 +65,7 @@ fun SkillMakerMasterSkills(
 }
 
 @Composable
-fun SkillButton(
+fun RowScope.SkillButton(
     skill: Skill,
     color: Color,
     onClick: () -> Unit
@@ -75,7 +75,10 @@ fun SkillButton(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .padding(5.dp)
-            .size(40.dp),
+            .sizeIn(maxWidth = 45.dp)
+            .aspectRatio(1f)
+            .fillMaxSize()
+            .weight(1f, false),
         onClick = onClick
     ) {
         Box {
