@@ -125,7 +125,6 @@
     <string name="p_story_skip">스토리 스킵</string>
     <string name="p_skill_confirmation">스킬 사용 확인</string>
     <string name="p_enable_withdraw">퇴각 활성화</string>
-    <string name="p_stop_on_ce_drop">예장 드롭시 정지</string>
     <string name="p_stop_on_ce_get">예장 획득시 정지</string>
     <string name="p_stop_on_first_clear_rewards">초회 클리어 보상 수령시 정지</string>
     <string name="p_stop_on_ce_get_summary">첫번째 퀘스트 클리어 보상과 인연예장(실험적 기능)</string>
@@ -150,7 +149,7 @@
     <string name="p_choose_folder_not_exist_title">다른 폴더를 선택하세요</string>
     <string name="p_choose_folder_not_exist_message">서포트 이미지, 드롭 이미지 등을 저장하는 폴더에 접근할 수 없습니다.</string>
     <string name="p_choose_folder_action">선택</string>
-    
+
     <string name="p_advanced">고급</string>
     <string name="p_debug_mode">디버그 모드</string>
     <string name="p_debug_mode_summary">대조되고 있는 부분 표시하기</string>

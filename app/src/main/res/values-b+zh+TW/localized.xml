@@ -109,7 +109,6 @@
     <string name="p_story_skip">跳過劇情</string>
     <string name="p_skill_confirmation">技能確認</string>
     <string name="p_enable_withdraw">啟用撤退</string>
-    <string name="p_stop_on_ce_drop">禮裝掉落自動停止</string>
     <string name="p_stop_on_ce_get">禮裝獲得自動停止</string>
     <string name="p_stop_on_ce_get_summary">首次通關及絆禮裝獲得時自動停止腳本</string>
     <string name="p_screenshot_drops">掉落截圖</string>

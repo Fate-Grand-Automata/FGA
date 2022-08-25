@@ -287,7 +287,7 @@
     <string name="mats_farmed">Farmed %d material(s)</string>
 
     <string name="p_ces">CEs</string>
-    <string name="ces_farmed">Farmed %d CE(s)</string>
+    <string name="ces_dropped">%d CE(s) dropped</string>
 
     <string name="times_rolled">Rolled %d time(s)</string>
 

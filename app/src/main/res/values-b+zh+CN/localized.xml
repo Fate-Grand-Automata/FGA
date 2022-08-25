@@ -125,7 +125,6 @@
     <string name="p_story_skip">跳过剧情</string>
     <string name="p_skill_confirmation">技能确认</string>
     <string name="p_enable_withdraw">启用撤退</string>
-    <string name="p_stop_on_ce_drop">掉落礼装时自动停止</string>
     <string name="p_stop_on_ce_get">获得礼装时自动停止</string>
     <string name="p_stop_on_first_clear_rewards">获得首通奖励时自动停止</string>
     <string name="p_stop_on_ce_get_summary">首次通关及羁绊礼装获得时自动停止脚本</string>
