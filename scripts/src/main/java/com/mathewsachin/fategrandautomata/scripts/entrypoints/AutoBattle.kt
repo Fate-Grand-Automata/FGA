@@ -255,7 +255,7 @@ class AutoBattle @Inject constructor(
     private fun isDeathAnimation() =
         FieldSlot.list
             .map { locations.battle.servantPresentRegion(it) }
-            .count { it.exists(images[Images.ServantExist], similarity = 0.75) } in 1..2
+            .count { it.exists(images[Images.ServantExist], similarity = 0.70) } in 1..2
 
     private fun ceRewardDetails() {
         if (prefs.stopOnCEGet) {

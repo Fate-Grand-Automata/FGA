@@ -115,7 +115,7 @@ class ServantTracker @Inject constructor(
     private fun check(slot: FieldSlot) {
         // If a servant is not present, that means none are left in the backline
         if (!locations.battle.servantPresentRegion(slot)
-                .exists(images[Images.ServantExist], similarity = 0.75)
+                .exists(images[Images.ServantExist], similarity = 0.70)
         ) {
             _deployed.remove(slot)
             servantQueue.clear()
