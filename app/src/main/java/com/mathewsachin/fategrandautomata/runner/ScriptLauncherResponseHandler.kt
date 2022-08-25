@@ -55,6 +55,9 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 prefs.refill.shouldLimitMats = resp.limitMats != null
                 resp.limitMats?.let { prefs.refill.limitMats = it }
 
+                prefs.refill.shouldLimitCEs = resp.limitCEs != null
+                resp.limitCEs?.let { prefs.refill.limitCEs = it }
+
                 prefs.waitAPRegen = resp.waitApRegen
 
                 ScriptModeEnum.Battle

@@ -236,6 +236,7 @@ fun battleLauncher(
                 refillCount = refillCount,
                 limitRuns = if (shouldLimitRuns) limitRuns else null,
                 limitMats = if (shouldLimitMats) limitMats else null,
+                limitCEs = if (shouldLimitCEs) limitCEs else null,
                 waitApRegen = waitApRegen
             )
         }
