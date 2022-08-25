@@ -31,12 +31,12 @@ class Caster @Inject constructor(
         val img = images[Images.BattleScreen]
 
         if (prefs.gameServer == GameServerEnum.Kr) {
-            // KR server supports skip for skill effect animation. check PR
+            // Skip Skill Animation. See #1319
             locations.battle.skipAnimationClick.click()
+        } else {
+            // slow devices need this. do not remove.
+            locations.battle.screenCheckRegion.waitVanish(img, 2.seconds)
         }
-
-        // slow devices need this. do not remove.
-        locations.battle.screenCheckRegion.waitVanish(img, 2.seconds)
 
         locations.battle.screenCheckRegion.exists(img, timeout)
     }
