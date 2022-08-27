@@ -87,7 +87,7 @@ fun LazyListScope.advancedGroup(
 
             val gameAreaMode by prefs.gameAreaMode.remember()
 
-            AnimatedVisibility(gameAreaMode == GameAreaMode.Custom) {
+            AnimatedVisibility(gameAreaMode in listOf(GameAreaMode.Custom, GameAreaMode.Duo)) {
                 Card(
                     modifier = Modifier.padding(5.dp),
                     elevation = 5.dp
