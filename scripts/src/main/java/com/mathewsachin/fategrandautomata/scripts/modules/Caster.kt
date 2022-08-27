@@ -33,8 +33,12 @@ class Caster @Inject constructor(
         if (prefs.gameServer in listOf(GameServerEnum.Jp, GameServerEnum.Kr)) {
             // Skip Skill Animation. See #1319
             locations.battle.skipAnimationClick.click()
+        } else {
+            // Without this fixed wait, a vanishing Attack button may be detected as Schrödinger's cat - not present but also present
+            // See #1341
+            0.5.seconds.wait()
         }
-        
+
         // slow devices need this. do not remove.
         locations.battle.screenCheckRegion.waitVanish(img, 2.seconds)
         locations.battle.screenCheckRegion.exists(img, timeout)
