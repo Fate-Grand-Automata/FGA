@@ -286,6 +286,9 @@
     <string name="p_mats">재료</string>
     <string name="mats_farmed">%d개의 재료 파밍됨</string>
 
+    <string name="p_ces">개념예장</string>
+    <string name="ces_dropped">%d개의 예장 획득함</string>
+
     <string name="times_rolled">%d번 돌림</string>
 
     <string name="mat_proof">영웅의 증표</string>
