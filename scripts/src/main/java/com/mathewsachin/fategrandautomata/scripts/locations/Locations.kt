@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.scripts.locations
 
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
 import com.mathewsachin.fategrandautomata.scripts.models.BoostItem
 import com.mathewsachin.libautomata.Location
@@ -21,7 +22,14 @@ class Locations @Inject constructor(
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
 
-    val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
+    val inventoryFullRegion = (
+        if (gameServer in listOf(GameServerEnum.Jp, GameServerEnum.Kr)) {
+            // Jp and Kr server button has short width
+            Region(-100, 900, 200, 110)
+        } else {
+            Region(-280, 860, 560, 190)
+        }
+    ).xFromCenter()
 
     val menuScreenRegion =
         (if (isWide)
