@@ -2,6 +2,7 @@ package com.mathewsachin.fategrandautomata.scripts.entrypoints
 
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.libautomata.EntryPoint
 import com.mathewsachin.libautomata.ExitManager
 import com.mathewsachin.libautomata.dagger.ScriptScope
@@ -34,27 +35,28 @@ class AutoFriendGacha @Inject constructor(
     }
 
     override fun script(): Nothing {
-        if (images[Images.FPSummonContinue] !in locations.fp.continueSummonRegion) {
-            locations.fp.first10SummonClick.click()
-            0.3.seconds.wait()
+        while (true) {
+            if (images[Images.FPSummonContinue] in locations.fp.continueSummonRegion) {
+                locations.fp.continueSummonClick.click()
+            } else {
+                locations.fp.first10SummonClick.click()
+            }
+            // wait for confirm dialog
+            1.seconds.wait()
+
+            if (prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp, GameServerEnum.Kr)
+                && locations.inventoryFullRegion.exists(images[Images.InventoryFull], similarity = 0.23)) {
+                throw ExitException(ExitReason.InventoryFull)
+            }
             locations.fp.okClick.click()
 
             countNext()
-        }
 
-        while (true) {
-            if (isInventoryFull()) {
-                throw ExitException(ExitReason.InventoryFull)
-            }
+            // wait for progress
+            3.seconds.wait()
 
-            if (images[Images.FPSummonContinue] in locations.fp.continueSummonRegion) {
-                countNext()
-
-                locations.fp.continueSummonClick.click()
-                0.3.seconds.wait()
-                locations.fp.okClick.click()
-                3.seconds.wait()
-            } else locations.fp.skipRapidClick.click(15)
+            // in summoning progress, click much for skip
+            locations.fp.skipRapidClick.click(15)
         }
     }
 }
