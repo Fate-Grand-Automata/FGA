@@ -127,7 +127,9 @@ class CutoutManager @Inject constructor(
                 val r = prefsCore.gameOffsetRight.get()
                 val b = prefsCore.gameOffsetBottom.get()
 
-                Region(l, t, w - l - r, h - t - b)
+                // if the camera is on the right, use the right offset as x
+                val x = if (display.rotation == Surface.ROTATION_270) r else l
+                Region(x, t, w - l - r, h - t - b)
             }
         }
     }
