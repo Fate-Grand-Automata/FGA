@@ -59,7 +59,7 @@ body:
         
         Recording functionality is available within the app in `More options` > `Advanced` > `Fine-tune`.
 
-        :warning: <span style="font-weight:bold;font-size:1.1em;">Do not use Android or 3rd party apps for recording, FGA will not be able to see anything on the screen anymore until you restart the FGA service.</span> The only exception is when you have set FGA to record the screen using `Root Mode`.
+        :warning: **Do not use Android or 3rd party apps for recording, FGA will not be able to see anything on the screen anymore until you restart the FGA service.** The only exception is when you have set FGA to record the screen using `Root Mode`.
         
         If the video is too large for Github, upload it to youtube.com or something similar.
     validations:
