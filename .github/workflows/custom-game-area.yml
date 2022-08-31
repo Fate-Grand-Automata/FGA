@@ -6,8 +6,9 @@ jobs:
   custom-game-area:
     if: >-
       github.event.issue.number == 1347 &&
-      github.event.comment.user.id == 12360257 &&
-      contains(github.event.comment.body, '!analyze ')
+      (contains(github.event.comment.body, '.png') ||
+      contains(github.event.comment.body, '.jpeg') ||
+      contains(github.event.comment.body, '.jpg'))
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/fate-grand-automata/custom-game-area
@@ -21,8 +22,7 @@ jobs:
           BODY: ${{ github.event.comment.body }}
         run: |
           cd /app
-          echo $BODY
-          url=$(echo "$BODY" | grep -Eo 'http(s)?://[^ >]+')
+          url=$(echo "$BODY" | grep -Eo 'http(s)?://[^ >]+?\.(png|jpeg|jpg)')
           curl $url --output /app/image.jpg --fail
           echo "COMMENT=@${{ github.event.comment.user.login }} Your offsets are $(python custom-game-area.py)" >> $GITHUB_ENV
           echo "Comment: ${{ env.COMMENT }}"
