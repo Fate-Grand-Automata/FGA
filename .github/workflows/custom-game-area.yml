@@ -24,7 +24,7 @@ jobs:
           echo $BODY
           url=$(echo "$BODY" | grep -Eo 'http(s)?://[^ >]+')
           curl $url --output /app/image.jpg --fail
-          echo "COMMENT=@${{ github.event.comment.user.login }} Your offsets are $(python custom-game-area.py)" >> $env:GITHUB_ENV
+          echo "COMMENT=@${{ github.event.comment.user.login }} Your offsets are $(python custom-game-area.py)" >> $GITHUB_ENV
           echo "Comment: ${{ env.COMMENT }}"
       - name: Post comment
         uses: peter-evans/create-or-update-comment@v2
