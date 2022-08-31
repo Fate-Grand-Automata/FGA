@@ -1,0 +1,30 @@
+name: Measure black bars
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  custom-game-area:
+    if: >-
+      github.event.issue.number == 1347 &&
+      github.event.comment.user.id == 12360257 &&
+      contains(github.event.comment.body, '!analyze ')
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/fate-grand-automata/custom-game-area
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Measure black bars
+        shell: bash
+        run: |
+          cd /app
+          echo ${{ github.event.comment.body }}
+          url=cat ${{ github.event.comment.body }} | grep -Eo 'http://[^ >]+'
+          curl $url --output /app/image.jpg --fail
+          echo "BODY=@${{ github.event.comment.user.name }} Your offsets are $(python custom-game-area.py)" >> $env:GITHUB_ENV
+      - name: Post comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:  
+          issue-number: 1347
+          body: ${{ env.BODY }}
