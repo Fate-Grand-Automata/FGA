@@ -20,7 +20,7 @@ jobs:
         run: |
           cd /app
           echo ${{ github.event.comment.body }}
-          url=cat ${{ github.event.comment.body }} | grep -Eo 'http://[^ >]+'
+          url=$(echo "${{ github.event.comment.body }}" | grep -Eo 'http(s)?://[^ >]+')
           curl $url --output /app/image.jpg --fail
           echo "BODY=@${{ github.event.comment.user.name }} Your offsets are $(python custom-game-area.py)" >> $env:GITHUB_ENV
       - name: Post comment
