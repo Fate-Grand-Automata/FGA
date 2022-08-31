@@ -17,14 +17,17 @@ jobs:
     steps:
       - name: Measure black bars
         shell: bash
+        env:
+          BODY: ${{ github.event.comment.body }}
         run: |
           cd /app
-          echo ${{ github.event.comment.body }}
-          url=$(echo "${{ github.event.comment.body }}" | grep -Eo 'http(s)?://[^ >]+')
+          echo $BODY
+          url=$(echo "$BODY" | grep -Eo 'http(s)?://[^ >]+')
           curl $url --output /app/image.jpg --fail
-          echo "BODY=@${{ github.event.comment.user.name }} Your offsets are $(python custom-game-area.py)" >> $env:GITHUB_ENV
+          echo "COMMENT=@${{ github.event.comment.user.login }} Your offsets are $(python custom-game-area.py)" >> $env:GITHUB_ENV
+          echo "Comment: ${{ env.COMMENT }}"
       - name: Post comment
         uses: peter-evans/create-or-update-comment@v2
         with:  
           issue-number: 1347
-          body: ${{ env.BODY }}
+          body: ${{ env.COMMENT }}
