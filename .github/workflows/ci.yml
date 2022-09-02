@@ -9,6 +9,7 @@ on:
       - '.gitignore'
       - 'README.md'
       - 'LICENSE'
+      - 'custom-game-area/**'
   push:
     branches:
       - master
@@ -22,6 +23,7 @@ on:
       - 'README'
       - 'LICENSE'
       - 'renovate.json'
+      - 'custom-game-area/**'
   workflow_dispatch:
 
 jobs:
