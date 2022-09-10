@@ -21,8 +21,7 @@ class Locations @Inject constructor(
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
     val continueBoostClick = Location(-20, 1120).xFromCenter()
 
-    val inventoryFullEnhancementButtonRegion = Region(-280, 860, 560, 190).xFromCenter()
-    val inventoryFullSellButtonRegion = Region(-880, 860, 560, 190).xFromCenter()
+    val inventoryFullRegion = Region(-880, 860, 1160, 190).xFromCenter()
 
     val menuScreenRegion =
         (if (isWide)

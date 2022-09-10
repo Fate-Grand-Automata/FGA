@@ -28,8 +28,7 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
 fun IFgoAutomataApi.isInventoryFull() =
     // We only have images for JP, NA and KR
     prefs.gameServer in listOf(GameServerEnum.En, GameServerEnum.Jp, GameServerEnum.Kr)
-            && locations.inventoryFullEnhancementButtonRegion.exists(images[Images.InventoryFull], similarity = 0.23)
-            && locations.inventoryFullSellButtonRegion.exists(images[Images.InventoryFull], similarity = 0.23)
+            && images[Images.InventoryFull] in locations.inventoryFullRegion
 
 /**
  * Script for starting quests, selecting the support and doing battles.
