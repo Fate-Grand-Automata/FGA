@@ -42,6 +42,28 @@ We use [OpenCV](https://opencv.org/) for image recognition,
 [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) for taking screenshots
 and [Accessibility Service](https://developer.android.com/guide/topics/ui/accessibility) for clicking/swiping.
 
+## Contributions
+Do you want to contribute to the source code? If you are interested, take a look at the [open issues](https://github.com/Fate-Grand-Automata/FGA/issues).
+### Getting Started
+A basic knowledge of Kotlin and Android development is recommended. For development tools, [Android Studio](https://developer.android.com/studio) and
+a working emulator or Android phone are necessary to test changes.
+
+If you are new to Kotlin and Android development, you can find out more here:
+- [Kotlin](https://kotlinlang.org/docs/getting-started.html)
+- [Android](https://developer.android.com/courses/android-basics-kotlin/course)
+
+Once you're ready:
+1. Fork the repository and clone it to your local machine.
+2. Open the project with Android Studio.
+3. If you are working on a specific issue, it is good practice to create and stage changes on a new branch based on the issue name.
+4. You can create a new branch by using the following commands: `git checkout -b issue-name`. 
+
+Project Structure:
+- `./app/`: Android-based part of the app that holds the UI, MediaProjection, AccessibilityService, and other utilities.
+- `./libautomata/`: Contains the methods needed to write the scripts. Method implementation is dependency-injected.
+- `./prefs/`: Implements user preferences
+- `./scripts/`: Contains the scripts for app functions, like AutoBattle, AutoLottery, etc.
+
 ## Acknowledgements
 - [FGO-Lua][FGOLua] developers are the real deal. Without them this app won't exist.
 - We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
