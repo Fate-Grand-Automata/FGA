@@ -64,6 +64,12 @@ Project Structure:
 - `./prefs/`: Implements user preferences
 - `./scripts/`: Contains the scripts for app functions, like AutoBattle, AutoLottery, etc.
 
+### How do I use my emulator (Bluestacks/Nox/Memu) in Android Studio?
+ADB tools are required to use a custom emulator in Android Studio. 
+Enable USB debugging in your emulator, and then open up a terminal/command prompt in the location that
+contains the ADB tool. Type in the command `adb connect localhost:####`, where the numbers are default ports specified by the emulator.
+For example, for Bluestacks you would use `adb connect localhost:5555`.
+
 ## Acknowledgements
 - [FGO-Lua][FGOLua] developers are the real deal. Without them this app won't exist.
 - We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
