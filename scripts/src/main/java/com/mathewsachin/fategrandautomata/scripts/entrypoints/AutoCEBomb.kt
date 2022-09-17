@@ -1,8 +1,10 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
-
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
-import com.mathewsachin.libautomata.*
+import com.mathewsachin.fategrandautomata.scripts.modules.ConnectionRetry
+import com.mathewsachin.libautomata.EntryPoint
+import com.mathewsachin.libautomata.ExitManager
+import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -13,109 +15,169 @@ import kotlin.time.Duration.Companion.seconds
  *
  * - Can only be started from CE enhancement screen with no CE selected.
  * - In the CE picking screens, the item sizes must be set to lowest.
- * - Base CE pickup screen should be filtered to correct rarity and sorted in Ascending order by Level.
- * - Enhancement material pickup screen should be filtered to correct rarity and sorted in Descending order by Level.
+ * - It will select the top left CE to upgrade it
+ * -
  */
 @ScriptScope
 class AutoCEBomb @Inject constructor(
     exitManager: ExitManager,
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
+    private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
-    sealed class ExitReason {
-        object NoSuitableTargetCEFound : ExitReason()
-    }
-
-    private fun imagesForSelectedRarity() = when (prefs.ceBombTargetRarity) {
-        1 -> listOf(
-            Images.CEStarvationLv1,
-            Images.CEAwakeningLv1,
-            Images.CEBarrierLv1,
-            Images.CELinkageLv1,
-            Images.CECombatLv1
-        )
-        2 -> listOf(
-            Images.CEGloomLv1,
-            Images.CESynchronizationLv1,
-            Images.CEDeceptionLv1,
-            Images.CEProsperityLv1,
-            Images.CEMercyLv1
-        )
-        else -> emptyList()
-    }
-
-    class ExitException(val reason: ExitReason) : Exception()
-
-    private fun findBaseCE(): Match {
-        for (img in imagesForSelectedRarity()) {
-            val matches = locations.levelOneCERegion
-                .findAll(images[img])
-                .toList()
-                .sorted()
-
-            // At least 2 copies are needed to merge
-            if (matches.size > 1) {
-                return matches[0]
-            }
-        }
-
-        throw ExitException(ExitReason.NoSuitableTargetCEFound)
-    }
 
     override fun script(): Nothing {
-        locations.ceEnhanceClick.click()
 
-        while (true) {
-            2.seconds.wait()
-
-            val baseCERegion = findBaseCE().region
-            val img = baseCERegion.getPattern()
-
-            img.use {
-                baseCERegion.click()
-                2.seconds.wait()
-
-                Location(900, 500).click()
-                2.seconds.wait()
-
-                // Picking the matching CE later allows more CE to be picked
-                pickCEs()
-                pickMatchingCE(img)
-
-                repeat(2) {
-                    Location(2300, 1300).click()
-                    1.seconds.wait()
-                }
-
-                Location(1600, 1200).click()
-                1.seconds.wait()
-
-                Location(2000, 1000).click(70)
-                locations.ceEnhanceClick.click()
-            }
-        }
-    }
-
-    private fun pickMatchingCE(img: Pattern) {
-        // Scroll to top
-        Location(2040, 400).click()
+        // Click on the "Tap to select a Craft Essence to Enhance" area
+        locations.ceSelectCEToEnhanceLocation.click()
         2.seconds.wait()
 
-        val matchingCE = locations.levelOneCERegion.find(img)
-            ?: throw ExitException(ExitReason.NoSuitableTargetCEFound)
+        // Pick the first possible CE of the list
+        // going from top left to bottom right
+        pickCEToUpgrade()
+        2.seconds.wait()
 
-        matchingCE.region.click()
-        1.seconds.wait()
-    }
+        locations.ceOpenEnhancementMenuLocation.click()
+        2.seconds.wait()
 
-    private fun pickCEs() {
-        // Scroll to bottom
-        Location(2040, 1400).click()
-        1.seconds.wait()
+        /** Loop to upgrade the CE selected
+         *  The exit conditions are either:
+         *  - CE is fully leveled
+         *  - An iteration went through without having selected a enhance fodder
+         *  - Too many iterations passed (just in case something went wrong)
+         *
+         *  Start condition: a CE is selected for enhancement
+         *  the list of Craft Essence to feed to it is shown
+         *
+         *  It will:
+         *  - select up to 20 enhance fodder
+         *  - Press on ok
+         *  - Press on enhance
+         *  - Press on ok on the "Perform enhancement" pop up window
+         *  - try to come back to the list of enhance fodder
+        **/
+        var count = 0
+        while (true) {
 
-        for (y in 0..3) {
-            for (x in 0..6) {
-                Location(1900 - 270 * x, 1300 - 290 * y).click()
+            // Check for possible connection retry
+            if (connectionRetry.needsToRetry()) {
+                connectionRetry.retry()
+            }
+
+            count++
+
+            // A CE to enhance is selected, now to select the 20 CE to feed to it
+            pickCEEnhanceFodder()
+
+            // Press Ok to exit the "Please select a craft essence to use for enhancement screen
+            // Press Ok again to enhance
+            repeat(2) {
+                locations.ceUpgradeOkButton.click()
+                1.seconds.wait()
+            }
+
+            // if at that point we're still on the CE selection page
+            // Then that means no CE was selected, so we exit the script
+            if (images[Images.CEDetails] in locations.ceMultiSelectRegion) {
+                throw ExitException(ExitReason.NoSuitableTargetCEFound)
+            }
+
+            // Enhancement confirmation window is now up
+            // press Ok to enhance
+            locations.cePerformEnhancementOkButton.click()
+            2.seconds.wait()
+
+            /**
+             * Enhancement animation goes on
+             * loop until we're back to the CE
+             * or encountered an exit condition
+             */
+            var subcount = 0
+            while (!(images[Images.CEDetails] in locations.ceMultiSelectRegion)) {
+
+                /** End the script if a CE is fully upgraded
+                 * The CE would have been removed from the ceToEnhance region
+                 * and we'd be back to a "Tap to select a Craft Essence to Enhance" state
+                 **/
+                if (images[Images.CEEnhance] in locations.ceToEnhanceRegion) {
+                    throw ExitException(ExitReason.CEFullyUpgraded)
+                }
+
+                /**
+                 * End of the script if we're stuck in this loop for some reason over 200 times
+                 */
+                if (subcount > 200) {
+                    throw ExitException(ExitReason.MaxNumberOfIterations)
+                }
+
+                // Check for possible connection retry
+                if (connectionRetry.needsToRetry()) {
+                    connectionRetry.retry()
+                }
+
+                // click on the location of the 20 CE grid
+                locations.ceOpenEnhancementMenuLocation.click()
+                subcount++
+            }
+
+            /** As we can only have up to 600 CE at once
+             * we can stop if we tried to feed 24CE, 40 times
+             * That way the script at least ends after ~24 minutes
+             * if it ran out of CE fodder and didn't detect it for some reason
+            **/
+            if (count > 40) {
+                throw ExitException(ExitReason.MaxNumberOfIterations)
             }
         }
     }
+
+    private fun pickCEToUpgrade() {
+        /**
+         * Will click on the position of every 28 possible CE on the screen
+         * until one was selected to be upgraded or none worked
+         * or none worked
+         */
+        var y = 0
+        var x = 0
+        while (images[Images.CEDetails] in locations.ceMultiSelectRegion) {
+            var currentLocation = Location(
+                locations.ceFirstFodderLocation.x + (x * 270),
+                locations.ceFirstFodderLocation.y + (y * 290) + 50
+            )
+            currentLocation.click()
+
+            if (x < 6) {
+                x++
+            }
+            else if (y < 3) {
+                y++
+                x = 0
+            }
+            else {
+                throw ExitException(ExitReason.NoSuitableTargetCEFound)
+            }
+        }
+    }
+
+    private fun pickCEEnhanceFodder() {
+        /**
+         * Will click on the position of every 28 possible CE on the screen
+         * to attempt to feed them to the CE bomb
+         */
+        for (y in 0..3) {
+            for (x in 0..6) {
+                val nextCELocation = Location(
+                    locations.ceFirstFodderLocation.x + (x * 270),
+                    locations.ceFirstFodderLocation.y + (y * 290) + 50
+                )
+                nextCELocation.click()
+            }
+        }
+    }
+
+    sealed class ExitReason {
+        object NoSuitableTargetCEFound : ExitReason()
+        object CEFullyUpgraded : ExitReason()
+        object MaxNumberOfIterations: ExitReason()
+    }
+    class ExitException(val reason: ExitReason) : Exception()
 }

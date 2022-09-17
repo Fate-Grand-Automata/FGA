@@ -173,6 +173,8 @@ class ScriptManager @Inject constructor(
             is AutoCEBomb.ExitException -> {
                 val msg = when (e.reason) {
                     AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> "No suitable target CE found"
+                    AutoCEBomb.ExitReason.MaxNumberOfIterations -> "Max number of iterations reached"
+                    AutoCEBomb.ExitReason.CEFullyUpgraded -> "CE is fully upgraded. Please lock it or put it in second archive"
                 }
 
                 messages.notify(msg)
