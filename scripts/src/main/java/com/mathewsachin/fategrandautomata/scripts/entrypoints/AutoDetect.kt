@@ -24,7 +24,7 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.PresentBox
             locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
                 ScriptModeEnum.SupportImageMaker
-            images[Images.CEEnhance] in locations.ceEnhanceRegion ->
+            images[Images.CEEnhance] in locations.ceToEnhanceRegion ->
                 ScriptModeEnum.CEBomb
             else -> ScriptModeEnum.Battle
         }
