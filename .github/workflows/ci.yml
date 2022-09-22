@@ -7,7 +7,7 @@ on:
       - '.github/ISSUE_TEMPLATE/**'
       - '.gitattributes'
       - '.gitignore'
-      - 'README.md'
+      - '*.md'
       - 'LICENSE'
       - 'custom-game-area/**'
   push:
@@ -20,7 +20,7 @@ on:
       - '.github/**'
       - '.gitattributes'
       - '.gitignore'
-      - 'README'
+      - '*.md'
       - 'LICENSE'
       - 'renovate.json'
       - 'custom-game-area/**'
