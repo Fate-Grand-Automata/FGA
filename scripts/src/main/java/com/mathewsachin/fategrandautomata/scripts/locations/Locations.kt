@@ -145,7 +145,7 @@ class Locations @Inject constructor(
     // Ok button on the CE selection list
     val ceUpgradeOkButton =
         (if (isWide)
-            Location(1200, 1300).xFromCenter()
+            Location(-400, 1300).xFromRight()
         else
             Location(2300, 1300)
         )
