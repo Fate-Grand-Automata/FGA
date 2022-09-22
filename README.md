@@ -58,4 +58,4 @@ If you want to contribute, read the [Contribution Guide](CONTRIBUTING.md).
 ~~Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!~~ `SUCCESS!`  
 Oh, and code/doc contributions are surely welcome!
 
-For donations, see the [wiki](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Donations).
+For donations, check out https://ko-fi.com/fategrandautomata.
