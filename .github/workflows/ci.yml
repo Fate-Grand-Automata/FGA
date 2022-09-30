@@ -68,7 +68,7 @@ jobs:
   canary:
     needs: build
     runs-on: macos-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && !startsWith(github.event.commits[0].author.name, 'renovate')
     steps:
       - uses: dev-drprasad/delete-tag-and-release@v0.2.0
         with:
