@@ -44,7 +44,7 @@ fun BattleConfigScreen(
 ) {
     val context = LocalContext.current
 
-    val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+    val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         vm.export(context, uri)
     }
 

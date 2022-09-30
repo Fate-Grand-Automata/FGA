@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -14,8 +15,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.insets.systemBarsPadding
 
 val blueNeutral = Color(0xff61b4f4)
 val blueLighter = Color(0xff98e6ff)
@@ -93,14 +92,12 @@ fun FgaScreen(
     content: @Composable BoxScope.() -> Unit
 ) {
     FGATheme {
-        ProvideWindowInsets {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .systemBarsPadding()
-            ) {
-                content()
-            }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
+        ) {
+            content()
         }
     }
 }
