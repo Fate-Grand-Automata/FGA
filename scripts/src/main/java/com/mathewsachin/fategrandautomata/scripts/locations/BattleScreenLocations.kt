@@ -91,7 +91,7 @@ class BattleScreenLocations @Inject constructor(
         slot.skill2().let {
             val x = locate(it).x
 
-            Region(x + 20, 910, 40, 80)
+            Region(x + 20, 865, 40, 80)
         }
 
     fun servantChangeSupportCheckRegion(slot: FieldSlot) =
