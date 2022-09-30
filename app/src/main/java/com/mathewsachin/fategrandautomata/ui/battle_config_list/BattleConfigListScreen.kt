@@ -85,7 +85,7 @@ fun BattleConfigListScreen(
                 BattleConfigListAction.Delete -> deleteConfirmDialog.show()
                 is BattleConfigListAction.Edit -> navigate(it.id)
                 BattleConfigListAction.Export -> battleConfigsExport.launch(Uri.EMPTY)
-                BattleConfigListAction.Import -> battleConfigImport.launch("*/*")
+                BattleConfigListAction.Import -> battleConfigImport.launch("application/json")
                 is BattleConfigListAction.ToggleSelected -> vm.toggleSelected(it.id)
                 is BattleConfigListAction.StartSelection -> vm.startSelection(it.id)
             }
