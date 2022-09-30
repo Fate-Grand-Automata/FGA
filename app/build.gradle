@@ -34,6 +34,7 @@ android {
     defaultConfig {
         applicationId "com.mathewsachin.fategrandautomata"
         minSdkVersion 24
+        //noinspection ExpiringTargetSdkVersion
         targetSdkVersion 30
         versionCode Integer.valueOf(System.env.FGA_VERSION_CODE ?: 1)
         versionName(System.env.FGA_VERSION_NAME ?: "0.1.0")
@@ -120,7 +121,6 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     def accompanist_version = "0.25.1"
-    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
 }
