@@ -34,8 +34,7 @@ android {
     defaultConfig {
         applicationId "com.mathewsachin.fategrandautomata"
         minSdkVersion 24
-        //noinspection ExpiringTargetSdkVersion
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode Integer.valueOf(System.env.FGA_VERSION_CODE ?: 1)
         versionName(System.env.FGA_VERSION_NAME ?: "0.1.0")
 
