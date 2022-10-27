@@ -20,8 +20,8 @@ class SupportScreenLocations @Inject constructor(
 
     val updateClick =
         when (gameServer) {
-            GameServerEnum.Jp, GameServerEnum.Cn, GameServerEnum.Kr -> 1865
-            else -> 1700
+            GameServerEnum.Tw -> 1700
+            else -> 1865
         }.let { x -> Location(x, 260) + headerOffset }
 
     val listTopClick = Location(if (isWide) -218 else -80, 360).xFromRight()
