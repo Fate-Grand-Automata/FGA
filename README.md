@@ -54,7 +54,7 @@ If you want to contribute, read the [Contribution Guide](CONTRIBUTING.md).
 
 [FGOLua]: https://github.com/29988122/Fate-Grand-Order_Lua
 
-## Like the project? Want to support me?
+## Like the project? Want to support us?
 ~~Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!~~ `SUCCESS!`  
 Oh, and code/doc contributions are surely welcome!
 
