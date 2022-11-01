@@ -13,7 +13,7 @@ buildscript {
         kotlin_version = '1.7.10'
         hilt_version = '2.44'
         compose_version = '1.2.1'
-        gson_version = '2.9.1'
+        gson_version = '2.10'
     }
     repositories {
         google()
