@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.PixelFormat
 import android.media.ImageReader
 import android.media.projection.MediaProjection
-import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.ScreenshotService
@@ -20,7 +19,6 @@ class MediaProjectionScreenshotService(
     private val mediaProjection: MediaProjection,
     private val imageSize: Size,
     private val screenDensity: Int,
-    private val storageProvider: StorageProvider,
     private val colorManager: ColorManager
 ) : ScreenshotService {
     private val bufferMat = Mat()

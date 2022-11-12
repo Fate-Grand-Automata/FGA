@@ -7,7 +7,6 @@ import com.mathewsachin.fategrandautomata.scripts.models.*
 import com.mathewsachin.fategrandautomata.scripts.models.battle.BattleState
 import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
 import com.mathewsachin.libautomata.dagger.ScriptScope
-import java.util.*
 import javax.inject.Inject
 
 @ScriptScope
@@ -27,17 +26,18 @@ class Card @Inject constructor(
         parser.parse()
     }
 
-    private val spamNps: Set<CommandCard.NP> get() =
-        (FieldSlot.list.zip(CommandCard.NP.list))
-            .mapNotNull { (servantSlot, np) ->
-                val teamSlot = servantTracker.deployed[servantSlot] ?: return@mapNotNull null
-                val npSpamConfig = spamConfig[teamSlot].np
+    private val spamNps: Set<CommandCard.NP>
+        get() =
+            (FieldSlot.list.zip(CommandCard.NP.list))
+                .mapNotNull { (servantSlot, np) ->
+                    val teamSlot = servantTracker.deployed[servantSlot] ?: return@mapNotNull null
+                    val npSpamConfig = spamConfig[teamSlot].np
 
-                if (caster.canSpam(npSpamConfig.spam) && (state.stage + 1) in npSpamConfig.waves)
-                    np
-                else null
-            }
-            .toSet()
+                    if (caster.canSpam(npSpamConfig.spam) && (state.stage + 1) in npSpamConfig.waves)
+                        np
+                    else null
+                }
+                .toSet()
 
     private fun pickCards(
         cards: List<ParsedCard>,

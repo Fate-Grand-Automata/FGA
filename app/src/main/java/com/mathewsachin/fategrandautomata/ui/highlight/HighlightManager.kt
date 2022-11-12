@@ -2,7 +2,6 @@ package com.mathewsachin.fategrandautomata.ui.highlight
 
 import android.graphics.PixelFormat
 import android.os.Build
-import android.view.View
 import android.view.WindowManager
 import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.libautomata.HighlightColor
@@ -18,7 +17,7 @@ class HighlightManager @Inject constructor() {
     private val regionsToHighlight = mutableMapOf<Region, HighlightColor>()
 
     private val highlightView by lazy {
-        HighlightView(tapperService,  regionsToHighlight)
+        HighlightView(tapperService, regionsToHighlight)
     }
 
     private val accessibilityWindowManager = tapperService
@@ -41,7 +40,7 @@ class HighlightManager @Inject constructor() {
     }
 
     fun hide() {
-       accessibilityWindowManager.removeView(highlightView)
+        accessibilityWindowManager.removeView(highlightView)
     }
 
     fun add(region: Region, color: HighlightColor) {

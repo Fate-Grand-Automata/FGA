@@ -185,7 +185,7 @@ class ScriptManager @Inject constructor(
     }
 
     fun pause(action: PauseAction): Boolean {
-        scriptState.let { state ->
+        return scriptState.let { state ->
             if (state is ScriptState.Started) {
                 if (state.paused && action != PauseAction.Pause) {
                     uiStateHolder.uiState = ScriptRunnerUIState.Running
@@ -203,9 +203,8 @@ class ScriptManager @Inject constructor(
                     return true
                 }
             }
+            return false
         }
-
-        return false
     }
 
     private fun updateGameServer() {

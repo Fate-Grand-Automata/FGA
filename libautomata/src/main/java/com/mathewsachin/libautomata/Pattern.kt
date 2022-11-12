@@ -40,7 +40,7 @@ interface Pattern : AutoCloseable {
      * Note that the resulting [Pattern] can have a smaller size than the [region] if the [region]
      * is not fully contained in the area of the image.
      *
-     * @param region a [Region] in image coordinates, see [Region.transformToImage]
+     * @param region a [Region] in image coordinates, see [Transformer.toImage]
      */
     fun crop(region: Region): Pattern
 

@@ -10,7 +10,6 @@ import com.mathewsachin.fategrandautomata.scripts.FgoGameAreaManager
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
 import com.mathewsachin.fategrandautomata.util.DisplayHelper
-import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.fategrandautomata.util.makeLandscape
 import com.mathewsachin.libautomata.*
 import dagger.hilt.android.scopes.ServiceScoped
@@ -21,7 +20,6 @@ import kotlin.math.roundToInt
 @ServiceScoped
 class ScreenshotServiceHolder @Inject constructor(
     private val prefs: IPreferences,
-    private val storageProvider: StorageProvider,
     private val display: DisplayHelper,
     private val colorManager: ColorManager,
     private val mediaProjectionManager: MediaProjectionManager,
@@ -56,7 +54,6 @@ class ScreenshotServiceHolder @Inject constructor(
                     mediaProjection,
                     scaledSize,
                     scaledDensity,
-                    storageProvider,
                     colorManager
                 )
             } else {
