@@ -57,7 +57,6 @@ class ScriptRunnerOverlay @Inject constructor(
             ScriptRunnerUI(
                 state = uiStateHolder.uiState,
                 updateState = { act(it) },
-                isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,
                 onDrag = { x, y -> onDrag(x, y) }
             )

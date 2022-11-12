@@ -84,6 +84,4 @@ class RootScreenshotService(
 
         buffer = null
     }
-
-    override fun startRecording(): AutoCloseable? = null
 }

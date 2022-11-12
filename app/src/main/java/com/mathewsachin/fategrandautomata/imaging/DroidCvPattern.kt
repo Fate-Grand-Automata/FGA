@@ -39,7 +39,7 @@ class DroidCvPattern(
     private var tag = ""
 
     override fun toString() =
-        if (tag.isBlank()) super.toString() else tag
+        tag.ifBlank { super.toString() }
 
     override fun close() {
         if (ownsMat) {

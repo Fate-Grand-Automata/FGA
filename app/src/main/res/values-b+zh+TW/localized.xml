@@ -136,8 +136,6 @@
     <string name="p_debug_mode_summary">將框出比對影像的區域</string>
     <string name="p_ignore_notch">忽略瀏海</string>
     <string name="p_ignore_notch_summary">若FGO未在您的手機上把瀏海部分空出來，請開啟此選項</string>
-    <string name="p_record_screen">螢幕錄影</string>
-    <string name="p_record_screen_summary">將在存放資料的資料夾儲存 \'record.mp4\' 為名的螢幕錄影檔案\n重新命名或複製至其他位置以保留</string>
     <string name="p_root_screenshot">以root截圖</string>
     <string name="p_root_screenshot_summary">對夜神模擬器(Nox with Android 7)有幫助，請在開啟服務前選取此設定</string>
     <string name="p_auto_start_service">自動開啟服務</string>
@@ -220,7 +218,6 @@
     <string name="accessibility_disabled_go_to_settings">前往設定</string>
     <string name="draw_overlay_disabled_title">無法顯示在其他應用程式上層</string>
     <string name="draw_overlay_disabled_message">請讓此程式顯示在其他應用程式上層，FGA需要啟用此設定以顯示控制按鈕</string>
-    <string name="cannot_start_recording">無法開啟螢幕錄影</string>
 
     <string name="script_msg_ap_ran_out">體力用盡！</string>
     <string name="stopped_by_user">使用者停止腳本</string>
@@ -305,7 +302,6 @@
     <string name="p_max_skills">滿技</string>
     <string name="p_stop_on_first_clear_rewards">首次通關自動停止</string>
     <string name="overlay_notification_text">服務啟動中</string>
-    <string name="cannot_stop_recording">無法停止螢幕錄影</string>
     <string name="unexpected_error_copy">複製</string>
     <string name="lottery_reset_disabled">已取消抽獎箱重置</string>
     <string name="first_clear_rewards">首次通關獎勵</string>

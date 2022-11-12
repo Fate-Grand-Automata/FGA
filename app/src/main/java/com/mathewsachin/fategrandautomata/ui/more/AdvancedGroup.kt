@@ -55,17 +55,6 @@ fun LazyListScope.advancedGroup(
     }
 
     item {
-        val rootForScreenshots by prefs.useRootForScreenshots.remember()
-
-        prefs.recordScreen.SwitchPreference(
-            title = stringResource(R.string.p_record_screen),
-            summary = stringResource(R.string.p_record_screen_summary),
-            icon = icon(R.drawable.ic_video),
-            enabled = !rootForScreenshots
-        )
-    }
-
-    item {
         RootForScreenshots(prefs.useRootForScreenshots)
     }
 

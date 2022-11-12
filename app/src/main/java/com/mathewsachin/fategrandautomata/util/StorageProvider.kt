@@ -44,13 +44,6 @@ class StorageProvider @Inject constructor(
     val rootDirName
         get() = dirRoot?.name
 
-    private val recordingFile
-        get() = dirRoot.getOrCreateFile("record.mp4")
-
-    val recordingFileDescriptor
-        get() = resolver.openFileDescriptor(recordingFile.uri, "rw")
-            ?: throw KnownException(KnownException.Reason.CouldNotOpenFileForRecording)
-
     private val persistablePermission =
         Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
