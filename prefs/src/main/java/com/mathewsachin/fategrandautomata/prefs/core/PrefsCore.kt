@@ -31,7 +31,7 @@ class PrefsCore @Inject constructor(
 
     val storySkip = maker.bool("story_skip")
     val withdrawEnabled = maker.bool("withdraw_enabled")
-    
+
     val stopOnCEGet = maker.bool("stop_on_ce_get")
     val stopOnFirstClearRewards = maker.bool("stop_on_first_clear_rewards")
 
@@ -43,7 +43,6 @@ class PrefsCore @Inject constructor(
 
     val ignoreNotchCalculation = maker.bool("ignore_notch")
     val useRootForScreenshots = maker.bool("use_root_screenshot")
-    val recordScreen = maker.bool("record_screen")
     val screenshotDrops = maker.bool("screenshot_drops")
     val screenshotDropsUnmodified = maker.bool("screenshot_drops_unmodified")
     val debugMode = maker.bool("debug_mode")

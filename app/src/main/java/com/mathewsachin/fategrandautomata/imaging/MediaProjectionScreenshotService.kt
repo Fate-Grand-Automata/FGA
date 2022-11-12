@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.PixelFormat
 import android.media.ImageReader
 import android.media.projection.MediaProjection
-import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.ScreenshotService
@@ -20,7 +19,6 @@ class MediaProjectionScreenshotService(
     private val mediaProjection: MediaProjection,
     private val imageSize: Size,
     private val screenDensity: Int,
-    private val storageProvider: StorageProvider,
     private val colorManager: ColorManager
 ) : ScreenshotService {
     private val bufferMat = Mat()
@@ -31,7 +29,9 @@ class MediaProjectionScreenshotService(
 
     @SuppressLint("WrongConstant")
     private val imageReader = ImageReader.newInstance(imageSize.width, imageSize.height, PixelFormat.RGBA_8888, 2)
-    private val virtualDisplay = mediaProjection.createVirtualDisplay(
+    private var virtualDisplay = createVirtualDisplay()
+
+    private fun createVirtualDisplay() = mediaProjection.createVirtualDisplay(
         "ScreenCapture",
         imageSize.width, imageSize.height, screenDensity,
         0, imageReader.surface, null, null
@@ -52,7 +52,14 @@ class MediaProjectionScreenshotService(
     }
 
     private fun screenshotIntoBuffer() {
-        imageReader.acquireLatestImage()?.use {
+        var image = imageReader.acquireLatestImage()
+        if (image == null) {
+            // restart MediaProjection
+            virtualDisplay.release()
+            virtualDisplay = createVirtualDisplay()
+            image = imageReader.acquireLatestImage()
+        }
+        image?.use {
             val plane = it.planes[0]
             val buffer = plane.buffer
 
@@ -79,7 +86,4 @@ class MediaProjectionScreenshotService(
 
         mediaProjection.stop()
     }
-
-    override fun startRecording() =
-        MediaProjectionRecording(mediaProjection, imageSize, screenDensity, storageProvider)
 }

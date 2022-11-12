@@ -25,8 +25,7 @@ fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
     updateState: (ScriptRunnerUIAction) -> Unit,
     onDrag: (Float, Float) -> Unit,
-    enabled: Boolean,
-    isRecording: Boolean
+    enabled: Boolean
 ) {
     FGATheme(
         darkTheme = true,
@@ -46,7 +45,7 @@ fun ScriptRunnerUI(
 
             Surface(
                 color = MaterialTheme.colors.surface,
-                contentColor = if (isRecording) MaterialTheme.colors.error else Color.White,
+                contentColor = Color.White,
                 elevation = 5.dp,
                 shape = CircleShape,
                 onClick = {

@@ -57,9 +57,8 @@ body:
       description: |
         Include a video of the script running on your device with `Debug mode` ON.
         
-        Recording functionality is available within the app in `More options` > `Advanced` > `Fine-tune`.
-
-        :warning: **Do not use Android or 3rd party apps for recording, FGA will not be able to see anything on the screen anymore until you restart the FGA service.** The only exception is when you have set FGA to record the screen using `Root Mode`.
+        ~~Recording functionality is available within the app in `More options` > `Advanced` > `Fine-tune`.~~
+        Record your screen using the system recorder. Android 13 broke FGA's recording function, but the latest FGA version should be fine with the system recorder running at the same time.
         
         If the video is too large for Github, upload it to youtube.com or something similar.
     validations:

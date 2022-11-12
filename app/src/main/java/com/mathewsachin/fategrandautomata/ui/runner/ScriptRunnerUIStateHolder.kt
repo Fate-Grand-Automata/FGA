@@ -9,6 +9,5 @@ import javax.inject.Inject
 @ServiceScoped
 class ScriptRunnerUIStateHolder @Inject constructor() {
     var uiState by mutableStateOf<ScriptRunnerUIState>(ScriptRunnerUIState.Idle)
-    var isRecording by mutableStateOf(false)
     var isPlayButtonEnabled by mutableStateOf(true)
 }

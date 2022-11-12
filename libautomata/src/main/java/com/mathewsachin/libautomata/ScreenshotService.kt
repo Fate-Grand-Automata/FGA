@@ -10,11 +10,4 @@ interface ScreenshotService : AutoCloseable {
      * @return an [Pattern] with the image data
      */
     fun takeScreenshot(): Pattern
-
-    /**
-     * Starts recording
-     *
-     * @return [AutoCloseable] which can be closed to stop recording, or null if recording is not supported
-     */
-    fun startRecording(): AutoCloseable?
 }

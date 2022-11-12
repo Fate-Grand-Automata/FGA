@@ -155,8 +155,6 @@
     <string name="p_debug_mode_summary">将框出对比图像的区域</string>
     <string name="p_ignore_notch">忽略刘海</string>
     <string name="p_ignore_notch_summary">若FGO未在您的手机上把刘海部分空出來，请开启此选项</string>
-    <string name="p_record_screen">屏幕录像</string>
-    <string name="p_record_screen_summary">将在存放文件的文件夹储存 \'record.mp4\' 为名的屏幕录像档案\n重新命名或复制至其他位置以保留</string>
     <string name="p_root_screenshot">以root截图</string>
     <string name="p_root_screenshot_summary">对夜神模拟器(Nox with Android 7)有帮助，请在开启服务前选取此设定</string>
     <string name="p_auto_start_service">自动开启服务</string>
@@ -248,8 +246,6 @@
     <string name="accessibility_disabled_go_to_settings">前往设定</string>
     <string name="draw_overlay_disabled_title">无法显示在其他应用程序上层</string>
     <string name="draw_overlay_disabled_message">请让此程序显示在其他应用程序上层，FGA需要启用此设定以显示控制按钮</string>
-    <string name="cannot_start_recording">无法开启屏幕录影</string>
-    <string name="cannot_stop_recording">无法停止屏幕录影</string>
     <string name="unexpected_error_copy">复制</string>
 
     <string name="script_msg_ap_ran_out">体力用尽！</string>
