@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.BackHandler
@@ -58,7 +59,7 @@ fun BattleConfigListScreen(
     }
 
     val battleConfigImport = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetMultipleContents()
+        ActivityResultContracts.OpenMultipleDocuments()
     ) { uris ->
         vm.importBattleConfigs(context, uris)
     }
@@ -85,7 +86,10 @@ fun BattleConfigListScreen(
                 BattleConfigListAction.Delete -> deleteConfirmDialog.show()
                 is BattleConfigListAction.Edit -> navigate(it.id)
                 BattleConfigListAction.Export -> battleConfigsExport.launch(Uri.EMPTY)
-                BattleConfigListAction.Import -> battleConfigImport.launch("application/json")
+                BattleConfigListAction.Import -> battleConfigImport.launch(
+                    //octet-stream as backup in case Android doesn't detect json
+                    arrayOf("application/json", "application/octet-stream")
+                )
                 is BattleConfigListAction.ToggleSelected -> vm.toggleSelected(it.id)
                 is BattleConfigListAction.StartSelection -> vm.startSelection(it.id)
             }
@@ -103,6 +107,7 @@ private sealed class BattleConfigListAction {
     class Edit(val id: String) : BattleConfigListAction()
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 private fun BattleConfigListContent(
     configs: List<BattleConfigCore>,
