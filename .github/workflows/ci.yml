@@ -28,7 +28,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -68,7 +68,7 @@ jobs:
   # Release master branch
   canary:
     needs: build
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' && !startsWith(github.event.commits[0].author.name, 'renovate')
     steps:
       - uses: actions/download-artifact@v3
