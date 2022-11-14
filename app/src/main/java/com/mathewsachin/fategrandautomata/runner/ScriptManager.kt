@@ -185,7 +185,7 @@ class ScriptManager @Inject constructor(
     }
 
     fun pause(action: PauseAction): Boolean {
-        return scriptState.let { state ->
+        scriptState.let { state ->
             if (state is ScriptState.Started) {
                 if (state.paused && action != PauseAction.Pause) {
                     uiStateHolder.uiState = ScriptRunnerUIState.Running
