@@ -37,17 +37,18 @@ jobs:
         with:
           java-version: 11
           distribution: 'temurin'
-
+          cache: 'gradle'
       - name: Determine Version Name
-        shell: pwsh
+        shell: bash
         run: |
-          $VERSION_CODE = $env:GITHUB_RUN_NUMBER
-          $VERSION_NAME = $env:GITHUB_RUN_NUMBER
-          if ($env:GITHUB_REF.StartsWith('refs/tags/')) {
-              $VERSION_NAME = $env:GITHUB_REF.Substring(10)
-          }
-          echo "FGA_VERSION_CODE=$VERSION_CODE" >> $env:GITHUB_ENV
-          echo "FGA_VERSION_NAME=$VERSION_NAME" >> $env:GITHUB_ENV
+          VERSION_CODE=${{ github.run_number }}
+          VERSION_NAME=${{ github.run_number }}
+          
+          if [[ ${{ github.ref }} == refs/tags/* ]]; then
+            VERSION_NAME = ${{ github.ref_name }}
+          fi
+          echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
+          echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
       - name: Build Android Package
         run: ./gradlew assembleCi --scan --parallel
