@@ -71,13 +71,6 @@ jobs:
     runs-on: macos-latest
     if: github.ref == 'refs/heads/master' && !startsWith(github.event.commits[0].author.name, 'renovate')
     steps:
-      - uses: dev-drprasad/delete-tag-and-release@v0.2.0
-        with:
-          delete_release: true
-          tag_name: canary
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: actions/download-artifact@v3
         with:
           name: apk
