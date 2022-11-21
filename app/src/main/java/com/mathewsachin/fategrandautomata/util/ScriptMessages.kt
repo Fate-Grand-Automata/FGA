@@ -94,7 +94,13 @@ class ScriptMessages @Inject constructor(
             ScriptNotify.CEDropped -> notify(context.getString(R.string.ce_dropped))
             ScriptNotify.CEGet -> notify(context.getString(R.string.ce_get))
             is ScriptNotify.FailedToDetermineCards -> {
-                val msg = context.getString(R.string.failed_to_determine_card_type, action.cards)
+                var msg = context.getString(R.string.failed_to_determine_card, action.cards)
+                if (action.unknownCardTypes) {
+                    msg += "\n" + context.getString(R.string.unknown_card_type)
+                }
+                if (action.unknownServants) {
+                    msg += "\n" + context.getString(R.string.unknown_servant_card)
+                }
 
                 toast(msg)
 
