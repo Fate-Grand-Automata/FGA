@@ -17,13 +17,6 @@ fun LazyListScope.battleGroup(
     prefs: PrefsCore
 ) {
     item {
-        prefs.skillConfirmation.SwitchPreference(
-            title = stringResource(R.string.p_skill_confirmation),
-            icon = icon(Icons.Default.RadioButtonChecked)
-        )
-    }
-
-    item {
         prefs.gameServerRaw.SingleSelectChipPreference(
             title = stringResource(R.string.p_game_server),
             icon = icon(Icons.Default.Public),
@@ -38,9 +31,24 @@ fun LazyListScope.battleGroup(
     }
 
     item {
+        prefs.skillConfirmation.SwitchPreference(
+            title = stringResource(R.string.p_skill_confirmation),
+            icon = icon(Icons.Default.RadioButtonChecked)
+        )
+    }
+
+    item {
+        prefs.skillSpeedUp.SwitchPreference(
+            title = stringResource(R.string.p_skill_speedup),
+            summary = stringResource(R.string.p_skill_speedup_summary),
+            icon = icon(Icons.Default.FastForward)
+        )
+    }
+
+    item {
         prefs.storySkip.SwitchPreference(
             title = stringResource(R.string.p_story_skip),
-            icon = icon(Icons.Default.FastForward)
+            icon = icon(Icons.Default.AutoStories)
         )
     }
 

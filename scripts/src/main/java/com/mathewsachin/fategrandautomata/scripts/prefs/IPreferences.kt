@@ -9,6 +9,7 @@ interface IPreferences {
     var scriptMode: ScriptModeEnum
     var gameServer: GameServerEnum
     val skillConfirmation: Boolean
+    val skillSpeedUp: Boolean
     val battleConfigs: List<IBattleConfig>
     var selectedBattleConfig: IBattleConfig
     val storySkip: Boolean

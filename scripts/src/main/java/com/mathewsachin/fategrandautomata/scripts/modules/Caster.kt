@@ -52,13 +52,20 @@ class Caster @Inject constructor(
 
             selectSkillTarget(target)
         }
-
-        // Close the window that opens up if skill is on cool-down
-        // Also triggers skill speedup for FGO servers with that feature
-        // If we wait for too long here, the vanishing Attack button will not be detected in waitForAnimationToFinish()
-        locations.battle.extraInfoWindowCloseClick.click()
+        
+        if (prefs.skillSpeedUp) {
+            // Trigger skill speedup by clicking in the top right
+            // Could also close any windows if a skill is on cool-down
+            // If we wait for too long here, the vanishing Attack button will not be detected in waitForAnimationToFinish()
+            locations.battle.extraInfoWindowCloseClick.click()
+        }
 
         waitForAnimationToFinish()
+
+        if (!prefs.skillSpeedUp) {
+            // If no skill speedup is used, there may still be an open window for skills on cool-down.
+            locations.battle.extraInfoWindowCloseClick.click()
+        }
     }
 
     fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {

@@ -124,10 +124,13 @@
     <string name="p_auto_choose_target">Auto choose target</string>
     <string name="p_story_skip">Story Skip</string>
     <string name="p_skill_confirmation">Skill Confirmation</string>
+    <string name="p_skill_confirmation_summary">Turn this on when Skill Confirmation is turned on in FGO</string>
+    <string name="p_skill_speedup">Skill Speedup</string>
+    <string name="p_skill_speedup_summary">Fast forwards Skill animations.\n\nCan lead to missed touch inputs, mostly when repeating quests, so disable this if you experience any problems.</string>
     <string name="p_enable_withdraw">Enable Withdraw</string>
     <string name="p_stop_on_ce_get">Stop on CE GET</string>
     <string name="p_stop_on_first_clear_rewards">Stop on first-clear rewards</string>
-    <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs (Experimental)</string>
+    <string name="p_stop_on_ce_get_summary">First-time quest completion rewards and Bond CEs</string>
     <string name="p_screenshot_drops">Screenshot Drops</string>
     <string name="p_screenshot_drops_summary">Saved to \'drops\' folder</string>
     <string name="p_screenshot_drops_unmodified">Save unmodified screenshots</string>

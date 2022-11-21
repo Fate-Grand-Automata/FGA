@@ -17,6 +17,8 @@ class PreferencesImpl @Inject constructor(
 
     override val skillConfirmation by prefs.skillConfirmation
 
+    override val skillSpeedUp by prefs.skillSpeedUp
+
     private var battleConfigList by prefs.battleConfigList
 
     override val battleConfigs
