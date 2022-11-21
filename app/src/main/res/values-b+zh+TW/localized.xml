@@ -237,7 +237,7 @@
     <string name="times_ran">已執行 %d 次</string>
     <string name="times_ran_out_of">已執行 %1$d / %2$d 次</string>
     <string name="refills_used_out_of">已自動回體 %1$d / %2$d 次</string>
-    <string name="failed_to_determine_card_type">辨識卡色失敗: %s</string>
+    <string name="failed_to_determine_card">辨識卡色失敗: %s</string>
     <string name="support_list_updated_in">支援清單在 %s 後刷新</string>
     <string name="times_withdrew">已撤退 %d 次</string>
     <string name="avg_time_per_run">平均一場時間: %s</string>

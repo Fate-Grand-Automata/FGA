@@ -269,7 +269,7 @@
     <string name="times_ran">%d번 반복함</string>
     <string name="times_ran_out_of">%2$d번 중 %1$d번 반복함</string>
     <string name="refills_used_out_of">%2$d번 중 %1$d번 사과 사용</string>
-    <string name="failed_to_determine_card_type">카드 유형 확인 실패: %s</string>
+    <string name="failed_to_determine_card">카드 유형 확인 실패: %s</string>
     <string name="support_list_updated_in">서포트 리스트가 %s 안에 갱신됩니다</string>
     <string name="times_withdrew">%d번 철수함</string>
     <string name="avg_time_per_run">반복 평균 시간: %s</string>

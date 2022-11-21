@@ -269,7 +269,9 @@
     <string name="times_ran">Ran %d time(s)</string>
     <string name="times_ran_out_of">Ran %1$d out of %2$d time(s)</string>
     <string name="refills_used_out_of">%1$d refills used out of %2$d</string>
-    <string name="failed_to_determine_card_type">Failed to determine Card type: %s</string>
+    <string name="failed_to_determine_card">Failed to determine Card: %s</string>
+    <string name="unknown_card_type">Card type could not be detected (Buster, Quick, Arts)</string>
+    <string name="unknown_servant_card">Card belongs to an unknown Servant</string>
     <string name="support_list_updated_in">Support list will be updated in %s</string>
     <string name="times_withdrew">Withdrew %d times</string>
     <string name="avg_time_per_run">Average time per run: %s</string>
