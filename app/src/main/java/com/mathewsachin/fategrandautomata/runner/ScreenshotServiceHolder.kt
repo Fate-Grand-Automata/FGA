@@ -1,7 +1,5 @@
 package com.mathewsachin.fategrandautomata.runner
 
-import android.app.Activity
-import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import com.mathewsachin.fategrandautomata.imaging.MediaProjectionScreenshotService
 import com.mathewsachin.fategrandautomata.root.RootScreenshotService
@@ -40,18 +38,12 @@ class ScreenshotServiceHolder @Inject constructor(
 
         screenshotService = try {
             if (prefs.wantsMediaProjectionToken) {
-                // Cloning the Intent allows reuse.
-                // Otherwise, the Intent gets consumed and MediaProjection cannot be started multiple times.
-                val token = ScriptRunnerService.mediaProjectionToken?.clone() as Intent
-
-                val mediaProjection =
-                    mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
-
                 val scaledSize = size * (scale ?: 1.0)
                 val scaledDensity = (landscapeMetrics.densityDpi / (scale ?: 1.0)).roundToInt()
 
                 MediaProjectionScreenshotService(
-                    mediaProjection,
+                    mediaProjectionManager,
+                    ScriptRunnerService.mediaProjectionToken!!,
                     scaledSize,
                     scaledDensity,
                     colorManager
