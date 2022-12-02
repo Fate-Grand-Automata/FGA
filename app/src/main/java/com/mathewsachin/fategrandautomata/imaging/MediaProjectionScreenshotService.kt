@@ -8,6 +8,7 @@ import android.hardware.display.VirtualDisplay
 import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
+import com.mathewsachin.fategrandautomata.util.StorageProvider
 import com.mathewsachin.libautomata.ColorManager
 import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.ScreenshotService
@@ -24,6 +25,7 @@ class MediaProjectionScreenshotService(
     private val mediaProjectionToken: Intent,
     private val imageSize: Size,
     private val screenDensity: Int,
+    private val storageProvider: StorageProvider,
     private val colorManager: ColorManager
 ) : ScreenshotService {
     private val bufferMat = Mat()
@@ -104,4 +106,7 @@ class MediaProjectionScreenshotService(
 
         mediaProjection.stop()
     }
+
+    override fun startRecording() =
+        MediaProjectionRecording(mediaProjection, imageSize, screenDensity, storageProvider)
 }

@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
+import android.widget.Toast
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.fategrandautomata.di.script.ScriptComponentBuilder
@@ -56,7 +57,7 @@ class ScriptManager @Inject constructor(
         context: Context,
         exception: AutoBattle.ExitException
     ) = withContext(Dispatchers.Main) {
-        suspendCancellableCoroutine { continuation ->
+        suspendCancellableCoroutine<Unit> { continuation ->
             var dialog: DialogInterface? = null
 
             val composeView = FakedComposeView(context) {
@@ -85,9 +86,36 @@ class ScriptManager @Inject constructor(
         uiStateHolder.isPlayButtonEnabled = false
         imageLoader.clearSupportCache()
 
+        // Stop recording
         scriptState.let { state ->
             if (state is ScriptState.Started) {
                 scriptState = ScriptState.Stopping(state)
+            }
+
+            val recording = when (state) {
+                ScriptState.Stopped -> null
+                is ScriptState.Started -> state.recording
+                is ScriptState.Stopping -> state.start.recording
+            }
+
+            if (recording != null) {
+                // A little bit of delay so the exit message can be recorded
+                launch {
+                    try {
+                        delay(500)
+                        withContext(Dispatchers.Main) {
+                            recording.close()
+                        }
+                    } catch (e: Exception) {
+                        val msg = context.getString(R.string.cannot_stop_recording)
+                        Timber.e(e, msg)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    uiStateHolder.isRecording = false
+                }
             }
         }
 
@@ -255,6 +283,7 @@ class ScriptManager @Inject constructor(
             if (resp !is ScriptLauncherResponse.Cancel) {
                 delay(500)
                 runEntryPoint(
+                    screenshotService = screenshotService,
                     entryPointProvider = { getEntryPoint(hiltEntryPoint) }
                 )
             }
@@ -271,17 +300,37 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private fun runEntryPoint(entryPointProvider: () -> EntryPoint) {
+    private suspend fun runEntryPoint(screenshotService: ScreenshotService, entryPointProvider: () -> EntryPoint) {
         if (scriptState !is ScriptState.Stopped) {
             return
+        }
+
+        val recording = try {
+            if (preferences.recordScreen) {
+                withContext(Dispatchers.Main) {
+                    screenshotService.startRecording()
+                }
+            } else null
+        } catch (e: Exception) {
+            val msg = context.getString(R.string.cannot_start_recording)
+            Timber.e(e, msg)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+
+            null
         }
 
         val entryPoint = entryPointProvider().apply {
             scriptExitListener = { onScriptExit(it) }
         }
 
-        scriptState = ScriptState.Started(entryPoint)
+        scriptState = ScriptState.Started(entryPoint, recording)
         uiStateHolder.uiState = ScriptRunnerUIState.Running
+
+        if (recording != null) {
+            uiStateHolder.isRecording = true
+        }
 
         entryPoint.run()
     }

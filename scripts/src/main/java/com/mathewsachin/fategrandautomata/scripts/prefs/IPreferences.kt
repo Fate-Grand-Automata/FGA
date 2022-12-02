@@ -20,6 +20,7 @@ interface IPreferences {
     var waitAPRegen: Boolean
     val ignoreNotchCalculation: Boolean
     val useRootForScreenshots: Boolean
+    val recordScreen: Boolean
     val skillDelay: Duration
     val screenshotDrops: Boolean
     val screenshotDropsUnmodified: Boolean
