@@ -4,7 +4,7 @@ class ResizedScreenshotProvider(
     private val original: ScreenshotService,
     private val scale: Double,
     platformImpl: PlatformImpl
-) : ScreenshotService {
+): ScreenshotService {
     private val resizeTarget = platformImpl.getResizableBlankPattern()
 
     override fun takeScreenshot(): Pattern {
@@ -12,6 +12,8 @@ class ResizedScreenshotProvider(
         shot.resize(resizeTarget, shot.size * scale)
         return resizeTarget
     }
+
+    override fun startRecording() = original.startRecording()
 
     override fun close() {
         original.close()

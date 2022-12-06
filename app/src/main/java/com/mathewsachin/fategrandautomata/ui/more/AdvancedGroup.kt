@@ -54,6 +54,23 @@ fun LazyListScope.advancedGroup(
         )
     }
 
+
+    item {
+        val rootForScreenshots by prefs.useRootForScreenshots.remember()
+
+        val enabled = !rootForScreenshots &&
+                android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU
+        if (!enabled) {
+            prefs.recordScreen.resetToDefault()
+        }
+        prefs.recordScreen.SwitchPreference(
+            title = stringResource(R.string.p_record_screen),
+            summary = stringResource(R.string.p_record_screen_summary),
+            icon = icon(R.drawable.ic_video),
+            enabled = enabled
+        )
+    }
+
     item {
         RootForScreenshots(prefs.useRootForScreenshots)
     }

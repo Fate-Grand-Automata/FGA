@@ -11,7 +11,7 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     testImplementation "junit:junit:4.13.2"
-    testImplementation "io.mockk:mockk:1.13.2"
+    testImplementation "io.mockk:mockk:1.13.3"
 }
 
 java {

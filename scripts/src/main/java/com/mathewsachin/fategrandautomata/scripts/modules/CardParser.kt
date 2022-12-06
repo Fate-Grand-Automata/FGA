@@ -93,12 +93,20 @@ class CardParser @Inject constructor(
                 )
             }
 
+        var unknownCardTypes = false
+        var unknownServants = false
         val failedToDetermine = cards
             .filter {
                 when {
                     it.isStunned -> false
-                    it.type == CardTypeEnum.Unknown -> true
-                    it.servant is TeamSlot.Unknown -> !prefs.skipServantFaceCardCheck
+                    it.type == CardTypeEnum.Unknown -> {
+                        unknownCardTypes = true
+                        true
+                    }
+                    it.servant is TeamSlot.Unknown && !prefs.skipServantFaceCardCheck -> {
+                        unknownServants = true
+                        true
+                    }
                     else -> false
                 }
             }
@@ -106,7 +114,7 @@ class CardParser @Inject constructor(
 
         if (failedToDetermine.isNotEmpty()) {
             messages.notify(
-                ScriptNotify.FailedToDetermineCards(failedToDetermine)
+                ScriptNotify.FailedToDetermineCards(failedToDetermine, unknownCardTypes, unknownServants)
             )
         }
 
