@@ -155,6 +155,8 @@
     <string name="p_debug_mode_summary">대조되고 있는 부분 표시하기</string>
     <string name="p_ignore_notch">노치(카메라 구멍) 계산 무시</string>
     <string name="p_ignore_notch_summary">페그오에서 노치 부분이 검정색으로 나오지 않을 경우 활성화 하세요.</string>
+    <string name="p_record_screen">화면 녹화</string>
+    <string name="p_record_screen_summary">\'record.mp4\'라는 파일이 지정된 폴더에 저장됩니다.\n저장하려면 복사하거나 이름을 바꿔주세요.</string>
     <string name="p_root_screenshot">루트 권한으로 스크린샷 하기</string>
     <string name="p_root_screenshot_summary">녹스(안드로이드 7)에서 유용. 해당 부분 활성화 후 서비스 ON.</string>
     <string name="p_auto_start_service">서비스 자동시작</string>
@@ -246,6 +248,8 @@
     <string name="accessibility_disabled_go_to_settings">설정으로 가기</string>
     <string name="draw_overlay_disabled_title">오버레이 권한 없음</string>
     <string name="draw_overlay_disabled_message">다른 앱 위에 그리기를 허용해주세요. 재생 버튼을 활성화하기 위해 쓰입니다.</string>
+    <string name="cannot_start_recording">화면 녹화를 시작할 수 없음</string>
+    <string name="cannot_stop_recording">화면 녹화를 끝낼 수 없음</string>
     <string name="unexpected_error_copy">복사</string>
 
     <string name="script_msg_ap_ran_out">AP를 모두 소비하였습니다!</string>
