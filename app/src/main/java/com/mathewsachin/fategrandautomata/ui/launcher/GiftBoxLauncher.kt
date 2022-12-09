@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,8 +23,8 @@ fun ColumnScope.GiftBoxLauncherContent(
 ) {
     Text(
         stringResource(R.string.p_max_gold_ember_set_size),
-        style = MaterialTheme.typography.body2,
-        color = MaterialTheme.colors.secondary
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.secondary
     )
 
     Box(
@@ -52,7 +52,7 @@ fun giftBoxLauncher(
     ) {
         Text(
             stringResource(R.string.p_script_mode_gift_box),
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.titleLarge
         )
 
         Divider(

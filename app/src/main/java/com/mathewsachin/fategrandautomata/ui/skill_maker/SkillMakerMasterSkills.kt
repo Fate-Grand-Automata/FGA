@@ -1,7 +1,7 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +41,7 @@ fun SkillMakerMasterSkills(
             ) {
                 Button(
                     onClick = onOrderChange,
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorServant3))
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorServant3))
                 ) {
                     Text(
                         stringResource(R.string.skill_maker_master_skills_order_change),

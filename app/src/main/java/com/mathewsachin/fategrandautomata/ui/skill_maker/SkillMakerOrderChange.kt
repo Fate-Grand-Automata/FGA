@@ -1,10 +1,10 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -100,12 +100,12 @@ fun OrderChangeSide(
             }
 
             Surface(
-                elevation = 5.dp,
+                tonalElevation = 5.dp,
                 shape = MaterialTheme.shapes.medium,
                 color =
-                    if (isSelected)
-                        colorResource(selectedColor)
-                    else MaterialTheme.colors.surface,
+                if (isSelected)
+                    colorResource(selectedColor)
+                else MaterialTheme.colorScheme.surfaceVariant,
                 modifier = Modifier
                     .padding(5.dp),
                 onClick = { onSelectedChange(it) }
@@ -115,9 +115,9 @@ fun OrderChangeSide(
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(16.dp),
                     color =
-                        if (isSelected)
-                            Color.White
-                        else Color.Unspecified
+                    if (isSelected)
+                        Color.White
+                    else Color.Unspecified
                 )
             }
         }

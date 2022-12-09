@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -10,7 +10,7 @@ fun ThemedDialog(
     onDismiss: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val colors = MaterialTheme.colors
+    val colors = MaterialTheme.colorScheme
     val typography = MaterialTheme.typography
     val shapes = MaterialTheme.shapes
 
@@ -21,7 +21,7 @@ fun ThemedDialog(
         )
     ) {
         MaterialTheme(
-            colors = colors,
+            colorScheme = colors,
             typography = typography,
             shapes = shapes,
             content = content

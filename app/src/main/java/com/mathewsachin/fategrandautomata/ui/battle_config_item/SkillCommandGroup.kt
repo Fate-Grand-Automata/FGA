@@ -5,10 +5,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -67,8 +68,7 @@ fun SkillCommandGroup(
                 PreferenceError(errorMessage)
             }
         }
-    }
-    else {
+    } else {
         Preference(
             title = { Text(stringResource(R.string.p_battle_config_cmd)) },
             summary = if (parsedCommand.isNotEmpty()) {
@@ -97,7 +97,9 @@ fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
     ) {
         items(skillCommand) {
             Card(
-                backgroundColor = colorResource(it.colorRes),
+                colors = cardColors(
+                    containerColor = colorResource(it.colorRes)
+                ),
                 modifier = Modifier
                     .padding(horizontal = 2.dp)
             ) {
@@ -116,8 +118,8 @@ fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
 fun PreferenceError(error: String) {
     Text(
         error,
-        style = MaterialTheme.typography.caption,
-        color = MaterialTheme.colors.error,
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.error,
         modifier = Modifier
             .padding(16.dp, 2.dp)
             .padding(bottom = 5.dp)

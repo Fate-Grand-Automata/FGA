@@ -3,15 +3,16 @@ package com.mathewsachin.fategrandautomata.ui.prefs
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.ListItem
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.Text
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.DimmedIcon
+import com.mathewsachin.fategrandautomata.ui.FGAListItemColors
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -26,7 +27,7 @@ fun <T> Pref<T>.remember(): MutableState<T> {
             .collect()
     }
 
-    return object: MutableState<T> {
+    return object : MutableState<T> {
         override var value: T
             get() = state
             set(value) {
@@ -59,7 +60,7 @@ fun Preference(
         summary = if (summary.isNotBlank()) {
             {
                 StatusWrapper(enabled) {
-                    Text(text = summary)
+                    Text(text = summary, style = MaterialTheme.typography.bodySmall)
                 }
             }
         } else null,
@@ -81,11 +82,12 @@ fun Preference(
     onClick: (() -> Unit)? = null,
     trailing: @Composable (() -> Unit)? = null
 ) {
-    StatusWrapper (enabled) {
+    StatusWrapper(enabled) {
         ListItem(
-            text = title,
-            secondaryText = summary,
-            icon = icon?.let {
+            headlineText = title,
+            supportingText = summary,
+            colors = FGAListItemColors(),
+            leadingContent = icon?.let {
                 {
                     DimmedIcon(
                         it,
@@ -100,7 +102,7 @@ fun Preference(
                 enabled = onClick != null && enabled,
                 onClick = { onClick?.invoke() }
             ),
-            trailing = trailing
+            trailingContent = trailing
         )
     }
 }
@@ -108,9 +110,8 @@ fun Preference(
 @Composable
 fun StatusWrapper(enabled: Boolean, content: @Composable () -> Unit) {
     if (!enabled) {
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
+        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)) {
             content()
         }
-    }
-    else content()
+    } else content()
 }

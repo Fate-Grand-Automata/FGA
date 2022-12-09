@@ -5,10 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.Checkbox
-import androidx.compose.material.ListItem
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
 import com.mathewsachin.fategrandautomata.scripts.models.TeamSlot
+import com.mathewsachin.fategrandautomata.ui.FGAListItemColors
 import com.mathewsachin.fategrandautomata.ui.drag_sort.DragSort
 import com.mathewsachin.fategrandautomata.ui.drag_sort.DragSortAdapter
 import com.mathewsachin.fategrandautomata.ui.prefs.listDialog
@@ -55,8 +56,9 @@ fun CardPriorityListItem.Render(
                     modifier = Modifier
                         .weight(1f)
                         .clickable { braveChainDialog.show() },
-                    text = { Text(stringResource(R.string.p_brave_chains)) },
-                    secondaryText = { Text(stringResource(braveChains.stringRes)) }
+                    headlineText = { Text(stringResource(R.string.p_brave_chains)) },
+                    supportingText = { Text(stringResource(braveChains.stringRes)) },
+                    colors = FGAListItemColors()
                 )
 
                 var rearrange by rearrangeCards
@@ -65,13 +67,14 @@ fun CardPriorityListItem.Render(
                     modifier = Modifier
                         .weight(1.1f)
                         .clickable { rearrange = !rearrange },
-                    text = { Text(stringResource(R.string.p_rearrange_cards)) },
-                    trailing = {
+                    headlineText = { Text(stringResource(R.string.p_rearrange_cards)) },
+                    trailingContent = {
                         Checkbox(
                             checked = rearrange,
                             onCheckedChange = { rearrange = it }
                         )
-                    }
+                    },
+                    colors = FGAListItemColors()
                 )
             }
         }

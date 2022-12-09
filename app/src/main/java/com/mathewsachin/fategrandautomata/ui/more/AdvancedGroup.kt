@@ -3,11 +3,12 @@ package com.mathewsachin.fategrandautomata.ui.more
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material.Card
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fullscreen
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardElevation
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -96,7 +97,7 @@ fun LazyListScope.advancedGroup(
             AnimatedVisibility(gameAreaMode == GameAreaMode.Custom) {
                 Card(
                     modifier = Modifier.padding(5.dp),
-                    elevation = 5.dp
+                    elevation = cardElevation(5.dp)
                 ) {
                     Column(
                         modifier = Modifier.scale(0.9f)

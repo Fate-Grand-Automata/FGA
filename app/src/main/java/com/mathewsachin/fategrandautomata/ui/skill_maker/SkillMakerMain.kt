@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
@@ -110,7 +110,7 @@ fun SkillMakerMain(
                     .fillMaxHeight()
             ) {
                 Button(
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorMasterSkill)),
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorMasterSkill)),
                     onClick = onMasterSkills
                 ) {
                     Text(
@@ -125,7 +125,7 @@ fun SkillMakerMain(
                 Button(
                     shape = CircleShape,
                     onClick = onAtk,
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(1f)

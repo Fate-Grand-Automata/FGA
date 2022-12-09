@@ -3,9 +3,9 @@ package com.mathewsachin.fategrandautomata.ui
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +29,7 @@ private fun DeltaButton(
 
     Surface(
         color = Color.Transparent,
-        contentColor = MaterialTheme.colors.onBackground,
+        contentColor = MaterialTheme.colorScheme.onBackground,
         shape = CircleShape
     ) {
         StatusWrapper(enabled = isEnabled) {

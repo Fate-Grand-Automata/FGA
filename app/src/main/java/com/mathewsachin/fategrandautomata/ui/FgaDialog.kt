@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,7 +59,7 @@ class FgaDialog private constructor() {
 
             Text(
                 text,
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.titleLarge
             )
         }
     }
@@ -89,32 +89,32 @@ class FgaDialog private constructor() {
                 .fillMaxWidth()
                 .padding(16.dp, 5.dp)
         ) {
-                if (showCancel) {
-                    TextButton(
-                        onClick = { hide() }
-                    ) {
-                        Text(cancelLabel.uppercase())
-                    }
-                }
-
-                if (showOk) {
-                    TextButton(
-                        onClick = {
-                            onSubmit()
-                            hide()
-                        },
-                        enabled = okEnabled
-                    ) {
-                        Text(okLabel.uppercase())
-                    }
+            if (showCancel) {
+                TextButton(
+                    onClick = { hide() }
+                ) {
+                    Text(cancelLabel.uppercase())
                 }
             }
+
+            if (showOk) {
+                TextButton(
+                    onClick = {
+                        onSubmit()
+                        hide()
+                    },
+                    enabled = okEnabled
+                ) {
+                    Text(okLabel.uppercase())
+                }
+            }
+        }
     }
 
     @Composable
     fun build(
         shape: Shape = MaterialTheme.shapes.medium,
-        color: Color = MaterialTheme.colors.surface,
+        color: Color = MaterialTheme.colorScheme.surface,
         contentColor: Color = contentColorFor(color),
         content: @Composable FgaDialog.() -> Unit
     ) {
@@ -191,20 +191,13 @@ fun ChoiceListItem(
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
 ) {
-    val background =
-        if (isSelected)
-            MaterialTheme.colors.secondary
-        else MaterialTheme.colors.surface
-
-    val foreground =
-        if (isSelected)
-            MaterialTheme.colors.onSecondary
-        else MaterialTheme.colors.onSurface
-
     Card(
         shape = CircleShape,
-        backgroundColor = background,
-        contentColor = foreground,
+        colors = CardDefaults.cardColors(
+            containerColor =
+            if (isSelected) MaterialTheme.colorScheme.primaryContainer
+            else MaterialTheme.colorScheme.surfaceVariant
+        ),
         modifier = Modifier
             .padding(bottom = 7.dp)
     ) {

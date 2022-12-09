@@ -12,12 +12,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardElevation
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -103,7 +104,7 @@ fun SupportGroup(
                 }
             }
 
-            AnimatedVisibility (preferredMode) {
+            AnimatedVisibility(preferredMode) {
                 val servants by config.support.preferredServants.remember()
                 val ces by config.support.preferredCEs.remember()
                 val cesFormatted by derivedStateOf {
@@ -134,7 +135,7 @@ fun SupportGroup(
                 }
             }
 
-            AnimatedVisibility (friendMode) {
+            AnimatedVisibility(friendMode) {
                 Column {
                     if (friendEntries.isNotEmpty()) {
                         config.support.friendNames.SupportSelectPreference(
@@ -168,7 +169,7 @@ fun SupportClassPicker(
     onSelectedChange: (SupportClass) -> Unit
 ) {
     Card(
-        elevation = 2.dp,
+        elevation = cardElevation(2.dp),
         modifier = Modifier
             .padding(16.dp, 5.dp)
             .fillMaxWidth()
@@ -187,7 +188,7 @@ fun SupportClassPicker(
                 }
                 val borderClass by transition.animateColor(label = "border color") { selected ->
                     if (selected)
-                        MaterialTheme.colors.secondary
+                        MaterialTheme.colorScheme.secondary
                     else Color.Transparent
                 }
 
@@ -213,19 +214,20 @@ fun SupportClassPicker(
     }
 }
 
-val SupportClass.drawable @DrawableRes get() = when (this) {
-    SupportClass.None -> R.drawable.ic_dots_horizontal
-    SupportClass.All -> R.drawable.support_all
-    SupportClass.Saber -> R.drawable.support_saber
-    SupportClass.Archer -> R.drawable.support_archer
-    SupportClass.Lancer -> R.drawable.support_lancer
-    SupportClass.Rider -> R.drawable.support_rider
-    SupportClass.Caster -> R.drawable.support_caster
-    SupportClass.Assassin -> R.drawable.support_assassin
-    SupportClass.Berserker -> R.drawable.support_berserker
-    SupportClass.Extra -> R.drawable.support_extra
-    SupportClass.Mix -> R.drawable.support_mix
-}
+val SupportClass.drawable
+    @DrawableRes get() = when (this) {
+        SupportClass.None -> R.drawable.ic_dots_horizontal
+        SupportClass.All -> R.drawable.support_all
+        SupportClass.Saber -> R.drawable.support_saber
+        SupportClass.Archer -> R.drawable.support_archer
+        SupportClass.Lancer -> R.drawable.support_lancer
+        SupportClass.Rider -> R.drawable.support_rider
+        SupportClass.Caster -> R.drawable.support_caster
+        SupportClass.Assassin -> R.drawable.support_assassin
+        SupportClass.Berserker -> R.drawable.support_berserker
+        SupportClass.Extra -> R.drawable.support_extra
+        SupportClass.Mix -> R.drawable.support_mix
+    }
 
 val DiamondShape = CutCornerShape(50)
 
@@ -263,11 +265,11 @@ fun PreferredSummary(
 
             if (servants.isNotEmpty()) {
                 Card(
-                    elevation = 2.dp
+                    elevation = cardElevation(2.dp)
                 ) {
                     Text(
                         maxSkillText,
-                        style = MaterialTheme.typography.caption,
+                        style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier
                             .padding(5.dp, 1.dp)
                     )
@@ -303,7 +305,7 @@ fun PreferredSummary(
                     Icon(
                         Icons.Default.Star,
                         contentDescription = "MLB",
-                        tint = MaterialTheme.colors.secondary,
+                        tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(20.dp)
                     )
                 }

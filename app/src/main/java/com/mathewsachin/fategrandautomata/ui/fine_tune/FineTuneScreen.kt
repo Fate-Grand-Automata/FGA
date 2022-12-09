@@ -3,7 +3,7 @@ package com.mathewsachin.fategrandautomata.ui.fine_tune
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +52,7 @@ fun FineTuneScreen(
                 text = {
                     Text(
                         stringResource(R.string.fine_tune_menu_reset_to_defaults),
-                        color = MaterialTheme.colors.onSecondary
+                        color = MaterialTheme.colorScheme.onSecondary
                     )
                 },
                 onClick = { vm.resetAll() },
@@ -60,10 +60,10 @@ fun FineTuneScreen(
                     Icon(
                         painterResource(R.drawable.ic_refresh),
                         contentDescription = stringResource(R.string.fine_tune_menu_reset_to_defaults),
-                        tint = MaterialTheme.colors.onSecondary
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                 },
-                backgroundColor = MaterialTheme.colors.secondary,
+                containerColor = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp)
