@@ -67,10 +67,12 @@ class ServantTracker @Inject constructor(
             )
         )
 
-        val isSupport = images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
+        var isSupport = false
+        // use same screenshot for support + face detection
+        useSameSnapIn {
+            isSupport = images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
 
-        if (teamSlot !in checkImages || isSupport) {
-            useSameSnapIn {
+            if (teamSlot !in checkImages || isSupport) {
                 checkImages[teamSlot] = TeamSlotData(
                     checkImage = locations.battle.servantChangeCheckRegion(slot)
                         .getPattern()

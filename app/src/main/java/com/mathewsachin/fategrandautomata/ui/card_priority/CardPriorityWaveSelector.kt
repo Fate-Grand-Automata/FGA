@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -56,18 +56,18 @@ fun CardPriorityWaveSelector(
                         modifier = Modifier
                             .padding(end = 5.dp)
                             .background(
-                                color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
+                                color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent,
                                 shape = MaterialTheme.shapes.medium
                             )
                             .clickable { onSelectedWaveChange(index) }
                     ) {
                         Text(
                             stringResource(R.string.card_priority_wave_number, index + 1),
-                            color = if (isSelected) MaterialTheme.colors.onSecondary else Color.Unspecified,
+                            color = if (isSelected) MaterialTheme.colorScheme.onSecondary else Color.Unspecified,
                             modifier = Modifier.padding(5.dp, 2.dp)
                         )
 
-                        AnimatedVisibility (index > 0 && index == items.lastIndex) {
+                        AnimatedVisibility(index > 0 && index == items.lastIndex) {
                             Box(
                                 modifier = Modifier
                                     .clickable {
@@ -82,7 +82,7 @@ fun CardPriorityWaveSelector(
                                 Icon(
                                     painterResource(R.drawable.ic_close),
                                     contentDescription = "Remove wave",
-                                    tint = MaterialTheme.colors.error
+                                    tint = MaterialTheme.colorScheme.error
                                 )
                             }
                         }
@@ -90,7 +90,7 @@ fun CardPriorityWaveSelector(
                 }
             }
 
-            AnimatedVisibility (
+            AnimatedVisibility(
                 items.size < 3,
                 enter = slideInHorizontally(initialOffsetX = { it * 2 }),
                 exit = slideOutHorizontally(targetOffsetX = { it * 2 })
@@ -98,7 +98,7 @@ fun CardPriorityWaveSelector(
                 Box(
                     modifier = Modifier
                         .background(
-                            MaterialTheme.colors.secondary,
+                            MaterialTheme.colorScheme.secondary,
                             shape = CircleShape
                         )
                         .clip(CircleShape)
@@ -118,7 +118,7 @@ fun CardPriorityWaveSelector(
                     Icon(
                         Icons.Default.Add,
                         contentDescription = "Add wave",
-                        tint = MaterialTheme.colors.onSecondary
+                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                 }
             }

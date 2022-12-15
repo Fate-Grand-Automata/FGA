@@ -16,7 +16,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 fun Modifier.holdRepeatClickable(

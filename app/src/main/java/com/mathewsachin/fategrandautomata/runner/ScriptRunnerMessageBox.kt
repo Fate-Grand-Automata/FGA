@@ -24,7 +24,7 @@ class ScriptRunnerMessageBox @Inject constructor(
         error: Exception? = null,
     ) {
         withContext(Dispatchers.Main) {
-            suspendCancellableCoroutine<Boolean> { continuation ->
+            suspendCancellableCoroutine { continuation ->
                 showOverlayDialog(service) {
                     setTitle(title)
                         .setMessage(message)

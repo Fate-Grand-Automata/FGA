@@ -8,7 +8,6 @@ import com.mathewsachin.fategrandautomata.scripts.locations.IScriptAreaTransform
 import com.mathewsachin.fategrandautomata.scripts.locations.ScriptAreaTransforms
 import com.mathewsachin.fategrandautomata.scripts.modules.RealSupportScreen
 import com.mathewsachin.fategrandautomata.scripts.modules.SupportScreen
-import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.libautomata.GameAreaManager
 import com.mathewsachin.libautomata.GestureService
 import com.mathewsachin.libautomata.PlatformImpl
@@ -24,7 +23,7 @@ abstract class ScriptsModule {
     companion object {
         @ScriptScope
         @Provides
-        fun provideGameAreaManager(platformImpl: PlatformImpl, prefs: IPreferences): GameAreaManager =
+        fun provideGameAreaManager(platformImpl: PlatformImpl): GameAreaManager =
             FgoGameAreaManager(
                 gameSizeWithBorders = platformImpl.windowRegion.size,
                 offset = { platformImpl.windowRegion.location }

@@ -7,13 +7,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -40,15 +39,15 @@ fun ScriptRunnerUI(
             val dragModifier = Modifier
                 .pointerInput(Unit) {
                     detectDragGestures { change, dragAmount ->
-                        change.consumeAllChanges()
+                        change.consume()
                         onDrag(dragAmount.x, dragAmount.y)
                     }
                 }
 
             Surface(
-                color = MaterialTheme.colors.surface,
-                contentColor = if (isRecording) MaterialTheme.colors.error else Color.White,
-                elevation = 5.dp,
+                color = MaterialTheme.colorScheme.surface,
+                contentColor = if (isRecording) MaterialTheme.colorScheme.error else Color.White,
+                tonalElevation = 5.dp,
                 shape = CircleShape,
                 onClick = {
                     val action = when (state) {
@@ -77,7 +76,7 @@ fun ScriptRunnerUI(
                 )
             }
 
-            AnimatedVisibility (
+            AnimatedVisibility(
                 state is ScriptRunnerUIState.Paused,
                 enter = fadeIn() + slideInHorizontally(),
                 exit = fadeOut() + slideOutHorizontally(),
@@ -107,9 +106,9 @@ fun ScriptRunnerUI(
                     state.let {
                         if (it is ScriptRunnerUIState.Paused && it.pausedStatus != null) {
                             Surface(
-                                color = MaterialTheme.colors.secondary,
-                                contentColor = MaterialTheme.colors.onSecondary,
-                                elevation = 5.dp,
+                                color = MaterialTheme.colorScheme.secondary,
+                                contentColor = MaterialTheme.colorScheme.onSecondary,
+                                tonalElevation = 5.dp,
                                 shape = shape,
                                 onClick = { updateState(ScriptRunnerUIAction.Status(it.pausedStatus)) },
                                 modifier = dragModifier

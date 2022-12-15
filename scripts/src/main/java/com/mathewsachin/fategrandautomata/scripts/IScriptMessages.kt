@@ -9,7 +9,7 @@ sealed class ScriptNotify {
     object CEGet : ScriptNotify()
     object CEDropped : ScriptNotify()
     class WaitForAPRegen(val minutes: Int = 1) : ScriptNotify()
-    class FailedToDetermineCards(val cards: List<CommandCard.Face>) : ScriptNotify()
+    class FailedToDetermineCards(val cards: List<CommandCard.Face>, val unknownCardTypes: Boolean, val unknownServants: Boolean) : ScriptNotify()
     class SupportListUpdatingIn(val time: Duration) : ScriptNotify()
     class BetweenRuns(val refills: Int, val runs: Int) : ScriptNotify()
 }

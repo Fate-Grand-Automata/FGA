@@ -273,7 +273,7 @@
     <string name="times_ran">%d번 반복함</string>
     <string name="times_ran_out_of">%2$d번 중 %1$d번 반복함</string>
     <string name="refills_used_out_of">%2$d번 중 %1$d번 사과 사용</string>
-    <string name="failed_to_determine_card_type">카드 유형 확인 실패: %s</string>
+    <string name="failed_to_determine_card">카드 유형 확인 실패: %s</string>
     <string name="support_list_updated_in">서포트 리스트가 %s 안에 갱신됩니다</string>
     <string name="times_withdrew">%d번 철수함</string>
     <string name="avg_time_per_run">반복 평균 시간: %s</string>
@@ -332,14 +332,14 @@
     <string name="mat_arrow">재난의 화살촉</string>
     <string name="mat_tiara">광은의 관</string>
     <string name="mat_particle">신맥영자</string>
-    <string name="mat_thread">무지개 실구슬</string>
+    <string name="mat_thread">무지갯빛 실타리</string>
     <string name="mat_mirror">구십구경</string>
     <string name="mat_egg">진리의 알</string>
     <string name="mat_star_shard">황성의 조각</string>
     <string name="mat_fruit">유구의 열매</string>
-    <string name="mat_demon_lantern">귀염귀등</string>
+    <string name="mat_demon_lantern">도깨비불 꽈리</string>
     <string name="mat_amnesty_bell">사면의 작은 종</string>
-    <string name="mat_fantasy_scales">몽환의 인분</string>
+    <string name="mat_fantasy_scales">몽환의 비늘가루</string>
     <string name="mat_ceremonial_blade">황혼의 의식검</string>
     <string name="mat_ashes">잊을 수 없는 재</string>
 

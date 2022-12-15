@@ -3,9 +3,11 @@ package com.mathewsachin.fategrandautomata.ui.battle_config_item
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.CardDefaults.cardElevation
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -25,7 +27,7 @@ fun PartySelection(config: BattleConfigCore) {
     val dialog = FgaDialog()
 
     dialog.build(
-        color = MaterialTheme.colors.background
+        color = MaterialTheme.colorScheme.background
     ) {
         title(stringResource(R.string.p_battle_config_party))
 
@@ -55,12 +57,12 @@ fun PartySelection(config: BattleConfigCore) {
     ) {
         Text(
             stringResource(R.string.p_battle_config_party).uppercase(),
-            style = MaterialTheme.typography.caption
+            style = MaterialTheme.typography.bodySmall
         )
 
         Text(
             if (party == -1) "--" else (party + 1).toString(),
-            style = MaterialTheme.typography.caption
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -71,14 +73,16 @@ private fun PartySelectionItem(
     isSelected: Boolean,
     onSelectedChange: () -> Unit
 ) {
-    val background = if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.surface
-    val foreground = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
+    val background = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant
+    val foreground = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
 
     Card(
-        elevation = 10.dp,
+        elevation = cardElevation(10.dp),
         shape = CircleShape,
-        backgroundColor = background,
-        contentColor = foreground,
+        colors = cardColors(
+            containerColor = background,
+            contentColor = foreground
+        ),
         modifier = Modifier
             .padding(5.dp)
     ) {

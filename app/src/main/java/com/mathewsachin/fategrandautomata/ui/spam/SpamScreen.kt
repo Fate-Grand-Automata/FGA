@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +19,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
 import com.mathewsachin.fategrandautomata.scripts.models.SkillSpamTarget
+import com.mathewsachin.fategrandautomata.ui.FGAListItemColors
 import com.mathewsachin.fategrandautomata.ui.Heading
 import com.mathewsachin.fategrandautomata.ui.HeadingButton
 import com.mathewsachin.fategrandautomata.ui.prefs.MultiSelectChip
@@ -70,7 +71,7 @@ fun SpamScreen(
                     Box(
                         modifier = Modifier
                             .background(
-                                color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent,
+                                color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent,
                                 shape = MaterialTheme.shapes.medium
                             )
                             .clickable { scope.launch { pagerState.animateScrollToPage(it - 1) } }
@@ -78,7 +79,7 @@ fun SpamScreen(
                     ) {
                         Text(
                             it.toString(),
-                            color = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
+                            color = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -240,10 +241,11 @@ private fun SelectSpamMode(
     )
 
     ListItem(
-        text = { Text(stringResource(R.string.spam)) },
-        secondaryText = { Text(stringResource(selected.stringRes)) },
+        headlineText = { Text(stringResource(R.string.spam)) },
+        supportingText = { Text(stringResource(selected.stringRes)) },
         modifier = modifier
-            .clickable { dialog.show() }
+            .clickable { dialog.show() },
+        colors = FGAListItemColors()
     )
 }
 
@@ -261,10 +263,11 @@ private fun SelectTarget(
     )
 
     ListItem(
-        text = { Text(stringResource(R.string.spam_target)) },
-        secondaryText = { Text(selected.toString()) },
+        headlineText = { Text(stringResource(R.string.spam_target)) },
+        supportingText = { Text(selected.toString()) },
         modifier = modifier
-            .clickable { dialog.show() }
+            .clickable { dialog.show() },
+        colors = FGAListItemColors()
     )
 }
 

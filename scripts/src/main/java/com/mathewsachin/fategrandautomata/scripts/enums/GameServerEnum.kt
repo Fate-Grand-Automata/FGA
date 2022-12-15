@@ -8,6 +8,7 @@ enum class GameServerEnum constructor(vararg val packageNames: String) {
     Kr("com.netmarble.fgok");
 
     var betterFgo = false
+        private set
 
     companion object {
         /**

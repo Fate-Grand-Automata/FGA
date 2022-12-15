@@ -5,10 +5,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,7 +67,7 @@ fun battleLauncher(
                         state = configListState,
                         hiddenAlpha = 0.3f,
                         horizontal = false,
-                        knobColor = MaterialTheme.colors.secondary
+                        knobColor = MaterialTheme.colorScheme.secondary
                     ),
                 state = configListState
             ) {
@@ -92,7 +92,7 @@ fun battleLauncher(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(5.dp, 2.dp)
-                .background(MaterialTheme.colors.onSurface.copy(alpha = 0.12f))
+                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
                 .width(1.dp)
         ) { }
 
@@ -104,7 +104,7 @@ fun battleLauncher(
                     state = mainConfigState,
                     hiddenAlpha = 0.3f,
                     horizontal = false,
-                    knobColor = MaterialTheme.colors.secondary,
+                    knobColor = MaterialTheme.colorScheme.secondary,
                     // needs to be adjusted when adding new items
                     fixedKnobRatio = 0.69f
                 )
@@ -119,8 +119,8 @@ fun battleLauncher(
                 ) {
                     Text(
                         "${stringResource(R.string.p_refill)}:",
-                        style = MaterialTheme.typography.body2,
-                        color = MaterialTheme.colors.secondary
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary
                     )
 
                     Stepper(
@@ -180,7 +180,7 @@ fun battleLauncher(
 
                     Text(
                         stringResource(R.string.p_wait_ap_regen_text),
-                        style = MaterialTheme.typography.body2
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
 
@@ -190,8 +190,8 @@ fun battleLauncher(
             item {
                 Text(
                     stringResource(R.string.p_limit),
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.secondary
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary
                 )
             }
 
@@ -272,7 +272,7 @@ fun LimitItem(
 
             Text(
                 "$text:",
-                style = MaterialTheme.typography.body2
+                style = MaterialTheme.typography.bodyMedium
             )
         }
 
@@ -295,7 +295,7 @@ fun BattleConfigItem(
         modifier = Modifier
             .padding(3.dp)
             .background(
-                color = if (isSelected) MaterialTheme.colors.primary else Color.Transparent,
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
                 shape = MaterialTheme.shapes.medium
             )
             .clickable(onClick = onSelected)
@@ -304,7 +304,7 @@ fun BattleConfigItem(
     ) {
         Text(
             name,
-            color = if (isSelected) MaterialTheme.colors.onPrimary else Color.Unspecified
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Unspecified
         )
     }
 }
@@ -321,7 +321,7 @@ fun RefillResourceEnum.RefillResource(
             .padding(end = 6.dp)
             .border(
                 width = 1.dp,
-                brush = SolidColor(if (isSelected) MaterialTheme.colors.primary else Color.Transparent),
+                brush = SolidColor(if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent),
                 shape = MaterialTheme.shapes.medium
             )
             .clickable(onClick = toggle)
@@ -329,8 +329,8 @@ fun RefillResourceEnum.RefillResource(
     ) {
         Text(
             stringResource(stringRes),
-            style = MaterialTheme.typography.overline,
-            color = if (isSelected) MaterialTheme.colors.primary else Color.Unspecified
+            style = MaterialTheme.typography.labelSmall,
+            color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Unspecified
         )
     }
 }

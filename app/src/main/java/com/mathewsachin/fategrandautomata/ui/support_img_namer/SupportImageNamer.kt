@@ -90,7 +90,7 @@ suspend fun showSupportImageNamer(context: Context, storageProvider: StorageProv
 
     val entryList = getSupportEntries(frame, storageProvider)
 
-    suspendCancellableCoroutine<Unit> { coroutine ->
+    suspendCancellableCoroutine { coroutine ->
         showOverlayDialog(context) {
             setCancelable(false)
                 .setTitle(context.getString(R.string.support_img_namer_title))

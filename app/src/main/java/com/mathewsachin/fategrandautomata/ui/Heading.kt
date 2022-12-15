@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +27,7 @@ fun Heading(
 
         Text(
             if (landscape) text.uppercase() else text,
-            style = if (landscape) MaterialTheme.typography.subtitle2 else MaterialTheme.typography.h4,
+            style = if (landscape) MaterialTheme.typography.titleSmall else MaterialTheme.typography.headlineMedium,
             modifier = Modifier
                 .padding(start = 16.dp)
         )
@@ -57,8 +54,10 @@ fun HeadingButton(
 ) {
     Card(
         shape = CircleShape,
-        backgroundColor = if (isDanger) MaterialTheme.colors.error else MaterialTheme.colors.primary,
-        contentColor = if (isDanger) MaterialTheme.colors.onError else MaterialTheme.colors.onPrimary,
+        colors = CardDefaults.cardColors(
+            containerColor = if (isDanger) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+            contentColor = if (isDanger) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimary
+        ),
         modifier = modifier
             .padding(end = 5.dp)
             .animateContentSize()
@@ -81,7 +80,7 @@ fun HeadingButton(
 
             Text(
                 text.uppercase(),
-                style = MaterialTheme.typography.subtitle2
+                style = MaterialTheme.typography.titleSmall
             )
         }
     }

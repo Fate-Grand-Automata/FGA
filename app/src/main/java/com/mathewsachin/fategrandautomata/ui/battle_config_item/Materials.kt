@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -84,7 +84,7 @@ fun Pref<Set<MaterialEnum>>.Materials() {
     ) {
         Text(
             stringResource(R.string.p_mats).uppercase(),
-            style = MaterialTheme.typography.caption,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp)
         )
 
@@ -102,7 +102,7 @@ fun Material(mat: MaterialEnum) {
             .padding(3.dp)
             .size(20.dp)
             .clip(CircleShape)
-            .border(0.5.dp, MaterialTheme.colors.onSurface, CircleShape)
+            .border(0.5.dp, MaterialTheme.colorScheme.onSurfaceVariant, CircleShape)
             .alpha(0.8f)
     )
 }

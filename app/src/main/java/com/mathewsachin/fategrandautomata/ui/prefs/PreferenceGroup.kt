@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -14,7 +14,7 @@ fun PreferenceGroupHeader(title: String) {
     Text(
         text = title,
         fontSize = 14.sp,
-        color = MaterialTheme.colors.secondary,
+        color = MaterialTheme.colorScheme.secondary,
         fontWeight = FontWeight.Medium,
         modifier = Modifier.padding(
             start = 16.dp,

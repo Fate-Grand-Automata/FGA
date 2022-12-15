@@ -5,20 +5,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -26,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
-import com.mathewsachin.fategrandautomata.scripts.enums.CardAffinityEnum
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
 import com.mathewsachin.fategrandautomata.ui.*
@@ -44,7 +45,7 @@ fun BattleConfigScreen(
 ) {
     val context = LocalContext.current
 
-    val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+    val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         vm.export(context, uri)
     }
 
@@ -207,7 +208,7 @@ private fun BattleConfigContent(
                                 ) {
                                     Text(
                                         stringResource(R.string.p_spam_spam).uppercase(),
-                                        style = MaterialTheme.typography.caption,
+                                        style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier
                                             .padding(16.dp, 5.dp)
                                     )
@@ -258,12 +259,7 @@ private fun BattleConfigContent(
 
 private val CardScore.color: Color
     @Composable get() {
-        // Dark colors won't be visible in dark theme
-        val score = if (MaterialTheme.colors.isLight)
-            this
-        else CardScore(type, CardAffinityEnum.Resist)
-
-        return colorResource(score.getColorRes())
+        return colorResource(getColorRes())
     }
 
 @Composable
@@ -281,7 +277,8 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                 Text(
                     "W${wave + 1}: ",
                     modifier = Modifier
-                        .padding(end = 16.dp)
+                        .padding(end = 16.dp),
+                    style = MaterialTheme.typography.bodyMedium
                 )
 
                 Card {
@@ -294,13 +291,21 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                                 Text(
                                     ",",
                                     modifier = Modifier
-                                        .padding(end = 4.dp)
+                                        .padding(end = 4.dp),
+                                    style = MaterialTheme.typography.bodyMedium
                                 )
                             }
 
                             Text(
                                 it.toString(),
-                                color = it.color
+                                color = it.color,
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    shadow = Shadow(
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        offset = Offset(1f, 1f),
+                                        blurRadius = 0f
+                                    )
+                                ),
                             )
                         }
                     }

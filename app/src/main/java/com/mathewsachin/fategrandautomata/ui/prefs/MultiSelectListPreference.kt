@@ -1,6 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.FgaDialog

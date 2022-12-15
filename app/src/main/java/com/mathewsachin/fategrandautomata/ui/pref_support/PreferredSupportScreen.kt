@@ -3,15 +3,19 @@ package com.mathewsachin.fategrandautomata.ui.pref_support
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.CardDefaults.cardElevation
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mathewsachin.fategrandautomata.R
@@ -148,16 +152,15 @@ private fun PreferredSupportHelp() {
         modifier = Modifier
             .padding(16.dp)
     ) {
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Text(
-                """
+        Text(
+            """
                 1. You can add more images using 'Support Image Maker' script by clicking the PLAY button on support or friend list screens.
                 
                 2. For event CEs, it is better to use the in-game filters in FGO for CEs and MLB setting.
                 """.trimIndent(),
-                style = MaterialTheme.typography.body2
-            )
-        }
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Light
+        )
     }
 }
 
@@ -183,18 +186,20 @@ private fun MaxSkills(
 
             val backgroundColor =
                 if (max)
-                    MaterialTheme.colors.secondary
-                else MaterialTheme.colors.surface
+                    MaterialTheme.colorScheme.secondary
+                else MaterialTheme.colorScheme.surfaceVariant
 
             val foregroundColor =
                 if (max)
-                    MaterialTheme.colors.onSecondary
-                else MaterialTheme.colors.onSurface
+                    MaterialTheme.colorScheme.onSecondary
+                else MaterialTheme.colorScheme.onSurfaceVariant
 
             Card(
-                elevation = 5.dp,
-                backgroundColor = backgroundColor,
-                contentColor = foregroundColor
+                elevation = cardElevation(5.dp),
+                colors = cardColors(
+                    containerColor = backgroundColor,
+                    contentColor = foregroundColor
+                )
             ) {
                 Box(
                     contentAlignment = Alignment.Center,

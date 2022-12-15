@@ -2,10 +2,10 @@ package com.mathewsachin.fategrandautomata.ui.launcher
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +30,7 @@ fun lotteryLauncher(
     ) {
         Text(
             stringResource(R.string.p_script_mode_lottery),
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.titleLarge
         )
 
         Divider(
@@ -48,8 +48,8 @@ fun lotteryLauncher(
         ) {
             Text(
                 stringResource(R.string.p_prevent_lottery_box_reset),
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.secondary
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
             )
 
             Switch(
@@ -68,8 +68,8 @@ fun lotteryLauncher(
         ) {
             Text(
                 stringResource(R.string.p_receive_embers),
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.secondary
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
             )
 
             Switch(

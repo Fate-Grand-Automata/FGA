@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.battle_config_list
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.BackHandler
@@ -13,11 +14,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +59,7 @@ fun BattleConfigListScreen(
     }
 
     val battleConfigImport = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetMultipleContents()
+        ActivityResultContracts.OpenMultipleDocuments()
     ) { uris ->
         vm.importBattleConfigs(context, uris)
     }
@@ -85,7 +86,10 @@ fun BattleConfigListScreen(
                 BattleConfigListAction.Delete -> deleteConfirmDialog.show()
                 is BattleConfigListAction.Edit -> navigate(it.id)
                 BattleConfigListAction.Export -> battleConfigsExport.launch(Uri.EMPTY)
-                BattleConfigListAction.Import -> battleConfigImport.launch("*/*")
+                BattleConfigListAction.Import -> battleConfigImport.launch(
+                    //octet-stream as backup in case Android doesn't detect json
+                    arrayOf("application/json", "application/octet-stream")
+                )
                 is BattleConfigListAction.ToggleSelected -> vm.toggleSelected(it.id)
                 is BattleConfigListAction.StartSelection -> vm.startSelection(it.id)
             }
@@ -103,6 +107,7 @@ private sealed class BattleConfigListAction {
     class Edit(val id: String) : BattleConfigListAction()
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 private fun BattleConfigListContent(
     configs: List<BattleConfigCore>,
@@ -226,7 +231,7 @@ private fun BattleConfigListContent(
                 FloatingActionButton(
                     onClick = { action(BattleConfigListAction.AddNew) },
                     modifier = Modifier
-                        .scale(if (isLandscape) 0.7f else 1f)
+                        .scale(if (isLandscape) 0.7f else 1f),
                 ) {
                     Icon(
                         Icons.Default.Add,
@@ -299,12 +304,12 @@ private fun BattleConfigItemSelected(
                 .padding(end = 16.dp)
                 .border(
                     1.dp,
-                    if (isSelected) Color.Transparent else MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
+                    if (isSelected) Color.Transparent else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
                     CircleShape
                 )
                 .background(
                     shape = CircleShape,
-                    color = if (isSelected) MaterialTheme.colors.secondary else Color.Transparent
+                    color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent
                 )
                 .size(15.dp)
         ) {
@@ -312,7 +317,7 @@ private fun BattleConfigItemSelected(
                 Icon(
                     rememberVectorPainter(Icons.Default.Check),
                     contentDescription = "Select",
-                    tint = MaterialTheme.colors.onSecondary,
+                    tint = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier
                         .size(10.dp)
                 )
@@ -340,7 +345,7 @@ private fun BattleConfigListItem(
 
     Card(
         shape = shape,
-        elevation = if (isSelected) 5.dp else 1.dp,
+        elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 5.dp else 1.dp),
         modifier = Modifier
             .padding(5.dp)
     ) {
@@ -360,7 +365,7 @@ private fun BattleConfigListItem(
 
             Text(
                 name,
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f)
             )
 

@@ -1,8 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui
 
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -13,7 +13,7 @@ fun DimmedIcon(
     modifier: Modifier = Modifier,
     contentDescription: String = "icon"
 ) {
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
         Icon(
             icon.asPainter(),
             contentDescription = contentDescription,

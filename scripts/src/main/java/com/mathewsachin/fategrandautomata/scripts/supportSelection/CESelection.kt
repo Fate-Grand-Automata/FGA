@@ -14,9 +14,7 @@ class CESelection @Inject constructor(
     api: IFgoAutomataApi,
     private val supportPrefs: ISupportPreferences,
     private val starChecker: SupportSelectionStarChecker
-): IFgoAutomataApi by api {
-    private val ces = supportPrefs.preferredCEs
-
+) : IFgoAutomataApi by api {
     data class FoundCE(val region: Region, val mlb: Boolean) : Comparable<FoundCE> {
         override fun compareTo(other: FoundCE) = when {
             // Prefer MLB

@@ -7,7 +7,7 @@ on:
       - '.github/ISSUE_TEMPLATE/**'
       - '.gitattributes'
       - '.gitignore'
-      - 'README.md'
+      - '*.md'
       - 'LICENSE'
       - 'custom-game-area/**'
   push:
@@ -20,7 +20,7 @@ on:
       - '.github/**'
       - '.gitattributes'
       - '.gitignore'
-      - 'README'
+      - '*.md'
       - 'LICENSE'
       - 'renovate.json'
       - 'custom-game-area/**'
@@ -28,7 +28,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -37,20 +37,21 @@ jobs:
         with:
           java-version: 11
           distribution: 'temurin'
-
+          # cache: 'gradle'
       - name: Determine Version Name
-        shell: pwsh
+        shell: bash
         run: |
-          $VERSION_CODE = $env:GITHUB_RUN_NUMBER
-          $VERSION_NAME = $env:GITHUB_RUN_NUMBER
-          if ($env:GITHUB_REF.StartsWith('refs/tags/')) {
-              $VERSION_NAME = $env:GITHUB_REF.Substring(10)
-          }
-          echo "FGA_VERSION_CODE=$VERSION_CODE" >> $env:GITHUB_ENV
-          echo "FGA_VERSION_NAME=$VERSION_NAME" >> $env:GITHUB_ENV
+          VERSION_CODE=${{ github.run_number }}
+          VERSION_NAME=${{ github.run_number }}
+          
+          if [[ ${{ github.ref }} == refs/tags/* ]]; then
+            VERSION_NAME = ${{ github.ref_name }}
+          fi
+          echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
+          echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
       - name: Build Android Package
-        run: ./gradlew assembleCi --scan --parallel
+        run: ./gradlew assembleCi --scan --parallel --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
@@ -67,42 +68,22 @@ jobs:
   # Release master branch
   canary:
     needs: build
-    runs-on: macos-latest
-    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && !startsWith(github.event.commits[0].author.name, 'renovate')
     steps:
-      - uses: dev-drprasad/delete-tag-and-release@v0.2.0
-        with:
-          delete_release: true
-          tag_name: canary
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: canary
-          release_name: 'FGA canary-${{ github.run_number }}'
-          prerelease: true
-
       - uses: actions/download-artifact@v3
         with:
           name: apk
+      
+      - name: Rename apk
+        run: mv app-ci.apk com.mathewsachin.fategrandautomata.apk
 
-      - name: Upload APK to GitHub Releases
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: create_release
+        uses: marvinpinto/action-automatic-releases@latest
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./app-ci.apk
-          asset_name: com.mathewsachin.fategrandautomata.apk
-          asset_content_type: application/vnd.android.package-archive
-
-      - name: Publish release
-        uses: StuYarrow/publish-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          id: ${{ steps.create_release.outputs.id }}
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "canary"
+          prerelease: true
+          title: 'FGA canary-${{ github.run_number }}'
+          files: |
+            *.apk

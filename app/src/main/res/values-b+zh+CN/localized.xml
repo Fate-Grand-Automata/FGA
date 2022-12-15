@@ -273,7 +273,7 @@
     <string name="times_ran">已执行 %d 次</string>
     <string name="times_ran_out_of">已执行 %1$d / %2$d 次</string>
     <string name="refills_used_out_of">已自动回体 %1$d / %2$d 次</string>
-    <string name="failed_to_determine_card_type">辨认卡色失败: %s</string>
+    <string name="failed_to_determine_card">辨认卡色失败: %s</string>
     <string name="support_list_updated_in">助战清单在 %s 后刷新</string>
     <string name="times_withdrew">已撤退 %d 次</string>
     <string name="avg_time_per_run">平均一场时间: %s</string>

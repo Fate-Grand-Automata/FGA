@@ -180,7 +180,7 @@ class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to { locations.battle.skipAnimationClick.click() }
+            { isDeathAnimation() } to { locations.battle.extraInfoWindowCloseClick.click() }
 
         )
 

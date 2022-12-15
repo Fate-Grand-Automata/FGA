@@ -42,6 +42,10 @@ We use [OpenCV](https://opencv.org/) for image recognition,
 [Media Projection](https://developer.android.com/reference/android/media/projection/MediaProjection) for taking screenshots
 and [Accessibility Service](https://developer.android.com/guide/topics/ui/accessibility) for clicking/swiping.
 
+## Contributing
+
+If you want to contribute, read the [Contribution Guide](CONTRIBUTING.md).
+
 ## Acknowledgements
 - [FGO-Lua][FGOLua] developers are the real deal. Without them this app won't exist.
 - We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
@@ -50,8 +54,8 @@ and [Accessibility Service](https://developer.android.com/guide/topics/ui/access
 
 [FGOLua]: https://github.com/29988122/Fate-Grand-Order_Lua
 
-## Like the project? Want to support me?
+## Like the project? Want to support us?
 ~~Just pray that I can roll [Skadi](https://gamepress.gg/grandorder/servant/scathachskadi)!~~ `SUCCESS!`  
 Oh, and code/doc contributions are surely welcome!
 
-For donations, see the [wiki](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Donations).
+For donations, check out https://ko-fi.com/fategrandautomata.

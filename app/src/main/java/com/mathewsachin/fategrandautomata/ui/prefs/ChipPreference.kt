@@ -1,17 +1,20 @@
 package com.mathewsachin.fategrandautomata.ui.prefs
 
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.CardDefaults.cardElevation
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowRow
 import com.mathewsachin.fategrandautomata.prefs.core.Pref
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.util.toggle
@@ -25,20 +28,22 @@ fun ChipPreferenceItem(
 ) {
     StatusWrapper(enabled) {
         Card(
-            backgroundColor = if (isSelected) MaterialTheme.colors.secondary else MaterialTheme.colors.surface,
-            contentColor = if (isSelected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-            elevation = 2.dp,
+            colors = cardColors(
+                containerColor = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            elevation = cardElevation(2.dp),
             modifier = Modifier
-                .padding(vertical = 5.dp)
-                .padding(end = 5.dp),
+                .defaultMinSize(minWidth = 30.dp),
             onClick = onSelect,
             enabled = enabled
         ) {
             Text(
                 text,
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .padding(5.dp, 2.dp)
+                    .align(Alignment.CenterHorizontally)
             )
         }
     }
@@ -57,10 +62,12 @@ fun <T> SingleSelectChip(
     Preference(
         title = { Text(title) },
         summary = {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth()
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                crossAxisSpacing = 0.dp,
+                mainAxisSpacing = 0.dp
             ) {
-                items(entries.toList()) { (key, value) ->
+                entries.forEach { (key, value) ->
                     ChipPreferenceItem(
                         text = value,
                         isSelected = key == selected,
@@ -110,10 +117,12 @@ fun <T> MultiSelectChip(
     Preference(
         title = { Text(title) },
         summary = {
-            LazyRow(
+            FlowRow(
+                crossAxisSpacing = 0.dp,
+                mainAxisSpacing = 0.dp,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(entries.toList()) { (key, value) ->
+                entries.forEach { (key, value) ->
                     ChipPreferenceItem(
                         text = value,
                         isSelected = key in selected,

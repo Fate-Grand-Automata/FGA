@@ -21,8 +21,7 @@ class ApplyBraveChains @Inject constructor() {
             // If there are more than 1 NPs, only 1 card after NPs at max
             && npUsage.nps.size <= 1
         ) {
-            val cardsToRearrange = cards
-                .mapIndexed { index, _ -> index }
+            val cardsToRearrange = List(cards.size) { index -> index }
                 .take((3 - npUsage.nps.size).coerceAtLeast(0))
                 .reversed()
 
