@@ -417,7 +417,8 @@ class AutoBattle @Inject constructor(
         messages.notify(
             ScriptNotify.BetweenRuns(
                 refills = refill.timesRefilled,
-                runs = state.runs
+                runs = state.runs,
+                ceDrops = ceDropsTracker.count
             )
         )
 

@@ -119,7 +119,8 @@ class ScriptMessages @Inject constructor(
             is ScriptNotify.BetweenRuns -> {
                 val msg = makeRefillAndRunsMessage(
                     timesRefilled = action.refills,
-                    timesRan = action.runs
+                    timesRan = action.runs,
+                    ceDrops = action.ceDrops
                 )
 
                 toast(msg)
@@ -128,7 +129,8 @@ class ScriptMessages @Inject constructor(
 
     private fun makeRefillAndRunsMessage(
         timesRan: Int,
-        timesRefilled: Int
+        timesRefilled: Int,
+        ceDrops: Int
     ) = buildString {
         val refill = prefs.refill
 
@@ -139,6 +141,12 @@ class ScriptMessages @Inject constructor(
         } else if (timesRan > 0) {
             appendLine(
                 context.getString(R.string.times_ran, timesRan)
+            )
+        }
+
+        if (ceDrops > 0) {
+            appendLine(
+                context.getString(R.string.ces_dropped, ceDrops)
             )
         }
 
