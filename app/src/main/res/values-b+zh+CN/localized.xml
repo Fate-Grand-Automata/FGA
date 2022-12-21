@@ -288,6 +288,8 @@
 
     <string name="times_rolled">已抽取 %d 次</string>
 
+    <string name="ces_dropped">礼装掉落: %d</string>
+
     <string name="mat_proof">英雄之证</string>
     <string name="mat_bone">凶骨</string>
     <string name="mat_fang">龙之牙</string>
