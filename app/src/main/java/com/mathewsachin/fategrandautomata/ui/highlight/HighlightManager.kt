@@ -11,8 +11,9 @@ import javax.inject.Inject
 
 @ServiceScoped
 class HighlightManager @Inject constructor() {
-    private val tapperService = TapperService.instance
-        ?: throw IllegalStateException("Accessibility service not running")
+    private val tapperService by lazy {
+        TapperService.instance ?: throw IllegalStateException("Accessibility service not running")
+    }
 
     private val regionsToHighlight = mutableMapOf<Region, HighlightColor>()
 
@@ -20,8 +21,9 @@ class HighlightManager @Inject constructor() {
         HighlightView(tapperService, regionsToHighlight)
     }
 
-    private val accessibilityWindowManager = tapperService
-        .getSystemService(WindowManager::class.java)
+    private val accessibilityWindowManager by lazy {
+        tapperService.getSystemService(WindowManager::class.java)
+    }
 
     private var highlightLayoutParams = WindowManager.LayoutParams().apply {
         type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
