@@ -412,12 +412,14 @@ class AutoBattle @Inject constructor(
 
     /**
      * Will show a toast informing the user of number of runs and how many apples have been used so far.
+     * Also shows CE drop count (if any have dropped).
      */
     private fun showRefillsAndRunsMessage() =
         messages.notify(
             ScriptNotify.BetweenRuns(
                 refills = refill.timesRefilled,
-                runs = state.runs
+                runs = state.runs,
+                ceDrops = ceDropsTracker.count
             )
         )
 
