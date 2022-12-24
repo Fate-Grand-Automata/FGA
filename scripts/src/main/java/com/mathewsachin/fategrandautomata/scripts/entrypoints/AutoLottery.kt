@@ -46,13 +46,15 @@ class AutoLottery @Inject constructor(
         throw ExitException(ExitReason.PresentBoxFull)
     }
 
+    private fun isOutOfCurrency() = images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion
+
     private fun ranOutOfCurrency() {
         // this can also be triggered before the notification about a new box happens
-        // wait a bit and then check for the message
-        2.seconds.wait()
+        // tap any dialog away, then check for the message
+        spin()
         if (isNewLineup()) {
             confirmNewLineup()
-        } else {
+        } else if (isOutOfCurrency()) {
             throw ExitException(ExitReason.RanOutOfCurrency)
         }
     }
@@ -67,7 +69,7 @@ class AutoLottery @Inject constructor(
     override fun script(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { isNewLineup() } to { confirmNewLineup() },
-            { images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion } to { ranOutOfCurrency() },
+            { isOutOfCurrency() } to { ranOutOfCurrency() },
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() }
         )
