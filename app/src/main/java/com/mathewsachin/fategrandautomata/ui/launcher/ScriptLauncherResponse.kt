@@ -7,7 +7,6 @@ sealed class ScriptLauncherResponse {
     object Cancel : ScriptLauncherResponse()
     data class FP(val limit: Int?) : ScriptLauncherResponse()
     data class Lottery(
-        val preventBoxReset: Boolean,
         val giftBox: GiftBox?
     ) : ScriptLauncherResponse()
 

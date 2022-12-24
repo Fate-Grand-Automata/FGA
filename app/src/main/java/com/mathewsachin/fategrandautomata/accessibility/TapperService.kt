@@ -23,7 +23,6 @@ class TapperService : AccessibilityService() {
 
     override fun onServiceConnected() {
         Timber.i("Accessibility Service bound to system")
-        Toast.makeText(this, "FGA Accessibility started", Toast.LENGTH_SHORT).show()
 
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {

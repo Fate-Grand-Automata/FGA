@@ -94,7 +94,6 @@
     <string name="p_limit">Limit</string>
     <string name="p_runs">Runs</string>
     <string name="p_roll_limit">Limit number of rolls</string>
-    <string name="p_prevent_lottery_box_reset">Prevent box reset</string>
     <string name="p_receive_embers">Receive embers</string>
 
     <string name="p_battle_config_name">Name</string>
@@ -258,7 +257,7 @@
     <string name="screen_turned_off">Script paused due to screen turning off</string>
     <string name="unexpected_error">Unexpected Error</string>
     <string name="script_exited">Script Exited</string>
-    <string name="lottery_reset_disabled">Lottery box reset is disabled</string>
+    <string name="lottery_currency_depleted">Ran out of lottery currency</string>
     <string name="inventory_full">Inventory Full</string>
     <string name="present_box_full">Present Box Full</string>
     <string name="support_img_maker_not_found">No support images were found on the current screen. Are you on Support selection or Friend list screen?</string>

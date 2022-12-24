@@ -136,7 +136,7 @@ class ScriptManager @Inject constructor(
             is AutoLottery.ExitException -> {
                 val msg = when (e.reason) {
                     AutoLottery.ExitReason.PresentBoxFull -> context.getString(R.string.present_box_full)
-                    AutoLottery.ExitReason.ResetDisabled -> context.getString(R.string.lottery_reset_disabled)
+                    AutoLottery.ExitReason.RanOutOfCurrency -> context.getString(R.string.lottery_currency_depleted)
                 }
 
                 messages.notify(msg)

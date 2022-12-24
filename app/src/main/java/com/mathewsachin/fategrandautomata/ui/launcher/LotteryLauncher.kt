@@ -19,7 +19,6 @@ fun lotteryLauncher(
     prefs: IPreferences,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
-    var preventReset by remember { mutableStateOf(prefs.preventLotteryBoxReset) }
     var receiveEmbers by remember { mutableStateOf(prefs.receiveEmbersWhenGiftBoxFull) }
     var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberSetSize) }
 
@@ -38,25 +37,6 @@ fun lotteryLauncher(
                 .padding(5.dp)
                 .padding(bottom = 16.dp)
         )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { preventReset = !preventReset }
-        ) {
-            Text(
-                stringResource(R.string.p_prevent_lottery_box_reset),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-
-            Switch(
-                checked = preventReset,
-                onCheckedChange = { preventReset = it }
-            )
-        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -90,7 +70,6 @@ fun lotteryLauncher(
         canBuild = { true },
         build = {
             ScriptLauncherResponse.Lottery(
-                preventReset,
                 if (receiveEmbers) ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize) else null
             )
         }

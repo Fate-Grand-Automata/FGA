@@ -6,6 +6,10 @@ import com.mathewsachin.fategrandautomata.IStorageProvider
 import com.mathewsachin.fategrandautomata.SupportImageKind
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
+import java.security.DigestInputStream
+import java.security.DigestOutputStream
+import java.security.MessageDigest
 
 class SupportImageExtractor(
     val context: Context,
@@ -51,13 +55,25 @@ class SupportImageExtractor(
     }
 
     private fun copyAssetToFile(Assets: AssetManager, AssetPath: String, kind: SupportImageKind, fileName: String) {
-        val assetStream = Assets.open(AssetPath)
-        assetStream.use {
-            val outStream = storageProvider.writeSupportImage(kind, fileName)
-            outStream.use {
-                assetStream.copyTo(outStream)
+        // this should prevent
+        val originalDigest = MessageDigest.getInstance("SHA-256")
+        val copiedFileDigest = MessageDigest.getInstance("SHA-256")
+        do {
+            originalDigest.reset()
+            copiedFileDigest.reset()
+
+            val assetStream = DigestInputStream(Assets.open(AssetPath), originalDigest)
+            assetStream.use {
+                val outStream = DigestOutputStream(storageProvider.writeSupportImage(kind, fileName), copiedFileDigest)
+                outStream.use {
+                    assetStream.copyTo(outStream)
+                }
             }
-        }
+            if (!MessageDigest.isEqual(originalDigest.digest(), copiedFileDigest.digest())) {
+                Timber.w("Digests were not equal")
+            }
+        } while (!MessageDigest.isEqual(originalDigest.digest(), copiedFileDigest.digest()))
+
     }
 
     suspend fun extract() =

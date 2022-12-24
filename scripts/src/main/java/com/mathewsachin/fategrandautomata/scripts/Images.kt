@@ -28,6 +28,7 @@ enum class Images {
     Retry,
     Withdraw,
     LotteryBoxFinished,
+    LotteryLineupUpdated,
     PresentBoxFull,
     MasterExp,
     MasterLevelUp,

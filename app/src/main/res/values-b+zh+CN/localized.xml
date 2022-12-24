@@ -94,7 +94,6 @@
     <string name="p_limit">上限</string>
     <string name="p_runs">已执行</string>
     <string name="p_roll_limit">限制抽取次数</string>
-    <string name="p_prevent_lottery_box_reset">避免重置无限池</string>
     <string name="p_receive_embers">收取种火</string>
 
     <string name="p_battle_config_name">脚本名称</string>
@@ -258,7 +257,6 @@
     <string name="screen_turned_off">脚本因屏幕关闭暂停执行</string>
     <string name="unexpected_error">未知错误</string>
     <string name="script_exited">脚本停止</string>
-    <string name="lottery_reset_disabled">已关闭重置无限池</string>
     <string name="inventory_full">背包已满</string>
     <string name="present_box_full">礼物盒已满</string>
     <string name="support_img_maker_not_found">无法检测到助战，请到好友选择画面或助战选择画面再次执行</string>

@@ -307,13 +307,11 @@
     <string name="overlay_notification_text">服務啟動中</string>
     <string name="cannot_stop_recording">無法停止螢幕錄影</string>
     <string name="unexpected_error_copy">複製</string>
-    <string name="lottery_reset_disabled">已取消抽獎箱重置</string>
     <string name="first_clear_rewards">首次通關獎勵</string>
     <string name="no_embers_found">未找到種火，請確認是否已將經驗值列為篩選條件</string>
     <string name="times_rolled">已抽取 %d 次</string>
     <string name="p_limit">上限</string>
     <string name="p_roll_limit">限制抽卡次數</string>
-    <string name="p_prevent_lottery_box_reset">取消抽箱重置</string>
     <string name="mat_core">曉光爐心</string>
     <string name="mat_bell">閑古鈴</string>
     <string name="mat_arrow">禍罪之箭頭</string>

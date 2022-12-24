@@ -24,7 +24,6 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 ScriptModeEnum.FP
             }
             is ScriptLauncherResponse.Lottery -> {
-                prefs.preventLotteryBoxReset = resp.preventBoxReset
                 val giftBoxResp = resp.giftBox
                 prefs.receiveEmbersWhenGiftBoxFull = giftBoxResp != null
 

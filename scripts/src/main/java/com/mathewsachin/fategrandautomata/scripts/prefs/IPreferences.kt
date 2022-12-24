@@ -30,7 +30,6 @@ interface IPreferences {
 
     var shouldLimitFP: Boolean
     var limitFP: Int
-    var preventLotteryBoxReset: Boolean
     var receiveEmbersWhenGiftBoxFull: Boolean
 
     val stageCounterSimilarity: Double

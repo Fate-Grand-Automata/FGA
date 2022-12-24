@@ -20,7 +20,7 @@ class AutoLottery @Inject constructor(
     private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
-        object ResetDisabled : ExitReason()
+        object RanOutOfCurrency : ExitReason()
         object PresentBoxFull : ExitReason()
     }
 
@@ -29,22 +29,7 @@ class AutoLottery @Inject constructor(
     private fun spin() {
         // Don't increase this too much or you'll regret when you're not able to stop the script
         // And your phone won't let you press anything
-        locations.lottery.spinClick.click(25)
-    }
-
-    private fun reset() {
-        if (prefs.preventLotteryBoxReset) {
-            throw ExitException(ExitReason.ResetDisabled)
-        }
-
-        locations.lottery.resetClick.click()
-        0.5.seconds.wait()
-
-        locations.lottery.resetConfirmationClick.click()
-        3.seconds.wait()
-
-        locations.lottery.resetCloseClick.click()
-        2.seconds.wait()
+        locations.lottery.spinClick.click(20)
     }
 
     private fun presentBoxFull() {
@@ -61,9 +46,28 @@ class AutoLottery @Inject constructor(
         throw ExitException(ExitReason.PresentBoxFull)
     }
 
+    private fun ranOutOfCurrency() {
+        // this can also be triggered before the notification about a new box happens
+        // wait a bit and then check for the message
+        2.seconds.wait()
+        if (isNewLineup()) {
+            confirmNewLineup()
+        } else {
+            throw ExitException(ExitReason.RanOutOfCurrency)
+        }
+    }
+
+    private fun isNewLineup() =
+        images[Images.LotteryLineupUpdated] in locations.lottery.lineupUpdatedRegion
+
+    private fun confirmNewLineup() {
+        locations.lottery.confirmNewLineupClick.click()
+    }
+
     override fun script(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
-            { images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion } to { reset() },
+            { isNewLineup() } to { confirmNewLineup() },
+            { images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion } to { ranOutOfCurrency() },
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() }
         )
