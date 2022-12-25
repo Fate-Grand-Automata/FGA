@@ -153,7 +153,7 @@
     <string name="p_debug_mode">Debug模式</string>
     <string name="p_debug_mode_summary">将框出对比图像的区域</string>
     <string name="p_ignore_notch">忽略刘海</string>
-    <string name="p_ignore_notch_summary">若FGO未在您的手机上把刘海部分空出來，请开启此选项</string>
+    <string name="p_ignore_notch_summary">若FGO未将刘海部分留黑，请开启此选项（仅适用于台服）</string>
     <string name="p_record_screen">屏幕录像</string>
     <string name="p_record_screen_summary">将在存放文件的文件夹储存 \'record.mp4\' 为名的屏幕录像档案\n重新命名或复制至其他位置以保留</string>
     <string name="p_root_screenshot">以root截图</string>
