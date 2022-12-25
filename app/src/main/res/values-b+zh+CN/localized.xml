@@ -92,7 +92,7 @@
     <string name="p_more_options">更多选项</string>
 
     <string name="p_limit">上限</string>
-    <string name="p_runs">已执行</string>
+    <string name="p_runs">执行次数</string>
     <string name="p_roll_limit">限制抽取次数</string>
     <string name="p_receive_embers">收取种火</string>
 
@@ -153,7 +153,7 @@
     <string name="p_debug_mode">Debug模式</string>
     <string name="p_debug_mode_summary">将框出对比图像的区域</string>
     <string name="p_ignore_notch">忽略刘海</string>
-    <string name="p_ignore_notch_summary">若FGO未在您的手机上把刘海部分空出來，请开启此选项</string>
+    <string name="p_ignore_notch_summary">若FGO未将刘海部分留黑，请开启此选项（仅适用于台服）</string>
     <string name="p_record_screen">屏幕录像</string>
     <string name="p_record_screen_summary">将在存放文件的文件夹储存 \'record.mp4\' 为名的屏幕录像档案\n重新命名或复制至其他位置以保留</string>
     <string name="p_root_screenshot">以root截图</string>
@@ -257,6 +257,7 @@
     <string name="screen_turned_off">脚本因屏幕关闭暂停执行</string>
     <string name="unexpected_error">未知错误</string>
     <string name="script_exited">脚本停止</string>
+    <string name="lottery_currency_depleted">奖券用尽</string>
     <string name="inventory_full">背包已满</string>
     <string name="present_box_full">礼物盒已满</string>
     <string name="support_img_maker_not_found">无法检测到助战，请到好友选择画面或助战选择画面再次执行</string>
@@ -271,7 +272,9 @@
     <string name="times_ran">已执行 %d 次</string>
     <string name="times_ran_out_of">已执行 %1$d / %2$d 次</string>
     <string name="refills_used_out_of">已自动回体 %1$d / %2$d 次</string>
-    <string name="failed_to_determine_card">辨认卡色失败: %s</string>
+    <string name="failed_to_determine_card">辨认指令卡失败: %s</string>
+    <string name="unknown_card_type">无法分辨指令卡颜色</string>
+    <string name="unknown_servant_card">指令卡属于未知从者</string>
     <string name="support_list_updated_in">助战清单在 %s 后刷新</string>
     <string name="times_withdrew">已撤退 %d 次</string>
     <string name="avg_time_per_run">平均一场时间: %s</string>
@@ -283,6 +286,9 @@
 
     <string name="p_mats">追踪掉落素材</string>
     <string name="mats_farmed">已获得 %d 个素材</string>
+
+    <string name="p_ces">礼装</string>
+    <string name="ces_dropped">已掉落 %d 张礼装</string>
 
     <string name="times_rolled">已抽取 %d 次</string>
 
@@ -335,6 +341,48 @@
     <string name="mat_demon_lantern">鬼炎鬼灯</string>
     <string name="mat_amnesty_bell">赦免的小钟</string>
     <string name="mat_fantasy_scales">梦幻的鳞粉</string>
+    <string name="mat_ceremonial_blade">黄昏的仪式剑（暂译）</string>
+    <string name="mat_ashes">不忘之灰（暂译）</string>
+
+    <string name="mat_monument_saber">剑阶金像</string>
+    <string name="mat_monument_archer">弓阶金像</string>
+    <string name="mat_monument_lancer">枪阶金像</string>
+    <string name="mat_monument_rider">骑阶金像</string>
+    <string name="mat_monument_caster">术阶金像</string>
+    <string name="mat_monument_asssassin">杀阶金像</string>
+    <string name="mat_monument_berserker">狂阶金像</string>
+
+    <string name="mat_piece_saber">剑阶银棋</string>
+    <string name="mat_piece_archer">弓阶银棋</string>
+    <string name="mat_piece_lancer">枪阶银棋</string>
+    <string name="mat_piece_rider">骑阶银棋</string>
+    <string name="mat_piece_caster">术阶银棋</string>
+    <string name="mat_piece_asssassin">杀阶银棋</string>
+    <string name="mat_piece_berserker">狂阶银棋</string>
+
+    <string name="mat_skill_gold_saber">剑之秘石</string>
+    <string name="mat_skill_gold_archer">弓之秘石</string>
+    <string name="mat_skill_gold_lancer">枪之秘石</string>
+    <string name="mat_skill_gold_rider">骑之秘石</string>
+    <string name="mat_skill_gold_caster">术之秘石</string>
+    <string name="mat_skill_gold_asssassin">杀之秘石</string>
+    <string name="mat_skill_gold_berserker">狂之秘石</string>
+
+    <string name="mat_skill_red_saber">剑之魔石</string>
+    <string name="mat_skill_red_archer">弓之魔石</string>
+    <string name="mat_skill_red_lancer">枪之魔石</string>
+    <string name="mat_skill_red_rider">骑之魔石</string>
+    <string name="mat_skill_red_caster">术之魔石</string>
+    <string name="mat_skill_red_asssassin">杀之魔石</string>
+    <string name="mat_skill_red_berserker">狂之魔石</string>
+
+    <string name="mat_skill_blue_saber">剑之辉石</string>
+    <string name="mat_skill_blue_archer">弓之辉石</string>
+    <string name="mat_skill_blue_lancer">枪之辉石</string>
+    <string name="mat_skill_blue_rider">骑之辉石</string>
+    <string name="mat_skill_blue_caster">术之辉石</string>
+    <string name="mat_skill_blue_asssassin">杀之辉石</string>
+    <string name="mat_skill_blue_berserker">狂之辉石</string>
 
     <string name="p_shuffle_cards">洗牌</string>
     <string name="p_shuffle_cards_wave">战斗数</string>
