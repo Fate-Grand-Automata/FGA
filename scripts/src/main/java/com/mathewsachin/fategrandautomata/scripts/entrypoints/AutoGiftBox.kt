@@ -116,7 +116,7 @@ class AutoGiftBox @Inject constructor(
             val countRegion = when (prefs.gameServer) {
                 GameServerEnum.Jp, GameServerEnum.Tw, GameServerEnum.Cn -> -940
                 GameServerEnum.En -> -830
-                GameServerEnum.Kr -> -910
+                GameServerEnum.Kr -> -1010
             }.let { x -> Region(x, -120, 300, 100) } + gift.region.location
 
             val iconRegion = Region(-1480, -116, 300, 240) + gift.region.location
