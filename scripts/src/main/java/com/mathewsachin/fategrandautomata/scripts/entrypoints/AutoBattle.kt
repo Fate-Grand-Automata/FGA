@@ -196,7 +196,7 @@ class AutoBattle @Inject constructor(
 
             actor?.invoke()
 
-            1.seconds.wait()
+            0.5.seconds.wait()
         }
     }
 
