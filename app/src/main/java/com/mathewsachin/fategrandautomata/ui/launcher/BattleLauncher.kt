@@ -138,10 +138,10 @@ fun battleLauncher(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    //only display bronze option for JP
-                    val bronzeApplesEnabled = prefs.gameServer == GameServerEnum.Jp
+                    //only display bronze option for JP and CN
+                    val bronzeApplesEnabled = prefs.gameServer in listOf(GameServerEnum.Jp, GameServerEnum.Cn)
                     if (!bronzeApplesEnabled) {
-                        //if the game server is not JP, disable it in the settings
+                        //disable it in the settings otherwise
                         refillResources = refillResources.minus(RefillResourceEnum.Bronze)
                     }
                     //TODO remove
