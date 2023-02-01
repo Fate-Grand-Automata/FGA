@@ -126,7 +126,9 @@ class Caster @Inject constructor(
         locations.battle.orderChangeOkClick.click()
 
         // Extra wait to allow order change dialog to close
-        1.seconds.wait()
+        0.3.seconds.wait()
+        // speed up animation
+        locations.battle.extraInfoWindowCloseClick.click()
 
         waitForAnimationToFinish(15.seconds)
 
