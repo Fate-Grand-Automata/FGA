@@ -1,26 +1,21 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
 
 @Composable
-fun SkillMakerTarget(
-    onSkillTarget: (ServantTarget?) -> Unit,
-    showEmiya: Boolean,
-    onEmiya: () -> Unit,
-    showSpaceIshtar: Boolean,
-    onSpaceIshtar: () -> Unit,
-    onKukulcan: () -> Unit,
+fun SkillMakerKukulcanTarget(
+    onSkillTarget: (ServantTarget) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -28,7 +23,7 @@ fun SkillMakerTarget(
             .padding(16.dp)
     ) {
         Text(
-            stringResource(R.string.skill_maker_target_header),
+            stringResource(R.string.skill_maker_kukulcan),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
@@ -59,40 +54,11 @@ fun SkillMakerTarget(
                 text = stringResource(R.string.skill_maker_target_servant, 3)
             )
         }
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Button(onClick = onKukulcan) {
-                Text(stringResource(R.string.skill_maker_kukulcan))
-            }
-
-            when {
-                showEmiya -> {
-                    Button(onClick = onEmiya) {
-                        Text(stringResource(R.string.skill_maker_emiya))
-                    }
-                }
-                showSpaceIshtar -> {
-                    Button(onClick = onSpaceIshtar) {
-                        Text(stringResource(R.string.skill_maker_space_ishtar))
-                    }
-                }
-                else -> {
-                    Button(
-                        enabled = false,
-                        onClick = { }
-                    ) {
-                        Text("--")
-                    }
-                }
-            }
-
-            Button(onClick = { onSkillTarget(null) }) {
-                Text(stringResource(R.string.skill_maker_target_none))
-            }
-        }
     }
+}
+
+@Preview(widthDp = 600, heightDp = 300)
+@Composable
+fun TestKukulcanTarget() {
+    SkillMakerKukulcanTarget(onSkillTarget = { })
 }

@@ -21,7 +21,7 @@ sealed class AutoSkillAction {
         }
     }
 
-    class ServantSkill(val skill: Skill.Servant, val target: ServantTarget?) : AutoSkillAction()
+    class ServantSkill(val skill: Skill.Servant, val targets: List<ServantTarget>?) : AutoSkillAction()
 
     class MasterSkill(val skill: Skill.Master, val target: ServantTarget?) : AutoSkillAction()
 

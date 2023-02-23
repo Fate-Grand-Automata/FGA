@@ -11,6 +11,12 @@ sealed class SkillMakerEntry {
                 "${skill.autoSkillCode}"
             else "${skill.autoSkillCode}${target.autoSkillCode}"
 
+        private fun toString(skill: Skill, targets: List<ServantTarget>?): String {
+            if (targets == null) return "${skill.autoSkillCode}"
+            if (targets.size == 1) return toString(skill, targets[0])
+            return "${skill.autoSkillCode}(${targets.map { t -> t.autoSkillCode }.joinToString("")})"
+        }
+
         override fun toString() = when (action) {
             is AutoSkillAction.Atk -> {
                 if (action == AutoSkillAction.Atk.noOp()) {
@@ -25,7 +31,7 @@ sealed class SkillMakerEntry {
                     }
                 }
             }
-            is AutoSkillAction.ServantSkill -> toString(action.skill, action.target)
+            is AutoSkillAction.ServantSkill -> toString(action.skill, action.targets)
             is AutoSkillAction.MasterSkill -> toString(action.skill, action.target)
             is AutoSkillAction.TargetEnemy -> "t${action.enemy.autoSkillCode}"
             is AutoSkillAction.OrderChange -> "x${action.starting.autoSkillCode}${action.sub.autoSkillCode}"

@@ -65,6 +65,9 @@
     <string name="skill_maker_quick">Quick</string>
     <string name="skill_maker_arts">Arts</string>
     <string name="skill_maker_buster">Buster</string>
+    <string name="skill_maker_kukulcan">Kukulcan</string>
+    <string name="skill_maker_option_1">Option 1</string>
+    <string name="skill_maker_option_2">Option 2</string>
 
     <string name="card_priority_wave_number">WAVE %d</string>
     <string name="card_priority_high">HIGH</string>

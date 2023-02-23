@@ -29,14 +29,38 @@ class AutoSkillCommand private constructor(
             return target
         }
 
+        private fun getTargets(queue: Queue<Char>): List<ServantTarget>? {
+            val targets = ArrayList<ServantTarget>()
+            val nextChar = queue.peek()
+            if (nextChar == '(') {
+                while (true) {
+                    val char = queue.remove()
+                    if (char == ')') break
+                    val target = ServantTarget.list.firstOrNull { it.autoSkillCode == char }
+                    if (target != null) {
+                        targets.add(target)
+                    }
+                }
+            } else {
+                val target = ServantTarget.list.firstOrNull { it.autoSkillCode == nextChar }
+                if (target != null) {
+                    queue.remove()
+                    targets.add(target)
+                }
+            }
+
+            if (targets.isEmpty()) return null
+            return targets
+        }
+
         private fun parseAction(queue: Queue<Char>): AutoSkillAction {
             try {
                 return when (val c = queue.remove()) {
                     in Skill.Servant.list.map { it.autoSkillCode } -> {
                         val skill = Skill.Servant.list.first { it.autoSkillCode == c }
-                        val target = getTarget(queue)
+                        val targets = getTargets(queue)
 
-                        AutoSkillAction.ServantSkill(skill, target)
+                        AutoSkillAction.ServantSkill(skill, targets)
                     }
                     in Skill.Master.list.map { it.autoSkillCode } -> {
                         val skill = Skill.Master.list.first { it.autoSkillCode == c }
