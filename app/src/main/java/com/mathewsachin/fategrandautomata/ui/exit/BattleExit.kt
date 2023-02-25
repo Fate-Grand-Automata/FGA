@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.exit
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -347,7 +348,8 @@ fun BattleExit(
     }
 }
 
-@Preview
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewBattleExitContent() {
     FGATheme {

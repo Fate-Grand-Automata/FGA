@@ -39,7 +39,10 @@ class Caster @Inject constructor(
         }
     }
 
-    private fun castSkill(skill: Skill, targets: List<ServantTarget>?) {
+    private fun castSkill(skill: Skill, target: ServantTarget?) =
+        castSkill(skill, listOfNotNull(target))
+
+    private fun castSkill(skill: Skill, targets: List<ServantTarget>) {
         when (skill) {
             is Skill.Master -> locations.battle.master.locate(skill)
             is Skill.Servant -> locations.battle.locate(skill)
@@ -47,12 +50,10 @@ class Caster @Inject constructor(
 
         confirmSkillUse()
 
-        if (targets != null) {
-            for (target in targets) {
-                prefs.skillDelay.wait()
+        targets.forEach { target ->
+            prefs.skillDelay.wait()
 
-                selectSkillTarget(target)
-            }
+            selectSkillTarget(target)
         }
 
         // Close the window that opens up if skill is on cool-down
@@ -63,13 +64,11 @@ class Caster @Inject constructor(
         waitForAnimationToFinish()
     }
 
-    fun castServantSkill(skill: Skill.Servant, targets: List<ServantTarget>?) {
-        castSkill(skill, targets)
-    }
+    fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) =
+        castSkill(skill, target)
 
-    fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
-        castSkill(skill, if (target == null) null else listOf(target))
-    }
+    fun castServantSkill(skill: Skill.Servant, targets: List<ServantTarget>) =
+        castSkill(skill, targets)
 
     fun selectSkillTarget(target: ServantTarget) {
         val actualTarget = when (target) {
@@ -111,7 +110,7 @@ class Caster @Inject constructor(
     fun castMasterSkill(skill: Skill.Master, target: ServantTarget? = null) {
         openMasterSkillMenu()
 
-        castSkill(skill, if (target == null) null else listOf(target))
+        castSkill(skill, target)
     }
 
     fun orderChange(action: AutoSkillAction.OrderChange) {

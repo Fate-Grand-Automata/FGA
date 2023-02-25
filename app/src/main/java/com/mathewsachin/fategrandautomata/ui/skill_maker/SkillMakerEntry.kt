@@ -11,11 +11,10 @@ sealed class SkillMakerEntry {
                 "${skill.autoSkillCode}"
             else "${skill.autoSkillCode}${target.autoSkillCode}"
 
-        private fun toString(skill: Skill, targets: List<ServantTarget>?): String {
-            if (targets == null) return "${skill.autoSkillCode}"
-            if (targets.size == 1) return toString(skill, targets[0])
-            return "${skill.autoSkillCode}(${targets.map { t -> t.autoSkillCode }.joinToString("")})"
-        }
+        private fun toString(skill: Skill, targets: List<ServantTarget>) =
+            if (targets.isEmpty()) "${skill.autoSkillCode}"
+            else if (targets.size == 1) "${skill.autoSkillCode}${targets[0].autoSkillCode}"
+            else "${skill.autoSkillCode}(${targets.map(ServantTarget::autoSkillCode).joinToString("")})"
 
         override fun toString() = when (action) {
             is AutoSkillAction.Atk -> {

@@ -1,5 +1,6 @@
 package com.mathewsachin.fategrandautomata.ui.skill_maker
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -8,10 +9,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.ServantTarget
+import com.mathewsachin.fategrandautomata.ui.FGATheme
+import com.mathewsachin.fategrandautomata.ui.FGATitle
 
 @Composable
 fun SkillMakerTarget(
@@ -27,11 +30,8 @@ fun SkillMakerTarget(
             .fillMaxHeight()
             .padding(16.dp)
     ) {
-        Text(
-            stringResource(R.string.skill_maker_target_header),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
+        FGATitle(
+            stringResource(R.string.skill_maker_target_header)
         )
 
         Row(
@@ -80,19 +80,40 @@ fun SkillMakerTarget(
                         Text(stringResource(R.string.skill_maker_space_ishtar))
                     }
                 }
-                else -> {
-                    Button(
-                        enabled = false,
-                        onClick = { }
-                    ) {
-                        Text("--")
-                    }
-                }
             }
 
             Button(onClick = { onSkillTarget(null) }) {
                 Text(stringResource(R.string.skill_maker_target_none))
             }
         }
+    }
+}
+
+@Composable
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun TestSkillMakerTargetEmiya() = TestSkillMaker(showEmiya = true)
+
+@Composable
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun TestSkillMakerTargetIshtar() = TestSkillMaker(showSpaceIshtar = true)
+
+@Composable
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun TestSkillMakerOnlyKukulcan() = TestSkillMaker()
+
+@Composable
+private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean = false) {
+    FGATheme {
+        SkillMakerTarget(
+            onSkillTarget = {},
+            showEmiya = showEmiya,
+            onEmiya = {},
+            showSpaceIshtar = showSpaceIshtar,
+            onSpaceIshtar = {},
+            onKukulcan = {}
+        )
     }
 }
