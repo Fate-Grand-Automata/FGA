@@ -14,8 +14,8 @@ class AutoSkill @Inject constructor(
     private val caster: Caster
 ) : IFgoAutomataApi by api {
     private fun act(action: AutoSkillAction) = when (action) {
-        is AutoSkillAction.Atk -> { }
-        is AutoSkillAction.ServantSkill -> caster.castServantSkill(action.skill, action.target)
+        is AutoSkillAction.Atk -> {}
+        is AutoSkillAction.ServantSkill -> caster.castServantSkill(action.skill, action.targets)
         is AutoSkillAction.MasterSkill -> caster.castMasterSkill(action.skill, action.target)
         is AutoSkillAction.TargetEnemy -> caster.selectEnemyTarget(action.enemy)
         is AutoSkillAction.OrderChange -> caster.orderChange(action)

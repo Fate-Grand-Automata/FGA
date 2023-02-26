@@ -39,7 +39,10 @@ class Caster @Inject constructor(
         }
     }
 
-    private fun castSkill(skill: Skill, target: ServantTarget?) {
+    private fun castSkill(skill: Skill, target: ServantTarget?) =
+        castSkill(skill, listOfNotNull(target))
+
+    private fun castSkill(skill: Skill, targets: List<ServantTarget>) {
         when (skill) {
             is Skill.Master -> locations.battle.master.locate(skill)
             is Skill.Servant -> locations.battle.locate(skill)
@@ -47,7 +50,7 @@ class Caster @Inject constructor(
 
         confirmSkillUse()
 
-        if (target != null) {
+        targets.forEach { target ->
             prefs.skillDelay.wait()
 
             selectSkillTarget(target)
@@ -61,9 +64,11 @@ class Caster @Inject constructor(
         waitForAnimationToFinish()
     }
 
-    fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) {
+    fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) =
         castSkill(skill, target)
-    }
+
+    fun castServantSkill(skill: Skill.Servant, targets: List<ServantTarget>) =
+        castSkill(skill, targets)
 
     fun selectSkillTarget(target: ServantTarget) {
         val actualTarget = when (target) {

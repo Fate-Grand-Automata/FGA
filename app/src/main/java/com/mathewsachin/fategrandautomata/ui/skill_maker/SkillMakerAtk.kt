@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.models.AutoSkillAction
 import com.mathewsachin.fategrandautomata.scripts.models.CommandCard
+import com.mathewsachin.fategrandautomata.ui.FGATitle
 import com.mathewsachin.fategrandautomata.ui.VectorIcon
 import com.mathewsachin.fategrandautomata.ui.icon
 
@@ -126,11 +127,8 @@ fun SkillMakerAtk(
             .fillMaxHeight()
             .padding(16.dp)
     ) {
-        Text(
-            stringResource(R.string.skill_maker_atk_header),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
+        FGATitle(
+            stringResource(R.string.skill_maker_atk_header)
         )
 
         var npSequence by rememberSaveable { mutableStateOf("") }
