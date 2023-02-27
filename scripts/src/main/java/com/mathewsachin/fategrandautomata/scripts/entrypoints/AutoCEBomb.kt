@@ -1,4 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts.entrypoints
+
 import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.Images
 import com.mathewsachin.fategrandautomata.scripts.modules.ConnectionRetry
@@ -16,7 +17,6 @@ import kotlin.time.Duration.Companion.seconds
  * - Can only be started from CE enhancement screen with no CE selected.
  * - In the CE picking screens, the item sizes must be set to lowest.
  * - It will select the top left CE to upgrade it
- * -
  */
 @ScriptScope
 class AutoCEBomb @Inject constructor(
@@ -28,7 +28,7 @@ class AutoCEBomb @Inject constructor(
     override fun script(): Nothing {
 
         // Click on the "Tap to select a Craft Essence to Enhance" area
-        locations.ceSelectCEToEnhanceLocation.click()
+        locations.ceBomb.ceSelectCEToEnhanceLocation.click()
         2.seconds.wait()
 
         // Pick the first possible CE of the list
@@ -36,7 +36,7 @@ class AutoCEBomb @Inject constructor(
         pickCEToUpgrade()
         2.seconds.wait()
 
-        locations.ceOpenEnhancementMenuLocation.click()
+        locations.ceBomb.ceOpenEnhancementMenuLocation.click()
         2.seconds.wait()
 
         /** Loop to upgrade the CE selected
@@ -54,7 +54,7 @@ class AutoCEBomb @Inject constructor(
          *  - Press on enhance
          *  - Press on ok on the "Perform enhancement" pop up window
          *  - try to come back to the list of enhance fodder
-        **/
+         **/
         var count = 0
         while (true) {
 
@@ -71,19 +71,19 @@ class AutoCEBomb @Inject constructor(
             // Press Ok to exit the "Please select a craft essence to use for enhancement screen
             // Press Ok again to enhance
             repeat(2) {
-                locations.ceUpgradeOkButton.click()
+                locations.ceBomb.ceUpgradeOkButton.click()
                 1.seconds.wait()
             }
 
             // if at that point we're still on the CE selection page
             // Then that means no CE was selected, so we exit the script
-            if (images[Images.CEDetails] in locations.ceMultiSelectRegion) {
+            if (images[Images.CEDetails] in locations.ceBomb.ceMultiSelectRegion) {
                 throw ExitException(ExitReason.NoSuitableTargetCEFound)
             }
 
             // Enhancement confirmation window is now up
             // press Ok to enhance
-            locations.cePerformEnhancementOkButton.click()
+            locations.ceBomb.cePerformEnhancementOkButton.click()
             2.seconds.wait()
 
             /**
@@ -92,13 +92,13 @@ class AutoCEBomb @Inject constructor(
              * or encountered an exit condition
              */
             var subcount = 0
-            while (!(images[Images.CEDetails] in locations.ceMultiSelectRegion)) {
+            while (images[Images.CEDetails] !in locations.ceBomb.ceMultiSelectRegion) {
 
                 /** End the script if a CE is fully upgraded
                  * The CE would have been removed from the ceToEnhance region
                  * and we'd be back to a "Tap to select a Craft Essence to Enhance" state
                  **/
-                if (images[Images.CEEnhance] in locations.ceToEnhanceRegion) {
+                if (images[Images.CEEnhance] in locations.ceBomb.ceToEnhanceRegion) {
                     throw ExitException(ExitReason.CEFullyUpgraded)
                 }
 
@@ -115,7 +115,7 @@ class AutoCEBomb @Inject constructor(
                 }
 
                 // click on the location of the 20 CE grid
-                locations.ceOpenEnhancementMenuLocation.click()
+                locations.ceBomb.ceOpenEnhancementMenuLocation.click()
                 subcount++
             }
 
@@ -123,7 +123,7 @@ class AutoCEBomb @Inject constructor(
              * we can stop if we tried to feed 24CE, 40 times
              * That way the script at least ends after ~24 minutes
              * if it ran out of CE fodder and didn't detect it for some reason
-            **/
+             **/
             if (count > 40) {
                 throw ExitException(ExitReason.MaxNumberOfIterations)
             }
@@ -134,25 +134,22 @@ class AutoCEBomb @Inject constructor(
         /**
          * Will click on the position of every 28 possible CE on the screen
          * until one was selected to be upgraded or none worked
-         * or none worked
          */
         var y = 0
         var x = 0
-        while (images[Images.CEDetails] in locations.ceMultiSelectRegion) {
-            var currentLocation = Location(
-                locations.ceFirstFodderLocation.x + (x * 270),
-                locations.ceFirstFodderLocation.y + (y * 290) + 50
+        while (images[Images.CEDetails] in locations.ceBomb.ceMultiSelectRegion) {
+            val currentLocation = Location(
+                locations.ceBomb.ceFirstFodderLocation.x + (x * 270),
+                locations.ceBomb.ceFirstFodderLocation.y + (y * 290) + 50
             )
             currentLocation.click()
 
             if (x < 6) {
                 x++
-            }
-            else if (y < 3) {
+            } else if (y < 3) {
                 y++
                 x = 0
-            }
-            else {
+            } else {
                 throw ExitException(ExitReason.NoSuitableTargetCEFound)
             }
         }
@@ -166,8 +163,8 @@ class AutoCEBomb @Inject constructor(
         for (y in 0..3) {
             for (x in 0..6) {
                 val nextCELocation = Location(
-                    locations.ceFirstFodderLocation.x + (x * 270),
-                    locations.ceFirstFodderLocation.y + (y * 290) + 50
+                    locations.ceBomb.ceFirstFodderLocation.x + (x * 270),
+                    locations.ceBomb.ceFirstFodderLocation.y + (y * 290) + 50
                 )
                 nextCELocation.click()
             }
@@ -177,7 +174,8 @@ class AutoCEBomb @Inject constructor(
     sealed class ExitReason {
         object NoSuitableTargetCEFound : ExitReason()
         object CEFullyUpgraded : ExitReason()
-        object MaxNumberOfIterations: ExitReason()
+        object MaxNumberOfIterations : ExitReason()
     }
+
     class ExitException(val reason: ExitReason) : Exception()
 }

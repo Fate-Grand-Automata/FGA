@@ -7,7 +7,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 
 @Composable
@@ -21,7 +23,7 @@ fun ceBombLauncher(
             .padding(top = 5.dp)
     ) {
         Text(
-            "Start the CE Bomb script",
+            stringResource(R.string.p_script_mode_ce_bomb),
             style = MaterialTheme.typography.titleLarge
         )
 
@@ -32,19 +34,13 @@ fun ceBombLauncher(
         )
 
         Text(
-            "This script will consume any CE it can indiscriminately.\n" +
-                    "Please ensure you've locked every CE you don't want to lose, " +
-                    "or moved them to the Second Archive.",
+            stringResource(R.string.p_ce_bomb_explanation),
             style = MaterialTheme.typography.bodyLarge
         )
     }
 
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
-        build = {
-            // TODO : since the targetRarity doesn't matter anymore
-            // I'm just passing an arbitrary value as i have no idea how it works behind that
-            ScriptLauncherResponse.CEBomb(1)
-        }
+        build = { ScriptLauncherResponse.CEBomb }
     )
 }

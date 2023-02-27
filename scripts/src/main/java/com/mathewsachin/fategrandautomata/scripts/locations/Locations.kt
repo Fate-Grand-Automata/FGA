@@ -15,7 +15,8 @@ class Locations @Inject constructor(
     val lottery: LotteryLocations,
     val support: SupportScreenLocations,
     val attack: AttackScreenLocations,
-    val battle: BattleScreenLocations
+    val battle: BattleScreenLocations,
+    val ceBomb: CEBombLocations
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
@@ -107,65 +108,6 @@ class Locations @Inject constructor(
 
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
-
-    // CE Bomb locations
-    // the dark gray " + Tap to select a Craft Essence to Enhance" area
-    var ceToEnhanceRegion =
-        (if (isWide)
-            Region(-1100, 600, 400, 400).xFromCenter()
-        else
-            Region(200, 600, 400, 400)
-        )
-
-    // click on the center of previous region
-    val ceSelectCEToEnhanceLocation =
-        (if (isWide)
-            Location(-900, 800).xFromCenter()
-        else
-            Location(400, 500)
-        )
-
-    // The 20 CE grid located on the right of the selected CE to enhance
-    // should be 20 empty dark gray "+" rectangles if no ce selected
-    val ceOpenEnhancementMenuLocation =
-        (if (isWide)
-            Location(200, 500).xFromCenter()
-        else
-            Location(900, 500)
-        )
-
-    // on the CE selection screen, should be the top left CE
-    val ceFirstFodderLocation =
-        (if (isWide)
-            Location(-980, 450).xFromCenter()
-        else
-            Location(280, 430)
-        )
-
-    // Ok button on the CE selection list
-    val ceUpgradeOkButton =
-        (if (isWide)
-            Location(-400, 1300).xFromRight()
-        else
-            Location(2300, 1300)
-        )
-
-    // Ok button on the pop-up to ask if you want to use selected CEs to enhance
-    val cePerformEnhancementOkButton =
-        (if (isWide)
-            Location(450, 1200).xFromCenter()
-        else
-            Location(1600, 1200)
-        )
-
-    // the "Multi Select" button on the CE Selection screen
-    val ceMultiSelectRegion =
-        (if (isWide)
-            Region(175, 880, 135, 115)
-        else
-            Region(0, 880, 135, 115)
-        )
-    // End of CEBomb locations
 
     val npStartedRegion = Region(-400, 500, 800, 400).xFromCenter()
 }

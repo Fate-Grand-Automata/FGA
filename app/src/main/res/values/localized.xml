@@ -220,6 +220,7 @@
     <string name="p_script_mode_fp">Friend Gacha</string>
     <string name="p_script_mode_support_image_maker">Support Image Maker</string>
     <string name="p_script_mode_gift_box">Gift Box</string>
+    <string name="p_script_mode_ce_bomb">CE Bomb</string>
 
     <string name="p_max_gold_ember_set_size">Max Gold ember set size</string>
 
@@ -403,4 +404,9 @@
     <string name="p_game_area_custom_top">Top</string>
     <string name="p_game_area_custom_right">Right</string>
     <string name="p_game_area_custom_bottom">Bottom</string>
+
+    <string name="p_ce_bomb_explanation">This script will consume any CE it can indiscriminately.\nPlease ensure you\'ve locked every CE you don\'t want to lose, or moved them to the Second Archive.</string>
+    <string name="ce_bomb_no_suitable_ces">No suitable target CE found</string>
+    <string name="ce_bomb_max_iterations">Max number of iterations reached</string>
+    <string name="ce_bomb_ce_fully_upgraded">CE is fully upgraded. Please lock it or put it in second archive</string>
 </resources>

@@ -37,11 +37,7 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 ScriptModeEnum.PresentBox
             }
             ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
-            is ScriptLauncherResponse.CEBomb -> {
-                prefs.ceBombTargetRarity = resp.targetRarity
-
-                ScriptModeEnum.CEBomb
-            }
+            ScriptLauncherResponse.CEBomb -> ScriptModeEnum.CEBomb
             is ScriptLauncherResponse.Battle -> {
                 prefs.selectedBattleConfig = resp.config
 
