@@ -12,7 +12,7 @@ sealed class ScriptLauncherResponse {
         val maxGoldEmberTotalCount: Int
     ) : ScriptLauncherResponse()
 
-    data class CEBomb(val targetRarity: Int) : ScriptLauncherResponse()
+    data object CEBomb : ScriptLauncherResponse()
 
     data class SkillUpgrade(
         val shouldUpgradeSkill1: Boolean,

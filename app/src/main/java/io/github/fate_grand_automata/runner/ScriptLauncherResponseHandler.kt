@@ -41,18 +41,13 @@ class ScriptLauncherResponseHandler @Inject constructor(
             }
 
             ScriptLauncherResponse.SupportImageMaker -> ScriptModeEnum.SupportImageMaker
-            is ScriptLauncherResponse.CEBomb -> {
-                prefs.ceBombTargetRarity = resp.targetRarity
-
-                ScriptModeEnum.CEBomb
-            }
-
+            ScriptLauncherResponse.CEBomb -> ScriptModeEnum.CEBomb
             is ScriptLauncherResponse.Battle -> {
                 ScriptModeEnum.Battle
             }
 
             is ScriptLauncherResponse.SkillUpgrade -> {
-                
+
                 prefs.skillUpgrade.shouldUpgradeSkill1 = resp.shouldUpgradeSkill1
                 prefs.skillUpgrade.upgradeSkill1 = resp.upgradeSkill1
 
@@ -61,7 +56,7 @@ class ScriptLauncherResponseHandler @Inject constructor(
 
                 prefs.skillUpgrade.shouldUpgradeSkill3 = resp.shouldUpgradeSkill3
                 prefs.skillUpgrade.upgradeSkill3 = resp.upgradeSkill3
-                
+
                 ScriptModeEnum.SkillUpgrade
             }
 
