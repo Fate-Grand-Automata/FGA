@@ -35,7 +35,7 @@ fun ceBombLauncher(
 
         Text(
             stringResource(R.string.p_ce_bomb_explanation),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 

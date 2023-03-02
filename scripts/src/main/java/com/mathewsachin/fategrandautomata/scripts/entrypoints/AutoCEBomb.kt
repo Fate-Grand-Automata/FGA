@@ -24,6 +24,8 @@ class AutoCEBomb @Inject constructor(
     api: IFgoAutomataApi,
     private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
+    private val ceRows = 4
+    private val ceColumns = 7
 
     override fun script(): Nothing {
 
@@ -75,8 +77,10 @@ class AutoCEBomb @Inject constructor(
                 1.seconds.wait()
             }
 
-            // if at that point we're still on the CE selection page
-            // Then that means no CE was selected, so we exit the script
+            /**
+             * If at that point we're still on the CE selection page
+             * then that means no CE was selected, so we exit the script
+             **/
             if (images[Images.CEDetails] in locations.ceBomb.ceMultiSelectRegion) {
                 throw ExitException(ExitReason.NoSuitableTargetCEFound)
             }
@@ -135,41 +139,38 @@ class AutoCEBomb @Inject constructor(
          * Will click on the position of every 28 possible CE on the screen
          * until one was selected to be upgraded or none worked
          */
-        var y = 0
-        var x = 0
-        while (images[Images.CEDetails] in locations.ceBomb.ceMultiSelectRegion) {
-            val currentLocation = Location(
-                locations.ceBomb.ceFirstFodderLocation.x + (x * 270),
-                locations.ceBomb.ceFirstFodderLocation.y + (y * 290) + 50
-            )
-            currentLocation.click()
+        for (y in 0 until ceRows) {
+            for (x in 0 until ceColumns) {
+                CELocation(x, y).click()
 
-            if (x < 6) {
-                x++
-            } else if (y < 3) {
-                y++
-                x = 0
-            } else {
-                throw ExitException(ExitReason.NoSuitableTargetCEFound)
+                if (images[Images.CEDetails] !in locations.ceBomb.ceMultiSelectRegion) {
+                    return
+                }
             }
         }
+
+        throw ExitException(ExitReason.NoSuitableTargetCEFound)
     }
 
+    /**
+     * Will click on the position of the 20 first CEs on the screen
+     * to attempt to feed them to the CE bomb
+     */
     private fun pickCEEnhanceFodder() {
-        /**
-         * Will click on the position of every 28 possible CE on the screen
-         * to attempt to feed them to the CE bomb
-         */
-        for (y in 0..3) {
-            for (x in 0..6) {
-                val nextCELocation = Location(
-                    locations.ceBomb.ceFirstFodderLocation.x + (x * 270),
-                    locations.ceBomb.ceFirstFodderLocation.y + (y * 290) + 50
-                )
-                nextCELocation.click()
+        var counter = 0
+        for (y in 0 until ceRows) {
+            for (x in 0 until ceColumns) {
+                if (counter >= 20) {
+                    return
+                }
+                CELocation(x, y).click()
+                counter++
             }
         }
     }
+
+    private fun CELocation(x: Int, y: Int) =
+        locations.ceBomb.ceFirstFodderLocation + Location(x * 270, y * 290 + 50)
 
     sealed class ExitReason {
         object NoSuitableTargetCEFound : ExitReason()
