@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Close Issue
-        uses: peter-evans/close-issue@v2
+        uses: peter-evans/close-issue@v3
         with:
           comment: |
             It seems like you have not used one of the issue templates when creating this issue.
