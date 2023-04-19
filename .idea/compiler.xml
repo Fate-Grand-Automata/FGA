@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
-      <module name="Fate_Grand_Automata.app" target="11" />
-      <module name="Fate_Grand_Automata.prefs" target="11" />
+      <module name="Fate_Grand_Automata.app" target="17" />
+      <module name="Fate_Grand_Automata.prefs" target="17" />
       <module name="libautomata" target="1.8" />
       <module name="scripts" target="1.8" />
     </bytecodeTargetLevel>
