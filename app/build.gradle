@@ -95,7 +95,7 @@ dependencies {
     implementation 'com.github.iamareebjamal:opencv-android:4.5.1'
 
     // ViewModel, LiveData
-    def lifecycle_version = "2.5.1"
+    def lifecycle_version = "2.6.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
