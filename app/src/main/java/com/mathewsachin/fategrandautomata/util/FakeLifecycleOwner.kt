@@ -9,7 +9,12 @@ import androidx.compose.runtime.Recomposer
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.compositionContext
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
@@ -24,7 +29,7 @@ private class FakeLifecycleOwner : SavedStateRegistryOwner {
     override val savedStateRegistry: SavedStateRegistry
         get() = savedStateRegistryController.savedStateRegistry
 
-    override fun getLifecycle() = lifecycleRegistry
+    override val lifecycle: Lifecycle get() = lifecycleRegistry
 
     fun setCurrentState(state: Lifecycle.State) {
         lifecycleRegistry.currentState = state
@@ -48,6 +53,10 @@ class FakedComposeView(
     private val content: @Composable () -> Unit
 ) : AutoCloseable {
     private val viewModelStore = ViewModelStore()
+    val viewModelStoreOwner = object : ViewModelStoreOwner {
+        override val viewModelStore: ViewModelStore
+            get() = viewModelStore
+    }
     private val lifecycleOwner = FakeLifecycleOwner()
 
     private val coroutineContext = AndroidUiDispatcher.CurrentThread
@@ -61,8 +70,8 @@ class FakedComposeView(
             // Trick The ComposeView into thinking we are tracking lifecycle
             lifecycleOwner.performRestore(null)
             lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-            ViewTreeLifecycleOwner.set(it, lifecycleOwner)
-            ViewTreeViewModelStoreOwner.set(it) { viewModelStore }
+            it.setViewTreeLifecycleOwner(lifecycleOwner)
+            it.setViewTreeViewModelStoreOwner(viewModelStoreOwner)
             it.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
 
             it.compositionContext = recomposer

@@ -1,6 +1,8 @@
 package com.mathewsachin.fategrandautomata.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -9,8 +11,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -47,8 +47,8 @@ fun <T> Tabbed(
 
         HorizontalPager(
             state = pagerState,
-            count = items.size,
-            content = { content(items[it]) },
+            pageCount = items.size,
+            pageContent = { content(items[it]) },
             verticalAlignment = Alignment.Top,
             modifier = Modifier
                 .weight(1f)
