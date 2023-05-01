@@ -5,9 +5,9 @@ import com.mathewsachin.fategrandautomata.scripts.IFgoAutomataApi
 import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferences
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.dagger.ScriptScope
+import java.util.stream.Collectors
 import javax.inject.Inject
 import kotlin.streams.asStream
-import kotlin.streams.toList
 
 @ScriptScope
 class CESelection @Inject constructor(
@@ -35,8 +35,8 @@ class CESelection @Inject constructor(
                     .map { FoundCE(it.region, isLimitBroken(it.region)) }
                     .filter { !supportPrefs.mlb || it.mlb }
             }
-            .toList()
             .sorted()
+            .collect(Collectors.toList())
 
     private fun isLimitBroken(craftEssence: Region): Boolean {
         val limitBreakRegion = locations.support.limitBreakRegion

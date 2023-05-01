@@ -11,8 +11,8 @@ import com.mathewsachin.libautomata.Pattern
 import com.mathewsachin.libautomata.Region
 import com.mathewsachin.libautomata.Size
 import com.mathewsachin.libautomata.dagger.ScriptScope
+import java.util.stream.Collectors
 import javax.inject.Inject
-import kotlin.streams.toList
 
 @ScriptScope
 class ServantSelection @Inject constructor(
@@ -53,7 +53,7 @@ class ServantSelection @Inject constructor(
                         .stream()
                 }
             }
-            .toList()
+            .collect(Collectors.toList())
             .sortedBy { it.Support }
 
     /**
