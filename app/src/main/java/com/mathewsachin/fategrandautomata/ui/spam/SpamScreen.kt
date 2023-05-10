@@ -253,8 +253,8 @@ private fun SelectSpamMode(
     )
 
     ListItem(
-        headlineText = { Text(stringResource(R.string.spam)) },
-        supportingText = { Text(stringResource(selected.stringRes)) },
+        headlineContent = { Text(stringResource(R.string.spam)) },
+        supportingContent = { Text(stringResource(selected.stringRes)) },
         modifier = modifier
             .clickable { dialog.show() },
         colors = FGAListItemColors()
@@ -275,8 +275,8 @@ private fun SelectTarget(
     )
 
     ListItem(
-        headlineText = { Text(stringResource(R.string.spam_target)) },
-        supportingText = { Text(selected.toString()) },
+        headlineContent = { Text(stringResource(R.string.spam_target)) },
+        supportingContent = { Text(selected.toString()) },
         modifier = modifier
             .clickable { dialog.show() },
         colors = FGAListItemColors()
