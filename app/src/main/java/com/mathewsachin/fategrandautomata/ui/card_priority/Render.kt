@@ -56,8 +56,8 @@ fun CardPriorityListItem.Render(
                     modifier = Modifier
                         .weight(1f)
                         .clickable { braveChainDialog.show() },
-                    headlineText = { Text(stringResource(R.string.p_brave_chains)) },
-                    supportingText = { Text(stringResource(braveChains.stringRes)) },
+                    headlineContent = { Text(stringResource(R.string.p_brave_chains)) },
+                    supportingContent = { Text(stringResource(braveChains.stringRes)) },
                     colors = FGAListItemColors()
                 )
 
@@ -67,7 +67,7 @@ fun CardPriorityListItem.Render(
                     modifier = Modifier
                         .weight(1.1f)
                         .clickable { rearrange = !rearrange },
-                    headlineText = { Text(stringResource(R.string.p_rearrange_cards)) },
+                    headlineContent = { Text(stringResource(R.string.p_rearrange_cards)) },
                     trailingContent = {
                         Checkbox(
                             checked = rearrange,

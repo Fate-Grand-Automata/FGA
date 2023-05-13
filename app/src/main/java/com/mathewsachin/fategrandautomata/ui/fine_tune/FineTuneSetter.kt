@@ -13,7 +13,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.mathewsachin.fategrandautomata.R
-import com.mathewsachin.fategrandautomata.ui.*
+import com.mathewsachin.fategrandautomata.ui.DimmedIcon
+import com.mathewsachin.fategrandautomata.ui.FGAListItemColors
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
+import com.mathewsachin.fategrandautomata.ui.Stepper
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.remember
 
 @Composable
@@ -40,8 +44,8 @@ fun FineTuneItem.FineTuneSetter() {
     Column {
         Row {
             ListItem(
-                headlineText = { Text(stringResource(name)) },
-                supportingText = { Text(defaultString) },
+                headlineContent = { Text(stringResource(name)) },
+                supportingContent = { Text(defaultString) },
                 modifier = Modifier.weight(1f),
                 colors = FGAListItemColors()
             )
