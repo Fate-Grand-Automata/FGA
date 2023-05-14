@@ -152,8 +152,6 @@
     <string name="p_advanced">고급</string>
     <string name="p_debug_mode">디버그 모드</string>
     <string name="p_debug_mode_summary">대조되고 있는 부분 표시하기</string>
-    <string name="p_ignore_notch">노치(카메라 구멍) 계산 무시</string>
-    <string name="p_ignore_notch_summary">페그오에서 노치 부분이 검정색으로 나오지 않을 경우 활성화 하세요.</string>
     <string name="p_record_screen">화면 녹화</string>
     <string name="p_record_screen_summary">\'record.mp4\'라는 파일이 지정된 폴더에 저장됩니다.\n저장하려면 복사하거나 이름을 바꿔주세요.</string>
     <string name="p_root_screenshot">루트 권한으로 스크린샷 하기</string>
@@ -391,7 +389,6 @@
     <string name="p_game_area_mode">게임 영역 설정</string>
     <string name="p_game_area_default">기본값</string>
     <string name="p_game_area_duo">Surface Duo</string>
-    <string name="p_game_area_xperia">Sony Xperia</string>
     <string name="p_game_area_custom">사용자 지정</string>
     <string name="p_game_area_custom_left">좌측 좌표</string>
     <string name="p_game_area_custom_top">상단 좌표</string>

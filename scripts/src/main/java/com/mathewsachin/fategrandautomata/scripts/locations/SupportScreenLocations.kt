@@ -1,6 +1,5 @@
 package com.mathewsachin.fategrandautomata.scripts.locations
 
-import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
 import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
 import com.mathewsachin.libautomata.Location
 import com.mathewsachin.libautomata.Region
@@ -18,11 +17,7 @@ class SupportScreenLocations @Inject constructor(
 
     val extraRegion = Region(1200, 200, 130, 130) + headerOffset
 
-    val updateClick =
-        when (gameServer) {
-            GameServerEnum.Tw -> 1700
-            else -> 1865
-        }.let { x -> Location(x, 260) + headerOffset }
+    val updateClick = Location(1865, 260) + headerOffset
 
     val listTopClick = Location(if (isWide) -218 else -80, 360).xFromRight()
 

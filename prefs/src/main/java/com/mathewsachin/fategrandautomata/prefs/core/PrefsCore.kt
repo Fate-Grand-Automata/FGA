@@ -40,8 +40,7 @@ class PrefsCore @Inject constructor(
     val refill = RefillPrefsCore(maker)
 
     val waitAPRegen = maker.bool("wait_for_ap_regeneration")
-
-    val ignoreNotchCalculation = maker.bool("ignore_notch")
+    
     val useRootForScreenshots = maker.bool("use_root_screenshot")
     val recordScreen = maker.bool("record_screen")
     val screenshotDrops = maker.bool("screenshot_drops")

@@ -2,7 +2,14 @@ package com.mathewsachin.fategrandautomata.util
 
 import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.GameAreaMode
-import com.mathewsachin.fategrandautomata.scripts.enums.*
+import com.mathewsachin.fategrandautomata.scripts.enums.BraveChainEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.MaterialEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.RefillResourceEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.ShuffleCardsEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SpamEnum
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportClass
+import com.mathewsachin.fategrandautomata.scripts.enums.SupportSelectionModeEnum
 
 val RefillResourceEnum.stringRes
     get() = when (this) {
@@ -156,7 +163,6 @@ val GameAreaMode.stringRes
     get() = when (this) {
         GameAreaMode.Default -> R.string.p_game_area_default
         GameAreaMode.Duo -> R.string.p_game_area_duo
-        GameAreaMode.Xperia -> R.string.p_game_area_xperia
         GameAreaMode.Custom -> R.string.p_game_area_custom
     }
 

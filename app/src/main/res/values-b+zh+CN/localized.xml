@@ -155,8 +155,6 @@
     <string name="p_advanced">进阶</string>
     <string name="p_debug_mode">Debug模式</string>
     <string name="p_debug_mode_summary">将框出对比图像的区域</string>
-    <string name="p_ignore_notch">忽略刘海</string>
-    <string name="p_ignore_notch_summary">若FGO未将刘海部分留黑，请开启此选项（仅适用于台服）</string>
     <string name="p_record_screen">屏幕录像</string>
     <string name="p_record_screen_summary">将在存放文件的文件夹储存 \'record.mp4\' 为名的屏幕录像档案\n重新命名或复制至其他位置以保留</string>
     <string name="p_root_screenshot">以root截图</string>
@@ -397,7 +395,6 @@
     <string name="p_game_area_mode">游戏区域偏移（消除黑边影响）</string>
     <string name="p_game_area_default">默认</string>
     <string name="p_game_area_duo">Surface Duo</string>
-    <string name="p_game_area_xperia">Sony Xperia</string>
     <string name="p_game_area_custom">自定义</string>
     <string name="p_game_area_custom_left">左侧（像素）</string>
     <string name="p_game_area_custom_top">顶部（像素）</string>

@@ -155,8 +155,6 @@
     <string name="p_advanced">Advanced</string>
     <string name="p_debug_mode">Debug mode</string>
     <string name="p_debug_mode_summary">Highlight the regions being matched</string>
-    <string name="p_ignore_notch">Ignore Notch calculation</string>
-    <string name="p_ignore_notch_summary">This setting only has an effect on FGO TW. Turn this on if FGO doesn\'t leave the notch area black.</string>
     <string name="p_record_screen">Record Screen</string>
     <string name="p_record_screen_summary">A file named \'record.mp4\' will be saved to output folder.\nCopy or rename it if you want to keep it.</string>
     <string name="p_root_screenshot">Use Root for Screenshots</string>
@@ -397,7 +395,6 @@
     <string name="p_game_area_mode">Game Area Mode</string>
     <string name="p_game_area_default">Default</string>
     <string name="p_game_area_duo">Surface Duo</string>
-    <string name="p_game_area_xperia">Sony Xperia</string>
     <string name="p_game_area_custom">Custom</string>
     <string name="p_game_area_custom_left">Left</string>
     <string name="p_game_area_custom_top">Top</string>

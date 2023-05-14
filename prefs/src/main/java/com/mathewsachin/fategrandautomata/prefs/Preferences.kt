@@ -3,7 +3,11 @@ package com.mathewsachin.fategrandautomata.prefs
 import com.mathewsachin.fategrandautomata.prefs.core.PrefsCore
 import com.mathewsachin.fategrandautomata.prefs.core.map
 import com.mathewsachin.fategrandautomata.scripts.enums.GameServerEnum
-import com.mathewsachin.fategrandautomata.scripts.prefs.*
+import com.mathewsachin.fategrandautomata.scripts.prefs.IBattleConfig
+import com.mathewsachin.fategrandautomata.scripts.prefs.IGesturesPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.IRefillPreferences
+import com.mathewsachin.fategrandautomata.scripts.prefs.ISupportPreferencesCommon
 import com.mathewsachin.libautomata.PlatformPrefs
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
@@ -60,8 +64,6 @@ class PreferencesImpl @Inject constructor(
         RefillPreferences(prefs.refill)
 
     override var waitAPRegen by prefs.waitAPRegen
-
-    override val ignoreNotchCalculation by prefs.ignoreNotchCalculation
 
     override val useRootForScreenshots by prefs.useRootForScreenshots
 
