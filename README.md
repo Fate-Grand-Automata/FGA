@@ -1,7 +1,7 @@
 # Fate/Grand Automata
 [![CI](https://github.com/MathewSachin/Fate-Grand-Automata/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/MathewSachin/Fate-Grand-Automata/actions)
 
-![Discord Banner 2](https://discordapp.com/api/guilds/1117873862500163684/widget.png?style=banner2)
+[![Discord Banner 2](https://discordapp.com/api/guilds/1117873862500163684/widget.png?style=banner2)](https://discord.gg/H99eUMYuH7)
 
 Auto-battle app for F/GO (Android 7 or later, no need for root on phones).  
 
