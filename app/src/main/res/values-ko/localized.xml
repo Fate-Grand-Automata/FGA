@@ -66,6 +66,9 @@
     <string name="skill_maker_arts">Arts</string>
     <string name="skill_maker_buster">Buster</string>
 
+    <string name="skill_maker_kukulcan">쿠쿨칸</string>
+    <string name="skill_maker_option_1">옵션 1</string>
+    <string name="skill_maker_option_2">옵션 2</string>
     <string name="card_priority_wave_number">웨이브 %d</string>
     <string name="card_priority_high">높음</string>
     <string name="card_priority_low">낮음</string>
@@ -255,6 +258,7 @@
     <string name="screen_turned_off">화면 꺼짐으로인해 스크립트 중지됨</string>
     <string name="unexpected_error">예상 밖의 오류</string>
     <string name="script_exited">스크립트 빠져나옴</string>
+    <string name="lottery_currency_depleted">룰렛 재화가 모두 소진됨</string>
     <string name="inventory_full">인벤토리 꽉 참</string>
     <string name="present_box_full">선물함 꽉 참</string>
     <string name="support_img_maker_not_found">현재 화면에서 서포트 이미지를 찾을 수 없습니다. 서포트 창이나 친구 목록에 계신가요?</string>
@@ -270,6 +274,8 @@
     <string name="times_ran_out_of">%2$d번 중 %1$d번 반복함</string>
     <string name="refills_used_out_of">%2$d번 중 %1$d번 사과 사용</string>
     <string name="failed_to_determine_card">카드 유형 확인 실패: %s</string>
+    <string name="unknown_card_type">카드 타입 감지 실패 (버스터, 퀵, 아츠)</string>
+    <string name="unknown_servant_card">인식되지 않은 서번트의 카드</string>
     <string name="support_list_updated_in">서포트 리스트가 %s 안에 갱신됩니다</string>
     <string name="times_withdrew">%d번 철수함</string>
     <string name="avg_time_per_run">반복 평균 시간: %s</string>
