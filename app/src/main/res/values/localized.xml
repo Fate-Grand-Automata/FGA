@@ -244,7 +244,7 @@
     <string name="accessibility_disable">DISABLE</string>
     <string name="accessibility_enable_in_settings">ENABLE IN SETTINGS</string>
     <string name="accessibility_disabled_title">Accessibility Disabled</string>
-    <string name="accessibility_disabled_message">FGA will need to use Android accessibility features to take screenshots of FGO. FGA will not use these screenshots for anything other than playing the game for you.\n\nPlease turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
+    <string name="accessibility_disabled_message">FGA will need to use Android accessibility features to simulate touch screen inputs for you in FGO.\n\nPlease turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
     <string name="accessibility_disabled_go_to_settings">Go To Settings</string>
     <string name="draw_overlay_disabled_title">Missing overlay permission</string>
     <string name="draw_overlay_disabled_message">Please allow this app to draw over other apps. It is used to draw the control buttons.</string>
