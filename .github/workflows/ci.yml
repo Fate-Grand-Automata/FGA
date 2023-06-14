@@ -79,7 +79,7 @@ jobs:
         run: ./gradlew bundleRelease
 
       - name: Upload Bundle
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         if: github.ref == 'refs/heads/master'
         with:
           name: bundle
@@ -92,12 +92,12 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Download Bundle
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: bundle
 
       - name: Download mapping file
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: mapping
 
