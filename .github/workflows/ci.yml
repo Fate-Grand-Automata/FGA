@@ -69,18 +69,18 @@ jobs:
         env:
           GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
         working-directory: ./app
-        if: github.event.name == 'workflow_dispatch'
+        if: github.ref == 'refs/heads/master'
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
       - name: Build Bundle
-        if: github.event.name == 'workflow_dispatch'
+        if: github.ref == 'refs/heads/master'
         env:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
         run: ./gradlew bundleRelease
 
       - name: Upload Bundle
         uses: actions/upload-artifact@v1
-        if: github.event.name == 'workflow_dispatch'
+        if: github.ref == 'refs/heads/master'
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
@@ -89,7 +89,7 @@ jobs:
     needs: build
     runs-on: macos-latest
     # if: startsWith(github.ref, 'refs/tags/')
-    if: github.event.name == 'workflow_dispatch'
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Download Bundle
         uses: actions/download-artifact@v1
