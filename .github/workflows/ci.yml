@@ -79,7 +79,7 @@ jobs:
         run: ./gradlew bundleRelease
 
       - name: Upload Bundle
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         if: github.ref == 'refs/heads/master'
         with:
           name: bundle
@@ -87,17 +87,17 @@ jobs:
 
   play_store:
     needs: build
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     # if: startsWith(github.ref, 'refs/tags/')
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Download Bundle
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: bundle
 
       - name: Download mapping file
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: mapping
 
@@ -107,8 +107,8 @@ jobs:
           track: beta
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
           packageName: com.mathewsachin.fategrandautomata
-          releaseFile: ./bundle/app-release.aab
-          mappingFile: ./mapping/mapping.txt
+          releaseFiles: ./app-release.aab
+          mappingFile: ./mapping.txt
 
   # Release master branch
   canary:
