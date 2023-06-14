@@ -65,11 +65,57 @@ jobs:
           name: mapping
           path: app/build/outputs/mapping/ci/mapping.txt
 
+      - name: Decrypt keystore (GPG)
+        env:
+          GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
+        working-directory: ./app
+        if: github.event.name == 'workflow_dispatch'
+        run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
+
+      - name: Build Bundle
+        if: github.event.name == 'workflow_dispatch'
+        env:
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+        run: ./gradlew bundleRelease
+
+      - name: Upload Bundle
+        uses: actions/upload-artifact@v1
+        if: github.event.name == 'workflow_dispatch'
+        with:
+          name: bundle
+          path: app/build/outputs/bundle/release/app-release.aab
+
+  play_store:
+    needs: build
+    runs-on: macos-latest
+    # if: startsWith(github.ref, 'refs/tags/')
+    if: github.event.name == 'workflow_dispatch'
+    steps:
+      - name: Download Bundle
+        uses: actions/download-artifact@v1
+        with:
+          name: bundle
+
+      - name: Download mapping file
+        uses: actions/download-artifact@v1
+        with:
+          name: mapping
+
+      - name: Deploy to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          track: beta
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
+          packageName: com.mathewsachin.fategrandautomata
+          releaseFile: ./bundle/app-release.aab
+          mappingFile: ./mapping/mapping.txt
+
   # Release master branch
   canary:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    # if: github.ref == 'refs/heads/master'
+    if: false
     steps:
       - uses: actions/download-artifact@v3
         with:
