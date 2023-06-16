@@ -22,7 +22,7 @@
 
     <string name="battle_config_list_no_items">目前没有脚本，请按右下角的加号新增</string>
     <string name="battle_config_list_import">导入脚本</string>
-    <string name="battle_config_list_export_all">导出脚本</string>
+    <string name="battle_config_list_export_all">导出全部脚本</string>
     <string name="battle_config_list_delete">删除</string>
     <string name="battle_config_list_export_failed">导出 %d 个脚本失败</string>
     <string name="battle_config_list_import_failed">导入 %d 个脚本失败</string>
@@ -30,9 +30,9 @@
     <string name="battle_config_list_delete_confirm_message">确认删除 %d 个脚本?</string>
 
     <string name="skill_maker_confirm_exit_title">确认离开</string>
-    <string name="skill_maker_confirm_exit_message">将不会储存目前设定的脚本，确认离开?</string>
+    <string name="skill_maker_confirm_exit_message">将不会储存目前设定的技能施放指令，确认离开?</string>
     <string name="skill_maker_confirm_clear_title">确认清除</string>
-    <string name="skill_maker_confirm_clear_message">将会清除所有设定，确认执行?</string>
+    <string name="skill_maker_confirm_clear_message">将会清除所有技能施放指令，确认执行?</string>
     <string name="skill_maker_atk_header">攻击指令</string>
     <string name="skill_maker_atk_servant_np">从者\n%d\n\n宝具</string>
     <string name="skill_maker_atk_cards_before_np">宝具前垫刀</string>
@@ -76,14 +76,14 @@
     <string name="start_service">开始服务</string>
     <string name="stop_service">停止服务</string>
     <string name="fine_tune_menu_reset_to_defaults">还原设定</string>
-    <string name="support_menu_extract_default_support_images">复制预设助战图片</string>
+    <string name="support_menu_extract_default_support_images">提取预设助战图片</string>
 
     <string name="support_img_namer_servants">从者</string>
     <string name="support_img_namer_folder_hint">可以使用以下方式命名文件夹: \'Merlin/asc1\'</string>
     <string name="support_img_namer_ce">概念礼装</string>
     <string name="support_img_namer_friend_names">好友名称</string>
     <string name="support_img_namer_item_name">名称</string>
-    <string name="support_img_namer_invalid_message">文件名称不可以句号或空格开头、不可使用特殊字符: %s</string>
+    <string name="support_img_namer_invalid_message">你不能选定超过一个文件夹。文件名称不可以句号或空格开头、不可使用特殊字符: %s</string>
     <string name="support_img_namer_title">请选择</string>
     <string name="support_img_namer_done">完成</string>
     <string name="support_img_namer_blank_file_name">名称不可为空白，请取消勾选或是加上名称</string>
@@ -149,10 +149,10 @@
     <string name="p_choose_folder_title">选择文件夹</string>
     <string name="p_choose_folder_message">选择存放助战、掉落物图片等的文件夹\n\n注:有可能需要开启「显示内部储存空间」选项</string>
     <string name="p_choose_folder_not_exist_title">选择其他文件夹</string>
-    <string name="p_choose_folder_not_exist_message">无法读取文件夹</string>
+    <string name="p_choose_folder_not_exist_message">无法读取存放助战、掉落物图片等的文件夹</string>
     <string name="p_choose_folder_action">选择</string>
 
-    <string name="p_advanced">进阶</string>
+    <string name="p_advanced">进阶设置</string>
     <string name="p_debug_mode">Debug模式</string>
     <string name="p_debug_mode_summary">将框出对比图像的区域</string>
     <string name="p_record_screen">屏幕录像</string>
@@ -185,6 +185,7 @@
     <string name="p_fine_tune_wait_multiplier">等待时间加乘（%）</string>
 
     <string name="troubleshoot">FGA有问题请先点这（GitHub链接）</string>
+    <string name="discord">Discord</string>
     <string name="battle_config_edit">编辑脚本</string>
     <string name="card_priority">指令卡优先级</string>
 
@@ -203,7 +204,7 @@
 
     <string name="spam">瞎打模式</string>
     <string name="spam_target">目标</string>
-    <string name="spam_np">宝具:</string>
+    <string name="spam_np">宝具：</string>
     <string name="p_spam_none">无</string>
     <string name="p_spam_spam">能放就放</string>
     <string name="p_spam_danger">危险敌人时施放</string>
@@ -244,7 +245,7 @@
     <string name="accessibility_disable">关闭</string>
     <string name="accessibility_enable_in_settings">在设置中开启</string>
     <string name="accessibility_disabled_title">无障碍服务已关闭</string>
-    <string name="accessibility_disabled_message">请在系统设定中开启无障碍服务设定，如果已经开启请关闭后重新开启</string>
+    <string name="accessibility_disabled_message">FGA需要使用Android无障碍服务，以在FGO中模拟点击屏幕。\n\n请在系统设定中开启无障碍服务设定。如果已经开启，请关闭后重新开启</string>
     <string name="accessibility_disabled_go_to_settings">前往设定</string>
     <string name="draw_overlay_disabled_title">无法显示在其他应用程序上层</string>
     <string name="draw_overlay_disabled_message">请让此程序显示在其他应用程序上层，FGA需要启用此设定以显示控制按钮</string>
