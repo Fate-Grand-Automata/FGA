@@ -81,7 +81,7 @@ class ServantSelection @Inject constructor(
 
     private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {
         val y = bounds.y + 325
-        val x = bounds.x + 1620
+        val x = bounds.x + 1610
 
         val skillMargin = 90
 
@@ -97,7 +97,7 @@ class ServantSelection @Inject constructor(
                 if (!shouldBeMaxed)
                     true
                 else {
-                    val skillRegion = Region(location, Size(50, 50))
+                    val skillRegion = Region(location, Size(60, 50))
 
                     skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
                 }
