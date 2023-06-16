@@ -69,18 +69,15 @@ jobs:
         env:
           GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
         working-directory: ./app
-        if: false
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
       - name: Build Bundle
-        if: false
         env:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
         run: ./gradlew bundleRelease
 
       - name: Upload Bundle
         uses: actions/upload-artifact@v3
-        if: false
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
@@ -89,14 +86,14 @@ jobs:
   canary:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: false
     steps:
       - uses: actions/download-artifact@v3
         with:
           name: apk
-      
+
       - name: Rename apk
-        run: mv app-ci.apk com.mathewsachin.fategrandautomata.apk
+        run: mv app-ci.apk io.github.fate_grand_automata.apk
 
       - id: create_release
         uses: marvinpinto/action-automatic-releases@latest
@@ -129,6 +126,6 @@ jobs:
         with:
           track: beta
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
-          packageName: com.mathewsachin.fategrandautomata
+          packageName: io.github.fate_grand_automata
           releaseFiles: ./app-release.aab
           mappingFile: ./mapping.txt

@@ -15,7 +15,7 @@ jobs:
           comment: |
             It seems like you have not used one of the issue templates when creating this issue.
             
-            Please go back to [this page](https://github.com/MathewSachin/Fate-Grand-Automata/issues/new/choose) and create a new issue.
+            Please go back to [this page](https://github.com/Fate-Grand-Automata/FGA/issues/new/choose) and create a new issue.
             
             This action was performed automatically.
       - name: Lock Issue

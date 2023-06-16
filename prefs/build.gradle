@@ -24,7 +24,7 @@ android {
             initWith release
         }
     }
-    namespace 'com.mathewsachin.fategrandautomata.prefs'
+    namespace 'io.github.fate_grand_automata.prefs'
 }
 
 dependencies {
