@@ -185,7 +185,6 @@
     <string name="p_fine_tune_wait_multiplier">Wait Multiplier</string>
 
     <string name="troubleshoot">Troubleshooting</string>
-    <string name="discord" translatable="false">Discord</string>
     <string name="battle_config_edit">Edit config</string>
     <string name="card_priority">Card Priority</string>
 
