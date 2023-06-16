@@ -24,15 +24,15 @@
     <string name="battle_config_list_import">불러오기</string>
     <string name="battle_config_list_export_all">모두 내보내기</string>
     <string name="battle_config_list_delete">삭제</string>
-    <string name="battle_config_list_export_failed">%d 아이템(들)을 내보내기 실패</string>
-    <string name="battle_config_list_import_failed">%d 아이템(들)을 불러오기 실패</string>
+    <string name="battle_config_list_export_failed">%d개의 항목 내보내기 실패</string>
+    <string name="battle_config_list_import_failed">%d개의 항목 불러오기 실패</string>
     <string name="battle_config_list_delete_confirm_title">삭제 확인</string>
-    <string name="battle_config_list_delete_confirm_message">%d 설정(들)을 정말로 지우시겠습니까?</string>
+    <string name="battle_config_list_delete_confirm_message">%d개의 설정들을 정말로 지우시겠습니까?</string>
 
     <string name="skill_maker_confirm_exit_title">나가기 확인</string>
-    <string name="skill_maker_confirm_exit_message">정말로 나가시겠습니까? 오토 스킬 커맨드가 사라집니다.</string>
+    <string name="skill_maker_confirm_exit_message">정말 나가시겠습니까? 수정된 오토 스킬 커맨드가 저장되지 않고 사라집니다.</string>
     <string name="skill_maker_confirm_clear_title">초기화 확인</string>
-    <string name="skill_maker_confirm_clear_message">이 작업은 오토 스클 커맨드를 초기화 하게 됩니다. 정말로 하시겠습니까?</string>
+    <string name="skill_maker_confirm_clear_message">이 작업은 오토 스킬 커맨드를 초기화 하게 됩니다. 정말 초기화 하시겠습니까?</string>
     <string name="skill_maker_atk_header">공격</string>
     <string name="skill_maker_atk_servant_np">서번트\n%d\n\n보구</string>
     <string name="skill_maker_atk_cards_before_np">보구 전 공격카드</string>
@@ -79,14 +79,14 @@
     <string name="support_menu_extract_default_support_images">기본 서포트 이미지 추출</string>
 
     <string name="support_img_namer_servants">서번트</string>
-    <string name="support_img_namer_folder_hint">이런 폴더명을 사용하여 이미지를 정리할 수 있습니다: \'Merlin/asc1\'</string>
-    <string name="support_img_namer_ce">개념예장(들)</string>
-    <string name="support_img_namer_friend_names">친구 이름(들)</string>
+    <string name="support_img_namer_folder_hint">서번트 서포트 이미지 이름은 다음과 같은 형식으로 지정해주세요: \'멀린/멀린1\'</string>
+    <string name="support_img_namer_ce">개념예장</string>
+    <string name="support_img_namer_friend_names">친구 이름</string>
     <string name="support_img_namer_item_name">이름</string>
-    <string name="support_img_namer_invalid_message">폴더를 하나 이상 지정할 수 없으며 파일명은 온점이나 스페이스로 시작할 수 없습니다. 그리고 이 기호는 사용할 수 없습니다: %s</string>
-    <string name="support_img_namer_title">원하는 걸로 하세요</string>
+    <string name="support_img_namer_invalid_message">폴더를 하나 이상 지정할 수 없으며 파일명은 온점이나 스페이스로 시작할 수 없습니다. 그리고 다음과 같은 기호들은 사용할 수 없습니다: %s</string>
+    <string name="support_img_namer_title">원하는 이름 지정</string>
     <string name="support_img_namer_done">완료</string>
-    <string name="support_img_namer_blank_file_name">이름 중에 하나가 아직 공백입니다. 서번트나 개념예장을 체크 해제 하시거나 이름을 지정해주세요.</string>
+    <string name="support_img_namer_blank_file_name">이름 중에 공백이 있습니다. 서번트나 개념예장을 체크 해제 하시거나 이름을 지정해주세요.</string>
     <string name="support_img_namer_file_rename_failed">\'%s\'로 이름 변경 실패</string>
 
     <string name="p_refill">AP 회복</string>
@@ -244,10 +244,10 @@
     <string name="accessibility_disable">비활성화</string>
     <string name="accessibility_enable_in_settings">설정에서 활성화</string>
     <string name="accessibility_disabled_title">접근성 비활성화</string>
-    <string name="accessibility_disabled_message">시스템 설정에서 접근성 서비스 사용을 활성화 하십시오. 이미 활성화 되어 있다면 비활성화 후 다시 활성화 하십시오.</string>
+    <string name="accessibility_disabled_message">FGA는 안드로이드의 접근성 기능을 사용하여 FGO 화면을 터치하여 사용자가 선택한 기능을 실행합니다.\n\n시스템 설정에서 접근성 서비스 사용을 활성화 하십시오. 이미 활성화 되어 있다면 비활성화 후 다시 활성화 하십시오.</string>
     <string name="accessibility_disabled_go_to_settings">설정으로 가기</string>
     <string name="draw_overlay_disabled_title">오버레이 권한 없음</string>
-    <string name="draw_overlay_disabled_message">다른 앱 위에 그리기를 허용해주세요. 재생 버튼을 활성화하기 위해 쓰입니다.</string>
+    <string name="draw_overlay_disabled_message">다른 앱 위에 그리기를 허용해주세요. FGA의 시작 버튼 배치를 위해 사용됩니다.</string>
     <string name="cannot_start_recording">화면 녹화를 시작할 수 없음</string>
     <string name="cannot_stop_recording">화면 녹화를 끝낼 수 없음</string>
     <string name="unexpected_error_copy">복사</string>
