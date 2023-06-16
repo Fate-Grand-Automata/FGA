@@ -66,18 +66,21 @@ jobs:
           path: app/build/outputs/mapping/ci/mapping.txt
 
       - name: Decrypt keystore (GPG)
+        if: github.ref == 'refs/heads/master'
         env:
           GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
         working-directory: ./app
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
       - name: Build Bundle
+        if: github.ref == 'refs/heads/master'
         env:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
         run: ./gradlew bundleRelease
 
       - name: Upload Bundle
         uses: actions/upload-artifact@v3
+        if: github.ref == 'refs/heads/master'
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
@@ -86,7 +89,7 @@ jobs:
   canary:
     needs: build
     runs-on: ubuntu-latest
-    if: false
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/download-artifact@v3
         with:
