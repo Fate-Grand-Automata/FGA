@@ -3,7 +3,14 @@ package com.mathewsachin.fategrandautomata.ui.battle_config_item
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
@@ -30,8 +37,13 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.prefs.core.BattleConfigCore
 import com.mathewsachin.fategrandautomata.scripts.models.CardPriorityPerWave
 import com.mathewsachin.fategrandautomata.scripts.models.CardScore
-import com.mathewsachin.fategrandautomata.ui.*
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
+import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.HeadingButton
+import com.mathewsachin.fategrandautomata.ui.OnResume
+import com.mathewsachin.fategrandautomata.ui.VerticalDivider
 import com.mathewsachin.fategrandautomata.ui.card_priority.getColorRes
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.pref_support.SupportViewModel
 import com.mathewsachin.fategrandautomata.ui.prefs.EditTextPreference
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
@@ -116,29 +128,23 @@ private fun BattleConfigContent(
             Heading(
                 stringResource(R.string.battle_config_edit)
             ) {
-                item {
-                    HeadingButton(
-                        text = stringResource(R.string.battle_config_item_export),
-                        onClick = onExport
-                    )
-                }
+                HeadingButton(
+                    text = stringResource(R.string.battle_config_item_export),
+                    onClick = onExport
+                )
 
-                item {
-                    HeadingButton(
-                        text = stringResource(R.string.battle_config_item_copy),
-                        icon = icon(Icons.Default.ContentCopy),
-                        onClick = onCopy
-                    )
-                }
+                HeadingButton(
+                    text = stringResource(R.string.battle_config_item_copy),
+                    icon = icon(Icons.Default.ContentCopy),
+                    onClick = onCopy
+                )
 
-                item {
-                    HeadingButton(
-                        text = stringResource(R.string.battle_config_item_delete),
-                        isDanger = true,
-                        icon = icon(Icons.Default.Delete),
-                        onClick = { deleteConfirmDialog.show() }
-                    )
-                }
+                HeadingButton(
+                    text = stringResource(R.string.battle_config_item_delete),
+                    isDanger = true,
+                    icon = icon(Icons.Default.Delete),
+                    onClick = { deleteConfirmDialog.show() }
+                )
             }
 
             LazyColumn(

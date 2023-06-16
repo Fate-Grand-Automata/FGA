@@ -7,11 +7,26 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.launch
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +40,12 @@ import com.mathewsachin.fategrandautomata.R
 import com.mathewsachin.fategrandautomata.accessibility.TapperService
 import com.mathewsachin.fategrandautomata.runner.ScriptRunnerService
 import com.mathewsachin.fategrandautomata.scripts.prefs.wantsMediaProjectionToken
-import com.mathewsachin.fategrandautomata.ui.*
+import com.mathewsachin.fategrandautomata.ui.FgaDialog
+import com.mathewsachin.fategrandautomata.ui.Heading
+import com.mathewsachin.fategrandautomata.ui.HeadingButton
+import com.mathewsachin.fategrandautomata.ui.OnResume
+import com.mathewsachin.fategrandautomata.ui.StartMediaProjection
+import com.mathewsachin.fategrandautomata.ui.icon
 import com.mathewsachin.fategrandautomata.ui.prefs.Preference
 import com.mathewsachin.fategrandautomata.util.OpenDocTreePersistable
 
@@ -163,6 +183,7 @@ private fun toggleOverlayService(
 sealed class MainScreenDestinations {
     object Releases : MainScreenDestinations()
     object TroubleshootingGuide : MainScreenDestinations()
+    object Discord : MainScreenDestinations()
     object BattleConfigs : MainScreenDestinations()
     object MoreOptions : MainScreenDestinations()
     object AccessibilitySettings : MainScreenDestinations()
@@ -184,20 +205,24 @@ private fun MainScreenContent(
         ) {
             item {
                 Heading(stringResource(R.string.app_name)) {
-                    item {
-                        HeadingButton(
-                            text = "Build: ${BuildConfig.VERSION_CODE}",
-                            onClick = { navigate(MainScreenDestinations.Releases) }
-                        )
-                    }
+                    HeadingButton(
+                        text = "Build: ${BuildConfig.VERSION_CODE}",
+                        onClick = { navigate(MainScreenDestinations.Releases) }
+                    )
 
-                    item {
-                        HeadingButton(
-                            text = stringResource(R.string.troubleshoot),
-                            onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
-                        )
-                    }
+                    HeadingButton(
+                        text = stringResource(R.string.troubleshoot),
+                        onClick = { navigate(MainScreenDestinations.TroubleshootingGuide) }
+                    )
+
+                    HeadingButton(
+                        text = stringResource(R.string.discord),
+                        icon = icon(R.drawable.ic_discord),
+                        onClick = { navigate(MainScreenDestinations.Discord) }
+                    )
+
                 }
+
             }
 
             item {

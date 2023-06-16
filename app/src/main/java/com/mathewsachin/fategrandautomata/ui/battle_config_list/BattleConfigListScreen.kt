@@ -90,6 +90,7 @@ fun BattleConfigListScreen(
                     //octet-stream as backup in case Android doesn't detect json
                     arrayOf("application/json", "application/octet-stream")
                 )
+
                 is BattleConfigListAction.ToggleSelected -> vm.toggleSelected(it.id)
                 is BattleConfigListAction.StartSelection -> vm.startSelection(it.id)
             }
@@ -129,32 +130,28 @@ private fun BattleConfigListContent(
                 Heading(
                     stringResource(R.string.p_battle_config)
                 ) {
-                    item {
-                        HeadingButton(
-                            text = stringResource(
-                                if (selectionMode)
-                                    R.string.battle_config_item_export
-                                else R.string.battle_config_list_export_all
-                            ),
-                            onClick = { action(BattleConfigListAction.Export) }
-                        )
-                    }
+                    HeadingButton(
+                        text = stringResource(
+                            if (selectionMode)
+                                R.string.battle_config_item_export
+                            else R.string.battle_config_list_export_all
+                        ),
+                        onClick = { action(BattleConfigListAction.Export) }
+                    )
 
-                    item {
-                        Crossfade(selectionMode) {
-                            if (it) {
-                                HeadingButton(
-                                    text = stringResource(R.string.battle_config_list_delete),
-                                    onClick = { action(BattleConfigListAction.Delete) },
-                                    isDanger = true,
-                                    icon = icon(Icons.Default.Delete)
-                                )
-                            } else {
-                                HeadingButton(
-                                    text = stringResource(R.string.battle_config_list_import),
-                                    onClick = { action(BattleConfigListAction.Import) }
-                                )
-                            }
+                    Crossfade(selectionMode) {
+                        if (it) {
+                            HeadingButton(
+                                text = stringResource(R.string.battle_config_list_delete),
+                                onClick = { action(BattleConfigListAction.Delete) },
+                                isDanger = true,
+                                icon = icon(Icons.Default.Delete)
+                            )
+                        } else {
+                            HeadingButton(
+                                text = stringResource(R.string.battle_config_list_import),
+                                onClick = { action(BattleConfigListAction.Import) }
+                            )
                         }
                     }
                 }

@@ -61,12 +61,15 @@ fun FgaApp(
                                 val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                                 context.startActivity(intent)
                             }
+
                             MainScreenDestinations.BattleConfigs -> {
                                 navController.navigate(NavConstants.battleConfigs)
                             }
+
                             MainScreenDestinations.MoreOptions -> {
                                 navController.navigate(NavConstants.moreOptions)
                             }
+
                             MainScreenDestinations.OverlaySettings -> {
                                 val intent = Intent(
                                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -75,6 +78,7 @@ fun FgaApp(
 
                                 context.startActivity(intent)
                             }
+
                             MainScreenDestinations.Releases -> {
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,
@@ -83,10 +87,20 @@ fun FgaApp(
 
                                 context.startActivity(intent)
                             }
+
                             MainScreenDestinations.TroubleshootingGuide -> {
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,
                                     Uri.parse(context.getString(R.string.link_troubleshoot))
+                                )
+
+                                context.startActivity(intent)
+                            }
+
+                            MainScreenDestinations.Discord -> {
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(context.getString(R.string.link_discord))
                                 )
 
                                 context.startActivity(intent)
@@ -125,6 +139,7 @@ fun FgaApp(
                                     popUpTo(NavConstants.battleConfigs)
                                 }
                             }
+
                             BattleConfigDestination.PreferredSupport -> navigate(NavConstants.preferredSupport, id)
                             BattleConfigDestination.SkillMaker -> {
                                 val intent = Intent(context, SkillMakerActivity::class.java).apply {
@@ -133,6 +148,7 @@ fun FgaApp(
 
                                 context.startActivity(intent)
                             }
+
                             BattleConfigDestination.Spam -> navigate(NavConstants.spam, id)
                         }
                     }

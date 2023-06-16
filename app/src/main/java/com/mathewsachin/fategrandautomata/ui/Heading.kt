@@ -3,21 +3,27 @@ package com.mathewsachin.fategrandautomata.ui
 import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
 fun Heading(
     text: String,
-    subheading: (LazyListScope.() -> Unit)? = null
+    subheading: (@Composable () -> Unit)? = null
 ) {
     Column(
         modifier = Modifier
@@ -33,10 +39,15 @@ fun Heading(
         )
 
         if (subheading != null) {
-            LazyRow(
-                contentPadding = PaddingValues(16.dp, 0.dp),
-                modifier = Modifier.padding(top = if (landscape) 7.dp else 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+            FlowRow(
+                mainAxisSpacing = 10.dp,
+                modifier = Modifier
+                    .padding(
+                        top = if (landscape) 7.dp else 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    ),
+                crossAxisSpacing = 10.dp
             ) {
                 subheading()
             }
@@ -59,7 +70,6 @@ fun HeadingButton(
             contentColor = if (isDanger) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimary
         ),
         modifier = modifier
-            .padding(end = 5.dp)
             .animateContentSize()
     ) {
         Row(
