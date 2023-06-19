@@ -81,7 +81,7 @@ jobs:
   canary:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && inputs.release-canary
+    if: github.ref == 'refs/heads/master' && inputs.release-canary == 'true'
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -103,7 +103,7 @@ jobs:
   play_store:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && inputs.release-playstore
+    if: github.ref == 'refs/heads/master' && inputs.release-playstore == 'true'
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
