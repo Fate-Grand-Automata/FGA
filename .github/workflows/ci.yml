@@ -34,6 +34,10 @@ on:
         description: 'Release play store version or not'
         default: 'true'
         required: true
+env:
+  JAVA_VERSION: 17
+  JAVA_DISTRO: 'temurin'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,9 +46,10 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: 17
-          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRO }}
           cache: 'gradle'
+
       - name: Determine Version Name
         shell: bash
         run: |
@@ -104,9 +109,10 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: 17
-          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRO }}
           cache: 'gradle'
+
       - name: Determine Version Name
         shell: bash
         run: |
@@ -118,6 +124,7 @@ jobs:
           fi
           echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
+
       - name: Decrypt keystore (GPG)
         env:
           GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
@@ -144,7 +151,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           track: beta
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
           packageName: io.github.fate_grand_automata
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           mappingFile: ./mapping.txt
