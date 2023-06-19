@@ -25,19 +25,26 @@ on:
       - 'renovate.json'
       - 'custom-game-area/**'
   workflow_dispatch:
-
+    inputs:
+      release-canary:
+        description: 'Release canary or not'
+        default: 'true'
+        required: true
+      release-playstore:
+        description: 'Release play store version or not'
+        default: 'true'
+        required: true
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: 'temurin'
-          # cache: 'gradle'
+          cache: 'gradle'
       - name: Determine Version Name
         shell: bash
         run: |
@@ -65,31 +72,11 @@ jobs:
           name: mapping
           path: app/build/outputs/mapping/ci/mapping.txt
 
-      - name: Decrypt keystore (GPG)
-        if: github.ref == 'refs/heads/master'
-        env:
-          GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
-        working-directory: ./app
-        run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
-
-      - name: Build Bundle
-        if: github.ref == 'refs/heads/master'
-        env:
-          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-        run: ./gradlew bundleRelease
-
-      - name: Upload Bundle
-        uses: actions/upload-artifact@v3
-        if: github.ref == 'refs/heads/master'
-        with:
-          name: bundle
-          path: app/build/outputs/bundle/release/app-release.aab
-
   # Release master branch
   canary:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && inputs.release-canary
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -111,13 +98,42 @@ jobs:
   play_store:
     needs: build
     runs-on: ubuntu-latest
-    # if: startsWith(github.ref, 'refs/tags/')
-    if: false
+    if: github.ref == 'refs/heads/master' && inputs.release-playstore
     steps:
-      - name: Download Bundle
-        uses: actions/download-artifact@v3
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+          cache: 'gradle'
+      - name: Determine Version Name
+        shell: bash
+        run: |
+          VERSION_CODE=${{ github.run_number }}
+          VERSION_NAME=${{ github.run_number }}
+          
+          if [[ ${{ github.ref }} == refs/tags/* ]]; then
+            VERSION_NAME = ${{ github.ref_name }}
+          fi
+          echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
+          echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
+      - name: Decrypt keystore (GPG)
+        env:
+          GPG_KEYSTORE: ${{ secrets.GPG_KEYSTORE }}
+        working-directory: ./app
+        run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
+
+      - name: Build Bundle
+        env:
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+        run: ./gradlew bundleRelease
+
+      - name: Upload Bundle
+        uses: actions/upload-artifact@v3
         with:
           name: bundle
+          path: app/build/outputs/bundle/release/app-release.aab
 
       - name: Download mapping file
         uses: actions/download-artifact@v3
@@ -130,5 +146,5 @@ jobs:
           track: beta
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT }}
           packageName: io.github.fate_grand_automata
-          releaseFiles: ./app-release.aab
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
           mappingFile: ./mapping.txt
