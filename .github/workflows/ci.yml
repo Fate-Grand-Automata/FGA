@@ -41,6 +41,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master' || inputs.release-canary != 'false'
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -74,14 +75,14 @@ jobs:
       - name: Upload De-obfuscation mapping file
         uses: actions/upload-artifact@v3
         with:
-          name: mapping
+          name: mapping-ci
           path: app/build/outputs/mapping/ci/mapping.txt
 
   # Release master branch
   canary:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && inputs.release-canary == 'true'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -101,9 +102,8 @@ jobs:
             *.apk
 
   play_store:
-    needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && inputs.release-playstore == 'true'
+    if: github.ref == 'refs/heads/master' && inputs.release-playstore != 'false'
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -131,10 +131,18 @@ jobs:
         working-directory: ./app
         run: gpg --quiet --batch --yes --decrypt --passphrase="$GPG_KEYSTORE" --output fgautomata.keystore fgautomata.keystore.gpg
 
-      - name: Build Bundle
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Deploy to Play Store
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+          lane: 'deploy'
         env:
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-        run: ./gradlew bundleRelease
 
       - name: Upload Bundle
         uses: actions/upload-artifact@v3
@@ -142,25 +150,8 @@ jobs:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
 
-      - name: Download mapping file
-        uses: actions/download-artifact@v3
+      - name: Upload De-obfuscation mapping file
+        uses: actions/upload-artifact@v3
         with:
-          name: mapping
-
-      - name: Deploy to Play Store (alpha)
-        uses: r0adkll/upload-google-play@v1
-        with:
-          track: alpha
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
-          packageName: io.github.fate_grand_automata
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          mappingFile: ./mapping.txt
-
-      - name: Deploy to Play Store (beta)
-        uses: r0adkll/upload-google-play@v1
-        with:
-          track: beta
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
-          packageName: io.github.fate_grand_automata
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          mappingFile: ./mapping.txt
+          name: mapping-release
+          path: app/build/outputs/mapping/release/mapping.txt
