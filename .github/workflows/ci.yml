@@ -147,7 +147,16 @@ jobs:
         with:
           name: mapping
 
-      - name: Deploy to Play Store
+      - name: Deploy to Play Store (alpha)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          track: alpha
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
+          packageName: io.github.fate_grand_automata
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          mappingFile: ./mapping.txt
+
+      - name: Deploy to Play Store (beta)
         uses: r0adkll/upload-google-play@v1
         with:
           track: beta
