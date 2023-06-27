@@ -64,7 +64,7 @@ val ShuffleCardsEnum.stringRes
         ShuffleCardsEnum.NoNPMatching -> R.string.p_shuffle_cards_when_no_np_matching
     }
 
-val MaterialEnum.stringRes
+val MaterialEnum.stringRes: Int
     get() = when (this) {
         MaterialEnum.Proof -> R.string.mat_proof
         MaterialEnum.Bone -> R.string.mat_bone
@@ -117,6 +117,10 @@ val MaterialEnum.stringRes
         MaterialEnum.FantasyScales -> R.string.mat_fantasy_scales
         MaterialEnum.CeremonialBlade -> R.string.mat_ceremonial_blade
         MaterialEnum.UnforgettableAshes -> R.string.mat_ashes
+        MaterialEnum.ObsidianEdge -> R.string.mat_obsidian_edge
+        MaterialEnum.VestigeOfMadness -> R.string.mat_vestige_of_madness
+        MaterialEnum.Sunscale -> R.string.mat_sunscale
+        MaterialEnum.Converger -> R.string.mat_converger
 
         MaterialEnum.MonumentSaber -> R.string.mat_monument_saber
         MaterialEnum.MonumentArcher -> R.string.mat_monument_archer

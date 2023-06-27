@@ -344,6 +344,10 @@
     <string name="mat_fantasy_scales">Scales of Fantasies</string>
     <string name="mat_ceremonial_blade">Twilight Ceremonial Blade</string>
     <string name="mat_ashes">Unforgettable Ashes</string>
+    <string name="mat_obsidian_edge">Obsidian Edge</string>
+    <string name="mat_vestige_of_madness">Vestige of Madness</string>
+    <string name="mat_sunscale">Sunscale</string>
+    <string name="mat_converger">Ether Proton Converger</string>
 
     <string name="mat_monument_saber">Saber Monument</string>
     <string name="mat_monument_archer">Archer Monument</string>

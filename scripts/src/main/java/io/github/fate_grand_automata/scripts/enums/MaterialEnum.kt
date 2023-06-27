@@ -13,6 +13,8 @@ enum class MaterialEnum {
     AmnestyBell,
     CeremonialBlade,
     UnforgettableAshes,
+    ObsidianEdge,
+    VestigeOfMadness,
 
     Seed,
     GhostLantern,
@@ -35,6 +37,8 @@ enum class MaterialEnum {
     DivineSpiritParticle,
     RainbowThreadBall,
     FantasyScales,
+    Sunscale,
+    Converger,
 
     Claw,
     Heart,

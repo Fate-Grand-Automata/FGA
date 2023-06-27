@@ -242,6 +242,10 @@ val MaterialEnum.drawable
         MaterialEnum.StarShard -> R.drawable.mat_star_shard
         MaterialEnum.FruitOfEternity -> R.drawable.mat_fruit
         MaterialEnum.DemonFlameLantern -> R.drawable.mat_demon_lantern
+        MaterialEnum.ObsidianEdge -> R.drawable.mat_obsidian_edge
+        MaterialEnum.VestigeOfMadness -> R.drawable.mat_vestige
+        MaterialEnum.Sunscale -> R.drawable.mat_sunscale
+        MaterialEnum.Converger -> R.drawable.mat_converger
 
         MaterialEnum.MonumentSaber -> R.drawable.mat_monument_saber
         MaterialEnum.MonumentArcher -> R.drawable.mat_monument_archer
