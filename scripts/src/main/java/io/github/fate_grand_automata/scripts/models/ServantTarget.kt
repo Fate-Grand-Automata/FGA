@@ -9,7 +9,7 @@ sealed class ServantTarget(val autoSkillCode: Char) {
     object Left : ServantTarget('7')
     object Right : ServantTarget('8')
 
-    // Kukulcan
+    // Kukulkan
     object Option1 : ServantTarget('K')
     object Option2 : ServantTarget('U')
 

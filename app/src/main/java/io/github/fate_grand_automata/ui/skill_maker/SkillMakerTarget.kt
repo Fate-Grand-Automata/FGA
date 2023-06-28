@@ -28,7 +28,7 @@ fun SkillMakerTarget(
     onEmiya: () -> Unit,
     showSpaceIshtar: Boolean,
     onSpaceIshtar: () -> Unit,
-    onKukulcan: () -> Unit,
+    onKukulkan: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -70,8 +70,8 @@ fun SkillMakerTarget(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Button(onClick = onKukulcan) {
-                Text(stringResource(R.string.skill_maker_kukulcan))
+            Button(onClick = onKukulkan) {
+                Text(stringResource(R.string.skill_maker_kukulkan))
             }
 
             when {
@@ -108,7 +108,7 @@ fun TestSkillMakerTargetIshtar() = TestSkillMaker(showSpaceIshtar = true)
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerOnlyKukulcan() = TestSkillMaker()
+fun TestSkillMakerOnlyKukulkan() = TestSkillMaker()
 
 @Composable
 private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean = false) {
@@ -119,7 +119,7 @@ private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean 
             onEmiya = {},
             showSpaceIshtar = showSpaceIshtar,
             onSpaceIshtar = {},
-            onKukulcan = {}
+            onKukulkan = {}
         )
     }
 }

@@ -21,7 +21,7 @@ import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 
 @Composable
-fun SkillMakerKukulcan(
+fun SkillMakerKukulkan(
     onOption1: () -> Unit,
     onOption2: () -> Unit,
     goToTarget: Boolean,
@@ -33,7 +33,7 @@ fun SkillMakerKukulcan(
             .padding(16.dp)
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_kukulcan)
+            stringResource(R.string.skill_maker_kukulkan)
         )
 
         Row(
@@ -63,7 +63,7 @@ fun SkillMakerKukulcan(
 }
 
 @Composable
-fun SkillMakerKukulcanTarget(
+fun SkillMakerKukulkanTarget(
     onSkillTarget: (ServantTarget) -> Unit,
 ) {
     Column(
@@ -72,7 +72,7 @@ fun SkillMakerKukulcanTarget(
             .padding(16.dp)
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_kukulcan)
+            stringResource(R.string.skill_maker_kukulkan)
         )
 
         Row(
@@ -106,17 +106,17 @@ fun SkillMakerKukulcanTarget(
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestKukulcan() {
+fun TestKukulkan() {
     FGATheme {
-        SkillMakerKukulcan(onOption1 = { }, onOption2 = { }, goToTarget = true, onTarget = { })
+        SkillMakerKukulkan(onOption1 = { }, onOption2 = { }, goToTarget = true, onTarget = { })
     }
 }
 
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestKukulcanTarget() {
+fun TestKukulkanTarget() {
     FGATheme {
-        SkillMakerKukulcanTarget(onSkillTarget = { })
+        SkillMakerKukulkanTarget(onSkillTarget = { })
     }
 }
