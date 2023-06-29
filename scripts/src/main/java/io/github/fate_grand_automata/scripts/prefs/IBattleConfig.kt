@@ -1,7 +1,7 @@
 package io.github.fate_grand_automata.scripts.prefs
 
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
@@ -26,7 +26,7 @@ interface IBattleConfig {
     var spam: List<ServantSpamConfig>
     val autoChooseTarget: Boolean
 
-    val server: GameServerEnum?
+    val server: GameServer?
 
     fun export(): Map<String, *>
 

@@ -43,7 +43,6 @@ allprojects {
 subprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
-            freeCompilerArgs += "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
             freeCompilerArgs += "-opt-in=kotlin.time.ExperimentalTime"
 
             // Set JVM target to 1.8

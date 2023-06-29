@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
+import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptNotify
 import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
@@ -19,15 +20,15 @@ class CardParser @Inject constructor(
     private fun CommandCard.Face.affinity(): CardAffinityEnum {
         val region = locations.attack.affinityRegion(this)
 
-        if (images[io.github.fate_grand_automata.scripts.Images.Weak] in region) {
-            return io.github.fate_grand_automata.scripts.enums.CardAffinityEnum.Weak
+        if (images[Images.Weak] in region) {
+            return CardAffinityEnum.Weak
         }
 
-        if (images[io.github.fate_grand_automata.scripts.Images.Resist] in region) {
-            return io.github.fate_grand_automata.scripts.enums.CardAffinityEnum.Resist
+        if (images[Images.Resist] in region) {
+            return CardAffinityEnum.Resist
         }
 
-        return io.github.fate_grand_automata.scripts.enums.CardAffinityEnum.Normal
+        return CardAffinityEnum.Normal
     }
 
     private fun CommandCard.Face.isStunned(): Boolean {
@@ -37,25 +38,25 @@ class CardParser @Inject constructor(
             height = 188
         )
 
-        return images[io.github.fate_grand_automata.scripts.Images.Stun] in stunRegion
+        return images[Images.Stun] in stunRegion
     }
 
     private fun CommandCard.Face.type(): CardTypeEnum {
         val region = locations.attack.typeRegion(this)
 
-        if (images[io.github.fate_grand_automata.scripts.Images.Buster] in region) {
-            return io.github.fate_grand_automata.scripts.enums.CardTypeEnum.Buster
+        if (images[Images.Buster] in region) {
+            return CardTypeEnum.Buster
         }
 
-        if (images[io.github.fate_grand_automata.scripts.Images.Arts] in region) {
-            return io.github.fate_grand_automata.scripts.enums.CardTypeEnum.Arts
+        if (images[Images.Arts] in region) {
+            return CardTypeEnum.Arts
         }
 
-        if (images[io.github.fate_grand_automata.scripts.Images.Quick] in region) {
-            return io.github.fate_grand_automata.scripts.enums.CardTypeEnum.Quick
+        if (images[Images.Quick] in region) {
+            return CardTypeEnum.Quick
         }
 
-        return io.github.fate_grand_automata.scripts.enums.CardTypeEnum.Unknown
+        return CardTypeEnum.Unknown
     }
 
     fun parse(): List<ParsedCard> {
@@ -102,10 +103,12 @@ class CardParser @Inject constructor(
                         unknownCardTypes = true
                         true
                     }
+
                     it.servant is TeamSlot.Unknown && !prefs.skipServantFaceCardCheck -> {
                         unknownServants = true
                         true
                     }
+
                     else -> false
                 }
             }

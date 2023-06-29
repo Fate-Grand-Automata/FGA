@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.entrypoints
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptNotify
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.models.BoostItem
 import io.github.fate_grand_automata.scripts.models.FieldSlot
@@ -29,17 +30,13 @@ import kotlin.time.Duration.Companion.seconds
  * Checks if Support Selection menu is up
  */
 fun IFgoAutomataApi.isInSupport(): Boolean {
-    return locations.support.screenCheckRegion.exists(images[io.github.fate_grand_automata.scripts.Images.SupportScreen], similarity = 0.85)
+    return locations.support.screenCheckRegion.exists(images[Images.SupportScreen], similarity = 0.85)
 }
 
 fun IFgoAutomataApi.isInventoryFull() =
     // We only have images for JP, NA and KR
-    prefs.gameServer in listOf(
-        io.github.fate_grand_automata.scripts.enums.GameServerEnum.En,
-        io.github.fate_grand_automata.scripts.enums.GameServerEnum.Jp,
-        io.github.fate_grand_automata.scripts.enums.GameServerEnum.Kr
-    )
-            && images[io.github.fate_grand_automata.scripts.Images.InventoryFull] in locations.inventoryFullRegion
+    (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Kr)
+            && images[Images.InventoryFull] in locations.inventoryFullRegion
 
 /**
  * Script for starting quests, selecting the support and doing battles.

@@ -3,7 +3,7 @@ package io.github.fate_grand_automata.util
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.GameAreaMode
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
@@ -170,11 +170,18 @@ val GameAreaMode.stringRes
         GameAreaMode.Custom -> R.string.p_game_area_custom
     }
 
-val GameServerEnum.stringRes
+val GameServer.stringRes
     get() = when (this) {
-        GameServerEnum.En -> R.string.game_server_na
-        GameServerEnum.Jp -> R.string.game_server_jp
-        GameServerEnum.Cn -> R.string.game_server_cn
-        GameServerEnum.Tw -> R.string.game_server_tw
-        GameServerEnum.Kr -> R.string.game_server_kr
+        is GameServer.En -> if (this.betterFgo) R.string.game_server_na_bfgo else R.string.game_server_na
+        is GameServer.Jp -> if (this.betterFgo) R.string.game_server_jp_bfgo else R.string.game_server_jp
+        else -> this.simpleStringRes
+    }
+
+val GameServer.simpleStringRes
+    get() = when (this) {
+        GameServer.Cn -> R.string.game_server_cn
+        GameServer.Tw -> R.string.game_server_tw
+        GameServer.Kr -> R.string.game_server_kr
+        is GameServer.En -> R.string.game_server_na
+        is GameServer.Jp -> R.string.game_server_jp
     }

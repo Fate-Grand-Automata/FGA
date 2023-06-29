@@ -2,7 +2,7 @@ package io.github.fate_grand_automata.scripts.entrypoints
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -118,9 +118,9 @@ class AutoGiftBox @Inject constructor(
 
         for (gift in checkRegion.findAll(images[Images.GiftBoxCheck]).sorted()) {
             val countRegion = when (prefs.gameServer) {
-                GameServerEnum.Jp, GameServerEnum.Tw, GameServerEnum.Cn -> -940
-                GameServerEnum.En -> -830
-                GameServerEnum.Kr -> -1010
+                is GameServer.Jp, GameServer.Tw, GameServer.Cn -> -940
+                is GameServer.En -> -830
+                GameServer.Kr -> -1010
             }.let { x -> Region(x, -120, 300, 100) } + gift.region.location
 
             val iconRegion = Region(-1480, -116, 300, 240) + gift.region.location

@@ -1,6 +1,6 @@
 package io.github.fate_grand_automata.scripts.locations
 
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.lib_automata.Location
 import io.github.lib_automata.Region
@@ -27,7 +27,7 @@ class AttackScreenLocations @Inject constructor(
     }.xFromCenter()
 
     private val faceCardDeltaY =
-        Location(0, if (gameServer == GameServerEnum.Cn && isWide) -42 else 0)
+        Location(0, if (gameServer == GameServer.Cn && isWide) -42 else 0)
 
     fun affinityRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -985

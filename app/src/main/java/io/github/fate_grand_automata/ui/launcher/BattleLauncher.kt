@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.Stepper
@@ -48,7 +48,14 @@ fun battleLauncher(
     val configs = remember {
         prefs.battleConfigs
             .filter {
-                it.server == null || it.server == prefs.gameServer
+                when (it.server) {
+                    // always show if no server is set
+                    null -> true
+                    // ignore betterFgo for En and Jp
+                    is GameServer.En -> prefs.gameServer is GameServer.En
+                    is GameServer.Jp -> prefs.gameServer is GameServer.Jp
+                    GameServer.Cn, GameServer.Kr, GameServer.Tw -> it.server == prefs.gameServer
+                }
             }
     }
     var selectedConfigIndex by remember { mutableStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
@@ -154,7 +161,7 @@ fun battleLauncher(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     //only display bronze option for JP and CN
-                    val bronzeApplesEnabled = prefs.gameServer in listOf(GameServerEnum.Jp, GameServerEnum.Cn)
+                    val bronzeApplesEnabled = prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Cn
                     if (!bronzeApplesEnabled) {
                         //disable it in the settings otherwise
                         refillResources = refillResources.minus(RefillResourceEnum.Bronze)

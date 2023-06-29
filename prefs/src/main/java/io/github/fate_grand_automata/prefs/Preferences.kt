@@ -2,7 +2,7 @@ package io.github.fate_grand_automata.prefs
 
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.prefs.core.map
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
@@ -17,7 +17,7 @@ class PreferencesImpl @Inject constructor(
 ) : IPreferences {
     override var scriptMode by prefs.scriptMode
 
-    override var gameServer = GameServerEnum.En
+    override var gameServer = GameServer.default
 
     override val skillConfirmation by prefs.skillConfirmation
 

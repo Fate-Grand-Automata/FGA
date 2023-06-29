@@ -8,14 +8,13 @@ import io.github.fate_grand_automata.SupportImageKind
 import io.github.fate_grand_automata.imaging.DroidCvPattern
 import io.github.fate_grand_automata.scripts.IImageLoader
 import io.github.fate_grand_automata.scripts.Images
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.lib_automata.ColorManager
 import io.github.lib_automata.Pattern
 import org.opencv.android.Utils
 import org.opencv.imgcodecs.Imgcodecs
-import java.io.FileNotFoundException
 import javax.inject.Inject
 
 class ImageLoader @Inject constructor(
@@ -24,12 +23,20 @@ class ImageLoader @Inject constructor(
     @ApplicationContext val context: Context,
     private val colorManager: ColorManager
 ) : IImageLoader {
-    private fun createPattern(gameServer: GameServerEnum, FileName: String): Pattern {
-        val filePath = "$gameServer/${FileName}"
+    private fun createPattern(gameServer: GameServer, FileName: String): Pattern {
+        val gameServerPath = gameServer.javaClass.simpleName
+        val filePath = "$gameServerPath/$FileName"
 
         val assets = context.assets
 
-        val inputStream = assets.open(filePath)
+        // load image from En by default or from current game server if a custom image exists
+        var gameServerWithImage = GameServer.En::class.simpleName
+
+        if (assets.list(gameServerPath)?.contains(FileName) == true) {
+            gameServerWithImage = gameServerPath
+        }
+
+        val inputStream = assets.open("$gameServerWithImage/${FileName}")
 
         inputStream.use {
             return DroidCvPattern(it, colorManager.isColor).tag(filePath)
@@ -40,8 +47,7 @@ class ImageLoader @Inject constructor(
 
     private fun key(name: String) = CacheKey(name, colorManager.isColor)
 
-    private var currentGameServer: GameServerEnum =
-        GameServerEnum.En
+    private var currentGameServer: GameServer = GameServer.default
     private var regionCachedPatterns = mutableMapOf<CacheKey, Pattern>()
 
     fun Images.fileName(): String = when (this) {
@@ -133,14 +139,6 @@ class ImageLoader @Inject constructor(
      * When image is not available for the current server, use the image from NA server.
      */
     private fun loadPatternWithFallback(path: String): Pattern {
-        if (currentGameServer != GameServerEnum.En) {
-            return try {
-                createPattern(currentGameServer, path)
-            } catch (e: FileNotFoundException) {
-                createPattern(GameServerEnum.En, path)
-            }
-        }
-
         return createPattern(currentGameServer, path)
     }
 

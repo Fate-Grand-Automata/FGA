@@ -6,6 +6,8 @@
     <string name="game_server_cn" translatable="false">CN</string>
     <string name="game_server_tw" translatable="false">TW</string>
     <string name="game_server_kr" translatable="false">KR</string>
+    <string name="game_server_na_bfgo" translatable="false">NA (Better FGO)</string>
+    <string name="game_server_jp_bfgo" translatable="false">JP (Better FGO)</string>
 
     <string name="link_troubleshoot" translatable="false">https://github.com/Fate-Grand-Automata/FGA/wiki/Troubleshooting</string>
     <string name="link_releases" translatable="false">https://github.com/Fate-Grand-Automata/FGA/releases</string>

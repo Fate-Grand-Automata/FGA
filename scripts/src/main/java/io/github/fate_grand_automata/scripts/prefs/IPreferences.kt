@@ -1,13 +1,13 @@
 package io.github.fate_grand_automata.scripts.prefs
 
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.PlatformPrefs
 import kotlin.time.Duration
 
 interface IPreferences {
     var scriptMode: ScriptModeEnum
-    var gameServer: GameServerEnum
+    var gameServer: GameServer
     val skillConfirmation: Boolean
     val battleConfigs: List<IBattleConfig>
     var selectedBattleConfig: IBattleConfig
