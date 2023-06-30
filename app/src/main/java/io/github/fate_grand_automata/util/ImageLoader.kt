@@ -24,17 +24,15 @@ class ImageLoader @Inject constructor(
     private val colorManager: ColorManager
 ) : IImageLoader {
     private fun createPattern(gameServer: GameServer, FileName: String): Pattern {
-        val gameServerPath = gameServer.javaClass.simpleName
+        val gameServerPath = gameServer.simple
         val filePath = "$gameServerPath/$FileName"
 
         val assets = context.assets
 
         // load image from En by default or from current game server if a custom image exists
-        var gameServerWithImage = GameServer.En::class.simpleName
-
-        if (assets.list(gameServerPath)?.contains(FileName) == true) {
-            gameServerWithImage = gameServerPath
-        }
+        val gameServerWithImage = if (assets.list(gameServerPath)?.contains(FileName) == true) {
+            gameServerPath
+        } else GameServer.default.simple
 
         val inputStream = assets.open("$gameServerWithImage/${FileName}")
 

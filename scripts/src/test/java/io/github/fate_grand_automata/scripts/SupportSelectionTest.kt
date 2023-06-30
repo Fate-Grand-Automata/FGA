@@ -1,5 +1,7 @@
 package io.github.fate_grand_automata.scripts
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.fate_grand_automata.scripts.modules.SupportClassPicker
@@ -12,8 +14,9 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class SupportSelectionTest {
     private val commonPrefs = object : ISupportPreferencesCommon {
@@ -63,7 +66,7 @@ class SupportSelectionTest {
 
     @Test
     fun `support not found after refreshing 3 times`() {
-        Assert.assertFalse(
+        assertFalse(
             testSupportSelection(
                 setup = {
                     it.state = FakeSupportScreen.State.NoSupports
@@ -72,7 +75,7 @@ class SupportSelectionTest {
                     }
                 },
                 verify = {
-                    Assert.assertEquals(3, it.refreshCount)
+                    assertThat(it.refreshCount).isEqualTo(3)
                 },
                 supportProvider = { SupportSelectionResult.Refresh }
             )
@@ -81,12 +84,12 @@ class SupportSelectionTest {
 
     @Test
     fun `support found immediately`() {
-        Assert.assertTrue(
+        assertTrue(
             testSupportSelection(
                 setup = { it.state = FakeSupportScreen.State.SomeSupports },
                 verify = {
-                    Assert.assertEquals(0, it.scrollOffset)
-                    Assert.assertEquals(0, it.refreshCount)
+                    assertThat(it.scrollOffset).isEqualTo(0)
+                    assertThat(it.refreshCount).isEqualTo(0)
                 },
                 supportProvider = { SupportSelectionResult.Done }
             )

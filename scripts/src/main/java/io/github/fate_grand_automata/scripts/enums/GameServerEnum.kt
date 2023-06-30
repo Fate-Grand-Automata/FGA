@@ -1,31 +1,28 @@
 package io.github.fate_grand_automata.scripts.enums
 
-sealed class GameServer constructor(val betterFgo: Boolean = false) {
-    sealed class En constructor(betterFgo: Boolean = false) : GameServer(betterFgo) {
+sealed class GameServer constructor(val simple: String, val betterFgo: Boolean = false) {
+    sealed class En constructor(betterFgo: Boolean = false) : GameServer("En", betterFgo) {
         object Original : En()
         object BetterFGO : En(true)
     }
 
-    sealed class Jp constructor(betterFgo: Boolean = false) : GameServer(betterFgo) {
+    sealed class Jp constructor(betterFgo: Boolean = false) : GameServer("Jp", betterFgo) {
         object Original : Jp()
         object BetterFGO : Jp(true)
     }
 
-    object Cn : GameServer()
-    object Tw : GameServer()
-    object Kr : GameServer()
+    object Cn : GameServer("Cn")
+    object Tw : GameServer("Tw")
+    object Kr : GameServer("Kr")
 
-    fun serialize(): String = when (this) {
-        is En -> En::class.simpleName
-        is Jp -> Jp::class.simpleName
-        Cn, Tw, Kr -> this.javaClass.simpleName
-    } + (if (betterFgo) betterFgoSuffix else "")
+    fun serialize(): String = simple + (if (betterFgo) betterFgoSuffix else "")
 
+    override fun toString(): String = serialize()
 
     companion object {
         val default = En.Original as GameServer
 
-        private val betterFgoSuffix = " BFGO"
+        private const val betterFgoSuffix = " BFGO"
 
         /**
          * Maps an APK package name to the corresponding [GameServer].
@@ -52,17 +49,10 @@ sealed class GameServer constructor(val betterFgo: Boolean = false) {
             "com.netmarble.fgok" to Kr
         )
 
-        fun deserialize(value: String): GameServer? =
-            when (value) {
-                En::class.simpleName -> En.Original
-                En::class.simpleName + betterFgoSuffix -> En.BetterFGO
-                Jp::class.simpleName -> Jp.Original
-                Jp::class.simpleName + betterFgoSuffix -> Jp.BetterFGO
-                else -> {
-                    GameServer::class.sealedSubclasses.firstOrNull {
-                        it.simpleName == value
-                    }?.objectInstance
-                }
-            }
+        private val serializedValues by lazy {
+            values.associateBy { it.serialize() }
+        }
+
+        fun deserialize(value: String): GameServer? = serializedValues[value]
     }
 }

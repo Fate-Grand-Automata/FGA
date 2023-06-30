@@ -1,11 +1,13 @@
 package io.github.fate_grand_automata.scripts
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEqualTo
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.modules.ApplyBraveChains
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
 
 class BraveChainsTest {
     private fun shouldReturnSame(mode: BraveChainEnum) {
@@ -17,7 +19,7 @@ class BraveChainsTest {
             braveChains = mode
         )
 
-        Assert.assertEquals(cards, picked)
+        assertThat(picked).isEqualTo(cards)
     }
 
     @Test
@@ -35,11 +37,7 @@ class BraveChainsTest {
             rearrange = true
         ).map { it.card }
 
-        val expected = listOf(
-            CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E
-        )
-
-        Assert.assertEquals(expected, picked)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.B, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -68,11 +66,7 @@ class BraveChainsTest {
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
         ).map { it.card }
 
-        val expected = listOf(
-            CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E
-        )
-
-        Assert.assertEquals(expected, picked)
+        assertThat(picked).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -87,11 +81,7 @@ class BraveChainsTest {
             npUsage = NPUsage(setOf(CommandCard.NP.A), 0)
         ).map { it.card }
 
-        val expected = listOf(
-            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E
-        )
-
-        Assert.assertEquals(expected, picked)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D, CommandCard.Face.E)
     }
 
     @Test
@@ -105,11 +95,7 @@ class BraveChainsTest {
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
         ).map { it.card }
 
-        val expected = listOf(
-            CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D
-        )
-
-        Assert.assertEquals(expected, picked)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
     }
 
     @Test
@@ -124,11 +110,7 @@ class BraveChainsTest {
             npUsage = NPUsage(setOf(CommandCard.NP.B), 0)
         ).map { it.card }
 
-        val expected = listOf(
-            CommandCard.Face.E, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D
-        )
-
-        Assert.assertEquals(expected, picked)
+        assertThat(picked).containsExactly(CommandCard.Face.E, CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
     }
 
     @Test
@@ -141,11 +123,7 @@ class BraveChainsTest {
             braveChains = BraveChainEnum.Avoid
         ).map { it.card }
 
-        val expected = listOf(
-            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.E, CommandCard.Face.D
-        )
-
-        Assert.assertEquals(expected, picked)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.E, CommandCard.Face.D)
     }
 
     @Test
@@ -163,11 +141,7 @@ class BraveChainsTest {
             braveChains = BraveChainEnum.Avoid
         ).map { it.card }
 
-        val expected = listOf(
-            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D
-        )
-
-        Assert.assertEquals(expected, picked)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
     }
 
     @Test
@@ -181,10 +155,6 @@ class BraveChainsTest {
             rearrange = true
         ).map { it.card }
 
-        val expected = listOf(
-            CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D
-        )
-
-        Assert.assertEquals(expected, picked)
+        assertThat(picked).containsExactly(CommandCard.Face.A, CommandCard.Face.B, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
     }
 }
