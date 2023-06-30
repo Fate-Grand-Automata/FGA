@@ -10,7 +10,7 @@ dependencies {
     implementation "com.google.dagger:hilt-core:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    testImplementation(platform('org.junit:junit-bom:5.8.2')) {
+    testImplementation(platform('org.junit:junit-bom:5.9.3')) {
         because("kotlin-test comes with conflicting junit versions")
     }
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
