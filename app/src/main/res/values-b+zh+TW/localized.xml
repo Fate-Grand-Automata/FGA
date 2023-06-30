@@ -134,8 +134,6 @@
     <string name="p_advanced">進階</string>
     <string name="p_debug_mode">除錯模式</string>
     <string name="p_debug_mode_summary">將框出比對影像的區域</string>
-    <string name="p_ignore_notch">忽略瀏海</string>
-    <string name="p_ignore_notch_summary">若FGO未在您的手機上把瀏海部分空出來，請開啟此選項</string>
     <string name="p_record_screen">螢幕錄影</string>
     <string name="p_record_screen_summary">將在存放資料的資料夾儲存 \'record.mp4\' 為名的螢幕錄影檔案\n重新命名或複製至其他位置以保留</string>
     <string name="p_root_screenshot">以root截圖</string>

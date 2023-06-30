@@ -13,7 +13,7 @@ body:
           required: true
         - label: I looked at other issues (even the [closed ones](https://github.com/Fate-Grand-Automata/FGA/issues?q=is%3Aissue+is%3Aclosed))
           required: true
-        - label: I read the [Troubleshooting Guide](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting)
+        - label: I read the [Troubleshooting Guide](https://github.com/Fate-Grand-Automata/FGA/wiki/Troubleshooting)
           required: true
   - type: dropdown
     id: server

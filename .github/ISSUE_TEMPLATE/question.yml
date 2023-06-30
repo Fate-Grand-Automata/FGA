@@ -9,7 +9,7 @@ body:
       label: Preparation
       description: "Before you open a question, you should check the following:"
       options:
-        - label: I read the [Troubleshooting Guide](https://github.com/MathewSachin/Fate-Grand-Automata/wiki/Troubleshooting)
+        - label: I read the [Troubleshooting Guide](https://github.com/Fate-Grand-Automata/FGA/wiki/Troubleshooting)
           required: true
         - label: My question isn't answered in any other issues (even the closed ones)
           required: true

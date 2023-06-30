@@ -65,7 +65,7 @@
     <string name="skill_maker_quick">Quick</string>
     <string name="skill_maker_arts">Arts</string>
     <string name="skill_maker_buster">Buster</string>
-    <string name="skill_maker_kukulcan">Kukulcan</string>
+    <string name="skill_maker_kukulkan">Kukulkan</string>
     <string name="skill_maker_option_1">Option 1</string>
     <string name="skill_maker_option_2">Option 2</string>
 
@@ -155,8 +155,6 @@
     <string name="p_advanced">Advanced</string>
     <string name="p_debug_mode">Debug mode</string>
     <string name="p_debug_mode_summary">Highlight the regions being matched</string>
-    <string name="p_ignore_notch">Ignore Notch calculation</string>
-    <string name="p_ignore_notch_summary">This setting only has an effect on FGO TW. Turn this on if FGO doesn\'t leave the notch area black.</string>
     <string name="p_record_screen">Record Screen</string>
     <string name="p_record_screen_summary">A file named \'record.mp4\' will be saved to output folder.\nCopy or rename it if you want to keep it.</string>
     <string name="p_root_screenshot">Use Root for Screenshots</string>
@@ -247,7 +245,7 @@
     <string name="accessibility_disable">DISABLE</string>
     <string name="accessibility_enable_in_settings">ENABLE IN SETTINGS</string>
     <string name="accessibility_disabled_title">Accessibility Disabled</string>
-    <string name="accessibility_disabled_message">Turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
+    <string name="accessibility_disabled_message">FGA will need to use Android accessibility features to simulate touch screen inputs for you in FGO.\n\nPlease turn on accessibility for this app from System settings. If it is already On, turn it OFF and start again.</string>
     <string name="accessibility_disabled_go_to_settings">Go To Settings</string>
     <string name="draw_overlay_disabled_title">Missing overlay permission</string>
     <string name="draw_overlay_disabled_message">Please allow this app to draw over other apps. It is used to draw the control buttons.</string>
@@ -347,6 +345,10 @@
     <string name="mat_fantasy_scales">Scales of Fantasies</string>
     <string name="mat_ceremonial_blade">Twilight Ceremonial Blade</string>
     <string name="mat_ashes">Unforgettable Ashes</string>
+    <string name="mat_obsidian_edge">Obsidian Edge</string>
+    <string name="mat_vestige_of_madness">Vestige of Madness</string>
+    <string name="mat_sunscale">Sunscale</string>
+    <string name="mat_converger">Ether Proton Converger</string>
 
     <string name="mat_monument_saber">Saber Monument</string>
     <string name="mat_monument_archer">Archer Monument</string>
@@ -398,7 +400,6 @@
     <string name="p_game_area_mode">Game Area Mode</string>
     <string name="p_game_area_default">Default</string>
     <string name="p_game_area_duo">Surface Duo</string>
-    <string name="p_game_area_xperia">Sony Xperia</string>
     <string name="p_game_area_custom">Custom</string>
     <string name="p_game_area_custom_left">Left</string>
     <string name="p_game_area_custom_top">Top</string>
