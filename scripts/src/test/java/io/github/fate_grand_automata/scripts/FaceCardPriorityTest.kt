@@ -1,5 +1,7 @@
 package io.github.fate_grand_automata.scripts
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
 import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
@@ -9,8 +11,7 @@ import io.github.fate_grand_automata.scripts.models.ParsedCard
 import io.github.fate_grand_automata.scripts.models.ServantPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.scripts.modules.FaceCardPriority
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
 
 class FaceCardPriorityTest {
     companion object {
@@ -63,11 +64,8 @@ class FaceCardPriorityTest {
         val priority = FaceCardPriority(CardPriorityPerWave.default, null)
 
         val sorted = priority.sort(lineup1, 0).map { it.card }
-        val expected = listOf(
-            CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D
-        )
 
-        Assert.assertEquals(expected, sorted)
+        assertThat(sorted).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
     }
 
     @Test
@@ -75,10 +73,7 @@ class FaceCardPriorityTest {
         val priority = FaceCardPriority(CardPriorityPerWave.default, ServantPriorityPerWave.default)
 
         val sorted = priority.sort(lineup1, 0).map { it.card }
-        val expected = listOf(
-            CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D
-        )
 
-        Assert.assertEquals(expected, sorted)
+        assertThat(sorted).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
     }
 }

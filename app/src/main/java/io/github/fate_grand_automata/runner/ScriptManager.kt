@@ -20,7 +20,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.exit.BattleExit
@@ -268,17 +268,17 @@ class ScriptManager @Inject constructor(
 
         preferences.gameServer =
             if (server == PrefsCore.GameServerAutoDetect)
-                (TapperService.instance?.detectedFgoServer ?: GameServerEnum.En).also {
+                (TapperService.instance?.detectedFgoServer ?: GameServer.default).also {
                     Timber.d("Using auto-detected Game Server: $it")
                 }
             else try {
-                enumValueOf<GameServerEnum>(server).also {
+                GameServer.deserialize(server)?.also {
                     Timber.d("Using Game Server: $it")
-                }
+                } ?: GameServer.default
             } catch (e: Exception) {
                 Timber.e(e, "Game Server: Falling back to NA")
 
-                GameServerEnum.En
+                GameServer.default
             }
     }
 

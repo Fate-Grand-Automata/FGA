@@ -10,11 +10,19 @@ dependencies {
     implementation "com.google.dagger:hilt-core:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    testImplementation "junit:junit:4.13.2"
+    testImplementation(platform('org.junit:junit-bom:5.8.2')) {
+        because("kotlin-test comes with conflicting junit versions")
+    }
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation "com.willowtreeapps.assertk:assertk:0.26.1"
     testImplementation "io.mockk:mockk:1.13.5"
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+test {
+    useJUnitPlatform()
 }

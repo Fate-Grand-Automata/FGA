@@ -47,6 +47,7 @@ import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
 import io.github.fate_grand_automata.ui.prefs.EditTextPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -79,7 +80,7 @@ fun BattleConfigScreen(
     val scope = rememberCoroutineScope()
 
     OnResume {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             if (supportVm.shouldExtractSupportImages) {
                 supportVm.performSupportImageExtraction(context)
             } else supportVm.refresh(context)

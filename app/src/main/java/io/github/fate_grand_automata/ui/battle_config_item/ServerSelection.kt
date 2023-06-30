@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
-import io.github.fate_grand_automata.scripts.enums.GameServerEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.GroupSelectorItem
 import io.github.fate_grand_automata.ui.prefs.remember
@@ -40,7 +40,10 @@ fun ServerSelection(config: BattleConfigCore) {
                 modifier = modifier
                     .fillMaxWidth()
             ) {
-                items(GameServerEnum.values()) {
+                items(
+                    // battle configs don't need to know about BetterFGO
+                    GameServer.values.filter { !it.betterFgo }
+                ) {
                     GroupSelectorItem(
                         stringResource(it.stringRes),
                         isSelected = it == server.asGameServer(),
