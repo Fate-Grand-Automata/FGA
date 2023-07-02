@@ -36,8 +36,13 @@ class MainActivity : ComponentActivity() {
                 supportVm = supportVm
             )
         }
+    }
 
-        appUpdateManager = AppUpdateManagerFactory.create(this)
+    override fun onResume() {
+        super.onResume()
+        if (!this::appUpdateManager.isInitialized) {
+            appUpdateManager = AppUpdateManagerFactory.create(this)
+        }
         checkForUpdate()
     }
 

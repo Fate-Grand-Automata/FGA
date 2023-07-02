@@ -1,14 +1,17 @@
 package io.github.fate_grand_automata.runner
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
@@ -121,8 +124,13 @@ class ScriptRunnerNotification @Inject constructor(
             .setTimeoutAfter(10_000) // 10s
             .build()
 
-        NotificationManagerCompat.from(service)
-            .notify(Ids.messageNotification, notification)
+        // Android 13+ needs a notification permission
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+            || ContextCompat.checkSelfPermission(service, POST_NOTIFICATIONS) == PERMISSION_GRANTED
+        ) {
+            // only show notification if allowed
+            NotificationManagerCompat.from(service).notify(Ids.messageNotification, notification)
+        }
 
         vibrate(100.milliseconds)
     }

@@ -1,7 +1,9 @@
 package io.github.fate_grand_automata.ui.main
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -35,6 +37,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import io.github.fate_grand_automata.BuildConfig
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.accessibility.TapperService
@@ -50,11 +55,13 @@ import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.util.OpenDocTreePersistable
 
 @Composable
+@OptIn(ExperimentalPermissionsApi::class)
 fun MainScreen(
     vm: MainScreenViewModel = viewModel(),
     navigate: (MainScreenDestinations) -> Unit
 ) {
     var dirPicker: ActivityResultLauncher<Uri?>? by remember { mutableStateOf(null) }
+    val permissionState = rememberPermissionState(permission = POST_NOTIFICATIONS)
 
     var toggling by rememberSaveable { mutableStateOf(false) }
 
@@ -94,6 +101,14 @@ fun MainScreen(
 
     val pickDirectory: () -> Unit = { dirPicker?.launch(Uri.EMPTY) }
 
+    val requestNotifications: () -> Unit = {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+            && !permissionState.status.isGranted
+        ) {
+            permissionState.launchPermissionRequest()
+        }
+    }
+
     fun toggleOverlayService() {
         toggling = false
 
@@ -101,6 +116,7 @@ fun MainScreen(
             context = context,
             vm = vm,
             pickDirectory = pickDirectory,
+            requestNotifications = requestNotifications,
             showOverlayDisabled = { overlayDisabledDialog.show() },
             showAccessibilityDisabled = { accessibilityDisabledDialog.show() },
             startMediaProjection = { startMediaProjection.launch() }
@@ -149,6 +165,7 @@ private fun toggleOverlayService(
     context: Context,
     vm: MainScreenViewModel,
     pickDirectory: () -> Unit,
+    requestNotifications: () -> Unit,
     showOverlayDisabled: () -> Unit,
     showAccessibilityDisabled: () -> Unit,
     startMediaProjection: () -> Unit
@@ -166,6 +183,8 @@ private fun toggleOverlayService(
     if (!vm.ensureRootDir(context, pickDirectory)) {
         return
     }
+
+    requestNotifications()
 
     if (ScriptRunnerService.serviceStarted.value) {
         ScriptRunnerService.stopService(context)
