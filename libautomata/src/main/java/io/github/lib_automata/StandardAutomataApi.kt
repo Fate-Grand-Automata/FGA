@@ -7,6 +7,7 @@ class StandardAutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
     private val highlight: Highlighter,
     private val click: Clicker,
+    private val globalEvents: GlobalEventService,
     private val imageMatcher: ImageMatcher,
     private val transform: Transformer,
     private val colorManager: ColorManager,
@@ -47,5 +48,7 @@ class StandardAutomataApi @Inject constructor(
     ) = imageMatcher.findAll(this, pattern, similarity)
 
     override fun Region.isWhite() = imageMatcher.isWhite(this)
+
+    override fun pressBack() = globalEvents.pressBack()
 }
 

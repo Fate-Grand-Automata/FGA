@@ -21,6 +21,8 @@ import io.github.fate_grand_automata.ui.battle_config_list.BattleConfigListScree
 import io.github.fate_grand_automata.ui.card_priority.CardPriorityScreen
 import io.github.fate_grand_automata.ui.fine_tune.FineTuneScreen
 import io.github.fate_grand_automata.ui.more.MoreOptionsScreen
+import io.github.fate_grand_automata.ui.onboarding.OnboardingScreen
+import io.github.fate_grand_automata.ui.openLinkIntent
 import io.github.fate_grand_automata.ui.pref_support.PreferredSupportScreen
 import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
 import io.github.fate_grand_automata.ui.skill_maker.SkillMakerActivity
@@ -35,7 +37,14 @@ fun FgaApp(
     val navController = rememberNavController()
 
     FgaScreen {
-        NavHost(navController = navController, startDestination = NavConstants.home) {
+        NavHost(
+            navController = navController,
+            startDestination = if (vm.prefs.isOnboardingRequired()) {
+                NavConstants.onboarding
+            } else {
+                NavConstants.home
+            }
+        ) {
             fun battleConfigComposable(
                 route: String,
                 content: @Composable (NavBackStackEntry, id: String) -> Unit
@@ -80,21 +89,11 @@ fun FgaApp(
                             }
 
                             MainScreenDestinations.Releases -> {
-                                val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(context.getString(R.string.link_releases))
-                                )
-
-                                context.startActivity(intent)
+                                openLinkIntent(context, R.string.link_releases)
                             }
 
                             MainScreenDestinations.TroubleshootingGuide -> {
-                                val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(context.getString(R.string.link_troubleshoot))
-                                )
-
-                                context.startActivity(intent)
+                                openLinkIntent(context, R.string.link_troubleshoot)
                             }
 
                             MainScreenDestinations.Discord -> {
@@ -107,6 +106,12 @@ fun FgaApp(
                             }
                         }
                     }
+                )
+            }
+            composable(NavConstants.onboarding) {
+                OnboardingScreen(
+                    vm = hiltViewModel(),
+                    navigateToHome = { navController.navigate(NavConstants.home) }
                 )
             }
             composable(NavConstants.battleConfigs) {
@@ -184,4 +189,5 @@ object NavConstants {
     const val cardPriority = "cardPriority"
     const val preferredSupport = "preferredSupport"
     const val spam = "spam"
+    const val onboarding = "onboarding"
 }

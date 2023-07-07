@@ -208,6 +208,18 @@ class SkillMakerViewModel @Inject constructor(
         starting: OrderChangeMember.Starting,
         sub: OrderChangeMember.Sub
     ) {
+        // some users first click on l and then on order change
+        // removes the last action if it was l
+        if (_currentIndex.value > 0) {
+            val lastAction = model.skillCommand[_currentIndex.value]
+            if (lastAction is SkillMakerEntry.Action &&
+                lastAction.action is AutoSkillAction.MasterSkill &&
+                lastAction.action.skill == Skill.Master.C
+            ) {
+                undo()
+            }
+        }
+
         add(
             SkillMakerEntry.Action(
                 AutoSkillAction.OrderChange(

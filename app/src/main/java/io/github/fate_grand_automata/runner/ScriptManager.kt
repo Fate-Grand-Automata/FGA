@@ -267,7 +267,7 @@ class ScriptManager @Inject constructor(
         val server = prefsCore.gameServerRaw.get()
 
         preferences.gameServer =
-            if (server == PrefsCore.GameServerAutoDetect)
+            if (server == PrefsCore.GAME_SERVER_AUTO_DETECT)
                 (TapperService.instance?.detectedFgoServer ?: GameServer.default).also {
                     Timber.d("Using auto-detected Game Server: $it")
                 }

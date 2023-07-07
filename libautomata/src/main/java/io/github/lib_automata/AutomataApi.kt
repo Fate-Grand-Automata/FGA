@@ -45,4 +45,5 @@ interface AutomataApi {
     ): Sequence<Match>
 
     fun Region.isWhite(): Boolean
+    fun pressBack()
 }
