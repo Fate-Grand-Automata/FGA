@@ -6,7 +6,7 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class AccessibilityGlobalEvents @Inject constructor() : GlobalEventService {
-    override fun pressBack(): Unit = runBlocking {
+    override fun pressBack() = runBlocking {
         TapperService.instance?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
     }
 }

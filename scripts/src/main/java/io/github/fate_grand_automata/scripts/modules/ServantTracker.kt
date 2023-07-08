@@ -111,7 +111,10 @@ class ServantTracker @Inject constructor(
         val image = locations.battle.servantDetailsFaceCardRegion.getPattern().tag("Face $teamSlot")
 
         // Close dialog
-        pressBack()
+        if (pressBack() != true) {
+            // click in top right if pressing back was not successful
+            locations.battle.extraInfoWindowCloseClick.click()
+        }
 
         faceCardImages[teamSlot] = image
 
