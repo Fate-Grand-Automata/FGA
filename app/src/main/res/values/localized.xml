@@ -147,7 +147,7 @@
     <string name="p_folder">Change folder used for Support images, drops images, etc.</string>
 
     <string name="p_choose_folder_title">Choose Folder</string>
-    <string name="p_choose_folder_message">Choose the folder to use to store Support images, drop images, etc.\n\nNOTE: You might have to use \'Show Internal Storage\' in your device\'s file picker.</string>
+    <string name="p_choose_folder_message">Choose the folder to use to store Support images, drop images, etc.\n\nIf you already have files from previous installations, don\'t pick the "support" folder but its parent folder.\n\nNOTE: You might have to use \'Show Internal Storage\' in your device\'s file picker.</string>
     <string name="p_choose_folder_not_exist_title">Choose another folder</string>
     <string name="p_choose_folder_not_exist_message">Can\'t access the folder used to store Support images, drop images, etc.</string>
     <string name="p_choose_folder_action">Choose</string>
@@ -404,4 +404,17 @@
     <string name="p_game_area_custom_top">Top</string>
     <string name="p_game_area_custom_right">Right</string>
     <string name="p_game_area_custom_bottom">Bottom</string>
+
+    <string name="p_welcome">Welcome to FGA!</string>
+    <string name="p_welcome_description">This screen will guide you through the most important setup steps.</string>
+    <string name="p_skill_confirmation_onboarding_description">Is Skill Confirmation enabled in FGO?\n\nIf you\'re not sure, leave it on.</string>
+    <string name="p_on">ON</string>
+    <string name="p_off">OFF</string>
+    <string name="p_battery_optimization">Battery optimization</string>
+    <string name="p_battery_optimization_description">FGA requires unrestricted battery settings, otherwise it will randomly stop working after some time.\n\nAfter pressing on the button, switch the app filter from \"Not optimized\" to \"All apps\" and set FGA to \"Do not optimize\".</string>
+    <string name="p_battery_optimization_action">Disable battery optimization</string>
+    <string name="p_battery_optimization_dontkillmyapp">You may also need to disable more optimizations specific to your device. Guides are available on dontkillmyapp.com.</string>
+    <string name="p_youtube_guide">Youtube guide</string>
+    <string name="p_youtube_guide_description">It\'s recommended to watch the Youtube guide as it will teach you how to set up farming configurations.</string>
+    <string name="p_youtube_guide_action">Open guide</string>
 </resources>

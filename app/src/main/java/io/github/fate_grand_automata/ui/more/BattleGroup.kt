@@ -33,7 +33,7 @@ fun LazyListScope.battleGroup(
             title = stringResource(R.string.p_game_server),
             icon = icon(Icons.Default.Public),
             entries =
-            mapOf(PrefsCore.GameServerAutoDetect to stringResource(R.string.p_game_server_auto_detect))
+            mapOf(PrefsCore.GAME_SERVER_AUTO_DETECT to stringResource(R.string.p_game_server_auto_detect))
                 .plus(
                     GameServer.values.associate {
                         it.serialize() to stringResource(it.stringRes)

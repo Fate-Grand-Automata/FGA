@@ -14,17 +14,22 @@ class PrefsCore @Inject constructor(
     @ApplicationContext val context: Context
 ) {
     companion object {
-        const val GameServerAutoDetect = "auto_detect"
+        const val GAME_SERVER_AUTO_DETECT = "auto_detect"
+
+        // increase for each changed Onboarding screen
+        const val CURRENT_ONBOARDING_VERSION = 1
     }
+
+    val onboardingCompletedVersion = maker.int("onboarding_completed_version")
 
     val scriptMode = maker.enum("script_mode", ScriptModeEnum.Battle)
 
     val gameServerRaw = maker.string(
         "game_server",
-        GameServerAutoDetect
+        GAME_SERVER_AUTO_DETECT
     )
 
-    val skillConfirmation = maker.bool("skill_conf")
+    val skillConfirmation = maker.bool("skill_conf", true)
 
     val battleConfigList = maker.stringSet("autoskill_list")
     val selectedAutoSkillConfig = maker.string("autoskill_selected")
