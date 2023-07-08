@@ -36,11 +36,6 @@ android {
         targetSdkVersion 33
         versionCode Integer.valueOf(System.env.FGA_VERSION_CODE ?: 1)
         versionName(System.env.FGA_VERSION_NAME ?: System.env.FGA_VERSION_CODE ?: "0.1.0")
-
-        ndk {
-            //noinspection ChromeOsAbiSupport
-            abiFilters "armeabi-v7a", "arm64-v8a"
-        }
     }
 
     signingConfigs {
@@ -73,6 +68,11 @@ android {
             initWith release
             applicationIdSuffix '.debug'
             signingConfig signingConfigs.debug
+
+            ndk {
+                //noinspection ChromeOsAbiSupport
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
         }
     }
     lint {
