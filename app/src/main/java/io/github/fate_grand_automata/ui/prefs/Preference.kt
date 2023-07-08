@@ -44,7 +44,8 @@ fun <T> Pref<T>.remember(): MutableState<T> {
 
         override fun component1() = value
         override fun component2(): (T) -> Unit = { value = it }
-    }
+    // store default value in config
+    }.apply { set(defaultValue) }
 }
 
 @Composable
