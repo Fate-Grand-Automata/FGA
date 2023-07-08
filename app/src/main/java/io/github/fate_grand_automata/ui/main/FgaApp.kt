@@ -111,7 +111,12 @@ fun FgaApp(
             composable(NavConstants.onboarding) {
                 OnboardingScreen(
                     vm = hiltViewModel(),
-                    navigateToHome = { navController.navigate(NavConstants.home) }
+                    navigateToHome = { navController.navigate(NavConstants.home) {
+                        // disables going back to onboarding from home screen
+                        popUpTo(NavConstants.onboarding) {
+                            inclusive = true
+                        }
+                    } }
                 )
             }
             composable(NavConstants.battleConfigs) {
