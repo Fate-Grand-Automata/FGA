@@ -1,6 +1,8 @@
 package io.github.fate_grand_automata.ui.onboarding
 
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -80,7 +82,7 @@ fun HighlightedText(
                 )
                 withStyle(
                     style = SpanStyle(
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.tertiary,
                         textDecoration = TextDecoration.Underline
                     ),
                 ) {
@@ -92,9 +94,12 @@ fun HighlightedText(
             }
         }
     }
+
+    val color = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+
     ClickableText(
         text = annotatedString,
-        style = style,
+        style = style.copy(color = color),
         onClick = { offset ->
             textData.forEach { annotatedStringData ->
                 if (annotatedStringData.tag != null && annotatedStringData.data != null) {

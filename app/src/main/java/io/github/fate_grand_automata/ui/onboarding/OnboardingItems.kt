@@ -6,8 +6,6 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -67,8 +65,6 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
             style = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(Modifier.height(20.dp))
-
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
 
@@ -86,7 +82,7 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
         }
         OutlinedButton(
             onClick = { dirPicker.launch(Uri.EMPTY) },
-            modifier = Modifier.padding(vertical = 20.dp)
+            modifier = Modifier.padding(vertical = 15.dp)
         ) {
             Text(
                 text = stringResource(R.string.p_choose_folder_action),
@@ -111,12 +107,11 @@ class SkillConfirmation(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
             style = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(Modifier.height(20.dp))
-
         var state by vm.prefsCore.skillConfirmation.remember()
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.padding(vertical = 15.dp)
         ) {
             Text(stringResource(R.string.p_off))
             Switch(
@@ -141,8 +136,6 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
             style = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(Modifier.height(20.dp))
-
         val context = LocalContext.current
 
         OutlinedButton(
@@ -151,7 +144,7 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
                 context.startActivity(intent)
                 onFinished()
             },
-            modifier = Modifier.padding(vertical = 20.dp)
+            modifier = Modifier.padding(vertical = 15.dp)
         ) {
             Text(
                 text = stringResource(R.string.p_battery_optimization_action),
@@ -194,15 +187,13 @@ class YoutubeVideo(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
             style = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(Modifier.height(20.dp))
-
         val context = LocalContext.current
 
         OutlinedButton(
             onClick = {
                 openLinkIntent(context, R.string.link_youtube)
             },
-            modifier = Modifier.padding(vertical = 20.dp)
+            modifier = Modifier.padding(vertical = 15.dp)
         ) {
             Text(
                 text = stringResource(R.string.p_youtube_guide_action),

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -84,8 +83,8 @@ fun OnboardingContent(
             pageCount = pages.size,
             state = pageState,
             modifier = Modifier
-                .fillMaxHeight(0.9f)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .weight(1f),
             userScrollEnabled = false
         ) { page ->
             OnBoardingPage {
@@ -113,10 +112,13 @@ fun TopSection(onBackClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp)
+            .padding(horizontal = 12.dp)
     ) {
         // Back button
-        IconButton(onClick = onBackClick, modifier = Modifier.align(Alignment.CenterStart)) {
+        IconButton(
+            onClick = onBackClick,
+            modifier = Modifier.align(Alignment.CenterStart)
+        ) {
             Icon(imageVector = Icons.Outlined.KeyboardArrowLeft, contentDescription = null)
         }
     }
@@ -127,20 +129,10 @@ fun BottomSection(size: Int, index: Int, enabled: Boolean, onButtonClick: () -> 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp)
+            .padding(horizontal = 12.dp)
     ) {
         // Indicators
         Indicators(size, index)
-
-        // FAB Next
-        /* FloatingActionButton(
-             onClick = onButtonClick,
-            // backgroundColor = MaterialTheme.colorScheme.primary,
-            // contentColor = MaterialTheme.colorScheme.onPrimary,
-             modifier = Modifier.align(Alignment.CenterEnd)
-         ) {
-             Icon(imageVector = Icons.Outlined.KeyboardArrowRight, contentDescription = "Next")
-         }*/
 
         Button(
             onClick = onButtonClick,
