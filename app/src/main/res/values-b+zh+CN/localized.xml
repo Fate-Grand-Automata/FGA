@@ -400,4 +400,5 @@
     <string name="p_game_area_custom_top">顶部（像素）</string>
     <string name="p_game_area_custom_right">右侧（像素）</string>
     <string name="p_game_area_custom_bottom">底部（像素）</string>
+    <string name="donate">捐款</string>
 </resources>

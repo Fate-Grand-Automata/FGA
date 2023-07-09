@@ -89,20 +89,19 @@ fun FgaApp(
                             }
 
                             MainScreenDestinations.Releases -> {
-                                openLinkIntent(context, R.string.link_releases)
+                                context.openLinkIntent(R.string.link_releases)
                             }
 
                             MainScreenDestinations.TroubleshootingGuide -> {
-                                openLinkIntent(context, R.string.link_troubleshoot)
+                                context.openLinkIntent(R.string.link_troubleshoot)
                             }
 
                             MainScreenDestinations.Discord -> {
-                                val intent = Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(context.getString(R.string.link_discord))
-                                )
+                                context.openLinkIntent(R.string.link_discord)
+                            }
 
-                                context.startActivity(intent)
+                            MainScreenDestinations.Donate -> {
+                                context.openLinkIntent(R.string.link_donate)
                             }
                         }
                     }
@@ -111,12 +110,14 @@ fun FgaApp(
             composable(NavConstants.onboarding) {
                 OnboardingScreen(
                     vm = hiltViewModel(),
-                    navigateToHome = { navController.navigate(NavConstants.home) {
-                        // disables going back to onboarding from home screen
-                        popUpTo(NavConstants.onboarding) {
-                            inclusive = true
+                    navigateToHome = {
+                        navController.navigate(NavConstants.home) {
+                            // disables going back to onboarding from home screen
+                            popUpTo(NavConstants.onboarding) {
+                                inclusive = true
+                            }
                         }
-                    } }
+                    }
                 )
             }
             composable(NavConstants.battleConfigs) {

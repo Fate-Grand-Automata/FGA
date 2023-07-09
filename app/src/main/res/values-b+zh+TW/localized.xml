@@ -325,7 +325,6 @@
     <string name="spam">自動模式</string>
     <string name="spam_target">自動目標</string>
     <string name="spam_np">自動寶具：</string>
-    <string name="skill_maker_kukulcan">庫庫爾坎</string>
     <string name="skill_maker_kukulkan">庫庫爾坎</string>
     <string name="skill_maker_option_1">選項 1</string>
     <string name="skill_maker_option_2">選項 2</string>
@@ -421,4 +420,5 @@
     <string name="p_youtube_guide">Youtube 教學</string>
     <string name="p_youtube_guide_description">請參考此 Youtube 教學影片以認識如何新增自動腳本</string>
     <string name="p_youtube_guide_action">至 Youtube 觀看</string>
+    <string name="donate">捐款</string>
 </resources>

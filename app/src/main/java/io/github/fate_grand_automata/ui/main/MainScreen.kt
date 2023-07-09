@@ -203,6 +203,7 @@ sealed class MainScreenDestinations {
     object Releases : MainScreenDestinations()
     object TroubleshootingGuide : MainScreenDestinations()
     object Discord : MainScreenDestinations()
+    object Donate : MainScreenDestinations()
     object BattleConfigs : MainScreenDestinations()
     object MoreOptions : MainScreenDestinations()
     object AccessibilitySettings : MainScreenDestinations()
@@ -238,6 +239,12 @@ private fun MainScreenContent(
                         text = stringResource(R.string.discord),
                         icon = icon(R.drawable.ic_discord),
                         onClick = { navigate(MainScreenDestinations.Discord) }
+                    )
+
+                    HeadingButton(
+                        text = stringResource(R.string.donate),
+                        icon = icon(R.drawable.ic_donate),
+                        onClick = { navigate(MainScreenDestinations.Donate) }
                     )
 
                 }

@@ -162,7 +162,7 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
                     text = "dontkillmyapp.com",
                     data = stringResource(R.string.link_dontkillmyapp),
                     onClick = { link ->
-                        openLinkIntent(context, link)
+                        context.openLinkIntent(link)
                     }
                 )
             ),
@@ -191,7 +191,7 @@ class YoutubeVideo(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
 
         OutlinedButton(
             onClick = {
-                openLinkIntent(context, R.string.link_youtube)
+                context.openLinkIntent(R.string.link_youtube)
             },
             modifier = Modifier.padding(vertical = 15.dp)
         ) {

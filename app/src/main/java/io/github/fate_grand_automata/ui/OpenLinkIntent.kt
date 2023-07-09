@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 
-fun openLinkIntent(context: Context, linkResource: Int) =
-    openLinkIntent(context, context.getString(linkResource))
+fun Context.openLinkIntent(linkResource: Int) =
+    this.openLinkIntent(getString(linkResource))
 
-fun openLinkIntent(context: Context, link: String) {
+fun Context.openLinkIntent(link: String) {
     val intent = Intent(
         Intent.ACTION_VIEW,
         Uri.parse(link)
     )
-    context.startActivity(intent)
+    startActivity(intent)
 }

@@ -417,4 +417,5 @@
     <string name="p_youtube_guide">Youtube guide</string>
     <string name="p_youtube_guide_description">It\'s recommended to watch the Youtube guide as it will teach you how to set up farming configurations.</string>
     <string name="p_youtube_guide_action">Open guide</string>
+    <string name="donate">Donate</string>
 </resources>
