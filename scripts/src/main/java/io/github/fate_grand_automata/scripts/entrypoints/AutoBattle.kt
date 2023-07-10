@@ -394,7 +394,7 @@ class AutoBattle @Inject constructor(
         prefs.gameServer.betterFgo && locations.npStartedRegion.isWhite()
 
     /**
-     * Taps in the top right a few times to trigger NP skip in BetterFGO.
+     * Taps in the bottom right a few times to trigger NP skip in BetterFGO.
      */
     private fun skipNp() {
         0.6.seconds.wait()
