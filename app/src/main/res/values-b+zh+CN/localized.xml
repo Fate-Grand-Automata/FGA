@@ -147,7 +147,7 @@
     <string name="p_folder">更改存放助战图片、掉落截图等的文件夹位置</string>
 
     <string name="p_choose_folder_title">选择文件夹</string>
-    <string name="p_choose_folder_message">选择存放助战、掉落物图片等的文件夹\n\n注:有可能需要开启「显示内部储存空间」选项</string>
+    <string name="p_choose_folder_message">选择存放助战、掉落物图片等的文件夹\n\n如果已存在来自先前安装的文件，请勿选择“support”文件夹，而是其父文件夹\n\n注:有可能需要开启「显示内部储存空间」选项</string>
     <string name="p_choose_folder_not_exist_title">选择其他文件夹</string>
     <string name="p_choose_folder_not_exist_message">无法读取存放助战、掉落物图片等的文件夹</string>
     <string name="p_choose_folder_action">选择</string>
@@ -344,6 +344,10 @@
     <string name="mat_fantasy_scales">梦幻的鳞粉</string>
     <string name="mat_ceremonial_blade">黄昏的仪式剑</string>
     <string name="mat_ashes">不忘之灰</string>
+    <string name="mat_obsidian_edge">黑曜锐刃（暂译）</string>
+    <string name="mat_vestige_of_madness">疯狂的残渣（暂译）</string>
+    <string name="mat_sunscale">太阳皮（暂译）</string>
+    <string name="mat_converger">以太蓄光体（暂译）</string>
 
     <string name="mat_monument_saber">剑阶金像</string>
     <string name="mat_monument_archer">弓阶金像</string>
@@ -400,5 +404,18 @@
     <string name="p_game_area_custom_top">顶部（像素）</string>
     <string name="p_game_area_custom_right">右侧（像素）</string>
     <string name="p_game_area_custom_bottom">底部（像素）</string>
+
+    <string name="p_welcome">欢迎使用FGA！</string>
+    <string name="p_welcome_description">该页面将会引导您完成最重要的设置步骤</string>
+    <string name="p_skill_confirmation_onboarding_description">游戏中是否开启了“技能使用确认”选项？\n\n如果您目前无法确定，则暂时选择“已开启”</string>
+    <string name="p_on">已开启</string>
+    <string name="p_off">未开启</string>
+    <string name="p_battery_optimization">电池优化</string>
+    <string name="p_battery_optimization_description">FGA需要取消“电池优化”的限制，否则在工作一段时间后，它会随机停止运行\n\n在点击下方按钮后，将应用程序筛选器由“未优化”切换到“所有应用”，并将下方FGA设置变更为“不优化”</string>
+    <string name="p_battery_optimization_action">关闭电池优化</string>
+    <string name="p_battery_optimization_dontkillmyapp">取决于您的设备，您可能还需要禁用更多的优化设置。您可以在dontkillmyapp.com（英文页面）上找到更多教程</string>
+    <string name="p_youtube_guide">Youtube教学视频</string>
+    <string name="p_youtube_guide_description">推荐您观看教学视频，它将指导您如何设置周回脚本（英语视频，需要科学上网）</string>
+    <string name="p_youtube_guide_action">打开教学视频</string>
     <string name="donate">捐款</string>
 </resources>
