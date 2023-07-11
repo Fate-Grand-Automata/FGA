@@ -10,6 +10,7 @@ import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
 import io.github.fate_grand_automata.scripts.models.battle.BattleState
+import io.github.lib_automata.Location
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -162,7 +163,8 @@ class Caster @Inject constructor(
     fun use(np: CommandCard.NP) {
         locations.attack.clickLocation(np).click()
 
-        locations.battle.extraInfoWindowCloseClick.click()
+        // click in top right to exit any cooldown/stun warning
+        (locations.battle.extraInfoWindowCloseClick - Location(0, 400)).click()
     }
 
     fun use(card: CommandCard.Face) {
