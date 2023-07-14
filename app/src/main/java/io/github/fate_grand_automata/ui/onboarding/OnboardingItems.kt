@@ -25,6 +25,7 @@ import io.github.fate_grand_automata.BuildConfig
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.openLinkIntent
+import io.github.fate_grand_automata.ui.prefs.SwitchState
 import io.github.fate_grand_automata.ui.prefs.TriStateSwitch
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.OpenDocTreePersistable
@@ -78,7 +79,7 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
                         scope.launch(Dispatchers.Main) {
                             // Toast needs to happen in the UI thread
                             val msg = context.getString(R.string.support_imgs_extracting)
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                         }
                         SupportImageExtractor(context, vm.storageProvider).extract()
                     }
@@ -99,6 +100,9 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
 }
 
 class SkillConfirmation(vm: OnboardingViewModel) : OnboardingItem(vm) {
+    // to remember the setting when back arrow is clicked
+    private var switchState = SwitchState.UNKNOWN
+
     override fun shouldSkip(): Boolean {
         // only show on first installation
         return vm.prefsCore.onboardingCompletedVersion.get() > 0
@@ -113,7 +117,7 @@ class SkillConfirmation(vm: OnboardingViewModel) : OnboardingItem(vm) {
             style = MaterialTheme.typography.bodyLarge
         )
 
-        var state by vm.prefsCore.skillConfirmation.remember()
+        var prefsState by vm.prefsCore.skillConfirmation.remember()
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -122,9 +126,11 @@ class SkillConfirmation(vm: OnboardingViewModel) : OnboardingItem(vm) {
             Text(stringResource(R.string.p_off))
             TriStateSwitch(
                 onCheckedChange = {
-                    state = it
+                    prefsState = it
+                    switchState = if (it) SwitchState.ON else SwitchState.OFF
                     onFinished()
-                }
+                },
+                checked = switchState
             )
             Text(stringResource(R.string.p_on))
         }
