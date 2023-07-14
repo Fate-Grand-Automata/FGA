@@ -3,13 +3,14 @@ package io.github.fate_grand_automata.ui.onboarding
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ import io.github.fate_grand_automata.BuildConfig
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.openLinkIntent
+import io.github.fate_grand_automata.ui.prefs.TriStateSwitch
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.OpenDocTreePersistable
 import io.github.fate_grand_automata.util.SupportImageExtractor
@@ -53,7 +55,7 @@ class WelcomeScreen(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
 
 class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
     override fun shouldSkip(): Boolean {
-        return vm.prefsCore.dirRoot.get().isNotBlank()
+        return vm.prefsCore.dirRoot.get().isNotBlank() && !vm.storageProvider.shouldExtractSupportImages
     }
 
     @Composable
@@ -73,11 +75,15 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
                 vm.storageProvider.setRoot(it)
                 scope.launch(Dispatchers.IO) {
                     if (vm.storageProvider.shouldExtractSupportImages) {
+                        scope.launch(Dispatchers.Main) {
+                            // Toast needs to happen in the UI thread
+                            val msg = context.getString(R.string.support_imgs_extracting)
+                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                        }
                         SupportImageExtractor(context, vm.storageProvider).extract()
                     }
+                    onFinished()
                 }
-
-                onFinished()
             }
         }
         OutlinedButton(
@@ -92,7 +98,7 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
     }
 }
 
-class SkillConfirmation(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
+class SkillConfirmation(vm: OnboardingViewModel) : OnboardingItem(vm) {
     override fun shouldSkip(): Boolean {
         // only show on first installation
         return vm.prefsCore.onboardingCompletedVersion.get() > 0
@@ -114,9 +120,11 @@ class SkillConfirmation(vm: OnboardingViewModel) : OnboardingItem(vm, true) {
             modifier = Modifier.padding(vertical = 15.dp)
         ) {
             Text(stringResource(R.string.p_off))
-            Switch(
-                checked = state,
-                onCheckedChange = { state = it }
+            TriStateSwitch(
+                onCheckedChange = {
+                    state = it
+                    onFinished()
+                }
             )
             Text(stringResource(R.string.p_on))
         }
@@ -137,12 +145,14 @@ class DisableBatteryOptimization(vm: OnboardingViewModel) : OnboardingItem(vm) {
         )
 
         val context = LocalContext.current
+        val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            onFinished()
+        }
 
         OutlinedButton(
             onClick = {
                 val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-                context.startActivity(intent)
-                onFinished()
+                launcher.launch(intent)
             },
             modifier = Modifier.padding(vertical = 15.dp)
         ) {

@@ -17,7 +17,8 @@
     <string name="battle_config_item_delete_confirm_message">Are you sure you want to delete this configuration?</string>
     <string name="battle_config_support_any">Any</string>
 
-    <string name="support_imgs_extracted">Support Images Extracted Successfully</string>
+    <string name="support_imgs_extracting">Extracting support images</string>
+    <string name="support_imgs_extracted">Support images extracted successfully</string>
     <string name="support_imgs_extract_failed">Couldn\'t extract support images</string>
 
     <string name="battle_config_list_no_items">No configs</string>
