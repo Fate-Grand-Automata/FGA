@@ -408,7 +408,7 @@
 
     <string name="p_welcome">Welcome to FGA!</string>
     <string name="p_welcome_description">This screen will guide you through the most important setup steps.</string>
-    <string name="p_skill_confirmation_onboarding_description">Is Skill Confirmation enabled in FGO?\n\nIf you\'re not sure, leave it on.</string>
+    <string name="p_skill_confirmation_onboarding_description">Is Skill Confirmation enabled in FGO?\n\nIf you\'re not sure, turn it ON.</string>
     <string name="p_on">ON</string>
     <string name="p_off">OFF</string>
     <string name="p_battery_optimization">Battery optimization</string>
