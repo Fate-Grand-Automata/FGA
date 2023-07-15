@@ -408,7 +408,7 @@
 
     <string name="p_welcome">Welcome to FGA!</string>
     <string name="p_welcome_description">This screen will guide you through the most important setup steps.</string>
-    <string name="p_skill_confirmation_onboarding_description">Is Skill Confirmation enabled in FGO?\n\nIf you\'re not sure, turn it ON.</string>
+    <string name="p_skill_confirmation_onboarding_description">Is "Confirm Skill Use" turned ON or OFF in FGO?\n\nON is the default FGO where it asks you to press OK each time you want to use a skill.\n\nYou can change this setting later on.</string>
     <string name="p_on">ON</string>
     <string name="p_off">OFF</string>
     <string name="p_battery_optimization">Battery optimization</string>
