@@ -17,6 +17,7 @@
     <string name="battle_config_item_delete_confirm_message">이 설정을 정말로 지우시겠습니까?</string>
     <string name="battle_config_support_any">아무거나</string>
 
+    <string name="support_imgs_extracting">서포트 이미지 추출</string>
     <string name="support_imgs_extracted">서포트 이미지가 성공적으로 추출되었습니다</string>
     <string name="support_imgs_extract_failed">서포트 이미지 추출을 실패했습니다</string>
 
@@ -345,6 +346,10 @@
     <string name="mat_ceremonial_blade">황혼의 의식검</string>
     <string name="mat_ashes">잊을 수 없는 재</string>
 
+    <string name="mat_obsidian_edge">흑요예인</string>
+    <string name="mat_vestige_of_madness">광기의 잔재</string>
+    <string name="mat_sunscale">태양피</string>
+    <string name="mat_converger">에테르 수광체</string>
     <string name="mat_monument_saber">세이버 모뉴먼트</string>
     <string name="mat_monument_archer">아쳐 모뉴먼트</string>
     <string name="mat_monument_lancer">랜서 모뉴먼트</string>
@@ -400,4 +405,18 @@
     <string name="p_game_area_custom_top">상단 좌표</string>
     <string name="p_game_area_custom_right">우측 좌표</string>
     <string name="p_game_area_custom_bottom">하단 좌표</string>
+    <string name="p_welcome">FGA에 오신걸 환영합니다!</string>
+    <string name="p_welcome_description">FGA 사용에 필요한 설정법을 안내드리겠습니다.</string>
+    <string name="p_skill_confirmation_onboarding_description">"스킬 사용 확인"이 켜져있으신가요?\n스킬을 사용하기 전에 정말 사용할 것인지 확인창이 나온다면 켜져있는 것입니다.\n이 설정은 나중에 변경할 수 있습니다.</string>
+    <string name="p_on">켜짐</string>
+    <string name="p_off">꺼짐</string>
+    <string name="p_battery_optimization">배터리 최적화</string>
+    <string name="p_battery_optimization_description">FGA를 구동하려면 배터리 설정의 제한을 풀어야합니다. 그러지 않으면 어느순간 갑자기 동작이 멈추게됩니다.\n\n아래 버튼을 누르신 후 필터에서 \"최적화 안 함\" 대신 \"모든 앱\"을 선택 후 FGA를 눌러서 "최적화 안 함"을 선택해주세요.</string>
+    <string name="p_battery_optimization_action">배터리 최적화 비활성화</string>
+    <string name="p_battery_optimization_dontkillmyapp">간혹 어떤 기종의 장비에서는 추가적으로 다른 최적화들을 비활성해야할 수 있습니다. 관련 설명은 dontkillmyapp.com (영어)에서 확인하실 수 있습니다.</string>
+    <string name="p_youtube_guide">유튜브 가이드 영상</string>
+    <string name="p_youtube_guide_description">파밍 설정 방법을 알려드리는 유튜브 영상(영어)이 있으니 확인해보시는 걸 추천드립니다.</string>
+    <string name="p_youtube_guide_action">가이드 열기 (영어)</string>
+    <string name="donate">기부</string>
+    <string name="update_download_success">다운로드가 완료되었습니다. 5초 내로 재시작됩니다.</string>
 </resources>
