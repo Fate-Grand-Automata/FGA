@@ -24,6 +24,7 @@ on:
       - 'LICENSE'
       - 'renovate.json'
       - 'custom-game-area/**'
+      - 'FUNDING.yml'
   workflow_dispatch:
     inputs:
       release-canary:
