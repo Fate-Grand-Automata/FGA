@@ -33,8 +33,8 @@ class AutoGiftBox @Inject constructor(
     }
 
     private data class IterationResult(
-        val pickedStacks: Int,
-        val pickedGoldEmbers: Int
+        val pickedStacks: Int = 0,
+        val pickedGoldEmbers: Int = 0
     ) {
         operator fun plus(other: IterationResult): IterationResult {
             return IterationResult(
@@ -45,7 +45,7 @@ class AutoGiftBox @Inject constructor(
     }
 
     override fun script(): Nothing {
-        var totalSelected = IterationResult(0, 0)
+        var totalSelected = IterationResult()
         val xpOffsetX = (locations.scriptArea.find(images[Images.GoldXP]) ?: locations.scriptArea.find(images[Images.SilverXP]))
             ?.region?.center?.x
             ?: throw ExitException(ExitReason.NoEmbersFound)
@@ -54,9 +54,8 @@ class AutoGiftBox @Inject constructor(
         val scrollEndRegion = Region(100 + checkRegion.x, 1320, 320, 60)
         val receiveSelectedClick = Location(1890 + xpOffsetX, 750)
         val receiveEnabledRegion = Region(1755 + xpOffsetX, 410, 290, 60)
-
-        while (true) {
-            val receiveEnabledPattern = receiveEnabledRegion.getPattern()
+        val receiveEnabledPattern = receiveEnabledRegion.getPattern()
+        do {
             val picked = iteration(checkRegion, scrollEndRegion)
             totalSelected += picked
 
@@ -68,9 +67,10 @@ class AutoGiftBox @Inject constructor(
                 }
                 receiveSelectedClick.click()
             } else break
-
-            if (receiveEnabledPattern !in receiveEnabledRegion) break
-        }
+        } while (
+            totalSelected.pickedGoldEmbers < prefs.maxGoldEmberTotalCount &&
+            receiveEnabledPattern in receiveEnabledRegion
+        )
 
         throw ExitException(
             ExitReason.CannotSelectAnyMore(
@@ -88,9 +88,7 @@ class AutoGiftBox @Inject constructor(
         var aroundEnd = false
         var nullStreak = 0
 
-        while (iterationResult.pickedStacks < maxClickCount &&
-            iterationResult.pickedGoldEmbers < prefs.maxGoldEmberTotalCount
-        ) {
+        do {
             val picked = useSameSnapIn {
                 if (!aroundEnd) {
                     // The scrollbar end position matches before completely at end
@@ -121,7 +119,10 @@ class AutoGiftBox @Inject constructor(
                 // Longer animations. At the end, items pulled up and released.
                 1.seconds.wait()
             }
-        }
+        } while (
+            iterationResult.pickedStacks < maxClickCount &&
+            iterationResult.pickedGoldEmbers < prefs.maxGoldEmberTotalCount
+        )
 
         return iterationResult
     }
