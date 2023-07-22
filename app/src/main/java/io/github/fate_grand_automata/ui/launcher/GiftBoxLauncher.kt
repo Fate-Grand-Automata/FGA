@@ -43,7 +43,7 @@ fun ColumnScope.GiftBoxLauncherContent(
         Stepper(
             value = maxGoldEmberStackSize,
             onValueChange = changeMaxGoldEmberStackSize,
-            valueRange = 0..30
+            valueRange = 0..100
         )
     }
 
