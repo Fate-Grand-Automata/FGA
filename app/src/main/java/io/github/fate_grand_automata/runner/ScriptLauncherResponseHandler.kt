@@ -11,7 +11,8 @@ class ScriptLauncherResponseHandler @Inject constructor(
     private val prefs: IPreferences
 ) {
     private fun handleGiftBoxResponse(resp: ScriptLauncherResponse.GiftBox) {
-        prefs.maxGoldEmberSetSize = resp.maxGoldEmberStackSize
+        prefs.maxGoldEmberStackSize = resp.maxGoldEmberStackSize
+        prefs.maxGoldEmberTotalCount = resp.maxGoldEmberTotalCount
     }
 
     fun handle(resp: ScriptLauncherResponse) {

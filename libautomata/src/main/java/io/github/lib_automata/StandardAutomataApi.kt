@@ -10,7 +10,8 @@ class StandardAutomataApi @Inject constructor(
     private val imageMatcher: ImageMatcher,
     private val transform: Transformer,
     private val colorManager: ColorManager,
-    private val wait: Waiter
+    private val wait: Waiter,
+    private val ocrService: OcrService
 ) : AutomataApi {
 
     override fun Region.getPattern() =
@@ -47,5 +48,22 @@ class StandardAutomataApi @Inject constructor(
     ) = imageMatcher.findAll(this, pattern, similarity)
 
     override fun Region.isWhite() = imageMatcher.isWhite(this)
+
+    override fun Region.detectText(outlinedText: Boolean): String {
+        screenshotManager.getScreenshot()
+            .crop(transform.toImage(this))
+            .threshold(0.5)
+            .let {
+                if (outlinedText) {
+                    it.use {
+                        it.fillText()
+                    }
+                } else it
+            }
+            .also { highlight(this, HighlightColor.Info) }
+            .use {
+                return ocrService.detectText(it)
+            }
+    }
 }
 

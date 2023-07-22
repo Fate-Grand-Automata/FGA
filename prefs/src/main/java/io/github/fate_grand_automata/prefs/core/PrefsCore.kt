@@ -79,6 +79,7 @@ class PrefsCore @Inject constructor(
     val swipeMultiplier = maker.int("swipe_multiplier", 100)
 
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
+    val maxGoldEmberTotalCount = maker.int("max_gold_ember_total_count", 100)
 
     val ceBombTargetRarity = maker.int("ce_bomb_target_rarity", 1)
 

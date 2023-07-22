@@ -45,4 +45,6 @@ interface AutomataApi {
     ): Sequence<Match>
 
     fun Region.isWhite(): Boolean
+
+    fun Region.detectText(outlinedText: Boolean = false): String
 }

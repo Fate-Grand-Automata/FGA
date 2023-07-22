@@ -56,6 +56,10 @@ interface Pattern : AutoCloseable {
     fun threshold(value: Double): Pattern
 
     fun isWhite(): Boolean
+    
+    fun floodFill(x: Double, y: Double, maxDiff: Double, newValue: Double): Pattern
+
+    fun fillText(): Pattern
 }
 
 /**

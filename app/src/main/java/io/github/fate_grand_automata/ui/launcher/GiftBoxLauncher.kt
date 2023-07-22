@@ -1,8 +1,10 @@
 package io.github.fate_grand_automata.ui.launcher
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -23,21 +25,43 @@ import io.github.fate_grand_automata.ui.Stepper
 @Composable
 fun ColumnScope.GiftBoxLauncherContent(
     maxGoldEmberStackSize: Int,
-    changeMaxEmberStackSize: (Int) -> Unit
+    changeMaxGoldEmberStackSize: (Int) -> Unit,
+    maxGoldEmberTotalCount: Int,
+    changeMaxGoldEmberTotalCount: (Int) -> Unit
 ) {
-    Text(
-        stringResource(R.string.p_max_gold_ember_set_size),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.secondary
-    )
-
-    Box(
-        modifier = Modifier.align(Alignment.End)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        Text(
+            stringResource(R.string.p_max_gold_ember_set_size),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary
+        )
+
         Stepper(
             value = maxGoldEmberStackSize,
-            onValueChange = changeMaxEmberStackSize,
-            valueRange = 0..4
+            onValueChange = changeMaxGoldEmberStackSize,
+            valueRange = 0..30
+        )
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            stringResource(R.string.p_max_gold_ember_total_count),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary
+        )
+
+        Stepper(
+            value = maxGoldEmberTotalCount,
+            onValueChange = changeMaxGoldEmberTotalCount,
+            valueRange = 1..600
         )
     }
 }
@@ -47,7 +71,8 @@ fun giftBoxLauncher(
     prefs: IPreferences,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
-    var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberSetSize) }
+    var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberStackSize) }
+    var maxGoldEmberTotalCount by remember { mutableStateOf(prefs.maxGoldEmberTotalCount) }
 
     Column(
         modifier = modifier
@@ -67,12 +92,14 @@ fun giftBoxLauncher(
 
         GiftBoxLauncherContent(
             maxGoldEmberStackSize = maxGoldEmberStackSize,
-            changeMaxEmberStackSize = { maxGoldEmberStackSize = it }
+            changeMaxGoldEmberStackSize = { maxGoldEmberStackSize = it },
+            maxGoldEmberTotalCount = maxGoldEmberTotalCount,
+            changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it }
         )
     }
 
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
-        build = { ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize) }
+        build = { ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize, maxGoldEmberTotalCount) }
     )
 }

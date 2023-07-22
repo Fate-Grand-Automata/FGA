@@ -10,7 +10,11 @@ sealed class ScriptLauncherResponse {
         val giftBox: GiftBox?
     ) : ScriptLauncherResponse()
 
-    data class GiftBox(val maxGoldEmberStackSize: Int) : ScriptLauncherResponse()
+    data class GiftBox(
+        val maxGoldEmberStackSize: Int,
+        val maxGoldEmberTotalCount: Int
+    ) : ScriptLauncherResponse()
+
     data class CEBomb(val targetRarity: Int) : ScriptLauncherResponse()
     object SupportImageMaker : ScriptLauncherResponse()
     data class Battle(
