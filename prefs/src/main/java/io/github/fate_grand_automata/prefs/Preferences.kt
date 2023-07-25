@@ -83,7 +83,9 @@ class PreferencesImpl @Inject constructor(
 
     override val waitBeforeCards by prefs.waitBeforeCards.map { it.milliseconds }
 
-    override var maxGoldEmberSetSize by prefs.maxGoldEmberSetSize
+    override var maxGoldEmberStackSize by prefs.maxGoldEmberSetSize
+
+    override var maxGoldEmberTotalCount by prefs.maxGoldEmberTotalCount
 
     override var ceBombTargetRarity by prefs.ceBombTargetRarity
 

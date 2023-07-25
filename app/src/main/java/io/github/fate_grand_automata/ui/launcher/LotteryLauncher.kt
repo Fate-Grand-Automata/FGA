@@ -28,7 +28,8 @@ fun lotteryLauncher(
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
     var receiveEmbers by remember { mutableStateOf(prefs.receiveEmbersWhenGiftBoxFull) }
-    var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberSetSize) }
+    var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberStackSize) }
+    var maxGoldEmberTotalCount by remember { mutableStateOf(prefs.maxGoldEmberTotalCount) }
 
     Column(
         modifier = modifier
@@ -69,7 +70,9 @@ fun lotteryLauncher(
         if (receiveEmbers) {
             GiftBoxLauncherContent(
                 maxGoldEmberStackSize = maxGoldEmberStackSize,
-                changeMaxEmberStackSize = { maxGoldEmberStackSize = it }
+                changeMaxGoldEmberStackSize = { maxGoldEmberStackSize = it },
+                maxGoldEmberTotalCount = maxGoldEmberTotalCount,
+                changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it }
             )
         }
     }
@@ -78,7 +81,9 @@ fun lotteryLauncher(
         canBuild = { true },
         build = {
             ScriptLauncherResponse.Lottery(
-                if (receiveEmbers) ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize) else null
+                if (receiveEmbers) {
+                    ScriptLauncherResponse.GiftBox(maxGoldEmberStackSize, maxGoldEmberTotalCount)
+                } else null
             )
         }
     )

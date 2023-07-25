@@ -9,6 +9,8 @@ import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.core.MatOfByte
+import org.opencv.core.MatOfPoint
+import org.opencv.core.Point
 import org.opencv.core.Rect
 import org.opencv.core.Scalar
 import org.opencv.imgcodecs.Imgcodecs
@@ -114,16 +116,8 @@ class DroidCvPattern(
                     Timber.d("Matched $template with a score of ${match.score}")
                     yield(match)
 
-                    Mat().use { mask ->
-                        // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
-                        val floodFillDiff = 0.3
-                        Imgproc.floodFill(
-                            result, mask, loc, Scalar(0.0),
-                            Rect(),
-                            Scalar(floodFillDiff), Scalar(floodFillDiff),
-                            Imgproc.FLOODFILL_FIXED_RANGE
-                        )
-                    }
+                    // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
+                    result.floodFill(loc, 0.3, 0.0)
                 } else {
                     Timber.v("Stopped matching $template at score ($score) < similarity ($similarity)")
                     break
@@ -182,5 +176,85 @@ class DroidCvPattern(
         val minMaxLocResult = Core.minMaxLoc(mat)
         // 0 = black, 255 = white
         return minMaxLocResult.minVal >= 200
+    }
+
+    override fun floodFill(x: Double, y: Double, maxDiff: Double, newValue: Double): Pattern {
+        val point = Point(x, y)
+        this.mat.floodFill(point, maxDiff, newValue)
+        return this
+    }
+
+    /**
+     * Fills in outlined text. Only use this on binary images produced by [threshold].
+     */
+    override fun fillText(): Pattern {
+        val mask = Mat.zeros(org.opencv.core.Size(width + 2.0, height + 2.0), mat.type())
+
+        for (point in getPointInHoles(this.mat)) {
+            mat.floodFillMask(point, 255.0, mask)
+        }
+
+        Core.bitwise_not(mask, mask)
+        return DroidCvPattern(mask)
+    }
+
+    /**
+     * Flood fills the mat.
+     */
+    private fun Mat.floodFill(startingPoint: Point, maxDiff: Double, newValue: Double) {
+        Mat().use { mask ->
+            Imgproc.floodFill(
+                this, mask, startingPoint, Scalar(newValue),
+                Rect(),
+                Scalar(maxDiff), Scalar(maxDiff),
+                Imgproc.FLOODFILL_FIXED_RANGE
+            )
+        }
+    }
+
+    /**
+     * Flood fills the mask instead of the mat.
+     */
+    private fun Mat.floodFillMask(startingPoint: Point, newValue: Double, mask: Mat) {
+        Imgproc.floodFill(
+            this, mask, startingPoint, Scalar(newValue),
+            Rect(), Scalar(0.0), Scalar(0.0),
+            4 + (newValue.toInt() shl 8) + Imgproc.FLOODFILL_MASK_ONLY
+        )
+
+    }
+
+    /**
+     * Identifies the point in the hole with the lowest y value.
+     */
+    private fun findTopHolePoint(holePoints: MatOfPoint): Point {
+        var topPoint = Point(0.0, Double.MAX_VALUE)
+        for (point in holePoints.toList()) {
+            if (point.y < topPoint.y) {
+                topPoint = point
+            }
+        }
+        return Point(topPoint.x, topPoint.y + 1.0)
+    }
+
+    /**
+     * Finds holes in outlined text and returns a list of [Point]s to be used as starting point for [floodFill].
+     */
+    private fun getPointInHoles(img: Mat): List<Point> {
+        val work = Mat()
+        Core.bitwise_not(img, work)
+        val contours = mutableListOf<MatOfPoint>()
+        val hierarchy = Mat()
+        Imgproc.findContours(work, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE)
+        val holePoints = mutableListOf<Point>()
+        contours.forEachIndexed { index, matOfPoint ->
+            val parent = hierarchy[0, index][3].toInt()
+            // top level holes have a parent but no grandparent...
+            if ((parent >= 0) && (hierarchy[0, parent][3] < 0)) {
+                holePoints.add(findTopHolePoint(matOfPoint))
+            }
+
+        }
+        return holePoints
     }
 }

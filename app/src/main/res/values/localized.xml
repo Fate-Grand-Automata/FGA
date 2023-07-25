@@ -221,6 +221,7 @@
     <string name="p_script_mode_gift_box">Gift Box</string>
 
     <string name="p_max_gold_ember_set_size">Max Gold ember set size</string>
+    <string name="p_max_gold_ember_total_count">Max Gold ember total count</string>
 
     <string name="p_not_set">Not Set</string>
 
@@ -282,7 +283,7 @@
     <string name="avg_time_per_run">Average time per run: %s</string>
     <string name="turns_count">Turns: %d</string>
     <string name="turns_stats">Turns: %1$d (min), %2$d (avg), %3$d (max)</string>
-    <string name="picked_exp_stacks">Picked %d EXP stacks</string>
+    <string name="picked_exp_stacks">Picked %d EXP stacks, resulting in a total amount of %d Gold embers</string>
     <string name="no_embers_found">Couldn\'t find Embers on screen. Make sure that you\'ve filtered for EXP cards.</string>
     <string name="root_failed">Failed to get root access</string>
 
