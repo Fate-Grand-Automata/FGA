@@ -10,6 +10,7 @@
     <string name="battle_config_item_delete_confirm_message">是否確認刪除此腳本</string>
     <string name="battle_config_support_any">任何（從者/概念禮裝）</string>
 
+    <string name="support_imgs_extracting">支援圖片擷取中</string>
     <string name="support_imgs_extracted">支援圖片擷取成功</string>
     <string name="support_imgs_extract_failed">無法擷取支援圖片</string>
 
@@ -195,8 +196,9 @@
     <string name="p_script_mode_support_image_maker">支援圖片截取器</string>
     <string name="p_script_mode_gift_box">禮物盒</string>
 
-    <string name="p_max_gold_ember_set_size">金種火最大領取數</string>
+    <string name="p_max_gold_ember_set_size">金種火最大領取數（枚／一堆）</string>
 
+    <string name="p_max_gold_ember_total_count">金種火最大領取數（總枚數）</string>
     <string name="p_not_set">未設定</string>
 
     <string name="p_support_class_none">無</string>
@@ -244,7 +246,7 @@
     <string name="avg_time_per_run">平均一場時間：%s</string>
     <string name="turns_count">回合 %d</string>
     <string name="turns_stats">回合：%1$d（最少）, %2$d（平均）, %3$d（最多）</string>
-    <string name="picked_exp_stacks">已挑選 %d 堆種火</string>
+    <string name="picked_exp_stacks">已挑選 %d 堆種火，總共挑選 %d 枚金種火</string>
 
     <string name="p_mats">追縱掉落素材</string>
     <string name="mats_farmed">已獲得 %d 個素材</string>
@@ -300,7 +302,7 @@
     </string>
     <string name="p_battle_config_server">伺服器</string>
     <string name="p_battle_config_support_also_check_all">同時檢查ALL職階欄</string>
-    <string name="p_max_skills">滿技</string>
+    <string name="p_max_skills">滿技能</string>
     <string name="p_stop_on_first_clear_rewards">首次通關自動停止</string>
     <string name="overlay_notification_text">服務啟動中</string>
     <string name="cannot_stop_recording">無法停止螢幕錄影</string>
@@ -413,4 +415,5 @@
     <string name="p_youtube_guide_description">請參考此 Youtube 教學影片以認識如何新增自動腳本</string>
     <string name="p_youtube_guide_action">至 Youtube 觀看</string>
     <string name="donate">捐款</string>
+    <string name="update_download_success">更新已下載完成，於 5 秒鐘後重啟</string>
 </resources>
