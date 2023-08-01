@@ -38,7 +38,9 @@ class SupportViewModel @Inject constructor(
     } catch (e: Exception) {
         val msg = "Couldn't access Support images ($kind)"
 
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        }
         Timber.e(e, msg)
 
         emptyList()
@@ -81,6 +83,8 @@ class SupportViewModel @Inject constructor(
             }
         }
 
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        }
     }
 }

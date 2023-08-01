@@ -138,10 +138,12 @@ class StorageProvider @Inject constructor(
                 KnownException.Reason.CouldNotOpenSupportFileForReading(kind, name)
             )
 
-        val files = if (file.isDirectory) {
-            file.listFiles().takeUnless { it.isEmpty() }
+        val files: List<DocumentFile> = if (file.isDirectory) {
+            file.listFiles()
+                .takeUnless { it.isEmpty() }
+                ?.filter { it.name != null && !it.name!!.lowercase().contains("nomedia") }
                 ?: throw KnownException(KnownException.Reason.SupportFolderIsEmpty(kind, name))
-        } else arrayOf(file)
+        } else listOf(file)
 
         return files.map {
             resolver.openInputStream(it.uri)
@@ -154,6 +156,7 @@ class StorageProvider @Inject constructor(
     override fun list(kind: SupportImageKind) = kind.imageFolder
         .listFiles()
         .mapNotNull { it.name }
+        .filterNot { it.lowercase().contains("nomedia") }
 
     private val dropsFolder
         get() = dirRoot.getOrCreateDir("drops")
