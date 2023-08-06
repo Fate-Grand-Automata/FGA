@@ -68,6 +68,17 @@ class Caster @Inject constructor(
         locations.battle.extraInfoWindowCloseClick.click()
 
         waitForAnimationToFinish()
+
+        // wait extra for Mélusine and then replace her image
+        if (targets.contains(ServantTarget.Melusine)) {
+            waitForAnimationToFinish()
+            val slot = when (skill) {
+                Skill.Servant.B3 -> FieldSlot.B
+                Skill.Servant.C3 -> FieldSlot.C
+                else -> FieldSlot.A
+            }
+            servantTracker.melusineChangedAscension(slot)
+        }
     }
 
     fun castServantSkill(skill: Skill.Servant, target: ServantTarget?) =
@@ -78,8 +89,7 @@ class Caster @Inject constructor(
 
     fun selectSkillTarget(target: ServantTarget) {
         val actualTarget = when (target) {
-            ServantTarget.Left, ServantTarget.Right -> target
-            else -> {
+            ServantTarget.A, ServantTarget.B, ServantTarget.C -> {
                 val deployed = servantTracker.deployed
 
                 // How many servants on field?
@@ -104,9 +114,11 @@ class Caster @Inject constructor(
                     else -> target
                 }
             }
+
+            else -> target
         }
 
-        locations.battle.locate(actualTarget).click()
+        locations.battle.locate(actualTarget)?.click()
     }
 
     private fun openMasterSkillMenu() {

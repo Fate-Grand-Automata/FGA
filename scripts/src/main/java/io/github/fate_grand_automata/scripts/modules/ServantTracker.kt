@@ -42,7 +42,7 @@ class ServantTracker @Inject constructor(
         nextRun()
     }
 
-    class TeamSlotData(
+    data class TeamSlotData(
         val checkImage: Pattern,
         val skills: List<Pattern>
     ) : AutoCloseable {
@@ -236,5 +236,25 @@ class ServantTracker @Inject constructor(
         }
 
         return result
+    }
+
+    /**
+     * Replaces the old Melusine image with a new one after using her 3rd skill.
+     */
+    fun melusineChangedAscension(fieldSlot: FieldSlot) {
+        val teamSlot = _deployed[fieldSlot]!!
+        val oldTeamSlotData = checkImages[teamSlot]
+        if (oldTeamSlotData != null) {
+            val newTeamSlotData = oldTeamSlotData.copy(
+                checkImage = locations.battle.servantChangeCheckRegion(fieldSlot)
+                    .getPattern()
+                    .tag("Servant $teamSlot")
+            )
+            oldTeamSlotData.checkImage.close()
+            checkImages[teamSlot] = newTeamSlotData
+        }
+        faceCardImages[teamSlot]?.close()
+        faceCardImages.remove(teamSlot)
+        initFaceCard(teamSlot, fieldSlot)
     }
 }

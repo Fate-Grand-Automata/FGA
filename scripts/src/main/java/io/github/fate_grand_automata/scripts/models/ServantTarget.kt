@@ -13,7 +13,10 @@ sealed class ServantTarget(val autoSkillCode: Char) {
     object Option1 : ServantTarget('K')
     object Option2 : ServantTarget('U')
 
+    // Mélusine
+    object Melusine : ServantTarget('M')
+
     companion object {
-        val list by lazy { listOf(A, B, C, Left, Right, Option1, Option2) }
+        val list by lazy { listOf(A, B, C, Left, Right, Option1, Option2, Melusine) }
     }
 }

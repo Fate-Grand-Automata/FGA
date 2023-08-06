@@ -148,6 +148,14 @@ fun SkillMakerUI(
                     },
                     onKukulkan = {
                         navigate(SkillMakerNav.Kukulkan(nav.skill))
+                    },
+                    showMelusine = nav.skill in listOf(
+                        Skill.Servant.A3,
+                        Skill.Servant.B3,
+                        Skill.Servant.C3
+                    ),
+                    onMelusine = {
+                        vm.targetSkill(ServantTarget.Melusine)
                     }
                 )
             }

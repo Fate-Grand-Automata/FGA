@@ -34,7 +34,8 @@ class BattleScreenLocations @Inject constructor(
         ServantTarget.Right -> 330
         ServantTarget.Option1 -> 0
         ServantTarget.Option2 -> 470
-    }.let { x -> Location(x, 880) }.xFromCenter()
+        ServantTarget.Melusine -> null
+    }?.let { x -> Location(x, 880) }?.xFromCenter()
 
     fun locate(skill: Skill.Servant) = when (skill) {
         Skill.Servant.A1 -> 148

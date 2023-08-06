@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.models.FieldSlot
+import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.SkillSpamConfig
 import io.github.fate_grand_automata.scripts.models.SkillSpamTarget
 import io.github.fate_grand_automata.scripts.models.SpamConfigPerTeamSlot
@@ -56,15 +57,15 @@ class SkillSpam @Inject constructor(
         when (target) {
             SkillSpamTarget.None -> null
             SkillSpamTarget.Self -> when (fieldSlot) {
-                io.github.fate_grand_automata.scripts.models.FieldSlot.A -> io.github.fate_grand_automata.scripts.models.ServantTarget.A
-                io.github.fate_grand_automata.scripts.models.FieldSlot.B -> io.github.fate_grand_automata.scripts.models.ServantTarget.B
-                io.github.fate_grand_automata.scripts.models.FieldSlot.C -> io.github.fate_grand_automata.scripts.models.ServantTarget.C
+                FieldSlot.A -> ServantTarget.A
+                FieldSlot.B -> ServantTarget.B
+                FieldSlot.C -> ServantTarget.C
             }
 
-            SkillSpamTarget.Slot1 -> io.github.fate_grand_automata.scripts.models.ServantTarget.A
-            SkillSpamTarget.Slot2 -> io.github.fate_grand_automata.scripts.models.ServantTarget.B
-            SkillSpamTarget.Slot3 -> io.github.fate_grand_automata.scripts.models.ServantTarget.C
-            SkillSpamTarget.Left -> io.github.fate_grand_automata.scripts.models.ServantTarget.Left
-            SkillSpamTarget.Right -> io.github.fate_grand_automata.scripts.models.ServantTarget.Right
+            SkillSpamTarget.Slot1 -> ServantTarget.A
+            SkillSpamTarget.Slot2 -> ServantTarget.B
+            SkillSpamTarget.Slot3 -> ServantTarget.C
+            SkillSpamTarget.Left -> ServantTarget.Left
+            SkillSpamTarget.Right -> ServantTarget.Right
         }
 }
