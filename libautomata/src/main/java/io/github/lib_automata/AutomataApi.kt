@@ -8,7 +8,7 @@ interface AutomataApi {
      *
      * @return an [Pattern] object with the image data
      */
-    fun Region.getPattern(): Pattern
+    fun Region.getPattern(tag: String = ""): Pattern
 
     fun <T> useSameSnapIn(block: () -> T): T
 

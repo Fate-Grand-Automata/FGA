@@ -42,12 +42,12 @@ class ServantTracker @Inject constructor(
         nextRun()
     }
 
-    class TeamSlotData(
-        val checkImage: Pattern,
+    data class TeamSlotData(
+        val checkImage: MutableList<Pattern>,
         val skills: List<Pattern>
     ) : AutoCloseable {
         override fun close() {
-            checkImage.close()
+            checkImage.forEach { it.close() }
             skills.forEach { it.close() }
         }
     }
@@ -55,11 +55,11 @@ class ServantTracker @Inject constructor(
     val checkImages = mutableMapOf<TeamSlot, TeamSlotData>()
     private var supportSlot: TeamSlot? = null
 
-    private val faceCardImages = mutableMapOf<TeamSlot, Pattern>()
+    private val faceCardImages = mutableMapOf<TeamSlot, MutableList<Pattern>>()
 
     override fun close() {
         checkImages.values.forEach { it.close() }
-        faceCardImages.values.forEach { it.close() }
+        faceCardImages.values.flatten().forEach { it.close() }
         checkImages.clear()
     }
 
@@ -78,13 +78,13 @@ class ServantTracker @Inject constructor(
 
             if (teamSlot !in checkImages || isSupport) {
                 checkImages[teamSlot] = TeamSlotData(
-                    checkImage = locations.battle.servantChangeCheckRegion(slot)
-                        .getPattern()
-                        .tag("Servant $teamSlot"),
+                    checkImage = mutableListOf(
+                        locations.battle.servantChangeCheckRegion(slot)
+                            .getPattern("Servant $teamSlot")
+                    ),
                     skills = slot.skills().mapIndexed { index, it ->
                         locations.battle.imageRegion(it)
-                            .getPattern()
-                            .tag("Servant $teamSlot S${index + 1}")
+                            .getPattern("Servant $teamSlot S${index + 1}")
                     }
                 )
             }
@@ -98,8 +98,8 @@ class ServantTracker @Inject constructor(
         }
     }
 
-    private fun initFaceCard(teamSlot: TeamSlot, slot: FieldSlot) {
-        if (prefs.skipServantFaceCardCheck || teamSlot in faceCardImages)
+    private fun initFaceCard(teamSlot: TeamSlot, slot: FieldSlot, addAnotherImage: Boolean = false) {
+        if (prefs.skipServantFaceCardCheck || (!addAnotherImage && teamSlot in faceCardImages))
             return
 
         // Open details dialog and click on INFO
@@ -108,12 +108,13 @@ class ServantTracker @Inject constructor(
 
         250.milliseconds.wait()
 
-        val image = locations.battle.servantDetailsFaceCardRegion.getPattern().tag("Face $teamSlot")
+        val image = locations.battle.servantDetailsFaceCardRegion.getPattern("Face $teamSlot")
 
         // Close dialog
         locations.battle.extraInfoWindowCloseClick.click()
 
-        faceCardImages[teamSlot] = image
+        faceCardImages.getOrPut(teamSlot) { mutableListOf() }
+            .add(image)
 
         250.milliseconds.wait()
     }
@@ -138,7 +139,7 @@ class ServantTracker @Inject constructor(
             return
         }
 
-        val isDifferentServant = checkImage !in locations.battle.servantChangeCheckRegion(slot)
+        val isDifferentServant = checkImage.none { it in locations.battle.servantChangeCheckRegion(slot) }
         val isSupport = images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
         val wasSupport = supportSlot == teamSlot
 
@@ -213,9 +214,11 @@ class ServantTracker @Inject constructor(
             .groupBy { card ->
                 // find the best matching Servant which isn't the support
                 ownedServants
-                    .mapValues { (_, image) ->
-                        locations.attack.servantMatchRegion(card)
-                            .find(image, 0.5)?.score ?: 0.0
+                    .mapValues { (_, images) ->
+                        images.maxOf { image ->
+                            locations.attack.servantMatchRegion(card)
+                                .find(image, 0.5)?.score ?: 0.0
+                        }
                     }
                     .filterValues { it > 0.0 }
                     .maxByOrNull { it.value }
@@ -236,5 +239,22 @@ class ServantTracker @Inject constructor(
         }
 
         return result
+    }
+
+    /**
+     * Adds the 3rd Ascension Melusine image to the existing 1st/2nd Ascension
+     * image so both are detected as the same Servant.
+     */
+    fun melusineChangedAscension(fieldSlot: FieldSlot) {
+        val teamSlot = _deployed[fieldSlot]!!
+        val teamSlotData = checkImages[teamSlot]
+        if (teamSlotData != null && teamSlotData.checkImage.size == 1) {
+            teamSlotData.checkImage.add(
+                locations.battle.servantChangeCheckRegion(fieldSlot)
+                    .getPattern("Melusine Asc3")
+            )
+
+            initFaceCard(teamSlot, fieldSlot, addAnotherImage = true)
+        }
     }
 }

@@ -14,11 +14,14 @@ class StandardAutomataApi @Inject constructor(
     private val ocrService: OcrService
 ) : AutomataApi {
 
-    override fun Region.getPattern() =
+    override fun Region.getPattern(tag: String): Pattern =
         screenshotManager.getScreenshot()
             .crop(transform.toImage(this))
             .also { highlight(this, HighlightColor.Info) }
             .copy() // It is important that the image gets cloned here.
+            .apply {
+                this.tag = tag
+            }
 
     override fun <T> useSameSnapIn(block: () -> T) =
         screenshotManager.useSameSnapIn(block)

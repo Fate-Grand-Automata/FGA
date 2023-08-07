@@ -23,7 +23,8 @@ import org.opencv.core.Size as CvSize
 
 class DroidCvPattern(
     private var mat: Mat = Mat(),
-    private val ownsMat: Boolean = true
+    private val ownsMat: Boolean = true,
+    override var tag: String = ""
 ) : Pattern {
     private companion object {
         fun makeMat(
@@ -41,9 +42,7 @@ class DroidCvPattern(
         }
     }
 
-    constructor(stream: InputStream, isColor: Boolean) : this(makeMat(stream, isColor))
-
-    private var tag = ""
+    constructor(stream: InputStream, isColor: Boolean, tag: String = "") : this(makeMat(stream, isColor), tag = tag)
 
     override fun toString() =
         tag.ifBlank { super.toString() }
@@ -65,7 +64,7 @@ class DroidCvPattern(
     override fun resize(size: Size): Pattern {
         val resizedMat = Mat().apply { resize(mat, this, size) }
 
-        return DroidCvPattern(resizedMat).tag(tag)
+        return DroidCvPattern(resizedMat, tag = tag)
     }
 
     override fun resize(target: Pattern, size: Size) {
@@ -73,7 +72,7 @@ class DroidCvPattern(
             resize(mat, target.mat, size)
         }
 
-        target.tag(tag)
+        target.tag = tag
     }
 
     private fun match(template: Pattern): Mat {
@@ -135,7 +134,7 @@ class DroidCvPattern(
 
         val rect = Rect(clippedRegion.x, clippedRegion.y, clippedRegion.width, clippedRegion.height)
 
-        return DroidCvPattern(Mat(mat, rect)).tag(tag)
+        return DroidCvPattern(Mat(mat, rect), tag = tag)
     }
 
     fun asBitmap(): Bitmap {
@@ -159,17 +158,14 @@ class DroidCvPattern(
         }
     }
 
-    override fun copy() = DroidCvPattern(mat.clone()).tag(tag)
-
-    override fun tag(tag: String) = apply { this.tag = tag }
+    override fun copy() = DroidCvPattern(mat.clone(), tag = tag)
 
     override fun threshold(value: Double): Pattern {
         val result = Mat()
 
         Imgproc.threshold(mat, result, value * 255, 255.0, Imgproc.THRESH_BINARY)
 
-        return DroidCvPattern(result)
-            .tag("$tag[threshold=$value]")
+        return DroidCvPattern(result, tag = "$tag[threshold=$value]")
     }
 
     override fun isWhite(): Boolean {

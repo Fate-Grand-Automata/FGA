@@ -8,6 +8,7 @@ import java.io.OutputStream
 interface Pattern : AutoCloseable {
     val width: Int
     val height: Int
+    var tag: String
 
     /**
      * Creates a resized image with the specified size.
@@ -51,12 +52,10 @@ interface Pattern : AutoCloseable {
      */
     fun copy(): Pattern
 
-    fun tag(tag: String): Pattern
-
     fun threshold(value: Double): Pattern
 
     fun isWhite(): Boolean
-    
+
     fun floodFill(x: Double, y: Double, maxDiff: Double, newValue: Double): Pattern
 
     fun fillText(): Pattern

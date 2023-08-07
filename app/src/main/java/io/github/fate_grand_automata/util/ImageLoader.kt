@@ -37,7 +37,7 @@ class ImageLoader @Inject constructor(
         val inputStream = assets.open("$gameServerWithImage/${FileName}")
 
         inputStream.use {
-            return DroidCvPattern(it, colorManager.isColor).tag(filePath)
+            return DroidCvPattern(it, colorManager.isColor, filePath)
         }
     }
 
@@ -160,7 +160,7 @@ class ImageLoader @Inject constructor(
         val inputStreams = storageProvider.readSupportImage(kind, name)
         return inputStreams.withIndex().map { (i, stream) ->
             stream.use {
-                DroidCvPattern(it, colorManager.isColor).tag("$name:$i")
+                DroidCvPattern(it, colorManager.isColor, "$name:$i")
             }
         }
     }
@@ -174,8 +174,9 @@ class ImageLoader @Inject constructor(
     override fun loadMaterial(material: MaterialEnum) =
         regionCachedPatterns.getOrPut(key("materials/$material")) {
             DroidCvPattern(
-                Utils.loadResource(context, material.drawable, Imgcodecs.IMREAD_GRAYSCALE)
-            ).tag("MAT:$material")
+                Utils.loadResource(context, material.drawable, Imgcodecs.IMREAD_GRAYSCALE),
+                tag = "MAT:$material"
+            )
         }
 }
 

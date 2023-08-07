@@ -29,6 +29,8 @@ fun SkillMakerTarget(
     showSpaceIshtar: Boolean,
     onSpaceIshtar: () -> Unit,
     onKukulkan: () -> Unit,
+    showMelusine: Boolean,
+    onMelusine: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -74,17 +76,22 @@ fun SkillMakerTarget(
                 Text(stringResource(R.string.skill_maker_kukulkan))
             }
 
-            when {
-                showEmiya -> {
-                    Button(onClick = onEmiya) {
-                        Text(stringResource(R.string.skill_maker_emiya))
-                    }
+            if (
+                showEmiya) {
+                Button(onClick = onEmiya) {
+                    Text(stringResource(R.string.skill_maker_emiya))
                 }
+            }
 
-                showSpaceIshtar -> {
-                    Button(onClick = onSpaceIshtar) {
-                        Text(stringResource(R.string.skill_maker_space_ishtar))
-                    }
+            if (showSpaceIshtar) {
+                Button(onClick = onSpaceIshtar) {
+                    Text(stringResource(R.string.skill_maker_space_ishtar))
+                }
+            }
+
+            if (showMelusine) {
+                Button(onClick = onMelusine) {
+                    Text(stringResource(R.string.skill_maker_melusine))
                 }
             }
 
@@ -111,7 +118,7 @@ fun TestSkillMakerTargetIshtar() = TestSkillMaker(showSpaceIshtar = true)
 fun TestSkillMakerOnlyKukulkan() = TestSkillMaker()
 
 @Composable
-private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean = false) {
+private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean = false, showMelusine: Boolean = showEmiya) {
     FGATheme {
         SkillMakerTarget(
             onSkillTarget = {},
@@ -119,7 +126,9 @@ private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean 
             onEmiya = {},
             showSpaceIshtar = showSpaceIshtar,
             onSpaceIshtar = {},
-            onKukulkan = {}
+            onKukulkan = {},
+            showMelusine = showMelusine,
+            onMelusine = {}
         )
     }
 }
