@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
 import io.github.fate_grand_automata.scripts.models.CommandCard
@@ -22,6 +23,8 @@ class Caster @Inject constructor(
     private val state: BattleState,
     private val servantTracker: ServantTracker
 ) : IFgoAutomataApi by api {
+    private var skillConfirmation: Boolean? = null
+
     // TODO: Shouldn't be here ideally.
     //  Once we add more spam modes, Skill spam and NP spam can have their own variants.
     fun canSpam(spam: SpamEnum): Boolean {
@@ -40,8 +43,21 @@ class Caster @Inject constructor(
     }
 
     private fun confirmSkillUse() {
-        if (prefs.skillConfirmation) {
-            locations.battle.skillOkClick.click()
+        when (prefs.gameServer) {
+            is GameServer.En, is GameServer.Jp -> {
+                if (skillConfirmation == null) {
+                    skillConfirmation = images[Images.SkillUse] in locations.battle.skillUseRegion
+                }
+                if (skillConfirmation == true) {
+                    locations.battle.skillOkClick.click()
+                }
+            }
+
+            else -> {
+                if (prefs.skillConfirmation) {
+                    locations.battle.skillOkClick.click()
+                }
+            }
         }
     }
 
