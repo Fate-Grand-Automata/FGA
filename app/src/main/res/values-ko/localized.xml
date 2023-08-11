@@ -126,7 +126,6 @@
     <string name="p_spam_summary">위험 모드는 자동 표적 활성화가 필요합니다</string>
     <string name="p_auto_choose_target">대상 자동 선택</string>
     <string name="p_story_skip">스토리 스킵</string>
-    <string name="p_skill_confirmation">스킬 사용 확인</string>
     <string name="p_enable_withdraw">퇴각 활성화</string>
     <string name="p_stop_on_ce_get">예장 획득시 정지</string>
     <string name="p_stop_on_first_clear_rewards">초회 클리어 보상 수령시 정지</string>
@@ -407,9 +406,6 @@
     <string name="p_game_area_custom_bottom">하단 좌표</string>
     <string name="p_welcome">FGA에 오신걸 환영합니다!</string>
     <string name="p_welcome_description">FGA 사용에 필요한 설정법을 안내드리겠습니다.</string>
-    <string name="p_skill_confirmation_onboarding_description">"스킬 사용 확인"이 켜져있으신가요?\n스킬을 사용하기 전에 정말 사용할 것인지 확인창이 나온다면 켜져있는 것입니다.\n이 설정은 나중에 변경할 수 있습니다.</string>
-    <string name="p_on">켜짐</string>
-    <string name="p_off">꺼짐</string>
     <string name="p_battery_optimization">배터리 최적화</string>
     <string name="p_battery_optimization_description">FGA를 구동하려면 배터리 설정의 제한을 풀어야합니다. 그러지 않으면 어느순간 갑자기 동작이 멈추게됩니다.\n\n아래 버튼을 누르신 후 필터에서 \"최적화 안 함\" 대신 \"모든 앱\"을 선택 후 FGA를 눌러서 "최적화 안 함"을 선택해주세요.</string>
     <string name="p_battery_optimization_action">배터리 최적화 비활성화</string>

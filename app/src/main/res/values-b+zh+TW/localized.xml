@@ -108,7 +108,6 @@
     <string name="p_spam_summary">選擇 Danger 敵人時施放選項需開啟自動選取敵人</string>
     <string name="p_auto_choose_target">自動選取敵人</string>
     <string name="p_story_skip">跳過劇情</string>
-    <string name="p_skill_confirmation">技能確認</string>
     <string name="p_enable_withdraw">啟用撤退</string>
     <string name="p_stop_on_ce_get">禮裝獲得自動停止</string>
     <string name="p_stop_on_ce_get_summary">首次通關及絆禮裝獲得時自動停止腳本</string>
@@ -404,9 +403,6 @@
     <string name="ce_bomb_ce_fully_upgraded">概念禮裝已達到等級上限，請鎖定或放置於靈基保管室</string>
     <string name="p_welcome">歡迎使用 FGA！</string>
     <string name="p_welcome_description">以下將介紹幾個最重要的初始化設定</string>
-    <string name="p_skill_confirmation_onboarding_description">「技能使用確認」是否已開啟？\n\n若不確定請選擇已開啟。</string>
-    <string name="p_on">開啟</string>
-    <string name="p_off">關閉</string>
     <string name="p_battery_optimization">電池效能最佳化</string>
     <string name="p_battery_optimization_description">FGA 需要在關閉電池最佳化的情況下才可正常運作，否則可能會被系統關閉\n\n點選按鈕後，請選擇 FGA 並將設定調整為「不進行最佳化」</string>
     <string name="p_battery_optimization_action">關閉電池效能最佳化（系統設定）</string>

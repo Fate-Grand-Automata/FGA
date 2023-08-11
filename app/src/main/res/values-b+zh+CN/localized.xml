@@ -125,7 +125,6 @@
     <string name="p_spam_summary">选择危险敌人时施放选项需开启自动选取敌人</string>
     <string name="p_auto_choose_target">自动选取敌人</string>
     <string name="p_story_skip">跳过剧情</string>
-    <string name="p_skill_confirmation">技能确认</string>
     <string name="p_enable_withdraw">启用撤退</string>
     <string name="p_stop_on_ce_get">获得礼装时自动停止</string>
     <string name="p_stop_on_first_clear_rewards">获得首通奖励时自动停止</string>
@@ -407,9 +406,6 @@
 
     <string name="p_welcome">欢迎使用FGA！</string>
     <string name="p_welcome_description">该页面将会引导您完成最重要的设置步骤</string>
-    <string name="p_skill_confirmation_onboarding_description">游戏中是否开启了“技能使用确认”选项？\n\n如果您目前无法确定，则暂时选择“已开启”</string>
-    <string name="p_on">已开启</string>
-    <string name="p_off">未开启</string>
     <string name="p_battery_optimization">电池优化</string>
     <string name="p_battery_optimization_description">FGA需要取消“电池优化”的限制，否则在工作一段时间后，它会随机停止运行\n\n在点击下方按钮后，将应用程序筛选器由“未优化”切换到“所有应用”，并将下方FGA设置变更为“不优化”</string>
     <string name="p_battery_optimization_action">关闭电池优化</string>

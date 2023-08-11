@@ -127,7 +127,6 @@
     <string name="p_spam_summary">Danger mode requires Auto-targeting</string>
     <string name="p_auto_choose_target">Auto choose target</string>
     <string name="p_story_skip">Story Skip</string>
-    <string name="p_skill_confirmation">Skill Confirmation</string>
     <string name="p_enable_withdraw">Enable Withdraw</string>
     <string name="p_stop_on_ce_get">Stop on CE GET</string>
     <string name="p_stop_on_first_clear_rewards">Stop on first-clear rewards</string>
@@ -410,9 +409,6 @@
 
     <string name="p_welcome">Welcome to FGA!</string>
     <string name="p_welcome_description">This screen will guide you through the most important setup steps.</string>
-    <string name="p_skill_confirmation_onboarding_description">Is "Confirm Skill Use" turned ON or OFF in FGO?\n\nON is the default FGO where it asks you to press OK each time you want to use a skill.\n\nYou can change this setting later on.</string>
-    <string name="p_on">ON</string>
-    <string name="p_off">OFF</string>
     <string name="p_battery_optimization">Battery optimization</string>
     <string name="p_battery_optimization_description">FGA requires unrestricted battery settings, otherwise it will randomly stop working after some time.\n\nAfter pressing on the button, switch the app filter from \"Not optimized\" to \"All apps\" and set FGA to \"Do not optimize\".</string>
     <string name="p_battery_optimization_action">Disable battery optimization</string>

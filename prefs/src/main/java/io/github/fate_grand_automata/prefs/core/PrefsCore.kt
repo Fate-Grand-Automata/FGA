@@ -29,8 +29,6 @@ class PrefsCore @Inject constructor(
         GAME_SERVER_AUTO_DETECT
     )
 
-    val skillConfirmation = maker.bool("skill_conf", true)
-
     val battleConfigList = maker.stringSet("autoskill_list")
     val selectedAutoSkillConfig = maker.string("autoskill_selected")
 

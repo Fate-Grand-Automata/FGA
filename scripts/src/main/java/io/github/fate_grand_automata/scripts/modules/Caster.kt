@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
 import io.github.fate_grand_automata.scripts.models.CommandCard
@@ -43,21 +42,11 @@ class Caster @Inject constructor(
     }
 
     private fun confirmSkillUse() {
-        when (prefs.gameServer) {
-            is GameServer.En, is GameServer.Jp -> {
-                if (skillConfirmation == null) {
-                    skillConfirmation = images[Images.SkillUse] in locations.battle.skillUseRegion
-                }
-                if (skillConfirmation == true) {
-                    locations.battle.skillOkClick.click()
-                }
-            }
-
-            else -> {
-                if (prefs.skillConfirmation) {
-                    locations.battle.skillOkClick.click()
-                }
-            }
+        if (skillConfirmation == null) {
+            skillConfirmation = images[Images.SkillUse] in locations.battle.skillUseRegion
+        }
+        if (skillConfirmation == true) {
+            locations.battle.skillOkClick.click()
         }
     }
 

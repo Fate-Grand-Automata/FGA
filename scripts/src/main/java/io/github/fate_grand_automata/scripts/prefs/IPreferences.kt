@@ -8,7 +8,6 @@ import kotlin.time.Duration
 interface IPreferences {
     var scriptMode: ScriptModeEnum
     var gameServer: GameServer
-    val skillConfirmation: Boolean
     val battleConfigs: List<IBattleConfig>
     var selectedBattleConfig: IBattleConfig
     val storySkip: Boolean
