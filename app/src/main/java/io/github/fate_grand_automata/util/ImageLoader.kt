@@ -110,6 +110,7 @@ class ImageLoader @Inject constructor(
         Images.CEMercyLv1 -> "mercy_0.png"
         Images.CEProsperityLv1 -> "prosperity_0.png"
         Images.CESynchronizationLv1 -> "synchronization_0.png"
+        Images.SkillUse -> "skill_use.png"
     }
 
     override operator fun get(img: Images): Pattern = synchronized(regionCachedPatterns) {

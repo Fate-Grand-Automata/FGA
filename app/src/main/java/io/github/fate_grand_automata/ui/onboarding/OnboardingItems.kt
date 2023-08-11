@@ -6,17 +6,12 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,9 +20,6 @@ import io.github.fate_grand_automata.BuildConfig
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.openLinkIntent
-import io.github.fate_grand_automata.ui.prefs.SwitchState
-import io.github.fate_grand_automata.ui.prefs.TriStateSwitch
-import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.OpenDocTreePersistable
 import io.github.fate_grand_automata.util.SupportImageExtractor
 import kotlinx.coroutines.Dispatchers
@@ -95,44 +87,6 @@ class PickDirectory(vm: OnboardingViewModel) : OnboardingItem(vm) {
                 text = stringResource(R.string.p_choose_folder_action),
                 style = MaterialTheme.typography.bodyLarge
             )
-        }
-    }
-}
-
-class SkillConfirmation(vm: OnboardingViewModel) : OnboardingItem(vm) {
-    // to remember the setting when back arrow is clicked
-    private var switchState = SwitchState.UNKNOWN
-
-    override fun shouldSkip(): Boolean {
-        // only show on first installation
-        return vm.prefsCore.onboardingCompletedVersion.get() > 0
-    }
-
-    @Composable
-    override fun UI(onFinished: () -> Unit) {
-        Heading(stringResource(R.string.p_skill_confirmation))
-
-        Text(
-            text = stringResource(R.string.p_skill_confirmation_onboarding_description),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        var prefsState by vm.prefsCore.skillConfirmation.remember()
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier.padding(vertical = 15.dp)
-        ) {
-            Text(stringResource(R.string.p_off))
-            TriStateSwitch(
-                onCheckedChange = {
-                    prefsState = it
-                    switchState = if (it) SwitchState.ON else SwitchState.OFF
-                    onFinished()
-                },
-                checked = switchState
-            )
-            Text(stringResource(R.string.p_on))
         }
     }
 }

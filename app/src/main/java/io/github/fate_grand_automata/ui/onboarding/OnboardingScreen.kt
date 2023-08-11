@@ -59,7 +59,6 @@ fun OnboardingContent(
         listOf(
             WelcomeScreen(vm),
             PickDirectory(vm),
-            SkillConfirmation(vm),
             DisableBatteryOptimization(vm),
             YoutubeVideo(vm)
         ).filter { !it.shouldSkip() }

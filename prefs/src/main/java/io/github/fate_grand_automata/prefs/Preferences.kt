@@ -19,8 +19,6 @@ class PreferencesImpl @Inject constructor(
 
     override var gameServer = GameServer.default
 
-    override val skillConfirmation by prefs.skillConfirmation
-
     private var battleConfigList by prefs.battleConfigList
 
     override val battleConfigs

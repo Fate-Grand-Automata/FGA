@@ -22,6 +22,8 @@ class Caster @Inject constructor(
     private val state: BattleState,
     private val servantTracker: ServantTracker
 ) : IFgoAutomataApi by api {
+    private var skillConfirmation: Boolean? = null
+
     // TODO: Shouldn't be here ideally.
     //  Once we add more spam modes, Skill spam and NP spam can have their own variants.
     fun canSpam(spam: SpamEnum): Boolean {
@@ -40,7 +42,10 @@ class Caster @Inject constructor(
     }
 
     private fun confirmSkillUse() {
-        if (prefs.skillConfirmation) {
+        if (skillConfirmation == null) {
+            skillConfirmation = images[Images.SkillUse] in locations.battle.skillUseRegion
+        }
+        if (skillConfirmation == true) {
             locations.battle.skillOkClick.click()
         }
     }

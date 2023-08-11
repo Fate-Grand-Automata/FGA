@@ -22,13 +22,6 @@ fun LazyListScope.battleGroup(
     prefs: PrefsCore
 ) {
     item {
-        prefs.skillConfirmation.SwitchPreference(
-            title = stringResource(R.string.p_skill_confirmation),
-            icon = icon(Icons.Default.RadioButtonChecked)
-        )
-    }
-
-    item {
         prefs.gameServerRaw.ListPreference(
             title = stringResource(R.string.p_game_server),
             icon = icon(Icons.Default.Public),
