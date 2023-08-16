@@ -20,6 +20,7 @@ import io.github.fate_grand_automata.scripts.modules.Withdraw
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
+import io.github.lib_automata.Match
 import io.github.lib_automata.ScriptAbortException
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -300,7 +301,17 @@ class AutoBattle @Inject constructor(
         locations.resultMatRewardsRegion.click()
     }
 
-    private fun isRepeatScreen() = images[Images.Repeat] in locations.continueRegion
+    private fun findRepeatButton(): Match? {
+        var match = locations.continueRegion.find(images[Images.Repeat])
+
+        // for TranslateFGO where the Repeat button is in English
+        if (match == null && prefs.gameServer is GameServer.Jp) {
+            match = locations.continueRegion.find(images[Images.Repeat, GameServer.En.Original])
+        }
+        return match
+    }
+
+    private fun isRepeatScreen() = findRepeatButton() != null
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
@@ -310,7 +321,7 @@ class AutoBattle @Inject constructor(
         // Pressing Continue option after completing a quest, resetting the state as would occur in "Menu" function
         battle.resetState()
 
-        val continueButtonRegion = locations.continueRegion.find(images[Images.Repeat])?.region
+        val continueButtonRegion = findRepeatButton()?.region
             ?: return
 
         // If Boost items are usable, Continue button shifts to the right

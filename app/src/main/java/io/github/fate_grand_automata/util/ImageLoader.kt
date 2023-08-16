@@ -41,9 +41,9 @@ class ImageLoader @Inject constructor(
         }
     }
 
-    private data class CacheKey(val name: String, val isColor: Boolean)
+    private data class CacheKey(val name: String, val gameServer: GameServer?, val isColor: Boolean)
 
-    private fun key(name: String) = CacheKey(name, colorManager.isColor)
+    private fun key(name: String, gameServer: GameServer? = null) = CacheKey(name, gameServer, colorManager.isColor)
 
     private var currentGameServer: GameServer = GameServer.default
     private var regionCachedPatterns = mutableMapOf<CacheKey, Pattern>()
@@ -113,7 +113,7 @@ class ImageLoader @Inject constructor(
         Images.SkillUse -> "skill_use.png"
     }
 
-    override operator fun get(img: Images): Pattern = synchronized(regionCachedPatterns) {
+    override operator fun get(img: Images, gameServer: GameServer?): Pattern = synchronized(regionCachedPatterns) {
         val path = img.fileName()
 
         val server = prefs.gameServer
@@ -125,16 +125,16 @@ class ImageLoader @Inject constructor(
             currentGameServer = server
         }
 
-        return regionCachedPatterns.getOrPut(key(path)) {
-            loadPatternWithFallback(path)
+        return regionCachedPatterns.getOrPut(key(path, gameServer)) {
+            loadPatternWithFallback(path, gameServer)
         }
     }
 
     /**
      * When image is not available for the current server, use the image from NA server.
      */
-    private fun loadPatternWithFallback(path: String): Pattern {
-        return createPattern(currentGameServer, path)
+    private fun loadPatternWithFallback(path: String, gameServer: GameServer?): Pattern {
+        return createPattern(gameServer ?: currentGameServer, path)
     }
 
     override fun clearImageCache() = synchronized(regionCachedPatterns) {
