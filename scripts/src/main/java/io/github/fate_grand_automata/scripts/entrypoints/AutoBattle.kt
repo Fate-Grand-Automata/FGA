@@ -300,7 +300,10 @@ class AutoBattle @Inject constructor(
         locations.resultMatRewardsRegion.click()
     }
 
-    private fun isRepeatScreen() = images[Images.Repeat] in locations.continueRegion
+    private fun isRepeatScreen() =
+        images[Images.Repeat] in locations.continueRegion ||
+                // for TranslateFGO where the Repeat button is in English
+                (prefs.gameServer is GameServer.Jp && images[Images.Repeat, GameServer.En.Original] in locations.continueRegion)
 
     private fun repeatQuest() {
         // Needed to show we don't need to enter the "StartQuest" function
