@@ -441,12 +441,11 @@ class AutoBattle @Inject constructor(
                 ceDrops = ceDropsTracker.count
             )
         )
-        // delay so refill with copper is not disturbed
-        2.5.seconds.wait()
     }
 
     private fun afterSelectingQuest() {
-        1.5.seconds.wait()
+        // delay so refill with copper is not disturbed
+        2.5.seconds.wait()
 
         if (isInventoryFull()) {
             throw BattleExitException(ExitReason.InventoryFull)
