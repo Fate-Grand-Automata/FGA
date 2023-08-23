@@ -1,2 +1,421 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="tapper_service_description">
+        このアクセシビリティサービスは、rootなしでクリックやスワイプを実行するために使用されます。
+        また、使用しているアプリのAPK名からFGOのバージョン（NA/JP/CN/TW/KR）を自動判別します。
+        万が一、不具合が発生した場合は、一度OFFにしてから再度ONにしてみてください。
+        それでもうまくいかない場合は、デバイスのアプリのバッテリー使用最適化設定を変更する必要があるかもしれません。
+    </string>
+
+    <string name="battle_config_item_copy">コピー</string>
+    <string name="battle_config_item_delete">削除</string>
+    <string name="battle_config_item_export">エクスポート</string>
+    <string name="battle_config_item_export_failed">エクスポート失敗</string>
+    <string name="battle_config_item_copy_name">%s (コピー)</string>
+    <string name="battle_config_item_delete_confirm_title">再確認</string>
+    <string name="battle_config_item_delete_confirm_ok">削除</string>
+    <string name="battle_config_item_delete_confirm_message">本当にこの設定を削除しますか?</string>
+    <string name="battle_config_support_any">なんでも</string>
+
+    <string name="support_imgs_extracting">サポート画像を抽出</string>
+    <string name="support_imgs_extracted">サポート画像を保存しました</string>
+    <string name="support_imgs_extract_failed">サポート画像を保存できませんでした</string>
+
+    <string name="battle_config_list_no_items">未設定</string>
+    <string name="battle_config_list_import">インポート</string>
+    <string name="battle_config_list_export_all">すべてエクスポートする</string>
+    <string name="battle_config_list_delete">削除</string>
+    <string name="battle_config_list_export_failed"> %d 個の設定がエクスポートできませんでした</string>
+    <string name="battle_config_list_import_failed"> %d 個の設定がインポートできませんでした</string>
+    <string name="battle_config_list_delete_confirm_title">再確認</string>
+    <string name="battle_config_list_delete_confirm_message">本当に %d 個の設定を削除しますか?</string>
+
+    <string name="skill_maker_confirm_exit_title">再確認</string>
+    <string name="skill_maker_confirm_exit_message">本当に終了しますか？スキルコマンドの変更は保存されません。</string>
+    <string name="skill_maker_confirm_clear_title">再確認</string>
+    <string name="skill_maker_confirm_clear_message">スキルコマンドがすべて削除されます。本当に削除しますか?</string>
+    <string name="skill_maker_atk_header">Attack</string>
+    <string name="skill_maker_atk_servant_np">サーヴァント\n%d\n\n宝具</string>
+    <string name="skill_maker_atk_cards_before_np">宝具前に選択するコマンドカード枚数</string>
+    <string name="skill_maker_atk_done">保存</string>
+    <string name="skill_maker_atk_next_wave">次のウェーブ</string>
+    <string name="skill_maker_atk_next_turn">次のターン \n同じウェーブ</string>
+
+    <string name="skill_maker_main_enemy">敵 %d</string>
+    <string name="skill_maker_main_battle">Battle: %d</string>
+    <string name="skill_maker_main_master_skills">マスター\n スキル</string>
+    <string name="skill_maker_main_undo">削除</string>
+    <string name="skill_maker_main_clear">全削除</string>
+    <string name="skill_maker_main_servant">サーヴァント %d</string>
+    <string name="skill_maker_main_attack">Attack</string>
+
+    <string name="skill_maker_master_skills_header">マスタースキル</string>
+    <string name="skill_maker_master_skills_order_change">オーダーチェンジ</string>
+
+    <string name="skill_maker_order_change_header">オーダーチェンジ</string>
+    <string name="skill_maker_order_change_starting_member">スターティングメンバー</string>
+    <string name="skill_maker_order_change_sub_member">サブメンバー</string>
+    <string name="skill_maker_order_change_servant">サーヴァント\n\n%d</string>
+
+    <string name="skill_maker_target_header">ターゲット選択</string>
+    <string name="skill_maker_target_none">全体</string>
+    <string name="skill_maker_target_servant">サーヴァント\n\n%d</string>
+
+    <string name="skill_maker_space_ishtar">スペースイシュタル</string>
+    <string name="skill_maker_emiya">エミヤ</string>
+    <string name="skill_maker_quick">Quick</string>
+    <string name="skill_maker_arts">Arts</string>
+    <string name="skill_maker_buster">Buster</string>
+    <string name="skill_maker_kukulkan">ククルカン</string>
+    <string name="skill_maker_option_1">スター消費しない</string>
+    <string name="skill_maker_option_2">10個消費する</string>
+
+    <string name="card_priority_wave_number">ウェーブ %d</string>
+    <string name="card_priority_high">高い</string>
+    <string name="card_priority_low">低い</string>
+
+    <string name="start_service">実行</string>
+    <string name="stop_service">停止</string>
+    <string name="fine_tune_menu_reset_to_defaults">初期設定へ戻す</string>
+    <string name="support_menu_extract_default_support_images">デフォルトのサポート画像を抽出</string>
+
+    <string name="support_img_namer_servants">サーヴァント</string>
+    <string name="support_img_namer_folder_hint">フォルダは次のように使用できます: \'Merlin/asc1\'</string>
+    <string name="support_img_namer_ce">概念礼装</string>
+    <string name="support_img_namer_friend_names">フレンド名</string>
+    <string name="support_img_namer_item_name">名前</string>
+    <string name="support_img_namer_invalid_message">1つ以上のフォルダを指定することはできず、ファイルの先頭にはピリオドやスペースを使用できません: %s</string>
+    <string name="support_img_namer_title">好きなものを選ぶ</string>
+    <string name="support_img_namer_done">完了</string>
+    <string name="support_img_namer_blank_file_name">名前の1つがまだ空です。名前のないサーヴァント/概念礼装のチェックを外すか、名前を指定してください。</string>
+    <string name="support_img_namer_file_rename_failed">次の名前へ変更できませんでした: \'%s\'</string>
+
+    <string name="p_refill">AP回復アイテム</string>
+    <string name="p_battle_config">バトルの設定</string>
+    <string name="p_battle_config_summary">バトルの設定を管理する</string>
+    <string name="p_more_options">その他の設定</string>
+
+    <string name="p_limit">限度</string>
+    <string name="p_runs">回数</string>
+    <string name="p_roll_limit">召喚回数の上限</string>
+    <string name="p_receive_embers">種火を受け取る</string>
+
+    <string name="p_battle_config_name">パーティー名</string>
+    <string name="p_battle_config_cmd">コマンド</string>
+    <string name="p_battle_config_notes">メモ</string>
+    <string name="p_battle_config_party">パーティー</string>
+    <string name="p_battle_config_server">ゲームサーバー</string>
+    <string name="p_battle_config_card_priority">カードの優先順位</string>
+    <string name="p_battle_config_servant_priority">サーヴァントの優先順位を設定する</string>
+    <string name="p_battle_config_support">サポート</string>
+    <string name="p_battle_config_support_selection_mode">選択モード</string>
+    <string name="p_battle_config_support_fallback_selection_mode">フォールバック</string>
+    <string name="p_battle_config_support_pref_servants">選択するサーヴァント</string>
+    <string name="p_battle_config_support_max_ascended">最終再臨</string>
+    <string name="p_battle_config_support_pref_ces">選択する概念礼装</string>
+    <string name="p_battle_config_support_mlb">最大進化</string>
+    <string name="p_battle_config_support_friend_names">フレンド名</string>
+    <string name="p_battle_config_support_friends_only">フレンドのみ</string>
+    <string name="p_battle_config_support_friend_name_hint">フレンド名画像を追加するには \'サポートイメージメーカー\' を使用してください</string>
+    <string name="p_battle_config_support_also_check_all">Allもチェックする</string>
+
+    <string name="p_max_skills">スキルレベル最大</string>
+
+    <string name="p_game_server">ゲームサーバー</string>
+    <string name="p_game_server_auto_detect">自動選択</string>
+    <string name="p_spam_summary">DANGERモードはDANGERエネミー(サーヴァント>DANGERエネミー)を自動選択します</string>
+    <string name="p_auto_choose_target">ターゲットの自動選択</string>
+    <string name="p_story_skip">ストーリースキップ</string>
+    <string name="p_skill_confirmation">スキルチェック</string>
+    <string name="p_enable_withdraw">全滅時に撤退</string>
+    <string name="p_stop_on_ce_get">概念礼装を入手したら停止</string>
+    <string name="p_stop_on_first_clear_rewards">初回クリア報酬を入手したら停止</string>
+    <string name="p_stop_on_ce_get_summary">概念礼装を入手すると動作を停止(絆10到達時や初回クリア報酬時)</string>
+    <string name="p_screenshot_drops">戦利品のスクリーンショットを保存</string>
+    <string name="p_screenshot_drops_summary"> \'drops\' フォルダに保存します</string>
+    <string name="p_screenshot_drops_unmodified">未編集のスクリーンショットを保存</string>
+    <string name="p_screenshot_drops_unmodified_summary">トリミングや拡縮されたスクリーンショットの代わりに、未編集でフルサイズのスクリーンショットを保存します</string>
+    <string name="p_boost_item">ブーストアイテム</string>
+    <string name="p_brave_chains">Brave Chains</string>
+    <string name="p_rearrange_cards">優先順位を逆転する</string>
+    <string name="p_skip_servant_face_checks">サーヴァント画像チェックをスキップ</string>
+    <string name="p_skip_servant_face_checks_summary">Brave chains、サーヴァント優先度、NP一致 カードシャッフルなどが機能しません</string>
+
+    <string name="p_wait_ap_regen_text">AP回復を待つ</string>
+    <string name="wait_ap_regen_toast_message">AP回復を待っています。 %d 分後に再確認します。</string>
+
+    <string name="p_storage">ストレージ</string>
+    <string name="p_folder">サポート画像、ドロップ画像などに使用するフォルダを変更する。</string>
+
+    <string name="p_choose_folder_title">フォルダ選択</string>
+    <string name="p_choose_folder_message">サポート画像やドロップ画像などを保存するフォルダを選択します。\n\n以前のインストールから既にファイルがある場合は、「support」フォルダではなく、その親フォルダを選んでください。\n\n注意：デバイスのファイルピッカーで「内部ストレージを表示」を使用する必要があるかもしれません。</string>
+    <string name="p_choose_folder_not_exist_title">他のフォルダーを選択する</string>
+    <string name="p_choose_folder_not_exist_message">サポート画像やドロップ画像などを保存するフォルダにアクセスできません。</string>
+    <string name="p_choose_folder_action">選択</string>
+
+    <string name="p_advanced">その他</string>
+    <string name="p_debug_mode">デバッグモード</string>
+    <string name="p_debug_mode_summary">一致した箇所をハイライトします</string>
+    <string name="p_record_screen">画面録画</string>
+    <string name="p_record_screen_summary">画面録画し \'record.mp4\' を出力フォルダに保存します。\n複製か名前を変更して保存してください。</string>
+    <string name="p_root_screenshot">Root権限でスクリーンショットを撮影する</string>
+    <string name="p_root_screenshot_summary">Nox (Android 7)などのエミュレータで使用します。有効にした後、一度停止させ、再度実行してください。 </string>
+    <string name="p_auto_start_service">自動でサービス開始</string>
+    <string name="p_thresholded_stage_counter">ウェーブカウンターのしきい値を検出</string>
+
+    <string name="p_fine_tune">微調整</string>
+    <string name="p_fine_tune_support">サポート</string>
+    <string name="p_fine_tune_support_swipes_per_update">更新までのスワイプ回数</string>
+    <string name="p_fine_tune_support_max_updates">更新回数上限</string>
+    <string name="p_fine_tune_similarity">類似度</string>
+    <string name="p_fine_tune_min_similarity">最小の類似度</string>
+    <string name="p_fine_tune_mlb_similarity">MLBの類似度</string>
+    <string name="p_fine_tune_stage_counter_similarity">ウェーブカウンターの類似度</string>
+    <string name="p_fine_tune_clicks">クリック</string>
+    <string name="p_fine_tune_wait_after_clicking">クリック後の待機秒数</string>
+    <string name="p_fine_tune_click_duration">クリックの継続時間</string>
+    <string name="p_fine_tune_click_delay">マルチクリック間隔</string>
+    <string name="p_fine_tune_swipes">スワイプ</string>
+    <string name="p_fine_tune_wait_after_swiping">スワイプ後の待機秒数</string>
+    <string name="p_fine_tune_swipe_duration">スワイプの継続時間</string>
+    <string name="p_fine_tune_swipe_multiplier">スワイプ時間倍率</string>
+    <string name="p_fine_tune_wait">待機</string>
+    <string name="p_fine_tune_skill_delay">スキル使用後の待機時間</string>
+    <string name="p_fine_tune_wait_before_turn">ターン経過後の待機時間</string>
+    <string name="p_fine_tune_wait_before_cards">カード選択後の待機時間</string>
+    <string name="p_fine_tune_wait_multiplier">待機時間倍率</string>
+
+    <string name="troubleshoot">Troubleshooting</string>
+    <string name="battle_config_edit">バトルの設定</string>
+    <string name="card_priority">カードの優先順位</string>
+
+    <string name="p_refill_type_gold">黄金の果実</string>
+    <string name="p_refill_type_silver">白銀の果実</string>
+    <string name="p_refill_type_bronze">青銅の果実</string>
+    <string name="p_refill_type_copper">赤銅の果実</string>
+    <string name="p_refill_type_sq">聖晶石</string>
+
+    <string name="p_brave_chains_don_t_care">考慮しない</string>
+    <string name="p_brave_chains_with_np">宝具と同時に</string>
+    <string name="p_brave_chains_avoid">使用しない</string>
+
+    <string name="p_boost_item_disabled">使用確認OFF</string>
+    <string name="p_boost_item_skip">使用しない</string>
+
+    <string name="spam">リピートモード</string>
+    <string name="spam_target">ターゲット</string>
+    <string name="spam_np">宝具:</string>
+    <string name="p_spam_none">なし</string>
+    <string name="p_spam_spam">可能なときに使用</string>
+    <string name="p_spam_danger">DANGER</string>
+
+    <string name="p_support_mode_first">一番上を選択</string>
+    <string name="p_support_mode_manual">手動</string>
+    <string name="p_support_mode_preferred">優先</string>
+    <string name="p_support_mode_friend">フレンド選択</string>
+
+    <string name="p_script_mode_battle">バトル</string>
+    <string name="p_script_mode_lottery">箱イベ</string>
+    <string name="p_script_mode_fp">フレンドポイント召喚</string>
+    <string name="p_script_mode_support_image_maker">サポートイメージメーカー</string>
+    <string name="p_script_mode_gift_box">プレゼントボックス</string>
+
+    <string name="p_max_gold_ember_set_size">次の個数以下の種火を選択する</string>
+    <string name="p_max_gold_ember_total_count">受け取った種火の総数</string>
+
+    <string name="p_not_set">未設定</string>
+
+    <string name="p_support_class_none">なし</string>
+    <string name="p_support_class_all">All</string>
+    <string name="p_support_class_saber">Saber</string>
+    <string name="p_support_class_archer">Archer</string>
+    <string name="p_support_class_lancer">Lancer</string>
+    <string name="p_support_class_rider">Rider</string>
+    <string name="p_support_class_caster">Caster</string>
+    <string name="p_support_class_assassin">Assassin</string>
+    <string name="p_support_class_berserker">Berserker</string>
+    <string name="p_support_class_extra">Extra</string>
+    <string name="p_support_class_mix">Mix</string>
+
+    <string name="overlay_notification_text">オーバーレイサービスの開始</string>
+    <string name="notification_stop">停止</string>
+
+    <string name="accessibility_service">"ユーザー補助: "</string>
+    <string name="accessibility_enabled">有効</string>
+    <string name="accessibility_disabled">無効になっています</string>
+    <string name="accessibility_disable">無効にする</string>
+    <string name="accessibility_enable_in_settings">設定を開いて有効にする</string>
+    <string name="accessibility_disabled_title">アクセシビリティ設定無効</string>
+    <string name="accessibility_disabled_message">FGAはAndroidのアクセシビリティ機能を使用して、FGOでのタッチスクリーン入力をシミュレートする必要があります。\n\nシステム設定から、このアプリのアクセシビリティをオンにしてください。オンになっている場合は、オフにしてからやり直してください。</string>
+    <string name="accessibility_disabled_go_to_settings">設定を開く</string>
+    <string name="draw_overlay_disabled_title">他のアプリの上に重ねて表示することができません</string>
+    <string name="draw_overlay_disabled_message">このアプリを他のアプリの上に重ねて表示できるようにしてください。コントロールボタンの表示に使用します。</string>
+    <string name="cannot_start_recording">レコーディング開始できませんでした</string>
+    <string name="cannot_stop_recording">レコーディング中止できませんでした</string>
+    <string name="unexpected_error_copy">コピー</string>
+
+    <string name="script_msg_ap_ran_out">APがなくなりました！</string>
+    <string name="stopped_by_user">ユーザーによって動作停止されました</string>
+    <string name="script_paused">一時停止されました</string>
+    <string name="screen_turned_off">画面がオフになったため一時停止しました</string>
+    <string name="unexpected_error">予期しないエラーが発生しました</string>
+    <string name="script_exited">動作終了しました</string>
+    <string name="lottery_currency_depleted">箱開封アイテムがなくなりました</string>
+    <string name="inventory_full">所持数が限界を超えています</string>
+    <string name="present_box_full">プレゼントボックスがいっぱいです</string>
+    <string name="support_img_maker_not_found">現在の画面でサポート画像を見つけることができません。サポート選択またはフレンドリストになっていませんか?</string>
+    <string name="support_selection_manual">サポート選択を手動に設定</string>
+    <string name="support_selection_friend_not_set">サポート選択にフレンド指定をする場合、フレンド名を1つ以上選択してください。</string>
+    <string name="support_selection_preferred_not_set">サポート選択に優先を使用する場合、サーヴァントか概念礼装を1つ以上選択してください。</string>
+    <string name="ce_dropped">概念礼装がドロップ！</string>
+    <string name="ce_get">概念礼装を入手！</string>
+    <string name="first_clear_rewards">QUEST CLEAR報酬入手！</string>
+    <string name="withdraw_disabled">すべてのサーヴァントが撃破され、動作停止しました。</string>
+    <string name="stop_after_this_run">今回で動作終了</string>
+    <string name="times_ran">%d 回実行</string>
+    <string name="times_ran_out_of">%2$d 回中 %1$d 回実行</string>
+    <string name="refills_used_out_of">2$d 個中 %1$d 個AP回復アイテム使用</string>
+    <string name="failed_to_determine_card">コマンドカードが認識できませんでした: %s</string>
+    <string name="unknown_card_type">カードの種類を検出できませんでした (Buster, Quick, Arts)</string>
+    <string name="unknown_servant_card">サーヴァントが認識できませんでした</string>
+    <string name="support_list_updated_in">指定されたサーヴァントが見つかりませんでした。サポートリストを %s 秒後に更新します。</string>
+    <string name="times_withdrew"> %d 回撤退しました</string>
+    <string name="avg_time_per_run">1回あたりの平均時間: %s</string>
+    <string name="turns_count">ターン数: %d</string>
+    <string name="turns_stats">ターン数: %1$d (最小), %2$d (平均), %3$d (最大)</string>
+    <string name="picked_exp_stacks"> %d 個の種火を選び受け取りました。</string>
+    <string name="no_embers_found">画面上に「種火」が見つかりません。サーヴァント(経験値)のフィルタリングを確認してください。</string>
+    <string name="root_failed">ルート権限の取得に失敗</string>
+
+    <string name="p_mats">素材</string>
+    <string name="mats_farmed">%d 個の素材を入手しました</string>
+
+    <string name="p_ces">概念礼装</string>
+    <string name="ces_dropped">%d 個の概念礼装を入手しました</string>
+
+    <string name="times_rolled">%d 回召喚しました</string>
+
+    <string name="mat_proof">英雄の証</string>
+    <string name="mat_bone">凶骨</string>
+    <string name="mat_fang">竜の牙</string>
+    <string name="mat_dust">虚栄の塵</string>
+    <string name="mat_chain">愚者の鎖</string>
+    <string name="mat_fluid">魔術髄液</string>
+    <string name="mat_seed">世界樹の種</string>
+    <string name="mat_ghost_lantern">ゴーストランタン</string>
+    <string name="mat_feather">鳳凰の羽根</string>
+    <string name="mat_page">禁断の頁</string>
+    <string name="mat_magatama">枯淡勾玉</string>
+    <string name="mat_giant_ring">巨人の指輪</string>
+    <string name="mat_claw">混沌の爪</string>
+    <string name="mat_heart">蛮神の心臓</string>
+    <string name="mat_spirit_root">精霊根</string>
+    <string name="mat_scarab">智慧のスカラベ</string>
+    <string name="mat_octuplet">八連双晶</string>
+    <string name="mat_serpent_jewel">蛇の宝玉</string>
+    <string name="mat_gear">無間の歯車</string>
+    <string name="mat_homunculus">ホムンクルスベビー</string>
+    <string name="mat_horseshoe">隕蹄鉄</string>
+    <string name="mat_shell">追憶の貝殻</string>
+    <string name="mat_scale">竜の逆鱗</string>
+    <string name="mat_young_horn">戦馬の幼角</string>
+    <string name="mat_tear_stone">血の涙石</string>
+    <string name="mat_grease">黒獣脂</string>
+    <string name="mat_lanugo">原初の産毛</string>
+    <string name="mat_gallstone">呪獣胆石</string>
+    <string name="mat_wine">奇奇神酒</string>
+    <string name="mat_stake">宵哭きの鉄杭</string>
+    <string name="mat_gunpowder">励振火薬</string>
+    <string name="mat_medal">大騎士勲章</string>
+    <string name="mat_lamp_evil_sealing">封魔のランプ</string>
+    <string name="mat_stinger">万死の毒針</string>
+    <string name="mat_eternal_ice">永遠結氷</string>
+    <string name="mat_steel">オーロラ鋼</string>
+    <string name="mat_core">暁光炉心</string>
+    <string name="mat_bell">閑古鈴</string>
+    <string name="mat_arrow">禍罪の矢尻</string>
+    <string name="mat_tiara">光銀の冠</string>
+    <string name="mat_particle">神脈霊子</string>
+    <string name="mat_thread">虹の糸玉</string>
+    <string name="mat_mirror">九十九鏡</string>
+    <string name="mat_egg">真理の卵</string>
+    <string name="mat_star_shard">煌星のカケラ</string>
+    <string name="mat_fruit">悠久の実</string>
+    <string name="mat_demon_lantern">鬼炎鬼灯</string>
+    <string name="mat_amnesty_bell">赦免の小鐘</string>
+    <string name="mat_fantasy_scales">夢幻の鱗粉</string>
+    <string name="mat_ceremonial_blade">黄昏の儀式剣</string>
+    <string name="mat_ashes">忘れじの灰</string>
+    <string name="mat_obsidian_edge">黒曜鋭刃</string>
+    <string name="mat_vestige_of_madness">狂気の残滓</string>
+    <string name="mat_sunscale">太陽皮</string>
+    <string name="mat_converger">エーテル収光体</string>
+
+    <string name="mat_monument_saber">セイバー モニュメント</string>
+    <string name="mat_monument_archer">アーチャー モニュメント</string>
+    <string name="mat_monument_lancer">ランサー モニュメント</string>
+    <string name="mat_monument_rider">ライダー モニュメント</string>
+    <string name="mat_monument_caster">キャスター モニュメント</string>
+    <string name="mat_monument_asssassin">アサシン モニュメント</string>
+    <string name="mat_monument_berserker">バーサーカー モニュメント</string>
+
+    <string name="mat_piece_saber">セイバー ピース</string>
+    <string name="mat_piece_archer">アーチャー ピース</string>
+    <string name="mat_piece_lancer">ランサー ピース</string>
+    <string name="mat_piece_rider">ライダー ピース</string>
+    <string name="mat_piece_caster">キャスター ピース</string>
+    <string name="mat_piece_asssassin">アサシン ピース</string>
+    <string name="mat_piece_berserker">バーサーカー ピース</string>
+
+    <string name="mat_skill_gold_saber">剣の秘石</string>
+    <string name="mat_skill_gold_archer">弓の秘石</string>
+    <string name="mat_skill_gold_lancer">槍の秘石</string>
+    <string name="mat_skill_gold_rider">騎の秘石</string>
+    <string name="mat_skill_gold_caster">術の秘石</string>
+    <string name="mat_skill_gold_asssassin">殺の秘石</string>
+    <string name="mat_skill_gold_berserker">狂の秘石</string>
+
+    <string name="mat_skill_red_saber">剣の魔石</string>
+    <string name="mat_skill_red_archer">弓の魔石</string>
+    <string name="mat_skill_red_lancer">槍の魔石</string>
+    <string name="mat_skill_red_rider">騎の魔石</string>
+    <string name="mat_skill_red_caster">術の魔石</string>
+    <string name="mat_skill_red_asssassin">殺の魔石</string>
+    <string name="mat_skill_red_berserker">狂の魔石</string>
+
+    <string name="mat_skill_blue_saber">剣の輝石</string>
+    <string name="mat_skill_blue_archer">弓の輝石</string>
+    <string name="mat_skill_blue_lancer">槍の輝石</string>
+    <string name="mat_skill_blue_rider">騎の輝石</string>
+    <string name="mat_skill_blue_caster">術の輝石</string>
+    <string name="mat_skill_blue_asssassin">殺の輝石</string>
+    <string name="mat_skill_blue_berserker">狂の輝石</string>
+
+    <string name="p_shuffle_cards">コマンドシャッフル</string>
+    <string name="p_shuffle_cards_wave">ウェーブ</string>
+    <string name="p_shuffle_cards_when">タイミング</string>
+    <string name="p_shuffle_cards_when_none">使用しない</string>
+    <string name="p_shuffle_cards_when_no_effective">WEAKカードがない場合</string>
+    <string name="p_shuffle_cards_when_no_np_matching">宝具使用サーヴァントのカードがない場合</string>
+
+    <string name="p_game_area_mode">ゲームエリア設定</string>
+    <string name="p_game_area_default">デフォルト</string>
+    <string name="p_game_area_duo">Surface Duo</string>
+    <string name="p_game_area_custom">カスタム</string>
+    <string name="p_game_area_custom_left">左側</string>
+    <string name="p_game_area_custom_top">上部</string>
+    <string name="p_game_area_custom_right">右側</string>
+    <string name="p_game_area_custom_bottom">下部</string>
+
+    <string name="p_welcome">FGAへようこそ!</string>
+    <string name="p_welcome_description">この画面では、最も重要なセットアップ手順を説明します。</string>
+    <string name="p_battery_optimization">バッテリー使用の最適化</string>
+    <string name="p_battery_optimization_description">FGAはバッテリー使用最適化設定を「制限なし」にする必要があります。そうしないと、時間が経つとランダムに動作しなくなります。\n\nボタンを押した後、アプリフィルターを「最近開いたアプリ」から「すべてのアプリ」に切り替え、FGAを「制限なし」に設定してください。</string>
+    <string name="p_battery_optimization_action">バッテリー使用最適化が無効</string>
+    <string name="p_battery_optimization_dontkillmyapp">また、お使いのデバイス固有の最適化を無効にする必要があるかもしれません。ガイドはdontkillmyapp.comでご覧いただけます。</string>
+    <string name="p_youtube_guide">Youtube ガイド</string>
+    <string name="p_youtube_guide_description">Youtube ガイドを見ることをお勧めします。このビデオで設定方法を教えてくれます。</string>
+    <string name="p_youtube_guide_action">ガイドを開く</string>
+    <string name="donate">Donate</string>
+    <string name="update_download_success">ダウンロード成功。5秒後に再起動します。</string>
+</resources>
