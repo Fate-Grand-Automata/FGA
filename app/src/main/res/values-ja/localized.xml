@@ -139,7 +139,7 @@
     <string name="p_brave_chains">Brave Chains</string>
     <string name="p_rearrange_cards">優先順位を逆転する</string>
     <string name="p_skip_servant_face_checks">サーヴァント画像チェックをスキップ</string>
-    <string name="p_skip_servant_face_checks_summary">Brave chains、サーヴァント優先度、NP一致 カードシャッフル、などが機能しません</string>
+    <string name="p_skip_servant_face_checks_summary">Brave chains、サーヴァント優先度、NP一致 カードシャッフルなどが機能しません</string>
 
     <string name="p_wait_ap_regen_text">AP回復を待つ</string>
     <string name="wait_ap_regen_toast_message">AP回復を待っています。 %d 分後に再確認します。</string>
