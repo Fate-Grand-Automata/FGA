@@ -293,7 +293,7 @@
     <string name="p_ces">概念礼装</string>
     <string name="ces_dropped">%d 個の概念礼装を入手しました</string>
 
-    <string name="times_rolled"> %d 回召喚しました</string>
+    <string name="times_rolled">%d 回召喚しました</string>
 
     <string name="mat_proof">英雄の証</string>
     <string name="mat_bone">凶骨</string>
@@ -409,9 +409,6 @@
 
     <string name="p_welcome">FGAへようこそ!</string>
     <string name="p_welcome_description">この画面では、最も重要なセットアップ手順を説明します。</string>
-    <string name="p_skill_confirmation_onboarding_description">FGOの「スキル使用確認」はONですかOFFですか？\n\nFGOの初期設定では、スキルを使用するたびに「決定」を押すよう求められます。\n\nこの設定は後で変更することができます。</string>
-    <string name="p_on">ON</string>
-    <string name="p_off">OFF</string>
     <string name="p_battery_optimization">バッテリー使用の最適化</string>
     <string name="p_battery_optimization_description">FGAはバッテリー使用最適化設定を「制限なし」にする必要があります。そうしないと、時間が経つとランダムに動作しなくなります。\n\nボタンを押した後、アプリフィルターを「最近開いたアプリ」から「すべてのアプリ」に切り替え、FGAを「制限なし」に設定してください。</string>
     <string name="p_battery_optimization_action">バッテリー使用最適化が無効</string>
