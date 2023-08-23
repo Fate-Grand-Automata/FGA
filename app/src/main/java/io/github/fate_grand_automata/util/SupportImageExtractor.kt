@@ -78,6 +78,7 @@ class SupportImageExtractor(
 
     suspend fun extract() =
         withContext(Dispatchers.IO) {
+            storageProvider.createNoMediaFile()
             extract(SupportImageKind.Servant)
             extract(SupportImageKind.CE)
         }

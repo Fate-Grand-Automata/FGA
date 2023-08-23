@@ -192,4 +192,8 @@ class StorageProvider @Inject constructor(
             }
         }
     }
+
+    override fun createNoMediaFile() {
+        supportImageFolder.getOrCreateFile(".nomedia")
+    }
 }
