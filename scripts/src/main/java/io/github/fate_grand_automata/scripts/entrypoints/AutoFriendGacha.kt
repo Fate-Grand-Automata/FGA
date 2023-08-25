@@ -34,7 +34,7 @@ class AutoFriendGacha @Inject constructor(
     }
 
     override fun script(): Nothing {
-        if (images[Images.FPSummonContinue] !in locations.fp.continueSummonRegion) {
+        if (!isSummonButtonVisible()) {
             locations.fp.first10SummonClick.click()
             0.3.seconds.wait()
             locations.fp.okClick.click()
@@ -47,7 +47,7 @@ class AutoFriendGacha @Inject constructor(
                 throw ExitException(ExitReason.InventoryFull)
             }
 
-            if (images[Images.FPSummonContinue] in locations.fp.continueSummonRegion) {
+            if (isSummonButtonVisible()) {
                 countNext()
 
                 locations.fp.continueSummonClick.click()
@@ -57,4 +57,6 @@ class AutoFriendGacha @Inject constructor(
             } else locations.fp.skipRapidClick.click(15)
         }
     }
+
+    private fun isSummonButtonVisible() = findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue)
 }
