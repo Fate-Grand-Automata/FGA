@@ -306,7 +306,7 @@ class AutoBattle @Inject constructor(
 
         // for TranslateFGO where the Repeat button is in English
         if (match == null && prefs.gameServer is GameServer.Jp) {
-            match = locations.continueRegion.find(images[Images.Repeat, GameServer.En.Original])
+            match = locations.continueRegion.find(images[Images.Repeat, GameServer.default])
         }
         return match
     }

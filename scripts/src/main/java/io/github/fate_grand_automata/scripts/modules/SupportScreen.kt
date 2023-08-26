@@ -52,8 +52,7 @@ class RealSupportScreen @Inject constructor(
     override fun isAnyDialogOpen() =
         images[Images.SupportExtra] !in locations.support.extraRegion
 
-    override fun noSupportsPresent() =
-        images[Images.SupportNotFound] in locations.support.notFoundRegion
+    override fun noSupportsPresent() = findImage(locations.support.notFoundRegion, Images.SupportNotFound)
 
     override fun someSupportsPresent() =
         locations.support.confirmSetupButtonRegion.exists(

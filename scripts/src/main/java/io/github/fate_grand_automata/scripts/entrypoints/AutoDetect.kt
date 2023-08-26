@@ -16,16 +16,21 @@ class AutoDetect @Inject constructor(
         }
 
         when {
-            images[Images.FriendSummon] in locations.fp.summonCheck || images[Images.FPSummonContinue] in locations.fp.continueSummonRegion ->
+            images[Images.FriendSummon] in locations.fp.summonCheck || findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ->
                 ScriptModeEnum.FP
+
             images[Images.LotteryBoxFinished] in locations.lottery.checkRegion || images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion ->
                 ScriptModeEnum.Lottery
+
             images[Images.GoldXP] in emberSearchRegion || images[Images.SilverXP] in emberSearchRegion ->
                 ScriptModeEnum.PresentBox
+
             locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
                 ScriptModeEnum.SupportImageMaker
+
             images[Images.CEEnhance] in locations.ceEnhanceRegion ->
                 ScriptModeEnum.CEBomb
+
             else -> ScriptModeEnum.Battle
         }
     }
