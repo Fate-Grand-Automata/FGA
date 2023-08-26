@@ -3,6 +3,8 @@
 
 Do you want to contribute to the source code? If you are interested, take a look at the [open issues](https://github.com/Fate-Grand-Automata/FGA/issues).
 
+If you just want to edit translations, go to https://poeditor.com/join/project/67PXOyBGI0 and add/edit them there.
+
 ##  Getting Started
 
 A basic knowledge of Kotlin and Android development is recommended. For development tools, [Android Studio](https://developer.android.com/studio) and a working emulator or Android phone are necessary to test changes.
@@ -61,8 +63,6 @@ Guide for determining new coordinates:
 
 ADB tools are required to use a custom emulator in Android Studio.
 
-Enable USB debugging in your emulator, and then open up a terminal/command prompt in the location that
-
-contains the ADB tool. Type in the command `adb connect localhost:####`, where the numbers are default ports specified by the emulator.
+Enable USB debugging in your emulator, and then open up a terminal/command prompt in the location that contains the ADB tool. Type in the command `adb connect localhost:####`, where the numbers are default ports specified by the emulator.
 
 For example, for Bluestacks you would use `adb connect localhost:5555`.
