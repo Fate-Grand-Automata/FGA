@@ -37,6 +37,7 @@ enum class Images {
     FPSummonContinue,
     SkillTen,
     Stun,
+    Immobilized,
     SelectedParty,
     SilverXP,
     GoldXP,

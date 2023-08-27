@@ -85,6 +85,7 @@ class ImageLoader @Inject constructor(
         Images.FPSummonContinue -> "fp_continue.png"
         Images.SkillTen -> "skill_ten.png"
         Images.Stun -> "stun.png"
+        Images.Immobilized -> "immobilized.png"
         Images.SelectedParty -> "selected_party.png"
         Images.SilverXP -> "SilverXP.png"
         Images.GoldXP -> "GoldXP.png"

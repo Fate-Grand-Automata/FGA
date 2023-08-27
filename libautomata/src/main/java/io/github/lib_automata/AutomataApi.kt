@@ -22,6 +22,8 @@ interface AutomataApi {
 
     operator fun Region.contains(image: Pattern) = exists(image)
 
+    operator fun Region.contains(images: Collection<Pattern>) = images.any { contains(it) }
+
     fun Region.find(
         pattern: Pattern,
         similarity: Double? = null

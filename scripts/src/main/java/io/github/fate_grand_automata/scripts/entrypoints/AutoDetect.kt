@@ -22,7 +22,7 @@ class AutoDetect @Inject constructor(
             images[Images.LotteryBoxFinished] in locations.lottery.checkRegion || images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion ->
                 ScriptModeEnum.Lottery
 
-            images[Images.GoldXP] in emberSearchRegion || images[Images.SilverXP] in emberSearchRegion ->
+            listOf(images[Images.GoldXP], images[Images.SilverXP]) in emberSearchRegion ->
                 ScriptModeEnum.PresentBox
 
             locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->

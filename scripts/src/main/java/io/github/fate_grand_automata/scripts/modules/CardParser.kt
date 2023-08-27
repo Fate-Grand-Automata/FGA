@@ -38,7 +38,7 @@ class CardParser @Inject constructor(
             height = 188
         )
 
-        return images[Images.Stun] in stunRegion
+        return listOf(images[Images.Stun], images[Images.Immobilized]) in stunRegion
     }
 
     private fun CommandCard.Face.type(): CardTypeEnum {
