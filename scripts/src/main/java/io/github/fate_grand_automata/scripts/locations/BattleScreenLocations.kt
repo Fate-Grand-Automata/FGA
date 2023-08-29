@@ -110,7 +110,7 @@ class BattleScreenLocations @Inject constructor(
         }
 
     fun imageRegion(skill: Skill.Servant) =
-        Region(30, 30, 30, 30) + locate(skill)
+        Region(22, 28, 30, 30) + locate(skill)
 
     val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
     val servantDetailsFaceCardRegion = Region(-685, 330, 110, 60).xFromCenter()

@@ -189,7 +189,8 @@ class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to { locations.battle.extraInfoWindowCloseClick.click() }
+            { isDeathAnimation() } to { locations.battle.extraInfoWindowCloseClick.click() },
+            { isRankUp() } to { locations.middleOfScreenClick.click() }
 
         )
 
@@ -412,13 +413,18 @@ class AutoBattle @Inject constructor(
         locations.battle.extraInfoWindowCloseClick.click(5)
     }
 
+    private fun isRankUp() =
+        images[Images.RankUp] in locations.rankUpRegion
+
     /**
      * Starts the quest after the support has already been selected. The following features are done optionally:
      * 1. The configured party is selected if it is set in the selected AutoSkill config
      * 2. A boost item is selected if [IPreferences.boostItemSelectionMode] is set (needed in some events)
      * 3. The story is skipped if [IPreferences.storySkip] is activated
      */
-    private fun startQuest() {
+    private
+
+    fun startQuest() {
         partySelection.selectParty()
 
         locations.menuStartQuestClick.click()

@@ -113,4 +113,8 @@ class Locations @Inject constructor(
     val levelOneCERegion = Region(160, 380, 1840, 900)
 
     val npStartedRegion = Region(-400, 500, 800, 400).xFromCenter()
+
+    val rankUpRegion = Region(270, 730, 220, 340).xFromCenter()
+
+    val middleOfScreenClick = Location(0, 720).xFromCenter()
 }
