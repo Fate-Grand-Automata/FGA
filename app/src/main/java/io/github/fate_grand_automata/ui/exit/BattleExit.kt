@@ -3,7 +3,8 @@ package io.github.fate_grand_automata.ui.exit
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
@@ -217,18 +216,20 @@ private fun Runs(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MaterialSummary(
     materials: Map<MaterialEnum, Int>
 ) {
-    LazyRow(
-        contentPadding = PaddingValues(16.dp)
+    FlowRow(
+        maxItemsInEachRow = 3,
+        modifier = Modifier.padding(16.dp)
     ) {
-        items(materials.toList()) { (mat, count) ->
+        for ((mat, count) in materials.toList()){
             Card(
                 shape = CircleShape,
                 modifier = Modifier
-                    .padding(end = 5.dp)
+                    .padding(end = 5.dp, top = 5.dp, bottom = 5.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
