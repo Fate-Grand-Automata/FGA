@@ -21,7 +21,7 @@ class MaterialsTracker @Inject constructor(
             .associateWith { 0 }
             .toMutableMap()
 
-    val farmed: Map<MaterialEnum, Int> get() = matsGot
+    val farmed: Map<MaterialEnum, Int> get() = matsGot.filterValues { it > 0 }
 
     fun autoDecrement() {
         val refill = prefs.refill
