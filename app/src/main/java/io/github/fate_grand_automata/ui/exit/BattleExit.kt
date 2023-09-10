@@ -226,6 +226,9 @@ private fun MaterialSummary(
         modifier = Modifier.padding(16.dp)
     ) {
         for ((mat, count) in materials.toList()){
+            if (count == 0){
+                continue
+            }
             Card(
                 shape = CircleShape,
                 modifier = Modifier
