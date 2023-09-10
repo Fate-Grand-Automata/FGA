@@ -225,10 +225,7 @@ private fun MaterialSummary(
         maxItemsInEachRow = 3,
         modifier = Modifier.padding(16.dp)
     ) {
-        for ((mat, count) in materials.toList()){
-            if (count == 0){
-                continue
-            }
+        for ((mat, count) in materials.toList()) {
             Card(
                 shape = CircleShape,
                 modifier = Modifier
@@ -386,7 +383,9 @@ fun PreviewBattleExitContent() {
                     materials = emptyMap(),
 //                    materials = mapOf(
 //                        MaterialEnum.ShellOfReminiscence to 2,
-//                        MaterialEnum.Chain to 5
+//                        MaterialEnum.Chain to 5,
+//                        MaterialEnum.AmnestyBell to 1,
+//                        MaterialEnum.AuroraSteel to 10
 //                    ),
                     withdrawCount = 1,
                     totalTime = 1880.seconds,
