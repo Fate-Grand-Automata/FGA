@@ -5,8 +5,8 @@ apply plugin: "kotlin-kapt"
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation "com.google.dagger:hilt-core:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "com.google.dagger:hilt-core:$hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2"
 }

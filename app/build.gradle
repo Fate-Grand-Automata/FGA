@@ -5,7 +5,7 @@ apply plugin: "kotlin-kapt"
 apply plugin: "dagger.hilt.android.plugin"
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion =  33
     ndkVersion "21.3.6528147"
 
     compileOptions {
@@ -85,7 +85,7 @@ dependencies {
     implementation project(":libautomata")
     implementation project(":scripts")
     implementation project(":prefs")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.core:core-ktx:1.10.1"
     def activity_version = "1.7.2"
@@ -102,10 +102,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
 
-    implementation "com.google.code.gson:gson:$gson_version"
+    implementation "com.google.code.gson:gson:$gsonVersion"
 
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
     implementation "com.jakewharton.timber:timber:5.0.1"
 
