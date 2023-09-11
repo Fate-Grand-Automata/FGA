@@ -9,7 +9,7 @@ hilt_navigation_compose_version = "1.0.0"
 kotlinx_coroutines_core_version = "1.7.3"
 lifecycle_version = "2.6.2"
 kotlin_verion = "1.9.10"
-hilt_version = "2.46.1"
+hilt_version = "2.48"
 gson_version = "2.10.1"
 
 gradle_version = "8.1.1"
@@ -31,13 +31,14 @@ timber_version = "5.0.1"
 compose_bom_version = "2023.06.01"
 
 kotlinCompilerExtensionVersion =  "1.5.3"
+ksp_version = "1.9.10-1.0.13"
 
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle_version" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin_verion" }
 hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt_version" }
-
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp_version" }
 
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_verion" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
@@ -98,6 +99,7 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 
 # Below are not working due to no version reference
 android-application = { id = "com.android.application" }
