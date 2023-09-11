@@ -1,19 +1,19 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
+apply plugin: "java-library"
+apply plugin: "kotlin"
+apply plugin: "kotlin-kapt"
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(':libautomata')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    api project(":libautomata")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation "com.google.dagger:hilt-core:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    testImplementation(platform('org.junit:junit-bom:5.9.3')) {
+    testImplementation(platform("org.junit:junit-bom:5.9.3")) {
         because("kotlin-test comes with conflicting junit versions")
     }
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
     testImplementation "com.willowtreeapps.assertk:assertk:0.26.1"
     testImplementation "io.mockk:mockk:1.13.5"
 }

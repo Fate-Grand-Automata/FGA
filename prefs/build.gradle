@@ -1,6 +1,6 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
 
 android {
     compileSdkVersion 33
@@ -18,22 +18,22 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt")
         }
         ci {
             initWith release
         }
     }
-    namespace 'io.github.fate_grand_automata.prefs'
+    namespace "io.github.fate_grand_automata.prefs"
 }
 
 dependencies {
-    implementation project(':scripts')
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation project(":scripts")
+    implementation "androidx.core:core-ktx:1.10.1"
     implementation "com.google.code.gson:gson:$gson_version"
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    api 'com.fredporciuncula:flow-preferences:1.9.1'
+    api "com.fredporciuncula:flow-preferences:1.9.1"
 }
