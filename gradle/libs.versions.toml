@@ -28,6 +28,8 @@ tesseract4android_version = "4.5.0"
 
 timber_version = "5.0.1"
 
+compose_bom_version = "2023.06.01"
+
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle_version" }
@@ -82,6 +84,15 @@ opencv-android = { module = "com.github.iamareebjamal:opencv-android", version.r
 tesseract4android = { module = "cz.adaptech.tesseract4android:tesseract4android", version.ref = "tesseract4android_version" }
 
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber_version" }
+
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose_bom_version" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }

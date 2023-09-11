@@ -115,15 +115,15 @@ dependencies {
 
     implementation(libs.timber)
 
-    val composeBom = platform("androidx.compose:compose-bom:2023.06.01")
+    val composeBom = platform(libs.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-core")
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons.core)
+    implementation(libs.compose.material.icons.extended)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
