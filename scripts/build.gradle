@@ -5,10 +5,10 @@ apply plugin: "kotlin-kapt"
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     api project(":libautomata")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
-    implementation "com.google.dagger:hilt-core:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "com.google.dagger:hilt-core:$hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
     testImplementation(platform("org.junit:junit-bom:5.9.3")) {
         because("kotlin-test comes with conflicting junit versions")

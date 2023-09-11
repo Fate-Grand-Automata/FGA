@@ -30,10 +30,10 @@ android {
 dependencies {
     implementation project(":scripts")
     implementation "androidx.core:core-ktx:1.10.1"
-    implementation "com.google.code.gson:gson:$gson_version"
+    implementation "com.google.code.gson:gson:$gsonVersion"
 
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
     api "com.fredporciuncula:flow-preferences:1.9.1"
 }
