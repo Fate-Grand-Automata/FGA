@@ -1,7 +1,7 @@
 plugins {
     id("java-library")
     id("kotlin")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 dependencies {
@@ -12,7 +12,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
 
     implementation(libs.dagger.hilt.core)
-    kapt(libs.dagger.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
 
     testImplementation(platform("org.junit:junit-bom:5.9.3")) {
         because("kotlin-test comes with conflicting junit versions")

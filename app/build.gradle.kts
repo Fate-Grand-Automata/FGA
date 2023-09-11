@@ -2,8 +2,8 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -111,7 +111,7 @@ dependencies {
     implementation(libs.google.gson)
 
     implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
 
     implementation(libs.timber)
 
@@ -138,8 +138,4 @@ dependencies {
 
     implementation(libs.google.android.play.update.ktx)
 
-}
-
-kapt {
-    correctErrorTypes = true
 }

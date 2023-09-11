@@ -20,6 +20,7 @@ buildscript {
 }
 plugins {
     alias(libs.plugins.ben.manes.versions)
+    alias(libs.plugins.ksp) apply false
 }
 
 

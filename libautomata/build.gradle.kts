@@ -1,7 +1,7 @@
 plugins {
     id("java-library")
     id("kotlin")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 dependencies {
@@ -9,7 +9,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     implementation(libs.dagger.hilt.core)
-    kapt(libs.dagger.hilt.compiler)
+    ksp(libs.dagger.hilt.compiler)
 
     implementation(libs.kotlinx.coroutines.core)
 }
