@@ -1,18 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply plugin: "com.github.ben-manes.versions"
 
-if (hasProperty('buildScan')) {
+if (hasProperty("buildScan")) {
     buildScan {
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
     }
 }
 
 buildscript {
     ext {
-        kotlin_version = '1.8.22'
-        hilt_version = '2.46.1'
-        gson_version = '2.10.1'
+        kotlin_version = "1.8.22"
+        hilt_version = "2.46.1"
+        gson_version = "2.10.1"
     }
     repositories {
         google()
@@ -21,7 +21,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.2'
+        classpath "com.android.tools.build:gradle:8.0.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "com.github.ben-manes:gradle-versions-plugin:0.47.0"
@@ -34,9 +34,9 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven { url 'https://repo1.maven.org/maven2' }
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url "https://repo1.maven.org/maven2" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 }
 
