@@ -374,7 +374,7 @@ Vui lòng bật khả năng truy cập cho ứng dụng này từ cài đặt H�
 
 Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không được tối ưu hóa\" sang \"Tất cả ứng dụng\" và đặt FGA thành \"Không tối ưu hóa\"."</string>
     <string name="p_battery_optimization_action">"Vô hiệu hóa tối ưu hóa pin"</string>
-    <string name="p_battery_optimization_dontkillmyapp">"Bạn cũng có thể cần phải tắt nhiều tối ưu hóa cụ thể hơn cho thiết bị của mình. Hướng dẫn có sẵn trên Dontkillmyapp.com."</string>
+    <string name="p_battery_optimization_dontkillmyapp">"Bạn cũng có thể cần phải tắt nhiều tối ưu hóa cụ thể hơn cho thiết bị của mình. Hướng dẫn có sẵn trên dontkillmyapp.com."</string>
     <string name="p_youtube_guide">"Hướng dẫn trên Youtube"</string>
     <string name="p_youtube_guide_description">"Bạn nên xem hướng dẫn Youtube vì nó sẽ hướng dẫn bạn cách thiết lập cấu hình khi farm."</string>
     <string name="p_youtube_guide_action">"Mở hướng dẫn"</string>
