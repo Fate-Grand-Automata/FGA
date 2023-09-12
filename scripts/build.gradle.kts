@@ -14,7 +14,7 @@ dependencies {
     implementation(libs.dagger.hilt.core)
     ksp(libs.dagger.hilt.compiler)
 
-    testImplementation(platform("org.junit:junit-bom:5.9.3")) {
+    testImplementation(platform(libs.junit.bom)) {
         because("kotlin-test comes with conflicting junit versions")
     }
     testImplementation("org.jetbrains.kotlin:kotlin-test")
