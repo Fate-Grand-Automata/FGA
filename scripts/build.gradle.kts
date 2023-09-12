@@ -17,7 +17,7 @@ dependencies {
     testImplementation(platform(libs.junit.bom)) {
         because("kotlin-test comes with conflicting junit versions")
     }
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation(libs.kotlin.test)
     testImplementation(libs.willowtreeapps.assertk)
     testImplementation(libs.mockk)
 }

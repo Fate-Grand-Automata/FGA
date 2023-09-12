@@ -30,7 +30,7 @@ timber_version = "5.0.1"
 
 compose_bom_version = "2023.06.01"
 
-kotlinCompilerExtensionVersion =  "1.5.3"
+kotlinCompilerExtensionVersion = "1.5.3"
 ksp_version = "1.9.10-1.0.13"
 
 junit_bom_version = "5.9.3"
@@ -44,6 +44,7 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_verion" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 
 fredporciuncula-flow-preferences = { module = "com.fredporciuncula:flow-preferences", version.ref = "flow_preferences_version" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk_version" }
@@ -88,7 +89,7 @@ androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 opencv-android = { module = "com.github.iamareebjamal:opencv-android", version.ref = "opencv_android_version" }
 tesseract4android = { module = "cz.adaptech.tesseract4android:tesseract4android", version.ref = "tesseract4android_version" }
 
-junit-bom = {group="org.junit", name = "junit-bom", version.ref = "junit_bom_version"}
+junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit_bom_version" }
 
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber_version" }
 
