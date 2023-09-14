@@ -18,4 +18,5 @@
     <string name="link_donate" translatable="false">https://ko-fi.com/fategrandautomata</string>
     <string name="battle_config_list_apples" translatable="false">Apples</string>
     <string name="reset" translatable="false">Reset</string>
+    <string name="battle_config_apple_subheading" translatable="false">Preset the Apple Count</string>
 </resources>

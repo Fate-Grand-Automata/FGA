@@ -62,6 +62,12 @@ fun BattleConfigAppleContent(
     ) {
         Heading(
             text = stringResource(R.string.battle_config_list_apples),
+            subheading = {
+                Text(
+                    text = stringResource(R.string.battle_config_apple_subheading),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         )
         val servers by derivedStateOf {
             configs
@@ -101,7 +107,7 @@ fun AppleContents() {
             item {
                 AppleItem(
                     appleCount = appleCount,
-                    mat=MaterialEnum.RefillSQ
+                    mat=MaterialEnum.RefillRainbowApple
                 )
             }
             item {

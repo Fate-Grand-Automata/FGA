@@ -162,7 +162,7 @@ val MaterialEnum.stringRes: Int
         MaterialEnum.SkillBlueAssassin -> R.string.mat_skill_blue_asssassin
         MaterialEnum.SkillBlueBerserker -> R.string.mat_skill_blue_berserker
 
-        MaterialEnum.RefillSQ -> R.string.p_refill_type_sq
+        MaterialEnum.RefillRainbowApple -> R.string.p_refill_type_sq
         MaterialEnum.RefillGoldApple -> R.string.p_refill_type_gold
         MaterialEnum.RefillSilverApple -> R.string.p_refill_type_silver
         MaterialEnum.RefillBlueApple -> R.string.p_refill_type_bronze
