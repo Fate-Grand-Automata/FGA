@@ -15,8 +15,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.ui.FgaScreen
+import io.github.fate_grand_automata.ui.battle_config_apple.BattleConfigAppleScreen
 import io.github.fate_grand_automata.ui.battle_config_item.BattleConfigDestination
 import io.github.fate_grand_automata.ui.battle_config_item.BattleConfigScreen
+import io.github.fate_grand_automata.ui.battle_config_list.BattleConfigListDestination
 import io.github.fate_grand_automata.ui.battle_config_list.BattleConfigListScreen
 import io.github.fate_grand_automata.ui.card_priority.CardPriorityScreen
 import io.github.fate_grand_automata.ui.fine_tune.FineTuneScreen
@@ -123,7 +125,28 @@ fun FgaApp(
             composable(NavConstants.battleConfigs) {
                 BattleConfigListScreen(
                     vm = hiltViewModel(),
-                    navigate = { navigate(NavConstants.battleConfigItem, it) }
+                    navigate = {
+                        when (it) {
+                            BattleConfigListDestination.BattleConfigApple -> {
+                                navController.navigate(NavConstants.battleConfigApple) {
+                                    popUpTo(NavConstants.battleConfigs) {
+                                        inclusive = true
+                                    }
+                                }
+                            }
+                            is BattleConfigListDestination.BattleConfigItem -> {
+                                navigate(NavConstants.battleConfigItem, it.id)
+                            }
+                        }
+                    }
+                )
+            }
+            composable(NavConstants.battleConfigApple) {
+                BattleConfigAppleScreen(
+                    vm = hiltViewModel(),
+                    navigate = {
+
+                    }
                 )
             }
             composable(NavConstants.moreOptions) {
@@ -189,6 +212,7 @@ object NavConstants {
     const val home = "home"
     const val battleConfigs = "configs"
     const val battleConfigItem = "configItem"
+    const val battleConfigApple = "apple"
     const val battleConfigIdKey = "id"
     const val moreOptions = "more"
     const val fineTune = "fineTune"
