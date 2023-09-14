@@ -71,7 +71,9 @@ fun Pref<Set<MaterialEnum>>.Materials() {
         multiChoiceList(
             selected = current,
             onSelectedChange = { current = it },
-            items = MaterialEnum.values().toList()
+            items = MaterialEnum.values().toList().filterNot { mat ->
+                mat.name.lowercase().contains("refill")
+            }
         ) { mat ->
             Material(mat)
 
