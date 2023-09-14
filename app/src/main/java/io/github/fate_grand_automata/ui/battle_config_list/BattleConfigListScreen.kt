@@ -40,7 +40,7 @@ import io.github.fate_grand_automata.util.stringRes
 @Composable
 fun BattleConfigListScreen(
     vm: BattleConfigListViewModel = viewModel(),
-    navigate: (String) -> Unit
+    navigate: (BattleConfigListDestination) -> Unit
 ) {
     val selectionMode by vm.selectionMode.collectAsState()
     val selectedConfigs by vm.selectedConfigs.collectAsState()
@@ -82,9 +82,13 @@ fun BattleConfigListScreen(
         selectedConfigs = selectedConfigs,
         action = {
             when (it) {
-                BattleConfigListAction.AddNew -> navigate(vm.newConfig().id)
+                BattleConfigListAction.AddNew -> {
+                    navigate(BattleConfigListDestination.BattleConfigItem(vm.newConfig().id))
+                }
                 BattleConfigListAction.Delete -> deleteConfirmDialog.show()
-                is BattleConfigListAction.Edit -> navigate(it.id)
+                is BattleConfigListAction.Edit -> {
+                    navigate(BattleConfigListDestination.BattleConfigItem(it.id))
+                }
                 BattleConfigListAction.Export -> battleConfigsExport.launch(Uri.EMPTY)
                 BattleConfigListAction.Import -> battleConfigImport.launch(
                     //octet-stream as backup in case Android doesn't detect json
@@ -93,9 +97,18 @@ fun BattleConfigListScreen(
 
                 is BattleConfigListAction.ToggleSelected -> vm.toggleSelected(it.id)
                 is BattleConfigListAction.StartSelection -> vm.startSelection(it.id)
+                BattleConfigListAction.SetApples -> {
+                    navigate(BattleConfigListDestination.BattleConfigApple)
+                }
             }
         }
     )
+}
+
+sealed class BattleConfigListDestination {
+    class BattleConfigItem(val id: String) : BattleConfigListDestination()
+
+    data object BattleConfigApple : BattleConfigListDestination()
 }
 
 private sealed class BattleConfigListAction {
@@ -103,6 +116,7 @@ private sealed class BattleConfigListAction {
     object Import : BattleConfigListAction()
     object Delete : BattleConfigListAction()
     object AddNew : BattleConfigListAction()
+    object SetApples : BattleConfigListAction()
     class ToggleSelected(val id: String) : BattleConfigListAction()
     class StartSelection(val id: String) : BattleConfigListAction()
     class Edit(val id: String) : BattleConfigListAction()
@@ -154,6 +168,11 @@ private fun BattleConfigListContent(
                             )
                         }
                     }
+                    HeadingButton(
+                        text = stringResource(R.string.battle_config_list_apples),
+                        icon = icon(R.drawable.ic_apple),
+                        onClick = { action(BattleConfigListAction.SetApples) }
+                    )
                 }
 
                 val servers by derivedStateOf {
