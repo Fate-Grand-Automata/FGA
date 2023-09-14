@@ -283,7 +283,7 @@ val MaterialEnum.drawable
         MaterialEnum.SkillBlueAssassin -> R.drawable.mat_skill_blue_assassin
         MaterialEnum.SkillBlueBerserker -> R.drawable.mat_skill_blue_berserker
 
-        MaterialEnum.RefillSQ -> R.drawable.mat_refill_sq
+        MaterialEnum.RefillRainbowApple -> R.drawable.mat_refill_sq
         MaterialEnum.RefillGoldApple -> R.drawable.mat_refill_gold_apple
         MaterialEnum.RefillSilverApple -> R.drawable.mat_refill_silver_apple
         MaterialEnum.RefillBlueApple -> R.drawable.mat_refill_blue_apple
