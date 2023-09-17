@@ -249,7 +249,7 @@ private fun Pref<Int>.AppleItem(
         Column(
             modifier=Modifier
                 .weight(3f)
-                .padding(bottom = 4.dp),
+                .padding(bottom = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
