@@ -19,4 +19,5 @@
     <string name="battle_config_list_apples" translatable="false">Apples</string>
     <string name="reset" translatable="false">Reset</string>
     <string name="battle_config_apple_subheading" translatable="false">Preset the Apple Count</string>
+    <string name="battle_config_apple_no_game_servers" translatable="false">No Game Server selected</string>
 </resources>

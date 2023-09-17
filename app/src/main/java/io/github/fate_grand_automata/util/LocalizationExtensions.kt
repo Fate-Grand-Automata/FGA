@@ -161,12 +161,6 @@ val MaterialEnum.stringRes: Int
         MaterialEnum.SkillBlueCaster -> R.string.mat_skill_blue_caster
         MaterialEnum.SkillBlueAssassin -> R.string.mat_skill_blue_asssassin
         MaterialEnum.SkillBlueBerserker -> R.string.mat_skill_blue_berserker
-
-        MaterialEnum.RefillRainbowApple -> R.string.p_refill_type_sq
-        MaterialEnum.RefillGoldApple -> R.string.p_refill_type_gold
-        MaterialEnum.RefillSilverApple -> R.string.p_refill_type_silver
-        MaterialEnum.RefillBlueApple -> R.string.p_refill_type_bronze
-        MaterialEnum.RefillCopperApple -> R.string.p_refill_type_copper
     }
 
 val GameAreaMode.stringRes

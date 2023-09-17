@@ -30,6 +30,7 @@ class PreferencesImpl @Inject constructor(
         get() = serverPrefsList.map {
             forPerServerConfigPref(it)
         }
+    override var showGameServers: List<GameServer> by prefs.showGameServer
 
     private var lastPerServerConfigPref: IPerServerConfigPrefs? = null
 
