@@ -64,15 +64,14 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 prefs.selectedServerConfigPref.copperApple = resp.copperRefillCount
                 prefs.selectedServerConfigPref.rainbowApple = resp.rainbowRefillCount
 
+                prefs.selectedServerConfigPref.shouldLimitRuns = resp.limitRuns != null
+                resp.limitRuns?.let { prefs.selectedServerConfigPref.limitRuns = it }
 
-                prefs.refill.shouldLimitRuns = resp.limitRuns != null
-                resp.limitRuns?.let { prefs.refill.limitRuns = it }
+                prefs.selectedServerConfigPref.shouldLimitMats = resp.limitMats != null
+                resp.limitMats?.let { prefs.selectedServerConfigPref.limitMats = it }
 
-                prefs.refill.shouldLimitMats = resp.limitMats != null
-                resp.limitMats?.let { prefs.refill.limitMats = it }
-
-                prefs.refill.shouldLimitCEs = resp.limitCEs != null
-                resp.limitCEs?.let { prefs.refill.limitCEs = it }
+                prefs.selectedServerConfigPref.shouldLimitCEs = resp.limitCEs != null
+                resp.limitCEs?.let { prefs.selectedServerConfigPref.limitCEs = it }
 
                 prefs.waitAPRegen = resp.waitApRegen
 

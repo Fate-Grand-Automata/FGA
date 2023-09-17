@@ -106,12 +106,12 @@ fun battleLauncher(
         )
     }
 
-    var shouldLimitRuns by remember { mutableStateOf(prefs.refill.shouldLimitRuns) }
-    var limitRuns by remember { mutableStateOf(prefs.refill.limitRuns) }
-    var shouldLimitMats by remember { mutableStateOf(prefs.refill.shouldLimitMats) }
-    var limitMats by remember { mutableStateOf(prefs.refill.limitMats) }
-    var shouldLimitCEs by remember { mutableStateOf(prefs.refill.shouldLimitCEs) }
-    var limitCEs by remember { mutableStateOf(prefs.refill.limitCEs) }
+    var shouldLimitRuns by remember { mutableStateOf(perServerConfigPref.shouldLimitRuns) }
+    var limitRuns by remember { mutableStateOf(perServerConfigPref.limitRuns) }
+    var shouldLimitMats by remember { mutableStateOf(perServerConfigPref.shouldLimitMats) }
+    var limitMats by remember { mutableStateOf(perServerConfigPref.limitMats) }
+    var shouldLimitCEs by remember { mutableStateOf(perServerConfigPref.shouldLimitCEs) }
+    var limitCEs by remember { mutableStateOf(perServerConfigPref.limitCEs) }
     var waitApRegen by remember { mutableStateOf(prefs.waitAPRegen) }
 
     Row(
