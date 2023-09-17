@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,8 +60,52 @@ fun battleLauncher(
             }
     }
     var selectedConfigIndex by remember { mutableStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
-    var refillResources by remember { mutableStateOf(prefs.refill.resources.toSet()) }
-    var refillCount by remember { mutableStateOf(prefs.refill.repetitions) }
+
+    val perServerConfigPref by remember {
+        mutableStateOf(
+            prefs.perServerConfigPrefList.single { selected ->
+                prefs.gameServer.toString() == selected.serverRaw
+            }
+        )
+    }
+
+    var refillResources by remember { mutableStateOf(perServerConfigPref.resources.toSet()) }
+
+    //only display bronze option for JP and CN
+    val bronzeApplesEnabled = prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Cn
+    if (!bronzeApplesEnabled) {
+        //disable it in the settings otherwise
+        refillResources = refillResources.minus(RefillResourceEnum.Bronze)
+    }
+    //TODO remove
+    if (refillResources.size > 1) {
+        refillResources = setOf(refillResources.first())
+    }
+    val availableRefills = RefillResourceEnum.values()
+        .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+
+    var copperApple by remember { mutableStateOf(perServerConfigPref.copperApple) }
+    var blueApple by remember { mutableStateOf(perServerConfigPref.blueApple) }
+    var silverApple by remember { mutableStateOf(perServerConfigPref.silverApple) }
+    var goldApple by remember { mutableStateOf(perServerConfigPref.goldApple) }
+    var rainbowApple by remember { mutableStateOf(perServerConfigPref.rainbowApple) }
+
+
+    val refillCount by remember {
+        mutableStateOf(
+            derivedStateOf {
+                when {
+                    RefillResourceEnum.Copper in refillResources -> copperApple
+                    RefillResourceEnum.Bronze in refillResources -> blueApple
+                    RefillResourceEnum.Silver in refillResources -> silverApple
+                    RefillResourceEnum.Gold in refillResources -> goldApple
+                    RefillResourceEnum.SQ in refillResources -> rainbowApple
+                    else -> 0
+                }
+            }
+        )
+    }
+
     var shouldLimitRuns by remember { mutableStateOf(prefs.refill.shouldLimitRuns) }
     var limitRuns by remember { mutableStateOf(prefs.refill.limitRuns) }
     var shouldLimitMats by remember { mutableStateOf(prefs.refill.shouldLimitMats) }
@@ -140,14 +185,27 @@ fun battleLauncher(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
+                        "${prefs.gameServer}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
                         "${stringResource(R.string.p_refill)}:",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.secondary
                     )
 
                     Stepper(
-                        value = refillCount,
-                        onValueChange = { refillCount = it },
+                        value = refillCount.value,
+                        onValueChange = { value ->
+                            when {
+                                RefillResourceEnum.Copper in refillResources -> copperApple = value
+                                RefillResourceEnum.Bronze in refillResources -> blueApple = value
+                                RefillResourceEnum.Silver in refillResources -> silverApple = value
+                                RefillResourceEnum.Gold in refillResources -> goldApple = value
+                                RefillResourceEnum.SQ in refillResources -> rainbowApple = value
+                            }
+                        },
                         valueRange = 0..999,
                         enabled = refillResources.isNotEmpty()
                     )
@@ -160,18 +218,7 @@ fun battleLauncher(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    //only display bronze option for JP and CN
-                    val bronzeApplesEnabled = prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Cn
-                    if (!bronzeApplesEnabled) {
-                        //disable it in the settings otherwise
-                        refillResources = refillResources.minus(RefillResourceEnum.Bronze)
-                    }
-                    //TODO remove
-                    if (refillResources.size > 1) {
-                        refillResources = setOf(refillResources.first())
-                    }
-                    val availableRefills = RefillResourceEnum.values()
-                        .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+
                     items(availableRefills) {
                         it.RefillResource(
                             isSelected = it in refillResources,
@@ -254,8 +301,13 @@ fun battleLauncher(
         build = {
             ScriptLauncherResponse.Battle(
                 config = configs[selectedConfigIndex],
+                perServerConfigPref=perServerConfigPref,
                 refillResources = refillResources,
-                refillCount = refillCount,
+                rainbowRefillCount = rainbowApple,
+                goldRefillCount = goldApple,
+                silverRefillCount = silverApple,
+                blueRefillCount = blueApple,
+                copperRefillCount = copperApple,
                 limitRuns = if (shouldLimitRuns) limitRuns else null,
                 limitMats = if (shouldLimitMats) limitMats else null,
                 limitCEs = if (shouldLimitCEs) limitCEs else null,

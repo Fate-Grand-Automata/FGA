@@ -3,7 +3,6 @@ package io.github.fate_grand_automata.scripts.prefs
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 
 interface IRefillPreferences {
-    var repetitions: Int
     val resources: List<RefillResourceEnum>
     fun updateResources(resources: Set<RefillResourceEnum>)
 

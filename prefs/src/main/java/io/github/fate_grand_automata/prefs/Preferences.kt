@@ -7,6 +7,7 @@ import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.prefs.IRefillPreferences
+import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.PlatformPrefs
 import javax.inject.Inject
@@ -25,15 +26,31 @@ class PreferencesImpl @Inject constructor(
         get() = battleConfigList.map { forBattleConfig(it) }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
 
-    private var selectedAutoSkillConfigKey by prefs.selectedAutoSkillConfig
+    private var serverPrefsList by prefs.serverPrefsList
+    override val perServerConfigPrefList: List<IPerServerConfigPrefs>
+        get() = serverPrefsList.map {
+            forPerServerConfigPref(it)
+        }
+
+    private var lastPerServerConfigPref: IPerServerConfigPrefs? = null
+
+    override var selectedServerConfigPref: IPerServerConfigPrefs
+        get()  {
+            val serverPrefConfig = lastPerServerConfigPref?.takeIf { it.serverRaw == gameServer.toString() } ?: forPerServerConfigPref(gameServer.toString())
+            lastPerServerConfigPref = serverPrefConfig
+            return serverPrefConfig
+        }
+        set(value) {
+            lastPerServerConfigPref = value
+
+        }
 
     private var lastConfig: IBattleConfig? = null
 
     override var selectedBattleConfig: IBattleConfig
         get() {
             val config = lastConfig.let {
-                val currentSelectedKey =
-                    selectedAutoSkillConfigKey
+                val currentSelectedKey = selectedServerConfigPref.selectedAutoSkillKey
 
                 if (it != null && it.id == currentSelectedKey) {
                     it
@@ -45,7 +62,7 @@ class PreferencesImpl @Inject constructor(
         }
         set(value) {
             lastConfig = value
-            selectedAutoSkillConfigKey = value.id
+            selectedServerConfigPref.selectedAutoSkillKey = value.id
         }
 
     override val storySkip by prefs.storySkip
@@ -123,9 +140,32 @@ class PreferencesImpl @Inject constructor(
             .toMutableSet()
             .apply { remove(id) }
 
-        if (selectedAutoSkillConfigKey == id) {
-            selectedAutoSkillConfigKey = ""
+
+        perServerConfigPrefList.forEach {
+            if(it.selectedAutoSkillKey == id){
+                it.selectedAutoSkillKey = ""
+            }
         }
+    }
+
+    private val serverPrefsMap = mutableMapOf<String, IPerServerConfigPrefs>()
+
+    override fun forPerServerConfigPref(id: String): IPerServerConfigPrefs  =
+        serverPrefsMap.getOrPut(id){
+            PerServerConfigPrefs(
+                id,
+                prefs
+            )
+        }
+
+    override fun addPerServerConfigPref(id: String): IPerServerConfigPrefs {
+        serverPrefsList = serverPrefsList
+            .toMutableSet()
+            .apply {
+                add(id)
+            }
+
+        return forPerServerConfigPref(id)
     }
 
     override fun isOnboardingRequired(): Boolean =

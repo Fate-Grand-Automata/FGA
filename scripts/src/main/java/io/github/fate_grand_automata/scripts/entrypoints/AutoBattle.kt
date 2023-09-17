@@ -155,7 +155,7 @@ class AutoBattle @Inject constructor(
             timesRan = state.runs,
             runLimit = if (prefs.refill.shouldLimitRuns) prefs.refill.limitRuns else null,
             timesRefilled = refill.timesRefilled,
-            refillLimit = prefs.refill.repetitions,
+            refillLimit = prefs.selectedServerConfigPref.currentAppleCount,
             ceDropCount = ceDropsTracker.count,
             materials = matTracker.farmed,
             withdrawCount = withdraw.count,

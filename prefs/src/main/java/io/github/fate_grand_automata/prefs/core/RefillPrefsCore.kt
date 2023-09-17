@@ -3,7 +3,8 @@ package io.github.fate_grand_automata.prefs.core
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 
 class RefillPrefsCore(maker: PrefMaker) {
-    val repetitions = maker.stringAsInt("refill_repetitions")
+//    val repetitions = maker.stringAsInt("refill_repetitions")
+
     val resources = maker.stringSet("refill_resource_x").map(
         defaultValue = emptySet(),
         convert = {

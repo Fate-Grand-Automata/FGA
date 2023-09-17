@@ -9,6 +9,8 @@ interface IPreferences {
     var scriptMode: ScriptModeEnum
     var gameServer: GameServer
     val battleConfigs: List<IBattleConfig>
+    val perServerConfigPrefList: List<IPerServerConfigPrefs>
+    var selectedServerConfigPref: IPerServerConfigPrefs
     var selectedBattleConfig: IBattleConfig
     val storySkip: Boolean
     val withdrawEnabled: Boolean
@@ -41,6 +43,10 @@ interface IPreferences {
     val gestures: IGesturesPreferences
 
     var ceBombTargetRarity: Int
+
+    fun forPerServerConfigPref(id: String): IPerServerConfigPrefs
+
+    fun addPerServerConfigPref(id: String): IPerServerConfigPrefs
 
     fun forBattleConfig(id: String): IBattleConfig
     fun addBattleConfig(id: String): IBattleConfig
