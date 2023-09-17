@@ -39,13 +39,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.prefs.core.PerServerConfigPrefsCore
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.scripts.enums.GameServer
-import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.Stepper
-import io.github.fate_grand_automata.ui.battle_config_item.Material
-import io.github.fate_grand_automata.ui.battle_config_item.MaterialsSummary
 import io.github.fate_grand_automata.ui.multiChoiceList
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.drawable
@@ -53,7 +50,6 @@ import io.github.fate_grand_automata.util.drawable
 @Composable
 fun BattleConfigAppleScreen(
     vm: BattleConfigAppleViewModel = viewModel(),
-    navigate: (String) -> Unit
 ) {
 
     val serverConfigPrefListFlow by vm.perServerConfigPrefsList.collectAsState(initial = emptyList())

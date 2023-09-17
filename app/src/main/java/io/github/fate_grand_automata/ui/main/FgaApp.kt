@@ -144,9 +144,6 @@ fun FgaApp(
             composable(NavConstants.battleConfigApple) {
                 BattleConfigAppleScreen(
                     vm = hiltViewModel(),
-                    navigate = {
-
-                    }
                 )
             }
             composable(NavConstants.moreOptions) {
