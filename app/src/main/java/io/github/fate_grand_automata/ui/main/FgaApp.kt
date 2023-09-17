@@ -129,7 +129,7 @@ fun FgaApp(
                         when (it) {
                             BattleConfigListDestination.BattleConfigApple -> {
                                 navController.navigate(NavConstants.battleConfigApple) {
-                                    popUpTo(NavConstants.battleConfigs) {
+                                    popUpTo(NavConstants.battleConfigApple) {
                                         inclusive = true
                                     }
                                 }

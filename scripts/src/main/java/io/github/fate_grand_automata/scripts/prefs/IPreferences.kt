@@ -10,6 +10,7 @@ interface IPreferences {
     var gameServer: GameServer
     val battleConfigs: List<IBattleConfig>
     val perServerConfigPrefList: List<IPerServerConfigPrefs>
+    var showGameServers: List<GameServer>
     var selectedServerConfigPref: IPerServerConfigPrefs
     var selectedBattleConfig: IBattleConfig
     val storySkip: Boolean
