@@ -242,13 +242,13 @@ private fun Pref<Int>.AppleItem(
         )
         Text(
             text = stringResource(mat.stringRes),
-            modifier=Modifier.weight(1f),
+            modifier=Modifier.weight(2f),
             textAlign = TextAlign.Center
         )
 
         Column(
             modifier=Modifier
-                .weight(3f)
+                .weight(2f)
                 .padding(bottom = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
