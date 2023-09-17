@@ -40,8 +40,6 @@ class PrefsCore @Inject constructor(
 
     val boostItemSelectionMode = maker.stringAsInt("selected_boost_item", -1)
 
-    val refill = RefillPrefsCore(maker)
-
     val waitAPRegen = maker.bool("wait_for_ap_regeneration")
 
     val useRootForScreenshots = maker.bool("use_root_screenshot")

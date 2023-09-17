@@ -98,10 +98,4 @@ enum class MaterialEnum {
     SkillBlueCaster,
     SkillBlueAssassin,
     SkillBlueBerserker,
-
-    RefillRainbowApple,
-    RefillGoldApple,
-    RefillSilverApple,
-    RefillBlueApple,
-    RefillCopperApple,
 }

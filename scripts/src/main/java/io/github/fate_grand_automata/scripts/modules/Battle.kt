@@ -47,7 +47,7 @@ class Battle @Inject constructor(
             throw AutoBattle.BattleExitException(AutoBattle.ExitReason.StopAfterThisRun)
         }
 
-        if (prefs.refill.shouldLimitRuns && state.runs >= prefs.refill.limitRuns) {
+        if (prefs.selectedServerConfigPref.shouldLimitRuns && state.runs >= prefs.selectedServerConfigPref.limitRuns) {
             throw AutoBattle.BattleExitException(AutoBattle.ExitReason.LimitRuns(state.runs))
         }
     }

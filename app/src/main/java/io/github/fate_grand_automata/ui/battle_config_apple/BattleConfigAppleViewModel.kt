@@ -11,13 +11,6 @@ import javax.inject.Inject
 class BattleConfigAppleViewModel @Inject constructor(
     prefsCore: PrefsCore,
     val prefs: IPreferences
-): ViewModel() {
-    val battleConfigItems = prefsCore
-        .battleConfigList
-        .asFlow()
-        .map { list ->
-            list
-                .map { key -> prefsCore.forBattleConfig(key) }
-                .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name.get() })
-        }
+) : ViewModel() {
+
 }

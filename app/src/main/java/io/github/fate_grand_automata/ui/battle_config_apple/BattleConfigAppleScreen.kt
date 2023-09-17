@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.ui.battle_config_apple
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,16 +26,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.Tabbed
 import io.github.fate_grand_automata.util.stringRes
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.github.fate_grand_automata.scripts.enums.MaterialEnum
-import io.github.fate_grand_automata.ui.FGATheme
+import io.github.fate_grand_automata.prefs.core.PerServerConfigPrefsCore
+import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.ui.Stepper
 import io.github.fate_grand_automata.util.drawable
 
@@ -45,17 +43,21 @@ fun BattleConfigAppleScreen(
     vm: BattleConfigAppleViewModel = viewModel(),
     navigate: (String) -> Unit
 ) {
-    val configs by vm.battleConfigItems.collectAsState(emptyList())
-    BattleConfigAppleContent(
-        configs = configs
-    )
+//    val servers by vm.gameServers.collectAsState(emptyList())
+//
+//    val serverPrefs by vm.serverPrefs.collectAsState(emptyList())
+//    BattleConfigAppleContent(
+//        servers=servers,
+//        serverPrefs=serverPrefs
+//    )
 
 }
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun BattleConfigAppleContent(
-    configs: List<BattleConfigCore>,
+    servers: List<GameServer>,
+    serverPrefs: List<PerServerConfigPrefsCore>
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -69,27 +71,22 @@ fun BattleConfigAppleContent(
                 )
             }
         )
-        val servers by derivedStateOf {
-            configs
-                .mapNotNull { it.server.get().asGameServer() }
-                .distinct()
-        }
 
         if (servers.isEmpty()) {
-
+//            AppleContents()
         } else {
             Tabbed(
-                items = listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) + servers.map { BattleConfigCore.Server.Set(it) },
-                heading = {
-                    Text(
-                        when (it) {
-                            BattleConfigCore.Server.NotSet -> "ALL"
-                            is BattleConfigCore.Server.Set -> stringResource(it.server.stringRes)
-                        }
-                    )
+                items = servers,
+                heading = {server ->
+                    Text(stringResource(server.stringRes))
                 },
-                content = {
-                    AppleContents()
+                content = { current ->
+                    val filterServerPref by derivedStateOf {
+                        serverPrefs.singleOrNull{
+                            it.serverRaw.get() == current.toString()
+                        }
+                    }
+                    filterServerPref?.let { AppleContents(serverPref = it) }
                 }
             )
         }
@@ -97,41 +94,55 @@ fun BattleConfigAppleContent(
 }
 
 @Composable
-fun AppleContents() {
-    var appleCount = remember {
-        mutableStateOf(0)
+fun AppleContents(
+    serverPref: PerServerConfigPrefsCore
+) {
+    var rainbowAppleCount = remember {
+        mutableStateOf(serverPref.rainbowAppleCount.get())
+    }
+    var goldAppleCount = remember {
+        mutableStateOf(serverPref.goldAppleCount.get())
+    }
+    var silverAppleCount = remember {
+        mutableStateOf(serverPref.silverAppleCount.get())
+    }
+    var blueAppleCount = remember {
+        mutableStateOf(serverPref.blueAppleCount.get())
+    }
+    var copperAppleCount = remember {
+        mutableStateOf(serverPref.copperAppleCount.get())
     }
     LazyColumn(
         modifier= Modifier.padding(horizontal = 8.dp),
         content = {
             item {
                 AppleItem(
-                    appleCount = appleCount,
-                    mat=MaterialEnum.RefillRainbowApple
+                    appleCount = rainbowAppleCount,
+                    mat=RefillResourceEnum.SQ
                 )
             }
             item {
                 AppleItem(
-                    appleCount = appleCount,
-                    mat=MaterialEnum.RefillGoldApple
+                    appleCount = goldAppleCount,
+                    mat=RefillResourceEnum.Gold
                 )
             }
             item {
                 AppleItem(
-                    appleCount = appleCount,
-                    mat=MaterialEnum.RefillSilverApple
+                    appleCount = silverAppleCount,
+                    mat=RefillResourceEnum.Silver
                 )
             }
             item {
                 AppleItem(
-                    appleCount = appleCount,
-                    mat=MaterialEnum.RefillBlueApple
+                    appleCount = blueAppleCount,
+                    mat=RefillResourceEnum.Bronze
                 )
             }
             item {
                 AppleItem(
-                    appleCount = appleCount,
-                    mat=MaterialEnum.RefillCopperApple
+                    appleCount = copperAppleCount,
+                    mat=RefillResourceEnum.Copper
                 )
             }
         })
@@ -140,7 +151,7 @@ fun AppleContents() {
 @Composable
 private fun AppleItem(
     appleCount: MutableState<Int>,
-    mat: MaterialEnum,
+    mat: RefillResourceEnum,
 ) {
     Row(
         modifier = Modifier
@@ -189,14 +200,5 @@ private fun AppleItem(
             )
         }
 
-    }
-}
-
-@Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun AppleContentsPreview() {
-    FGATheme {
-        AppleContents()
     }
 }

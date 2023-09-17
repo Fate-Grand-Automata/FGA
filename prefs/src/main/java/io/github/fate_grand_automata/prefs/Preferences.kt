@@ -6,7 +6,6 @@ import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
-import io.github.fate_grand_automata.scripts.prefs.IRefillPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.PlatformPrefs
@@ -74,9 +73,6 @@ class PreferencesImpl @Inject constructor(
     override val stopOnFirstClearRewards by prefs.stopOnFirstClearRewards
 
     override val boostItemSelectionMode by prefs.boostItemSelectionMode
-
-    override val refill: IRefillPreferences =
-        RefillPreferences(prefs.refill)
 
     override var waitAPRegen by prefs.waitAPRegen
 

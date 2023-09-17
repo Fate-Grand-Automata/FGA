@@ -46,19 +46,5 @@ class PerServerConfigPrefsCore(
 
     val serverRaw = maker.string("server", "")
 
-    val resources = maker.stringSet("refill_resource_x").map(
-        defaultValue = emptySet(),
-        convert = {
-            it
-                .mapNotNull { m ->
-                    try {
-                        enumValueOf<RefillResourceEnum>(m)
-                    } catch (e: Exception) {
-                        null
-                    }
-                }
-                .toSet()
-        },
-        reverse = { it.map { m -> m.name }.toSet() }
-    )
+    val refill = RefillPrefsCore(maker)
 }

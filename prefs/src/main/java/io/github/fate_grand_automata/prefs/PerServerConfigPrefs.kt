@@ -46,9 +46,16 @@ internal class PerServerConfigPrefs(
             }
         }
 
-    override val resources: List<RefillResourceEnum> by prefs.resources.map { set ->
+    override val resources: List<RefillResourceEnum> by prefs.refill.resources.map { set ->
         set.sortedBy { it.ordinal }
     }
 
-    override fun updateResources(resources: Set<RefillResourceEnum>) = prefs.resources.set(resources)
+    override fun updateResources(resources: Set<RefillResourceEnum>) = prefs.refill.resources.set(resources)
+
+    override var shouldLimitRuns: Boolean by prefs.refill.shouldLimitRuns
+    override var limitRuns: Int by prefs.refill.limitRuns
+    override var shouldLimitMats: Boolean by prefs.refill.shouldLimitMats
+    override var limitMats: Int by prefs.refill.limitMats
+    override var shouldLimitCEs: Boolean by prefs.refill.shouldLimitCEs
+    override var limitCEs: Int by prefs.refill.limitCEs
 }

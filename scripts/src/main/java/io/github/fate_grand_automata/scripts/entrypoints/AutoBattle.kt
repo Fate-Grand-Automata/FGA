@@ -105,16 +105,16 @@ class AutoBattle @Inject constructor(
             matTracker.autoDecrement()
             ceDropsTracker.autoDecrement()
 
-            val refill = prefs.refill
+            val perServerConfigPref = prefs.selectedServerConfigPref
 
             // Auto-decrement runs
-            if (refill.shouldLimitRuns) {
-                refill.limitRuns -= state.runs
+            if (perServerConfigPref.shouldLimitRuns) {
+                perServerConfigPref.limitRuns -= state.runs
 
                 // Turn off run limit when done
-                if (refill.limitRuns <= 0) {
-                    refill.limitRuns = 1
-                    refill.shouldLimitRuns = false
+                if (perServerConfigPref.limitRuns <= 0) {
+                    perServerConfigPref.limitRuns = 1
+                    perServerConfigPref.shouldLimitRuns = false
                 }
             }
         }
@@ -153,7 +153,7 @@ class AutoBattle @Inject constructor(
     private fun makeExitState(): ExitState {
         return ExitState(
             timesRan = state.runs,
-            runLimit = if (prefs.refill.shouldLimitRuns) prefs.refill.limitRuns else null,
+            runLimit = if (prefs.selectedServerConfigPref.shouldLimitRuns) prefs.selectedServerConfigPref.limitRuns else null,
             timesRefilled = refill.timesRefilled,
             refillLimit = prefs.selectedServerConfigPref.currentAppleCount,
             ceDropCount = ceDropsTracker.count,

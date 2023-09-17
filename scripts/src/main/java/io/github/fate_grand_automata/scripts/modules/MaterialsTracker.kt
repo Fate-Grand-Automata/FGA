@@ -24,16 +24,17 @@ class MaterialsTracker @Inject constructor(
     val farmed: Map<MaterialEnum, Int> get() = matsGot.filterValues { it > 0 }
 
     fun autoDecrement() {
-        val refill = prefs.refill
+//        val refill = prefs.refill
+        val perServerConfigPref = prefs.selectedServerConfigPref
 
         // Auto-decrement materials
-        if (refill.shouldLimitMats) {
-            refill.limitMats -= matsGot.values.sum()
+        if (perServerConfigPref.shouldLimitMats) {
+            perServerConfigPref.limitMats -= matsGot.values.sum()
 
             // Turn off limit by materials when done
-            if (refill.limitMats <= 0) {
-                refill.limitMats = 1
-                refill.shouldLimitMats = false
+            if (perServerConfigPref.limitMats <= 0) {
+                perServerConfigPref.limitMats = 1
+                perServerConfigPref.shouldLimitMats = false
             }
         }
     }
@@ -51,12 +52,12 @@ class MaterialsTracker @Inject constructor(
             matsGot.merge(material, count, Int::plus)
         }
 
-        if (prefs.refill.shouldLimitMats) {
+        if (prefs.selectedServerConfigPref.shouldLimitMats) {
             val totalMats = matsGot
                 .values
                 .sum()
 
-            if (totalMats >= prefs.refill.limitMats) {
+            if (totalMats >= prefs.selectedServerConfigPref.limitMats) {
                 // Count the current run
                 state.nextRun()
 
