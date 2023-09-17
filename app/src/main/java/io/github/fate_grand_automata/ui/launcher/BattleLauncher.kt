@@ -185,11 +185,6 @@ fun battleLauncher(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        "${prefs.gameServer}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                    Text(
                         "${stringResource(R.string.p_refill)}:",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.secondary
