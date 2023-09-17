@@ -307,7 +307,7 @@ fun BattleExit(
                 battleExitContent(
                     reason = exception.reason,
                     state = exception.state,
-                    refillEnabled = prefs.refill.resources.isNotEmpty()
+                    refillEnabled = prefs.selectedServerConfigPref.resources.isNotEmpty()
                 )
             }
 

@@ -50,8 +50,20 @@ class ScriptLauncherResponseHandler @Inject constructor(
             is ScriptLauncherResponse.Battle -> {
                 prefs.selectedBattleConfig = resp.config
 
-                prefs.refill.updateResources(resp.refillResources)
-                prefs.refill.repetitions = resp.refillCount
+                prefs.selectedServerConfigPref = resp.perServerConfigPref
+
+                if(resp.refillResources.isNotEmpty()){
+                    prefs.selectedServerConfigPref.selectedApple = resp.refillResources.first()
+                }
+
+                prefs.selectedServerConfigPref.updateResources(resp.refillResources)
+
+                prefs.selectedServerConfigPref.blueApple = resp.blueRefillCount
+                prefs.selectedServerConfigPref.goldApple = resp.goldRefillCount
+                prefs.selectedServerConfigPref.silverApple = resp.silverRefillCount
+                prefs.selectedServerConfigPref.copperApple = resp.copperRefillCount
+                prefs.selectedServerConfigPref.rainbowApple = resp.rainbowRefillCount
+
 
                 prefs.refill.shouldLimitRuns = resp.limitRuns != null
                 resp.limitRuns?.let { prefs.refill.limitRuns = it }

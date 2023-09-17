@@ -8,7 +8,6 @@ import io.github.fate_grand_automata.scripts.prefs.IRefillPreferences
 internal class RefillPreferences(
     val prefs: RefillPrefsCore
 ) : IRefillPreferences {
-    override var repetitions by prefs.repetitions
 
     override val resources by prefs.resources.map { set ->
         set.sortedBy { it.ordinal }

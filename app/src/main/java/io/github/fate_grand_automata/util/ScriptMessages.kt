@@ -146,6 +146,7 @@ class ScriptMessages @Inject constructor(
         ceDropCount: Int
     ) = buildString {
         val refill = prefs.refill
+        val perServerConfigPref = prefs.selectedServerConfigPref
 
         if (refill.shouldLimitRuns && refill.limitRuns > 0) {
             appendLine(
@@ -163,8 +164,8 @@ class ScriptMessages @Inject constructor(
             )
         }
 
-        if (refill.resources.isNotEmpty()) {
-            val refillRepetitions = refill.repetitions
+        if (perServerConfigPref.resources.isNotEmpty()) {
+            val refillRepetitions = perServerConfigPref.currentAppleCount
             if (refillRepetitions > 0) {
                 appendLine(
                     context.getString(R.string.refills_used_out_of, timesRefilled, refillRepetitions)

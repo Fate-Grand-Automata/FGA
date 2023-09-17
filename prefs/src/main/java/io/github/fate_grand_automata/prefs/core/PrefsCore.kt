@@ -30,7 +30,7 @@ class PrefsCore @Inject constructor(
     )
 
     val battleConfigList = maker.stringSet("autoskill_list")
-    val selectedAutoSkillConfig = maker.string("autoskill_selected")
+    val serverPrefsList = maker.stringSet("serverPrefs_list")
 
     val storySkip = maker.bool("story_skip")
     val withdrawEnabled = maker.bool("withdraw_enabled")
@@ -121,4 +121,16 @@ class PrefsCore @Inject constructor(
         }
 
     fun removeBattleConfig(id: String) = battleConfigMap.remove(id)
+
+    private val perServerConfigPrefsMap = mutableMapOf<String, PerServerConfigPrefsCore>()
+
+    fun forPerServerConfigPrefs(id: String): PerServerConfigPrefsCore =
+        perServerConfigPrefsMap.getOrPut(id){
+            PerServerConfigPrefsCore(
+                id,
+                context
+            )
+        }
+
+
 }
