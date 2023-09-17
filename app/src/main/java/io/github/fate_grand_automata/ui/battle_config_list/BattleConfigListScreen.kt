@@ -144,35 +144,42 @@ private fun BattleConfigListContent(
                 Heading(
                     stringResource(R.string.p_battle_config)
                 ) {
-                    HeadingButton(
-                        text = stringResource(
-                            if (selectionMode)
-                                R.string.battle_config_item_export
-                            else R.string.battle_config_list_export_all
-                        ),
-                        onClick = { action(BattleConfigListAction.Export) }
-                    )
+                    Column(
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row {
+                            HeadingButton(
+                                text = stringResource(
+                                    if (selectionMode)
+                                        R.string.battle_config_item_export
+                                    else R.string.battle_config_list_export_all
+                                ),
+                                onClick = { action(BattleConfigListAction.Export) }
+                            )
 
-                    Crossfade(selectionMode) {
-                        if (it) {
-                            HeadingButton(
-                                text = stringResource(R.string.battle_config_list_delete),
-                                onClick = { action(BattleConfigListAction.Delete) },
-                                isDanger = true,
-                                icon = icon(Icons.Default.Delete)
-                            )
-                        } else {
-                            HeadingButton(
-                                text = stringResource(R.string.battle_config_list_import),
-                                onClick = { action(BattleConfigListAction.Import) }
-                            )
+                            Crossfade(selectionMode) {
+                                if (it) {
+                                    HeadingButton(
+                                        text = stringResource(R.string.battle_config_list_delete),
+                                        onClick = { action(BattleConfigListAction.Delete) },
+                                        isDanger = true,
+                                        icon = icon(Icons.Default.Delete)
+                                    )
+                                } else {
+                                    HeadingButton(
+                                        text = stringResource(R.string.battle_config_list_import),
+                                        onClick = { action(BattleConfigListAction.Import) }
+                                    )
+                                }
+                            }
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        HeadingButton(
+                            text = stringResource(R.string.battle_config_list_apples),
+                            icon = icon(R.drawable.ic_apple),
+                            onClick = { action(BattleConfigListAction.SetApples) }
+                        )
                     }
-                    HeadingButton(
-                        text = stringResource(R.string.battle_config_list_apples),
-                        icon = icon(R.drawable.ic_apple),
-                        onClick = { action(BattleConfigListAction.SetApples) }
-                    )
                 }
 
                 val servers by derivedStateOf {
