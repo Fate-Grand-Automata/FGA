@@ -15,6 +15,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +35,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.GameServer
@@ -90,7 +94,7 @@ fun battleLauncher(
     var goldApple by remember { mutableStateOf(perServerConfigPref.goldApple) }
     var rainbowApple by remember { mutableStateOf(perServerConfigPref.rainbowApple) }
 
-    LaunchedEffect(copperApple, blueApple, silverApple, goldApple, rainbowApple, block ={
+    LaunchedEffect(copperApple, blueApple, silverApple, goldApple, rainbowApple, block = {
         perServerConfigPref.copperApple = copperApple
         perServerConfigPref.blueApple = blueApple
         perServerConfigPref.silverApple = silverApple
@@ -122,10 +126,14 @@ fun battleLauncher(
     var limitCEs by remember { mutableStateOf(perServerConfigPref.limitCEs) }
     var waitApRegen by remember { mutableStateOf(prefs.waitAPRegen) }
 
-    LaunchedEffect(limitRuns, limitMats, limitCEs, block ={
+    var resetAllButton by remember{ mutableStateOf(false) }
+
+    LaunchedEffect(limitRuns, limitMats, limitCEs, block = {
         perServerConfigPref.limitRuns = limitRuns
         perServerConfigPref.limitMats = limitMats
         perServerConfigPref.limitCEs = limitCEs
+
+        resetAllButton = limitRuns > 1 || limitMats > 1 || limitCEs > 1
     })
 
     Row(
@@ -266,11 +274,54 @@ fun battleLauncher(
             }
 
             item {
-                Text(
-                    stringResource(R.string.p_limit),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.p_limit).uppercase(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Card(
+                            shape = CircleShape,
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            ),
+                            enabled = resetAllButton,
+                            onClick = {
+                                limitRuns = 1
+                                limitCEs = 1
+                                limitMats = 1
+                            }
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .padding(10.dp, 4.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.reset_all).uppercase(),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    textAlign = TextAlign.Center,
+                                    color = if (resetAllButton) MaterialTheme.colorScheme.onSecondaryContainer
+                                    else MaterialTheme.colorScheme.onSecondaryContainer.copy(0.38f)
+                                )
+                            }
+                        }
+                    }
+
+                }
+
             }
 
             item {
@@ -310,7 +361,7 @@ fun battleLauncher(
         build = {
             ScriptLauncherResponse.Battle(
                 config = configs[selectedConfigIndex],
-                perServerConfigPref=perServerConfigPref,
+                perServerConfigPref = perServerConfigPref,
                 refillResources = refillResources,
                 rainbowRefillCount = rainbowApple,
                 goldRefillCount = goldApple,
