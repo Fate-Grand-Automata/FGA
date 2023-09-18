@@ -90,6 +90,14 @@ fun battleLauncher(
     var goldApple by remember { mutableStateOf(perServerConfigPref.goldApple) }
     var rainbowApple by remember { mutableStateOf(perServerConfigPref.rainbowApple) }
 
+    LaunchedEffect(copperApple, blueApple, silverApple, goldApple, rainbowApple, block ={
+        perServerConfigPref.copperApple = copperApple
+        perServerConfigPref.blueApple = blueApple
+        perServerConfigPref.silverApple = silverApple
+        perServerConfigPref.goldApple = goldApple
+        perServerConfigPref.rainbowApple = rainbowApple
+    })
+
 
     val refillCount by remember {
         mutableStateOf(
@@ -113,6 +121,12 @@ fun battleLauncher(
     var shouldLimitCEs by remember { mutableStateOf(perServerConfigPref.shouldLimitCEs) }
     var limitCEs by remember { mutableStateOf(perServerConfigPref.limitCEs) }
     var waitApRegen by remember { mutableStateOf(prefs.waitAPRegen) }
+
+    LaunchedEffect(limitRuns, limitMats, limitCEs, block ={
+        perServerConfigPref.limitRuns = limitRuns
+        perServerConfigPref.limitMats = limitMats
+        perServerConfigPref.limitCEs = limitCEs
+    })
 
     Row(
         modifier = modifier
