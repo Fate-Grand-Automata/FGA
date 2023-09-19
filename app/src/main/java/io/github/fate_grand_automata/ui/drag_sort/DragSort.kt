@@ -32,11 +32,16 @@ fun <T> DragSort(
 ) {
 
     val dialog = FgaDialog()
+    var newItems by remember(items) {
+        mutableStateOf(items)
+    }
 
-    dialog.build {
-        var newItems by remember(items) {
-            mutableStateOf(items)
+    dialog.build(
+        onDismiss = {
+            newItems = items
         }
+    ) {
+
         titleText?.let {
             title(text = it)
         }
@@ -71,6 +76,9 @@ fun <T> DragSort(
             buttons(
                 onSubmit = {
                     onSubmit(newItems)
+                },
+                onCancel = {
+                    newItems = items
                 }
             )
         }
