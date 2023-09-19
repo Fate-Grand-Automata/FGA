@@ -237,15 +237,15 @@ fun FGATheme(
         colorServant2 = Color(0xFF0277bd),
         colorServant3 = Color(0xFFf57f17),
 
-        colorBusterWeak = Color(0xFFb71c1c),
+        colorBusterWeak = Color(0xFFc81f1f),
         colorBuster = Color(0xFFe64a19),
         colorBusterResist = Color(0xFFf57c00),
 
-        colorArtsWeak = Color(0xFF0d47a1),
+        colorArtsWeak = Color(0xFF0e4fb3),
         colorArts = Color(0xFF0277bd),
         colorArtsResist = Color(0xFF3498db),
 
-        colorQuickWeak = Color(0xFF004d40),
+        colorQuickWeak = Color(0xFF006755),
         colorQuick = Color(0xFF2e7d32),
         colorQuickResist = Color(0xFF7cb342),
     )

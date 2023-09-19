@@ -95,7 +95,9 @@ fun CardPriorityDragSort(
         },
         initialContent = {
             LazyRow(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
             ) {
                 items(cloneScores) { item ->
                     Card(
