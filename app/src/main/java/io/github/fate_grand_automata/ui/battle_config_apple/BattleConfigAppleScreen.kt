@@ -113,6 +113,7 @@ fun SelectGameServers(
         }
 
         buttons(
+            okEnabled=currentGameServers.isNotEmpty(),
             onSubmit = {
                 onSubmit(currentGameServers)
             }
