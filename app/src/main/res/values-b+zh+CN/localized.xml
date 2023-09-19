@@ -94,7 +94,7 @@ Order Change"</string>
     <string name="p_battle_config_party">"队伍编号"</string>
     <string name="p_battle_config_server">"区服"</string>
     <string name="p_battle_config_card_priority">"指令卡优先级"</string>
-    <string name="p_battle_config_servant_priority">"使用从者优先级"</string>
+    <string name="p_battle_config_use_servant_priority">"使用从者优先级"</string>
     <string name="p_battle_config_support">"助战从者"</string>
     <string name="p_battle_config_support_selection_mode">"助战从者选取方式"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"备用选取方式"</string>

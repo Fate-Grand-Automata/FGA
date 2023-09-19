@@ -49,7 +49,7 @@ fun CardPriorityView(
 
             val servantPriority by useServantPriority.remember()
             useServantPriority.SwitchPreference(
-                title = stringResource(R.string.p_battle_config_servant_priority),
+                title = stringResource(R.string.p_battle_config_use_servant_priority),
                 modifier = Modifier
                     .padding(bottom = 16.dp)
             )
