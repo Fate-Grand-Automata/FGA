@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -223,62 +224,64 @@ private fun Pref<Int>.AppleItem(
 ) {
     var state by remember()
 
-    Row(
+    ListItem(
         modifier = Modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = MaterialTheme.colorScheme.inverseSurface, shape= RectangleShape),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = painterResource(id = mat.drawable),
-            contentDescription = stringResource(id = mat.stringRes),
-            modifier=Modifier.weight(1f)
-        )
-        Text(
-            text = stringResource(mat.stringRes),
-            modifier=Modifier.weight(2f),
-            textAlign = TextAlign.Center
-        )
-
-        Column(
-            modifier=Modifier
-                .weight(2f)
-                .padding(bottom = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                 contentAlignment = Alignment.Center
-            ){
-                Stepper(
-                    value = state,
-                    onValueChange = { state = it },
-                    valueRange = 0..999,
-                    enabled = true
-                )
-            }
-
-            Card(
-                shape = CircleShape,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.inverseSurface, shape = RectangleShape),
+        leadingContent = {
+            Image(
+                painter = painterResource(id = mat.drawable),
+                contentDescription = stringResource(id = mat.stringRes),
+            )
+        },
+        trailingContent = {
+            Column(
+                modifier= Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .clickable {
-                            state = 0
-                        }
-                        .padding(10.dp, 4.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.reset).uppercase(),
-                        style = MaterialTheme.typography.labelSmall,
-                        textAlign= TextAlign.Center,
+                ){
+                    Stepper(
+                        value = state,
+                        onValueChange = { state = it },
+                        valueRange = 0..999,
+                        enabled = true
                     )
                 }
+
+                Card(
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .clickable {
+                                state = 0
+                            }
+                            .padding(10.dp, 4.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.reset).uppercase(),
+                            style = MaterialTheme.typography.labelSmall,
+                            textAlign= TextAlign.Center,
+                        )
+                    }
+                }
             }
+
+        },
+        headlineContent = {
+            Text(
+                text = stringResource(mat.stringRes).uppercase(),
+                textAlign = TextAlign.Left,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
-
-
-    }
+    )
 }
