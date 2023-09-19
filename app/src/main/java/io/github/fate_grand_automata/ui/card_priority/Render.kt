@@ -127,6 +127,7 @@ private fun ServantPriority(
 
     DragSort(
         titleText = stringResource(id = R.string.p_battle_config_servant_priority),
+        messageText= stringResource(R.string.p_battle_config_instructions_drag_and_drop),
         items = clonePriorities,
         itemContent = { item ->
             ListItem(
