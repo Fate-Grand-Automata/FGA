@@ -77,6 +77,7 @@ class FgaDialog private constructor() {
     @Composable
     fun buttons(
         onSubmit: () -> Unit,
+        onCancel: () -> Unit = {},
         showOk: Boolean = true,
         showCancel: Boolean = true,
         okEnabled: Boolean = true,
@@ -91,7 +92,10 @@ class FgaDialog private constructor() {
         ) {
             if (showCancel) {
                 TextButton(
-                    onClick = { hide() }
+                    onClick = {
+                        hide()
+                        onCancel()
+                    }
                 ) {
                     Text(cancelLabel.uppercase())
                 }
@@ -116,11 +120,15 @@ class FgaDialog private constructor() {
         shape: Shape = MaterialTheme.shapes.medium,
         color: Color = MaterialTheme.colorScheme.surface,
         contentColor: Color = contentColorFor(color),
-        content: @Composable FgaDialog.() -> Unit
+        onDismiss: () -> Unit = {},
+        content: @Composable FgaDialog.() -> Unit,
     ) {
         if (visible.value) {
             ThemedDialog(
-                onDismiss = { hide() }
+                onDismiss = {
+                    hide()
+                    onDismiss()
+                }
             ) {
                 Surface(
                     shape = shape,

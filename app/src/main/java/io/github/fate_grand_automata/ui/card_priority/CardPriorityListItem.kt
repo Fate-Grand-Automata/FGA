@@ -6,8 +6,8 @@ import io.github.fate_grand_automata.scripts.models.CardScore
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 
 data class CardPriorityListItem(
-    val scores: MutableList<CardScore>,
-    val servantPriority: MutableList<TeamSlot>,
+    var scores: MutableList<CardScore>,
+    var servantPriority: MutableList<TeamSlot>,
     var rearrangeCards: MutableState<Boolean>,
     var braveChains: MutableState<BraveChainEnum>
 )

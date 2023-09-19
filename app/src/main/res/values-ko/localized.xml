@@ -94,7 +94,7 @@
     <string name="p_battle_config_party">"파티"</string>
     <string name="p_battle_config_server">"서버"</string>
     <string name="p_battle_config_card_priority">"카드 우선"</string>
-    <string name="p_battle_config_servant_priority">"서번트 우선"</string>
+    <string name="p_battle_config_use_servant_priority">"서번트 우선"</string>
     <string name="p_battle_config_support">"서포트"</string>
     <string name="p_battle_config_support_selection_mode">"선택 모드"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"실패시 선택 모드"</string>
