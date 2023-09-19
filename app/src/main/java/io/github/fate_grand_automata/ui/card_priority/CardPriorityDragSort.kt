@@ -32,6 +32,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import io.github.fate_grand_automata.R
@@ -50,7 +52,7 @@ fun CardPriorityDragSort(
 
     DragSort(
         titleText = stringResource(R.string.card_priority),
-        messageText= stringResource(R.string.p_battle_config_instructions_drag_and_drop),
+        messageText = stringResource(R.string.p_battle_config_instructions_drag_and_drop),
         items = cloneScores,
         itemContent = { item ->
             ListItem(
@@ -156,11 +158,16 @@ private fun getCardScoreName(item: CardScore) =
     buildAnnotatedString {
         when (item.affinity) {
             CardAffinityEnum.Normal -> {
-                pushStyle(style = SpanStyle(fontWeight = FontWeight.Bold))
+                pushStyle(style = SpanStyle(fontWeight = FontWeight.Medium, letterSpacing = TextUnit(0.5f, TextUnitType.Sp)))
             }
 
             CardAffinityEnum.Weak -> {
-                pushStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold, fontStyle = FontStyle.Normal))
+                pushStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.SemiBold, fontStyle = FontStyle.Normal,
+                        letterSpacing = TextUnit(1f, TextUnitType.Sp)
+                    )
+                )
                 append("${item.affinity} ".uppercase())
             }
 
