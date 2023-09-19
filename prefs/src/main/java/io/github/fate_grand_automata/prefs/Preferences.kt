@@ -5,8 +5,8 @@ import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
-import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
+import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.PlatformPrefs
 import javax.inject.Inject
@@ -36,7 +36,7 @@ class PreferencesImpl @Inject constructor(
 
     override var selectedServerConfigPref: IPerServerConfigPrefs
         get()  {
-            val serverPrefConfig = lastPerServerConfigPref?.takeIf { it.serverRaw == gameServer.toString() } ?: forPerServerConfigPref(gameServer.toString())
+            val serverPrefConfig = lastPerServerConfigPref?.takeIf { it.server == gameServer } ?: forPerServerConfigPref(gameServer.toString())
             lastPerServerConfigPref = serverPrefConfig
             return serverPrefConfig
         }

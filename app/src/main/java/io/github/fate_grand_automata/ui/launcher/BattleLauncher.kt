@@ -68,7 +68,7 @@ fun battleLauncher(
     val perServerConfigPref by remember {
         mutableStateOf(
             prefs.perServerConfigPrefList.single { selected ->
-                prefs.gameServer.toString() == selected.serverRaw
+                prefs.gameServer == selected.server
             }
         )
     }
