@@ -105,10 +105,3 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
-
-# Below are not working due to no version reference
-android-application = { id = "com.android.application" }
-kotlin-android = { id = "kotlin-android" }
-kotlin-parcelize = { id = "kotlin-parcelize" }
-kotlin-kapt = { id = "kotlin-kapt" }
-dagger-hilt-android-plugin = { id = "dagger.hilt.android.plugin" }
