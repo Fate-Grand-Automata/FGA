@@ -57,7 +57,7 @@ fun BattleConfigAppleScreen(
 
     BattleConfigAppleContent(
         serverConfigPrefsList = serverConfigPrefListFlow,
-        gameServers=gameServers,
+        gameServers = gameServers,
         onSubmit = {
             vm.updateGameServers(it)
         }
@@ -68,7 +68,7 @@ fun BattleConfigAppleScreen(
 fun SelectGameServers(
     servers: List<GameServer>,
     onSubmit: (List<GameServer>) -> Unit
-){
+) {
     val dialog = FgaDialog()
 
     dialog.build {
@@ -99,14 +99,14 @@ fun SelectGameServers(
         }
         multiChoiceList(
             selected = currentGameServers.toSet(),
-            onSelectedChange = { currentGameServers = it.toList()},
+            onSelectedChange = { currentGameServers = it.toList() },
             items = GameServer.values.filterNot {
                 it.betterFgo
             }
         ) { server ->
 
             Text(
-                server.toString(),
+                text = stringResource(id = server.stringRes),
                 modifier = Modifier
                     .padding(start = 16.dp)
             )
@@ -119,7 +119,6 @@ fun SelectGameServers(
         )
 
 
-
     }
     Column(
         modifier = Modifier
@@ -127,7 +126,7 @@ fun SelectGameServers(
     ) {
         HeadingButton(
             text = stringResource(R.string.p_game_server).uppercase(),
-            modifier=Modifier.padding(top = 8.dp, bottom = 8.dp),
+            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
             onClick = { dialog.show() }
         )
 
@@ -152,14 +151,14 @@ fun BattleConfigAppleContent(
                         style = MaterialTheme.typography.bodySmall
                     )
                     SelectGameServers(
-                        servers=gameServers,
+                        servers = gameServers,
                         onSubmit = onSubmit
                     )
                 }
             }
         )
 
-        if (gameServers.isNotEmpty()){
+        if (gameServers.isNotEmpty()) {
             Tabbed(
                 items = gameServers,
                 heading = { server ->
@@ -176,8 +175,7 @@ fun BattleConfigAppleContent(
                     }
                 }
             )
-        }
-        else{
+        } else {
             Column {
                 Text(
                     stringResource(R.string.battle_config_apple_no_game_servers),
@@ -207,7 +205,7 @@ fun AppleContents(
             item {
                 serverConfigPref.silverAppleCount.AppleItem(mat = RefillResourceEnum.Silver)
             }
-            if (serverConfigPref.server.get() is GameServer.Jp || serverConfigPref.server.get() is GameServer.Cn){
+            if (serverConfigPref.server.get() is GameServer.Jp || serverConfigPref.server.get() is GameServer.Cn) {
                 item {
                     serverConfigPref.blueAppleCount.AppleItem(mat = RefillResourceEnum.Bronze)
                 }
@@ -236,14 +234,14 @@ private fun Pref<Int>.AppleItem(
         },
         trailingContent = {
             Column(
-                modifier= Modifier,
+                modifier = Modifier,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                ){
+                ) {
                     Stepper(
                         value = state,
                         onValueChange = { state = it },
@@ -268,7 +266,7 @@ private fun Pref<Int>.AppleItem(
                         Text(
                             text = stringResource(id = R.string.reset).uppercase(),
                             style = MaterialTheme.typography.labelSmall,
-                            textAlign= TextAlign.Center,
+                            textAlign = TextAlign.Center,
                         )
                     }
                 }
