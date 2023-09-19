@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -25,27 +24,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.ui.Heading
-import io.github.fate_grand_automata.ui.Tabbed
-import io.github.fate_grand_automata.util.stringRes
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PerServerConfigPrefsCore
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.ui.FgaDialog
+import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.Stepper
+import io.github.fate_grand_automata.ui.Tabbed
 import io.github.fate_grand_automata.ui.multiChoiceList
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.drawable
+import io.github.fate_grand_automata.util.stringRes
 
 @Composable
 fun BattleConfigAppleScreen(
@@ -168,7 +166,7 @@ fun BattleConfigAppleContent(
                 },
                 content = { current ->
                     val currentServerConfigPref = serverConfigPrefsList.singleOrNull {
-                        it.serverRaw.get() == current.toString()
+                        it.server.get() == current
                     }
                     if (currentServerConfigPref != null) {
                         AppleContents(
@@ -208,10 +206,7 @@ fun AppleContents(
             item {
                 serverConfigPref.silverAppleCount.AppleItem(mat = RefillResourceEnum.Silver)
             }
-            if (serverConfigPref.serverRaw.get() == "${GameServer.Jp.Original}" ||
-                serverConfigPref.serverRaw.get() == "${GameServer.Jp.BetterFGO}" ||
-                serverConfigPref.serverRaw.get() == "${GameServer.Cn}"
-            ){
+            if (serverConfigPref.server.get() is GameServer.Jp || serverConfigPref.server.get() is GameServer.Cn){
                 item {
                     serverConfigPref.blueAppleCount.AppleItem(mat = RefillResourceEnum.Bronze)
                 }

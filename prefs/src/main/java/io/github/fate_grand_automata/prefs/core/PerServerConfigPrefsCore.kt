@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.prefs.core
 import android.content.Context
 import android.content.SharedPreferences
 import com.fredporciuncula.flow.preferences.Serializer
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 
 class PerServerConfigPrefsCore(
@@ -30,10 +31,9 @@ class PerServerConfigPrefsCore(
     val selectedApple = maker.serialized(
         "selected_apple",
         serializer = object : Serializer<RefillResourceEnum> {
-            override fun deserialize(serialized: String): RefillResourceEnum = try{
+            override fun deserialize(serialized: String): RefillResourceEnum = try {
                 RefillResourceEnum.valueOf(serialized)
-            }
-            catch (e: IllegalArgumentException){
+            } catch (e: IllegalArgumentException) {
                 RefillResourceEnum.Copper
             }
 
@@ -44,7 +44,22 @@ class PerServerConfigPrefsCore(
     )
 
 
-    val serverRaw = maker.string("server", "")
-
     val refill = RefillPrefsCore(maker)
+
+    val server = maker.serialized(
+        key = "server",
+        default = GameServer.default,
+        serializer = object : Serializer<GameServer> {
+            override fun deserialize(serialized: String): GameServer {
+                return try {
+                    GameServer.deserialize(serialized) ?: GameServer.default
+                } catch (e: Exception) {
+                    GameServer.default
+                }
+            }
+
+            override fun serialize(value: GameServer): String =
+                value.serialize()
+        }
+    )
 }

@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.prefs
 
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 
 
@@ -8,8 +9,6 @@ interface IPerServerConfigPrefs {
     val id: String
 
     var selectedAutoSkillKey: String
-
-    var serverRaw: String
 
     var rainbowApple: Int
     var goldApple: Int
@@ -33,4 +32,6 @@ interface IPerServerConfigPrefs {
 
     var shouldLimitCEs: Boolean
     var limitCEs: Int
+
+    var server: GameServer
 }

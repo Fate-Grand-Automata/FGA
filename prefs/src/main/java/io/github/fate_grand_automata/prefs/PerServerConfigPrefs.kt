@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.prefs
 
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.prefs.core.map
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 
@@ -12,8 +13,6 @@ internal class PerServerConfigPrefs(
 
     val prefs = prefsCore.forPerServerConfigPrefs(id)
     override var selectedAutoSkillKey by prefs.selectedAutoSkillConfig
-
-    override var serverRaw by prefs.serverRaw
 
     override var rainbowApple by prefs.rainbowAppleCount
 
@@ -58,4 +57,6 @@ internal class PerServerConfigPrefs(
     override var limitMats: Int by prefs.refill.limitMats
     override var shouldLimitCEs: Boolean by prefs.refill.shouldLimitCEs
     override var limitCEs: Int by prefs.refill.limitCEs
+
+    override var server: GameServer by prefs.server
 }

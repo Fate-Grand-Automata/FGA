@@ -36,7 +36,7 @@ class MainScreenViewModel @Inject constructor(
 
             gameServers.forEach { server ->
                 val serverPref = prefs.addPerServerConfigPref("$server")
-                serverPref.serverRaw = server.toString()
+                serverPref.server = server
             }
         }
     }
