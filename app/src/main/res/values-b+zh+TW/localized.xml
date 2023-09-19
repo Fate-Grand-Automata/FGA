@@ -320,7 +320,7 @@
     <string name="mat_egg">真理之卵</string>
     <string name="mat_star_shard">煌星碎片</string>
     <string name="mat_fruit">悠久果實</string>
-    <string name="p_battle_config_servant_priority">偏好從者</string>
+    <string name="p_battle_config_use_servant_priority">偏好從者</string>
     <string name="p_skip_servant_face_checks">跳過從者檢查</string>
     <string name="p_skip_servant_face_checks_summary">Brave Chain、偏好從者、在無施放寶具從者的指令牌時洗牌等功能將不會生效</string>
     <string name="spam">自動模式</string>

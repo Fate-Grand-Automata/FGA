@@ -94,7 +94,8 @@ Skills"</string>
     <string name="p_battle_config_party">"Party"</string>
     <string name="p_battle_config_server">"Server"</string>
     <string name="p_battle_config_card_priority">"Card Priority"</string>
-    <string name="p_battle_config_servant_priority">"Use Servant Priority"</string>
+    <string name="p_battle_config_use_servant_priority">"Use Servant Priority"</string>
+    <string name="p_battle_config_servant_priority">"Servant Priority"</string>
     <string name="p_battle_config_support">"Support"</string>
     <string name="p_battle_config_support_selection_mode">"Selection Mode"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Fallback"</string>

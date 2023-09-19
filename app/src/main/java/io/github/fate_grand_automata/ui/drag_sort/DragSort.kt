@@ -1,36 +1,95 @@
 package io.github.fate_grand_automata.ui.drag_sort
 
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import io.github.fate_grand_automata.util.ItemTouchHelperCallback
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.ui.FgaDialog
 
 @Composable
 fun <T> DragSort(
-    items: MutableList<T>,
-    viewConfigGrabber: (T) -> DragSortAdapter.ItemViewConfig
+    titleText: String? = null,
+    items: List<T>,
+    itemContent: @Composable LazyItemScope.(item: T) -> Unit,
+    initialContent: @Composable BoxScope.() -> Unit,
+    onSubmit: (List<T>) -> Unit
 ) {
-    AndroidView(
-        factory = { context ->
-            RecyclerView(context).apply {
-                setHasFixedSize(true)
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            }
-        },
-        update = {
-            it.adapter = DragSortAdapter(
-                items,
-                viewConfigGrabber
-            ).also { adapter ->
-                val callback = ItemTouchHelperCallback(adapter)
-                val itemTouchHelper = ItemTouchHelper(callback)
-                itemTouchHelper.attachToRecyclerView(it)
 
-                adapter.itemTouchHelper = itemTouchHelper
-            }
+    val dialog = FgaDialog()
+
+    dialog.build {
+        var newItems by remember(items) {
+            mutableStateOf(items)
         }
+        titleText?.let {
+            title(text = it)
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight(0.7f),
+        ) {
+            DragDropColumn(
+                items = newItems,
+                onSwap = { from, to ->
+                    newItems = newItems.toMutableList().apply {
+                        this[from] = newItems[to]
+                        this[to] = newItems[from]
+                    }
+                },
+                itemContent = itemContent
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextButton(
+                onClick = {
+                    newItems = items
+                },
+                enabled = newItems != items,
+                content = {
+                    Text(text = stringResource(id = R.string.reset).uppercase())
+                }
+            )
+            buttons(
+                onSubmit = {
+                    onSubmit(newItems)
+                }
+            )
+        }
+
+
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .combinedClickable(
+                onClick = {
+                    dialog.show()
+                },
+                onLongClick = {
+                    dialog.show()
+                }
+            ),
+        content = initialContent
     )
 }
