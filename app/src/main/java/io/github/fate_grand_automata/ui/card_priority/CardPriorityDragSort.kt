@@ -50,6 +50,7 @@ fun CardPriorityDragSort(
 
     DragSort(
         titleText = stringResource(R.string.card_priority),
+        messageText= stringResource(R.string.p_battle_config_instructions_drag_and_drop),
         items = cloneScores,
         itemContent = { item ->
             ListItem(
