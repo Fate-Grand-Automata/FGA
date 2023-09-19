@@ -23,6 +23,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -94,15 +95,6 @@ fun battleLauncher(
     var goldApple by remember { mutableStateOf(perServerConfigPref.goldApple) }
     var rainbowApple by remember { mutableStateOf(perServerConfigPref.rainbowApple) }
 
-    LaunchedEffect(copperApple, blueApple, silverApple, goldApple, rainbowApple, block = {
-        perServerConfigPref.copperApple = copperApple
-        perServerConfigPref.blueApple = blueApple
-        perServerConfigPref.silverApple = silverApple
-        perServerConfigPref.goldApple = goldApple
-        perServerConfigPref.rainbowApple = rainbowApple
-    })
-
-
     val refillCount by remember {
         mutableStateOf(
             derivedStateOf {
@@ -126,13 +118,23 @@ fun battleLauncher(
     var limitCEs by remember { mutableStateOf(perServerConfigPref.limitCEs) }
     var waitApRegen by remember { mutableStateOf(prefs.waitAPRegen) }
 
-    var resetAllButton by remember{ mutableStateOf(false) }
+    var resetAllButton by remember { mutableStateOf(false) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            perServerConfigPref.limitRuns = limitRuns
+            perServerConfigPref.limitMats = limitMats
+            perServerConfigPref.limitCEs = limitCEs
+            perServerConfigPref.copperApple = copperApple
+            perServerConfigPref.blueApple = blueApple
+            perServerConfigPref.silverApple = silverApple
+            perServerConfigPref.goldApple = goldApple
+            perServerConfigPref.rainbowApple = rainbowApple
+            perServerConfigPref.updateResources(refillResources)
+        }
+    }
 
     LaunchedEffect(limitRuns, limitMats, limitCEs, block = {
-        perServerConfigPref.limitRuns = limitRuns
-        perServerConfigPref.limitMats = limitMats
-        perServerConfigPref.limitCEs = limitCEs
-
         resetAllButton = limitRuns > 1 || limitMats > 1 || limitCEs > 1
     })
 
