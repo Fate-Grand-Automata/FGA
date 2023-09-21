@@ -3,8 +3,8 @@ package io.github.fate_grand_automata.ui.drag_sort
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -44,57 +44,56 @@ fun <T> DragSort(
             newItems = items
         }
     ) {
+        Column {
+            titleText?.let {
+                title(text = it)
+            }
+            messageText?.let {
+                Text(
+                    text = it,
+                    textAlign = TextAlign.Justify,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f),
+            ) {
+                DragDropColumn(
+                    items = newItems,
+                    onSwap = { from, to ->
+                        newItems = newItems.toMutableList().apply {
+                            this[from] = newItems[to]
+                            this[to] = newItems[from]
+                        }
+                    },
+                    itemContent = itemContent
+                )
+            }
 
-        titleText?.let {
-            title(text = it)
-        }
-        messageText?.let {
-            Text(
-                text = it,
-                textAlign = TextAlign.Justify,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier=Modifier.padding(horizontal = 24.dp)
-            )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxHeight(0.7f),
-        ) {
-            DragDropColumn(
-                items = newItems,
-                onSwap = { from, to ->
-                    newItems = newItems.toMutableList().apply {
-                        this[from] = newItems[to]
-                        this[to] = newItems[from]
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextButton(
+                    onClick = {
+                        newItems = items
+                    },
+                    enabled = newItems != items,
+                    content = {
+                        Text(text = stringResource(id = R.string.reset).uppercase())
                     }
-                },
-                itemContent = itemContent
-            )
+                )
+                buttons(
+                    onSubmit = {
+                        onSubmit(newItems)
+                    },
+                    onCancel = {
+                        newItems = items
+                    }
+                )
+            }
         }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextButton(
-                onClick = {
-                    newItems = items
-                },
-                enabled = newItems != items,
-                content = {
-                    Text(text = stringResource(id = R.string.reset).uppercase())
-                }
-            )
-            buttons(
-                onSubmit = {
-                    onSubmit(newItems)
-                },
-                onCancel = {
-                    newItems = items
-                }
-            )
-        }
-
-
     }
 
     Box(

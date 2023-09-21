@@ -1,6 +1,8 @@
 package io.github.fate_grand_automata.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -170,6 +172,7 @@ class FgaDialog private constructor() {
 fun <T> FgaDialog.multiChoiceList(
     selected: Set<T>,
     items: List<T>,
+    prioritySelected: Boolean = false,
     onSelectedChange: (Set<T>) -> Unit,
     template: @Composable RowScope.(T) -> Unit = {
         Text(it.toString())
@@ -181,10 +184,22 @@ fun <T> FgaDialog.multiChoiceList(
             modifier = modifier
                 .fillMaxWidth()
         ) {
-            items(items) {
+            val rearrangeItems = when (prioritySelected) {
+                true -> items.sortedByDescending {
+                    it in selected
+                }
+
+                false -> items
+            }
+            items(rearrangeItems) {
                 ChoiceListItem(
                     isSelected = it in selected,
-                    onClick = { onSelectedChange(selected.toggle(it)) }
+                    onClick = { onSelectedChange(selected.toggle(it)) },
+                    modifier = Modifier.animateItemPlacement(
+                        spring(
+                            stiffness = Spring.StiffnessMedium
+                        )
+                    )
                 ) {
                     template(it)
                 }
@@ -195,6 +210,7 @@ fun <T> FgaDialog.multiChoiceList(
 
 @Composable
 fun ChoiceListItem(
+    modifier: Modifier = Modifier,
     isSelected: Boolean,
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
@@ -208,6 +224,7 @@ fun ChoiceListItem(
         ),
         modifier = Modifier
             .padding(bottom = 7.dp)
+            .then(modifier)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
