@@ -61,7 +61,8 @@ fun Pref<Set<MaterialEnum>>.Materials() {
                 onClick = { current = emptySet() },
                 modifier = Modifier
                     .padding(16.dp, 5.dp)
-                    .alignByBaseline()
+                    .alignByBaseline(),
+                enabled = current.isNotEmpty()
             ) {
                 // TODO: Localize
                 Text("CLEAR")
@@ -71,6 +72,7 @@ fun Pref<Set<MaterialEnum>>.Materials() {
         multiChoiceList(
             selected = current,
             onSelectedChange = { current = it },
+            prioritySelected = true,
             items = MaterialEnum.values().toList()
         ) { mat ->
             Material(mat)
