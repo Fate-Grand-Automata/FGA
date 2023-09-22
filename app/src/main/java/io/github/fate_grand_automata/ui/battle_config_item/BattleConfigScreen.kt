@@ -30,6 +30,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
@@ -46,6 +50,7 @@ import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
 import io.github.fate_grand_automata.ui.prefs.EditTextPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
+import io.github.fate_grand_automata.util.toSp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -288,33 +293,49 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                 )
 
                 Card {
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp)
-                    ) {
+                    val priorityString = buildAnnotatedString {
                         priorities.forEachIndexed { index, it ->
                             if (index != 0) {
-                                Text(
-                                    ",",
-                                    modifier = Modifier
-                                        .padding(end = 4.dp),
-                                    style = MaterialTheme.typography.bodyMedium
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                                        fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
+                                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                        letterSpacing = MaterialTheme.typography.bodyMedium.letterSpacing,
+                                    )
+                                ) {
+                                    append(",")
+                                }
+                                withStyle(style = SpanStyle(
+                                    letterSpacing = 4.dp.toSp()
                                 )
+                                ){
+                                    append(" ")
+                                }
                             }
-
-                            Text(
-                                it.toString(),
-                                color = it.color,
-                                style = MaterialTheme.typography.bodyMedium.copy(
+                            withStyle(
+                                style = SpanStyle(
+                                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                                    fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
+                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                    letterSpacing = MaterialTheme.typography.bodyMedium.letterSpacing,
+                                    color = it.color,
                                     shadow = Shadow(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         offset = Offset(1f, 1f),
                                         blurRadius = 0f
                                     )
-                                ),
-                            )
+                                )
+                            ) {
+                                append(it.toString())
+                            }
                         }
                     }
+                    Text(
+                        text = priorityString,
+                        modifier = Modifier.padding(horizontal = 5.dp),
+                        textAlign = TextAlign.Justify
+                    )
                 }
             }
         }
