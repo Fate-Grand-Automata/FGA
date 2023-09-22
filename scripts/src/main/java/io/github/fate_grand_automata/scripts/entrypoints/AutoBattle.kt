@@ -181,6 +181,7 @@ class AutoBattle @Inject constructor(
             { isStartingNp() } to { skipNp() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
+            { isInOrdealCallOutOfPodsScreen() } to { locations.ordealCallOutOfPodsClick.click() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
@@ -300,6 +301,13 @@ class AutoBattle @Inject constructor(
         screenshotDrops.screenshotDrops()
 
         locations.resultMatRewardsRegion.click()
+    }
+
+    private fun isInOrdealCallOutOfPodsScreen(): Boolean {
+        // Lock the Ordeal Call for JP server
+        if (prefs.gameServer !is GameServer.Jp) return true
+
+        return images[Images.OrdealCallOutOfPods] in locations.ordealCallOutOfPodsRegion
     }
 
     private fun findRepeatButton(): Match? {

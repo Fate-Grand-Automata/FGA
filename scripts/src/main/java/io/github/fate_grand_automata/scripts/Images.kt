@@ -64,5 +64,6 @@ enum class Images {
     CEProsperityLv1,
     CESynchronizationLv1,
     SkillUse,
-    RankUp
+    RankUp,
+    OrdealCallOutOfPods
 }
