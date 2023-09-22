@@ -22,4 +22,5 @@
     <string name="battle_config_apple_no_game_servers" translatable="false">No Game Server/s selected</string>
     <string name="reset_all" translatable="false">Reset all</string>
     <string name="p_battle_config_instructions_drag_and_drop">Drag and drop columns for priority. Top items are higher priority.</string>
+    <string name="script_msg_storm_pods_ran_out">Ran out of Storm Pods</string>
 </resources>
