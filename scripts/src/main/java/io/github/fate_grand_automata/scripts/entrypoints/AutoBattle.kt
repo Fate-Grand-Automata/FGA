@@ -66,6 +66,7 @@ class AutoBattle @Inject constructor(
         class LimitMaterials(val count: Int) : ExitReason()
         object WithdrawDisabled : ExitReason()
         object APRanOut : ExitReason()
+        object StormPodRanOut: ExitReason()
         object InventoryFull : ExitReason()
         class LimitRuns(val count: Int) : ExitReason()
         object SupportSelectionManual : ExitReason()
@@ -181,7 +182,7 @@ class AutoBattle @Inject constructor(
             { isStartingNp() } to { skipNp() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
-            { isInOrdealCallOutOfPodsScreen() } to { locations.ordealCallOutOfPodsClick.click() },
+            { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
@@ -308,6 +309,12 @@ class AutoBattle @Inject constructor(
         if (prefs.gameServer !is GameServer.Jp) return false
 
         return images[Images.OrdealCallOutOfPods] in locations.ordealCallOutOfPodsRegion
+    }
+
+    private fun ordealCallOutOfPods(){
+        locations.ordealCallOutOfPodsClick.click()
+        0.5.seconds.wait()
+        throw BattleExitException(ExitReason.StormPodRanOut)
     }
 
     private fun findRepeatButton(): Match? {
