@@ -305,7 +305,7 @@ class AutoBattle @Inject constructor(
 
     private fun isInOrdealCallOutOfPodsScreen(): Boolean {
         // Lock the Ordeal Call for JP server
-        if (prefs.gameServer !is GameServer.Jp) return true
+        if (prefs.gameServer !is GameServer.Jp) return false
 
         return images[Images.OrdealCallOutOfPods] in locations.ordealCallOutOfPodsRegion
     }
