@@ -15,7 +15,7 @@ dependencies {
     }
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     testImplementation "com.willowtreeapps.assertk:assertk:0.26.1"
-    testImplementation "io.mockk:mockk:1.13.5"
+    testImplementation "io.mockk:mockk:1.13.8"
 }
 
 java {
