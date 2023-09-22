@@ -23,6 +23,10 @@ class Locations @Inject constructor(
 
     val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
 
+    val ordealCallOutOfPodsRegion = Region(-270, 1060, 540, 130).xFromCenter()
+
+    val ordealCallOutOfPodsClick = Location(0, 1125).xFromCenter()
+
     val menuScreenRegion =
         (if (isWide)
             Region(-600, 1200, 600, 240)
