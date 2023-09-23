@@ -313,7 +313,9 @@ class AutoBattle @Inject constructor(
 
     private fun ordealCallOutOfPods(){
         locations.ordealCallOutOfPodsClick.click()
-        0.5.seconds.wait()
+        // Count the current run
+        state.nextRun()
+        
         throw BattleExitException(ExitReason.StormPodRanOut)
     }
 
