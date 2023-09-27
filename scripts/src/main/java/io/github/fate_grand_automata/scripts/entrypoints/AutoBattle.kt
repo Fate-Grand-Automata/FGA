@@ -183,6 +183,7 @@ class AutoBattle @Inject constructor(
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
+            { isInInterludeEndScreen()} to {locations.interludeCloseClick.click()},
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
@@ -367,6 +368,8 @@ class AutoBattle @Inject constructor(
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
         locations.resultFriendRequestRejectClick.click()
     }
+    private fun isInInterludeEndScreen() =
+        images[Images.InterludeEndScreen] in locations.interludeEndScreenClose
 
     /**
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
