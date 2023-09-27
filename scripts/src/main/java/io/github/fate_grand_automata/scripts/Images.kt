@@ -65,5 +65,6 @@ enum class Images {
     CESynchronizationLv1,
     SkillUse,
     RankUp,
-    OrdealCallOutOfPods
+    OrdealCallOutOfPods,
+    InterludeEndScreen
 }

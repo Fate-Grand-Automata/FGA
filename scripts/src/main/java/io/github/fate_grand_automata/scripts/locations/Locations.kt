@@ -27,6 +27,9 @@ class Locations @Inject constructor(
 
     val ordealCallOutOfPodsClick = Location(0, 1125).xFromCenter()
 
+    val interludeCloseClick =  Location(-399, 1123).xFromCenter()
+    val interludeEndScreenClose =Region(-671, 1064, 533, 120).xFromCenter()
+
     val menuScreenRegion =
         (if (isWide)
             Region(-600, 1200, 600, 240)
