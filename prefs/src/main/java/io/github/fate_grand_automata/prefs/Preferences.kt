@@ -28,7 +28,7 @@ class PreferencesImpl @Inject constructor(
     private var serverPrefsList by prefs.serverPrefsList
     override val perServerConfigPrefList: List<IPerServerConfigPrefs>
         get() = serverPrefsList.map {
-            forPerServerConfigPref(it)
+            getPerServerConfigPref(it)
         }
     override var showGameServers: List<GameServer> by prefs.showGameServer
 
@@ -36,7 +36,7 @@ class PreferencesImpl @Inject constructor(
 
     override var selectedServerConfigPref: IPerServerConfigPrefs
         get()  {
-            val serverPrefConfig = lastPerServerConfigPref?.takeIf { it.server == gameServer } ?: forPerServerConfigPref(gameServer.toString())
+            val serverPrefConfig = lastPerServerConfigPref?.takeIf { it.server == gameServer } ?: getPerServerConfigPref(gameServer.toString())
             lastPerServerConfigPref = serverPrefConfig
             return serverPrefConfig
         }
@@ -147,7 +147,7 @@ class PreferencesImpl @Inject constructor(
 
     private val serverPrefsMap = mutableMapOf<String, IPerServerConfigPrefs>()
 
-    override fun forPerServerConfigPref(id: String): IPerServerConfigPrefs  =
+    override fun getPerServerConfigPref(id: String): IPerServerConfigPrefs  =
         serverPrefsMap.getOrPut(id){
             PerServerConfigPrefs(
                 id,
@@ -162,7 +162,7 @@ class PreferencesImpl @Inject constructor(
                 add(id)
             }
 
-        return forPerServerConfigPref(id)
+        return getPerServerConfigPref(id)
     }
 
     override fun isOnboardingRequired(): Boolean =

@@ -162,7 +162,7 @@ private fun ServantPriority(
                             modifier = Modifier.fillMaxWidth(),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = Color.White
                         )
                     }
                 }
@@ -212,7 +212,8 @@ private fun PrioritiesCardItem(
                     text = "${item.position}",
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth(),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White
                 )
             }
         )

@@ -45,7 +45,7 @@ interface IPreferences {
 
     var ceBombTargetRarity: Int
 
-    fun forPerServerConfigPref(id: String): IPerServerConfigPrefs
+    fun getPerServerConfigPref(id: String): IPerServerConfigPrefs
 
     fun addPerServerConfigPref(id: String): IPerServerConfigPrefs
 

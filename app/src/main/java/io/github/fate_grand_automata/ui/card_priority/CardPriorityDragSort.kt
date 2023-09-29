@@ -89,7 +89,7 @@ fun CardPriorityDragSort(
                             modifier = Modifier.fillMaxWidth(),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = Color.White
                         )
                     }
                 }
@@ -116,7 +116,8 @@ fun CardPriorityDragSort(
                         ) {
                             Text(
                                 text = item.toString(),
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                color=Color.White
                             )
                         }
                     }
