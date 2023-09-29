@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
@@ -347,13 +349,11 @@ private fun BattleConfigListItem(
     val materialsSet by it.materials.remember()
     val mats = materialsSet.take(3)
 
-    val shape = CircleShape
-
     // Without this, holding a list item would leave it highlighted because of recomposition happening before ripple ending
     val longClickState = rememberUpdatedState(onLongClick)
 
     Card(
-        shape = shape,
+        shape = RoundedCornerShape(25),
         elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 5.dp else 1.dp),
         modifier = Modifier
             .padding(5.dp)
@@ -375,7 +375,9 @@ private fun BattleConfigListItem(
             Text(
                 name,
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
             )
 
             mats.forEach {
