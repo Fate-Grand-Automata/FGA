@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -58,7 +59,7 @@ fun <T> DragSort(
             }
             Box(
                 modifier = Modifier
-                    .weight(1f),
+                    .fillMaxHeight(0.6f),
             ) {
                 DragDropColumn(
                     items = newItems,
