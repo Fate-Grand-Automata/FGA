@@ -3,10 +3,10 @@ package io.github.fate_grand_automata.ui.card_priority
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.DragHandle
@@ -96,32 +96,34 @@ fun CardPriorityDragSort(
             )
         },
         initialContent = {
-            LazyRow(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.Center)
             ) {
-                items(cloneScores) { item ->
+                cloneScores.forEach { item ->
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = getCardScoreColor(item = item)
                         ),
                         shape = RectangleShape,
-                        modifier = Modifier
+                        modifier = Modifier.weight(1f)
                     ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
-                                .padding(horizontal = 10.dp, vertical = 4.dp)
+                                .fillMaxSize()
+                                .padding(horizontal = 2.dp, vertical = 4.dp)
                         ) {
                             Text(
                                 text = item.toString(),
                                 textAlign = TextAlign.Center,
-                                color=Color.White
+                                color = Color.White
                             )
                         }
                     }
                 }
+
             }
         },
         onSubmit = {
