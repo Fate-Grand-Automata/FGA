@@ -385,4 +385,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_max_gold_ember_total_count">"Max Gold ember total count"</string>
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
     <string name="skill_maker_melusine">"Mélusine"</string>
+
+    <string name="p_battle_config_instructions_drag_and_drop">Drag and drop columns for priority. Top items are higher priority.</string>
+    <string name="script_msg_storm_pods_ran_out">Ran out of Storm Pods</string>
 </resources>
