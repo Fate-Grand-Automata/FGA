@@ -16,11 +16,9 @@
     <string name="link_youtube" translatable="false">https://www.youtube.com/watch?v=JOwupZ4W8AQ&amp;t=4m10s</string>
     <string name="link_dontkillmyapp" translatable="false">https://dontkillmyapp.com/</string>
     <string name="link_donate" translatable="false">https://ko-fi.com/fategrandautomata</string>
-    <string name="battle_config_list_apples" translatable="false">Apples</string>
+
     <string name="reset" translatable="false">Reset</string>
     <string name="battle_config_apple_subheading" translatable="false">Preset the Apple Count</string>
     <string name="battle_config_apple_no_game_servers" translatable="false">No Game Server/s selected</string>
     <string name="reset_all" translatable="false">Reset all</string>
-    <string name="p_battle_config_instructions_drag_and_drop">Drag and drop columns for priority. Top items are higher priority.</string>
-    <string name="script_msg_storm_pods_ran_out">Ran out of Storm Pods</string>
 </resources>
