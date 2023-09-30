@@ -59,7 +59,8 @@ fun CardPriorityDragSort(
                 leadingContent = {
                     Icon(
                         imageVector = Icons.Default.DragHandle,
-                        contentDescription = stringResource(R.string.card_priority)
+                        contentDescription = stringResource(R.string.card_priority),
+                        tint = Color.White
                     )
                 },
                 trailingContent = {
