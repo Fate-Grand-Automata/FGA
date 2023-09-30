@@ -134,7 +134,8 @@ private fun ServantPriority(
                 leadingContent = {
                     Icon(
                         imageVector = Icons.Default.DragHandle,
-                        contentDescription = stringResource(id = R.string.p_battle_config_servant_priority)
+                        contentDescription = stringResource(id = R.string.p_battle_config_servant_priority),
+                        tint = Color.White
                     )
                 },
                 trailingContent = {
