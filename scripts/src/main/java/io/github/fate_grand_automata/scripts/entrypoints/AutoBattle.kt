@@ -309,7 +309,7 @@ class AutoBattle @Inject constructor(
         // Lock the Ordeal Call for JP server
         if (prefs.gameServer !is GameServer.Jp) return false
 
-        return images[Images.OrdealCallOutOfPods] in locations.ordealCallOutOfPodsRegion
+        return images[Images.Close] in locations.ordealCallOutOfPodsRegion
     }
 
     private fun ordealCallOutOfPods(){
@@ -369,7 +369,7 @@ class AutoBattle @Inject constructor(
         locations.resultFriendRequestRejectClick.click()
     }
     private fun isInInterludeEndScreen() =
-        images[Images.InterludeEndScreen] in locations.interludeEndScreenClose
+        images[Images.Close] in locations.interludeEndScreenClose
 
     /**
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...
