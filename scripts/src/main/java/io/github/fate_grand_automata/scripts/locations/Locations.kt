@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.locations
 
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.models.BoostItem
 import io.github.lib_automata.Location
@@ -124,4 +125,20 @@ class Locations @Inject constructor(
     val rankUpRegion = Region(270, 730, 220, 340).xFromCenter()
 
     val middleOfScreenClick = Location(0, 720).xFromCenter()
+
+
+    fun getCeEnhanceRegion(server: GameServer) = when (server) {
+        is GameServer.En -> when (isWide) {
+            false -> Region(-672, 16, 240, 96).xFromRight()
+            true -> Region(-843, 16, 240, 96).xFromRight()
+        }
+
+        is GameServer.Jp -> when (isWide) {
+            false -> Region(-1088, 16, 704, 104).xFromRight()
+
+            true -> Region(-1259, 16, 704, 104).xFromRight()
+        }
+
+        else -> Region(-1088, 16, 704, 104).xFromRight()
+    }
 }
