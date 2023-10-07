@@ -100,7 +100,7 @@ class ImageLoader @Inject constructor(
         Images.Support -> "support.png"
         Images.ServantCheckSupport -> "servant_check_support.png"
         Images.BattleMenu -> "battle_menu.png"
-        Images.CEEnhance -> "ce_enhance.png"
+        Images.EmptyEnhance -> "empty_enhance.png"
         Images.CEGloomLv1 -> "gloom_0.png"
         Images.CEStarvationLv1 -> "starvation_0.png"
         Images.CEAwakeningLv1 -> "awakening_0.png"

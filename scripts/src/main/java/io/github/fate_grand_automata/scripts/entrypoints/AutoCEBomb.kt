@@ -68,7 +68,7 @@ class AutoCEBomb @Inject constructor(
     }
 
     override fun script(): Nothing {
-        locations.ceEnhanceClick.click()
+        locations.emptyEnhanceClick.click()
 
         while (true) {
             2.seconds.wait()
@@ -96,7 +96,7 @@ class AutoCEBomb @Inject constructor(
                 1.seconds.wait()
 
                 Location(2000, 1000).click(70)
-                locations.ceEnhanceClick.click()
+                locations.emptyEnhanceClick.click()
             }
         }
     }
