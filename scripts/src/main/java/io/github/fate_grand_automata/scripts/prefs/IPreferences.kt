@@ -52,6 +52,8 @@ interface IPreferences {
     fun removeBattleConfig(id: String)
     fun isOnboardingRequired(): Boolean
     fun completedOnboarding()
+
+    val skillUpgrade: ISkillUpgradePreferences
 }
 
 val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots

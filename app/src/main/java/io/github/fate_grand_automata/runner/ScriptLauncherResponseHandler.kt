@@ -50,6 +50,20 @@ class ScriptLauncherResponseHandler @Inject constructor(
             is ScriptLauncherResponse.Battle -> {
                 ScriptModeEnum.Battle
             }
+
+            is ScriptLauncherResponse.SkillUpgrade -> {
+                
+                prefs.skillUpgrade.shouldUpgradeSkill1 = resp.shouldUpgradeSkill1
+                prefs.skillUpgrade.upgradeSkill1 = resp.upgradeSkill1
+
+                prefs.skillUpgrade.shouldUpgradeSkill2 = resp.shouldUpgradeSkill2
+                prefs.skillUpgrade.upgradeSkill2 = resp.upgradeSkill2
+
+                prefs.skillUpgrade.shouldUpgradeSkill3 = resp.shouldUpgradeSkill3
+                prefs.skillUpgrade.upgradeSkill3 = resp.upgradeSkill3
+                
+                ScriptModeEnum.SkillUpgrade
+            }
         }
     }
 }

@@ -3,12 +3,14 @@ package io.github.fate_grand_automata.scripts.entrypoints
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
+import io.github.fate_grand_automata.scripts.modules.AutoSetup
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
 class AutoDetect @Inject constructor(
     api: IFgoAutomataApi,
+    private val autoSetup: AutoSetup
 ) : IFgoAutomataApi by api {
     fun get() = useSameSnapIn {
         val emberSearchRegion = locations.scriptArea.let {
@@ -29,6 +31,11 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.SupportImageMaker
 
             images[Images.CraftEssenceEnhancement] in locations.getCeEnhanceRegion(prefs.gameServer) -> ScriptModeEnum.CEBomb
+
+            images[Images.SkillEnhancement] in locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer) -> {
+                autoSetup.getMinimumSkillLevel()
+                ScriptModeEnum.SkillUpgrade
+            }
 
             else -> ScriptModeEnum.Battle
         }
