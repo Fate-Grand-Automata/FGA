@@ -77,6 +77,8 @@ class AutoSkillUpgrade @Inject constructor(
     var skill2UpgradeResult: EnhancementException? = null
     var skill3UpgradeResult: EnhancementException? = null
 
+    private var skill1Available = true
+
     override fun script(): Nothing {
         try {
             skillUpgrade()
@@ -93,6 +95,7 @@ class AutoSkillUpgrade @Inject constructor(
 
     private fun skillUpgrade(): Nothing {
         if (isServantEmpty) {
+            skill1Available = false
             throw SkillUpgradeException(ExitReason.NoServantSelected)
         }
         val skillUpgrade = prefs.skillUpgrade
@@ -344,7 +347,7 @@ class AutoSkillUpgrade @Inject constructor(
         return ExitState(
             skill1Summary = Summary(
                 isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill1,
-                isAvailable = true,
+                isAvailable = skill1Available,
                 enhancementExitReason = skill1UpgradeResult,
                 startingLevel = prefs.skillUpgrade.minSkill1,
                 endLevel = skill1count,
