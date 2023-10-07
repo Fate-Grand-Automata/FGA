@@ -52,7 +52,7 @@ enum class Images {
     Support,
     ServantCheckSupport,
     BattleMenu,
-    CEEnhance,
+    EmptyEnhance,
     CEGloomLv1,
     CEStarvationLv1,
     CEAwakeningLv1,

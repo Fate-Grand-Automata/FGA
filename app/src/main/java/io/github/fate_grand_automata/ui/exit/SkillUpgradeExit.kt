@@ -97,4 +97,5 @@ private fun LazyListScope.skillUpgradeExitContent(
 private fun AutoSkillUpgrade.ExitReason.text(): String = when (this) {
     AutoSkillUpgrade.ExitReason.RanOutOfQP -> "Run out of QP"
     AutoSkillUpgrade.ExitReason.Success -> "Success"
+    AutoSkillUpgrade.ExitReason.NoServantSelected -> "No Servant Selected. Please select a servant before proceeding"
 }

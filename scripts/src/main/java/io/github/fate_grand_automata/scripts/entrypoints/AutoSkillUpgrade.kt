@@ -22,6 +22,8 @@ class AutoSkillUpgrade @Inject constructor(
     sealed class ExitReason {
         data object RanOutOfQP : ExitReason()
 
+        data object NoServantSelected: ExitReason()
+
         data object Success : ExitReason()
     }
 
@@ -56,6 +58,10 @@ class AutoSkillUpgrade @Inject constructor(
     var skill3UpgradeResult: Exception? = null
 
     override fun script(): Nothing {
+        if (isServantEmpty){
+            throw ExitException(ExitReason.NoServantSelected)
+        }
+
         val skillUpgrade = prefs.skillUpgrade
 
         if (skillUpgrade.shouldUpgradeSkill1) {
@@ -154,9 +160,6 @@ class AutoSkillUpgrade @Inject constructor(
             } catch (e: EnhancementException) {
                 results(e)
                 break
-            } catch (e: Exception) {
-                results(e)
-                break
             }
         }
     }
@@ -181,16 +184,16 @@ class AutoSkillUpgrade @Inject constructor(
         return if (isConfirmationDialog) {
             false
         } else {
-            val currentLocation = images[Images.SkillEnhancement] in locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer)
+
             val currentLevel = region.detectNumberInText()
 
             currentLevel?.let {
                 isSkillUpgradeAnimationFinished = true
-                if (currentLocation) {
+                if (isInSkillEnhancementMenu) {
                     operation(it)
                 }
-                targetLevel <= it && currentLocation
-            } ?: currentLocation && isSkillUpgradeAnimationFinished
+                targetLevel <= it && isInSkillEnhancementMenu
+            } ?: isInSkillEnhancementMenu && isSkillUpgradeAnimationFinished
         }
     }
 
@@ -240,8 +243,15 @@ class AutoSkillUpgrade @Inject constructor(
         return skill3count < targetLevel
     }
 
-    private val isOutOfMats = images[Images.SkillInsufficientMaterials] in locations.skillUpgrade.getInsufficientMatsRegion(prefs.gameServer)
+    private val isOutOfMats = images[Images.SkillInsufficientMaterials] in
+            locations.skillUpgrade.getInsufficientMatsRegion(prefs.gameServer)
 
-    private val isConfirmationDialog = images[Images.Ok] in locations.skillUpgrade.getConfirmationDialog(prefs.gameServer)
+    private val isConfirmationDialog = images[Images.Ok] in
+            locations.skillUpgrade.getConfirmationDialog(prefs.gameServer)
+
+    private val isInSkillEnhancementMenu = images[Images.SkillEnhancement] in
+            locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer)
+
+    private val isServantEmpty = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
 }
