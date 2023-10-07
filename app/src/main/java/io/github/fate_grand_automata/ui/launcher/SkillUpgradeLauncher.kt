@@ -181,10 +181,16 @@ fun SkillUpgradeItem(
             }
             item {
                 Text(
-                    text = if (minimumUpgrade < 10) name.uppercase() else name.uppercase() + "\n" + stringResource(id = R.string.skill_max).uppercase(),
+                    text = when(minimumUpgrade < 10){
+                        true ->  name.uppercase()
+                        false -> name.uppercase() + "\n" + stringResource(id = R.string.skill_max).uppercase()
+                    },
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (shouldUpgrade) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
+                    color = when(shouldUpgrade){
+                        true -> MaterialTheme.colorScheme.onBackground
+                        false -> MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
+                    }
                 )
             }
             if (minimumUpgrade < 10) {
