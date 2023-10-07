@@ -113,7 +113,6 @@ class ScriptManager @Inject constructor(
                 SkillUpgradeExit(
                     exception = exception,
                     prefs = preferences,
-                    prefsCore = prefsCore,
                     onClose = { dialog?.dismiss() },
                     onCopy = { clipboardManager.set(context, exception) }
                 )

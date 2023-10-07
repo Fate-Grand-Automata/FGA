@@ -395,4 +395,20 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_3">Skill 3</string>
     <string name="skill_max">Max Level</string>
     <string name="skill_not_available">Not Available</string>
+    <string name="skill_not_selected_to_upgrade">Not Selected to upgrade</string>
+
+    <string name="skill_number">"Skill %d"</string>
+    <string name="skill_level_up_by">"Level up by %d"</string>
+
+    <string name="skill_enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
+
+    <string name="ran_out_of_qp">Ran out of QP</string>
+    <string name="done">Done</string>
+
+    <string name="skill_enhancement_error_same_level">Same level
+        No enhancement perform</string>
+    <string name="skill_enhancement_error_out_of_qp">Upgrading stopped due to insufficient QP</string>
+    <string name="skill_enhancement_error_out_of_mats">Upgrading stopped due to insufficient mats</string>
+
+    <string name="success">Success</string>
 </resources>
