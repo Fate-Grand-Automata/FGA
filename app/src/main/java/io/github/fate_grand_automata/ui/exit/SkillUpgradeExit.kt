@@ -126,6 +126,7 @@ private fun SkillUpgradeExitContent(
                 Text(
                     text = stringResource(id = R.string.skill_number, index + 1).uppercase(),
                     textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 Divider(
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
@@ -161,18 +162,21 @@ private fun SkillUpgradeSummary(
                     )
                 }
             }
+
             summary.isAvailable && summary.isCheckToUpgrade -> {
                 summaryLevelUp(summary)
             }
+
             summary.isAvailable && !summary.isCheckToUpgrade -> {
                 item {
                     Text(
-                        text = stringResource(id = R.string.skill_not_selected_to_upgrade).uppercase(),
+                        text = stringResource(id = R.string.skill_not_selected_for_enhancement).uppercase(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
             }
+
             else -> {
                 item {
                     Text(
@@ -196,15 +200,21 @@ private fun LazyListScope.summaryLevelUp(
     ) {
         item {
             Text(
-                text = "${summary.startingLevel} -> ${summary.endLevel}",
-                textAlign = TextAlign.Center
+                text = stringResource(
+                    id = R.string.skill_enhancement_went_from_and_to,
+                    summary.startingLevel!!,
+                    summary.endLevel!!
+                ),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
         item {
             val difference = summary.endLevel!! - summary.startingLevel!!
             Text(
                 text = stringResource(id = R.string.skill_level_up_by, difference).uppercase(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
@@ -213,7 +223,8 @@ private fun LazyListScope.summaryLevelUp(
         item {
             Text(
                 text = it.reason.text().uppercase(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
