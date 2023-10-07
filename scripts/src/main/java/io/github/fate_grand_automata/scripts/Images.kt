@@ -66,5 +66,8 @@ enum class Images {
     SkillUse,
     RankUp,
     Close,
-    CraftEssenceEnhancement
+    CraftEssenceEnhancement,
+    SkillEnhancement,
+    SkillInsufficientMaterials,
+    Ok
 }

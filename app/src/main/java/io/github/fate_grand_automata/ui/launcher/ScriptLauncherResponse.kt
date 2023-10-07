@@ -17,6 +17,16 @@ sealed class ScriptLauncherResponse {
     ) : ScriptLauncherResponse()
 
     data class CEBomb(val targetRarity: Int) : ScriptLauncherResponse()
+
+    data class SkillUpgrade(
+        val shouldUpgradeSkill1: Boolean,
+        val upgradeSkill1: Int,
+        val shouldUpgradeSkill2: Boolean,
+        val upgradeSkill2: Int,
+        val shouldUpgradeSkill3: Boolean,
+        val upgradeSkill3: Int,
+    ) : ScriptLauncherResponse()
+
     object SupportImageMaker : ScriptLauncherResponse()
     data class Battle(
         val config: IBattleConfig,

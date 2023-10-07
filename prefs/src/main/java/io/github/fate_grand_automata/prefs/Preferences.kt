@@ -7,6 +7,7 @@ import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.scripts.prefs.ISkillUpgradePreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.PlatformPrefs
 import javax.inject.Inject
@@ -170,6 +171,8 @@ class PreferencesImpl @Inject constructor(
 
     override fun completedOnboarding() =
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
+
+    override val skillUpgrade: ISkillUpgradePreferences = SkillUpgradePrefs(prefs.skillUpgrade)
 
     override val support = object :
         ISupportPreferencesCommon {

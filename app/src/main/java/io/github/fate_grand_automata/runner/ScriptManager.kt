@@ -20,11 +20,13 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoCEBomb
 import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
+import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.exit.BattleExit
+import io.github.fate_grand_automata.ui.exit.SkillUpgradeExit
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncher
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncherResponse
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
@@ -95,6 +97,39 @@ class ScriptManager @Inject constructor(
                 setOnDismissListener {
                     composeView.close()
                     continuation.resume(Unit)
+                }
+            }
+        }
+    }
+
+    private suspend fun showAutoSkillUpgradeMenu(
+        context: Context,
+        exception: AutoSkillUpgrade.ExitException
+    ) = withContext(Dispatchers.Main) {
+        suspendCancellableCoroutine<Unit> { continuation ->
+            var dialog: DialogInterface? = null
+
+            val composeView = FakedComposeView(context) {
+                SkillUpgradeExit(
+                    exception = exception,
+                    prefs = preferences,
+                    prefsCore = prefsCore,
+                    onClose = { dialog?.dismiss() },
+                    onCopy = { clipboardManager.set(context, exception) }
+                )
+            }
+            dialog = showOverlayDialog(context) {
+                setView(composeView.view)
+
+                setOnDismissListener {
+                    uiStateHolder.isPlayButtonEnabled = true
+                    composeView.close()
+
+                    try {
+                        continuation.resume(Unit)
+                    } catch (e: IllegalStateException) {
+                        // Ignore exception on resuming twice
+                    }
                 }
             }
         }
@@ -212,6 +247,10 @@ class ScriptManager @Inject constructor(
                 messageBox.show(scriptExitedString, msg)
             }
 
+            is AutoSkillUpgrade.ExitException -> {
+                showAutoSkillUpgradeMenu(service, e)
+            }
+
             is KnownException -> {
                 messages.notify(scriptExitedString)
 
@@ -241,6 +280,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.PresentBox -> entryPoint.giftBox()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
+            ScriptModeEnum.SkillUpgrade -> entryPoint.skillUpgrade()
         }
 
     enum class PauseAction {
