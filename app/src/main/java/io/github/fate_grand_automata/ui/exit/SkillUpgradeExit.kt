@@ -224,11 +224,11 @@ private fun LazyListScope.summaryLevelUp(
     if (reason == AutoSkillUpgrade.ExitReason.Abort) {
         if ((summary.startingLevel == summary.endLevel) ||
             summary.endLevel == null ||
-            (summary.targetLevel != null && summary.startingLevel != summary.targetLevel)
+            (summary.targetLevel != null && summary.endLevel != summary.targetLevel)
         ) {
             item {
                 Text(
-                    text = stringResource(id = R.string.skill_enhancement_halt).uppercase(),
+                    text = stringResource(id = R.string.skill_enhancement_halt_aborted).uppercase(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -244,6 +244,17 @@ private fun LazyListScope.summaryLevelUp(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium,
             )
+        }
+        if (summary.endLevel != summary.targetLevel && summary.targetLevel != null){
+            item{
+                Text(
+                    text = stringResource(id = R.string.skill_enhancement_error_target_not_met,
+                        summary.targetLevel!!
+                    ).uppercase(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
     }
 }

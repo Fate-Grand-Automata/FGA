@@ -402,6 +402,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="skill_enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
     <string name="skill_enhancement_halt">Enhancement halt</string>
+    <string name="skill_enhancement_halt_aborted">Enhancement halt due to script abort</string>
 
     <string name="ran_out_of_qp">Ran out of QP</string>
     <string name="done">Done</string>
@@ -409,6 +410,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_enhancement_error_same_level">Same level\nNo enhancement perform</string>
     <string name="skill_enhancement_error_out_of_qp">Insufficient QP</string>
     <string name="skill_enhancement_error_out_of_mats">Insufficient mats</string>
+
+    <string name="skill_enhancement_error_target_not_met">"Unable to finish enhancement to Lvl %d"</string>
 
     <string name="success">Success</string>
 </resources>

@@ -161,7 +161,6 @@ class AutoSkillUpgrade @Inject constructor(
         skillLocation.click(2)
         0.5.seconds.wait()
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
-            { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             {
                 isTheTargetUpgradeMet(
@@ -171,6 +170,7 @@ class AutoSkillUpgrade @Inject constructor(
                 )
             } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet) },
             { checkUpgradeSkill(targetLevel) } to { executeUpgradeSkill() },
+            { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
         )
 
         performSkillUpgradeLoop(
