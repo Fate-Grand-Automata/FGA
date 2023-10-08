@@ -401,6 +401,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_level_up_by">"Level up by %d"</string>
 
     <string name="skill_enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
+    <string name="skill_enhancement_halt">Enhancement halt</string>
 
     <string name="ran_out_of_qp">Ran out of QP</string>
     <string name="done">Done</string>

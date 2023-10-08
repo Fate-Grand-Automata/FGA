@@ -132,6 +132,7 @@ private fun SkillUpgradeExitContent(
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
                 )
                 SkillUpgradeSummary(
+                    reason = reason,
                     summary = summary,
                 )
             }
@@ -143,6 +144,7 @@ private fun SkillUpgradeExitContent(
 
 @Composable
 private fun SkillUpgradeSummary(
+    reason: AutoSkillUpgrade.ExitReason,
     summary: AutoSkillUpgrade.Summary,
     modifier: Modifier = Modifier
 ) {
@@ -164,7 +166,7 @@ private fun SkillUpgradeSummary(
             }
 
             summary.isAvailable && summary.isCheckToUpgrade -> {
-                summaryLevelUp(summary)
+                summaryLevelUp(reason = reason, summary = summary)
             }
 
             summary.isAvailable && !summary.isCheckToUpgrade -> {
@@ -193,31 +195,47 @@ private fun SkillUpgradeSummary(
 }
 
 private fun LazyListScope.summaryLevelUp(
+    reason: AutoSkillUpgrade.ExitReason,
     summary: AutoSkillUpgrade.Summary,
 ) {
-    if (summary.startingLevel != null && summary.endLevel != null &&
-        summary.startingLevel != summary.endLevel
-    ) {
-        item {
-            Text(
-                text = stringResource(
-                    id = R.string.skill_enhancement_went_from_and_to,
-                    summary.startingLevel!!,
-                    summary.endLevel!!
-                ),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
-        item {
-            val difference = summary.endLevel!! - summary.startingLevel!!
-            Text(
-                text = stringResource(id = R.string.skill_level_up_by, difference).uppercase(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+    if (summary.startingLevel != null && summary.endLevel != null) {
+        if (summary.startingLevel != summary.endLevel) {
+            item {
+                Text(
+                    text = stringResource(
+                        id = R.string.skill_enhancement_went_from_and_to,
+                        summary.startingLevel!!,
+                        summary.endLevel!!
+                    ),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+            item {
+                val difference = summary.endLevel!! - summary.startingLevel!!
+                Text(
+                    text = stringResource(id = R.string.skill_level_up_by, difference).uppercase(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
     }
+    if (reason == AutoSkillUpgrade.ExitReason.Abort) {
+        if ((summary.startingLevel == summary.endLevel) ||
+            summary.endLevel == null ||
+            (summary.targetLevel != null && summary.startingLevel != summary.targetLevel)
+        ) {
+            item {
+                Text(
+                    text = stringResource(id = R.string.skill_enhancement_halt).uppercase(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
+    }
+
 
     summary.enhancementExitReason?.let {
         item {

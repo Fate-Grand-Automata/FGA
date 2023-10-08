@@ -53,7 +53,8 @@ class AutoSkillUpgrade @Inject constructor(
         val isAvailable: Boolean,
         val enhancementExitReason: EnhancementException? = null,
         val startingLevel: Int? = null,
-        val endLevel: Int? = null
+        val endLevel: Int? = null,
+        val targetLevel: Int? = null
     )
 
     class ExitState(
@@ -351,12 +352,20 @@ class AutoSkillUpgrade @Inject constructor(
                 enhancementExitReason = skill1UpgradeResult,
                 startingLevel = prefs.skillUpgrade.minSkill1,
                 endLevel = skill1count,
+                targetLevel = when (prefs.skillUpgrade.upgradeSkill1 > 0) {
+                    true -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
+                    false -> null
+                }
             ), skill2Summary = Summary(
                 isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill2,
                 isAvailable = prefs.skillUpgrade.skill2Available,
                 enhancementExitReason = skill2UpgradeResult,
                 startingLevel = if (prefs.skillUpgrade.skill2Available) prefs.skillUpgrade.minSkill2 else null,
                 endLevel = skill2count,
+                targetLevel = when (prefs.skillUpgrade.upgradeSkill2 > 0) {
+                    true -> prefs.skillUpgrade.minSkill2 + prefs.skillUpgrade.upgradeSkill2
+                    false -> null
+                },
             ),
             skill3Summary = Summary(
                 isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill3,
@@ -364,6 +373,10 @@ class AutoSkillUpgrade @Inject constructor(
                 enhancementExitReason = skill3UpgradeResult,
                 startingLevel = if (prefs.skillUpgrade.skill3Available) prefs.skillUpgrade.minSkill3 else null,
                 endLevel = skill3count,
+                targetLevel = when (prefs.skillUpgrade.upgradeSkill3 > 0) {
+                    true -> prefs.skillUpgrade.minSkill3 + prefs.skillUpgrade.upgradeSkill3
+                    false -> null
+                }
             )
 
 
