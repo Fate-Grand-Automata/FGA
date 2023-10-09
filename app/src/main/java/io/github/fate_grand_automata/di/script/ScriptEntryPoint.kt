@@ -16,5 +16,7 @@ interface ScriptEntryPoint {
 
     fun skillUpgrade(): AutoSkillUpgrade
 
+    fun servantLevel(): AutoServantEnhancement
+
     fun autoDetect(): AutoDetect
 }

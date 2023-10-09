@@ -23,6 +23,11 @@ sealed class ScriptLauncherResponse {
         val upgradeSkill3: Int,
     ) : ScriptLauncherResponse()
 
+    data class ServantEnhancement(
+        val shouldLimit: Boolean,
+        val limitCount: Int
+    ): ScriptLauncherResponse()
+
     object SupportImageMaker : ScriptLauncherResponse()
     object Battle : ScriptLauncherResponse()
 }

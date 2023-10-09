@@ -17,7 +17,8 @@ class Locations @Inject constructor(
     val support: SupportScreenLocations,
     val attack: AttackScreenLocations,
     val battle: BattleScreenLocations,
-    val skillUpgrade: SkillUpgradeLocations
+    val skillUpgrade: SkillUpgradeLocations,
+    val servant: ServantEnhancementLocations
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()

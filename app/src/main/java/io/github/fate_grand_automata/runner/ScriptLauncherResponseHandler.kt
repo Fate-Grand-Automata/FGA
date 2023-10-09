@@ -64,6 +64,13 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 
                 ScriptModeEnum.SkillUpgrade
             }
+
+            is ScriptLauncherResponse.ServantEnhancement -> {
+                prefs.servant.shouldLimit = resp.shouldLimit
+                prefs.servant.limitCount = resp.limitCount
+
+                ScriptModeEnum.ServantLevel
+            }
         }
     }
 }
