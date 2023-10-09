@@ -118,6 +118,7 @@ class ImageLoader @Inject constructor(
         Images.SkillEnhancement -> "skill_enhance.png"
         Images.SkillInsufficientMaterials -> "skill_insufficient_mats.png"
         Images.Ok -> "ok.png"
+        Images.SkillInsufficientQP -> "skill_insufficient_qp.png"
     }
 
     override operator fun get(img: Images, gameServer: GameServer?): Pattern = synchronized(regionCachedPatterns) {

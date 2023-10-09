@@ -408,6 +408,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="done">Done</string>
 
     <string name="skill_enhancement_error_same_level">Same level\nNo enhancement perform</string>
+    <string name="skill_enhancement_error_exit_early_out_of_qp">Exit early due to Insufficient QP</string>
     <string name="skill_enhancement_error_out_of_qp">Insufficient QP</string>
     <string name="skill_enhancement_error_out_of_mats">Insufficient mats</string>
 

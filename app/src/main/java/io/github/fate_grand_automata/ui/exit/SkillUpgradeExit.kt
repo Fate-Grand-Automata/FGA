@@ -99,7 +99,7 @@ private fun SkillUpgradeExitContent(
     state: AutoSkillUpgrade.ExitState
 ) {
     Text(
-        text = reason.text(),
+        text = reason.text().uppercase(),
         style = MaterialTheme.typography.titleLarge,
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -280,6 +280,9 @@ private fun AutoSkillUpgrade.EnhancementExitReason.text(): String = when (this) 
 
     AutoSkillUpgrade.EnhancementExitReason.OutOfQPException ->
         stringResource(id = R.string.skill_enhancement_error_out_of_qp)
+
+    AutoSkillUpgrade.EnhancementExitReason.ExitEarlyOutOfQPException ->
+        stringResource(id = R.string.skill_enhancement_error_exit_early_out_of_qp)
 
     AutoSkillUpgrade.EnhancementExitReason.SameLevelError ->
         stringResource(id = R.string.skill_enhancement_error_same_level)
