@@ -57,6 +57,21 @@ class SkillUpgradeLocations @Inject constructor(
         else -> Region(-498, 225, 286, 43).xFromCenter()
     }
 
+    fun getInsufficientQPRegion(server: GameServer) = when (server) {
+        is GameServer.En -> when (isWide) {
+            true -> Region(-500, 195, 405, 44).xFromCenter()
+            false ->  Region(-499, 222, 405, 44).xFromCenter()
+        }
+
+        is GameServer.Jp -> when (isWide) {
+            true -> Region(-503, 195, 397, 47).xFromCenter()
+            // TODO Confirm with the latest JP image
+            false -> Region(-500, 222, 397, 47).xFromCenter()
+        }
+
+        else -> Region(-498, 225, 286, 43).xFromCenter()
+    }
+
     val enhancementClick = when (isWide) {
         false -> Location(-281, 1343).xFromRight()
         true -> Location(-396, 1284).xFromRight()

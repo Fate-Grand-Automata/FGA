@@ -69,5 +69,6 @@ enum class Images {
     CraftEssenceEnhancement,
     SkillEnhancement,
     SkillInsufficientMaterials,
-    Ok
+    Ok,
+    SkillInsufficientQP
 }

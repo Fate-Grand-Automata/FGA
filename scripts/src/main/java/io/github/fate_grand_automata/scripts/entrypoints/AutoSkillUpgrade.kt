@@ -41,6 +41,8 @@ class AutoSkillUpgrade @Inject constructor(
         data object OutOfMatsException : EnhancementExitReason()
         data object OutOfQPException : EnhancementExitReason()
 
+        data object ExitEarlyOutOfQPException : EnhancementExitReason()
+
         data object TargetLevelMet : EnhancementExitReason()
 
         data object SameLevelError : EnhancementExitReason()
@@ -114,7 +116,16 @@ class AutoSkillUpgrade @Inject constructor(
             } else {
                 updateSkill1UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
             }
+            if (skill1UpgradeResult?.reason == EnhancementExitReason.OutOfQPException){
 
+                if (skillUpgrade.shouldUpgradeSkill2){
+                    skill2UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
+                }
+                if (skillUpgrade.shouldUpgradeSkill3){
+                    skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
+                }
+                throw SkillUpgradeException(ExitReason.RanOutOfQP)
+            }
         }
         if (skillUpgrade.shouldUpgradeSkill2) {
             if (skillUpgrade.upgradeSkill2 > 0) {
@@ -129,8 +140,12 @@ class AutoSkillUpgrade @Inject constructor(
             } else {
                 updateSkill2UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
             }
-
-
+            if (skill2UpgradeResult?.reason == EnhancementExitReason.OutOfQPException){
+                if (skillUpgrade.shouldUpgradeSkill3){
+                    skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
+                }
+                throw SkillUpgradeException(ExitReason.RanOutOfQP)
+            }
         }
         if (skillUpgrade.shouldUpgradeSkill3) {
             if (skillUpgrade.upgradeSkill3 > 0) {
@@ -145,7 +160,9 @@ class AutoSkillUpgrade @Inject constructor(
             } else {
                 updateSkill3UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
             }
-
+            if (skill3UpgradeResult?.reason == EnhancementExitReason.OutOfQPException){
+                throw SkillUpgradeException(ExitReason.RanOutOfQP)
+            }
         }
         throw SkillUpgradeException(ExitReason.Done)
     }
@@ -171,6 +188,7 @@ class AutoSkillUpgrade @Inject constructor(
             } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet) },
             { checkUpgradeSkill(targetLevel) } to { executeUpgradeSkill() },
             { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
+            { isOutOfQP() } to { throw EnhancementException(EnhancementExitReason.OutOfQPException) }
         )
 
         performSkillUpgradeLoop(
@@ -245,23 +263,14 @@ class AutoSkillUpgrade @Inject constructor(
 
     private fun updateSkill1UpgradeResult(e: EnhancementException) {
         skill1UpgradeResult = e
-        if (e == EnhancementException(EnhancementExitReason.OutOfQPException)) {
-            throw SkillUpgradeException(ExitReason.RanOutOfQP)
-        }
     }
 
     private fun updateSkill2UpgradeResult(e: EnhancementException) {
         skill2UpgradeResult = e
-        if (e == EnhancementException(EnhancementExitReason.OutOfQPException)) {
-            throw SkillUpgradeException(ExitReason.RanOutOfQP)
-        }
     }
 
     private fun updateSkill3UpgradeResult(e: EnhancementException) {
         skill3UpgradeResult = e
-        if (e == EnhancementException(EnhancementExitReason.OutOfQPException)) {
-            throw SkillUpgradeException(ExitReason.RanOutOfQP)
-        }
     }
 
     private fun updateSkill1(level: Int): Boolean {
@@ -341,6 +350,9 @@ class AutoSkillUpgrade @Inject constructor(
 
     private val isInSkillEnhancementMenu = images[Images.SkillEnhancement] in
             locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer)
+
+    private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
+            locations.skillUpgrade.getInsufficientQPRegion(prefs.gameServer)
 
     private val isServantEmpty = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
