@@ -56,6 +56,8 @@ interface IPreferences {
     fun completedOnboarding()
 
     val skillUpgrade: ISkillUpgradePreferences
+
+    val servant: IServantEnhancementPreferences
 }
 
 val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots

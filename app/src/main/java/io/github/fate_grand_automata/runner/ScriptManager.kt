@@ -20,6 +20,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoCEBomb
 import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
+import io.github.fate_grand_automata.scripts.entrypoints.AutoServantEnhancement
 import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
@@ -250,6 +251,35 @@ class ScriptManager @Inject constructor(
                 showAutoSkillUpgradeMenu(service, e)
             }
 
+            is AutoServantEnhancement.ExitException -> {
+                val msg = when (val reason = e.reason) {
+                    AutoServantEnhancement.ExitReason.NoServantSelected ->
+                        context.getString(R.string.enhancement_missing_servant)
+
+                    AutoServantEnhancement.ExitReason.RanOutOfQP -> context.getString(R.string.ran_out_of_qp)
+                    is AutoServantEnhancement.ExitReason.Unexpected -> {
+                        e.let {
+                            "${context.getString(R.string.unexpected_error)}: ${e.message}"
+                        }
+                    }
+
+                    is AutoServantEnhancement.ExitReason.Limit ->
+                        context.getString(R.string.level_uo_by, reason.count)
+
+                    AutoServantEnhancement.ExitReason.MaxLevelAchieved ->
+                        context.getString(R.string.max_level)
+
+                    AutoServantEnhancement.ExitReason.NoEmbersLeft ->
+                        context.getString(R.string.servant_enhancement_no_embers_left)
+
+                    AutoServantEnhancement.ExitReason.Abort ->
+                        context.getString(R.string.enhancement_halt_aborted)
+                }
+
+                messages.notify(msg)
+                messageBox.show(scriptExitedString, msg)
+            }
+
             is KnownException -> {
                 messages.notify(scriptExitedString)
 
@@ -280,6 +310,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
             ScriptModeEnum.SkillUpgrade -> entryPoint.skillUpgrade()
+            ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
         }
 
     enum class PauseAction {

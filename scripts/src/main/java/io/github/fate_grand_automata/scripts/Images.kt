@@ -70,5 +70,8 @@ enum class Images {
     SkillEnhancement,
     SkillInsufficientMaterials,
     Ok,
-    SkillInsufficientQP
+    SkillInsufficientQP,
+    ServantEnhancement,
+    ServantAutoSelect,
+    ServantMaxLevel
 }

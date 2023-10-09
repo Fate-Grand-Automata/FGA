@@ -16,7 +16,6 @@ class AutoDetect @Inject constructor(
         val emberSearchRegion = locations.scriptArea.let {
             it.copy(width = it.width / 3)
         }
-
         when {
             images[Images.FriendSummon] in locations.fp.summonCheck || findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ->
                 ScriptModeEnum.FP
@@ -36,6 +35,8 @@ class AutoDetect @Inject constructor(
                 autoSetup.getMinimumSkillLevel()
                 ScriptModeEnum.SkillUpgrade
             }
+            images[Images.ServantEnhancement] in locations.servant.getServantEnhancementRegion(prefs.gameServer) ->
+                ScriptModeEnum.ServantLevel
 
             else -> ScriptModeEnum.Battle
         }

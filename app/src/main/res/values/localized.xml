@@ -400,9 +400,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_number">"Skill %d"</string>
     <string name="skill_level_up_by">"Level up by %d"</string>
 
-    <string name="skill_enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
+    <string name="enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
     <string name="skill_enhancement_halt">Enhancement halt</string>
-    <string name="skill_enhancement_halt_aborted">Enhancement halt due to script abort</string>
+    <string name="enhancement_halt_aborted">Enhancement halt due to script abort</string>
 
     <string name="ran_out_of_qp">Ran out of QP</string>
     <string name="done">Done</string>
@@ -415,4 +415,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_enhancement_error_target_not_met">"Unable to finish enhancement to Lvl %d"</string>
 
     <string name="success">Success</string>
+
+    <string name="level_uo_by">"Level up by %d time(s)"</string>
+    <string name="max_level">Max Level Achieved</string>
+
+    <string name="servant_enhancement">Servant Enhancement</string>
+
+    <string name="servant_enhancement_limit">Should limit number of enhancement?</string>
+    <string name="servant_enhancement_no_embers_left">Insufficient Embers</string>
 </resources>

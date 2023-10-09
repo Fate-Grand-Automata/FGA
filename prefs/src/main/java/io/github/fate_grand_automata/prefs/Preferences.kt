@@ -1,12 +1,14 @@
 package io.github.fate_grand_automata.prefs
 
 import io.github.fate_grand_automata.prefs.core.PrefsCore
+import io.github.fate_grand_automata.prefs.core.ServantEnhancementPrefs
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.scripts.prefs.IServantEnhancementPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISkillUpgradePreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.PlatformPrefs
@@ -36,7 +38,7 @@ class PreferencesImpl @Inject constructor(
     private var lastPerServerConfigPref: IPerServerConfigPrefs? = null
 
     override var selectedServerConfigPref: IPerServerConfigPrefs
-        get()  {
+        get() {
             val serverPrefConfig = lastPerServerConfigPref?.takeIf { it.server == gameServer } ?: getPerServerConfigPref(gameServer.toString())
             lastPerServerConfigPref = serverPrefConfig
             return serverPrefConfig
@@ -140,7 +142,7 @@ class PreferencesImpl @Inject constructor(
 
 
         perServerConfigPrefList.forEach {
-            if(it.selectedAutoSkillKey == id){
+            if (it.selectedAutoSkillKey == id) {
                 it.selectedAutoSkillKey = ""
             }
         }
@@ -148,8 +150,8 @@ class PreferencesImpl @Inject constructor(
 
     private val serverPrefsMap = mutableMapOf<String, IPerServerConfigPrefs>()
 
-    override fun getPerServerConfigPref(id: String): IPerServerConfigPrefs  =
-        serverPrefsMap.getOrPut(id){
+    override fun getPerServerConfigPref(id: String): IPerServerConfigPrefs =
+        serverPrefsMap.getOrPut(id) {
             PerServerConfigPrefs(
                 id,
                 prefs
@@ -173,6 +175,9 @@ class PreferencesImpl @Inject constructor(
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
 
     override val skillUpgrade: ISkillUpgradePreferences = SkillUpgradePrefs(prefs.skillUpgrade)
+
+    override val servant: IServantEnhancementPreferences =
+        ServantEnhancementPrefs(prefs.servantEnhancement)
 
     override val support = object :
         ISupportPreferencesCommon {

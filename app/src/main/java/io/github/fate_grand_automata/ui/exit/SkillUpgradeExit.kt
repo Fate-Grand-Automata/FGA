@@ -228,7 +228,7 @@ private fun LazyListScope.summaryLevelUp(
         ) {
             item {
                 Text(
-                    text = stringResource(id = R.string.skill_enhancement_halt_aborted).uppercase(),
+                    text = stringResource(id = R.string.enhancement_halt_aborted).uppercase(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -263,7 +263,7 @@ private fun LazyListScope.summaryLevelUp(
 private fun AutoSkillUpgrade.ExitReason.text(): String = when (this) {
     AutoSkillUpgrade.ExitReason.RanOutOfQP -> stringResource(id = R.string.ran_out_of_qp)
     AutoSkillUpgrade.ExitReason.Done -> stringResource(id = R.string.done)
-    AutoSkillUpgrade.ExitReason.NoServantSelected -> stringResource(id = R.string.skill_enhancement_missing_servant)
+    AutoSkillUpgrade.ExitReason.NoServantSelected -> stringResource(id = R.string.enhancement_missing_servant)
     AutoSkillUpgrade.ExitReason.Abort -> stringResource(R.string.stopped_by_user)
     is AutoSkillUpgrade.ExitReason.Unexpected -> {
         e.let {
