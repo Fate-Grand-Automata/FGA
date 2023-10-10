@@ -209,7 +209,7 @@ class AutoSkillUpgrade @Inject constructor(
                         .filter { (validator, _) -> validator() }
                         .map { (_, actor) -> actor }
                         .firstOrNull()
-                } ?: { locations.skillUpgrade.skipRapidClick.click(5) }
+                } ?: { locations.enhancementSkipRapidClick.click(5) }
                 actor.invoke()
 
                 0.5.seconds.wait()
@@ -254,7 +254,7 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun executeUpgradeSkill() {
-        locations.skillUpgrade.enhancementClick.click()
+        locations.enhancementClick.click()
         0.5.seconds.wait()
         locations.skillUpgrade.confirmationDialogClick.click()
         isSkillUpgradeAnimationFinished = false
@@ -346,13 +346,13 @@ class AutoSkillUpgrade @Inject constructor(
             locations.skillUpgrade.getInsufficientMatsRegion(prefs.gameServer)
 
     private val isConfirmationDialog = images[Images.Ok] in
-            locations.skillUpgrade.getConfirmationDialog(prefs.gameServer)
+            locations.skillUpgrade.getConfirmationDialog
 
     private val isInSkillEnhancementMenu = images[Images.SkillEnhancement] in
             locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer)
 
     private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
-            locations.skillUpgrade.getInsufficientQPRegion(prefs.gameServer)
+            locations.getInsufficientQPRegion(prefs.gameServer)
 
     private val isServantEmpty = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 

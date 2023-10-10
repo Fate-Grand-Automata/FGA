@@ -118,8 +118,8 @@ class Locations @Inject constructor(
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
 
-    val emptyEnhanceRegion = when(isWide){
-        true ->  Region(400, 600, 400, 400)
+    val emptyEnhanceRegion = when (isWide) {
+        true -> Region(400, 600, 400, 400)
         false -> Region(200, 600, 400, 400)
     }
     val emptyEnhanceClick = Location(200, 600)
@@ -143,7 +143,29 @@ class Locations @Inject constructor(
 
             true -> Region(-1259, 16, 704, 104).xFromRight()
         }
-
+        // Other servers are not supported
         else -> Region(-1088, 16, 704, 104).xFromRight()
     }
+
+    fun getInsufficientQPRegion(server: GameServer) = when (server) {
+        is GameServer.En -> when (isWide) {
+            true -> Region(-500, 195, 405, 44).xFromCenter()
+            false -> Region(-499, 222, 405, 44).xFromCenter()
+        }
+
+        is GameServer.Jp -> when (isWide) {
+            true -> Region(-503, 195, 397, 47).xFromCenter()
+            // TODO Confirm with the latest JP image
+            false -> Region(-500, 222, 397, 47).xFromCenter()
+        }
+        // Other servers are not supported
+        else -> Region(-498, 225, 286, 43).xFromCenter()
+    }
+
+    val enhancementClick = when (isWide) {
+        false -> Location(-281, 1343).xFromRight()
+        true -> Location(-396, 1284).xFromRight()
+    }
+
+    val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
 }
