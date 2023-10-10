@@ -39,8 +39,6 @@ class AutoServantEnhancement @Inject constructor(
 
     class ExitException(val reason: ExitReason) : Exception()
 
-    private var autoSelectClick = false
-
 
     override fun script(): Nothing {
         try {
@@ -84,7 +82,7 @@ class AutoServantEnhancement @Inject constructor(
                     .filter { (validator, _) -> validator() }
                     .map { (_, actor) -> actor }
                     .firstOrNull()
-            } ?: { locations.servant.skipRapidClick.click(5) }
+            } ?: { locations.enhancementSkipRapidClick.click(5) }
             actor.invoke()
 
             0.5.seconds.wait()
@@ -92,19 +90,17 @@ class AutoServantEnhancement @Inject constructor(
     }
 
     private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
-            locations.skillUpgrade.getInsufficientQPRegion(prefs.gameServer)
+            locations.getInsufficientQPRegion(prefs.gameServer)
 
     private fun performAutoSelect() {
         locations.servant.autoSelectLocation.click()
-        autoSelectClick = true
     }
 
     private fun performEnhancement() {
         locations.servant.emberConfirmationDialogLocation.click()
         1.seconds.wait()
-        locations.skillUpgrade.enhancementClick.click()
+        locations.enhancementClick.click()
         0.5.seconds.wait()
-        autoSelectClick = false
     }
 
     private fun confirmEnhancement() {
