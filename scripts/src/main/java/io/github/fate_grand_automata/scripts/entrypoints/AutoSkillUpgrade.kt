@@ -97,7 +97,7 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun skillUpgrade(): Nothing {
-        if (isServantEmpty) {
+        if (isServantEmpty()) {
             skill1Available = false
             throw SkillUpgradeException(ExitReason.NoServantSelected)
         }
@@ -237,17 +237,18 @@ class AutoSkillUpgrade @Inject constructor(
         operation: (Int) -> Boolean
     ): Boolean {
 
-        return if (isConfirmationDialog) {
+        return if (isConfirmationDialog()) {
             false
         } else {
             val currentLevel = region.detectNumberInText()
 
             currentLevel?.let {
-                val notSameLastValue = if (isInSkillEnhancementMenu) {
+                val checkIfIsInSkillEnhancementMenu = isInSkillEnhancementMenu()
+                val notSameLastValue = if (checkIfIsInSkillEnhancementMenu) {
                     isSkillUpgradeAnimationFinished = true
                     operation(it)
                 } else false
-                targetLevel <= it && isInSkillEnhancementMenu &&
+                targetLevel <= it && checkIfIsInSkillEnhancementMenu &&
                         notSameLastValue && isSkillUpgradeAnimationFinished
             } ?: false
         }
@@ -283,7 +284,7 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun needToUpgradeSkill1(targetLevel: Int): Boolean {
-        if (isConfirmationDialog) return false
+        if (isConfirmationDialog()) return false
         return skill1count?.let {
             val checkIfFirst = when (lastSkill1count) {
                 it -> false
@@ -306,7 +307,7 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun needToUpgradeSkill2(targetLevel: Int): Boolean {
-        if (isConfirmationDialog) return false
+        if (isConfirmationDialog()) return false
         return skill2count?.let {
             val checkIfFirst = when (lastSkill2count) {
                 it -> false
@@ -329,7 +330,7 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun needToUpgradeSkill3(targetLevel: Int): Boolean {
-        if (isConfirmationDialog) return false
+        if (isConfirmationDialog()) return false
         return skill3count?.let {
             val checkIfFirst = when (lastSkill3count) {
                 it -> false
@@ -345,16 +346,16 @@ class AutoSkillUpgrade @Inject constructor(
     private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
             locations.skillUpgrade.getInsufficientMatsRegion(prefs.gameServer)
 
-    private val isConfirmationDialog = images[Images.Ok] in
+    private fun isConfirmationDialog() = images[Images.Ok] in
             locations.skillUpgrade.getConfirmationDialog
 
-    private val isInSkillEnhancementMenu = images[Images.SkillEnhancement] in
+    private fun isInSkillEnhancementMenu() = images[Images.SkillEnhancement] in
             locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer)
 
     private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
             locations.getInsufficientQPRegion(prefs.gameServer)
 
-    private val isServantEmpty = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
+    private fun isServantEmpty() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
     private fun makeExitState(): ExitState {
         return ExitState(
