@@ -248,6 +248,9 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoSkillUpgrade.ExitException -> {
+                if (e.reason !is AutoSkillUpgrade.ExitReason.Abort) {
+                    messages.notify(scriptExitedString)
+                }
                 showAutoSkillUpgradeMenu(service, e)
             }
 
