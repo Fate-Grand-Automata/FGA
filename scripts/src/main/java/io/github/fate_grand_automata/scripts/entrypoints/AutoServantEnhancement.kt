@@ -65,14 +65,14 @@ class AutoServantEnhancement @Inject constructor(
 
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
+            { isLimitReached() } to
+                    { throw ServantUpgradeException(ExitReason.Limit(prefs.servant.limitCount - limitCount)) },
+            { isMaxLevel() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
+            { isOutOfQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) },
             { isEmberSelectionDialogOpen() } to { performEnhancement() },
             { isNoEmberDialogOpen() } to { throw ServantUpgradeException(ExitReason.NoEmbersLeft) },
             { isFinalConfirmVisible() } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
-            { isMaxLevel() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
-            { isLimitReached() } to
-                    { throw ServantUpgradeException(ExitReason.Limit(prefs.servant.limitCount - limitCount)) },
-            { isOutOfQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) }
         )
 
         while (true) {
@@ -111,7 +111,10 @@ class AutoServantEnhancement @Inject constructor(
 
     }
 
-    private fun isLimitReached() = shouldLimit && limitCount <= 0
+    private fun isInServantEnhancementMenu() = images[Images.ServantEnhancement] in
+            locations.servant.getServantEnhancementRegion(prefs.gameServer)
+
+    private fun isLimitReached() = shouldLimit && limitCount <= 0 && isInServantEnhancementMenu()
 
     private fun isServantEmpty() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
