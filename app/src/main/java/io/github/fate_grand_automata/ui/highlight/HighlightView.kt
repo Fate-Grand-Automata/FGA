@@ -27,11 +27,11 @@ class HighlightView(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         for ((region, color) in regionsToHighlight) {
-            canvas?.drawRect(
+            canvas.drawRect(
                 region.x.toFloat(),
                 region.y.toFloat(),
                 region.right.toFloat(),

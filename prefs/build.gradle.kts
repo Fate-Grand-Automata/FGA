@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -14,7 +14,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
     }
 
     buildTypes {

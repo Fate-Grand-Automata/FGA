@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     ndkVersion = "21.3.6528147"
 
     compileOptions {
