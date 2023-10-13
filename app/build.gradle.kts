@@ -131,7 +131,6 @@ dependencies {
 
 
 
-    implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.accompanist.permissions)

@@ -68,7 +68,6 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson_version" }
 
 # Accompanist
-accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist_version" }
 accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist_version" }
 accompanist-flowlayout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "accompanist_version" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist_version" }
