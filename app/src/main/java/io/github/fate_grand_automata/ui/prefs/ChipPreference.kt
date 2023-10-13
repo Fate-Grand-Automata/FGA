@@ -1,5 +1,7 @@
 package io.github.fate_grand_automata.ui.prefs
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.ui.VectorIcon
 import io.github.fate_grand_automata.util.toggle
@@ -64,8 +65,8 @@ fun <T> SingleSelectChip(
         summary = {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                crossAxisSpacing = 0.dp,
-                mainAxisSpacing = 0.dp
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
+                verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
                 entries.forEach { (key, value) ->
                     ChipPreferenceItem(
@@ -118,8 +119,6 @@ fun <T> MultiSelectChip(
         title = { Text(title) },
         summary = {
             FlowRow(
-                crossAxisSpacing = 0.dp,
-                mainAxisSpacing = 0.dp,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 entries.forEach { (key, value) ->

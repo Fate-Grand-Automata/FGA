@@ -25,6 +25,7 @@ android {
         freeCompilerArgs += "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
         freeCompilerArgs += "-opt-in=androidx.compose.animation.ExperimentalAnimationApi"
         freeCompilerArgs += "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
+        freeCompilerArgs += "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
     }
 
     composeOptions {
@@ -132,7 +133,6 @@ dependencies {
 
 
     implementation(libs.accompanist.pager.indicators)
-    implementation(libs.accompanist.flowlayout)
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)
