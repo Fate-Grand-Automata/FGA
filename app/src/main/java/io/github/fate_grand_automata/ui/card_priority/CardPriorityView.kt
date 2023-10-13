@@ -33,7 +33,7 @@ fun CardPriorityView(
     items: SnapshotStateList<CardPriorityListItem>,
     useServantPriority: Pref<Boolean>
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = {items.size},)
     val scope = rememberCoroutineScope()
 
     Box(
@@ -64,7 +64,6 @@ fun CardPriorityView(
 
             HorizontalPager(
                 state = pagerState,
-                pageCount = items.size,
                 verticalAlignment = Alignment.Top,
                 modifier = Modifier
                     .fillMaxWidth()

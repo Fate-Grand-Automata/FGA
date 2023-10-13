@@ -3,7 +3,9 @@ package io.github.fate_grand_automata.ui
 import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
 fun Heading(
@@ -40,14 +41,14 @@ fun Heading(
 
         if (subheading != null) {
             FlowRow(
-                mainAxisSpacing = 10.dp,
+                horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
                 modifier = Modifier
                     .padding(
                         top = if (landscape) 7.dp else 16.dp,
                         start = 16.dp,
                         end = 16.dp
                     ),
-                crossAxisSpacing = 10.dp
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 subheading()
             }
