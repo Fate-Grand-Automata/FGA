@@ -65,7 +65,7 @@ fun OnboardingContent(
     }
 
     val scope = rememberCoroutineScope()
-    val pageState = rememberPagerState()
+    val pageState = rememberPagerState(pageCount = {pages.size},)
     var nextEnabled by remember { mutableStateOf(true) }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -79,7 +79,6 @@ fun OnboardingContent(
         )
 
         HorizontalPager(
-            pageCount = pages.size,
             state = pageState,
             modifier = Modifier
                 .fillMaxWidth()

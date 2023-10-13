@@ -20,7 +20,7 @@ fun <T> Tabbed(
     content: @Composable (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = {items.size},)
     val scope = rememberCoroutineScope()
 
     Column(
@@ -47,7 +47,6 @@ fun <T> Tabbed(
 
         HorizontalPager(
             state = pagerState,
-            pageCount = items.size,
             pageContent = { content(items[it]) },
             verticalAlignment = Alignment.Top,
             modifier = Modifier
