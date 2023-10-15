@@ -36,6 +36,7 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.ui.*
 import io.github.fate_grand_automata.ui.battle_config_item.Material
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.stringRes
 

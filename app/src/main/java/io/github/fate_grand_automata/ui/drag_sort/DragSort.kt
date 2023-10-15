@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.ui.FgaDialog
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
 
 @Composable
 fun <T> DragSort(

@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
-import io.github.fate_grand_automata.ui.ChoiceListItem
+import io.github.fate_grand_automata.ui.dialog.ChoiceListItem
 
 @Composable
 fun ceBombLauncher(

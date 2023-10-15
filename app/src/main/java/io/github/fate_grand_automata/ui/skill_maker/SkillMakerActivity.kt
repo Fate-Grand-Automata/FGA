@@ -14,10 +14,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
-import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.ui.OnPause
 import io.github.fate_grand_automata.ui.PreventRtl
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
 
 @AndroidEntryPoint
 class SkillMakerActivity : ComponentActivity() {

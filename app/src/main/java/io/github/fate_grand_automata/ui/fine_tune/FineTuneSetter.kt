@@ -15,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.ui.DimmedIcon
 import io.github.fate_grand_automata.ui.FGAListItemColors
-import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.Stepper
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.prefs.remember
 

@@ -40,12 +40,12 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
-import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.VerticalDivider
 import io.github.fate_grand_automata.ui.card_priority.getCardScoreColor
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
 import io.github.fate_grand_automata.ui.prefs.EditTextPreference

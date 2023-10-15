@@ -1,4 +1,4 @@
-package io.github.fate_grand_automata.ui
+package io.github.fate_grand_automata.ui.dialog
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

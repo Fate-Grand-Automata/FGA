@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
-import io.github.fate_grand_automata.ui.FgaDialog
-import io.github.fate_grand_automata.ui.multiChoiceList
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
+import io.github.fate_grand_automata.ui.dialog.multiChoiceList
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.drawable
 import io.github.fate_grand_automata.util.stringRes

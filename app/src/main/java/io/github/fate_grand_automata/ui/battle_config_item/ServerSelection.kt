@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.scripts.enums.GameServer
-import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.GroupSelectorItem
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.stringRes
 
