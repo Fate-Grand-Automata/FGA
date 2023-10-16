@@ -5,7 +5,6 @@ import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
-import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import io.github.lib_automata.ScriptAbortException
 import io.github.lib_automata.dagger.ScriptScope
@@ -90,10 +89,6 @@ class AutoSkillUpgrade @Inject constructor(
         }
     }
 
-    private var shouldUpgradeSkill1 = false
-    private var shouldUpgradeSkill2 = false
-    private var shouldUpgradeSkill3 = false
-
 
     private fun skillUpgrade(): Nothing {
         if (isServantEmpty()) {
@@ -101,20 +96,14 @@ class AutoSkillUpgrade @Inject constructor(
             throw SkillUpgradeException(ExitReason.NoServantSelected)
         }
         val skillUpgrade = prefs.skillUpgrade
-        shouldUpgradeSkill1 = skillUpgrade.shouldUpgradeSkill1
-        shouldUpgradeSkill2 = skillUpgrade.shouldUpgradeSkill2
-        shouldUpgradeSkill3 = skillUpgrade.shouldUpgradeSkill3
 
-        if (shouldUpgradeSkill1) {
+        if (skillUpgrade.shouldUpgradeSkill1) {
             if (skillUpgrade.upgradeSkill1 > 0) {
                 setupSkillUpgradeLoop(
-                    skillLocation = locations.skillUpgrade.skill1Click,
-                    skillRegion = locations.skillUpgrade.skill1TextRegion,
-                    targetLevel = prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1,
                     skillNumber = 1,
                 )
             } else {
-                updateSkillUpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError), 1)
+                updateSkillUpgradeResult(EnhancementExitReason.SameLevelError, 1)
             }
 
             ifRanOfQPEarlyException(
@@ -122,32 +111,26 @@ class AutoSkillUpgrade @Inject constructor(
                 index = 1
             )
         }
-        if (shouldUpgradeSkill2) {
+        if (skillUpgrade.shouldUpgradeSkill2) {
             if (skillUpgrade.upgradeSkill2 > 0) {
                 setupSkillUpgradeLoop(
-                    skillLocation = locations.skillUpgrade.skill2Click,
-                    skillRegion = locations.skillUpgrade.skill2TextRegion,
-                    targetLevel = prefs.skillUpgrade.minSkill2 + prefs.skillUpgrade.upgradeSkill2,
                     skillNumber = 2,
                 )
             } else {
-                updateSkillUpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError), 2)
+                updateSkillUpgradeResult(EnhancementExitReason.SameLevelError, 2)
             }
             ifRanOfQPEarlyException(
                 e = skill2UpgradeResult?.reason,
                 index = 1
             )
         }
-        if (shouldUpgradeSkill3) {
+        if (skillUpgrade.shouldUpgradeSkill3) {
             if (skillUpgrade.upgradeSkill3 > 0) {
                 setupSkillUpgradeLoop(
-                    skillLocation = locations.skillUpgrade.skill3Click,
-                    skillRegion = locations.skillUpgrade.skill3TextRegion,
-                    targetLevel = prefs.skillUpgrade.minSkill3 + prefs.skillUpgrade.upgradeSkill3,
                     skillNumber = 3,
                 )
             } else {
-                updateSkillUpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError), 3)
+                updateSkillUpgradeResult(EnhancementExitReason.SameLevelError, 3)
             }
             ifRanOfQPEarlyException(
                 e = skill3UpgradeResult?.reason,
@@ -158,13 +141,15 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun setupSkillUpgradeLoop(
-        skillLocation: Location,
-        skillRegion: Region,
-        targetLevel: Int,
         skillNumber: Int,
     ) {
+        val skillLocation = currentSkillLocation(skillNumber)
+        val skillRegion = currentSkillTextRegion(skillNumber)
+        val targetLevel = currentTargetSkillLevel(skillNumber)
+
         skillLocation.click(2)
-        0.5.seconds.wait()
+        1.0.seconds.wait()
+
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             {
@@ -206,7 +191,7 @@ class AutoSkillUpgrade @Inject constructor(
 
                 0.5.seconds.wait()
             } catch (e: EnhancementException) {
-                updateSkillUpgradeResult(e, skillNumber)
+                updateSkillUpgradeResult(e.reason, skillNumber)
                 break
             }
         }
@@ -248,29 +233,50 @@ class AutoSkillUpgrade @Inject constructor(
         1.0.seconds.wait()
     }
 
-    private fun updateSkillUpgradeResult(e: EnhancementException, index: Int) {
+    private fun updateSkillUpgradeResult(e: EnhancementExitReason, index: Int) {
         when (index) {
-            1 -> skill1UpgradeResult = e
-            2 -> skill2UpgradeResult = e
-            3 -> skill3UpgradeResult = e
-            else -> skill1UpgradeResult = e
+            1 -> skill1UpgradeResult = EnhancementException(e)
+            2 -> skill2UpgradeResult = EnhancementException(e)
+            3 -> skill3UpgradeResult = EnhancementException(e)
+            else -> skill1UpgradeResult = EnhancementException(e)
         }
+    }
+
+    private fun currentSkillTextRegion(index: Int) = when (index) {
+        1 -> locations.skillUpgrade.skill1TextRegion
+        2 -> locations.skillUpgrade.skill2TextRegion
+        3 -> locations.skillUpgrade.skill3TextRegion
+        else -> locations.skillUpgrade.skill1TextRegion
+    }
+
+    private fun currentTargetSkillLevel(index: Int) = when (index) {
+        1 -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
+        2 -> prefs.skillUpgrade.minSkill2 + prefs.skillUpgrade.upgradeSkill2
+        3 -> prefs.skillUpgrade.minSkill3 + prefs.skillUpgrade.upgradeSkill3
+        else -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
+    }
+
+    private fun currentSkillLocation(index: Int) = when (index) {
+        1 -> locations.skillUpgrade.skill1Location
+        2 -> locations.skillUpgrade.skill2Location
+        3 -> locations.skillUpgrade.skill3Location
+        else -> locations.skillUpgrade.skill1Location
     }
 
     private fun ifRanOfQPEarlyException(e: EnhancementExitReason?, index: Int) {
         if (e != EnhancementExitReason.OutOfQPException) return
         when (index) {
             1 -> {
-                if (shouldUpgradeSkill2) {
+                if (prefs.skillUpgrade.shouldUpgradeSkill2) {
                     skill2UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
                 }
-                if (shouldUpgradeSkill3) {
+                if (prefs.skillUpgrade.shouldUpgradeSkill3) {
                     skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
                 }
             }
 
             2 -> {
-                if (shouldUpgradeSkill3) {
+                if (prefs.skillUpgrade.shouldUpgradeSkill3) {
                     skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
                 }
             }

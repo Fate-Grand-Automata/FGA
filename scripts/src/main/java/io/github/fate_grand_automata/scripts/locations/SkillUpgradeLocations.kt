@@ -24,11 +24,11 @@ class SkillUpgradeLocations @Inject constructor(
         else -> Region(-408, 20, 213, 86).xFromRight()
     }
 
-    val skill1Click = Location(-339, 519).xFromCenter()
+    val skill1Location = Location(-339, 519).xFromCenter()
 
-    val skill2Click = Location(236, 519).xFromCenter()
+    val skill2Location = Location(236, 519).xFromCenter()
 
-    val skill3Click = Location(812, 519).xFromCenter()
+    val skill3Location = Location(812, 519).xFromCenter()
 
     fun getInsufficientMatsRegion(server: GameServer) = when (server) {
         is GameServer.En -> when (isWide) {
