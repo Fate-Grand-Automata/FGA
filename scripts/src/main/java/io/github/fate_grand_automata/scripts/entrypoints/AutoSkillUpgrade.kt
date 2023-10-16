@@ -70,17 +70,12 @@ class AutoSkillUpgrade @Inject constructor(
     private var skill2count: Int? = null
     private var skill3count: Int? = null
 
-    private var lastSkill1count: Int? = null
-    private var lastSkill2count: Int? = null
-    private var lastSkill3count: Int? = null
-
-    private var isSkillUpgradeAnimationFinished = false
-
     var skill1UpgradeResult: EnhancementException? = null
     var skill2UpgradeResult: EnhancementException? = null
     var skill3UpgradeResult: EnhancementException? = null
 
     private var skill1Available = true
+
 
     override fun script(): Nothing {
         try {
@@ -93,8 +88,12 @@ class AutoSkillUpgrade @Inject constructor(
             val reason = ExitReason.Unexpected(e)
             throw ExitException(reason, makeExitState())
         }
-
     }
+
+    private var shouldUpgradeSkill1 = false
+    private var shouldUpgradeSkill2 = false
+    private var shouldUpgradeSkill3 = false
+
 
     private fun skillUpgrade(): Nothing {
         if (isServantEmpty()) {
@@ -102,67 +101,58 @@ class AutoSkillUpgrade @Inject constructor(
             throw SkillUpgradeException(ExitReason.NoServantSelected)
         }
         val skillUpgrade = prefs.skillUpgrade
+        shouldUpgradeSkill1 = skillUpgrade.shouldUpgradeSkill1
+        shouldUpgradeSkill2 = skillUpgrade.shouldUpgradeSkill2
+        shouldUpgradeSkill3 = skillUpgrade.shouldUpgradeSkill3
 
-        if (skillUpgrade.shouldUpgradeSkill1) {
+        if (shouldUpgradeSkill1) {
             if (skillUpgrade.upgradeSkill1 > 0) {
                 setupSkillUpgradeLoop(
                     skillLocation = locations.skillUpgrade.skill1Click,
                     skillRegion = locations.skillUpgrade.skill1TextRegion,
                     targetLevel = prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1,
-                    operation = ::updateSkill1,
-                    checkUpgradeSkill = ::needToUpgradeSkill1,
-                    results = ::updateSkill1UpgradeResult
+                    skillNumber = 1,
                 )
             } else {
-                updateSkill1UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
+                updateSkillUpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError), 1)
             }
-            if (skill1UpgradeResult?.reason == EnhancementExitReason.OutOfQPException) {
 
-                if (skillUpgrade.shouldUpgradeSkill2) {
-                    skill2UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
-                }
-                if (skillUpgrade.shouldUpgradeSkill3) {
-                    skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
-                }
-                throw SkillUpgradeException(ExitReason.RanOutOfQP)
-            }
+            ifRanOfQPEarlyException(
+                e = skill1UpgradeResult?.reason,
+                index = 1
+            )
         }
-        if (skillUpgrade.shouldUpgradeSkill2) {
+        if (shouldUpgradeSkill2) {
             if (skillUpgrade.upgradeSkill2 > 0) {
                 setupSkillUpgradeLoop(
                     skillLocation = locations.skillUpgrade.skill2Click,
                     skillRegion = locations.skillUpgrade.skill2TextRegion,
                     targetLevel = prefs.skillUpgrade.minSkill2 + prefs.skillUpgrade.upgradeSkill2,
-                    operation = ::updateSkill2,
-                    checkUpgradeSkill = ::needToUpgradeSkill2,
-                    results = ::updateSkill2UpgradeResult
+                    skillNumber = 2,
                 )
             } else {
-                updateSkill2UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
+                updateSkillUpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError), 2)
             }
-            if (skill2UpgradeResult?.reason == EnhancementExitReason.OutOfQPException) {
-                if (skillUpgrade.shouldUpgradeSkill3) {
-                    skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
-                }
-                throw SkillUpgradeException(ExitReason.RanOutOfQP)
-            }
+            ifRanOfQPEarlyException(
+                e = skill2UpgradeResult?.reason,
+                index = 1
+            )
         }
-        if (skillUpgrade.shouldUpgradeSkill3) {
+        if (shouldUpgradeSkill3) {
             if (skillUpgrade.upgradeSkill3 > 0) {
                 setupSkillUpgradeLoop(
                     skillLocation = locations.skillUpgrade.skill3Click,
                     skillRegion = locations.skillUpgrade.skill3TextRegion,
                     targetLevel = prefs.skillUpgrade.minSkill3 + prefs.skillUpgrade.upgradeSkill3,
-                    operation = ::updateSkill3,
-                    checkUpgradeSkill = ::needToUpgradeSkill3,
-                    results = ::updateSkill3UpgradeResult
+                    skillNumber = 3,
                 )
             } else {
-                updateSkill3UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
+                updateSkillUpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError), 3)
             }
-            if (skill3UpgradeResult?.reason == EnhancementExitReason.OutOfQPException) {
-                throw SkillUpgradeException(ExitReason.RanOutOfQP)
-            }
+            ifRanOfQPEarlyException(
+                e = skill3UpgradeResult?.reason,
+                index = 3
+            )
         }
         throw SkillUpgradeException(ExitReason.Done)
     }
@@ -171,9 +161,7 @@ class AutoSkillUpgrade @Inject constructor(
         skillLocation: Location,
         skillRegion: Region,
         targetLevel: Int,
-        operation: (Int) -> Boolean,
-        checkUpgradeSkill: (Int) -> Boolean,
-        results: (EnhancementException) -> Unit
+        skillNumber: Int,
     ) {
         skillLocation.click(2)
         0.5.seconds.wait()
@@ -183,25 +171,27 @@ class AutoSkillUpgrade @Inject constructor(
                 isTheTargetUpgradeMet(
                     region = skillRegion,
                     targetLevel = targetLevel,
-                    operation = operation
+                    skillNumber = skillNumber
                 )
             } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet) },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
             { isConfirmationDialog() } to { executeUpgradeSkill() },
-            { checkUpgradeSkill(targetLevel) } to { locations.enhancementClick.click() },
+            {
+                checkIfWillUpgradeSkill(targetLevel = targetLevel, index = skillNumber)
+            } to { locations.enhancementClick.click() },
             { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
             { isOutOfQP() } to { throw EnhancementException(EnhancementExitReason.OutOfQPException) }
         )
 
         performSkillUpgradeLoop(
             currentSkillScreen = screens,
-            results = results
+            skillNumber = skillNumber
         )
     }
 
     private fun performSkillUpgradeLoop(
         currentSkillScreen: Map<() -> Boolean, () -> Unit>,
-        results: (EnhancementException) -> Unit
+        skillNumber: Int,
     ) {
         while (true) {
             try {
@@ -216,7 +206,7 @@ class AutoSkillUpgrade @Inject constructor(
 
                 0.5.seconds.wait()
             } catch (e: EnhancementException) {
-                results(e)
+                updateSkillUpgradeResult(e, skillNumber)
                 break
             }
         }
@@ -236,7 +226,7 @@ class AutoSkillUpgrade @Inject constructor(
     private fun isTheTargetUpgradeMet(
         region: Region,
         targetLevel: Int,
-        operation: (Int) -> Boolean
+        skillNumber: Int,
     ): Boolean {
 
         return if (isConfirmationDialog()) {
@@ -245,103 +235,80 @@ class AutoSkillUpgrade @Inject constructor(
             val currentLevel = region.detectNumberInText()
 
             currentLevel?.let {
+                updateCurrentSkillLevel(level = it, index = skillNumber)
                 val checkIfIsInSkillEnhancementMenu = isInSkillEnhancementMenu()
-                val notSameLastValue = if (checkIfIsInSkillEnhancementMenu) {
-                    isSkillUpgradeAnimationFinished = true
-                    operation(it)
-                } else false
-                targetLevel <= it && checkIfIsInSkillEnhancementMenu &&
-                        notSameLastValue && isSkillUpgradeAnimationFinished
+
+                targetLevel <= it && checkIfIsInSkillEnhancementMenu
             } ?: false
         }
     }
 
     private fun executeUpgradeSkill() {
         locations.skillUpgrade.confirmationDialogClick.click()
-        isSkillUpgradeAnimationFinished = false
-        0.5.seconds.wait()
+        1.0.seconds.wait()
     }
 
-    private fun updateSkill1UpgradeResult(e: EnhancementException) {
-        skill1UpgradeResult = e
-    }
-
-    private fun updateSkill2UpgradeResult(e: EnhancementException) {
-        skill2UpgradeResult = e
-    }
-
-    private fun updateSkill3UpgradeResult(e: EnhancementException) {
-        skill3UpgradeResult = e
-    }
-
-    private fun updateSkill1(level: Int): Boolean {
-        skill1count = level
-        return when (lastSkill1count) {
-            level -> false
-            null -> false
-            else -> true
+    private fun updateSkillUpgradeResult(e: EnhancementException, index: Int) {
+        when (index) {
+            1 -> skill1UpgradeResult = e
+            2 -> skill2UpgradeResult = e
+            3 -> skill3UpgradeResult = e
+            else -> skill1UpgradeResult = e
         }
     }
 
-    private fun needToUpgradeSkill1(targetLevel: Int): Boolean {
-        if (isConfirmationDialog()) return false
-        return skill1count?.let {
-            val checkIfFirst = when (lastSkill1count) {
-                it -> false
-                else -> {
-                    lastSkill1count = it
-                    true
+    private fun ifRanOfQPEarlyException(e: EnhancementExitReason?, index: Int) {
+        if (e != EnhancementExitReason.OutOfQPException) return
+        when (index) {
+            1 -> {
+                if (shouldUpgradeSkill2) {
+                    skill2UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
+                }
+                if (shouldUpgradeSkill3) {
+                    skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
                 }
             }
-            it < targetLevel && isSkillUpgradeAnimationFinished && checkIfFirst
-        } ?: false
+
+            2 -> {
+                if (shouldUpgradeSkill3) {
+                    skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
+                }
+            }
+        }
+        throw SkillUpgradeException(ExitReason.RanOutOfQP)
     }
 
-    private fun updateSkill2(level: Int): Boolean {
-        skill2count = level
-        return when (lastSkill2count) {
-            level -> false
-            null -> false
-            else -> true
+    private fun updateCurrentSkillLevel(level: Int, index: Int) {
+        when (index) {
+            1 -> skill1count = level
+            2 -> skill2count = level
+            3 -> skill3count = level
+            else -> skill1count = level
         }
     }
 
-    private fun needToUpgradeSkill2(targetLevel: Int): Boolean {
-        if (isConfirmationDialog()) return false
-        return skill2count?.let {
-            val checkIfFirst = when (lastSkill2count) {
-                it -> false
-                else -> {
-                    lastSkill2count = it
-                    true
-                }
-            }
-            it < targetLevel && isSkillUpgradeAnimationFinished && checkIfFirst
-        } ?: false
+    private fun checkIfWillUpgradeSkill(targetLevel: Int, index: Int): Boolean {
+        if (isConfirmationDialog() || isTemporaryServant()) return false
+
+        return when (index) {
+            1 -> skill1count?.let {
+                it < targetLevel
+            } ?: false
+
+            2 -> skill2count?.let {
+                it < targetLevel
+            } ?: false
+
+            3 -> skill3count?.let {
+                it < targetLevel
+            } ?: false
+
+            else -> skill1count?.let {
+                it < targetLevel
+            } ?: false
+        } && isInSkillEnhancementMenu()
     }
 
-    private fun updateSkill3(level: Int): Boolean {
-        skill3count = level
-        return when (lastSkill3count) {
-            level -> false
-            null -> false
-            else -> true
-        }
-    }
-
-    private fun needToUpgradeSkill3(targetLevel: Int): Boolean {
-        if (isConfirmationDialog()) return false
-        return skill3count?.let {
-            val checkIfFirst = when (lastSkill3count) {
-                it -> false
-                else -> {
-                    lastSkill3count = it
-                    true
-                }
-            }
-            it < targetLevel && isSkillUpgradeAnimationFinished && checkIfFirst
-        } ?: false
-    }
 
     private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
             locations.skillUpgrade.getInsufficientMatsRegion(prefs.gameServer)
