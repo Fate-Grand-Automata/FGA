@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.ui.launcher
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,8 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,6 +73,35 @@ fun skillUpgradeLauncher(
         mutableStateOf(skillUpgrade.skill3Available)
     }
 
+    var shouldUpdateAll by remember {
+        mutableStateOf(false)
+    }
+    val lowestMinSkill = listOf(minSkill1, minSkill2, minSkill3).min()
+    var targetAllSkillLevel by remember {
+        mutableStateOf(
+            lowestMinSkill
+        )
+    }
+
+
+    LaunchedEffect(key1 = targetAllSkillLevel, block = {
+        if (minSkill1 <= targetAllSkillLevel && shouldUpgrade1) {
+            upgradeSkill1 = targetAllSkillLevel - minSkill1
+        }
+        if (minSkill2 <= targetAllSkillLevel && shouldUpgrade2) {
+            upgradeSkill2 = targetAllSkillLevel - minSkill2
+        }
+        if (minSkill3 <= targetAllSkillLevel && shouldUpgrade3) {
+            upgradeSkill3 = targetAllSkillLevel - minSkill3
+        }
+    })
+
+    LaunchedEffect(key1 = shouldUpdateAll, block = {
+        shouldUpgrade1 = shouldUpdateAll == true && minSkill1 < 10
+        shouldUpgrade2 = shouldUpdateAll == true && minSkill2 < 10
+        shouldUpgrade3 = shouldUpdateAll == true && minSkill3 < 10
+    })
+
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
@@ -78,6 +111,49 @@ fun skillUpgradeLauncher(
             text = stringResource(id = R.string.skill_upgrade),
             style = MaterialTheme.typography.headlineSmall
         )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { shouldUpdateAll = !shouldUpdateAll }
+        ) {
+            Text(
+                stringResource(R.string.skill_enhancement_all_question),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            Switch(
+                checked = shouldUpdateAll,
+                onCheckedChange = { shouldUpdateAll = it }
+            )
+        }
+
+        Box(
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TextButton(
+                    onClick = { targetAllSkillLevel =  lowestMinSkill},
+                    enabled = shouldUpdateAll,
+                    modifier = Modifier.alignByBaseline()
+                ) {
+                    Text(text = stringResource(id = R.string.reset).uppercase())
+                }
+                Stepper(
+                    modifier = Modifier.alignByBaseline(),
+                    value = targetAllSkillLevel,
+                    onValueChange = { targetAllSkillLevel = it },
+                    valueRange = lowestMinSkill..10,
+                    enabled = shouldUpdateAll,
+                )
+            }
+        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -181,13 +257,13 @@ fun SkillUpgradeItem(
             }
             item {
                 Text(
-                    text = when(minimumUpgrade < 10){
-                        true ->  name.uppercase()
+                    text = when (minimumUpgrade < 10) {
+                        true -> name.uppercase()
                         false -> name.uppercase() + "\n" + stringResource(id = R.string.skill_max).uppercase()
                     },
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = when(shouldUpgrade){
+                    color = when (shouldUpgrade) {
                         true -> MaterialTheme.colorScheme.onBackground
                         false -> MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
                     }

@@ -55,6 +55,7 @@ private fun DeltaButton(
 
 @Composable
 fun Stepper(
+    modifier: Modifier = Modifier,
     value: Int,
     onValueChange: (Int) -> Unit,
     valueRange: IntRange,
@@ -67,6 +68,7 @@ fun Stepper(
     val onCommit = { onValueChange(currentValue.coerceIn(valueRange)) }
 
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         DeltaButton(
