@@ -110,6 +110,7 @@ class AutoServantEnhancement @Inject constructor(
         if (limitCount > 0) {
             --limitCount
         }
+        1.0.seconds.wait()
 
     }
 
