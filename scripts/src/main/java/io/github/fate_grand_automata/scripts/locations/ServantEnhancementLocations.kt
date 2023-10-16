@@ -55,4 +55,6 @@ class ServantEnhancementLocations @Inject constructor(
         true -> Region(615, 1009, 54, 124).xFromCenter()
         false -> Region(615, 1049, 54, 124).xFromCenter()
     }
+
+    val getAutoSelectNoQPRegion = Region(342, 1096, 121, 60).xFromCenter()
 }

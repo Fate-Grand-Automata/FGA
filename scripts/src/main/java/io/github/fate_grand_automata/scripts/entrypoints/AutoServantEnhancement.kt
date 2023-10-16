@@ -69,7 +69,9 @@ class AutoServantEnhancement @Inject constructor(
                     { throw ServantUpgradeException(ExitReason.Limit(prefs.servant.limitCount - limitCount)) },
             { isMaxLevel() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
             { isOutOfQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) },
+            { isAutoSelectNoQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) },
             { isEmberSelectionDialogOpen() } to { performEnhancement() },
+            { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
             { isNoEmberDialogOpen() } to { throw ServantUpgradeException(ExitReason.NoEmbersLeft) },
             { isFinalConfirmVisible() } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
@@ -130,4 +132,8 @@ class AutoServantEnhancement @Inject constructor(
     private fun isFinalConfirmVisible() = images[Images.Ok] in locations.servant.getFinalConfirmRegion
 
     private fun isMaxLevel() = images[Images.ServantMaxLevel] in locations.servant.getServantMaxLevelRegion
+
+    private fun isTemporaryServant() = images[Images.Execute] in locations.tempServantEnhancementRegion
+
+    private fun isAutoSelectNoQP() = images[Images.Ok] in locations.servant.getAutoSelectNoQPRegion
 }

@@ -122,6 +122,7 @@ class ImageLoader @Inject constructor(
         Images.ServantEnhancement -> "servant_enhancement.png"
         Images.ServantAutoSelect -> "servant_auto_select.png"
         Images.ServantMaxLevel -> "servant_max_level.png"
+        Images.Execute -> "execute.png"
     }
 
     override operator fun get(img: Images, gameServer: GameServer?): Pattern = synchronized(regionCachedPatterns) {

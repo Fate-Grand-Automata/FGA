@@ -116,12 +116,12 @@ class AutoSkillUpgrade @Inject constructor(
             } else {
                 updateSkill1UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
             }
-            if (skill1UpgradeResult?.reason == EnhancementExitReason.OutOfQPException){
+            if (skill1UpgradeResult?.reason == EnhancementExitReason.OutOfQPException) {
 
-                if (skillUpgrade.shouldUpgradeSkill2){
+                if (skillUpgrade.shouldUpgradeSkill2) {
                     skill2UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
                 }
-                if (skillUpgrade.shouldUpgradeSkill3){
+                if (skillUpgrade.shouldUpgradeSkill3) {
                     skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
                 }
                 throw SkillUpgradeException(ExitReason.RanOutOfQP)
@@ -140,8 +140,8 @@ class AutoSkillUpgrade @Inject constructor(
             } else {
                 updateSkill2UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
             }
-            if (skill2UpgradeResult?.reason == EnhancementExitReason.OutOfQPException){
-                if (skillUpgrade.shouldUpgradeSkill3){
+            if (skill2UpgradeResult?.reason == EnhancementExitReason.OutOfQPException) {
+                if (skillUpgrade.shouldUpgradeSkill3) {
                     skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
                 }
                 throw SkillUpgradeException(ExitReason.RanOutOfQP)
@@ -160,7 +160,7 @@ class AutoSkillUpgrade @Inject constructor(
             } else {
                 updateSkill3UpgradeResult(EnhancementException(EnhancementExitReason.SameLevelError))
             }
-            if (skill3UpgradeResult?.reason == EnhancementExitReason.OutOfQPException){
+            if (skill3UpgradeResult?.reason == EnhancementExitReason.OutOfQPException) {
                 throw SkillUpgradeException(ExitReason.RanOutOfQP)
             }
         }
@@ -186,7 +186,9 @@ class AutoSkillUpgrade @Inject constructor(
                     operation = operation
                 )
             } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet) },
-            { checkUpgradeSkill(targetLevel) } to { executeUpgradeSkill() },
+            { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
+            { isConfirmationDialog() } to { executeUpgradeSkill() },
+            { checkUpgradeSkill(targetLevel) } to { locations.enhancementClick.click() },
             { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
             { isOutOfQP() } to { throw EnhancementException(EnhancementExitReason.OutOfQPException) }
         )
@@ -255,8 +257,6 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun executeUpgradeSkill() {
-        locations.enhancementClick.click()
-        0.5.seconds.wait()
         locations.skillUpgrade.confirmationDialogClick.click()
         isSkillUpgradeAnimationFinished = false
         0.5.seconds.wait()
@@ -356,6 +356,8 @@ class AutoSkillUpgrade @Inject constructor(
             locations.getInsufficientQPRegion(prefs.gameServer)
 
     private fun isServantEmpty() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
+
+    private fun isTemporaryServant() = images[Images.Execute] in locations.tempServantEnhancementRegion
 
     private fun makeExitState(): ExitState {
         return ExitState(
