@@ -161,11 +161,11 @@ class AutoSkillUpgrade @Inject constructor(
             } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet) },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
             { isConfirmationDialog() } to { executeUpgradeSkill() },
+            { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
+            { isOutOfQP() } to { throw EnhancementException(EnhancementExitReason.OutOfQPException) },
             {
                 checkIfWillUpgradeSkill(targetLevel = targetLevel, index = skillNumber)
             } to { locations.enhancementClick.click() },
-            { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
-            { isOutOfQP() } to { throw EnhancementException(EnhancementExitReason.OutOfQPException) }
         )
 
         performSkillUpgradeLoop(
