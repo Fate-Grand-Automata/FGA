@@ -17,8 +17,8 @@ class SkillUpgradeLocations @Inject constructor(
         }
 
         is GameServer.Jp -> when (isWide) {
-            false -> Region(-1154, 20, 897, 100).xFromRight()
-            true -> Region(-1324, 20, 897, 100).xFromRight()
+            false -> Region(-586, 19, 346, 93).xFromRight()
+            true -> Region(-756, 19, 346, 93).xFromRight()
         }
         // Other servers are not supported
         else -> Region(-408, 20, 213, 86).xFromRight()
