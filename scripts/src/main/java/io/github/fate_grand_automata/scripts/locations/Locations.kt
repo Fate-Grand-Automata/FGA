@@ -154,8 +154,7 @@ class Locations @Inject constructor(
         }
 
         is GameServer.Jp -> when (isWide) {
-            true -> Region(-503, 195, 397, 47).xFromCenter()
-            // TODO Confirm with the latest JP image
+            true -> Region(-502, 195, 397, 47).xFromCenter()
             false -> Region(-500, 222, 397, 47).xFromCenter()
         }
         // Other servers are not supported
