@@ -73,6 +73,7 @@ enum class Images {
     SkillInsufficientQP,
     ServantEnhancement,
     ServantAutoSelect,
+    ServantAutoSelectOff,
     ServantMaxLevel,
     Execute
 }

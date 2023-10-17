@@ -75,6 +75,7 @@ class AutoServantEnhancement @Inject constructor(
             { isNoEmberOrQPDialogOpen() } to { throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft) },
             { isFinalConfirmVisible() } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
+            { isAutoSelectOff() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
         )
 
         while (true) {
@@ -114,7 +115,7 @@ class AutoServantEnhancement @Inject constructor(
 
     }
 
-    private fun performMinEmberLowQPEnhancement(){
+    private fun performMinEmberLowQPEnhancement() {
         locations.servant.getAutoSelectMinEmberLowQPLocation.click()
         1.0.seconds.wait()
         locations.enhancementClick.click()
@@ -144,4 +145,8 @@ class AutoServantEnhancement @Inject constructor(
     private fun isTemporaryServant() = images[Images.Execute] in locations.tempServantEnhancementRegion
 
     private fun isAutoSelectMinEmberLowQP() = images[Images.Ok] in locations.servant.getAutoSelectMinEmberLowQPRegion
+
+    // This is for the temporary servants as they cannot do palingenesis and
+    // thus needed another way to check if they are max level at FA
+    private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in locations.servant.getAutoSelectRegion
 }

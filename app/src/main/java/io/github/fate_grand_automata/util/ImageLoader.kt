@@ -121,6 +121,7 @@ class ImageLoader @Inject constructor(
         Images.SkillInsufficientQP -> "skill_insufficient_qp.png"
         Images.ServantEnhancement -> "servant_enhancement.png"
         Images.ServantAutoSelect -> "servant_auto_select.png"
+        Images.ServantAutoSelectOff -> "servant_auto_select_off.png"
         Images.ServantMaxLevel -> "servant_max_level.png"
         Images.Execute -> "execute.png"
     }
