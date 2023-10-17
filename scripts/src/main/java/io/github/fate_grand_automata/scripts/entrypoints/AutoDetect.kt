@@ -35,7 +35,7 @@ class AutoDetect @Inject constructor(
                 autoSetup.getMinimumSkillLevel()
                 ScriptModeEnum.SkillUpgrade
             }
-            images[Images.ServantEnhancement] in locations.servant.getServantEnhancementRegion(prefs.gameServer) ->
+            images[Images.ServantEnhancement] in locations.servant.getServantEnhancementRegion ->
                 ScriptModeEnum.ServantLevel
 
             else -> ScriptModeEnum.Battle

@@ -9,20 +9,10 @@ class ServantEnhancementLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-    fun getServantEnhancementRegion(server: GameServer) = when (server) {
-        is GameServer.En -> when (isWide) {
-            true -> Region(-551, 38, 357, 75).xFromRight()
-            false -> Region(-381, 38, 357, 75).xFromRight()
-        }
-
-        is GameServer.Jp -> when (isWide) {
-            true -> Region(-1039, 20, 599, 97).xFromRight()
-            false -> Region(-871, 20, 599, 97).xFromRight()
-        }
-        // Other servers are not supported
-        else -> Region(-551, 38, 357, 75).xFromRight()
+    val getServantEnhancementRegion = when (isWide) {
+        true -> Region(-551, 38, 357, 75).xFromRight()
+        false -> Region(-381, 38, 357, 75).xFromRight()
     }
-
 
     val getEmberConfirmationDialogRegion = Region(341, 1229, 120, 60).xFromCenter()
 

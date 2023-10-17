@@ -115,7 +115,7 @@ class AutoServantEnhancement @Inject constructor(
     }
 
     private fun isInServantEnhancementMenu() = images[Images.ServantEnhancement] in
-            locations.servant.getServantEnhancementRegion(prefs.gameServer)
+            locations.servant.getServantEnhancementRegion
 
     private fun isLimitReached() = shouldLimit && limitCount <= 0 && isInServantEnhancementMenu()
 
