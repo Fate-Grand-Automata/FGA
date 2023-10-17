@@ -69,7 +69,7 @@ class AutoServantEnhancement @Inject constructor(
                     { throw ServantUpgradeException(ExitReason.Limit(prefs.servant.limitCount - limitCount)) },
             { isMaxLevel() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
             { isOutOfQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) },
-            { isAutoSelectNoQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) },
+            { isAutoSelectMinEmberLowQP() } to { performMinEmberLowQPEnhancement() },
             { isEmberSelectionDialogOpen() } to { performEnhancement() },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
             { isNoEmberOrQPDialogOpen() } to { throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft) },
@@ -114,6 +114,13 @@ class AutoServantEnhancement @Inject constructor(
 
     }
 
+    private fun performMinEmberLowQPEnhancement(){
+        locations.servant.getAutoSelectMinEmberLowQPLocation.click()
+        1.0.seconds.wait()
+        locations.enhancementClick.click()
+        0.5.seconds.wait()
+    }
+
     private fun isInServantEnhancementMenu() = images[Images.ServantEnhancement] in
             locations.servant.getServantEnhancementRegion
 
@@ -136,5 +143,5 @@ class AutoServantEnhancement @Inject constructor(
 
     private fun isTemporaryServant() = images[Images.Execute] in locations.tempServantEnhancementRegion
 
-    private fun isAutoSelectNoQP() = images[Images.Ok] in locations.servant.getAutoSelectNoQPRegion
+    private fun isAutoSelectMinEmberLowQP() = images[Images.Ok] in locations.servant.getAutoSelectMinEmberLowQPRegion
 }
