@@ -23,7 +23,7 @@ class AutoServantEnhancement @Inject constructor(
 
         data object NoServantSelected : ExitReason()
 
-        data object NoEmbersLeft : ExitReason()
+        data object NoEmbersOrQPLeft : ExitReason()
 
         data object Abort : ExitReason()
 
@@ -72,7 +72,7 @@ class AutoServantEnhancement @Inject constructor(
             { isAutoSelectNoQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) },
             { isEmberSelectionDialogOpen() } to { performEnhancement() },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
-            { isNoEmberDialogOpen() } to { throw ServantUpgradeException(ExitReason.NoEmbersLeft) },
+            { isNoEmberOrQPDialogOpen() } to { throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft) },
             { isFinalConfirmVisible() } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
         )
@@ -127,8 +127,8 @@ class AutoServantEnhancement @Inject constructor(
     private fun isEmberSelectionDialogOpen() = images[Images.Ok] in
             locations.servant.getEmberConfirmationDialogRegion
 
-    private fun isNoEmberDialogOpen() = images[Images.Close] in
-            locations.servant.getNoEmberDialogRegion(prefs.gameServer)
+    private fun isNoEmberOrQPDialogOpen() = images[Images.Close] in
+            locations.servant.getNoEmberOrQPDialogRegion(prefs.gameServer)
 
     private fun isFinalConfirmVisible() = images[Images.Ok] in locations.servant.getFinalConfirmRegion
 

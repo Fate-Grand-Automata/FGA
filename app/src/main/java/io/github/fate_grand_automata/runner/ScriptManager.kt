@@ -272,8 +272,8 @@ class ScriptManager @Inject constructor(
                     AutoServantEnhancement.ExitReason.MaxLevelAchieved ->
                         context.getString(R.string.max_level)
 
-                    AutoServantEnhancement.ExitReason.NoEmbersLeft ->
-                        context.getString(R.string.servant_enhancement_no_embers_left)
+                    AutoServantEnhancement.ExitReason.NoEmbersOrQPLeft ->
+                        context.getString(R.string.servant_enhancement_no_embers_or_qp_left)
 
                     AutoServantEnhancement.ExitReason.Abort ->
                         context.getString(R.string.enhancement_halt_aborted)

@@ -30,7 +30,7 @@ class ServantEnhancementLocations @Inject constructor(
         false -> Location(-127, 334).xFromRight()
     }
 
-    fun getNoEmberDialogRegion(server: GameServer) = when (server) {
+    fun getNoEmberOrQPDialogRegion(server: GameServer) = when (server) {
         is GameServer.En -> Region(-109, 1088, 218, 72).xFromCenter()
         is GameServer.Jp -> Region(-111, 1088, 218, 72).xFromCenter()
         // Other servers are not supported

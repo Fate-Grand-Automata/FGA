@@ -422,7 +422,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement">Servant Enhancement</string>
 
     <string name="servant_enhancement_limit">Should limit number of enhancement?</string>
-    <string name="servant_enhancement_no_embers_left">Insufficient Embers</string>
+    <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
     <string name="servert_enhancement_warning_notice">Auto Servant Enhancement will only use the auto-select feature for the embers.
         Please ensure that you have set the \"Automatic Material Selection\" before proceeding.</string>
 
