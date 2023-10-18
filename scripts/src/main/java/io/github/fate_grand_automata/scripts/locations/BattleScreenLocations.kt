@@ -50,15 +50,29 @@ class BattleScreenLocations @Inject constructor(
     }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1158) }
 
     fun locate(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A -> 90
-        EnemyTarget.B -> 570
-        EnemyTarget.C -> 1050
+        EnemyTarget.A1 -> 90
+        EnemyTarget.B1 -> 570
+        EnemyTarget.C1 -> 1050
+        // TODO ongoing work, temporary values
+        EnemyTarget.A2 -> 1050
+        EnemyTarget.B2 -> 1050
+        EnemyTarget.C2 -> 1050
+        EnemyTarget.D2 -> 1050
+        EnemyTarget.E2 -> 1050
+        EnemyTarget.F2 -> 1050
     }.let { x -> Location(x + if (isWide) 183 else 0, 80) }
 
     fun dangerRegion(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A -> Region(0, 0, 485, 220)
-        EnemyTarget.B -> Region(485, 0, 482, 220)
-        EnemyTarget.C -> Region(967, 0, 476, 220)
+        EnemyTarget.A1 -> Region(0, 0, 485, 220)
+        EnemyTarget.B1 -> Region(485, 0, 482, 220)
+        EnemyTarget.C1 -> Region(967, 0, 476, 220)
+        // TODO ongoing work, temporary values
+        EnemyTarget.A2 -> Region(967, 0, 476, 220)
+        EnemyTarget.B2 -> Region(967, 0, 476, 220)
+        EnemyTarget.C2 -> Region(967, 0, 476, 220)
+        EnemyTarget.D2 -> Region(967, 0, 476, 220)
+        EnemyTarget.E2 -> Region(967, 0, 476, 220)
+        EnemyTarget.F2 -> Region(967, 0, 476, 220)
     } + Location(if (isWide) 150 else 0, 0)
 
     val screenCheckRegion =

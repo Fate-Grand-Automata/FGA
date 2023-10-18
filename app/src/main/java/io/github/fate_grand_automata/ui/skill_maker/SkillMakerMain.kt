@@ -1,5 +1,11 @@
 package io.github.fate_grand_automata.ui.skill_maker
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -7,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -23,8 +30,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -62,12 +73,74 @@ fun SkillMakerMain(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth()
         ) {
-            val enemyTarget by vm.enemyTarget
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                val enemyTarget by vm.enemyTarget
 
-            EnemyTarget(
-                selected = enemyTarget,
-                onSelectedChange = { vm.setEnemyTarget(it) }
-            )
+                val normalEnemyFormation by vm.normalEnemyFormation
+
+                IconButton(
+                    onClick = {
+                        vm.reverseEnemyFormation()
+                    },
+                    enabled = !normalEnemyFormation,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowLeft,
+                        contentDescription = null
+                    )
+                }
+                AnimatedContent(
+                    targetState = normalEnemyFormation,
+                    label = "Changing Enemy Content",
+                    transitionSpec = {
+                        if (normalEnemyFormation) {
+                            slideInHorizontally { width -> -width } +
+                                    fadeIn() togetherWith (slideOutHorizontally { width -> -width } + fadeOut())
+                        } else {
+                            slideInHorizontally { width -> width } +
+                                    fadeIn() togetherWith (slideOutHorizontally { width -> -width } + fadeOut())
+                        }
+                    },
+                    modifier = Modifier.weight(1f)
+                ) { enemyFormation ->
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        when (enemyFormation) {
+                            true -> {
+                                EnemyTarget(
+                                    selected = enemyTarget,
+                                    onSelectedChange = { vm.setEnemyTarget(it) }
+                                )
+                            }
+
+                            false -> {
+                                SixEnemyTarget(
+                                    selected = enemyTarget,
+                                    onSelectedChange = { vm.setEnemyTarget(it) }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                IconButton(
+                    onClick = {
+                        vm.reverseEnemyFormation()
+                    },
+                    enabled = normalEnemyFormation,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = null
+                    )
+                }
+            }
 
             val stage by vm.stage
             Text(stringResource(R.string.skill_maker_main_battle, stage))
@@ -290,6 +363,39 @@ fun EnemyTarget(
 ) {
     Row {
         (1..3).map {
+            val isSelected = selected == it
+            val onClick = { onSelectedChange(it) }
+
+            Row(
+                modifier = Modifier
+                    .padding(end = 10.dp)
+                    .clickable(onClick = onClick),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = isSelected,
+                    onClick = onClick
+                )
+
+                Text(
+                    stringResource(R.string.skill_maker_main_enemy, it),
+                    modifier = Modifier
+                        .padding(start = 5.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SixEnemyTarget(
+    selected: Int?,
+    onSelectedChange: (Int) -> Unit
+) {
+    FlowRow(
+        maxItemsInEachRow = 3
+    ) {
+        (4..9).map {
             val isSelected = selected == it
             val onClick = { onSelectedChange(it) }
 

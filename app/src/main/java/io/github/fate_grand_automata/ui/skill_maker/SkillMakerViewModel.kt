@@ -115,6 +115,22 @@ class SkillMakerViewModel @Inject constructor(
             .take(currentIndex.value + 1)
             .reversed()
 
+    private val _normaEnemyFormation = mutableStateOf(true)
+
+    val normalEnemyFormation: State<Boolean> = _normaEnemyFormation
+
+    fun reverseEnemyFormation() {
+        _normaEnemyFormation.value = !_normaEnemyFormation.value
+
+        _enemyTarget.value?.let {
+            when (it) {
+                in 1..3 -> setEnemyTarget(it + 3)
+                in 4..6 -> setEnemyTarget(it - 3)
+                else -> setEnemyTarget(it - 6)
+            }
+        }
+    }
+
     private val _enemyTarget = mutableStateOf(state.enemyTarget)
 
     val enemyTarget: State<Int?> = _enemyTarget
