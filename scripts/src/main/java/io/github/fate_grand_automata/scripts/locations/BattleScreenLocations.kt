@@ -49,27 +49,33 @@ class BattleScreenLocations @Inject constructor(
         Skill.Servant.C3 -> 1770
     }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1158) }
 
+    private fun Location.threeEnemyFormation() = this + Location(x = if (isWide) 183 else 0, y = 0)
+
+    private fun Location.sixEnemyFormation() = this + Location(x = if (isWide) 155 else 0, y = 0)
+
     fun locate(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A1 -> 90
-        EnemyTarget.B1 -> 570
-        EnemyTarget.C1 -> 1050
-        // TODO ongoing work, temporary values
-        EnemyTarget.A2 -> 1050
-        EnemyTarget.B2 -> 1050
-        EnemyTarget.C2 -> 1050
-        EnemyTarget.D2 -> 1050
-        EnemyTarget.E2 -> 1050
-        EnemyTarget.F2 -> 1050
-    }.let { x -> Location(x + if (isWide) 183 else 0, 80) }
+        EnemyTarget.A1 -> Location(90, 80).threeEnemyFormation()
+        EnemyTarget.B1 -> Location(570, 80).threeEnemyFormation()
+        EnemyTarget.C1 -> Location(1050, 80).threeEnemyFormation()
+
+        EnemyTarget.A2 -> Location(281, 64).sixEnemyFormation()
+        EnemyTarget.B2 -> Location(681, 64).sixEnemyFormation()
+        EnemyTarget.C2 -> Location(1081, 64).sixEnemyFormation()
+
+        EnemyTarget.D2 -> Location(82, 261).sixEnemyFormation()
+        EnemyTarget.E2 -> Location(482, 261).sixEnemyFormation()
+        EnemyTarget.F2 -> Location(882, 261).sixEnemyFormation()
+    }
 
     fun dangerRegion(enemy: EnemyTarget) = when (enemy) {
         EnemyTarget.A1 -> Region(0, 0, 485, 220)
         EnemyTarget.B1 -> Region(485, 0, 482, 220)
         EnemyTarget.C1 -> Region(967, 0, 476, 220)
         // TODO ongoing work, temporary values
-        EnemyTarget.A2 -> Region(967, 0, 476, 220)
-        EnemyTarget.B2 -> Region(967, 0, 476, 220)
-        EnemyTarget.C2 -> Region(967, 0, 476, 220)
+        EnemyTarget.A2 -> Region(220, 136, 112, 22)
+        EnemyTarget.B2 -> Region(620, 136, 112, 22)
+        EnemyTarget.C2 -> Region(1020, 136, 112, 22)
+
         EnemyTarget.D2 -> Region(967, 0, 476, 220)
         EnemyTarget.E2 -> Region(967, 0, 476, 220)
         EnemyTarget.F2 -> Region(967, 0, 476, 220)
