@@ -67,19 +67,25 @@ class BattleScreenLocations @Inject constructor(
         EnemyTarget.F2 -> Location(882, 261).sixEnemyFormation()
     }
 
-    fun dangerRegion(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A1 -> Region(0, 0, 485, 220)
-        EnemyTarget.B1 -> Region(485, 0, 482, 220)
-        EnemyTarget.C1 -> Region(967, 0, 476, 220)
-        // TODO ongoing work, temporary values
-        EnemyTarget.A2 -> Region(220, 136, 112, 22)
-        EnemyTarget.B2 -> Region(620, 136, 112, 22)
-        EnemyTarget.C2 -> Region(1020, 136, 112, 22)
+    private fun Region.threeEnemyFormation() = this + Location(if (isWide) 150 else 0, 0)
 
-        EnemyTarget.D2 -> Region(967, 0, 476, 220)
-        EnemyTarget.E2 -> Region(967, 0, 476, 220)
-        EnemyTarget.F2 -> Region(967, 0, 476, 220)
-    } + Location(if (isWide) 150 else 0, 0)
+    private fun Region.sixEnemyFormationUpper() = this + Location(x = if (isWide) 155 else 0, y = 0)
+
+    private fun Region.sixEnemyFormationLower() = this + Location(x = if (isWide) 153 else 0, y = if (isWide) -1 else 0)
+
+    fun dangerRegion(enemy: EnemyTarget) = when (enemy) {
+        EnemyTarget.A1 -> Region(0, 0, 485, 220).threeEnemyFormation()
+        EnemyTarget.B1 -> Region(485, 0, 482, 220).threeEnemyFormation()
+        EnemyTarget.C1 -> Region(967, 0, 476, 220).threeEnemyFormation()
+
+        EnemyTarget.A2 -> Region(220, 136, 112, 22).sixEnemyFormationUpper()
+        EnemyTarget.B2 -> Region(620, 136, 112, 22).sixEnemyFormationUpper()
+        EnemyTarget.C2 -> Region(1020, 136, 112, 22).sixEnemyFormationUpper()
+
+        EnemyTarget.D2 -> Region(24, 334, 112, 22).sixEnemyFormationLower()
+        EnemyTarget.E2 -> Region(424, 334, 112, 22).sixEnemyFormationLower()
+        EnemyTarget.F2 -> Region(824, 334, 112, 22).sixEnemyFormationLower()
+    }
 
     val screenCheckRegion =
         (if (isWide)

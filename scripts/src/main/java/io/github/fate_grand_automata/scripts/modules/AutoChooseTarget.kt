@@ -16,8 +16,13 @@ class AutoChooseTarget @Inject constructor(
     private fun isPriorityTarget(enemy: EnemyTarget): Boolean {
         val region = locations.battle.dangerRegion(enemy)
 
-        val isDanger = images[Images.TargetDanger] in region
-        val isServant = images[Images.TargetServant] in region
+        val normalFormation = enemy in listOf(EnemyTarget.A1, EnemyTarget.B1, EnemyTarget.C1)
+
+        val isDanger = (if (normalFormation) images[Images.TargetDanger] else
+            images[Images.TargetDangerSix]) in region
+
+        val isServant = (if (normalFormation) images[Images.TargetServant] else
+            images[Images.TargetServantSix]) in region
 
         return isDanger || isServant
     }
