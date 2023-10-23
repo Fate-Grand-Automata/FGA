@@ -35,7 +35,7 @@ class Refill @Inject constructor(
             ++timesRefilled
 
             3.seconds.wait()
-        } else if (prefs.waitAPRegen) {
+        } else if (perServerConfigPref.waitForAPRegen) {
             locations.staminaCloseClick.click()
 
             messages.notify(ScriptNotify.WaitForAPRegen())

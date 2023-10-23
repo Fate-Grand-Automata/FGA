@@ -31,7 +31,6 @@ class PrefsCore @Inject constructor(
     )
 
     val battleConfigList = maker.stringSet("autoskill_list")
-    val serverPrefsList = maker.stringSet("serverPrefs_list")
 
     val storySkip = maker.bool("story_skip")
     val withdrawEnabled = maker.bool("withdraw_enabled")
@@ -40,8 +39,6 @@ class PrefsCore @Inject constructor(
     val stopOnFirstClearRewards = maker.bool("stop_on_first_clear_rewards")
 
     val boostItemSelectionMode = maker.stringAsInt("selected_boost_item", -1)
-
-    val waitAPRegen = maker.bool("wait_for_ap_regeneration")
 
     val useRootForScreenshots = maker.bool("use_root_screenshot")
     val recordScreen = maker.bool("record_screen")
@@ -110,11 +107,11 @@ class PrefsCore @Inject constructor(
     val dirRoot = maker.string("dir_root")
 
     var showGameServer = maker.serialized(
-        key="show_game_server",
+        key = "show_game_server",
         default = listOf(GameServer.default),
         serializer = object : Serializer<List<GameServer>> {
             private val separator = ","
-            override fun deserialize(serialized: String): List<GameServer>{
+            override fun deserialize(serialized: String): List<GameServer> {
                 val values = serialized.split(separator)
                 return values.mapNotNull { GameServer.deserialize(it) }
             }
@@ -138,10 +135,10 @@ class PrefsCore @Inject constructor(
 
     private val perServerConfigPrefsMap = mutableMapOf<String, PerServerConfigPrefsCore>()
 
-    fun forPerServerConfigPrefs(id: String): PerServerConfigPrefsCore =
-        perServerConfigPrefsMap.getOrPut(id){
+    fun forPerServerConfigPrefs(gameServer: GameServer): PerServerConfigPrefsCore =
+        perServerConfigPrefsMap.getOrPut(gameServer.simple) {
             PerServerConfigPrefsCore(
-                id,
+                gameServer,
                 context
             )
         }

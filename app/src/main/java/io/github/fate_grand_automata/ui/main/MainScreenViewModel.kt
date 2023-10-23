@@ -30,13 +30,10 @@ class MainScreenViewModel @Inject constructor(
     init {
         // init the perServerConfigs
         CoroutineScope(Dispatchers.IO).launch {
-            val gameServers = GameServer.values.filterNot {
+            GameServer.values.filterNot {
                 it.betterFgo
-            }
-
-            gameServers.forEach { server ->
-                val serverPref = prefs.addPerServerConfigPref("$server")
-                serverPref.server = server
+            }.forEach { server ->
+                prefs.addPerServerConfigPref(server)
             }
         }
     }

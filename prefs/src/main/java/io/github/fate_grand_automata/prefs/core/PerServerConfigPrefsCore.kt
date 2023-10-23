@@ -7,11 +7,11 @@ import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 
 class PerServerConfigPrefsCore(
-    val id: String,
+    val server: GameServer,
     val context: Context
 ) {
     val sharedPrefs: SharedPreferences = context.getSharedPreferences(
-        id,
+        server.simple,
         Context.MODE_PRIVATE
     )
 
@@ -45,21 +45,4 @@ class PerServerConfigPrefsCore(
 
 
     val refill = RefillPrefsCore(maker)
-
-    val server = maker.serialized(
-        key = "server",
-        default = GameServer.default,
-        serializer = object : Serializer<GameServer> {
-            override fun deserialize(serialized: String): GameServer {
-                return try {
-                    GameServer.deserialize(serialized) ?: GameServer.default
-                } catch (e: Exception) {
-                    GameServer.default
-                }
-            }
-
-            override fun serialize(value: GameServer): String =
-                value.serialize()
-        }
-    )
 }

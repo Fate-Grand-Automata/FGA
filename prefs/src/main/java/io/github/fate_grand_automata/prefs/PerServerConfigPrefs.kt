@@ -7,11 +7,11 @@ import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 
 internal class PerServerConfigPrefs(
-    override val id: String,
+    override val server: GameServer,
     prefsCore: PrefsCore
 ) : IPerServerConfigPrefs {
 
-    val prefs = prefsCore.forPerServerConfigPrefs(id)
+    val prefs = prefsCore.forPerServerConfigPrefs(server)
     override var selectedAutoSkillKey by prefs.selectedAutoSkillConfig
 
     override var rainbowApple by prefs.rainbowAppleCount
@@ -27,7 +27,7 @@ internal class PerServerConfigPrefs(
     override var selectedApple by prefs.selectedApple
     override var currentAppleCount: Int
         get() {
-            return when(selectedApple){
+            return when (selectedApple) {
                 RefillResourceEnum.Copper -> copperApple
                 RefillResourceEnum.Bronze -> blueApple
                 RefillResourceEnum.Silver -> silverApple
@@ -36,7 +36,7 @@ internal class PerServerConfigPrefs(
             }
         }
         set(value) {
-            when(selectedApple){
+            when (selectedApple) {
                 RefillResourceEnum.Copper -> copperApple = value
                 RefillResourceEnum.Bronze -> blueApple = value
                 RefillResourceEnum.Silver -> silverApple = value
@@ -57,6 +57,4 @@ internal class PerServerConfigPrefs(
     override var limitMats: Int by prefs.refill.limitMats
     override var shouldLimitCEs: Boolean by prefs.refill.shouldLimitCEs
     override var limitCEs: Int by prefs.refill.limitCEs
-
-    override var server: GameServer by prefs.server
 }

@@ -48,33 +48,6 @@ class ScriptLauncherResponseHandler @Inject constructor(
             }
 
             is ScriptLauncherResponse.Battle -> {
-                prefs.selectedBattleConfig = resp.config
-
-                prefs.selectedServerConfigPref = resp.perServerConfigPref
-
-                if(resp.refillResources.isNotEmpty()){
-                    prefs.selectedServerConfigPref.selectedApple = resp.refillResources.first()
-                }
-
-                prefs.selectedServerConfigPref.updateResources(resp.refillResources)
-
-                prefs.selectedServerConfigPref.blueApple = resp.blueRefillCount
-                prefs.selectedServerConfigPref.goldApple = resp.goldRefillCount
-                prefs.selectedServerConfigPref.silverApple = resp.silverRefillCount
-                prefs.selectedServerConfigPref.copperApple = resp.copperRefillCount
-                prefs.selectedServerConfigPref.rainbowApple = resp.rainbowRefillCount
-
-                prefs.selectedServerConfigPref.shouldLimitRuns = resp.limitRuns != null
-                resp.limitRuns?.let { prefs.selectedServerConfigPref.limitRuns = it }
-
-                prefs.selectedServerConfigPref.shouldLimitMats = resp.limitMats != null
-                resp.limitMats?.let { prefs.selectedServerConfigPref.limitMats = it }
-
-                prefs.selectedServerConfigPref.shouldLimitCEs = resp.limitCEs != null
-                resp.limitCEs?.let { prefs.selectedServerConfigPref.limitCEs = it }
-
-                prefs.waitAPRegen = resp.waitApRegen
-
                 ScriptModeEnum.Battle
             }
         }

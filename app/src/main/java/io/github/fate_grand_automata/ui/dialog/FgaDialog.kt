@@ -32,7 +32,7 @@ import java.util.*
 // Simplified form of https://github.com/vanpra/compose-material-dialogs
 
 @SuppressLint("ComposableNaming")
-class FgaDialog private constructor(initialValue: Boolean = false) {
+class FgaDialog private constructor(initialVisibility: Boolean = false) {
     companion object {
 
         fun saver(): Saver<FgaDialog, *> = Saver(
@@ -49,7 +49,7 @@ class FgaDialog private constructor(initialValue: Boolean = false) {
         }
     }
 
-    private var visible by mutableStateOf(initialValue)
+    private var visible by mutableStateOf(initialVisibility)
 
     fun show() {
         visible = true

@@ -5,9 +5,7 @@ import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 
 
 interface IPerServerConfigPrefs {
-
-    val id: String
-
+    val server: GameServer
     var selectedAutoSkillKey: String
 
     var rainbowApple: Int
@@ -32,6 +30,4 @@ interface IPerServerConfigPrefs {
 
     var shouldLimitCEs: Boolean
     var limitCEs: Int
-
-    var server: GameServer
 }

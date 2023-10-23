@@ -25,18 +25,15 @@ class PreferencesImpl @Inject constructor(
         get() = battleConfigList.map { forBattleConfig(it) }
             .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name })
 
-    private var serverPrefsList by prefs.serverPrefsList
-    override val perServerConfigPrefList: List<IPerServerConfigPrefs>
-        get() = serverPrefsList.map {
-            getPerServerConfigPref(it)
-        }
     override var showGameServers: List<GameServer> by prefs.showGameServer
 
     private var lastPerServerConfigPref: IPerServerConfigPrefs? = null
 
     override var selectedServerConfigPref: IPerServerConfigPrefs
-        get()  {
-            val serverPrefConfig = lastPerServerConfigPref?.takeIf { it.server == gameServer } ?: getPerServerConfigPref(gameServer.toString())
+        get() {
+            val serverPrefConfig = lastPerServerConfigPref
+                ?.takeIf { it.server.simple == gameServer.simple }
+                ?: getPerServerConfigPref(gameServer)
             lastPerServerConfigPref = serverPrefConfig
             return serverPrefConfig
         }
@@ -74,8 +71,6 @@ class PreferencesImpl @Inject constructor(
     override val stopOnFirstClearRewards by prefs.stopOnFirstClearRewards
 
     override val boostItemSelectionMode by prefs.boostItemSelectionMode
-
-    override var waitAPRegen by prefs.waitAPRegen
 
     override val useRootForScreenshots by prefs.useRootForScreenshots
 
@@ -138,8 +133,8 @@ class PreferencesImpl @Inject constructor(
             .apply { remove(id) }
 
 
-        perServerConfigPrefList.forEach {
-            if(it.selectedAutoSkillKey == id){
+        serverPrefsMap.values.forEach {
+            if (it.selectedAutoSkillKey == id) {
                 it.selectedAutoSkillKey = ""
             }
         }
@@ -147,22 +142,16 @@ class PreferencesImpl @Inject constructor(
 
     private val serverPrefsMap = mutableMapOf<String, IPerServerConfigPrefs>()
 
-    override fun getPerServerConfigPref(id: String): IPerServerConfigPrefs  =
-        serverPrefsMap.getOrPut(id){
+    override fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs =
+        serverPrefsMap.getOrPut(server.simple) {
             PerServerConfigPrefs(
-                id,
+                GameServer.deserialize(server.simple)!!,
                 prefs
             )
         }
 
-    override fun addPerServerConfigPref(id: String): IPerServerConfigPrefs {
-        serverPrefsList = serverPrefsList
-            .toMutableSet()
-            .apply {
-                add(id)
-            }
-
-        return getPerServerConfigPref(id)
+    override fun addPerServerConfigPref(server: GameServer): IPerServerConfigPrefs {
+        return getPerServerConfigPref(server)
     }
 
     override fun isOnboardingRequired(): Boolean =

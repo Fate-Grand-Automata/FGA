@@ -68,9 +68,7 @@ fun battleLauncher(
 
     val perServerConfigPref by remember {
         mutableStateOf(
-            prefs.perServerConfigPrefList.single { selected ->
-                prefs.gameServer.simple == selected.server.simple
-            }
+            prefs.getPerServerConfigPref(prefs.gameServer)
         )
     }
 
@@ -116,27 +114,37 @@ fun battleLauncher(
     var limitMats by remember { mutableStateOf(perServerConfigPref.limitMats) }
     var shouldLimitCEs by remember { mutableStateOf(perServerConfigPref.shouldLimitCEs) }
     var limitCEs by remember { mutableStateOf(perServerConfigPref.limitCEs) }
-    var waitApRegen by remember { mutableStateOf(prefs.waitAPRegen) }
+    var waitApRegen by remember { mutableStateOf(perServerConfigPref.waitForAPRegen) }
 
     var resetAllButton by remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         onDispose {
+            perServerConfigPref.shouldLimitRuns = shouldLimitRuns
             perServerConfigPref.limitRuns = limitRuns
+            perServerConfigPref.shouldLimitMats = shouldLimitMats
             perServerConfigPref.limitMats = limitMats
+            perServerConfigPref.shouldLimitCEs = shouldLimitCEs
             perServerConfigPref.limitCEs = limitCEs
             perServerConfigPref.copperApple = copperApple
             perServerConfigPref.blueApple = blueApple
             perServerConfigPref.silverApple = silverApple
             perServerConfigPref.goldApple = goldApple
             perServerConfigPref.rainbowApple = rainbowApple
+            perServerConfigPref.waitForAPRegen = waitApRegen
             perServerConfigPref.updateResources(refillResources)
+
+            if (selectedConfigIndex > -1) {
+                prefs.selectedBattleConfig = configs[selectedConfigIndex]
+            }
         }
     }
 
-    LaunchedEffect(limitRuns, limitMats, limitCEs, block = {
-        resetAllButton = limitRuns > 1 || limitMats > 1 || limitCEs > 1
-    })
+    LaunchedEffect(shouldLimitRuns, limitRuns, shouldLimitMats, limitMats, shouldLimitCEs, limitCEs) {
+        resetAllButton = shouldLimitRuns || limitRuns > 1 ||
+                shouldLimitMats || limitMats > 1 ||
+                shouldLimitCEs || limitCEs > 1
+    }
 
     Row(
         modifier = modifier
@@ -197,7 +205,7 @@ fun battleLauncher(
                     horizontal = false,
                     knobColor = MaterialTheme.colorScheme.secondary,
                     // needs to be adjusted when adding new items
-                    fixedKnobRatio = 0.81f
+                    fixedKnobRatio = 0.70f
                 )
                 .padding(start = 5.dp),
             state = mainConfigState
@@ -301,8 +309,11 @@ fun battleLauncher(
                             ),
                             enabled = resetAllButton,
                             onClick = {
+                                shouldLimitRuns = false
                                 limitRuns = 1
+                                shouldLimitCEs = false
                                 limitCEs = 1
+                                shouldLimitMats = false
                                 limitMats = 1
                             }
                         ) {
@@ -361,20 +372,7 @@ fun battleLauncher(
     return ScriptLauncherResponseBuilder(
         canBuild = { selectedConfigIndex != -1 },
         build = {
-            ScriptLauncherResponse.Battle(
-                config = configs[selectedConfigIndex],
-                perServerConfigPref = perServerConfigPref,
-                refillResources = refillResources,
-                rainbowRefillCount = rainbowApple,
-                goldRefillCount = goldApple,
-                silverRefillCount = silverApple,
-                blueRefillCount = blueApple,
-                copperRefillCount = copperApple,
-                limitRuns = if (shouldLimitRuns) limitRuns else null,
-                limitMats = if (shouldLimitMats) limitMats else null,
-                limitCEs = if (shouldLimitCEs) limitCEs else null,
-                waitApRegen = waitApRegen
-            )
+            ScriptLauncherResponse.Battle
         }
     )
 }
