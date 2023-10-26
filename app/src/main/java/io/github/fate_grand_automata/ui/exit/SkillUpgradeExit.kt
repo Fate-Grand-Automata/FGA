@@ -284,8 +284,8 @@ private fun AutoSkillUpgrade.EnhancementExitReason.text(): String = when (this) 
     AutoSkillUpgrade.EnhancementExitReason.ExitEarlyOutOfQPException ->
         stringResource(id = R.string.skill_enhancement_error_exit_early_out_of_qp)
 
-    AutoSkillUpgrade.EnhancementExitReason.SameLevelError ->
-        stringResource(id = R.string.skill_enhancement_error_same_level)
+    AutoSkillUpgrade.EnhancementExitReason.NoSkillUpgradeError ->
+        stringResource(id = R.string.skill_enhancement_error_no_enhancment)
 
     AutoSkillUpgrade.EnhancementExitReason.TargetLevelMet -> stringResource(id = R.string.success)
 }

@@ -44,7 +44,7 @@ class AutoSkillUpgrade @Inject constructor(
 
         data object TargetLevelMet : EnhancementExitReason()
 
-        data object SameLevelError : EnhancementExitReason()
+        data object NoSkillUpgradeError : EnhancementExitReason()
     }
 
     class EnhancementException(val reason: EnhancementExitReason) : Exception()
@@ -103,7 +103,7 @@ class AutoSkillUpgrade @Inject constructor(
                     skillNumber = 1,
                 )
             } else {
-                updateSkillUpgradeResult(EnhancementExitReason.SameLevelError, 1)
+                updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, 1)
             }
 
             ifRanOfQPEarlyException(
@@ -117,7 +117,7 @@ class AutoSkillUpgrade @Inject constructor(
                     skillNumber = 2,
                 )
             } else {
-                updateSkillUpgradeResult(EnhancementExitReason.SameLevelError, 2)
+                updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, 2)
             }
             ifRanOfQPEarlyException(
                 e = skill2UpgradeResult?.reason,
@@ -130,7 +130,7 @@ class AutoSkillUpgrade @Inject constructor(
                     skillNumber = 3,
                 )
             } else {
-                updateSkillUpgradeResult(EnhancementExitReason.SameLevelError, 3)
+                updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, 3)
             }
             ifRanOfQPEarlyException(
                 e = skill3UpgradeResult?.reason,
