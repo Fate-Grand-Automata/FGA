@@ -39,6 +39,7 @@ fun ScriptLauncher(
                 ScriptModeEnum.CEBomb -> ceBombLauncher(prefs, modifier)
                 ScriptModeEnum.SkillUpgrade -> skillUpgradeLauncher(prefs, modifier)
                 ScriptModeEnum.ServantLevel -> servantEnhancementLauncher(prefs, modifier)
+                ScriptModeEnum.PlayButtonDetection -> playButtonDetectionLauncher(prefs, modifier)
             }
 
             Divider()

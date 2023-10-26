@@ -29,6 +29,7 @@ fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
     updateState: (ScriptRunnerUIAction) -> Unit,
     onDrag: (Float, Float) -> Unit,
+    onDragEnd: () -> Unit,
     enabled: Boolean,
     isRecording: Boolean
 ) {
@@ -42,10 +43,13 @@ fun ScriptRunnerUI(
         ) {
             val dragModifier = Modifier
                 .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        onDrag(dragAmount.x, dragAmount.y)
-                    }
+                    detectDragGestures(
+                        onDragEnd = onDragEnd,
+                        onDrag = { change, dragAmount ->
+                            change.consume()
+                            onDrag(dragAmount.x, dragAmount.y)
+                        }
+                    )
                 }
 
             Surface(

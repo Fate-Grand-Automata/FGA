@@ -20,6 +20,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoCEBomb
 import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
+import io.github.fate_grand_automata.scripts.entrypoints.AutoPlayButtonDetection
 import io.github.fate_grand_automata.scripts.entrypoints.AutoServantEnhancement
 import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
@@ -284,6 +285,9 @@ class ScriptManager @Inject constructor(
                 messages.notify(msg)
                 messageBox.show(scriptExitedString, msg)
             }
+            is AutoPlayButtonDetection.ExitException -> {
+                // do nothing
+            }
 
             is KnownException -> {
                 messages.notify(scriptExitedString)
@@ -316,6 +320,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
             ScriptModeEnum.SkillUpgrade -> entryPoint.skillUpgrade()
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
+            ScriptModeEnum.PlayButtonDetection -> entryPoint.playButtonDetection()
         }
 
     enum class PauseAction {

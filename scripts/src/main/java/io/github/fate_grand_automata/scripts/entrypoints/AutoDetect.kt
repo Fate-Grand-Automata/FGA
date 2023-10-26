@@ -16,25 +16,39 @@ class AutoDetect @Inject constructor(
         val emberSearchRegion = locations.scriptArea.let {
             it.copy(width = it.width / 3)
         }
+        val isPlayButtonInGoodXLocation = prefs.playButtonLocation.x in
+                0..locations.scriptAreaRaw.width /4
+        val isPlayButtonInGoodYLocation = prefs.playButtonLocation.y in
+                locations.scriptAreaRaw.height * 5/8..locations.scriptAreaRaw.height
+
         when {
-            images[Images.FriendSummon] in locations.fp.summonCheck || findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ->
+            !isPlayButtonInGoodXLocation || !isPlayButtonInGoodYLocation ->
+                ScriptModeEnum.PlayButtonDetection
+
+            images[Images.FriendSummon] in locations.fp.summonCheck ||
+                    findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ->
                 ScriptModeEnum.FP
 
-            images[Images.LotteryBoxFinished] in locations.lottery.checkRegion || images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion ->
+            images[Images.LotteryBoxFinished] in locations.lottery.checkRegion ||
+                    images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion ->
                 ScriptModeEnum.Lottery
 
             listOf(images[Images.GoldXP], images[Images.SilverXP]) in emberSearchRegion ->
                 ScriptModeEnum.PresentBox
 
-            locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
+            locations.support.confirmSetupButtonRegion.exists(
+                images[Images.SupportConfirmSetupButton], similarity = 0.75
+            ) ->
                 ScriptModeEnum.SupportImageMaker
 
-            images[Images.CraftEssenceEnhancement] in locations.getCeEnhanceRegion(prefs.gameServer) -> ScriptModeEnum.CEBomb
+            images[Images.CraftEssenceEnhancement] in locations.getCeEnhanceRegion(prefs.gameServer) ->
+                ScriptModeEnum.CEBomb
 
             images[Images.SkillEnhancement] in locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer) -> {
                 autoSetup.getMinimumSkillLevel()
                 ScriptModeEnum.SkillUpgrade
             }
+
             images[Images.ServantEnhancement] in locations.servant.getServantEnhancementRegion ->
                 ScriptModeEnum.ServantLevel
 

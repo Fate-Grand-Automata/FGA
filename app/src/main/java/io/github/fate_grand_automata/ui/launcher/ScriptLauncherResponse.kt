@@ -28,6 +28,8 @@ sealed class ScriptLauncherResponse {
         val limitCount: Int
     ): ScriptLauncherResponse()
 
+    data object PlayButtonDetection : ScriptLauncherResponse()
+
     object SupportImageMaker : ScriptLauncherResponse()
     object Battle : ScriptLauncherResponse()
 }

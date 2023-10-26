@@ -439,4 +439,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
         Please ensure that you have set the \"Automatic Material Selection\" before proceeding.</string>
 
     <string name="skill_enhancement_all_question">Should update all available skill?</string>
+
+    <string name="p_script_mode_play_button_detection">Play Button Detection</string>
+    <string name="p_play_button_detection_explanation">Place the play button on the bottom left of the screen for optimal configuration</string>
 </resources>

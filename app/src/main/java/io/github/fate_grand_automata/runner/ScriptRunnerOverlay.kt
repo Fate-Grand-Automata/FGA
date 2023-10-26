@@ -59,7 +59,8 @@ class ScriptRunnerOverlay @Inject constructor(
                 updateState = { act(it) },
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,
-                onDrag = { x, y -> onDrag(x, y) }
+                onDrag = { x, y -> onDrag(x, y) },
+                onDragEnd = { savePlayButtonLocation() }
             )
         }.view
 

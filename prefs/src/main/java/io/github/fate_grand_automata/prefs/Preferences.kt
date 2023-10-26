@@ -11,6 +11,7 @@ import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.prefs.IServantEnhancementPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISkillUpgradePreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
+import io.github.lib_automata.Location
 import io.github.lib_automata.PlatformPrefs
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
@@ -167,6 +168,8 @@ class PreferencesImpl @Inject constructor(
 
     override val servant: IServantEnhancementPreferences =
         ServantEnhancementPrefs(prefs.servantEnhancement)
+
+    override val playButtonLocation: Location by prefs.playBtnLocation
 
     override val support = object :
         ISupportPreferencesCommon {
