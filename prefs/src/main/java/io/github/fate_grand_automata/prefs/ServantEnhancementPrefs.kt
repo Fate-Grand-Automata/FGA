@@ -1,5 +1,6 @@
-package io.github.fate_grand_automata.prefs.core
+package io.github.fate_grand_automata.prefs
 
+import io.github.fate_grand_automata.prefs.core.ServantEnhancementPrefsCore
 import io.github.fate_grand_automata.scripts.prefs.IServantEnhancementPreferences
 
 internal class ServantEnhancementPrefs(

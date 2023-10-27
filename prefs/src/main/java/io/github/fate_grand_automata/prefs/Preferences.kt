@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.prefs
 
 import io.github.fate_grand_automata.prefs.core.PrefsCore
-import io.github.fate_grand_automata.prefs.core.ServantEnhancementPrefs
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
