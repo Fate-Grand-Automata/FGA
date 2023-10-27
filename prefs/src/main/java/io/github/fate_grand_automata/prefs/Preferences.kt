@@ -5,6 +5,7 @@ import io.github.fate_grand_automata.prefs.core.ServantEnhancementPrefs
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
+import io.github.fate_grand_automata.scripts.prefs.ICraftEssencePreferences
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
@@ -168,6 +169,9 @@ class PreferencesImpl @Inject constructor(
 
     override val servant: IServantEnhancementPreferences =
         ServantEnhancementPrefs(prefs.servantEnhancement)
+
+    override val craftEssence: ICraftEssencePreferences =
+        CraftEssencePrefs(prefs.craftEssence)
 
     override val playButtonLocation: Location by prefs.playBtnLocation
 

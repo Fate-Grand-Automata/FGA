@@ -58,6 +58,8 @@ interface IPreferences {
 
     val servant: IServantEnhancementPreferences
 
+    val craftEssence: ICraftEssencePreferences
+
     val playButtonLocation: Location
 
     val ignorePlayButtonDetectionWarning: Boolean

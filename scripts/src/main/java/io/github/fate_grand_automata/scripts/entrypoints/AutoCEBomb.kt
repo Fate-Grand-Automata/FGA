@@ -29,14 +29,16 @@ class AutoCEBomb @Inject constructor(
 
     override fun script(): Nothing {
 
-        // Click on the "Tap to select a Craft Essence to Enhance" area
-        locations.ceBomb.ceSelectCEToEnhanceLocation.click()
-        2.seconds.wait()
+        if (prefs.craftEssence.emptyEnhance) {
+            // Click on the "Tap to select a Craft Essence to Enhance" area
+            locations.ceBomb.ceSelectCEToEnhanceLocation.click()
+            2.seconds.wait()
 
-        // Pick the first possible CE of the list
-        // going from top left to bottom right
-        pickCEToUpgrade()
-        2.seconds.wait()
+            // Pick the first possible CE of the list
+            // going from top left to bottom right
+            pickCEToUpgrade()
+            2.seconds.wait()
+        }
 
         locations.ceBomb.ceOpenEnhancementMenuLocation.click()
         2.seconds.wait()

@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
+import io.github.fate_grand_automata.scripts.Images
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -36,5 +37,10 @@ class AutoSetup @Inject constructor(
         prefs.skillUpgrade.skill3Available = skill3Text != null
     }
 
+    fun checkIfEmptyEnhance() {
+        val emptyEnhance = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
+
+        prefs.craftEssence.emptyEnhance = emptyEnhance
+    }
 
 }
