@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,11 +30,12 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.prefs.core.PrefsCore
+import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
 fun playButtonDetectionLauncher(
-    prefs: IPreferences,
+    prefsCore: PrefsCore,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
 
@@ -51,15 +52,13 @@ fun playButtonDetectionLauncher(
         Divider(
             modifier = Modifier
                 .padding(5.dp)
-                .padding(bottom = 16.dp)
+                .padding(bottom = 8.dp)
         )
 
         Row(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.weight(1f)
         ) {
             Text(
                 text = stringResource(R.string.p_play_button_detection_explanation),
@@ -71,6 +70,31 @@ fun playButtonDetectionLauncher(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
+            )
+        }
+
+        Divider(
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+        )
+
+        val ignorePlayButtonDetectionWarning = prefsCore.ignorePlayButtonDetectionWarning.remember()
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.p_ignore_play_button_detection_further_warning),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.weight(1f)
+            )
+
+            Switch(
+                checked = ignorePlayButtonDetectionWarning.value,
+                onCheckedChange = { ignorePlayButtonDetectionWarning.value = it },
             )
         }
 
@@ -119,8 +143,8 @@ private fun DrawLocationGuide(
     ) {
         Canvas(
             modifier = Modifier
-                .height(150.dp)
-                .width(250.dp)
+                .height(100.dp)
+                .width(175.dp)
         ) {
             drawRect(color = primaryContainerColor)
             drawPath(

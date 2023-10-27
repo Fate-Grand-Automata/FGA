@@ -466,7 +466,8 @@ class ScriptManager @Inject constructor(
                         continuation.resume(it)
                         dialog?.dismiss()
                     },
-                    prefs = preferences
+                    prefs = preferences,
+                    prefsCore = prefsCore
                 )
             }
 

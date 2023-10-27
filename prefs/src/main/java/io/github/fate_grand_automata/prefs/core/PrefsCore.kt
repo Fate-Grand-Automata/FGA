@@ -147,4 +147,6 @@ class PrefsCore @Inject constructor(
 
     val servantEnhancement = ServantEnhancementPrefsCore(maker)
 
+    val ignorePlayButtonDetectionWarning = maker.bool("ignore_play_button_detection_warning")
+
 }

@@ -442,4 +442,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="p_script_mode_play_button_detection">Play Button Detection</string>
     <string name="p_play_button_detection_explanation">Place the play button on the bottom left of the screen for optimal configuration</string>
+    <string name="p_ignore_play_button_detection_further_warning">Ignore further warning about play button\'s location.</string>
+    <string name="p_ignore_play_button_detection_warning">Ignore warning about play button\'s location.</string>
+
 </resources>

@@ -59,6 +59,8 @@ interface IPreferences {
     val servant: IServantEnhancementPreferences
 
     val playButtonLocation: Location
+
+    val ignorePlayButtonDetectionWarning: Boolean
 }
 
 val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots

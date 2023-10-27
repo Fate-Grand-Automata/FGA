@@ -17,12 +17,13 @@ class AutoDetect @Inject constructor(
             it.copy(width = it.width / 3)
         }
         val isPlayButtonInGoodXLocation = prefs.playButtonLocation.x in
-                0..locations.scriptAreaRaw.width /4
+                0..locations.scriptAreaRaw.width / 4
         val isPlayButtonInGoodYLocation = prefs.playButtonLocation.y in
-                locations.scriptAreaRaw.height * 5/8..locations.scriptAreaRaw.height
+                locations.scriptAreaRaw.height * 5 / 8..locations.scriptAreaRaw.height
 
         when {
-            !isPlayButtonInGoodXLocation || !isPlayButtonInGoodYLocation ->
+            (!isPlayButtonInGoodXLocation || !isPlayButtonInGoodYLocation) &&
+                    !prefs.ignorePlayButtonDetectionWarning ->
                 ScriptModeEnum.PlayButtonDetection
 
             images[Images.FriendSummon] in locations.fp.summonCheck ||

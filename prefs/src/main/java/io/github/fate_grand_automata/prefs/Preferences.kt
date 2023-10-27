@@ -171,6 +171,9 @@ class PreferencesImpl @Inject constructor(
 
     override val playButtonLocation: Location by prefs.playBtnLocation
 
+    override val ignorePlayButtonDetectionWarning: Boolean by
+        prefs.ignorePlayButtonDetectionWarning
+
     override val support = object :
         ISupportPreferencesCommon {
         override val mlbSimilarity by prefs.mlbSimilarity.map { it / 100.0 }
