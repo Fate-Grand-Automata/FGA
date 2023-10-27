@@ -105,6 +105,7 @@ class ImageLoader @Inject constructor(
         Images.RankUp -> "rank_up.png"
         Images.Close -> "close.png"
         Images.CraftEssenceEnhancement -> "craft_essence.png"
+        Images.CraftEssenceDisplaySmall -> "craft_essence_display_small.png"
         Images.SkillEnhancement -> "skill_enhance.png"
         Images.SkillInsufficientMaterials -> "skill_insufficient_mats.png"
         Images.Ok -> "ok.png"

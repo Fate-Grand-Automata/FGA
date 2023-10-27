@@ -69,6 +69,14 @@ class AutoCEBomb @Inject constructor(
 
             count++
 
+            // If the display is not small, we need to change it to the smallest possible
+            if (!isDisplaySmall()){
+                while (!isDisplaySmall()){
+                    locations.ceBomb.displayChangeLocation.click()
+                    1.0.seconds.wait()
+                }
+            }
+
             // A CE to enhance is selected, now to select the 20 CE to feed to it
             pickCEEnhanceFodder()
 
@@ -174,10 +182,13 @@ class AutoCEBomb @Inject constructor(
     private fun CELocation(x: Int, y: Int) =
         locations.ceBomb.ceFirstFodderLocation + Location(x * 270, y * 290 + 50)
 
+    private fun isDisplaySmall() = images[Images.CraftEssenceDisplaySmall] in
+            locations.ceBomb.displayCheckRegion
+
     sealed class ExitReason {
-        object NoSuitableTargetCEFound : ExitReason()
-        object CEFullyUpgraded : ExitReason()
-        object MaxNumberOfIterations : ExitReason()
+        data object NoSuitableTargetCEFound : ExitReason()
+        data object CEFullyUpgraded : ExitReason()
+        data object MaxNumberOfIterations : ExitReason()
     }
 
     class ExitException(val reason: ExitReason) : Exception()

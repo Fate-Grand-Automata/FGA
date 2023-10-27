@@ -56,4 +56,22 @@ class CEBombLocations @Inject constructor(
             Region(175, 880, 135, 115)
         else
             Region(0, 880, 135, 115)
+
+    /**
+     * This is checking the space in between CEs
+     */
+    val displayCheckRegion = when (isWide) {
+        true -> Region(614, 610, 30, 22)
+        false -> Region(382, 611, 30, 22)
+    }
+
+    /***
+     * Click the upper right most corner of the display change button
+     * This should have highest chance of mis-clicking due to the
+     * play button being right next to it
+     */
+    val displayChangeLocation = when (isWide) {
+        true -> Location(301, 1206)
+        false -> Location(118, 1288)
+    }
 }

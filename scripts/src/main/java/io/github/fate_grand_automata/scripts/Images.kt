@@ -57,6 +57,7 @@ enum class Images {
     RankUp,
     Close,
     CraftEssenceEnhancement,
+    CraftEssenceDisplaySmall,
     SkillEnhancement,
     SkillInsufficientMaterials,
     Ok,
