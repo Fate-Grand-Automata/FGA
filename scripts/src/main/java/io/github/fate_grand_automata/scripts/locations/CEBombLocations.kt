@@ -67,7 +67,7 @@ class CEBombLocations @Inject constructor(
 
     /***
      * Click the upper right most corner of the display change button
-     * This should have highest chance of mis-clicking due to the
+     * This should have highest chance of not mis-clicking due to the
      * play button being right next to it
      */
     val displayChangeLocation = when (isWide) {
