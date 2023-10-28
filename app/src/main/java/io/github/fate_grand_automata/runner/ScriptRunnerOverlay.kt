@@ -60,7 +60,10 @@ class ScriptRunnerOverlay @Inject constructor(
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,
                 onDrag = { x, y -> onDrag(x, y) },
-                onDragEnd = { savePlayButtonLocation() }
+                onDragEnd = { savePlayButtonLocation() },
+                onInitialization = { x, y ->
+                    saveInitialPlayButtonLocation(x, y)
+                }
             )
         }.view
 
@@ -90,6 +93,14 @@ class ScriptRunnerOverlay @Inject constructor(
             // top-left corner is fallback value. ignore
             if (location != Location()) {
                 setPlayBtnLocation(location.x, location.y)
+            }
+        }
+    }
+
+    private fun saveInitialPlayButtonLocation(x: Float, y: Float){
+        prefsCore.playBtnLocation.let {
+            if (it.get() == Location()) {
+                it.set(Location(x.roundToInt(), y.roundToInt()))
             }
         }
     }
