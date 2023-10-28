@@ -9,4 +9,8 @@ interface ICraftEssencePreferences {
     val ceFodderRarity: List<Int>
 
     var ceTargetRarity: Int
+
+    var skipAutomaticDisplayChange: Boolean
+
+    var topRightDisplayLocation: Boolean
 }

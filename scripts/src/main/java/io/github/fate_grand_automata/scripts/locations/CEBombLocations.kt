@@ -66,13 +66,16 @@ class CEBombLocations @Inject constructor(
     }
 
     /***
-     * Click the upper right most corner of the display change button
-     * This should have highest chance of not mis-clicking due to the
-     * play button being right next to it
+     * Added two locations for the display change button click
      */
-    val displayChangeLocation = when (isWide) {
+    val displayChangeLocationTopRight = when (isWide) {
         true -> Location(301, 1206)
         false -> Location(118, 1288)
+    }
+
+    val displayChangeLocationBottomLeft = when (isWide) {
+        true -> Location(182, 1326)
+        false -> Location(5, 1411)
     }
 
     val filtersLocation = Location(1953, 255) + Location(if (isWide) 265 else 0, 0)

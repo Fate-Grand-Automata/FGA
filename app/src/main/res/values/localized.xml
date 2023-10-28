@@ -448,5 +448,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_play_button_detection_explanation">Place the play button on the bottom left of the screen for optimal configuration</string>
     <string name="p_ignore_play_button_detection_further_warning">Ignore further warning about play button\'s location.</string>
     <string name="p_ignore_play_button_detection_warning">Ignore warning about play button\'s location.</string>
+    <string name="p_ce_bomb_skip_automatic_display_change">Skip automatic display size change?</string>
+    <string name="p_ce_bomb_display_top_right">Top Right</string>
+    <string name="p_ce_bomb_display_bottom_left">Bottom Left</string>
 
 </resources>

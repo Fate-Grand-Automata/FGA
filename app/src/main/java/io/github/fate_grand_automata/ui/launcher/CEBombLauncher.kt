@@ -52,6 +52,10 @@ fun ceBombLauncher(
 
     var fodderRarity by prefsCore.craftEssence.ceFodderRarity.remember()
 
+    var skipAutomaticDisplayChange by prefsCore.craftEssence.skipAutomaticDisplayChange.remember()
+
+    var topRightDisplayLocation by prefsCore.craftEssence.topRightDisplayLocation.remember()
+
     LaunchedEffect(key1 = fodderRarity, block = {
         if (fodderRarity.isEmpty()) {
             fodderRarity = setOf(1, 2)
@@ -109,6 +113,43 @@ fun ceBombLauncher(
                     .scrollbar(rightColumnState, horizontal = false),
                 state = rightColumnState,
             ) {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                skipAutomaticDisplayChange = !skipAutomaticDisplayChange
+                            }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.p_ce_bomb_skip_automatic_display_change),
+                                modifier = Modifier
+                                    .weight(1f),
+                                style = bodyTextSize()
+                            )
+                            Checkbox(
+                                checked = skipAutomaticDisplayChange,
+                                onCheckedChange = {
+                                    skipAutomaticDisplayChange = !skipAutomaticDisplayChange
+                                },
+                            )
+                        }
+                        displayChangeItems(
+                            modifier = Modifier,
+                            enabled = !skipAutomaticDisplayChange,
+                            displayMode = topRightDisplayLocation,
+                            onClick = {
+                                topRightDisplayLocation = it
+                            }
+                        )
+
+                    }
+                }
                 item {
                     Column(
                         modifier = Modifier
@@ -212,8 +253,8 @@ fun targetRarityItems(
     ) {
         (1..2).map { item ->
             val isSelected = item == selected
-            rarityItem(
-                item = item,
+            selectedItem(
+                text = stringResource(id = R.string.rarity, item),
                 enabled = enabled,
                 isSelected = isSelected,
                 onClick = {
@@ -248,8 +289,8 @@ fun fodderRarityItems(
                 "items: $items\n" +
                         "item: $item" + "\tisSelected: $isSelected"
             )
-            rarityItem(
-                item = item,
+            selectedItem(
+                text = stringResource(id = R.string.rarity, item),
                 enabled = enabled,
                 isSelected = isSelected,
                 onClick = {
@@ -269,9 +310,40 @@ fun fodderRarityItems(
 }
 
 @Composable
-fun rarityItem(
+private fun displayChangeItems(
     modifier: Modifier = Modifier,
-    item: Int,
+    enabled: Boolean = true,
+    displayMode: Boolean,
+    onClick: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        listOf(true, false).map { mode ->
+            val isSelected = mode == displayMode
+            selectedItem(
+                text = if (mode) stringResource(id = R.string.p_ce_bomb_display_top_right) else
+                    stringResource(id = R.string.p_ce_bomb_display_bottom_left),
+                enabled = enabled,
+                isSelected = isSelected,
+                onClick = {
+                    if (enabled) {
+                        onClick(mode)
+                    }
+                },
+                modifier = Modifier
+                    .padding(horizontal = 4.dp, vertical = 2.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun selectedItem(
+    modifier: Modifier = Modifier,
+    text: String,
     enabled: Boolean = true,
     isSelected: Boolean,
     onClick: () -> Unit,
@@ -290,7 +362,7 @@ fun rarityItem(
         modifier = modifier
     ) {
         Text(
-            text = stringResource(id = R.string.rarity, item),
+            text = text,
             modifier = Modifier.padding(vertical = 2.dp, horizontal = 4.dp),
             style = labelTextSize(),
             color = if (enabled) MaterialTheme.colorScheme.onSurface

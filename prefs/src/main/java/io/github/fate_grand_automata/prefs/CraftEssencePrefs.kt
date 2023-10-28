@@ -16,4 +16,8 @@ internal class CraftEssencePrefs(
     override val ceFodderRarity: List<Int> by prefs.ceFodderRarity.map{
         it.sorted()
     }
+
+    override var skipAutomaticDisplayChange: Boolean by prefs.skipAutomaticDisplayChange
+
+    override var topRightDisplayLocation: Boolean by prefs.topRightDisplayLocation
 }

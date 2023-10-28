@@ -72,12 +72,7 @@ class AutoCEBomb @Inject constructor(
             count++
 
             // If the display is not small, we need to change it to the smallest possible
-            if (!isDisplaySmall()) {
-                while (!isDisplaySmall()) {
-                    locations.ceBomb.displayChangeLocation.click()
-                    1.seconds.wait()
-                }
-            }
+            automaticDisplayChange()
 
             // A CE to enhance is selected, now to select the 20 CE to feed to it
             pickCEEnhanceFodder()
@@ -142,6 +137,26 @@ class AutoCEBomb @Inject constructor(
              **/
             if (count > 40) {
                 throw ExitException(ExitReason.MaxNumberOfIterations)
+            }
+        }
+    }
+
+    private fun automaticDisplayChange(){
+        if (prefs.craftEssence.skipAutomaticDisplayChange) return
+
+        val displayLocation = prefs.craftEssence.topRightDisplayLocation
+
+        if (!isDisplaySmall()) {
+            while (!isDisplaySmall()) {
+                when(displayLocation){
+                    true -> {
+                        locations.ceBomb.displayChangeLocationTopRight.click()
+                    }
+                    false -> {
+                        locations.ceBomb.displayChangeLocationBottomLeft.click()
+                    }
+                }
+                1.seconds.wait()
             }
         }
     }
