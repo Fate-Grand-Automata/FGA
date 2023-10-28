@@ -19,4 +19,12 @@ interface GestureService : AutoCloseable {
      * @param times the number of times to click
      */
     fun click(location: Location, times: Int = 1)
+
+    /**
+     * Long presses and Swipes from one [Location] to another [Location].
+     *
+     * @param start the [Location] where the swipe should start
+     * @param end the [Location] where the swipe should end
+     */
+    fun longPressAndSwipe(start: Location, end: Location)
 }

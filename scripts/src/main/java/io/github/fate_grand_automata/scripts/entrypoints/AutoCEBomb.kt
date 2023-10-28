@@ -174,7 +174,7 @@ class AutoCEBomb @Inject constructor(
             bottomRight.x !in xRange &&
                     bottomRight.y !in yRange -> bottomRight
 
-            else -> topRight
+            else -> return
         }
 
         if (!isDisplaySmall()) {
