@@ -109,7 +109,7 @@ class AutoCEBomb @Inject constructor(
                  * The CE would have been removed from the ceToEnhance region
                  * and we'd be back to a "Tap to select a Craft Essence to Enhance" state
                  **/
-                if (images[Images.EmptyEnhance] in locations.ceBomb.ceToEnhanceRegion) {
+                if (images[Images.EmptyEnhance] in locations.emptyEnhanceRegion) {
                     throw ExitException(ExitReason.CEFullyUpgraded)
                 }
 

@@ -7,12 +7,6 @@ import javax.inject.Inject
 class CEBombLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
-    // the dark gray " + Tap to select a Craft Essence to Enhance" area
-    val ceToEnhanceRegion =
-        if (isWide)
-            Region(-1100, 600, 400, 400).xFromCenter()
-        else
-            Region(200, 600, 400, 400)
 
     // click on the center of previous region
     val ceSelectCEToEnhanceLocation =

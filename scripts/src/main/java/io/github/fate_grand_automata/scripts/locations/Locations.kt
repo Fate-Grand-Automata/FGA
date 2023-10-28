@@ -126,7 +126,7 @@ class Locations @Inject constructor(
     val middleOfScreenClick = Location(0, 720).xFromCenter()
 
     val emptyEnhanceRegion = when (isWide) {
-        true -> Region(400, 600, 400, 400)
+        true -> Region(-1100, 600, 400, 400).xFromCenter()
         false -> Region(200, 600, 400, 400)
     }
 
