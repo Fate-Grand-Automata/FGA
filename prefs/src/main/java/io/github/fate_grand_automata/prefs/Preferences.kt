@@ -98,8 +98,6 @@ class PreferencesImpl @Inject constructor(
 
     override var maxGoldEmberTotalCount by prefs.maxGoldEmberTotalCount
 
-    override var ceBombTargetRarity by prefs.ceBombTargetRarity
-
     override var stopAfterThisRun by prefs.stopAfterThisRun
 
     override var skipServantFaceCardCheck by prefs.skipServantFaceCardCheck

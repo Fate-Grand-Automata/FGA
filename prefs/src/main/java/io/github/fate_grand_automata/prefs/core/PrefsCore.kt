@@ -75,8 +75,6 @@ class PrefsCore @Inject constructor(
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
     val maxGoldEmberTotalCount = maker.int("max_gold_ember_total_count", 100)
 
-    val ceBombTargetRarity = maker.int("ce_bomb_target_rarity", 1)
-
     val stopAfterThisRun = maker.bool("stop_after_this_run")
     val skipServantFaceCardCheck = maker.bool("skip_servant_face_card_check")
 

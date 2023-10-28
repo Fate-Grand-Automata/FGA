@@ -33,7 +33,7 @@ class AutoCEBomb @Inject constructor(
             // Click on the "Tap to select a Craft Essence to Enhance" area
             locations.ceBomb.ceSelectCEToEnhanceLocation.click()
             2.seconds.wait()
-
+            setTargetCEFilters()
             // Pick the first possible CE of the list
             // going from top left to bottom right
             pickCEToUpgrade()
@@ -42,6 +42,8 @@ class AutoCEBomb @Inject constructor(
 
         locations.ceBomb.ceOpenEnhancementMenuLocation.click()
         2.seconds.wait()
+
+        setFodderCEFilters()
 
         /** Loop to upgrade the CE selected
          *  The exit conditions are either:
@@ -70,10 +72,10 @@ class AutoCEBomb @Inject constructor(
             count++
 
             // If the display is not small, we need to change it to the smallest possible
-            if (!isDisplaySmall()){
-                while (!isDisplaySmall()){
+            if (!isDisplaySmall()) {
+                while (!isDisplaySmall()) {
                     locations.ceBomb.displayChangeLocation.click()
-                    1.0.seconds.wait()
+                    1.seconds.wait()
                 }
             }
 
@@ -142,6 +144,56 @@ class AutoCEBomb @Inject constructor(
                 throw ExitException(ExitReason.MaxNumberOfIterations)
             }
         }
+    }
+
+    private fun setTargetCEFilters() {
+        if (prefs.craftEssence.skipCEFilterDetection) return
+
+        locations.ceBomb.filtersLocation.click()
+        2.seconds.wait()
+
+        for (rarity in 5 downTo 1) {
+            val filterStarRegion = locations.ceBomb.filters5StarRegion(rarity = rarity)
+            val filterLocation = locations.ceBomb.filters5StarLocation(rarity = rarity)
+
+            val filterOff = images[Images.CraftEssenceFodderCEFilterOff] in filterStarRegion
+
+            if (rarity == prefs.craftEssence.ceTargetRarity && filterOff) {
+                filterLocation.click()
+                0.5.seconds.wait()
+            }
+            if (rarity != prefs.craftEssence.ceTargetRarity && !filterOff) {
+                filterLocation.click()
+                0.5.seconds.wait()
+            }
+        }
+        locations.ceBomb.filterCloseLocation.click()
+        1.seconds.wait()
+    }
+
+    private fun setFodderCEFilters() {
+        if (prefs.craftEssence.skipCEFilterDetection) return
+
+        locations.ceBomb.filtersLocation.click()
+        2.seconds.wait()
+
+        for (rarity in 5 downTo 1) {
+            val filterStarRegion = locations.ceBomb.filters5StarRegion(rarity = rarity)
+            val filterLocation = locations.ceBomb.filters5StarLocation(rarity = rarity)
+
+            val filterOff = images[Images.CraftEssenceFodderCEFilterOff] in filterStarRegion
+
+            if (rarity in prefs.craftEssence.ceFodderRarity && filterOff) {
+                filterLocation.click()
+                0.5.seconds.wait()
+            }
+            if (rarity !in prefs.craftEssence.ceFodderRarity && !filterOff) {
+                filterLocation.click()
+                0.5.seconds.wait()
+            }
+        }
+        locations.ceBomb.filterCloseLocation.click()
+        1.seconds.wait()
     }
 
     private fun pickCEToUpgrade() {

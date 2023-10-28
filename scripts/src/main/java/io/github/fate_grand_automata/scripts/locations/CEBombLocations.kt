@@ -74,4 +74,18 @@ class CEBombLocations @Inject constructor(
         true -> Location(301, 1206)
         false -> Location(118, 1288)
     }
+
+    val filtersLocation = Location(1953, 255) + Location(if (isWide) 265 else 0, 0)
+
+    fun filters5StarRegion(rarity: Int) = when (isWide) {
+        true ->  Region(709, 408, 41, 36)
+        false ->  Region(491, 408, 41, 36)
+    } + Location((5 - rarity) * 374, 0)
+
+    fun filters5StarLocation(rarity: Int) = when (isWide) {
+        true -> Location(729, 464)
+        false -> Location(511, 464)
+    } + Location((5 - rarity) * 375, 0)
+
+    val filterCloseLocation = Location(2109, 1269) + Location(if (isWide) 159 else 0, 0)
 }

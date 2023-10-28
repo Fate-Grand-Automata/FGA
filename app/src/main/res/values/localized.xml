@@ -396,6 +396,10 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="ce_bomb_no_suitable_ces">No suitable target CE found</string>
     <string name="ce_bomb_max_iterations">Max number of iterations reached</string>
     <string name="ce_bomb_ce_fully_upgraded">CE is fully upgraded. Please lock it or put it in second archive</string>
+    <string name="p_ce_bomb_skip_filter_detection">Skip filter Detection?</string>
+    <string name="p_ce_bomb_skip_filter_summary">Check if filters are set.</string>
+    <string name="p_ce_bomb_target_rarity">Target Rarity</string>
+    <string name="p_ce_bomb_fodder_rarity">Fodder Rarity</string>
 
     <string name="script_msg_storm_pods_ran_out">"Ran out of Storm Pods"</string>
     <string name="reset_all">"Reset all"</string>

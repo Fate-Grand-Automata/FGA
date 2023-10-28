@@ -42,8 +42,6 @@ interface IPreferences {
     val platformPrefs: PlatformPrefs
     val gestures: IGesturesPreferences
 
-    var ceBombTargetRarity: Int
-
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
     fun addPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
