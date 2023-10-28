@@ -13,6 +13,7 @@ import io.github.fate_grand_automata.scripts.prefs.ISkillUpgradePreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.Location
 import io.github.lib_automata.PlatformPrefs
+import io.github.lib_automata.Region
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -171,6 +172,8 @@ class PreferencesImpl @Inject constructor(
         CraftEssencePrefs(prefs.craftEssence)
 
     override val playButtonLocation: Location by prefs.playBtnLocation
+
+    override val playButtonRegion: Region by prefs.playButtonRegion
 
     override val ignorePlayButtonDetectionWarning: Boolean by
         prefs.ignorePlayButtonDetectionWarning

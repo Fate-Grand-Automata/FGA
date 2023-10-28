@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.Location
 import io.github.lib_automata.PlatformPrefs
+import io.github.lib_automata.Region
 import kotlin.time.Duration
 
 interface IPreferences {
@@ -59,6 +60,8 @@ interface IPreferences {
     val craftEssence: ICraftEssencePreferences
 
     val playButtonLocation: Location
+
+    val playButtonRegion: Region
 
     val ignorePlayButtonDetectionWarning: Boolean
 }

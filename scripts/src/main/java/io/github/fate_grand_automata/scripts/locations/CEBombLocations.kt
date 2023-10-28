@@ -54,22 +54,14 @@ class CEBombLocations @Inject constructor(
     /**
      * This is checking the space in between CEs
      */
-    val displayCheckRegion = when (isWide) {
+    val displaySizeCheckRegion = when (isWide) {
         true -> Region(-883, 610, 29, 23).xFromCenter()
         false -> Region(-898, 611, 30, 22).xFromCenter()
     }
 
-    /***
-     * Added two locations for the display change button click
-     */
-    val displayChangeLocationTopRight = when (isWide) {
-        true -> Location(301, 1206)
-        false -> Location(118, 1288)
-    }
-
-    val displayChangeLocationBottomLeft = when (isWide) {
-        true -> Location(182, 1326)
-        false -> Location(5, 1411)
+    val displayChangeRegion = when(isWide){
+        true -> Region(182, 1206, 118, 119)
+        false -> Region(-1280, 1288, 118, 123).xFromCenter()
     }
 
     val filtersLocation = when (isWide) {

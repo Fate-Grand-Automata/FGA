@@ -19,9 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -32,7 +29,7 @@ import io.github.fate_grand_automata.ui.FGATheme
 fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
     updateState: (ScriptRunnerUIAction) -> Unit,
-    onInitialization: (Float, Float) -> Unit,
+    onPosition: () -> Unit,
     onDrag: (Float, Float) -> Unit,
     onDragEnd: () -> Unit,
     enabled: Boolean,
@@ -42,27 +39,11 @@ fun ScriptRunnerUI(
         darkTheme = true,
         background = Color.Transparent
     ) {
-        val configuration = LocalConfiguration.current
-        val density = LocalDensity.current
-
-        val screenWidth = with(density) { configuration.screenWidthDp.dp.roundToPx() }
-        val screenHeight = with(density) { configuration.screenHeightDp.dp.roundToPx() }
         Row(
             modifier = Modifier
                 .padding(5.dp)
         ) {
             val dragModifier = Modifier
-                .onGloballyPositioned { layoutCoordinates ->
-                    val viewPosition = layoutCoordinates.positionInRoot()
-
-                    val viewPositionRelativeToScreenX = viewPosition.x / screenWidth
-                    val viewPositionRelativeToScreenY = viewPosition.y / screenHeight
-
-                    onInitialization(
-                        viewPositionRelativeToScreenX,
-                        screenHeight - viewPositionRelativeToScreenY
-                    )
-                }
                 .pointerInput(Unit) {
                     detectDragGestures(
                         onDragEnd = onDragEnd,
@@ -72,6 +53,7 @@ fun ScriptRunnerUI(
                         }
                     )
                 }
+                .onGloballyPositioned { onPosition() }
 
             Surface(
                 color = MaterialTheme.colorScheme.surface,

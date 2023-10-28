@@ -6,6 +6,7 @@ import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
 import io.github.lib_automata.Location
+import io.github.lib_automata.Scale
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -22,7 +23,8 @@ import kotlin.time.Duration.Companion.seconds
 class AutoCEBomb @Inject constructor(
     exitManager: ExitManager,
     api: IFgoAutomataApi,
-    private val connectionRetry: ConnectionRetry
+    private val connectionRetry: ConnectionRetry,
+    private val scale: Scale
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     private val ceRows = 4
     private val ceColumns = 7
@@ -143,21 +145,42 @@ class AutoCEBomb @Inject constructor(
         }
     }
 
-    private fun setDisplaySize(){
+    private fun setDisplaySize() {
         if (prefs.craftEssence.skipAutomaticDisplayChange) return
 
-        val displayLocation = prefs.craftEssence.topRightDisplayLocation
+        val buttonRegion = prefs.playButtonRegion * (scale.screenToImage?.times(2) ?: 1.0)
+
+        val displayRegion = locations.ceBomb.displayChangeRegion
+
+        val topLeft = Location(displayRegion.x, displayRegion.y)
+        val topRight = Location(displayRegion.right, displayRegion.y)
+
+        val bottomLeft = Location(displayRegion.x, displayRegion.bottom)
+        val bottomRight = Location(displayRegion.right, displayRegion.bottom)
+
+        val xRange = buttonRegion.x..buttonRegion.right
+        val yRange = buttonRegion.y..buttonRegion.bottom
+
+        val displayLocation = when {
+            topRight.x !in xRange &&
+                    topRight.y !in yRange -> topRight
+
+            topLeft.x !in xRange &&
+                    topLeft.y !in yRange -> topLeft
+
+            bottomLeft.x !in xRange &&
+                    bottomLeft.y !in yRange -> bottomLeft
+
+            bottomRight.x !in xRange &&
+                    bottomRight.y !in yRange -> bottomRight
+
+            else -> topRight
+        }
 
         if (!isDisplaySmall()) {
+
             while (!isDisplaySmall()) {
-                when(displayLocation){
-                    true -> {
-                        locations.ceBomb.displayChangeLocationTopRight.click()
-                    }
-                    false -> {
-                        locations.ceBomb.displayChangeLocationBottomLeft.click()
-                    }
-                }
+                displayLocation.click()
                 1.seconds.wait()
             }
         }
@@ -252,7 +275,7 @@ class AutoCEBomb @Inject constructor(
         locations.ceBomb.ceFirstFodderLocation + Location(x * 270, y * 290 + 50)
 
     private fun isDisplaySmall() = images[Images.CraftEssenceDisplaySmall] in
-            locations.ceBomb.displayCheckRegion
+            locations.ceBomb.displaySizeCheckRegion
 
     sealed class ExitReason {
         data object NoSuitableTargetCEFound : ExitReason()
