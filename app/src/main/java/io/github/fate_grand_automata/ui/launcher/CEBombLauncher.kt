@@ -53,8 +53,6 @@ fun ceBombLauncher(
 
     var skipAutomaticDisplayChange by prefsCore.craftEssence.skipAutomaticDisplayChange.remember()
 
-    var topRightDisplayLocation by prefsCore.craftEssence.topRightDisplayLocation.remember()
-
     LaunchedEffect(key1 = fodderRarity, block = {
         if (fodderRarity.isEmpty()) {
             fodderRarity = setOf(1, 2)
@@ -138,15 +136,6 @@ fun ceBombLauncher(
                                 },
                             )
                         }
-                        displayChangeItems(
-                            modifier = Modifier,
-                            enabled = !skipAutomaticDisplayChange,
-                            displayMode = topRightDisplayLocation,
-                            onClick = {
-                                topRightDisplayLocation = it
-                            }
-                        )
-
                     }
                 }
                 item {
@@ -295,37 +284,6 @@ fun fodderRarityItems(
                         } else {
                             onClick(items.toSet() + item)
                         }
-                    }
-                },
-                modifier = Modifier
-                    .padding(horizontal = 4.dp, vertical = 2.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun displayChangeItems(
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    displayMode: Boolean,
-    onClick: (Boolean) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        listOf(true, false).map { mode ->
-            val isSelected = mode == displayMode
-            selectedItem(
-                text = if (mode) stringResource(id = R.string.p_ce_bomb_display_top_right) else
-                    stringResource(id = R.string.p_ce_bomb_display_bottom_left),
-                enabled = enabled,
-                isSelected = isSelected,
-                onClick = {
-                    if (enabled) {
-                        onClick(mode)
                     }
                 },
                 modifier = Modifier

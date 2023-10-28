@@ -11,6 +11,4 @@ interface ICraftEssencePreferences {
     var ceTargetRarity: Int
 
     var skipAutomaticDisplayChange: Boolean
-
-    var topRightDisplayLocation: Boolean
 }

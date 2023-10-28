@@ -18,6 +18,4 @@ internal class CraftEssencePrefs(
     }
 
     override var skipAutomaticDisplayChange: Boolean by prefs.skipAutomaticDisplayChange
-
-    override var topRightDisplayLocation: Boolean by prefs.topRightDisplayLocation
 }
