@@ -34,6 +34,8 @@ class AutoCEBomb @Inject constructor(
             locations.ceBomb.ceSelectCEToEnhanceLocation.click()
             2.seconds.wait()
             setTargetCEFilters()
+
+            automaticDisplayChange()
             // Pick the first possible CE of the list
             // going from top left to bottom right
             pickCEToUpgrade()
