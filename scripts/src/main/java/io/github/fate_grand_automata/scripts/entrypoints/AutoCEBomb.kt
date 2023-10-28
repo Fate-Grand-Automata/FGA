@@ -35,7 +35,7 @@ class AutoCEBomb @Inject constructor(
             2.seconds.wait()
             setTargetCEFilters()
 
-            automaticDisplayChange()
+            setDisplaySize()
             // Pick the first possible CE of the list
             // going from top left to bottom right
             pickCEToUpgrade()
@@ -74,7 +74,7 @@ class AutoCEBomb @Inject constructor(
             count++
 
             // If the display is not small, we need to change it to the smallest possible
-            automaticDisplayChange()
+            setDisplaySize()
 
             // A CE to enhance is selected, now to select the 20 CE to feed to it
             pickCEEnhanceFodder()
@@ -143,7 +143,7 @@ class AutoCEBomb @Inject constructor(
         }
     }
 
-    private fun automaticDisplayChange(){
+    private fun setDisplaySize(){
         if (prefs.craftEssence.skipAutomaticDisplayChange) return
 
         val displayLocation = prefs.craftEssence.topRightDisplayLocation
