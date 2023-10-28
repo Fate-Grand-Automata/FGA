@@ -55,8 +55,8 @@ class CEBombLocations @Inject constructor(
      * This is checking the space in between CEs
      */
     val displayCheckRegion = when (isWide) {
-        true -> Region(614, 610, 30, 22)
-        false -> Region(382, 611, 30, 22)
+        true -> Region(-883, 610, 29, 23).xFromCenter()
+        false -> Region(-898, 611, 30, 22).xFromCenter()
     }
 
     /***
@@ -72,17 +72,17 @@ class CEBombLocations @Inject constructor(
         false -> Location(5, 1411)
     }
 
-    val filtersLocation = Location(1953, 255) + Location(if (isWide) 265 else 0, 0)
+    val filtersLocation = Location(673, 255).xFromCenter() + Location(if (isWide) 265 else 0, 0)
 
     fun filters5StarRegion(rarity: Int) = when (isWide) {
-        true ->  Region(709, 408, 41, 36)
-        false ->  Region(491, 408, 41, 36)
+        true -> Region(-788, 406, 41, 36).xFromCenter()
+        false -> Region(-789, 408, 41, 36).xFromCenter()
     } + Location((5 - rarity) * 374, 0)
 
     fun filters5StarLocation(rarity: Int) = when (isWide) {
-        true -> Location(729, 464)
-        false -> Location(511, 464)
+        true -> Location(-767, 424).xFromCenter()
+        false -> Location(-768, 426).xFromCenter()
     } + Location((5 - rarity) * 375, 0)
 
-    val filterCloseLocation = Location(2109, 1269) + Location(if (isWide) 159 else 0, 0)
+    val filterCloseLocation = Location(829, 1269).xFromCenter() + Location(if (isWide) 159 else 0, 0)
 }
