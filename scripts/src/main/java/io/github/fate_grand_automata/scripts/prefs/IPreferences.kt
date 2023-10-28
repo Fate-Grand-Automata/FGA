@@ -17,8 +17,7 @@ interface IPreferences {
     val stopOnCEGet: Boolean
     val stopOnFirstClearRewards: Boolean
     val boostItemSelectionMode: Int
-
-    //    val refill: IRefillPreferences
+    
     val useRootForScreenshots: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration

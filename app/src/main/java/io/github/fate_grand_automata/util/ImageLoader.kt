@@ -10,7 +10,6 @@ import io.github.fate_grand_automata.scripts.IImageLoader
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
-import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.lib_automata.ColorManager
 import io.github.lib_automata.Pattern
@@ -184,16 +183,6 @@ class ImageLoader @Inject constructor(
             )
         }
 }
-
-
-val RefillResourceEnum.drawable
-    get() = when(this){
-        RefillResourceEnum.Copper -> R.drawable.mat_refill_copper_apple
-        RefillResourceEnum.Bronze -> R.drawable.mat_refill_blue_apple
-        RefillResourceEnum.Silver -> R.drawable.mat_refill_silver_apple
-        RefillResourceEnum.Gold -> R.drawable.mat_refill_gold_apple
-        RefillResourceEnum.SQ -> R.drawable.mat_refill_sq
-    }
 
 val MaterialEnum.drawable
     get() = when (this) {
