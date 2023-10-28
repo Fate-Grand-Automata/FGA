@@ -16,9 +16,4 @@
     <string name="link_youtube" translatable="false">https://www.youtube.com/watch?v=JOwupZ4W8AQ&amp;t=4m10s</string>
     <string name="link_dontkillmyapp" translatable="false">https://dontkillmyapp.com/</string>
     <string name="link_donate" translatable="false">https://ko-fi.com/fategrandautomata</string>
-
-    <string name="reset" translatable="false">Reset</string>
-    <string name="battle_config_apple_subheading" translatable="false">Preset the Apple Count</string>
-    <string name="battle_config_apple_no_game_servers" translatable="false">No Game Server/s selected</string>
-    <string name="reset_all" translatable="false">Reset all</string>
 </resources>

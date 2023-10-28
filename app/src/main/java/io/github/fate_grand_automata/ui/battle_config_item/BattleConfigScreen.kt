@@ -29,6 +29,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -44,7 +45,7 @@ import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.VerticalDivider
-import io.github.fate_grand_automata.ui.card_priority.getCardScoreColor
+import io.github.fate_grand_automata.ui.card_priority.getColorRes
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
@@ -270,7 +271,7 @@ private fun BattleConfigContent(
 
 private val CardScore.color: Color
     @Composable get() {
-        return getCardScoreColor(this)
+        return colorResource(getColorRes())
     }
 
 @Composable
@@ -306,10 +307,11 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                                 ) {
                                     append(",")
                                 }
-                                withStyle(style = SpanStyle(
-                                    letterSpacing = 4.dp.toSp()
-                                )
-                                ){
+                                withStyle(
+                                    style = SpanStyle(
+                                        letterSpacing = 4.dp.toSp()
+                                    )
+                                ) {
                                     append(" ")
                                 }
                             }

@@ -93,7 +93,7 @@ Master"</string>
     <string name="p_battle_config_party">"Tổ đội"</string>
     <string name="p_battle_config_server">"Máy chủ"</string>
     <string name="p_battle_config_card_priority">"Ưu tiên thẻ"</string>
-    <string name="p_battle_config_servant_priority">"Sử dụng ưu tiên Servant"</string>
+    <string name="p_battle_config_use_servant_priority">"Sử dụng ưu tiên Servant"</string>
     <string name="p_battle_config_support">"Hỗ trợ"</string>
     <string name="p_battle_config_support_selection_mode">"Lựa chọn chế độ"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Dự phòng"</string>

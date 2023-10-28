@@ -36,8 +36,7 @@ fun FineTuneItem.FineTuneSetter() {
 
         buttons(
             onSubmit = { reset() },
-            // TODO: Localize 'Reset to default'
-            okLabel = "Reset to default"
+            okLabel = stringResource(R.string.reset_to_default)
         )
     }
 
