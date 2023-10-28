@@ -34,7 +34,6 @@ import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.VerticalDivider
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.ui.scrollbar
-import timber.log.Timber
 
 @Composable
 fun ceBombLauncher(
@@ -285,10 +284,6 @@ fun fodderRarityItems(
         (1..3).map { item ->
             val isSelected = items.contains(item)
 
-            Timber.d(
-                "items: $items\n" +
-                        "item: $item" + "\tisSelected: $isSelected"
-            )
             selectedItem(
                 text = stringResource(id = R.string.rarity, item),
                 enabled = enabled,
