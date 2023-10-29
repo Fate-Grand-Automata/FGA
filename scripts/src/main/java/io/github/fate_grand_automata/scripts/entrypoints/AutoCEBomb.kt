@@ -250,13 +250,12 @@ class AutoCEBomb @Inject constructor(
      */
 
     private fun longPressAndDragOrMultipleClicks() {
-        for (y in 0 until ceRows) {
-            val columnClicks = (0..ceColumns).map {
-                CELocation(it, y)
+        val clicksArray = (0..<ceRows).flatMap { y ->
+            (0..<ceColumns).map { x ->
+                CELocation(x, y)
             }
-            longPressAndSwipeOrMultipleClicks(columnClicks)
-            0.5.seconds.wait()
         }
+        longPressAndSwipeOrMultipleClicks(clicksArray, window = ceColumns)
     }
 
     private fun CELocation(x: Int, y: Int) =

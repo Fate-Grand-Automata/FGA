@@ -28,5 +28,5 @@ interface GestureService : AutoCloseable {
      *
      * @param clicks the [Location]s where the swipe should start and end
      */
-    fun longPressAndDragOrMultipleClicks(clicks: List<Location>)
+    fun longPressAndDragOrMultipleClicks(clicks: List<Location>, window: Int)
 }

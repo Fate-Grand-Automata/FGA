@@ -165,18 +165,34 @@ class AccessibilityGestures @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun longPressAndDrag8(clicks: List<Location>) {
+    suspend fun longPressAndDrag8(
+        clicks: List<Location>,
+        window: Int = 1
+    ) {
         val start = clicks.first()
-        val middle = clicks.elementAtOrNull(clicks.size / 2)
         val end = clicks.last()
 
+        val clicksArrays = clicks.chunked(window).flatMapIndexed { index, locations ->
+            if (index == 0) {
+                val first = locations.first()
+                val middle = if (locations.size > 2)
+                    locations.elementAtOrNull(locations.size / 2) else null
+                val last = locations.last()
+                listOfNotNull(first, middle, last)
+            } else {
+                listOf(locations.last())
+            }
+        }
+
         /**
-         * Turns out that you ned to have a delay to make the
+         * Turns out that you need to have a delay to make the
          * strokes sequential. Otherwise, they will be executed
          * at the same time or depending on when start time is.
          */
         var gestureDelay = 0L
-        val swipeDuration = 500L
+        val longPressDuration = 1000L
+        val swipeDuration = 400L
+        val swiperLiftDuration = 50L
 
         val mouseDownPath = Path().moveTo(start)
 
@@ -186,15 +202,15 @@ class AccessibilityGestures @Inject constructor(
         var lastStroke = GestureDescription.StrokeDescription(
             mouseDownPath,
             gestureDelay,
-            1000L,
+            longPressDuration,
             true
         ).also {
             performGesture(it)
-            gestureDelay += 1000L
+            gestureDelay += longPressDuration
         }
         Timber.d("Long Pressed")
 
-        listOfNotNull(start, middle, end).windowed(2).forEach { (from, to) ->
+        clicksArrays.windowed(2).forEach { (from, to) ->
             val swipePath = Path()
                 .moveTo(from)
                 .lineTo(to)
@@ -214,7 +230,7 @@ class AccessibilityGestures @Inject constructor(
         lastStroke.continueStroke(
             mouseUpPath,
             gestureDelay,
-            400L,
+            swiperLiftDuration,
             false
         ).also {
             performGesture(it)
@@ -223,10 +239,14 @@ class AccessibilityGestures @Inject constructor(
 
     }
 
-    override fun longPressAndDragOrMultipleClicks(clicks: List<Location>) = runBlocking {
+    override fun longPressAndDragOrMultipleClicks(
+        clicks: List<Location>,
+        window: Int
+    ) = runBlocking {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             longPressAndDrag8(
-                clicks = clicks
+                clicks = clicks,
+                window = window
             )
         } else {
             clicks.forEach { singleClick ->

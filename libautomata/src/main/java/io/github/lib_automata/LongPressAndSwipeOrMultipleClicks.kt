@@ -3,7 +3,7 @@ package io.github.lib_automata
 import javax.inject.Inject
 
 interface LongPressAndSwipeOrMultipleClicks {
-    operator fun invoke(clicks: List<Location>)
+    operator fun invoke(clicks: List<Location>, window: Int)
 }
 
 class RealLongPressAndSwipeOrMultipleClicks @Inject constructor(
@@ -12,7 +12,7 @@ class RealLongPressAndSwipeOrMultipleClicks @Inject constructor(
     private val transform: Transformer
 ) : LongPressAndSwipeOrMultipleClicks {
 
-    override fun invoke(clicks: List<Location>) {
+    override fun invoke(clicks: List<Location>, window: Int) {
         var secondToTheLastLocation = Location()
 
         val transformClicks = clicks.mapIndexed { index: Int, location: Location ->
@@ -37,7 +37,8 @@ class RealLongPressAndSwipeOrMultipleClicks @Inject constructor(
         }
 
         gestureService.longPressAndDragOrMultipleClicks(
-            clicks=transformClicks
+            clicks=transformClicks,
+            window=window
         )
     }
 
