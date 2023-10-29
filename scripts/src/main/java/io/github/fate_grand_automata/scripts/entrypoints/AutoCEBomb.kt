@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.entrypoints
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.enums.CEDisplayChangeAreaEnum
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -148,7 +149,7 @@ class AutoCEBomb @Inject constructor(
     private fun setDisplaySize() {
         if (prefs.craftEssence.skipAutomaticDisplayChange) return
 
-        val buttonRegion = prefs.playButtonRegion * (scale.screenToImage?.times(2) ?: 1.0)
+        val displayArea = prefs.craftEssence.ceDisplayChangeArea
 
         val displayRegion = locations.ceBomb.displayChangeRegion
 
@@ -158,22 +159,12 @@ class AutoCEBomb @Inject constructor(
         val bottomLeft = Location(displayRegion.x, displayRegion.bottom)
         val bottomRight = Location(displayRegion.right, displayRegion.bottom)
 
-        val xRange = buttonRegion.x..buttonRegion.right
-        val yRange = buttonRegion.y..buttonRegion.bottom
 
         val displayLocation = when {
-            topRight.x !in xRange &&
-                    topRight.y !in yRange -> topRight
-
-            topLeft.x !in xRange &&
-                    topLeft.y !in yRange -> topLeft
-
-            bottomLeft.x !in xRange &&
-                    bottomLeft.y !in yRange -> bottomLeft
-
-            bottomRight.x !in xRange &&
-                    bottomRight.y !in yRange -> bottomRight
-
+            CEDisplayChangeAreaEnum.TOP_RIGHT in displayArea -> topRight
+            CEDisplayChangeAreaEnum.TOP_LEFT in displayArea -> topLeft
+            CEDisplayChangeAreaEnum.BOTTOM_LEFT in displayArea -> bottomLeft
+            CEDisplayChangeAreaEnum.BOTTOM_RIGHT in displayArea -> bottomRight
             else -> return
         }
 

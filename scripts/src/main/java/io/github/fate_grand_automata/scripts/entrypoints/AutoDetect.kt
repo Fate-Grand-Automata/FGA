@@ -42,6 +42,7 @@ class AutoDetect @Inject constructor(
 
             images[Images.CraftEssenceEnhancement] in locations.getCeEnhanceRegion(prefs.gameServer) ->{
                 autoSetup.checkIfEmptyEnhance()
+                autoSetup.checkIfCanAutomaticDisplayChangeInCE()
                 ScriptModeEnum.CEBomb
             }
 

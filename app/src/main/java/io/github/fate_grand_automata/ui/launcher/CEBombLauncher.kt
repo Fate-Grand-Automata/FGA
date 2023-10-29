@@ -53,6 +53,10 @@ fun ceBombLauncher(
 
     var skipAutomaticDisplayChange by prefsCore.craftEssence.skipAutomaticDisplayChange.remember()
 
+    val canShowAutomaticDisplayChange by remember{
+        mutableStateOf(prefs.craftEssence.canShowAutomaticDisplayChange)
+    }
+
     LaunchedEffect(key1 = fodderRarity, block = {
         if (fodderRarity.isEmpty()) {
             fodderRarity = setOf(1, 2)
@@ -110,34 +114,37 @@ fun ceBombLauncher(
                     .scrollbar(rightColumnState, horizontal = false),
                 state = rightColumnState,
             ) {
-                item {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                skipAutomaticDisplayChange = !skipAutomaticDisplayChange
-                            }
-                    ) {
-                        Row(
+                if (canShowAutomaticDisplayChange){
+                    item {
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.p_ce_bomb_skip_automatic_display_change),
-                                modifier = Modifier
-                                    .weight(1f),
-                                style = bodyTextSize()
-                            )
-                            Checkbox(
-                                checked = skipAutomaticDisplayChange,
-                                onCheckedChange = {
+                                .fillMaxWidth()
+                                .clickable {
                                     skipAutomaticDisplayChange = !skipAutomaticDisplayChange
-                                },
-                            )
+                                }
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.p_ce_bomb_skip_automatic_display_change),
+                                    modifier = Modifier
+                                        .weight(1f),
+                                    style = bodyTextSize()
+                                )
+                                Checkbox(
+                                    checked = skipAutomaticDisplayChange,
+                                    onCheckedChange = {
+                                        skipAutomaticDisplayChange = !skipAutomaticDisplayChange
+                                    },
+                                )
+                            }
                         }
                     }
                 }
+
                 item {
                     Column(
                         modifier = Modifier
