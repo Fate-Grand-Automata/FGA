@@ -47,4 +47,10 @@ abstract class LibAutomataModule {
     @ScriptScope
     @Binds
     abstract fun api(api: StandardAutomataApi): AutomataApi
+
+    @ScriptScope
+    @Binds
+    abstract fun longPressAndSwipeOrMultipleClicks(
+        longPressAndSwipeOrMultipleClicks: RealLongPressAndSwipeOrMultipleClicks
+    ): LongPressAndSwipeOrMultipleClicks
 }

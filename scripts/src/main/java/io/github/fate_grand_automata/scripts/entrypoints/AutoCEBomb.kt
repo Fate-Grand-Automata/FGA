@@ -7,7 +7,7 @@ import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
 import io.github.lib_automata.Location
-import io.github.lib_automata.Scale
+import io.github.lib_automata.LongPressAndSwipeOrMultipleClicks
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -25,7 +25,7 @@ class AutoCEBomb @Inject constructor(
     exitManager: ExitManager,
     api: IFgoAutomataApi,
     private val connectionRetry: ConnectionRetry,
-    private val scale: Scale
+    private val longPressAndSwipeOrMultipleClicks: LongPressAndSwipeOrMultipleClicks
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     private val ceRows = 4
     private val ceColumns = 7
@@ -80,7 +80,7 @@ class AutoCEBomb @Inject constructor(
             setDisplaySize()
 
             // A CE to enhance is selected, now to select the 20 CE to feed to it
-            pickCEEnhanceFodder()
+            longPressAndDragOrMultipleClicks()
 
             // Press Ok to exit the "Please select a craft essence to use for enhancement screen
             // Press Ok again to enhance
@@ -169,7 +169,6 @@ class AutoCEBomb @Inject constructor(
         }
 
         if (!isDisplaySmall()) {
-
             while (!isDisplaySmall()) {
                 displayLocation.click()
                 1.seconds.wait()
@@ -246,19 +245,17 @@ class AutoCEBomb @Inject constructor(
     }
 
     /**
-     * Will click on the position of the 20 first CEs on the screen
-     * to attempt to feed them to the CE bomb
+     * Will perform long press and drag for Android 8.0 and above,
+     * otherwise it will perform multiple clicks
      */
-    private fun pickCEEnhanceFodder() {
-        var counter = 0
+
+    private fun longPressAndDragOrMultipleClicks() {
         for (y in 0 until ceRows) {
-            for (x in 0 until ceColumns) {
-                if (counter >= 20) {
-                    return
-                }
-                CELocation(x, y).click()
-                counter++
+            val columnClicks = (0..ceColumns).map {
+                CELocation(it, y)
             }
+            longPressAndSwipeOrMultipleClicks(columnClicks)
+            0.5.seconds.wait()
         }
     }
 

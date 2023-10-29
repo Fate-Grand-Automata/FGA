@@ -144,9 +144,11 @@ class AccessibilityGestures @Inject constructor(
         wait(gesturePrefs.clickWaitTime)
     }
 
-    private suspend fun performGesture(StrokeDesc: GestureDescription.StrokeDescription): Boolean = suspendCancellableCoroutine {
+    private suspend fun performGesture(
+        strokeDesc: GestureDescription.StrokeDescription
+    ): Boolean = suspendCancellableCoroutine {
         val gestureDesc = GestureDescription.Builder()
-            .addStroke(StrokeDesc)
+            .addStroke(strokeDesc)
             .build()
 
         val callback = object : AccessibilityService.GestureResultCallback() {
@@ -160,6 +162,77 @@ class AccessibilityGestures @Inject constructor(
         }
 
         TapperService.instance?.dispatchGesture(gestureDesc, callback, null)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun longPressAndDrag8(clicks: List<Location>) {
+        val start = clicks.first()
+        val middle = clicks.elementAtOrNull(clicks.size / 2)
+        val end = clicks.last()
+
+        /**
+         * Turns out that you ned to have a delay to make the
+         * strokes sequential. Otherwise, they will be executed
+         * at the same time or depending on when start time is.
+         */
+        var gestureDelay = 0L
+        val swipeDuration = 500L
+
+        val mouseDownPath = Path().moveTo(start)
+
+        /**
+         * Long Pressed
+         */
+        var lastStroke = GestureDescription.StrokeDescription(
+            mouseDownPath,
+            gestureDelay,
+            1000L,
+            true
+        ).also {
+            performGesture(it)
+            gestureDelay += 1000L
+        }
+        Timber.d("Long Pressed")
+
+        listOfNotNull(start, middle, end).windowed(2).forEach { (from, to) ->
+            val swipePath = Path()
+                .moveTo(from)
+                .lineTo(to)
+            lastStroke = lastStroke.continueStroke(
+                swipePath,
+                gestureDelay,
+                swipeDuration,
+                true
+            ).also {
+                performGesture(it)
+            }
+            Timber.d("Swiped started at $gestureDelay ms; From $from to $to  ")
+            gestureDelay += swipeDuration
+        }
+
+        val mouseUpPath = Path().moveTo(end)
+        lastStroke.continueStroke(
+            mouseUpPath,
+            gestureDelay,
+            400L,
+            false
+        ).also {
+            performGesture(it)
+        }
+        Timber.d("End the stroke")
+
+    }
+
+    override fun longPressAndDragOrMultipleClicks(clicks: List<Location>) = runBlocking {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            longPressAndDrag8(
+                clicks = clicks
+            )
+        } else {
+            clicks.forEach { singleClick ->
+                click(singleClick)
+            }
+        }
     }
 
     override fun close() {}

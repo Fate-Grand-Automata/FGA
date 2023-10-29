@@ -21,10 +21,12 @@ interface GestureService : AutoCloseable {
     fun click(location: Location, times: Int = 1)
 
     /**
+     * If the system is Android 8.0 or above
      * Long presses and Swipes from one [Location] to another [Location].
      *
-     * @param start the [Location] where the swipe should start
-     * @param end the [Location] where the swipe should end
+     * Otherwise, it will perform multiple clicks.
+     *
+     * @param clicks the [Location]s where the swipe should start and end
      */
-    fun longPressAndSwipe(start: Location, end: Location)
+    fun longPressAndDragOrMultipleClicks(clicks: List<Location>)
 }
