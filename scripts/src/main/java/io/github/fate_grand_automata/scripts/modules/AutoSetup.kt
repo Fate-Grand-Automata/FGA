@@ -43,10 +43,12 @@ class AutoSetup @Inject constructor(
         prefs.craftEssence.emptyEnhance = emptyEnhance
     }
 
-    val isPlayButtonInGoodXLocation = prefs.playButtonLocation.x in
-            0..locations.scriptAreaRaw.width / 4
+    val playButton = prefs.playButtonRegion
 
-    val isPlayButtonInGoodYLocation = prefs.playButtonLocation.y in
+    val isPlayButtonInGoodXLocation = playButton.location.x in
+            0..locations.scriptAreaRaw.width / 2
+
+    val isPlayButtonInGoodYLocation = playButton.location.y in
             locations.scriptAreaRaw.height * 5 / 8..locations.scriptAreaRaw.height
 
 }

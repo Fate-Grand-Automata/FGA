@@ -15,10 +15,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -35,6 +35,9 @@ fun ScriptRunnerUI(
     enabled: Boolean,
     isRecording: Boolean
 ) {
+    LaunchedEffect(key1 = Unit, block = {
+        onPosition()
+    })
     FGATheme(
         darkTheme = true,
         background = Color.Transparent
@@ -53,7 +56,6 @@ fun ScriptRunnerUI(
                         }
                     )
                 }
-                .onGloballyPositioned { onPosition() }
 
             Surface(
                 color = MaterialTheme.colorScheme.surface,
