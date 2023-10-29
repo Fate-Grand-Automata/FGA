@@ -98,7 +98,7 @@ class ScriptRunnerOverlay @Inject constructor(
 
     private fun savePlayButtonRegion(initial: Boolean = false) {
         prefsCore.playButtonRegion.let {
-            if (initial) {
+            if (initial && prefsCore.playBtnLocation.get() == Location()) {
                 it.set(
                     Region(
                         0,
