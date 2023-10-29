@@ -78,6 +78,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
     AutoBattle.ExitReason.Paused -> stringResource(R.string.script_paused)
     AutoBattle.ExitReason.StopAfterThisRun -> stringResource(R.string.stop_after_this_run)
+    AutoBattle.ExitReason.StormPodRanOut -> stringResource(R.string.script_msg_storm_pods_ran_out)
 }
 
 @Composable
@@ -307,7 +308,7 @@ fun BattleExit(
                 battleExitContent(
                     reason = exception.reason,
                     state = exception.state,
-                    refillEnabled = prefs.refill.resources.isNotEmpty()
+                    refillEnabled = prefs.selectedServerConfigPref.resources.isNotEmpty()
                 )
             }
 

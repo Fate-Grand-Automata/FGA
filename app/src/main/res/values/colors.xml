@@ -10,15 +10,15 @@
     <color name="colorServant2">#0277bd</color>
     <color name="colorServant3">#f57f17</color>
 
-    <color name="colorBusterWeak">#b71c1c</color>
+    <color name="colorBusterWeak">#c81f1f</color>
     <color name="colorBuster">#e64a19</color>
     <color name="colorBusterResist">#f57c00</color>
 
-    <color name="colorArtsWeak">#0d47a1</color>
+    <color name="colorArtsWeak">#0e4fb3</color>
     <color name="colorArts">#0277bd</color>
     <color name="colorArtsResist">#3498db</color>
 
-    <color name="colorQuickWeak">#004d40</color>
+    <color name="colorQuickWeak">#006755</color>
     <color name="colorQuick">#2e7d32</color>
     <color name="colorQuickResist">#7cb342</color>
 

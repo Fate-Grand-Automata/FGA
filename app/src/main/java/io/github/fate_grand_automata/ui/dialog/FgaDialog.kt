@@ -1,6 +1,8 @@
-package io.github.fate_grand_automata.ui
+package io.github.fate_grand_automata.ui.dialog
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,8 +12,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,26 +24,39 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.github.fate_grand_automata.ui.DimmedIcon
+import io.github.fate_grand_automata.ui.VectorIcon
 import io.github.fate_grand_automata.util.toggle
 import java.util.*
 
 // Simplified form of https://github.com/vanpra/compose-material-dialogs
 
 @SuppressLint("ComposableNaming")
-class FgaDialog private constructor() {
+class FgaDialog private constructor(initialVisibility: Boolean = false) {
     companion object {
+
+        fun saver(): Saver<FgaDialog, *> = Saver(
+            save = {
+                it.visible
+            },
+            restore = {
+                FgaDialog(it)
+            }
+        )
         @Composable
-        operator fun invoke() = remember { FgaDialog() }
+        operator fun invoke(initialValue: Boolean = false) = rememberSaveable(saver = saver()) {
+            FgaDialog(initialValue)
+        }
     }
 
-    private val visible = mutableStateOf(false)
+    private var visible by mutableStateOf(initialVisibility)
 
     fun show() {
-        visible.value = true
+        visible = true
     }
 
     fun hide() {
-        visible.value = false
+        visible = false
     }
 
     @Composable
@@ -77,6 +95,7 @@ class FgaDialog private constructor() {
     @Composable
     fun buttons(
         onSubmit: () -> Unit,
+        onCancel: () -> Unit = {},
         showOk: Boolean = true,
         showCancel: Boolean = true,
         okEnabled: Boolean = true,
@@ -91,7 +110,10 @@ class FgaDialog private constructor() {
         ) {
             if (showCancel) {
                 TextButton(
-                    onClick = { hide() }
+                    onClick = {
+                        hide()
+                        onCancel()
+                    }
                 ) {
                     Text(cancelLabel.uppercase())
                 }
@@ -116,11 +138,15 @@ class FgaDialog private constructor() {
         shape: Shape = MaterialTheme.shapes.medium,
         color: Color = MaterialTheme.colorScheme.surface,
         contentColor: Color = contentColorFor(color),
-        content: @Composable FgaDialog.() -> Unit
+        onDismiss: () -> Unit = {},
+        content: @Composable FgaDialog.() -> Unit,
     ) {
-        if (visible.value) {
+        if (visible) {
             ThemedDialog(
-                onDismiss = { hide() }
+                onDismiss = {
+                    hide()
+                    onDismiss()
+                }
             ) {
                 Surface(
                     shape = shape,
@@ -162,6 +188,7 @@ class FgaDialog private constructor() {
 fun <T> FgaDialog.multiChoiceList(
     selected: Set<T>,
     items: List<T>,
+    prioritySelected: Boolean = false,
     onSelectedChange: (Set<T>) -> Unit,
     template: @Composable RowScope.(T) -> Unit = {
         Text(it.toString())
@@ -173,10 +200,22 @@ fun <T> FgaDialog.multiChoiceList(
             modifier = modifier
                 .fillMaxWidth()
         ) {
-            items(items) {
+            val rearrangeItems = when (prioritySelected) {
+                true -> items.sortedByDescending {
+                    it in selected
+                }
+
+                false -> items
+            }
+            items(rearrangeItems) {
                 ChoiceListItem(
                     isSelected = it in selected,
-                    onClick = { onSelectedChange(selected.toggle(it)) }
+                    onClick = { onSelectedChange(selected.toggle(it)) },
+                    modifier = Modifier.animateItemPlacement(
+                        spring(
+                            stiffness = Spring.StiffnessMedium
+                        )
+                    )
                 ) {
                     template(it)
                 }
@@ -187,6 +226,7 @@ fun <T> FgaDialog.multiChoiceList(
 
 @Composable
 fun ChoiceListItem(
+    modifier: Modifier = Modifier,
     isSelected: Boolean,
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
@@ -200,6 +240,7 @@ fun ChoiceListItem(
         ),
         modifier = Modifier
             .padding(bottom = 7.dp)
+            .then(modifier)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

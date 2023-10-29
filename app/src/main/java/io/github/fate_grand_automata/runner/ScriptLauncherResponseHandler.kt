@@ -48,22 +48,6 @@ class ScriptLauncherResponseHandler @Inject constructor(
             }
 
             is ScriptLauncherResponse.Battle -> {
-                prefs.selectedBattleConfig = resp.config
-
-                prefs.refill.updateResources(resp.refillResources)
-                prefs.refill.repetitions = resp.refillCount
-
-                prefs.refill.shouldLimitRuns = resp.limitRuns != null
-                resp.limitRuns?.let { prefs.refill.limitRuns = it }
-
-                prefs.refill.shouldLimitMats = resp.limitMats != null
-                resp.limitMats?.let { prefs.refill.limitMats = it }
-
-                prefs.refill.shouldLimitCEs = resp.limitCEs != null
-                resp.limitCEs?.let { prefs.refill.limitCEs = it }
-
-                prefs.waitAPRegen = resp.waitApRegen
-
                 ScriptModeEnum.Battle
             }
         }

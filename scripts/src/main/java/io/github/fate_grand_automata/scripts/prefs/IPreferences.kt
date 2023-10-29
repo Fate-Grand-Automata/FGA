@@ -9,14 +9,15 @@ interface IPreferences {
     var scriptMode: ScriptModeEnum
     var gameServer: GameServer
     val battleConfigs: List<IBattleConfig>
+    var showGameServers: List<GameServer>
+    var selectedServerConfigPref: IPerServerConfigPrefs
     var selectedBattleConfig: IBattleConfig
     val storySkip: Boolean
     val withdrawEnabled: Boolean
     val stopOnCEGet: Boolean
     val stopOnFirstClearRewards: Boolean
     val boostItemSelectionMode: Int
-    val refill: IRefillPreferences
-    var waitAPRegen: Boolean
+    
     val useRootForScreenshots: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
@@ -41,6 +42,10 @@ interface IPreferences {
     val gestures: IGesturesPreferences
 
     var ceBombTargetRarity: Int
+
+    fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
+
+    fun addPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
     fun forBattleConfig(id: String): IBattleConfig
     fun addBattleConfig(id: String): IBattleConfig

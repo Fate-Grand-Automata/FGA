@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.prefs.core
 import android.content.Context
 import com.fredporciuncula.flow.preferences.Serializer
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.Location
 import javax.inject.Inject
@@ -30,7 +31,6 @@ class PrefsCore @Inject constructor(
     )
 
     val battleConfigList = maker.stringSet("autoskill_list")
-    val selectedAutoSkillConfig = maker.string("autoskill_selected")
 
     val storySkip = maker.bool("story_skip")
     val withdrawEnabled = maker.bool("withdraw_enabled")
@@ -39,10 +39,6 @@ class PrefsCore @Inject constructor(
     val stopOnFirstClearRewards = maker.bool("stop_on_first_clear_rewards")
 
     val boostItemSelectionMode = maker.stringAsInt("selected_boost_item", -1)
-
-    val refill = RefillPrefsCore(maker)
-
-    val waitAPRegen = maker.bool("wait_for_ap_regeneration")
 
     val useRootForScreenshots = maker.bool("use_root_screenshot")
     val recordScreen = maker.bool("record_screen")
@@ -110,6 +106,21 @@ class PrefsCore @Inject constructor(
 
     val dirRoot = maker.string("dir_root")
 
+    var showGameServer = maker.serialized(
+        key = "show_game_server",
+        default = listOf(GameServer.default),
+        serializer = object : Serializer<List<GameServer>> {
+            private val separator = ","
+            override fun deserialize(serialized: String): List<GameServer> {
+                val values = serialized.split(separator)
+                return values.mapNotNull { GameServer.deserialize(it) }
+            }
+
+            override fun serialize(value: List<GameServer>): String = value.joinToString(separator)
+
+        }
+    )
+
     private val battleConfigMap = mutableMapOf<String, BattleConfigCore>()
 
     fun forBattleConfig(id: String): BattleConfigCore =
@@ -121,4 +132,16 @@ class PrefsCore @Inject constructor(
         }
 
     fun removeBattleConfig(id: String) = battleConfigMap.remove(id)
+
+    private val perServerConfigPrefsMap = mutableMapOf<String, PerServerConfigPrefsCore>()
+
+    fun forPerServerConfigPrefs(gameServer: GameServer): PerServerConfigPrefsCore =
+        perServerConfigPrefsMap.getOrPut(gameServer.simple) {
+            PerServerConfigPrefsCore(
+                gameServer,
+                context
+            )
+        }
+
+
 }

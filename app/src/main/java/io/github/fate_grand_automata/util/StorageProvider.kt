@@ -45,8 +45,12 @@ class StorageProvider @Inject constructor(
     val rootDirName
         get() = dirRoot?.name
 
-    private val recordingFile
-        get() = dirRoot.getOrCreateFile("record.mp4")
+    private val recordingFile: DocumentFile
+        get() {
+            val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.getDefault())
+            val timeString = sdf.format(Date())
+            return dirRoot.getOrCreateFile("record-$timeString.mp4")
+        }
 
     val recordingFileDescriptor
         get() = resolver.openFileDescriptor(recordingFile.uri, "rw")
@@ -162,7 +166,7 @@ class StorageProvider @Inject constructor(
         get() = dirRoot.getOrCreateDir("drops")
 
     override fun dropScreenshot(patterns: List<Pattern>) {
-        val sdf = SimpleDateFormat("dd-M-yyyy-hh-mm-ss", Locale.US)
+        val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.getDefault())
         val timeString = sdf.format(Date())
 
         for ((i, pattern) in patterns.withIndex()) {

@@ -66,6 +66,7 @@ class AutoBattle @Inject constructor(
         class LimitMaterials(val count: Int) : ExitReason()
         object WithdrawDisabled : ExitReason()
         object APRanOut : ExitReason()
+        object StormPodRanOut: ExitReason()
         object InventoryFull : ExitReason()
         class LimitRuns(val count: Int) : ExitReason()
         object SupportSelectionManual : ExitReason()
@@ -105,16 +106,16 @@ class AutoBattle @Inject constructor(
             matTracker.autoDecrement()
             ceDropsTracker.autoDecrement()
 
-            val refill = prefs.refill
+            val perServerConfigPref = prefs.selectedServerConfigPref
 
             // Auto-decrement runs
-            if (refill.shouldLimitRuns) {
-                refill.limitRuns -= state.runs
+            if (perServerConfigPref.shouldLimitRuns) {
+                perServerConfigPref.limitRuns -= state.runs
 
                 // Turn off run limit when done
-                if (refill.limitRuns <= 0) {
-                    refill.limitRuns = 1
-                    refill.shouldLimitRuns = false
+                if (perServerConfigPref.limitRuns <= 0) {
+                    perServerConfigPref.limitRuns = 1
+                    perServerConfigPref.shouldLimitRuns = false
                 }
             }
         }
@@ -153,9 +154,9 @@ class AutoBattle @Inject constructor(
     private fun makeExitState(): ExitState {
         return ExitState(
             timesRan = state.runs,
-            runLimit = if (prefs.refill.shouldLimitRuns) prefs.refill.limitRuns else null,
+            runLimit = if (prefs.selectedServerConfigPref.shouldLimitRuns) prefs.selectedServerConfigPref.limitRuns else null,
             timesRefilled = refill.timesRefilled,
-            refillLimit = prefs.refill.repetitions,
+            refillLimit = prefs.selectedServerConfigPref.currentAppleCount,
             ceDropCount = ceDropsTracker.count,
             materials = matTracker.farmed,
             withdrawCount = withdraw.count,
@@ -181,6 +182,8 @@ class AutoBattle @Inject constructor(
             { isStartingNp() } to { skipNp() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
+            { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
+            { isInInterludeEndScreen()} to {locations.interludeCloseClick.click()},
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
@@ -302,6 +305,21 @@ class AutoBattle @Inject constructor(
         locations.resultMatRewardsRegion.click()
     }
 
+    private fun isInOrdealCallOutOfPodsScreen(): Boolean {
+        // Lock the Ordeal Call for JP server
+        if (prefs.gameServer !is GameServer.Jp) return false
+
+        return images[Images.Close] in locations.ordealCallOutOfPodsRegion
+    }
+
+    private fun ordealCallOutOfPods(){
+        locations.ordealCallOutOfPodsClick.click()
+        // Count the current run
+        state.nextRun()
+        
+        throw BattleExitException(ExitReason.StormPodRanOut)
+    }
+
     private fun findRepeatButton(): Match? {
         var match = locations.continueRegion.find(images[Images.Repeat])
 
@@ -350,6 +368,8 @@ class AutoBattle @Inject constructor(
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
         locations.resultFriendRequestRejectClick.click()
     }
+    private fun isInInterludeEndScreen() =
+        images[Images.Close] in locations.interludeEndScreenClose
 
     /**
      * Checks if FGO is on the quest reward screen for Mana Prisms, SQ, ...

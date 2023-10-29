@@ -15,12 +15,17 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +36,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.GameServer
@@ -59,15 +65,86 @@ fun battleLauncher(
             }
     }
     var selectedConfigIndex by remember { mutableStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
-    var refillResources by remember { mutableStateOf(prefs.refill.resources.toSet()) }
-    var refillCount by remember { mutableStateOf(prefs.refill.repetitions) }
-    var shouldLimitRuns by remember { mutableStateOf(prefs.refill.shouldLimitRuns) }
-    var limitRuns by remember { mutableStateOf(prefs.refill.limitRuns) }
-    var shouldLimitMats by remember { mutableStateOf(prefs.refill.shouldLimitMats) }
-    var limitMats by remember { mutableStateOf(prefs.refill.limitMats) }
-    var shouldLimitCEs by remember { mutableStateOf(prefs.refill.shouldLimitCEs) }
-    var limitCEs by remember { mutableStateOf(prefs.refill.limitCEs) }
-    var waitApRegen by remember { mutableStateOf(prefs.waitAPRegen) }
+
+    val perServerConfigPref by remember {
+        mutableStateOf(
+            prefs.getPerServerConfigPref(prefs.gameServer)
+        )
+    }
+
+    var refillResources by remember { mutableStateOf(perServerConfigPref.resources.toSet()) }
+
+    //only display bronze option for JP and CN
+    val bronzeApplesEnabled = prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Cn
+    if (!bronzeApplesEnabled) {
+        //disable it in the settings otherwise
+        refillResources = refillResources.minus(RefillResourceEnum.Bronze)
+    }
+    //TODO remove
+    if (refillResources.size > 1) {
+        refillResources = setOf(refillResources.first())
+    }
+    val availableRefills = RefillResourceEnum.values()
+        .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+
+    var copperApple by remember { mutableStateOf(perServerConfigPref.copperApple) }
+    var blueApple by remember { mutableStateOf(perServerConfigPref.blueApple) }
+    var silverApple by remember { mutableStateOf(perServerConfigPref.silverApple) }
+    var goldApple by remember { mutableStateOf(perServerConfigPref.goldApple) }
+    var rainbowApple by remember { mutableStateOf(perServerConfigPref.rainbowApple) }
+
+    val refillCount by remember {
+        mutableStateOf(
+            derivedStateOf {
+                when {
+                    RefillResourceEnum.Copper in refillResources -> copperApple
+                    RefillResourceEnum.Bronze in refillResources -> blueApple
+                    RefillResourceEnum.Silver in refillResources -> silverApple
+                    RefillResourceEnum.Gold in refillResources -> goldApple
+                    RefillResourceEnum.SQ in refillResources -> rainbowApple
+                    else -> 0
+                }
+            }
+        )
+    }
+
+    var shouldLimitRuns by remember { mutableStateOf(perServerConfigPref.shouldLimitRuns) }
+    var limitRuns by remember { mutableStateOf(perServerConfigPref.limitRuns) }
+    var shouldLimitMats by remember { mutableStateOf(perServerConfigPref.shouldLimitMats) }
+    var limitMats by remember { mutableStateOf(perServerConfigPref.limitMats) }
+    var shouldLimitCEs by remember { mutableStateOf(perServerConfigPref.shouldLimitCEs) }
+    var limitCEs by remember { mutableStateOf(perServerConfigPref.limitCEs) }
+    var waitApRegen by remember { mutableStateOf(perServerConfigPref.waitForAPRegen) }
+
+    var resetAllButton by remember { mutableStateOf(false) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            perServerConfigPref.shouldLimitRuns = shouldLimitRuns
+            perServerConfigPref.limitRuns = limitRuns
+            perServerConfigPref.shouldLimitMats = shouldLimitMats
+            perServerConfigPref.limitMats = limitMats
+            perServerConfigPref.shouldLimitCEs = shouldLimitCEs
+            perServerConfigPref.limitCEs = limitCEs
+            perServerConfigPref.copperApple = copperApple
+            perServerConfigPref.blueApple = blueApple
+            perServerConfigPref.silverApple = silverApple
+            perServerConfigPref.goldApple = goldApple
+            perServerConfigPref.rainbowApple = rainbowApple
+            perServerConfigPref.waitForAPRegen = waitApRegen
+            perServerConfigPref.updateResources(refillResources)
+
+            if (selectedConfigIndex > -1) {
+                prefs.selectedBattleConfig = configs[selectedConfigIndex]
+            }
+        }
+    }
+
+    LaunchedEffect(shouldLimitRuns, limitRuns, shouldLimitMats, limitMats, shouldLimitCEs, limitCEs) {
+        resetAllButton = shouldLimitRuns || limitRuns > 1 ||
+                shouldLimitMats || limitMats > 1 ||
+                shouldLimitCEs || limitCEs > 1
+    }
 
     Row(
         modifier = modifier
@@ -128,7 +205,7 @@ fun battleLauncher(
                     horizontal = false,
                     knobColor = MaterialTheme.colorScheme.secondary,
                     // needs to be adjusted when adding new items
-                    fixedKnobRatio = 0.81f
+                    fixedKnobRatio = 0.70f
                 )
                 .padding(start = 5.dp),
             state = mainConfigState
@@ -146,8 +223,16 @@ fun battleLauncher(
                     )
 
                     Stepper(
-                        value = refillCount,
-                        onValueChange = { refillCount = it },
+                        value = refillCount.value,
+                        onValueChange = { value ->
+                            when {
+                                RefillResourceEnum.Copper in refillResources -> copperApple = value
+                                RefillResourceEnum.Bronze in refillResources -> blueApple = value
+                                RefillResourceEnum.Silver in refillResources -> silverApple = value
+                                RefillResourceEnum.Gold in refillResources -> goldApple = value
+                                RefillResourceEnum.SQ in refillResources -> rainbowApple = value
+                            }
+                        },
                         valueRange = 0..999,
                         enabled = refillResources.isNotEmpty()
                     )
@@ -160,18 +245,7 @@ fun battleLauncher(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    //only display bronze option for JP and CN
-                    val bronzeApplesEnabled = prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Cn
-                    if (!bronzeApplesEnabled) {
-                        //disable it in the settings otherwise
-                        refillResources = refillResources.minus(RefillResourceEnum.Bronze)
-                    }
-                    //TODO remove
-                    if (refillResources.size > 1) {
-                        refillResources = setOf(refillResources.first())
-                    }
-                    val availableRefills = RefillResourceEnum.values()
-                        .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+
                     items(availableRefills) {
                         it.RefillResource(
                             isSelected = it in refillResources,
@@ -210,11 +284,57 @@ fun battleLauncher(
             }
 
             item {
-                Text(
-                    stringResource(R.string.p_limit),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.p_limit).uppercase(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Card(
+                            shape = CircleShape,
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            ),
+                            enabled = resetAllButton,
+                            onClick = {
+                                shouldLimitRuns = false
+                                limitRuns = 1
+                                shouldLimitCEs = false
+                                limitCEs = 1
+                                shouldLimitMats = false
+                                limitMats = 1
+                            }
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .padding(10.dp, 4.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.reset_all).uppercase(),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    textAlign = TextAlign.Center,
+                                    color = if (resetAllButton) MaterialTheme.colorScheme.onSecondaryContainer
+                                    else MaterialTheme.colorScheme.onSecondaryContainer.copy(0.38f)
+                                )
+                            }
+                        }
+                    }
+
+                }
+
             }
 
             item {
@@ -252,15 +372,7 @@ fun battleLauncher(
     return ScriptLauncherResponseBuilder(
         canBuild = { selectedConfigIndex != -1 },
         build = {
-            ScriptLauncherResponse.Battle(
-                config = configs[selectedConfigIndex],
-                refillResources = refillResources,
-                refillCount = refillCount,
-                limitRuns = if (shouldLimitRuns) limitRuns else null,
-                limitMats = if (shouldLimitMats) limitMats else null,
-                limitCEs = if (shouldLimitCEs) limitCEs else null,
-                waitApRegen = waitApRegen
-            )
+            ScriptLauncherResponse.Battle
         }
     )
 }

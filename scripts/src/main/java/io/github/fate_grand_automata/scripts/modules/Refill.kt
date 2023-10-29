@@ -20,13 +20,13 @@ class Refill @Inject constructor(
      * If needed, loops and wait for AP regeneration
      */
     private fun refillOnce() {
-        val refill = prefs.refill
+        val perServerConfigPref = prefs.selectedServerConfigPref
 
-        if (refill.resources.isNotEmpty()
-            && timesRefilled < refill.repetitions
+        if (perServerConfigPref.resources.isNotEmpty()
+            && timesRefilled < perServerConfigPref.currentAppleCount
         ) {
             //TODO check for OK image between each resource
-            refill.resources
+            perServerConfigPref.resources
                 .flatMap { locations.locate(it) }
                 .forEach { it.click() }
 
@@ -35,7 +35,7 @@ class Refill @Inject constructor(
             ++timesRefilled
 
             3.seconds.wait()
-        } else if (prefs.waitAPRegen) {
+        } else if (perServerConfigPref.waitForAPRegen) {
             locations.staminaCloseClick.click()
 
             messages.notify(ScriptNotify.WaitForAPRegen())
@@ -51,9 +51,9 @@ class Refill @Inject constructor(
     }
 
     fun autoDecrement() {
-        val refill = prefs.refill
-
+        val perServerConfigPref = prefs.selectedServerConfigPref
         // Auto-decrement apples
-        refill.repetitions -= timesRefilled
+        perServerConfigPref.currentAppleCount -= timesRefilled
+
     }
 }

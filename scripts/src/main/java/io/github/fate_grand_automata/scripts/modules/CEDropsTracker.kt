@@ -18,16 +18,17 @@ class CEDropsTracker @Inject constructor(
         private set
 
     fun autoDecrement() {
-        val refill = prefs.refill
+//        val refill = prefs.refill
+        val perServerConfigPref = prefs.selectedServerConfigPref
 
         // Auto-decrement CEs
-        if (refill.shouldLimitCEs) {
-            refill.limitCEs -= count
+        if (perServerConfigPref.shouldLimitCEs) {
+            perServerConfigPref.limitCEs -= count
 
             // Turn off limit by CEs when done
-            if (refill.limitCEs <= 0) {
-                refill.limitCEs = 1
-                refill.shouldLimitCEs = false
+            if (perServerConfigPref.limitCEs <= 0) {
+                perServerConfigPref.limitCEs = 1
+                perServerConfigPref.shouldLimitCEs = false
             }
         }
     }
@@ -45,7 +46,7 @@ class CEDropsTracker @Inject constructor(
         if (ceDropped > 0) {
             count += ceDropped
 
-            if (prefs.refill.shouldLimitCEs && count >= prefs.refill.limitCEs) {
+            if (prefs.selectedServerConfigPref.shouldLimitCEs && count >= prefs.selectedServerConfigPref.limitCEs) {
                 // Count the current run
                 state.nextRun()
 

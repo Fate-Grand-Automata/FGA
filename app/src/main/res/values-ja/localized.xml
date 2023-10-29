@@ -96,7 +96,7 @@
     <string name="p_battle_config_party">"パーティー"</string>
     <string name="p_battle_config_server">"ゲームサーバー"</string>
     <string name="p_battle_config_card_priority">"カードの優先順位"</string>
-    <string name="p_battle_config_servant_priority">"サーヴァントの優先順位を設定する"</string>
+    <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
     <string name="p_battle_config_support">"サポート"</string>
     <string name="p_battle_config_support_selection_mode">"選択モード"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"フォールバック"</string>

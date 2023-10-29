@@ -10,8 +10,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.runner.ScriptRunnerService
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.util.StorageProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -22,6 +26,18 @@ class MainScreenViewModel @Inject constructor(
     val prefs: IPreferences,
     val storageProvider: StorageProvider
 ) : ViewModel() {
+
+    init {
+        // init the perServerConfigs
+        CoroutineScope(Dispatchers.IO).launch {
+            GameServer.values.filterNot {
+                it.betterFgo
+            }.forEach { server ->
+                prefs.addPerServerConfigPref(server)
+            }
+        }
+    }
+
     val autoStartService
         get() =
             prefsCore.autoStartService.get()

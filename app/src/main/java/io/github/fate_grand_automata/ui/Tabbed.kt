@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,8 +21,12 @@ fun <T> Tabbed(
     content: @Composable (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pagerState = rememberPagerState(pageCount = {items.size},)
+    val pagerState = rememberPagerState(pageCount = {items.size})
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(items) {
+        pagerState.scrollToPage(0)
+    }
 
     Column(
         modifier = modifier

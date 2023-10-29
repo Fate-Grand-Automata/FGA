@@ -6,9 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import io.github.fate_grand_automata.prefs.core.Pref
-import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.VectorIcon
-import io.github.fate_grand_automata.ui.singleChoiceList
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
+import io.github.fate_grand_automata.ui.dialog.singleChoiceList
 
 @Composable
 fun <T> listDialog(

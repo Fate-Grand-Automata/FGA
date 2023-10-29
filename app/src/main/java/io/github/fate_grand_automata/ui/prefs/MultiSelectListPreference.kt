@@ -7,9 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import io.github.fate_grand_automata.prefs.core.Pref
-import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.VectorIcon
-import io.github.fate_grand_automata.ui.multiChoiceList
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
+import io.github.fate_grand_automata.ui.dialog.multiChoiceList
 
 @Composable
 fun <T> multiSelectListDialog(

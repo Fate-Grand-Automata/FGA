@@ -45,11 +45,11 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.accessibility.TapperService
 import io.github.fate_grand_automata.runner.ScriptRunnerService
 import io.github.fate_grand_automata.scripts.prefs.wantsMediaProjectionToken
-import io.github.fate_grand_automata.ui.FgaDialog
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.StartMediaProjection
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.util.OpenDocTreePersistable
