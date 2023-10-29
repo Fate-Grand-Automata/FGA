@@ -12,10 +12,6 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -159,58 +155,6 @@ private val DarkColors = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
-@Immutable
-data class CustomFGAColors(
-    val colorEnemyTarget: Color,
-    val colorMasterSkill: Color,
-    val colorStageChange: Color,
-
-    val colorServant1: Color,
-    val colorServant2: Color,
-    val colorServant3: Color,
-
-    val colorBusterWeak: Color,
-    val colorBuster: Color,
-    val colorBusterResist: Color,
-
-    val colorArtsWeak: Color,
-    val colorArts: Color,
-    val colorArtsResist: Color,
-
-    val colorQuickWeak: Color,
-    val colorQuick: Color,
-    val colorQuickResist: Color,
-)
-
-val LocalCustomColorsPalette = staticCompositionLocalOf {
-    CustomFGAColors(
-        colorEnemyTarget = Color.Unspecified,
-        colorMasterSkill = Color.Unspecified,
-        colorStageChange = Color.Unspecified,
-
-        colorServant1 = Color.Unspecified,
-        colorServant2 = Color.Unspecified,
-        colorServant3 = Color.Unspecified,
-
-        colorBusterWeak = Color.Unspecified,
-        colorBuster = Color.Unspecified,
-        colorBusterResist = Color.Unspecified,
-
-        colorArtsWeak = Color.Unspecified,
-        colorArts = Color.Unspecified,
-        colorArtsResist = Color.Unspecified,
-
-        colorQuickWeak = Color.Unspecified,
-        colorQuick = Color.Unspecified,
-        colorQuickResist = Color.Unspecified,
-    )
-}
-
-val MaterialTheme.customFGAColors: CustomFGAColors
-    @Composable
-    @ReadOnlyComposable
-    get() = LocalCustomColorsPalette.current
-
 @Composable
 fun FGAListItemColors() = ListItemDefaults.colors(
     containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -228,45 +172,18 @@ fun FGATheme(
         LightColors
     }
 
-    val onCustomFGAColorsPalette = CustomFGAColors(
-        colorEnemyTarget = Color(0xFF2e7d32),
-        colorMasterSkill = Color(0xFF006064),
-        colorStageChange = Color(0xFF616161),
-
-        colorServant1 = Color(0xFFc62828),
-        colorServant2 = Color(0xFF0277bd),
-        colorServant3 = Color(0xFFf57f17),
-
-        colorBusterWeak = Color(0xFFc81f1f),
-        colorBuster = Color(0xFFe64a19),
-        colorBusterResist = Color(0xFFf57c00),
-
-        colorArtsWeak = Color(0xFF0e4fb3),
-        colorArts = Color(0xFF0277bd),
-        colorArtsResist = Color(0xFF3498db),
-
-        colorQuickWeak = Color(0xFF006755),
-        colorQuick = Color(0xFF2e7d32),
-        colorQuickResist = Color(0xFF7cb342),
-    )
-
-    CompositionLocalProvider(
-        LocalCustomColorsPalette provides onCustomFGAColorsPalette
+    MaterialTheme(
+        colorScheme = colors,
+        typography = typography
     ) {
-        MaterialTheme(
-            colorScheme = colors,
-            typography = typography
+        Surface(
+            color = if (background == Color.Unspecified) MaterialTheme.colorScheme.background else background
         ) {
-            Surface(
-                color = if (background == Color.Unspecified) MaterialTheme.colorScheme.background else background
-            ) {
-                PreventRtl {
-                    content()
-                }
+            PreventRtl {
+                content()
             }
         }
     }
-
 }
 
 @Composable
