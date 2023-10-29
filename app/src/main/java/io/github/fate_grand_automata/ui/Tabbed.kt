@@ -21,12 +21,12 @@ fun <T> Tabbed(
     content: @Composable (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = {items.size})
+    val pagerState = rememberPagerState(pageCount = {items.size})
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(key1 = items, block ={
+    LaunchedEffect(items) {
         pagerState.scrollToPage(0)
-    })
+    }
 
     Column(
         modifier = modifier
