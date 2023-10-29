@@ -62,7 +62,7 @@ class ScriptRunnerOverlay @Inject constructor(
                 enabled = uiStateHolder.isPlayButtonEnabled,
                 onDrag = { x, y -> onDrag(x, y) },
                 onDragEnd = { savePlayButtonRegion() },
-                onPosition = { savePlayButtonRegion() }
+                onPosition = { savePlayButtonRegion(initial = true) }
             )
         }.view
 
@@ -96,9 +96,9 @@ class ScriptRunnerOverlay @Inject constructor(
         }
     }
 
-    private fun savePlayButtonRegion(){
+    private fun savePlayButtonRegion(initial: Boolean = false) {
         prefsCore.playButtonRegion.let {
-            if (it.get() == Region(0,0,1,1)){
+            if (initial) {
                 it.set(
                     Region(
                         0,
@@ -107,7 +107,7 @@ class ScriptRunnerOverlay @Inject constructor(
                         layout.measuredHeight
                     )
                 )
-            } else{
+            } else {
                 it.set(
                     Region(
                         scriptCtrlBtnLayoutParams.x,

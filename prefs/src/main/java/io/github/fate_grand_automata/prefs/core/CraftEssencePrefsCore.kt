@@ -1,10 +1,30 @@
 package io.github.fate_grand_automata.prefs.core
 
+import io.github.fate_grand_automata.scripts.enums.CEDisplayChangeAreaEnum
+
 class CraftEssencePrefsCore(maker: PrefMaker) {
 
     val emptyEnhance = maker.bool("emptyEnhance")
 
     val skipAutomaticDisplayChange = maker.bool("skip_automatic_display_change")
+
+    val canShowAutomaticDisplayChange=  maker.bool("can_show_automatic_display_change", true)
+
+    val ceDisplayChangeArea = maker.stringSet("ce_display_change_area").map(
+        defaultValue = emptySet(),
+        convert = {
+            it
+                .mapNotNull { m ->
+                    try {
+                        enumValueOf<CEDisplayChangeAreaEnum>(m)
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+                .toSet()
+        },
+        reverse = { it.map { m -> m.name }.toSet() }
+    )
 
     val ceTargetRarity = maker.int("ce_target_rarity", 1)
 
