@@ -143,6 +143,21 @@ fun ceBombLauncher(
                             }
                         }
                     }
+                } else {
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.p_ce_bomb_skip_automatic_display_warning),
+                                style = bodyTextSize(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+                item {
+                    Divider()
                 }
 
                 item {
@@ -179,9 +194,6 @@ fun ceBombLauncher(
                         )
                     }
 
-                }
-                item {
-                    Divider()
                 }
                 if (isEmptyEnhance) {
                     item {
