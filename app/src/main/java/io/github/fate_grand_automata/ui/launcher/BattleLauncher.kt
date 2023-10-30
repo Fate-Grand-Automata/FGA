@@ -132,6 +132,9 @@ fun battleLauncher(
             perServerConfigPref.goldApple = goldApple
             perServerConfigPref.rainbowApple = rainbowApple
             perServerConfigPref.waitForAPRegen = waitApRegen
+            if (refillResources.isNotEmpty()) {
+                perServerConfigPref.selectedApple = refillResources.first()
+            }
             perServerConfigPref.updateResources(refillResources)
 
             if (selectedConfigIndex > -1) {
