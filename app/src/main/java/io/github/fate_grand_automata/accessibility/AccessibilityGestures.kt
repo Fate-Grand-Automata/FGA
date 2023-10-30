@@ -222,7 +222,7 @@ class AccessibilityGestures @Inject constructor(
             ).also {
                 performGesture(it)
             }
-            Timber.d("Swiped started at $gestureDelay ms; From $from to $to  ")
+            Timber.d("Drag From $from to $to  ")
             gestureDelay += dragDuration
         }
 
