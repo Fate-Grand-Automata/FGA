@@ -19,4 +19,6 @@ interface ICraftEssencePreferences {
     var ceDisplayChangeArea: Set<CEDisplayChangeAreaEnum>
 
     fun updateCeDisplayChangeArea(area: CEDisplayChangeAreaEnum)
+
+    var useDragging: Boolean
 }

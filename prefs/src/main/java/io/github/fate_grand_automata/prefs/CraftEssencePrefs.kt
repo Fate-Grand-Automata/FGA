@@ -26,4 +26,6 @@ internal class CraftEssencePrefs(
 
     override fun updateCeDisplayChangeArea(area: CEDisplayChangeAreaEnum) =
         prefs.ceDisplayChangeArea.set(setOf(area))
+
+    override var useDragging: Boolean by prefs.useDragging
 }

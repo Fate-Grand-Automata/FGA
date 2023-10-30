@@ -27,7 +27,7 @@ class AutoCEBomb @Inject constructor(
     private val connectionRetry: ConnectionRetry,
     private val longPressAndSwipeOrMultipleClicks: LongPressAndSwipeOrMultipleClicks
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
-    private val ceRows = 4
+    private val ceRows = 3
     private val ceColumns = 7
 
     override fun script(): Nothing {
@@ -255,7 +255,11 @@ class AutoCEBomb @Inject constructor(
                 CELocation(x, y)
             }
         }
-        longPressAndSwipeOrMultipleClicks(clicksArray, chunked = ceColumns)
+        when(prefs.craftEssence.useDragging){
+            true -> longPressAndSwipeOrMultipleClicks(clicksArray, chunked = ceColumns)
+            false -> clicksArray.forEach { it.click() }
+        }
+
     }
 
     private fun CELocation(x: Int, y: Int) =

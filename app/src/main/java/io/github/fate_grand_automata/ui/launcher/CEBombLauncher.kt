@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.ui.launcher
 
+import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,13 +54,25 @@ fun ceBombLauncher(
 
     var skipAutomaticDisplayChange by prefsCore.craftEssence.skipAutomaticDisplayChange.remember()
 
-    val canShowAutomaticDisplayChange by remember{
+    val canShowAutomaticDisplayChange by remember {
         mutableStateOf(prefs.craftEssence.canShowAutomaticDisplayChange)
+    }
+
+    var useDragging by prefsCore.craftEssence.useDragging.remember()
+
+    val canShowDragging by remember {
+        mutableStateOf(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
     }
 
     LaunchedEffect(key1 = fodderRarity, block = {
         if (fodderRarity.isEmpty()) {
             fodderRarity = setOf(1, 2)
+        }
+    })
+
+    LaunchedEffect(key1 = Unit, block = {
+        if (!canShowDragging) {
+            useDragging = false
         }
     })
 
@@ -114,7 +127,30 @@ fun ceBombLauncher(
                     .scrollbar(rightColumnState, horizontal = false),
                 state = rightColumnState,
             ) {
-                if (canShowAutomaticDisplayChange){
+                if (canShowDragging) {
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.p_ce_bomb_input_method).uppercase(),
+                                style = bodyTextSize(),
+                                modifier = Modifier.fillMaxWidth(),
+                            )
+                            determineSelectionMethod(
+                                useDragging = useDragging,
+                                onUseDraggingChange = {
+                                    useDragging = it
+                                }
+                            )
+                        }
+                    }
+                    item {
+                        Divider()
+                    }
+                }
+                if (canShowAutomaticDisplayChange) {
                     item {
                         Column(
                             modifier = Modifier
@@ -310,6 +346,37 @@ fun fodderRarityItems(
             )
         }
     }
+}
+
+@Composable
+private fun determineSelectionMethod(
+    modifier: Modifier = Modifier,
+    useDragging: Boolean,
+    onUseDraggingChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        listOf(true, false).forEach { input ->
+            val isSelected = useDragging == input
+
+            selectedItem(
+                text = stringResource(
+                    id = if (input) R.string.p_ce_bomb_dragging
+                    else R.string.p_ce_bomb_clicking
+                ).uppercase(),
+                isSelected = isSelected,
+                onClick = {
+                    onUseDraggingChange(input)
+                },
+                modifier = Modifier
+                    .padding(horizontal = 4.dp, vertical = 2.dp)
+            )
+        }
+    }
+
 }
 
 @Composable
