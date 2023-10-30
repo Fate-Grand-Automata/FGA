@@ -74,10 +74,12 @@ class AutoCEBomb @Inject constructor(
                 connectionRetry.retry()
             }
 
+            if (count == 0){
+                setDisplaySize()
+            }
+
             count++
 
-            // If the display is not small, we need to change it to the smallest possible
-            setDisplaySize()
 
             // A CE to enhance is selected, now to select the 20 CE to feed to it
             longPressAndDragOrMultipleClicks()
