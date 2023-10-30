@@ -190,9 +190,9 @@ class AccessibilityGestures @Inject constructor(
          * at the same time or depending on when start time is.
          */
         var gestureDelay = 0L
-        val longPressDuration = 1000L
-        val swipeDuration = 400L
-        val swiperLiftDuration = 50L
+        val longPressDuration = gesturePrefs.longPressDuration.inWholeMilliseconds
+        val dragDuration = gesturePrefs.dragDuration.inWholeMilliseconds
+        val dragReleaseDuration = 50L
 
         val mouseDownPath = Path().moveTo(start)
 
@@ -217,20 +217,20 @@ class AccessibilityGestures @Inject constructor(
             lastStroke = lastStroke.continueStroke(
                 swipePath,
                 gestureDelay,
-                swipeDuration,
+                dragDuration,
                 true
             ).also {
                 performGesture(it)
             }
             Timber.d("Swiped started at $gestureDelay ms; From $from to $to  ")
-            gestureDelay += swipeDuration
+            gestureDelay += dragDuration
         }
 
         val mouseUpPath = Path().moveTo(end)
         lastStroke.continueStroke(
             mouseUpPath,
             gestureDelay,
-            swiperLiftDuration,
+            dragReleaseDuration,
             false
         ).also {
             performGesture(it)

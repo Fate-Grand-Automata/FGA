@@ -169,6 +169,11 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_fine_tune_wait_before_turn">"Wait before Turn"</string>
     <string name="p_fine_tune_wait_before_cards">"Wait before Cards"</string>
     <string name="p_fine_tune_wait_multiplier">"Wait Multiplier"</string>
+
+    <string name="p_fine_tune_drag">"Dragging"</string>
+    <string name="p_fine_tune_long_press_duration">"Long Press duration"</string>
+    <string name="p_fine_tune_drag_duration">"Drag duration"</string>
+
     <string name="troubleshoot">"Troubleshooting"</string>
     <string name="battle_config_edit">"Edit config"</string>
     <string name="card_priority">"Card Priority"</string>

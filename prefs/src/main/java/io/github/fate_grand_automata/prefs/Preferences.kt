@@ -176,7 +176,7 @@ class PreferencesImpl @Inject constructor(
     override val playButtonRegion: Region by prefs.playButtonRegion
 
     override val ignorePlayButtonDetectionWarning: Boolean by
-        prefs.ignorePlayButtonDetectionWarning
+    prefs.ignorePlayButtonDetectionWarning
 
     override val support = object :
         ISupportPreferencesCommon {
@@ -214,5 +214,12 @@ class PreferencesImpl @Inject constructor(
 
         override val swipeDuration by prefs.swipeDuration
             .map { it.milliseconds }
+
+        override val longPressDuration by prefs.longPressDuration
+            .map { it.milliseconds }
+        override val dragDuration by prefs.dragDuration
+            .map { it.milliseconds }
+
+
     }
 }
