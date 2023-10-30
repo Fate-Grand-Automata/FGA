@@ -167,12 +167,12 @@ class AccessibilityGestures @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun longPressAndDrag8(
         clicks: List<Location>,
-        window: Int = 1
+        chunked: Int = 1
     ) {
         val start = clicks.first()
         val end = clicks.last()
 
-        val clicksArrays = clicks.chunked(window).flatMapIndexed { index, locations ->
+        val clicksArrays = clicks.chunked(chunked).flatMapIndexed { index, locations ->
             if (index == 0) {
                 val first = locations.first()
                 val middle = if (locations.size > 2)
@@ -241,12 +241,12 @@ class AccessibilityGestures @Inject constructor(
 
     override fun longPressAndDragOrMultipleClicks(
         clicks: List<Location>,
-        window: Int
+        chunked: Int
     ) = runBlocking {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             longPressAndDrag8(
                 clicks = clicks,
-                window = window
+                chunked = chunked
             )
         } else {
             clicks.forEach { singleClick ->

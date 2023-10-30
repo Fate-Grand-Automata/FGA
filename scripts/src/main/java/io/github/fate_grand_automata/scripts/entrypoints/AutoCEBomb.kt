@@ -255,7 +255,7 @@ class AutoCEBomb @Inject constructor(
                 CELocation(x, y)
             }
         }
-        longPressAndSwipeOrMultipleClicks(clicksArray, window = ceColumns)
+        longPressAndSwipeOrMultipleClicks(clicksArray, chunked = ceColumns)
     }
 
     private fun CELocation(x: Int, y: Int) =
