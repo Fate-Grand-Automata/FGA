@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
@@ -138,9 +139,10 @@ fun ceBombLauncher(
                                 .fillMaxWidth()
                         ) {
                             Text(
-                                text = stringResource(id = R.string.p_ce_bomb_input_method).uppercase(),
+                                text = stringResource(id = R.string.p_ce_bomb_selection_method).uppercase(),
                                 style = bodyTextSize(),
                                 modifier = Modifier.fillMaxWidth(),
+                                textDecoration = TextDecoration.Underline
                             )
                             determineSelectionMethod(
                                 useDragging = useDragging,
@@ -243,7 +245,8 @@ fun ceBombLauncher(
                                 modifier = Modifier,
                                 style = bodyTextSize(),
                                 color = if (skipFilterDetection) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-                                else MaterialTheme.colorScheme.onSurface
+                                else MaterialTheme.colorScheme.onSurface,
+                                textDecoration = TextDecoration.Underline
                             )
 
                             targetRarityItems(
@@ -264,7 +267,8 @@ fun ceBombLauncher(
                             modifier = Modifier,
                             style = bodyTextSize(),
                             color = if (skipFilterDetection) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-                            else MaterialTheme.colorScheme.onSurface
+                            else MaterialTheme.colorScheme.onSurface,
+                            textDecoration = TextDecoration.Underline
                         )
 
                         fodderRarityItems(

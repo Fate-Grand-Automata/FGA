@@ -458,6 +458,6 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_ce_bomb_skip_automatic_display_warning">Set display size to the smallest possible.</string>
     <string name="p_ce_bomb_dragging">Dragging</string>
     <string name="p_ce_bomb_clicking">Clicking</string>
-    <string name="p_ce_bomb_input_method">Selection method</string>
+    <string name="p_ce_bomb_selection_method">Selection method</string>
 
 </resources>
