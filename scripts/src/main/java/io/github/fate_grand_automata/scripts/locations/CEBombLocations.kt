@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.locations
 
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import javax.inject.Inject
@@ -73,7 +74,6 @@ class CEBombLocations @Inject constructor(
 
     val firstFilterRegion = Region(-789, 408, 41, 36).xFromCenter()
 
-
     fun filterByRarityRegion(rarity: Int) = firstFilterRegion +
             Location((5 - rarity) * 374, 0)
 
@@ -81,6 +81,11 @@ class CEBombLocations @Inject constructor(
 
     fun filterByRarityLocation(rarity: Int) = firstFilterLocation +
             Location((5 - rarity) * 375, 0)
+
+    val filterCloseRegion = when(gameServer){
+        is GameServer.En -> Region(771, 1240, 120, 60).xFromCenter()
+        else -> Region(781, 1244, 100, 52).xFromCenter()
+    }
 
     val filterCloseLocation = when (isWide) {
         true -> Location(-668, 1270).xFromRight()

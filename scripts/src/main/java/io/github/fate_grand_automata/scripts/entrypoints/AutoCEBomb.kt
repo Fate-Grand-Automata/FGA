@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.entrypoints
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.CEDisplayChangeAreaEnum
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -199,8 +200,12 @@ class AutoCEBomb @Inject constructor(
                 0.5.seconds.wait()
             }
         }
-        locations.ceBomb.filterCloseLocation.click()
-        1.seconds.wait()
+        if (isFilterClosable()) {
+            locations.ceBomb.filterCloseLocation.click()
+            1.seconds.wait()
+        } else {
+            throw ExitException(ExitReason.NoSuitableTargetCEFound)
+        }
     }
 
     private fun setFodderCEFilters() {
@@ -224,8 +229,13 @@ class AutoCEBomb @Inject constructor(
                 0.5.seconds.wait()
             }
         }
-        locations.ceBomb.filterCloseLocation.click()
-        1.seconds.wait()
+        if (isFilterClosable()) {
+            locations.ceBomb.filterCloseLocation.click()
+            1.seconds.wait()
+        } else {
+            throw ExitException(ExitReason.NoSuitableTargetCEFound)
+        }
+
     }
 
     private fun pickCEToUpgrade() {
@@ -293,7 +303,7 @@ class AutoCEBomb @Inject constructor(
     }
 
     private fun doesCraftEssenceExist(x: Int, y: Int) =
-        locations.ceBomb.craftEssenceStarRegion(x, y).exists(images[Images.CraftEssenceStar], similarity = 0.55)
+        locations.ceBomb.craftEssenceStarRegion(x, y).exists(images[Images.CraftEssenceStar], similarity = 0.50)
 
 
     private fun CELocation(x: Int, y: Int) = locations.ceBomb.ceFirstFodderLocation +
@@ -301,6 +311,16 @@ class AutoCEBomb @Inject constructor(
 
     private fun isDisplaySmall() = images[Images.CraftEssenceDisplaySmall] in
             locations.ceBomb.displaySizeCheckRegion
+
+    private fun isFilterClosable() = when (prefs.gameServer) {
+        is GameServer.En -> images[Images.Ok] in locations.ceBomb.filterCloseRegion
+
+        // the JP text was smaller than on other buttons of the same text
+        else -> {
+            val region = locations.ceBomb.filterCloseRegion
+            images[Images.Ok].resize(region.size * 0.5) in region
+        }
+    }
 
     sealed class ExitReason {
         data object NoSuitableTargetCEFound : ExitReason()
