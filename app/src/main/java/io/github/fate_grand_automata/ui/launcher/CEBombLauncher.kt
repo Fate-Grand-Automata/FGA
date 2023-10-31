@@ -314,7 +314,7 @@ fun targetRarityItems(
                     }
                 },
                 modifier = Modifier
-                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                    .padding(horizontal = 4.dp, vertical = 1.dp)
             )
         }
     }
@@ -350,7 +350,7 @@ fun fodderRarityItems(
                     }
                 },
                 modifier = Modifier
-                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                    .padding(horizontal = 4.dp, vertical = 1.dp)
             )
         }
     }
@@ -380,7 +380,7 @@ private fun determineSelectionMethod(
                     onUseDraggingChange(input)
                 },
                 modifier = Modifier
-                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                    .padding(horizontal = 4.dp, vertical = 1.dp)
             )
         }
     }
@@ -410,7 +410,7 @@ private fun selectedItem(
     ) {
         Text(
             text = text,
-            modifier = Modifier.padding(vertical = 2.dp, horizontal = 4.dp),
+            modifier = Modifier.padding(vertical = 1.dp, horizontal = 4.dp),
             style = labelTextSize(),
             color = if (enabled) MaterialTheme.colorScheme.onSurface
             else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
