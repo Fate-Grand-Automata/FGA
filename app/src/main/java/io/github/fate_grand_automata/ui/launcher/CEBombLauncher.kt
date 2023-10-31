@@ -124,7 +124,11 @@ fun ceBombLauncher(
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .weight(1f)
-                    .scrollbar(rightColumnState, horizontal = false),
+                    .scrollbar(
+                        rightColumnState,
+                        horizontal = false,
+                        hiddenAlpha = 0.3f
+                    ),
                 state = rightColumnState,
             ) {
                 if (canShowDragging) {
