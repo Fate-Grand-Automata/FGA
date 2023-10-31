@@ -181,12 +181,12 @@ class AutoCEBomb @Inject constructor(
     private fun setTargetCEFilters() {
         if (prefs.craftEssence.skipCEFilterDetection) return
 
-        locations.ceBomb.filtersLocation.click()
+        locations.ceBomb.changeFilterButtonLocation.click()
         2.seconds.wait()
 
         for (rarity in 5 downTo 1) {
-            val filterStarRegion = locations.ceBomb.filters5StarRegion(rarity = rarity)
-            val filterLocation = locations.ceBomb.filters5StarLocation(rarity = rarity)
+            val filterStarRegion = locations.ceBomb.filterByRarityRegion(rarity = rarity)
+            val filterLocation = locations.ceBomb.filterByRarityLocation(rarity = rarity)
 
             val filterOff = images[Images.CraftEssenceFodderCEFilterOff] in filterStarRegion
 
@@ -206,12 +206,12 @@ class AutoCEBomb @Inject constructor(
     private fun setFodderCEFilters() {
         if (prefs.craftEssence.skipCEFilterDetection) return
 
-        locations.ceBomb.filtersLocation.click()
+        locations.ceBomb.changeFilterButtonLocation.click()
         2.seconds.wait()
 
         for (rarity in 5 downTo 1) {
-            val filterStarRegion = locations.ceBomb.filters5StarRegion(rarity = rarity)
-            val filterLocation = locations.ceBomb.filters5StarLocation(rarity = rarity)
+            val filterStarRegion = locations.ceBomb.filterByRarityRegion(rarity = rarity)
+            val filterLocation = locations.ceBomb.filterByRarityLocation(rarity = rarity)
 
             val filterOff = images[Images.CraftEssenceFodderCEFilterOff] in filterStarRegion
 

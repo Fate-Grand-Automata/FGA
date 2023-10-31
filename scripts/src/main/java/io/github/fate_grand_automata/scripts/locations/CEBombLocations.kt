@@ -66,15 +66,20 @@ class CEBombLocations @Inject constructor(
 
     fun craftEssenceStarRegion(x: Int, y: Int) = firstCEStarRegion + Location(x * 266, y * 285)
 
-    val filtersLocation = when (isWide) {
+    val changeFilterButtonLocation = when (isWide) {
         true -> Location(-776, 257).xFromRight()
         false -> Location(673, 257).xFromCenter()
     }
 
-    fun filters5StarRegion(rarity: Int) = Region(-789, 408, 41, 36).xFromCenter() +
+    val firstFilterRegion = Region(-789, 408, 41, 36).xFromCenter()
+
+
+    fun filterByRarityRegion(rarity: Int) = firstFilterRegion +
             Location((5 - rarity) * 374, 0)
 
-    fun filters5StarLocation(rarity: Int) = Location(-767, 424).xFromCenter() +
+    val firstFilterLocation = Location(-767, 424).xFromCenter()
+
+    fun filterByRarityLocation(rarity: Int) = firstFilterLocation +
             Location((5 - rarity) * 375, 0)
 
     val filterCloseLocation = when (isWide) {
