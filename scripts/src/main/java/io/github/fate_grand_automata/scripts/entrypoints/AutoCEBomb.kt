@@ -74,7 +74,7 @@ class AutoCEBomb @Inject constructor(
                 connectionRetry.retry()
             }
 
-            if (count == 0){
+            if (count == 0) {
                 setDisplaySize()
             }
 
@@ -82,7 +82,7 @@ class AutoCEBomb @Inject constructor(
 
 
             // A CE to enhance is selected, now to select the 20 CE to feed to it
-            longPressAndDragOrMultipleClicks()
+            useDraggingOrNot()
 
             // Press Ok to exit the "Please select a craft essence to use for enhancement screen
             // Press Ok again to enhance
@@ -246,26 +246,58 @@ class AutoCEBomb @Inject constructor(
         throw ExitException(ExitReason.NoSuitableTargetCEFound)
     }
 
+    private fun useDraggingOrNot() {
+        if (prefs.craftEssence.useDragging) {
+            longPressAndDragOrMultipleClicks()
+        } else {
+            for (y in 0 until ceRows) {
+                for (x in 0 until ceColumns) {
+                    CELocation(x, y).click()
+                }
+            }
+        }
+    }
+
     /**
      * Will perform long press and drag for Android 8.0 and above,
      * otherwise it will perform multiple clicks
      */
 
     private fun longPressAndDragOrMultipleClicks() {
-        val clicksArray = (0..<ceRows).flatMap { y ->
-            (0..<ceColumns).map { x ->
-                CELocation(x, y)
+        val clicksArray = mutableListOf<Location>()
+
+        /**
+         * TODO: Add checking of the scroll button
+         *    for when there is only few CEs left to make
+         *    the checker faster
+         */
+
+
+        var foundCraftEssence = false
+        for (y in ceRows downTo 0) {
+            for (x in (ceColumns - 1) downTo 0) {
+                if (foundCraftEssence || doesCraftEssenceExist(x, y)) {
+                    clicksArray.add(CELocation(x, y))
+                    foundCraftEssence = true
+                }
             }
         }
-        when(prefs.craftEssence.useDragging){
-            true -> longPressAndSwipeOrMultipleClicks(clicksArray, chunked = ceColumns)
-            false -> clicksArray.forEach { it.click() }
+
+        if (clicksArray.isEmpty()) throw ExitException(ExitReason.NoSuitableTargetCEFound)
+
+        when {
+            clicksArray.size < 4 -> clicksArray.forEach { it.click() }
+            else -> longPressAndSwipeOrMultipleClicks(clicksArray.reversed(), chunked = ceColumns)
         }
 
     }
 
-    private fun CELocation(x: Int, y: Int) =
-        locations.ceBomb.ceFirstFodderLocation + Location(x * 270, y * 290 + 50)
+    private fun doesCraftEssenceExist(x: Int, y: Int) =
+        locations.ceBomb.craftEssenceStarRegion(x, y).exists(images[Images.CraftEssenceStar], similarity = 0.55)
+
+
+    private fun CELocation(x: Int, y: Int) = locations.ceBomb.ceFirstFodderLocation +
+            Location(x * 270, y * 290 + 50)
 
     private fun isDisplaySmall() = images[Images.CraftEssenceDisplaySmall] in
             locations.ceBomb.displaySizeCheckRegion

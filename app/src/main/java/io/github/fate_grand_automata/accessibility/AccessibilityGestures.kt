@@ -172,16 +172,26 @@ class AccessibilityGestures @Inject constructor(
         val start = clicks.first()
         val end = clicks.last()
 
-        val clicksArrays = clicks.chunked(chunked).flatMapIndexed { index, locations ->
-            if (index == 0) {
-                val first = locations.first()
-                val middle = if (locations.size > 2)
-                    locations.elementAtOrNull(locations.size / 2) else null
-                val last = locations.last()
-                listOfNotNull(first, middle, last)
-            } else {
-                listOf(locations.last())
-            }
+        /**
+         * Creating fastest path possible
+         */
+        val clicksArrays = if (clicks.size > chunked) {
+            val chunkedClick = clicks.chunked(chunked)
+            val firstChunked = chunkedClick.first()
+            val lastChunked = chunkedClick.last()
+            listOfNotNull(
+                firstChunked.first(),
+                firstChunked.last(),
+                if (lastChunked.size == chunked) null else {
+                    Location(
+                        x = firstChunked.last().x,
+                        y = lastChunked.last().y
+                    )
+                },
+                lastChunked.last(),
+            )
+        } else {
+            listOf(clicks.first(), clicks.last())
         }
 
         /**
