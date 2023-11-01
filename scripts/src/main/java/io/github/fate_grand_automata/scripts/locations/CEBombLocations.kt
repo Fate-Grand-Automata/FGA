@@ -61,11 +61,11 @@ class CEBombLocations @Inject constructor(
     }
 
     val firstCEStarRegion = when (isWide) {
-        true -> Region(-932, 574, 28, 30).xFromCenter()
-        false -> Region(-948, 574, 29, 29).xFromCenter()
+        true -> Region(-932, 582, 28, 30).xFromCenter()
+        false -> Region(-948, 582, 29, 21).xFromCenter()
     }
 
-    fun craftEssenceStarRegion(x: Int, y: Int) = firstCEStarRegion + Location(x * 266, y * 285)
+    fun craftEssenceStarRegion(x: Int, y: Int) = firstCEStarRegion + Location(x * 266, y * 283)
 
     val changeFilterButtonLocation = when (isWide) {
         true -> Location(-776, 257).xFromRight()

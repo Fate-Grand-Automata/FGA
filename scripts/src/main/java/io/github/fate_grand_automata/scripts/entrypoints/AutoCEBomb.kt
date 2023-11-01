@@ -339,7 +339,7 @@ class AutoCEBomb @Inject constructor(
     }
 
     private fun doesCraftEssenceExist(x: Int, y: Int) =
-        locations.ceBomb.craftEssenceStarRegion(x, y).exists(images[Images.CraftEssenceStar], similarity = 0.50)
+        locations.ceBomb.craftEssenceStarRegion(x, y).exists(images[Images.CraftEssenceStar], similarity = 0.60)
 
 
     private fun CELocation(x: Int, y: Int) = locations.ceBomb.ceFirstFodderLocation +
