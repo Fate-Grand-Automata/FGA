@@ -82,7 +82,7 @@ class CEBombLocations @Inject constructor(
     fun filterByRarityLocation(rarity: Int) = firstFilterLocation +
             Location((5 - rarity) * 375, 0)
 
-    val filterCloseRegion = when(gameServer){
+    val filterCloseRegion = when (gameServer) {
         is GameServer.En -> Region(771, 1240, 120, 60).xFromCenter()
         else -> Region(781, 1244, 100, 52).xFromCenter()
     }
@@ -91,4 +91,12 @@ class CEBombLocations @Inject constructor(
         true -> Location(-668, 1270).xFromRight()
         false -> Location(829, 1269).xFromCenter()
     }
+
+    val sortButtonLocation = Location(1015, 256).xFromCenter()
+
+    val smartSortRegion = Region(-160, 924, 67, 42).xFromCenter()
+
+    val selectSortRegion = Region(724, 924, 68, 42).xFromCenter()
+
+    val sortCloseLocation = Location(425, 1267).xFromCenter()
 }

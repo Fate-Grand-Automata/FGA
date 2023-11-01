@@ -30,6 +30,8 @@ class CraftEssencePrefsCore(maker: PrefMaker) {
 
     val ceTargetRarity = maker.int("ce_target_rarity", 1)
 
+    val skipSortDetection = maker.bool("skip_sort_detection")
+
     val skipCEFilterDetection = maker.bool("skip_ce_filter_detection")
 
     val ceFodderRarity = maker.stringSet("ce_fodder_rarity").map(

@@ -55,6 +55,8 @@ fun ceBombLauncher(
 
     var skipAutomaticDisplayChange by prefsCore.craftEssence.skipAutomaticDisplayChange.remember()
 
+    var skipSortDetection by prefsCore.craftEssence.skipSortDetection.remember()
+
     val canShowAutomaticDisplayChange by remember {
         mutableStateOf(prefs.craftEssence.canShowAutomaticDisplayChange)
     }
@@ -155,6 +157,30 @@ fun ceBombLauncher(
                     item {
                         Divider()
                     }
+                }
+                item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                skipSortDetection = !skipSortDetection
+                            }
+                    ){
+                        Text(text = stringResource(id = R.string.p_ce_bomb_skip_sort_detection),
+                            style = bodyTextSize(),
+                            modifier = Modifier.weight(1f),
+                        )
+                        Checkbox(
+                            checked = skipSortDetection,
+                            onCheckedChange = {
+                                skipSortDetection = !skipSortDetection
+                            },
+                        )
+                    }
+                }
+                item {
+                    Divider()
                 }
                 if (canShowAutomaticDisplayChange) {
                     item {

@@ -6,6 +6,8 @@ interface ICraftEssencePreferences {
 
     var emptyEnhance: Boolean
 
+    var skipSortDetection: Boolean
+
     var skipCEFilterDetection: Boolean
 
     val ceFodderRarity: List<Int>

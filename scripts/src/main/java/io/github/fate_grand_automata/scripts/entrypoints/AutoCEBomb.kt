@@ -43,6 +43,7 @@ class AutoCEBomb @Inject constructor(
             locations.ceBomb.ceSelectCEToEnhanceLocation.click()
             2.seconds.wait()
             setTargetCEFilters()
+            setupSortFeatures()
 
             setDisplaySize()
             // Pick the first possible CE of the list
@@ -82,6 +83,7 @@ class AutoCEBomb @Inject constructor(
 
             if (count == 0) {
                 setDisplaySize()
+                setupSortFeatures()
             }
 
             count++
@@ -243,6 +245,27 @@ class AutoCEBomb @Inject constructor(
 
     }
 
+    private fun setupSortFeatures(){
+        if (prefs.craftEssence.skipSortDetection) return
+
+        locations.ceBomb.sortButtonLocation.click()
+        2.seconds.wait()
+
+        if (!isSmartSortOn()){
+            locations.ceBomb.smartSortRegion.center.click()
+            0.5.seconds.wait()
+        }
+
+        if (!isSelectSortOn()){
+            locations.ceBomb.selectSortRegion.center.click()
+            0.5.seconds.wait()
+        }
+
+        locations.ceBomb.sortCloseLocation.click()
+        2.seconds.wait()
+
+    }
+
     private fun pickCEToUpgrade() {
         /**
          * Will click on the position of every 28 possible CE on the screen
@@ -334,6 +357,10 @@ class AutoCEBomb @Inject constructor(
             images[Images.Ok].resize(region.size * 0.5) in region
         }
     }
+
+    private fun isSmartSortOn() = images[Images.On] in locations.ceBomb.smartSortRegion
+
+    private fun isSelectSortOn() = images[Images.On] in locations.ceBomb.selectSortRegion
 
     sealed class ExitReason {
         data object NoSuitableTargetCEFound : ExitReason()

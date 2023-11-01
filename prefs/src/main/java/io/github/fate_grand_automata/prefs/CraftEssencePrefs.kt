@@ -12,6 +12,8 @@ internal class CraftEssencePrefs(
 
     override var ceTargetRarity: Int by prefs.ceTargetRarity
 
+    override var skipSortDetection: Boolean by prefs.skipSortDetection
+
     override var skipCEFilterDetection: Boolean by prefs.skipCEFilterDetection
 
     override val ceFodderRarity: List<Int> by prefs.ceFodderRarity.map {
