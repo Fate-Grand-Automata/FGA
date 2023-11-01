@@ -261,6 +261,11 @@ class AutoCEBomb @Inject constructor(
             0.5.seconds.wait()
         }
 
+        if(isSortByLevelOff()){
+            locations.ceBomb.sortByLevelRegion.center.click()
+            0.5.seconds.wait()
+        }
+
         locations.ceBomb.sortCloseLocation.click()
         2.seconds.wait()
 
@@ -361,6 +366,9 @@ class AutoCEBomb @Inject constructor(
     private fun isSmartSortOn() = images[Images.On] in locations.ceBomb.smartSortRegion
 
     private fun isSelectSortOn() = images[Images.On] in locations.ceBomb.selectSortRegion
+
+    private fun isSortByLevelOff() = images[Images.CraftEssenceFodderCEFilterOff] in
+        locations.ceBomb.sortByLevelRegion
 
     sealed class ExitReason {
         data object NoSuitableTargetCEFound : ExitReason()

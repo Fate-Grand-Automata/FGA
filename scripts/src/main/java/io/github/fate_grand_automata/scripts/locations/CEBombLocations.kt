@@ -99,4 +99,6 @@ class CEBombLocations @Inject constructor(
     val selectSortRegion = Region(724, 924, 68, 42).xFromCenter()
 
     val sortCloseLocation = Location(425, 1267).xFromCenter()
+
+    val sortByLevelRegion = Region(-789, 408, 41, 36).xFromCenter()
 }
