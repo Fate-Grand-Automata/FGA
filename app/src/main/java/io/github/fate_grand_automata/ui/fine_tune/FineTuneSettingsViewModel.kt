@@ -135,7 +135,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                     pref = prefs.longPressDuration,
                     name = R.string.p_fine_tune_long_press_duration,
                     icon = icon(Icons.Default.TouchApp),
-                    valueRange = 500..2000,
+                    valueRange = 500..3000,
                     valueRepresentation = { "${it}ms" },
                     hint = "Duration of long press. This is used for dragging CEs in enhancement screen."
                 ),
