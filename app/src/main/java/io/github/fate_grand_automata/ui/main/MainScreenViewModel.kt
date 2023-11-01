@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.fate_grand_automata.BuildConfig
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.runner.ScriptRunnerService
@@ -34,6 +35,9 @@ class MainScreenViewModel @Inject constructor(
                 it.betterFgo
             }.forEach { server ->
                 prefs.addPerServerConfigPref(server)
+            }
+            prefsCore.debugMode.let {
+                it.set(BuildConfig.DEBUG || it.get())
             }
         }
     }
