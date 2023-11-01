@@ -31,7 +31,11 @@ class AutoCEBomb @Inject constructor(
     private val ceRows = 3
     private val ceColumns = 7
 
+    var skipRow = mutableListOf<Int>()
+
     override fun script(): Nothing {
+
+        skipRow.clear()
 
         if (prefs.craftEssence.emptyEnhance) {
             // Click on the "Tap to select a Craft Essence to Enhance" area
@@ -285,11 +289,19 @@ class AutoCEBomb @Inject constructor(
 
         var foundCraftEssence = false
         for (y in ceRows downTo 0) {
+            // skip rows that have no CE in them to save time on checking them again
+            if (y in skipRow) continue
+
+            var ceFound = 0
             for (x in (ceColumns - 1) downTo 0) {
                 if (foundCraftEssence || doesCraftEssenceExist(x, y)) {
                     clicksArray.add(CELocation(x, y))
                     foundCraftEssence = true
+                    ceFound += 1
                 }
+            }
+            if (ceFound == 0){
+                skipRow.add(y)
             }
         }
 
