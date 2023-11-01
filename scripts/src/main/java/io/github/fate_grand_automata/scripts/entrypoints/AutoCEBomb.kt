@@ -28,7 +28,8 @@ class AutoCEBomb @Inject constructor(
     private val connectionRetry: ConnectionRetry,
     private val longPressAndSwipeOrMultipleClicks: LongPressAndSwipeOrMultipleClicks
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
-    private val ceRows = 3
+    private val fodderCeRows = 3
+    private val targetCeRows = 4
     private val ceColumns = 7
 
     var skipRow = mutableListOf<Int>()
@@ -247,7 +248,7 @@ class AutoCEBomb @Inject constructor(
          * Will click on the position of every 28 possible CE on the screen
          * until one was selected to be upgraded or none worked
          */
-        for (y in 0 until ceRows) {
+        for (y in 0 until targetCeRows) {
             for (x in 0 until ceColumns) {
                 CELocation(x, y).click()
 
@@ -264,7 +265,7 @@ class AutoCEBomb @Inject constructor(
         if (prefs.craftEssence.useDragging) {
             longPressAndDragOrMultipleClicks()
         } else {
-            for (y in 0 until ceRows) {
+            for (y in 0 until targetCeRows) {
                 for (x in 0 until ceColumns) {
                     CELocation(x, y).click()
                 }
@@ -288,7 +289,7 @@ class AutoCEBomb @Inject constructor(
 
 
         var foundCraftEssence = false
-        for (y in ceRows downTo 0) {
+        for (y in fodderCeRows downTo 0) {
             // skip rows that have no CE in them to save time on checking them again
             if (y in skipRow) continue
 
