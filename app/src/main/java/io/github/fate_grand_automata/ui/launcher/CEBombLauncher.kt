@@ -1,6 +1,13 @@
 package io.github.fate_grand_automata.ui.launcher
 
 import android.os.Build
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +23,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.ui.Stepper
 import io.github.fate_grand_automata.ui.VerticalDivider
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.ui.scrollbar
@@ -66,6 +75,10 @@ fun ceBombLauncher(
     val canShowDragging by remember {
         mutableStateOf(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
     }
+
+    var longPressDuration by prefsCore.longPressDuration.remember()
+
+    var dragDuration by prefsCore.dragDuration.remember()
 
     LaunchedEffect(key1 = fodderRarity, block = {
         if (fodderRarity.isEmpty()) {
@@ -103,7 +116,7 @@ fun ceBombLauncher(
             LazyColumn(
                 modifier = Modifier
                     .padding(end = 8.dp)
-                    .weight(1f)
+                    .weight(0.4f)
                     .scrollbar(
                         state = leftColumnState,
                         horizontal = false,
@@ -126,7 +139,7 @@ fun ceBombLauncher(
             LazyColumn(
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .weight(1f)
+                    .weight(0.6f)
                     .scrollbar(
                         rightColumnState,
                         horizontal = false,
@@ -150,6 +163,17 @@ fun ceBombLauncher(
                                 useDragging = useDragging,
                                 onUseDraggingChange = {
                                     useDragging = it
+                                }
+                            )
+                            longPressAndDragSettings(
+                                useDragging = useDragging,
+                                longPressDuration = longPressDuration,
+                                onLongPressDurationChange = {
+                                    longPressDuration = it
+                                },
+                                dragDuration = dragDuration,
+                                onDragDurationChange = {
+                                    dragDuration = it
                                 }
                             )
                         }
@@ -410,7 +434,74 @@ private fun determineSelectionMethod(
             )
         }
     }
+}
 
+@Composable
+private fun longPressAndDragSettings(
+    useDragging: Boolean,
+    longPressDuration: Int,
+    onLongPressDurationChange: (Int) -> Unit,
+    dragDuration: Int,
+    onDragDurationChange: (Int) -> Unit,
+){
+    AnimatedVisibility(
+        visible = useDragging,
+        enter = slideInVertically() + expandVertically(expandFrom = Alignment.Top) + fadeIn(initialAlpha = 0.3f),
+        exit = slideOutVertically() + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(
+                    onClick = {
+                        onLongPressDurationChange(1500)
+                        onDragDurationChange(50)
+                    },
+                    enabled = longPressDuration != 1500 || dragDuration != 50
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.reset_to_default)
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.p_fine_tune_long_press_duration),
+                    style = labelTextSize(),
+                    modifier = Modifier.weight(1f)
+                )
+                Stepper(
+                    value = longPressDuration,
+                    onValueChange = onLongPressDurationChange,
+                    valueRange = 500..3000
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.p_fine_tune_drag_duration),
+                    style = labelTextSize(),
+                    modifier = Modifier.weight(1f)
+                )
+                Stepper(
+                    value = dragDuration,
+                    onValueChange = onDragDurationChange,
+                    valueRange = 50..1000
+                )
+            }
+        }
+    }
 }
 
 @Composable
