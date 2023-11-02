@@ -85,6 +85,8 @@ class AutoCEBomb @Inject constructor(
                 setDisplaySize()
                 setupSortFeatures()
             }
+            // ensure to be on top of the list
+            locations.ceBomb.ceScrollbar.click(if (count == 0) 3 else 1)
 
             count++
 
@@ -245,23 +247,23 @@ class AutoCEBomb @Inject constructor(
 
     }
 
-    private fun setupSortFeatures(){
+    private fun setupSortFeatures() {
         if (prefs.craftEssence.skipSortDetection) return
 
         locations.ceBomb.sortButtonLocation.click()
         2.seconds.wait()
 
-        if (!isSmartSortOn()){
+        if (!isSmartSortOn()) {
             locations.ceBomb.smartSortRegion.center.click()
             0.5.seconds.wait()
         }
 
-        if (!isSelectSortOn()){
+        if (!isSelectSortOn()) {
             locations.ceBomb.selectSortRegion.center.click()
             0.5.seconds.wait()
         }
 
-        if(isSortByLevelOff()){
+        if (isSortByLevelOff()) {
             locations.ceBomb.sortByLevelRegion.center.click()
             0.5.seconds.wait()
         }
@@ -293,7 +295,7 @@ class AutoCEBomb @Inject constructor(
         if (prefs.craftEssence.useDragging) {
             longPressAndDragOrMultipleClicks()
         } else {
-            for (y in 0 until targetCeRows) {
+            for (y in 0 until fodderCeRows) {
                 for (x in 0 until ceColumns) {
                     CELocation(x, y).click()
                 }
@@ -307,15 +309,20 @@ class AutoCEBomb @Inject constructor(
      */
 
     private fun longPressAndDragOrMultipleClicks() {
+        val clicksArray = getClickLocationList().reversed()
+
+        if (clicksArray.isEmpty()) throw ExitException(ExitReason.NoSuitableTargetCEFound)
+
+        when {
+            clicksArray.size < 4 -> clicksArray.forEach { it.click() }
+            else -> longPressAndSwipeOrMultipleClicks(clicksArray, chunked = ceColumns)
+        }
+        0.5.seconds.wait()
+    }
+
+
+    private fun getClickLocationList(): List<Location> {
         val clicksArray = mutableListOf<Location>()
-
-        /**
-         * TODO: Add checking of the scroll button
-         *    for when there is only few CEs left to make
-         *    the checker faster
-         */
-
-
         var foundCraftEssence = false
         for (y in fodderCeRows downTo 0) {
             // skip rows that have no CE in them to save time on checking them again
@@ -329,18 +336,11 @@ class AutoCEBomb @Inject constructor(
                     ceFound += 1
                 }
             }
-            if (ceFound == 0){
+            if (ceFound == 0) {
                 skipRow.add(y)
             }
         }
-
-        if (clicksArray.isEmpty()) throw ExitException(ExitReason.NoSuitableTargetCEFound)
-
-        when {
-            clicksArray.size < 4 -> clicksArray.forEach { it.click() }
-            else -> longPressAndSwipeOrMultipleClicks(clicksArray.reversed(), chunked = ceColumns)
-        }
-
+        return clicksArray
     }
 
     private fun doesCraftEssenceExist(x: Int, y: Int) =
@@ -368,7 +368,7 @@ class AutoCEBomb @Inject constructor(
     private fun isSelectSortOn() = images[Images.On] in locations.ceBomb.selectSortRegion
 
     private fun isSortByLevelOff() = images[Images.CraftEssenceFodderCEFilterOff] in
-        locations.ceBomb.sortByLevelRegion
+            locations.ceBomb.sortByLevelRegion
 
     sealed class ExitReason {
         data object NoSuitableTargetCEFound : ExitReason()

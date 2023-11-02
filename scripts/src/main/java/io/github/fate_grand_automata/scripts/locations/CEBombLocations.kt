@@ -104,4 +104,9 @@ class CEBombLocations @Inject constructor(
     val sortCloseLocation = Location(425, 1267).xFromCenter()
 
     val sortByLevelRegion = Region(-789, 408, 41, 36).xFromCenter()
+
+    val ceScrollbar = when(isWide){
+        true -> Region(-718, 390, 55, 20).xFromRight()
+        false -> Region(716, 390, 55, 21).xFromCenter()
+    }
 }
