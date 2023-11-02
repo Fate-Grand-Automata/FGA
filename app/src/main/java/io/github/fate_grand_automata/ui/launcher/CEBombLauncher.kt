@@ -80,6 +80,13 @@ fun ceBombLauncher(
 
     var dragDuration by prefsCore.dragDuration.remember()
 
+    val longPressDurationDefault by remember {
+        mutableStateOf(prefsCore.longPressDuration.defaultValue)
+    }
+    val dragDurationDefault by remember {
+        mutableStateOf(prefsCore.dragDuration.defaultValue)
+    }
+
     LaunchedEffect(key1 = fodderRarity, block = {
         if (fodderRarity.isEmpty()) {
             fodderRarity = setOf(1, 2)
@@ -165,18 +172,22 @@ fun ceBombLauncher(
                                     useDragging = it
                                 }
                             )
-                            longPressAndDragSettings(
-                                useDragging = useDragging,
-                                longPressDuration = longPressDuration,
-                                onLongPressDurationChange = {
-                                    longPressDuration = it
-                                },
-                                dragDuration = dragDuration,
-                                onDragDurationChange = {
-                                    dragDuration = it
-                                }
-                            )
                         }
+                    }
+                    item {
+                        longPressAndDragSettings(
+                            useDragging = useDragging,
+                            longPressDuration = longPressDuration,
+                            longPressDurationDefault = longPressDurationDefault,
+                            onLongPressDurationChange = {
+                                longPressDuration = it
+                            },
+                            dragDuration = dragDuration,
+                            dragDurationDefault = dragDurationDefault,
+                            onDragDurationChange = {
+                                dragDuration = it
+                            },
+                        )
                     }
                     item {
                         Divider()
@@ -190,8 +201,9 @@ fun ceBombLauncher(
                             .clickable {
                                 skipSortDetection = !skipSortDetection
                             }
-                    ){
-                        Text(text = stringResource(id = R.string.p_ce_bomb_skip_sort_detection),
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.p_ce_bomb_skip_sort_detection),
                             style = bodyTextSize(),
                             modifier = Modifier.weight(1f),
                         )
@@ -440,65 +452,102 @@ private fun determineSelectionMethod(
 private fun longPressAndDragSettings(
     useDragging: Boolean,
     longPressDuration: Int,
+    longPressDurationDefault: Int,
     onLongPressDurationChange: (Int) -> Unit,
     dragDuration: Int,
+    dragDurationDefault: Int,
     onDragDurationChange: (Int) -> Unit,
-){
-    AnimatedVisibility(
-        visible = useDragging,
-        enter = slideInVertically() + expandVertically(expandFrom = Alignment.Top) + fadeIn(initialAlpha = 0.3f),
-        exit = slideOutVertically() + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+) {
+    var showDurationSettings by remember {
+        mutableStateOf(false)
+    }
+    Column(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column {
+        if (useDragging) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
-            ) {
-                TextButton(
-                    onClick = {
-                        onLongPressDurationChange(1500)
-                        onDragDurationChange(50)
+                    .fillMaxWidth()
+                    .padding(vertical = 1.dp)
+                    .clickable {
+                        showDurationSettings = !showDurationSettings
                     },
-                    enabled = longPressDuration != 1500 || dragDuration != 50
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = when (showDurationSettings) {
+                        true -> stringResource(id = R.string.p_ce_bomb_hide_dragging_settings)
+                        false -> stringResource(id = R.string.p_ce_bomb_show_dragging_settings)
+                    },
+                    style = labelTextSize(),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+        AnimatedVisibility(
+            visible = useDragging && showDurationSettings,
+            enter = slideInVertically() + expandVertically(expandFrom = Alignment.Top) + fadeIn(initialAlpha = 0.3f),
+            exit = slideOutVertically() + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
                 ) {
                     Text(
-                        text = stringResource(id = R.string.reset_to_default)
+                        text = stringResource(id = R.string.p_ce_bomb_duration).uppercase(),
+                        style = labelTextSize(),
+                        modifier = Modifier.weight(1f),
+                        textDecoration = TextDecoration.Underline
+                    )
+                    TextButton(
+                        onClick = {
+                            onLongPressDurationChange(longPressDurationDefault)
+                            onDragDurationChange(dragDurationDefault)
+                        },
+                        enabled = longPressDuration != longPressDurationDefault || dragDuration != dragDurationDefault
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.reset_to_default)
+                        )
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.p_ce_bomb_long_press),
+                        style = labelTextSize(),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Stepper(
+                        value = longPressDuration,
+                        onValueChange = onLongPressDurationChange,
+                        valueRange = 500..3000
                     )
                 }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = R.string.p_fine_tune_long_press_duration),
-                    style = labelTextSize(),
-                    modifier = Modifier.weight(1f)
-                )
-                Stepper(
-                    value = longPressDuration,
-                    onValueChange = onLongPressDurationChange,
-                    valueRange = 500..3000
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = R.string.p_fine_tune_drag_duration),
-                    style = labelTextSize(),
-                    modifier = Modifier.weight(1f)
-                )
-                Stepper(
-                    value = dragDuration,
-                    onValueChange = onDragDurationChange,
-                    valueRange = 50..1000
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.p_ce_bomb_drag),
+                        style = labelTextSize(),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Stepper(
+                        value = dragDuration,
+                        onValueChange = onDragDurationChange,
+                        valueRange = 50..1000
+                    )
+                }
             }
         }
     }
