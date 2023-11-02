@@ -74,7 +74,7 @@ class PrefsCore @Inject constructor(
     val swipeMultiplier = maker.int("swipe_multiplier", 100)
 
     val longPressDuration = maker.int("long_press_duration", 1500)
-    val dragDuration = maker.int("drag_duration", 200)
+    val dragDuration = maker.int("drag_duration", 50)
 
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
     val maxGoldEmberTotalCount = maker.int("max_gold_ember_total_count", 100)
