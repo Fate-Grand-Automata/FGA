@@ -32,11 +32,10 @@ class AutoCEBomb @Inject constructor(
     private val targetCeRows = 4
     private val ceColumns = 7
 
-    var skipRow = mutableListOf<Int>()
-    var count = 0
+    private var skipRow = mutableListOf<Int>()
 
-    var firstTargetSetupDone = false
-    var firstFodderSetupDone = false
+    private var firstTargetSetupDone = false
+    private var firstFodderSetupDone = false
 
     override fun script(): Nothing {
         skipRow.clear()
@@ -93,16 +92,14 @@ class AutoCEBomb @Inject constructor(
     }
 
     private fun performCraftEssenceUpgrade() {
+        // ensure to be on top of the list
+        locations.ceBomb.ceScrollbar.click(if (!firstFodderSetupDone) 3 else 1)
         if (!firstFodderSetupDone) {
             initialScreenSetup()
             setFodderCEFilters()
 
             firstFodderSetupDone = true
         }
-
-
-        // ensure to be on top of the list
-        locations.ceBomb.ceScrollbar.click(if (count == 0) 3 else 1)
 
         useDraggingOrNotToPickFodderCEs()
 
