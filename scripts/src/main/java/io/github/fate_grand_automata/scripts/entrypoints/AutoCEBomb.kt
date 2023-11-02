@@ -33,129 +33,95 @@ class AutoCEBomb @Inject constructor(
     private val ceColumns = 7
 
     var skipRow = mutableListOf<Int>()
+    var count = 0
+
+    var firstTargetSetupDone = false
+    var firstFodderSetupDone = false
 
     override fun script(): Nothing {
-
         skipRow.clear()
+        loop()
+    }
 
-        if (prefs.craftEssence.emptyEnhance) {
-            // Click on the "Tap to select a Craft Essence to Enhance" area
-            locations.ceBomb.ceSelectCEToEnhanceLocation.click()
-            2.seconds.wait()
-            setTargetCEFilters()
-            setupSortFeatures()
-
-            setDisplaySize()
-            // Pick the first possible CE of the list
-            // going from top left to bottom right
-            pickCEToUpgrade()
-            2.seconds.wait()
-        }
-
-        locations.ceBomb.ceOpenEnhancementMenuLocation.click()
-        2.seconds.wait()
-
-        setFodderCEFilters()
-
-        /** Loop to upgrade the CE selected
-         *  The exit conditions are either:
-         *  - CE is fully leveled
-         *  - An iteration went through without having selected a enhance fodder
-         *  - Too many iterations passed (just in case something went wrong)
-         *
-         *  Start condition: a CE is selected for enhancement
-         *  the list of Craft Essence to feed to it is shown
-         *
-         *  It will:
-         *  - select up to 20 enhance fodder
-         *  - Press on ok
-         *  - Press on enhance
-         *  - Press on ok on the "Perform enhancement" pop up window
-         *  - try to come back to the list of enhance fodder
-         **/
-        var count = 0
-        while (true) {
-
-            // Check for possible connection retry
-            if (connectionRetry.needsToRetry()) {
-                connectionRetry.retry()
-            }
-
-            if (count == 0) {
-                setDisplaySize()
-                setupSortFeatures()
-            }
-            // ensure to be on top of the list
-            locations.ceBomb.ceScrollbar.click(if (count == 0) 3 else 1)
-
-            count++
-
-
-            // A CE to enhance is selected, now to select the 20 CE to feed to it
-            useDraggingOrNot()
-
-            // Press Ok to exit the "Please select a craft essence to use for enhancement screen
-            // Press Ok again to enhance
-            repeat(2) {
-                locations.ceBomb.ceUpgradeOkButton.click()
-                1.seconds.wait()
-            }
-
-            /**
-             * If at that point we're still on the CE selection page
-             * then that means no CE was selected, so we exit the script
-             **/
-            if (images[Images.CEDetails] in locations.ceBomb.ceMultiSelectRegion) {
-                throw ExitException(ExitReason.NoSuitableTargetCEFound)
-            }
-
-            // Enhancement confirmation window is now up
-            // press Ok to enhance
-            locations.ceBomb.cePerformEnhancementOkButton.click()
-            2.seconds.wait()
-
-            /**
-             * Enhancement animation goes on
-             * loop until we're back to the CE
-             * or encountered an exit condition
-             */
-            var subcount = 0
-            while (images[Images.CEDetails] !in locations.ceBomb.ceMultiSelectRegion) {
-
-                /** End the script if a CE is fully upgraded
-                 * The CE would have been removed from the ceToEnhance region
-                 * and we'd be back to a "Tap to select a Craft Essence to Enhance" state
-                 **/
-                if (images[Images.EmptyEnhance] in locations.emptyEnhanceRegion) {
-                    throw ExitException(ExitReason.CEFullyUpgraded)
-                }
-
-                /**
-                 * End of the script if we're stuck in this loop for some reason over 200 times
-                 */
-                if (subcount > 200) {
-                    throw ExitException(ExitReason.MaxNumberOfIterations)
-                }
-
-                // Check for possible connection retry
-                if (connectionRetry.needsToRetry()) {
-                    connectionRetry.retry()
-                }
-
-                // click on the location of the 20 CE grid
+    fun loop(): Nothing {
+        val screens: Map<() -> Boolean, () -> Unit> = mapOf(
+            { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
+            { isEmptyEnhance() } to { pickTarget() },
+            { isFinalConfirmVisible() } to {
+                locations.ceBomb.cePerformEnhancementOkButton.click()
+            },
+            { isInPickUpCraftEssenceScreen() } to {
+                performCraftEssenceUpgrade()
+            },
+            { isInCraftEssenceEnhancementMenu() && !isEmptyEnhance() } to {
                 locations.ceBomb.ceOpenEnhancementMenuLocation.click()
-                subcount++
-            }
+            },
+        )
 
-            /** As we can only have up to 600 CE at once
-             * we can stop if we tried to feed 24CE, 40 times
-             * That way the script at least ends after ~24 minutes
-             * if it ran out of CE fodder and didn't detect it for some reason
-             **/
-            if (count > 40) {
-                throw ExitException(ExitReason.MaxNumberOfIterations)
-            }
+        while (true) {
+            val actor = useSameSnapIn {
+                screens
+                    .asSequence()
+                    .filter { (validator, _) -> validator() }
+                    .map { (_, actor) -> actor }
+                    .firstOrNull()
+            } ?: { locations.ceBomb.enhancementSkipRapidClick.click(5) }
+            actor.invoke()
+
+            0.5.seconds.wait()
         }
+    }
+
+    private fun pickTarget() {
+        locations.ceBomb.ceSelectCEToEnhanceLocation.click()
+
+        // waits until CE details Exist
+        val found = locations.ceBomb.ceMultiSelectRegion.exists(
+            image = images[Images.CEDetails],
+            timeout = 2.seconds
+        )
+
+        if (!found) return
+
+        if (!firstTargetSetupDone) {
+            initialScreenSetup()
+            setTargetCEFilters()
+            firstTargetSetupDone = true
+        }
+
+        pickTargetCraftEssenceToUpgrade()
+    }
+
+    private fun performCraftEssenceUpgrade() {
+        if (!firstFodderSetupDone) {
+            initialScreenSetup()
+            setFodderCEFilters()
+
+            firstFodderSetupDone = true
+        }
+
+
+        // ensure to be on top of the list
+        locations.ceBomb.ceScrollbar.click(if (count == 0) 3 else 1)
+
+        useDraggingOrNotToPickFodderCEs()
+
+        locations.ceBomb.ceUpgradeOkButton.click()
+
+        val exiting = locations.ceBomb.ceMultiSelectRegion.waitVanish(
+            image = images[Images.CEDetails],
+            timeout = 3.seconds
+        )
+        if (!exiting) {
+            throw ExitException(ExitReason.NoSuitableTargetCEFound)
+        }
+        0.5.seconds.wait()
+        locations.ceBomb.ceUpgradeOkButton.click()
+    }
+
+    private fun initialScreenSetup() {
+        setDisplaySize()
+        setupSortFeatures()
     }
 
     private fun setDisplaySize() {
@@ -273,7 +239,7 @@ class AutoCEBomb @Inject constructor(
 
     }
 
-    private fun pickCEToUpgrade() {
+    private fun pickTargetCraftEssenceToUpgrade() {
         /**
          * Will click on the position of every 28 possible CE on the screen
          * until one was selected to be upgraded or none worked
@@ -291,7 +257,7 @@ class AutoCEBomb @Inject constructor(
         throw ExitException(ExitReason.NoSuitableTargetCEFound)
     }
 
-    private fun useDraggingOrNot() {
+    private fun useDraggingOrNotToPickFodderCEs() {
         if (prefs.craftEssence.useDragging) {
             longPressAndDragOrMultipleClicks()
         } else {
@@ -343,6 +309,14 @@ class AutoCEBomb @Inject constructor(
         return clicksArray
     }
 
+    private fun isEmptyEnhance() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
+
+    private fun isInCraftEssenceEnhancementMenu() = images[Images.CraftEssenceEnhancement] in
+            locations.getCeEnhanceRegion(prefs.gameServer)
+
+    private fun isInPickUpCraftEssenceScreen() = images[Images.CEDetails] in
+            locations.ceBomb.ceMultiSelectRegion
+
     private fun doesCraftEssenceExist(x: Int, y: Int) =
         locations.ceBomb.craftEssenceStarRegion(x, y).exists(images[Images.CraftEssenceStar], similarity = 0.60)
 
@@ -369,6 +343,9 @@ class AutoCEBomb @Inject constructor(
 
     private fun isSortByLevelOff() = images[Images.CraftEssenceFodderCEFilterOff] in
             locations.ceBomb.sortByLevelRegion
+
+    private fun isFinalConfirmVisible() = images[Images.Ok] in
+            locations.ceBomb.getFinalConfirmRegion
 
     sealed class ExitReason {
         data object NoSuitableTargetCEFound : ExitReason()

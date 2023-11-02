@@ -109,4 +109,8 @@ class CEBombLocations @Inject constructor(
         true -> Region(-718, 390, 55, 20).xFromRight()
         false -> Region(716, 390, 55, 21).xFromCenter()
     }
+
+    val enhancementSkipRapidClick = Location(-100, 1080).xFromRight()
+
+    val getFinalConfirmRegion = Region(341, 1145, 120, 60).xFromCenter()
 }
