@@ -394,11 +394,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_melusine">"Mélusine"</string>
 
     <string name="p_ce_bomb_explanation">
-        This script will consume any CE it can indiscriminately. Please ensure you\'ve locked every CE you don\'t
-        want to lose, or moved them to the Second Archive.\n
-        \n
-        It only works optimally if you have set the CE list to the smallest possible size, sorted the base CEs
-        by ascending rarity with Smart Sort OFF and sorted the CE fodder by ascending rarity with Smart Sort ON.
+        "Please read before starting script!\n\nWithout proper sorting, this script will consume CE indiscriminately.\n\nFor the most optimal pre-setup, please follow the following instructions before starting script:\n\n1) CE list to the smallest possible size\n\n2) Sort the base CE by ascending rarity with \"Smart Sort ON\"\n\n3) Sort the CE fodder by ascending rarity with \"Smart Sort ON\"\n\nIn case confused to follow the above instructions, you may use FGA's sort + filter function for reference,which will be utilized automatically upon starting script.\n\nHowever, please keep in mind if a wrong base CE / CE fodder is used, FGA developers will not be held responsible.\n\nShould the CE have been maxed levelled - it is highly recommended to prevent accidental CE fodder use by locking it and/or put it in the Second Archive."
     </string>
     <string name="ce_bomb_no_suitable_ces">No suitable target CE found</string>
     <string name="ce_bomb_max_iterations">Max number of iterations reached</string>

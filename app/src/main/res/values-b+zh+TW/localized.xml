@@ -397,7 +397,6 @@
     <string name="p_game_area_custom_top">下（像素）</string>
     <string name="p_game_area_custom_right">右（像素）</string>
     <string name="p_game_area_custom_bottom">上（像素）</string>
-    <string name="p_ce_bomb_explanation">此腳本將無差別地使用所有可以做為強化素材的概念禮裝，執行前請再三確認希望保留的概念禮裝已經上鎖或放至靈基保管室\n\n為了最佳化此腳本的執行，請將「想要強化的概念禮裝」清單以最小集合過濾、以稀有度順序「升序」排列、關閉智慧過濾，並將「強化用素材」以稀有度順序「升序」排列、開啟智慧過濾</string>
     <string name="ce_bomb_no_suitable_ces">無法選擇作為強化素材的概念禮裝</string>
     <string name="ce_bomb_max_iterations">已達到最大執行次數</string>
     <string name="ce_bomb_ce_fully_upgraded">概念禮裝已達到等級上限，請鎖定或放置於靈基保管室</string>
