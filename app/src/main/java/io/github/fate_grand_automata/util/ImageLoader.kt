@@ -83,6 +83,7 @@ class ImageLoader @Inject constructor(
         Images.MatRewards -> "mat_rewards.png"
         Images.InventoryFull -> "inven_full.png"
         Images.FPSummonContinue -> "fp_continue.png"
+        Images.FPCENotice -> "fp_ce_notice.png"
         Images.SkillTen -> "skill_ten.png"
         Images.Stun -> "stun.png"
         Images.Immobilized -> "immobilized.png"

@@ -35,6 +35,7 @@ enum class Images {
     MatRewards,
     InventoryFull,
     FPSummonContinue,
+    FPCENotice,
     SkillTen,
     Stun,
     Immobilized,

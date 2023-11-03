@@ -30,8 +30,6 @@ interface IPreferences {
     var stopAfterThisRun: Boolean
     val skipServantFaceCardCheck: Boolean
 
-    var shouldLimitFP: Boolean
-    var limitFP: Int
     var receiveEmbersWhenGiftBoxFull: Boolean
 
     val stageCounterSimilarity: Double
@@ -58,6 +56,8 @@ interface IPreferences {
     val servant: IServantEnhancementPreferences
 
     val craftEssence: ICraftEssencePreferences
+
+    val friendGacha: IFriendGachaPreferences
 
     val playButtonLocation: Location
 

@@ -87,6 +87,7 @@ Skills"</string>
     <string name="p_limit">"Limit"</string>
     <string name="p_runs">"Runs"</string>
     <string name="p_roll_limit">"Limit number of rolls"</string>
+    <string name="p_roll_create_ce_bomb_after_summon">"Create a CE bomb if the maximum limit of CEs has been reached?"</string>
     <string name="p_receive_embers">"Receive embers"</string>
     <string name="p_battle_config_name">"Name"</string>
     <string name="p_battle_config_cmd">"Command"</string>
@@ -270,6 +271,7 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="p_ces">"CEs"</string>
     <string name="ces_dropped">"%d CE(s) dropped"</string>
     <string name="times_rolled">"Rolled %d time(s)"</string>
+    <string name="unable_to_verify_if_reached_the_ce_menu">"Unable to verify if reached the CE Enhancement Screen, exiting early"</string>
     <string name="mat_proof">"Proof of Hero"</string>
     <string name="mat_bone">"Evil Bone"</string>
     <string name="mat_fang">"Dragon's Fang"</string>

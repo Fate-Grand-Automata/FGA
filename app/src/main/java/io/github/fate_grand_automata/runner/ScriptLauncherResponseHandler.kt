@@ -18,12 +18,8 @@ class ScriptLauncherResponseHandler @Inject constructor(
     fun handle(resp: ScriptLauncherResponse) {
         prefs.scriptMode = when (resp) {
             ScriptLauncherResponse.Cancel -> return
-            is ScriptLauncherResponse.FP -> {
-                prefs.shouldLimitFP = resp.limit != null
-                resp.limit?.let { prefs.limitFP = it }
 
-                ScriptModeEnum.FP
-            }
+            is ScriptLauncherResponse.FP -> ScriptModeEnum.FP
 
             is ScriptLauncherResponse.Lottery -> {
                 val giftBoxResp = resp.giftBox

@@ -48,8 +48,7 @@ class PrefsCore @Inject constructor(
     val debugMode = maker.bool("debug_mode")
     val autoStartService = maker.bool("auto_start_service")
 
-    val shouldLimitFP = maker.bool("should_fp_limit")
-    val limitFP = maker.int("fp_limit", 1)
+
     val receiveEmbersWhenGiftBoxFull = maker.bool("receive_embers_when_gift_box_full")
 
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
@@ -168,6 +167,8 @@ class PrefsCore @Inject constructor(
     val servantEnhancement = ServantEnhancementPrefsCore(maker)
 
     val craftEssence = CraftEssencePrefsCore(maker)
+
+    val friendGacha = FriendGachaPrefsCore(maker)
 
     val ignorePlayButtonDetectionWarning = maker.bool("ignore_play_button_detection_warning")
 
