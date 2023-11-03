@@ -49,7 +49,7 @@ class AutoFriendGacha @Inject constructor(
             if (isInventoryFull()) {
                 if (prefs.friendGacha.shouldCreateCEBombAfterSummon && canGoToCeEnhancementMenu()) {
                     locations.inventoryFullRegion.click()
-                    val isScreenTransitionAchieved = locations.getCeEnhanceRegion(prefs.gameServer).exists(
+                    val isScreenTransitionAchieved = locations.ceBomb.getCeEnhanceRegion.exists(
                         image = images[Images.CraftEssenceEnhancement],
                         timeout = 30.seconds
                     )

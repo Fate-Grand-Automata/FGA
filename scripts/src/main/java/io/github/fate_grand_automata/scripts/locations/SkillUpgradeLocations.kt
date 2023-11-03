@@ -10,18 +10,16 @@ class SkillUpgradeLocations @Inject constructor(
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
 
-    fun getSkillEnhanceRegion(server: GameServer) = when (server) {
+    val getSkillEnhanceRegion = when (gameServer) {
         is GameServer.En -> when (isWide) {
             false -> Region(-240, 19, 213, 86).xFromRight()
             true -> Region(-408, 20, 213, 86).xFromRight()
         }
-
-        is GameServer.Jp -> when (isWide) {
+        // JP option
+        else -> when (isWide) {
             false -> Region(-586, 19, 346, 93).xFromRight()
             true -> Region(-756, 19, 346, 93).xFromRight()
         }
-        // Other servers are not supported
-        else -> Region(-408, 20, 213, 86).xFromRight()
     }
 
     val skill1Location = Location(-339, 519).xFromCenter()
@@ -30,18 +28,16 @@ class SkillUpgradeLocations @Inject constructor(
 
     val skill3Location = Location(812, 519).xFromCenter()
 
-    fun getInsufficientMatsRegion(server: GameServer) = when (server) {
+    val getInsufficientMatsRegion = when (gameServer) {
         is GameServer.En -> when (isWide) {
             true -> Region(-498, 197, 446, 43).xFromCenter()
             false -> Region(-498, 225, 446, 43).xFromCenter()
         }
-
-        is GameServer.Jp -> when (isWide) {
+        // JP option
+        else -> when (isWide) {
             true -> Region(-499, 200, 597, 40).xFromCenter()
             false -> Region(-501, 228, 597, 43).xFromCenter()
         }
-        // Other servers are not supported
-        else -> Region(-498, 225, 286, 43).xFromCenter()
     }
 
 

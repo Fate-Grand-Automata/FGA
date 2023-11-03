@@ -130,33 +130,16 @@ class Locations @Inject constructor(
         false -> Region(200, 600, 400, 400)
     }
 
-    fun getCeEnhanceRegion(server: GameServer) = when (server) {
-        is GameServer.En -> when (isWide) {
-            false -> Region(-672, 16, 240, 96).xFromRight()
-            true -> Region(-843, 16, 240, 96).xFromRight()
-        }
-
-        is GameServer.Jp -> when (isWide) {
-            false -> Region(-1088, 16, 704, 104).xFromRight()
-
-            true -> Region(-1259, 16, 704, 104).xFromRight()
-        }
-        // Other servers are not supported
-        else -> Region(-1088, 16, 704, 104).xFromRight()
-    }
-
-    fun getInsufficientQPRegion(server: GameServer) = when (server) {
+    val getInsufficientQPRegion = when (gameServer) {
         is GameServer.En -> when (isWide) {
             true -> Region(-500, 195, 405, 44).xFromCenter()
             false -> Region(-499, 222, 405, 44).xFromCenter()
         }
-
-        is GameServer.Jp -> when (isWide) {
+        // JP option
+        else -> when (isWide) {
             true -> Region(-502, 195, 397, 47).xFromCenter()
             false -> Region(-500, 222, 397, 47).xFromCenter()
         }
-        // Other servers are not supported
-        else -> Region(-498, 225, 286, 43).xFromCenter()
     }
 
     val enhancementClick = when (isWide) {

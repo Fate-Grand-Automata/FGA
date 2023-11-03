@@ -9,6 +9,19 @@ class CEBombLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
+    val getCeEnhanceRegion = when (gameServer) {
+        is GameServer.En -> when (isWide) {
+            false -> Region(-672, 16, 240, 96).xFromRight()
+            true -> Region(-843, 16, 240, 96).xFromRight()
+        }
+        // JP option
+        else -> when (isWide) {
+            false -> Region(-1088, 16, 704, 104).xFromRight()
+
+            true -> Region(-1259, 16, 704, 104).xFromRight()
+        }
+    }
+
     // click on the center of previous region
     val ceSelectCEToEnhanceLocation = when (isWide) {
         true -> Location(-900, 800).xFromCenter()

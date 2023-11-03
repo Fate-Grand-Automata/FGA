@@ -40,13 +40,13 @@ class AutoDetect @Inject constructor(
             ) ->
                 ScriptModeEnum.SupportImageMaker
 
-            images[Images.CraftEssenceEnhancement] in locations.getCeEnhanceRegion(prefs.gameServer) ->{
+            images[Images.CraftEssenceEnhancement] in locations.ceBomb.getCeEnhanceRegion ->{
                 autoSetup.checkIfEmptyEnhance()
                 autoSetup.checkIfCanAutomaticDisplayChangeInCE()
                 ScriptModeEnum.CEBomb
             }
 
-            images[Images.SkillEnhancement] in locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer) -> {
+            images[Images.SkillEnhancement] in locations.skillUpgrade.getSkillEnhanceRegion -> {
                 autoSetup.getMinimumSkillLevel()
                 ScriptModeEnum.SkillUpgrade
             }

@@ -348,7 +348,7 @@ class AutoCEBomb @Inject constructor(
     private fun isEmptyEnhance() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
     private fun isInCraftEssenceEnhancementMenu() = images[Images.CraftEssenceEnhancement] in
-            locations.getCeEnhanceRegion(prefs.gameServer)
+            locations.ceBomb.getCeEnhanceRegion
 
     private fun isInPickUpCraftEssenceScreen() = images[Images.CEDetails] in
             locations.ceBomb.ceMultiSelectRegion

@@ -93,7 +93,7 @@ class AutoServantEnhancement @Inject constructor(
     }
 
     private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
-            locations.getInsufficientQPRegion(prefs.gameServer)
+            locations.getInsufficientQPRegion
 
     private fun performAutoSelect() {
         locations.servant.autoSelectLocation.click()

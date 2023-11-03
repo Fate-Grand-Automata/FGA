@@ -317,16 +317,16 @@ class AutoSkillUpgrade @Inject constructor(
 
 
     private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
-            locations.skillUpgrade.getInsufficientMatsRegion(prefs.gameServer)
+            locations.skillUpgrade.getInsufficientMatsRegion
 
     private fun isConfirmationDialog() = images[Images.Ok] in
             locations.skillUpgrade.getConfirmationDialog
 
     private fun isInSkillEnhancementMenu() = images[Images.SkillEnhancement] in
-            locations.skillUpgrade.getSkillEnhanceRegion(prefs.gameServer)
+            locations.skillUpgrade.getSkillEnhanceRegion
 
     private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
-            locations.getInsufficientQPRegion(prefs.gameServer)
+            locations.getInsufficientQPRegion
 
     private fun isServantEmpty() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
