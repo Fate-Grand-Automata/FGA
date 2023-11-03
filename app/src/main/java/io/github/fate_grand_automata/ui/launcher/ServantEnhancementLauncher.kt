@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,13 +22,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.ui.Stepper
 
 
 @Composable
 fun servantEnhancementLauncher(
-    prefs: IPreferences,
+    prefsCore: PrefsCore,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
 
@@ -37,6 +38,12 @@ fun servantEnhancementLauncher(
 
     var limitCount by remember {
         mutableStateOf(1)
+    }
+    DisposableEffect(Unit){
+        onDispose {
+            prefsCore.servantEnhancement.limitCount.set(limitCount)
+            prefsCore.servantEnhancement.shouldLimit.set(shouldLimit)
+        }
     }
 
     Column(
@@ -89,10 +96,7 @@ fun servantEnhancementLauncher(
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
         build = {
-            ScriptLauncherResponse.ServantEnhancement(
-                shouldLimit = shouldLimit,
-                limitCount = limitCount
-            )
+            ScriptLauncherResponse.ServantEnhancement
         }
     )
 }
