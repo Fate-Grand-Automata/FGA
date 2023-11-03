@@ -2,18 +2,19 @@ package io.github.fate_grand_automata.ui.launcher
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,9 +41,15 @@ fun fpLauncher(
 
     var shouldCreateCEBombAfterSummon by prefsCore.friendGacha.shouldCreateCEBombAfterSummon.remember()
 
+    LaunchedEffect(key1 = shouldLimit, block ={
+        if (shouldLimit){
+            shouldCreateCEBombAfterSummon = false
+        }
+    })
+
     DisposableEffect(Unit) {
         onDispose {
-            if (shouldLimit){
+            if (shouldLimit) {
                 shouldCreateCEBombAfterSummon = false
             }
         }
@@ -63,85 +70,94 @@ fun fpLauncher(
                 .padding(5.dp)
                 .padding(bottom = 16.dp)
         )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { shouldLimit = !shouldLimit }
-        ) {
-            Text(
-                stringResource(R.string.p_roll_limit),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Switch(
-                checked = shouldLimit,
-                onCheckedChange = { shouldLimit = it }
-            )
-        }
-
-        Box(
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Stepper(
-                value = rollLimit,
-                onValueChange = { rollLimit = it },
-                valueRange = 1..999,
-                enabled = shouldLimit
-            )
-        }
-        if (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp) {
-            Divider(modifier = Modifier.padding(vertical = 4.dp))
-            Row(
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(
-                        enabled = !shouldLimit,
-                        onClick = {
-                            shouldCreateCEBombAfterSummon = !shouldCreateCEBombAfterSummon
-                        }
-                    )
-            ) {
-                Column(
+        LazyColumn {
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp),
-                    verticalArrangement = Arrangement.Top,
-                ){
+                        .fillMaxWidth()
+                        .clickable {
+                            shouldLimit = !shouldLimit
+                        }
+                ) {
                     Text(
-                        stringResource(R.string.p_roll_create_ce_bomb_after_summon),
+                        stringResource(R.string.p_roll_limit),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
-                            MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface
                     )
-                    Spacer(modifier = Modifier.padding(vertical = 4.dp))
-                    Text(
-                        stringResource(R.string.p_roll_create_ce_bomb_after_summon_note),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
-                            MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        stringResource(R.string.p_roll_create_ce_bomb_reminder),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
-                            MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Justify
+
+                    Switch(
+                        checked = shouldLimit,
+                        onCheckedChange = { shouldLimit = it }
                     )
                 }
+            }
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Stepper(
+                        value = rollLimit,
+                        onValueChange = { rollLimit = it },
+                        valueRange = 1..999,
+                        enabled = shouldLimit
+                    )
+                }
+            }
+            item {
+                if (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp) {
+                    Divider(modifier = Modifier.padding(vertical = 4.dp))
+                    Row(
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                enabled = !shouldLimit,
+                                onClick = {
+                                    shouldCreateCEBombAfterSummon = !shouldCreateCEBombAfterSummon
+                                }
+                            )
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
+                            verticalArrangement = Arrangement.Top,
+                        ) {
+                            Text(
+                                stringResource(R.string.p_roll_create_ce_bomb_after_summon),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
+                                    MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                            Text(
+                                stringResource(R.string.p_roll_create_ce_bomb_after_summon_note),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
+                                    MaterialTheme.colorScheme.onSurface,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                stringResource(R.string.p_roll_create_ce_bomb_reminder),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
+                                    MaterialTheme.colorScheme.onSurface,
+                                textAlign = TextAlign.Justify
+                            )
+                        }
 
 
-                Switch(
-                    checked = shouldCreateCEBombAfterSummon,
-                    onCheckedChange = { shouldCreateCEBombAfterSummon = it },
-                    enabled = !shouldLimit
-                )
+                        Switch(
+                            checked = shouldCreateCEBombAfterSummon,
+                            onCheckedChange = { shouldCreateCEBombAfterSummon = it },
+                            enabled = !shouldLimit
+                        )
+                    }
+                }
             }
         }
     }
