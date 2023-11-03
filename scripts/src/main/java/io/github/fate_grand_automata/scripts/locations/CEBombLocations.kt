@@ -16,9 +16,8 @@ class CEBombLocations @Inject constructor(
         }
         // JP option
         else -> when (isWide) {
-            false -> Region(-1088, 16, 704, 104).xFromRight()
-
-            true -> Region(-1259, 16, 704, 104).xFromRight()
+            false -> Region(675, 16, 221, 104).xFromCenter()
+            true -> Region(-776, 16, 221, 104).xFromRight()
         }
     }
 
@@ -107,7 +106,7 @@ class CEBombLocations @Inject constructor(
 
     val sortButtonLocation = Location(1015, 256).xFromCenter()
 
-    val smartSortRegion = when(isWide){
+    val smartSortRegion = when (isWide) {
         true -> Region(-162, 924, 67, 42).xFromCenter()
         false -> Region(-160, 924, 67, 42).xFromCenter()
     }
@@ -118,7 +117,7 @@ class CEBombLocations @Inject constructor(
 
     val sortByLevelRegion = Region(-789, 408, 41, 36).xFromCenter()
 
-    val ceScrollbar = when(isWide){
+    val ceScrollbar = when (isWide) {
         true -> Region(-718, 390, 55, 20).xFromRight()
         false -> Region(716, 390, 55, 21).xFromCenter()
     }
@@ -127,7 +126,7 @@ class CEBombLocations @Inject constructor(
 
     val getFinalConfirmRegion = Region(341, 1145, 120, 60).xFromCenter()
 
-    val firstLockRegion =  when(isWide){
+    val firstLockRegion = when (isWide) {
         true -> Region(-1135, 483, 32, 25).xFromCenter()
         false -> Region(-1151, 483, 32, 25).xFromCenter()
     }
