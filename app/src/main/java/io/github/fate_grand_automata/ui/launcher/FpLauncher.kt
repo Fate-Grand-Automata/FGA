@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
@@ -18,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
@@ -71,7 +74,7 @@ fun fpLauncher(
             Text(
                 stringResource(R.string.p_roll_limit),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Switch(
@@ -91,8 +94,9 @@ fun fpLauncher(
             )
         }
         if (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp) {
+            Divider(modifier = Modifier.padding(vertical = 4.dp))
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -103,12 +107,35 @@ fun fpLauncher(
                         }
                     )
             ) {
-                Text(
-                    stringResource(R.string.p_roll_create_ce_bomb_after_summon),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = if (shouldLimit) MaterialTheme.colorScheme.secondary.copy(0.3f) else
-                        MaterialTheme.colorScheme.secondary
-                )
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
+                    verticalArrangement = Arrangement.Top,
+                ){
+                    Text(
+                        stringResource(R.string.p_roll_create_ce_bomb_after_summon),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
+                            MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                    Text(
+                        stringResource(R.string.p_roll_create_ce_bomb_after_summon_note),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
+                            MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        stringResource(R.string.p_roll_create_ce_bomb_reminder),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
+                            MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Justify
+                    )
+                }
+
 
                 Switch(
                     checked = shouldCreateCEBombAfterSummon,

@@ -87,7 +87,9 @@ Skills"</string>
     <string name="p_limit">"Limit"</string>
     <string name="p_runs">"Runs"</string>
     <string name="p_roll_limit">"Limit number of rolls"</string>
-    <string name="p_roll_create_ce_bomb_after_summon">"Create a CE bomb if the maximum limit of CEs has been reached?"</string>
+    <string name="p_roll_create_ce_bomb_after_summon">"Should the CE bomb script run after the maximum limit of CEs has been reached?"</string>
+    <string name="p_roll_create_ce_bomb_after_summon_note">"Note of the following:"</string>
+    <string name="p_roll_create_ce_bomb_reminder">"- It will only redirect to the Craft Essence Enhancement menu when the maximum number of CEs has been reached.\n\n- And, this option will make use of the current settings for the CE bomb script."</string>
     <string name="p_receive_embers">"Receive embers"</string>
     <string name="p_battle_config_name">"Name"</string>
     <string name="p_battle_config_cmd">"Command"</string>
