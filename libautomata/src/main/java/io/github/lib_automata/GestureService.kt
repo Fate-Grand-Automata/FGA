@@ -31,5 +31,5 @@ interface GestureService : AutoCloseable {
      * @param clicks the [Location]s where the swipe should start and end
      * @param chunked the number of rows to be chunked
      */
-    fun longPressAndDragOrMultipleClicks(clicks: List<Location>, chunked: Int)
+    fun longPressAndDragOrMultipleClicks(clicks: List<List<Location>>, chunked: Int)
 }

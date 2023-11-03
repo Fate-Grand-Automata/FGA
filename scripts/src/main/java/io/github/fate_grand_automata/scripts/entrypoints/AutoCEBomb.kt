@@ -33,12 +33,12 @@ class AutoCEBomb @Inject constructor(
     private val ceColumns = 7
 
     private var skipRow = mutableListOf<Int>()
+    private var skipColumn = mutableListOf<Int>()
 
     private var firstTargetSetupDone = false
     private var firstFodderSetupDone = false
 
     override fun script(): Nothing {
-        skipRow.clear()
         loop()
     }
 
@@ -47,7 +47,7 @@ class AutoCEBomb @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { isEmptyEnhance() } to { pickTarget() },
             { isFinalConfirmVisible() } to {
-                locations.ceBomb.cePerformEnhancementOkButton.click()
+                runEnhancement()
             },
             { isInPickUpCraftEssenceScreen() } to {
                 performCraftEssenceUpgrade()
@@ -71,7 +71,16 @@ class AutoCEBomb @Inject constructor(
         }
     }
 
+    private fun runEnhancement() {
+        locations.ceBomb.cePerformEnhancementOkButton.click()
+        0.5.seconds.wait()
+        locations.ceBomb.enhancementSkipRapidClick.click(5)
+    }
+
     private fun pickTarget() {
+        skipRow.clear()
+        skipColumn.clear()
+
         locations.ceBomb.ceSelectCEToEnhanceLocation.click()
 
         // waits until CE details Exist
@@ -101,7 +110,7 @@ class AutoCEBomb @Inject constructor(
             firstFodderSetupDone = true
         }
 
-        useDraggingOrNotToPickFodderCEs()
+        pickFodderCEs()
 
         locations.ceBomb.ceUpgradeOkButton.click()
 
@@ -254,7 +263,7 @@ class AutoCEBomb @Inject constructor(
         throw ExitException(ExitReason.NoSuitableTargetCEFound)
     }
 
-    private fun useDraggingOrNotToPickFodderCEs() {
+    private fun pickFodderCEs() {
         if (prefs.craftEssence.useDragging) {
             longPressAndDragOrMultipleClicks()
         } else {
@@ -272,38 +281,68 @@ class AutoCEBomb @Inject constructor(
      */
 
     private fun longPressAndDragOrMultipleClicks() {
+        getLockLocations()
+
         val clicksArray = getClickLocationList().reversed()
 
         if (clicksArray.isEmpty()) throw ExitException(ExitReason.NoSuitableTargetCEFound)
 
         when {
-            clicksArray.size < 4 -> clicksArray.forEach { it.click() }
+            clicksArray.size == 1 && clicksArray.first().size < 4 -> clicksArray.first().forEach { it.click() }
             else -> longPressAndSwipeOrMultipleClicks(clicksArray, chunked = ceColumns)
         }
         0.5.seconds.wait()
     }
 
 
-    private fun getClickLocationList(): List<Location> {
-        val clicksArray = mutableListOf<Location>()
+    private fun getClickLocationList(): List<List<Location>> {
+        val clicksRows = mutableListOf<List<Location>>()
         var foundCraftEssence = false
         for (y in fodderCeRows downTo 0) {
             // skip rows that have no CE in them to save time on checking them again
             if (y in skipRow) continue
 
-            var ceFound = 0
+            val clicksColumns = mutableListOf<Location>()
             for (x in (ceColumns - 1) downTo 0) {
+                // lock exists, skip specific location
+                if (x + (y * 7) in skipColumn) continue
+
                 if (foundCraftEssence || doesCraftEssenceExist(x, y)) {
-                    clicksArray.add(CELocation(x, y))
+                    clicksColumns.add(CELocation(x, y))
                     foundCraftEssence = true
-                    ceFound += 1
                 }
             }
-            if (ceFound == 0) {
+            if (clicksColumns.isEmpty()) {
                 skipRow.add(y)
+            } else {
+                clicksRows.add(clicksColumns.reversed())
             }
         }
-        return clicksArray
+        return clicksRows
+    }
+
+    private fun getLockLocations() {
+        var foundLock = true
+        loop@ for (y in 0 until fodderCeRows) {
+            // skip rows that have no CE in them to save time on checking them again
+            if (y in skipRow) continue
+
+            for (x in 0 until ceColumns) {
+                val index = x + (y * 7)
+                if (index in skipColumn) continue
+
+                if (!foundLock) break@loop
+
+                if (doesLockExist(x, y)) {
+                    skipColumn.add(index)
+                } else {
+                    foundLock = false
+                }
+            }
+        }
+
+        // if all are lock, exit
+        if (foundLock) throw ExitException(ExitReason.NoSuitableTargetCEFound)
     }
 
     private fun isEmptyEnhance() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
@@ -316,6 +355,9 @@ class AutoCEBomb @Inject constructor(
 
     private fun doesCraftEssenceExist(x: Int, y: Int) =
         locations.ceBomb.craftEssenceStarRegion(x, y).exists(images[Images.CraftEssenceStar], similarity = 0.60)
+
+    private fun doesLockExist(x: Int, y: Int) =
+        locations.ceBomb.craftEssenceLockRegion(x, y).exists(images[Images.CraftEssenceLock], similarity = 0.60)
 
 
     private fun CELocation(x: Int, y: Int) = locations.ceBomb.ceFirstFodderLocation +

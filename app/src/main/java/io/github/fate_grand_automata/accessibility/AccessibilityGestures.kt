@@ -166,22 +166,22 @@ class AccessibilityGestures @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun longPressAndDrag8(
-        clicks: List<Location>,
+        clicks: List<List<Location>>,
         chunked: Int = 1
     ) {
-        val start = clicks.first()
-        val end = clicks.last()
+
+        val firstChunked = clicks.first()
 
         /**
          * Creating fastest path possible
          */
-        val clicksArrays = if (clicks.size > chunked) {
-            val chunkedClick = clicks.chunked(chunked)
-            val firstChunked = chunkedClick.first()
-            val lastChunked = chunkedClick.last()
+        val clicksArrays = if (clicks.size > 1) {
+            val lastChunked = clicks.last()
             listOfNotNull(
                 firstChunked.first(),
-                firstChunked.last(),
+                if (firstChunked.size == 1) null else {
+                    firstChunked.last()
+                },
                 if (lastChunked.size == chunked) null else {
                     Location(
                         x = firstChunked.last().x,
@@ -191,8 +191,10 @@ class AccessibilityGestures @Inject constructor(
                 lastChunked.last(),
             )
         } else {
-            listOf(clicks.first(), clicks.last())
+            listOf(firstChunked.first(), firstChunked.last())
         }
+        val start = clicksArrays.first()
+        val end = clicksArrays.last()
 
         /**
          * Turns out that you need to have a delay to make the
@@ -250,7 +252,7 @@ class AccessibilityGestures @Inject constructor(
     }
 
     override fun longPressAndDragOrMultipleClicks(
-        clicks: List<Location>,
+        clicks: List<List<Location>>,
         chunked: Int
     ) = runBlocking {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -259,8 +261,10 @@ class AccessibilityGestures @Inject constructor(
                 chunked = chunked
             )
         } else {
-            clicks.forEach { singleClick ->
-                click(singleClick)
+            clicks.forEach { row ->
+                row.forEach { column ->
+                    click(column)
+                }
             }
         }
     }

@@ -113,4 +113,12 @@ class CEBombLocations @Inject constructor(
     val enhancementSkipRapidClick = Location(-100, 1080).xFromRight()
 
     val getFinalConfirmRegion = Region(341, 1145, 120, 60).xFromCenter()
+
+    val firstLockRegion =  when(isWide){
+        true -> Region(-1135, 483, 32, 25).xFromCenter()
+        false -> Region(-1151, 483, 32, 25).xFromCenter()
+    }
+
+    fun craftEssenceLockRegion(x: Int, y: Int) = firstLockRegion +
+            Location(x * 266, y * 285)
 }

@@ -3,7 +3,7 @@ package io.github.lib_automata
 import javax.inject.Inject
 
 interface LongPressAndSwipeOrMultipleClicks {
-    operator fun invoke(clicks: List<Location>, chunked: Int)
+    operator fun invoke(clicks: List<List<Location>>, chunked: Int)
 }
 
 class RealLongPressAndSwipeOrMultipleClicks @Inject constructor(
@@ -12,39 +12,17 @@ class RealLongPressAndSwipeOrMultipleClicks @Inject constructor(
     private val transform: Transformer
 ) : LongPressAndSwipeOrMultipleClicks {
 
-    override fun invoke(clicks: List<Location>, chunked: Int) {
-        var secondToTheLastLocation = Location()
+    override fun invoke(clicks: List<List<Location>>, chunked: Int) {
 
-        val transformClicks = clicks.mapIndexed { index: Int, location: Location ->
-            if (index != clicks.lastIndex){
-                secondToTheLastLocation = location
-                transform.toScreen(location)
-            } else {
-                val endX = lerp(
-                    secondToTheLastLocation.x,
-                    location.x,
-                    platformImpl.prefs.swipeMultiplier
-                ).coerceAtLeast(0)
-
-                val endY = lerp(
-                    secondToTheLastLocation.y,
-                    location.y,
-                    platformImpl.prefs.swipeMultiplier
-                ).coerceAtLeast(0)
-
-                transform.toScreen(Location(endX, endY))
+        val transformClicks = clicks.map { row ->
+            row.map { columnLocation ->
+                transform.toScreen(columnLocation)
             }
         }
 
         gestureService.longPressAndDragOrMultipleClicks(
-            clicks=transformClicks,
-            chunked=chunked
+            clicks = transformClicks,
+            chunked = chunked
         )
     }
-
-    /**
-     * linear interpolation
-     */
-    private fun lerp(start: Int, end: Int, fraction: Double) =
-        (start + (end - start) * fraction).toInt()
 }

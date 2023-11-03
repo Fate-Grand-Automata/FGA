@@ -61,6 +61,7 @@ enum class Images {
     CraftEssenceStar,
     CraftEssenceFodderCEFilterOff,
     On,
+    CraftEssenceLock,
     SkillEnhancement,
     SkillInsufficientMaterials,
     Ok,
