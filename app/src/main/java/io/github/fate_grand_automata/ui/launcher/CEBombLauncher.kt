@@ -10,6 +10,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -193,31 +194,7 @@ fun ceBombLauncher(
                         Divider()
                     }
                 }
-                item {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                skipSortDetection = !skipSortDetection
-                            }
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.p_ce_bomb_skip_sort_detection),
-                            style = bodyTextSize(),
-                            modifier = Modifier.weight(1f),
-                        )
-                        Checkbox(
-                            checked = skipSortDetection,
-                            onCheckedChange = {
-                                skipSortDetection = !skipSortDetection
-                            },
-                        )
-                    }
-                }
-                item {
-                    Divider()
-                }
+
                 if (canShowAutomaticDisplayChange) {
                     item {
                         Column(
@@ -233,7 +210,7 @@ fun ceBombLauncher(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = stringResource(id = R.string.p_ce_bomb_skip_automatic_display_change),
+                                    text = stringResource(id = R.string.p_ce_bomb_skip_display_size_setup),
                                     modifier = Modifier
                                         .weight(1f),
                                     style = bodyTextSize()
@@ -247,18 +224,56 @@ fun ceBombLauncher(
                             }
                         }
                     }
+                    item {
+                        skipReminder(
+                            show = skipAutomaticDisplayChange,
+                            text = stringResource(id = R.string.p_ce_bomb_skip_display_size_reminder)
+                        )
+                    }
                 } else {
                     item {
                         Row(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
-                                text = stringResource(id = R.string.p_ce_bomb_skip_automatic_display_warning),
+                                text = stringResource(id = R.string.p_ce_bomb_skip_display_size_warning),
                                 style = bodyTextSize(),
                                 textAlign = TextAlign.Center
                             )
                         }
                     }
+                }
+                item {
+                    Divider()
+                }
+
+                item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                skipSortDetection = !skipSortDetection
+                            }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.p_ce_bomb_skip_sort_setup),
+                            style = bodyTextSize(),
+                            modifier = Modifier.weight(1f),
+                        )
+                        Checkbox(
+                            checked = skipSortDetection,
+                            onCheckedChange = {
+                                skipSortDetection = !skipSortDetection
+                            },
+                        )
+                    }
+                }
+                item {
+                    skipReminder(
+                        show = skipSortDetection,
+                        text = stringResource(id = R.string.p_ce_bomb_skip_sort_reminder)
+                    )
                 }
                 item {
                     Divider()
@@ -278,7 +293,7 @@ fun ceBombLauncher(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = stringResource(id = R.string.p_ce_bomb_skip_filter_detection),
+                                text = stringResource(id = R.string.p_ce_bomb_skip_filter_setup),
                                 modifier = Modifier
                                     .weight(1f),
                                 style = bodyTextSize()
@@ -290,14 +305,13 @@ fun ceBombLauncher(
                                 },
                             )
                         }
-                        Text(
-                            text = stringResource(id = R.string.p_ce_bomb_skip_filter_summary),
-                            style = labelTextSize(),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
                     }
-
+                }
+                item {
+                    skipReminder(
+                        show = skipFilterDetection,
+                        text = stringResource(id = R.string.p_ce_bomb_skip_filter_reminder)
+                    )
                 }
                 if (isEmptyEnhance) {
                     item {
@@ -550,6 +564,31 @@ private fun longPressAndDragSettings(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun skipReminder(
+    show: Boolean,
+    text: String
+) {
+    AnimatedVisibility(
+        visible = show,
+        enter = slideInVertically() + expandVertically(expandFrom = Alignment.Top) + fadeIn(initialAlpha = 0.3f),
+        exit = slideOutVertically() + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+    ) {
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ){
+            Text(
+                text = text,
+                style = labelTextSize(),
+                modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp, horizontal = 2.dp),
+                textAlign = TextAlign.Justify,
+            )
+        }
+
     }
 }
 
