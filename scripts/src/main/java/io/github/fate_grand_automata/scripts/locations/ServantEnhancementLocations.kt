@@ -22,8 +22,8 @@ class ServantEnhancementLocations @Inject constructor(
     }
 
     val getAutoSelectRegion = when (isWide) {
-        true -> Region(-470, 262, 242, 61).xFromRight()
-        false -> Region(-250, 304, 242, 61).xFromRight()
+        true -> Region(1032, 268, 238, 53).xFromCenter()
+        false -> Region(1032, 308, 238, 53).xFromCenter()
     }
     val autoSelectLocation = when (isWide) {
         true -> Location(-347, 294).xFromRight()
@@ -46,7 +46,7 @@ class ServantEnhancementLocations @Inject constructor(
         false -> Region(615, 1049, 54, 124).xFromCenter()
     }
 
-    val getAutoSelectMinEmberLowQPRegion = when(isWide){
+    val getAutoSelectMinEmberLowQPRegion = when (isWide) {
         true -> Region(341, 1094, 120, 60).xFromCenter()
         false -> Region(342, 1096, 121, 60).xFromCenter()
     }
