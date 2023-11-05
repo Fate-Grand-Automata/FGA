@@ -128,9 +128,9 @@ class AutoCEBomb @Inject constructor(
         locations.ceBomb.ceUpgradeOkButton.click()
     }
 
-    private fun fixPosition(){
-        val startSwipeFixLocation = CELocation(0,0)
-        val endSwipeFixLocation = CELocation(0,1)
+    private fun fixPosition() {
+        val startSwipeFixLocation = CELocation(0, 0)
+        val endSwipeFixLocation = CELocation(0, 1)
 
         swiper(
             start = startSwipeFixLocation,
@@ -172,9 +172,14 @@ class AutoCEBomb @Inject constructor(
         }
 
         if (!isDisplaySmall()) {
+            var displayLoop = 0
             while (!isDisplaySmall()) {
                 displayLocation.click()
                 1.seconds.wait()
+                displayLoop++
+                if (displayLoop >= 10){
+                    break
+                }
             }
         }
     }
