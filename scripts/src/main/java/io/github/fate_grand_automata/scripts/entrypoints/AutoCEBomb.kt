@@ -9,6 +9,7 @@ import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
 import io.github.lib_automata.Location
 import io.github.lib_automata.LongPressAndSwipeOrMultipleClicks
+import io.github.lib_automata.Swiper
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -26,7 +27,8 @@ class AutoCEBomb @Inject constructor(
     exitManager: ExitManager,
     api: IFgoAutomataApi,
     private val connectionRetry: ConnectionRetry,
-    private val longPressAndSwipeOrMultipleClicks: LongPressAndSwipeOrMultipleClicks
+    private val longPressAndSwipeOrMultipleClicks: LongPressAndSwipeOrMultipleClicks,
+    private val swiper: Swiper
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     private val fodderCeRows = 3
     private val targetCeRows = 4
@@ -102,7 +104,8 @@ class AutoCEBomb @Inject constructor(
 
     private fun performCraftEssenceUpgrade() {
         // ensure to be on top of the list
-        locations.ceBomb.ceScrollbar.click(if (!firstFodderSetupDone) 3 else 1)
+        fixPosition()
+
         if (!firstFodderSetupDone) {
             initialScreenSetup()
             setFodderCEFilters()
@@ -125,9 +128,25 @@ class AutoCEBomb @Inject constructor(
         locations.ceBomb.ceUpgradeOkButton.click()
     }
 
+    private fun fixPosition(){
+        val startSwipeFixLocation = CELocation(0,0)
+        val endSwipeFixLocation = CELocation(0,1)
+
+        swiper(
+            start = startSwipeFixLocation,
+            end = endSwipeFixLocation,
+        )
+        0.5.seconds.wait()
+
+        locations.ceBomb.ceScrollbar.click(3)
+    }
+
     private fun initialScreenSetup() {
+        2.seconds.wait()
         setDisplaySize()
+        2.seconds.wait()
         setupSortFeatures()
+        2.seconds.wait()
     }
 
     private fun setDisplaySize() {
