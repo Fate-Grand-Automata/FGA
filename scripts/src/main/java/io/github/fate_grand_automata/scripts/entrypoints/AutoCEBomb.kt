@@ -76,7 +76,7 @@ class AutoCEBomb @Inject constructor(
     private fun runEnhancement() {
         locations.ceBomb.cePerformEnhancementOkButton.click()
         0.5.seconds.wait()
-        locations.ceBomb.enhancementSkipRapidClick.click(5)
+        locations.ceBomb.enhancementSkipRapidClick.click(15)
     }
 
     private fun pickTarget() {
