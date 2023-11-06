@@ -51,7 +51,10 @@ class AutoFriendGacha @Inject constructor(
                     locations.inventoryFullRegion.click()
                     val isScreenTransitionAchieved = locations.ceBomb.getCeEnhanceRegion.exists(
                         image = images[Images.CraftEssenceEnhancement],
-                        timeout = 30.seconds
+                        timeout = 30.seconds,
+                        // due to some effects behind the word `craft` that affects the similarity
+                        // lowering it would make the detection faster
+                        similarity = 0.6
                     )
                     if (isScreenTransitionAchieved) {
                         autoCEBomb.script()
