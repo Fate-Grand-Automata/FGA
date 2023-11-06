@@ -142,15 +142,13 @@ class AutoCEBomb @Inject constructor(
     }
 
     private fun initialScreenSetup() {
-        2.seconds.wait()
         setDisplaySize()
-        2.seconds.wait()
         setupSortFeatures()
-        2.seconds.wait()
     }
 
     private fun setDisplaySize() {
         if (prefs.craftEssence.skipAutomaticDisplayChange) return
+        2.seconds.wait()
 
         val displayArea = prefs.craftEssence.ceDisplayChangeArea
 
@@ -186,6 +184,7 @@ class AutoCEBomb @Inject constructor(
 
     private fun setTargetCEFilters() {
         if (prefs.craftEssence.skipCEFilterDetection) return
+        2.seconds.wait()
 
         locations.ceBomb.changeFilterButtonLocation.click()
         2.seconds.wait()
@@ -215,6 +214,7 @@ class AutoCEBomb @Inject constructor(
 
     private fun setFodderCEFilters() {
         if (prefs.craftEssence.skipCEFilterDetection) return
+        2.seconds.wait()
 
         locations.ceBomb.changeFilterButtonLocation.click()
         2.seconds.wait()
@@ -245,6 +245,7 @@ class AutoCEBomb @Inject constructor(
 
     private fun setupSortFeatures() {
         if (prefs.craftEssence.skipSortDetection) return
+        2.seconds.wait()
 
         locations.ceBomb.sortButtonLocation.click()
         2.seconds.wait()
