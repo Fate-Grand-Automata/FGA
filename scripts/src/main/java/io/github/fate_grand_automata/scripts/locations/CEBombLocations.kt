@@ -106,12 +106,9 @@ class CEBombLocations @Inject constructor(
 
     val sortButtonLocation = Location(1015, 256).xFromCenter()
 
-    val smartSortRegion = when (isWide) {
-        true -> Region(-162, 924, 67, 42).xFromCenter()
-        false -> Region(-160, 924, 67, 42).xFromCenter()
-    }
+    val smartSortRegion = Region(-159, 928, 61, 36).xFromCenter()
 
-    val selectSortRegion = Region(724, 924, 68, 42).xFromCenter()
+    val selectSortRegion =  Region(728, 928, 60, 36).xFromCenter()
 
     val sortCloseLocation = Location(425, 1267).xFromCenter()
 
