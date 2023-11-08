@@ -87,13 +87,13 @@ class AutoCEBomb @Inject constructor(
 
         // Until the lock CE system in place, we're going to break after the first CE
         // to prevent using of the already max CE
-        if (craftEssenceProcessed > 1){
+        if (craftEssenceProcessed >= 1){
             throw ExitException(ExitReason.CEFullyUpgraded)
         }
 
         locations.ceBomb.ceSelectCEToEnhanceLocation.click()
 
-        craftEssenceProcessed += 1
+        craftEssenceProcessed++
 
         // waits until CE details Exist
         val found = locations.ceBomb.ceMultiSelectRegion.exists(
