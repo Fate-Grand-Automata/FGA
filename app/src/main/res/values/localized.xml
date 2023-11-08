@@ -89,7 +89,7 @@ Skills"</string>
     <string name="p_roll_limit">"Limit number of rolls"</string>
     <string name="p_roll_create_ce_bomb_after_summon">"Should the CE bomb script run after the maximum limit of CEs has been reached?"</string>
     <string name="p_roll_create_ce_bomb_after_summon_note">"Note of the following:"</string>
-    <string name="p_roll_create_ce_bomb_reminder">"- It will only redirect to the Craft Essence Enhancement menu when the maximum number of CEs has been reached.\n\n- And, this option will make use of the current settings for the CE bomb script."</string>
+    <string name="p_roll_create_ce_bomb_reminder">"- It will only redirect to the Craft Essence Enhancement menu when the maximum number of CEs has been reached."</string>
     <string name="p_receive_embers">"Receive embers"</string>
     <string name="p_battle_config_name">"Name"</string>
     <string name="p_battle_config_cmd">"Command"</string>
@@ -467,5 +467,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_play_button_detection_explanation">Place the play button on the bottom left of the screen for optimal configuration</string>
     <string name="p_ignore_play_button_detection_further_warning">Ignore further warning about play button\'s location.</string>
     <string name="p_ignore_play_button_detection_warning">Ignore warning about play button\'s location.</string>
+    <string name="p_fp_gacha_show_ce_bomb_settings">Show CE Bomb Settings</string>
+    <string name="p_fp_gacha_hide_ce_bomb_settings">Hide CE Bomb Settings</string>
 
 </resources>

@@ -248,26 +248,12 @@ fun ceBombLauncher(
                 }
 
                 item {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                skipSortDetection = !skipSortDetection
-                            }
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.p_ce_bomb_skip_sort_setup),
-                            style = bodyTextSize(),
-                            modifier = Modifier.weight(1f),
-                        )
-                        Checkbox(
-                            checked = skipSortDetection,
-                            onCheckedChange = {
-                                skipSortDetection = !skipSortDetection
-                            },
-                        )
-                    }
+                    sortSettings(
+                        skipSortDetection = skipSortDetection,
+                        onSkipSortDetectionChange = {
+                            skipSortDetection = !skipSortDetection
+                        }
+                    )
                 }
                 item {
                     skipReminder(
@@ -280,32 +266,12 @@ fun ceBombLauncher(
                 }
 
                 item {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                skipFilterDetection = !skipFilterDetection
-                            },
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.p_ce_bomb_skip_filter_setup),
-                                modifier = Modifier
-                                    .weight(1f),
-                                style = bodyTextSize()
-                            )
-                            Checkbox(
-                                checked = skipFilterDetection,
-                                onCheckedChange = {
-                                    skipFilterDetection = !skipFilterDetection
-                                },
-                            )
+                    filterSettings(
+                        skipFilterDetection = skipFilterDetection,
+                        onSkipFilterDetectionChange = {
+                            skipFilterDetection = !skipFilterDetection
                         }
-                    }
+                    )
                 }
                 item {
                     skipReminder(
@@ -315,47 +281,23 @@ fun ceBombLauncher(
                 }
                 if (isEmptyEnhance) {
                     item {
-                        Column {
-                            Text(
-                                text = stringResource(id = R.string.p_ce_bomb_target_rarity).uppercase(),
-                                modifier = Modifier,
-                                style = bodyTextSize(),
-                                color = if (skipFilterDetection) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-                                else MaterialTheme.colorScheme.onSurface,
-                                textDecoration = TextDecoration.Underline
-                            )
-
-                            targetRarityItems(
-                                selected = targetRarity,
-                                onClick = {
-                                    targetRarity = it
-                                },
-                                modifier = Modifier,
-                                enabled = !skipFilterDetection
-                            )
-                        }
-                    }
-                }
-                item {
-                    Column {
-                        Text(
-                            text = stringResource(id = R.string.p_ce_bomb_fodder_rarity).uppercase(),
-                            modifier = Modifier,
-                            style = bodyTextSize(),
-                            color = if (skipFilterDetection) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-                            else MaterialTheme.colorScheme.onSurface,
-                            textDecoration = TextDecoration.Underline
-                        )
-
-                        fodderRarityItems(
-                            modifier = Modifier,
-                            enabled = !skipFilterDetection,
-                            items = fodderRarity.toList(),
-                            onClick = {
-                                fodderRarity = it
+                        setTargetRarityFilter(
+                            skipFilterDetection = skipFilterDetection,
+                            targetRarity = targetRarity,
+                            onTargetRarityChange = {
+                                targetRarity = it
                             }
                         )
                     }
+                }
+                item {
+                    setFodderRarityFilter(
+                        skipFilterDetection = skipFilterDetection,
+                        fodderRarity = fodderRarity,
+                        onFodderRarityChange = {
+                            fodderRarity = it
+                        }
+                    )
                 }
             }
         }
@@ -365,6 +307,116 @@ fun ceBombLauncher(
         canBuild = { true },
         build = { ScriptLauncherResponse.CEBomb }
     )
+}
+
+@Composable
+fun filterSettings(
+    skipFilterDetection: Boolean,
+    onSkipFilterDetectionChange: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = onSkipFilterDetectionChange
+            ),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.p_ce_bomb_skip_filter_setup),
+                modifier = Modifier
+                    .weight(1f),
+                style = bodyTextSize()
+            )
+            Checkbox(
+                checked = skipFilterDetection,
+                onCheckedChange = {
+                    onSkipFilterDetectionChange()
+                },
+            )
+        }
+    }
+}
+
+@Composable
+fun sortSettings(
+    skipSortDetection: Boolean,
+    onSkipSortDetectionChange: () -> Unit = {}
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = onSkipSortDetectionChange
+            )
+    ) {
+        Text(
+            text = stringResource(id = R.string.p_ce_bomb_skip_sort_setup),
+            style = bodyTextSize(),
+            modifier = Modifier.weight(1f),
+        )
+        Checkbox(
+            checked = skipSortDetection,
+            onCheckedChange = {
+                onSkipSortDetectionChange()
+            },
+        )
+    }
+}
+
+@Composable
+fun setFodderRarityFilter(
+    skipFilterDetection: Boolean,
+    fodderRarity: Set<Int>,
+    onFodderRarityChange: (Set<Int>) -> Unit
+) {
+    Column {
+        Text(
+            text = stringResource(id = R.string.p_ce_bomb_fodder_rarity).uppercase(),
+            modifier = Modifier,
+            style = bodyTextSize(),
+            color = if (skipFilterDetection) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+            else MaterialTheme.colorScheme.onSurface,
+            textDecoration = TextDecoration.Underline
+        )
+
+        fodderRarityItems(
+            modifier = Modifier,
+            enabled = !skipFilterDetection,
+            items = fodderRarity.toList(),
+            onClick = onFodderRarityChange
+        )
+    }
+}
+
+@Composable
+fun setTargetRarityFilter(
+    skipFilterDetection: Boolean,
+    targetRarity: Int,
+    onTargetRarityChange: (Int) -> Unit
+) {
+    Column {
+        Text(
+            text = stringResource(id = R.string.p_ce_bomb_target_rarity).uppercase(),
+            modifier = Modifier,
+            style = bodyTextSize(),
+            color = if (skipFilterDetection) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+            else MaterialTheme.colorScheme.onSurface,
+            textDecoration = TextDecoration.Underline
+        )
+
+        targetRarityItems(
+            selected = targetRarity,
+            onClick = onTargetRarityChange,
+            modifier = Modifier,
+            enabled = !skipFilterDetection
+        )
+    }
 }
 
 @Composable
@@ -568,7 +620,7 @@ private fun longPressAndDragSettings(
 }
 
 @Composable
-private fun skipReminder(
+fun skipReminder(
     show: Boolean,
     text: String
 ) {
@@ -580,11 +632,13 @@ private fun skipReminder(
         Box(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             Text(
                 text = text,
                 style = labelTextSize(),
-                modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp, horizontal = 2.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 1.dp, horizontal = 2.dp),
                 textAlign = TextAlign.Justify,
             )
         }

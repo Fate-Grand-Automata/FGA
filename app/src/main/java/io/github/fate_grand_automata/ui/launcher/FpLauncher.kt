@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.ui.launcher
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,10 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,9 +45,25 @@ fun fpLauncher(
 
     var shouldCreateCEBombAfterSummon by prefsCore.friendGacha.shouldCreateCEBombAfterSummon.remember()
 
-    LaunchedEffect(key1 = shouldLimit, block ={
-        if (shouldLimit){
+    var skipSortDetection by prefsCore.craftEssence.skipSortDetection.remember()
+
+    var skipFilterDetection by prefsCore.craftEssence.skipCEFilterDetection.remember()
+
+    var targetRarity by prefsCore.craftEssence.ceTargetRarity.remember()
+
+    var fodderRarity by prefsCore.craftEssence.ceFodderRarity.remember()
+
+    var showCEBombSettings by remember { mutableStateOf(false) }
+
+
+    LaunchedEffect(key1 = shouldLimit, block = {
+        if (shouldLimit) {
             shouldCreateCEBombAfterSummon = false
+        }
+    })
+    LaunchedEffect(key1 = fodderRarity, block = {
+        if (fodderRarity.isEmpty()) {
+            fodderRarity = setOf(1, 2)
         }
     })
 
@@ -97,8 +118,8 @@ fun fpLauncher(
                     )
                 }
             }
-            item {
-                if (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp) {
+            if (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp) {
+                item {
                     Divider(modifier = Modifier.padding(vertical = 4.dp))
                     Row(
                         verticalAlignment = Alignment.Top,
@@ -149,6 +170,102 @@ fun fpLauncher(
                         )
                     }
                 }
+                if (shouldCreateCEBombAfterSummon) {
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(1.dp)
+                                    .clickable(
+                                        enabled = shouldCreateCEBombAfterSummon,
+                                        onClick = {
+                                            showCEBombSettings = !showCEBombSettings
+                                        },
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = when (showCEBombSettings) {
+                                        true -> stringResource(R.string.p_fp_gacha_hide_ce_bomb_settings)
+                                        false -> stringResource(R.string.p_fp_gacha_show_ce_bomb_settings)
+                                    },
+                                    style = labelTextSize(),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+
+                            AnimatedVisibility(
+                                visible = showCEBombSettings,
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .padding(4.dp),
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.Start
+                                    ) {
+                                        sortSettings(
+                                            skipSortDetection = skipSortDetection,
+                                            onSkipSortDetectionChange = {
+                                                skipSortDetection = !skipSortDetection
+                                            }
+                                        )
+                                        skipReminder(
+                                            show = skipSortDetection,
+                                            text = stringResource(id = R.string.p_ce_bomb_skip_sort_reminder)
+                                        )
+                                        Divider(
+                                            modifier = Modifier.padding(vertical = 1.dp, horizontal = 2.dp)
+                                        )
+                                        filterSettings(
+                                            skipFilterDetection = skipFilterDetection,
+                                            onSkipFilterDetectionChange = {
+                                                skipFilterDetection = !skipFilterDetection
+                                            }
+                                        )
+                                        skipReminder(
+                                            show = skipFilterDetection,
+                                            text = stringResource(id = R.string.p_ce_bomb_skip_filter_reminder)
+                                        )
+                                    }
+                                    Column(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .padding(4.dp),
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.Start
+                                    ) {
+                                        setTargetRarityFilter(
+                                            skipFilterDetection = skipFilterDetection,
+                                            targetRarity = targetRarity,
+                                            onTargetRarityChange = {
+                                                targetRarity = it
+                                            }
+                                        )
+                                        setFodderRarityFilter(
+                                            skipFilterDetection = skipFilterDetection,
+                                            fodderRarity = fodderRarity,
+                                            onFodderRarityChange = {
+                                                fodderRarity = it
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
             }
         }
     }
@@ -159,4 +276,16 @@ fun fpLauncher(
             ScriptLauncherResponse.FP
         }
     )
+}
+
+@Composable
+private fun bodyTextSize(): TextStyle {
+    return if (LocalConfiguration.current.screenHeightDp < 500) MaterialTheme.typography.bodySmall else
+        MaterialTheme.typography.bodyLarge
+}
+
+@Composable
+private fun labelTextSize(): TextStyle {
+    return if (LocalConfiguration.current.screenHeightDp < 500) MaterialTheme.typography.labelSmall else
+        MaterialTheme.typography.labelLarge
 }
