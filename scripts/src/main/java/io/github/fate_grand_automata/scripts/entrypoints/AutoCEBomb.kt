@@ -40,6 +40,8 @@ class AutoCEBomb @Inject constructor(
     private var firstTargetSetupDone = false
     private var firstFodderSetupDone = false
 
+    private var craftEssenceProcessed = 0
+
     override fun script(): Nothing {
         loop()
     }
@@ -83,7 +85,15 @@ class AutoCEBomb @Inject constructor(
         skipRow.clear()
         skipColumn.clear()
 
+        // Until the lock CE system in place, we're going to break after the first CE
+        // to prevent using of the already max CE
+        if (craftEssenceProcessed > 1){
+            throw ExitException(ExitReason.CEFullyUpgraded)
+        }
+
         locations.ceBomb.ceSelectCEToEnhanceLocation.click()
+
+        craftEssenceProcessed += 1
 
         // waits until CE details Exist
         val found = locations.ceBomb.ceMultiSelectRegion.exists(
