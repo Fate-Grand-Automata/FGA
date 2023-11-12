@@ -74,8 +74,8 @@ fun battleLauncher(
 
     var refillResources by remember { mutableStateOf(perServerConfigPref.resources.toSet()) }
 
-    //only display bronze option for JP and CN
-    val bronzeApplesEnabled = prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Cn
+    //only display bronze option for JP and CN and TW
+    val bronzeApplesEnabled = prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Cn || prefs.gameServer is GameServer.Tw
     if (!bronzeApplesEnabled) {
         //disable it in the settings otherwise
         refillResources = refillResources.minus(RefillResourceEnum.Bronze)
