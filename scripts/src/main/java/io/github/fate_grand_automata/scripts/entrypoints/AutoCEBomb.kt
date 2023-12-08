@@ -40,7 +40,7 @@ class AutoCEBomb @Inject constructor(
     private var firstTargetSetupDone = false
     private var firstFodderSetupDone = false
 
-    private var craftEssenceProcessed = 0
+    private var initialCEEnhancementRun = true
 
     override fun script(): Nothing {
         loop()
@@ -57,7 +57,7 @@ class AutoCEBomb @Inject constructor(
                 performCraftEssenceUpgrade()
             },
             { isInCraftEssenceEnhancementMenu() && !isEmptyEnhance() } to {
-                locations.ceBomb.ceOpenEnhancementMenuLocation.click()
+                checkIfCEisLockedAndClickEnhancementMenuLocation()
             },
         )
 
@@ -75,6 +75,30 @@ class AutoCEBomb @Inject constructor(
         }
     }
 
+    private fun checkIfCEisLockedAndClickEnhancementMenuLocation(){
+        checkIfCEisLocked()
+        locations.ceBomb.ceOpenEnhancementMenuLocation.click()
+    }
+
+    private fun checkIfCEisLocked(){
+        if (!initialCEEnhancementRun) return
+
+        locations.emptyEnhanceRegion.longPress()
+
+        2.seconds.wait()
+
+        if (!isSelectedCELocked()){
+            locations.ceBomb.selectedCELockedRegion.click()
+            0.5.seconds.wait()
+        }
+
+        locations.ceBomb.selectedCEBackButtonRegion.click()
+
+        initialCEEnhancementRun = false
+
+        waitUntilCraftEssenceEnhancementMenuExist()
+    }
+
     private fun runEnhancement() {
         locations.ceBomb.cePerformEnhancementOkButton.click()
         0.5.seconds.wait()
@@ -85,15 +109,10 @@ class AutoCEBomb @Inject constructor(
         skipRow.clear()
         skipColumn.clear()
 
-        // Until the lock CE system in place, we're going to break after the first CE
-        // to prevent using of the already max CE
-        if (craftEssenceProcessed >= 1){
-            throw ExitException(ExitReason.CEFullyUpgraded)
-        }
+        initialCEEnhancementRun = true
+
 
         locations.ceBomb.ceSelectCEToEnhanceLocation.click()
-
-        craftEssenceProcessed++
 
         // waits until CE details Exist
         val found = locations.ceBomb.ceMultiSelectRegion.exists(
@@ -385,6 +404,11 @@ class AutoCEBomb @Inject constructor(
     private fun isInCraftEssenceEnhancementMenu() = images[Images.CraftEssenceEnhancement] in
             locations.ceBomb.getCeEnhanceRegion
 
+    private fun waitUntilCraftEssenceEnhancementMenuExist() = locations.ceBomb.getCeEnhanceRegion.exists(
+        image = images[Images.CraftEssenceEnhancement],
+        timeout = 30.seconds
+    )
+
     private fun isInPickUpCraftEssenceScreen() = images[Images.CEDetails] in
             locations.ceBomb.ceMultiSelectRegion
 
@@ -420,6 +444,9 @@ class AutoCEBomb @Inject constructor(
 
     private fun isFinalConfirmVisible() = images[Images.Ok] in
             locations.ceBomb.getFinalConfirmRegion
+
+    private fun isSelectedCELocked() = images[Images.CraftEssenceFodderSelectedCELocked] in
+            locations.ceBomb.selectedCELockedRegion
 
     sealed class ExitReason {
         data object NoSuitableTargetCEFound : ExitReason()

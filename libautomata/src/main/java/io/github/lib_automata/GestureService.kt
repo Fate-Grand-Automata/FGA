@@ -32,4 +32,7 @@ interface GestureService : AutoCloseable {
      * @param chunked the number of rows to be chunked
      */
     fun longPressAndDragOrMultipleClicks(clicks: List<List<Location>>, chunked: Int)
+
+
+    fun longPress(location: Location, duration: Int = 2000)
 }

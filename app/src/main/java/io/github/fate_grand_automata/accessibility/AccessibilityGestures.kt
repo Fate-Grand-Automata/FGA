@@ -14,7 +14,12 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.roundToInt
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
@@ -268,6 +273,45 @@ class AccessibilityGestures @Inject constructor(
             }
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun longPress8(location: Location, duration: Int = 2000){
+        val longPressPath = Path().moveTo(location)
+
+        val longPressDuration = duration.toLong()
+        var gestureDelay = 0L
+        val dragReleaseDuration = 50L
+
+        val lastStroke = GestureDescription.StrokeDescription(
+            longPressPath,
+            0L,
+            longPressDuration,
+            true
+        ).also {
+            performGesture(it)
+            gestureDelay += longPressDuration
+        }
+
+        lastStroke.continueStroke(
+            longPressPath,
+            gestureDelay,
+            dragReleaseDuration,
+            false
+        ).also {
+            performGesture(it)
+        }
+
+        Timber.d("long pressed $location")
+    }
+
+    override fun longPress(location: Location, duration: Int) = runBlocking {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            longPress8(location, duration)
+        } else {
+            click(location, 2)
+        }
+    }
+
 
     override fun close() {}
 }

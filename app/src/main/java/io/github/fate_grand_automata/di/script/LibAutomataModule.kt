@@ -53,4 +53,8 @@ abstract class LibAutomataModule {
     abstract fun longPressAndSwipeOrMultipleClicks(
         longPressAndSwipeOrMultipleClicks: RealLongPressAndSwipeOrMultipleClicks
     ): LongPressAndSwipeOrMultipleClicks
+
+    @ScriptScope
+    @Binds
+    abstract fun longPress(longPress: RealLongPress): LongPress
 }

@@ -130,4 +130,14 @@ class CEBombLocations @Inject constructor(
 
     fun craftEssenceLockRegion(x: Int, y: Int) = firstLockRegion +
             Location(x * 266, y * 285)
+
+    val selectedCELockedRegion = when (isWide) {
+        true -> Region(-1375, 290, 123, 38).xFromCenter()
+        false -> Region(-1280, 291, 123, 37).xFromCenter()
+    }
+
+    val selectedCEBackButtonRegion = when (isWide) {
+        true -> Region(-1318, 16, 63, 130).xFromCenter()
+        false -> Region(-1208, 19, 64, 126).xFromCenter()
+    }
 }
