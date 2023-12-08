@@ -83,6 +83,8 @@ class AutoCEBomb @Inject constructor(
     private fun checkIfCEisLocked(){
         if (!initialCEEnhancementRun) return
 
+        if (prefs.craftEssence.skipAutoLockTargetCE) return
+
         locations.emptyEnhanceRegion.longPress()
 
         2.seconds.wait()

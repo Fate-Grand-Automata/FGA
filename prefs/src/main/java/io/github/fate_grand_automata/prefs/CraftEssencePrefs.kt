@@ -30,4 +30,6 @@ internal class CraftEssencePrefs(
         prefs.ceDisplayChangeArea.set(setOf(area))
 
     override var useDragging: Boolean by prefs.useDragging
+
+    override var skipAutoLockTargetCE: Boolean by prefs.skipAutoLockTargetCE
 }

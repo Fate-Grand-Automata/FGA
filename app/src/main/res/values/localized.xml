@@ -412,6 +412,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_ce_bomb_duration">Duration</string>
     <string name="p_ce_bomb_hide_dragging_settings">Hide Dragging Settings</string>
     <string name="p_ce_bomb_show_dragging_settings">Show Dragging Settings</string>
+    <string name="p_ce_bomb_skip_auto_lock_of_target_ce">Skip the auto-lock of target CE?</string>
     <string name="p_ce_bomb_skip_display_size_setup">Skip the display size setup?</string>
     <string name="p_ce_bomb_skip_display_size_reminder">Please ensure that the display size is set to the smallest option.</string>
     <string name="p_ce_bomb_skip_display_size_warning">Set the display size to the smallest option available.</string>

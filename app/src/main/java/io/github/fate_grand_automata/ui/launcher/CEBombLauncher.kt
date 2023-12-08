@@ -73,7 +73,9 @@ fun ceBombLauncher(
 
     var useDragging by prefsCore.craftEssence.useDragging.remember()
 
-    val canShowDragging by remember {
+    var skipAutoLockTargetCE by prefsCore.craftEssence.skipAutoLockTargetCE.remember()
+
+    val canUseLongPressed by remember {
         mutableStateOf(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
     }
 
@@ -95,8 +97,9 @@ fun ceBombLauncher(
     })
 
     LaunchedEffect(key1 = Unit, block = {
-        if (!canShowDragging) {
+        if (!canUseLongPressed) {
             useDragging = false
+            skipAutoLockTargetCE = true
         }
     })
 
@@ -155,7 +158,7 @@ fun ceBombLauncher(
                     ),
                 state = rightColumnState,
             ) {
-                if (canShowDragging) {
+                if (canUseLongPressed) {
                     item {
                         Column(
                             modifier = Modifier
@@ -191,6 +194,38 @@ fun ceBombLauncher(
                         )
                     }
                     item {
+                        Divider()
+                    }
+
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    skipAutoLockTargetCE = !skipAutoLockTargetCE
+                                }
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.p_ce_bomb_skip_auto_lock_of_target_ce),
+                                    modifier = Modifier
+                                        .weight(1f),
+                                    style = bodyTextSize()
+                                )
+                                Checkbox(
+                                    checked = skipAutoLockTargetCE,
+                                    onCheckedChange = {
+                                        skipAutoLockTargetCE = !skipAutoLockTargetCE
+                                    },
+                                )
+                            }
+                        }
+                    }
+                    item{
                         Divider()
                     }
                 }

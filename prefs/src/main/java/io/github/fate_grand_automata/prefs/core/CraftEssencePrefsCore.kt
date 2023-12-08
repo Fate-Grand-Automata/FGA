@@ -6,6 +6,8 @@ class CraftEssencePrefsCore(maker: PrefMaker) {
 
     val emptyEnhance = maker.bool("emptyEnhance")
 
+    val skipAutoLockTargetCE = maker.bool("skip_auto_lock_target_ce")
+
     val useDragging = maker.bool("use_dragging", default = true)
 
     val skipAutomaticDisplayChange = maker.bool("skip_automatic_display_change")

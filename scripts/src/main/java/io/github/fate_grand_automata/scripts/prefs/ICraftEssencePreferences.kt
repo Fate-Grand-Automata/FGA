@@ -23,4 +23,6 @@ interface ICraftEssencePreferences {
     fun updateCeDisplayChangeArea(area: CEDisplayChangeAreaEnum)
 
     var useDragging: Boolean
+
+    var skipAutoLockTargetCE: Boolean
 }
