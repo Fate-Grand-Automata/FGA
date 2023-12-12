@@ -66,7 +66,7 @@ class AutoBattle @Inject constructor(
         class LimitMaterials(val count: Int) : ExitReason()
         object WithdrawDisabled : ExitReason()
         object APRanOut : ExitReason()
-        object StormPodRanOut: ExitReason()
+        object StormPodRanOut : ExitReason()
         object InventoryFull : ExitReason()
         class LimitRuns(val count: Int) : ExitReason()
         object SupportSelectionManual : ExitReason()
@@ -183,7 +183,7 @@ class AutoBattle @Inject constructor(
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
-            { isInInterludeEndScreen()} to {locations.interludeCloseClick.click()},
+            { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
@@ -192,7 +192,7 @@ class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to { locations.battle.extraInfoWindowCloseClick.click() },
+            { isDeathAnimation() } to { locations.middleOfScreenClick.click() },
             { isRankUp() } to { locations.middleOfScreenClick.click() }
 
         )
@@ -312,11 +312,11 @@ class AutoBattle @Inject constructor(
         return images[Images.Close] in locations.ordealCallOutOfPodsRegion
     }
 
-    private fun ordealCallOutOfPods(){
+    private fun ordealCallOutOfPods() {
         locations.ordealCallOutOfPodsClick.click()
         // Count the current run
         state.nextRun()
-        
+
         throw BattleExitException(ExitReason.StormPodRanOut)
     }
 
@@ -368,6 +368,7 @@ class AutoBattle @Inject constructor(
         // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
         locations.resultFriendRequestRejectClick.click()
     }
+
     private fun isInInterludeEndScreen() =
         images[Images.Close] in locations.interludeEndScreenClose
 
