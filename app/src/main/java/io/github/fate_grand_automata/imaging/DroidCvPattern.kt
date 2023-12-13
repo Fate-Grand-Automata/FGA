@@ -174,6 +174,12 @@ class DroidCvPattern(
         return minMaxLocResult.minVal >= 200
     }
 
+    override fun isBlack(): Boolean {
+        val minMaxLocResult = Core.minMaxLoc(mat)
+        // 0 = black, 255 = white
+        return minMaxLocResult.maxVal <= 55
+    }
+
     override fun floodFill(x: Double, y: Double, maxDiff: Double, newValue: Double): Pattern {
         val point = Point(x, y)
         this.mat.floodFill(point, maxDiff, newValue)

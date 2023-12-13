@@ -56,6 +56,8 @@ interface Pattern : AutoCloseable {
 
     fun isWhite(): Boolean
 
+    fun isBlack(): Boolean
+
     fun floodFill(x: Double, y: Double, maxDiff: Double, newValue: Double): Pattern
 
     fun fillText(): Pattern

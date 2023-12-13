@@ -48,5 +48,7 @@ interface AutomataApi {
 
     fun Region.isWhite(): Boolean
 
+    fun Region.isBlack(): Boolean
+
     fun Region.detectText(outlinedText: Boolean = false): String
 }

@@ -180,6 +180,7 @@ class AutoBattle @Inject constructor(
             },
             { isInMenu() } to { menu() },
             { isStartingNp() } to { skipNp() },
+            { isBetweenWaves() } to { locations.middleOfScreenClick.click() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
@@ -425,6 +426,12 @@ class AutoBattle @Inject constructor(
      */
     private fun isStartingNp() =
         prefs.gameServer.betterFgo && locations.npStartedRegion.isWhite()
+
+    /**
+     * Black screen probably means we're between waves.
+     */
+    private fun isBetweenWaves() =
+        locations.npStartedRegion.isBlack()
 
     /**
      * Taps in the bottom right a few times to trigger NP skip in BetterFGO.
