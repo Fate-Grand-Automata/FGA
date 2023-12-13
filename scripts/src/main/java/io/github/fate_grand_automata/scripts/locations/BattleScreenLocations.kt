@@ -114,4 +114,6 @@ class BattleScreenLocations @Inject constructor(
 
     val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
     val servantDetailsFaceCardRegion = Region(-685, 330, 110, 60).xFromCenter()
+
+    val battleSafeMiddleOfScreenClick = Location(0, 550).xFromCenter()
 }

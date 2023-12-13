@@ -180,7 +180,7 @@ class AutoBattle @Inject constructor(
             },
             { isInMenu() } to { menu() },
             { isStartingNp() } to { skipNp() },
-            { isBetweenWaves() } to { locations.middleOfScreenClick.click() },
+            { isBetweenWaves() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
@@ -193,7 +193,7 @@ class AutoBattle @Inject constructor(
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
-            { isDeathAnimation() } to { locations.middleOfScreenClick.click() },
+            { isDeathAnimation() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
             { isRankUp() } to { locations.middleOfScreenClick.click() }
 
         )
