@@ -180,7 +180,6 @@ class AutoBattle @Inject constructor(
             },
             { isInMenu() } to { menu() },
             { isStartingNp() } to { skipNp() },
-            { isBetweenWaves() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
@@ -194,8 +193,8 @@ class AutoBattle @Inject constructor(
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
             { isDeathAnimation() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
-            { isRankUp() } to { locations.middleOfScreenClick.click() }
-
+            { isRankUp() } to { locations.middleOfScreenClick.click() },
+            { isBetweenWaves() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
         )
 
         // Loop through SCREENS until a Validator returns true
