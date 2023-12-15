@@ -68,13 +68,13 @@ jobs:
         run: ./gradlew assembleCi --scan --parallel --no-daemon
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apk
           path: app/build/outputs/apk/ci/app-ci.apk
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mapping-ci
           path: app/build/outputs/mapping/ci/mapping.txt
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: apk
 
@@ -146,13 +146,13 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
 
       - name: Upload Bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
 
       - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
