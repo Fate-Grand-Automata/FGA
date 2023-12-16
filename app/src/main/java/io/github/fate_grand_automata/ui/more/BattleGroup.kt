@@ -6,7 +6,6 @@ import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.material.icons.filled.NoAccounts
 import androidx.compose.material.icons.filled.OfflineBolt
 import androidx.compose.material.icons.filled.Public
-import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import io.github.fate_grand_automata.R

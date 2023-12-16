@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -34,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -51,8 +54,11 @@ import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.StartMediaProjection
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.icon
+import io.github.fate_grand_automata.ui.prefs.LanguagePref
+import io.github.fate_grand_automata.ui.prefs.ListPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.util.OpenDocTreePersistable
+import java.util.Locale
 
 @Composable
 @OptIn(ExperimentalPermissionsApi::class)
@@ -262,6 +268,15 @@ private fun MainScreenContent(
                             summary = stringResource(R.string.p_battle_config_summary),
                             icon = icon(R.drawable.ic_formation),
                             onClick = { navigate(MainScreenDestinations.BattleConfigs) }
+                        )
+
+                        Divider()
+
+                        LanguagePref().ListPreference(
+                            title = stringResource(R.string.p_app_language),
+                            icon = icon(Icons.Default.Language),
+                            entries = stringArrayResource(id = R.array.available_languages)
+                                .associateWith { Locale.forLanguageTag(it).displayName }
                         )
 
                         Divider()

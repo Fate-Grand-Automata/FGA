@@ -58,6 +58,7 @@ fun OnboardingContent(
     val pages = remember {
         listOf(
             WelcomeScreen(vm),
+            PickLanguage(vm),
             PickDirectory(vm),
             DisableBatteryOptimization(vm),
             YoutubeVideo(vm)
@@ -65,7 +66,7 @@ fun OnboardingContent(
     }
 
     val scope = rememberCoroutineScope()
-    val pageState = rememberPagerState(pageCount = {pages.size},)
+    val pageState = rememberPagerState(pageCount = { pages.size })
     var nextEnabled by remember { mutableStateOf(true) }
 
     Column(modifier = Modifier.fillMaxSize()) {

@@ -16,4 +16,13 @@
     <string name="link_youtube" translatable="false">https://www.youtube.com/watch?v=JOwupZ4W8AQ&amp;t=4m10s</string>
     <string name="link_dontkillmyapp" translatable="false">https://dontkillmyapp.com/</string>
     <string name="link_donate" translatable="false">https://ko-fi.com/fategrandautomata</string>
+
+    <string-array name="available_languages">
+        <item>en</item>
+        <item>ja</item>
+        <item>zh-CN</item>
+        <item>zh-TW</item>
+        <item>ko</item>
+        <item>vi</item>
+    </string-array>
 </resources>
