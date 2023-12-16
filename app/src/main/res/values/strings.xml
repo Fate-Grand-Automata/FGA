@@ -17,12 +17,10 @@
     <string name="link_dontkillmyapp" translatable="false">https://dontkillmyapp.com/</string>
     <string name="link_donate" translatable="false">https://ko-fi.com/fategrandautomata</string>
 
-    <string-array name="available_languages">
-        <item>en</item>
-        <item>ja</item>
-        <item>zh-CN</item>
-        <item>zh-TW</item>
-        <item>ko</item>
-        <item>vi</item>
-    </string-array>
+    <string name="language_en" translatable="false">English</string>
+    <string name="language_ja" translatable="false">日本語</string>
+    <string name="language_zhCN" translatable="false">中文（中国）</string>
+    <string name="language_zhTW" translatable="false">中文（台湾）</string>
+    <string name="language_ko" translatable="false">한국어</string>
+    <string name="language_vi" translatable="false">Tiếng Việt</string>
 </resources>

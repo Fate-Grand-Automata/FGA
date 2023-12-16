@@ -36,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -58,7 +57,6 @@ import io.github.fate_grand_automata.ui.prefs.LanguagePref
 import io.github.fate_grand_automata.ui.prefs.ListPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.util.OpenDocTreePersistable
-import java.util.Locale
 
 @Composable
 @OptIn(ExperimentalPermissionsApi::class)
@@ -275,8 +273,7 @@ private fun MainScreenContent(
                         LanguagePref().ListPreference(
                             title = stringResource(R.string.p_app_language),
                             icon = icon(Icons.Default.Language),
-                            entries = stringArrayResource(id = R.array.available_languages)
-                                .associateWith { Locale.forLanguageTag(it).displayName }
+                            entries = LanguagePref.availableLanguages()
                         )
 
                         Divider()
