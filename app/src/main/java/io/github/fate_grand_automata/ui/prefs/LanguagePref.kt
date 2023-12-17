@@ -8,7 +8,7 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.Pref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlin.reflect.KProperty
 
 class LanguagePref : Pref<String> {
@@ -24,9 +24,7 @@ class LanguagePref : Pref<String> {
         )
     }
 
-    private val locale = MutableStateFlow(get())
-
-    override val defaultValue: String = "en"
+    override val defaultValue: String = get()
     override val key: String = "language"
 
     override fun resetToDefault() {
@@ -42,7 +40,9 @@ class LanguagePref : Pref<String> {
     }
 
     override fun asFlow(): Flow<String> {
-        return locale
+        return flow {
+            get()
+        }
     }
 
     override fun asSyncCollector(throwOnFailure: Boolean): FlowCollector<String> {
@@ -78,7 +78,6 @@ class LanguagePref : Pref<String> {
         AppCompatDelegate.setApplicationLocales(
             LocaleListCompat.forLanguageTags(value)
         )
-        locale.value = value
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {

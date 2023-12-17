@@ -161,7 +161,8 @@ fun MainScreen(
             } else {
                 navigate(MainScreenDestinations.AccessibilitySettings)
             }
-        }
+        },
+        languagePref = LanguagePref()
     )
 }
 
@@ -220,7 +221,8 @@ private fun MainScreenContent(
     overlayServiceStarted: Boolean,
     toggleOverlayService: () -> Unit,
     accessibilityServiceStarted: Boolean,
-    toggleAccessibilityService: () -> Unit
+    toggleAccessibilityService: () -> Unit,
+    languagePref: LanguagePref
 ) {
     Box {
         LazyColumn(
@@ -270,7 +272,7 @@ private fun MainScreenContent(
 
                         Divider()
 
-                        LanguagePref().ListPreference(
+                        languagePref.ListPreference(
                             title = stringResource(R.string.p_app_language),
                             icon = icon(Icons.Default.Language),
                             entries = LanguagePref.availableLanguages()
