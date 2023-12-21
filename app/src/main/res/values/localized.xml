@@ -455,7 +455,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="success">Success</string>
 
-    <string name="level_uo_by">"Level up by %d time(s)"</string>
+    <string name="level_up_by">"Level up by %d time(s)"</string>
     <string name="max_level">Max Level Achieved</string>
 
     <string name="servant_enhancement">Servant Enhancement</string>

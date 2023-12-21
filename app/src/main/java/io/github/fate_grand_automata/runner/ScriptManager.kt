@@ -272,7 +272,7 @@ class ScriptManager @Inject constructor(
                     }
 
                     is AutoServantEnhancement.ExitReason.Limit ->
-                        context.getString(R.string.level_uo_by, reason.count)
+                        context.getString(R.string.level_up_by, reason.count)
 
                     AutoServantEnhancement.ExitReason.MaxLevelAchieved ->
                         context.getString(R.string.max_level)
