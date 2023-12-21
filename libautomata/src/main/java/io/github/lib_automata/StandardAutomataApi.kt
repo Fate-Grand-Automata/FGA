@@ -57,6 +57,8 @@ class StandardAutomataApi @Inject constructor(
 
     override fun Region.isWhite() = imageMatcher.isWhite(this)
 
+    override fun Region.isBlack() = imageMatcher.isBlack(this)
+
     override fun Region.detectText(outlinedText: Boolean): String {
         screenshotManager.getScreenshot()
             .crop(transform.toImage(this))

@@ -48,6 +48,8 @@ interface AutomataApi {
 
     fun Region.isWhite(): Boolean
 
+    fun Region.isBlack(): Boolean
+
     fun Region.detectText(outlinedText: Boolean = false): String
 
     fun Location.longPress(duration: Int = 2000)

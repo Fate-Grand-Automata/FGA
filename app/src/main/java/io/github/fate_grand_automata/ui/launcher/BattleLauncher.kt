@@ -27,6 +27,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -64,7 +65,7 @@ fun battleLauncher(
                 }
             }
     }
-    var selectedConfigIndex by remember { mutableStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
+    var selectedConfigIndex by remember { mutableIntStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
 
     val perServerConfigPref by remember {
         mutableStateOf(
@@ -74,10 +75,9 @@ fun battleLauncher(
 
     var refillResources by remember { mutableStateOf(perServerConfigPref.resources.toSet()) }
 
-    //only display bronze option for JP and CN
-    val bronzeApplesEnabled = prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Cn
+    // hide bronze option for NA
+    val bronzeApplesEnabled = prefs.gameServer !is GameServer.En
     if (!bronzeApplesEnabled) {
-        //disable it in the settings otherwise
         refillResources = refillResources.minus(RefillResourceEnum.Bronze)
     }
     //TODO remove
@@ -87,11 +87,11 @@ fun battleLauncher(
     val availableRefills = RefillResourceEnum.values()
         .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
 
-    var copperApple by remember { mutableStateOf(perServerConfigPref.copperApple) }
-    var blueApple by remember { mutableStateOf(perServerConfigPref.blueApple) }
-    var silverApple by remember { mutableStateOf(perServerConfigPref.silverApple) }
-    var goldApple by remember { mutableStateOf(perServerConfigPref.goldApple) }
-    var rainbowApple by remember { mutableStateOf(perServerConfigPref.rainbowApple) }
+    var copperApple by remember { mutableIntStateOf(perServerConfigPref.copperApple) }
+    var blueApple by remember { mutableIntStateOf(perServerConfigPref.blueApple) }
+    var silverApple by remember { mutableIntStateOf(perServerConfigPref.silverApple) }
+    var goldApple by remember { mutableIntStateOf(perServerConfigPref.goldApple) }
+    var rainbowApple by remember { mutableIntStateOf(perServerConfigPref.rainbowApple) }
 
     val refillCount by remember {
         mutableStateOf(
@@ -109,11 +109,11 @@ fun battleLauncher(
     }
 
     var shouldLimitRuns by remember { mutableStateOf(perServerConfigPref.shouldLimitRuns) }
-    var limitRuns by remember { mutableStateOf(perServerConfigPref.limitRuns) }
+    var limitRuns by remember { mutableIntStateOf(perServerConfigPref.limitRuns) }
     var shouldLimitMats by remember { mutableStateOf(perServerConfigPref.shouldLimitMats) }
-    var limitMats by remember { mutableStateOf(perServerConfigPref.limitMats) }
+    var limitMats by remember { mutableIntStateOf(perServerConfigPref.limitMats) }
     var shouldLimitCEs by remember { mutableStateOf(perServerConfigPref.shouldLimitCEs) }
-    var limitCEs by remember { mutableStateOf(perServerConfigPref.limitCEs) }
+    var limitCEs by remember { mutableIntStateOf(perServerConfigPref.limitCEs) }
     var waitApRegen by remember { mutableStateOf(perServerConfigPref.waitForAPRegen) }
 
     var resetAllButton by remember { mutableStateOf(false) }

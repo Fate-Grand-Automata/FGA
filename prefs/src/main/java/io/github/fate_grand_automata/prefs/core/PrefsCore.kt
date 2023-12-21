@@ -19,7 +19,7 @@ class PrefsCore @Inject constructor(
         const val GAME_SERVER_AUTO_DETECT = "auto_detect"
 
         // increase for each changed Onboarding screen
-        const val CURRENT_ONBOARDING_VERSION = 1
+        const val CURRENT_ONBOARDING_VERSION = 2
     }
 
     val onboardingCompletedVersion = maker.int("onboarding_completed_version")
