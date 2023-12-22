@@ -17,8 +17,8 @@ class SkillUpgradeLocations @Inject constructor(
         }
         // JP option
         else -> when (isWide) {
-            false -> Region(-586, 19, 346, 93).xFromRight()
-            true -> Region(-756, 19, 346, 93).xFromRight()
+            false -> Region(-572, 48, 317, 59).xFromRight()
+            true -> Region(-742, 48, 317, 59).xFromRight()
         }
     }
 
