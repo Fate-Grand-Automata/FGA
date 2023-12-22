@@ -166,6 +166,8 @@ class AutoSkillUpgrade @Inject constructor(
             {
                 checkIfWillUpgradeSkill(targetLevel = targetLevel, index = skillNumber)
             } to { locations.enhancementClick.click() },
+            // case when all skills are level up returning to the main menu
+            { isServantEmpty() } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet)}
         )
 
         performSkillUpgradeLoop(
