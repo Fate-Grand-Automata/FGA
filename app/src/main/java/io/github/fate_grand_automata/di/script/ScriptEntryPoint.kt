@@ -21,4 +21,6 @@ interface ScriptEntryPoint {
     fun autoDetect(): AutoDetect
 
     fun playButtonDetection(): AutoPlayButtonDetection
+
+    fun append(): AutoAppend
 }

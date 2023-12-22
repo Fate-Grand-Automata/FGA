@@ -43,7 +43,9 @@ class ScriptLauncherResponseHandler @Inject constructor(
             }
 
             is ScriptLauncherResponse.SkillUpgrade -> {
-
+                // Do not remove this, we need this to only be updated once the user has pressed the "Ok" button
+                // otherwise, the config will carry over if the user selected new servant which the config does not
+                // match (e.g. skill 3 can be upgraded to servant A but not to servant B)
                 prefs.skillUpgrade.shouldUpgradeSkill1 = resp.shouldUpgradeSkill1
                 prefs.skillUpgrade.upgradeSkill1 = resp.upgradeSkill1
 
@@ -60,6 +62,21 @@ class ScriptLauncherResponseHandler @Inject constructor(
 
             is ScriptLauncherResponse.PlayButtonDetection ->
                 ScriptModeEnum.PlayButtonDetection
+
+            is ScriptLauncherResponse.Append -> {
+                // Do not remove this, we need this to only be updated once the user has pressed the "Ok" button
+                // otherwise, the config will carry over if the user selected new servant which the config does not
+                // match
+                prefs.append.shouldUnlockAppend1 = resp.shouldUnlockAppend1
+                prefs.append.shouldUnlockAppend2 = resp.shouldUnlockAppend2
+                prefs.append.shouldUnlockAppend3 = resp.shouldUnlockAppend3
+
+                prefs.append.upgradeAppend1 = resp.upgradeAppend1
+                prefs.append.upgradeAppend2 = resp.upgradeAppend2
+                prefs.append.upgradeAppend3 = resp.upgradeAppend3
+
+                ScriptModeEnum.Append
+            }
         }
     }
 }

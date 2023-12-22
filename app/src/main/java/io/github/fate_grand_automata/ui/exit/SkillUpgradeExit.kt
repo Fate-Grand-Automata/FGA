@@ -276,16 +276,16 @@ private fun AutoSkillUpgrade.ExitReason.text(): String = when (this) {
 @Composable
 private fun AutoSkillUpgrade.EnhancementExitReason.text(): String = when (this) {
     AutoSkillUpgrade.EnhancementExitReason.OutOfMatsException ->
-        stringResource(id = R.string.skill_enhancement_error_out_of_mats)
+        stringResource(id = R.string.enhancement_error_out_of_mats)
 
     AutoSkillUpgrade.EnhancementExitReason.OutOfQPException ->
-        stringResource(id = R.string.skill_enhancement_error_out_of_qp)
+        stringResource(id = R.string.enhancement_error_out_of_qp)
 
     AutoSkillUpgrade.EnhancementExitReason.ExitEarlyOutOfQPException ->
-        stringResource(id = R.string.skill_enhancement_error_exit_early_out_of_qp)
+        stringResource(id = R.string.enhancement_error_exit_early_out_of_qp)
 
     AutoSkillUpgrade.EnhancementExitReason.NoSkillUpgradeError ->
-        stringResource(id = R.string.skill_enhancement_error_no_enhancment)
+        stringResource(id = R.string.enhancement_error_no_enhancement)
 
     AutoSkillUpgrade.EnhancementExitReason.TargetLevelMet -> stringResource(id = R.string.success)
 }

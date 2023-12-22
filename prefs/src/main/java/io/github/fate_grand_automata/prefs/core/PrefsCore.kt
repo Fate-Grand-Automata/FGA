@@ -164,6 +164,8 @@ class PrefsCore @Inject constructor(
 
     val skillUpgrade = SkillUpgradePrefsCore(maker)
 
+    val append = AppendPrefsCore(maker)
+
     val servantEnhancement = ServantEnhancementPrefsCore(maker)
 
     val craftEssence = CraftEssencePrefsCore(maker)

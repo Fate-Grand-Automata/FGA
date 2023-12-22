@@ -53,6 +53,8 @@ interface IPreferences {
 
     val skillUpgrade: ISkillUpgradePreferences
 
+    val append: IAppendPreferences
+
     val servant: IServantEnhancementPreferences
 
     val craftEssence: ICraftEssencePreferences

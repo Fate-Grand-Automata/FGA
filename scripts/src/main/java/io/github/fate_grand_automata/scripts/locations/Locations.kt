@@ -19,7 +19,8 @@ class Locations @Inject constructor(
     val battle: BattleScreenLocations,
     val ceBomb: CEBombLocations,
     val skillUpgrade: SkillUpgradeLocations,
-    val servant: ServantEnhancementLocations
+    val servant: ServantEnhancementLocations,
+    val append: AppendLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()

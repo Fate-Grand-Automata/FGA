@@ -88,7 +88,7 @@ Skills"</string>
     <string name="p_runs">"Runs"</string>
     <string name="p_roll_limit">"Limit number of rolls"</string>
     <string name="p_roll_create_ce_bomb_after_summon">"Should the CE bomb script run after the maximum limit of CEs has been reached?"</string>
-    <string name="p_roll_create_ce_bomb_after_summon_note">"Note:"</string>
+    <string name="note">"Note:"</string>
     <string name="p_roll_create_ce_bomb_reminder">"- It will only redirect to the Craft Essence Enhancement menu when the maximum number of CEs has been reached."</string>
     <string name="p_receive_embers">"Receive embers"</string>
     <string name="p_battle_config_name">"Name"</string>
@@ -446,10 +446,10 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="ran_out_of_qp">Ran out of QP</string>
     <string name="done">Done</string>
 
-    <string name="skill_enhancement_error_no_enhancment">No enhancement perform</string>
-    <string name="skill_enhancement_error_exit_early_out_of_qp">Exit early due to Insufficient QP</string>
-    <string name="skill_enhancement_error_out_of_qp">Insufficient QP</string>
-    <string name="skill_enhancement_error_out_of_mats">Insufficient mats</string>
+    <string name="enhancement_error_no_enhancement">No enhancement perform</string>
+    <string name="enhancement_error_exit_early_out_of_qp">Exit early due to Insufficient QP</string>
+    <string name="enhancement_error_out_of_qp">Insufficient QP</string>
+    <string name="enhancement_error_out_of_mats">Insufficient mats</string>
 
     <string name="skill_enhancement_error_target_not_met">"Unable to finish enhancement to Lvl %d"</string>
 
@@ -473,5 +473,19 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_ignore_play_button_detection_warning">Ignore warning about play button\'s location.</string>
     <string name="p_fp_gacha_show_ce_bomb_settings">Show CE Bomb Settings</string>
     <string name="p_fp_gacha_hide_ce_bomb_settings">Hide CE Bomb Settings</string>
+
+    <string name="append">Append Skill</string>
+    <string name="append_1">Append 1</string>
+    <string name="append_2">Append 2</string>
+    <string name="append_3">Append 3</string>
+    <string name="should_unlock_append">Should Unlock?</string>
+    <string name="append_note">We can\'t detect the level of the append skill, so you need to set it manually how many times you want to upgrade it.</string>
+
+    <string name="append_unable_to_unlock">Unable to unlock append</string>
+    <string name="append_unlock_success">Successfully unlock!</string>
+    <string name="append_number">"Append %d"</string>
+    <string name="append_unable_to_upgrade_further">Unable to further Upgrade</string>
+    <string name="upgraded_number_of_times">Upgraded %d times</string>
+    <string name="append_unable_to_upgrade_n_times">Unable to upgrade %d times</string>
 
 </resources>

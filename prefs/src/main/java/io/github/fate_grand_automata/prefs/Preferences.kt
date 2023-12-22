@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.prefs
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.scripts.prefs.IAppendPreferences
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.ICraftEssencePreferences
 import io.github.fate_grand_automata.scripts.prefs.IFriendGachaPreferences
@@ -162,6 +163,8 @@ class PreferencesImpl @Inject constructor(
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
 
     override val skillUpgrade: ISkillUpgradePreferences = SkillUpgradePrefs(prefs.skillUpgrade)
+
+    override val append: IAppendPreferences = AppendPrefs(prefs.append)
 
     override val servant: IServantEnhancementPreferences =
         ServantEnhancementPrefs(prefs.servantEnhancement)

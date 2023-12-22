@@ -28,6 +28,15 @@ sealed class ScriptLauncherResponse {
     data object PlayButtonDetection : ScriptLauncherResponse()
 
     data object SupportImageMaker : ScriptLauncherResponse()
+
+    data class Append(
+        val shouldUnlockAppend1: Boolean,
+        val shouldUnlockAppend2: Boolean,
+        val shouldUnlockAppend3: Boolean,
+        val upgradeAppend1: Int,
+        val upgradeAppend2: Int,
+        val upgradeAppend3: Int,
+    ): ScriptLauncherResponse()
     data object Battle : ScriptLauncherResponse()
 }
 

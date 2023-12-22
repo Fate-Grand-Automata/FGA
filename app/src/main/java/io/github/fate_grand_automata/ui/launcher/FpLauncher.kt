@@ -147,7 +147,7 @@ fun fpLauncher(
                             )
                             Spacer(modifier = Modifier.padding(vertical = 4.dp))
                             Text(
-                                stringResource(R.string.p_roll_create_ce_bomb_after_summon_note),
+                                stringResource(R.string.note),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = if (shouldLimit) MaterialTheme.colorScheme.onSurface.copy(0.3f) else
                                     MaterialTheme.colorScheme.onSurface,

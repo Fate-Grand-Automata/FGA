@@ -9,5 +9,6 @@ enum class ScriptModeEnum {
     CEBomb,
     SkillUpgrade,
     ServantLevel,
-    PlayButtonDetection
+    PlayButtonDetection,
+    Append
 }

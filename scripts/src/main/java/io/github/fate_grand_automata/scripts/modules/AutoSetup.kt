@@ -90,4 +90,12 @@ class AutoSetup @Inject constructor(
     val isPlayButtonInGoodYLocation = playButton.location.y in
             locations.scriptAreaRaw.height * 5 / 8..locations.scriptAreaRaw.height
 
+    fun checkAppendLocks(){
+        useSameSnapIn {
+            prefs.append.isAppend1Locked = images[Images.AppendLock] in locations.append.lockLocations(0)
+            prefs.append.isAppend2Locked = images[Images.AppendLock] in locations.append.lockLocations(1)
+            prefs.append.isAppend3Locked = images[Images.AppendLock] in locations.append.lockLocations(2)
+        }
+    }
+
 }

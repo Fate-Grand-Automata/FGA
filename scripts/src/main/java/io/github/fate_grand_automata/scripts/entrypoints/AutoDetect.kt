@@ -40,7 +40,7 @@ class AutoDetect @Inject constructor(
             ) ->
                 ScriptModeEnum.SupportImageMaker
 
-            images[Images.CraftEssenceEnhancement] in locations.ceBomb.getCeEnhanceRegion ->{
+            images[Images.CraftEssenceEnhancement] in locations.ceBomb.getCeEnhanceRegion -> {
                 autoSetup.checkIfEmptyEnhance()
                 autoSetup.checkIfCanAutomaticDisplayChangeInCE()
                 ScriptModeEnum.CEBomb
@@ -53,6 +53,11 @@ class AutoDetect @Inject constructor(
 
             images[Images.ServantEnhancement] in locations.servant.getServantEnhancementRegion ->
                 ScriptModeEnum.ServantLevel
+
+            images[Images.AppendSkill] in locations.append.getAppendBannerRegion -> {
+                autoSetup.checkAppendLocks()
+                ScriptModeEnum.Append
+            }
 
             else -> ScriptModeEnum.Battle
         }
