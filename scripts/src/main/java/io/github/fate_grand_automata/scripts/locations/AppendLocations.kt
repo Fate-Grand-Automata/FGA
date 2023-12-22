@@ -16,7 +16,7 @@ class AppendLocations @Inject constructor(
         }
         // JP option
         else -> when (isWide) {
-            true -> Region(722, 38, 90, 70).xFromCenter()
+            true -> Region(-838, 38, 90, 70).xFromRight()
             false -> Region(-666, 36, 90, 71).xFromRight()
         }
     }
