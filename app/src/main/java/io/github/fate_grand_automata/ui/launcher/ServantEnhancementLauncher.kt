@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -98,6 +99,10 @@ fun servantEnhancementLauncher(
             )
         }
 
+        Divider(
+            modifier = Modifier.padding(vertical = 5.dp)
+        )
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -117,6 +122,10 @@ fun servantEnhancementLauncher(
             )
         }
 
+        Divider(
+            modifier = Modifier.padding(vertical = 5.dp)
+        )
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -135,6 +144,10 @@ fun servantEnhancementLauncher(
                 onCheckedChange = { shouldRedirectGrail = it }
             )
         }
+
+        Divider(
+            modifier = Modifier.padding(vertical = 5.dp)
+        )
     }
 
     return ScriptLauncherResponseBuilder(
