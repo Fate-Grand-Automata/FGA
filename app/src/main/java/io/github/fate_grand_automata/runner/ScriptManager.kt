@@ -300,9 +300,6 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoServantEnhancement.ExitException -> {
-                preferences.servant.shouldRedirectGrail = false
-                preferences.servant.shouldRedirectAscension = false
-
                 val msg = when (val reason = e.reason) {
                     AutoServantEnhancement.ExitReason.NoServantSelected ->
                         context.getString(R.string.enhancement_missing_servant)
