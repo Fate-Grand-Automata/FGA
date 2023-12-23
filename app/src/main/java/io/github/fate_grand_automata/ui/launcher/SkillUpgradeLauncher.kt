@@ -278,6 +278,14 @@ fun SkillUpgradeItem(
                         enabled = shouldUpgrade
                     )
                 }
+                item {
+                    TextButton(
+                        onClick = { onUpgradeLevelChange(minimumUpgrade)  },
+                        enabled = shouldUpgrade && (upgradeLevel + minimumUpgrade) != minimumUpgrade,
+                    ) {
+                        Text(text = stringResource(id = R.string.reset).uppercase())
+                    }
+                }
             }
 
         } else {
