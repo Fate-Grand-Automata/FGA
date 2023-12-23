@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
@@ -61,6 +62,13 @@ fun servantEnhancementLauncher(
         Text(
             text = stringResource(id = R.string.servant_enhancement),
             style = MaterialTheme.typography.headlineSmall
+        )
+        Divider()
+
+        Text(
+            text = stringResource(R.string.note),
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold
         )
 
         Text(
