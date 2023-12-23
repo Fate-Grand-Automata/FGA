@@ -152,6 +152,10 @@ class AutoSkillUpgrade @Inject constructor(
 
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
+            // case when all skills are level up returning to the main menu
+            { isServantEmpty() } to {
+                exitEnhancementLoopAsAllSkillsAreMaxedOut(skillNumber=skillNumber)
+            },
             {
                 isTheTargetUpgradeMet(
                     region = skillRegion,
@@ -166,14 +170,17 @@ class AutoSkillUpgrade @Inject constructor(
             {
                 checkIfWillUpgradeSkill(targetLevel = targetLevel, index = skillNumber)
             } to { locations.enhancementClick.click() },
-            // case when all skills are level up returning to the main menu
-            { isServantEmpty() } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet)}
         )
 
         performSkillUpgradeLoop(
             currentSkillScreen = screens,
             skillNumber = skillNumber
         )
+    }
+
+    private fun exitEnhancementLoopAsAllSkillsAreMaxedOut(skillNumber: Int) {
+        updateCurrentSkillLevel(level = 10, index = skillNumber)
+        throw EnhancementException(EnhancementExitReason.TargetLevelMet)
     }
 
     private fun performSkillUpgradeLoop(
