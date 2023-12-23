@@ -133,8 +133,9 @@ private fun AppendItem(
         modifier = modifier
             .fillMaxHeight()
             .clickable(
+                enabled = isLocked,
                 onClick = {
-
+                    onShouldUnlockChange(!shouldUnlock)
                 }
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
