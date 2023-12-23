@@ -53,6 +53,11 @@ class ServantEnhancementLocations @Inject constructor(
         false -> Region(615, 1049, 54, 124).xFromCenter()
     }
 
+    val getServantRedirectRegion = when(isWide) {
+        true -> Region(689, 1015, 43, 111).xFromCenter()
+        false -> Region(689, 1060, 43, 111).xFromCenter()
+    }
+
     val getAutoSelectMinEmberLowQPRegion = when (isWide) {
         true -> Region(341, 1094, 120, 60).xFromCenter()
         false -> Region(342, 1096, 121, 60).xFromCenter()

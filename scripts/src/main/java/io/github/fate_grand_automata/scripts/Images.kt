@@ -72,6 +72,8 @@ enum class Images {
     ServantAutoSelect,
     ServantAutoSelectOff,
     ServantMaxLevel,
+    ServantGrail,
+    ServantAscension,
     Execute,
     AppendSkill,
     AppendLock

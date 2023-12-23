@@ -5,4 +5,8 @@ class ServantEnhancementPrefsCore(maker: PrefMaker) {
     val shouldLimit = maker.bool("limit_servant_enhancement")
 
     val limitCount = maker.stringAsInt("limit_servant_enhancement_count", default = 1)
+
+    val shouldRedirectAscension = maker.bool("redirect_servant_ascension")
+
+    val shouldRedirectGrail = maker.bool("redirect_servant_grail")
 }

@@ -4,4 +4,6 @@ interface IServantEnhancementPreferences {
 
     var shouldLimit: Boolean
     var limitCount: Int
+    var shouldRedirectAscension: Boolean
+    var shouldRedirectGrail: Boolean
 }

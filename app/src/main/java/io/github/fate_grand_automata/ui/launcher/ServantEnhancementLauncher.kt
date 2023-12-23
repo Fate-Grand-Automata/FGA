@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.ui.Stepper
+import io.github.fate_grand_automata.ui.prefs.remember
 
 
 @Composable
@@ -39,6 +40,11 @@ fun servantEnhancementLauncher(
     var limitCount by remember {
         mutableStateOf(1)
     }
+
+    var shouldRedirectAscension by prefsCore.servantEnhancement.shouldRedirectAscension.remember()
+
+    var shouldRedirectGrail by prefsCore.servantEnhancement.shouldRedirectGrail.remember()
+
     DisposableEffect(Unit){
         onDispose {
             prefsCore.servantEnhancement.limitCount.set(limitCount)
@@ -89,6 +95,44 @@ fun servantEnhancementLauncher(
                 onValueChange = { limitCount = it },
                 valueRange = 1..999,
                 enabled = shouldLimit
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { shouldRedirectAscension = !shouldRedirectAscension }
+        ) {
+            Text(
+                stringResource(R.string.servant_enhancement_redirect_ascension),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            Switch(
+                checked = shouldRedirectAscension,
+                onCheckedChange = { shouldRedirectAscension = it }
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { shouldRedirectGrail = !shouldRedirectGrail }
+        ) {
+            Text(
+                stringResource(R.string.servant_enhancement_redirect_grail),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            Switch(
+                checked = shouldRedirectGrail,
+                onCheckedChange = { shouldRedirectGrail = it }
             )
         }
     }

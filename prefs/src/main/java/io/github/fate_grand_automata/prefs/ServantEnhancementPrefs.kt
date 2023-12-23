@@ -8,4 +8,7 @@ internal class ServantEnhancementPrefs(
 ) : IServantEnhancementPreferences {
     override var shouldLimit: Boolean by prefsCore.shouldLimit
     override var limitCount: Int by prefsCore.limitCount
+
+    override var shouldRedirectAscension: Boolean by prefsCore.shouldRedirectAscension
+    override var shouldRedirectGrail: Boolean by prefsCore.shouldRedirectGrail
 }

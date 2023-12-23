@@ -120,6 +120,8 @@ class ImageLoader @Inject constructor(
         Images.ServantAutoSelect -> "servant_auto_select.png"
         Images.ServantAutoSelectOff -> "servant_auto_select_off.png"
         Images.ServantMaxLevel -> "servant_max_level.png"
+        Images.ServantGrail -> "servant_grail.png"
+        Images.ServantAscension -> "servant_ascension.png"
         Images.Execute -> "execute.png"
         Images.AppendSkill -> "append_skill.png"
         Images.AppendLock -> "append_lock.png"

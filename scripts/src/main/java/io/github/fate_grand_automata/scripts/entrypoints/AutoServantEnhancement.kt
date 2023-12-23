@@ -31,6 +31,10 @@ class AutoServantEnhancement @Inject constructor(
 
         data object MaxLevelAchieved : ExitReason()
 
+        data object RedirectAscension : ExitReason()
+
+        data object RedirectGrail : ExitReason()
+
         data class Limit(val count: Int) : ExitReason()
 
     }
@@ -67,7 +71,7 @@ class AutoServantEnhancement @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { isLimitReached() } to
                     { throw ServantUpgradeException(ExitReason.Limit(prefs.servant.limitCount - limitCount)) },
-            { isMaxLevel() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
+            { isMaxLevel() } to { checkIfRedirectOrExitAfterMaxLevel() },
             { isOutOfQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) },
             { isAutoSelectMinEmberLowQP() } to { performMinEmberLowQPEnhancement() },
             { isEmberSelectionDialogOpen() } to { performEnhancement() },
@@ -89,6 +93,24 @@ class AutoServantEnhancement @Inject constructor(
             actor.invoke()
 
             0.5.seconds.wait()
+        }
+    }
+
+    private fun checkIfRedirectOrExitAfterMaxLevel() {
+        when{
+            prefs.servant.shouldRedirectAscension && isRedirectAscensionVisible() -> {
+                locations.servant.getServantRedirectRegion.click()
+                15.seconds.wait()
+                throw ServantUpgradeException(ExitReason.RedirectAscension)
+            }
+            prefs.servant.shouldRedirectGrail && isRedirectGrailVisible() -> {
+                locations.servant.getServantRedirectRegion.click()
+                15.seconds.wait()
+                throw ServantUpgradeException(ExitReason.RedirectGrail)
+            }
+            else ->{
+                throw ServantUpgradeException(ExitReason.MaxLevelAchieved)
+            }
         }
     }
 
@@ -149,4 +171,9 @@ class AutoServantEnhancement @Inject constructor(
     // This is for the temporary servants as they cannot do palingenesis and
     // thus needed another way to check if they are max level at FA
     private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in locations.servant.getAutoSelectRegion
+
+    private fun isRedirectGrailVisible() = images[Images.ServantGrail] in locations.servant.getServantRedirectRegion
+
+    private fun isRedirectAscensionVisible() = images[Images.ServantAscension] in
+            locations.servant.getServantRedirectRegion
 }
