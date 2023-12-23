@@ -493,5 +493,6 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="append_unable_to_upgrade_n_times">Unable to upgrade %d times</string>
 
     <string name="mute_notifications">Mute Notifications?</string>
+    <string name="append_upgrade_all_question">Should upgrade all available append?</string>
 
 </resources>

@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.ui.launcher
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,8 +12,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -27,14 +31,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
-import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.Stepper
 import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
 fun appendLauncher(
     prefsCore: PrefsCore,
-    prefs: IPreferences,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
 
@@ -49,6 +51,32 @@ fun appendLauncher(
     var upgradeAppend1 by remember { mutableIntStateOf(0) }
     var upgradeAppend2 by remember { mutableIntStateOf(0) }
     var upgradeAppend3 by remember { mutableIntStateOf(0) }
+
+    var upgradeAll by remember { mutableIntStateOf(0) }
+    var shouldUpgradeAll by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = shouldUpgradeAll, block = {
+        if (isAppend1Locked) {
+            shouldUnlockAppend1 = shouldUpgradeAll == true
+        }
+        if (isAppend2Locked) {
+            shouldUnlockAppend2 = shouldUpgradeAll == true
+        }
+        if (isAppend3Locked) {
+            shouldUnlockAppend3 = shouldUpgradeAll == true
+        }
+    })
+    LaunchedEffect(key1 = upgradeAll, block ={
+        if (!isAppend1Locked || shouldUnlockAppend1) {
+            upgradeAppend1 = upgradeAll
+        }
+        if (!isAppend2Locked || shouldUnlockAppend2) {
+            upgradeAppend2 = upgradeAll
+        }
+        if (!isAppend3Locked || shouldUnlockAppend3) {
+            upgradeAppend3 = upgradeAll
+        }
+    })
 
     Column(
         modifier = modifier
@@ -71,6 +99,51 @@ fun appendLauncher(
             text = stringResource(R.string.append_note),
             style = MaterialTheme.typography.bodyMedium
         )
+
+        Divider()
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { shouldUpgradeAll = !shouldUpgradeAll }
+        ) {
+            Text(
+                stringResource(R.string.append_upgrade_all_question),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            Switch(
+                checked = shouldUpgradeAll,
+                onCheckedChange = { shouldUpgradeAll = it }
+            )
+        }
+
+        Box(
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TextButton(
+                    onClick = { upgradeAll = 0 },
+                    enabled = shouldUpgradeAll,
+                    modifier = Modifier.alignByBaseline()
+                ) {
+                    Text(text = stringResource(id = R.string.reset).uppercase())
+                }
+                Stepper(
+                    modifier = Modifier.alignByBaseline(),
+                    value = upgradeAll,
+                    onValueChange = { upgradeAll = it },
+                    valueRange = 0..9,
+                    enabled = shouldUpgradeAll,
+                )
+            }
+        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -175,6 +248,14 @@ private fun AppendItem(
                 valueRange = 0..9,
                 enabled = !isLocked || shouldUnlock
             )
+        }
+        item {
+            TextButton(
+                onClick = { onUpgradeLevelChange(0)  },
+                enabled = (!isLocked || shouldUnlock) && upgradeLevel != 0,
+            ) {
+                Text(text = stringResource(id = R.string.reset).uppercase())
+            }
         }
     }
 }
