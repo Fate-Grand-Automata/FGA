@@ -469,7 +469,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_redirect_ascension_success">Redirected to Ascension.</string>
     <string name="servant_enhancement_redirect_grail_success">Redirected to Palingenesis.</string>
 
-    <string name="skill_enhancement_all_question">Should update all available skill?</string>
+    <string name="skill_enhancement_all_question">Should upgrade all available skill?</string>
 
     <string name="p_script_mode_play_button_detection">Play Button Detection</string>
     <string name="p_play_button_detection_explanation">Place the play button on the bottom left of the screen for optimal configuration</string>
