@@ -9,4 +9,6 @@ class ServantEnhancementPrefsCore(maker: PrefMaker) {
     val shouldRedirectAscension = maker.bool("redirect_servant_ascension")
 
     val shouldRedirectGrail = maker.bool("redirect_servant_grail")
+
+    val muteNotifications = maker.bool("mute_servant_enhancement_notifications")
 }

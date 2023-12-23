@@ -6,4 +6,6 @@ interface IServantEnhancementPreferences {
     var limitCount: Int
     var shouldRedirectAscension: Boolean
     var shouldRedirectGrail: Boolean
+
+    var muteNotifications: Boolean
 }

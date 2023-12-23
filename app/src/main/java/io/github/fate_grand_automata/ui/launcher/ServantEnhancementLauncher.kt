@@ -47,6 +47,8 @@ fun servantEnhancementLauncher(
 
     var shouldRedirectGrail by prefsCore.servantEnhancement.shouldRedirectGrail.remember()
 
+    var muteNotifications by prefsCore.servantEnhancement.muteNotifications.remember()
+
     DisposableEffect(Unit){
         onDispose {
             prefsCore.servantEnhancement.limitCount.set(limitCount)
@@ -76,6 +78,8 @@ fun servantEnhancementLauncher(
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Justify
         )
+
+        Divider()
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -156,6 +160,25 @@ fun servantEnhancementLauncher(
         Divider(
             modifier = Modifier.padding(vertical = 5.dp)
         )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { muteNotifications = !muteNotifications }
+        ) {
+            Text(
+                stringResource(R.string.mute_notifications),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            Switch(
+                checked = muteNotifications,
+                onCheckedChange = { muteNotifications = it }
+            )
+        }
     }
 
     return ScriptLauncherResponseBuilder(

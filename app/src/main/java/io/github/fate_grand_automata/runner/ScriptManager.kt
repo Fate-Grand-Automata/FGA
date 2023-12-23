@@ -328,8 +328,9 @@ class ScriptManager @Inject constructor(
                     AutoServantEnhancement.ExitReason.RedirectGrail ->
                         context.getString(R.string.servant_enhancement_redirect_grail_success)
                 }
-
-                messages.notify(msg)
+                if (!preferences.servant.muteNotifications){
+                    messages.notify(msg)
+                }
                 messageBox.show(scriptExitedString, msg)
             }
             is AutoPlayButtonDetection.ExitException -> {
