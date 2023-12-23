@@ -39,9 +39,8 @@ class ServantEnhancementLocations @Inject constructor(
 
     fun getNoEmberOrQPDialogRegion(server: GameServer) = when (server) {
         is GameServer.En -> Region(-109, 1088, 218, 72).xFromCenter()
-        is GameServer.Jp -> Region(-111, 1088, 218, 72).xFromCenter()
-        // Other servers are not supported
-        else -> Region(-109, 1088, 218, 72).xFromCenter()
+        // JP Option
+        else -> Region(-111, 1088, 218, 72).xFromCenter()
     }
 
     val getFinalConfirmRegion = Region(341, 1145, 120, 60).xFromCenter()
