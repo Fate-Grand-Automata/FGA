@@ -58,8 +58,17 @@ fun ScriptRunnerUI(
                 }
 
             Surface(
-                color = MaterialTheme.colorScheme.surface,
-                contentColor = if (isRecording) MaterialTheme.colorScheme.error else Color.White,
+                color = when (state) {
+                    ScriptRunnerUIState.Running -> MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                    else -> MaterialTheme.colorScheme.surface
+                },
+                contentColor = when (state) {
+                    ScriptRunnerUIState.Running -> {
+                        val color = if (isRecording) MaterialTheme.colorScheme.error else Color.White
+                        color.copy(alpha = 0.5f)
+                    }
+                    else -> Color.White
+                },
                 tonalElevation = 5.dp,
                 shape = CircleShape,
                 onClick = {
