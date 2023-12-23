@@ -74,6 +74,8 @@ enum class Images {
     ServantMaxLevel,
     ServantGrail,
     ServantAscension,
+    ServantGrailBanner,
+    ServantAscensionBanner,
     Execute,
     AppendSkill,
     AppendLock

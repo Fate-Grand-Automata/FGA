@@ -100,12 +100,12 @@ class AutoServantEnhancement @Inject constructor(
         when{
             prefs.servant.shouldRedirectAscension && isRedirectAscensionVisible() -> {
                 locations.servant.getServantRedirectRegion.click()
-                15.seconds.wait()
+                waitUntilAscensionVisible()
                 throw ServantUpgradeException(ExitReason.RedirectAscension)
             }
             prefs.servant.shouldRedirectGrail && isRedirectGrailVisible() -> {
                 locations.servant.getServantRedirectRegion.click()
-                15.seconds.wait()
+                waitUntilGrailVisible()
                 throw ServantUpgradeException(ExitReason.RedirectGrail)
             }
             else ->{
@@ -176,4 +176,16 @@ class AutoServantEnhancement @Inject constructor(
 
     private fun isRedirectAscensionVisible() = images[Images.ServantAscension] in
             locations.servant.getServantRedirectRegion
+
+    private fun waitUntilGrailVisible() = locations.servant.getServantEnhancementRegion.exists(
+        images[Images.ServantGrailBanner],
+        similarity = 0.7,
+        timeout = 15.seconds
+    )
+
+    private fun waitUntilAscensionVisible() = locations.servant.getServantEnhancementRegion.exists(
+        images[Images.ServantAscensionBanner],
+        similarity = 0.7,
+        timeout = 15.seconds
+    )
 }

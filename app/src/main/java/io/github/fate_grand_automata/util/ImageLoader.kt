@@ -122,6 +122,8 @@ class ImageLoader @Inject constructor(
         Images.ServantMaxLevel -> "servant_max_level.png"
         Images.ServantGrail -> "servant_grail.png"
         Images.ServantAscension -> "servant_ascension.png"
+        Images.ServantGrailBanner -> "servant_redirect_palingenesis.png"
+        Images.ServantAscensionBanner -> "servant_redirect_ascension.png"
         Images.Execute -> "execute.png"
         Images.AppendSkill -> "append_skill.png"
         Images.AppendLock -> "append_lock.png"
