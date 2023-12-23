@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
@@ -34,7 +36,7 @@ fun appendLauncher(
     prefsCore: PrefsCore,
     prefs: IPreferences,
     modifier: Modifier = Modifier
-) : ScriptLauncherResponseBuilder{
+): ScriptLauncherResponseBuilder {
 
     val isAppend1Locked by prefsCore.append.isAppend1Locked.remember()
     val isAppend2Locked by prefsCore.append.isAppend2Locked.remember()
@@ -74,7 +76,7 @@ fun appendLauncher(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
-        ){
+        ) {
             AppendItem(
                 modifier = Modifier.weight(1f),
                 name = stringResource(id = R.string.append_1),
@@ -108,14 +110,16 @@ fun appendLauncher(
 
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
-        build = { ScriptLauncherResponse.Append(
-            shouldUnlockAppend1 = shouldUnlockAppend1,
-            shouldUnlockAppend2 = shouldUnlockAppend2,
-            shouldUnlockAppend3 = shouldUnlockAppend3,
-            upgradeAppend1 = upgradeAppend1,
-            upgradeAppend2 = upgradeAppend2,
-            upgradeAppend3 = upgradeAppend3
-        ) }
+        build = {
+            ScriptLauncherResponse.Append(
+                shouldUnlockAppend1 = shouldUnlockAppend1,
+                shouldUnlockAppend2 = shouldUnlockAppend2,
+                shouldUnlockAppend3 = shouldUnlockAppend3,
+                upgradeAppend1 = upgradeAppend1,
+                upgradeAppend2 = upgradeAppend2,
+                upgradeAppend3 = upgradeAppend3
+            )
+        }
     )
 }
 
@@ -128,7 +132,7 @@ private fun AppendItem(
     onShouldUnlockChange: (Boolean) -> Unit,
     upgradeLevel: Int,
     onUpgradeLevelChange: (Int) -> Unit,
-){
+) {
     LazyColumn(
         modifier = modifier
             .fillMaxHeight()
@@ -140,18 +144,21 @@ private fun AppendItem(
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-    ){
+    ) {
         item {
             Text(
-                text = name,
-                style = MaterialTheme.typography.bodyMedium
+                text = name.uppercase(),
+                style = MaterialTheme.typography.bodyMedium,
+                textDecoration = TextDecoration.Underline,
+                textAlign = TextAlign.Center,
             )
         }
-        if (isLocked){
+        if (isLocked) {
             item {
                 Text(
                     text = stringResource(id = R.string.should_unlock_append),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 8.dp)
                 )
             }
             item {
