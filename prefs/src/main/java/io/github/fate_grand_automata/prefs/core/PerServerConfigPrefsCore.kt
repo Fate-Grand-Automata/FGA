@@ -45,4 +45,7 @@ class PerServerConfigPrefsCore(
 
 
     val refill = RefillPrefsCore(maker)
+
+    val autoAcceptFriendRequest = maker.bool("auto_accept_friend_request")
+    val isFriendListFull = maker.bool("is_friend_list_full")
 }

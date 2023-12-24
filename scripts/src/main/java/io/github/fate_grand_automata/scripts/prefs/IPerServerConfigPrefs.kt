@@ -30,4 +30,7 @@ interface IPerServerConfigPrefs {
 
     var shouldLimitCEs: Boolean
     var limitCEs: Int
+
+    var autoAcceptFriendRequest: Boolean
+    var isFriendListFull: Boolean
 }

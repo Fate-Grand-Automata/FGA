@@ -495,4 +495,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="mute_notifications">Mute Notifications?</string>
     <string name="append_upgrade_all_question">Should upgrade all available append?</string>
 
+
+    <string name="p_auto_accept_friend_request">Auto accept Friend Request?</string>
+
 </resources>

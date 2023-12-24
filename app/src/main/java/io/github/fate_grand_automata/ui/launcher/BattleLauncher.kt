@@ -118,6 +118,8 @@ fun battleLauncher(
 
     var resetAllButton by remember { mutableStateOf(false) }
 
+    var autoAcceptFriendRequest by remember { mutableStateOf(perServerConfigPref.autoAcceptFriendRequest) }
+
     DisposableEffect(Unit) {
         onDispose {
             perServerConfigPref.shouldLimitRuns = shouldLimitRuns
@@ -140,6 +142,8 @@ fun battleLauncher(
             if (selectedConfigIndex > -1) {
                 prefs.selectedBattleConfig = configs[selectedConfigIndex]
             }
+            perServerConfigPref.autoAcceptFriendRequest = autoAcceptFriendRequest
+            perServerConfigPref.isFriendListFull = false
         }
     }
 
@@ -368,6 +372,38 @@ fun battleLauncher(
                     count = limitCEs,
                     onCountChange = { limitCEs = it }
                 )
+            }
+            item {
+                Divider()
+            }
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clickable {
+                                autoAcceptFriendRequest = !autoAcceptFriendRequest
+                            }
+                    ) {
+                        Checkbox(
+                            checked = autoAcceptFriendRequest,
+                            onCheckedChange = {
+                                autoAcceptFriendRequest = it
+                            },
+                            modifier = Modifier
+                        )
+
+                        Text(
+                            text= stringResource(R.string.p_auto_accept_friend_request),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
             }
         }
     }
