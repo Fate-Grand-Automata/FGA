@@ -27,6 +27,9 @@ interface IBattleConfig {
     val autoChooseTarget: Boolean
 
     val server: GameServer?
+    
+    val addRaidTurnDelay: Boolean
+    val raidTurnDelaySeconds : Int
 
     fun export(): Map<String, *>
 

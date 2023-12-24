@@ -44,6 +44,10 @@ internal class BattleConfig(
 
     override var spam by prefs.spam
 
+    override val addRaidTurnDelay by prefs.addRaidTurnDelay
+
+    override val raidTurnDelaySeconds by prefs.raidTurnDelaySeconds
+
     override fun export(): Map<String, *> = prefs.export()
 
     override fun import(map: Map<String, *>) =

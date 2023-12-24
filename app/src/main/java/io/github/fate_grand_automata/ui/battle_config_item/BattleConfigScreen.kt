@@ -209,12 +209,26 @@ private fun BattleConfigContent(
                                 ) {
                                     config.materials.Materials()
                                 }
+                            }
 
+                            Divider(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
+                            )
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
+                                RaidDelay(
+                                    modifier = Modifier.weight(1f),
+                                    config = config
+                                )
                                 VerticalDivider()
-
                                 Box(
                                     modifier = Modifier
                                         .fillMaxHeight()
+                                        .weight(1f)
                                         .clickable(onClick = { navigate(BattleConfigDestination.Spam) }),
                                     contentAlignment = Alignment.Center
                                 ) {
@@ -225,17 +239,21 @@ private fun BattleConfigContent(
                                             .padding(16.dp, 5.dp)
                                     )
                                 }
-
                                 VerticalDivider()
-
-                                ServerSelection(config)
-
+                                ServerSelection(
+                                    modifier = Modifier.weight(1f),
+                                    config = config
+                                )
                                 VerticalDivider()
-
-                                PartySelection(config)
+                                PartySelection(
+                                    modifier = Modifier.weight(1f),
+                                    config = config
+                                )
                             }
 
-                            Divider()
+                            Divider(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
+                            )
 
                             val cardPriority by vm.cardPriority.collectAsState(null)
 
