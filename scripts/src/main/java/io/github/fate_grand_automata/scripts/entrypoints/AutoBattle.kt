@@ -317,6 +317,15 @@ class AutoBattle @Inject constructor(
         // Count the current run
         state.nextRun()
 
+        2.seconds.wait()
+        val isBlackScreen = isBetweenWaves()
+        if (isBlackScreen){
+            locations.menuScreenRegion.exists(
+                images[Images.Menu],
+                similarity = 0.7,
+                timeout = 15.seconds
+            )
+        }
         throw BattleExitException(ExitReason.StormPodRanOut)
     }
 
