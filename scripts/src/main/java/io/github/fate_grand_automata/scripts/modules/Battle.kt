@@ -70,6 +70,9 @@ class Battle @Inject constructor(
 
         if (battleConfig.addRaidTurnDelay){
             battleConfig.raidTurnDelaySeconds.seconds.wait()
+
+            // snap another screenshot for the raid
+            isIdle()
         }
 
         onTurnStarted()
