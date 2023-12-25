@@ -68,11 +68,11 @@ class Battle @Inject constructor(
     fun performBattle() {
         prefs.waitBeforeTurn.wait()
 
-        onTurnStarted()
-
         if (battleConfig.addRaidTurnDelay){
             battleConfig.raidTurnDelaySeconds.seconds.wait()
         }
+
+        onTurnStarted()
 
         servantTracker.beginTurn()
 
