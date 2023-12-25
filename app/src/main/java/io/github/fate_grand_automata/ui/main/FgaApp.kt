@@ -126,6 +126,7 @@ fun FgaApp(
             composable(NavConstants.battleConfigs) {
                 BattleConfigListScreen(
                     vm = hiltViewModel(),
+                    windowSizeClass = windowSizeClass,
                     navigate = { navigate(NavConstants.battleConfigItem, it) }
                 )
             }

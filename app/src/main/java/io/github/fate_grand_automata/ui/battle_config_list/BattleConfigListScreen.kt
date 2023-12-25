@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.ui.battle_config_list
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -11,8 +10,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -20,13 +20,14 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,6 +44,7 @@ import io.github.fate_grand_automata.util.stringRes
 @Composable
 fun BattleConfigListScreen(
     vm: BattleConfigListViewModel = viewModel(),
+    windowSizeClass: WindowSizeClass,
     navigate: (String) -> Unit
 ) {
     val selectionMode by vm.selectionMode.collectAsState()
@@ -83,6 +85,7 @@ fun BattleConfigListScreen(
         configs = configs,
         selectionMode = selectionMode,
         selectedConfigs = selectedConfigs,
+        windowSizeClass= windowSizeClass,
         action = {
             when (it) {
                 BattleConfigListAction.AddNew -> {
@@ -108,10 +111,10 @@ fun BattleConfigListScreen(
 }
 
 private sealed class BattleConfigListAction {
-    object Export : BattleConfigListAction()
-    object Import : BattleConfigListAction()
-    object Delete : BattleConfigListAction()
-    object AddNew : BattleConfigListAction()
+    data object Export : BattleConfigListAction()
+    data object Import : BattleConfigListAction()
+    data object Delete : BattleConfigListAction()
+    data object AddNew : BattleConfigListAction()
     class ToggleSelected(val id: String) : BattleConfigListAction()
     class StartSelection(val id: String) : BattleConfigListAction()
     class Edit(val id: String) : BattleConfigListAction()
@@ -120,12 +123,13 @@ private sealed class BattleConfigListAction {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 private fun BattleConfigListContent(
+    windowSizeClass: WindowSizeClass,
     configs: List<BattleConfigCore>,
     selectionMode: Boolean,
     selectedConfigs: Set<String>,
     action: (BattleConfigListAction) -> Unit
 ) {
-    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val isLandscape = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact
 
     Box {
         Box(
@@ -177,12 +181,14 @@ private fun BattleConfigListContent(
                         selectionMode = selectionMode,
                         action = action,
                         selectedConfigs = selectedConfigs,
+                        windowSizeClass= windowSizeClass,
                         modifier = Modifier
                             .weight(1f)
                     )
                 } else {
                     Tabbed(
-                        items = listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) + servers.map { BattleConfigCore.Server.Set(it) },
+                        items = listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) +
+                                servers.map { BattleConfigCore.Server.Set(it) },
                         heading = {
                             Text(
                                 when (it) {
@@ -206,7 +212,8 @@ private fun BattleConfigListContent(
                                 configs = filteredConfigs,
                                 selectionMode = selectionMode,
                                 action = action,
-                                selectedConfigs = selectedConfigs
+                                selectedConfigs = selectedConfigs,
+                                windowSizeClass= windowSizeClass,
                             )
                         },
                         modifier = Modifier
@@ -258,12 +265,18 @@ private fun ConfigList(
     selectionMode: Boolean,
     action: (BattleConfigListAction) -> Unit,
     selectedConfigs: Set<String>,
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(top = 16.dp)
-    ) {
+    LazyVerticalGrid(
+        columns = when (windowSizeClass.widthSizeClass) {
+            WindowWidthSizeClass.Medium -> GridCells.Fixed(2)
+            WindowWidthSizeClass.Expanded -> GridCells.Fixed(3)
+            else -> GridCells.Fixed(1)
+        },
+        contentPadding = PaddingValues(top = 16.dp),
+        modifier = modifier
+    ){
         if (configs.isEmpty()) {
             item {
                 Text(
@@ -272,30 +285,36 @@ private fun ConfigList(
                 )
             }
         } else {
-            items(
-                configs,
-                key = { it.id }
-            ) {
-                BattleConfigListItem(
-                    it,
-                    onClick = {
-                        if (selectionMode) {
-                            action(BattleConfigListAction.ToggleSelected(it.id))
-                        } else {
-                            action(BattleConfigListAction.Edit(it.id))
-                        }
-                    },
-                    onLongClick = {
-                        if (!selectionMode) {
-                            action(BattleConfigListAction.StartSelection(it.id))
-                        }
-                    },
-                    isSelectionMode = selectionMode,
-                    isSelected = selectionMode && it.id in selectedConfigs
-                )
+            configs.forEach { config ->
+                item(
+                    config.id,
+                    span = {
+                        GridItemSpan(1)
+                    }
+                ) {
+                    BattleConfigListItem(
+                        config,
+                        onClick = {
+                            if (selectionMode) {
+                                action(BattleConfigListAction.ToggleSelected(config.id))
+                            } else {
+                                action(BattleConfigListAction.Edit(config.id))
+                            }
+                        },
+                        onLongClick = {
+                            if (!selectionMode) {
+                                action(BattleConfigListAction.StartSelection(config.id))
+                            }
+                        },
+                        isSelectionMode = selectionMode,
+                        isSelected = selectionMode && config.id in selectedConfigs
+                    )
+                }
             }
+
         }
     }
+
 }
 
 @Composable
@@ -344,7 +363,8 @@ private fun BattleConfigListItem(
     val materialsSet by it.materials.remember()
     val mats = materialsSet.take(3)
 
-    // Without this, holding a list item would leave it highlighted because of recomposition happening before ripple ending
+    // Without this, holding a list item would leave it highlighted because
+    // of recomposition happening before ripple ending
     val longClickState = rememberUpdatedState(onLongClick)
 
     Card(
