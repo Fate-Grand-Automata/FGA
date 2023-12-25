@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
@@ -34,7 +35,15 @@ class BattleConfigListViewModel @Inject constructor(
         .map { list ->
             list
                 .map { key -> prefsCore.forBattleConfig(key) }
-                .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name.get() })
+                .sortedWith(
+                    compareByDescending<BattleConfigCore> {
+                        it.server.get() == BattleConfigCore.Server.NotSet
+                    }.thenByDescending {
+                        it.server.get().asGameServer().toString()
+                    }.thenBy(String.CASE_INSENSITIVE_ORDER) {
+                        it.name.get()
+                    }
+                )
         }
 
     private val _selectedConfigs = MutableStateFlow(emptySet<String>())
