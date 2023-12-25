@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.prefs.core.Pref
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
@@ -38,6 +39,33 @@ import io.github.fate_grand_automata.ui.dialog.multiChoiceList
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.drawable
 import io.github.fate_grand_automata.util.stringRes
+
+
+@Composable
+fun MaterialDisplay(
+    modifier: Modifier = Modifier,
+    config: BattleConfigCore,
+    onNavigate: () -> Unit
+){
+    val selected by config.materials.remember()
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = onNavigate
+            )
+            .heightIn(min = 70.dp)
+            .padding(vertical = 5.dp)
+    ) {
+        Text(
+            stringResource(R.string.p_mats).uppercase(),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+
+        MaterialsSummary(materials = selected.toList())
+    }
+}
 
 @Composable
 fun Pref<Set<MaterialEnum>>.Materials() {

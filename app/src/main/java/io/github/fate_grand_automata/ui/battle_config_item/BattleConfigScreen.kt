@@ -94,11 +94,13 @@ fun BattleConfigScreen(
 }
 
 sealed class BattleConfigDestination {
-    object SkillMaker : BattleConfigDestination()
-    object CardPriority : BattleConfigDestination()
-    object Spam : BattleConfigDestination()
-    object PreferredSupport : BattleConfigDestination()
-    object Back : BattleConfigDestination()
+    data object SkillMaker : BattleConfigDestination()
+    data object CardPriority : BattleConfigDestination()
+    data object Spam : BattleConfigDestination()
+    data object PreferredSupport : BattleConfigDestination()
+    data object Back : BattleConfigDestination()
+
+    data object Material : BattleConfigDestination()
     class Other(val id: String) : BattleConfigDestination()
 }
 
@@ -201,14 +203,12 @@ private fun BattleConfigContent(
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-                                    .height(IntrinsicSize.Min)
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                ) {
-                                    config.materials.Materials()
-                                }
+                                MaterialDisplay(
+                                    modifier = Modifier.weight(1f),
+                                    config = config,
+                                    onNavigate = { navigate(BattleConfigDestination.Material) }
+                                )
                             }
 
                             Divider(

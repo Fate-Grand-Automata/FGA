@@ -505,4 +505,6 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="state_off">Off</string>
     <string name="save">Save</string>
 
+    <string name="p_material_search">Material name</string>
+
 </resources>

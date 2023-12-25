@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.ui.main
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,6 +21,7 @@ import io.github.fate_grand_automata.ui.battle_config_item.BattleConfigScreen
 import io.github.fate_grand_automata.ui.battle_config_list.BattleConfigListScreen
 import io.github.fate_grand_automata.ui.card_priority.CardPriorityScreen
 import io.github.fate_grand_automata.ui.fine_tune.FineTuneScreen
+import io.github.fate_grand_automata.ui.material.MaterialScreen
 import io.github.fate_grand_automata.ui.more.MoreOptionsScreen
 import io.github.fate_grand_automata.ui.onboarding.OnboardingScreen
 import io.github.fate_grand_automata.ui.openLinkIntent
@@ -30,6 +32,7 @@ import io.github.fate_grand_automata.ui.spam.SpamScreen
 
 @Composable
 fun FgaApp(
+    windowSizeClass: WindowSizeClass,
     vm: MainScreenViewModel,
     supportVm: SupportViewModel
 ) {
@@ -161,6 +164,8 @@ fun FgaApp(
                             }
 
                             BattleConfigDestination.Spam -> navigate(NavConstants.spam, id)
+
+                            BattleConfigDestination.Material -> navigate(NavConstants.materials, id)
                         }
                     }
                 )
@@ -181,6 +186,15 @@ fun FgaApp(
                     vm = hiltViewModel()
                 )
             }
+            battleConfigComposable(NavConstants.materials){ _, _ ->
+                MaterialScreen(
+                    windowSizeClass = windowSizeClass,
+                    vm = hiltViewModel(),
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
         }
     }
 }
@@ -195,5 +209,6 @@ object NavConstants {
     const val cardPriority = "cardPriority"
     const val preferredSupport = "preferredSupport"
     const val spam = "spam"
+    const val materials = "materials"
     const val onboarding = "onboarding"
 }
