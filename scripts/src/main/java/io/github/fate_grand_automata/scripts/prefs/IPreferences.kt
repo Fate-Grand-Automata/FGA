@@ -19,7 +19,7 @@ interface IPreferences {
     val stopOnCEGet: Boolean
     val stopOnFirstClearRewards: Boolean
     val boostItemSelectionMode: Int
-    
+
     val useRootForScreenshots: Boolean
     val recordScreen: Boolean
     val skillDelay: Duration
@@ -29,6 +29,7 @@ interface IPreferences {
     var maxGoldEmberTotalCount: Int
     var stopAfterThisRun: Boolean
     val skipServantFaceCardCheck: Boolean
+    val treatSupportLikeOwnServant: Boolean
 
     var receiveEmbersWhenGiftBoxFull: Boolean
 
