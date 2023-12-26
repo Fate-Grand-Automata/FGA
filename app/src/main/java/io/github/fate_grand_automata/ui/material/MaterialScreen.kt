@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +38,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -60,6 +62,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -170,7 +173,7 @@ fun MaterialScreen(
             )
         },
         modifier = Modifier
-            .pointerInput(Unit){
+            .pointerInput(Unit) {
                 detectTapGestures {
                     focusManager.clearFocus()
                 }
@@ -313,27 +316,13 @@ private fun ClearButton(
     selectedMaterials: List<MaterialEnum>,
     onClear: () -> Unit
 ) {
-    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-        IconButton(
-            onClick = onClear,
-            enabled = selectedMaterials.isNotEmpty(),
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-        ) {
-            Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear")
-        }
-    } else {
-        TextButton(
-            onClick = onClear,
-            enabled = selectedMaterials.isNotEmpty(),
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.skill_maker_main_clear).uppercase(),
-            )
-        }
-    }
+    iconOrTextVariableButton(
+        windowSizeClass = windowSizeClass,
+        enabled = selectedMaterials.isNotEmpty(),
+        icon = Icons.Default.Clear,
+        text = stringResource(R.string.skill_maker_main_clear).uppercase(),
+        action = onClear
+    )
 }
 
 @Composable
@@ -342,27 +331,13 @@ private fun UndoButton(
     materialListTracker: List<UndoTracker>,
     onUndo: () -> Unit
 ) {
-    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-        IconButton(
-            onClick = onUndo,
-            enabled = materialListTracker.isNotEmpty(),
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-        ) {
-            Icon(imageVector = Icons.Default.Undo, contentDescription = "undo")
-        }
-    } else {
-        TextButton(
-            onClick = onUndo,
-            enabled = materialListTracker.isNotEmpty(),
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.skill_maker_main_undo).uppercase(),
-            )
-        }
-    }
+    iconOrTextVariableButton(
+        windowSizeClass = windowSizeClass,
+        enabled = materialListTracker.isNotEmpty(),
+        icon = Icons.Default.Undo,
+        text = stringResource(R.string.skill_maker_main_undo).uppercase(),
+        action = onUndo
+    )
 
 }
 
@@ -372,28 +347,57 @@ private fun ResetButton(
     enableReset: Boolean,
     onReset: () -> Unit
 ) {
+    iconOrTextVariableButton(
+        windowSizeClass = windowSizeClass,
+        enabled = enableReset,
+        icon = Icons.Default.RestartAlt,
+        text = stringResource(R.string.reset).uppercase(),
+        action = onReset
+    )
+}
+
+@Composable
+private fun iconOrTextVariableButton(
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    windowSizeClass: WindowSizeClass,
+    icon: ImageVector,
+    text: String,
+    action: () -> Unit,
+) {
     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-        IconButton(
-            onClick = onReset,
-            enabled = enableReset,
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
+        PlainTooltipBox(
+            tooltip = {
+                Text(text = text)
+            },
+            modifier = Modifier.padding(top = 24.dp)
         ) {
-            Icon(imageVector = Icons.Default.RestartAlt, contentDescription = "Reset")
+            Box(
+                modifier = Modifier
+                    .tooltipAnchor()
+            ) {
+                IconButton(
+                    onClick = action,
+                    enabled = enabled,
+                    modifier = modifier
+                        .padding(horizontal = 4.dp)
+                ) {
+                    Icon(imageVector = icon, contentDescription = text)
+                }
+            }
         }
     } else {
         TextButton(
-            onClick = onReset,
-            enabled = enableReset,
-            modifier = Modifier
+            onClick = action,
+            enabled = enabled,
+            modifier = modifier
                 .padding(horizontal = 4.dp)
         ) {
             Text(
-                text = stringResource(R.string.reset).uppercase(),
+                text = text,
             )
         }
     }
-
 }
 
 @Composable
