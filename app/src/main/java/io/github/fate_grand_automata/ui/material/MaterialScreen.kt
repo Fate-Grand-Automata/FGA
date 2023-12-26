@@ -1,15 +1,26 @@
 package io.github.fate_grand_automata.ui.material
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -62,15 +73,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
@@ -143,10 +161,16 @@ fun MaterialScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = stringResource(R.string.p_mats),
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    MaterialQuery(
+                        windowSizeClass = windowSizeClass,
+                        query = query,
+                        onQueryChanged = {
+                            vm.onQueryUpdated(it)
+                        },
+                        onClear = {
+                            vm.onQueryUpdated("")
+                            focusManager.clearFocus()
+                        },
                     )
                 },
                 navigationIcon = {
@@ -183,44 +207,6 @@ fun MaterialScreen(
             modifier = Modifier
                 .padding(padding)
         ) {
-            TextField(
-                value = query,
-                onValueChange = {
-                    vm.onQueryUpdated(it)
-                },
-                maxLines = 1,
-                modifier = Modifier.fillMaxWidth(),
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Search,
-                        contentDescription = null
-                    )
-                },
-                trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            vm.onQueryUpdated("")
-                            focusManager.clearFocus()
-                        },
-                    ) {
-                        Icon(
-                            Icons.Default.Clear,
-                            contentDescription = null,
-                        )
-                    }
-                },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.8f),
-                ),
-                placeholder = {
-                    Text(
-                        stringResource(R.string.p_material_search),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
@@ -259,6 +245,139 @@ fun MaterialScreen(
             }
         }
     }
+}
+
+@Composable
+private fun MaterialQuery(
+    windowSizeClass: WindowSizeClass,
+    query: String,
+    onQueryChanged: (String) -> Unit,
+    onClear: () -> Unit,
+) {
+    val focusRequester = remember { FocusRequester() }
+
+    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+        var isSearchModeOn by remember { mutableStateOf(false) }
+        val keyboardController = LocalSoftwareKeyboardController.current
+
+        LaunchedEffect(key1 = isSearchModeOn, block = {
+            if (isSearchModeOn) {
+                focusRequester.requestFocus()
+            }
+        })
+        val slideIn = slideInHorizontally(initialOffsetX = { width -> width }) +
+                expandHorizontally(
+                    expandFrom = Alignment.End,
+                    initialWidth = { w -> w }
+                )
+        val slideOut = slideOutHorizontally(targetOffsetX = { width -> width }) +
+                shrinkHorizontally(
+                    shrinkTowards = Alignment.End,
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessMediumLow,
+                        visibilityThreshold = IntSize.VisibilityThreshold
+                    )
+                )
+
+        AnimatedContent(
+            targetState = isSearchModeOn,
+            label = "Search Mode for mobile",
+            transitionSpec = {
+                slideIn togetherWith (slideOut)
+            },
+            contentAlignment = Alignment.CenterStart
+        ) { searchMode ->
+            if (searchMode) {
+                QueryTextBox(
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
+                        .onFocusChanged { focusState ->
+                            if (!focusState.isFocused) {
+                                keyboardController?.show()
+                            }
+                        },
+                    query = query,
+                    onQueryChanged = onQueryChanged,
+                    onClear = {
+                        isSearchModeOn = false
+                        onClear()
+                    }
+                )
+            } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.p_mats),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                    TopbarIconButtonWithTooltip(
+                        text = stringResource(id = R.string.p_material_search),
+                        icon = Icons.Default.Search,
+                        action = {
+                            isSearchModeOn = true
+                        }
+                    )
+                }
+            }
+        }
+
+    } else {
+        QueryTextBox(
+            query = query,
+            onQueryChanged = onQueryChanged,
+            onClear = onClear
+        )
+    }
+}
+
+@Composable
+private fun QueryTextBox(
+    modifier: Modifier = Modifier,
+    query: String,
+    onQueryChanged: (String) -> Unit,
+    onClear: () -> Unit,
+) {
+    TextField(
+        value = query,
+        onValueChange = onQueryChanged,
+        maxLines = 1,
+        modifier = modifier
+            .fillMaxWidth(),
+        trailingIcon = {
+            TopbarIconButtonWithTooltip(
+                icon = Icons.Default.Clear,
+                text = stringResource(R.string.p_material_search_clear),
+                action = onClear
+            )
+        },
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.8f),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+        ),
+        placeholder = {
+            Box(
+                contentAlignment = Alignment.CenterStart,
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                Text(
+                    stringResource(R.string.p_material_search_placeholder),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Start
+                )
+            }
+        }
+    )
 }
 
 @Composable
@@ -366,26 +485,13 @@ private fun iconOrTextVariableButton(
     action: () -> Unit,
 ) {
     if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-        PlainTooltipBox(
-            tooltip = {
-                Text(text = text)
-            },
-            modifier = Modifier.padding(top = 24.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .tooltipAnchor()
-            ) {
-                IconButton(
-                    onClick = action,
-                    enabled = enabled,
-                    modifier = modifier
-                        .padding(horizontal = 4.dp)
-                ) {
-                    Icon(imageVector = icon, contentDescription = text)
-                }
-            }
-        }
+        TopbarIconButtonWithTooltip(
+            text = text,
+            action = action,
+            enabled = enabled,
+            modifier = modifier,
+            icon = icon
+        )
     } else {
         TextButton(
             onClick = action,
@@ -396,6 +502,36 @@ private fun iconOrTextVariableButton(
             Text(
                 text = text,
             )
+        }
+    }
+}
+
+@Composable
+private fun TopbarIconButtonWithTooltip(
+    modifier: Modifier = Modifier,
+    text: String,
+    enabled: Boolean = true,
+    icon: ImageVector,
+    action: () -> Unit,
+) {
+    PlainTooltipBox(
+        tooltip = {
+            Text(text = text)
+        },
+        modifier = Modifier.padding(top = 24.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .tooltipAnchor()
+        ) {
+            IconButton(
+                onClick = action,
+                enabled = enabled,
+                modifier = modifier
+                    .padding(horizontal = 1.dp)
+            ) {
+                Icon(imageVector = icon, contentDescription = text)
+            }
         }
     }
 }
