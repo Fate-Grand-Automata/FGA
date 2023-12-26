@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.ui.material
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
@@ -415,7 +416,8 @@ private fun SelectedMaterialRow(
     onRemoved: (MaterialEnum) -> Unit
 ) {
     LazyRow(
-        modifier = modifier,
+        modifier = modifier
+            .animateContentSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         items(selectedMaterials) { mat ->
