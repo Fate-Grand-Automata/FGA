@@ -93,6 +93,8 @@ class AutoBattle @Inject constructor(
     // for skipping some intro before the quest starts
     private var isIntroSkipped = false
 
+    private var canSkipWavesInBattle = false
+
     override fun script(): Nothing {
         try {
             loop()
@@ -178,6 +180,7 @@ class AutoBattle @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to {
                 storySkipPossible = false
+                canSkipWavesInBattle = true
                 isIntroSkipped = false
                 battle.performBattle()
                 servantDeathPossible = true
@@ -294,6 +297,8 @@ class AutoBattle @Inject constructor(
      * Clicks through the reward screens.
      */
     private fun result() {
+        canSkipWavesInBattle = false
+
         servantDeathPossible = false
         locations.resultClick.click(15)
         storySkipPossible = true
@@ -475,7 +480,7 @@ class AutoBattle @Inject constructor(
      * Black screen probably means we're between waves.
      */
     private fun isBetweenWaves() =
-        locations.npStartedRegion.isBlack()
+        locations.npStartedRegion.isBlack() && canSkipWavesInBattle
 
     /**
      * Taps in the bottom right a few times to trigger NP skip in BetterFGO.
