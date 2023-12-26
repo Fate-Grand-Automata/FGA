@@ -202,7 +202,7 @@ class AutoBattle @Inject constructor(
             { isCeRewardDetails() } to { ceRewardDetails() },
             { isDeathAnimation() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
             { isRankUp() } to { locations.middleOfScreenClick.click() },
-            { isBetweenWaves() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
+            { isBetweenWaves() && canSkipWavesInBattle } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -480,7 +480,7 @@ class AutoBattle @Inject constructor(
      * Black screen probably means we're between waves.
      */
     private fun isBetweenWaves() =
-        locations.npStartedRegion.isBlack() && canSkipWavesInBattle
+        locations.npStartedRegion.isBlack()
 
     /**
      * Taps in the bottom right a few times to trigger NP skip in BetterFGO.
