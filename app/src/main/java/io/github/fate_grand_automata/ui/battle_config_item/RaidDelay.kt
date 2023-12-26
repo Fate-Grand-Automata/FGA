@@ -139,7 +139,7 @@ fun RaidDelay(
                     onValueChange = {
                         currentRaidTurnDelaySeconds = it
                     },
-                    valueRange = 3..10,
+                    valueRange = 1..10,
                     valueRepresentation = {
                         "${it}s"
                     }

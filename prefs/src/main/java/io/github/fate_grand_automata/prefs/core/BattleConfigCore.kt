@@ -188,5 +188,5 @@ class BattleConfigCore(
 
     val addRaidTurnDelay = maker.bool("add_raid_delay")
 
-    val raidTurnDelaySeconds = maker.stringAsInt("raid_delay_seconds", 3)
+    val raidTurnDelaySeconds = maker.stringAsInt("raid_delay_seconds", 2)
 }
