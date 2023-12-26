@@ -348,7 +348,7 @@ private fun QueryTextBox(
     TextField(
         value = query,
         onValueChange = onQueryChanged,
-        maxLines = 1,
+        singleLine = true,
         modifier = modifier
             .fillMaxWidth(),
         trailingIcon = {
