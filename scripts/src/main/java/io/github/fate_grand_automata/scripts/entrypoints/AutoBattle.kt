@@ -90,6 +90,9 @@ class AutoBattle @Inject constructor(
     // for tracking whether to check for servant deaths or not
     private var servantDeathPossible = false
 
+    // for skipping some intro before the quest starts
+    private var isIntroSkipped = false
+
     override fun script(): Nothing {
         try {
             loop()
@@ -175,6 +178,7 @@ class AutoBattle @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to {
                 storySkipPossible = false
+                isIntroSkipped = false
                 battle.performBattle()
                 servantDeathPossible = true
             },
@@ -189,6 +193,7 @@ class AutoBattle @Inject constructor(
             { isRepeatScreen() } to { repeatQuest() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
+            { shouldSkipStoryIntro() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
             { isFriendRequestScreen() } to { handleFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
@@ -293,6 +298,14 @@ class AutoBattle @Inject constructor(
         locations.resultClick.click(15)
         storySkipPossible = true
     }
+
+    /**
+     * There is some intro done before the quest starts.
+     * Usually it is in-between Support Selection setup and story skip/battle quest start
+     *
+     * This is an Experimental feature to skip that
+     */
+    private fun shouldSkipStoryIntro() = prefs.selectedBattleConfig.storyIntroSkip && isIntroSkipped
 
     private fun isInDropsScreen() =
         images[Images.MatRewards] in locations.resultMatRewardsRegion
@@ -423,6 +436,8 @@ class AutoBattle @Inject constructor(
 
     // Selections Support option
     private fun support() {
+        isIntroSkipped = true
+
         support.selectSupport()
 
         if (!isContinuing) {
@@ -444,6 +459,7 @@ class AutoBattle @Inject constructor(
                 locations.menuStorySkipRegion.exists(images[Images.StorySkip], similarity = 0.7)
 
     private fun skipStory() {
+        isIntroSkipped = false
         locations.menuStorySkipClick.click()
         0.5.seconds.wait()
         locations.menuStorySkipYesClick.click()
@@ -478,9 +494,7 @@ class AutoBattle @Inject constructor(
      * 2. A boost item is selected if [IPreferences.boostItemSelectionMode] is set (needed in some events)
      * 3. The story is skipped if [IPreferences.storySkip] is activated
      */
-    private
-
-    fun startQuest() {
+    private fun startQuest() {
         partySelection.selectParty()
 
         locations.menuStartQuestClick.click()

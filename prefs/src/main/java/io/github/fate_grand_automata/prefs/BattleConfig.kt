@@ -48,6 +48,8 @@ internal class BattleConfig(
 
     override val raidTurnDelaySeconds by prefs.raidTurnDelaySeconds
 
+    override val storyIntroSkip by prefs.storyIntroSkip
+
     override fun export(): Map<String, *> = prefs.export()
 
     override fun import(map: Map<String, *>) =

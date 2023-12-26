@@ -220,11 +220,6 @@ private fun BattleConfigContent(
                                 modifier = Modifier
                                     .height(IntrinsicSize.Min)
                             ) {
-                                RaidDelay(
-                                    modifier = Modifier.weight(1f),
-                                    config = config
-                                )
-                                VerticalDivider()
                                 Box(
                                     modifier = Modifier
                                         .fillMaxHeight()
@@ -246,6 +241,26 @@ private fun BattleConfigContent(
                                 )
                                 VerticalDivider()
                                 PartySelection(
+                                    modifier = Modifier.weight(1f),
+                                    config = config
+                                )
+                            }
+
+                            Divider(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
+                            )
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ){
+                                RaidDelay(
+                                    modifier = Modifier.weight(1f),
+                                    config = config
+                                )
+                                VerticalDivider()
+                                StoryIntro(
                                     modifier = Modifier.weight(1f),
                                     config = config
                                 )

@@ -98,6 +98,8 @@ Skills"</string>
     <string name="p_battle_config_raid">"Raid"</string>
     <string name="p_battle_config_raid_delay">"Raid Delay"</string>
     <string name="p_battle_config_raid_delay_message">This adds extra turn delay used for raids.</string>
+    <string name="p_battle_config_skip_intro">"Skip Intro"</string>
+    <string name="p_battle_config_skip_intro_message">"This is an experimental feature to skip intro animations."</string>
     <string name="p_battle_config_server">"Server"</string>
     <string name="p_battle_config_card_priority">"Card Priority"</string>
     <string name="p_battle_config_use_servant_priority">"Use Servant Priority"</string>
