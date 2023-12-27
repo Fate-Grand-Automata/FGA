@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.scripts.models.battle
 
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.TimeSource
 
@@ -27,7 +26,7 @@ class BattleState @Inject constructor() {
         private set
     var minTurnsPerRun = Int.MAX_VALUE
         private set
-    var averageTurnsPerRun = 0
+    var averageTurnsPerRun: Double = 0.0
         private set
 
     var runs = 0
@@ -43,7 +42,7 @@ class BattleState @Inject constructor() {
             totalTurns += runState.totalTurns
             maxTurnsPerRun = maxOf(maxTurnsPerRun, runState.totalTurns)
             minTurnsPerRun = minOf(minTurnsPerRun, runState.totalTurns)
-            averageTurnsPerRun = (totalTurns / runs.toDouble()).roundToInt()
+            averageTurnsPerRun = totalTurns / runs.toDouble()
 
             runState = RunState()
         }

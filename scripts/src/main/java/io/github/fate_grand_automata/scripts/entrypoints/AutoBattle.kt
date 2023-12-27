@@ -155,7 +155,7 @@ class AutoBattle @Inject constructor(
         val averageTimePerRun: Duration,
         val minTurnsPerRun: Int,
         val maxTurnsPerRun: Int,
-        val averageTurnsPerRun: Int
+        val averageTurnsPerRun: Double
     )
 
     private fun makeExitState(): ExitState {
