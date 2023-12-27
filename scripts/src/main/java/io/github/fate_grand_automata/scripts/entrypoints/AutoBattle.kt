@@ -187,6 +187,7 @@ class AutoBattle @Inject constructor(
             },
             { isInMenu() } to { menu() },
             { isStartingNp() } to { skipNp() },
+            { isInBondScreen() } to { handleBondScreen() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
@@ -257,12 +258,19 @@ class AutoBattle @Inject constructor(
     private fun isInResult(): Boolean {
         val cases = sequenceOf(
             images[Images.Result] to locations.resultScreenRegion,
-            images[Images.Bond] to locations.resultBondRegion,
             images[Images.MasterLevelUp] to locations.resultMasterLvlUpRegion,
             images[Images.MasterExp] to locations.resultMasterExpRegion
         )
 
         return cases.any { (image, region) -> image in region }
+    }
+
+    private fun isInBondScreen() = images[Images.Bond] in locations.resultBondRegion
+
+    private fun handleBondScreen() {
+        screenshotDrops.screenshotBond()
+
+        result()
     }
 
     private fun isBond10CEReward() =

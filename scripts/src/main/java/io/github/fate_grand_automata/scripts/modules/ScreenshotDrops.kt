@@ -7,6 +7,7 @@ import io.github.lib_automata.Pattern
 import io.github.lib_automata.ScreenshotService
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class ScreenshotDrops @Inject constructor(
@@ -37,5 +38,18 @@ class ScreenshotDrops @Inject constructor(
         }
 
         storageProvider.dropScreenshot(drops)
+    }
+
+    fun screenshotBond(){
+        if (!prefs.screenshotBond){
+            return
+        }
+
+        useColor {
+            val pattern = screenshotService.takeScreenshot()
+
+            storageProvider.dropBondScreenShot(pattern)
+        }
+        0.5.seconds.wait()
     }
 }

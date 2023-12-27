@@ -183,6 +183,25 @@ class StorageProvider @Inject constructor(
         }
     }
 
+    private val bondFolder
+        get() = dirRoot.getOrCreateDir("bond")
+
+    override fun dropBondScreenShot(pattern: Pattern) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss", Locale.getDefault())
+        val timeString = sdf.format(Date())
+
+        val dropFileName = "bond-${timeString}.png"
+
+        pattern.use {
+            val file = bondFolder.createFile(mimePng, dropFileName)
+                ?: throw KnownException(KnownException.Reason.CouldNotCreateDropScreenshotFile)
+
+            resolver.openOutputStream(file.uri)?.use { stream ->
+                pattern.save(stream)
+            }
+        }
+    }
+
     override fun dump(name: String, image: Pattern) {
         image.use {
             if (BuildConfig.DEBUG) {

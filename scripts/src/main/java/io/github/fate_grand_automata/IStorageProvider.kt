@@ -16,6 +16,8 @@ interface IStorageProvider {
 
     fun dropScreenshot(patterns: List<Pattern>)
 
+    fun dropBondScreenShot(pattern: Pattern)
+
     /**
      * For debugging images
      *
