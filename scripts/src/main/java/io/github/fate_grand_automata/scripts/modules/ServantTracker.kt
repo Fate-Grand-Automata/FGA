@@ -74,7 +74,7 @@ class ServantTracker @Inject constructor(
         var isSupport = false
         // use same screenshot for support + face detection
         useSameSnapIn {
-            isSupport = images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
+            isSupport = isSupport(slot)
 
             if (teamSlot !in checkImages || isSupport) {
                 checkImages[teamSlot] = TeamSlotData(
@@ -140,7 +140,7 @@ class ServantTracker @Inject constructor(
         }
 
         val isDifferentServant = checkImage.none { it in locations.battle.servantChangeCheckRegion(slot) }
-        val isSupport = images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
+        val isSupport = isSupport(slot)
         val wasSupport = supportSlot == teamSlot
 
         // New run with different support
@@ -257,4 +257,10 @@ class ServantTracker @Inject constructor(
             initFaceCard(teamSlot, fieldSlot, addAnotherImage = true)
         }
     }
+
+    /**
+     * Checks if the given [slot] is a Support Servant. Will always return `false` if "Treat Support like own Servant" is enabled.
+     */
+    private fun isSupport(slot: FieldSlot) = !prefs.treatSupportLikeOwnServant &&
+            images[Images.ServantCheckSupport] in locations.battle.servantChangeSupportCheckRegion(slot)
 }

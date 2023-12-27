@@ -107,6 +107,8 @@ class PreferencesImpl @Inject constructor(
 
     override var skipServantFaceCardCheck by prefs.skipServantFaceCardCheck
 
+    override var treatSupportLikeOwnServant by prefs.treatSupportLikeOwnServant
+
     override var receiveEmbersWhenGiftBoxFull by prefs.receiveEmbersWhenGiftBoxFull
 
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()

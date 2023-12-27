@@ -83,6 +83,7 @@ class PrefsCore @Inject constructor(
 
     val stopAfterThisRun = maker.bool("stop_after_this_run")
     val skipServantFaceCardCheck = maker.bool("skip_servant_face_card_check")
+    val treatSupportLikeOwnServant = maker.bool("treat_support_like_own_servant")
 
     val playBtnLocation = maker.serialized(
         "play_btn_location",
@@ -111,13 +112,13 @@ class PrefsCore @Inject constructor(
 
                     Region(split[0].toInt(), split[1].toInt(), split[2].toInt(), split[3].toInt())
                 } catch (e: Exception) {
-                    Region(x=0, y=0, height = 1, width = 1)
+                    Region(x = 0, y = 0, height = 1, width = 1)
                 }
 
             override fun serialize(value: Region) =
                 "${value.x},${value.y},${value.width},${value.height}"
         },
-        default = Region(x=0, y=0, height = 1, width = 1)
+        default = Region(x = 0, y = 0, height = 1, width = 1)
     )
 
     val gameAreaMode = maker.enum("game_area_mode", GameAreaMode.Default)
