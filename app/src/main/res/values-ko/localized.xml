@@ -253,7 +253,7 @@
     <string name="times_withdrew">"%d번 철수함"</string>
     <string name="avg_time_per_run">"반복 평균 시간: %s"</string>
     <string name="turns_count">"턴: %d"</string>
-    <string name="turns_stats">"턴: %1$d (최단), %2$d (평균), %3$d (최장)"</string>
+    <string name="turns_stats">"턴: %1$d (최단), %2$.02f (평균), %3$d (최장)"</string>
     <string name="picked_exp_stacks">"%d개의 종화 묶음 획득"</string>
     <string name="no_embers_found">"화면에서 종화를 찾을 수 없습니다. 종화를 필터하지 않았는지 확인바랍니다."</string>
     <string name="root_failed">"루트 권한을 얻는데 실패했습니다."</string>

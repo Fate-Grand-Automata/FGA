@@ -393,7 +393,7 @@ fun PreviewBattleExitContent() {
                     averageTimePerRun = 75.seconds,
                     minTurnsPerRun = 3,
                     maxTurnsPerRun = 4,
-                    averageTurnsPerRun = 6
+                    averageTurnsPerRun = 3.45678
                 ),
                 refillEnabled = true
             )

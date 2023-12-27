@@ -244,7 +244,7 @@
     <string name="times_withdrew">已撤退 %d 次</string>
     <string name="avg_time_per_run">平均一場時間：%s</string>
     <string name="turns_count">回合 %d</string>
-    <string name="turns_stats">回合：%1$d（最少）, %2$d（平均）, %3$d（最多）</string>
+    <string name="turns_stats">回合：%1$d（最少）, %2$.02f（平均）, %3$d（最多）</string>
     <string name="picked_exp_stacks">已挑選 %d 堆種火，總共挑選 %d 枚金種火</string>
 
     <string name="p_mats">追縱掉落素材</string>
