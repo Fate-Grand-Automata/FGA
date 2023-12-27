@@ -44,12 +44,16 @@ class ScreenshotDrops @Inject constructor(
         if (!prefs.screenshotBond){
             return
         }
+        prefs.hidePlayButtonForScreenshot = true
+        1.seconds.wait()
 
         useColor {
             val pattern = screenshotService.takeScreenshot()
 
             storageProvider.dropBondScreenShot(pattern)
         }
-        0.5.seconds.wait()
+
+        prefs.hidePlayButtonForScreenshot = false
+        1.seconds.wait()
     }
 }
