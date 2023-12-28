@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -125,27 +126,24 @@ fun appendLauncher(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { shouldUpgradeAll = !shouldUpgradeAll }
+                    .padding(bottom = 8.dp)
             ) {
                 Text(
                     stringResource(R.string.append_upgrade_all_question),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary
                 )
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Switch(
-                        checked = shouldUpgradeAll,
-                        onCheckedChange = { shouldUpgradeAll = it }
-                    )
-                    Stepper(
-                        value = upgradeAll,
-                        onValueChange = { upgradeAll = it },
-                        valueRange = 0..9,
-                        enabled = shouldUpgradeAll,
-                    )
-                }
+                Switch(
+                    checked = shouldUpgradeAll,
+                    onCheckedChange = { shouldUpgradeAll = it },
+                    modifier = Modifier.scale(0.75f)
+                )
+                Stepper(
+                    value = upgradeAll,
+                    onValueChange = { upgradeAll = it },
+                    valueRange = 0..9,
+                    enabled = shouldUpgradeAll,
+                )
             }
         }
 
