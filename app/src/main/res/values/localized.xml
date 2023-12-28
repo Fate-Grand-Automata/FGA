@@ -470,10 +470,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="servant_enhancement_limit">Should limit number of enhancement?</string>
     <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
-    <string name="servert_enhancement_warning_notice">Auto Servant Enhancement will only use the auto-select feature for the embers.
-        Please ensure that you have set the \"Automatic Material Selection\" before proceeding.</string>
-    <string name="servant_enhancement_redirect_ascension">Should Redirect to Ascension once level max out?</string>
-    <string name="servant_enhancement_redirect_grail">Should Redirect to Palingenesis once level max out?</string>
+    <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
+    <string name="servant_enhancement_redirect_ascension">Redirect to Ascension upon reaching the level cap?</string>
+    <string name="servant_enhancement_redirect_grail">Redirect to Palingenesis upon reaching the level cap?</string>
     <string name="servant_enhancement_redirect_ascension_success">Redirected to Ascension.</string>
     <string name="servant_enhancement_redirect_grail_success">Redirected to Palingenesis.</string>
 
