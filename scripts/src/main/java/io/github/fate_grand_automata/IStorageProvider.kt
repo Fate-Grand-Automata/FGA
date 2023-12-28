@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata
 
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.lib_automata.Pattern
 import java.io.File
 import java.io.InputStream
@@ -16,7 +17,7 @@ interface IStorageProvider {
 
     fun dropScreenshot(patterns: List<Pattern>)
 
-    fun dropBondScreenShot(pattern: Pattern)
+    fun dropBondScreenShot(pattern: Pattern, server: GameServer = GameServer.default)
 
     /**
      * For debugging images

@@ -50,7 +50,7 @@ class ScreenshotDrops @Inject constructor(
         useColor {
             val pattern = screenshotService.takeScreenshot()
 
-            storageProvider.dropBondScreenShot(pattern)
+            storageProvider.dropBondScreenShot(pattern, server = prefs.gameServer)
         }
 
         prefs.hidePlayButtonForScreenshot = false
