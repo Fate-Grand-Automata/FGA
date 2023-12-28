@@ -14,10 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,22 +35,15 @@ fun servantEnhancementLauncher(
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
 
-    var shouldLimit by remember { mutableStateOf(false) }
+    var shouldLimit by prefsCore.servantEnhancement.shouldLimit.remember()
 
-    var limitCount by remember { mutableStateOf(1) }
+    var limitCount by prefsCore.servantEnhancement.limitCount.remember()
 
     var shouldRedirectAscension by prefsCore.servantEnhancement.shouldRedirectAscension.remember()
 
     var shouldRedirectGrail by prefsCore.servantEnhancement.shouldRedirectGrail.remember()
 
     var muteNotifications by prefsCore.servantEnhancement.muteNotifications.remember()
-
-    DisposableEffect(Unit) {
-        onDispose {
-            prefsCore.servantEnhancement.limitCount.set(limitCount)
-            prefsCore.servantEnhancement.shouldLimit.set(shouldLimit)
-        }
-    }
 
     LazyColumn(
         modifier = modifier
