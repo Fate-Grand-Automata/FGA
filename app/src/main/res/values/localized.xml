@@ -130,7 +130,7 @@ Skills"</string>
     <string name="p_screenshot_drops_unmodified_summary">"Save unmodified full-screen screenshots instead of cropped and rescaled screenshots"</string>
 
     <string name="p_screenshot_bond">"Screenshot Bond"</string>
-    <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder"</string>
+    <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
     <string name="p_boost_item">"Boost Item"</string>
     <string name="p_brave_chains">"Brave Chains"</string>
     <string name="p_rearrange_cards">"Rearrange Cards"</string>
