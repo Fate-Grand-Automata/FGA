@@ -308,7 +308,9 @@ class AutoBattle @Inject constructor(
         canSkipWavesInBattle = false
 
         servantDeathPossible = false
-        locations.resultClick.click(15)
+        locations.resultClick.click(
+            times = if (prefs.screenshotBond) 5 else 15
+        )
         storySkipPossible = true
     }
 
