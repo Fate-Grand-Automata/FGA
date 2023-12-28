@@ -81,7 +81,7 @@ fun skillUpgradeLauncher(
         mutableStateOf(skillUpgrade.skill3Available)
     }
 
-    var shouldUpdateAll by remember {
+    var shouldUpgradeAll by remember {
         mutableStateOf(false)
     }
     val lowestMinSkill = listOf(minSkill1, minSkill2, minSkill3).min()
@@ -104,10 +104,10 @@ fun skillUpgradeLauncher(
         }
     })
 
-    LaunchedEffect(key1 = shouldUpdateAll, block = {
-        shouldUpgrade1 = shouldUpdateAll == true && minSkill1 < 10
-        shouldUpgrade2 = shouldUpdateAll == true && minSkill2 < 10
-        shouldUpgrade3 = shouldUpdateAll == true && minSkill3 < 10
+    LaunchedEffect(key1 = shouldUpgradeAll, block = {
+        shouldUpgrade1 = shouldUpgradeAll == true && minSkill1 < 10
+        shouldUpgrade2 = shouldUpgradeAll == true && minSkill2 < 10
+        shouldUpgrade3 = shouldUpgradeAll == true && minSkill3 < 10
     })
 
     LazyColumn(
@@ -136,7 +136,7 @@ fun skillUpgradeLauncher(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { shouldUpdateAll = !shouldUpdateAll }
+                    .clickable { shouldUpgradeAll = !shouldUpgradeAll }
             ) {
                 Text(
                     stringResource(R.string.skill_enhancement_all_question),
@@ -146,11 +146,11 @@ fun skillUpgradeLauncher(
                     textAlign = TextAlign.Justify
                 )
                 Switch(
-                    checked = shouldUpdateAll,
+                    checked = shouldUpgradeAll,
                     onCheckedChange = {
-                        shouldUpdateAll = it
+                        shouldUpgradeAll = it
                     },
-                    thumbContent = if (shouldUpdateAll){
+                    thumbContent = if (shouldUpgradeAll) {
                         {
                             Icon(
                                 imageVector = Icons.Filled.Check,
@@ -158,7 +158,9 @@ fun skillUpgradeLauncher(
                                 modifier = Modifier.size(SwitchDefaults.IconSize),
                             )
                         }
-                    } else { null },
+                    } else {
+                        null
+                    },
                     modifier = Modifier.scale(0.75f)
                 )
 
@@ -168,7 +170,7 @@ fun skillUpgradeLauncher(
                     value = targetAllSkillLevel,
                     onValueChange = { targetAllSkillLevel = it },
                     valueRange = lowestMinSkill..10,
-                    enabled = shouldUpdateAll,
+                    enabled = shouldUpgradeAll,
                     textStyle = MaterialTheme.typography.bodyMedium,
                     valueRepresentation = { "Lv. $it" }
                 )
