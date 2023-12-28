@@ -95,6 +95,8 @@ class AutoBattle @Inject constructor(
 
     private var canSkipWavesInBattle = false
 
+    private var canScreenshotBondCE = false
+
     override fun script(): Nothing {
         try {
             loop()
@@ -268,6 +270,8 @@ class AutoBattle @Inject constructor(
     private fun isInBondScreen() = images[Images.Bond] in locations.resultBondRegion
 
     private fun handleBondScreen() {
+        canScreenshotBondCE = true
+
         screenshotDrops.screenshotBond()
 
         if (prefs.screenshotBond){
@@ -284,8 +288,15 @@ class AutoBattle @Inject constructor(
     /**
      * It seems like we need to click on CE (center of screen) to accept them
      */
-    private fun bond10CEReward() =
+    private fun bond10CEReward(){
+        if (prefs.screenshotBond && canScreenshotBondCE){
+            screenshotDrops.screenshotBond()
+            0.5.seconds.wait()
+            canScreenshotBondCE = false
+        }
+
         locations.scriptArea.center.click()
+    }
 
     private fun isCeRewardDetails() =
         images[Images.CEDetails] in locations.resultCeRewardDetailsRegion
@@ -331,6 +342,8 @@ class AutoBattle @Inject constructor(
         images[Images.MatRewards] in locations.resultMatRewardsRegion
 
     private fun dropScreen() {
+        canScreenshotBondCE = false
+
         ceDropsTracker.lookForCEDrops()
         matTracker.parseMaterials()
         screenshotDrops.screenshotDrops()
@@ -457,6 +470,8 @@ class AutoBattle @Inject constructor(
     // Selections Support option
     private fun support() {
         isIntroSkipped = true
+
+        canScreenshotBondCE = false
 
         support.selectSupport()
 
