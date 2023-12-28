@@ -6,12 +6,14 @@ import io.github.fate_grand_automata.scripts.models.TeamSlot
 import kotlin.time.Duration
 
 sealed class ScriptNotify {
-    object CEGet : ScriptNotify()
-    object CEDropped : ScriptNotify()
+    data object CEGet : ScriptNotify()
+    data object CEDropped : ScriptNotify()
     class WaitForAPRegen(val minutes: Int = 1) : ScriptNotify()
-    class FailedToDetermineCards(val cards: List<CommandCard.Face>, val unknownCardTypes: Boolean, val unknownServants: Boolean) : ScriptNotify()
+    class FailedToDetermineCards(val cards: List<CommandCard.Face>,
+                                 val unknownCardTypes: Boolean, val unknownServants: Boolean) : ScriptNotify()
     class SupportListUpdatingIn(val time: Duration) : ScriptNotify()
     class BetweenRuns(val refills: Int, val runs: Int, val ceDrops: Int) : ScriptNotify()
+    data object BondLevelUp : ScriptNotify()
 }
 
 sealed class ScriptLog {

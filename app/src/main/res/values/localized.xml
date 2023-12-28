@@ -515,4 +515,5 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="p_treat_support_like_own_servant">Treat Support like own Servants</string>
     <string name="p_treat_support_like_own_servant_summary">Will do normal face card checks instead of looking for the "Support" icon on face cards. This solves problems with super-buffed Support Servants, but will break card priority if you have 2 of the same Servant in the party.</string>
+    <string name="bond_level_up">Bond Level up</string>
 </resources>
