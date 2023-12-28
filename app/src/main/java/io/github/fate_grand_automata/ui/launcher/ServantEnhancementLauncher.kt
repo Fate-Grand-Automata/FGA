@@ -1,12 +1,14 @@
 package io.github.fate_grand_automata.ui.launcher
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.ui.Stepper
+import io.github.fate_grand_automata.ui.VerticalDivider
 import io.github.fate_grand_automata.ui.prefs.remember
 
 
@@ -35,13 +38,9 @@ fun servantEnhancementLauncher(
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
 
-    var shouldLimit by remember {
-        mutableStateOf(false)
-    }
+    var shouldLimit by remember { mutableStateOf(false) }
 
-    var limitCount by remember {
-        mutableStateOf(1)
-    }
+    var limitCount by remember { mutableStateOf(1) }
 
     var shouldRedirectAscension by prefsCore.servantEnhancement.shouldRedirectAscension.remember()
 
@@ -49,137 +48,136 @@ fun servantEnhancementLauncher(
 
     var muteNotifications by prefsCore.servantEnhancement.muteNotifications.remember()
 
-    DisposableEffect(Unit){
+    DisposableEffect(Unit) {
         onDispose {
             prefsCore.servantEnhancement.limitCount.set(limitCount)
             prefsCore.servantEnhancement.shouldLimit.set(shouldLimit)
         }
     }
 
-    Column(
+    LazyColumn(
         modifier = modifier
             .padding(horizontal = 16.dp)
             .padding(top = 5.dp)
     ) {
-        Text(
-            text = stringResource(id = R.string.servant_enhancement),
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Divider()
-
-        Text(
-            text = stringResource(R.string.note),
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold
-        )
-
-        Text(
-            text = stringResource(id = R.string.servert_enhancement_warning_notice),
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Justify
-        )
-
-        Divider()
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { shouldLimit = !shouldLimit }
-        ) {
+        stickyHeader {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = MaterialTheme.colorScheme.background
+                    )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.servant_enhancement),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                Divider()
+            }
+        }
+        item {
             Text(
-                stringResource(R.string.servant_enhancement_limit),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
+                text = stringResource(R.string.note),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold
             )
+        }
+        item {
+            Text(
+                text = stringResource(id = R.string.servert_enhancement_warning_notice),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Justify
+            )
+        }
+        item {
+            Divider()
+        }
 
-            Switch(
-                checked = shouldLimit,
-                onCheckedChange = { shouldLimit = it }
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { shouldLimit = !shouldLimit }
+            ) {
+                Text(
+                    stringResource(R.string.servant_enhancement_limit),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Switch(
+                        checked = shouldLimit,
+                        onCheckedChange = { shouldLimit = it }
+                    )
+                    Stepper(
+                        value = limitCount,
+                        onValueChange = { limitCount = it },
+                        valueRange = 1..999,
+                        enabled = shouldLimit
+                    )
+                }
+            }
+        }
+
+        item {
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp)
             )
         }
 
-        Box(
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Stepper(
-                value = limitCount,
-                onValueChange = { limitCount = it },
-                valueRange = 1..999,
-                enabled = shouldLimit
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                RowTextCheckBox(
+                    modifier = Modifier
+                        .weight(1f),
+                    text = stringResource(R.string.servant_enhancement_redirect_ascension),
+                    status = shouldRedirectAscension,
+                    onStatusChange = {
+                        shouldRedirectAscension = it
+                    }
+                )
+                VerticalDivider()
+
+                RowTextCheckBox(
+                    modifier = Modifier
+                        .weight(1f),
+                    text = stringResource(R.string.servant_enhancement_redirect_grail),
+                    status = shouldRedirectGrail,
+                    onStatusChange = {
+                        shouldRedirectGrail = it
+                    }
+                )
+
+            }
+        }
+        item {
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp)
             )
         }
-
-        Divider(
-            modifier = Modifier.padding(vertical = 5.dp)
-        )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { shouldRedirectAscension = !shouldRedirectAscension }
-        ) {
-            Text(
-                stringResource(R.string.servant_enhancement_redirect_ascension),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-
-            Switch(
-                checked = shouldRedirectAscension,
-                onCheckedChange = { shouldRedirectAscension = it }
-            )
-        }
-
-        Divider(
-            modifier = Modifier.padding(vertical = 5.dp)
-        )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { shouldRedirectGrail = !shouldRedirectGrail }
-        ) {
-            Text(
-                stringResource(R.string.servant_enhancement_redirect_grail),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-
-            Switch(
-                checked = shouldRedirectGrail,
-                onCheckedChange = { shouldRedirectGrail = it }
-            )
-        }
-
-        Divider(
-            modifier = Modifier.padding(vertical = 5.dp)
-        )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { muteNotifications = !muteNotifications }
-        ) {
-            Text(
-                stringResource(R.string.mute_notifications),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-
-            Switch(
-                checked = muteNotifications,
-                onCheckedChange = { muteNotifications = it }
+        item {
+            RowTextCheckBox(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = stringResource(R.string.mute_notifications),
+                status = muteNotifications,
+                onStatusChange = {
+                    muteNotifications = it
+                }
             )
         }
     }
+
 
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
@@ -187,4 +185,32 @@ fun servantEnhancementLauncher(
             ScriptLauncherResponse.ServantEnhancement
         }
     )
+}
+
+@Composable
+private fun RowTextCheckBox(
+    modifier: Modifier = Modifier,
+    status: Boolean,
+    text: String,
+    onStatusChange: (Boolean) -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier
+            .clickable { onStatusChange(!status) }
+    ) {
+        Text(
+            text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.secondary,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.weight(1f)
+        )
+
+        Checkbox(
+            checked = status,
+            onCheckedChange = { onStatusChange(it) }
+        )
+    }
 }
