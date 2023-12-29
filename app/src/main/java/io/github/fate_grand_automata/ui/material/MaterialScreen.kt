@@ -265,9 +265,10 @@ private fun MaterialQuery(
                     expandFrom = Alignment.End,
                     initialWidth = { w -> w }
                 )
-        val slideOut = slideOutHorizontally(targetOffsetX = { width -> width }) +
+        val slideOut = slideOutHorizontally(
+            targetOffsetX = { width -> -width }) +
                 shrinkHorizontally(
-                    shrinkTowards = Alignment.End,
+                    shrinkTowards = Alignment.Start,
                     animationSpec = spring(
                         stiffness = Spring.StiffnessMediumLow,
                         visibilityThreshold = IntSize.VisibilityThreshold
