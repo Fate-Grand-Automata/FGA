@@ -67,12 +67,12 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -100,7 +100,6 @@ import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.MaterialRarity
 import io.github.fate_grand_automata.util.drawable
 import io.github.fate_grand_automata.util.stringRes
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -124,9 +123,6 @@ fun MaterialScreen(
     var entries by remember {
         mutableStateOf(emptyList<MaterialEnum>())
     }
-    var currentMats by remember {
-        mutableStateOf(emptyList<MaterialEnum>())
-    }
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
@@ -136,9 +132,6 @@ fun MaterialScreen(
         }.sortedByDescending { shown ->
             shown in selectedMaterials
         }
-        currentMats = entries.filter {
-            it.rarity == MaterialRarity.entries[pager.currentPage]
-        }
         focusManager.clearFocus()
     })
 
@@ -147,17 +140,6 @@ fun MaterialScreen(
             context.getString(it.stringRes).contains(query, ignoreCase = true)
         }.sortedByDescending { shown ->
             shown in selectedMaterials
-        }
-        currentMats = entries.filter {
-            it.rarity == MaterialRarity.entries[pager.currentPage]
-        }
-    })
-    LaunchedEffect(key1 = pager, block = {
-        snapshotFlow { pager.currentPage }.collectLatest { page ->
-            currentMats = entries.filter {
-                it.rarity == MaterialRarity.entries[page]
-            }
-            focusManager.clearFocus()
         }
     })
 
@@ -236,11 +218,16 @@ fun MaterialScreen(
                 MaterialTabRow(
                     windowSizeClass = windowSizeClass, pager, selectedMaterials, query, entries
                 )
-                HorizontalPager(state = pager) { _ ->
+                HorizontalPager(state = pager) { page ->
+                    val currentMats by remember {
+                        derivedStateOf {
+                            entries.filter { it.rarity == MaterialRarity.entries[page] }
+                        }
+                    }
                     MaterialPager(
-                        windowSizeClass,
-                        currentMats,
-                        selectedMaterials,
+                        windowSizeClass = windowSizeClass,
+                        currentMats = currentMats,
+                        selectedMaterials = selectedMaterials,
                         onClick = { mat ->
                             if (mat in selectedMaterials) {
                                 vm.removeMaterial(mat)
