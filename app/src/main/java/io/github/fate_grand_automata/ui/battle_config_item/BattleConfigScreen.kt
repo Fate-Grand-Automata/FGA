@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,17 +15,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +52,6 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
-import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.HeadingButton
 import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.VerticalDivider
@@ -67,7 +74,9 @@ fun BattleConfigScreen(
 ) {
     val context = LocalContext.current
 
-    val battleConfigExport = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+    val battleConfigExport = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
         vm.export(context, uri)
     }
 
@@ -120,58 +129,66 @@ private fun BattleConfigContent(
     navigate: (BattleConfigDestination) -> Unit,
     vm: BattleConfigScreenViewModel = viewModel()
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+    val isMobileVertical by remember {
+        mutableStateOf(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact)
+    }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.battle_config_edit).uppercase(),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                actions = {
+                    if (!isMobileVertical) {
+                        BattleConfigActionButtons(
+                            onDelete = onDelete,
+                            onExport = onExport,
+                            onCopy = onCopy
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { navigate(BattleConfigDestination.Back) }
+                    ) {
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(padding)
         ) {
-            val deleteConfirmDialog = FgaDialog()
-            deleteConfirmDialog.build {
-                title(stringResource(R.string.battle_config_item_delete_confirm_title))
-                message(stringResource(R.string.battle_config_item_delete_confirm_message))
-
-                buttons(
-                    onSubmit = onDelete,
-                    okLabel = stringResource(R.string.battle_config_item_delete_confirm_ok)
+            if (isMobileVertical) {
+                BattleConfigActionButtons(
+                    onDelete = onDelete,
+                    onExport = onExport,
+                    onCopy = onCopy
                 )
             }
-
-            Heading(
-                stringResource(R.string.battle_config_edit)
-            ) {
-                HeadingButton(
-                    text = stringResource(R.string.battle_config_item_export),
-                    onClick = onExport
-                )
-
-                HeadingButton(
-                    text = stringResource(R.string.battle_config_item_copy),
-                    icon = icon(Icons.Default.ContentCopy),
-                    onClick = onCopy
-                )
-
-                HeadingButton(
-                    text = stringResource(R.string.battle_config_item_delete),
-                    isDanger = true,
-                    icon = icon(Icons.Default.Delete),
-                    onClick = { deleteConfirmDialog.show() }
-                )
-            }
+            Divider()
 
             LazyVerticalStaggeredGrid(
                 modifier = Modifier.weight(1f),
-                columns = when (windowSizeClass.widthSizeClass) {
-                    WindowWidthSizeClass.Compact -> StaggeredGridCells.Fixed(1)
-                    else -> StaggeredGridCells.Fixed(2)
-                }
+                columns = when (isMobileVertical) {
+                    true -> StaggeredGridCells.Fixed(1)
+                    false -> StaggeredGridCells.Fixed(2)
+                },
+                contentPadding = PaddingValues(bottom = 16.dp)
             ) {
                 item {
                     Card(
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Column {
                             config.name.EditTextPreference(
@@ -192,8 +209,7 @@ private fun BattleConfigContent(
                 item {
                     Card(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 16.dp)
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         SkillCommandGroup(
                             config = config,
@@ -206,8 +222,7 @@ private fun BattleConfigContent(
                 item {
                     Card(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 16.dp)
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Column {
                             Row(
@@ -264,7 +279,7 @@ private fun BattleConfigContent(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .height(IntrinsicSize.Min)
-                            ){
+                            ) {
                                 RaidDelay(
                                     modifier = Modifier.weight(1f),
                                     config = config
@@ -310,6 +325,55 @@ private fun BattleConfigContent(
             }
         }
     }
+}
+
+@Composable
+private fun BattleConfigActionButtons(
+    onDelete: () -> Unit,
+    onExport: () -> Unit,
+    onCopy: () -> Unit
+) {
+    val deleteConfirmDialog = FgaDialog()
+    deleteConfirmDialog.build {
+        title(stringResource(R.string.battle_config_item_delete_confirm_title))
+        message(stringResource(R.string.battle_config_item_delete_confirm_message))
+
+        buttons(
+            onSubmit = onDelete,
+            okLabel = stringResource(R.string.battle_config_item_delete_confirm_ok)
+        )
+    }
+
+    Row(
+        modifier = Modifier.padding(
+            start = 8.dp,
+            end = 4.dp,
+            bottom = 8.dp
+        ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        HeadingButton(
+            text = stringResource(R.string.battle_config_item_export),
+            onClick = onExport,
+            modifier = Modifier.padding(horizontal = 12.dp)
+        )
+
+        HeadingButton(
+            text = stringResource(R.string.battle_config_item_copy),
+            icon = icon(Icons.Default.ContentCopy),
+            onClick = onCopy,
+            modifier = Modifier.padding(horizontal = 12.dp)
+        )
+
+        HeadingButton(
+            text = stringResource(R.string.battle_config_item_delete),
+            isDanger = true,
+            icon = icon(Icons.Default.Delete),
+            onClick = { deleteConfirmDialog.show() },
+            modifier = Modifier.padding(horizontal = 12.dp)
+        )
+    }
+
 }
 
 private val CardScore.color: Color

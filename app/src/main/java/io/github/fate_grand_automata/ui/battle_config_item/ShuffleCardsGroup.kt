@@ -23,8 +23,7 @@ import io.github.fate_grand_automata.util.stringRes
 fun ShuffleCardsGroup(config: BattleConfigCore) {
     Card(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Column(
             modifier = Modifier
