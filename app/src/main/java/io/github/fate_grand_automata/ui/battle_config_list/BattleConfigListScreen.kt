@@ -152,8 +152,11 @@ private fun BattleConfigListContent(
                         onClick = { action(BattleConfigListAction.Export) }
                     )
 
-                    Crossfade(selectionMode) {
-                        if (it) {
+                    Crossfade(
+                        selectionMode,
+                        label = "selection Mode"
+                    ) { selMode ->
+                        if (selMode) {
                             HeadingButton(
                                 text = stringResource(R.string.battle_config_list_delete),
                                 onClick = { action(BattleConfigListAction.Delete) },
