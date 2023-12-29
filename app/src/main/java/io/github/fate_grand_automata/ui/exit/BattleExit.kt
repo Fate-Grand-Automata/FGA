@@ -57,9 +57,9 @@ private val Duration.stringify: String
 private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.Abort -> stringResource(R.string.stopped_by_user)
     is AutoBattle.ExitReason.Unexpected -> {
-        e.let {
+        cause.let {
             if (it is KnownException) it.reason.msg
-            else "${stringResource(R.string.unexpected_error)}: ${e.message}"
+            else "${stringResource(R.string.unexpected_error)}: ${cause?.message}"
         }
     }
 
@@ -73,7 +73,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.SupportSelectionManual -> stringResource(R.string.support_selection_manual)
     AutoBattle.ExitReason.SupportSelectionFriendNotSet -> stringResource(R.string.support_selection_friend_not_set)
     AutoBattle.ExitReason.SupportSelectionPreferredNotSet -> stringResource(R.string.support_selection_preferred_not_set)
-    is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${e.message}"
+    is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${cause?.message}"
     is AutoBattle.ExitReason.CardPriorityParseError -> msg
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
     AutoBattle.ExitReason.Paused -> stringResource(R.string.script_paused)
@@ -345,7 +345,7 @@ fun BattleExit(
             ) {
                 Row {
                     val allowCopy = exception.reason.let { reason ->
-                        reason is AutoBattle.ExitReason.Unexpected && reason.e !is KnownException
+                        reason is AutoBattle.ExitReason.Unexpected && reason.cause !is KnownException
                     }
 
                     if (allowCopy) {

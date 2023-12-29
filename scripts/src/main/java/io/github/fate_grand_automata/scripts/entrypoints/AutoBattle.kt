@@ -57,9 +57,9 @@ class AutoBattle @Inject constructor(
     private val matTracker: MaterialsTracker,
     private val ceDropsTracker: CEDropsTracker
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
-    sealed class ExitReason {
+    sealed class ExitReason(val cause: Exception? = null) {
         object Abort : ExitReason()
-        class Unexpected(val e: Exception) : ExitReason()
+        class Unexpected(cause: Exception) : ExitReason(cause)
         object CEGet : ExitReason()
         class LimitCEs(val count: Int) : ExitReason()
         object FirstClearRewards : ExitReason()
@@ -72,15 +72,15 @@ class AutoBattle @Inject constructor(
         object SupportSelectionManual : ExitReason()
         object SupportSelectionFriendNotSet : ExitReason()
         object SupportSelectionPreferredNotSet : ExitReason()
-        class SkillCommandParseError(val e: Exception) : ExitReason()
+        class SkillCommandParseError(cause: Exception) : ExitReason(cause)
         class CardPriorityParseError(val msg: String) : ExitReason()
         object Paused : ExitReason()
         object StopAfterThisRun : ExitReason()
     }
 
-    internal class BattleExitException(val reason: ExitReason) : Exception()
+    internal class BattleExitException(val reason: ExitReason) : Exception(reason.cause)
 
-    class ExitException(val reason: ExitReason, val state: ExitState) : Exception()
+    class ExitException(val reason: ExitReason, val state: ExitState) : Exception(reason.cause)
 
     private var isContinuing = false
 
