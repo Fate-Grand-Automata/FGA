@@ -241,7 +241,6 @@
     <string name="present_box_full">"プレゼントボックスがいっぱいです"</string>
     <string name="support_img_maker_not_found">"現在の画面でサポート画像を見つけることができません。サポート選択またはフレンドリストになっていませんか?"</string>
     <string name="support_selection_manual">"サポート選択を手動に設定"</string>
-    <string name="support_selection_friend_not_set">"サポート選択にフレンド指定をする場合、フレンド名を1つ以上選択してください。"</string>
     <string name="support_selection_preferred_not_set">"サポート選択に優先を使用する場合、サーヴァントか概念礼装を1つ以上選択してください。"</string>
     <string name="ce_dropped">"概念礼装がドロップ！"</string>
     <string name="ce_get">"概念礼装を入手！"</string>
