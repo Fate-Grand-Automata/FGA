@@ -147,7 +147,7 @@ private fun BattleConfigListContent(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            TopAppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.p_battle_config).uppercase(),
