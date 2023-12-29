@@ -127,7 +127,10 @@ fun FgaApp(
                 BattleConfigListScreen(
                     vm = hiltViewModel(),
                     windowSizeClass = windowSizeClass,
-                    navigate = { navigate(NavConstants.battleConfigItem, it) }
+                    navigate = { navigate(NavConstants.battleConfigItem, it) },
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    }
                 )
             }
             composable(NavConstants.moreOptions) {
