@@ -417,7 +417,8 @@ private fun SelectedMaterialRow(
 ) {
     LazyRow(
         modifier = modifier
-            .animateContentSize(),
+            .animateContentSize()
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         items(selectedMaterials) { mat ->
