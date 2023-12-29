@@ -11,7 +11,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
@@ -19,6 +20,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -59,6 +62,7 @@ import kotlinx.coroutines.launch
 fun BattleConfigScreen(
     vm: BattleConfigScreenViewModel = viewModel(),
     supportVm: SupportViewModel = viewModel(),
+    windowSizeClass: WindowSizeClass,
     navigate: (BattleConfigDestination) -> Unit
 ) {
     val context = LocalContext.current
@@ -70,6 +74,7 @@ fun BattleConfigScreen(
     BattleConfigContent(
         config = vm.battleConfigCore,
         friendEntries = supportVm.friends,
+        windowSizeClass = windowSizeClass,
         onExport = { battleConfigExport.launch("${vm.battleConfig.name}.fga") },
         onCopy = {
             val id = vm.createCopyAndReturnId(context)
@@ -107,6 +112,7 @@ sealed class BattleConfigDestination {
 @Composable
 private fun BattleConfigContent(
     config: BattleConfigCore,
+    windowSizeClass: WindowSizeClass,
     friendEntries: Map<String, String>,
     onExport: () -> Unit,
     onCopy: () -> Unit,
@@ -155,8 +161,12 @@ private fun BattleConfigContent(
                 )
             }
 
-            LazyColumn(
-                modifier = Modifier.weight(1f)
+            LazyVerticalStaggeredGrid(
+                modifier = Modifier.weight(1f),
+                columns = when (windowSizeClass.widthSizeClass) {
+                    WindowWidthSizeClass.Compact -> StaggeredGridCells.Fixed(1)
+                    else -> StaggeredGridCells.Fixed(2)
+                }
             ) {
                 item {
                     Card(

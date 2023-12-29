@@ -145,6 +145,7 @@ fun FgaApp(
                 BattleConfigScreen(
                     vm = hiltViewModel(),
                     supportVm = supportVm,
+                    windowSizeClass = windowSizeClass,
                     navigate = {
                         when (it) {
                             BattleConfigDestination.Back -> navController.popBackStack()
