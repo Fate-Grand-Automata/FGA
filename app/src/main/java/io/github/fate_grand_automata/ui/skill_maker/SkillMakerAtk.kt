@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.ui.skill_maker
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -129,6 +130,8 @@ private fun CardsBeforeNp(
 
 @Composable
 fun SkillMakerAtk(
+    wave: Int,
+    turn: Int,
     onNextWave: (AutoSkillAction.Atk) -> Unit,
     onNextTurn: (AutoSkillAction.Atk) -> Unit
 ) {
@@ -137,9 +140,25 @@ fun SkillMakerAtk(
             .fillMaxHeight()
             .padding(16.dp)
     ) {
-        FGATitle(
-            stringResource(R.string.skill_maker_atk_header)
-        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ){
+            FGATitle(
+                stringResource(R.string.skill_maker_atk_header),
+                modifier = Modifier.align(Alignment.Center)
+            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                Text(stringResource(R.string.skill_maker_main_wave, wave))
+
+                Text(stringResource(R.string.skill_maker_main_turn, turn))
+            }
+        }
 
         var npSequence by rememberSaveable { mutableStateOf("") }
 
