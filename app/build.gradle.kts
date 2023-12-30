@@ -82,6 +82,22 @@ android {
                 abiFilters.add("arm64-v8a")
             }
         }
+        create("preview") {
+            initWith(getByName("release"))
+            buildConfigField("boolean", "PREVIEW", "true")
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks.add("release")
+
+            applicationIdSuffix = ".preview"
+            versionNameSuffix = "-preview"
+
+
+            ndk {
+                //noinspection ChromeOsAbiSupport
+                abiFilters.add("armeabi-v7a")
+                abiFilters.add("arm64-v8a")
+            }
+        }
     }
     lint {
         abortOnError = false
