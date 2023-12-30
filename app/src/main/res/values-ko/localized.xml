@@ -35,7 +35,6 @@
     <string name="skill_maker_atk_next_turn">"동일 웨이브 중
 다음 턴"</string>
     <string name="skill_maker_main_enemy">"적 %d"</string>
-    <string name="skill_maker_main_battle">"배틀: %d"</string>
     <string name="skill_maker_main_master_skills">"마스터
 스킬"</string>
     <string name="skill_maker_main_undo">"되돌리기"</string>

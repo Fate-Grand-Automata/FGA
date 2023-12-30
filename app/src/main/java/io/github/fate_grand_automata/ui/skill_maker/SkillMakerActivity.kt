@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,6 +79,9 @@ fun SkillMakerUI(
 
     val (current, navigate) = vm.navigation
 
+    val turn by vm.turn
+    val wave by vm.wave
+
     Crossfade(
         current,
         animationSpec = spring()
@@ -85,7 +89,9 @@ fun SkillMakerUI(
         when (nav) {
             SkillMakerNav.Atk -> {
                 SkillMakerAtk(
-                    onNextWave = { vm.nextStage(it) },
+                    wave = wave,
+                    turn = turn,
+                    onNextWave = { vm.nextWave(it) },
                     onNextTurn = { vm.nextTurn(it) }
                 )
             }
