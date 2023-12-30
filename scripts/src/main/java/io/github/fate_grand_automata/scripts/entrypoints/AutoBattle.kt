@@ -90,6 +90,9 @@ class AutoBattle @Inject constructor(
     // for tracking whether to check for servant death and wave transition animations
     private var isInBattle = false
 
+
+    private var canScreenshotBondCE = false
+
     override fun script(): Nothing {
         try {
             loop()
@@ -180,6 +183,7 @@ class AutoBattle @Inject constructor(
             },
             { isInMenu() } to { menu() },
             { isStartingNp() } to { skipNp() },
+            { isInBondScreen() } to { handleBondScreen() },
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
@@ -249,12 +253,26 @@ class AutoBattle @Inject constructor(
     private fun isInResult(): Boolean {
         val cases = sequenceOf(
             images[Images.Result] to locations.resultScreenRegion,
-            images[Images.Bond] to locations.resultBondRegion,
             images[Images.MasterLevelUp] to locations.resultMasterLvlUpRegion,
             images[Images.MasterExp] to locations.resultMasterExpRegion
         )
 
         return cases.any { (image, region) -> image in region }
+    }
+
+    private fun isInBondScreen() = images[Images.Bond] in locations.resultBondRegion
+
+    private fun handleBondScreen(){
+        canScreenshotBondCE = true
+
+        screenshotDrops.screenshotBond()
+
+        if (prefs.screenshotBond){
+            messages.notify(ScriptNotify.BondLevelUp)
+            0.5.seconds.wait()
+        }
+
+        result()
     }
 
     private fun isBond10CEReward() =
@@ -263,8 +281,15 @@ class AutoBattle @Inject constructor(
     /**
      * It seems like we need to click on CE (center of screen) to accept them
      */
-    private fun bond10CEReward() =
+    private fun bond10CEReward(){
+        if (prefs.screenshotBond && canScreenshotBondCE){
+            screenshotDrops.screenshotBond()
+            0.5.seconds.wait()
+            canScreenshotBondCE = false
+        }
+
         locations.scriptArea.center.click()
+    }
 
     private fun isCeRewardDetails() =
         images[Images.CEDetails] in locations.resultCeRewardDetailsRegion
@@ -290,7 +315,9 @@ class AutoBattle @Inject constructor(
      */
     private fun result() {
         isInBattle = false
-        locations.resultClick.click(15)
+        locations.resultClick.click(
+            times = if (prefs.screenshotBond) 5 else 15
+        )
         storySkipPossible = true
     }
 
@@ -298,6 +325,8 @@ class AutoBattle @Inject constructor(
         images[Images.MatRewards] in locations.resultMatRewardsRegion
 
     private fun dropScreen() {
+        canScreenshotBondCE = false
+
         ceDropsTracker.lookForCEDrops()
         matTracker.parseMaterials()
         screenshotDrops.screenshotDrops()
@@ -403,6 +432,8 @@ class AutoBattle @Inject constructor(
 
     // Selections Support option
     private fun support() {
+        canScreenshotBondCE = false
+
         support.selectSupport()
 
         if (!isContinuing) {

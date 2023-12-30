@@ -23,6 +23,8 @@ interface IPreferences {
     val skillDelay: Duration
     val screenshotDrops: Boolean
     val screenshotDropsUnmodified: Boolean
+    val screenshotBond: Boolean
+    var hidePlayButtonForScreenshot: Boolean
     var maxGoldEmberStackSize: Int
     var maxGoldEmberTotalCount: Int
     var stopAfterThisRun: Boolean
