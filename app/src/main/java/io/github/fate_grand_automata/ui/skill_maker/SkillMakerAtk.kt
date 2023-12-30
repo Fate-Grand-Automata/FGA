@@ -72,13 +72,18 @@ private fun SelectNps(
                 },
                 modifier = Modifier
                     .padding(5.dp),
-                enabled = canSelect || isSelected,
                 onClick = {
-                    val newNpSequence = when(isSelected){
-                        true -> npSequence.filter { m -> m.toString() != servantNumber.toString() }
-                        false -> npSequence + servantNumber
+                    if (canSelect){
+                        val newNpSequence = when(isSelected){
+                            true -> npSequence.filter { m -> m.toString() != servantNumber.toString() }
+                            false -> npSequence + servantNumber
+                        }
+                        onNpSequenceChange(newNpSequence)
+                    } else {
+                        val newNpSequence = npSequence.dropLast(1) + servantNumber
+                        onNpSequenceChange(newNpSequence)
                     }
-                    onNpSequenceChange(newNpSequence)
+
                 }
             ) {
                 Text(
