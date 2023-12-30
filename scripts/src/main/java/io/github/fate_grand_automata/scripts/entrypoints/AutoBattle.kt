@@ -90,6 +90,8 @@ class AutoBattle @Inject constructor(
     // for tracking whether to check for servant deaths or not
     private var servantDeathPossible = false
 
+    private var canSkipWavesInBattle = false
+
     override fun script(): Nothing {
         try {
             loop()
@@ -175,6 +177,7 @@ class AutoBattle @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to {
                 storySkipPossible = false
+                canSkipWavesInBattle = true
                 battle.performBattle()
                 servantDeathPossible = true
             },
@@ -194,7 +197,7 @@ class AutoBattle @Inject constructor(
             { isCeRewardDetails() } to { ceRewardDetails() },
             { isDeathAnimation() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
             { isRankUp() } to { locations.middleOfScreenClick.click() },
-            { isBetweenWaves() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
+            { isBetweenWaves() && canSkipWavesInBattle } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -289,6 +292,8 @@ class AutoBattle @Inject constructor(
      * Clicks through the reward screens.
      */
     private fun result() {
+        canSkipWavesInBattle = false
+
         servantDeathPossible = false
         locations.resultClick.click(15)
         storySkipPossible = true
