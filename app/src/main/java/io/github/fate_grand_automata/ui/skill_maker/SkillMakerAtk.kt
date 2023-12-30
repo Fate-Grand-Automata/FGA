@@ -73,8 +73,8 @@ private fun SelectNps(
                 modifier = Modifier
                     .padding(5.dp),
                 onClick = {
-                    if (canSelect){
-                        val newNpSequence = when(isSelected){
+                    if (canSelect) {
+                        val newNpSequence = when (isSelected) {
                             true -> npSequence.filter { m -> m.toString() != servantNumber.toString() }
                             false -> npSequence + servantNumber
                         }
@@ -104,11 +104,14 @@ private fun SelectNps(
 
 @Composable
 private fun CardsBeforeNp(
+    modifier: Modifier = Modifier,
     numberOfNpSelected: Int,
     cardsBeforeNp: Int,
     onCardsBeforeNpChange: (Int) -> Unit
 ) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Text(stringResource(R.string.skill_maker_atk_cards_before_np))
 
         Row {
@@ -200,21 +203,31 @@ fun SkillMakerAtk(
                 .fillMaxWidth()
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
         ) {
 
 
             CardsBeforeNp(
+                modifier = Modifier.align(Alignment.CenterStart),
                 numberOfNpSelected = numberOfNPs,
                 cardsBeforeNp = cardsBeforeNp,
                 onCardsBeforeNpChange = { cardsBeforeNp = it }
             )
 
-            Row {
+            Text(
+                text = when (cardsBeforeNp) {
+                    0 -> npSequence
+                    else -> "n$cardsBeforeNp $npSequence"
+                },
+                modifier = Modifier.align(Alignment.Center)
+            )
+
+            Row(
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
                 Button(
                     onClick = { onNextTurn(makeAtkAction(npSequence, cardsBeforeNp)) },
                     modifier = Modifier
