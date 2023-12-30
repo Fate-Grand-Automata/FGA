@@ -75,25 +75,41 @@ jobs:
           name: mapping-preview
           path: app/build/outputs/mapping/preview/mapping.txt
 
-  # Release master branch
-  canary:
+  release:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/development'
+    if: github.ref == 'refs/heads/development'  
     steps:
+      - name: Tag Version
+        run: |
+          echo "VERSION_TAG=${{ github.run_number }}" >> $GITHUB_ENV
+      
+      - name: Create Tag
+        id: create_tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const run_tag = `${{ github.run_number }}`; 
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${run_tag}`,
+              sha: context.sha
+            })
       - uses: actions/download-artifact@v4
         with:
           name: apk
 
       - name: Rename apk
-        run: mv app-preview.apk io.github.fate_grand_automata-preview.apk
-
-      - id: create_release
+        run: mv app-preview.apk fga-preview-${{ env.VERSION_TAG }}.apk
+      
+      - name: Create tagged Release
+        id: create_release_tag
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "canary"
-          prerelease: true
-          title: 'FGA canary-${{ github.run_number }}'
+          automatic_release_tag: "${{ env.VERSION_TAG }}"
+          prerelease: false
+          title: 'FGA Preview ${{ github.run_number }}'
           files: |
             *.apk
