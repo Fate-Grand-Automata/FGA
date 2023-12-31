@@ -81,10 +81,12 @@ android {
                 abiFilters.add("arm64-v8a")
             }
         }
-        create("alpha") {
+        create("dev") {
             initWith(getByName("release"))
+            buildConfigField("boolean", "DEV", "true")
             applicationIdSuffix = ".debug"
             signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks.add("release")
 
             ndk {
                 //noinspection ChromeOsAbiSupport
