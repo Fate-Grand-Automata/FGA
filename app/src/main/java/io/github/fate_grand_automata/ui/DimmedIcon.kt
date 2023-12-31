@@ -6,18 +6,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun DimmedIcon(
     icon: VectorIcon,
     modifier: Modifier = Modifier,
-    contentDescription: String = "icon"
+    contentDescription: String = "icon",
+    tint: Color? = null
 ) {
-    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
+    if (tint != null) {
         Icon(
             icon.asPainter(),
             contentDescription = contentDescription,
-            modifier = modifier
+            modifier = modifier,
+            tint = tint
         )
+
+    } else {
+        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
+            Icon(
+                icon.asPainter(),
+                contentDescription = contentDescription,
+                modifier = modifier,
+            )
+        }
     }
+
 }
