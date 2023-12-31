@@ -66,7 +66,7 @@ jobs:
 
       - name: Build Android Package
         run: |
-          if [[ ${{ github.ref }} == "refs/heads/master ]]; then
+          if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
             ./gradlew assembleCi --scan --parallel --no-daemon
           else
             ./gradlew assembleAlpha --scan --parallel --no-daemon
@@ -77,7 +77,7 @@ jobs:
         with:
           name: apk
           path: |
-            if [[ ${{ github.ref }} == "refs/heads/master ]]; then
+            if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
               app/build/outputs/apk/ci/app-ci.apk
             else
               app/build/outputs/apk/alpha/app-alpha.apk
@@ -88,7 +88,7 @@ jobs:
         with:
           name: mapping-ci
           path: |
-            if [[ ${{ github.ref }} == "refs/heads/master ]]; then
+            if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
               app/build/outputs/mapping/ci/mapping.txt
             else
               app/build/outputs/mapping/alpha/mapping.txt
