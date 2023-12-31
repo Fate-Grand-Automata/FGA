@@ -87,8 +87,8 @@ class AutoBattle @Inject constructor(
     // for tracking whether the story skip button could be visible in the current screen
     private var storySkipPossible = true
 
-    // for tracking whether to check for servant deaths or not
-    private var servantDeathPossible = false
+    // for tracking whether to check for servant death and wave transition animations
+    private var isInBattle = false
 
     override fun script(): Nothing {
         try {
@@ -175,8 +175,8 @@ class AutoBattle @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to {
                 storySkipPossible = false
+                isInBattle = true
                 battle.performBattle()
-                servantDeathPossible = true
             },
             { isInMenu() } to { menu() },
             { isStartingNp() } to { skipNp() },
@@ -270,7 +270,7 @@ class AutoBattle @Inject constructor(
         images[Images.CEDetails] in locations.resultCeRewardDetailsRegion
 
     private fun isDeathAnimation() =
-        servantDeathPossible && FieldSlot.list
+        isInBattle && FieldSlot.list
             .map { locations.battle.servantPresentRegion(it) }
             .count { it.exists(images[Images.ServantExist], similarity = 0.70) } in 1..2
 
@@ -289,7 +289,7 @@ class AutoBattle @Inject constructor(
      * Clicks through the reward screens.
      */
     private fun result() {
-        servantDeathPossible = false
+        isInBattle = false
         locations.resultClick.click(15)
         storySkipPossible = true
     }
@@ -430,7 +430,7 @@ class AutoBattle @Inject constructor(
      * Black screen probably means we're between waves.
      */
     private fun isBetweenWaves() =
-        locations.npStartedRegion.isBlack()
+        isInBattle && locations.npStartedRegion.isBlack()
 
     /**
      * Taps in the bottom right a few times to trigger NP skip in BetterFGO.
