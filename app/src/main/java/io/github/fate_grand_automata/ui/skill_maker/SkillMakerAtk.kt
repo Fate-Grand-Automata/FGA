@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.ui.skill_maker
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,14 +64,19 @@ private fun SelectNps(
                 else -> R.color.colorAccent
             }
 
-            Surface(
-                tonalElevation = 5.dp,
-                shape = MaterialTheme.shapes.medium,
-                color = when {
+            val animatedColorState by animateColorAsState(
+                targetValue = when {
                     isSelected -> colorResource(selectedColor)
                     !canSelect -> MaterialTheme.colorScheme.surfaceVariant.copy(0.3f)
                     else -> MaterialTheme.colorScheme.surfaceVariant
                 },
+                label = "Add animation to the changing of color"
+            )
+
+            Surface(
+                tonalElevation = 5.dp,
+                shape = MaterialTheme.shapes.medium,
+                color = animatedColorState,
                 modifier = Modifier
                     .padding(5.dp),
                 onClick = {
@@ -128,14 +134,19 @@ private fun CardsBeforeNp(
 
                 val canSelect = numberOfNpSelected + cardNumber <= 3
 
-                Surface(
-                    tonalElevation = 5.dp,
-                    shape = MaterialTheme.shapes.medium,
-                    color = when {
+                val animatedColorState by animateColorAsState(
+                    targetValue = when {
                         isSelected -> colorResource(R.color.colorAccent)
                         !canSelect -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                         else -> MaterialTheme.colorScheme.surfaceVariant
                     },
+                    label = "Add animation to the changing of color"
+                )
+
+                Surface(
+                    tonalElevation = 5.dp,
+                    shape = MaterialTheme.shapes.medium,
+                    color = animatedColorState,
                     modifier = Modifier
                         .padding(5.dp),
                     enabled = canSelect,
