@@ -106,7 +106,7 @@ class SkillMakerViewModel @Inject constructor(
         ++_currentIndex.value
     }
 
-    private fun undo() {
+    private fun deleteSelected() {
         model.skillCommand.removeAt(currentIndex.value)
         --_currentIndex.value
     }
@@ -194,7 +194,7 @@ class SkillMakerViewModel @Inject constructor(
         _currentIndex.value = model.skillCommand.lastIndex
 
         while (last.let { l -> l is SkillMakerEntry.Next && l.action == AutoSkillAction.Atk.noOp() }) {
-            undo()
+            deleteSelected()
         }
 
         return getSkillCmdString()
@@ -232,7 +232,7 @@ class SkillMakerViewModel @Inject constructor(
                 lastAction.action is AutoSkillAction.MasterSkill &&
                 lastAction.action.skill == Skill.Master.C
             ) {
-                undo()
+                deleteSelected()
             }
         }
 
@@ -273,7 +273,7 @@ class SkillMakerViewModel @Inject constructor(
         _enemyTarget.value = target
     }
 
-    private fun undoStageOrTurn() {
+    private fun deleteStageOrTurn() {
         // Decrement Battle/Turn count
         if (last is SkillMakerEntry.Next.Wave) {
             prevStage()
@@ -284,7 +284,7 @@ class SkillMakerViewModel @Inject constructor(
         }
 
         // Undo the Battle/Turn change
-        undo()
+        deleteSelected()
 
         revertToPreviousEnemyTarget()
     }
@@ -293,24 +293,24 @@ class SkillMakerViewModel @Inject constructor(
         _currentIndex.value = model.skillCommand.lastIndex
 
         while (!isEmpty()) {
-            onUndo()
+            onDeleteSelected()
         }
     }
 
-    fun onUndo() {
+    fun onDeleteSelected() {
         if (!isEmpty()) {
             // Un-select target
             when (val last = last) {
                 // Battle/Turn change
                 is SkillMakerEntry.Next -> {
-                    undoStageOrTurn()
+                    deleteStageOrTurn()
                 }
 
                 is SkillMakerEntry.Action -> {
                     if (last.action is AutoSkillAction.TargetEnemy) {
-                        undo()
+                        deleteSelected()
                         revertToPreviousEnemyTarget()
-                    } else undo()
+                    } else deleteSelected()
                 }
                 // Do nothing
                 is SkillMakerEntry.Start -> {

@@ -37,7 +37,6 @@
     <string name="skill_maker_main_enemy">"적 %d"</string>
     <string name="skill_maker_main_master_skills">"마스터
 스킬"</string>
-    <string name="skill_maker_main_undo">"되돌리기"</string>
     <string name="skill_maker_main_clear">"초기화"</string>
     <string name="skill_maker_main_servant">"서번트 %d"</string>
     <string name="skill_maker_main_attack">"공격"</string>

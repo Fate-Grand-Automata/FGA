@@ -38,7 +38,6 @@
     <string name="skill_maker_main_wave">"Battle: %d"</string>
     <string name="skill_maker_main_master_skills">"マスター
 スキル"</string>
-    <string name="skill_maker_main_undo">"削除"</string>
     <string name="skill_maker_main_clear">"全削除"</string>
     <string name="skill_maker_main_servant">"サーヴァント %d"</string>
     <string name="skill_maker_main_attack">"Attack"</string>
