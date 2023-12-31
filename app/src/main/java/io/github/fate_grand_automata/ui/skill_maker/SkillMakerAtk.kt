@@ -243,10 +243,19 @@ fun SkillMakerAtk(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
+                val npSequenceValue = npSequence.map {
+                    when (it) {
+                        '1' -> CommandCard.NP.A
+                        '2' -> CommandCard.NP.B
+                        '3' -> CommandCard.NP.C
+                        else -> ""
+                    }
+                }.joinToString("")
+
                 Text(
                     text = when (cardsBeforeNp) {
-                        0 -> npSequence
-                        else -> "n$cardsBeforeNp $npSequence"
+                        0 -> npSequenceValue
+                        else -> "n$cardsBeforeNp $npSequenceValue"
                     },
                     textAlign = TextAlign.Center,
                     textDecoration = TextDecoration.Underline
