@@ -145,9 +145,9 @@ jobs:
         uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'download_apk'
-          options: '{ "version_code": "${{ github.run_number }}" }'
         env:
           SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
+          SUPPLY_VERSION_CODE: ${{ github.run_number }}
 
       - id: create_release
         uses: marvinpinto/action-automatic-releases@latest
