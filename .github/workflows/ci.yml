@@ -72,27 +72,27 @@ jobs:
             ./gradlew assembleDev --scan --parallel --no-daemon
           fi
 
+      - name: Set the path
+        run: |
+            if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
+                echo "APK_PATH=app/build/outputs/apk/ci/app-ci.apk" >> $GITHUB_ENV
+                echo "MAPPING=app/build/outputs/mapping/ci/mapping.txt" >> $GITHUB_ENV
+            else
+                echo "APK_PATH=app/build/outputs/apk/dev/app-dev.apk" >> $GITHUB_ENV
+                echo "MAPPING_PATH=app/build/outputs/mapping/dev/mapping.txt" >> $GITHUB_ENV
+            fi
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: apk
-          path: |
-            if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
-              app/build/outputs/apk/ci/app-ci.apk
-            else
-              app/build/outputs/apk/dev/app-dev.apk
-            fi
+          path: ${{ env.APK_PATH }}
 
       - name: Upload De-obfuscation mapping file
         uses: actions/upload-artifact@v4
         with:
           name: mapping-ci
-          path: |
-            if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
-              app/build/outputs/mapping/ci/mapping.txt
-            else
-              app/build/outputs/mapping/dev/mapping.txt
-            fi
+          path: ${{ env.MAPPING_PATH }}
 
   # Release master branch
   canary:
