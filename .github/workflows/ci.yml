@@ -148,7 +148,8 @@ jobs:
         env:
           SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
           SUPPLY_VERSION_CODE: ${{ github.run_number }}
-
+      - name: zip APK
+        run: zip FGA-apk.zip io.github.fate_grand_automata.apk
       - id: create_release
         uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -157,4 +158,4 @@ jobs:
           prerelease: true
           title: 'FGA ${{ github.run_number }}'
           files: |
-            *.apk
+            FGA-apk.zip
