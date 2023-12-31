@@ -65,19 +65,34 @@ jobs:
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
       - name: Build Android Package
-        run: ./gradlew assembleCi --scan --parallel --no-daemon
+        run: |
+          if [[ ${{ github.ref }} == "refs/heads/master ]]; then
+            ./gradlew assembleCi --scan --parallel --no-daemon
+          else
+            ./gradlew assembleAlpha --scan --parallel --no-daemon
+          fi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: apk
-          path: app/build/outputs/apk/ci/app-ci.apk
+          path: |
+            if [[ ${{ github.ref }} == "refs/heads/master ]]; then
+              app/build/outputs/apk/ci/app-ci.apk
+            else
+              app/build/outputs/apk/alpha/app-alpha.apk
+            fi
 
       - name: Upload De-obfuscation mapping file
         uses: actions/upload-artifact@v4
         with:
           name: mapping-ci
-          path: app/build/outputs/mapping/ci/mapping.txt
+          path: |
+            if [[ ${{ github.ref }} == "refs/heads/master ]]; then
+              app/build/outputs/mapping/ci/mapping.txt
+            else
+              app/build/outputs/mapping/alpha/mapping.txt
+            fi
 
   # Release master branch
   canary:
