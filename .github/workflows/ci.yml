@@ -69,7 +69,7 @@ jobs:
           if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
             ./gradlew assembleCi --scan --parallel --no-daemon
           else
-            ./gradlew assembleAlpha --scan --parallel --no-daemon
+            ./gradlew assembleDev --scan --parallel --no-daemon
           fi
 
       - name: Upload APK
@@ -80,7 +80,7 @@ jobs:
             if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
               app/build/outputs/apk/ci/app-ci.apk
             else
-              app/build/outputs/apk/alpha/app-alpha.apk
+              app/build/outputs/apk/dev/app-dev.apk
             fi
 
       - name: Upload De-obfuscation mapping file
@@ -91,7 +91,7 @@ jobs:
             if [[ ${{ github.ref }} == "refs/heads/master" ]]; then
               app/build/outputs/mapping/ci/mapping.txt
             else
-              app/build/outputs/mapping/alpha/mapping.txt
+              app/build/outputs/mapping/dev/mapping.txt
             fi
 
   # Release master branch
