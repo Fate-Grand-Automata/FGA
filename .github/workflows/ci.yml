@@ -78,7 +78,8 @@ jobs:
                 echo "APK_PATH=app/build/outputs/apk/ci/app-ci.apk" >> $GITHUB_ENV
                 echo "MAPPING=app/build/outputs/mapping/ci/mapping.txt" >> $GITHUB_ENV
             else
-                echo "APK_PATH=app/build/outputs/apk/dev/app-dev.apk" >> $GITHUB_ENV
+                mv app/build/outputs/apk/dev/app-dev.apk app/build/outputs/apk/dev/fga-${{ env.FGA_VERSION_CODE }}.apk
+                echo "APK_PATH=app/build/outputs/apk/dev/fga-${{ env.FGA_VERSION_CODE }}.apk" >> $GITHUB_ENV
                 echo "MAPPING_PATH=app/build/outputs/mapping/dev/mapping.txt" >> $GITHUB_ENV
             fi
 
