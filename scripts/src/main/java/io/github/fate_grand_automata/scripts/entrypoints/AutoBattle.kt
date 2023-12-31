@@ -318,7 +318,7 @@ class AutoBattle @Inject constructor(
         state.nextRun()
 
         2.seconds.wait()
-        val isBlackScreen = isBetweenWaves()
+        val isBlackScreen = locations.npStartedRegion.isBlack()
         if (isBlackScreen){
             locations.menuScreenRegion.exists(
                 images[Images.Menu],
