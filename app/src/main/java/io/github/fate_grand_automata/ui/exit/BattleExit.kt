@@ -24,6 +24,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +36,7 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
+import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.DimmedIcon
 import io.github.fate_grand_automata.ui.FGATheme
@@ -84,20 +90,56 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
 @Composable
 private fun Refill(
     limit: Int,
-    timesRefilled: Int
+    timesRefilled: Int,
+    selectedApple: RefillResourceEnum
 ) {
     if (limit > 0) {
         SmallChip(
             text = "$timesRefilled / $limit",
-            icon = icon(R.drawable.ic_apple)
+            icon = icon(R.drawable.ic_apple),
+            tint = when(selectedApple){
+                RefillResourceEnum.SQ -> null
+                else -> selectedApple.color
+            },
+            iconModifier =  when(selectedApple){
+                RefillResourceEnum.SQ -> Modifier
+                    .graphicsLayer(alpha = 0.99f)
+                    .drawWithCache {
+                        val rainbowAppleColorList = listOf(
+                            Color(0xFFe71d43),
+                            Color(0xFFff3700),
+                            Color(0xFFffa500),
+                            Color(0xFFaad500),
+                            Color(0xFF002baa),
+                            Color(0xFF3200ac),
+                            Color(0xFF812ba6)
+                        )
+                        val brush = Brush.linearGradient(rainbowAppleColorList)
+                        onDrawWithContent {
+                            drawContent()
+                            drawRect(brush, blendMode = BlendMode.SrcAtop)
+                        }
+                    }
+                else -> Modifier
+            }
         )
     }
 }
 
+val RefillResourceEnum.color: Color
+    get() = when (this) {
+        RefillResourceEnum.SQ -> Color(0xFFe99fa2)
+        RefillResourceEnum.Gold -> Color(0xFFe9b717)
+        RefillResourceEnum.Silver -> Color(0xFFb0b0b0)
+        RefillResourceEnum.Bronze -> Color(0xFF4bc8e7)
+        RefillResourceEnum.Copper -> Color(0xFFac9283)
+    }
+
 private fun LazyListScope.battleExitContent(
     reason: AutoBattle.ExitReason,
     state: AutoBattle.ExitState,
-    refillEnabled: Boolean
+    refillEnabled: Boolean,
+    selectedApple: RefillResourceEnum
 ) {
     item {
         Text(
@@ -118,7 +160,8 @@ private fun LazyListScope.battleExitContent(
             if (refillEnabled) {
                 Refill(
                     limit = state.refillLimit,
-                    timesRefilled = state.timesRefilled
+                    timesRefilled = state.timesRefilled,
+                    selectedApple = selectedApple,
                 )
             }
 
@@ -257,8 +300,10 @@ private fun MaterialSummary(
 
 @Composable
 private fun SmallChip(
+    iconModifier: Modifier = Modifier,
     text: String,
-    icon: VectorIcon? = null
+    icon: VectorIcon? = null,
+    tint: Color? = null
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
@@ -274,9 +319,10 @@ private fun SmallChip(
                 DimmedIcon(
                     icon,
                     contentDescription = "icon",
-                    modifier = Modifier
+                    modifier = iconModifier
                         .padding(end = 5.dp)
-                        .size(16.dp)
+                        .size(16.dp),
+                    tint = tint
                 )
             }
 
@@ -308,7 +354,8 @@ fun BattleExit(
                 battleExitContent(
                     reason = exception.reason,
                     state = exception.state,
-                    refillEnabled = prefs.selectedServerConfigPref.resources.isNotEmpty()
+                    refillEnabled = prefs.selectedServerConfigPref.resources.isNotEmpty(),
+                    selectedApple = prefs.selectedServerConfigPref.selectedApple
                 )
             }
 
@@ -395,7 +442,8 @@ fun PreviewBattleExitContent() {
                     maxTurnsPerRun = 4,
                     averageTurnsPerRun = 3.45678
                 ),
-                refillEnabled = true
+                refillEnabled = true,
+                selectedApple = RefillResourceEnum.Copper
             )
         }
     }
