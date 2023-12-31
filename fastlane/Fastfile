@@ -23,4 +23,11 @@ platform :android do
       skip_upload_screenshots: true
     )
   end
+
+  desc "Download the APK from the Play Console"
+  lane :download_apk do
+    download_universal_apk_from_google_play(
+      destination: "./io.github.fate_grand_automata.apk"
+    )
+  end
 end

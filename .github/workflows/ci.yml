@@ -27,10 +27,6 @@ on:
       - 'FUNDING.yml'
   workflow_dispatch:
     inputs:
-      release-canary:
-        description: 'Release canary or not'
-        default: 'true'
-        required: true
       release-playstore:
         description: 'Release play store version or not'
         default: 'true'
@@ -42,7 +38,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/master' || inputs.release-canary != 'false'
+    if: github.ref != 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -78,29 +74,6 @@ jobs:
         with:
           name: mapping-ci
           path: app/build/outputs/mapping/ci/mapping.txt
-
-  # Release master branch
-  canary:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: apk
-
-      - name: Rename apk
-        run: mv app-ci.apk io.github.fate_grand_automata.apk
-
-      - id: create_release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "canary"
-          prerelease: true
-          title: 'FGA canary-${{ github.run_number }}'
-          files: |
-            *.apk
 
   play_store:
     runs-on: ubuntu-latest
@@ -156,3 +129,27 @@ jobs:
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
+
+  # Release master branch
+  github_release:
+    needs: play_store
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download Universal APK
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+          lane: 'download_apk'
+          options: '{ "version_code": "${{ github.run_number }}" }'
+        env:
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
+
+      - id: create_release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ github.run_number }}"
+          prerelease: true
+          title: 'FGA ${{ github.run_number }}'
+          files: |
+            *.apk
