@@ -37,7 +37,6 @@
     <string name="skill_maker_main_enemy">"敌人 %d"</string>
     <string name="skill_maker_main_battle">"战斗 %d"</string>
     <string name="skill_maker_main_master_skills">"御主技能"</string>
-    <string name="skill_maker_main_undo">"复原"</string>
     <string name="skill_maker_main_clear">"重设"</string>
     <string name="skill_maker_main_servant">"从者 %d"</string>
     <string name="skill_maker_main_attack">"攻击"</string>
