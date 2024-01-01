@@ -149,7 +149,7 @@ jobs:
           SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
           SUPPLY_VERSION_CODE: ${{ github.run_number }}
       - name: zip APK
-        run: zip FGA-apk.zip io.github.fate_grand_automata.apk
+        run: zip FGA-apk.zip *.apk
       - id: create_release
         uses: marvinpinto/action-automatic-releases@latest
         with:
