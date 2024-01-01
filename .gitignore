@@ -9,6 +9,10 @@
 /.idea/assetWizardSettings.xml
 /.idea/jarRepositories.xml
 /.idea/misc.xml
+/.idea/shelf/
+/.idea/sonarlint
+/.idea/migrations.xml
+/.idea/deploymentTargetDropDown.xml
 .DS_Store
 /build
 /captures
