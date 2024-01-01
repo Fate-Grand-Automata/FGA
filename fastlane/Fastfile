@@ -25,9 +25,10 @@ platform :android do
   end
 
   desc "Download the APK from the Play Console"
-  lane :download_apk do
+  lane :download_apk do |options|
     download_universal_apk_from_google_play(
-      destination: "./io.github.fate_grand_automata-" + ENV['SUPPLY_VERSION_CODE'] + ".apk"
+      version_code: options[:version_code],
+      destination: "./io.github.fate_grand_automata-" + options[:version_code] + ".apk"
     )
   end
 end

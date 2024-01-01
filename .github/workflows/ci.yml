@@ -13,8 +13,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - 'v*'
     paths-ignore:
       - '.idea/**'
       - '.github/**'
@@ -26,14 +24,10 @@ on:
       - 'custom-game-area/**'
       - 'FUNDING.yml'
   workflow_dispatch:
-    inputs:
-      release-playstore:
-        description: 'Release play store version or not'
-        default: 'true'
-        required: true
 env:
   JAVA_VERSION: 17
   JAVA_DISTRO: 'temurin'
+  VERSION_CODE: '${{ github.run_number }}'
 
 jobs:
   build:
@@ -51,12 +45,7 @@ jobs:
       - name: Determine Version Name
         shell: bash
         run: |
-          VERSION_CODE=${{ github.run_number }}
-          VERSION_NAME=${{ github.run_number }}
-          
-          if [[ ${{ github.ref }} == refs/tags/* ]]; then
-            VERSION_NAME = ${{ github.ref_name }}
-          fi
+          VERSION_NAME=$VERSION_CODE
           echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
@@ -77,7 +66,7 @@ jobs:
 
   play_store:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && inputs.release-playstore != 'false'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -90,12 +79,7 @@ jobs:
       - name: Determine Version Name
         shell: bash
         run: |
-          VERSION_CODE=${{ github.run_number }}
-          VERSION_NAME=${{ github.run_number }}
-          
-          if [[ ${{ github.ref }} == refs/tags/* ]]; then
-            VERSION_NAME = ${{ github.ref_name }}
-          fi
+          VERSION_NAME=$VERSION_CODE
           echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
@@ -145,17 +129,17 @@ jobs:
         uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'download_apk'
+          options: '{ "version_code": "$VERSION_CODE" }'
         env:
           SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
-          SUPPLY_VERSION_CODE: ${{ github.run_number }}
       - name: zip APK
         run: zip FGA-apk.zip *.apk
       - id: create_release
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ github.run_number }}"
+          automatic_release_tag: "$VERSION_CODE"
           prerelease: true
-          title: 'FGA ${{ github.run_number }}'
+          title: 'FGA $VERSION_CODE'
           files: |
             FGA-apk.zip
