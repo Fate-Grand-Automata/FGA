@@ -297,7 +297,10 @@ private fun PresetButton(
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary,
+                color = when (enabled) {
+                    true -> MaterialTheme.colorScheme.secondary
+                    false -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
+                },
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
