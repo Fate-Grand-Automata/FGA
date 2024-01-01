@@ -103,6 +103,9 @@ jobs:
       - name: Rename apk
         run: mv app-preview.apk fga-preview-${{ env.VERSION_TAG }}.apk
       
+      - name: Zipped APK
+        run: zip -r fga-preview-${{ env.VERSION_TAG }}.zip fga-preview-${{ env.VERSION_TAG }}.apk
+      
       - name: Create tagged Release
         id: create_release_tag
         uses: marvinpinto/action-automatic-releases@latest
@@ -112,4 +115,4 @@ jobs:
           prerelease: false
           title: 'FGA Preview ${{ github.run_number }}'
           files: |
-            *.apk
+            fga-preview-${{ env.VERSION_TAG }}.zip
