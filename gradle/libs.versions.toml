@@ -8,7 +8,7 @@ flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.1.0"
 kotlinx_coroutines_core_version = "1.7.3"
 lifecycle_version = "2.6.2"
-kotlin_verion = "1.9.21"
+kotlin_version = "1.9.21"
 hilt_version = "2.48.1"
 gson_version = "2.10.1"
 
@@ -38,11 +38,11 @@ junit_bom_version = "5.9.3"
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle_version" }
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin_verion" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin_version" }
 hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt_version" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp_version" }
 
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_verion" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_version" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 
