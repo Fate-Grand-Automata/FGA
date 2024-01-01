@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.ui.launcher
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -145,19 +146,72 @@ fun skillUpgradeLauncher(
                     onCheckedChange = {
                         shouldUpgradeAll = it
                     },
-                    modifier = Modifier.scale(0.75f)
                 )
-
-
-
-                Stepper(
-                    value = targetAllSkillLevel,
-                    onValueChange = { targetAllSkillLevel = it },
-                    valueRange = lowestMinSkill..10,
+            }
+        }
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+            ) {
+                PresetButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    text = "4",
                     enabled = shouldUpgradeAll,
-                    textStyle = MaterialTheme.typography.bodyMedium,
-                    valueRepresentation = { "Lv. $it" }
+                    onClick = {
+                        targetAllSkillLevel = 4
+                    }
                 )
+                PresetButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    text = "7",
+                    enabled = shouldUpgradeAll,
+                    onClick = {
+                        targetAllSkillLevel = 7
+                    }
+                )
+                PresetButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    text = "9",
+                    enabled = shouldUpgradeAll,
+                    onClick = {
+                        targetAllSkillLevel = 9
+                    }
+                )
+                PresetButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    text = "10",
+                    enabled = shouldUpgradeAll,
+                    onClick = {
+                        targetAllSkillLevel = 10
+                    }
+                )
+                Box(
+                    modifier = Modifier
+                        .weight(1.5f)
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Stepper(
+                        value = targetAllSkillLevel,
+                        onValueChange = { targetAllSkillLevel = it },
+                        valueRange = lowestMinSkill..10,
+                        enabled = shouldUpgradeAll,
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        valueRepresentation = { "Lv. $it" }
+                    )
+                }
             }
         }
 
@@ -226,6 +280,32 @@ fun skillUpgradeLauncher(
                 upgradeSkill3 = upgradeSkill3,
             )
         }
+    )
+}
+
+@Composable
+private fun PresetButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    SuggestionChip(
+        onClick = onClick,
+        modifier = modifier,
+        label = {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyMedium,
+                color = when (enabled) {
+                    true -> MaterialTheme.colorScheme.secondary
+                    false -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
+                },
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        enabled = enabled,
     )
 }
 
