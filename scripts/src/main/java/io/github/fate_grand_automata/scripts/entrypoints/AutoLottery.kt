@@ -20,8 +20,12 @@ class AutoLottery @Inject constructor(
     private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
-        object RanOutOfCurrency : ExitReason()
-        object PresentBoxFull : ExitReason()
+        data object RanOutOfCurrency : ExitReason()
+        data object PresentBoxFull : ExitReason()
+
+        data object NoEmbersFound : ExitReason()
+
+        data class CannotSelectAnyMore(val pickedStacks: Int, val pickedGoldEmbers: Int) : ExitReason()
     }
 
     class ExitException(val reason: ExitReason) : Exception()
@@ -29,20 +33,44 @@ class AutoLottery @Inject constructor(
     private fun spin() {
         // Don't increase this too much or you'll regret when you're not able to stop the script
         // And your phone won't let you press anything
-        locations.lottery.spinClick.click(20)
+        locations.lottery.spinClick.click(
+            prefs.lottoSpin
+        )
     }
+    
 
     private fun presentBoxFull() {
         if (prefs.receiveEmbersWhenGiftBoxFull) {
+
             val moveToPresentBox = locations.lottery.fullPresentBoxRegion
                 .find(images[Images.PresentBoxFull])
 
             moveToPresentBox?.region?.click()
 
             1.seconds.wait()
-            giftBox.script()
-        }
+            try{
+                giftBox.script()
+            } catch (e: AutoGiftBox.ExitException){
+                when(e.reason){
+                    AutoGiftBox.ExitReason.ReturnToLottery -> {
+                        // do nothing
+                    }
+                    AutoGiftBox.ExitReason.NoEmbersFound -> {
+                        throw ExitException(ExitReason.NoEmbersFound)
+                    }
+                    is AutoGiftBox.ExitReason.CannotSelectAnyMore -> {
+                        throw ExitException(
+                            ExitReason.CannotSelectAnyMore(e.reason.pickedStacks, e.reason.pickedGoldEmbers)
+                        )
+                    }
+                }
+            }
 
+        }
+        if (prefs.loopIntoLotteryAfterPresentBox && prefs.receiveEmbersWhenGiftBoxFull){
+            prefs.loopIntoLotteryAfterPresentBox = false
+            return
+        }
         throw ExitException(ExitReason.PresentBoxFull)
     }
 
