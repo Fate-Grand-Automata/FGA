@@ -21,7 +21,9 @@ class AutoGiftBox @Inject constructor(
     private val connectionRetry: ConnectionRetry
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
-        object NoEmbersFound : ExitReason()
+
+        data object ReturnToLottery : ExitReason()
+        data object NoEmbersFound : ExitReason()
         class CannotSelectAnyMore(val pickedStacks: Int, val pickedGoldEmbers: Int) : ExitReason()
     }
 
@@ -71,6 +73,29 @@ class AutoGiftBox @Inject constructor(
             totalSelected.pickedGoldEmbers < prefs.maxGoldEmberTotalCount &&
             receiveEnabledPattern in receiveEnabledRegion
         )
+
+
+        if (prefs.loopIntoLotteryAfterPresentBox) {
+            val isFullDialog = locations.closeLowerMiddleScreenRegion.exists(
+                images[Images.Close],
+                timeout = 10.seconds
+            )
+            if (isFullDialog) {
+                locations.closeLowerMiddleScreenRegion.click()
+                0.5.seconds.wait()
+            }
+            // close window
+            locations.resultCeRewardCloseClick.click()
+            1.seconds.wait()
+
+            locations.lottery.checkRegion.exists(
+                images[Images.LotteryBoxFinished],
+                timeout = 15.seconds
+            )
+
+            throw ExitException(ExitReason.ReturnToLottery)
+        }
+
 
         throw ExitException(
             ExitReason.CannotSelectAnyMore(
