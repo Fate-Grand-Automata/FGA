@@ -63,4 +63,6 @@ class ServantEnhancementLocations @Inject constructor(
     }
 
     val getAutoSelectMinEmberLowQPLocation = Location(402, 1126).xFromCenter()
+
+    val returnToServantMenuFromAscensionLocation = Location(816, 572).xFromCenter()
 }

@@ -10,6 +10,7 @@ internal class ServantEnhancementPrefs(
     override var limitCount: Int by prefsCore.limitCount
 
     override var shouldRedirectAscension: Boolean by prefsCore.shouldRedirectAscension
+    override var shouldPerformAscension: Boolean by prefsCore.shouldPerformAscension
     override var shouldRedirectGrail: Boolean by prefsCore.shouldRedirectGrail
 
     override var muteNotifications: Boolean by prefsCore.muteNotifications

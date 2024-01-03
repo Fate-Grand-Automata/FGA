@@ -347,6 +347,9 @@ class ScriptManager @Inject constructor(
                         context.getString(R.string.servant_enhancement_redirect_ascension_success)
                     AutoServantEnhancement.ExitReason.RedirectGrail ->
                         context.getString(R.string.servant_enhancement_redirect_grail_success)
+
+                    AutoServantEnhancement.ExitReason.UnableToPerformAscension ->
+                        context.getString(R.string.servant_enhancement_perform_ascension_failed)
                 }
                 if (!preferences.servant.muteNotifications){
                     messages.notify(msg)
