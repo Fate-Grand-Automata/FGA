@@ -5,7 +5,7 @@ on:
 jobs:
   labelCheck:
     if: >-
-          github.event.issue.user.id != 10654537 && github.event.issue.user.id != 12360257 &&
+          github.event.issue.user.id != 16458204 && github.event.issue.user.id != 12360257 &&
           join(github.event.issue.labels) == ''
     runs-on: ubuntu-latest
     steps:

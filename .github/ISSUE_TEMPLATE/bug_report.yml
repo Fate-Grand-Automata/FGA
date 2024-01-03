@@ -63,7 +63,7 @@ body:
         
         If the video is too large for Github, upload it to youtube.com or something similar.
     validations:
-      required: true
+      required: false
   - type: markdown
     attributes:
       value: "Now please tell us about your device"
@@ -77,7 +77,7 @@ body:
         
         If you are using an emulator, use its name and version instead.
     validations:
-      required: true
+      required: false
   - type: dropdown
     id: android-version
     attributes:
