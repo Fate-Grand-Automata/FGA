@@ -35,6 +35,7 @@ interface IPreferences {
 
     var receiveEmbersWhenGiftBoxFull: Boolean
     var loopIntoLotteryAfterPresentBox: Boolean
+    var isPresentBoxFull: Boolean
 
     val lottoSpin: Int
 

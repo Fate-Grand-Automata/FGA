@@ -25,7 +25,8 @@ class AutoLottery @Inject constructor(
 
         data object NoEmbersFound : ExitReason()
 
-        data class CannotSelectAnyMore(val pickedStacks: Int, val pickedGoldEmbers: Int) : ExitReason()
+        data class PresentBoxFullAndCannotSelectAnymore(
+            val pickedStacks: Int, val pickedGoldEmbers: Int,) : ExitReason()
     }
 
     class ExitException(val reason: ExitReason) : Exception()
@@ -37,10 +38,21 @@ class AutoLottery @Inject constructor(
             prefs.lottoSpin
         )
     }
-    
+
+    private var pickedStacks = 0
+    private var pickedGoldEmbers = 0
+
 
     private fun presentBoxFull() {
         if (prefs.receiveEmbersWhenGiftBoxFull) {
+            if (prefs.isPresentBoxFull) {
+                throw ExitException(
+                    ExitReason.PresentBoxFullAndCannotSelectAnymore(
+                        pickedStacks,
+                        pickedGoldEmbers
+                    )
+                )
+            }
 
             val moveToPresentBox = locations.lottery.fullPresentBoxRegion
                 .find(images[Images.PresentBoxFull])
@@ -48,27 +60,27 @@ class AutoLottery @Inject constructor(
             moveToPresentBox?.region?.click()
 
             1.seconds.wait()
-            try{
+            try {
                 giftBox.script()
-            } catch (e: AutoGiftBox.ExitException){
-                when(e.reason){
+            } catch (e: AutoGiftBox.ExitException) {
+                when (e.reason) {
                     AutoGiftBox.ExitReason.ReturnToLottery -> {
                         // do nothing
                     }
+
                     AutoGiftBox.ExitReason.NoEmbersFound -> {
                         throw ExitException(ExitReason.NoEmbersFound)
                     }
+
                     is AutoGiftBox.ExitReason.CannotSelectAnyMore -> {
-                        throw ExitException(
-                            ExitReason.CannotSelectAnyMore(e.reason.pickedStacks, e.reason.pickedGoldEmbers)
-                        )
+                        pickedStacks = e.reason.pickedStacks
+                        pickedGoldEmbers = e.reason.pickedGoldEmbers
                     }
                 }
             }
 
         }
-        if (prefs.loopIntoLotteryAfterPresentBox && prefs.receiveEmbersWhenGiftBoxFull){
-            prefs.loopIntoLotteryAfterPresentBox = false
+        if (prefs.loopIntoLotteryAfterPresentBox) {
             return
         }
         throw ExitException(ExitReason.PresentBoxFull)
@@ -95,6 +107,8 @@ class AutoLottery @Inject constructor(
     }
 
     override fun script(): Nothing {
+        prefs.isPresentBoxFull = false
+
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { isNewLineup() } to { confirmNewLineup() },
             { isOutOfCurrency() } to { ranOutOfCurrency() },
