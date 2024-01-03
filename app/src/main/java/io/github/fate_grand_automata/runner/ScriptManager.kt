@@ -227,6 +227,8 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoLottery.ExitException -> {
+                preferences.loopIntoLotteryAfterPresentBox = false
+                preferences.isPresentBoxFull = false
                 val msg = when (val reason = e.reason) {
                     AutoLottery.ExitReason.PresentBoxFull -> context.getString(R.string.present_box_full)
                     AutoLottery.ExitReason.RanOutOfCurrency -> context.getString(R.string.lottery_currency_depleted)
@@ -252,6 +254,8 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoGiftBox.ExitException -> {
+                preferences.loopIntoLotteryAfterPresentBox = false
+                preferences.isPresentBoxFull = false
                 val msg = when (val reason = e.reason) {
                     is AutoGiftBox.ExitReason.CannotSelectAnyMore -> context.getString(
                         R.string.picked_exp_stacks,
