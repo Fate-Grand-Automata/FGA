@@ -89,7 +89,6 @@ fun lotteryLauncher(
                     changeMaxGoldEmberStackSize = { maxGoldEmberStackSize = it },
                     maxGoldEmberTotalCount = maxGoldEmberTotalCount,
                     changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it },
-                    enableMaxAmountOfEmbers= !returnToLotteryAfterPresentBox
                 )
             }
         }
