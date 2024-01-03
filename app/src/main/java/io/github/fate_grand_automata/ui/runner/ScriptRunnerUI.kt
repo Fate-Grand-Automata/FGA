@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
+import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.prefs.remember
 
@@ -37,6 +38,7 @@ fun ScriptRunnerUI(
     isRecording: Boolean
 ) {
     val hidePlayButtonForScreenshot by prefsCore.hidePlayButtonForScreenshot.remember()
+    val script by prefsCore.scriptMode.remember()
 
     FGATheme(
         darkTheme = true,
@@ -57,13 +59,17 @@ fun ScriptRunnerUI(
             Surface(
                 color = when (state) {
                     ScriptRunnerUIState.Running ->
-                        MaterialTheme.colorScheme.surface.copy(alpha = if (hidePlayButtonForScreenshot) 0f else 0.5f)
+                        MaterialTheme.colorScheme.surface.copy(
+                            alpha = if (hidePlayButtonForScreenshot && script == ScriptModeEnum.Battle) 0f else 0.5f
+                        )
                     else -> MaterialTheme.colorScheme.surface
                 },
                 contentColor = when (state) {
                     ScriptRunnerUIState.Running -> {
                         val color = if (isRecording) MaterialTheme.colorScheme.error else Color.White
-                        color.copy(alpha = if (hidePlayButtonForScreenshot) 0f else 0.5f)
+                        color.copy(
+                            alpha = if (hidePlayButtonForScreenshot && script == ScriptModeEnum.Battle) 0f else 0.5f
+                        )
                     }
                     else -> Color.White
                 },
