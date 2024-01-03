@@ -230,8 +230,15 @@ class ScriptManager @Inject constructor(
                 val msg = when (val reason = e.reason) {
                     AutoLottery.ExitReason.PresentBoxFull -> context.getString(R.string.present_box_full)
                     AutoLottery.ExitReason.RanOutOfCurrency -> context.getString(R.string.lottery_currency_depleted)
-                    AutoLottery.ExitReason.PresentBoxFullAndCannotSelectAnymore -> {
-                        context.getString(R.string.present_box_full_and_embers_are_overflowing)
+                    is AutoLottery.ExitReason.PresentBoxFullAndCannotSelectAnymore -> {
+                        if (reason.pickedGoldEmbers == 0) {
+                            context.getString(R.string.present_box_full_and_embers_are_overflowing)
+                        } else {
+                            context.getString(
+                                R.string.present_box_full_and_have_pick_at_least_embers,
+                                reason.pickedGoldEmbers
+                            )
+                        }
                     }
 
                     AutoLottery.ExitReason.NoEmbersFound -> context.getString(R.string.no_embers_found)
@@ -253,7 +260,11 @@ class ScriptManager @Inject constructor(
                     )
 
                     AutoGiftBox.ExitReason.NoEmbersFound -> context.getString(R.string.no_embers_found)
-                    AutoGiftBox.ExitReason.ReturnToLottery -> context.getString(R.string.no_embers_found)
+                    is AutoGiftBox.ExitReason.ReturnToLottery -> context.getString(
+                        R.string.picked_exp_stacks_return_to_lottery,
+                        reason.pickedStacks,
+                        reason.pickedGoldEmbers
+                    )
                 }
 
                 messages.notify(msg)

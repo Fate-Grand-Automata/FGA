@@ -22,7 +22,7 @@ class AutoGiftBox @Inject constructor(
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
 
-        data object ReturnToLottery : ExitReason()
+        class ReturnToLottery(val pickedStacks: Int, val pickedGoldEmbers: Int)  : ExitReason()
         data object NoEmbersFound : ExitReason()
         class CannotSelectAnyMore(val pickedStacks: Int, val pickedGoldEmbers: Int) : ExitReason()
     }
@@ -94,7 +94,12 @@ class AutoGiftBox @Inject constructor(
                 timeout = 15.seconds
             )
 
-            throw ExitException(ExitReason.ReturnToLottery)
+            throw ExitException(
+                ExitReason.ReturnToLottery(
+                    totalSelected.pickedStacks,
+                    totalSelected.pickedGoldEmbers
+                )
+            )
         }
 
 
