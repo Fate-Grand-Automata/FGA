@@ -28,7 +28,11 @@ class Locations @Inject constructor(
 
     val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
 
-    val ordealCallOutOfPodsRegion = Region(-112, 1088, 219, 72).xFromCenter()
+    val closeLowerMiddleScreenRegion = when(gameServer){
+        is GameServer.En -> Region(-111, 1084, 219, 72).xFromCenter()
+        // JP Option
+        else -> Region(-112, 1088, 219, 72).xFromCenter()
+    }
 
     val ordealCallOutOfPodsClick = Location(-2, 1124).xFromCenter()
 

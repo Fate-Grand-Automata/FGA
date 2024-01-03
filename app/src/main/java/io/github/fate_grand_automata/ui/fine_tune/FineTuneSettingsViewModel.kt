@@ -30,8 +30,7 @@ class FineTuneSettingsViewModel @Inject constructor(
                     name = R.string.p_fine_tune_support_max_updates,
                     icon = icon(R.drawable.ic_refresh),
                     valueRange = 0..50,
-                    hint = "Maximum number of times to refresh in support screen after " +
-                            "which the configured fallback option is used."
+                    hint = "Maximum number of times to refresh in support screen after which the configured fallback option is used."
                 )
             )
         ),
@@ -93,9 +92,15 @@ class FineTuneSettingsViewModel @Inject constructor(
                     icon = icon(R.drawable.ic_click),
                     valueRange = 0..50,
                     valueRepresentation = { "${it}ms" },
-                    hint = "Delay between individual taps/clicks when doing so repeatedly " +
-                            "like at the end of battles, friend point summon and lottery script."
-                )
+                    hint = "Delay between individual taps/clicks when doing so repeatedly like at the end of battles, friend point summon and lottery script."
+                ),
+                FineTuneItem(
+                    pref = prefs.lottoSpin,
+                    name = R.string.p_fine_tune_lotto_clicks,
+                    icon = icon(R.drawable.ic_click),
+                    valueRange = 10..20,
+                    hint = "The number of clicks for lotto spin. Decrease this if your device is lagging."
+                ),
             )
         ),
         FineTuneGroup(

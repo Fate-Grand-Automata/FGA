@@ -54,6 +54,9 @@ class PrefsCore @Inject constructor(
 
 
     val receiveEmbersWhenGiftBoxFull = maker.bool("receive_embers_when_gift_box_full")
+    val loopIntoLotteryAfterPresentBox = maker.bool("loop_into_lottery_after_present_box")
+    val isPresentBoxFull = maker.bool("is_present_box_full")
+    val lottoSpin = maker.stringAsInt("lotto_spin", 20)
 
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
     val supportMaxUpdates = maker.int("support_max_updates_x", 5)

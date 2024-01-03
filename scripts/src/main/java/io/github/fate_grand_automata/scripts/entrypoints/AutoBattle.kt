@@ -355,7 +355,7 @@ class AutoBattle @Inject constructor(
         // Lock the Ordeal Call for JP server
         if (prefs.gameServer !is GameServer.Jp) return false
 
-        return images[Images.Close] in locations.ordealCallOutOfPodsRegion
+        return images[Images.Close] in locations.closeLowerMiddleScreenRegion
     }
 
     private fun ordealCallOutOfPods() {

@@ -34,6 +34,10 @@ interface IPreferences {
     val treatSupportLikeOwnServant: Boolean
 
     var receiveEmbersWhenGiftBoxFull: Boolean
+    var loopIntoLotteryAfterPresentBox: Boolean
+    var isPresentBoxFull: Boolean
+
+    val lottoSpin: Int
 
     val stageCounterSimilarity: Double
     val stageCounterNew: Boolean
