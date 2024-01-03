@@ -88,7 +88,7 @@ Skills"</string>
     <string name="p_runs">"Runs"</string>
     <string name="p_roll_limit">"Limit number of rolls"</string>
     <string name="p_receive_embers">"Receive embers"</string>
-    <string name="p_return_to_lottery">"Return to lottery after successfully getting ember from present box."</string>
+    <string name="p_return_to_lottery">"Experimental:\nReturn to lottery after successfully getting ember/s from present box.\nThis will loop until you got full present box and embers in storage."</string>
     <string name="p_battle_config_name">"Name"</string>
     <string name="p_battle_config_cmd">"Command"</string>
     <string name="p_battle_config_notes">"Notes"</string>
