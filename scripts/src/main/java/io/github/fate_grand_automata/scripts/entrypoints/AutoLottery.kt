@@ -25,10 +25,13 @@ class AutoLottery @Inject constructor(
 
         data object NoEmbersFound : ExitReason()
 
-        data class CannotSelectAnyMore(
-            val pickedStacks: Int, val pickedGoldEmbers: Int,) : ExitReason()
+        class CannotSelectAnyMore(
+            val pickedStacks: Int, val pickedGoldEmbers: Int,
+        ) : ExitReason()
 
-        data object PresentBoxFullAndCannotSelectAnymore: ExitReason()
+        class PresentBoxFullAndCannotSelectAnymore(
+            val pickedStacks: Int, val pickedGoldEmbers: Int,
+        ) : ExitReason()
     }
 
     class ExitException(val reason: ExitReason) : Exception()
@@ -48,7 +51,12 @@ class AutoLottery @Inject constructor(
     private fun presentBoxFull() {
         if (prefs.receiveEmbersWhenGiftBoxFull) {
             if (prefs.isPresentBoxFull) {
-                throw ExitException(ExitReason.PresentBoxFullAndCannotSelectAnymore)
+                throw ExitException(
+                    ExitReason.PresentBoxFullAndCannotSelectAnymore(
+                        pickedStacks,
+                        pickedGoldEmbers
+                    )
+                )
             }
 
             val moveToPresentBox = locations.lottery.fullPresentBoxRegion
@@ -61,8 +69,11 @@ class AutoLottery @Inject constructor(
                 giftBox.script()
             } catch (e: AutoGiftBox.ExitException) {
                 when (e.reason) {
-                    AutoGiftBox.ExitReason.ReturnToLottery -> {
-                        // do nothing
+                    is AutoGiftBox.ExitReason.ReturnToLottery -> {
+                        if (!prefs.isPresentBoxFull) {
+                            pickedStacks += e.reason.pickedStacks
+                            pickedGoldEmbers += e.reason.pickedGoldEmbers
+                        }
                     }
 
                     AutoGiftBox.ExitReason.NoEmbersFound -> {
@@ -71,10 +82,12 @@ class AutoLottery @Inject constructor(
 
                     is AutoGiftBox.ExitReason.CannotSelectAnyMore -> {
                         // this will only execute if the loop present box is not enabled
-                        throw ExitException(ExitReason.CannotSelectAnyMore(
-                            e.reason.pickedStacks,
-                            e.reason.pickedGoldEmbers
-                        ))
+                        throw ExitException(
+                            ExitReason.CannotSelectAnyMore(
+                                e.reason.pickedStacks,
+                                e.reason.pickedGoldEmbers
+                            )
+                        )
                     }
                 }
             }
