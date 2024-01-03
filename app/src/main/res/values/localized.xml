@@ -255,9 +255,9 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="unexpected_error">"Unexpected Error"</string>
     <string name="script_exited">"Script Exited"</string>
     <string name="lottery_currency_depleted">"Ran out of lottery currency"</string>
-    <string name="lottery_picked_exp_stacks">"Present Box Full and Picked %d EXP stacks, resulting in a total amount of %d Gold embers"</string>
     <string name="inventory_full">"Inventory Full"</string>
     <string name="present_box_full">"Present Box Full"</string>
+    <string name="present_box_full_and_embers_are_overflowing">"Present Box is full and Embers are overflowing."</string>
     <string name="support_img_maker_not_found">"No support images were found on the current screen. Are you on Support selection or Friend list screen?"</string>
     <string name="support_selection_manual">"Support selection set to Manual"</string>
     <string name="support_selection_friend_not_set">"When using 'friend' support selection mode, specify at least one friend name."</string>
