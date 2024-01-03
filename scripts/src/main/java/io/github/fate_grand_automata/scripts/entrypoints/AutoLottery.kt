@@ -25,8 +25,10 @@ class AutoLottery @Inject constructor(
 
         data object NoEmbersFound : ExitReason()
 
-        data class PresentBoxFullAndCannotSelectAnymore(
+        data class CannotSelectAnyMore(
             val pickedStacks: Int, val pickedGoldEmbers: Int,) : ExitReason()
+
+        data object PresentBoxFullAndCannotSelectAnymore: ExitReason()
     }
 
     class ExitException(val reason: ExitReason) : Exception()
@@ -46,12 +48,7 @@ class AutoLottery @Inject constructor(
     private fun presentBoxFull() {
         if (prefs.receiveEmbersWhenGiftBoxFull) {
             if (prefs.isPresentBoxFull) {
-                throw ExitException(
-                    ExitReason.PresentBoxFullAndCannotSelectAnymore(
-                        pickedStacks,
-                        pickedGoldEmbers
-                    )
-                )
+                throw ExitException(ExitReason.PresentBoxFullAndCannotSelectAnymore)
             }
 
             val moveToPresentBox = locations.lottery.fullPresentBoxRegion
@@ -73,8 +70,11 @@ class AutoLottery @Inject constructor(
                     }
 
                     is AutoGiftBox.ExitReason.CannotSelectAnyMore -> {
-                        pickedStacks = e.reason.pickedStacks
-                        pickedGoldEmbers = e.reason.pickedGoldEmbers
+                        // this will only execute if the loop present box is not enabled
+                        throw ExitException(ExitReason.CannotSelectAnyMore(
+                            e.reason.pickedStacks,
+                            e.reason.pickedGoldEmbers
+                        ))
                     }
                 }
             }
