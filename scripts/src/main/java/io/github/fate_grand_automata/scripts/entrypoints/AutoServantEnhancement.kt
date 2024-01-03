@@ -82,7 +82,7 @@ class AutoServantEnhancement @Inject constructor(
             { isFinalConfirmVisible() } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
             { isAutoSelectOff() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
-            { isInAscensionMenu()} to { handleReturnToEnhancementMenu() },
+            { isInAscensionMenu() } to { handleReturnToEnhancementMenu() },
         )
 
         while (true) {
@@ -100,14 +100,16 @@ class AutoServantEnhancement @Inject constructor(
     }
 
     private fun checkIfRedirectOrExitAfterMaxLevel() {
+        val ascensionRedirect = isRedirectAscensionVisible()
+        val grailRedirect = isRedirectGrailVisible()
         when {
-            prefs.servant.shouldRedirectAscension && isRedirectAscensionVisible() -> {
+            prefs.servant.shouldRedirectAscension && ascensionRedirect -> {
                 locations.servant.getServantRedirectRegion.click()
                 waitUntilAscensionVisible()
                 handlePerformedAscension()
             }
 
-            prefs.servant.shouldRedirectGrail && isRedirectGrailVisible() -> {
+            prefs.servant.shouldRedirectGrail && grailRedirect -> {
                 locations.servant.getServantRedirectRegion.click()
                 waitUntilGrailVisible()
                 throw ServantUpgradeException(ExitReason.RedirectGrail)
@@ -141,7 +143,7 @@ class AutoServantEnhancement @Inject constructor(
         if (!confirmationVisible) {
             throw ServantUpgradeException(ExitReason.UnableToPerformAscension)
         }
-        while (true){
+        while (true) {
             locations.servant.getFinalConfirmLocation.click()
 
             val isAscensionMenuVisible = locations.servant.getServantEnhancementRegion.waitVanish(
