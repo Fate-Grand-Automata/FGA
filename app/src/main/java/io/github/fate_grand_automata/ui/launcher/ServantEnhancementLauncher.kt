@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -40,6 +41,8 @@ fun servantEnhancementLauncher(
     var limitCount by prefsCore.servantEnhancement.limitCount.remember()
 
     var shouldRedirectAscension by prefsCore.servantEnhancement.shouldRedirectAscension.remember()
+
+    var shouldPerformAscension by prefsCore.servantEnhancement.shouldPerformAscension.remember()
 
     var shouldRedirectGrail by prefsCore.servantEnhancement.shouldRedirectGrail.remember()
 
@@ -147,6 +150,31 @@ fun servantEnhancementLauncher(
                         shouldRedirectGrail = it
                     }
                 )
+
+            }
+        }
+        item {
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp)
+            )
+        }
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                RowTextCheckBox(
+                    modifier = Modifier
+                        .weight(1f),
+                    text = stringResource(R.string.servant_enhancement_perform_ascension),
+                    status = shouldPerformAscension,
+                    onStatusChange = {
+                        shouldPerformAscension = it
+                    }
+                )
+                VerticalDivider()
+                Spacer(modifier = Modifier.weight(1f))
 
             }
         }

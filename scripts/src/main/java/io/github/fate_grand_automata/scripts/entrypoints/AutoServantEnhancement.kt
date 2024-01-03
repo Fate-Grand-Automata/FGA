@@ -33,6 +33,8 @@ class AutoServantEnhancement @Inject constructor(
 
         data object RedirectAscension : ExitReason()
 
+        data object UnableToPerformAscension : ExitReason()
+
         data object RedirectGrail : ExitReason()
 
         data class Limit(val count: Int) : ExitReason()
@@ -80,6 +82,7 @@ class AutoServantEnhancement @Inject constructor(
             { isFinalConfirmVisible() } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
             { isAutoSelectOff() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
+            { isInAscensionMenu() } to { handleReturnToEnhancementMenu() },
         )
 
         while (true) {
@@ -97,21 +100,69 @@ class AutoServantEnhancement @Inject constructor(
     }
 
     private fun checkIfRedirectOrExitAfterMaxLevel() {
-        when{
-            prefs.servant.shouldRedirectAscension && isRedirectAscensionVisible() -> {
+        val ascensionRedirect = isRedirectAscensionVisible()
+        val grailRedirect = isRedirectGrailVisible()
+        when {
+            prefs.servant.shouldRedirectAscension && ascensionRedirect -> {
                 locations.servant.getServantRedirectRegion.click()
                 waitUntilAscensionVisible()
-                throw ServantUpgradeException(ExitReason.RedirectAscension)
+                handlePerformedAscension()
             }
-            prefs.servant.shouldRedirectGrail && isRedirectGrailVisible() -> {
+
+            prefs.servant.shouldRedirectGrail && grailRedirect -> {
                 locations.servant.getServantRedirectRegion.click()
                 waitUntilGrailVisible()
                 throw ServantUpgradeException(ExitReason.RedirectGrail)
             }
-            else ->{
+
+            else -> {
                 throw ServantUpgradeException(ExitReason.MaxLevelAchieved)
             }
         }
+    }
+
+    private fun handlePerformedAscension() {
+        if (!prefs.servant.shouldPerformAscension) {
+            throw ServantUpgradeException(ExitReason.RedirectAscension)
+        }
+        var confirmationVisible = false
+        for (i in 0..2) {
+            locations.enhancementClick.click()
+            confirmationVisible = locations.servant.getFinalConfirmRegion.exists(
+                images[Images.Ok],
+                timeout = 5.seconds
+            )
+            if (confirmationVisible) {
+                break
+            }
+            if (connectionRetry.needsToRetry()) {
+                connectionRetry.retry()
+                0.5.seconds.wait()
+            }
+        }
+        if (!confirmationVisible) {
+            throw ServantUpgradeException(ExitReason.UnableToPerformAscension)
+        }
+        while (true) {
+            locations.servant.getFinalConfirmLocation.click()
+
+            val isAscensionMenuVisible = locations.servant.getServantEnhancementRegion.waitVanish(
+                images[Images.ServantAscensionBanner],
+                timeout = 3.seconds
+            )
+            if (isAscensionMenuVisible) {
+                break
+            }
+        }
+    }
+
+    private fun isInAscensionMenu() = images[Images.ServantAscensionBanner] in
+            locations.servant.getServantEnhancementRegion
+
+    private fun handleReturnToEnhancementMenu() {
+        locations.servant.returnToServantMenuFromAscensionLocation.click()
+        0.5.seconds.wait()
+        waitUntilServantMenuVisible()
     }
 
     private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
@@ -185,6 +236,12 @@ class AutoServantEnhancement @Inject constructor(
 
     private fun waitUntilAscensionVisible() = locations.servant.getServantEnhancementRegion.exists(
         images[Images.ServantAscensionBanner],
+        similarity = 0.7,
+        timeout = 15.seconds
+    )
+
+    private fun waitUntilServantMenuVisible() = locations.servant.getServantEnhancementRegion.exists(
+        images[Images.ServantEnhancement],
         similarity = 0.7,
         timeout = 15.seconds
     )
