@@ -24,6 +24,7 @@ import io.github.fate_grand_automata.ui.Stepper
 
 @Composable
 fun ColumnScope.GiftBoxLauncherContent(
+    enableMaxAmountOfEmbers: Boolean = true,
     maxGoldEmberStackSize: Int,
     changeMaxGoldEmberStackSize: (Int) -> Unit,
     maxGoldEmberTotalCount: Int,
@@ -55,13 +56,17 @@ fun ColumnScope.GiftBoxLauncherContent(
         Text(
             stringResource(R.string.p_max_gold_ember_total_count),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.secondary
+            color = when(enableMaxAmountOfEmbers) {
+                true -> MaterialTheme.colorScheme.secondary
+                false -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
+            }
         )
 
         Stepper(
             value = maxGoldEmberTotalCount,
             onValueChange = changeMaxGoldEmberTotalCount,
-            valueRange = 1..600
+            valueRange = 1..600,
+            enabled = enableMaxAmountOfEmbers
         )
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
@@ -87,29 +88,39 @@ fun lotteryLauncher(
                     maxGoldEmberStackSize = maxGoldEmberStackSize,
                     changeMaxGoldEmberStackSize = { maxGoldEmberStackSize = it },
                     maxGoldEmberTotalCount = maxGoldEmberTotalCount,
-                    changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it }
+                    changeMaxGoldEmberTotalCount = { maxGoldEmberTotalCount = it },
+                    enableMaxAmountOfEmbers= !returnToLotteryAfterPresentBox
                 )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 5.dp)
-                        .clickable { receiveEmbers = !receiveEmbers }
-                ) {
-                    Text(
-                        stringResource(R.string.p_return_to_lottery),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-
-                    Switch(
-                        checked = returnToLotteryAfterPresentBox,
-                        onCheckedChange = { returnToLotteryAfterPresentBox = it }
-                    )
-                }
             }
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp)
+                .clickable(
+                    enabled = receiveEmbers,
+                    onClick = {
+                        returnToLotteryAfterPresentBox = !returnToLotteryAfterPresentBox
+                    }
+                )
+        ) {
+            Text(
+                stringResource(R.string.p_return_to_lottery),
+                style = MaterialTheme.typography.bodyMedium,
+                color = when(receiveEmbers) {
+                    true -> MaterialTheme.colorScheme.secondary
+                    false -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
+                },
+                textAlign = TextAlign.Justify
+            )
+
+            Switch(
+                checked = returnToLotteryAfterPresentBox,
+                onCheckedChange = { returnToLotteryAfterPresentBox = it },
+                enabled = receiveEmbers
+            )
         }
 
 
