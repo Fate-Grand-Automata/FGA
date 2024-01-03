@@ -160,9 +160,9 @@ class ScriptManager @Inject constructor(
                 val msg = when (val reason = e.reason) {
                     AutoLottery.ExitReason.PresentBoxFull -> context.getString(R.string.present_box_full)
                     AutoLottery.ExitReason.RanOutOfCurrency -> context.getString(R.string.lottery_currency_depleted)
-                    is AutoLottery.ExitReason.CannotSelectAnyMore -> {
+                    is AutoLottery.ExitReason.PresentBoxFullAndCannotSelectAnymore -> {
                         context.getString(
-                            R.string.picked_exp_stacks,
+                            R.string.lottery_picked_exp_stacks,
                             reason.pickedStacks,
                             reason.pickedGoldEmbers
                         )

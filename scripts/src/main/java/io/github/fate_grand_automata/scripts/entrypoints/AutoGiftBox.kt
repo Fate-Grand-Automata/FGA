@@ -81,6 +81,7 @@ class AutoGiftBox @Inject constructor(
                 timeout = 10.seconds
             )
             if (isFullDialog) {
+                prefs.isPresentBoxFull = true
                 locations.closeLowerMiddleScreenRegion.click()
                 0.5.seconds.wait()
             }
