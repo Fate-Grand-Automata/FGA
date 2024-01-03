@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
@@ -88,9 +87,11 @@ private fun SelectNps(
                                 npSequence + servantNumber
                             }
                         }
+
                         isSelected -> {
                             npSequence.filter { m -> m.toString() != servantNumber.toString() }
                         }
+
                         else -> {
                             npSequence.dropLast(1) + servantNumber
                         }
@@ -237,47 +238,26 @@ fun SkillMakerAtk(
             )
 
 
-
-            Column(
+            Row(
                 modifier = Modifier.align(Alignment.CenterEnd),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ){
-                val npSequenceValue = npSequence.map {
-                    when (it) {
-                        '1' -> CommandCard.NP.A
-                        '2' -> CommandCard.NP.B
-                        '3' -> CommandCard.NP.C
-                        else -> ""
-                    }
-                }.joinToString("")
-
-                Text(
-                    text = when (cardsBeforeNp) {
-                        0 -> npSequenceValue
-                        else -> "n$cardsBeforeNp $npSequenceValue"
-                    },
-                    textAlign = TextAlign.Center,
-                    textDecoration = TextDecoration.Underline
-                )
-                Row{
-                    Button(
-                        onClick = { onNextTurn(makeAtkAction(npSequence, cardsBeforeNp)) },
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                    ) {
-                        Text(
-                            stringResource(R.string.skill_maker_atk_next_turn),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    ButtonWithIcon(
-                        text = R.string.skill_maker_atk_next_wave,
-                        icon = icon(Icons.Default.FastForward),
-                        onClick = { onNextWave(makeAtkAction(npSequence, cardsBeforeNp)) }
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    onClick = { onNextTurn(makeAtkAction(npSequence, cardsBeforeNp)) },
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                ) {
+                    Text(
+                        stringResource(R.string.skill_maker_atk_next_turn),
+                        textAlign = TextAlign.Center
                     )
                 }
+
+                ButtonWithIcon(
+                    text = R.string.skill_maker_atk_next_wave,
+                    icon = icon(Icons.Default.FastForward),
+                    onClick = { onNextWave(makeAtkAction(npSequence, cardsBeforeNp)) }
+                )
             }
         }
     }
