@@ -162,6 +162,12 @@ class PreferencesImpl @Inject constructor(
     override fun completedOnboarding() =
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
 
+    override val playButtonLocation by prefs.playBtnLocation
+
+    override val playButtonRegion by prefs.playButtonRegion
+
+    override val ignorePlayButtonDetectionWarning by prefs.ignorePlayButtonDetectionWarning
+
     override val support = object :
         ISupportPreferencesCommon {
         override val mlbSimilarity by prefs.mlbSimilarity.map { it / 100.0 }

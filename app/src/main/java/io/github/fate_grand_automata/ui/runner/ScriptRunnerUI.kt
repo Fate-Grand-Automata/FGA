@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -28,10 +29,15 @@ import io.github.fate_grand_automata.ui.FGATheme
 fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
     updateState: (ScriptRunnerUIAction) -> Unit,
+    onPosition: () -> Unit,
     onDrag: (Float, Float) -> Unit,
+    onDragEnd: () -> Unit,
     enabled: Boolean,
     isRecording: Boolean
 ) {
+    LaunchedEffect(key1 = Unit, block = {
+        onPosition()
+    })
     FGATheme(
         darkTheme = true,
         background = Color.Transparent
@@ -42,10 +48,13 @@ fun ScriptRunnerUI(
         ) {
             val dragModifier = Modifier
                 .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        onDrag(dragAmount.x, dragAmount.y)
-                    }
+                    detectDragGestures (
+                        onDragEnd = onDragEnd,
+                        onDrag = { change, dragAmount ->
+                            change.consume()
+                            onDrag(dragAmount.x, dragAmount.y)
+                        }
+                    )
                 }
 
             Surface(

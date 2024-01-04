@@ -20,6 +20,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoCEBomb
 import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
+import io.github.fate_grand_automata.scripts.entrypoints.AutoNotifyError
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
@@ -198,6 +199,9 @@ class ScriptManager @Inject constructor(
 
                 showBattleExit(service, e)
             }
+            is AutoNotifyError.ExitException -> {
+                // do nothing
+            }
 
             is ScriptAbortException -> {
                 // user aborted. do nothing
@@ -241,6 +245,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.PresentBox -> entryPoint.giftBox()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
+            ScriptModeEnum.PlayButtonDetection -> entryPoint.playButtonDetection()
         }
 
     enum class PauseAction {
@@ -386,7 +391,8 @@ class ScriptManager @Inject constructor(
                         continuation.resume(it)
                         dialog?.dismiss()
                     },
-                    prefs = preferences
+                    prefs = preferences,
+                    prefsCore = prefsCore
                 )
             }
 

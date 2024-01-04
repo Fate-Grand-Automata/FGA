@@ -50,6 +50,9 @@ class ScriptLauncherResponseHandler @Inject constructor(
             is ScriptLauncherResponse.Battle -> {
                 ScriptModeEnum.Battle
             }
+            is ScriptLauncherResponse.PlayButtonDetection -> {
+                ScriptModeEnum.PlayButtonDetection
+            }
         }
     }
 }
