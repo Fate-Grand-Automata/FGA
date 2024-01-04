@@ -11,6 +11,9 @@ class FPLocations @Inject constructor(
 ): IScriptAreaTransforms by scriptAreaTransforms {
     val summonCheck = Region(100, 1152, 75, 143).xFromCenter()
     val initialSummonCheck = Region(-265, 1131, 75, 143).xFromCenter()
+    val initialSummonClick = Location(2, 1052).xFromCenter()
+    val initialSummonContinueClick = Region(341, 1145, 120, 60).xFromCenter()
+
 
     val continueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
     val first10SummonClick = Location(120, 1062).xFromCenter()
