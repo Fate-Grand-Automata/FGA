@@ -200,5 +200,5 @@ val ScriptModeEnum.scriptName
         // Going to be grouped together
         ScriptModeEnum.SupportImageMaker -> R.string.app_name
         ScriptModeEnum.Battle -> R.string.app_name
-        ScriptModeEnum.NotifyError -> R.string.app_name
+        ScriptModeEnum.NotifyError -> R.string.script_error_warning
     }
