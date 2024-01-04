@@ -56,8 +56,8 @@ interface AutomataApi {
 
     fun Region.longPress(duration: Int = 2000)
 
-    fun List<Pair<Region, Pattern>>.exists(
-        timeout: Duration,
+    fun List<Pair<Pattern, Region>>.exists(
+        timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
         requireAll: Boolean = false
     ): Boolean

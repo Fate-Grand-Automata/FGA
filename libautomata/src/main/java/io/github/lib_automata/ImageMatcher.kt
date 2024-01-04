@@ -60,7 +60,7 @@ interface ImageMatcher {
      * @param requireAll if `true`, all images must exist in their respective regions
      */
     fun existsInList(
-        items: List<Pair<Region, Pattern>>,
+        items: List<Pair<Pattern, Region>>,
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
         requireAll: Boolean
@@ -187,7 +187,7 @@ class RealImageMatcher @Inject constructor(
             }
 
     override fun existsInList(
-        items: List<Pair<Region, Pattern>>,
+        items: List<Pair<Pattern, Region>>,
         timeout: Duration,
         similarity: Double?,
         requireAll: Boolean
@@ -196,11 +196,11 @@ class RealImageMatcher @Inject constructor(
         return checkConditionLoop(
             {
                 if (requireAll){
-                    items.all { (region, image) ->
+                    items.all { (image, region) ->
                         region.existsNow(image, similarity)
                     }
                 } else{
-                    items.any { (region, image) ->
+                    items.any { (image, region) ->
                         region.existsNow(image, similarity)
                     }
                 }
