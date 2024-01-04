@@ -56,7 +56,7 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.SkillUpgrade
             }
 
-            images[Images.ServantEnhancement] in locations.servant.getServantEnhancementRegion ->
+            images[Images.ServantAutoSelect] in locations.servant.getAutoSelectRegion ->
                 ScriptModeEnum.ServantLevel
 
             images[Images.AppendSkill] in locations.append.getAppendBannerRegion -> {
