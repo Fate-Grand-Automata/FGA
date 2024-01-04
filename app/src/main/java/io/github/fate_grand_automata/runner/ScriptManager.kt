@@ -340,10 +340,10 @@ class ScriptManager @Inject constructor(
                     }
 
                     is AutoServantEnhancement.ExitReason.Limit ->
-                        context.getString(R.string.level_up_by, reason.count)
+                        context.getString(R.string.servant_level_up_by_n_times, reason.count)
 
                     AutoServantEnhancement.ExitReason.MaxLevelAchieved ->
-                        context.getString(R.string.max_level)
+                        context.getString(R.string.servant_level_max)
 
                     AutoServantEnhancement.ExitReason.NoEmbersOrQPLeft ->
                         context.getString(R.string.servant_enhancement_no_embers_or_qp_left)
@@ -352,12 +352,12 @@ class ScriptManager @Inject constructor(
                         context.getString(R.string.enhancement_halt_aborted)
 
                     AutoServantEnhancement.ExitReason.RedirectAscension ->
-                        context.getString(R.string.servant_enhancement_redirect_ascension_success)
+                        context.getString(R.string.servant_redirect_ascension_success)
                     AutoServantEnhancement.ExitReason.RedirectGrail ->
-                        context.getString(R.string.servant_enhancement_redirect_grail_success)
+                        context.getString(R.string.servant_redirect_grail_success)
 
                     AutoServantEnhancement.ExitReason.UnableToPerformAscension ->
-                        context.getString(R.string.servant_enhancement_perform_ascension_failed)
+                        context.getString(R.string.servant_perform_ascension_failed)
                 }
                 if (!preferences.servant.muteNotifications){
                     messages.notify(msg)
