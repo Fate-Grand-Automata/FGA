@@ -7,7 +7,7 @@ import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
-class AutoPlayButtonDetection @Inject constructor(
+class AutoNotifyError @Inject constructor(
     exitManager: ExitManager,
     api: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
