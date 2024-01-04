@@ -107,14 +107,24 @@ class AutoServantLevel @Inject constructor(
         val grailRedirect = isRedirectGrailVisible()
         when {
             prefs.servant.shouldRedirectAscension && ascensionRedirect -> {
-                locations.servant.servantRedirectCheckRegion.click()
-                waitUntilAscensionVisible()
+                while (true){
+                    locations.servant.servantRedirectCheckRegion.click()
+                    val isVisible = waitUntilAscensionVisible()
+                    if (isVisible) {
+                        break
+                    }
+                }
                 handlePerformedAscension()
             }
 
             prefs.servant.shouldRedirectGrail && grailRedirect -> {
-                locations.servant.servantRedirectCheckRegion.click()
-                waitUntilGrailVisible()
+                while (true) {
+                    locations.servant.servantRedirectCheckRegion.click()
+                    val isVisible = waitUntilGrailVisible()
+                    if (isVisible) {
+                        break
+                    }
+                }
                 throw ServantUpgradeException(ExitReason.RedirectGrail)
             }
 
@@ -234,13 +244,13 @@ class AutoServantLevel @Inject constructor(
     private fun waitUntilGrailVisible() = locations.enhancementBannerRegion.exists(
         images[Images.ServantGrailBanner],
         similarity = 0.7,
-        timeout = 15.seconds
+        timeout = 5.seconds
     )
 
     private fun waitUntilAscensionVisible() = locations.enhancementBannerRegion.exists(
         images[Images.ServantAscensionBanner],
         similarity = 0.7,
-        timeout = 15.seconds
+        timeout = 5.seconds
     )
 
     private fun waitUntilServantMenuVisible() = locations.servant.servantAutoSelectRegion.exists(
