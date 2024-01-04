@@ -23,4 +23,6 @@ interface ScriptEntryPoint {
     fun playButtonDetection(): AutoNotifyError
 
     fun append(): AutoAppend
+
+    fun notifyError(): AutoNotifyError
 }

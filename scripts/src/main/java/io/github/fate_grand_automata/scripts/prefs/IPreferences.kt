@@ -73,6 +73,8 @@ interface IPreferences {
     val playButtonRegion: Region
 
     val ignorePlayButtonDetectionWarning: Boolean
+
+    var notifyErrorWarning: String
 }
 
 val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots

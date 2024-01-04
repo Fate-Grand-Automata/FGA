@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts
 
+import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.models.CommandCard
 import io.github.fate_grand_automata.scripts.models.FieldSlot
 import io.github.fate_grand_automata.scripts.models.TeamSlot
@@ -42,8 +43,14 @@ sealed class ScriptLog {
     ) : ScriptLog()
 }
 
+sealed class ScriptMessage {
+    class NotifyErrorWarningScript(val script: ScriptModeEnum): ScriptMessage()
+}
+
 interface IScriptMessages {
     fun notify(action: ScriptNotify)
 
     fun log(item: ScriptLog)
+
+    fun storeString(item: ScriptMessage)
 }

@@ -10,7 +10,9 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.runner.ScriptRunnerNotification
 import io.github.fate_grand_automata.scripts.IScriptMessages
 import io.github.fate_grand_automata.scripts.ScriptLog
+import io.github.fate_grand_automata.scripts.ScriptMessage
 import io.github.fate_grand_automata.scripts.ScriptNotify
+import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import timber.log.Timber
 import javax.inject.Inject
@@ -178,4 +180,21 @@ class ScriptMessages @Inject constructor(
             }
         }
     }.trimEnd()
+
+
+    override fun storeString(item: ScriptMessage) {
+        when(item){
+            is ScriptMessage.NotifyErrorWarningScript -> {
+                when(item.script){
+                    ScriptModeEnum.Append, ScriptModeEnum.SkillUpgrade, ScriptModeEnum.ServantLevel -> {
+                        val script = context.getString(item.script.scriptName)
+                        prefs.notifyErrorWarning = context.getString(R.string.script_error_no_servant, script)
+                    }
+                    else -> {
+                        // do nothing
+                    }
+                }
+            }
+        }
+    }
 }

@@ -39,6 +39,8 @@ sealed class ScriptLauncherResponse {
         val upgradeAppend3: Int,
     ): ScriptLauncherResponse()
     data object Battle : ScriptLauncherResponse()
+
+    data object NotifyError: ScriptLauncherResponse()
 }
 
 class ScriptLauncherResponseBuilder(

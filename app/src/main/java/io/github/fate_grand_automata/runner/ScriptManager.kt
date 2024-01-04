@@ -399,6 +399,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
             ScriptModeEnum.PlayButtonDetection -> entryPoint.playButtonDetection()
             ScriptModeEnum.Append -> entryPoint.append()
+            ScriptModeEnum.NotifyError -> entryPoint.notifyError()
         }
 
     enum class PauseAction {
