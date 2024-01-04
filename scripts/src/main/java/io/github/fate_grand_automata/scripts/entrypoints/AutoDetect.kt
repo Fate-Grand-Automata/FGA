@@ -25,7 +25,8 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.PlayButtonDetection
 
             images[Images.FriendSummon] in locations.fp.summonCheck ||
-                    findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ->
+                    findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ||
+                    images[Images.FriendSummon] in locations.fp.initialSummonCheck ->
                 ScriptModeEnum.FP
 
             images[Images.LotteryBoxFinished] in locations.lottery.checkRegion ||
