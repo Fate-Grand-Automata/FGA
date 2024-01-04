@@ -133,13 +133,13 @@ jobs:
         env:
           SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
       - name: zip APK
-        run: zip FGA-apk.zip *.apk
+        run: zip FGA-apk-${VERSION_CODE}.zip *.apk
       - id: create_release
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "$VERSION_CODE"
+          automatic_release_tag: "${{ env.VERSION_CODE }}"
           prerelease: true
-          title: 'FGA $VERSION_CODE'
+          title: 'FGA ${{ env.VERSION_CODE }}'
           files: |
-            FGA-apk.zip
+            FGA-apk-${{ env.VERSION_CODE }}.zip
