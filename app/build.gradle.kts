@@ -17,6 +17,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     kotlinOptions {
@@ -157,5 +158,7 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)
+
+    debugImplementation(libs.leak.canary)
 
 }

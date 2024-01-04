@@ -39,4 +39,6 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
 
     api(libs.fredporciuncula.flow.preferences)
+
+    debugImplementation(libs.leak.canary)
 }
