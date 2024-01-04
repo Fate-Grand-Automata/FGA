@@ -37,6 +37,14 @@ class StandardAutomataApi @Inject constructor(
     override fun Location.longPress(duration: Int) = longPress(this, duration)
 
     override fun Region.longPress(duration: Int) = longPress(center, duration)
+    override fun List<Pair<Region, Pattern>>.exists(
+        timeout: Duration, similarity: Double?, requireAll: Boolean,
+    ) = imageMatcher.existsInList(
+        items = this,
+        timeout = timeout,
+        similarity = similarity,
+        requireAll = requireAll
+    )
 
     override fun Region.exists(
         image: Pattern,
@@ -75,5 +83,6 @@ class StandardAutomataApi @Inject constructor(
                 return ocrService.detectText(it)
             }
     }
+
 }
 
