@@ -256,6 +256,6 @@ class AutoServantLevel @Inject constructor(
     private fun waitUntilServantMenuVisible() = locations.servant.servantAutoSelectRegion.exists(
         images[Images.ServantAutoSelect],
         similarity = 0.7,
-        timeout = 15.seconds
+        timeout = 5.seconds
     )
 }
