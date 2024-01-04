@@ -71,15 +71,18 @@ class AutoServantLevel @Inject constructor(
 
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
-            { isLimitReached() } to
-                    { throw ServantUpgradeException(ExitReason.Limit(prefs.servant.limitCount - limitCount)) },
-            { isMaxLevel() } to { checkIfRedirectOrExitAfterMaxLevel() },
+            { isLimitReached() } to {
+                throw ServantUpgradeException(ExitReason.Limit(prefs.servant.limitCount - limitCount))
+            },
+            { isMaxLevel() } to { checkMaxLevelRedirectOrExit() },
             { isOutOfQP() } to { throw ServantUpgradeException(ExitReason.RanOutOfQP) },
-            { isAutoSelectMinEmberLowQP() } to { performMinEmberLowQPEnhancement() },
-            { isEmberSelectionDialogOpen() } to { performEnhancement() },
+            { isAutoSelectMinimumEmberForLowQP() } to { performMinimumEmberForLowQPEnhancement() },
+            { isEmberSelectionDialogVisible() } to { performEnhancement() },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
-            { isNoEmberOrQPDialogOpen() } to { throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft) },
-            { isFinalConfirmVisible() } to { confirmEnhancement() },
+            { isEmptyEmberOrQPDialogVisible() } to {
+                throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
+            },
+            { isFinalConfirmDialogVisible() } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
             { isAutoSelectOff() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
             { isInAscensionMenu() } to { handleReturnToEnhancementMenu() },
@@ -99,18 +102,18 @@ class AutoServantLevel @Inject constructor(
         }
     }
 
-    private fun checkIfRedirectOrExitAfterMaxLevel() {
+    private fun checkMaxLevelRedirectOrExit() {
         val ascensionRedirect = isRedirectAscensionVisible()
         val grailRedirect = isRedirectGrailVisible()
         when {
             prefs.servant.shouldRedirectAscension && ascensionRedirect -> {
-                locations.servant.getServantRedirectRegion.click()
+                locations.servant.servantRedirectCheckRegion.click()
                 waitUntilAscensionVisible()
                 handlePerformedAscension()
             }
 
             prefs.servant.shouldRedirectGrail && grailRedirect -> {
-                locations.servant.getServantRedirectRegion.click()
+                locations.servant.servantRedirectCheckRegion.click()
                 waitUntilGrailVisible()
                 throw ServantUpgradeException(ExitReason.RedirectGrail)
             }
@@ -128,7 +131,7 @@ class AutoServantLevel @Inject constructor(
         var confirmationVisible = false
         for (i in 0..2) {
             locations.enhancementClick.click()
-            confirmationVisible = locations.servant.getFinalConfirmRegion.exists(
+            confirmationVisible = locations.servant.finalConfirmRegion.exists(
                 images[Images.Ok],
                 timeout = 5.seconds
             )
@@ -144,7 +147,7 @@ class AutoServantLevel @Inject constructor(
             throw ServantUpgradeException(ExitReason.UnableToPerformAscension)
         }
         while (true) {
-            locations.servant.getFinalConfirmLocation.click()
+            locations.servant.finalConfirmRegion.click()
 
             val isAscensionMenuVisible = locations.enhancementBannerRegion.waitVanish(
                 images[Images.ServantAscensionBanner],
@@ -180,7 +183,7 @@ class AutoServantLevel @Inject constructor(
     }
 
     private fun confirmEnhancement() {
-        locations.servant.getFinalConfirmLocation.click()
+        locations.servant.finalConfirmRegion.click()
         if (limitCount > 0) {
             --limitCount
         }
@@ -188,8 +191,8 @@ class AutoServantLevel @Inject constructor(
 
     }
 
-    private fun performMinEmberLowQPEnhancement() {
-        locations.servant.getAutoSelectMinEmberLowQPLocation.click()
+    private fun performMinimumEmberForLowQPEnhancement() {
+        locations.servant.autoSelectMinEmberLowQPLocation.click()
         1.0.seconds.wait()
         locations.enhancementClick.click()
         0.5.seconds.wait()
@@ -202,29 +205,31 @@ class AutoServantLevel @Inject constructor(
     private fun isAutoSelectVisible(): Boolean = images[Images.ServantAutoSelect] in
             locations.servant.servantAutoSelectRegion
 
-    private fun isEmberSelectionDialogOpen() = images[Images.Ok] in
-            locations.servant.getEmberConfirmationDialogRegion
+    private fun isEmberSelectionDialogVisible() = images[Images.Ok] in
+            locations.servant.emberConfirmationDialogRegion
 
-    private fun isNoEmberOrQPDialogOpen() = images[Images.Close] in
-            locations.servant.getNoEmberOrQPDialogRegion(prefs.gameServer)
+    private fun isEmptyEmberOrQPDialogVisible() = images[Images.Close] in
+            locations.servant.emptyEmberOrQPDialogRegion(prefs.gameServer)
 
-    private fun isFinalConfirmVisible() = images[Images.Ok] in locations.servant.getFinalConfirmRegion
+    private fun isFinalConfirmDialogVisible() = images[Images.Ok] in locations.servant.finalConfirmRegion
 
-    private fun isMaxLevel() = images[Images.ServantMaxLevel] in locations.servant.getServantMaxLevelRegion
+    private fun isMaxLevel() = images[Images.ServantMaxLevel] in locations.servant.servantMaxLevelRegion
 
     private fun isTemporaryServant() = images[Images.Execute] in locations.tempServantEnhancementRegion
 
-    private fun isAutoSelectMinEmberLowQP() = images[Images.Ok] in locations.servant.getAutoSelectMinEmberLowQPRegion
+    private fun isAutoSelectMinimumEmberForLowQP() = images[Images.Ok] in
+            locations.servant.autoSelectMinEmberLowQPRegion
 
     // This is for the temporary servants as they cannot do palingenesis and
     // thus needed another way to check if they are max level at FA
-    private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in locations.servant.servantAutoSelectRegion
+    private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in
+            locations.servant.servantAutoSelectRegion
 
     private fun isRedirectGrailVisible() = images[Images.ServantGrailRedirectFromMenu] in
-            locations.servant.getServantRedirectRegion
+            locations.servant.servantRedirectCheckRegion
 
     private fun isRedirectAscensionVisible() = images[Images.ServantAscensionRedirectFromMenu] in
-            locations.servant.getServantRedirectRegion
+            locations.servant.servantRedirectCheckRegion
 
     private fun waitUntilGrailVisible() = locations.enhancementBannerRegion.exists(
         images[Images.ServantGrailBanner],
