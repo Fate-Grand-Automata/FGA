@@ -17,9 +17,9 @@ class AutoSetup @Inject constructor(
     private val scale: Scale
 ) : IFgoAutomataApi by api {
 
-    fun noServantFoundWarning() {
+    fun noServantFoundWarning(script: ScriptModeEnum) {
         messages.storeString(
-            ScriptMessage.NotifyErrorWarningScript(script = ScriptModeEnum.ServantLevel)
+            ScriptMessage.NotifyErrorWarningScript(script = script)
         )
     }
 
