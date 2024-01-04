@@ -220,9 +220,10 @@ class AutoServantEnhancement @Inject constructor(
     // thus needed another way to check if they are max level at FA
     private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in locations.servant.servantAutoSelectRegion
 
-    private fun isRedirectGrailVisible() = images[Images.ServantGrail] in locations.servant.getServantRedirectRegion
+    private fun isRedirectGrailVisible() = images[Images.ServantGrailRedirectFromMenu] in
+            locations.servant.getServantRedirectRegion
 
-    private fun isRedirectAscensionVisible() = images[Images.ServantAscension] in
+    private fun isRedirectAscensionVisible() = images[Images.ServantAscensionRedirectFromMenu] in
             locations.servant.getServantRedirectRegion
 
     private fun waitUntilGrailVisible() = locations.enhancementBannerRegion.exists(
