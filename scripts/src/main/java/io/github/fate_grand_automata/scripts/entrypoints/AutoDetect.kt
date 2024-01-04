@@ -24,11 +24,6 @@ class AutoDetect @Inject constructor(
                     !prefs.ignorePlayButtonDetectionWarning ->
                 ScriptModeEnum.PlayButtonDetection
 
-            images[Images.ServantAutoSelectOff] in locations.servant.servantAutoSelectRegion -> {
-                autoSetup.noServantFoundWarning(ScriptModeEnum.ServantLevel)
-                ScriptModeEnum.NotifyError
-            }
-
             images[Images.FriendSummon] in locations.fp.summonCheck ||
                     findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ||
                     images[Images.FriendSummon] in locations.fp.initialSummonCheck ->
@@ -57,7 +52,10 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.SkillUpgrade
             }
 
-            images[Images.ServantAutoSelect] in locations.servant.servantAutoSelectRegion ->
+            listOf(
+                images[Images.ServantAutoSelect] to locations.servant.servantAutoSelectRegion,
+                images[Images.ServantAutoSelectOff] to locations.servant.servantAutoSelectRegion,
+            ).existsAny()->
                 ScriptModeEnum.ServantLevel
 
             images[Images.AppendSkill] in locations.append.getAppendBannerRegion -> {

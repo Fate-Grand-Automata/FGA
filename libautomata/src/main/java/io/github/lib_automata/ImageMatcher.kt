@@ -59,7 +59,7 @@ interface ImageMatcher {
      * @param similarity the minimum similarity for this search
      * @param requireAll if `true`, all images must exist in their respective regions
      */
-    fun existsInList(
+    fun existsAnyInList(
         items: List<Pair<Pattern, Region>>,
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
@@ -186,7 +186,7 @@ class RealImageMatcher @Inject constructor(
                 )
             }
 
-    override fun existsInList(
+    override fun existsAnyInList(
         items: List<Pair<Pattern, Region>>,
         timeout: Duration,
         similarity: Double?,
