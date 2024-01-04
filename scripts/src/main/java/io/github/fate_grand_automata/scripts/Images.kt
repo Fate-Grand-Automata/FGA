@@ -64,7 +64,7 @@ enum class Images {
     CraftEssenceFodderSelectedCELocked,
     On,
     CraftEssenceLock,
-    SkillEnhancement,
+    SkillMenuBanner,
     SkillInsufficientMaterials,
     Ok,
     SkillInsufficientQP,

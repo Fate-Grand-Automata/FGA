@@ -331,7 +331,7 @@ class AutoSkillUpgrade @Inject constructor(
     private fun isConfirmationDialog() = images[Images.Ok] in
             locations.skillUpgrade.getConfirmationDialog
 
-    private fun isInSkillEnhancementMenu() = images[Images.SkillEnhancement] in
+    private fun isInSkillEnhancementMenu() = images[Images.SkillMenuBanner] in
             locations.skillUpgrade.getSkillEnhanceRegion
 
     private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
