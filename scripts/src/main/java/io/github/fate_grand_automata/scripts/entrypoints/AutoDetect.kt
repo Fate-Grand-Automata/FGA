@@ -24,7 +24,7 @@ class AutoDetect @Inject constructor(
                     !prefs.ignorePlayButtonDetectionWarning ->
                 ScriptModeEnum.PlayButtonDetection
 
-            images[Images.ServantAutoSelectOff] in locations.servant.getAutoSelectRegion -> {
+            images[Images.ServantAutoSelectOff] in locations.servant.servantAutoSelectRegion -> {
                 autoSetup.noServantFoundWarning(ScriptModeEnum.ServantLevel)
                 ScriptModeEnum.NotifyError
             }
@@ -57,7 +57,7 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.SkillUpgrade
             }
 
-            images[Images.ServantAutoSelect] in locations.servant.getAutoSelectRegion ->
+            images[Images.ServantAutoSelect] in locations.servant.servantAutoSelectRegion ->
                 ScriptModeEnum.ServantLevel
 
             images[Images.AppendSkill] in locations.append.getAppendBannerRegion -> {

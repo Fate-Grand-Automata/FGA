@@ -203,7 +203,7 @@ class AutoServantEnhancement @Inject constructor(
     private fun isServantEmpty() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
     private fun isAutoSelectVisible(): Boolean = images[Images.ServantAutoSelect] in
-            locations.servant.getAutoSelectRegion
+            locations.servant.servantAutoSelectRegion
 
     private fun isEmberSelectionDialogOpen() = images[Images.Ok] in
             locations.servant.getEmberConfirmationDialogRegion
@@ -221,7 +221,7 @@ class AutoServantEnhancement @Inject constructor(
 
     // This is for the temporary servants as they cannot do palingenesis and
     // thus needed another way to check if they are max level at FA
-    private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in locations.servant.getAutoSelectRegion
+    private fun isAutoSelectOff() = images[Images.ServantAutoSelectOff] in locations.servant.servantAutoSelectRegion
 
     private fun isRedirectGrailVisible() = images[Images.ServantGrail] in locations.servant.getServantRedirectRegion
 

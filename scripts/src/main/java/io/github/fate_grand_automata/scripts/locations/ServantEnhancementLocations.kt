@@ -29,7 +29,7 @@ class ServantEnhancementLocations @Inject constructor(
         false -> Location(-1096, 1259).xFromRight()
     }
 
-    val getAutoSelectRegion = when (isWide) {
+    val servantAutoSelectRegion = when (isWide) {
         true -> Region(1032, 268, 238, 53).xFromCenter()
         false -> Region(1032, 308, 238, 53).xFromCenter()
     }
