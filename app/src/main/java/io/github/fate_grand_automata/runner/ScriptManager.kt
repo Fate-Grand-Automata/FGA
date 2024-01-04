@@ -177,6 +177,8 @@ class ScriptManager @Inject constructor(
                     is AutoLottery.ExitReason.CannotSelectAnyMore -> {
                         context.getString(R.string.picked_exp_stacks, reason.pickedStacks, reason.pickedGoldEmbers)
                     }
+
+                    AutoLottery.ExitReason.Abort -> context.getString(R.string.aborted)
                 }
 
                 messages.notify(msg)

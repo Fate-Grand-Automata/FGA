@@ -5,6 +5,7 @@ import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
+import io.github.lib_automata.ScriptAbortException
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -28,6 +29,8 @@ class AutoLottery @Inject constructor(
         class CannotSelectAnyMore(
             val pickedStacks: Int, val pickedGoldEmbers: Int,
         ) : ExitReason()
+
+        object Abort : ExitReason()
 
         class PresentBoxFullAndCannotSelectAnymore(
             val pickedStacks: Int, val pickedGoldEmbers: Int,
@@ -121,7 +124,16 @@ class AutoLottery @Inject constructor(
 
     override fun script(): Nothing {
         prefs.isPresentBoxFull = false
+        try {
+            loop()
+        } catch (e: ScriptAbortException) {
+            throw ExitException(ExitReason.Abort)
+        } catch (e: ExitException) {
+            throw e
+        }
+    }
 
+    private fun loop(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { isNewLineup() } to { confirmNewLineup() },
             { isOutOfCurrency() } to { ranOutOfCurrency() },
