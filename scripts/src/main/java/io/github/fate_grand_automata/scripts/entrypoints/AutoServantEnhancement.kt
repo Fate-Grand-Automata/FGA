@@ -146,7 +146,7 @@ class AutoServantEnhancement @Inject constructor(
         while (true) {
             locations.servant.getFinalConfirmLocation.click()
 
-            val isAscensionMenuVisible = locations.servant.getServantEnhancementRegion.waitVanish(
+            val isAscensionMenuVisible = locations.enhancementBannerRegion.waitVanish(
                 images[Images.ServantAscensionBanner],
                 timeout = 3.seconds
             )
@@ -157,7 +157,7 @@ class AutoServantEnhancement @Inject constructor(
     }
 
     private fun isInAscensionMenu() = images[Images.ServantAscensionBanner] in
-            locations.servant.getServantEnhancementRegion
+            locations.enhancementBannerRegion
 
     private fun handleReturnToEnhancementMenu() {
         locations.servant.returnToServantMenuFromAscensionLocation.click()
@@ -225,13 +225,13 @@ class AutoServantEnhancement @Inject constructor(
     private fun isRedirectAscensionVisible() = images[Images.ServantAscension] in
             locations.servant.getServantRedirectRegion
 
-    private fun waitUntilGrailVisible() = locations.servant.getServantEnhancementRegion.exists(
+    private fun waitUntilGrailVisible() = locations.enhancementBannerRegion.exists(
         images[Images.ServantGrailBanner],
         similarity = 0.7,
         timeout = 15.seconds
     )
 
-    private fun waitUntilAscensionVisible() = locations.servant.getServantEnhancementRegion.exists(
+    private fun waitUntilAscensionVisible() = locations.enhancementBannerRegion.exists(
         images[Images.ServantAscensionBanner],
         similarity = 0.7,
         timeout = 15.seconds

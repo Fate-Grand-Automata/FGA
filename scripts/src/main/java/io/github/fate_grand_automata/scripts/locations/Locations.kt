@@ -39,6 +39,15 @@ class Locations @Inject constructor(
     val interludeCloseClick = Location(-399, 1125).xFromCenter()
     val interludeEndScreenClose = Region(-509, 1089, 219, 72).xFromCenter()
 
+    /**
+     * The following region are used for the various enhancement screen listed below:
+     * Skill Upgrade, Ascension, Append Upgrade and Grail
+     */
+    val enhancementBannerRegion = when(isWide) {
+        true -> Region(-412, 282, 241, 37).xFromCenter()
+        false -> Region(-413, 324, 241, 37).xFromCenter()
+    }
+
     val menuScreenRegion =
         (if (isWide)
             Region(-600, 1200, 600, 240)
