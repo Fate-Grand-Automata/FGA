@@ -5,30 +5,19 @@ import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import javax.inject.Inject
 
-class ServantEnhancementLocations @Inject constructor(
+class ServantLevelLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-    val getServantEnhancementRegion = when (gameServer) {
-        is GameServer.En -> when (isWide) {
-            true -> Region(-551, 38, 357, 75).xFromRight()
-            false -> Region(-381, 38, 357, 75).xFromRight()
-        }
-        // JP Option
-        else -> when (isWide) {
-            true -> Region(-502, 19, 64, 101).xFromRight()
-            false -> Region(-332, 19, 64, 101).xFromRight()
-        }
-    }
-
-    val getEmberConfirmationDialogRegion = Region(341, 1229, 120, 60).xFromCenter()
+    val emberConfirmationDialogRegion =
+        Region(341, 1229, 120, 60).xFromCenter()
 
     val emberConfirmationDialogLocation = when (isWide) {
         true -> Location(-1096, 1259).xFromRight()
         false -> Location(-1096, 1259).xFromRight()
     }
 
-    val getAutoSelectRegion = when (isWide) {
+    val servantAutoSelectRegion = when (isWide) {
         true -> Region(1032, 268, 238, 53).xFromCenter()
         false -> Region(1032, 308, 238, 53).xFromCenter()
     }
@@ -37,32 +26,30 @@ class ServantEnhancementLocations @Inject constructor(
         false -> Location(-127, 334).xFromRight()
     }
 
-    fun getNoEmberOrQPDialogRegion(server: GameServer) = when (server) {
+    fun emptyEmberOrQPDialogRegion(server: GameServer) = when (server) {
         is GameServer.En -> Region(-109, 1088, 218, 72).xFromCenter()
         // JP Option
         else -> Region(-111, 1088, 218, 72).xFromCenter()
     }
 
-    val getFinalConfirmRegion = Region(341, 1145, 120, 60).xFromCenter()
+    val finalConfirmRegion = Region(341, 1145, 120, 60).xFromCenter()
 
-    val getFinalConfirmLocation = Location(401, 1175).xFromCenter()
-
-    val getServantMaxLevelRegion = when (isWide) {
+    val servantMaxLevelRegion = when (isWide) {
         true -> Region(615, 1009, 54, 124).xFromCenter()
         false -> Region(615, 1049, 54, 124).xFromCenter()
     }
 
-    val getServantRedirectRegion = when(isWide) {
+    val servantRedirectCheckRegion = when(isWide) {
         true -> Region(689, 1015, 43, 111).xFromCenter()
         false -> Region(689, 1060, 43, 111).xFromCenter()
     }
 
-    val getAutoSelectMinEmberLowQPRegion = when (isWide) {
+    val autoSelectMinEmberLowQPRegion = when (isWide) {
         true -> Region(341, 1094, 120, 60).xFromCenter()
         false -> Region(342, 1096, 121, 60).xFromCenter()
     }
 
-    val getAutoSelectMinEmberLowQPLocation = Location(402, 1126).xFromCenter()
+    val autoSelectMinEmberLowQPLocation = Location(402, 1126).xFromCenter()
 
     val returnToServantMenuFromAscensionLocation = Location(816, 572).xFromCenter()
 }

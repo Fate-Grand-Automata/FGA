@@ -22,7 +22,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.AutoNotifyError
-import io.github.fate_grand_automata.scripts.entrypoints.AutoServantEnhancement
+import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
 import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
@@ -327,37 +327,37 @@ class ScriptManager @Inject constructor(
                 showAutoAppendMenu(service, e)
             }
 
-            is AutoServantEnhancement.ExitException -> {
+            is AutoServantLevel.ExitException -> {
                 val msg = when (val reason = e.reason) {
-                    AutoServantEnhancement.ExitReason.NoServantSelected ->
+                    AutoServantLevel.ExitReason.NoServantSelected ->
                         context.getString(R.string.enhancement_missing_servant)
 
-                    AutoServantEnhancement.ExitReason.RanOutOfQP -> context.getString(R.string.ran_out_of_qp)
-                    is AutoServantEnhancement.ExitReason.Unexpected -> {
+                    AutoServantLevel.ExitReason.RanOutOfQP -> context.getString(R.string.ran_out_of_qp)
+                    is AutoServantLevel.ExitReason.Unexpected -> {
                         e.let {
                             "${context.getString(R.string.unexpected_error)}: ${e.message}"
                         }
                     }
 
-                    is AutoServantEnhancement.ExitReason.Limit ->
-                        context.getString(R.string.level_up_by, reason.count)
+                    is AutoServantLevel.ExitReason.Limit ->
+                        context.getString(R.string.servant_level_up_by_n_times, reason.count)
 
-                    AutoServantEnhancement.ExitReason.MaxLevelAchieved ->
-                        context.getString(R.string.max_level)
+                    AutoServantLevel.ExitReason.MaxLevelAchieved ->
+                        context.getString(R.string.servant_level_max)
 
-                    AutoServantEnhancement.ExitReason.NoEmbersOrQPLeft ->
+                    AutoServantLevel.ExitReason.NoEmbersOrQPLeft ->
                         context.getString(R.string.servant_enhancement_no_embers_or_qp_left)
 
-                    AutoServantEnhancement.ExitReason.Abort ->
+                    AutoServantLevel.ExitReason.Abort ->
                         context.getString(R.string.enhancement_halt_aborted)
 
-                    AutoServantEnhancement.ExitReason.RedirectAscension ->
-                        context.getString(R.string.servant_enhancement_redirect_ascension_success)
-                    AutoServantEnhancement.ExitReason.RedirectGrail ->
-                        context.getString(R.string.servant_enhancement_redirect_grail_success)
+                    AutoServantLevel.ExitReason.RedirectAscension ->
+                        context.getString(R.string.servant_redirect_ascension_success)
+                    AutoServantLevel.ExitReason.RedirectGrail ->
+                        context.getString(R.string.servant_redirect_grail_success)
 
-                    AutoServantEnhancement.ExitReason.UnableToPerformAscension ->
-                        context.getString(R.string.servant_enhancement_perform_ascension_failed)
+                    AutoServantLevel.ExitReason.UnableToPerformAscension ->
+                        context.getString(R.string.servant_perform_ascension_failed)
                 }
                 if (!preferences.servant.muteNotifications){
                     messages.notify(msg)
@@ -401,6 +401,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
             ScriptModeEnum.PlayButtonDetection -> entryPoint.playButtonDetection()
             ScriptModeEnum.Append -> entryPoint.append()
+            ScriptModeEnum.NotifyError -> entryPoint.notifyError()
         }
 
     enum class PauseAction {

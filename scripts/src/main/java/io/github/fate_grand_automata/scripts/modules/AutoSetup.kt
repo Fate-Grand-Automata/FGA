@@ -2,7 +2,9 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.ScriptMessage
 import io.github.fate_grand_automata.scripts.enums.CEDisplayChangeAreaEnum
+import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import io.github.lib_automata.Scale
@@ -14,6 +16,12 @@ class AutoSetup @Inject constructor(
     api: IFgoAutomataApi,
     private val scale: Scale
 ) : IFgoAutomataApi by api {
+
+    fun noServantFoundWarning(script: ScriptModeEnum) {
+        messages.storeString(
+            ScriptMessage.NotifyErrorWarningScript(script = script)
+        )
+    }
 
 
     fun Region.detectNumberInText(): Int? {

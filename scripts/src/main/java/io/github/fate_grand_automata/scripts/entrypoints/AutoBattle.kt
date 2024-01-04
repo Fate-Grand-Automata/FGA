@@ -87,13 +87,11 @@ class AutoBattle @Inject constructor(
     // for tracking whether the story skip button could be visible in the current screen
     private var storySkipPossible = true
 
-    // for tracking whether to check for servant deaths or not
-    private var servantDeathPossible = false
+    // for tracking whether to check for servant death and wave transition animations
+    private var isInBattle = false
 
     // for skipping some intro before the quest starts
     private var isIntroSkipped = false
-
-    private var canSkipWavesInBattle = false
 
     private var canScreenshotBondCE = false
 
@@ -182,10 +180,9 @@ class AutoBattle @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { battle.isIdle() } to {
                 storySkipPossible = false
-                canSkipWavesInBattle = true
                 isIntroSkipped = false
+                isInBattle = true
                 battle.performBattle()
-                servantDeathPossible = true
             },
             { isInMenu() } to { menu() },
             { isStartingNp() } to { skipNp() },
@@ -205,7 +202,7 @@ class AutoBattle @Inject constructor(
             { isCeRewardDetails() } to { ceRewardDetails() },
             { isDeathAnimation() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
             { isRankUp() } to { locations.middleOfScreenClick.click() },
-            { isBetweenWaves() && canSkipWavesInBattle } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
+            { isBetweenWaves() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
         )
 
         // Loop through SCREENS until a Validator returns true
@@ -302,7 +299,7 @@ class AutoBattle @Inject constructor(
         images[Images.CEDetails] in locations.resultCeRewardDetailsRegion
 
     private fun isDeathAnimation() =
-        servantDeathPossible && FieldSlot.list
+        isInBattle && FieldSlot.list
             .map { locations.battle.servantPresentRegion(it) }
             .count { it.exists(images[Images.ServantExist], similarity = 0.70) } in 1..2
 
@@ -321,9 +318,9 @@ class AutoBattle @Inject constructor(
      * Clicks through the reward screens.
      */
     private fun result() {
-        canSkipWavesInBattle = false
+        isInBattle = false
 
-        servantDeathPossible = false
+        isInBattle = false
         locations.resultClick.click(
             times = if (prefs.screenshotBond) 5 else 15
         )
@@ -364,7 +361,7 @@ class AutoBattle @Inject constructor(
         state.nextRun()
 
         2.seconds.wait()
-        val isBlackScreen = isBetweenWaves()
+        val isBlackScreen = locations.npStartedRegion.isBlack()
         if (isBlackScreen) {
             locations.menuScreenRegion.exists(
                 images[Images.Menu],
@@ -510,7 +507,7 @@ class AutoBattle @Inject constructor(
      * Black screen probably means we're between waves.
      */
     private fun isBetweenWaves() =
-        locations.npStartedRegion.isBlack()
+        locations.npStartedRegion.isBlack() && isInBattle
 
     /**
      * Taps in the bottom right a few times to trigger NP skip in BetterFGO.

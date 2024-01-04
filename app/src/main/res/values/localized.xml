@@ -470,20 +470,20 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="success">Success</string>
 
-    <string name="level_up_by">"Level up by %d time(s)"</string>
-    <string name="max_level">Max Level Achieved</string>
 
     <string name="servant_enhancement">Servant Enhancement</string>
-
     <string name="servant_enhancement_limit">Should limit number of enhancement?</string>
     <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
     <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
-    <string name="servant_enhancement_redirect_ascension">Redirect to Ascension upon reaching the level cap?</string>
-    <string name="servant_enhancement_perform_ascension">Should Performed Ascension?</string>
-    <string name="servant_enhancement_redirect_grail">Redirect to Palingenesis upon reaching the level cap?</string>
-    <string name="servant_enhancement_redirect_ascension_success">Redirected to Ascension.</string>
-    <string name="servant_enhancement_redirect_grail_success">Redirected to Palingenesis.</string>
-    <string name="servant_enhancement_perform_ascension_failed">Unable to perform Ascension.</string>
+    <string name="servant_redirect_ascension_question">Redirect to Ascension upon reaching the level cap?</string>
+    <string name="servant_perform_ascension_question">Should Performed Ascension?</string>
+    <string name="servant_redirect_grail">Redirect to Palingenesis upon reaching the level cap?</string>
+    <string name="servant_redirect_ascension_success">Redirected to Ascension.</string>
+    <string name="servant_redirect_grail_success">Redirected to Palingenesis.</string>
+    <string name="servant_perform_ascension_failed">Unable to perform Ascension.</string>
+    <string name="servant_level_up_by_n_times">"Level up by %d time(s)"</string>
+    <string name="servant_level_max">Max Level Achieved</string>
+
 
     <string name="skill_enhancement_all_question">Upgrade all available skill?</string>
 
@@ -526,5 +526,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_treat_support_like_own_servant_summary">Will do normal face card checks instead of looking for the "Support" icon on face cards. This solves problems with super-buffed Support Servants, but will break card priority if you have 2 of the same Servant in the party.</string>
     <string name="bond_level_up">Bond Level up</string>
 
+
+    <string name="script_error_no_servant">"The \"%s\" script is unable to run. Must set a servant to continue."</string>
+    <string name="script_error_warning">Script Warning</string>
     <string name="script_aborted">Script Abort!</string>
 </resources>

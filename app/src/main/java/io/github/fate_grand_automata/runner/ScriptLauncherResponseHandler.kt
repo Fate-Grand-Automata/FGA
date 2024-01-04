@@ -79,6 +79,8 @@ class ScriptLauncherResponseHandler @Inject constructor(
 
                 ScriptModeEnum.Append
             }
+
+            is ScriptLauncherResponse.NotifyError -> ScriptModeEnum.NotifyError
         }
     }
 }

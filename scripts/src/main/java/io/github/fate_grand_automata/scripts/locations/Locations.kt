@@ -19,7 +19,7 @@ class Locations @Inject constructor(
     val battle: BattleScreenLocations,
     val ceBomb: CEBombLocations,
     val skillUpgrade: SkillUpgradeLocations,
-    val servant: ServantEnhancementLocations,
+    val servant: ServantLevelLocations,
     val append: AppendLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
@@ -38,6 +38,15 @@ class Locations @Inject constructor(
 
     val interludeCloseClick = Location(-399, 1125).xFromCenter()
     val interludeEndScreenClose = Region(-509, 1089, 219, 72).xFromCenter()
+
+    /**
+     * The following region are used for the various enhancement screen listed below:
+     * Skill Upgrade, Ascension, Append Upgrade and Grail
+     */
+    val enhancementBannerRegion = when(isWide) {
+        true -> Region(-412, 282, 241, 37).xFromCenter()
+        false -> Region(-413, 324, 241, 37).xFromCenter()
+    }
 
     val menuScreenRegion =
         (if (isWide)

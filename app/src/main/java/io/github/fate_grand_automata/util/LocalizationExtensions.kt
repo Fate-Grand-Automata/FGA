@@ -6,6 +6,7 @@ import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
+import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.enums.SupportClass
@@ -184,4 +185,20 @@ val GameServer.simpleStringRes
         GameServer.Kr -> R.string.game_server_kr
         is GameServer.En -> R.string.game_server_na
         is GameServer.Jp -> R.string.game_server_jp
+    }
+
+val ScriptModeEnum.scriptName
+    get() = when(this){
+        ScriptModeEnum.FP -> R.string.p_script_mode_fp
+        ScriptModeEnum.Lottery -> R.string.p_script_mode_lottery
+        ScriptModeEnum.PresentBox -> R.string.p_script_mode_gift_box
+        ScriptModeEnum.CEBomb -> R.string.p_script_mode_ce_bomb
+        ScriptModeEnum.SkillUpgrade -> R.string.skill_upgrade
+        ScriptModeEnum.ServantLevel -> R.string.servant_enhancement
+        ScriptModeEnum.PlayButtonDetection -> R.string.p_script_mode_play_button_detection
+        ScriptModeEnum.Append -> R.string.append
+        // Going to be grouped together
+        ScriptModeEnum.SupportImageMaker -> R.string.app_name
+        ScriptModeEnum.Battle -> R.string.app_name
+        ScriptModeEnum.NotifyError -> R.string.script_error_warning
     }

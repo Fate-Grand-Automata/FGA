@@ -31,7 +31,7 @@ import io.github.fate_grand_automata.ui.prefs.remember
 
 
 @Composable
-fun servantEnhancementLauncher(
+fun servantLevelLauncher(
     prefsCore: PrefsCore,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
@@ -133,7 +133,7 @@ fun servantEnhancementLauncher(
                 RowTextCheckBox(
                     modifier = Modifier
                         .weight(1f),
-                    text = stringResource(R.string.servant_enhancement_redirect_ascension),
+                    text = stringResource(R.string.servant_redirect_ascension_question),
                     status = shouldRedirectAscension,
                     onStatusChange = {
                         shouldRedirectAscension = it
@@ -144,7 +144,7 @@ fun servantEnhancementLauncher(
                 RowTextCheckBox(
                     modifier = Modifier
                         .weight(1f),
-                    text = stringResource(R.string.servant_enhancement_redirect_grail),
+                    text = stringResource(R.string.servant_redirect_grail),
                     status = shouldRedirectGrail,
                     onStatusChange = {
                         shouldRedirectGrail = it
@@ -167,7 +167,7 @@ fun servantEnhancementLauncher(
                 RowTextCheckBox(
                     modifier = Modifier
                         .weight(1f),
-                    text = stringResource(R.string.servant_enhancement_perform_ascension),
+                    text = stringResource(R.string.servant_perform_ascension_question),
                     status = shouldPerformAscension,
                     onStatusChange = {
                         shouldPerformAscension = it

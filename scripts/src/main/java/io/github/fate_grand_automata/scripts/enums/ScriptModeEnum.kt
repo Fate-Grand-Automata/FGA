@@ -10,5 +10,6 @@ enum class ScriptModeEnum {
     SkillUpgrade,
     ServantLevel,
     PlayButtonDetection,
-    Append
+    Append,
+    NotifyError
 }

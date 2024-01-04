@@ -40,9 +40,10 @@ fun ScriptLauncher(
                 ScriptModeEnum.PresentBox -> giftBoxLauncher(prefs, modifier)
                 ScriptModeEnum.CEBomb -> ceBombLauncher(prefsCore, prefs, modifier)
                 ScriptModeEnum.SkillUpgrade -> skillUpgradeLauncher(prefs, modifier)
-                ScriptModeEnum.ServantLevel -> servantEnhancementLauncher(prefsCore, modifier)
+                ScriptModeEnum.ServantLevel -> servantLevelLauncher(prefsCore, modifier)
                 ScriptModeEnum.PlayButtonDetection -> playButtonDetectionLauncher(prefsCore, modifier)
                 ScriptModeEnum.Append -> appendLauncher(prefsCore, modifier)
+                ScriptModeEnum.NotifyError -> notifyErrorLauncher(prefsCore, modifier)
             }
 
             Divider()

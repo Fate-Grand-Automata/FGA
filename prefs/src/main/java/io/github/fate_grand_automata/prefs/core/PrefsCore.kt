@@ -182,4 +182,6 @@ class PrefsCore @Inject constructor(
 
     val ignorePlayButtonDetectionWarning = maker.bool("ignore_play_button_detection_warning")
 
+    val notifyErrorWarning = maker.string("notify_error_warning")
+
 }

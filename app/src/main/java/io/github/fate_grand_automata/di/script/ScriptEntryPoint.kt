@@ -16,11 +16,13 @@ interface ScriptEntryPoint {
 
     fun skillUpgrade(): AutoSkillUpgrade
 
-    fun servantLevel(): AutoServantEnhancement
+    fun servantLevel(): AutoServantLevel
 
     fun autoDetect(): AutoDetect
 
     fun playButtonDetection(): AutoNotifyError
 
     fun append(): AutoAppend
+
+    fun notifyError(): AutoNotifyError
 }
