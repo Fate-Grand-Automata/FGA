@@ -159,4 +159,6 @@ dependencies {
 
     implementation(libs.google.android.play.update.ktx)
 
+    debugImplementation(libs.leak.canary)
+
 }
