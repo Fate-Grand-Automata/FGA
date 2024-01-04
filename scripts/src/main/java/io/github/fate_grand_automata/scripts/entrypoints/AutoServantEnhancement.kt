@@ -195,10 +195,7 @@ class AutoServantEnhancement @Inject constructor(
         0.5.seconds.wait()
     }
 
-    private fun isInServantEnhancementMenu() = images[Images.ServantChoose] in
-            locations.servant.servantChooseRegion
-
-    private fun isLimitReached() = shouldLimit && limitCount <= 0 && isInServantEnhancementMenu()
+    private fun isLimitReached() = shouldLimit && limitCount <= 0 && isAutoSelectVisible()
 
     private fun isServantEmpty() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
@@ -240,8 +237,8 @@ class AutoServantEnhancement @Inject constructor(
         timeout = 15.seconds
     )
 
-    private fun waitUntilServantMenuVisible() = locations.servant.servantChooseRegion.exists(
-        images[Images.ServantChoose],
+    private fun waitUntilServantMenuVisible() = locations.servant.servantAutoSelectRegion.exists(
+        images[Images.ServantAutoSelect],
         similarity = 0.7,
         timeout = 15.seconds
     )
