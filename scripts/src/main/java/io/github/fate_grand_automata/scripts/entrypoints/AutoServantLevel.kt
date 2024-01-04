@@ -12,7 +12,7 @@ import kotlin.time.Duration.Companion.seconds
 
 
 @ScriptScope
-class AutoServantEnhancement @Inject constructor(
+class AutoServantLevel @Inject constructor(
     private val connectionRetry: ConnectionRetry,
     exitManager: ExitManager,
     api: IFgoAutomataApi

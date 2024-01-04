@@ -31,7 +31,7 @@ import io.github.fate_grand_automata.ui.prefs.remember
 
 
 @Composable
-fun servantEnhancementLauncher(
+fun servantLevelLauncher(
     prefsCore: PrefsCore,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
