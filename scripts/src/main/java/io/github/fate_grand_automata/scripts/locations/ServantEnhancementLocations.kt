@@ -20,6 +20,7 @@ class ServantEnhancementLocations @Inject constructor(
             false -> Region(-332, 19, 64, 101).xFromRight()
         }
     }
+    val servantChooseRegion = Region(-896, 24, 224, 123).xFromCenter()
 
     val getEmberConfirmationDialogRegion = Region(341, 1229, 120, 60).xFromCenter()
 
