@@ -316,7 +316,7 @@ class AutoAppend @Inject constructor(
             locations.getInsufficientQPRegion
 
     private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
-            locations.skillUpgrade.getInsufficientMatsRegion
+            locations.skill.getInsufficientMatsRegion
 
     private fun isInAppendMenu() = images[Images.AppendSkill] in locations.append.getAppendBannerRegion
 

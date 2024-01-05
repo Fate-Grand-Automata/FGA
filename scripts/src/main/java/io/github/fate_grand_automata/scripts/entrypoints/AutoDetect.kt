@@ -49,7 +49,7 @@ class AutoDetect @Inject constructor(
 
             images[Images.SkillMenuBanner] in locations.enhancementBannerRegion -> {
                 autoSetup.getMinimumSkillLevel()
-                ScriptModeEnum.SkillUpgrade
+                ScriptModeEnum.Skill
             }
 
             listOf(

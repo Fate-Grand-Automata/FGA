@@ -57,7 +57,7 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 prefs.skillUpgrade.shouldUpgradeSkill3 = resp.shouldUpgradeSkill3
                 prefs.skillUpgrade.upgradeSkill3 = resp.upgradeSkill3
 
-                ScriptModeEnum.SkillUpgrade
+                ScriptModeEnum.Skill
             }
 
             is ScriptLauncherResponse.ServantEnhancement -> ScriptModeEnum.ServantLevel

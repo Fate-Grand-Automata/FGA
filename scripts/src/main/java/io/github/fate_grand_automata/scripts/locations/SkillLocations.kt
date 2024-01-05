@@ -5,7 +5,7 @@ import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import javax.inject.Inject
 
-class SkillUpgradeLocations @Inject constructor(
+class SkillLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 

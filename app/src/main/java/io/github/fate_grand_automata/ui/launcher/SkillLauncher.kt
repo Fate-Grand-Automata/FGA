@@ -35,7 +35,7 @@ import io.github.fate_grand_automata.ui.Stepper
 
 
 @Composable
-fun skillUpgradeLauncher(
+fun skillLauncher(
     prefs: IPreferences,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {

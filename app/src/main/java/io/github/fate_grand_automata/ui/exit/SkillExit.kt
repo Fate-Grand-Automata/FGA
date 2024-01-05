@@ -21,15 +21,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
+import io.github.fate_grand_automata.scripts.entrypoints.AutoSkill
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.util.KnownException
 
 
 @Composable
-fun SkillUpgradeExit(
-    exception: AutoSkillUpgrade.ExitException,
+fun SkillExit(
+    exception: AutoSkill.ExitException,
     prefs: IPreferences,
     onClose: () -> Unit,
     onCopy: () -> Unit
@@ -70,7 +70,7 @@ fun SkillUpgradeExit(
             ) {
                 Row {
                     val allowCopy = exception.reason.let { reason ->
-                        reason is AutoSkillUpgrade.ExitReason.Unexpected && reason.e !is KnownException
+                        reason is AutoSkill.ExitReason.Unexpected && reason.e !is KnownException
                     }
                     if (allowCopy) {
                         TextButton(onClick = onCopy) {
@@ -95,8 +95,8 @@ fun SkillUpgradeExit(
 
 @Composable
 private fun SkillUpgradeExitContent(
-    reason: AutoSkillUpgrade.ExitReason,
-    state: AutoSkillUpgrade.ExitState
+    reason: AutoSkill.ExitReason,
+    state: AutoSkill.ExitState
 ) {
     Text(
         text = reason.text().uppercase(),
@@ -144,8 +144,8 @@ private fun SkillUpgradeExitContent(
 
 @Composable
 private fun SkillUpgradeSummary(
-    reason: AutoSkillUpgrade.ExitReason,
-    summary: AutoSkillUpgrade.Summary,
+    reason: AutoSkill.ExitReason,
+    summary: AutoSkill.Summary,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -195,8 +195,8 @@ private fun SkillUpgradeSummary(
 }
 
 private fun LazyListScope.summaryLevelUp(
-    reason: AutoSkillUpgrade.ExitReason,
-    summary: AutoSkillUpgrade.Summary,
+    reason: AutoSkill.ExitReason,
+    summary: AutoSkill.Summary,
 ) {
     if (summary.startingLevel != null && summary.endLevel != null) {
         if (summary.startingLevel != summary.endLevel) {
@@ -221,7 +221,7 @@ private fun LazyListScope.summaryLevelUp(
             }
         }
     }
-    if (reason == AutoSkillUpgrade.ExitReason.Abort) {
+    if (reason == AutoSkill.ExitReason.Abort) {
         if ((summary.startingLevel == summary.endLevel) ||
             summary.endLevel == null ||
             (summary.targetLevel != null && summary.endLevel != summary.targetLevel)
@@ -260,12 +260,12 @@ private fun LazyListScope.summaryLevelUp(
 }
 
 @Composable
-private fun AutoSkillUpgrade.ExitReason.text(): String = when (this) {
-    AutoSkillUpgrade.ExitReason.RanOutOfQP -> stringResource(id = R.string.ran_out_of_qp)
-    AutoSkillUpgrade.ExitReason.Done -> stringResource(id = R.string.done)
-    AutoSkillUpgrade.ExitReason.NoServantSelected -> stringResource(id = R.string.enhancement_missing_servant)
-    AutoSkillUpgrade.ExitReason.Abort -> stringResource(R.string.stopped_by_user)
-    is AutoSkillUpgrade.ExitReason.Unexpected -> {
+private fun AutoSkill.ExitReason.text(): String = when (this) {
+    AutoSkill.ExitReason.RanOutOfQP -> stringResource(id = R.string.ran_out_of_qp)
+    AutoSkill.ExitReason.Done -> stringResource(id = R.string.done)
+    AutoSkill.ExitReason.NoServantSelected -> stringResource(id = R.string.enhancement_missing_servant)
+    AutoSkill.ExitReason.Abort -> stringResource(R.string.stopped_by_user)
+    is AutoSkill.ExitReason.Unexpected -> {
         e.let {
             if (it is KnownException) it.reason.msg
             else "${stringResource(R.string.unexpected_error)}: ${e.message}"
@@ -274,18 +274,18 @@ private fun AutoSkillUpgrade.ExitReason.text(): String = when (this) {
 }
 
 @Composable
-private fun AutoSkillUpgrade.EnhancementExitReason.text(): String = when (this) {
-    AutoSkillUpgrade.EnhancementExitReason.OutOfMatsException ->
+private fun AutoSkill.EnhancementExitReason.text(): String = when (this) {
+    AutoSkill.EnhancementExitReason.OutOfMatsException ->
         stringResource(id = R.string.enhancement_error_out_of_mats)
 
-    AutoSkillUpgrade.EnhancementExitReason.OutOfQPException ->
+    AutoSkill.EnhancementExitReason.OutOfQPException ->
         stringResource(id = R.string.enhancement_error_out_of_qp)
 
-    AutoSkillUpgrade.EnhancementExitReason.ExitEarlyOutOfQPException ->
+    AutoSkill.EnhancementExitReason.ExitEarlyOutOfQPException ->
         stringResource(id = R.string.enhancement_error_exit_early_out_of_qp)
 
-    AutoSkillUpgrade.EnhancementExitReason.NoSkillUpgradeError ->
+    AutoSkill.EnhancementExitReason.NoSkillUpgradeError ->
         stringResource(id = R.string.enhancement_error_no_enhancement)
 
-    AutoSkillUpgrade.EnhancementExitReason.TargetLevelMet -> stringResource(id = R.string.success)
+    AutoSkill.EnhancementExitReason.TargetLevelMet -> stringResource(id = R.string.success)
 }

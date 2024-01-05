@@ -193,7 +193,7 @@ val ScriptModeEnum.scriptName
         ScriptModeEnum.Lottery -> R.string.p_script_mode_lottery
         ScriptModeEnum.PresentBox -> R.string.p_script_mode_gift_box
         ScriptModeEnum.CEBomb -> R.string.p_script_mode_ce_bomb
-        ScriptModeEnum.SkillUpgrade -> R.string.skill_upgrade
+        ScriptModeEnum.Skill -> R.string.skill_upgrade
         ScriptModeEnum.ServantLevel -> R.string.servant_enhancement
         ScriptModeEnum.PlayButtonDetection -> R.string.p_script_mode_play_button_detection
         ScriptModeEnum.Append -> R.string.append

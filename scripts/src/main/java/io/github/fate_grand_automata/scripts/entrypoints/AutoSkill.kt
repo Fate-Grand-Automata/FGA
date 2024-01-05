@@ -12,7 +12,7 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
-class AutoSkillUpgrade @Inject constructor(
+class AutoSkill @Inject constructor(
     private val connectionRetry: ConnectionRetry,
     exitManager: ExitManager,
     api: IFgoAutomataApi
@@ -238,7 +238,7 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun executeUpgradeSkill() {
-        locations.skillUpgrade.confirmationDialogClick.click()
+        locations.skill.confirmationDialogClick.click()
         1.0.seconds.wait()
     }
 
@@ -252,10 +252,10 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun currentSkillTextRegion(index: Int) = when (index) {
-        1 -> locations.skillUpgrade.skill1TextRegion
-        2 -> locations.skillUpgrade.skill2TextRegion
-        3 -> locations.skillUpgrade.skill3TextRegion
-        else -> locations.skillUpgrade.skill1TextRegion
+        1 -> locations.skill.skill1TextRegion
+        2 -> locations.skill.skill2TextRegion
+        3 -> locations.skill.skill3TextRegion
+        else -> locations.skill.skill1TextRegion
     }
 
     private fun currentTargetSkillLevel(index: Int) = when (index) {
@@ -266,10 +266,10 @@ class AutoSkillUpgrade @Inject constructor(
     }
 
     private fun currentSkillLocation(index: Int) = when (index) {
-        1 -> locations.skillUpgrade.skill1Location
-        2 -> locations.skillUpgrade.skill2Location
-        3 -> locations.skillUpgrade.skill3Location
-        else -> locations.skillUpgrade.skill1Location
+        1 -> locations.skill.skill1Location
+        2 -> locations.skill.skill2Location
+        3 -> locations.skill.skill3Location
+        else -> locations.skill.skill1Location
     }
 
     private fun ifRanOfQPEarlyException(e: EnhancementExitReason?, index: Int) {
@@ -326,10 +326,10 @@ class AutoSkillUpgrade @Inject constructor(
 
 
     private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
-            locations.skillUpgrade.getInsufficientMatsRegion
+            locations.skill.getInsufficientMatsRegion
 
     private fun isConfirmationDialog() = images[Images.Ok] in
-            locations.skillUpgrade.getConfirmationDialog
+            locations.skill.getConfirmationDialog
 
     private fun isInSkillEnhancementMenu() = images[Images.SkillMenuBanner] in
             locations.enhancementBannerRegion
