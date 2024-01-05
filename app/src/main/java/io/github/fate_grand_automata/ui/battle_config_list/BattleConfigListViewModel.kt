@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.prefs.core.PrefsCore
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.util.toggle
@@ -36,10 +37,11 @@ class BattleConfigListViewModel @Inject constructor(
             list
                 .map { key -> prefsCore.forBattleConfig(key) }
                 .sortedWith(
-                    compareByDescending<BattleConfigCore> {
-                        it.server.get() == BattleConfigCore.Server.NotSet
-                    }.thenByDescending {
-                        it.server.get().asGameServer().toString()
+                    compareBy<BattleConfigCore, Int?>((nullsFirst())) {
+                        // sort by null, NA, JP, CN, TW, KR
+                        it.server.get().asGameServer()?.let { server ->
+                            GameServer.values.indexOf(server)
+                        }
                     }.thenBy(String.CASE_INSENSITIVE_ORDER) {
                         it.name.get()
                     }
