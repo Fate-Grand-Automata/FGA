@@ -56,19 +56,20 @@ class ApplyBraveChains @Inject constructor() {
         val matchingCards = cards
             .filter { it.fieldSlot == fieldSlot }
             .toMutableList()
-
-        // When there is 1 NP, 1 Card before NP, only 1 matching face-card,
-        // we want the matching face-card after NP.
+        val nonMatchingCards = cards - matchingCards
+        val combinedCards = matchingCards + nonMatchingCards
+        /*
+          When rearrange is active and there is 1 NP and 1 Card before NP,
+          we want the best or matching face-card after NP.
+         */
         if (rearrange
-            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP, matchingCards.size).all { it == 1 }
+            && listOf(npUsage.nps.size, npUsage.cardsBeforeNP).all { it == 1 }
         ) {
-            Collections.swap(matchingCards, 0, 1)
+            Collections.swap(combinedCards, 0, 1)
         }
 
-        val nonMatchingCards = cards - matchingCards
-
         return rearrange(
-            cards = matchingCards + nonMatchingCards,
+            cards = combinedCards,
             rearrange = rearrange,
             npUsage = npUsage
         )
