@@ -9,19 +9,6 @@ class SkillUpgradeLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-
-    val getSkillEnhanceRegion = when (gameServer) {
-        is GameServer.En -> when (isWide) {
-            false -> Region(-240, 19, 213, 86).xFromRight()
-            true -> Region(-408, 20, 213, 86).xFromRight()
-        }
-        // JP option
-        else -> when (isWide) {
-            false -> Region(-626, 19, 54, 35).xFromRight()
-            true -> Region(-796, 19, 54, 35).xFromRight()
-        }
-    }
-
     val skill1Location = Location(-339, 519).xFromCenter()
 
     val skill2Location = Location(236, 519).xFromCenter()
