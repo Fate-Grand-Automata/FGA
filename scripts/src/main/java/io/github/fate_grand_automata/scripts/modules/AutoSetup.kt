@@ -25,16 +25,16 @@ class AutoSetup @Inject constructor(
 
     fun getMinimumSkillLevel() {
         val skill1Text = locations.skill.skillTextRegion(1).findNumberInText()
-        prefs.skillUpgrade.minimumSkillOne = skill1Text ?: 1
+        prefs.skill.minimumSkillOne = skill1Text ?: 1
         val skill2Text = locations.skill.skillTextRegion(2).findNumberInText()
 
-        prefs.skillUpgrade.minimumSkillTwo = skill2Text ?: 1
-        prefs.skillUpgrade.isSkillTwoAvailable = skill2Text != null
+        prefs.skill.minimumSkillTwo = skill2Text ?: 1
+        prefs.skill.isSkillTwoAvailable = skill2Text != null
 
         val skill3Text = locations.skill.skillTextRegion(3).findNumberInText()
 
-        prefs.skillUpgrade.minimumSkillThree = skill3Text ?: 1
-        prefs.skillUpgrade.isSkillThreeAvailable = skill3Text != null
+        prefs.skill.minimumSkillThree = skill3Text ?: 1
+        prefs.skill.isSkillThreeAvailable = skill3Text != null
     }
 
     fun checkIfEmptyEnhance() {

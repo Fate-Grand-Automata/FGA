@@ -58,7 +58,7 @@ interface IPreferences {
     fun isOnboardingRequired(): Boolean
     fun completedOnboarding()
 
-    val skillUpgrade: ISkillPreferences
+    val skill: ISkillPreferences
 
     val append: IAppendPreferences
 

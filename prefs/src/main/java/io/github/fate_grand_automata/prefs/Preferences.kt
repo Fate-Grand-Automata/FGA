@@ -174,7 +174,7 @@ class PreferencesImpl @Inject constructor(
     override fun completedOnboarding() =
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
 
-    override val skillUpgrade: ISkillPreferences = SkillPrefs(prefs.skillUpgrade)
+    override val skill: ISkillPreferences = SkillPrefs(prefs.skill)
 
     override val append: IAppendPreferences = AppendPrefs(prefs.append)
 

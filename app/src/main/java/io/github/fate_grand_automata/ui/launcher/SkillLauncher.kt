@@ -44,7 +44,7 @@ fun skillLauncher(
     var shouldUpgradeSkillOne by remember {
         mutableStateOf(false)
     }
-    val minimumSkillOne by prefsCore.skillUpgrade.minimumSkillOne.remember()
+    val minimumSkillOne by prefsCore.skill.minimumSkillOne.remember()
 
     var skillOneUpgradeValue by remember {
         mutableStateOf(0)
@@ -52,20 +52,20 @@ fun skillLauncher(
     var shouldUpgradeSkillTwo by remember {
         mutableStateOf(false)
     }
-    val minimumSkillTwo by prefsCore.skillUpgrade.minimumSkillTwo.remember()
+    val minimumSkillTwo by prefsCore.skill.minimumSkillTwo.remember()
     var skillTwoUpgradeValue by remember {
         mutableStateOf(0)
     }
-    val isSkillTwoAvailable by prefsCore.skillUpgrade.isSkillTwoAvailable.remember()
+    val isSkillTwoAvailable by prefsCore.skill.isSkillTwoAvailable.remember()
 
     var shouldUpgradeSkillThree by remember {
         mutableStateOf(false)
     }
-    val minimumSkillThree by prefsCore.skillUpgrade.minimumSkillThree.remember()
+    val minimumSkillThree by prefsCore.skill.minimumSkillThree.remember()
     var skillThreeUpgradeValue by remember {
         mutableStateOf(0)
     }
-    val isSkillThreeAvailable by prefsCore.skillUpgrade.isSkillThreeAvailable.remember()
+    val isSkillThreeAvailable by prefsCore.skill.isSkillThreeAvailable.remember()
 
     var shouldUpgradeAllSkills by remember {
         mutableStateOf(false)
