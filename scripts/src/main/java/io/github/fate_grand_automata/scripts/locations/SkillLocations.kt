@@ -9,7 +9,15 @@ class SkillLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-
+    /**
+     * The location of the skill button on the battle screen.
+     * skill 1 x = -339
+     * skill 2 x = 237
+     * skill 3 x = 813
+     *
+     * This is different from the skill text location.
+     * @see skillTextRegion
+     */
     fun skillLocation(skillNumber: Int) = Location(-339, 519).xFromCenter() +
             Location(576 * (skillNumber - 1), 0)
 
@@ -28,6 +36,12 @@ class SkillLocations @Inject constructor(
 
     val confirmationDialogRegion = Region(341, 1146, 121, 60).xFromCenter()
 
+    /**
+     * The Region of the skill text on the battle screen.
+     * skill 1 x = -192
+     * skill 2 x = 383
+     * skill 3 x = 958
+     */
     fun skillTextRegion(skillNumber: Int) =
         Region(-192, if (isWide) 545 else 585, 155, 56).xFromCenter() +
                 Location(575 * (skillNumber - 1), 0)
