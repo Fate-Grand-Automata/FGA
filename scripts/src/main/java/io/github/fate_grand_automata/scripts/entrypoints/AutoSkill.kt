@@ -162,7 +162,7 @@ class AutoSkill @Inject constructor(
         skillNumber: Int,
     ) {
         val skillLocation = locations.skill.skillLocation(skillNumber)
-        val skillRegion = currentSkillTextRegion(skillNumber)
+        val skillRegion = locations.skill.skillTextRegion(skillNumber)
         val targetLevel = currentTargetSkillLevel(skillNumber)
 
         skillLocation.click(2)
@@ -271,13 +271,6 @@ class AutoSkill @Inject constructor(
      */
     private fun updateSkillUpgradeResult(e: EnhancementExitReason, index: Int) {
         upgradeResultList[index - 1] = EnhancementException(e)
-    }
-
-    private fun currentSkillTextRegion(index: Int) = when (index) {
-        1 -> locations.skill.skill1TextRegion
-        2 -> locations.skill.skill2TextRegion
-        3 -> locations.skill.skill3TextRegion
-        else -> locations.skill.skill1TextRegion
     }
 
     private fun currentTargetSkillLevel(index: Int) = when (index) {

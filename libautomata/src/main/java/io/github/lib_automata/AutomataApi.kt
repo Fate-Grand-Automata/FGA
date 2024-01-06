@@ -62,5 +62,7 @@ interface AutomataApi {
         requireAll: Boolean = false
     ): Boolean
 
-    fun Region.findNumberInText(): Int?
+    fun Region.findNumberInText(
+        replace: List<Pair<String, String>> = emptyList()
+    ): Int?
 }
