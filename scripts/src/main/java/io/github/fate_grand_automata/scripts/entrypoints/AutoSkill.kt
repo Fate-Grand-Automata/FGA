@@ -129,46 +129,32 @@ class AutoSkill @Inject constructor(
         }
         val skillUpgrade = prefs.skillUpgrade
 
-        if (skillUpgrade.shouldUpgradeSkill1) {
-            if (skillUpgrade.upgradeSkill1 > 0) {
-                setupSkillUpgradeLoop(
-                    skillNumber = 1,
-                )
-            } else {
-                updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, 1)
+        for (skillNumber in 1..3){
+            val shouldUpgrade = when(skillNumber){
+                1 -> skillUpgrade.shouldUpgradeSkill1
+                2 -> skillUpgrade.shouldUpgradeSkill2
+                3 -> skillUpgrade.shouldUpgradeSkill3
+                else -> false
             }
+            val canUpgrade = when(skillNumber){
+                1 -> skillUpgrade.upgradeSkill1 > 0
+                2 -> skillUpgrade.upgradeSkill2 > 0
+                3 -> skillUpgrade.upgradeSkill3 > 0
+                else -> false
+            }
+            if(shouldUpgrade){
+                if(canUpgrade){
+                    setupSkillUpgradeLoop(skillNumber = skillNumber)
+                } else {
+                    updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, skillNumber)
+                }
+                ifRanOfQPEarlyException(
+                    e = upgradeResultList[skillNumber - 1]?.reason,
+                    index = skillNumber - 1
+                )
+            }
+        }
 
-            ifRanOfQPEarlyException(
-                e = upgradeResultList[0]?.reason,
-                index = 1
-            )
-        }
-        if (skillUpgrade.shouldUpgradeSkill2) {
-            if (skillUpgrade.upgradeSkill2 > 0) {
-                setupSkillUpgradeLoop(
-                    skillNumber = 2,
-                )
-            } else {
-                updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, 2)
-            }
-            ifRanOfQPEarlyException(
-                e = upgradeResultList[1]?.reason,
-                index = 1
-            )
-        }
-        if (skillUpgrade.shouldUpgradeSkill3) {
-            if (skillUpgrade.upgradeSkill3 > 0) {
-                setupSkillUpgradeLoop(
-                    skillNumber = 3,
-                )
-            } else {
-                updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, 3)
-            }
-            ifRanOfQPEarlyException(
-                e = upgradeResultList[2]?.reason,
-                index = 3
-            )
-        }
         throw SkillUpgradeException(ExitReason.Done)
     }
 
