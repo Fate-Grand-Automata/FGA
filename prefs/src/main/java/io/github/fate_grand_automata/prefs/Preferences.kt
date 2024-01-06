@@ -11,7 +11,7 @@ import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.prefs.IServantEnhancementPreferences
-import io.github.fate_grand_automata.scripts.prefs.ISkillUpgradePreferences
+import io.github.fate_grand_automata.scripts.prefs.ISkillPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.Location
 import io.github.lib_automata.PlatformPrefs
@@ -174,7 +174,7 @@ class PreferencesImpl @Inject constructor(
     override fun completedOnboarding() =
         prefs.onboardingCompletedVersion.set(PrefsCore.CURRENT_ONBOARDING_VERSION)
 
-    override val skillUpgrade: ISkillUpgradePreferences = SkillUpgradePrefs(prefs.skillUpgrade)
+    override val skillUpgrade: ISkillPreferences = SkillPrefs(prefs.skillUpgrade)
 
     override val append: IAppendPreferences = AppendPrefs(prefs.append)
 

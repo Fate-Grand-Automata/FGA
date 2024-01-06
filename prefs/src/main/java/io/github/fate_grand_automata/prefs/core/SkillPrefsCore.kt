@@ -1,6 +1,6 @@
 package io.github.fate_grand_automata.prefs.core
 
-class SkillUpgradePrefsCore(maker: PrefMaker) {
+class SkillPrefsCore(maker: PrefMaker) {
 
     val shouldUpgradeSkill1 = maker.bool("shouldUpgradeSkill_1")
     val minSkill1 = maker.stringAsInt(key="minSkill1", default = 1)

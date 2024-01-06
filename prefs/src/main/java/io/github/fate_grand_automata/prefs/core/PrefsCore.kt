@@ -170,7 +170,7 @@ class PrefsCore @Inject constructor(
             )
         }
 
-    val skillUpgrade = SkillUpgradePrefsCore(maker)
+    val skillUpgrade = SkillPrefsCore(maker)
 
     val append = AppendPrefsCore(maker)
 

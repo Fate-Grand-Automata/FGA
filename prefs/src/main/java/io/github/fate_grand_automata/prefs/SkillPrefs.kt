@@ -1,11 +1,11 @@
 package io.github.fate_grand_automata.prefs
 
-import io.github.fate_grand_automata.prefs.core.SkillUpgradePrefsCore
-import io.github.fate_grand_automata.scripts.prefs.ISkillUpgradePreferences
+import io.github.fate_grand_automata.prefs.core.SkillPrefsCore
+import io.github.fate_grand_automata.scripts.prefs.ISkillPreferences
 
-internal class SkillUpgradePrefs(
-    val prefs: SkillUpgradePrefsCore
-): ISkillUpgradePreferences {
+internal class SkillPrefs(
+    val prefs: SkillPrefsCore
+): ISkillPreferences {
     override var shouldUpgradeSkill1: Boolean by prefs.shouldUpgradeSkill1
     override var minSkill1: Int by prefs.minSkill1
     override var upgradeSkill1: Int by prefs.upgradeSkill1

@@ -1,6 +1,6 @@
 package io.github.fate_grand_automata.scripts.prefs
 
-interface ISkillUpgradePreferences {
+interface ISkillPreferences {
 
     var shouldUpgradeSkill1: Boolean
     var minSkill1: Int
