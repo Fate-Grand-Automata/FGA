@@ -61,4 +61,6 @@ interface AutomataApi {
         similarity: Double? = null,
         requireAll: Boolean = false
     ): Boolean
+
+    fun Region.findNumberInText(): Int?
 }

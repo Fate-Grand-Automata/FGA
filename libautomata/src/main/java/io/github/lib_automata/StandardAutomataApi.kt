@@ -46,6 +46,18 @@ class StandardAutomataApi @Inject constructor(
         requireAll = requireAll
     )
 
+    override fun Region.findNumberInText(): Int? {
+        val text = this
+            .detectText(false) // replace common OCR mistakes
+            .replace("%", "x")
+            .replace("S", "5")
+            .replace("O", "0")
+            .lowercase()
+        val regex = Regex("""(\d+)""")
+        return regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
+    }
+
+
     override fun Region.exists(
         image: Pattern,
         timeout: Duration,

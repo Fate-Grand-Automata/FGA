@@ -206,16 +206,6 @@ class AutoSkill @Inject constructor(
         }
     }
 
-    fun Region.detectNumberInText(): Int? {
-        val text = this
-            .detectText(false) // replace common OCR mistakes
-            .replace("%", "x")
-            .replace("S", "5")
-            .replace("O", "0")
-            .lowercase()
-        val regex = Regex("""(\d+)""")
-        return regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
-    }
 
     private fun isTheTargetUpgradeMet(
         region: Region,
@@ -226,7 +216,7 @@ class AutoSkill @Inject constructor(
         return if (isConfirmationDialog()) {
             false
         } else {
-            val currentLevel = region.detectNumberInText()
+            val currentLevel = region.findNumberInText()
 
             currentLevel?.let {
                 updateCurrentSkillLevel(level = it, index = skillNumber)
