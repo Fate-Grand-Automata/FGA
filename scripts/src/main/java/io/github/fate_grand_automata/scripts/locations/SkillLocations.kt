@@ -10,8 +10,8 @@ class SkillLocations @Inject constructor(
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
 
-    fun skillLocation(skill: Int) = Location(-339, 519).xFromCenter() +
-            Location(576 * (skill - 1), 0)
+    fun skillLocation(skillNumber: Int) = Location(-339, 519).xFromCenter() +
+            Location(576 * (skillNumber - 1), 0)
 
     val insufficientMaterialsRegion = when (gameServer) {
         is GameServer.En -> when (isWide) {

@@ -150,7 +150,7 @@ class AutoSkill @Inject constructor(
                 }
                 ifRanOfQPEarlyException(
                     e = upgradeResultList[skillNumber - 1]?.reason,
-                    index = skillNumber - 1
+                    skillNumber = skillNumber - 1
                 )
             }
         }
@@ -163,7 +163,7 @@ class AutoSkill @Inject constructor(
     ) {
         val skillLocation = locations.skill.skillLocation(skillNumber)
         val skillRegion = locations.skill.skillTextRegion(skillNumber)
-        val targetLevel = currentTargetSkillLevel(skillNumber)
+        val targetLevel = determineCurrentSkillLevel(skillNumber)
 
         skillLocation.click(2)
         1.0.seconds.wait()
@@ -182,11 +182,11 @@ class AutoSkill @Inject constructor(
                 )
             } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet) },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
-            { isConfirmationDialog() } to { executeUpgradeSkill() },
+            { isConfirmationDialogVisible() } to { executeUpgradeSkill() },
             { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
             { isOutOfQP() } to { throw EnhancementException(EnhancementExitReason.OutOfQPException) },
             {
-                checkIfWillUpgradeSkill(targetLevel = targetLevel, index = skillNumber)
+                verifySkillUpgradeEligibility(targetLevel = targetLevel, skillNumber = skillNumber)
             } to { locations.enhancementClick.click() },
         )
 
@@ -201,7 +201,7 @@ class AutoSkill @Inject constructor(
      * @param skillNumber the index of the skill
      */
     private fun terminateEnhancementWhenSkillsMaxed(skillNumber: Int) {
-        updateCurrentSkillLevel(level = 10, index = skillNumber)
+        updateCurrentSkillLevel(level = 10, skillNumber = skillNumber)
         throw EnhancementException(EnhancementExitReason.TargetLevelMet)
     }
 
@@ -246,11 +246,11 @@ class AutoSkill @Inject constructor(
         targetLevel: Int,
         skillNumber: Int,
     ): Boolean {
-        if (isConfirmationDialog()) return false
+        if (isConfirmationDialogVisible()) return false
 
         val currentLevel = region.findNumberInText() ?: return false
 
-        updateCurrentSkillLevel(level = currentLevel, index = skillNumber)
+        updateCurrentSkillLevel(level = currentLevel, skillNumber = skillNumber)
         val checkIfIsInSkillEnhancementMenu = isInSkillEnhancementMenu()
 
         return targetLevel <= currentLevel && checkIfIsInSkillEnhancementMenu
@@ -267,13 +267,13 @@ class AutoSkill @Inject constructor(
     /**
      * This function is used to update the skill upgrade result
      * @param e the exception that is thrown
-     * @param index the index of the skill
+     * @param skillNumber the index of the skill
      */
-    private fun setSkillUpgradeException(e: EnhancementExitReason, index: Int) {
-        upgradeResultList[index - 1] = EnhancementException(e)
+    private fun setSkillUpgradeException(e: EnhancementExitReason, skillNumber: Int) {
+        upgradeResultList[skillNumber - 1] = EnhancementException(e)
     }
 
-    private fun currentTargetSkillLevel(index: Int) = when (index) {
+    private fun determineCurrentSkillLevel(skillNumber: Int) = when (skillNumber) {
         1 -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
         2 -> prefs.skillUpgrade.minSkill2 + prefs.skillUpgrade.upgradeSkill2
         3 -> prefs.skillUpgrade.minSkill3 + prefs.skillUpgrade.upgradeSkill3
@@ -283,13 +283,13 @@ class AutoSkill @Inject constructor(
     /**
      * This function is used to update the skill upgrade result if the skill upgrade is ran out of QP early
      * @param e the exception that is thrown
-     * @param index the index of the skill
+     * @param skillNumber the index of the skill
      */
-    private fun ifRanOfQPEarlyException(e: EnhancementExitReason?, index: Int) {
+    private fun ifRanOfQPEarlyException(e: EnhancementExitReason?, skillNumber: Int) {
         if (e != EnhancementExitReason.OutOfQPException) return
         val skillUpgrade = prefs.skillUpgrade
         val exitEarlyException = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
-        when (index) {
+        when (skillNumber) {
             1 -> {
                 if (skillUpgrade.shouldUpgradeSkill2) upgradeResultList[1] = exitEarlyException
                 if (skillUpgrade.shouldUpgradeSkill3) upgradeResultList[2] = exitEarlyException
@@ -300,19 +300,19 @@ class AutoSkill @Inject constructor(
         throw SkillUpgradeException(ExitReason.RanOutOfQP)
     }
 
-    private fun updateCurrentSkillLevel(level: Int, index: Int) {
-        skillCountList[index - 1] = level
+    private fun updateCurrentSkillLevel(level: Int, skillNumber: Int) {
+        skillCountList[skillNumber - 1] = level
     }
 
     /**
      * This function is used to check if the skill will be upgraded
      * @param targetLevel the target level of the skill
-     * @param index the index of the skill
+     * @param skillNumber the index of the skill
      * @return true if the skill will be upgraded
      */
-    private fun checkIfWillUpgradeSkill(targetLevel: Int, index: Int): Boolean {
-        if (isConfirmationDialog() || isTemporaryServant()) return false
-        val skillCount = skillCountList[index - 1]
+    private fun verifySkillUpgradeEligibility(targetLevel: Int, skillNumber: Int): Boolean {
+        if (isConfirmationDialogVisible() || isTemporaryServant()) return false
+        val skillCount = skillCountList[skillNumber - 1]
         val skillCountConditionMet = skillCount?.let { it < targetLevel } ?: false
 
         return skillCountConditionMet && isInSkillEnhancementMenu()
@@ -322,7 +322,7 @@ class AutoSkill @Inject constructor(
     private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
             locations.skill.insufficientMaterialsRegion
 
-    private fun isConfirmationDialog() = images[Images.Ok] in
+    private fun isConfirmationDialogVisible() = images[Images.Ok] in
             locations.skill.confirmationDialogRegion
 
     private fun isInSkillEnhancementMenu() = images[Images.SkillMenuBanner] in
