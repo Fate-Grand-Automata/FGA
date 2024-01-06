@@ -42,68 +42,68 @@ fun skillLauncher(
 
     val skillUpgrade = prefs.skillUpgrade
 
-    var shouldUpgrade1 by remember {
+    var shouldUpgradeSkillOne by remember {
         mutableStateOf(false)
     }
-    val minSkill1 by remember {
+    val minimumSkillOne by remember {
         mutableStateOf(skillUpgrade.minimumSkillOne)
     }
-    var upgradeSkill1 by remember {
+    var skillOneUpgradeValue by remember {
         mutableStateOf(0)
     }
-    var shouldUpgrade2 by remember {
+    var shouldUpgradeSkillTwo by remember {
         mutableStateOf(false)
     }
-    val minSkill2 by remember {
+    val minimumSkillTwo by remember {
         mutableStateOf(skillUpgrade.minimumSkillTwo)
     }
-    var upgradeSkill2 by remember {
+    var skillTwoUpgradeValue by remember {
         mutableStateOf(0)
     }
-    val skill2Available by remember {
+    val isSkillTwoAvailable by remember {
         mutableStateOf(skillUpgrade.isSkillTwoAvailable)
     }
 
-    var shouldUpgrade3 by remember {
+    var shouldUpgradeSkillThree by remember {
         mutableStateOf(false)
     }
-    val minSkill3 by remember {
+    val minimumSkillThree by remember {
         mutableStateOf(skillUpgrade.minimumSkillThree)
     }
-    var upgradeSkill3 by remember {
+    var skillThreeUpgradeValue by remember {
         mutableStateOf(0)
     }
-    val skill3Available by remember {
+    val isSkillThreeAvailable by remember {
         mutableStateOf(skillUpgrade.isSkillThreeAvailable)
     }
 
-    var shouldUpgradeAll by remember {
+    var shouldUpgradeAllSkills by remember {
         mutableStateOf(false)
     }
-    val lowestMinSkill = listOf(minSkill1, minSkill2, minSkill3).min()
+    val lowestMinimumSkillLevel = listOf(minimumSkillOne, minimumSkillTwo, minimumSkillThree).min()
     var targetAllSkillLevel by remember {
         mutableStateOf(
-            lowestMinSkill
+            lowestMinimumSkillLevel
         )
     }
 
 
     LaunchedEffect(key1 = targetAllSkillLevel, block = {
-        if (minSkill1 <= targetAllSkillLevel && shouldUpgrade1) {
-            upgradeSkill1 = targetAllSkillLevel - minSkill1
+        if (minimumSkillOne <= targetAllSkillLevel && shouldUpgradeSkillOne) {
+            skillOneUpgradeValue = targetAllSkillLevel - minimumSkillOne
         }
-        if (minSkill2 <= targetAllSkillLevel && shouldUpgrade2) {
-            upgradeSkill2 = targetAllSkillLevel - minSkill2
+        if (minimumSkillTwo <= targetAllSkillLevel && shouldUpgradeSkillTwo) {
+            skillTwoUpgradeValue = targetAllSkillLevel - minimumSkillTwo
         }
-        if (minSkill3 <= targetAllSkillLevel && shouldUpgrade3) {
-            upgradeSkill3 = targetAllSkillLevel - minSkill3
+        if (minimumSkillThree <= targetAllSkillLevel && shouldUpgradeSkillThree) {
+            skillThreeUpgradeValue = targetAllSkillLevel - minimumSkillThree
         }
     })
 
-    LaunchedEffect(key1 = shouldUpgradeAll, block = {
-        shouldUpgrade1 = shouldUpgradeAll == true && minSkill1 < 10
-        shouldUpgrade2 = shouldUpgradeAll == true && minSkill2 < 10
-        shouldUpgrade3 = shouldUpgradeAll == true && minSkill3 < 10
+    LaunchedEffect(key1 = shouldUpgradeAllSkills, block = {
+        shouldUpgradeSkillOne = shouldUpgradeAllSkills == true && minimumSkillOne < 10
+        shouldUpgradeSkillTwo = shouldUpgradeAllSkills == true && minimumSkillTwo < 10
+        shouldUpgradeSkillThree = shouldUpgradeAllSkills == true && minimumSkillThree < 10
     })
 
     LazyColumn(
@@ -132,7 +132,7 @@ fun skillLauncher(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { shouldUpgradeAll = !shouldUpgradeAll }
+                    .clickable { shouldUpgradeAllSkills = !shouldUpgradeAllSkills }
             ) {
                 Text(
                     stringResource(R.string.skill_enhancement_all_question),
@@ -142,9 +142,9 @@ fun skillLauncher(
                     textAlign = TextAlign.Justify
                 )
                 Switch(
-                    checked = shouldUpgradeAll,
+                    checked = shouldUpgradeAllSkills,
                     onCheckedChange = {
-                        shouldUpgradeAll = it
+                        shouldUpgradeAllSkills = it
                     },
                 )
             }
@@ -162,7 +162,7 @@ fun skillLauncher(
                         .weight(1f)
                         .padding(horizontal = 4.dp, vertical = 2.dp),
                     text = "4",
-                    enabled = shouldUpgradeAll,
+                    enabled = shouldUpgradeAllSkills,
                     onClick = {
                         targetAllSkillLevel = 4
                     }
@@ -172,7 +172,7 @@ fun skillLauncher(
                         .weight(1f)
                         .padding(horizontal = 4.dp, vertical = 2.dp),
                     text = "7",
-                    enabled = shouldUpgradeAll,
+                    enabled = shouldUpgradeAllSkills,
                     onClick = {
                         targetAllSkillLevel = 7
                     }
@@ -182,7 +182,7 @@ fun skillLauncher(
                         .weight(1f)
                         .padding(horizontal = 4.dp, vertical = 2.dp),
                     text = "9",
-                    enabled = shouldUpgradeAll,
+                    enabled = shouldUpgradeAllSkills,
                     onClick = {
                         targetAllSkillLevel = 9
                     }
@@ -192,7 +192,7 @@ fun skillLauncher(
                         .weight(1f)
                         .padding(horizontal = 4.dp, vertical = 2.dp),
                     text = "10",
-                    enabled = shouldUpgradeAll,
+                    enabled = shouldUpgradeAllSkills,
                     onClick = {
                         targetAllSkillLevel = 10
                     }
@@ -206,8 +206,8 @@ fun skillLauncher(
                     Stepper(
                         value = targetAllSkillLevel,
                         onValueChange = { targetAllSkillLevel = it },
-                        valueRange = lowestMinSkill..10,
-                        enabled = shouldUpgradeAll,
+                        valueRange = lowestMinimumSkillLevel..10,
+                        enabled = shouldUpgradeAllSkills,
                         textStyle = MaterialTheme.typography.bodyMedium,
                         valueRepresentation = { "Lv. $it" }
                     )
@@ -223,13 +223,13 @@ fun skillLauncher(
             ) {
                 SkillUpgradeItem(
                     name = stringResource(id = R.string.skill_1),
-                    shouldUpgrade = shouldUpgrade1,
+                    shouldUpgrade = shouldUpgradeSkillOne,
                     onShouldUpgradeChange = {
-                        shouldUpgrade1 = it
+                        shouldUpgradeSkillOne = it
                     },
-                    minimumUpgrade = minSkill1,
-                    upgradeLevel = upgradeSkill1,
-                    onUpgradeLevelChange = { upgradeSkill1 = it - minSkill1 },
+                    minimumUpgrade = minimumSkillOne,
+                    upgradeLevel = skillOneUpgradeValue,
+                    onUpgradeLevelChange = { skillOneUpgradeValue = it - minimumSkillOne },
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 2.dp),
@@ -237,32 +237,32 @@ fun skillLauncher(
 
                 SkillUpgradeItem(
                     name = stringResource(id = R.string.skill_2),
-                    shouldUpgrade = shouldUpgrade2,
+                    shouldUpgrade = shouldUpgradeSkillTwo,
                     onShouldUpgradeChange = {
-                        shouldUpgrade2 = it
+                        shouldUpgradeSkillTwo = it
                     },
-                    minimumUpgrade = minSkill2,
-                    upgradeLevel = upgradeSkill2,
-                    onUpgradeLevelChange = { upgradeSkill2 = it - minSkill2 },
+                    minimumUpgrade = minimumSkillTwo,
+                    upgradeLevel = skillTwoUpgradeValue,
+                    onUpgradeLevelChange = { skillTwoUpgradeValue = it - minimumSkillTwo },
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 2.dp),
-                    available = skill2Available
+                    available = isSkillTwoAvailable
                 )
 
                 SkillUpgradeItem(
                     name = stringResource(id = R.string.skill_3),
-                    shouldUpgrade = shouldUpgrade3,
+                    shouldUpgrade = shouldUpgradeSkillThree,
                     onShouldUpgradeChange = {
-                        shouldUpgrade3 = it
+                        shouldUpgradeSkillThree = it
                     },
-                    minimumUpgrade = minSkill3,
-                    upgradeLevel = upgradeSkill3,
-                    onUpgradeLevelChange = { upgradeSkill3 = it - minSkill3 },
+                    minimumUpgrade = minimumSkillThree,
+                    upgradeLevel = skillThreeUpgradeValue,
+                    onUpgradeLevelChange = { skillThreeUpgradeValue = it - minimumSkillThree },
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 2.dp),
-                    available = skill3Available
+                    available = isSkillThreeAvailable
                 )
             }
         }
@@ -272,12 +272,12 @@ fun skillLauncher(
         canBuild = { true },
         build = {
             ScriptLauncherResponse.Skill(
-                shouldUpgradeSkillOne = shouldUpgrade1,
-                skillOneUpgradeValue = upgradeSkill1,
-                shouldUpgradeSkillTwo = shouldUpgrade2,
-                skillTwoUpgradeValue = upgradeSkill2,
-                shouldUpgradeSkillThree = shouldUpgrade3,
-                skillThreeUpgradeValue = upgradeSkill3,
+                shouldUpgradeSkillOne = shouldUpgradeSkillOne,
+                skillOneUpgradeValue = skillOneUpgradeValue,
+                shouldUpgradeSkillTwo = shouldUpgradeSkillTwo,
+                skillTwoUpgradeValue = skillTwoUpgradeValue,
+                shouldUpgradeSkillThree = shouldUpgradeSkillThree,
+                skillThreeUpgradeValue = skillThreeUpgradeValue,
             )
         }
     )
