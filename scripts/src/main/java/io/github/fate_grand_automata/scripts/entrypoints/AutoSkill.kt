@@ -212,19 +212,14 @@ class AutoSkill @Inject constructor(
         targetLevel: Int,
         skillNumber: Int,
     ): Boolean {
+        if (isConfirmationDialog()) return false
 
-        return if (isConfirmationDialog()) {
-            false
-        } else {
-            val currentLevel = region.findNumberInText()
+        val currentLevel = region.findNumberInText() ?: return false
 
-            currentLevel?.let {
-                updateCurrentSkillLevel(level = it, index = skillNumber)
-                val checkIfIsInSkillEnhancementMenu = isInSkillEnhancementMenu()
+        updateCurrentSkillLevel(level = currentLevel, index = skillNumber)
+        val checkIfIsInSkillEnhancementMenu = isInSkillEnhancementMenu()
 
-                targetLevel <= it && checkIfIsInSkillEnhancementMenu
-            } ?: false
-        }
+        return targetLevel <= currentLevel && checkIfIsInSkillEnhancementMenu
     }
 
     private fun executeUpgradeSkill() {
