@@ -20,33 +20,70 @@ class AutoSkill @Inject constructor(
 
 
     sealed class ExitReason {
-
+        /**
+         * The script was aborted by the user.
+         */
         data object Abort : ExitReason()
+
+        /**
+         * The script ran out of QP.
+         */
         data object RanOutOfQP : ExitReason()
 
+        /**
+         * No servant was selected.
+         */
         data object NoServantSelected : ExitReason()
 
+        /**
+         * An unexpected exception was thrown.
+         */
         class Unexpected(val e: Exception) : ExitReason()
 
+        /**
+         * The script finished successfully.
+         */
         data object Done : ExitReason()
     }
 
+    /**
+     * The current script Exception
+     */
     class SkillUpgradeException(val reason: ExitReason) : Exception()
 
     class ExitException(val reason: ExitReason, val state: ExitState) : Exception()
 
 
     sealed class EnhancementExitReason {
+        /**
+         * The script ran out of materials.
+         */
         data object OutOfMatsException : EnhancementExitReason()
+
+        /**
+         * The script ran out of QP.
+         */
         data object OutOfQPException : EnhancementExitReason()
+
+        /**
+         * The script exited early because it ran out of QP in previous skills.
+         */
 
         data object ExitEarlyOutOfQPException : EnhancementExitReason()
 
+        /**
+         * The script reached the target level.
+         */
         data object TargetLevelMet : EnhancementExitReason()
-
+        /**
+         * The script exited early because no skill was selected.
+         */
         data object NoSkillUpgradeError : EnhancementExitReason()
     }
 
+    /**
+     * Individually, each skill can exit with one of these reasons.
+     */
     class EnhancementException(val reason: EnhancementExitReason) : Exception()
 
     class Summary(
@@ -149,7 +186,7 @@ class AutoSkill @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             // case when all skills are level up returning to the main menu
             { isServantEmpty() } to {
-                exitEnhancementLoopAsAllSkillsAreMaxedOut(skillNumber=skillNumber)
+                exitEnhancementLoopAsAllSkillsAreMaxedOut(skillNumber = skillNumber)
             },
             {
                 isTheTargetLevelConditionMet(
@@ -173,11 +210,20 @@ class AutoSkill @Inject constructor(
         )
     }
 
+    /**
+     * This special function used to exit the skill upgrade loop as all skills are maxed out
+     * @param skillNumber the index of the skill
+     */
     private fun exitEnhancementLoopAsAllSkillsAreMaxedOut(skillNumber: Int) {
         updateCurrentSkillLevel(level = 10, index = skillNumber)
         throw EnhancementException(EnhancementExitReason.TargetLevelMet)
     }
 
+    /**
+     * This function is used to perform the current skill upgrade loop
+     * @param currentSkillScreen the current skill screen
+     * @param skillNumber the index of the skill
+     */
     private fun performSkillUpgradeLoop(
         currentSkillScreen: Map<() -> Boolean, () -> Unit>,
         skillNumber: Int,
@@ -202,6 +248,13 @@ class AutoSkill @Inject constructor(
     }
 
 
+    /**
+     * This function is used to check if the target level is met
+     * @param region the region of the skill
+     * @param targetLevel the target level of the skill
+     * @param skillNumber the index of the skill
+     * @return true if the target level is met
+     */
     private fun isTheTargetLevelConditionMet(
         region: Region,
         targetLevel: Int,
@@ -217,11 +270,19 @@ class AutoSkill @Inject constructor(
         return targetLevel <= currentLevel && checkIfIsInSkillEnhancementMenu
     }
 
+    /**
+     * This function is used to execute the skill upgrade
+     */
     private fun executeUpgradeSkill() {
         locations.skill.confirmationDialogRegion.click()
         1.0.seconds.wait()
     }
 
+    /**
+     * This function is used to update the skill upgrade result
+     * @param e the exception that is thrown
+     * @param index the index of the skill
+     */
     private fun updateSkillUpgradeResult(e: EnhancementExitReason, index: Int) {
         upgradeResultList[index - 1] = EnhancementException(e)
     }
@@ -254,6 +315,7 @@ class AutoSkill @Inject constructor(
                 if (skillUpgrade.shouldUpgradeSkill2) upgradeResultList[1] = exitEarlyException
                 if (skillUpgrade.shouldUpgradeSkill3) upgradeResultList[2] = exitEarlyException
             }
+
             2 -> if (skillUpgrade.shouldUpgradeSkill3) upgradeResultList[2] = exitEarlyException
         }
         throw SkillUpgradeException(ExitReason.RanOutOfQP)
@@ -263,12 +325,18 @@ class AutoSkill @Inject constructor(
         skillCountList[index - 1] = level
     }
 
+    /**
+     * This function is used to check if the skill will be upgraded
+     * @param targetLevel the target level of the skill
+     * @param index the index of the skill
+     * @return true if the skill will be upgraded
+     */
     private fun checkIfWillUpgradeSkill(targetLevel: Int, index: Int): Boolean {
         if (isConfirmationDialog() || isTemporaryServant()) return false
         val skillCount = skillCountList[index - 1]
-        val skillCountConditionMet = skillCount?.let{ it < targetLevel } ?: false
+        val skillCountConditionMet = skillCount?.let { it < targetLevel } ?: false
 
-        return skillCountConditionMet  && isInSkillEnhancementMenu()
+        return skillCountConditionMet && isInSkillEnhancementMenu()
     }
 
 
@@ -322,8 +390,6 @@ class AutoSkill @Inject constructor(
                     false -> null
                 }
             )
-
-
         )
     }
 
