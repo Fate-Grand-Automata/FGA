@@ -172,7 +172,7 @@ class AutoSkill @Inject constructor(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             // case when all skills are level up returning to the main menu
             { isServantEmpty() } to {
-                exitEnhancementLoopAsAllSkillsAreMaxedOut(skillNumber = skillNumber)
+                terminateEnhancementWhenSkillsMaxed(skillNumber = skillNumber)
             },
             {
                 isTheTargetLevelConditionMet(
@@ -200,7 +200,7 @@ class AutoSkill @Inject constructor(
      * This special function used to exit the skill upgrade loop as all skills are maxed out
      * @param skillNumber the index of the skill
      */
-    private fun exitEnhancementLoopAsAllSkillsAreMaxedOut(skillNumber: Int) {
+    private fun terminateEnhancementWhenSkillsMaxed(skillNumber: Int) {
         updateCurrentSkillLevel(level = 10, index = skillNumber)
         throw EnhancementException(EnhancementExitReason.TargetLevelMet)
     }
