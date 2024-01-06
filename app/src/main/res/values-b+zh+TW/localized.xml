@@ -35,7 +35,7 @@
     <string name="skill_maker_atk_next_turn">下一回合\n（同一波敵人）</string>
 
     <string name="skill_maker_main_enemy">敵人 %d</string>
-    <string name="skill_maker_main_battle">BATTLE %d</string>
+    <string name="skill_maker_main_wave">BATTLE %d</string>
     <string name="skill_maker_main_master_skills">御主技能</string>
     <string name="skill_maker_main_clear">重設</string>
     <string name="skill_maker_main_servant">從者 %d</string>

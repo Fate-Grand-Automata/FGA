@@ -35,7 +35,8 @@ NP"</string>
     <string name="skill_maker_atk_next_turn">"Next Turn
 in same wave"</string>
     <string name="skill_maker_main_enemy">"Enemy %d"</string>
-    <string name="skill_maker_main_battle">"Battle: %d"</string>
+    <string name="skill_maker_main_wave">"Wave: %d"</string>
+    <string name="skill_maker_main_turn">"Turn: %d"</string>
     <string name="skill_maker_main_master_skills">"Master
 Skills"</string>
     <string name="skill_maker_main_delete_selected">"Delete selected"</string>
