@@ -208,7 +208,7 @@ class AutoSkill @Inject constructor(
     ) {
         val skillLocation = locations.skill.skillLocation(skillNumber)
         val skillRegion = locations.skill.skillTextRegion(skillNumber)
-        val targetLevel = determineCurrentSkillLevel(skillNumber)
+        val targetLevel = determineTargetSkillLevel(skillNumber)
 
         skillLocation.click(2)
         1.0.seconds.wait()
@@ -333,7 +333,7 @@ class AutoSkill @Inject constructor(
      * @param skillNumber the index of the skill
      * @return the current skill level
      */
-    private fun determineCurrentSkillLevel(skillNumber: Int) = when (skillNumber) {
+    private fun determineTargetSkillLevel(skillNumber: Int) = when (skillNumber) {
         1 -> prefs.skillUpgrade.minimumSkillOne + prefs.skillUpgrade.skillOneUpgradeValue
         2 -> prefs.skillUpgrade.minimumSkillTwo + prefs.skillUpgrade.skillTwoUpgradeValue
         3 -> prefs.skillUpgrade.minimumSkillThree + prefs.skillUpgrade.skillThreeUpgradeValue
