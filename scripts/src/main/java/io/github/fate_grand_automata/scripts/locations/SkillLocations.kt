@@ -26,9 +26,7 @@ class SkillLocations @Inject constructor(
     }
 
 
-    val getConfirmationDialog = Region(341, 1146, 121, 60).xFromCenter()
-
-    val confirmationDialogClick = Location(401, 1176).xFromCenter()
+    val confirmationDialogRegion = Region(341, 1146, 121, 60).xFromCenter()
 
 
     val skill1TextRegion = when (isWide) {

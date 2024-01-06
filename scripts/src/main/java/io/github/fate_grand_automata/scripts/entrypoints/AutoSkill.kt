@@ -238,7 +238,7 @@ class AutoSkill @Inject constructor(
     }
 
     private fun executeUpgradeSkill() {
-        locations.skill.confirmationDialogClick.click()
+        locations.skill.confirmationDialogRegion.click()
         1.0.seconds.wait()
     }
 
@@ -323,7 +323,7 @@ class AutoSkill @Inject constructor(
             locations.skill.getInsufficientMatsRegion
 
     private fun isConfirmationDialog() = images[Images.Ok] in
-            locations.skill.getConfirmationDialog
+            locations.skill.confirmationDialogRegion
 
     private fun isInSkillEnhancementMenu() = images[Images.SkillMenuBanner] in
             locations.enhancementBannerRegion
