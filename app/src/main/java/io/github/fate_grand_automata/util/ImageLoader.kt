@@ -112,7 +112,7 @@ class ImageLoader @Inject constructor(
         Images.CraftEssenceFodderSelectedCELocked -> "craft_essence_selected_ce_locked.png"
         Images.On -> "craft_essence_sort_on.png"
         Images.CraftEssenceLock -> "craft_essence_lock.png"
-        Images.SkillEnhancement -> "skill_enhance.png"
+        Images.SkillMenuBanner -> "skill_menu_banner.png"
         Images.SkillInsufficientMaterials -> "skill_insufficient_mats.png"
         Images.Ok -> "ok.png"
         Images.SkillInsufficientQP -> "skill_insufficient_qp.png"

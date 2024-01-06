@@ -18,7 +18,7 @@ class Locations @Inject constructor(
     val attack: AttackScreenLocations,
     val battle: BattleScreenLocations,
     val ceBomb: CEBombLocations,
-    val skillUpgrade: SkillUpgradeLocations,
+    val skill: SkillLocations,
     val servant: ServantLevelLocations,
     val append: AppendLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {

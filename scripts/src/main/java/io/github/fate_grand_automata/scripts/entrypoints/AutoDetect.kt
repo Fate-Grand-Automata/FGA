@@ -47,9 +47,9 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.CEBomb
             }
 
-            images[Images.SkillEnhancement] in locations.skillUpgrade.getSkillEnhanceRegion -> {
+            images[Images.SkillMenuBanner] in locations.enhancementBannerRegion -> {
                 autoSetup.getMinimumSkillLevel()
-                ScriptModeEnum.SkillUpgrade
+                ScriptModeEnum.Skill
             }
 
             listOf(

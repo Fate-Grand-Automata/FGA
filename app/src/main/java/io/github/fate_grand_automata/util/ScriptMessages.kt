@@ -186,7 +186,7 @@ class ScriptMessages @Inject constructor(
         when(item){
             is ScriptMessage.NotifyErrorWarningScript -> {
                 when(item.script){
-                    ScriptModeEnum.Append, ScriptModeEnum.SkillUpgrade, ScriptModeEnum.ServantLevel -> {
+                    ScriptModeEnum.Append, ScriptModeEnum.Skill, ScriptModeEnum.ServantLevel -> {
                         val script = context.getString(item.script.scriptName)
                         prefs.notifyErrorWarning = context.getString(R.string.script_error_no_servant, script)
                     }

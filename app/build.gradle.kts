@@ -64,7 +64,7 @@ android {
     buildTypes {
         getByName("debug") {
             isDebuggable = true
-            applicationIdSuffix = ".test"
+            applicationIdSuffix = ".canary"
             signingConfig = signingConfigs.getByName("debug")
         }
         getByName("release") {

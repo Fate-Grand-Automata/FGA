@@ -6,7 +6,6 @@ import io.github.fate_grand_automata.scripts.ScriptMessage
 import io.github.fate_grand_automata.scripts.enums.CEDisplayChangeAreaEnum
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.Location
-import io.github.lib_automata.Region
 import io.github.lib_automata.Scale
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -24,26 +23,15 @@ class AutoSetup @Inject constructor(
     }
 
 
-    fun Region.detectNumberInText(): Int? {
-        val text = this
-            .detectText(false) // replace common OCR mistakes
-            .replace("%", "x")
-            .replace("S", "5")
-            .replace("O", "0")
-            .lowercase()
-        val regex = Regex("""(\d+)""")
-        return regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
-    }
-
     fun getMinimumSkillLevel() {
-        val skill1Text = locations.skillUpgrade.skill1TextRegion.detectNumberInText()
+        val skill1Text = locations.skill.skillTextRegion(1).findNumberInText()
         prefs.skillUpgrade.minSkill1 = skill1Text ?: 1
-        val skill2Text = locations.skillUpgrade.skill2TextRegion.detectNumberInText()
+        val skill2Text = locations.skill.skillTextRegion(2).findNumberInText()
 
         prefs.skillUpgrade.minSkill2 = skill2Text ?: 1
         prefs.skillUpgrade.skill2Available = skill2Text != null
 
-        val skill3Text = locations.skillUpgrade.skill3TextRegion.detectNumberInText()
+        val skill3Text = locations.skill.skillTextRegion(3).findNumberInText()
 
         prefs.skillUpgrade.minSkill3 = skill3Text ?: 1
         prefs.skillUpgrade.skill3Available = skill3Text != null

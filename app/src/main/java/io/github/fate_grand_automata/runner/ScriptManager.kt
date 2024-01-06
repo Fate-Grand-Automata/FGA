@@ -23,14 +23,14 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.AutoNotifyError
 import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
-import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
+import io.github.fate_grand_automata.scripts.entrypoints.AutoSkill
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.exit.AppendUpgradeExit
 import io.github.fate_grand_automata.ui.exit.BattleExit
-import io.github.fate_grand_automata.ui.exit.SkillUpgradeExit
+import io.github.fate_grand_automata.ui.exit.SkillExit
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncher
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncherResponse
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
@@ -106,15 +106,15 @@ class ScriptManager @Inject constructor(
         }
     }
 
-    private suspend fun showAutoSkillUpgradeMenu(
+    private suspend fun showAutoSkillMenu(
         context: Context,
-        exception: AutoSkillUpgrade.ExitException
+        exception: AutoSkill.ExitException
     ) = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine<Unit> { continuation ->
             var dialog: DialogInterface? = null
 
             val composeView = FakedComposeView(context) {
-                SkillUpgradeExit(
+                SkillExit(
                     exception = exception,
                     prefs = preferences,
                     onClose = { dialog?.dismiss() },
@@ -314,11 +314,11 @@ class ScriptManager @Inject constructor(
                 messageBox.show(scriptExitedString, msg)
             }
 
-            is AutoSkillUpgrade.ExitException -> {
-                if (e.reason !is AutoSkillUpgrade.ExitReason.Abort) {
+            is AutoSkill.ExitException -> {
+                if (e.reason !is AutoSkill.ExitReason.Abort) {
                     messages.notify(scriptExitedString)
                 }
-                showAutoSkillUpgradeMenu(service, e)
+                showAutoSkillMenu(service, e)
             }
             is AutoAppend.ExitException -> {
                 if (e.reason !is AutoAppend.ExitReason.Abort) {
@@ -397,7 +397,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.PresentBox -> entryPoint.giftBox()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
-            ScriptModeEnum.SkillUpgrade -> entryPoint.skillUpgrade()
+            ScriptModeEnum.Skill -> entryPoint.skill()
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
             ScriptModeEnum.PlayButtonDetection -> entryPoint.playButtonDetection()
             ScriptModeEnum.Append -> entryPoint.append()

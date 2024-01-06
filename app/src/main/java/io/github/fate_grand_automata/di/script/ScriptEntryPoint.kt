@@ -14,7 +14,7 @@ interface ScriptEntryPoint {
     fun supportImageMaker(): SupportImageMaker
     fun ceBomb(): AutoCEBomb
 
-    fun skillUpgrade(): AutoSkillUpgrade
+    fun skill(): AutoSkill
 
     fun servantLevel(): AutoServantLevel
 
