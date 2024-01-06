@@ -30,52 +30,42 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.ui.Stepper
+import io.github.fate_grand_automata.ui.prefs.remember
 
 
 @Composable
 fun skillLauncher(
-    prefs: IPreferences,
+    prefsCore: PrefsCore,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
-
-    val skillUpgrade = prefs.skillUpgrade
 
     var shouldUpgradeSkillOne by remember {
         mutableStateOf(false)
     }
-    val minimumSkillOne by remember {
-        mutableStateOf(skillUpgrade.minimumSkillOne)
-    }
+    val minimumSkillOne by prefsCore.skillUpgrade.minimumSkillOne.remember()
+
     var skillOneUpgradeValue by remember {
         mutableStateOf(0)
     }
     var shouldUpgradeSkillTwo by remember {
         mutableStateOf(false)
     }
-    val minimumSkillTwo by remember {
-        mutableStateOf(skillUpgrade.minimumSkillTwo)
-    }
+    val minimumSkillTwo by prefsCore.skillUpgrade.minimumSkillTwo.remember()
     var skillTwoUpgradeValue by remember {
         mutableStateOf(0)
     }
-    val isSkillTwoAvailable by remember {
-        mutableStateOf(skillUpgrade.isSkillTwoAvailable)
-    }
+    val isSkillTwoAvailable by prefsCore.skillUpgrade.isSkillTwoAvailable.remember()
 
     var shouldUpgradeSkillThree by remember {
         mutableStateOf(false)
     }
-    val minimumSkillThree by remember {
-        mutableStateOf(skillUpgrade.minimumSkillThree)
-    }
+    val minimumSkillThree by prefsCore.skillUpgrade.minimumSkillThree.remember()
     var skillThreeUpgradeValue by remember {
         mutableStateOf(0)
     }
-    val isSkillThreeAvailable by remember {
-        mutableStateOf(skillUpgrade.isSkillThreeAvailable)
-    }
+    val isSkillThreeAvailable by prefsCore.skillUpgrade.isSkillThreeAvailable.remember()
 
     var shouldUpgradeAllSkills by remember {
         mutableStateOf(false)
