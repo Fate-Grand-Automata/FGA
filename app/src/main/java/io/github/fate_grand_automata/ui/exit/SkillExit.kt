@@ -106,11 +106,7 @@ private fun SkillUpgradeExitContent(
             .padding(bottom = 16.dp, top = 5.dp)
     )
 
-    val items = listOf(
-        state.skill1Summary,
-        state.skill2Summary,
-        state.skill3Summary
-    )
+    val items = state.skillSummaryList
 
     Row(
         modifier = Modifier
