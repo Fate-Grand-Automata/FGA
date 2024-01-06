@@ -6,17 +6,17 @@ import io.github.fate_grand_automata.scripts.prefs.ISkillPreferences
 internal class SkillPrefs(
     val prefs: SkillPrefsCore
 ): ISkillPreferences {
-    override var shouldUpgradeSkill1: Boolean by prefs.shouldUpgradeSkill1
-    override var minSkill1: Int by prefs.minSkill1
-    override var upgradeSkill1: Int by prefs.upgradeSkill1
+    override var shouldUpgradeSkillOne: Boolean by prefs.shouldUpgradeSkillOne
+    override var minimumSkillOne: Int by prefs.minimumSkillOne
+    override var skillOneUpgradeValue: Int by prefs.skillOneUpgradeValue
 
-    override var shouldUpgradeSkill2: Boolean by prefs.shouldUpgradeSkill2
-    override var minSkill2: Int by prefs.minSkill2
-    override var upgradeSkill2: Int by prefs.upgradeSkill2
-    override var skill2Available: Boolean by prefs.skill2Available
+    override var shouldUpgradeSkillTwo: Boolean by prefs.shouldUpgradeSkillTwo
+    override var minimumSkillTwo: Int by prefs.minimumSkillTwo
+    override var skillTwoUpgradeValue: Int by prefs.skillTwoUpgradeValue
+    override var isSkillTwoAvailable: Boolean by prefs.isSkillTwoAvailable
 
-    override var shouldUpgradeSkill3: Boolean by prefs.shouldUpgradeSkill3
-    override var minSkill3: Int by prefs.minSkill3
-    override var upgradeSkill3: Int by prefs.upgradeSkill3
-    override var skill3Available: Boolean by prefs.skill3Available
+    override var shouldUpgradeSkillThree: Boolean by prefs.shouldUpgradeSkillThree
+    override var minimumSkillThree: Int by prefs.minimumSkillThree
+    override var skillThreeUpgradeValue: Int by prefs.skillThreeUpgradeValue
+    override var isSkillThreeAvailable: Boolean by prefs.isSkillThreeAvailable
 }

@@ -35,17 +35,17 @@ fun SkillExit(
     onCopy: () -> Unit
 ) {
     LaunchedEffect(key1 = Unit, block = {
-        prefs.skillUpgrade.shouldUpgradeSkill1 = false
-        prefs.skillUpgrade.upgradeSkill1 = 0
-        prefs.skillUpgrade.minSkill1 = 1
+        prefs.skillUpgrade.shouldUpgradeSkillOne = false
+        prefs.skillUpgrade.skillOneUpgradeValue = 0
+        prefs.skillUpgrade.minimumSkillOne = 1
 
-        prefs.skillUpgrade.shouldUpgradeSkill2 = false
-        prefs.skillUpgrade.upgradeSkill2 = 0
-        prefs.skillUpgrade.minSkill2 = 1
+        prefs.skillUpgrade.shouldUpgradeSkillTwo = false
+        prefs.skillUpgrade.skillTwoUpgradeValue = 0
+        prefs.skillUpgrade.minimumSkillTwo = 1
 
-        prefs.skillUpgrade.shouldUpgradeSkill3 = false
-        prefs.skillUpgrade.upgradeSkill3 = 0
-        prefs.skillUpgrade.minSkill3 = 1
+        prefs.skillUpgrade.shouldUpgradeSkillThree = false
+        prefs.skillUpgrade.skillThreeUpgradeValue = 0
+        prefs.skillUpgrade.minimumSkillThree = 1
     })
     FgaScreen {
         Column(

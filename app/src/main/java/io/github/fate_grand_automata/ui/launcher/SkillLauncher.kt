@@ -46,7 +46,7 @@ fun skillLauncher(
         mutableStateOf(false)
     }
     val minSkill1 by remember {
-        mutableStateOf(skillUpgrade.minSkill1)
+        mutableStateOf(skillUpgrade.minimumSkillOne)
     }
     var upgradeSkill1 by remember {
         mutableStateOf(0)
@@ -55,26 +55,26 @@ fun skillLauncher(
         mutableStateOf(false)
     }
     val minSkill2 by remember {
-        mutableStateOf(skillUpgrade.minSkill2)
+        mutableStateOf(skillUpgrade.minimumSkillTwo)
     }
     var upgradeSkill2 by remember {
         mutableStateOf(0)
     }
     val skill2Available by remember {
-        mutableStateOf(skillUpgrade.skill2Available)
+        mutableStateOf(skillUpgrade.isSkillTwoAvailable)
     }
 
     var shouldUpgrade3 by remember {
         mutableStateOf(false)
     }
     val minSkill3 by remember {
-        mutableStateOf(skillUpgrade.minSkill3)
+        mutableStateOf(skillUpgrade.minimumSkillThree)
     }
     var upgradeSkill3 by remember {
         mutableStateOf(0)
     }
     val skill3Available by remember {
-        mutableStateOf(skillUpgrade.skill3Available)
+        mutableStateOf(skillUpgrade.isSkillThreeAvailable)
     }
 
     var shouldUpgradeAll by remember {

@@ -130,15 +130,15 @@ class AutoSkill @Inject constructor(
 
         for (skillNumber in 1..3) {
             val shouldUpgrade = when (skillNumber) {
-                1 -> skillUpgrade.shouldUpgradeSkill1
-                2 -> skillUpgrade.shouldUpgradeSkill2
-                3 -> skillUpgrade.shouldUpgradeSkill3
+                1 -> skillUpgrade.shouldUpgradeSkillOne
+                2 -> skillUpgrade.shouldUpgradeSkillTwo
+                3 -> skillUpgrade.shouldUpgradeSkillThree
                 else -> false
             }
             val canUpgrade = when (skillNumber) {
-                1 -> skillUpgrade.upgradeSkill1 > 0
-                2 -> skillUpgrade.upgradeSkill2 > 0
-                3 -> skillUpgrade.upgradeSkill3 > 0
+                1 -> skillUpgrade.skillOneUpgradeValue > 0
+                2 -> skillUpgrade.skillTwoUpgradeValue > 0
+                3 -> skillUpgrade.skillThreeUpgradeValue > 0
                 else -> false
             }
             if (shouldUpgrade) {
@@ -273,10 +273,10 @@ class AutoSkill @Inject constructor(
     }
 
     private fun determineCurrentSkillLevel(skillNumber: Int) = when (skillNumber) {
-        1 -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
-        2 -> prefs.skillUpgrade.minSkill2 + prefs.skillUpgrade.upgradeSkill2
-        3 -> prefs.skillUpgrade.minSkill3 + prefs.skillUpgrade.upgradeSkill3
-        else -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
+        1 -> prefs.skillUpgrade.minimumSkillOne + prefs.skillUpgrade.skillOneUpgradeValue
+        2 -> prefs.skillUpgrade.minimumSkillTwo + prefs.skillUpgrade.skillTwoUpgradeValue
+        3 -> prefs.skillUpgrade.minimumSkillThree + prefs.skillUpgrade.skillThreeUpgradeValue
+        else -> prefs.skillUpgrade.minimumSkillOne + prefs.skillUpgrade.skillOneUpgradeValue
     }
 
     /**
@@ -290,11 +290,11 @@ class AutoSkill @Inject constructor(
         val exitEarlyException = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
         when (skillNumber) {
             1 -> {
-                if (skillUpgrade.shouldUpgradeSkill2) upgradeResultList[1] = exitEarlyException
-                if (skillUpgrade.shouldUpgradeSkill3) upgradeResultList[2] = exitEarlyException
+                if (skillUpgrade.shouldUpgradeSkillTwo) upgradeResultList[1] = exitEarlyException
+                if (skillUpgrade.shouldUpgradeSkillThree) upgradeResultList[2] = exitEarlyException
             }
 
-            2 -> if (skillUpgrade.shouldUpgradeSkill3) upgradeResultList[2] = exitEarlyException
+            2 -> if (skillUpgrade.shouldUpgradeSkillThree) upgradeResultList[2] = exitEarlyException
         }
         throw SkillUpgradeException(ExitReason.RanOutOfQP)
     }
@@ -338,35 +338,35 @@ class AutoSkill @Inject constructor(
         return ExitState(
             skillSummaryList = listOf(
                 Summary(
-                    isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill1,
+                    isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkillOne,
                     isAvailable = skill1Available,
                     enhancementExitReason = upgradeResultList[0],
-                    startingLevel = prefs.skillUpgrade.minSkill1,
+                    startingLevel = prefs.skillUpgrade.minimumSkillOne,
                     endLevel = skillCountList[0],
-                    targetLevel = when (prefs.skillUpgrade.upgradeSkill1 > 0) {
-                        true -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
+                    targetLevel = when (prefs.skillUpgrade.skillOneUpgradeValue > 0) {
+                        true -> prefs.skillUpgrade.minimumSkillOne + prefs.skillUpgrade.skillOneUpgradeValue
                         false -> null
                     }
                 ),
                 Summary(
-                    isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill2,
-                    isAvailable = prefs.skillUpgrade.skill2Available,
+                    isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkillTwo,
+                    isAvailable = prefs.skillUpgrade.isSkillTwoAvailable,
                     enhancementExitReason = upgradeResultList[1],
-                    startingLevel = if (prefs.skillUpgrade.skill2Available) prefs.skillUpgrade.minSkill2 else null,
+                    startingLevel = if (prefs.skillUpgrade.isSkillTwoAvailable) prefs.skillUpgrade.minimumSkillTwo else null,
                     endLevel = skillCountList[1],
-                    targetLevel = when (prefs.skillUpgrade.upgradeSkill2 > 0) {
-                        true -> prefs.skillUpgrade.minSkill2 + prefs.skillUpgrade.upgradeSkill2
+                    targetLevel = when (prefs.skillUpgrade.skillTwoUpgradeValue > 0) {
+                        true -> prefs.skillUpgrade.minimumSkillTwo + prefs.skillUpgrade.skillTwoUpgradeValue
                         false -> null
                     },
                 ),
                 Summary(
-                    isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill3,
-                    isAvailable = prefs.skillUpgrade.skill3Available,
+                    isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkillThree,
+                    isAvailable = prefs.skillUpgrade.isSkillThreeAvailable,
                     enhancementExitReason = upgradeResultList[2],
-                    startingLevel = if (prefs.skillUpgrade.skill3Available) prefs.skillUpgrade.minSkill3 else null,
+                    startingLevel = if (prefs.skillUpgrade.isSkillThreeAvailable) prefs.skillUpgrade.minimumSkillThree else null,
                     endLevel = skillCountList[2],
-                    targetLevel = when (prefs.skillUpgrade.upgradeSkill3 > 0) {
-                        true -> prefs.skillUpgrade.minSkill3 + prefs.skillUpgrade.upgradeSkill3
+                    targetLevel = when (prefs.skillUpgrade.skillThreeUpgradeValue > 0) {
+                        true -> prefs.skillUpgrade.minimumSkillThree + prefs.skillUpgrade.skillThreeUpgradeValue
                         false -> null
                     }
                 )

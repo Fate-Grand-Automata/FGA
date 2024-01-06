@@ -2,18 +2,18 @@ package io.github.fate_grand_automata.prefs.core
 
 class SkillPrefsCore(maker: PrefMaker) {
 
-    val shouldUpgradeSkill1 = maker.bool("shouldUpgradeSkill_1")
-    val minSkill1 = maker.stringAsInt(key="minSkill1", default = 1)
-    val upgradeSkill1 = maker.stringAsInt(key = "upgrade_skill_1")
+    val shouldUpgradeSkillOne = maker.bool("skill_should_upgrade_one")
+    val minimumSkillOne = maker.stringAsInt(key="skill_one_minimum", default = 1)
+    val skillOneUpgradeValue = maker.stringAsInt(key = "skill_one_upgrade_value")
 
-    val shouldUpgradeSkill2 = maker.bool("shouldUpgradeSkill_2")
-    val minSkill2 = maker.stringAsInt(key="minSkill_2", default = 1)
-    val upgradeSkill2 = maker.stringAsInt(key = "upgrade_skill_2")
-    val skill2Available = maker.bool("isSkill2Available")
+    val shouldUpgradeSkillTwo = maker.bool("skill_should_upgrade_two")
+    val minimumSkillTwo = maker.stringAsInt(key="skill_two_minimum", default = 1)
+    val skillTwoUpgradeValue = maker.stringAsInt(key = "skill_two_upgrade_value")
+    val isSkillTwoAvailable = maker.bool("skill_is_two_available")
 
 
-    val shouldUpgradeSkill3 = maker.bool("shouldUpgradeSkill_3")
-    val minSkill3 = maker.stringAsInt(key="minSkill_3", default = 1)
-    val upgradeSkill3 = maker.stringAsInt(key = "upgrade_skill_3")
-    val skill3Available = maker.bool("isSkill3Available")
+    val shouldUpgradeSkillThree = maker.bool("skill_should_upgrade_three")
+    val minimumSkillThree = maker.stringAsInt(key="skill_three_minimum", default = 1)
+    val skillThreeUpgradeValue = maker.stringAsInt(key = "skill_three_upgrade_value")
+    val isSkillThreeAvailable = maker.bool("skill_is_three_available")
 }

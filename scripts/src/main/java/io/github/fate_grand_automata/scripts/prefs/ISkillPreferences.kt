@@ -2,18 +2,18 @@ package io.github.fate_grand_automata.scripts.prefs
 
 interface ISkillPreferences {
 
-    var shouldUpgradeSkill1: Boolean
-    var minSkill1: Int
-    var upgradeSkill1: Int
+    var shouldUpgradeSkillOne: Boolean
+    var minimumSkillOne: Int
+    var skillOneUpgradeValue: Int
 
-    var shouldUpgradeSkill2: Boolean
-    var minSkill2: Int
-    var upgradeSkill2: Int
-    var skill2Available: Boolean
+    var shouldUpgradeSkillTwo: Boolean
+    var minimumSkillTwo: Int
+    var skillTwoUpgradeValue: Int
+    var isSkillTwoAvailable: Boolean
 
-    var shouldUpgradeSkill3: Boolean
-    var minSkill3: Int
-    var upgradeSkill3: Int
-    var skill3Available: Boolean
+    var shouldUpgradeSkillThree: Boolean
+    var minimumSkillThree: Int
+    var skillThreeUpgradeValue: Int
+    var isSkillThreeAvailable: Boolean
     
 }
