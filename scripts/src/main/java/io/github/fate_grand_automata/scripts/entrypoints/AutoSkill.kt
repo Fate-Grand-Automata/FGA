@@ -143,7 +143,7 @@ class AutoSkill @Inject constructor(
     private fun setupSkillUpgradeLoop(
         skillNumber: Int,
     ) {
-        val skillLocation = currentSkillLocation(skillNumber)
+        val skillLocation = locations.skill.skillLocation(skillNumber)
         val skillRegion = currentSkillTextRegion(skillNumber)
         val targetLevel = currentTargetSkillLevel(skillNumber)
 
@@ -265,12 +265,6 @@ class AutoSkill @Inject constructor(
         else -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
     }
 
-    private fun currentSkillLocation(index: Int) = when (index) {
-        1 -> locations.skill.skill1Location
-        2 -> locations.skill.skill2Location
-        3 -> locations.skill.skill3Location
-        else -> locations.skill.skill1Location
-    }
 
     private fun ifRanOfQPEarlyException(e: EnhancementExitReason?, index: Int) {
         if (e != EnhancementExitReason.OutOfQPException) return

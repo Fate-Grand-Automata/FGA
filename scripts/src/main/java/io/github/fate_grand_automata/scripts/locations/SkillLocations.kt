@@ -9,11 +9,9 @@ class SkillLocations @Inject constructor(
     scriptAreaTransforms: IScriptAreaTransforms
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-    val skill1Location = Location(-339, 519).xFromCenter()
 
-    val skill2Location = Location(236, 519).xFromCenter()
-
-    val skill3Location = Location(812, 519).xFromCenter()
+    fun skillLocation(skill: Int) = Location(-339, 519).xFromCenter() +
+            Location(576 * (skill - 1), 0)
 
     val getInsufficientMatsRegion = when (gameServer) {
         is GameServer.En -> when (isWide) {
