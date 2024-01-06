@@ -146,7 +146,7 @@ class AutoSkill @Inject constructor(
                 if(canUpgrade){
                     setupSkillUpgradeLoop(skillNumber = skillNumber)
                 } else {
-                    updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, skillNumber)
+                    setSkillUpgradeException(EnhancementExitReason.NoSkillUpgradeError, skillNumber)
                 }
                 ifRanOfQPEarlyException(
                     e = upgradeResultList[skillNumber - 1]?.reason,
@@ -227,7 +227,7 @@ class AutoSkill @Inject constructor(
 
                 0.5.seconds.wait()
             } catch (e: EnhancementException) {
-                updateSkillUpgradeResult(e.reason, skillNumber)
+                setSkillUpgradeException(e.reason, skillNumber)
                 break
             }
         }
@@ -269,7 +269,7 @@ class AutoSkill @Inject constructor(
      * @param e the exception that is thrown
      * @param index the index of the skill
      */
-    private fun updateSkillUpgradeResult(e: EnhancementExitReason, index: Int) {
+    private fun setSkillUpgradeException(e: EnhancementExitReason, index: Int) {
         upgradeResultList[index - 1] = EnhancementException(e)
     }
 
