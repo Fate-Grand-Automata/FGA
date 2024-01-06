@@ -300,7 +300,7 @@ private fun PresetButton(
 }
 
 @Composable
-fun SkillUpgradeItem(
+private fun SkillUpgradeItem(
     modifier: Modifier = Modifier,
     name: String,
     shouldUpgrade: Boolean,
