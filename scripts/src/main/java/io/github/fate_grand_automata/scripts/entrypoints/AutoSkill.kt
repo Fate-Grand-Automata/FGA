@@ -66,9 +66,7 @@ class AutoSkill @Inject constructor(
 
     private var skillCountList: MutableList<Int?> = mutableListOf(null, null, null)
 
-    var skill1UpgradeResult: EnhancementException? = null
-    var skill2UpgradeResult: EnhancementException? = null
-    var skill3UpgradeResult: EnhancementException? = null
+    private var upgradeResultList: MutableList<EnhancementException?> = mutableListOf(null, null, null)
 
     private var skill1Available = true
 
@@ -104,7 +102,7 @@ class AutoSkill @Inject constructor(
             }
 
             ifRanOfQPEarlyException(
-                e = skill1UpgradeResult?.reason,
+                e = upgradeResultList[0]?.reason,
                 index = 1
             )
         }
@@ -117,7 +115,7 @@ class AutoSkill @Inject constructor(
                 updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, 2)
             }
             ifRanOfQPEarlyException(
-                e = skill2UpgradeResult?.reason,
+                e = upgradeResultList[1]?.reason,
                 index = 1
             )
         }
@@ -130,7 +128,7 @@ class AutoSkill @Inject constructor(
                 updateSkillUpgradeResult(EnhancementExitReason.NoSkillUpgradeError, 3)
             }
             ifRanOfQPEarlyException(
-                e = skill3UpgradeResult?.reason,
+                e = upgradeResultList[2]?.reason,
                 index = 3
             )
         }
@@ -225,12 +223,7 @@ class AutoSkill @Inject constructor(
     }
 
     private fun updateSkillUpgradeResult(e: EnhancementExitReason, index: Int) {
-        when (index) {
-            1 -> skill1UpgradeResult = EnhancementException(e)
-            2 -> skill2UpgradeResult = EnhancementException(e)
-            3 -> skill3UpgradeResult = EnhancementException(e)
-            else -> skill1UpgradeResult = EnhancementException(e)
-        }
+        upgradeResultList[index - 1] = EnhancementException(e)
     }
 
     private fun currentSkillTextRegion(index: Int) = when (index) {
@@ -258,10 +251,10 @@ class AutoSkill @Inject constructor(
         val exitEarlyException = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
         when (index) {
             1 -> {
-                if (skillUpgrade.shouldUpgradeSkill2) skill2UpgradeResult = exitEarlyException
-                if (skillUpgrade.shouldUpgradeSkill3) skill3UpgradeResult = exitEarlyException
+                if (skillUpgrade.shouldUpgradeSkill2) upgradeResultList[1] = exitEarlyException
+                if (skillUpgrade.shouldUpgradeSkill3) upgradeResultList[2] = exitEarlyException
             }
-            2 -> if (skillUpgrade.shouldUpgradeSkill3) skill3UpgradeResult = exitEarlyException
+            2 -> if (skillUpgrade.shouldUpgradeSkill3) upgradeResultList[2] = exitEarlyException
         }
         throw SkillUpgradeException(ExitReason.RanOutOfQP)
     }
@@ -300,7 +293,7 @@ class AutoSkill @Inject constructor(
             skill1Summary = Summary(
                 isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill1,
                 isAvailable = skill1Available,
-                enhancementExitReason = skill1UpgradeResult,
+                enhancementExitReason = upgradeResultList[0],
                 startingLevel = prefs.skillUpgrade.minSkill1,
                 endLevel = skillCountList[0],
                 targetLevel = when (prefs.skillUpgrade.upgradeSkill1 > 0) {
@@ -310,7 +303,7 @@ class AutoSkill @Inject constructor(
             ), skill2Summary = Summary(
                 isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill2,
                 isAvailable = prefs.skillUpgrade.skill2Available,
-                enhancementExitReason = skill2UpgradeResult,
+                enhancementExitReason = upgradeResultList[1],
                 startingLevel = if (prefs.skillUpgrade.skill2Available) prefs.skillUpgrade.minSkill2 else null,
                 endLevel = skillCountList[1],
                 targetLevel = when (prefs.skillUpgrade.upgradeSkill2 > 0) {
@@ -321,7 +314,7 @@ class AutoSkill @Inject constructor(
             skill3Summary = Summary(
                 isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkill3,
                 isAvailable = prefs.skillUpgrade.skill3Available,
-                enhancementExitReason = skill3UpgradeResult,
+                enhancementExitReason = upgradeResultList[2],
                 startingLevel = if (prefs.skillUpgrade.skill3Available) prefs.skillUpgrade.minSkill3 else null,
                 endLevel = skillCountList[2],
                 targetLevel = when (prefs.skillUpgrade.upgradeSkill3 > 0) {
