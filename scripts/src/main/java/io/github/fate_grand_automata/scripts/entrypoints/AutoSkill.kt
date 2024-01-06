@@ -352,7 +352,8 @@ class AutoSkill @Inject constructor(
                     isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkillTwo,
                     isAvailable = prefs.skillUpgrade.isSkillTwoAvailable,
                     enhancementExitReason = upgradeResultList[1],
-                    startingLevel = if (prefs.skillUpgrade.isSkillTwoAvailable) prefs.skillUpgrade.minimumSkillTwo else null,
+                    startingLevel = if (prefs.skillUpgrade.isSkillTwoAvailable)
+                        prefs.skillUpgrade.minimumSkillTwo else null,
                     endLevel = skillCountList[1],
                     targetLevel = when (prefs.skillUpgrade.skillTwoUpgradeValue > 0) {
                         true -> prefs.skillUpgrade.minimumSkillTwo + prefs.skillUpgrade.skillTwoUpgradeValue
@@ -363,7 +364,8 @@ class AutoSkill @Inject constructor(
                     isCheckToUpgrade = prefs.skillUpgrade.shouldUpgradeSkillThree,
                     isAvailable = prefs.skillUpgrade.isSkillThreeAvailable,
                     enhancementExitReason = upgradeResultList[2],
-                    startingLevel = if (prefs.skillUpgrade.isSkillThreeAvailable) prefs.skillUpgrade.minimumSkillThree else null,
+                    startingLevel = if (prefs.skillUpgrade.isSkillThreeAvailable)
+                        prefs.skillUpgrade.minimumSkillThree else null,
                     endLevel = skillCountList[2],
                     targetLevel = when (prefs.skillUpgrade.skillThreeUpgradeValue > 0) {
                         true -> prefs.skillUpgrade.minimumSkillThree + prefs.skillUpgrade.skillThreeUpgradeValue
