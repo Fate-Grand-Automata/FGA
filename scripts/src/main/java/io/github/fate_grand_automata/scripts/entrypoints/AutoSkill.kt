@@ -320,7 +320,7 @@ class AutoSkill @Inject constructor(
 
 
     private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
-            locations.skill.getInsufficientMatsRegion
+            locations.skill.insufficientMaterialsRegion
 
     private fun isConfirmationDialog() = images[Images.Ok] in
             locations.skill.confirmationDialogRegion

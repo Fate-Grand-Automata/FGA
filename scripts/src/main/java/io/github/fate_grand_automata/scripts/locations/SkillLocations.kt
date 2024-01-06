@@ -13,7 +13,7 @@ class SkillLocations @Inject constructor(
     fun skillLocation(skill: Int) = Location(-339, 519).xFromCenter() +
             Location(576 * (skill - 1), 0)
 
-    val getInsufficientMatsRegion = when (gameServer) {
+    val insufficientMaterialsRegion = when (gameServer) {
         is GameServer.En -> when (isWide) {
             true -> Region(-498, 197, 446, 43).xFromCenter()
             false -> Region(-498, 225, 446, 43).xFromCenter()
