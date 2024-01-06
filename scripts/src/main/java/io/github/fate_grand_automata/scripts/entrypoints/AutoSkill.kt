@@ -250,24 +250,21 @@ class AutoSkill @Inject constructor(
         else -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
     }
 
-
+    /**
+     * This function is used to update the skill upgrade result if the skill upgrade is ran out of QP early
+     * @param e the exception that is thrown
+     * @param index the index of the skill
+     */
     private fun ifRanOfQPEarlyException(e: EnhancementExitReason?, index: Int) {
         if (e != EnhancementExitReason.OutOfQPException) return
+        val skillUpgrade = prefs.skillUpgrade
+        val exitEarlyException = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
         when (index) {
             1 -> {
-                if (prefs.skillUpgrade.shouldUpgradeSkill2) {
-                    skill2UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
-                }
-                if (prefs.skillUpgrade.shouldUpgradeSkill3) {
-                    skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
-                }
+                if (skillUpgrade.shouldUpgradeSkill2) skill2UpgradeResult = exitEarlyException
+                if (skillUpgrade.shouldUpgradeSkill3) skill3UpgradeResult = exitEarlyException
             }
-
-            2 -> {
-                if (prefs.skillUpgrade.shouldUpgradeSkill3) {
-                    skill3UpgradeResult = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
-                }
-            }
+            2 -> if (skillUpgrade.shouldUpgradeSkill3) skill3UpgradeResult = exitEarlyException
         }
         throw SkillUpgradeException(ExitReason.RanOutOfQP)
     }
