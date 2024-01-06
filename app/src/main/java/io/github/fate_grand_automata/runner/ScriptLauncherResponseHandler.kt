@@ -44,18 +44,18 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 ScriptModeEnum.Battle
             }
 
-            is ScriptLauncherResponse.SkillUpgrade -> {
+            is ScriptLauncherResponse.Skill -> {
                 // Do not remove this, we need this to only be updated once the user has pressed the "Ok" button
                 // otherwise, the config will carry over if the user selected new servant which the config does not
                 // match (e.g. skill 3 can be upgraded to servant A but not to servant B)
-                prefs.skillUpgrade.shouldUpgradeSkillOne = resp.shouldUpgradeSkill1
-                prefs.skillUpgrade.skillOneUpgradeValue = resp.upgradeSkill1
+                prefs.skillUpgrade.shouldUpgradeSkillOne = resp.shouldUpgradeSkillOne
+                prefs.skillUpgrade.skillOneUpgradeValue = resp.skillOneUpgradeValue
 
-                prefs.skillUpgrade.shouldUpgradeSkillTwo = resp.shouldUpgradeSkill2
-                prefs.skillUpgrade.skillTwoUpgradeValue = resp.upgradeSkill2
+                prefs.skillUpgrade.shouldUpgradeSkillTwo = resp.shouldUpgradeSkillTwo
+                prefs.skillUpgrade.skillTwoUpgradeValue = resp.skillTwoUpgradeValue
 
-                prefs.skillUpgrade.shouldUpgradeSkillThree = resp.shouldUpgradeSkill3
-                prefs.skillUpgrade.skillThreeUpgradeValue = resp.upgradeSkill3
+                prefs.skillUpgrade.shouldUpgradeSkillThree = resp.shouldUpgradeSkillThree
+                prefs.skillUpgrade.skillThreeUpgradeValue = resp.skillThreeUpgradeValue
 
                 ScriptModeEnum.Skill
             }

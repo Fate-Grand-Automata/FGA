@@ -15,13 +15,13 @@ sealed class ScriptLauncherResponse {
 
     data object CEBomb : ScriptLauncherResponse()
 
-    data class SkillUpgrade(
-        val shouldUpgradeSkill1: Boolean,
-        val upgradeSkill1: Int,
-        val shouldUpgradeSkill2: Boolean,
-        val upgradeSkill2: Int,
-        val shouldUpgradeSkill3: Boolean,
-        val upgradeSkill3: Int,
+    data class Skill(
+        val shouldUpgradeSkillOne: Boolean,
+        val skillOneUpgradeValue: Int,
+        val shouldUpgradeSkillTwo: Boolean,
+        val skillTwoUpgradeValue: Int,
+        val shouldUpgradeSkillThree: Boolean,
+        val skillThreeUpgradeValue: Int,
     ) : ScriptLauncherResponse()
 
     data object ServantEnhancement : ScriptLauncherResponse()

@@ -271,13 +271,13 @@ fun skillLauncher(
     return ScriptLauncherResponseBuilder(
         canBuild = { true },
         build = {
-            ScriptLauncherResponse.SkillUpgrade(
-                shouldUpgradeSkill1 = shouldUpgrade1,
-                upgradeSkill1 = upgradeSkill1,
-                shouldUpgradeSkill2 = shouldUpgrade2,
-                upgradeSkill2 = upgradeSkill2,
-                shouldUpgradeSkill3 = shouldUpgrade3,
-                upgradeSkill3 = upgradeSkill3,
+            ScriptLauncherResponse.Skill(
+                shouldUpgradeSkillOne = shouldUpgrade1,
+                skillOneUpgradeValue = upgradeSkill1,
+                shouldUpgradeSkillTwo = shouldUpgrade2,
+                skillTwoUpgradeValue = upgradeSkill2,
+                shouldUpgradeSkillThree = shouldUpgrade3,
+                skillThreeUpgradeValue = upgradeSkill3,
             )
         }
     )
