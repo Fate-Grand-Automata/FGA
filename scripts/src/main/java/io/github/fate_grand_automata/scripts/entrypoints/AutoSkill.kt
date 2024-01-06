@@ -18,7 +18,9 @@ class AutoSkill @Inject constructor(
     api: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
 
-
+    /**
+     * This is the overall exit reason of the script.
+     */
     sealed class ExitReason {
         /**
          * The script was aborted by the user.
@@ -51,9 +53,21 @@ class AutoSkill @Inject constructor(
      */
     class SkillUpgradeException(val reason: ExitReason) : Exception()
 
+    /**
+     * The current script exit Exception
+     * @param reason the reason why the script exited
+     * @param state the current state of the script
+     * @see ExitState
+     * @see ExitReason
+     * @see Summary
+     * @see EnhancementExitReason
+     */
+
     class ExitException(val reason: ExitReason, val state: ExitState) : Exception()
 
-
+    /**
+     * This is the reason why the skill exited.
+     */
     sealed class EnhancementExitReason {
         /**
          * The script ran out of materials.
@@ -87,6 +101,25 @@ class AutoSkill @Inject constructor(
      */
     class EnhancementException(val reason: EnhancementExitReason) : Exception()
 
+    /**
+     * The summary of the skill upgrade.
+     * @param isCheckToUpgrade whether the skill is checked to upgrade
+     * @param isAvailable whether the skill is available
+     * This is applicable to skill two and three only. While skill one is always available.
+     *
+     * @param enhancementExitReason the reason why the skill exited
+     * This gives the result of the enhancement.
+     *
+     * @param startingLevel the starting level of the skill.
+     * This is the minimum level of the skill.
+     *
+     * @param endLevel the ending level of the skill
+     * This is the current level of the skill.
+     * This is added due to aborting of the script.
+     * So, the script can return the current level of the skill.
+     *
+     * @param targetLevel the target level of the skill
+     */
     class Summary(
         val isCheckToUpgrade: Boolean,
         val isAvailable: Boolean,
@@ -96,13 +129,26 @@ class AutoSkill @Inject constructor(
         val targetLevel: Int? = null
     )
 
-    class ExitState(
-        val skillSummaryList: List<Summary>,
-    )
+    class ExitState(val skillSummaryList: List<Summary>)
+
+    /**
+     * This list is used to store the current skill level
+     */
 
     private var skillCountList: MutableList<Int?> = mutableListOf(null, null, null)
 
+    /**
+     * This list is used to store the skill upgrade result via EnhancementException
+     * @see EnhancementException
+     */
+
     private var upgradeResultList: MutableList<EnhancementException?> = mutableListOf(null, null, null)
+    
+    /**
+     * This variable is used to store the skill one availability
+     * While skill one is always available. This is added if there is no
+     * servant selected. So, the script can return the correct result.
+     */
 
     private var skill1Available = true
 
@@ -235,6 +281,16 @@ class AutoSkill @Inject constructor(
 
     /**
      * This function is used to check if the target level is met
+     *
+     * If the confirmation dialog is visible, you can't accurately read the skill level.
+     * So, we need to check if the confirmation dialog is visible first.
+     *
+     * Afterwards, we can check if the target level is met using OCR.
+     * If cannot read, then most likely we are in the middle of enhancing the skill.
+     *
+     * If the target level is met, we need to check if the script is in the skill enhancement menu.
+     * to prevent stray detection
+     *
      * @param region the region of the skill
      * @param targetLevel the target level of the skill
      * @param skillNumber the index of the skill
@@ -272,6 +328,11 @@ class AutoSkill @Inject constructor(
         upgradeResultList[skillNumber - 1] = EnhancementException(e)
     }
 
+    /**
+     * This function is used to determine the current skill level
+     * @param skillNumber the index of the skill
+     * @return the current skill level
+     */
     private fun determineCurrentSkillLevel(skillNumber: Int) = when (skillNumber) {
         1 -> prefs.skillUpgrade.minimumSkillOne + prefs.skillUpgrade.skillOneUpgradeValue
         2 -> prefs.skillUpgrade.minimumSkillTwo + prefs.skillUpgrade.skillTwoUpgradeValue
@@ -304,9 +365,15 @@ class AutoSkill @Inject constructor(
     }
 
     /**
-     * This function is used to check if the skill will be upgraded
+     * This function is used to check if the skill will be upgraded.
+     * This is in tandem with @see isTheTargetLevelConditionMet
+     * where the first function would read the current skill level
+     * and then this function would perform the actual enhancement
+     * if the target level is not met yet.
+     *
      * @param targetLevel the target level of the skill
      * @param skillNumber the index of the skill
+     * @see isTheTargetLevelConditionMet
      * @return true if the skill will be upgraded
      */
     private fun verifySkillUpgradeEligibility(targetLevel: Int, skillNumber: Int): Boolean {
@@ -317,21 +384,56 @@ class AutoSkill @Inject constructor(
         return skillCountConditionMet && isInSkillEnhancementMenu()
     }
 
-
-    private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
-            locations.skill.insufficientMaterialsRegion
-
-    private fun isConfirmationDialogVisible() = images[Images.Ok] in
-            locations.skill.confirmationDialogRegion
-
+    /**
+     * This function is used to check if the script is in the skill enhancement menu
+     *      This is the "Skills" text.
+     * @return true if the script is in the skill enhancement menu
+     */
     private fun isInSkillEnhancementMenu() = images[Images.SkillMenuBanner] in
             locations.enhancementBannerRegion
 
+    /**
+     * This function is used to check if the script is out of materials
+     * You can find the out of materials at the top of the skills text.
+     *
+     * @return true if the script is out of materials
+     */
+    private fun isOutOfMats(): Boolean = images[Images.SkillInsufficientMaterials] in
+            locations.skill.insufficientMaterialsRegion
+
+    /**
+     * This function is used to check if the confirmation dialog is visible
+     * This is after selecting the Enhance button
+     *
+     * @return true if the confirmation dialog is visible
+     */
+    private fun isConfirmationDialogVisible() = images[Images.Ok] in
+            locations.skill.confirmationDialogRegion
+
+    /**
+     * This function is used to check if the script is out of QP
+     * You can find the out of QP at the top of the skills text.
+     *
+     * @return true if the script is out of QP
+     */
     private fun isOutOfQP(): Boolean = images[Images.SkillInsufficientQP] in
             locations.getInsufficientQPRegion
 
+    /**
+     * This function is used to check if the servant is empty
+     * This is being used for checking at the start of the script.
+     * And if the current servant got max level.
+     *
+     * @return true if the servant is empty
+     */
     private fun isServantEmpty() = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
+    /**
+     * This function is used to check if the servant is temporary
+     * There is additional click if the servant is temporary.
+     *
+     * @return true if the servant is temporary
+     */
     private fun isTemporaryServant() = images[Images.Execute] in locations.tempServantEnhancementRegion
 
     private fun makeExitState(): ExitState {
