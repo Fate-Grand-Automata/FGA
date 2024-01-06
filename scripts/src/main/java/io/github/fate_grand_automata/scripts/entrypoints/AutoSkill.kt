@@ -157,7 +157,7 @@ class AutoSkill @Inject constructor(
                 exitEnhancementLoopAsAllSkillsAreMaxedOut(skillNumber=skillNumber)
             },
             {
-                isTheTargetUpgradeMet(
+                isTheTargetLevelConditionMet(
                     region = skillRegion,
                     targetLevel = targetLevel,
                     skillNumber = skillNumber
@@ -207,7 +207,7 @@ class AutoSkill @Inject constructor(
     }
 
 
-    private fun isTheTargetUpgradeMet(
+    private fun isTheTargetLevelConditionMet(
         region: Region,
         targetLevel: Int,
         skillNumber: Int,
