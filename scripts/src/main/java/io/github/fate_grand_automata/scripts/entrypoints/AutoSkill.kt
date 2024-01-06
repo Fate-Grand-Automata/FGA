@@ -64,10 +64,7 @@ class AutoSkill @Inject constructor(
         val skill3Summary: Summary
     )
 
-
-    private var skill1count: Int? = null
-    private var skill2count: Int? = null
-    private var skill3count: Int? = null
+    private var skillCountList: MutableList<Int?> = mutableListOf(null, null, null)
 
     var skill1UpgradeResult: EnhancementException? = null
     var skill2UpgradeResult: EnhancementException? = null
@@ -270,34 +267,15 @@ class AutoSkill @Inject constructor(
     }
 
     private fun updateCurrentSkillLevel(level: Int, index: Int) {
-        when (index) {
-            1 -> skill1count = level
-            2 -> skill2count = level
-            3 -> skill3count = level
-            else -> skill1count = level
-        }
+        skillCountList[index - 1] = level
     }
 
     private fun checkIfWillUpgradeSkill(targetLevel: Int, index: Int): Boolean {
         if (isConfirmationDialog() || isTemporaryServant()) return false
+        val skillCount = skillCountList[index - 1]
+        val skillCountConditionMet = skillCount?.let{ it < targetLevel } ?: false
 
-        return when (index) {
-            1 -> skill1count?.let {
-                it < targetLevel
-            } ?: false
-
-            2 -> skill2count?.let {
-                it < targetLevel
-            } ?: false
-
-            3 -> skill3count?.let {
-                it < targetLevel
-            } ?: false
-
-            else -> skill1count?.let {
-                it < targetLevel
-            } ?: false
-        } && isInSkillEnhancementMenu()
+        return skillCountConditionMet  && isInSkillEnhancementMenu()
     }
 
 
@@ -324,7 +302,7 @@ class AutoSkill @Inject constructor(
                 isAvailable = skill1Available,
                 enhancementExitReason = skill1UpgradeResult,
                 startingLevel = prefs.skillUpgrade.minSkill1,
-                endLevel = skill1count,
+                endLevel = skillCountList[0],
                 targetLevel = when (prefs.skillUpgrade.upgradeSkill1 > 0) {
                     true -> prefs.skillUpgrade.minSkill1 + prefs.skillUpgrade.upgradeSkill1
                     false -> null
@@ -334,7 +312,7 @@ class AutoSkill @Inject constructor(
                 isAvailable = prefs.skillUpgrade.skill2Available,
                 enhancementExitReason = skill2UpgradeResult,
                 startingLevel = if (prefs.skillUpgrade.skill2Available) prefs.skillUpgrade.minSkill2 else null,
-                endLevel = skill2count,
+                endLevel = skillCountList[1],
                 targetLevel = when (prefs.skillUpgrade.upgradeSkill2 > 0) {
                     true -> prefs.skillUpgrade.minSkill2 + prefs.skillUpgrade.upgradeSkill2
                     false -> null
@@ -345,7 +323,7 @@ class AutoSkill @Inject constructor(
                 isAvailable = prefs.skillUpgrade.skill3Available,
                 enhancementExitReason = skill3UpgradeResult,
                 startingLevel = if (prefs.skillUpgrade.skill3Available) prefs.skillUpgrade.minSkill3 else null,
-                endLevel = skill3count,
+                endLevel = skillCountList[2],
                 targetLevel = when (prefs.skillUpgrade.upgradeSkill3 > 0) {
                     true -> prefs.skillUpgrade.minSkill3 + prefs.skillUpgrade.upgradeSkill3
                     false -> null
