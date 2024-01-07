@@ -394,4 +394,32 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_app_language">"App Language"</string>
     <string name="p_treat_support_like_own_servant">Treat Support like own Servants</string>
     <string name="p_treat_support_like_own_servant_summary">Will do normal face card checks instead of looking for the "Support" icon on face cards. This solves problems with super-buffed Support Servants, but will break card priority if you have 2 of the same Servant in the party.</string>
+
+    <string name="done">Done</string>
+
+    <string name="enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
+    <string name="ran_out_of_qp">Ran out of QP</string>
+
+
+    <string name="enhancement_error_out_of_qp">Insufficient QP</string>
+    <string name="enhancement_error_out_of_mats">Insufficient mats</string>
+    <string name="enhancement_error_exit_early_out_of_qp">Exit early due to Insufficient QP</string>
+    <string name="enhancement_error_no_enhancement">No enhancement perform</string>
+    <string name="enhancement_halt_aborted">Enhancement halt due to script abort</string>
+
+
+    <string name="skill_enhancement_error_target_not_met">"Unable to finish enhancement to Lvl %d"</string>
+    <string name="skill_enhancement_halt">Enhancement halt</string>
+
+    <string name="skill_enhancement_level_up_by">"Level up by %d"</string>
+
+    <string name="skill_upgrade">Skill Upgrade</string>
+    <string name="skill_upgrade_all_available_question">Upgrade all available skill?</string>
+    <string name="skill_max_level">Max Level</string>
+    <string name="skill_not_available">Not Available</string>
+    <string name="skill_not_selected_for_enhancement">Not Selected for enhancement</string>
+
+    <string name="skill_number">"Skill %d"</string>
+    <string name="reset">"Reset"</string>
+    <string name="success">Success</string>
 </resources>

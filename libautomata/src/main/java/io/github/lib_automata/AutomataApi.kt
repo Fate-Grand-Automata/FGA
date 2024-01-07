@@ -51,4 +51,8 @@ interface AutomataApi {
     fun Region.isBlack(): Boolean
 
     fun Region.detectText(outlinedText: Boolean = false): String
+
+    fun Region.findNumberInText(
+        replace: List<Pair<String, String>> = emptyList()
+    ): Int?
 }

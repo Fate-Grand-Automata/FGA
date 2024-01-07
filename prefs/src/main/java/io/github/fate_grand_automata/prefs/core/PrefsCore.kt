@@ -144,5 +144,7 @@ class PrefsCore @Inject constructor(
             )
         }
 
+    val skill = SkillPrefsCore(maker)
+
 
 }

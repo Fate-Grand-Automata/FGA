@@ -15,4 +15,6 @@ interface ScriptEntryPoint {
     fun ceBomb(): AutoCEBomb
 
     fun autoDetect(): AutoDetect
+
+    fun skill(): AutoSkill
 }

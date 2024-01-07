@@ -70,5 +70,21 @@ class StandardAutomataApi @Inject constructor(
                 return ocrService.detectText(it)
             }
     }
+
+    override fun Region.findNumberInText(
+        replace: List<Pair<String, String>>,
+    ): Int? {
+        var text = this
+            .detectText(false) // replace common OCR mistakes
+            .replace("%", "x")
+            .replace("S", "5")
+            .replace("O", "0")
+            .lowercase()
+        replace.forEach {
+            text = text.replace(it.first, it.second)
+        }
+        val regex = Regex("""(\d+)""")
+        return regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
+    }
 }
 
