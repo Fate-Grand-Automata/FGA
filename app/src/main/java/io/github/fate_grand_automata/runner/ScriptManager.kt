@@ -192,6 +192,8 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoBattle.ExitException -> {
+                preferences.hidePlayButton = false
+
                 if (e.reason !is AutoBattle.ExitReason.Abort) {
                     messages.notify(scriptExitedString)
                 }
