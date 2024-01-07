@@ -41,8 +41,7 @@ class AutoFriendGacha @Inject constructor(
 
             countNext()
         }
-
-        if (!isSummonButtonVisible()) {
+        else if (!isSummonButtonVisible()) {
             locations.fp.first10SummonClick.click()
             0.3.seconds.wait()
             locations.fp.okClick.click()
