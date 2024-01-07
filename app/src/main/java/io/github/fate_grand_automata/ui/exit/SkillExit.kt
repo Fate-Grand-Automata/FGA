@@ -35,17 +35,17 @@ fun SkillExit(
     onCopy: () -> Unit
 ) {
     LaunchedEffect(key1 = Unit, block = {
-        prefs.skillUpgrade.shouldUpgradeSkill1 = false
-        prefs.skillUpgrade.upgradeSkill1 = 0
-        prefs.skillUpgrade.minSkill1 = 1
+        prefs.skill.shouldUpgradeSkillOne = false
+        prefs.skill.skillOneUpgradeValue = 0
+        prefs.skill.minimumSkillOne = 1
 
-        prefs.skillUpgrade.shouldUpgradeSkill2 = false
-        prefs.skillUpgrade.upgradeSkill2 = 0
-        prefs.skillUpgrade.minSkill2 = 1
+        prefs.skill.shouldUpgradeSkillTwo = false
+        prefs.skill.skillTwoUpgradeValue = 0
+        prefs.skill.minimumSkillTwo = 1
 
-        prefs.skillUpgrade.shouldUpgradeSkill3 = false
-        prefs.skillUpgrade.upgradeSkill3 = 0
-        prefs.skillUpgrade.minSkill3 = 1
+        prefs.skill.shouldUpgradeSkillThree = false
+        prefs.skill.skillThreeUpgradeValue = 0
+        prefs.skill.minimumSkillThree = 1
     })
     FgaScreen {
         Column(
@@ -154,7 +154,7 @@ private fun SkillUpgradeSummary(
             summary.startingLevel == 10 -> {
                 item {
                     Text(
-                        text = stringResource(id = R.string.skill_max).uppercase(),
+                        text = stringResource(id = R.string.skill_max_level).uppercase(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                     )
@@ -210,7 +210,7 @@ private fun LazyListScope.summaryLevelUp(
             item {
                 val difference = summary.endLevel!! - summary.startingLevel!!
                 Text(
-                    text = stringResource(id = R.string.skill_level_up_by, difference).uppercase(),
+                    text = stringResource(id = R.string.skill_enhancement_level_up_by, difference).uppercase(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                 )

@@ -443,30 +443,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_choose_app_language">"Choose App Language"</string>
     <string name="p_app_language">"App Language"</string>
 
-    <string name="skill_upgrade">Skill Upgrade</string>
-    <string name="skill_1">Skill 1</string>
-    <string name="skill_2">Skill 2</string>
-    <string name="skill_3">Skill 3</string>
-    <string name="skill_max">Max Level</string>
-    <string name="skill_not_available">Not Available</string>
-    <string name="skill_not_selected_for_enhancement">Not Selected for enhancement</string>
 
-    <string name="skill_number">"Skill %d"</string>
-    <string name="skill_level_up_by">"Level up by %d"</string>
 
-    <string name="enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
-    <string name="skill_enhancement_halt">Enhancement halt</string>
-    <string name="enhancement_halt_aborted">Enhancement halt due to script abort</string>
-
-    <string name="ran_out_of_qp">Ran out of QP</string>
-    <string name="done">Done</string>
-
-    <string name="enhancement_error_no_enhancement">No enhancement perform</string>
-    <string name="enhancement_error_exit_early_out_of_qp">Exit early due to Insufficient QP</string>
-    <string name="enhancement_error_out_of_qp">Insufficient QP</string>
-    <string name="enhancement_error_out_of_mats">Insufficient mats</string>
-
-    <string name="skill_enhancement_error_target_not_met">"Unable to finish enhancement to Lvl %d"</string>
 
     <string name="success">Success</string>
 
@@ -485,7 +463,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_level_max">Max Level Achieved</string>
 
 
-    <string name="skill_enhancement_all_question">Upgrade all available skill?</string>
+
 
     <string name="p_script_mode_play_button_detection">Play Button Detection</string>
     <string name="p_play_button_detection_explanation">Place the play button on the bottom left of the screen for optimal configuration</string>
@@ -530,4 +508,30 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="script_error_no_servant">"The \"%s\" script is unable to run. Must set a servant to continue."</string>
     <string name="script_error_warning">Script Warning</string>
     <string name="script_aborted">Script Abort!</string>
+
+    <string name="done">Done</string>
+
+    <string name="enhancement_missing_servant">No Servant Selected. Please select a servant before proceeding.</string>
+    <string name="ran_out_of_qp">Ran out of QP</string>
+
+
+    <string name="enhancement_error_out_of_qp">Insufficient QP</string>
+    <string name="enhancement_error_out_of_mats">Insufficient mats</string>
+    <string name="enhancement_error_exit_early_out_of_qp">Exit early due to Insufficient QP</string>
+    <string name="enhancement_error_no_enhancement">No enhancement perform</string>
+    <string name="enhancement_halt_aborted">Enhancement halt due to script abort</string>
+
+
+    <string name="skill_enhancement_error_target_not_met">"Unable to finish enhancement to Lvl %d"</string>
+    <string name="skill_enhancement_halt">Enhancement halt</string>
+
+    <string name="skill_enhancement_level_up_by">"Level up by %d"</string>
+
+    <string name="skill_upgrade">Skill Upgrade</string>
+    <string name="skill_upgrade_all_available_question">Upgrade all available skill?</string>
+    <string name="skill_max_level">Max Level</string>
+    <string name="skill_not_available">Not Available</string>
+    <string name="skill_not_selected_for_enhancement">Not Selected for enhancement</string>
+
+    <string name="skill_number">"Skill %d"</string>
 </resources>
