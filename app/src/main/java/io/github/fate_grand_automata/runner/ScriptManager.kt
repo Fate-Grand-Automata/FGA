@@ -192,7 +192,7 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoBattle.ExitException -> {
-                preferences.hidePlayButtonForScreenshot = false
+                preferences.hidePlayButton = false
 
                 if (e.reason !is AutoBattle.ExitReason.Abort) {
                     messages.notify(scriptExitedString)

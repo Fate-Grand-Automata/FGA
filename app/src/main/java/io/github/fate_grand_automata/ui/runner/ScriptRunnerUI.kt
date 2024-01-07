@@ -37,7 +37,7 @@ fun ScriptRunnerUI(
     enabled: Boolean,
     isRecording: Boolean
 ) {
-    val hidePlayButtonForScreenshot by prefsCore.hidePlayButtonForScreenshot.remember()
+    val hidePlayButton by prefsCore.hidePlayButton.remember()
     val script by prefsCore.scriptMode.remember()
 
     FGATheme(
@@ -60,7 +60,7 @@ fun ScriptRunnerUI(
                 color = when (state) {
                     ScriptRunnerUIState.Running ->
                         MaterialTheme.colorScheme.surface.copy(
-                            alpha = if (hidePlayButtonForScreenshot && script == ScriptModeEnum.Battle) 0f else 0.5f
+                            alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f
                         )
                     else -> MaterialTheme.colorScheme.surface
                 },
@@ -68,7 +68,7 @@ fun ScriptRunnerUI(
                     ScriptRunnerUIState.Running -> {
                         val color = if (isRecording) MaterialTheme.colorScheme.error else Color.White
                         color.copy(
-                            alpha = if (hidePlayButtonForScreenshot && script == ScriptModeEnum.Battle) 0f else 0.5f
+                            alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f
                         )
                     }
                     else -> Color.White

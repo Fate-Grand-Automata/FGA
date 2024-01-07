@@ -265,9 +265,8 @@ class AutoBattle @Inject constructor(
     private fun handleBondScreen(){
         canScreenshotBondCE = true
 
-        screenshotDrops.screenshotBond()
-
         if (prefs.screenshotBond){
+            screenshotDrops.screenshotBond()
             messages.notify(ScriptNotify.BondLevelUp)
             0.5.seconds.wait()
         }
