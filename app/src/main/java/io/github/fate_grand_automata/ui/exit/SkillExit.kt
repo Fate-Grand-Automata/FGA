@@ -154,7 +154,7 @@ private fun SkillUpgradeSummary(
             summary.startingLevel == 10 -> {
                 item {
                     Text(
-                        text = stringResource(id = R.string.skill_max).uppercase(),
+                        text = stringResource(id = R.string.skill_max_level).uppercase(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                     )
@@ -210,7 +210,7 @@ private fun LazyListScope.summaryLevelUp(
             item {
                 val difference = summary.endLevel!! - summary.startingLevel!!
                 Text(
-                    text = stringResource(id = R.string.skill_level_up_by, difference).uppercase(),
+                    text = stringResource(id = R.string.skill_enhancement_level_up_by, difference).uppercase(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                 )

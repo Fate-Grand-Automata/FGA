@@ -125,7 +125,7 @@ fun skillLauncher(
                     .clickable { shouldUpgradeAllSkills = !shouldUpgradeAllSkills }
             ) {
                 Text(
-                    stringResource(R.string.skill_enhancement_all_question),
+                    stringResource(R.string.skill_upgrade_all_available_question),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.weight(1f),
@@ -334,7 +334,7 @@ private fun SkillUpgradeItem(
             Text(
                 text = when (minimumUpgrade < 10) {
                     true -> name.uppercase()
-                    false -> name.uppercase() + "\n" + stringResource(id = R.string.skill_max).uppercase()
+                    false -> name.uppercase() + "\n" + stringResource(id = R.string.skill_max_level).uppercase()
                 },
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium,
