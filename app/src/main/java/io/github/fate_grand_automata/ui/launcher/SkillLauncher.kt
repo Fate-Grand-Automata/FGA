@@ -212,7 +212,7 @@ fun skillLauncher(
                 horizontalArrangement = Arrangement.Center
             ) {
                 SkillUpgradeItem(
-                    name = stringResource(id = R.string.skill_1),
+                    name = stringResource(id = R.string.skill_number, 1),
                     shouldUpgrade = shouldUpgradeSkillOne,
                     onShouldUpgradeChange = {
                         shouldUpgradeSkillOne = it
@@ -226,7 +226,7 @@ fun skillLauncher(
                 )
 
                 SkillUpgradeItem(
-                    name = stringResource(id = R.string.skill_2),
+                    name = stringResource(id = R.string.skill_number, 2),
                     shouldUpgrade = shouldUpgradeSkillTwo,
                     onShouldUpgradeChange = {
                         shouldUpgradeSkillTwo = it
@@ -241,7 +241,7 @@ fun skillLauncher(
                 )
 
                 SkillUpgradeItem(
-                    name = stringResource(id = R.string.skill_3),
+                    name = stringResource(id = R.string.skill_number, 3),
                     shouldUpgrade = shouldUpgradeSkillThree,
                     onShouldUpgradeChange = {
                         shouldUpgradeSkillThree = it
