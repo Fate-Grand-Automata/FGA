@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "REPO_NAME=${{ github.repository }}" >>${GITHUB_ENV}
 
-      - name: save the Github secrets
+      - name: Save the Github secrets
         run: |
           echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >>${GITHUB_ENV}
 

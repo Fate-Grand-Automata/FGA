@@ -15,7 +15,7 @@ if len(GITHUB_TOKEN) > 0:
     httpx_client = httpx.Client(headers={"Authorization": f"Bearer {GITHUB_TOKEN}"})
 
 URL_BASE = f"https://api.github.com/repos/{REPO}"
-
+print(f"URL_BASE: {URL_BASE}")
 
 ESCAPE_CHARACTER = "<ln>\n"
 
@@ -31,6 +31,8 @@ def save_releases_summary(summary: str):
     if element is not None:
         element.text = f'"{summary}"'
         tree.write(strings_xml_path)
+    
+    print(f"release_notes_summary: {summary}")
 
 
 def get_commit_message(sha: str):
@@ -63,7 +65,10 @@ def get_last_releases():
     body = json.loads(response.text)
 
     commit_info_list = []
+    index = 15
     for release in body:
+        if index == 0:
+            break
         tag = release["tag_name"]
 
         tag_sha = url_tag_commit_sha(tag)
@@ -72,10 +77,12 @@ def get_last_releases():
         
         commit_info_list.append(f"{tag}")
         commit_info_list.append(f"{tag_commit_message}")
+
+        index -= 1
     return commit_info_list
 
 
-def development_branch():
+def master_branch():
     latest_commit = get_latest_commit()
     last_releases_information = get_last_releases()
     information = ["Latest", f"{latest_commit}"] + last_releases_information
@@ -117,7 +124,7 @@ def pull_request_branch():
 def main():
     if BRANCH == "master":
         print("master branch")
-        development_branch()
+        master_branch()
     else:
         print(f"pull request branch {PR_NUMBER}")
         pull_request_branch()
