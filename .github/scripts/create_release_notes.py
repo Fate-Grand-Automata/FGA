@@ -24,14 +24,14 @@ cwd = Path.cwd()
 
 def save_releases_summary(summary: str):
     strings_xml_path = cwd / "app" / "src" / "main" / "res" / "values" / "strings.xml"
+    print(f"strings_xml_path: {strings_xml_path}")
     tree = ET.parse(strings_xml_path)
     root = tree.getroot()
 
     element = root.find("./string[@name='release_notes_summary']")
     if element is not None:
-        element.text = f'"{summary}"'
+        element.text = f'\"{summary}\"'
         tree.write(strings_xml_path)
-
     print(f"release_notes_summary: {summary}")
     with open(strings_xml_path,) as f:
         print(f.read())
