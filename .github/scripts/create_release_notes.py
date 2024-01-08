@@ -31,8 +31,10 @@ def save_releases_summary(summary: str):
     if element is not None:
         element.text = f'"{summary}"'
         tree.write(strings_xml_path)
-    
+
     print(f"release_notes_summary: {summary}")
+    with open(strings_xml_path,) as f:
+        print(f.read())
 
 
 def get_commit_message(sha: str):
@@ -74,7 +76,7 @@ def get_last_releases():
         tag_sha = url_tag_commit_sha(tag)
 
         tag_commit_message = get_commit_message(tag_sha)
-        
+
         commit_info_list.append(f"{tag}")
         commit_info_list.append(f"{tag_commit_message}")
 
