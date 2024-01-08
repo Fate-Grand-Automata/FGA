@@ -205,14 +205,16 @@ private fun toggleOverlayService(
 }
 
 sealed class MainScreenDestinations {
-    object Releases : MainScreenDestinations()
-    object TroubleshootingGuide : MainScreenDestinations()
-    object Discord : MainScreenDestinations()
-    object Donate : MainScreenDestinations()
-    object BattleConfigs : MainScreenDestinations()
-    object MoreOptions : MainScreenDestinations()
-    object AccessibilitySettings : MainScreenDestinations()
-    object OverlaySettings : MainScreenDestinations()
+    data object Releases : MainScreenDestinations()
+
+    data object ReleaseNotes: MainScreenDestinations()
+    data object TroubleshootingGuide : MainScreenDestinations()
+    data object Discord : MainScreenDestinations()
+    data object Donate : MainScreenDestinations()
+    data object BattleConfigs : MainScreenDestinations()
+    data object MoreOptions : MainScreenDestinations()
+    data object AccessibilitySettings : MainScreenDestinations()
+    data object OverlaySettings : MainScreenDestinations()
 }
 
 @Composable
@@ -251,6 +253,11 @@ private fun MainScreenContent(
                         text = stringResource(R.string.donate),
                         icon = icon(R.drawable.ic_donate),
                         onClick = { navigate(MainScreenDestinations.Donate) }
+                    )
+
+                    HeadingButton(
+                        text = stringResource(id = R.string.release_notes),
+                        onClick = { navigate(MainScreenDestinations.ReleaseNotes) }
                     )
 
                 }

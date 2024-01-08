@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.ui.main
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,11 +26,13 @@ import io.github.fate_grand_automata.ui.onboarding.OnboardingScreen
 import io.github.fate_grand_automata.ui.openLinkIntent
 import io.github.fate_grand_automata.ui.pref_support.PreferredSupportScreen
 import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
+import io.github.fate_grand_automata.ui.release_notes.ReleaseNotesScreen
 import io.github.fate_grand_automata.ui.skill_maker.SkillMakerActivity
 import io.github.fate_grand_automata.ui.spam.SpamScreen
 
 @Composable
 fun FgaApp(
+    windowSizeClass: WindowSizeClass,
     vm: MainScreenViewModel,
     supportVm: SupportViewModel
 ) {
@@ -103,7 +106,19 @@ fun FgaApp(
                             MainScreenDestinations.Donate -> {
                                 context.openLinkIntent(R.string.link_donate)
                             }
+
+                            MainScreenDestinations.ReleaseNotes -> {
+                                navController.navigate(NavConstants.releaseNotes)
+                            }
                         }
+                    }
+                )
+            }
+            composable(NavConstants.releaseNotes) {
+                ReleaseNotesScreen(
+                    windowSizeClass = windowSizeClass,
+                    onBack = {
+                        navController.popBackStack()
                     }
                 )
             }
@@ -191,6 +206,7 @@ object NavConstants {
     const val battleConfigItem = "configItem"
     const val battleConfigIdKey = "id"
     const val moreOptions = "more"
+    const val releaseNotes = "releaseNotes"
     const val fineTune = "fineTune"
     const val cardPriority = "cardPriority"
     const val preferredSupport = "preferredSupport"
