@@ -534,4 +534,6 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_not_selected_for_enhancement">Not Selected for enhancement</string>
 
     <string name="skill_number">"Skill %d"</string>
+
+    <string name="release_notes">Release Notes</string>
 </resources>

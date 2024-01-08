@@ -27,6 +27,7 @@ import io.github.fate_grand_automata.ui.onboarding.OnboardingScreen
 import io.github.fate_grand_automata.ui.openLinkIntent
 import io.github.fate_grand_automata.ui.pref_support.PreferredSupportScreen
 import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
+import io.github.fate_grand_automata.ui.release_notes.ReleaseNotesScreen
 import io.github.fate_grand_automata.ui.skill_maker.SkillMakerActivity
 import io.github.fate_grand_automata.ui.spam.SpamScreen
 
@@ -106,7 +107,18 @@ fun FgaApp(
                             MainScreenDestinations.Donate -> {
                                 context.openLinkIntent(R.string.link_donate)
                             }
+
+                            MainScreenDestinations.ReleaseNotes -> {
+                                navController.navigate(NavConstants.releaseNotes)
+                            }
                         }
+                    }
+                )
+            }
+            composable(NavConstants.releaseNotes) {
+                ReleaseNotesScreen(
+                    onBack = {
+                        navController.popBackStack()
                     }
                 )
             }
@@ -210,6 +222,7 @@ object NavConstants {
     const val battleConfigItem = "configItem"
     const val battleConfigIdKey = "id"
     const val moreOptions = "more"
+    const val releaseNotes = "releaseNotes"
     const val fineTune = "fineTune"
     const val cardPriority = "cardPriority"
     const val preferredSupport = "preferredSupport"
