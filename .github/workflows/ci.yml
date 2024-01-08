@@ -41,6 +41,37 @@ jobs:
     if: github.ref != 'refs/heads/development' || inputs.release-canary != 'false'
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install Python Dependencies
+        run: pip install httpx
+      
+      - name: Determine development branch or pull request
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/development ]]; then
+            echo "BRANCH=development" >>${GITHUB_ENV}
+          else
+            echo "BRANCH=${{ github.head_ref }}" >>${GITHUB_ENV}
+          fi
+
+      - name: Determine Pull Request Number
+        run: |
+          if [[ ${{ github.ref }} == refs/heads/development ]]; then
+            echo "PR_NUMBER=0" >>${GITHUB_ENV}
+          else
+            echo "PR_NUMBER=${{ github.event.pull_request.number }}" >>${GITHUB_ENV}
+          fi
+      - name: Determine the repositoru name and owner
+        run: |
+          echo "REPO_NAME=${{ github.repository }}" >>${GITHUB_ENV}
+          echo "REPO_OWNER=${{ github.repository_owner }}" >>${GITHUB_ENV}
+      
+      - name: Run Python Create Release notes
+        run: python .github/scripts/create_release_notes.py
+        
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
