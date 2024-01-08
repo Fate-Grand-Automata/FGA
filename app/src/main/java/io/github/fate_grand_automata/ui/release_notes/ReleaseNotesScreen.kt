@@ -61,7 +61,7 @@ fun ReleaseNotesScreen(
                 .padding(paddingValues),
         ) {
             val summaryList = stringResource(id = R.string.release_notes_summary).split("<ln>\n")
-            if (summaryList[0].lowercase() == "pr") {
+            if (summaryList[0].lowercase().contains("pr", ignoreCase = true)) {
                 PullRequestReleaseNotes(
                     summaryList=summaryList
                 )

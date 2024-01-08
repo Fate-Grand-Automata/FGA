@@ -124,12 +124,13 @@ def pull_request_branch():
 
 
 def main():
-    if BRANCH == "master":
-        print("master branch")
-        master_branch()
-    else:
-        print(f"pull request branch {PR_NUMBER}")
-        pull_request_branch()
+    master_branch()
+    # if BRANCH == "master":
+    #     print("master branch")
+    #     master_branch()
+    # else:
+    #     print(f"pull request branch {PR_NUMBER}")
+    #     pull_request_branch()
 
 
 if __name__ == "__main__":
