@@ -55,7 +55,7 @@ class BattleConfigListViewModel @Inject constructor(
                 battleConfigCore.usageCount.get()
             }
             val lastUsageGetter = { battleConfigCore: BattleConfigCore ->
-                if (battleConfigCore.usageCount.get() > 1){
+                if (battleConfigCore.usageCount.get() > 0){
                     battleConfigCore.lastUsage.get().toInstant(TimeZone.UTC).epochSeconds
                 } else {
                     0L
