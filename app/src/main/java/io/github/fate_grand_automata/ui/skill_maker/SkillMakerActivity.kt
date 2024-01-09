@@ -1,13 +1,14 @@
 package io.github.fate_grand_automata.ui.skill_maker
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +21,7 @@ import io.github.fate_grand_automata.ui.PreventRtl
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 
 @AndroidEntryPoint
-class SkillMakerActivity : ComponentActivity() {
+class SkillMakerActivity : AppCompatActivity() {
     val vm: SkillMakerViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +79,9 @@ fun SkillMakerUI(
 
     val (current, navigate) = vm.navigation
 
+    val turn by vm.turn
+    val wave by vm.wave
+
     Crossfade(
         current,
         animationSpec = spring()
@@ -85,7 +89,9 @@ fun SkillMakerUI(
         when (nav) {
             SkillMakerNav.Atk -> {
                 SkillMakerAtk(
-                    onNextWave = { vm.nextStage(it) },
+                    wave = wave,
+                    turn = turn,
+                    onNextWave = { vm.nextWave(it) },
                     onNextTurn = { vm.nextTurn(it) }
                 )
             }

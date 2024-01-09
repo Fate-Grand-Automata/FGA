@@ -35,10 +35,11 @@ NP"</string>
     <string name="skill_maker_atk_next_turn">"Next Turn
 in same wave"</string>
     <string name="skill_maker_main_enemy">"Enemy %d"</string>
-    <string name="skill_maker_main_battle">"Battle: %d"</string>
+    <string name="skill_maker_main_wave">"Wave: %d"</string>
+    <string name="skill_maker_main_turn">"Turn: %d"</string>
     <string name="skill_maker_main_master_skills">"Master
 Skills"</string>
-    <string name="skill_maker_main_undo">"Undo"</string>
+    <string name="skill_maker_main_delete_selected">"Delete selected"</string>
     <string name="skill_maker_main_clear">"Clear"</string>
     <string name="skill_maker_main_servant">"Servant %d"</string>
     <string name="skill_maker_main_attack">"Attack"</string>
@@ -398,8 +399,15 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_app_language">"App Language"</string>
     <string name="p_treat_support_like_own_servant">Treat Support like own Servants</string>
     <string name="p_treat_support_like_own_servant_summary">Will do normal face card checks instead of looking for the "Support" icon on face cards. This solves problems with super-buffed Support Servants, but will break card priority if you have 2 of the same Servant in the party.</string>
+
     <string name="aborted">Aborted</string>
 
 
     <string name="p_script_mode_gift_box_warning">Please ensure you have set the filters to Embers only.</string>
+
+
+    <string name="p_screenshot_bond">"Screenshot Bond"</string>
+    <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
+    <string name="bond_level_up">Bond Level up!</string>
+
 </resources>

@@ -13,8 +13,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - 'v*'
     paths-ignore:
       - '.idea/**'
       - '.github/**'
@@ -26,23 +24,15 @@ on:
       - 'custom-game-area/**'
       - 'FUNDING.yml'
   workflow_dispatch:
-    inputs:
-      release-canary:
-        description: 'Release canary or not'
-        default: 'true'
-        required: true
-      release-playstore:
-        description: 'Release play store version or not'
-        default: 'true'
-        required: true
 env:
   JAVA_VERSION: 17
   JAVA_DISTRO: 'temurin'
+  VERSION_CODE: '${{ github.run_number }}'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/master' || inputs.release-canary != 'false'
+    if: github.ref != 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -55,12 +45,7 @@ jobs:
       - name: Determine Version Name
         shell: bash
         run: |
-          VERSION_CODE=${{ github.run_number }}
-          VERSION_NAME=${{ github.run_number }}
-          
-          if [[ ${{ github.ref }} == refs/tags/* ]]; then
-            VERSION_NAME = ${{ github.ref_name }}
-          fi
+          VERSION_NAME=$VERSION_CODE
           echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
@@ -79,32 +64,9 @@ jobs:
           name: mapping-ci
           path: app/build/outputs/mapping/ci/mapping.txt
 
-  # Release master branch
-  canary:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: apk
-
-      - name: Rename apk
-        run: mv app-ci.apk io.github.fate_grand_automata.apk
-
-      - id: create_release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "canary"
-          prerelease: true
-          title: 'FGA canary-${{ github.run_number }}'
-          files: |
-            *.apk
-
   play_store:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && inputs.release-playstore != 'false'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -117,12 +79,7 @@ jobs:
       - name: Determine Version Name
         shell: bash
         run: |
-          VERSION_CODE=${{ github.run_number }}
-          VERSION_NAME=${{ github.run_number }}
-          
-          if [[ ${{ github.ref }} == refs/tags/* ]]; then
-            VERSION_NAME = ${{ github.ref_name }}
-          fi
+          VERSION_NAME=$VERSION_CODE
           echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
@@ -156,3 +113,37 @@ jobs:
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
+
+  # Release master branch
+  github_release:
+    needs: play_store
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+      - name: Download Universal APK
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+          lane: 'download_apk'
+          options: '{ "version_code": "$VERSION_CODE" }'
+        env:
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
+      - name: zip APK
+        run: zip FGA-apk-${VERSION_CODE}.zip *.apk
+      - name: Create tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          custom_tag: ${{ env.VERSION_CODE }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          generateReleaseNotes: true
+          artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
+          tag: ${{ env.VERSION_CODE }}
+          name: 'FGA ${{ env.VERSION_CODE }}'
+          prerelease: true

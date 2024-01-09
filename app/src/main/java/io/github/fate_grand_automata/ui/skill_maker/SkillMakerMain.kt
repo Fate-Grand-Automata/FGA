@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
@@ -69,8 +70,16 @@ fun SkillMakerMain(
                 onSelectedChange = { vm.setEnemyTarget(it) }
             )
 
-            val stage by vm.stage
-            Text(stringResource(R.string.skill_maker_main_battle, stage))
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val wave by vm.wave
+                Text(stringResource(R.string.skill_maker_main_wave, wave))
+
+                val turn by vm.turn
+                Text(stringResource(R.string.skill_maker_main_turn, turn))
+            }
         }
 
         SkillHistory(vm)
@@ -90,9 +99,9 @@ fun SkillMakerMain(
                     val currentIndex by vm.currentIndex
 
                     ButtonWithIcon(
-                        text = R.string.skill_maker_main_undo,
-                        icon = icon(R.drawable.ic_undo),
-                        onClick = { vm.onUndo() },
+                        text = R.string.skill_maker_main_delete_selected,
+                        icon = icon(Icons.Default.Delete),
+                        onClick = { vm.onDeleteSelected() },
                         enabled = currentIndex > 0,
                         modifier = Modifier.padding(end = 5.dp)
                     )

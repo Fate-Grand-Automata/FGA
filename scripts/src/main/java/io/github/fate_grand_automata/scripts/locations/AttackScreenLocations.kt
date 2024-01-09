@@ -35,7 +35,7 @@ class AttackScreenLocations @Inject constructor(
         CommandCard.Face.C -> 41
         CommandCard.Face.D -> 554
         CommandCard.Face.E -> 1068
-    }.let { x -> Region(x, 620, 250, 230) + faceCardDeltaY }.xFromCenter()
+    }.let { x -> Region(x, 590, 250, 260) + faceCardDeltaY }.xFromCenter()
 
     fun typeRegion(card: CommandCard.Face) = when (card) {
         CommandCard.Face.A -> -1280
