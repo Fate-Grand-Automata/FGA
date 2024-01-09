@@ -4,7 +4,8 @@ sealed class ScriptLauncherResponse {
     object Cancel : ScriptLauncherResponse()
     data class FP(val limit: Int?) : ScriptLauncherResponse()
     data class Lottery(
-        val giftBox: GiftBox?
+        val giftBox: GiftBox?,
+        val returnToLottery: Boolean,
     ) : ScriptLauncherResponse()
 
     data class GiftBox(
