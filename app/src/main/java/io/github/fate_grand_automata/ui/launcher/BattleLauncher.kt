@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
@@ -250,46 +251,51 @@ fun battleLauncher(
                     configListState.scrollToItem(selectedConfigIndex)
                 }
             }
-
-            LazyColumn(
+            Box(
                 modifier = Modifier
                     .weight(1f)
-                    .scrollbar(
-                        state = configListState,
-                        hiddenAlpha = 0.3f,
-                        horizontal = false,
-                        knobColor = MaterialTheme.colorScheme.secondary
-                    ),
-                state = configListState
-            ) {
-                stickyHeader {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surface)
-                            .clickable {
-                                configSortIndex += 1
-                                if (configSortIndex >= configSortList.size) {
-                                    configSortIndex = 0
-                                }
-                                configSort = configSortList[configSortIndex]
-                            },
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            stringResource(configSort.stringRes).uppercase(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.secondary,
+                    .clipToBounds()
+            ){
+                LazyColumn(
+                    modifier = Modifier
+
+                        .scrollbar(
+                            state = configListState,
+                            hiddenAlpha = 0.3f,
+                            horizontal = false,
+                            knobColor = MaterialTheme.colorScheme.secondary
+                        ),
+                    state = configListState
+                ) {
+                    stickyHeader {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.surface)
+                                .clickable {
+                                    configSortIndex += 1
+                                    if (configSortIndex >= configSortList.size) {
+                                        configSortIndex = 0
+                                    }
+                                    configSort = configSortList[configSortIndex]
+                                },
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                stringResource(configSort.stringRes).uppercase(),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary,
+                            )
+                        }
+                    }
+                    itemsIndexed(configs) { index, item ->
+                        BattleConfigItem(
+                            name = item.name,
+                            isSelected = selectedConfigIndex == index,
+                            onSelected = { selectedConfigIndex = index }
                         )
                     }
-                }
-                itemsIndexed(configs) { index, item ->
-                    BattleConfigItem(
-                        name = item.name,
-                        isSelected = selectedConfigIndex == index,
-                        onSelected = { selectedConfigIndex = index }
-                    )
                 }
             }
         } else {
