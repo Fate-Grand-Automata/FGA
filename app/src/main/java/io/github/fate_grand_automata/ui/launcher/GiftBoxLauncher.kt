@@ -29,6 +29,12 @@ fun ColumnScope.GiftBoxLauncherContent(
     maxGoldEmberTotalCount: Int,
     changeMaxGoldEmberTotalCount: (Int) -> Unit
 ) {
+    Text(
+        text = stringResource(R.string.p_script_mode_gift_box_warning),
+        modifier= Modifier.fillMaxWidth(),
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.secondary
+    )
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
