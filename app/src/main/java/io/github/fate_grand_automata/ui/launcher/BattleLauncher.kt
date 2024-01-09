@@ -93,7 +93,15 @@ fun battleLauncher(
                 }
         )
     }
+    var selectedConfigIndex by remember { mutableIntStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
+
+    val configListState = rememberLazyListState()
+
+
     LaunchedEffect(configSort){
+        val tempSelectedBattleConfig = if (configs.isNotEmpty() && selectedConfigIndex > -1) {
+            configs[selectedConfigIndex]
+        } else null
         configs = configs.sortedWith(
             when (configSort) {
                 BattleConfigListSortEnum.DEFAULT_SORTED -> {
@@ -144,8 +152,12 @@ fun battleLauncher(
                 }
             }
         )
+        tempSelectedBattleConfig?.let { tmp ->
+            selectedConfigIndex = configs.indexOf(tmp)
+            configListState.scrollToItem(selectedConfigIndex)
+        }
     }
-    var selectedConfigIndex by remember { mutableIntStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
+
 
 
 
@@ -233,7 +245,6 @@ fun battleLauncher(
     ) {
         if (configs.isNotEmpty()) {
             // Scrolling the selected config into view
-            val configListState = rememberLazyListState()
             LaunchedEffect(true) {
                 if (selectedConfigIndex != -1) {
                     configListState.scrollToItem(selectedConfigIndex)
