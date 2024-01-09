@@ -2,6 +2,8 @@ plugins {
     id("java-library")
     id("kotlin")
     id("com.google.devtools.ksp")
+
+    kotlin("plugin.serialization") version libs.versions.kotlin.version.get()
 }
 
 dependencies {
@@ -13,6 +15,9 @@ dependencies {
 
     implementation(libs.dagger.hilt.core)
     ksp(libs.dagger.hilt.compiler)
+
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization)
 
     testImplementation(platform(libs.junit.bom)) {
         because("kotlin-test comes with conflicting junit versions")

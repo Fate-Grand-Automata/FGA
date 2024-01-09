@@ -58,4 +58,8 @@ internal class BattleConfig(
     }
 
     override fun hashCode() = id.hashCode()
+
+    override var lastUsage by prefs.lastUsage
+
+    override var usageCount by prefs.usageCount
 }

@@ -35,6 +35,9 @@ ksp_version = "1.9.21-1.0.16"
 
 junit_bom_version = "5.9.3"
 
+kotlinx_datetime_version = "0.5.0"
+kotlinx_serialization_version = "1.6.2"
+
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle_version" }
@@ -100,6 +103,9 @@ compose-material3-window-size = { group = "androidx.compose.material3", name = "
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
+kotlinx-datetime = {group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx_datetime_version"}
+#https://github.com/Kotlin/kotlinx-datetime/issues/297#issuecomment-1857904444
+kotlinx-serialization = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx_serialization_version"}
 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }

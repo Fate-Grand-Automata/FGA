@@ -4,6 +4,8 @@ plugins {
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp")
+
+    kotlin("plugin.serialization") version libs.versions.kotlin.version.get()
 }
 
 android {
@@ -141,5 +143,8 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)
+
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization)
 
 }

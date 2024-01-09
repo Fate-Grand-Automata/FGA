@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.util
 
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.GameAreaMode
+import io.github.fate_grand_automata.scripts.enums.BattleConfigListSortEnum
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.MaterialEnum
@@ -184,4 +185,15 @@ val GameServer.simpleStringRes
         GameServer.Kr -> R.string.game_server_kr
         is GameServer.En -> R.string.game_server_na
         is GameServer.Jp -> R.string.game_server_jp
+    }
+
+
+val BattleConfigListSortEnum.stringRes
+    get() = when (this) {
+        BattleConfigListSortEnum.DEFAULT_SORTED -> R.string.p_battle_config_sort_default
+        BattleConfigListSortEnum.SORT_BY_NAME_DESC -> R.string.p_battle_config_sort_by_name_desc
+        BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_ASC -> R.string.p_battle_config_sort_by_usage_count_asc
+        BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_DESC -> R.string.p_battle_config_sort_by_usage_count_desc
+        BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_ASC -> R.string.p_battle_config_sort_by_last_usage_time_asc
+        BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_DESC -> R.string.p_battle_config_sort_by_last_usage_time_desc
     }

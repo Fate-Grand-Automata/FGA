@@ -48,6 +48,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -193,7 +196,11 @@ class ScriptManager @Inject constructor(
 
             is AutoBattle.ExitException -> {
                 preferences.hidePlayButton = false
-
+                if (e.reason !is AutoBattle.ExitReason.Paused && e.state.timesRan > 0){
+                    preferences.selectedBattleConfig.lastUsage =
+                        Clock.System.now().toLocalDateTime(timeZone = TimeZone.UTC)
+                    preferences.selectedBattleConfig.usageCount += e.state.timesRan
+                }
                 if (e.reason !is AutoBattle.ExitReason.Abort) {
                     messages.notify(scriptExitedString)
                 }

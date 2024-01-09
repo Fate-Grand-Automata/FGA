@@ -40,38 +40,114 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.scripts.enums.BattleConfigListSortEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
+import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.Stepper
 import io.github.fate_grand_automata.ui.scrollbar
 import io.github.fate_grand_automata.util.stringRes
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 @Composable
 fun battleLauncher(
     prefs: IPreferences,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
-    val configs = remember {
-        prefs.battleConfigs
-            .filter {
-                when (it.server) {
-                    // always show if no server is set
-                    null -> true
-                    // ignore betterFgo for En and Jp
-                    is GameServer.En -> prefs.gameServer is GameServer.En
-                    is GameServer.Jp -> prefs.gameServer is GameServer.Jp
-                    GameServer.Cn, GameServer.Kr, GameServer.Tw -> it.server == prefs.gameServer
-                }
-            }
-    }
-    var selectedConfigIndex by remember { mutableIntStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
 
     val perServerConfigPref by remember {
         mutableStateOf(
             prefs.getPerServerConfigPref(prefs.gameServer)
         )
     }
+    val configSortList by remember{
+        mutableStateOf(
+            BattleConfigListSortEnum.entries.toList()
+        )
+    }
+    var configSort by remember {
+        mutableStateOf(
+            perServerConfigPref.configListSort
+        )
+    }
+    var configSortIndex by remember{
+        mutableStateOf(
+            configSortList.indexOf(configSort)
+        )
+    }
+
+    var configs by remember {
+        mutableStateOf(
+            prefs.battleConfigs
+                .filter {
+                    when (it.server) {
+                        // always show if no server is set
+                        null -> true
+                        // ignore betterFgo for En and Jp
+                        is GameServer.En -> prefs.gameServer is GameServer.En
+                        is GameServer.Jp -> prefs.gameServer is GameServer.Jp
+                        GameServer.Cn, GameServer.Kr, GameServer.Tw -> it.server == prefs.gameServer
+                    }
+                }
+        )
+    }
+    LaunchedEffect(configSort){
+        configs = configs.sortedWith(
+            when (configSort) {
+                BattleConfigListSortEnum.DEFAULT_SORTED -> {
+                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.name }
+                }
+                BattleConfigListSortEnum.SORT_BY_NAME_DESC -> {
+                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.name }
+                }
+
+                BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_ASC -> {
+                    compareBy<IBattleConfig> {
+                        it.usageCount
+                    }.thenBy(String.CASE_INSENSITIVE_ORDER) {
+                        it.name
+                    }
+                }
+
+                BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_DESC -> {
+                    compareByDescending<IBattleConfig> {
+                        it.usageCount
+                    }.thenBy(String.CASE_INSENSITIVE_ORDER) {
+                        it.name
+                    }
+                }
+
+                BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_ASC -> {
+                    compareBy<IBattleConfig> {
+                        if (it.usageCount > 0) {
+                            it.lastUsage.toInstant(TimeZone.UTC).epochSeconds
+                        } else {
+                            0L
+                        }
+                    }.thenBy(String.CASE_INSENSITIVE_ORDER) {
+                        it.name
+                    }
+                }
+
+                BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_DESC -> {
+                    compareByDescending<IBattleConfig> {
+                        if (it.usageCount > 0) {
+                            it.lastUsage.toInstant(TimeZone.UTC).epochSeconds
+                        } else {
+                            0L
+                        }
+                    }.thenBy(String.CASE_INSENSITIVE_ORDER) {
+                        it.name
+                    }
+                }
+            }
+        )
+    }
+    var selectedConfigIndex by remember { mutableIntStateOf(configs.indexOf(prefs.selectedBattleConfig)) }
+
+
 
     var refillResources by remember { mutableStateOf(perServerConfigPref.resources.toSet()) }
 
@@ -140,6 +216,8 @@ fun battleLauncher(
             if (selectedConfigIndex > -1) {
                 prefs.selectedBattleConfig = configs[selectedConfigIndex]
             }
+
+            perServerConfigPref.configListSort = configSort
         }
     }
 
@@ -173,6 +251,28 @@ fun battleLauncher(
                     ),
                 state = configListState
             ) {
+                stickyHeader {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surface)
+                            .clickable {
+                                configSortIndex += 1
+                                if (configSortIndex >= configSortList.size) {
+                                    configSortIndex = 0
+                                }
+                                configSort = configSortList[configSortIndex]
+                            },
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            stringResource(configSort.stringRes).uppercase(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.secondary,
+                        )
+                    }
+                }
                 itemsIndexed(configs) { index, item ->
                     BattleConfigItem(
                         name = item.name,

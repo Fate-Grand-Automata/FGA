@@ -398,4 +398,16 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_screenshot_bond">"Screenshot Bond"</string>
     <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
     <string name="bond_level_up">Bond Level up!</string>
+
+    <string name="battle_config_list_usage_count">"%d uses."</string>
+    <string name="battle_config_list_last_usage">"Last Use: %s %02d:%02d:%02d."</string>
+
+    <string name="p_battle_config_sort">Sort</string>
+    <string name="p_battle_config_sort_title">Battle Config List Sort</string>
+    <string name="p_battle_config_sort_default">Default</string>
+    <string name="p_battle_config_sort_by_last_usage_time_asc">Last usage time Asc.</string>
+    <string name="p_battle_config_sort_by_last_usage_time_desc">Last usage time Desc.</string>
+    <string name="p_battle_config_sort_by_usage_count_desc">Usage count Desc.</string>
+    <string name="p_battle_config_sort_by_usage_count_asc">Usage count Asc.</string>
+    <string name="p_battle_config_sort_by_name_desc">Name desc.</string>
 </resources>

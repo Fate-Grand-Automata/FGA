@@ -111,6 +111,8 @@ class PreferencesImpl @Inject constructor(
 
     override var receiveEmbersWhenGiftBoxFull by prefs.receiveEmbersWhenGiftBoxFull
 
+    override var configListSort by prefs.configListSort
+
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
 
     override fun forBattleConfig(id: String): IBattleConfig =
