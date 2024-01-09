@@ -26,7 +26,7 @@ class Locations @Inject constructor(
 
     val closeLowerMiddleScreenRegion = when(gameServer){
         is GameServer.En -> Region(-111, 1084, 219, 72).xFromCenter()
-        // JP Option
+        // JP and TW Option
         else -> Region(-112, 1088, 219, 72).xFromCenter()
     }
 
