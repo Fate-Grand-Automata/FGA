@@ -205,10 +205,13 @@ class AutoServantLevel @Inject constructor(
         run ascension@{
             repeat(retry) {
                 locations.enhancementClick.click()
-                confirmationVisible = locations.servant.finalConfirmRegion.exists(
-                    images[Images.Ok],
+                confirmationVisible = listOf(
+                    images[Images.Ok] to locations.servant.finalConfirmRegion,
+                    images[Images.Execute] to locations.tempServantEnhancementRegion
+                ).existsAny(
                     timeout = 3.seconds
                 )
+                
                 if (confirmationVisible) {
                     return@ascension
                 }
