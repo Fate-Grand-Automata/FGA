@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.FgaScreen
@@ -20,7 +21,8 @@ import io.github.fate_grand_automata.ui.FgaScreen
 fun ScriptLauncher(
     scriptMode: ScriptModeEnum,
     onResponse: (ScriptLauncherResponse) -> Unit,
-    prefs: IPreferences
+    prefs: IPreferences,
+    prefsCore: PrefsCore
 ) {
     FgaScreen {
         Column(
@@ -37,6 +39,7 @@ fun ScriptLauncher(
                 ScriptModeEnum.Lottery -> lotteryLauncher(prefs, modifier)
                 ScriptModeEnum.PresentBox -> giftBoxLauncher(prefs, modifier)
                 ScriptModeEnum.CEBomb -> ceBombLauncher(prefs, modifier)
+                ScriptModeEnum.ServantLevel -> servantLevelLauncher(prefsCore, modifier)
             }
 
             Divider()

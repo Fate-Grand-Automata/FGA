@@ -51,4 +51,10 @@ interface AutomataApi {
     fun Region.isBlack(): Boolean
 
     fun Region.detectText(outlinedText: Boolean = false): String
+
+    fun List<Pair<Pattern, Region>>.existsAny(
+        timeout: Duration = Duration.ZERO,
+        similarity: Double? = null,
+        requireAll: Boolean = false
+    ): Boolean
 }
