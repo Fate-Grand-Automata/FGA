@@ -5,10 +5,14 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 interface Highlighter {
+    companion object {
+        val DEFAULT_DURATION = 0.3.seconds
+    }
+
     operator fun invoke(
         region: Region,
         color: HighlightColor,
-        duration: Duration = 0.3.seconds
+        duration: Duration = DEFAULT_DURATION
     )
 }
 
