@@ -60,7 +60,7 @@ class BattleConfigListViewModel @Inject constructor(
                 .map { key -> prefsCore.forBattleConfig(key) }
                 .sortedWith(
                     when (sort) {
-                        BattleConfigListSortEnum.DEFAULT_SORTED -> {
+                        BattleConfigListSortEnum.DEFAULT_SORT -> {
                             compareByDescending<BattleConfigCore, Int?>((nullsFirst())) {
                                 it.server.get().asGameServer()?.let { server ->
                                     GameServer.values.indexOf(server)

@@ -57,7 +57,7 @@ fun BattleConfigListScreen(
     val selectionMode by vm.selectionMode.collectAsState()
     val selectedConfigs by vm.selectedConfigs.collectAsState()
 
-    val configListSort by vm.configListSort.collectAsState(BattleConfigListSortEnum.DEFAULT_SORTED)
+    val configListSort by vm.configListSort.collectAsState(BattleConfigListSortEnum.DEFAULT_SORT)
 
     BackHandler(
         enabled = selectionMode,

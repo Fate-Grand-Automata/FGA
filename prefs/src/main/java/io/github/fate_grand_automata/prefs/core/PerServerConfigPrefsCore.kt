@@ -47,5 +47,5 @@ class PerServerConfigPrefsCore(
 
     val refill = RefillPrefsCore(maker)
 
-    val configListSort = maker.enum("config_list_sort", BattleConfigListSortEnum.DEFAULT_SORTED)
+    val configListSort = maker.enum("config_list_sort", BattleConfigListSortEnum.DEFAULT_SORT)
 }

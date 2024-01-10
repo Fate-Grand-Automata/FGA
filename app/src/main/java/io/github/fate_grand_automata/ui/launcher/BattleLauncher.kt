@@ -105,7 +105,7 @@ fun battleLauncher(
         } else null
         configs = configs.sortedWith(
             when (configSort) {
-                BattleConfigListSortEnum.DEFAULT_SORTED -> {
+                BattleConfigListSortEnum.DEFAULT_SORT -> {
                     compareBy(String.CASE_INSENSITIVE_ORDER) { it.name }
                 }
                 BattleConfigListSortEnum.SORT_BY_NAME_DESC -> {

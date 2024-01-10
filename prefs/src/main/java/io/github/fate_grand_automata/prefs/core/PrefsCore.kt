@@ -147,5 +147,5 @@ class PrefsCore @Inject constructor(
             )
         }
 
-    val configListSort = maker.enum("config_list_sort", BattleConfigListSortEnum.DEFAULT_SORTED)
+    val configListSort = maker.enum("config_list_sort", BattleConfigListSortEnum.DEFAULT_SORT)
 }
