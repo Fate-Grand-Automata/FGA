@@ -158,7 +158,7 @@ class AutoServantLevel @Inject constructor(
         when {
             prefs.servant.shouldRedirectAscension && ascensionRedirect -> {
                 while (true) {
-                    locations.servant.servantRedirectCheckRegion.click()
+                    locations.servant.servantRedirectCheckRegion(prefs.gameServer).click()
                     val isVisible = waitUntilAscensionVisible()
                     if (isVisible) {
                         break
@@ -171,7 +171,7 @@ class AutoServantLevel @Inject constructor(
 
             prefs.servant.shouldRedirectGrail && grailRedirect -> {
                 while (true) {
-                    locations.servant.servantRedirectCheckRegion.click()
+                    locations.servant.servantRedirectCheckRegion(prefs.gameServer).click()
                     val isVisible = waitUntilGrailVisible()
                     if (isVisible) {
                         break
@@ -369,13 +369,13 @@ class AutoServantLevel @Inject constructor(
      * This function will check if the servant can redirect to the grail menu.
      */
     private fun isRedirectGrailVisible() = images[Images.ServantGrailRedirectFromMenu] in
-            locations.servant.servantRedirectCheckRegion
+            locations.servant.servantRedirectCheckRegion(prefs.gameServer)
 
     /**
      * This function will check if the servant can redirect to the ascension menu.
      */
     private fun isRedirectAscensionVisible() = images[Images.ServantAscensionRedirectFromMenu] in
-            locations.servant.servantRedirectCheckRegion
+            locations.servant.servantRedirectCheckRegion(prefs.gameServer)
 
     /**
      * This function will wait until the grail menu is visible.

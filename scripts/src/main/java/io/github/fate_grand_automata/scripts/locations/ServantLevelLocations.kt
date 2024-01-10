@@ -39,9 +39,16 @@ class ServantLevelLocations @Inject constructor(
         false -> Region(615, 1049, 54, 124).xFromCenter()
     }
 
-    val servantRedirectCheckRegion = when(isWide) {
-        true -> Region(689, 1015, 43, 111).xFromCenter()
-        false -> Region(689, 1060, 43, 111).xFromCenter()
+    fun servantRedirectCheckRegion(server: GameServer) = when(server){
+        is GameServer.Tw -> when(isWide){
+            true -> Region(776, 1015, 46, 110).xFromCenter()
+            false -> Region(776, 1060, 46, 110).xFromCenter()
+        }
+        // EN and JP Option
+        else -> when(isWide) {
+            true -> Region(689, 1015, 43, 111).xFromCenter()
+            false -> Region(689, 1060, 43, 111).xFromCenter()
+        }
     }
 
     val autoSelectMinEmberLowQPRegion = when (isWide) {
