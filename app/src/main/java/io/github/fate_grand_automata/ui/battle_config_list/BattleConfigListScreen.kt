@@ -45,7 +45,6 @@ import io.github.fate_grand_automata.ui.dialog.singleChoiceList
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.simpleStringRes
 import io.github.fate_grand_automata.util.stringRes
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
@@ -429,14 +428,7 @@ private fun BattleConfigListItem(
     val longClickState = rememberUpdatedState(onLongClick)
 
     val usageCount by config.usageCount.remember()
-    var lastUsage by config.lastUsage.remember()
-
-
-    LaunchedEffect(Unit) {
-        if (usageCount == 0) {
-            lastUsage = Clock.System.now().toLocalDateTime(TimeZone.UTC)
-        }
-    }
+    val lastUsage by config.lastUsage.remember()
 
     val usageContent: @Composable (() -> Unit)? = if (usageCount > 0) {
         @Composable {
