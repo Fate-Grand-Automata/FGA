@@ -160,7 +160,7 @@ private fun BattleConfigListContent(
             },
             template = {
                 Text(
-                    text = stringResource(id = it.stringRes).uppercase()
+                    text = stringResource(id = it.stringRes)
                 )
             }
         )
