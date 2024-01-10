@@ -144,9 +144,9 @@ private fun BattleConfigListContent(
 ) {
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    val filterListDialog = FgaDialog()
+    val sortListDialog = FgaDialog()
 
-    filterListDialog.build {
+    sortListDialog.build {
         title(
             text = stringResource(id = R.string.p_battle_config_sort_title)
         )
@@ -156,7 +156,7 @@ private fun BattleConfigListContent(
             selected = configListSort,
             onSelectedChange = { sort ->
                 onConfigListSortChange(sort)
-                filterListDialog.hide()
+                sortListDialog.hide()
             },
             template = {
                 Text(
@@ -209,7 +209,7 @@ private fun BattleConfigListContent(
                     HeadingButton(
                         text = stringResource(id = R.string.p_battle_config_sort),
                         onClick = {
-                            filterListDialog.show()
+                            sortListDialog.show()
                         },
                         icon = icon(Icons.Default.Sort)
                     )
