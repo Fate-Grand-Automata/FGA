@@ -405,6 +405,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
     <string name="servant_redirect_ascension_question">Redirect to Ascension upon reaching the level cap?</string>
     <string name="servant_perform_ascension_question">Should Performed Ascension?</string>
+    <string name="servant_perform_ascension_warning">Ascension of duplicate servant is not supported.</string>
     <string name="servant_redirect_grail">Redirect to Palingenesis upon reaching the level cap?</string>
     <string name="servant_redirect_ascension_success">Redirected to Ascension.</string>
     <string name="servant_redirect_grail_success">Redirected to Palingenesis.</string>
