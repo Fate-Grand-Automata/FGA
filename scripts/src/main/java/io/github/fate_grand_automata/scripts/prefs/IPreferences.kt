@@ -32,8 +32,6 @@ interface IPreferences {
     val skipServantFaceCardCheck: Boolean
     val treatSupportLikeOwnServant: Boolean
 
-    var shouldLimitFP: Boolean
-    var limitFP: Int
     var receiveEmbersWhenGiftBoxFull: Boolean
 
     val stageCounterSimilarity: Double

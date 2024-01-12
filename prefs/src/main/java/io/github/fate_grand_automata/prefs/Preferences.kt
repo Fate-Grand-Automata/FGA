@@ -107,9 +107,6 @@ class PreferencesImpl @Inject constructor(
 
     override var treatSupportLikeOwnServant by prefs.treatSupportLikeOwnServant
 
-    override var shouldLimitFP by prefs.shouldLimitFP
-    override var limitFP by prefs.limitFP
-
     override var receiveEmbersWhenGiftBoxFull by prefs.receiveEmbersWhenGiftBoxFull
 
     override val craftEssence: ICraftEssencePreferences =
