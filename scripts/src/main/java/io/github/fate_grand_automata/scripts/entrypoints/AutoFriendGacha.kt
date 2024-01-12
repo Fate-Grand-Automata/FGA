@@ -34,7 +34,14 @@ class AutoFriendGacha @Inject constructor(
     }
 
     override fun script(): Nothing {
-        if (!isSummonButtonVisible()) {
+        if (images[Images.FriendSummon] in locations.fp.initialSummonCheck){
+            locations.fp.initialSummonClick.click()
+            0.3.seconds.wait()
+            locations.fp.initialSummonContinueClick.click()
+
+            countNext()
+        }
+        else if (!isSummonButtonVisible()) {
             locations.fp.first10SummonClick.click()
             0.3.seconds.wait()
             locations.fp.okClick.click()

@@ -56,6 +56,7 @@ class ScriptRunnerOverlay @Inject constructor(
         layout = FakedComposeView(service) {
             ScriptRunnerUI(
                 state = uiStateHolder.uiState,
+                prefsCore = prefsCore,
                 updateState = { act(it) },
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,

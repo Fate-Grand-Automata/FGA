@@ -138,6 +138,11 @@ class ScriptMessages @Inject constructor(
 
                 toast(msg)
             }
+            is ScriptNotify.BondLevelUp -> {
+                notify(
+                    context.getString(R.string.bond_level_up)
+                )
+            }
         }
 
     private fun makeRefillAndRunsMessage(

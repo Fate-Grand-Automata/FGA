@@ -83,6 +83,10 @@ class PreferencesImpl @Inject constructor(
 
     override val screenshotDropsUnmodified by prefs.screenshotDropsUnmodified
 
+    override val screenshotBond by prefs.screenshotBond
+
+    override var hidePlayButton by prefs.hidePlayButton
+
     override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
 
     override val stageCounterNew by prefs.stageCounterNew
