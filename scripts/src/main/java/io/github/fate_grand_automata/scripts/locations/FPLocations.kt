@@ -24,6 +24,7 @@ class FPLocations @Inject constructor(
 
     val ceFullVerifyRegion = when(gameServer){
         is GameServer.En -> Region(133, 282, 155, 56).xFromCenter()
+        is GameServer.Tw -> Region(-577, 304, 123, 63).xFromCenter()
         // JP option
         else -> Region(-683, 302, 312, 64).xFromCenter()
     }
