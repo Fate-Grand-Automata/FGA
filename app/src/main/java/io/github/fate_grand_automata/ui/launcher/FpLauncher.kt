@@ -56,7 +56,7 @@ fun fpLauncher(
     var showCEBombSettings by remember { mutableStateOf(false) }
 
     val isCEBombSupported by remember {
-        mutableStateOf(prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.En)
+        mutableStateOf(prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Tw)
     }
 
 
