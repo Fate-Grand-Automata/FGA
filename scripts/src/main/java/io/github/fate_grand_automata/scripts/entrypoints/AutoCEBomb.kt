@@ -363,7 +363,7 @@ class AutoCEBomb @Inject constructor(
                 }
             }
         }
-
+        var retry = 5
         while (true){
             locations.ceBomb.filterCloseLocation.click()
             val didFiveStarVanish = locations.ceBomb.filterByRarityRegion(rarity = 5).waitVanish(
@@ -371,6 +371,10 @@ class AutoCEBomb @Inject constructor(
                 timeout = 2.seconds
             )
             if (didFiveStarVanish) break
+            if (retry == 0){
+                throw ExitException(ExitReason.NoSuitableTargetCEFound)
+            }
+            retry--
         }
     }
 
@@ -408,6 +412,7 @@ class AutoCEBomb @Inject constructor(
                 }
             }
         }
+        var retry = 5
         while (true){
             locations.ceBomb.filterCloseLocation.click()
             val didFiveStarVanish = locations.ceBomb.filterByRarityRegion(rarity = 5).waitVanish(
@@ -415,6 +420,10 @@ class AutoCEBomb @Inject constructor(
                 timeout = 2.seconds
             )
             if (didFiveStarVanish) break
+            if (retry == 0){
+                throw ExitException(ExitReason.NoSuitableTargetCEFound)
+            }
+            retry--
         }
     }
 
