@@ -67,8 +67,6 @@ class AutoFriendGacha @Inject constructor(
                 rollFPAgain()
             },
             { isFPSellVisible() } to {
-                countNext()
-
                 if (prefs.friendGacha.shouldRedirectToSell) {
                     locations.fp.fpSellRegion.click()
                     waitForSellBanner()
