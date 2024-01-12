@@ -426,4 +426,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="ce_bomb_clicking">Clicking</string>
     <string name="ce_bomb_selection_method">Selection method</string>
 
+    <string name="p_fp_gacha_show_ce_bomb_settings">Show CE Bomb Settings</string>
+    <string name="p_fp_gacha_hide_ce_bomb_settings">Hide CE Bomb Settings</string>
+    <string name="p_fp_gacha_ce_bomb_pr_for_other_servers">Please open a PR to add support for your server.</string>
+
 </resources>

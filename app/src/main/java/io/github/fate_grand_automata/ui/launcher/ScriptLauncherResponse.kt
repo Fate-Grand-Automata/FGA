@@ -2,7 +2,7 @@ package io.github.fate_grand_automata.ui.launcher
 
 sealed class ScriptLauncherResponse {
     data object Cancel : ScriptLauncherResponse()
-    data class FP(val limit: Int?) : ScriptLauncherResponse()
+    data object FP : ScriptLauncherResponse()
     data class Lottery(
         val giftBox: GiftBox?
     ) : ScriptLauncherResponse()
