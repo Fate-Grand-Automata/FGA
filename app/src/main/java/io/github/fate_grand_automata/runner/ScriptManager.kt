@@ -185,6 +185,8 @@ class ScriptManager @Inject constructor(
                 val msg = when (val reason = e.reason) {
                     AutoFriendGacha.ExitReason.InventoryFull -> context.getString(R.string.inventory_full)
                     is AutoFriendGacha.ExitReason.Limit -> context.getString(R.string.times_rolled, reason.count)
+                    AutoFriendGacha.ExitReason.UnableVerifyIfReachedCEEnhancementMenu ->
+                        context.getString(R.string.unable_to_verify_if_reached_the_ce_menu)
                 }
 
                 messages.notify(msg)

@@ -74,5 +74,6 @@ enum class Images {
     CraftEssenceFodderSelectedCELocked,
     CraftEssenceLock,
     CraftEssenceOn,
-    Ok
+    Ok,
+    FPCENotice
 }

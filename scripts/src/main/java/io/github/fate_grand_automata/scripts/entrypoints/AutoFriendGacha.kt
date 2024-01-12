@@ -14,10 +14,12 @@ import kotlin.time.Duration.Companion.seconds
 @ScriptScope
 class AutoFriendGacha @Inject constructor(
     exitManager: ExitManager,
-    api: IFgoAutomataApi
+    api: IFgoAutomataApi,
+    private val autoCEBomb: AutoCEBomb
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason {
-        object InventoryFull : ExitReason()
+        data object UnableVerifyIfReachedCEEnhancementMenu : ExitReason()
+        data object InventoryFull : ExitReason()
         class Limit(val count: Int) : ExitReason()
     }
 
@@ -51,7 +53,7 @@ class AutoFriendGacha @Inject constructor(
 
         while (true) {
             if (isInventoryFull()) {
-                throw ExitException(ExitReason.InventoryFull)
+                performActionsOnInventoryFull()
             }
 
             if (isSummonButtonVisible()) {
@@ -65,5 +67,29 @@ class AutoFriendGacha @Inject constructor(
         }
     }
 
+    private fun performActionsOnInventoryFull() {
+        val redirectToCEBomb = prefs.friendGacha.shouldCreateCEBombAfterSummon && canGoToCeEnhancementMenu()
+
+        when {
+            redirectToCEBomb -> {
+                locations.inventoryFullRegion.click()
+                val isScreenTransitionAchieved = locations.ceBomb.ceBannerOffRegion.exists(
+                    image = images[Images.CraftEssenceBannerOff],
+                    timeout = 30.seconds,
+                )
+                if (isScreenTransitionAchieved) {
+                    autoCEBomb.script()
+                } else {
+                    throw ExitException(ExitReason.UnableVerifyIfReachedCEEnhancementMenu)
+                }
+            }
+
+            else -> throw ExitException(ExitReason.InventoryFull)
+        }
+
+    }
+
     private fun isSummonButtonVisible() = findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue)
+
+    private fun canGoToCeEnhancementMenu() = images[Images.FPCENotice] in locations.fp.ceFullVerifyRegion
 }

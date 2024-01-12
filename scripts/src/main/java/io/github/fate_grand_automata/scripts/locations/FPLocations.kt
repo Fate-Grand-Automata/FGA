@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.locations
 
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
@@ -20,4 +21,10 @@ class FPLocations @Inject constructor(
     val okClick = Location(320, 1120).xFromCenter()
     val continueSummonClick = Location(320, 1325).xFromCenter()
     val skipRapidClick = Location(1240, 1400).xFromCenter()
+
+    val ceFullVerifyRegion = when(gameServer){
+        is GameServer.En -> Region(133, 282, 155, 56).xFromCenter()
+        // JP option
+        else -> Region(-683, 302, 312, 64).xFromCenter()
+    }
 }
