@@ -3,7 +3,6 @@ package io.github.fate_grand_automata.scripts.entrypoints
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.CEDisplayChangeAreaEnum
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -365,11 +364,13 @@ class AutoCEBomb @Inject constructor(
             }
         }
 
-        if (isFilterClosable()) {
+        while (true){
             locations.ceBomb.filterCloseLocation.click()
-            1.seconds.wait()
-        } else {
-            throw ExitException(ExitReason.NoSuitableTargetCEFound)
+            val didFiveStarVanish = locations.ceBomb.filterByRarityRegion(rarity = 5).waitVanish(
+                image = images[Images.CraftEssenceFodderCEFilterOff],
+                timeout = 2.seconds
+            )
+            if (didFiveStarVanish) break
         }
     }
 
@@ -407,14 +408,14 @@ class AutoCEBomb @Inject constructor(
                 }
             }
         }
-
-        if (isFilterClosable()) {
+        while (true){
             locations.ceBomb.filterCloseLocation.click()
-            1.seconds.wait()
-        } else {
-            throw ExitException(ExitReason.NoSuitableTargetCEFound)
+            val didFiveStarVanish = locations.ceBomb.filterByRarityRegion(rarity = 5).waitVanish(
+                image = images[Images.CraftEssenceFodderCEFilterOff],
+                timeout = 2.seconds
+            )
+            if (didFiveStarVanish) break
         }
-
     }
 
     /**
@@ -681,19 +682,6 @@ class AutoCEBomb @Inject constructor(
      */
     private fun isDisplaySmall() = images[Images.CraftEssenceDisplaySmall] in
             locations.ceBomb.displaySizeCheckRegion
-
-    private fun isFilterClosable() = when (prefs.gameServer) {
-        is GameServer.En -> images[Images.Ok] in locations.ceBomb.filterCloseRegion
-
-        // TW, looks like the same case too
-        // the JP text was smaller than on other buttons of the same text
-        // and I don't know why.
-        // I also can't remember why 0.5 size works too.
-        else -> {
-            val region = locations.ceBomb.filterCloseRegion
-            images[Images.Ok].resize(region.size * 0.5) in region
-        }
-    }
 
     private fun isSmartSortOn() = images[Images.CraftEssenceOn] in locations.ceBomb.smartSortRegion
 
