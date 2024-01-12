@@ -28,7 +28,7 @@ class AutoFriendGacha @Inject constructor(
     private var count = 0
 
     private fun countNext() {
-        if (prefs.shouldLimitFP && count >= prefs.limitFP) {
+        if (prefs.friendGacha.shouldLimitFP && count >= prefs.friendGacha.limitFP) {
             throw ExitException(ExitReason.Limit(count))
         }
 
