@@ -363,7 +363,7 @@ class AutoCEBomb @Inject constructor(
                 }
             }
         }
-        var retry = 5
+        var retry = 3
         while (true){
             locations.ceBomb.filterCloseLocation.click()
             val didFiveStarVanish = locations.ceBomb.filterByRarityRegion(rarity = 5).waitVanish(
@@ -413,7 +413,7 @@ class AutoCEBomb @Inject constructor(
                 }
             }
         }
-        var retry = 5
+        var retry = 3
         while (true){
             locations.ceBomb.filterCloseLocation.click()
             val didFiveStarVanish = locations.ceBomb.filterByRarityRegion(rarity = 5).waitVanish(
