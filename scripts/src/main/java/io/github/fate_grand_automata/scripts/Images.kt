@@ -52,7 +52,7 @@ enum class Images {
     Support,
     ServantCheckSupport,
     BattleMenu,
-    CEEnhance,
+    EmptyEnhance,
     CEGloomLv1,
     CEStarvationLv1,
     CEAwakeningLv1,
@@ -65,5 +65,14 @@ enum class Images {
     CESynchronizationLv1,
     SkillUse,
     RankUp,
-    Close
+    Close,
+    CraftEssenceBannerOn,
+    CraftEssenceBannerOff,
+    CraftEssenceDisplaySmall,
+    CraftEssenceStar,
+    CraftEssenceFodderCEFilterOff,
+    CraftEssenceFodderSelectedCELocked,
+    CraftEssenceLock,
+    CraftEssenceOn,
+    Ok
 }

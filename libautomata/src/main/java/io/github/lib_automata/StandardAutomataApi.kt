@@ -7,6 +7,8 @@ class StandardAutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
     private val highlight: Highlighter,
     private val click: Clicker,
+    private val longPress: LongPress,
+    private val longPressAndSwipeOrMultipleClicks: LongPressAndSwipeOrMultipleClicks,
     private val imageMatcher: ImageMatcher,
     private val transform: Transformer,
     private val colorManager: ColorManager,
@@ -69,6 +71,22 @@ class StandardAutomataApi @Inject constructor(
             .use {
                 return ocrService.detectText(it)
             }
+    }
+
+    override fun Location.longPress(duration: Int) = longPress(this, duration)
+
+    override fun Region.longPress(duration: Int) = longPress(center, duration)
+    override fun List<Pair<Pattern, Region>>.existsAny(
+        timeout: Duration, similarity: Double?, requireAll: Boolean,
+    ) = imageMatcher.existsAnyInList(
+        items = this,
+        timeout = timeout,
+        similarity = similarity,
+        requireAll = requireAll
+    )
+
+    override fun longPressAndSwipe(clicksArray: List<List<Location>>, chunked: Int) {
+        longPressAndSwipeOrMultipleClicks(clicksArray, chunked)
     }
 }
 

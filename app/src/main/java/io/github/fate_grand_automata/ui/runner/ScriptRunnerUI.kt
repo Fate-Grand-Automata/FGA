@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,12 +34,18 @@ fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
     prefsCore: PrefsCore,
     updateState: (ScriptRunnerUIAction) -> Unit,
+    onPosition: () -> Unit,
     onDrag: (Float, Float) -> Unit,
+    onDragEnd: () -> Unit,
     enabled: Boolean,
     isRecording: Boolean
 ) {
     val hidePlayButton by prefsCore.hidePlayButton.remember()
     val script by prefsCore.scriptMode.remember()
+
+    LaunchedEffect(key1 = Unit, block = {
+        onPosition()
+    })
 
     FGATheme(
         darkTheme = true,
@@ -50,10 +57,13 @@ fun ScriptRunnerUI(
         ) {
             val dragModifier = Modifier
                 .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        onDrag(dragAmount.x, dragAmount.y)
-                    }
+                    detectDragGestures(
+                        onDragEnd = onDragEnd,
+                        onDrag = { change, dragAmount ->
+                            change.consume()
+                            onDrag(dragAmount.x, dragAmount.y)
+                        }
+                    )
                 }
 
             Surface(

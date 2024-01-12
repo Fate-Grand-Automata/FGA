@@ -6,6 +6,7 @@ import io.github.lib_automata.Region
 
 interface IScriptAreaTransforms {
     val scriptArea: Region
+    val scriptAreaRaw: Region
     val isWide: Boolean
     val gameServer: GameServer
     val canLongSwipe: Boolean

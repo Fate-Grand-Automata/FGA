@@ -50,6 +50,21 @@ interface ImageMatcher {
 
     fun isWhite(region: Region): Boolean
     fun isBlack(region: Region): Boolean
+
+    /**
+     * Checks if all images in the list exist in their respective regions.
+     *
+     * @param items a list of [Region] and [Pattern] pairs
+     * @param timeout how long to search for before giving up
+     * @param similarity the minimum similarity for this search
+     * @param requireAll if `true`, all images must exist in their respective regions
+     */
+    fun existsAnyInList(
+        items: List<Pair<Pattern, Region>>,
+        timeout: Duration = Duration.ZERO,
+        similarity: Double? = null,
+        requireAll: Boolean
+    ): Boolean
 }
 
 class RealImageMatcher @Inject constructor(
@@ -170,4 +185,27 @@ class RealImageMatcher @Inject constructor(
                     color = if (it) HighlightColor.Success else HighlightColor.Error
                 )
             }
+
+    override fun existsAnyInList(
+        items: List<Pair<Pattern, Region>>,
+        timeout: Duration,
+        similarity: Double?,
+        requireAll: Boolean
+    ): Boolean {
+        exitManager.checkExitRequested()
+        return checkConditionLoop(
+            {
+                if (requireAll){
+                    items.all { (image, region) ->
+                        region.existsNow(image, similarity)
+                    }
+                } else{
+                    items.any { (image, region) ->
+                        region.existsNow(image, similarity)
+                    }
+                }
+            },
+            timeout
+        )
+    }
 }

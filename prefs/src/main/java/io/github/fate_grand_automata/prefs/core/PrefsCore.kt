@@ -6,6 +6,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.Location
+import io.github.lib_automata.Region
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -74,10 +75,11 @@ class PrefsCore @Inject constructor(
     val swipeDuration = maker.int("swipe_duration", 300)
     val swipeMultiplier = maker.int("swipe_multiplier", 100)
 
+    val longPressDuration = maker.int("long_press_duration", 750)
+    val dragDuration = maker.int("drag_duration", 50)
+
     val maxGoldEmberSetSize = maker.int("max_gold_ember_set_size", 1)
     val maxGoldEmberTotalCount = maker.int("max_gold_ember_total_count", 100)
-
-    val ceBombTargetRarity = maker.int("ce_bomb_target_rarity", 1)
 
     val stopAfterThisRun = maker.bool("stop_after_this_run")
     val skipServantFaceCardCheck = maker.bool("skip_servant_face_card_check")
@@ -99,6 +101,24 @@ class PrefsCore @Inject constructor(
                 "${value.x},${value.y}"
         },
         default = Location()
+    )
+
+    val playButtonRegion = maker.serialized(
+        "play_button_region",
+        serializer = object : Serializer<Region> {
+            override fun deserialize(serialized: String) =
+                try {
+                    val split = serialized.split(',')
+
+                    Region(split[0].toInt(), split[1].toInt(), split[2].toInt(), split[3].toInt())
+                } catch (e: Exception) {
+                    Region(x = 0, y = 0, height = 1, width = 1)
+                }
+
+            override fun serialize(value: Region) =
+                "${value.x},${value.y},${value.width},${value.height}"
+        },
+        default = Region(x = 0, y = 0, height = 1, width = 1)
     )
 
     val gameAreaMode = maker.enum("game_area_mode", GameAreaMode.Default)
@@ -146,5 +166,7 @@ class PrefsCore @Inject constructor(
             )
         }
 
+    val craftEssence = CraftEssencePrefsCore(maker)
 
+    val friendGacha = FriendGachaPrefsCore(maker)
 }

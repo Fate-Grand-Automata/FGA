@@ -207,7 +207,7 @@ class ScriptManager @Inject constructor(
 
             is AutoCEBomb.ExitException -> {
                 val msg = when (e.reason) {
-                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> "No suitable target CE found"
+                    AutoCEBomb.ExitReason.NoSuitableTargetCEFound -> context.getString(R.string.ce_bomb_no_suitable_ces)
                 }
 
                 messages.notify(msg)
@@ -388,7 +388,8 @@ class ScriptManager @Inject constructor(
                         continuation.resume(it)
                         dialog?.dismiss()
                     },
-                    prefs = preferences
+                    prefs = preferences,
+                    prefsCore = prefsCore
                 )
             }
 
