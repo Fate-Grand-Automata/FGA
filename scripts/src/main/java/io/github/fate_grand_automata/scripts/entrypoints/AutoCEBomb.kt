@@ -64,6 +64,8 @@ class AutoCEBomb @Inject constructor(
     private var initialCEEnhancementRun = true
 
     override fun script(): Nothing {
+        // Re-read again the target CE, due to the script redirecting from FP gacha
+        prefs.craftEssence.emptyEnhance = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
         loop()
     }
 
