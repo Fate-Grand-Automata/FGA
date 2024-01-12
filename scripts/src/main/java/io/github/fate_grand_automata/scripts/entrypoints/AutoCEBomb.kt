@@ -684,8 +684,8 @@ class AutoCEBomb @Inject constructor(
 
     private fun isFilterClosable() = when (prefs.gameServer) {
         is GameServer.En -> images[Images.Ok] in locations.ceBomb.filterCloseRegion
-        is GameServer.Tw -> images[Images.Ok] in locations.ceBomb.filterCloseRegion
 
+        // TW, looks like the same case too
         // the JP text was smaller than on other buttons of the same text
         // and I don't know why.
         // I also can't remember why 0.5 size works too.
