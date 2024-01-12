@@ -166,7 +166,7 @@ class AutoCEBomb @Inject constructor(
      *
      */
     private fun pickTarget() {
-        if (prefs.craftEssence.emptyEnhance){
+        if (!prefs.craftEssence.emptyEnhance){
             throw ExitException(ExitReason.TargetCEMaxLevel)
         }
         skipRow.clear()
