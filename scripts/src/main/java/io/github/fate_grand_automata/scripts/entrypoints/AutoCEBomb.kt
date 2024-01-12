@@ -376,6 +376,7 @@ class AutoCEBomb @Inject constructor(
             }
             retry--
         }
+        0.5.seconds.wait()
     }
 
     /**
@@ -425,6 +426,7 @@ class AutoCEBomb @Inject constructor(
             }
             retry--
         }
+        0.5.seconds.wait()
     }
 
     /**
