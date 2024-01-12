@@ -398,4 +398,10 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_screenshot_bond">"Screenshot Bond"</string>
     <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
     <string name="bond_level_up">Bond Level up!</string>
+
+    <string name="fp_reached_sell_banner">Successfully Redirect.</string>
+    <string name="fp_reached_sell_banner_failed">Unable verify the redirect.</string>
+    <string name="fp_run_out_of_friend_points">Ran out of Friend Points.</string>
+    <string name="should_redirect_to_sell_after_summon">Redirect to Sell after summon?</string>
+    <string name="should_redirect_to_sell_after_summon_warning">Note: This is incompatible with Redirect to ce bomb</string>
 </resources>

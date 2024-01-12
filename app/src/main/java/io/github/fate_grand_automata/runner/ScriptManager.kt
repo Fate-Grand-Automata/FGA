@@ -185,6 +185,28 @@ class ScriptManager @Inject constructor(
                 val msg = when (val reason = e.reason) {
                     AutoFriendGacha.ExitReason.InventoryFull -> context.getString(R.string.inventory_full)
                     is AutoFriendGacha.ExitReason.Limit -> context.getString(R.string.times_rolled, reason.count)
+                    is AutoFriendGacha.ExitReason.ReachedSellBanner ->
+                        when {
+                            reason.inventoryFull -> context.getString(R.string.fp_reached_sell_banner) + " " +
+                                    context.getString(R.string.inventory_full)
+
+                            reason.count == 0 -> context.getString(R.string.fp_reached_sell_banner)
+                            else -> context.getString(R.string.fp_reached_sell_banner) + " " +
+                                    context.getString(R.string.times_rolled, reason.count)
+                        }
+
+                    AutoFriendGacha.ExitReason.RunOutOfFP ->
+                        context.getString(R.string.fp_run_out_of_friend_points)
+
+                    is AutoFriendGacha.ExitReason.SellBannerNotVisible ->
+                        when {
+                            reason.inventoryFull -> context.getString(R.string.fp_reached_sell_banner_failed) + " " +
+                                    context.getString(R.string.inventory_full)
+
+                            reason.count == 0 -> context.getString(R.string.fp_reached_sell_banner_failed)
+                            else -> context.getString(R.string.fp_reached_sell_banner_failed) + " " +
+                                    context.getString(R.string.times_rolled, reason.count)
+                        }
                 }
 
                 messages.notify(msg)
@@ -388,7 +410,8 @@ class ScriptManager @Inject constructor(
                         continuation.resume(it)
                         dialog?.dismiss()
                     },
-                    prefs = preferences
+                    prefs = preferences,
+                    prefsCore = prefsCore
                 )
             }
 

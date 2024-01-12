@@ -20,4 +20,16 @@ class FPLocations @Inject constructor(
     val okClick = Location(320, 1120).xFromCenter()
     val continueSummonClick = Location(320, 1325).xFromCenter()
     val skipRapidClick = Location(1240, 1400).xFromCenter()
+
+    val fpSellRegion = when(isWide){
+        true -> Region(651, 1262, 318, 109).xFromCenter()
+        false -> Region(651, 1291, 318, 109).xFromCenter()
+    }
+
+    val sellBannerRegion = when(isWide){
+        true -> Region(194, 829, 135, 115)
+        false -> Region(6, 847, 135, 115)
+    }
+
+    val inventoryFullSellRegion = Region(-647, 923, 114, 54).xFromCenter()
 }

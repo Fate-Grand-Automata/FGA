@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.prefs.core.map
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
+import io.github.fate_grand_automata.scripts.prefs.IFriendGachaPreferences
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
@@ -106,12 +107,12 @@ class PreferencesImpl @Inject constructor(
 
     override var treatSupportLikeOwnServant by prefs.treatSupportLikeOwnServant
 
-    override var shouldLimitFP by prefs.shouldLimitFP
-    override var limitFP by prefs.limitFP
-
     override var receiveEmbersWhenGiftBoxFull by prefs.receiveEmbersWhenGiftBoxFull
 
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
+
+    override val friendGacha: IFriendGachaPreferences =
+        FriendGachaPrefs(prefs.friendGacha)
 
     override fun forBattleConfig(id: String): IBattleConfig =
         autoSkillMap.getOrPut(id) {
