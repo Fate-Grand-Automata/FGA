@@ -407,6 +407,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
         "Please read before starting script!\n\nWithout proper sorting, this script will consume CE indiscriminately.\n\nFor the most optimal pre-setup, please follow the following instructions before starting script:\n\n1) CE list to the smallest possible size\n\n2) Sort the base CE by ascending rarity with \"Smart Sort ON\"\n\n3) Sort the CE fodder by ascending rarity with \"Smart Sort ON\"\n\nIn case confused to follow the above instructions, you may use FGA's sort + filter function for reference,which will be utilized automatically upon starting script.\n\nHowever, please keep in mind if a wrong base CE / CE fodder is used, FGA developers will not be held responsible.\n\nShould the CE have been maxed levelled - it is highly recommended to prevent accidental CE fodder use by locking it and/or put it in the Second Archive."
     </string>
     <string name="ce_bomb_no_suitable_ces">No suitable target CE found</string>
+    <string name="ce_bomb_target_ce_max_level">Target CE have reached max level.</string>
     <string name="ce_bomb_skip_sort_setup">Skip the CE sort settings setup?</string>
     <string name="ce_bomb_skip_sort_reminder">Make sure the sort settings are configured.</string>
     <string name="ce_bomb_skip_filter_setup">Skip the CE filter settings setup?</string>

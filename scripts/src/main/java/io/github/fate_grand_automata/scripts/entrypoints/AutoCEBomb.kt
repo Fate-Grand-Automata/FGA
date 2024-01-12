@@ -27,6 +27,13 @@ class AutoCEBomb @Inject constructor(
          * No suitable target/fodder CE was found.
          */
         data object NoSuitableTargetCEFound : ExitReason()
+
+        /**
+         * The target CE is already max level.
+         * This is done if the user have setup the initial target CE, and after continues runs
+         * the target CE have reached max level.
+         */
+        data object TargetCEMaxLevel : ExitReason()
     }
 
     class ExitException(val reason: ExitReason) : Exception()
@@ -159,6 +166,9 @@ class AutoCEBomb @Inject constructor(
      *
      */
     private fun pickTarget() {
+        if (prefs.craftEssence.emptyEnhance){
+            throw ExitException(ExitReason.TargetCEMaxLevel)
+        }
         skipRow.clear()
         skipColumn.clear()
 
