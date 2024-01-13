@@ -56,6 +56,8 @@ fun fpLauncher(
 
     var showCEBombSettings by remember { mutableStateOf(false) }
 
+    var showCEWarning by remember { mutableStateOf(false) }
+
     val isCEBombSupported by remember {
         mutableStateOf(prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Tw)
     }
@@ -288,6 +290,40 @@ fun fpLauncher(
                                 }
                             }
                         }
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(1.dp)
+                                .clickable(
+                                    enabled = shouldCreateCEBombAfterSummon,
+                                    onClick = {
+                                        showCEBombSettings = !showCEBombSettings
+                                    },
+                                ),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = when (showCEBombSettings) {
+                                    true -> stringResource(R.string.p_fp_gacha_hide_ce_bomb_warning)
+                                    false -> stringResource(R.string.p_fp_gacha_show_ce_bomb_warning)
+                                },
+                                style = labelTextSize(),
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+
+                        AnimatedVisibility(visible = showCEWarning) {
+                            Text(
+                                text = stringResource(R.string.ce_bomb_explanation),
+                                style = labelTextSize(),
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Justify
+                            )
+                        }
+
                     }
 
                 }
