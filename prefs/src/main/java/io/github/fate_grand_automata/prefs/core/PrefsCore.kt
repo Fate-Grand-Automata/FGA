@@ -146,5 +146,6 @@ class PrefsCore @Inject constructor(
             )
         }
 
+    val append = AppendPrefsCore(maker)
 
 }

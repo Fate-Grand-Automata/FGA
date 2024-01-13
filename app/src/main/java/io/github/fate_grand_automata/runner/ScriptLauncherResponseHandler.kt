@@ -46,6 +46,20 @@ class ScriptLauncherResponseHandler @Inject constructor(
 
                 ScriptModeEnum.CEBomb
             }
+            is ScriptLauncherResponse.Append -> {
+                // Do not remove this, we need this to only be updated once the user has pressed the "Ok" button
+                // otherwise, the config will carry over if the user selected new servant which the config does not
+                // match
+                prefs.append.shouldUnlockAppendOne = resp.shouldUnlockAppend1
+                prefs.append.shouldUnlockAppendTwo = resp.shouldUnlockAppend2
+                prefs.append.shouldUnlockAppendThree = resp.shouldUnlockAppend3
+
+                prefs.append.upgradeAppendOne = resp.upgradeAppend1
+                prefs.append.upgradeAppendTwo = resp.upgradeAppend2
+                prefs.append.upgradeAppendThree = resp.upgradeAppend3
+
+                ScriptModeEnum.Append
+            }
 
             is ScriptLauncherResponse.Battle -> {
                 ScriptModeEnum.Battle

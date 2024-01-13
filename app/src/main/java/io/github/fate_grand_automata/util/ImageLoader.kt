@@ -100,7 +100,7 @@ class ImageLoader @Inject constructor(
         Images.Support -> "support.png"
         Images.ServantCheckSupport -> "servant_check_support.png"
         Images.BattleMenu -> "battle_menu.png"
-        Images.CEEnhance -> "ce_enhance.png"
+        Images.EmptyEnhance -> "empty_enhance.png"
         Images.CEGloomLv1 -> "gloom_0.png"
         Images.CEStarvationLv1 -> "starvation_0.png"
         Images.CEAwakeningLv1 -> "awakening_0.png"
@@ -114,6 +114,11 @@ class ImageLoader @Inject constructor(
         Images.SkillUse -> "skill_use.png"
         Images.RankUp -> "rank_up.png"
         Images.Close -> "close.png"
+        Images.AppendBanner -> "append_banner.png"
+        Images.AppendLock -> "append_lock.png"
+        Images.Ok -> "ok.png"
+        Images.SkillInsufficientQP -> "skill_insufficient_qp.png"
+        Images.SkillInsufficientMaterials -> "skill_insufficient_mats.png"
     }
 
     override operator fun get(img: Images, gameServer: GameServer?): Pattern = synchronized(regionCachedPatterns) {

@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.locations
 
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.RefillResourceEnum
 import io.github.fate_grand_automata.scripts.models.BoostItem
 import io.github.lib_automata.Location
@@ -15,7 +16,8 @@ class Locations @Inject constructor(
     val lottery: LotteryLocations,
     val support: SupportScreenLocations,
     val attack: AttackScreenLocations,
-    val battle: BattleScreenLocations
+    val battle: BattleScreenLocations,
+    val append: AppendLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
@@ -124,4 +126,49 @@ class Locations @Inject constructor(
     val rankUpRegion = Region(270, 730, 220, 340).xFromCenter()
 
     val middleOfScreenClick = Location(0, 720).xFromCenter()
+
+    /**
+     * The following region are used for the various enhancement screen listed below:
+     * Skill Upgrade, Ascension, Append Upgrade and Grail
+     */
+    val enhancementBannerRegion = when(isWide) {
+        true -> Region(-412, 282, 241, 37).xFromCenter()
+        false -> Region(-413, 324, 241, 37).xFromCenter()
+    }
+
+    val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
+
+    val enhancementClick = when (isWide) {
+        false -> Location(-281, 1343).xFromRight()
+        true -> Location(-396, 1284).xFromRight()
+    }
+
+    val getInsufficientQPRegion = when (gameServer) {
+        is GameServer.En -> when (isWide) {
+            true -> Region(-500, 195, 405, 44).xFromCenter()
+            false -> Region(-499, 222, 405, 44).xFromCenter()
+        }
+        // JP option
+        else -> when (isWide) {
+            true -> Region(-502, 195, 397, 47).xFromCenter()
+            false -> Region(-500, 222, 397, 47).xFromCenter()
+        }
+    }
+
+    val insufficientMaterialsRegion = when (gameServer) {
+        is GameServer.En -> when (isWide) {
+            true -> Region(-498, 197, 446, 43).xFromCenter()
+            false -> Region(-498, 225, 446, 43).xFromCenter()
+        }
+        // JP option
+        else -> when (isWide) {
+            true -> Region(-499, 200, 597, 40).xFromCenter()
+            false -> Region(-501, 228, 597, 43).xFromCenter()
+        }
+    }
+
+    val emptyEnhanceRegion = when (isWide) {
+        true -> Region(-1100, 600, 400, 400).xFromCenter()
+        false -> Region(200, 600, 400, 400)
+    }
 }
