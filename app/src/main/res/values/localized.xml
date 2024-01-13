@@ -432,4 +432,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_fp_gacha_ce_bomb_pr_for_other_servers">Please open a PR to add support for your server.</string>
     <string name="unable_to_verify_if_reached_the_ce_menu">"Unable to verify if reached the CE Enhancement Screen, exiting early"</string>
 
+    <string name="p_script_mode_ce_level">CE Level</string>
+    <string name="ce_level_explanation">
+        "This script mode would immediately stop once the current target CE is maxed out to prevent unnecessary picking of the another target CE.\n\nThis mode is made to just level up the current CE.\n\nTo enter CE bomb mode, there should be no target CE.\n\nPlease read before starting script!\n\nWithout proper sorting, this script will consume CE indiscriminately.\n\nFor the most optimal pre-setup, please follow the following instructions before starting script:\n\n1) CE list to the smallest possible size\n\n2) Sort the base CE by ascending rarity with \"Smart Sort ON\"\n\n3) Sort the CE fodder by ascending rarity with \"Smart Sort ON\"\n\nIn case confused to follow the above instructions, you may use FGA's sort + filter function for reference,which will be utilized automatically upon starting script.\n\nHowever, please keep in mind if a wrong base CE / CE fodder is used, FGA developers will not be held responsible.\n\nShould the CE have been maxed levelled - it is highly recommended to prevent accidental CE fodder use by locking it and/or put it in the Second Archive."
+    </string>
 </resources>

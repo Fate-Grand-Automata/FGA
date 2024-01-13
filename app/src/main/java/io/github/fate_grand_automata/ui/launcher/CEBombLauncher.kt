@@ -109,7 +109,10 @@ fun ceBombLauncher(
             .padding(top = 5.dp)
     ) {
         Text(
-            stringResource(R.string.p_script_mode_ce_bomb),
+            text = when(isEmptyEnhance) {
+                true -> stringResource(id = R.string.p_script_mode_ce_bomb)
+                false -> stringResource(id = R.string.p_script_mode_ce_level)
+            },
             style = MaterialTheme.typography.titleLarge
         )
 
@@ -138,7 +141,10 @@ fun ceBombLauncher(
             ) {
                 item {
                     Text(
-                        stringResource(R.string.ce_bomb_explanation),
+                        text = when(isEmptyEnhance) {
+                            true -> stringResource(R.string.ce_bomb_explanation)
+                            false -> stringResource(id = R.string.ce_level_explanation)
+                        },
                         style = bodyTextSize(),
                         textAlign = TextAlign.Justify
                     )
