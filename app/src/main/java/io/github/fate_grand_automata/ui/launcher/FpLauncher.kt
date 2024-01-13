@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.ui.launcher
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -58,6 +59,17 @@ fun fpLauncher(
     val isCEBombSupported by remember {
         mutableStateOf(prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Tw)
     }
+
+    val canUseLongPressed by remember {
+        mutableStateOf(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+    }
+
+    LaunchedEffect(key1 = Unit, block = {
+        if (!canUseLongPressed) {
+            prefs.craftEssence.useDragging = false
+            prefs.craftEssence.skipAutoLockTargetCE = true
+        }
+    })
 
 
     LaunchedEffect(key1 = shouldLimit, block = {
