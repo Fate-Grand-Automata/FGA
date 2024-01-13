@@ -179,6 +179,14 @@ private fun BattleConfigListContent(
                     stringResource(R.string.p_battle_config)
                 ) {
                     HeadingButton(
+                        text = stringResource(id = R.string.p_battle_config_sort),
+                        onClick = {
+                            sortListDialog.show()
+                        },
+                        icon = icon(Icons.Default.Sort)
+                    )
+
+                    HeadingButton(
                         text = stringResource(
                             if (selectionMode)
                                 R.string.battle_config_item_export
@@ -205,14 +213,6 @@ private fun BattleConfigListContent(
                             )
                         }
                     }
-
-                    HeadingButton(
-                        text = stringResource(id = R.string.p_battle_config_sort),
-                        onClick = {
-                            sortListDialog.show()
-                        },
-                        icon = icon(Icons.Default.Sort)
-                    )
                 }
 
                 val servers by derivedStateOf {
