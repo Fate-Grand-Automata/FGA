@@ -298,13 +298,13 @@ fun fpLauncher(
                                 .clickable(
                                     enabled = shouldCreateCEBombAfterSummon,
                                     onClick = {
-                                        showCEBombSettings = !showCEBombSettings
+                                        showCEWarning = !showCEWarning
                                     },
                                 ),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = when (showCEBombSettings) {
+                                text = when (showCEWarning) {
                                     true -> stringResource(R.string.p_fp_gacha_hide_ce_bomb_warning)
                                     false -> stringResource(R.string.p_fp_gacha_show_ce_bomb_warning)
                                 },
