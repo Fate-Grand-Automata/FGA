@@ -87,6 +87,7 @@ class BattleConfigScreenViewModel @Inject constructor(
         val map = battleConfig.export()
         newConfig.import(map)
         newConfig.name = context.getString(R.string.battle_config_item_copy_name, newConfig.name)
+        newConfig.usageCount = 0
 
         return guid
     }
