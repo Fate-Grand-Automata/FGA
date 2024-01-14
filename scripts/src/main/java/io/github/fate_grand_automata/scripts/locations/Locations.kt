@@ -106,7 +106,7 @@ class Locations @Inject constructor(
     val resultMasterExpRegion = Region(0, 350, 400, 110).xFromCenter()
     val resultMasterLvlUpRegion = Region(710, 160, 250, 270).xFromCenter()
     val resultScreenRegion = Region(-1180, 300, 700, 200).xFromCenter()
-    val resultBondRegion = Region(720, 690, 120, 250).xFromCenter()
+    val resultBondRegion = Region(720, 600, 120, 400).xFromCenter()
 
     val resultCeRewardRegion = Region(-230, 1216, 33, 28).xFromCenter()
     val resultCeRewardDetailsRegion = Region(if (isWide) 193 else 0, 512, 135, 115)
