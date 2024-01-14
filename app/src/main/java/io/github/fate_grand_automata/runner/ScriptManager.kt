@@ -20,7 +20,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoCEBomb
 import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
-import io.github.fate_grand_automata.scripts.entrypoints.AutoSkill
+import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
@@ -104,7 +104,7 @@ class ScriptManager @Inject constructor(
 
     private suspend fun showAutoSkillMenu(
         context: Context,
-        exception: AutoSkill.ExitException
+        exception: AutoSkillUpgrade.ExitException
     ) = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine<Unit> { continuation ->
             var dialog: DialogInterface? = null
@@ -234,8 +234,8 @@ class ScriptManager @Inject constructor(
 
                 showBattleExit(service, e)
             }
-            is AutoSkill.ExitException -> {
-                if (e.reason !is AutoSkill.ExitReason.Abort) {
+            is AutoSkillUpgrade.ExitException -> {
+                if (e.reason !is AutoSkillUpgrade.ExitReason.Abort) {
                     messages.notify(scriptExitedString)
                 }
                 showAutoSkillMenu(service, e)

@@ -16,5 +16,5 @@ interface ScriptEntryPoint {
 
     fun autoDetect(): AutoDetect
 
-    fun skill(): AutoSkill
+    fun skill(): AutoSkillUpgrade
 }
