@@ -71,9 +71,9 @@ class StandardAutomataApi @Inject constructor(
             }
     }
 
-    override fun List<Pair<Pattern, Region>>.existsAny(
+    override fun Map<Pattern, Region>.exists(
         timeout: Duration, similarity: Double?, requireAll: Boolean,
-    ) = imageMatcher.existsAnyInList(
+    ) = imageMatcher.exists(
         items = this,
         timeout = timeout,
         similarity = similarity,

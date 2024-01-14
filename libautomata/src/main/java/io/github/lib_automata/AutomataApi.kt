@@ -52,7 +52,7 @@ interface AutomataApi {
 
     fun Region.detectText(outlinedText: Boolean = false): String
 
-    fun List<Pair<Pattern, Region>>.existsAny(
+    fun Map<Pattern, Region>.exists(
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
         requireAll: Boolean = false

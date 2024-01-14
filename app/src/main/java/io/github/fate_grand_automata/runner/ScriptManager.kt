@@ -204,36 +204,33 @@ class ScriptManager @Inject constructor(
             is AutoServantLevel.ExitException -> {
                 val msg = when (val reason = e.reason) {
                     AutoServantLevel.ExitReason.NoServantSelected ->
-                        context.getString(R.string.enhancement_missing_servant)
+                        context.getString(R.string.servant_enhancement_none_selected)
 
                     is AutoServantLevel.ExitReason.Unexpected -> {
                         e.let {
-                            "${context.getString(R.string.unexpected_error)}: ${e.message}"
+                            "${context.getString(R.string.unexpected_error)}: ${reason.exception.message}"
                         }
                     }
 
-                    is AutoServantLevel.ExitReason.Limit ->
-                        context.getString(R.string.servant_level_up_by_n_times, reason.count)
-
                     AutoServantLevel.ExitReason.MaxLevelAchieved ->
-                        context.getString(R.string.servant_level_max)
+                        context.getString(R.string.servant_enhancement_max_level)
 
                     AutoServantLevel.ExitReason.NoEmbersOrQPLeft ->
                         context.getString(R.string.servant_enhancement_no_embers_or_qp_left)
 
                     AutoServantLevel.ExitReason.Abort ->
-                        context.getString(R.string.enhancement_halt_aborted)
+                        context.getString(R.string.servant_enhancement_aborted)
 
                     AutoServantLevel.ExitReason.RedirectAscension ->
-                        context.getString(R.string.servant_redirect_ascension_success)
+                        context.getString(R.string.servant_enhancement_redirect_ascension_success)
                     AutoServantLevel.ExitReason.RedirectGrail ->
-                        context.getString(R.string.servant_redirect_grail_success)
+                        context.getString(R.string.servant_enhancement_redirect_grail_success)
 
                     AutoServantLevel.ExitReason.UnableToPerformAscension ->
-                        context.getString(R.string.servant_perform_ascension_failed)
-                }
-                if (!preferences.servant.muteNotifications){
-                    messages.notify(msg)
+                        context.getString(R.string.servant_enhancement_perform_ascension_failed)
+
+                    AutoServantLevel.ExitReason.NotImplementedForServer ->
+                        context.getString(R.string.servant_enhancement_not_implemented)
                 }
                 messageBox.show(scriptExitedString, msg)
             }

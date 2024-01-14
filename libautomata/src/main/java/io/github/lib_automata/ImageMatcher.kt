@@ -52,15 +52,15 @@ interface ImageMatcher {
     fun isBlack(region: Region): Boolean
 
     /**
-     * Checks if all images in the list exist in their respective regions.
+     * Checks if all images in the map exist in their respective regions.
      *
-     * @param items a list of [Region] and [Pattern] pairs
+     * @param items a [Map] of [Region] and [Pattern] pairs
      * @param timeout how long to search for before giving up
      * @param similarity the minimum similarity for this search
      * @param requireAll if `true`, all images must exist in their respective regions
      */
-    fun existsAnyInList(
-        items: List<Pair<Pattern, Region>>,
+    fun exists(
+        items: Map<Pattern, Region>,
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,
         requireAll: Boolean
@@ -186,8 +186,8 @@ class RealImageMatcher @Inject constructor(
                 )
             }
 
-    override fun existsAnyInList(
-        items: List<Pair<Pattern, Region>>,
+    override fun exists(
+        items: Map<Pattern, Region>,
         timeout: Duration,
         similarity: Double?,
         requireAll: Boolean

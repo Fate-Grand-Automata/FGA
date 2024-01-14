@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.entrypoints
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -45,7 +46,7 @@ class AutoServantLevel @Inject constructor(
          * The script exited because it encountered an unexpected exception.
          */
 
-        class Unexpected(val e: Exception) : ExitReason()
+        class Unexpected(val exception: Exception) : ExitReason()
 
         /**
          * The script exited because it reached the max level.
@@ -72,10 +73,9 @@ class AutoServantLevel @Inject constructor(
         data object RedirectGrail : ExitReason()
 
         /**
-         * The script exited because it reached the limit of enhancements set by the User.
+         * The script exited because it the function doesn't work yet for the selected server.
          */
-        data class Limit(val count: Int) : ExitReason()
-
+        data object NotImplementedForServer : ExitReason()
     }
 
     class ServantUpgradeException(val reason: ExitReason) : Exception()
@@ -84,6 +84,10 @@ class AutoServantLevel @Inject constructor(
 
 
     override fun script(): Nothing {
+        if (prefs.gameServer is GameServer.Cn || prefs.gameServer is GameServer.Kr) {
+            throw ExitException(ExitReason.NotImplementedForServer)
+        }
+
         try {
             loop()
         } catch (e: ServantUpgradeException) {
@@ -96,21 +100,13 @@ class AutoServantLevel @Inject constructor(
         }
     }
 
-    private var shouldLimit = false
-    private var limitCount = 1
-
     private fun loop(): Nothing {
         if (isServantEmpty()) {
             throw ServantUpgradeException(ExitReason.NoServantSelected)
         }
-        shouldLimit = prefs.servant.shouldLimit
-        limitCount = prefs.servant.limitCount
 
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
-            { isLimitReached() } to {
-                throw ServantUpgradeException(ExitReason.Limit(prefs.servant.limitCount - limitCount))
-            },
             { isMaxLevel() } to { checkMaxLevelRedirectOrExit() },
             { isAutoSelectMinimumEmberForLowQP() } to { performMinimumEmberForLowQPEnhancement() },
             { isEmberSelectionDialogVisible() } to { performEnhancement() },
@@ -211,10 +207,10 @@ class AutoServantLevel @Inject constructor(
         run ascension@{
             repeat(retry) {
                 locations.enhancementClick.click()
-                confirmationVisible = listOf(
+                confirmationVisible = mapOf(
                     images[Images.Ok] to locations.servant.finalConfirmRegion,
                     images[Images.Execute] to locations.tempServantEnhancementRegion
-                ).existsAny(
+                ).exists(
                     timeout = 3.seconds
                 )
                 
@@ -286,9 +282,6 @@ class AutoServantLevel @Inject constructor(
      */
     private fun confirmEnhancement() {
         locations.servant.finalConfirmRegion.click()
-        if (limitCount > 0) {
-            --limitCount
-        }
         1.0.seconds.wait()
 
     }
@@ -303,13 +296,6 @@ class AutoServantLevel @Inject constructor(
         locations.enhancementClick.click()
         0.5.seconds.wait()
     }
-
-    /**
-     * This function will check if the limit is reached and it is on the servant enhancement menu.
-     *
-     * @see isAutoSelectVisible
-     */
-    private fun isLimitReached() = shouldLimit && limitCount <= 0 && isAutoSelectVisible()
 
     /**
      * This function will check if the servant is empty.
@@ -353,7 +339,6 @@ class AutoServantLevel @Inject constructor(
     /**
      * This function will check if the servant is temporary.
      * Temporary servants have additional check to ensure that they are going to be enhanced.
-     *
      */
     private fun isTemporaryServant() = images[Images.Execute] in locations.tempServantEnhancementRegion
 
