@@ -53,7 +53,6 @@ val SupportSelectionModeEnum.stringRes
     get() = when (this) {
         SupportSelectionModeEnum.First -> R.string.p_support_mode_first
         SupportSelectionModeEnum.Manual -> R.string.p_support_mode_manual
-        SupportSelectionModeEnum.Friend -> R.string.p_support_mode_friend
         SupportSelectionModeEnum.Preferred -> R.string.p_support_mode_preferred
     }
 

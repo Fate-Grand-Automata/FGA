@@ -239,7 +239,6 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="present_box_full">"Present Box Full"</string>
     <string name="support_img_maker_not_found">"No support images were found on the current screen. Are you on Support selection or Friend list screen?"</string>
     <string name="support_selection_manual">"Support selection set to Manual"</string>
-    <string name="support_selection_friend_not_set">"When using 'friend' support selection mode, specify at least one friend name."</string>
     <string name="support_selection_preferred_not_set">"When using 'preferred' support selection mode, specify at least one Servant or Craft Essence."</string>
     <string name="ce_dropped">"CE Dropped!"</string>
     <string name="ce_get">"CE GET!"</string>

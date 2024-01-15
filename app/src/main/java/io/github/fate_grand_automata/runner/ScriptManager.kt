@@ -86,7 +86,9 @@ class ScriptManager @Inject constructor(
                     prefs = preferences,
                     prefsCore = prefsCore,
                     onClose = { dialog?.dismiss() },
-                    onCopy = { clipboardManager.set(context, exception) }
+                    onCopy = {
+                        clipboardManager.set(context, exception)
+                    }
                 )
             }
 
