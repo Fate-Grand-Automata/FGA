@@ -99,6 +99,8 @@ class RealImageMatcher @Inject constructor(
         condition: () -> Boolean,
         timeout: Duration = Duration.ZERO
     ): Boolean {
+        //TODO throw exception if useSameSnapIn is active and timeout > 0
+
         val endTimeMark = TimeSource.Monotonic.markNow() + timeout
 
         while (true) {
@@ -193,16 +195,27 @@ class RealImageMatcher @Inject constructor(
         requireAll: Boolean
     ): Boolean {
         exitManager.checkExitRequested()
+        val imageCheck = {
+            if (requireAll) {
+                items.all { (image, region) ->
+                    region.existsNow(image, similarity)
+                }
+            } else {
+                items.any { (image, region) ->
+                    region.existsNow(image, similarity)
+                }
+            }
+        }
         return checkConditionLoop(
             {
-                if (requireAll){
-                    items.all { (image, region) ->
-                        region.existsNow(image, similarity)
+                // debug rectangles will cause errors so activate useSameSnapIn if it's not already active
+                if (!screenshotManager.usePreviousSnap) {
+                    screenshotManager.useSameSnapIn {
+                        imageCheck()
                     }
-                } else{
-                    items.any { (image, region) ->
-                        region.existsNow(image, similarity)
-                    }
+                }
+                else {
+                    imageCheck()
                 }
             },
             timeout
