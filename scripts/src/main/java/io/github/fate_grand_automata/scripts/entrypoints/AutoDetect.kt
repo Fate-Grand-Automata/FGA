@@ -30,7 +30,14 @@ class AutoDetect @Inject constructor(
             locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
                 ScriptModeEnum.SupportImageMaker
 
-            images[Images.CEEnhance] in locations.ceEnhanceRegion ->
+            mapOf(
+                images[Images.ServantAutoSelect] to locations.servant.servantAutoSelectRegion,
+                images[Images.ServantAutoSelectOff] to locations.servant.servantAutoSelectRegion,
+                images[Images.ServantAscensionBanner] to locations.enhancementBannerRegion
+            ).exists()->
+                ScriptModeEnum.ServantLevel
+
+            images[Images.EmptyEnhance] in locations.emptyEnhanceRegion ->
                 ScriptModeEnum.CEBomb
 
             else -> ScriptModeEnum.Battle

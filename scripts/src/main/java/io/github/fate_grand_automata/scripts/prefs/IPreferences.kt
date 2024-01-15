@@ -47,7 +47,11 @@ interface IPreferences {
 
     var ceBombTargetRarity: Int
 
+
     var configListSort: BattleConfigListSortEnum
+
+    val servant: IServantEnhancementPreferences
+
 
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
