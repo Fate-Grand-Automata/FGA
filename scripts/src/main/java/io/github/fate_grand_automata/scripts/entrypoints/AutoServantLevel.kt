@@ -99,7 +99,7 @@ class AutoServantLevel @Inject constructor(
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { isMaxLevel() } to { checkMaxLevelRedirectOrExit() },
-            { isAutoSelectMinimumEmberForLowQP() } to { performMinimumEmberForLowQPEnhancement() },
+            { isAutoSelectMinimumEmberForLowQP(prefs.gameServer) } to { performMinimumEmberForLowQPEnhancement() },
             { isEmberSelectionDialogVisible() } to { performEnhancement() },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
             { isEmptyEmberOrQPDialogVisible() } to {
@@ -315,11 +315,8 @@ class AutoServantLevel @Inject constructor(
      * This function will check if the final confirmation dialog is visible.
      * After clicking the button, it would then perform the enhancement.
      */
-    private fun isFinalConfirmDialogVisible(gameServer: GameServer) = when (gameServer) {
-        // KR has 2 OK buttons, this one only shows up in the final confirmation
-        is GameServer.Kr -> images[Images.OkKR] in locations.servant.finalConfirmRegion
-        else -> images[Images.Ok] in locations.servant.finalConfirmRegion
-    }
+    private fun isFinalConfirmDialogVisible(gameServer: GameServer) =
+        okButtonPatterns(gameServer) in locations.servant.finalConfirmRegion
 
     /**
      * This function will check if the servant is max level.
@@ -340,8 +337,8 @@ class AutoServantLevel @Inject constructor(
     /**
      * This function will check if the servant can auto select the minimum ember for low QP.
      */
-    private fun isAutoSelectMinimumEmberForLowQP() = images[Images.Ok] in
-            locations.servant.autoSelectMinEmberLowQPRegion
+    private fun isAutoSelectMinimumEmberForLowQP(gameServer: GameServer) =
+        okButtonPatterns(gameServer) in locations.servant.autoSelectMinEmberLowQPRegion
 
 
     /**
@@ -398,4 +395,10 @@ class AutoServantLevel @Inject constructor(
      */
     private fun isReturnToLevel() = images[Images.ServantAscensionReturnToLevel] in
             locations.servant.ascensionReturnToLevelRegion
+
+    private fun okButtonPatterns(gameServer: GameServer) = when (gameServer) {
+        // KR has 2 OK buttons
+        is GameServer.Kr -> listOf(images[Images.Ok], images[Images.OkKR])
+        else -> listOf(images[Images.Ok])
+    }
 }
