@@ -37,14 +37,16 @@ class ServantLevelLocations @Inject constructor(
     }
 
     fun servantRedirectCheckRegion(server: GameServer) = when(server){
-        is GameServer.Tw -> when(isWide){
-            true -> Region(774, 1013, 50, 114).xFromCenter()
-            false -> Region(774, 1058, 50, 114).xFromCenter()
-        }
-        // EN and JP Option
-        else -> when(isWide) {
+        is GameServer.Tw,
+        is GameServer.Cn,
+        is GameServer.Kr -> when(isWide) {
             true -> Region(687, 1013, 47, 115).xFromCenter()
             false -> Region(687, 1058, 47, 115).xFromCenter()
+        }
+        // EN and JP Option
+        else -> when(isWide){
+            true -> Region(774, 1013, 50, 114).xFromCenter()
+            false -> Region(774, 1058, 50, 114).xFromCenter()
         }
     }
 
