@@ -36,7 +36,7 @@ class AutoDetect @Inject constructor(
             mapOf(
                 images[Images.CraftEssenceBannerOn] to locations.ceBomb.ceBannerOnRegion,
                 images[Images.CraftEssenceBannerOff] to locations.ceBomb.ceBannerOffRegion
-            ).existsAny() -> {
+            ).exists() -> {
                 autoSetup.checkIfEmptyEnhance()
                 autoSetup.checkIfCanAutomaticDisplayChangeInCE()
                 ScriptModeEnum.CEBomb

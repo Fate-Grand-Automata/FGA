@@ -401,7 +401,6 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="p_script_mode_ce_bomb">CE Bomb</string>
     <string name="p_roll_create_ce_bomb_after_summon">"Should the CE bomb script run after the maximum limit of CEs has been reached?"</string>
-    <string name="note">"Note:"</string>
     <string name="p_roll_create_ce_bomb_reminder">"- It will only redirect to the Craft Essence Enhancement menu when the maximum number of CEs has been reached."</string>
     <string name="ce_bomb_explanation">
         "Please read before starting script!\n\nWithout proper sorting, this script will consume CE indiscriminately.\n\nFor the most optimal pre-setup, please follow the following instructions before starting script:\n\n1) CE list to the smallest possible size\n\n2) Sort the base CE by ascending rarity with \"Smart Sort ON\"\n\n3) Sort the CE fodder by ascending rarity with \"Smart Sort ON\"\n\nIn case confused to follow the above instructions, you may use FGA's sort + filter function for reference,which will be utilized automatically upon starting script.\n\nHowever, please keep in mind if a wrong base CE / CE fodder is used, FGA developers will not be held responsible.\n\nShould the CE have been maxed levelled - it is highly recommended to prevent accidental CE fodder use by locking it and/or put it in the Second Archive."
