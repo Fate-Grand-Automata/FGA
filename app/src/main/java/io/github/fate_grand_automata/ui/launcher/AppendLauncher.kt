@@ -173,6 +173,16 @@ fun appendLauncher(
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 4.dp, vertical = 2.dp),
+                    text = "8",
+                    enabled = shouldUpgradeAll,
+                    onClick = {
+                        upgradeAll = 8
+                    }
+                )
+                PresetButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
                     text = "9",
                     enabled = shouldUpgradeAll,
                     onClick = {
