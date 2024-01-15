@@ -8,4 +8,5 @@ enum class ScriptModeEnum {
     SupportImageMaker,
     CEBomb,
     Skill,
+    ServantLevel,
 }

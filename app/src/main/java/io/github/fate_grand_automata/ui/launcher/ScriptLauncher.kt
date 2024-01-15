@@ -40,6 +40,7 @@ fun ScriptLauncher(
                 ScriptModeEnum.PresentBox -> giftBoxLauncher(prefs, modifier)
                 ScriptModeEnum.CEBomb -> ceBombLauncher(prefs, modifier)
                 ScriptModeEnum.Skill -> skillLauncher(prefsCore, modifier)
+                ScriptModeEnum.ServantLevel -> servantLevelLauncher(prefsCore.servantEnhancement, modifier)
             }
 
             Divider()

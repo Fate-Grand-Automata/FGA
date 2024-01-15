@@ -24,6 +24,9 @@ sealed class ScriptLauncherResponse {
         val shouldUpgradeSkillThree: Boolean,
         val skillThreeUpgradeValue: Int,
     ) : ScriptLauncherResponse()
+
+    data object ServantEnhancement : ScriptLauncherResponse()
+
 }
 
 class ScriptLauncherResponseBuilder(

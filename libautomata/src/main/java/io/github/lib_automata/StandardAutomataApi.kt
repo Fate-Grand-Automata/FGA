@@ -71,6 +71,7 @@ class StandardAutomataApi @Inject constructor(
             }
     }
 
+
     override fun Region.findNumberInText(
         replace: List<Pair<String, String>>,
     ): Int? {
@@ -86,5 +87,14 @@ class StandardAutomataApi @Inject constructor(
         val regex = Regex("""(\d+)""")
         return regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
     }
+
+    override fun Map<Pattern, Region>.exists(
+        timeout: Duration, similarity: Double?, requireAll: Boolean,
+    ) = imageMatcher.exists(
+        items = this,
+        timeout = timeout,
+        similarity = similarity,
+        requireAll = requireAll
+    )
 }
 

@@ -17,7 +17,8 @@ class Locations @Inject constructor(
     val support: SupportScreenLocations,
     val attack: AttackScreenLocations,
     val battle: BattleScreenLocations,
-    val skill: SkillLocations
+    val skill: SkillLocations,
+    val servant: ServantLevelLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
@@ -108,7 +109,7 @@ class Locations @Inject constructor(
     val resultMasterExpRegion = Region(0, 350, 400, 110).xFromCenter()
     val resultMasterLvlUpRegion = Region(710, 160, 250, 270).xFromCenter()
     val resultScreenRegion = Region(-1180, 300, 700, 200).xFromCenter()
-    val resultBondRegion = Region(720, 690, 120, 250).xFromCenter()
+    val resultBondRegion = Region(720, 600, 120, 400).xFromCenter()
 
     val resultCeRewardRegion = Region(-230, 1216, 33, 28).xFromCenter()
     val resultCeRewardDetailsRegion = Region(if (isWide) 193 else 0, 512, 135, 115)
@@ -117,7 +118,10 @@ class Locations @Inject constructor(
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
 
-    val ceEnhanceRegion = Region(200, 600, 400, 400)
+    val emptyEnhanceRegion = when (isWide) {
+        true -> Region(-1100, 600, 400, 400).xFromCenter()
+        false -> Region(200, 600, 400, 400)
+    }
     val ceEnhanceClick = Location(200, 600)
     val levelOneCERegion = Region(160, 380, 1840, 900)
 
@@ -127,15 +131,6 @@ class Locations @Inject constructor(
 
     val middleOfScreenClick = Location(0, 720).xFromCenter()
 
-    val tempServantEnhancementLocation = Location(402, 1124).xFromCenter()
-
-    val enhancementClick = when (isWide) {
-        false -> Location(-281, 1343).xFromRight()
-        true -> Location(-396, 1284).xFromRight()
-    }
-    val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
-
-    val tempServantEnhancementRegion = Region(252, 1096, 301, 57).xFromCenter()
 
     /**
      * The following region are used for the various enhancement screen listed below:
@@ -145,6 +140,7 @@ class Locations @Inject constructor(
         true -> Region(-412, 282, 241, 37).xFromCenter()
         false -> Region(-413, 324, 241, 37).xFromCenter()
     }
+
 
     val getInsufficientQPRegion = when (gameServer) {
         is GameServer.En -> when (isWide) {
@@ -162,4 +158,15 @@ class Locations @Inject constructor(
         true -> Region(-1100, 600, 400, 400).xFromCenter()
         false -> Region(200, 600, 400, 400)
     }
+
+    val enhancementClick = when (isWide) {
+        false -> Location(-281, 1343).xFromRight()
+        true -> Location(-396, 1284).xFromRight()
+    }
+
+    val tempServantEnhancementRegion = Region(252, 1096, 301, 57).xFromCenter()
+
+    val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
+
+    val tempServantEnhancementLocation = Location(402, 1124).xFromCenter()
 }
