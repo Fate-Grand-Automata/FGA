@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -295,7 +296,7 @@ private fun AppendItem(
     upgradeLevel: Int,
     onUpgradeLevelChange: (Int) -> Unit,
 ) {
-    val upgradeText = stringResource(id = R.string.upgrade)
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .fillMaxHeight()
@@ -325,15 +326,20 @@ private fun AppendItem(
                 onCheckedChange = onShouldUnlockChange
             )
         }
-        Spacer(modifier = Modifier.padding(vertical=4.dp))
+        Spacer(modifier = Modifier.padding(vertical = 4.dp))
 
         Stepper(
             value = (upgradeLevel),
             onValueChange = { onUpgradeLevelChange(it) },
             valueRange = 0..9,
             enabled = !isLocked || shouldUnlock,
-            valueRepresentation = {upgrade ->
-                upgradeText + "\n$upgrade"
+            valueRepresentation = { upgrade ->
+                if (upgrade <= 1){
+                    context.getString(R.string.append_upgrade_time, upgrade)
+                } else{
+                    context.getString(R.string.append_upgrade_times, upgrade)
+                }
+
             }
         )
         TextButton(

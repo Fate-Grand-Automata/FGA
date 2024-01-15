@@ -411,7 +411,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="upgraded_number_of_times">Upgraded %d times</string>
     <string name="append_unable_to_upgrade_n_times">Unable to upgrade %d times</string>
     <string name="append_lag">Possible Network Lag. Unable to proceed.</string>
-    <string name="upgrade">Upgrade</string>
+    <string name="append_upgrade_times">"Upgrade\n%d\ntimes"</string>
+    <string name="append_upgrade_time">"Upgrade\n%d\ntime"</string>
 
     <string name="mute_notifications">Mute Notifications?</string>
     <string name="append_upgrade_all_question">Upgrade all available append?</string>
