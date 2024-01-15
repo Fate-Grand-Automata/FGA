@@ -25,6 +25,7 @@ sealed class ScriptLauncherResponse {
         val upgradeAppend3: Int,
     ): ScriptLauncherResponse()
 
+    data object ServantEnhancement : ScriptLauncherResponse()
 
 }
 

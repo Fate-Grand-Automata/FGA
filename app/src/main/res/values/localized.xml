@@ -399,6 +399,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
     <string name="bond_level_up">Bond Level up!</string>
 
+
     <string name="append">Append Skill</string>
     <string name="should_unlock_append">Check(\u2713) to unlock</string>
     <string name="append_note">We can\'t detect the level of the append skill, so you need to set it manually how many times you want to upgrade it.</string>
@@ -426,5 +427,21 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="ran_out_of_qp">Ran out of QP</string>
     <string name="success">Success</string>
     <string name="reset">"Reset"</string>
+
+    <string name="servant_enhancement">Servant Enhancement</string>
+    <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
+    <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
+    <string name="servant_enhancement_redirect_ascension_question">Redirect to Ascension upon reaching the level cap</string>
+    <string name="servant_enhancement_perform_ascension_question">Perform Ascension</string>
+    <string name="servant_enhancement_perform_ascension_warning">Ascension of duplicate Servants is not supported.</string>
+    <string name="servant_enhancement_redirect_grail">Redirect to Palingenesis upon reaching the level cap</string>
+    <string name="servant_enhancement_redirect_ascension_success">Redirected to Ascension</string>
+    <string name="servant_enhancement_redirect_grail_success">Redirected to Palingenesis</string>
+    <string name="servant_enhancement_perform_ascension_failed">Unable to perform Ascension</string>
+    <string name="servant_enhancement_max_level">Max Level Achieved</string>
+    <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
+    <string name="servant_enhancement_aborted">Enhancement was aborted</string>
+    <string name="servant_enhancement_not_implemented">Servant Enhancement is not supported on your FGO server yet."</string>
+
     <string name="note">"Note:"</string>
 </resources>

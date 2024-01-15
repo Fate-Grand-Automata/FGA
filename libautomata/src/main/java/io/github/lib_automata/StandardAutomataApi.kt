@@ -70,5 +70,14 @@ class StandardAutomataApi @Inject constructor(
                 return ocrService.detectText(it)
             }
     }
+
+    override fun Map<Pattern, Region>.exists(
+        timeout: Duration, similarity: Double?, requireAll: Boolean,
+    ) = imageMatcher.exists(
+        items = this,
+        timeout = timeout,
+        similarity = similarity,
+        requireAll = requireAll
+    )
 }
 

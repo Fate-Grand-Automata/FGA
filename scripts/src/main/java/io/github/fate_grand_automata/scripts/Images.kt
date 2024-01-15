@@ -71,4 +71,13 @@ enum class Images {
     Ok,
     SkillInsufficientQP,
     SkillInsufficientMaterials
+    ServantAutoSelect,
+    ServantAutoSelectOff,
+    ServantMaxLevel,
+    ServantGrailRedirectFromMenu,
+    ServantAscensionRedirectFromMenu,
+    ServantGrailBanner,
+    ServantAscensionBanner,
+    ServantAscensionReturnToLevel,
+    Execute
 }
