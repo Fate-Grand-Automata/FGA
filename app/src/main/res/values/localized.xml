@@ -402,7 +402,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="append">Append Skill</string>
     <string name="should_unlock_append">Check(\u2713) to unlock</string>
-    <string name="append_note">We can\'t detect the level of the append skill, so you need to set it manually how many times you want to upgrade it.</string>
+    <string name="append_note">We can\'t detect the level of the append skill, so you need to set it manually how many times you want to upgrade it.\n\nFor example Level 1 -> 4, you need to set 3 into the append.</string>
 
     <string name="append_unable_to_unlock">Unable to unlock append</string>
     <string name="append_unlock_success">Successfully unlock!</string>
