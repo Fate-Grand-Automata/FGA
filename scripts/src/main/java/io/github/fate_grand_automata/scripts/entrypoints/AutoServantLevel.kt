@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.entrypoints
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -104,7 +105,7 @@ class AutoServantLevel @Inject constructor(
             { isEmptyEmberOrQPDialogVisible() } to {
                 throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
             },
-            { isFinalConfirmDialogVisible() } to { confirmEnhancement() },
+            { isFinalConfirmDialogVisible(prefs.gameServer) } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
             { isAutoSelectOff() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
             { isInAscensionMenu() } to { handlePerformedAscension() },
@@ -314,7 +315,11 @@ class AutoServantLevel @Inject constructor(
      * This function will check if the final confirmation dialog is visible.
      * After clicking the button, it would then perform the enhancement.
      */
-    private fun isFinalConfirmDialogVisible() = images[Images.Ok] in locations.servant.finalConfirmRegion
+    private fun isFinalConfirmDialogVisible(gameServer: GameServer) = when (gameServer) {
+        // KR has 2 OK buttons, this one only shows up in the final confirmation
+        is GameServer.Kr -> images[Images.OkKR] in locations.servant.finalConfirmRegion
+        else -> images[Images.Ok] in locations.servant.finalConfirmRegion
+    }
 
     /**
      * This function will check if the servant is max level.
