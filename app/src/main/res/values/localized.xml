@@ -438,4 +438,20 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="ce_level_explanation">
         "This script mode would immediately stop once the current target CE is maxed out to prevent unnecessary picking of the another target CE.\n\nThis mode is made to just level up the current CE.\n\nTo enter CE bomb mode, there should be no target CE.\n\nPlease read before starting script!\n\nWithout proper sorting, this script will consume CE indiscriminately.\n\nFor the most optimal pre-setup, please follow the following instructions before starting script:\n\n1) CE list to the smallest possible size\n\n2) Sort the base CE by ascending rarity with \"Smart Sort ON\"\n\n3) Sort the CE fodder by ascending rarity with \"Smart Sort ON\"\n\nIn case confused to follow the above instructions, you may use FGA's sort + filter function for reference,which will be utilized automatically upon starting script.\n\nHowever, please keep in mind if a wrong base CE / CE fodder is used, FGA developers will not be held responsible.\n\nShould the CE have been maxed levelled - it is highly recommended to prevent accidental CE fodder use by locking it and/or put it in the Second Archive."
     </string>
+    <string name="servant_enhancement">Servant Enhancement</string>
+    <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
+    <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
+    <string name="servant_enhancement_redirect_ascension_question">Redirect to Ascension upon reaching the level cap</string>
+    <string name="servant_enhancement_perform_ascension_question">Perform Ascension</string>
+    <string name="servant_enhancement_perform_ascension_warning">Ascension of duplicate Servants is not supported.</string>
+    <string name="servant_enhancement_redirect_grail">Redirect to Palingenesis upon reaching the level cap</string>
+    <string name="servant_enhancement_redirect_ascension_success">Redirected to Ascension</string>
+    <string name="servant_enhancement_redirect_grail_success">Redirected to Palingenesis</string>
+    <string name="servant_enhancement_perform_ascension_failed">Unable to perform Ascension</string>
+    <string name="servant_enhancement_max_level">Max Level Achieved</string>
+    <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
+    <string name="servant_enhancement_aborted">Enhancement was aborted</string>
+    <string name="servant_enhancement_not_implemented">Servant Enhancement is not supported on your FGO server yet."</string>
+    <string name="note">"Note:"</string>
+
 </resources>

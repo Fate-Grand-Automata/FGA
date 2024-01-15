@@ -17,6 +17,7 @@ class Locations @Inject constructor(
     val attack: AttackScreenLocations,
     val battle: BattleScreenLocations,
     val ceBomb: CEBombLocations,
+    val servant: ServantLevelLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
     val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
@@ -107,7 +108,7 @@ class Locations @Inject constructor(
     val resultMasterExpRegion = Region(0, 350, 400, 110).xFromCenter()
     val resultMasterLvlUpRegion = Region(710, 160, 250, 270).xFromCenter()
     val resultScreenRegion = Region(-1180, 300, 700, 200).xFromCenter()
-    val resultBondRegion = Region(720, 690, 120, 250).xFromCenter()
+    val resultBondRegion = Region(720, 600, 120, 400).xFromCenter()
 
     val resultCeRewardRegion = Region(-230, 1216, 33, 28).xFromCenter()
     val resultCeRewardDetailsRegion = Region(if (isWide) 193 else 0, 512, 135, 115)
@@ -131,5 +132,25 @@ class Locations @Inject constructor(
         false -> Region(200, 600, 400, 400)
     }
 
+
+    /**
+     * The following region are used for the various enhancement screen listed below:
+     * Skill Upgrade, Ascension, Append Upgrade and Grail
+     */
+    val enhancementBannerRegion = when(isWide) {
+        true -> Region(-412, 282, 241, 37).xFromCenter()
+        false -> Region(-413, 324, 241, 37).xFromCenter()
+    }
+
+    val enhancementClick = when (isWide) {
+        false -> Location(-281, 1343).xFromRight()
+        true -> Location(-396, 1284).xFromRight()
+    }
+
+    val tempServantEnhancementRegion = Region(252, 1096, 301, 57).xFromCenter()
+
+    val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
+
+    val tempServantEnhancementLocation = Location(402, 1124).xFromCenter()
 
 }

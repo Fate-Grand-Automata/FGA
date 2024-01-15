@@ -48,6 +48,8 @@ interface IPreferences {
 
     val playButtonRegion: Region
 
+    val servant: IServantEnhancementPreferences
+
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
     fun addPerServerConfigPref(server: GameServer): IPerServerConfigPrefs

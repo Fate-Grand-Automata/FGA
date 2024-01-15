@@ -66,6 +66,7 @@ enum class Images {
     SkillUse,
     RankUp,
     Close,
+
     CraftEssenceBannerOn,
     CraftEssenceBannerOff,
     CraftEssenceDisplaySmall,
@@ -75,5 +76,16 @@ enum class Images {
     CraftEssenceLock,
     CraftEssenceOn,
     Ok,
-    FPCENotice
+    FPCENotice,
+
+    ServantAutoSelect,
+    ServantAutoSelectOff,
+    ServantMaxLevel,
+    ServantGrailRedirectFromMenu,
+    ServantAscensionRedirectFromMenu,
+    ServantGrailBanner,
+    ServantAscensionBanner,
+    ServantAscensionReturnToLevel,
+    Execute,
+
 }

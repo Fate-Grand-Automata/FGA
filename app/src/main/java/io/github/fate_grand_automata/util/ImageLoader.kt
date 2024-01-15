@@ -114,6 +114,7 @@ class ImageLoader @Inject constructor(
         Images.SkillUse -> "skill_use.png"
         Images.RankUp -> "rank_up.png"
         Images.Close -> "close.png"
+
         Images.CraftEssenceBannerOn -> "craft_essence_banner_on.png"
         Images.CraftEssenceBannerOff -> "craft_essence_banner_off.png"
         Images.CraftEssenceDisplaySmall -> "craft_essence_display_small.png"
@@ -124,6 +125,16 @@ class ImageLoader @Inject constructor(
         Images.CraftEssenceOn -> "craft_essence_sort_on.png"
         Images.Ok -> "ok.png"
         Images.FPCENotice -> "fp_ce_notice.png"
+
+        Images.ServantAutoSelect -> "servant_auto_select.png"
+        Images.ServantAutoSelectOff -> "servant_auto_select_off.png"
+        Images.ServantMaxLevel -> "servant_max_level.png"
+        Images.ServantGrailRedirectFromMenu -> "servant_palingenesis_redirect_from_menu.png"
+        Images.ServantAscensionRedirectFromMenu -> "servant_ascension_redirect_from_menu.png"
+        Images.ServantGrailBanner -> "servant_palingenesis_banner.png"
+        Images.ServantAscensionBanner -> "servant_ascension_banner.png"
+        Images.ServantAscensionReturnToLevel -> "servant_ascension_return_to_level.png"
+        Images.Execute -> "execute.png"
     }
 
     override operator fun get(img: Images, gameServer: GameServer?): Pattern = synchronized(regionCachedPatterns) {

@@ -9,6 +9,7 @@ import io.github.fate_grand_automata.scripts.prefs.IFriendGachaPreferences
 import io.github.fate_grand_automata.scripts.prefs.IGesturesPreferences
 import io.github.fate_grand_automata.scripts.prefs.IPerServerConfigPrefs
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.scripts.prefs.IServantEnhancementPreferences
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferencesCommon
 import io.github.lib_automata.PlatformPrefs
 import io.github.lib_automata.Region
@@ -118,6 +119,9 @@ class PreferencesImpl @Inject constructor(
     override val playButtonRegion: Region by prefs.playButtonRegion
 
     private val autoSkillMap = mutableMapOf<String, IBattleConfig>()
+
+    override val servant: IServantEnhancementPreferences =
+        ServantEnhancementPrefs(prefs.servantEnhancement)
 
     override fun forBattleConfig(id: String): IBattleConfig =
         autoSkillMap.getOrPut(id) {

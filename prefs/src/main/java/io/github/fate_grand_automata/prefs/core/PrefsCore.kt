@@ -166,5 +166,8 @@ class PrefsCore @Inject constructor(
 
     val craftEssence = CraftEssencePrefsCore(maker)
 
+    val servantEnhancement = ServantEnhancementPrefsCore(maker)
+
+
     val friendGacha = FriendGachaPrefsCore(maker)
 }
