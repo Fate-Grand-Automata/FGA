@@ -70,7 +70,7 @@ enum class Images {
     AppendLock,
     Ok,
     SkillInsufficientQP,
-    SkillInsufficientMaterials
+    SkillInsufficientMaterials,
     ServantAutoSelect,
     ServantAutoSelectOff,
     ServantMaxLevel,
