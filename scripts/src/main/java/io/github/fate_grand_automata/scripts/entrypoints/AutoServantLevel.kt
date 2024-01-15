@@ -71,11 +71,6 @@ class AutoServantLevel @Inject constructor(
          * The script exited because it was redirected to the grail menu.
          */
         data object RedirectGrail : ExitReason()
-
-        /**
-         * The script exited because it the function doesn't work yet for the selected server.
-         */
-        data object NotImplementedForServer : ExitReason()
     }
 
     class ServantUpgradeException(val reason: ExitReason) : Exception()
@@ -84,10 +79,6 @@ class AutoServantLevel @Inject constructor(
 
 
     override fun script(): Nothing {
-        if (prefs.gameServer is GameServer.Cn || prefs.gameServer is GameServer.Kr) {
-            throw ExitException(ExitReason.NotImplementedForServer)
-        }
-
         try {
             loop()
         } catch (e: ServantUpgradeException) {
