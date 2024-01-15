@@ -81,6 +81,5 @@ enum class Images {
     ServantGrailBanner,
     ServantAscensionBanner,
     ServantAscensionReturnToLevel,
-    Execute,
 
 }
