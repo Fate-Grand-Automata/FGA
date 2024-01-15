@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -294,6 +295,7 @@ private fun AppendItem(
     upgradeLevel: Int,
     onUpgradeLevelChange: (Int) -> Unit,
 ) {
+    val upgradeText = stringResource(id = R.string.upgrade)
     Column(
         modifier = modifier
             .fillMaxHeight()
@@ -323,12 +325,16 @@ private fun AppendItem(
                 onCheckedChange = onShouldUnlockChange
             )
         }
+        Spacer(modifier = Modifier.padding(vertical=4.dp))
 
         Stepper(
             value = (upgradeLevel),
             onValueChange = { onUpgradeLevelChange(it) },
             valueRange = 0..9,
-            enabled = !isLocked || shouldUnlock
+            enabled = !isLocked || shouldUnlock,
+            valueRepresentation = {upgrade ->
+                upgradeText + "\n$upgrade"
+            }
         )
         TextButton(
             onClick = { onUpgradeLevelChange(0) },
