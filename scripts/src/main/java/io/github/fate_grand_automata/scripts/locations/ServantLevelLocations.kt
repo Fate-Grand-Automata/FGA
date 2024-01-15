@@ -26,11 +26,8 @@ class ServantLevelLocations @Inject constructor(
         false -> Location(-127, 334).xFromRight()
     }
 
-    fun emptyEmberOrQPDialogRegion(server: GameServer) = when (server) {
-        is GameServer.En -> Region(-107, 1086, 222, 76).xFromCenter()
-        // JP Option
-        else -> Region(-113, 1086, 222, 76).xFromCenter()
-    }
+    val emptyEmberOrQPDialogRegion =
+        Region(-113, 1086, 224, 76).xFromCenter()
 
     val finalConfirmRegion = Region(339, 1143, 124, 64).xFromCenter()
 

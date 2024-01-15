@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.scripts.entrypoints
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
-import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
@@ -204,7 +203,7 @@ class AutoServantLevel @Inject constructor(
                 ).exists(
                     timeout = 3.seconds
                 )
-                
+
                 if (confirmationVisible) {
                     return@ascension
                 }
@@ -308,8 +307,8 @@ class AutoServantLevel @Inject constructor(
     /**
      * This function will check if the empty ember or QP dialog is visible.
      */
-    private fun isEmptyEmberOrQPDialogVisible() = images[Images.Close] in
-            locations.servant.emptyEmberOrQPDialogRegion(prefs.gameServer)
+    private fun isEmptyEmberOrQPDialogVisible() =
+        images[Images.Close] in locations.servant.emptyEmberOrQPDialogRegion
 
     /**
      * This function will check if the final confirmation dialog is visible.
