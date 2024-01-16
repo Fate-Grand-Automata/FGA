@@ -66,6 +66,9 @@ enum class Images {
     SkillUse,
     RankUp,
     Close,
+
+    FPSell,
+
     ServantAutoSelect,
     ServantAutoSelectOff,
     ServantMaxLevel,
@@ -79,5 +82,5 @@ enum class Images {
      * 2nd OK button for FGO KR
      */
     OkKR,
-    Execute
+    Execute,
 }

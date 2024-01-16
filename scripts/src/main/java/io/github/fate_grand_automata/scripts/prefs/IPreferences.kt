@@ -31,8 +31,6 @@ interface IPreferences {
     val skipServantFaceCardCheck: Boolean
     val treatSupportLikeOwnServant: Boolean
 
-    var shouldLimitFP: Boolean
-    var limitFP: Int
     var receiveEmbersWhenGiftBoxFull: Boolean
 
     val stageCounterSimilarity: Double
@@ -46,7 +44,11 @@ interface IPreferences {
 
     var ceBombTargetRarity: Int
 
+
+    val friendGacha: IFriendGachaPreferences
+
     val servant: IServantEnhancementPreferences
+
 
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
