@@ -24,8 +24,11 @@ class SupportViewModel @Inject constructor(
     val storageProvider: StorageProvider
 ) : ViewModel() {
     var servants: Map<String, String> by mutableStateOf(emptyMap())
+        private set
     var ces: Map<String, String> by mutableStateOf(emptyMap())
+        private set
     var friends: Map<String, String> by mutableStateOf(emptyMap())
+        private set
 
     private suspend fun getSupportImages(
         context: Context,
