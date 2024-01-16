@@ -140,7 +140,6 @@ fun FgaApp(
             battleConfigComposable(NavConstants.battleConfigItem) { _, id ->
                 BattleConfigScreen(
                     vm = hiltViewModel(),
-                    supportVm = supportVm,
                     navigate = {
                         when (it) {
                             BattleConfigDestination.Back -> navController.popBackStack()
