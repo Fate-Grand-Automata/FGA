@@ -230,9 +230,6 @@ class ScriptManager @Inject constructor(
 
                     AutoServantLevel.ExitReason.UnableToPerformAscension ->
                         context.getString(R.string.servant_enhancement_perform_ascension_failed)
-
-                    AutoServantLevel.ExitReason.NotImplementedForServer ->
-                        context.getString(R.string.servant_enhancement_not_implemented)
                 }
                 messageBox.show(scriptExitedString, msg)
             }
