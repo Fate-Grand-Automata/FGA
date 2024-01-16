@@ -47,6 +47,10 @@ class ScriptLauncherResponseHandler @Inject constructor(
             is ScriptLauncherResponse.Battle -> {
                 ScriptModeEnum.Battle
             }
+
+            is ScriptLauncherResponse.ServantEnhancement -> {
+                ScriptModeEnum.ServantLevel
+            }
         }
     }
 }

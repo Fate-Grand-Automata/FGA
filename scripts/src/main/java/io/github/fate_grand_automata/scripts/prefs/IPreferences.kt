@@ -44,7 +44,11 @@ interface IPreferences {
 
     var ceBombTargetRarity: Int
 
+
     val friendGacha: IFriendGachaPreferences
+
+    val servant: IServantEnhancementPreferences
+
 
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 

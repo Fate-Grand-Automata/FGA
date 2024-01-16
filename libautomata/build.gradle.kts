@@ -11,7 +11,7 @@ dependencies {
     implementation(libs.dagger.hilt.core)
     ksp(libs.dagger.hilt.compiler)
 
-    implementation(libs.kotlinx.coroutines.core)
+    api(libs.kotlinx.coroutines.core)
 }
 
 java {

@@ -8,7 +8,6 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
-import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.skill_maker.SkillMakerModel
@@ -23,7 +22,6 @@ import javax.inject.Inject
 class BattleConfigScreenViewModel @Inject constructor(
     val prefs: IPreferences,
     val battleConfig: IBattleConfig,
-    val prefsCore: PrefsCore,
     val battleConfigCore: BattleConfigCore
 ) : ViewModel() {
 
