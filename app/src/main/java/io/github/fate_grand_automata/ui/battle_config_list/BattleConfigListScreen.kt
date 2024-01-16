@@ -23,12 +23,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,6 +40,7 @@ import io.github.fate_grand_automata.ui.*
 import io.github.fate_grand_automata.ui.battle_config_item.Material
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
+import io.github.fate_grand_automata.util.simpleStringRes
 import io.github.fate_grand_automata.util.stringRes
 
 @Composable
@@ -272,28 +275,58 @@ private fun ConfigList(
                 )
             }
         } else {
-            items(
-                configs,
-                key = { it.id }
-            ) {
-                BattleConfigListItem(
-                    it,
-                    onClick = {
-                        if (selectionMode) {
-                            action(BattleConfigListAction.ToggleSelected(it.id))
-                        } else {
-                            action(BattleConfigListAction.Edit(it.id))
+            val configsByServer = configs.groupBy { it.server.get().asGameServer() }
+            configsByServer.forEach { entry ->
+                if (configsByServer.size > 1) {
+                    stickyHeader {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.secondary)
+                                .padding(10.dp, 5.dp),
+                        ) {
+                            Text(
+                                text = stringResource(entry.key?.simpleStringRes ?: R.string.p_not_set),
+                                modifier = Modifier.fillMaxWidth(),
+                                style = MaterialTheme.typography.titleLarge,
+                                textAlign = TextAlign.Left,
+                                color = MaterialTheme.colorScheme.onSecondary
+                            )
                         }
-                    },
-                    onLongClick = {
-                        if (!selectionMode) {
-                            action(BattleConfigListAction.StartSelection(it.id))
-                        }
-                    },
-                    isSelectionMode = selectionMode,
-                    isSelected = selectionMode && it.id in selectedConfigs
-                )
+                    }
+                }
+
+                items(
+                    entry.value,
+                    key = { it.id }
+                ) {
+                    BattleConfigListItem(
+                        it,
+                        onClick = {
+                            if (selectionMode) {
+                                action(BattleConfigListAction.ToggleSelected(it.id))
+                            } else {
+                                action(BattleConfigListAction.Edit(it.id))
+                            }
+                        },
+                        onLongClick = {
+                            if (!selectionMode) {
+                                action(BattleConfigListAction.StartSelection(it.id))
+                            }
+                        },
+                        isSelectionMode = selectionMode,
+                        isSelected = selectionMode && it.id in selectedConfigs
+                    )
+                }
+
+                item {
+                    Spacer(
+                        modifier = Modifier.height(10.dp)
+                    )
+                }
             }
+
+
         }
     }
 }

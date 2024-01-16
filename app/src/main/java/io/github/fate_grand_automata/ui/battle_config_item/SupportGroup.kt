@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,13 +40,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
-import io.github.fate_grand_automata.prefs.core.BattleConfigCore
+import io.github.fate_grand_automata.prefs.core.SupportPrefsCore
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 import io.github.fate_grand_automata.scripts.enums.canAlsoCheckAll
 import io.github.fate_grand_automata.ui.DimmedIcon
 import io.github.fate_grand_automata.ui.icon
-import io.github.fate_grand_automata.ui.pref_support.SupportSelectPreference
 import io.github.fate_grand_automata.ui.prefs.ListPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
@@ -57,12 +57,11 @@ import java.io.File
 
 @Composable
 fun SupportGroup(
-    config: BattleConfigCore,
+    config: SupportPrefsCore,
     maxSkillText: String,
-    friendEntries: Map<String, String>,
     goToPreferred: () -> Unit
 ) {
-    val supportMode by config.support.selectionMode.remember()
+    val supportMode by config.selectionMode.remember()
 
     Card(
         modifier = Modifier
@@ -77,7 +76,7 @@ fun SupportGroup(
                 title = stringResource(R.string.p_battle_config_support)
             )
 
-            var supportClass by config.support.supportClass.remember()
+            var supportClass by config.supportClass.remember()
 
             SupportClassPicker(
                 selected = supportClass,
@@ -87,24 +86,23 @@ fun SupportGroup(
             val canAlsoCheckAll = supportClass.canAlsoCheckAll && supportMode != SupportSelectionModeEnum.Manual
 
             AnimatedVisibility(canAlsoCheckAll) {
-                config.support.alsoCheckAll.SwitchPreference(
+                config.alsoCheckAll.SwitchPreference(
                     title = stringResource(R.string.p_battle_config_support_also_check_all)
                 )
             }
 
             val preferredMode = supportMode == SupportSelectionModeEnum.Preferred
-            val friendMode = supportMode == SupportSelectionModeEnum.Friend
 
             Row {
-                config.support.selectionMode.ListPreference(
+                config.selectionMode.ListPreference(
                     title = stringResource(R.string.p_battle_config_support_selection_mode),
-                    entries = SupportSelectionModeEnum.values()
+                    entries = SupportSelectionModeEnum.entries
                         .associateWith { stringResource(it.stringRes) },
                     modifier = Modifier.weight(1f)
                 )
 
-                if (preferredMode || friendMode) {
-                    config.support.fallbackTo.SingleSelectChipPreference(
+                if (preferredMode) {
+                    config.fallbackTo.SingleSelectChipPreference(
                         title = stringResource(R.string.p_battle_config_support_fallback_selection_mode),
                         entries = listOf(
                             SupportSelectionModeEnum.First,
@@ -116,15 +114,25 @@ fun SupportGroup(
             }
 
             AnimatedVisibility(preferredMode) {
-                val servants by config.support.preferredServants.remember()
-                val ces by config.support.preferredCEs.remember()
-                val cesFormatted by derivedStateOf {
-                    ces
-                        .map { File(it).nameWithoutExtension }
-                        .toSet()
-                }
-
                 Column {
+                    val servants by config.preferredServants.remember()
+                    val ces by config.preferredCEs.remember()
+                    val cesFormatted by remember {
+                        derivedStateOf {
+                            ces
+                                .map { File(it).nameWithoutExtension }
+                                .toSet()
+                        }
+                    }
+                    val friendNames by config.friendNames.remember()
+                    val friendNamesFormatted by remember {
+                        derivedStateOf {
+                            friendNames
+                                .map { File(it).nameWithoutExtension }
+                                .toSet()
+                        }
+                    }
+
                     Preference(
                         title = { Text(stringResource(R.string.p_support_mode_preferred)) },
                         summary = {
@@ -132,7 +140,8 @@ fun SupportGroup(
                                 config = config,
                                 maxSkillText = maxSkillText,
                                 servants = servants,
-                                ces = cesFormatted
+                                ces = cesFormatted,
+                                friendNames = friendNamesFormatted
                             )
                         },
                         onClick = goToPreferred
@@ -141,31 +150,6 @@ fun SupportGroup(
                     AnimatedVisibility(servants.isEmpty() && ces.isEmpty()) {
                         PreferenceError(
                             stringResource(R.string.support_selection_preferred_not_set)
-                        )
-                    }
-                }
-            }
-
-            AnimatedVisibility(friendMode) {
-                Column {
-                    if (friendEntries.isNotEmpty()) {
-                        config.support.friendNames.SupportSelectPreference(
-                            title = stringResource(R.string.p_battle_config_support_friend_names),
-                            entries = friendEntries
-                        )
-                    } else {
-                        Preference(
-                            icon = icon(R.drawable.ic_info),
-                            title = stringResource(R.string.p_battle_config_support_friend_names),
-                            summary = stringResource(R.string.p_battle_config_support_friend_name_hint)
-                        )
-                    }
-
-                    val friendNames by config.support.friendNames.remember()
-
-                    AnimatedVisibility(friendNames.isEmpty()) {
-                        PreferenceError(
-                            stringResource(R.string.support_selection_friend_not_set)
                         )
                     }
                 }
@@ -191,7 +175,7 @@ fun SupportClassPicker(
             contentPadding = PaddingValues(5.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            items(SupportClass.values().drop(1)) {
+            items(SupportClass.entries.drop(1)) {
                 val isSelected = selected == it
                 val transition = updateTransition(isSelected, label = "Selected")
                 val alpha by transition.animateFloat(label = "alpha") { selected ->
@@ -244,10 +228,11 @@ val DiamondShape = CutCornerShape(50)
 
 @Composable
 fun PreferredSummary(
-    config: BattleConfigCore,
+    config: SupportPrefsCore,
     maxSkillText: String,
     servants: Set<String>,
-    ces: Set<String>
+    ces: Set<String>,
+    friendNames: Set<String>
 ) {
     Column(
         modifier = Modifier
@@ -310,7 +295,7 @@ fun PreferredSummary(
             )
 
             if (ces.isNotEmpty()) {
-                val mlb by config.support.mlb.remember()
+                val mlb by config.mlb.remember()
 
                 if (mlb) {
                     Icon(
@@ -320,6 +305,32 @@ fun PreferredSummary(
                         modifier = Modifier.size(20.dp)
                     )
                 }
+            }
+        }
+
+        val friendsOnly by config.friendsOnly.remember()
+
+        if (friendsOnly) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(vertical = 2.dp)
+            ) {
+                DimmedIcon(
+                    icon(R.drawable.ic_friend),
+                    contentDescription = "friend"
+                )
+
+                val text = if (friendNames.isNotEmpty())
+                    friendNames.joinToString()
+                else stringResource(R.string.battle_config_support_any)
+
+                Text(
+                    text,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 16.dp)
+                )
             }
         }
     }

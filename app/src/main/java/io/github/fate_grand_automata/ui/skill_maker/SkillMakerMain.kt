@@ -70,8 +70,16 @@ fun SkillMakerMain(
                 onSelectedChange = { vm.setEnemyTarget(it) }
             )
 
-            val stage by vm.stage
-            Text(stringResource(R.string.skill_maker_main_battle, stage))
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val wave by vm.wave
+                Text(stringResource(R.string.skill_maker_main_wave, wave))
+
+                val turn by vm.turn
+                Text(stringResource(R.string.skill_maker_main_turn, turn))
+            }
         }
 
         SkillHistory(vm)

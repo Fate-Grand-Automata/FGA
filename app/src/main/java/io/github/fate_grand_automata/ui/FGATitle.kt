@@ -8,10 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun FGATitle(text: String) = Text(
+fun FGATitle(
+    text: String,
+    modifier: Modifier = Modifier,
+) = Text(
     text,
     textAlign = TextAlign.Center,
     color = MaterialTheme.colorScheme.onSurface,
-    modifier = Modifier
+    modifier = modifier
         .fillMaxWidth()
 )

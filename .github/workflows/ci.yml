@@ -133,13 +133,17 @@ jobs:
         env:
           SUPPLY_JSON_KEY_DATA: ${{ secrets.SERVICE_ACCOUNT_NEW_APP }}
       - name: zip APK
-        run: zip FGA-apk.zip *.apk
-      - id: create_release
-        uses: marvinpinto/action-automatic-releases@latest
+        run: zip FGA-apk-${VERSION_CODE}.zip *.apk
+      - name: Create tag
+        uses: mathieudutour/github-tag-action@v6.1
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "$VERSION_CODE"
+          custom_tag: ${{ env.VERSION_CODE }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          generateReleaseNotes: true
+          artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
+          tag: ${{ env.VERSION_CODE }}
+          name: 'FGA ${{ env.VERSION_CODE }}'
           prerelease: true
-          title: 'FGA $VERSION_CODE'
-          files: |
-            FGA-apk.zip

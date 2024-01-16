@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -23,11 +24,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.prefs.core.PrefsCore
+import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.fate_grand_automata.ui.FGATheme
+import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
 fun ScriptRunnerUI(
     state: ScriptRunnerUIState,
+    prefsCore: PrefsCore,
     updateState: (ScriptRunnerUIAction) -> Unit,
     onPosition: () -> Unit,
     onDrag: (Float, Float) -> Unit,
@@ -35,9 +40,15 @@ fun ScriptRunnerUI(
     enabled: Boolean,
     isRecording: Boolean
 ) {
+
     LaunchedEffect(key1 = Unit, block = {
         onPosition()
     })
+
+    val hidePlayButton by prefsCore.hidePlayButton.remember()
+    val script by prefsCore.scriptMode.remember()
+
+
     FGATheme(
         darkTheme = true,
         background = Color.Transparent
@@ -58,8 +69,22 @@ fun ScriptRunnerUI(
                 }
 
             Surface(
-                color = MaterialTheme.colorScheme.surface,
-                contentColor = if (isRecording) MaterialTheme.colorScheme.error else Color.White,
+                color = when (state) {
+                    ScriptRunnerUIState.Running ->
+                        MaterialTheme.colorScheme.surface.copy(
+                            alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f
+                        )
+                    else -> MaterialTheme.colorScheme.surface
+                },
+                contentColor = when (state) {
+                    ScriptRunnerUIState.Running -> {
+                        val color = if (isRecording) MaterialTheme.colorScheme.error else Color.White
+                        color.copy(
+                            alpha = if (hidePlayButton && script == ScriptModeEnum.Battle) 0f else 0.5f
+                        )
+                    }
+                    else -> Color.White
+                },
                 tonalElevation = 5.dp,
                 shape = CircleShape,
                 onClick = {

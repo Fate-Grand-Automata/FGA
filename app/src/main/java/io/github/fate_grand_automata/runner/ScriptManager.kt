@@ -21,6 +21,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
 import io.github.fate_grand_automata.scripts.entrypoints.AutoNotifyError
+import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
@@ -86,7 +87,9 @@ class ScriptManager @Inject constructor(
                     prefs = preferences,
                     prefsCore = prefsCore,
                     onClose = { dialog?.dismiss() },
-                    onCopy = { clipboardManager.set(context, exception) }
+                    onCopy = {
+                        clipboardManager.set(context, exception)
+                    }
                 )
             }
 
@@ -193,14 +196,51 @@ class ScriptManager @Inject constructor(
             }
 
             is AutoBattle.ExitException -> {
+                preferences.hidePlayButton = false
+
                 if (e.reason !is AutoBattle.ExitReason.Abort) {
                     messages.notify(scriptExitedString)
                 }
 
                 showBattleExit(service, e)
             }
+
             is AutoNotifyError.ExitException -> {
                 // do nothing
+            }
+            is AutoServantLevel.ExitException -> {
+                val msg = when (val reason = e.reason) {
+                    AutoServantLevel.ExitReason.NoServantSelected ->
+                        context.getString(R.string.servant_enhancement_none_selected)
+
+                    is AutoServantLevel.ExitReason.Unexpected -> {
+                        e.let {
+                            "${context.getString(R.string.unexpected_error)}: ${reason.exception.message}"
+                        }
+                    }
+
+                    AutoServantLevel.ExitReason.MaxLevelAchieved ->
+                        context.getString(R.string.servant_enhancement_max_level)
+
+                    AutoServantLevel.ExitReason.NoEmbersOrQPLeft ->
+                        context.getString(R.string.servant_enhancement_no_embers_or_qp_left)
+
+                    AutoServantLevel.ExitReason.Abort ->
+                        context.getString(R.string.servant_enhancement_aborted)
+
+                    AutoServantLevel.ExitReason.RedirectAscension ->
+                        context.getString(R.string.servant_enhancement_redirect_ascension_success)
+                    AutoServantLevel.ExitReason.RedirectGrail ->
+                        context.getString(R.string.servant_enhancement_redirect_grail_success)
+
+                    AutoServantLevel.ExitReason.UnableToPerformAscension ->
+                        context.getString(R.string.servant_enhancement_perform_ascension_failed)
+
+                    AutoServantLevel.ExitReason.NotImplementedForServer ->
+                        context.getString(R.string.servant_enhancement_not_implemented)
+                }
+                messageBox.show(scriptExitedString, msg)
+
             }
 
             is ScriptAbortException -> {
@@ -246,6 +286,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
             ScriptModeEnum.PlayButtonDetection -> entryPoint.playButtonDetection()
+            ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
         }
 
     enum class PauseAction {

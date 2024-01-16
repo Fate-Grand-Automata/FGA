@@ -25,6 +25,8 @@ interface IPreferences {
     val skillDelay: Duration
     val screenshotDrops: Boolean
     val screenshotDropsUnmodified: Boolean
+    val screenshotBond: Boolean
+    var hidePlayButton: Boolean
     var maxGoldEmberStackSize: Int
     var maxGoldEmberTotalCount: Int
     var stopAfterThisRun: Boolean
@@ -45,6 +47,8 @@ interface IPreferences {
     val gestures: IGesturesPreferences
 
     var ceBombTargetRarity: Int
+
+    val servant: IServantEnhancementPreferences
 
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 

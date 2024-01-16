@@ -35,7 +35,8 @@ NP"</string>
     <string name="skill_maker_atk_next_turn">"Next Turn
 in same wave"</string>
     <string name="skill_maker_main_enemy">"Enemy %d"</string>
-    <string name="skill_maker_main_battle">"Battle: %d"</string>
+    <string name="skill_maker_main_wave">"Wave: %d"</string>
+    <string name="skill_maker_main_turn">"Turn: %d"</string>
     <string name="skill_maker_main_master_skills">"Master
 Skills"</string>
     <string name="skill_maker_main_delete_selected">"Delete selected"</string>
@@ -238,7 +239,6 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="present_box_full">"Present Box Full"</string>
     <string name="support_img_maker_not_found">"No support images were found on the current screen. Are you on Support selection or Friend list screen?"</string>
     <string name="support_selection_manual">"Support selection set to Manual"</string>
-    <string name="support_selection_friend_not_set">"When using 'friend' support selection mode, specify at least one friend name."</string>
     <string name="support_selection_preferred_not_set">"When using 'preferred' support selection mode, specify at least one Servant or Craft Essence."</string>
     <string name="ce_dropped">"CE Dropped!"</string>
     <string name="ce_get">"CE GET!"</string>
@@ -394,8 +394,30 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_treat_support_like_own_servant">Treat Support like own Servants</string>
     <string name="p_treat_support_like_own_servant_summary">Will do normal face card checks instead of looking for the "Support" icon on face cards. This solves problems with super-buffed Support Servants, but will break card priority if you have 2 of the same Servant in the party.</string>
 
+
     <string name="p_script_mode_play_button_detection">Play Button Detection</string>
     <string name="p_play_button_detection_explanation">Place the play button on the bottom left of the screen for optimal configuration</string>
     <string name="p_ignore_play_button_detection_further_warning">Ignore further warning about play button\'s location.</string>
     <string name="p_ignore_play_button_detection_warning">Ignore warning about play button\'s location.</string>
+
+    <string name="p_screenshot_bond">"Screenshot Bond"</string>
+    <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
+    <string name="bond_level_up">Bond Level up!</string>
+
+    <string name="servant_enhancement">Servant Enhancement</string>
+    <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
+    <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
+    <string name="servant_enhancement_redirect_ascension_question">Redirect to Ascension upon reaching the level cap</string>
+    <string name="servant_enhancement_perform_ascension_question">Perform Ascension</string>
+    <string name="servant_enhancement_perform_ascension_warning">Ascension of duplicate Servants is not supported.</string>
+    <string name="servant_enhancement_redirect_grail">Redirect to Palingenesis upon reaching the level cap</string>
+    <string name="servant_enhancement_redirect_ascension_success">Redirected to Ascension</string>
+    <string name="servant_enhancement_redirect_grail_success">Redirected to Palingenesis</string>
+    <string name="servant_enhancement_perform_ascension_failed">Unable to perform Ascension</string>
+    <string name="servant_enhancement_max_level">Max Level Achieved</string>
+    <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
+    <string name="servant_enhancement_aborted">Enhancement was aborted</string>
+    <string name="servant_enhancement_not_implemented">Servant Enhancement is not supported on your FGO server yet."</string>
+    <string name="note">"Note:"</string>
+
 </resources>

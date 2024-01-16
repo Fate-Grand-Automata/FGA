@@ -34,7 +34,6 @@ Bảo Khí"</string>
     <string name="skill_maker_atk_next_wave">"Lượt tiếp theo"</string>
     <string name="skill_maker_atk_next_turn">"Lượt tiếp treo trong một lượt quái"</string>
     <string name="skill_maker_main_enemy">"Quái %d"</string>
-    <string name="skill_maker_main_battle">"Trận đấu: %d"</string>
     <string name="skill_maker_main_master_skills">"Kĩ năng 
 Master"</string>
     <string name="skill_maker_main_clear">"Dọn sạch"</string>
@@ -236,7 +235,6 @@ Vui lòng bật khả năng truy cập cho ứng dụng này từ cài đặt H�
     <string name="present_box_full">"Hộp quà đã đầy"</string>
     <string name="support_img_maker_not_found">"Không tìm thấy hình ảnh hỗ trợ nào trên màn hình hiện tại. Bạn đang ở màn hình Lựa chọn hỗ trợ hay Danh sách bạn bè?"</string>
     <string name="support_selection_manual">"Lựa chọn hỗ trợ được đặt thành Thủ công"</string>
-    <string name="support_selection_friend_not_set">"Khi sử dụng chế độ chọn hỗ trợ 'bạn bè', hãy chỉ định ít nhất một tên người bạn."</string>
     <string name="support_selection_preferred_not_set">"Khi sử dụng chế độ lựa chọn hỗ trợ 'ưa thích', hãy chỉ định ít nhất một Servanthoặc CE."</string>
     <string name="ce_dropped">"CE đã đánh rơi!"</string>
     <string name="ce_get">"CE NHẬN!"</string>

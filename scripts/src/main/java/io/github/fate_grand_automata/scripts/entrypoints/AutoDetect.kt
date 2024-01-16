@@ -23,8 +23,11 @@ class AutoDetect @Inject constructor(
             (!isPlayButtonInGoodXLocation || !isPlayButtonInGoodYLocation) &&
                     !prefs.ignorePlayButtonDetectionWarning ->
                 ScriptModeEnum.PlayButtonDetection
+            
 
-            images[Images.FriendSummon] in locations.fp.summonCheck || findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ->
+            images[Images.FriendSummon] in locations.fp.summonCheck ||
+                    findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue) ||
+                    images[Images.FriendSummon] in locations.fp.initialSummonCheck ->
                 ScriptModeEnum.FP
 
             images[Images.LotteryBoxFinished] in locations.lottery.checkRegion || images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion ->
@@ -36,7 +39,14 @@ class AutoDetect @Inject constructor(
             locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
                 ScriptModeEnum.SupportImageMaker
 
-            images[Images.CEEnhance] in locations.ceEnhanceRegion ->
+            mapOf(
+                images[Images.ServantAutoSelect] to locations.servant.servantAutoSelectRegion,
+                images[Images.ServantAutoSelectOff] to locations.servant.servantAutoSelectRegion,
+                images[Images.ServantAscensionBanner] to locations.enhancementBannerRegion
+            ).exists()->
+                ScriptModeEnum.ServantLevel
+
+            images[Images.EmptyEnhance] in locations.emptyEnhanceRegion ->
                 ScriptModeEnum.CEBomb
 
             else -> ScriptModeEnum.Battle
