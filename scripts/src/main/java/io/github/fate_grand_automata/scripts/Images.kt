@@ -78,6 +78,8 @@ enum class Images {
     ServantAscensionBanner,
     ServantAscensionReturnToLevel,
     Ok,
-    Execute,
-
+    /**
+     * 2nd OK button for FGO KR
+     */
+    OkKR,
 }
