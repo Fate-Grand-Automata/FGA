@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.ui.fine_tune
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.TouchApp
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
@@ -117,6 +118,27 @@ class FineTuneSettingsViewModel @Inject constructor(
                     valueRange = 50..200,
                     valueRepresentation = { "${it}%" },
                     hint = "Control the length of swipes. This is multiplied with the number of pixels to swipe over. Use along with swipe duration to tweak it to your needs."
+                )
+            )
+        ),
+        FineTuneGroup(
+            name = R.string.p_fine_tune_drag,
+            items = listOf(
+                FineTuneItem(
+                    pref = prefs.longPressDuration,
+                    name = R.string.p_fine_tune_long_press_duration,
+                    icon = icon(Icons.Default.TouchApp),
+                    valueRange = 500..3000,
+                    valueRepresentation = { "${it}ms" },
+                    hint = "Duration of long press. This is used for dragging CEs in enhancement screen."
+                ),
+                FineTuneItem(
+                    pref = prefs.dragDuration,
+                    name = R.string.p_fine_tune_drag_duration,
+                    icon = icon(R.drawable.ic_swipe),
+                    valueRange = 50..1000,
+                    valueRepresentation = { "${it}ms" },
+                    hint = "Duration of drag. This is used for dragging CEs in enhancement screen."
                 )
             )
         ),
