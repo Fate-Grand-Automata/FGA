@@ -8,11 +8,11 @@ flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.1.0"
 kotlinx_coroutines_core_version = "1.7.3"
 lifecycle_version = "2.6.2"
-kotlin_version = "1.9.21"
+kotlin_version = "1.9.22"
 hilt_version = "2.48.1"
 gson_version = "2.10.1"
 
-gradle_version = "8.2.0"
+gradle_version = "8.2.1"
 
 ben-manes_versions = "0.47.0"
 accompanist_version = "0.32.0"
@@ -30,8 +30,8 @@ timber_version = "5.0.1"
 
 compose_bom_version = "2023.10.01"
 
-kotlinCompilerExtensionVersion = "1.5.7"
-ksp_version = "1.9.21-1.0.16"
+kotlinCompilerExtensionVersion = "1.5.8"
+ksp_version = "1.9.22-1.0.16"
 
 junit_bom_version = "5.9.3"
 
