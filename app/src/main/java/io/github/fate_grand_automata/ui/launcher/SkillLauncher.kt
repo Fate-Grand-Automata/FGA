@@ -92,8 +92,8 @@ fun skillLauncher(
 
     LaunchedEffect(key1 = shouldUpgradeAllSkills, block = {
         shouldUpgradeSkillOne = shouldUpgradeAllSkills == true && minimumSkillOne < 10
-        shouldUpgradeSkillTwo = shouldUpgradeAllSkills == true && minimumSkillTwo < 10
-        shouldUpgradeSkillThree = shouldUpgradeAllSkills == true && minimumSkillThree < 10
+        shouldUpgradeSkillTwo = shouldUpgradeAllSkills == true && minimumSkillTwo < 10 && isSkillTwoAvailable
+        shouldUpgradeSkillThree = shouldUpgradeAllSkills == true && minimumSkillThree < 10 && isSkillThreeAvailable
     })
 
     LazyColumn(
