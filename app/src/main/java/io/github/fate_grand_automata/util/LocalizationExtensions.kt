@@ -10,6 +10,7 @@ import io.github.fate_grand_automata.scripts.enums.ShuffleCardsEnum
 import io.github.fate_grand_automata.scripts.enums.SpamEnum
 import io.github.fate_grand_automata.scripts.enums.SupportClass
 import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
+import io.github.fate_grand_automata.scripts.models.EnemyFormation
 
 val RefillResourceEnum.stringRes
     get() = when (this) {
@@ -183,4 +184,10 @@ val GameServer.simpleStringRes
         GameServer.Kr -> R.string.game_server_kr
         is GameServer.En -> R.string.game_server_na
         is GameServer.Jp -> R.string.game_server_jp
+    }
+
+val EnemyFormation.stringRes
+    get() = when (this) {
+        EnemyFormation.THREE -> R.string.enemy_formation_three
+        EnemyFormation.SIX -> R.string.enemy_formation_six
     }
