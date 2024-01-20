@@ -10,6 +10,7 @@ on:
       - '*.md'
       - 'LICENSE'
       - 'custom-game-area/**'
+      - 'docs/**'
   push:
     branches:
       - master
@@ -23,6 +24,7 @@ on:
       - 'renovate.json'
       - 'custom-game-area/**'
       - 'FUNDING.yml'
+      - 'docs/**'
   workflow_dispatch:
 env:
   JAVA_VERSION: 17
