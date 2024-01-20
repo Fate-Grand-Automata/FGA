@@ -4,8 +4,8 @@ To make lottery script work, 2 images are needed per server
 
 1. `lottery.png`
    
-   <img src="wiki/img/lottery.png" width="500">
+   <img src="img/lottery.png" width="500">
 
 2. `StopGifts.png`
 
-   <img src="wiki/img/StopGifts.png" width="500">
+   <img src="img/StopGifts.png" width="500">
