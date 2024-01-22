@@ -1,3 +1,14 @@
+- [Introduction](#introduction)
+  - [Video Introduction](#video-introduction)
+  - [Battle Configs](#battle-configs)
+    - [Step 1](#step-1)
+    - [Step 2](#step-2)
+    - [Step 3](#step-3)
+    - [Step 4](#step-4)
+      - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
+  - [Additional Battle Config (optional)](#additional-battle-config-optional)
+
+
 # Introduction
 First and foremost, if you are new to FGA - you have come to the right place. 
 
@@ -6,7 +17,7 @@ This battle section is strictly for FGA Battle Configuration.
 ## Video Introduction
 Please be warned it is a bit outdated, but it should give you a general idea of how to setup FGA for yourself.
 
-<a href="https://m.youtube.com/watch?v=JOwupZ4W8AQ&feature=youtu.be" target="_blank"> FGA Tutorial - Build 1437 </a>
+<a href="https://youtube.com/watch?v=JOwupZ4W8AQ&feature=youtu.be" target="_blank"> FGA Tutorial - Build 1437 </a>
 
 ## Battle Configs
 Assuming you have watched the video introduction, this section will go more in-depth tutorial on setting up a battle config.
