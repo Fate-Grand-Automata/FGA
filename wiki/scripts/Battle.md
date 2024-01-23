@@ -10,6 +10,11 @@
       - [Command Mapping](#command-mapping)
         - [Skills mapping](#skills-mapping)
         - [Targetable](#targetable)
+        - [Special Skills](#special-skills)
+        - [Kukulkan](#kukulkan)
+        - [Emiya](#emiya)
+        - [Space Ishtar](#space-ishtar)
+        - [Melusine/Ptolemy](#melusineptolemy)
         - [Enemy targetable](#enemy-targetable)
         - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
         - [Master skills](#master-skills)
@@ -101,6 +106,40 @@ Skills that are targetable will use the servants position number to apply the sk
 
 ![Battle Configs - FGA Command | Servant skills - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127627494963556362/Screenshot_20230709-104541_FGA_CI.jpg "FGA Command | Servant skills - targetable")
 ![Battle Configs - FGO to FGA Command mapping | Servant skills - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127627495294894121/20230709_104707.jpg "FGO to FGA Command mapping | Servant skills - targetable")
+
+##### Special Skills
+
+Due to the nature of some skills, they will have a different/additional command mapping to accommodate them.
+
+##### Kukulkan
+
+[First Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#First_Skill) and [Third Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Third_Skill) is a self targetable skill that has option to use critical stars for more effects.
+
+Use `Option 1` if you don't plan to use critical stars.
+
+![Kukulkan use option 1](https://i.imgur.com/rwUpGpH.gif)
+
+Use `Option 2` if you plan to use critical stars.
+
+![Kukulkan use option 2](https://i.imgur.com/d7AYeJ3.gif)
+
+---
+
+[Second Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Second_Skill) is a targetable skill that has option to use critical stars for more effects.
+
+Use `Option 1` if you don't plan to use critical stars.
+
+![Kukulkan use option 1](https://i.imgur.com/TvOxKOR.gif)
+
+Use `Option 2` if you plan to use critical stars.
+
+![Kukulkan use option 2](https://i.imgur.com/DVQ65aN.gif)
+
+##### Emiya
+
+##### Space Ishtar
+
+##### Melusine/Ptolemy
 
 ##### Enemy targetable
 
