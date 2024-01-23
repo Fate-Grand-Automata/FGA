@@ -348,8 +348,6 @@ Please note, you do not have to set them everytime you're making a new script.
 
 ![Battle Configs - Card Priority](https://cdn.discordapp.com/attachments/1127606706420068372/1127694004822225007/20230709_151143.jpg "Battle Configs - Card Priority")
 
-For those uninterested in Card Priority, please search for the text "End Card Priority explanation" (Ctrl + F) and proceed forward.
-
 ___
 
 ### Card Priority explanation
@@ -397,9 +395,16 @@ ___
 
 ### Servant Priority
 
-- [Servant Priority](https://github.com/Fate-Grand-Automata/FGA/issues/730 "Servant Priority link") is an optional feature under Card Priority.
+Servant priority takes higher priority over card priority.
 
-For more details on how Servant Priority works - https://github.com/Fate-Grand-Automata/FGA/issues/730
+In order to activate the servant priority you must turn it on.
+
+![Servant priority on](https://i.imgur.com/KSXE36s.png)
+
+Then you can now select the servant you want to prioritize.
+
+![Servant priority](https://i.imgur.com/fz9BBtX.png)
+
 ___
 
 ### Brave Chain
@@ -422,8 +427,6 @@ Turning on 'Rearrange cards' will flip the order of how FGA reads cards from lef
 
 Then, FGA will pick the first card that matches the settings in card priority in that order.
 
-___
-End Card Priority explanation.
 ___
 
 ## Support Selection
