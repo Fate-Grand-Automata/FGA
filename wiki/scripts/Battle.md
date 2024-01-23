@@ -1,44 +1,47 @@
 - [Introduction](#introduction)
 - [Video Introduction](#video-introduction)
 - [Battle Configs](#battle-configs)
-  - [Step 1 - Enter the Battle Configs menu](#step-1---enter-the-battle-configs-menu)
-  - [Step 2 - Create new script with the floating action button.](#step-2---create-new-script-with-the-floating-action-button)
-  - [Step 3 - Give your script a name](#step-3---give-your-script-a-name)
-  - [Step 4 - Edit the command](#step-4---edit-the-command)
+    - [Step 1 - Enter the Battle Configs menu](#step-1---enter-the-battle-configs-menu)
+    - [Step 2 - Create new script with the floating action button.](#step-2---create-new-script-with-the-floating-action-button)
+    - [Step 3 - Give your script a name](#step-3---give-your-script-a-name)
+    - [Step 4 - Edit the command](#step-4---edit-the-command)
 - [Commands](#commands)
-  - [Party Mapping](#party-mapping)
-  - [Screen Mapping](#screen-mapping)
-  - [Skills mapping](#skills-mapping)
-  - [Targetable](#targetable)
-  - [Special Skills](#special-skills)
-    - [Kukulkan](#kukulkan)
-    - [Emiya](#emiya)
-    - [Space Ishtar](#space-ishtar)
-    - [Melusine/Ptolemy](#melusineptolemy)
-      - [Warning about Melusine option.](#warning-about-melusine-option)
-  - [Enemy targetable](#enemy-targetable)
-  - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
-    - [Cards before NP](#cards-before-np)
-  - [Master skills](#master-skills)
-  - [Master skills - Plugsuit](#master-skills---plugsuit)
-  - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
-    - [Next Wave](#next-wave)
-    - [Next Turn in the same wave](#next-turn-in-the-same-wave)
-    - [Wave and Turn Indicator](#wave-and-turn-indicator)
-    - [Raid Battle](#raid-battle)
-  - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
+    - [Party Mapping](#party-mapping)
+    - [Screen Mapping](#screen-mapping)
+    - [Skills mapping](#skills-mapping)
+    - [Targetable](#targetable)
+    - [Special Skills](#special-skills)
+        - [Kukulkan](#kukulkan)
+        - [Emiya](#emiya)
+        - [Space Ishtar](#space-ishtar)
+        - [Melusine/Ptolemy](#melusineptolemy)
+            - [Warning about Melusine option.](#warning-about-melusine-option)
+    - [Enemy targetable](#enemy-targetable)
+    - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
+        - [Cards before NP](#cards-before-np)
+    - [Master skills](#master-skills)
+    - [Master skills - Plugsuit](#master-skills---plugsuit)
+    - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
+        - [Next Wave](#next-wave)
+        - [Next Turn in the same wave](#next-turn-in-the-same-wave)
+        - [Wave and Turn Indicator](#wave-and-turn-indicator)
+        - [Raid Battle](#raid-battle)
+    - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
 - [Additional Battle Config (optional)](#additional-battle-config-optional)
-  - [Materials](#materials)
-  - [Spam](#spam)
-  - [Server](#server)
-  - [Party Selection](#party-selection)
-  - [Card Priority (optional)](#card-priority-optional)
-    - [Card Priority explanation](#card-priority-explanation)
-      - [Symbols used in Card Priority](#symbols-used-in-card-priority)
-    - [Servant Priority](#servant-priority)
-    - [Brave Chain](#brave-chain)
-    - [Rearrange Cards feature](#rearrange-cards-feature)
-  - [Support Selection](#support-selection)
+    - [Materials](#materials)
+    - [Spam](#spam)
+    - [Server](#server)
+    - [Party Selection](#party-selection)
+    - [Card Priority (optional)](#card-priority-optional)
+        - [Card Priority explanation](#card-priority-explanation)
+            - [Symbols used in Card Priority](#symbols-used-in-card-priority)
+        - [Servant Priority](#servant-priority)
+        - [Brave Chain](#brave-chain)
+        - [Rearrange Cards feature](#rearrange-cards-feature)
+    - [Support Selection](#support-selection)
+        - [Class Selection](#class-selection)
+        - [Support Selection Options](#support-selection-options)
+        - [Preferred Selection](#preferred-selection)
 
 # Introduction
 
@@ -285,7 +288,8 @@ Turn skipping can't be use to switch to the next wave and vice versa.
 
 ### Wave and Turn Indicator
 
-With the recent update as of FGA [Build 2382](https://github.com/Fate-Grand-Automata/FGA/releases/tag/2382). You'll be able now to track the current wave and turn
+With the recent update as of FGA [Build 2382](https://github.com/Fate-Grand-Automata/FGA/releases/tag/2382). You'll be able now to track the current
+wave and turn
 
 ![Main menu](https://i.imgur.com/yvcme5d.png)
 
@@ -431,4 +435,43 @@ ___
 
 ## Support Selection
 
-![Battle Configs - Card Priority | Rearrange Cards](https://cdn.discordapp.com/attachments/1127606706420068372/1127728473641861221/20230709_172943.jpg "Battle Configs - Card Priority | Rearrange Cards")
+### Class Selection
+
+If you do not select any class, FGA will pick support from the current class that is showing in the screen.
+
+![Battle Configs - Support Selection | Class Selection](https://i.imgur.com/fM3HW6p.png "Battle Configs - Support Selection | Class Selection")
+
+### Support Selection Options
+
+There is 3 ways to select support.
+
+![Battle Configs - Support Selection](https://i.imgur.com/ZAJsjDK.png "Battle Configs - Support Selection")
+
+1. First
+
+   FGA will pick the first support that shows up in the support selection screen.
+
+2. Manual
+
+   FGA will exit and you must manually pick the support. After picking up the support, Run the FGA again.
+
+3. Preferred
+
+   FGA will pick the support that matches the settings in support selection in that order.
+
+### Preferred Selection
+
+If you want to specify which support you want to use, you can use the preferred selection.
+
+![Battle Configs - Support Selection | Preferred Selection](https://i.imgur.com/VcKxqmu.png "Battle Configs - Support Selection | Preferred Selection")
+
+#### Fallback
+
+The script would continue checking the next support if the preferred support is not found, until the specific settings in the fine tuning is met.
+Afterwards, it will then pick the action depending on what is set in the fallback option.
+
+In order to know the limits of searching for the preferred support.
+
+Go to More Options -> Advanced -> Fine-Tune -> Support. 
+
+![Battle Configs - Support Selection | Preferred Selection | Fine-Tune](https://i.imgur.com/Ewh6o4r.png "Battle Configs - Support Selection | Preferred Selection | Fine-Tune")
