@@ -233,7 +233,11 @@ Master skills is handled the same way for all 'Mystic Codes' with an exception t
 
 The `l` command should not be used when using the plugsuit mystic code. Instead, the plugsuit order change command should be used with
 
-![Battle Configs - FGA Command | Mystic Code - Plugsuit](https://cdn.discordapp.com/attachments/1127606706420068372/1127632827064778843/20230709_110918.jpg "FGA Command | Mystic Code - Plugsuit")
+![Battle Configs - FGA Command | Mystic Code - Plugsuit](https://i.imgur.com/LQVSDkA.png "FGA Command | Mystic Code - Plugsuit")
+
+This will trigger the plugsuit order change menu.
+
+![Order Change](https://i.imgur.com/BY5izMc.png)
 
 ## Next turn in the same wave, and Next wave
 
