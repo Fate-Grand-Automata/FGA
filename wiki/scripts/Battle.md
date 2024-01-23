@@ -1,41 +1,43 @@
 - [Introduction](#introduction)
 - [Video Introduction](#video-introduction)
 - [Battle Configs](#battle-configs)
-    - [Step 1 - Enter the Battle Configs menu](#step-1---enter-the-battle-configs-menu)
-    - [Step 2 - Create new script with the floating action button.](#step-2---create-new-script-with-the-floating-action-button)
-    - [Step 3 - Give your script a name](#step-3---give-your-script-a-name)
-    - [Step 4 - Edit the command](#step-4---edit-the-command)
+  - [Step 1 - Enter the Battle Configs menu](#step-1---enter-the-battle-configs-menu)
+  - [Step 2 - Create new script with the floating action button.](#step-2---create-new-script-with-the-floating-action-button)
+  - [Step 3 - Give your script a name](#step-3---give-your-script-a-name)
+  - [Step 4 - Edit the command](#step-4---edit-the-command)
 - [Commands](#commands)
-    - [Party Mapping](#party-mapping)
-    - [Screen Mapping](#screen-mapping)
-    - [Skills mapping](#skills-mapping)
-    - [Targetable](#targetable)
-    - [Special Skills](#special-skills)
-        - [Kukulkan](#kukulkan)
-        - [Emiya](#emiya)
-        - [Space Ishtar](#space-ishtar)
-        - [Melusine/Ptolemy](#melusineptolemy)
-            - [Warning about Melusine option.](#warning-about-melusine-option)
-    - [Enemy targetable](#enemy-targetable)
-    - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
-    - [Master skills](#master-skills)
-    - [Master skills - Plugsuit](#master-skills---plugsuit)
-    - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
-        - [Next Wave](#next-wave)
-        - [Next Turn in the same wave](#next-turn-in-the-same-wave)
-    - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
+  - [Party Mapping](#party-mapping)
+  - [Screen Mapping](#screen-mapping)
+  - [Skills mapping](#skills-mapping)
+  - [Targetable](#targetable)
+  - [Special Skills](#special-skills)
+    - [Kukulkan](#kukulkan)
+    - [Emiya](#emiya)
+    - [Space Ishtar](#space-ishtar)
+    - [Melusine/Ptolemy](#melusineptolemy)
+      - [Warning about Melusine option.](#warning-about-melusine-option)
+  - [Enemy targetable](#enemy-targetable)
+  - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
+    - [Cards before NP](#cards-before-np)
+  - [Master skills](#master-skills)
+  - [Master skills - Plugsuit](#master-skills---plugsuit)
+  - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
+    - [Next Wave](#next-wave)
+    - [Next Turn in the same wave](#next-turn-in-the-same-wave)
+    - [Wave and Turn Indicator](#wave-and-turn-indicator)
+  - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
 - [Additional Battle Config (optional)](#additional-battle-config-optional)
-    - [Materials](#materials)
-    - [Spam](#spam)
-    - [Server](#server)
-    - [Party Selection](#party-selection)
-    - [Card Priority (optional)](#card-priority-optional)
-        - [Card Priority explanation](#card-priority-explanation)
-            - [Symbols used in Card Priority](#symbols-used-in-card-priority)
-        - [Servant Priority](#servant-priority)
-        - [Brave Chain](#brave-chain)
-        - [Rearrange Cards feature](#rearrange-cards-feature)
-    - [Support Selection](#support-selection)
+  - [Materials](#materials)
+  - [Spam](#spam)
+  - [Server](#server)
+  - [Party Selection](#party-selection)
+  - [Card Priority (optional)](#card-priority-optional)
+    - [Card Priority explanation](#card-priority-explanation)
+      - [Symbols used in Card Priority](#symbols-used-in-card-priority)
+    - [Servant Priority](#servant-priority)
+    - [Brave Chain](#brave-chain)
+    - [Rearrange Cards feature](#rearrange-cards-feature)
+  - [Support Selection](#support-selection)
 
 # Introduction
 
@@ -283,6 +285,18 @@ With the recent update as of FGA [Build 2382](https://github.com/Fate-Grand-Auto
 ![Main menu](https://i.imgur.com/yvcme5d.png)
 
 ![Attack Menu](https://i.imgur.com/x9Jzjxg.png)
+
+---
+
+### Raid Battle
+
+Raid Battles more often happens in the same wave.
+
+![Raid](https://i.imgur.com/cCjdCIM.jpeg)
+
+If that happens, you must select the `Next turn in the same wave` option.
+
+![Raid Option](https://i.imgur.com/oBUJcqJ.png)
 
 ___
 
