@@ -208,6 +208,10 @@ Like your servants, enemies also have a number and can be targeted too.
 
 ![Battle Configs - FGO to FGA Command mapping | Enemies - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553186447443/20230709_105236.jpg "FGO to FGA Command mapping | Enemies - targetable")![Battle Configs - FGA Command | Enemies - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553484247100/20230709_105306.jpg "FGA Command | Enemies - targetable")
 
+Like in FGO, you can only select one enemy at a time.
+
+![Battle Configs - FGA Command | Enemies - targetable](https://i.imgur.com/174JOiI.gif "FGA Command | Enemies - targetable")
+
 ## Noble Phantasm (NP) Order
 
 Noble Phantasm (NP) use your servants position.
