@@ -233,12 +233,15 @@ With cards in the high will have priority usage over cards on the low end
 
 Cards can be changed around for different use case eg:
 - For Buster cards priority:
+
   ![Battle Configs - Card Priority | Buster](https://cdn.discordapp.com/attachments/1127606706420068372/1127705166628540427/20230709_153937.jpg "Battle Configs - Card Priority | Buster")
 
 - For charging NP with face cards (Arts cards priority):
+
   ![Battle Configs - Card Priority | Art](https://cdn.discordapp.com/attachments/1127606706420068372/1127713422881063013/20230709_154002.jpg "Battle Configs - Card Priority | Art")
 
 - For stars (Quick cards priority):
+
   ![Battle Configs - Card Priority | Quick](https://cdn.discordapp.com/attachments/1127606706420068372/1127713500937076927/20230709_154016.jpg "Battle Configs - Card Priority | Quick")
 
 If you want to have different card priority for different waves, then you can add more waves and rearrange the card priority to your liking. 
