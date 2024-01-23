@@ -135,13 +135,19 @@ Use `Option 2` if you plan to use critical stars.
 
 ![Kukulkan use option 2](https://i.imgur.com/DVQ65aN.gif)
 
+---
+
 ###### Emiya
 
-Emiya's [Third Skill](https://fategrandorder.fandom.com/wiki/EMIYA#Third_Skill) at max upgrade have additional options.
+Emiya's [Third Skill](https://fategrandorder.fandom.com/wiki/EMIYA#Third_Skill) can select an NP card type after its second upgrade.
 
-Only use this option if you have max upgrade his third skill.
+Only use the `"Emiya"` option if you've fully upgraded the third skill.
 
 ![Emiya's Third Skill Max Upgrade](https://i.imgur.com/ZKH1qSV.png)
+
+or the support you'll borrow have it fully upgraded.
+
+![Emiya's Support Third Skill Max Upgrade](https://i.imgur.com/sFI8IQx.png)
 
 Using Arts option
 
@@ -150,6 +156,8 @@ Using Arts option
 Using Buster option
 
 ![Emiya use Buster](https://i.imgur.com/1oDpuav.gif)
+
+---
 
 ###### Space Ishtar
 
