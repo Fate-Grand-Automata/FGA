@@ -215,11 +215,18 @@ Keep in mind, they will be __*used in the order you choose*__ them.
 ![Battle Configs - FGO to FGA Command mapping | Noble Phantasm](https://cdn.discordapp.com/attachments/1127606706420068372/1127629873721135235/20230709_105703.jpg "FGO to FGA Command mapping | Noble Phantasm")
 ![Battle Configs - FGA Command | Noble Phantasm](https://cdn.discordapp.com/attachments/1127606706420068372/1127629874018914344/20230709_105818.jpg "FGA Command | Noble Phantasm")
 
+### Cards before NP
+
+If you ever need to use cards before NP, you can select the following options.
+
+![Cards before NP](https://i.imgur.com/XTrJTZT.png)
+
 ## Master skills
 
 Master skills is handled the same way for all 'Mystic Codes' with an exception to the plugsuit.
 
 ![Battle Configs - FGO to FGA Command mapping | Mystic Codes](https://cdn.discordapp.com/attachments/1127606706420068372/1127632299337453689/20230709_110424.jpg "FGO to FGA Command mapping | Mystic Codes")
+
 ![Battle Configs - FGA Command | Mystic Code](https://cdn.discordapp.com/attachments/1127606706420068372/1127632299568136342/20230709_110454.jpg "FGA Command | Mystic Code")
 
 ## Master skills - Plugsuit
