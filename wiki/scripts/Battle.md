@@ -1,41 +1,41 @@
 - [Introduction](#introduction)
 - [Video Introduction](#video-introduction)
 - [Battle Configs](#battle-configs)
-  - [Step 1 - Enter the Battle Configs menu](#step-1---enter-the-battle-configs-menu)
-  - [Step 2 - Create new script with the floating action button.](#step-2---create-new-script-with-the-floating-action-button)
-  - [Step 3 - Give your script a name](#step-3---give-your-script-a-name)
-  - [Step 4 - Edit the command](#step-4---edit-the-command)
+    - [Step 1 - Enter the Battle Configs menu](#step-1---enter-the-battle-configs-menu)
+    - [Step 2 - Create new script with the floating action button.](#step-2---create-new-script-with-the-floating-action-button)
+    - [Step 3 - Give your script a name](#step-3---give-your-script-a-name)
+    - [Step 4 - Edit the command](#step-4---edit-the-command)
 - [Commands](#commands)
-  - [Party Mapping](#party-mapping)
-  - [Screen Mapping](#screen-mapping)
-  - [Skills mapping](#skills-mapping)
-  - [Targetable](#targetable)
-  - [Special Skills](#special-skills)
-    - [Kukulkan](#kukulkan)
-    - [Emiya](#emiya)
-    - [Space Ishtar](#space-ishtar)
-    - [Melusine/Ptolemy](#melusineptolemy)
-      - [Warning about Melusine option.](#warning-about-melusine-option)
-  - [Enemy targetable](#enemy-targetable)
-  - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
-  - [Master skills](#master-skills)
-  - [Master skills - Plugsuit](#master-skills---plugsuit)
-  - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
-    - [Next Wave](#next-wave)
-    - [Next Turn in the same wave](#next-turn-in-the-same-wave)
-  - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
+    - [Party Mapping](#party-mapping)
+    - [Screen Mapping](#screen-mapping)
+    - [Skills mapping](#skills-mapping)
+    - [Targetable](#targetable)
+    - [Special Skills](#special-skills)
+        - [Kukulkan](#kukulkan)
+        - [Emiya](#emiya)
+        - [Space Ishtar](#space-ishtar)
+        - [Melusine/Ptolemy](#melusineptolemy)
+            - [Warning about Melusine option.](#warning-about-melusine-option)
+    - [Enemy targetable](#enemy-targetable)
+    - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
+    - [Master skills](#master-skills)
+    - [Master skills - Plugsuit](#master-skills---plugsuit)
+    - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
+        - [Next Wave](#next-wave)
+        - [Next Turn in the same wave](#next-turn-in-the-same-wave)
+    - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
 - [Additional Battle Config (optional)](#additional-battle-config-optional)
-  - [Materials](#materials)
-  - [Spam](#spam)
-  - [Server](#server)
-  - [Party Selection](#party-selection)
-  - [Card Priority (optional)](#card-priority-optional)
-    - [Card Priority explanation](#card-priority-explanation)
-      - [Symbols used in Card Priority](#symbols-used-in-card-priority)
-    - [Servant Priority](#servant-priority)
-    - [Brave Chain](#brave-chain)
-    - [Rearrange Cards feature](#rearrange-cards-feature)
-  - [Support Selection](#support-selection)
+    - [Materials](#materials)
+    - [Spam](#spam)
+    - [Server](#server)
+    - [Party Selection](#party-selection)
+    - [Card Priority (optional)](#card-priority-optional)
+        - [Card Priority explanation](#card-priority-explanation)
+            - [Symbols used in Card Priority](#symbols-used-in-card-priority)
+        - [Servant Priority](#servant-priority)
+        - [Brave Chain](#brave-chain)
+        - [Rearrange Cards feature](#rearrange-cards-feature)
+    - [Support Selection](#support-selection)
 
 # Introduction
 
@@ -158,6 +158,9 @@ or the support you'll borrow have it fully upgraded.
 
 ![Emiya's Support Third Skill Max Upgrade](https://i.imgur.com/sFI8IQx.png)
 
+Note: FGA doesn't have the capability to detect if the skill is fully upgraded or not, but you can use preferred friends to ensure that you get
+the right support.
+
 Using Arts option
 
 ![Emiya use Arts](https://i.imgur.com/hlknb1L.gif)
@@ -191,7 +194,8 @@ This causes a long transition animation and this option will help mitigate that 
 
 After using Melusine's third skill at ascension 1 and 2, any succeeding use of third skill must use the `normal third skill` option.
 
-While Ptolemy will keep using the `Melusine` option. As Ptolemy keeps changing back and forth between Ascension 1 and Ascension 3 with each use of his third skill.
+While Ptolemy will keep using the `Melusine` option. As Ptolemy keeps changing back and forth between Ascension 1 and Ascension 3 with each use of his
+third skill.
 
 ---
 
