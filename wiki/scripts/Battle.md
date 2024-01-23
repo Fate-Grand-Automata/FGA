@@ -15,6 +15,8 @@
         - [Master skills](#master-skills)
         - [Master skills - Plugsuit](#master-skills---plugsuit)
         - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
+          - [Next Wave](#next-wave)
+          - [Next Turn in the same wave](#next-turn-in-the-same-wave)
     - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
   - [Additional Battle Config (optional)](#additional-battle-config-optional)
     - [Materials](#materials)
@@ -23,9 +25,11 @@
     - [Party Selection](#party-selection)
     - [Card Priority (optional)](#card-priority-optional)
       - [Card Priority explanation](#card-priority-explanation)
+        - [Symbols used in Card Priority](#symbols-used-in-card-priority)
       - [Servant Priority](#servant-priority)
       - [Brave Chain](#brave-chain)
       - [Rearrange Cards feature](#rearrange-cards-feature)
+    - [Support Selection](#support-selection)
 
 
 # Introduction
@@ -133,6 +137,8 @@ This step will cover both wave and turn options.
 
 ![Battle Configs - FGA Command | Wave and Turn options](https://cdn.discordapp.com/attachments/1127606706420068372/1127635393924300943/20230709_111920.jpg "FGA Command | Wave and Turn options")
 
+###### Next Wave
+
 A wave or battle that's displayed in the top right corner
 
 ![Battle Configs - FGA Command | Wave](https://cdn.discordapp.com/attachments/1127606706420068372/1127637782043566090/20230709_112240.jpg)
@@ -146,7 +152,11 @@ Take note of the symbol above. This will indicate that you've skipped to the nex
 By wave skipping, you're telling FGA that you don't want do anything else until you're on the next wave. 
 
 **Be warned** that if you use the next wave button then any skill you use after that will only activate during the next wave so make sure you check over your script to see if you have made any mistakes.
+
 ___
+
+###### Next Turn in the same wave
+
 ![Battle Configs - FGA Command | Next Turn Symbol](https://cdn.discordapp.com/attachments/1127606706420068372/1127644007313461249/20230709_112155.jpg "Next Turn Symbol")
 
 Turns are indicated by this symbol
@@ -205,8 +215,11 @@ ___
 
 Card Priority is used to tell FGA how to handle face cards.
 
-![Battle Configs - Card Priority Interface](https://cdn.discordapp.com/attachments/1127606706420068372/1127696989459591208/20230709_152209.jpg)
 With cards in the high will have priority usage over cards on the low end
+
+![Battle Configs - Card Priority Interface](https://cdn.discordapp.com/attachments/1127606706420068372/1127696989459591208/20230709_152209.jpg)
+
+##### Symbols used in Card Priority
 
 - WB = Weak Buster
 - WA = Weak Art
@@ -267,5 +280,6 @@ ___
 End Card Priority explanation.
 ___
 
- - Support Selection
+### Support Selection
+
 ![Battle Configs - Card Priority | Rearrange Cards](https://cdn.discordapp.com/attachments/1127606706420068372/1127728473641861221/20230709_172943.jpg "Battle Configs - Card Priority | Rearrange Cards")
