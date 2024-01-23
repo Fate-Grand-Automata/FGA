@@ -25,6 +25,7 @@
     - [Next Wave](#next-wave)
     - [Next Turn in the same wave](#next-turn-in-the-same-wave)
     - [Wave and Turn Indicator](#wave-and-turn-indicator)
+    - [Raid Battle](#raid-battle)
   - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
 - [Additional Battle Config (optional)](#additional-battle-config-optional)
   - [Materials](#materials)
