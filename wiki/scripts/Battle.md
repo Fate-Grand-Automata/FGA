@@ -274,6 +274,16 @@ Turns are indicated by this symbol
 
 Turn skipping can't be use to switch to the next wave and vice versa.
 
+---
+
+### Wave and Turn Indicator
+
+With the recent update as of FGA [Build 2382](https://github.com/Fate-Grand-Automata/FGA/releases/tag/2382). You'll be able now to track the current wave and turn
+
+![Main menu](https://i.imgur.com/yvcme5d.png)
+
+![Attack Menu](https://i.imgur.com/x9Jzjxg.png)
+
 ___
 
 ## Example of FGA Battle Config setup and used
