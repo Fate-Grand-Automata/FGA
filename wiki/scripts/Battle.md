@@ -111,7 +111,7 @@ Skills that are targetable will use the servants position number to apply the sk
 
 Due to the nature of some skills, they will have a different/additional command mapping to accommodate them.
 
-##### Kukulkan
+###### Kukulkan
 
 [First Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#First_Skill) and [Third Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Third_Skill) is a self targetable skill that has option to use critical stars for more effects.
 
@@ -135,11 +135,13 @@ Use `Option 2` if you plan to use critical stars.
 
 ![Kukulkan use option 2](https://i.imgur.com/DVQ65aN.gif)
 
-##### Emiya
+###### Emiya
 
-##### Space Ishtar
+Emiya's [Third Skill](https://fategrandorder.fandom.com/wiki/EMIYA#Third_Skill) at max 
 
-##### Melusine/Ptolemy
+###### Space Ishtar
+
+###### Melusine/Ptolemy
 
 ##### Enemy targetable
 
