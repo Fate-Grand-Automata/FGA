@@ -503,7 +503,19 @@ Then you can select if you want the preferred CE to be `max limit broken`
 
 Enable this option if you want to use your friends as preferred support.
 
+If there are no images in the `support` -> `friends` directory, This will be the screen that will show up. You need to manually add via the Support Image Maker.
+
 ![Preferred Friends](https://i.imgur.com/GAq5wIK.png)
+
+Once you have added the images, you can now select the preferred friends.
+
+![Preferred Friends](https://i.imgur.com/yJGbnsn.png)
+
+#### Final Look
+
+![Preferred Selection](https://i.imgur.com/nWQiBFC.png)
+
+Note: You can use only one(CE only) or any of the combinations of the preferred settings.
 
 #### Fallback
 
