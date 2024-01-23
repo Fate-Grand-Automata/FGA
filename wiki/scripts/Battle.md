@@ -161,7 +161,17 @@ Using Buster option
 
 ###### Space Ishtar
 
+For convenience's sake, Space Ishtar's [Second Skill](https://fategrandorder.fandom.com/wiki/Space_Ishtar#Second_Skill) has her option also explicitly shown.
+
+![Space Ishtar Option](https://i.imgur.com/CoNfanB.gif)
+
+---
+
 ###### Melusine/Ptolemy
+
+
+
+---
 
 ##### Enemy targetable
 
