@@ -8,21 +8,20 @@
 - [Commands](#commands)
   - [Party Mapping](#party-mapping)
   - [Screen Mapping](#screen-mapping)
-  - [Command Mapping](#command-mapping)
-    - [Skills mapping](#skills-mapping)
-    - [Targetable](#targetable)
-    - [Special Skills](#special-skills)
-      - [Kukulkan](#kukulkan)
-      - [Emiya](#emiya)
-      - [Space Ishtar](#space-ishtar)
-      - [Melusine/Ptolemy](#melusineptolemy)
-    - [Enemy targetable](#enemy-targetable)
-    - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
-    - [Master skills](#master-skills)
-    - [Master skills - Plugsuit](#master-skills---plugsuit)
-    - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
-      - [Next Wave](#next-wave)
-      - [Next Turn in the same wave](#next-turn-in-the-same-wave)
+  - [Skills mapping](#skills-mapping)
+  - [Targetable](#targetable)
+  - [Special Skills](#special-skills)
+    - [Kukulkan](#kukulkan)
+    - [Emiya](#emiya)
+    - [Space Ishtar](#space-ishtar)
+    - [Melusine/Ptolemy](#melusineptolemy)
+  - [Enemy targetable](#enemy-targetable)
+  - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
+  - [Master skills](#master-skills)
+  - [Master skills - Plugsuit](#master-skills---plugsuit)
+  - [Next turn in the same wave, and Next wave](#next-turn-in-the-same-wave-and-next-wave)
+    - [Next Wave](#next-wave)
+    - [Next Turn in the same wave](#next-turn-in-the-same-wave)
   - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
 - [Additional Battle Config (optional)](#additional-battle-config-optional)
   - [Materials](#materials)
@@ -98,9 +97,7 @@ For your reference, look at the images below on how to map with FGA.
 ![Battle Configs - FGO to FGA Command mapping](https://cdn.discordapp.com/attachments/1127606706420068372/1127622994605396038/20200429_183015.jpg "FGO to FGA Command mapping")
 ![Battle Configs - FGA Command Interface](https://cdn.discordapp.com/attachments/1127606706420068372/1127622994945130496/Screenshot_20230709-103020_FGA_CI.jpg "FGA Command Interface")
 
-## Command Mapping
-
-### Skills mapping
+## Skills mapping
 
 When creating scripts 'Skills' and 'NP', you create by basing on your servant positions with each skill is represented by a letter on the command
 creator.
@@ -108,18 +105,18 @@ creator.
 ![Battle Configs - FGO to FGA Command mapping | Servant skills](https://cdn.discordapp.com/attachments/1127606706420068372/1127625668465807371/20230709_103946.jpg "FGO to FGA Command mapping | Servant skills")
 ![Battle Configs - FGO to FGA Command mapping | Servant skills](https://cdn.discordapp.com/attachments/1127606706420068372/1127625668746813460/20230709_104022.jpg "FGA Command | Servant skills")
 
-### Targetable
+## Targetable
 
 Skills that are targetable will use the servants position number to apply the skill to them
 
 ![Battle Configs - FGA Command | Servant skills - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127627494963556362/Screenshot_20230709-104541_FGA_CI.jpg "FGA Command | Servant skills - targetable")
 ![Battle Configs - FGO to FGA Command mapping | Servant skills - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127627495294894121/20230709_104707.jpg "FGO to FGA Command mapping | Servant skills - targetable")
 
-### Special Skills
+## Special Skills
 
 Due to the nature of some skills, they will have a different/additional command mapping to accommodate them.
 
-#### Kukulkan
+### Kukulkan
 
 [First Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#First_Skill)
 and [Third Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Third_Skill) is a self targetable skill that has option to use critical stars for
@@ -148,7 +145,7 @@ Use `Option 2` if you plan to use critical stars.
 
 ---
 
-#### Emiya
+### Emiya
 
 Emiya's [Third Skill](https://fategrandorder.fandom.com/wiki/EMIYA#Third_Skill) can select an NP card type after its second upgrade.
 
@@ -170,7 +167,7 @@ Using Buster option
 
 ---
 
-#### Space Ishtar
+### Space Ishtar
 
 For convenience's sake, Space Ishtar's [Second Skill](https://fategrandorder.fandom.com/wiki/Space_Ishtar#Second_Skill) has her option also explicitly
 shown.
@@ -179,7 +176,7 @@ shown.
 
 ---
 
-#### Melusine/Ptolemy
+### Melusine/Ptolemy
 
 Melusine's [Third Skill at Ascension 1 and 2](https://fategrandorder.fandom.com/wiki/M%C3%A9lusine#Third_Skill) and
 Ptolemy's [Third Skill](https://fategrandorder.fandom.com/wiki/Ptolemaios#Third_Skill) both have capability to alter the NP type after the skill use.
@@ -189,13 +186,13 @@ This causes a long transition animation and this option will help mitigate that 
 
 ---
 
-### Enemy targetable
+## Enemy targetable
 
 Like your servants, enemies also have a number and can be targeted too.
 
 ![Battle Configs - FGO to FGA Command mapping | Enemies - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553186447443/20230709_105236.jpg "FGO to FGA Command mapping | Enemies - targetable")![Battle Configs - FGA Command | Enemies - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553484247100/20230709_105306.jpg "FGA Command | Enemies - targetable")
 
-### Noble Phantasm (NP) Order
+## Noble Phantasm (NP) Order
 
 Noble Phantasm (NP) use your servants position.
 
@@ -205,26 +202,26 @@ Keep in mind, they will be __*used in the order you choose*__ them.
 ![Battle Configs - FGO to FGA Command mapping | Noble Phantasm](https://cdn.discordapp.com/attachments/1127606706420068372/1127629873721135235/20230709_105703.jpg "FGO to FGA Command mapping | Noble Phantasm")
 ![Battle Configs - FGA Command | Noble Phantasm](https://cdn.discordapp.com/attachments/1127606706420068372/1127629874018914344/20230709_105818.jpg "FGA Command | Noble Phantasm")
 
-### Master skills
+## Master skills
 
 Master skills is handled the same way for all 'Mystic Codes' with an exception to the plugsuit.
 
 ![Battle Configs - FGO to FGA Command mapping | Mystic Codes](https://cdn.discordapp.com/attachments/1127606706420068372/1127632299337453689/20230709_110424.jpg "FGO to FGA Command mapping | Mystic Codes")
 ![Battle Configs - FGA Command | Mystic Code](https://cdn.discordapp.com/attachments/1127606706420068372/1127632299568136342/20230709_110454.jpg "FGA Command | Mystic Code")
 
-### Master skills - Plugsuit
+## Master skills - Plugsuit
 
 The `l` command should not be used when using the plugsuit mystic code. Instead, the plugsuit order change command should be used with
 
 ![Battle Configs - FGA Command | Mystic Code - Plugsuit](https://cdn.discordapp.com/attachments/1127606706420068372/1127632827064778843/20230709_110918.jpg "FGA Command | Mystic Code - Plugsuit")
 
-### Next turn in the same wave, and Next wave
+## Next turn in the same wave, and Next wave
 
 This step will cover both wave and turn options.
 
 ![Battle Configs - FGA Command | Wave and Turn options](https://cdn.discordapp.com/attachments/1127606706420068372/1127635393924300943/20230709_111920.jpg "FGA Command | Wave and Turn options")
 
-#### Next Wave
+### Next Wave
 
 A wave or battle that's displayed in the top right corner
 
@@ -243,7 +240,7 @@ over your script to see if you have made any mistakes.
 
 ___
 
-#### Next Turn in the same wave
+### Next Turn in the same wave
 
 ![Battle Configs - FGA Command | Next Turn Symbol](https://cdn.discordapp.com/attachments/1127606706420068372/1127644007313461249/20230709_112155.jpg "Next Turn Symbol")
 
