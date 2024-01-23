@@ -188,7 +188,7 @@ This causes a long transition animation and this option will help mitigate that 
 
 ![Melusine/Ptolemy Option](https://i.imgur.com/Uij44bW.gif)
 
-<img src="https://i.imgur.com/hX2mGjA.gif" width="500" height="250" alt="Melusine option"/>
+![Melusine option](https://i.imgur.com/hX2mGjA.gif)
 
 #### Warning about Melusine option.
 
