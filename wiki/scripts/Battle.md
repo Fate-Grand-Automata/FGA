@@ -11,10 +11,10 @@
         - [Skills mapping](#skills-mapping)
         - [Targetable](#targetable)
         - [Special Skills](#special-skills)
-        - [Kukulkan](#kukulkan)
-        - [Emiya](#emiya)
-        - [Space Ishtar](#space-ishtar)
-        - [Melusine/Ptolemy](#melusineptolemy)
+          - [Kukulkan](#kukulkan)
+          - [Emiya](#emiya)
+          - [Space Ishtar](#space-ishtar)
+          - [Melusine/Ptolemy](#melusineptolemy)
         - [Enemy targetable](#enemy-targetable)
         - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
         - [Master skills](#master-skills)
@@ -137,7 +137,19 @@ Use `Option 2` if you plan to use critical stars.
 
 ###### Emiya
 
-Emiya's [Third Skill](https://fategrandorder.fandom.com/wiki/EMIYA#Third_Skill) at max 
+Emiya's [Third Skill](https://fategrandorder.fandom.com/wiki/EMIYA#Third_Skill) at max upgrade have additional options.
+
+Only use this option if you have max upgrade his third skill.
+
+![Emiya's Third Skill Max Upgrade](https://i.imgur.com/ZKH1qSV.png)
+
+Using Arts option
+
+![Emiya use Arts](https://i.imgur.com/hlknb1L.gif)
+
+Using Buster option
+
+![Emiya use Buster](https://i.imgur.com/1oDpuav.gif)
 
 ###### Space Ishtar
 
