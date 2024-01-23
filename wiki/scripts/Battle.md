@@ -45,6 +45,7 @@
       - [Preferred Selection - Preferred Servant](#preferred-selection---preferred-servant)
       - [Preferred Servant - Preferred CE](#preferred-servant---preferred-ce)
       - [Preferred Servant - Preferred Friends](#preferred-servant---preferred-friends)
+      - [Final Look](#final-look)
       - [Fallback](#fallback)
 
 # Introduction
