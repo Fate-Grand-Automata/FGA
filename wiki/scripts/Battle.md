@@ -15,6 +15,7 @@
     - [Emiya](#emiya)
     - [Space Ishtar](#space-ishtar)
     - [Melusine/Ptolemy](#melusineptolemy)
+      - [Warning about Melusine option.](#warning-about-melusine-option)
   - [Enemy targetable](#enemy-targetable)
   - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
   - [Master skills](#master-skills)
@@ -95,7 +96,7 @@ Each servant in your party will be given a number from 1 to 6, first to last.
 For your reference, look at the images below on how to map with FGA.
 
 ![Battle Configs - FGO to FGA Command mapping](https://cdn.discordapp.com/attachments/1127606706420068372/1127622994605396038/20200429_183015.jpg "FGO to FGA Command mapping")
-![Battle Configs - FGA Command Interface](https://cdn.discordapp.com/attachments/1127606706420068372/1127622994945130496/Screenshot_20230709-103020_FGA_CI.jpg "FGA Command Interface")
+![Battle Configs - FGA Command Interface](https://i.imgur.com/6N9OHcx.png "FGA Command Interface")
 
 ## Skills mapping
 
@@ -183,6 +184,14 @@ Ptolemy's [Third Skill](https://fategrandorder.fandom.com/wiki/Ptolemaios#Third_
 This causes a long transition animation and this option will help mitigate that problem.
 
 ![Melusine/Ptolemy Option](https://i.imgur.com/Uij44bW.gif)
+
+![Melusine option](https://i.imgur.com/7JJ5cMg.gif)
+
+#### Warning about Melusine option.
+
+After using Melusine's third skill at ascension 1 and 2, any succeeding use of third skill must use the `normal third skill` option.
+
+While Ptolemy will keep using the `Melusine` option. As Ptolemy keeps changing back and forth between Ascension 1 and Ascension 3 with each use of his third skill.
 
 ---
 
