@@ -80,9 +80,9 @@ This is where you'll create your commands that FGA will use in battle.
 
 ![Battle Configs - Command](https://cdn.discordapp.com/attachments/1127606706420068372/1127619924370665552/20230709_101515.jpg "Command")
 
-When creating a battle script, you have to remember that servant positions are important.
-
 #### Party Mapping
+
+When creating a battle script, you have to remember that servant positions are important.
 
 Each servant in your party will be given a number from 1 to 6, first to last.
 ![Battle Configs - Servant Position in FGO ](https://cdn.discordapp.com/attachments/1127606706420068372/1127622383767916625/Screenshot_20200116-225324_Video_Player.jpg "Servant Position in FGO ")
