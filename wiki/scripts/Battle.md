@@ -307,6 +307,7 @@ I recommend opening the video below for reference before continuing this FGA Bat
 <a href="https://youtu.be/ahY4tFEpUSg" target="_blank"> FGA Config setup and used video </a>
 
 Example command from video:
+
 ![FGA Battle Configs example from video - Command](https://cdn.discordapp.com/attachments/1127606706420068372/1127661024938557610/20230709_124941.png "FGA Battle Configs example from video - Command")
 
 # Additional Battle Config (optional)
