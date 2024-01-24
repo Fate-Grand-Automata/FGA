@@ -41,6 +41,7 @@ class AutoDetect @Inject constructor(
 
 
             images[Images.AppendBanner] in locations.enhancementBannerRegion -> {
+                autoSetup.checkIfEmptyEnhance()
                 autoSetup.checkAppendLocks()
                 ScriptModeEnum.Append
             }

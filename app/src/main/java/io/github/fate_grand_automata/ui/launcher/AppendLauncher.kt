@@ -43,6 +43,7 @@ fun appendLauncher(
     prefsCore: PrefsCore,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
+    val emptyServant by prefsCore.emptyEnhance.remember()
 
     val appendOneLocked by prefsCore.append.appendOneLocked.remember()
     val appendTwoLocked by prefsCore.append.appendTwoLocked.remember()
@@ -103,150 +104,166 @@ fun appendLauncher(
             }
         }
 
-        item {
-            Text(
-                text = stringResource(R.string.note),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        item {
-            Text(
-                text = stringResource(R.string.append_note),
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
-
-        item {
-            Divider()
-        }
-
-        item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { shouldUpgradeAll = !shouldUpgradeAll }
-                    .padding(bottom = 8.dp)
-            ) {
+        if (emptyServant) {
+            item {
                 Text(
-                    stringResource(R.string.append_upgrade_all_question),
+                    text = stringResource(id = R.string.empty_servant),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-                Switch(
-                    checked = shouldUpgradeAll,
-                    onCheckedChange = { shouldUpgradeAll = it },
+                    color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    textAlign = TextAlign.Center
                 )
             }
-        }
-        item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-            ) {
-                PresetButton(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    text = "3",
-                    enabled = shouldUpgradeAll,
-                    onClick = {
-                        upgradeAll = 3
-                    }
+        } else {
+            item {
+                Text(
+                    text = stringResource(R.string.note),
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold
                 )
-                PresetButton(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    text = "6",
-                    enabled = shouldUpgradeAll,
-                    onClick = {
-                        upgradeAll = 6
-                    }
+            }
+
+            item {
+                Text(
+                    text = stringResource(R.string.append_note),
+                    style = MaterialTheme.typography.bodyMedium
                 )
-                PresetButton(
+            }
+
+            item {
+                Divider()
+            }
+
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    text = "8",
-                    enabled = shouldUpgradeAll,
-                    onClick = {
-                        upgradeAll = 8
-                    }
-                )
-                PresetButton(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    text = "9",
-                    enabled = shouldUpgradeAll,
-                    onClick = {
-                        upgradeAll = 9
-                    }
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(1.5f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    contentAlignment = Alignment.Center
+                        .fillMaxWidth()
+                        .clickable { shouldUpgradeAll = !shouldUpgradeAll }
+                        .padding(bottom = 8.dp)
                 ) {
-                    Stepper(
-                        value = upgradeAll,
-                        onValueChange = { upgradeAll = it },
-                        valueRange = 0..9,
-                        enabled = shouldUpgradeAll,
+                    Text(
+                        stringResource(R.string.append_upgrade_all_question),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Switch(
+                        checked = shouldUpgradeAll,
+                        onCheckedChange = { shouldUpgradeAll = it },
+                        modifier = Modifier
                     )
                 }
             }
-        }
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                ) {
+                    PresetButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        text = "3",
+                        enabled = shouldUpgradeAll,
+                        onClick = {
+                            upgradeAll = 3
+                        }
+                    )
+                    PresetButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        text = "6",
+                        enabled = shouldUpgradeAll,
+                        onClick = {
+                            upgradeAll = 6
+                        }
+                    )
+                    PresetButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        text = "8",
+                        enabled = shouldUpgradeAll,
+                        onClick = {
+                            upgradeAll = 8
+                        }
+                    )
+                    PresetButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        text = "9",
+                        enabled = shouldUpgradeAll,
+                        onClick = {
+                            upgradeAll = 9
+                        }
+                    )
+                    Box(
+                        modifier = Modifier
+                            .weight(1.5f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Stepper(
+                            value = upgradeAll,
+                            onValueChange = { upgradeAll = it },
+                            valueRange = 0..9,
+                            enabled = shouldUpgradeAll,
+                        )
+                    }
+                }
+            }
 
-        item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                AppendItem(
-                    modifier = Modifier.weight(1f),
-                    name = stringResource(id = R.string.append_number, 1),
-                    isLocked = appendOneLocked,
-                    shouldUnlock = shouldUnlockAppend1,
-                    onShouldUnlockChange = { shouldUnlockAppend1 = it },
-                    upgradeLevel = upgradeAppend1,
-                    onUpgradeLevelChange = { upgradeAppend1 = it }
-                )
-                AppendItem(
-                    modifier = Modifier.weight(1f),
-                    name = stringResource(id = R.string.append_number, 2),
-                    isLocked = appendTwoLocked,
-                    shouldUnlock = shouldUnlockAppend2,
-                    onShouldUnlockChange = { shouldUnlockAppend2 = it },
-                    upgradeLevel = upgradeAppend2,
-                    onUpgradeLevelChange = { upgradeAppend2 = it }
-                )
-                AppendItem(
-                    modifier = Modifier.weight(1f),
-                    name = stringResource(id = R.string.append_number, 3),
-                    isLocked = appendThreeLocked,
-                    shouldUnlock = shouldUnlockAppend3,
-                    onShouldUnlockChange = { shouldUnlockAppend3 = it },
-                    upgradeLevel = upgradeAppend3,
-                    onUpgradeLevelChange = { upgradeAppend3 = it }
-                )
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    AppendItem(
+                        modifier = Modifier.weight(1f),
+                        name = stringResource(id = R.string.append_number, 1),
+                        isLocked = appendOneLocked,
+                        shouldUnlock = shouldUnlockAppend1,
+                        onShouldUnlockChange = { shouldUnlockAppend1 = it },
+                        upgradeLevel = upgradeAppend1,
+                        onUpgradeLevelChange = { upgradeAppend1 = it }
+                    )
+                    AppendItem(
+                        modifier = Modifier.weight(1f),
+                        name = stringResource(id = R.string.append_number, 2),
+                        isLocked = appendTwoLocked,
+                        shouldUnlock = shouldUnlockAppend2,
+                        onShouldUnlockChange = { shouldUnlockAppend2 = it },
+                        upgradeLevel = upgradeAppend2,
+                        onUpgradeLevelChange = { upgradeAppend2 = it }
+                    )
+                    AppendItem(
+                        modifier = Modifier.weight(1f),
+                        name = stringResource(id = R.string.append_number, 3),
+                        isLocked = appendThreeLocked,
+                        shouldUnlock = shouldUnlockAppend3,
+                        onShouldUnlockChange = { shouldUnlockAppend3 = it },
+                        upgradeLevel = upgradeAppend3,
+                        onUpgradeLevelChange = { upgradeAppend3 = it }
+                    )
+                }
             }
         }
     }
 
 
     return ScriptLauncherResponseBuilder(
-        canBuild = { true },
+        canBuild = {
+            !emptyServant
+        },
         build = {
             ScriptLauncherResponse.Append(
                 shouldUnlockAppend1 = shouldUnlockAppend1,
@@ -334,9 +351,9 @@ private fun AppendItem(
             valueRange = 0..9,
             enabled = !isLocked || shouldUnlock,
             valueRepresentation = { upgrade ->
-                if (upgrade <= 1){
+                if (upgrade <= 1) {
                     context.getString(R.string.append_upgrade_time, upgrade)
-                } else{
+                } else {
                     context.getString(R.string.append_upgrade_times, upgrade)
                 }
 
