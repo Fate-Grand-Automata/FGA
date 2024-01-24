@@ -33,8 +33,8 @@ class AutoDetect @Inject constructor(
                 ScriptModeEnum.SupportImageMaker
 
 
-
             images[Images.SkillMenuBanner] in locations.enhancementBannerRegion -> {
+                autoSetup.checkIfEmptyEnhance()
                 autoSetup.getMinimumSkillLevel()
                 ScriptModeEnum.Skill
             }
@@ -43,7 +43,7 @@ class AutoDetect @Inject constructor(
                 images[Images.ServantAutoSelect] to locations.servant.servantAutoSelectRegion,
                 images[Images.ServantAutoSelectOff] to locations.servant.servantAutoSelectRegion,
                 images[Images.ServantAscensionBanner] to locations.enhancementBannerRegion
-            ).exists()->
+            ).exists() ->
                 ScriptModeEnum.ServantLevel
 
             images[Images.EmptyEnhance] in locations.emptyEnhanceRegion ->

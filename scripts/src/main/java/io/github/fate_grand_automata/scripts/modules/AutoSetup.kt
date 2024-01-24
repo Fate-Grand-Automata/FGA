@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
+import io.github.fate_grand_automata.scripts.Images
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
@@ -9,6 +10,11 @@ class AutoSetup @Inject constructor(
     api: IFgoAutomataApi,
 ) : IFgoAutomataApi by api {
 
+    fun checkIfEmptyEnhance() {
+        val emptyEnhance = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
+
+        prefs.emptyEnhance = emptyEnhance
+    }
 
 
     fun getMinimumSkillLevel() {
