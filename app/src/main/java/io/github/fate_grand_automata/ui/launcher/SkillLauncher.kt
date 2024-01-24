@@ -41,6 +41,8 @@ fun skillLauncher(
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
 
+    val emptyServant by prefsCore.emptyEnhance.remember()
+
     var shouldUpgradeSkillOne by remember {
         mutableStateOf(false)
     }
@@ -116,150 +118,166 @@ fun skillLauncher(
                 Divider()
             }
         }
-        item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { shouldUpgradeAllSkills = !shouldUpgradeAllSkills }
-            ) {
+        if (emptyServant){
+            item {
                 Text(
-                    stringResource(R.string.skill_upgrade_all_available_question),
+                    text = stringResource(id = R.string.empty_servant),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Justify
-                )
-                Switch(
-                    checked = shouldUpgradeAllSkills,
-                    onCheckedChange = {
-                        shouldUpgradeAllSkills = it
-                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    textAlign = TextAlign.Center
                 )
             }
-        }
-        item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-            ) {
-                PresetButton(
+        } else {
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    text = "4",
-                    enabled = shouldUpgradeAllSkills,
-                    onClick = {
-                        targetAllSkillLevel = 4
-                    }
-                )
-                PresetButton(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    text = "7",
-                    enabled = shouldUpgradeAllSkills,
-                    onClick = {
-                        targetAllSkillLevel = 7
-                    }
-                )
-                PresetButton(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    text = "9",
-                    enabled = shouldUpgradeAllSkills,
-                    onClick = {
-                        targetAllSkillLevel = 9
-                    }
-                )
-                PresetButton(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    text = "10",
-                    enabled = shouldUpgradeAllSkills,
-                    onClick = {
-                        targetAllSkillLevel = 10
-                    }
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(1.5f)
-                        .padding(horizontal = 4.dp, vertical = 2.dp),
-                    contentAlignment = Alignment.Center
+                        .fillMaxWidth()
+                        .clickable { shouldUpgradeAllSkills = !shouldUpgradeAllSkills }
                 ) {
-                    Stepper(
-                        value = targetAllSkillLevel,
-                        onValueChange = { targetAllSkillLevel = it },
-                        valueRange = lowestMinimumSkillLevel..10,
-                        enabled = shouldUpgradeAllSkills,
-                        textStyle = MaterialTheme.typography.bodyMedium,
-                        valueRepresentation = { "Lv. $it" }
+                    Text(
+                        stringResource(R.string.skill_upgrade_all_available_question),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Justify
+                    )
+                    Switch(
+                        checked = shouldUpgradeAllSkills,
+                        onCheckedChange = {
+                            shouldUpgradeAllSkills = it
+                        },
                     )
                 }
             }
-        }
-
-        item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                SkillUpgradeItem(
-                    name = stringResource(id = R.string.skill_number, 1),
-                    shouldUpgrade = shouldUpgradeSkillOne,
-                    onShouldUpgradeChange = {
-                        shouldUpgradeSkillOne = it
-                    },
-                    minimumUpgrade = minimumSkillOne,
-                    upgradeLevel = skillOneUpgradeValue,
-                    onUpgradeLevelChange = { skillOneUpgradeValue = it - minimumSkillOne },
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 2.dp),
-                )
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                ) {
+                    PresetButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        text = "4",
+                        enabled = shouldUpgradeAllSkills,
+                        onClick = {
+                            targetAllSkillLevel = 4
+                        }
+                    )
+                    PresetButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        text = "7",
+                        enabled = shouldUpgradeAllSkills,
+                        onClick = {
+                            targetAllSkillLevel = 7
+                        }
+                    )
+                    PresetButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        text = "9",
+                        enabled = shouldUpgradeAllSkills,
+                        onClick = {
+                            targetAllSkillLevel = 9
+                        }
+                    )
+                    PresetButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        text = "10",
+                        enabled = shouldUpgradeAllSkills,
+                        onClick = {
+                            targetAllSkillLevel = 10
+                        }
+                    )
+                    Box(
+                        modifier = Modifier
+                            .weight(1.5f)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Stepper(
+                            value = targetAllSkillLevel,
+                            onValueChange = { targetAllSkillLevel = it },
+                            valueRange = lowestMinimumSkillLevel..10,
+                            enabled = shouldUpgradeAllSkills,
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            valueRepresentation = { "Lv. $it" }
+                        )
+                    }
+                }
+            }
 
-                SkillUpgradeItem(
-                    name = stringResource(id = R.string.skill_number, 2),
-                    shouldUpgrade = shouldUpgradeSkillTwo,
-                    onShouldUpgradeChange = {
-                        shouldUpgradeSkillTwo = it
-                    },
-                    minimumUpgrade = minimumSkillTwo,
-                    upgradeLevel = skillTwoUpgradeValue,
-                    onUpgradeLevelChange = { skillTwoUpgradeValue = it - minimumSkillTwo },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 2.dp),
-                    available = isSkillTwoAvailable
-                )
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    SkillUpgradeItem(
+                        name = stringResource(id = R.string.skill_number, 1),
+                        shouldUpgrade = shouldUpgradeSkillOne,
+                        onShouldUpgradeChange = {
+                            shouldUpgradeSkillOne = it
+                        },
+                        minimumUpgrade = minimumSkillOne,
+                        upgradeLevel = skillOneUpgradeValue,
+                        onUpgradeLevelChange = { skillOneUpgradeValue = it - minimumSkillOne },
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 2.dp),
+                    )
 
-                SkillUpgradeItem(
-                    name = stringResource(id = R.string.skill_number, 3),
-                    shouldUpgrade = shouldUpgradeSkillThree,
-                    onShouldUpgradeChange = {
-                        shouldUpgradeSkillThree = it
-                    },
-                    minimumUpgrade = minimumSkillThree,
-                    upgradeLevel = skillThreeUpgradeValue,
-                    onUpgradeLevelChange = { skillThreeUpgradeValue = it - minimumSkillThree },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 2.dp),
-                    available = isSkillThreeAvailable
-                )
+                    SkillUpgradeItem(
+                        name = stringResource(id = R.string.skill_number, 2),
+                        shouldUpgrade = shouldUpgradeSkillTwo,
+                        onShouldUpgradeChange = {
+                            shouldUpgradeSkillTwo = it
+                        },
+                        minimumUpgrade = minimumSkillTwo,
+                        upgradeLevel = skillTwoUpgradeValue,
+                        onUpgradeLevelChange = { skillTwoUpgradeValue = it - minimumSkillTwo },
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 2.dp),
+                        available = isSkillTwoAvailable
+                    )
+
+                    SkillUpgradeItem(
+                        name = stringResource(id = R.string.skill_number, 3),
+                        shouldUpgrade = shouldUpgradeSkillThree,
+                        onShouldUpgradeChange = {
+                            shouldUpgradeSkillThree = it
+                        },
+                        minimumUpgrade = minimumSkillThree,
+                        upgradeLevel = skillThreeUpgradeValue,
+                        onUpgradeLevelChange = { skillThreeUpgradeValue = it - minimumSkillThree },
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 2.dp),
+                        available = isSkillThreeAvailable
+                    )
+                }
             }
         }
     }
 
     return ScriptLauncherResponseBuilder(
-        canBuild = { true },
+        canBuild = {
+            !emptyServant
+        },
         build = {
             ScriptLauncherResponse.Skill(
                 shouldUpgradeSkillOne = shouldUpgradeSkillOne,
