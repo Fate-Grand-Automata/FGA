@@ -18,7 +18,7 @@ class AutoSetup @Inject constructor(
     fun checkIfEmptyEnhance() {
         val emptyEnhance = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
 
-        prefs.craftEssence.emptyEnhance = emptyEnhance
+        prefs.emptyEnhance = emptyEnhance
     }
 
     /**

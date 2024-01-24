@@ -3,12 +3,6 @@ package io.github.fate_grand_automata.prefs.core
 import io.github.fate_grand_automata.scripts.enums.CEDisplayChangeAreaEnum
 
 class CraftEssencePrefsCore(maker: PrefMaker) {
-    /**
-     * Checks if the CE enhancement screen is empty.
-     * If it is not empty, then the script will show the Target CE as there is already target CE selected.
-     */
-    val emptyEnhance = maker.bool("ce_empty_enhance")
-
     val skipAutoLockTargetCE = maker.bool("ce_skip_auto_lock_target")
 
     val useDragging = maker.bool("ce_use_dragging", default = true)

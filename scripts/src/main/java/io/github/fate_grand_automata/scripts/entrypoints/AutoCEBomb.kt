@@ -65,7 +65,7 @@ class AutoCEBomb @Inject constructor(
 
     override fun script(): Nothing {
         // Re-read again the target CE, due to the script redirecting from FP gacha
-        prefs.craftEssence.emptyEnhance = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
+        prefs.emptyEnhance = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
         loop()
     }
 
@@ -167,7 +167,7 @@ class AutoCEBomb @Inject constructor(
      *
      */
     private fun pickTarget() {
-        if (!prefs.craftEssence.emptyEnhance){
+        if (!prefs.emptyEnhance){
             throw ExitException(ExitReason.TargetCEMaxLevel)
         }
         skipRow.clear()

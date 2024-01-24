@@ -55,7 +55,7 @@ fun ceBombLauncher(
 ): ScriptLauncherResponseBuilder {
 
     val isEmptyEnhance by remember {
-        mutableStateOf(prefs.craftEssence.emptyEnhance)
+        mutableStateOf(prefs.emptyEnhance)
     }
     var skipFilterDetection by prefsCore.craftEssence.skipCEFilterDetection.remember()
 

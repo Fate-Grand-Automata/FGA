@@ -3,9 +3,6 @@ package io.github.fate_grand_automata.scripts.prefs
 import io.github.fate_grand_automata.scripts.enums.CEDisplayChangeAreaEnum
 
 interface ICraftEssencePreferences {
-
-    var emptyEnhance: Boolean
-
     var skipSortDetection: Boolean
 
     var skipCEFilterDetection: Boolean
