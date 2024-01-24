@@ -120,6 +120,8 @@ class PreferencesImpl @Inject constructor(
     override val servant: IServantEnhancementPreferences =
         ServantEnhancementPrefs(prefs.servantEnhancement)
 
+    override var emptyEnhance by prefs.emptyEnhance
+
     override fun forBattleConfig(id: String): IBattleConfig =
         autoSkillMap.getOrPut(id) {
             BattleConfig(

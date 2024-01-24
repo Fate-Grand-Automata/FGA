@@ -12,6 +12,12 @@ class AutoSetup @Inject constructor(
     private val scale: Scale
 ) : IFgoAutomataApi by api {
 
+    fun checkIfEmptyEnhance() {
+        val emptyEnhance = images[Images.EmptyEnhance] in locations.emptyEnhanceRegion
+
+        prefs.emptyEnhance = emptyEnhance
+    }
+
     fun checkAppendLocks(){
         useSameSnapIn {
             prefs.append.appendOneLocked = images[Images.AppendLock] in locations.append.lockLocations(0)

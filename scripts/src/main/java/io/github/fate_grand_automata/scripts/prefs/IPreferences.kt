@@ -51,6 +51,7 @@ interface IPreferences {
 
     val servant: IServantEnhancementPreferences
 
+    var emptyEnhance: Boolean
 
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
