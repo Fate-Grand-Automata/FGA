@@ -189,6 +189,8 @@ shown.
 
 ![Space Ishtar Option](https://i.imgur.com/CoNfanB.gif)
 
+![Ishtar](https://i.imgur.com/CuBYrDT.gif)
+
 ---
 
 ### Melusine/Ptolemy
