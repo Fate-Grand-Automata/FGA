@@ -20,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.PrefsCore
+import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.Stepper
 import io.github.fate_grand_automata.ui.prefs.remember
 
@@ -38,6 +40,7 @@ import io.github.fate_grand_automata.ui.prefs.remember
 @Composable
 fun skillLauncher(
     prefsCore: PrefsCore,
+    prefs: IPreferences,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
 
@@ -46,7 +49,9 @@ fun skillLauncher(
     var shouldUpgradeSkillOne by remember {
         mutableStateOf(false)
     }
-    val minimumSkillOne by prefsCore.skill.minimumSkillOne.remember()
+    val minimumSkillOne by remember{
+        mutableIntStateOf(prefs.skill.minimumSkillOne)
+    }
 
     var skillOneUpgradeValue by remember {
         mutableStateOf(0)
@@ -54,7 +59,9 @@ fun skillLauncher(
     var shouldUpgradeSkillTwo by remember {
         mutableStateOf(false)
     }
-    val minimumSkillTwo by prefsCore.skill.minimumSkillTwo.remember()
+    val minimumSkillTwo by remember{
+        mutableIntStateOf(prefs.skill.minimumSkillTwo)
+    }
     var skillTwoUpgradeValue by remember {
         mutableStateOf(0)
     }
@@ -63,7 +70,9 @@ fun skillLauncher(
     var shouldUpgradeSkillThree by remember {
         mutableStateOf(false)
     }
-    val minimumSkillThree by prefsCore.skill.minimumSkillThree.remember()
+    val minimumSkillThree by remember {
+        mutableIntStateOf(prefs.skill.minimumSkillThree)
+    }
     var skillThreeUpgradeValue by remember {
         mutableStateOf(0)
     }
@@ -72,7 +81,15 @@ fun skillLauncher(
     var shouldUpgradeAllSkills by remember {
         mutableStateOf(false)
     }
-    val lowestMinimumSkillLevel = listOf(minimumSkillOne, minimumSkillTwo, minimumSkillThree).min()
+    val lowestMinimumSkillLevel by remember {
+        mutableIntStateOf(
+            when {
+                isSkillThreeAvailable -> minOf(minimumSkillOne, minimumSkillTwo, minimumSkillThree)
+                isSkillTwoAvailable -> minOf(minimumSkillOne, minimumSkillTwo)
+                else -> minimumSkillOne
+            }
+        )
+    }
     var targetAllSkillLevel by remember {
         mutableStateOf(
             lowestMinimumSkillLevel

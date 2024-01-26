@@ -39,7 +39,7 @@ fun ScriptLauncher(
                 ScriptModeEnum.Lottery -> lotteryLauncher(prefs, modifier)
                 ScriptModeEnum.PresentBox -> giftBoxLauncher(prefs, modifier)
                 ScriptModeEnum.CEBomb -> ceBombLauncher(prefs, modifier)
-                ScriptModeEnum.Skill -> skillLauncher(prefsCore, modifier)
+                ScriptModeEnum.Skill -> skillLauncher(prefsCore = prefsCore, prefs = prefs, modifier = modifier)
                 ScriptModeEnum.ServantLevel -> servantLevelLauncher(prefsCore.servantEnhancement, modifier)
             }
 
