@@ -142,6 +142,8 @@ Use `Option 2` if you plan to use critical stars.
 
 ![Kukulkan use option 2](https://i.imgur.com/d7AYeJ3.gif)
 
+![Kuku s1/s3](https://i.imgur.com/JwD0rAe.gif)
+
 ---
 
 [Second Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Second_Skill) is a targetable skill that has option to use critical stars for more
