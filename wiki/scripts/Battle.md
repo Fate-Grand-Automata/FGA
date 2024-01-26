@@ -518,7 +518,7 @@ And the what skills to be `max level`
 
 ![Servant Settings](https://i.imgur.com/NRpwsuV.png)
 
-Note: We can only reliably detect if the skill level is max level or not. We can't detect the current skill level.
+Note: We can only reliably detect if the skill level is max level `Lvl. 10` or not. We can't detect the current skill level.
 
 #### Preferred Servant - Preferred CE
 
