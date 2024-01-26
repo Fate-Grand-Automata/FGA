@@ -458,6 +458,14 @@ If you do not select any class, FGA will pick support from the current class tha
 
 ![Battle Configs - Support Selection | Class Selection](https://i.imgur.com/fM3HW6p.png "Battle Configs - Support Selection | Class Selection")
 
+Be sure to click on the class that you want to select.
+
+![click class](https://i.imgur.com/yRsgVGU.png)
+
+If you want to check the `All` option toggle this button.
+
+![All](https://i.imgur.com/rKsjhgd.png)
+
 ### Support Selection Options
 
 There is 3 ways to select support.
