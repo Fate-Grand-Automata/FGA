@@ -180,6 +180,10 @@ Using Buster option
 
 ![Emiya use Buster](https://i.imgur.com/1oDpuav.gif)
 
+Battle
+
+![Emiya](https://i.imgur.com/sYxXXO2.gif)
+
 ---
 
 ### Space Ishtar
