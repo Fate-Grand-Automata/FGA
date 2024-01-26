@@ -502,7 +502,7 @@ If you want to specify which support you want to use, you can use the preferred 
 
 In order to set the preferred settings, you must click on the preferred selection option.
 
-![Battle Configs - Support Selection | Preferred Selection](https://i.imgur.com/baddVZi.png "Battle Configs - Support Selection | Preferred Selection")
+![Battle Configs - Support Selection | Preferred Selection](https://i.imgur.com/om1dM9K.png "Battle Configs - Support Selection | Preferred Selection")
 
 Then, you can set the preferred settings.
 
