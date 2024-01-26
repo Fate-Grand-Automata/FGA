@@ -424,6 +424,8 @@ Then you can now select the servant you want to prioritize.
 
 ![Servant priority](https://i.imgur.com/fz9BBtX.png)
 
+Follow the positioning on the [Party Mapping](#party-mapping)
+
 ___
 
 ### Brave Chain
