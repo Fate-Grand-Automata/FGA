@@ -337,9 +337,19 @@ Example command from video:
 
 ## Materials
 
-Materials is use in combination with another setting in the pop up menu that will be covered later for when you want to farm a specific material.
+Materials is use when you want to farm a specific material.
 
 ![Battle Configs - Material](https://cdn.discordapp.com/attachments/1127606706420068372/1127664742601850931/20230709_130905.jpg "Battle Configs - Material")
+
+![Material Selection](https://i.imgur.com/2IQKvSj.png)
+
+Any Selected Material would be moved upwards.
+
+![Selected Material](https://i.imgur.com/FGyjJng.png)
+
+After selecting the material and pressing `ok`, you would then be able to see a summary of the first 3 materials that you have selected.
+
+![Material Summary](https://i.imgur.com/LDrLxre.png)
 
 ## Spam
 
