@@ -526,7 +526,7 @@ Once you have added the images, you can now select the preferred friends.
 
 #### Final Look
 
-![Preferred Selection](https://i.imgur.com/nWQiBFC.png)
+![Preferred Selection](https://i.imgur.com/DSjRziN.png)
 
 Note: You can use only one(CE only) or any of the combinations of the preferred settings.
 
