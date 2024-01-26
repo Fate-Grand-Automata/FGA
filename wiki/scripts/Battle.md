@@ -157,6 +157,8 @@ Use `Option 2` if you plan to use critical stars.
 
 ![Kukulkan use option 2](https://i.imgur.com/DVQ65aN.gif)
 
+![kuku s2](https://i.imgur.com/b7Pdy4E.gif)
+
 ---
 
 ### Emiya
