@@ -1,6 +1,6 @@
 [versions]
 appcompat_version = "1.6.1"
-assertk_version = "0.26.1"
+assertk_version = "0.28.0"
 constraintlayout_version = "2.1.4"
 core_ktx_version = "1.12.0"
 documentfile_version = "1.0.1"
@@ -14,7 +14,7 @@ gson_version = "2.10.1"
 
 gradle_version = "8.2.2"
 
-ben-manes_versions = "0.47.0"
+ben-manes_versions = "0.49.0"
 accompanist_version = "0.34.0"
 
 google_android_play_version = "2.1.0"
