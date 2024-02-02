@@ -151,6 +151,6 @@ jobs:
         with:
           generateReleaseNotes: true
           artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
-          tag: ${{ env.VERSION_CODE }}
+          tag: 'v${{ env.VERSION_CODE }}'
           name: 'FGA ${{ env.VERSION_CODE }}'
           prerelease: true
