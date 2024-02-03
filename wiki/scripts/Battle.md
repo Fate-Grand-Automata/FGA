@@ -34,7 +34,7 @@
     - [Card Priority explanation](#card-priority-explanation)
       - [Symbols used in Card Priority](#symbols-used-in-card-priority)
     - [Servant Priority](#servant-priority)
-    - [Rearrange Cards feature](#rearrange-cards-feature)
+    - [Rearrange Cards](#rearrange-cards)
     - [Brave Chain](#brave-chain)
   - [Support Selection](#support-selection)
     - [Class Selection](#class-selection)
@@ -432,7 +432,7 @@ There are only 3 options for brace chains unless you use Servant Priority.
 ![Battle Configs - Card Priority | Brave Chain options](https://cdn.discordapp.com/attachments/1127606706420068372/1127719287168180314/20230709_165137.jpg "Battle Configs - Card Priority | Brave Chain options")
 ___
 
-### Rearrange Cards feature
+### Rearrange Cards
 
 When you pick 3 face cards in FGO, the position of the card determines the damage and effect of the card.
 For example, Quick cards generate more stars, Arts cards generate more NP, and Buster cards deal more damage. 
