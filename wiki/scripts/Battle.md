@@ -7,16 +7,15 @@
   - [Step 4 - Edit the command](#step-4---edit-the-command)
 - [Commands](#commands)
   - [Party Mapping](#party-mapping)
-  - [Screen Mapping](#screen-mapping)
   - [Skills mapping](#skills-mapping)
-  - [Targetable](#targetable)
+  - [Targeting](#targeting)
   - [Special Skills](#special-skills)
     - [Kukulkan](#kukulkan)
     - [Emiya](#emiya)
     - [Space Ishtar](#space-ishtar)
-    - [Melusine/Ptolemy](#melusineptolemy)
-      - [Warning about Melusine option.](#warning-about-melusine-option)
-  - [Enemy targetable](#enemy-targetable)
+    - [Mélusine/Ptolemy](#mlusineptolemy)
+      - [Warning about Mélusine option.](#warning-about-mlusine-option)
+  - [Enemy Targeting](#enemy-targeting)
   - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
     - [Cards before NP](#cards-before-np)
   - [Master skills](#master-skills)
@@ -26,7 +25,6 @@
     - [Next Turn in the same wave](#next-turn-in-the-same-wave)
     - [Wave and Turn Indicator](#wave-and-turn-indicator)
     - [Raid Battle](#raid-battle)
-  - [Example of FGA Battle Config setup and used](#example-of-fga-battle-config-setup-and-used)
 - [Additional Battle Config (optional)](#additional-battle-config-optional)
   - [Materials](#materials)
   - [Spam](#spam)
@@ -36,8 +34,8 @@
     - [Card Priority explanation](#card-priority-explanation)
       - [Symbols used in Card Priority](#symbols-used-in-card-priority)
     - [Servant Priority](#servant-priority)
-    - [Brave Chain](#brave-chain)
     - [Rearrange Cards feature](#rearrange-cards-feature)
+    - [Brave Chain](#brave-chain)
   - [Support Selection](#support-selection)
     - [Class Selection](#class-selection)
     - [Support Selection Options](#support-selection-options)
@@ -102,13 +100,6 @@ Each servant in your party will be given a number from 1 to 6, first to last.
 ![Battle Configs - Servant Position in FGO ](https://cdn.discordapp.com/attachments/1127606706420068372/1127622383767916625/Screenshot_20200116-225324_Video_Player.jpg "Servant Position in FGO ")
 ![Battle Configs - Servant Position Reference in FGA](https://cdn.discordapp.com/attachments/1127606706420068372/1127622384229306449/20230709_102808.jpg "Servant Position Reference in FGA")
 
-## Screen Mapping
-
-For your reference, look at the images below on how to map with FGA.
-
-![Battle Configs - FGO to FGA Command mapping](https://cdn.discordapp.com/attachments/1127606706420068372/1127622994605396038/20200429_183015.jpg "FGO to FGA Command mapping")
-![Battle Configs - FGA Command Interface](https://i.imgur.com/6N9OHcx.png "FGA Command Interface")
-
 ## Skills mapping
 
 When creating scripts 'Skills' and 'NP', you create by basing on your servant positions with each skill is represented by a letter on the command
@@ -117,7 +108,7 @@ creator.
 ![Battle Configs - FGO to FGA Command mapping | Servant skills](https://cdn.discordapp.com/attachments/1127606706420068372/1127625668465807371/20230709_103946.jpg "FGO to FGA Command mapping | Servant skills")
 ![Battle Configs - FGO to FGA Command mapping | Servant skills](https://cdn.discordapp.com/attachments/1127606706420068372/1127625668746813460/20230709_104022.jpg "FGA Command | Servant skills")
 
-## Targetable
+## Targeting
 
 Skills that are targetable will use the servants position number to apply the skill to them
 
@@ -201,34 +192,41 @@ shown.
 
 ---
 
-### Melusine/Ptolemy
+### Mélusine/Ptolemy
 
-Melusine's [Third Skill at Ascension 1 and 2](https://fategrandorder.fandom.com/wiki/M%C3%A9lusine#Third_Skill) and
-Ptolemy's [Third Skill](https://fategrandorder.fandom.com/wiki/Ptolemaios#Third_Skill) both have capability to alter the NP type after the skill use.
-This causes a long transition animation and this option will help mitigate that problem.
+Mélusine's [Third Skill at Ascension 1 and 2](https://fategrandorder.fandom.com/wiki/M%C3%A9lusine#Third_Skill) and
+Ptolemy's [Third Skill](https://fategrandorder.fandom.com/wiki/Ptolemaios#Third_Skill) change the Servant's Ascension
+forms in the middle of the battle.
 
-![Melusine/Ptolemy Option](https://i.imgur.com/Uij44bW.gif)
+Use the `Mélusine` option to both account for the long animation and for the changed face cards. Otherwise, Servant
+Priority will be broken for the rest of the battle.
 
-![Melusine option](https://i.imgur.com/hX2mGjA.gif)
+![Mélusine/Ptolemy Option](https://i.imgur.com/Uij44bW.gif)
 
-#### Warning about Melusine option.
+![Mélusine option](https://i.imgur.com/hX2mGjA.gif)
 
-After using Melusine's third skill at ascension 1 and 2, any succeeding use of third skill must use the `normal third skill` option.
+#### Warning about the Mélusine option.
 
-While Ptolemy will keep using the `Melusine` option. As Ptolemy keeps changing back and forth between Ascension 1 and Ascension 3 with each use of his
-third skill.
+After using Mélusine's third skill at ascension 1 and 2, any succeeding use of third skill
+should use the normal third skill. So if Mélusine is in the 1st position, use `c`.
+
+If you're already starting the battle with Mélusine in Ascension 3, there's no need to use
+the `Mélusine` option since she won't change forms.
+
+With Ptolemy you will need to keep using the `Mélusine` option as he changes forms on every
+use of his third skill.
 
 ---
 
-## Enemy targetable
+## Enemy Targeting
 
 Like your servants, enemies also have a number and can be targeted too.
 
-![Battle Configs - FGO to FGA Command mapping | Enemies - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553186447443/20230709_105236.jpg "FGO to FGA Command mapping | Enemies - targetable")![Battle Configs - FGA Command | Enemies - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553484247100/20230709_105306.jpg "FGA Command | Enemies - targetable")
+![Battle Configs - FGO to FGA Command mapping | Enemy Targeting](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553186447443/20230709_105236.jpg "FGO to FGA Command mapping | Enemy Targeting")![Battle Configs - FGA Command | Enemy Targeting](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553484247100/20230709_105306.jpg "FGA Command | Enemy Targeting")
 
 Like in FGO, you can only select one enemy at a time.
 
-![Battle Configs - FGA Command | Enemies - targetable](https://i.imgur.com/174JOiI.gif "FGA Command | Enemies - targetable")
+![Battle Configs - FGA Command | Enemy Targeting](https://i.imgur.com/174JOiI.gif "FGA Command | Enemy Targeting")
 
 ## Noble Phantasm (NP) Order
 
@@ -248,7 +246,7 @@ If you ever need to use cards before NP, you can select the following options.
 
 ## Master skills
 
-Master skills is handled the same way for all 'Mystic Codes' with an exception to the plugsuit.
+Master skills is handled the same way for all 'Mystic Codes' with an exception to the Plugsuit.
 
 ![Battle Configs - FGO to FGA Command mapping | Mystic Codes](https://cdn.discordapp.com/attachments/1127606706420068372/1127632299337453689/20230709_110424.jpg "FGO to FGA Command mapping | Mystic Codes")
 
@@ -256,11 +254,11 @@ Master skills is handled the same way for all 'Mystic Codes' with an exception t
 
 ## Master skills - Plugsuit
 
-The `l` command should not be used when using the plugsuit mystic code. Instead, the plugsuit order change command should be used with
+The `l` command should not be used when using the Plugsuit mystic code. Instead, the Plugsuit order change command should be used with
 
 ![Battle Configs - FGA Command | Mystic Code - Plugsuit](https://i.imgur.com/LQVSDkA.png "FGA Command | Mystic Code - Plugsuit")
 
-This will trigger the plugsuit order change menu.
+This will trigger the Plugsuit order change menu.
 
 ![Order Change](https://i.imgur.com/BY5izMc.png)
 
@@ -284,8 +282,8 @@ Take note of the symbol above. This will indicate that you've skipped to the nex
 
 By wave skipping, you're telling FGA that you don't want do anything else until you're on the next wave.
 
-**Be warned** that if you use the next wave button then any skill you use after that will only activate during the next wave so make sure you check
-over your script to see if you have made any mistakes.
+**Be warned** that if you use the next wave button then any skill you use after that will only activate during the next wave so make sure you
+double-check your script to see if you have made any mistakes.
 
 ___
 
@@ -297,14 +295,12 @@ Turns are indicated by this symbol
 
 ![Battle Configs - FGA Command | Next Turn Symbol](https://cdn.discordapp.com/attachments/1127606706420068372/1127644007611248680/20230709_111757.jpg "Next Turn Symbol")
 
-Turn skipping can't be use to switch to the next wave and vice versa.
-
 ---
 
 ### Wave and Turn Indicator
 
-With the recent update as of FGA [Build 2382](https://github.com/Fate-Grand-Automata/FGA/releases/tag/2382). You'll be able now to track the current
-wave and turn
+With the recent update as of FGA [Build 2382](https://github.com/Fate-Grand-Automata/FGA/releases/tag/2382). You're now able to track the current
+wave and turn in your command.
 
 ![Main menu](https://i.imgur.com/yvcme5d.png)
 
@@ -314,40 +310,31 @@ wave and turn
 
 ### Raid Battle
 
-Raid Battles more often happens in the same wave.
+Raid Battles can sometimes only have 1 wave.
 
 ![Raid](https://i.imgur.com/cCjdCIM.jpeg)
 
-If that happens, you must select the `Next turn in the same wave` option.
+In those cases, you must select the `Next turn in the same wave` option.
 
 ![Raid Option](https://i.imgur.com/oBUJcqJ.png)
 
 ___
 
-## Example of FGA Battle Config setup and used
-
-I recommend opening the video below for reference before continuing this FGA Battle Config guide.
-<a href="https://youtu.be/ahY4tFEpUSg" target="_blank"> FGA Config setup and used video </a>
-
-Example command from video:
-
-![FGA Battle Configs example from video - Command](https://cdn.discordapp.com/attachments/1127606706420068372/1127661024938557610/20230709_124941.png "FGA Battle Configs example from video - Command")
-
 # Additional Battle Config (optional)
 
 ## Materials
 
-Materials is use when you want to farm a specific material.
+Materials can be used when you want to farm a specific material.
 
 ![Battle Configs - Material](https://cdn.discordapp.com/attachments/1127606706420068372/1127664742601850931/20230709_130905.jpg "Battle Configs - Material")
 
 ![Material Selection](https://i.imgur.com/2IQKvSj.png)
 
-Any Selected Material would be moved upwards.
+Any Selected Material will be shown at the top of the list.
 
 ![Selected Material](https://i.imgur.com/FGyjJng.png)
 
-After selecting the material and pressing `ok`, you would then be able to see a summary of the first 3 materials that you have selected.
+After selecting the material and pressing `OK`, you'll see a summary of the first 3 selected materials.
 
 ![Material Summary](https://i.imgur.com/LDrLxre.png)
 
@@ -447,16 +434,20 @@ ___
 
 ### Rearrange Cards feature
 
-FGA reads face cards from left to right, starting from the right corner to the left.
+When you pick 3 face cards in FGO, the position of the card determines the damage and effect of the card.
+For example, Quick cards generate more stars, Arts cards generate more NP, and Buster cards deal more damage. 
 
-![Battle Configs - Card Priority | Default face card reading](https://cdn.discordapp.com/attachments/1127606706420068372/1127726348337696808/Untitled_design.png "Battle Configs - Card Priority | Default face card reading")
+At the same time, the 1st card will determine the bonus effect applied to all face cards. For example, if a
+Buster card is picked first, all face cards get a damage boost.
 
-Turning on 'Rearrange cards' will flip the order of how FGA reads cards from left > right to right < left
+The Rearrange Cards feature orders the 3 strongest cards so the 2nd strongest is used last.
 
-![Battle Configs - Card Priority | Rearrange Cards](https://cdn.discordapp.com/attachments/1127606706420068372/1127720604972368032/20230709_165504.jpg "Battle Configs - Card Priority | Rearrange Cards")
-![Battle Configs - Card Priority | Rearrange CardsUsed](https://cdn.discordapp.com/attachments/1127606706420068372/1127726957342232646/Untitled_design_1.png "Battle Configs - Card Priority | Rearrange Cards Used")
+![Face Cards](img/face-cards.jpg)
 
-Then, FGA will pick the first card that matches the settings in card priority in that order.
+If default card priority is used, FGA will pick these 3 cards:
+- Jeanne Archer Buster (strongest card)
+- Castoria Buster (3rd strongest card)
+- Jeanne Archer Arts (2nd strongest card)
 
 ___
 
@@ -475,6 +466,9 @@ Be sure to click on the class that you want to select.
 If you want to check the `All` option toggle this button.
 
 ![All](https://i.imgur.com/rKsjhgd.png)
+
+:warn: This feature does not work reliably for users who have not cleared Solomon. The "Start Quest" button
+will become unresponsive until you manually click the Back button in the top left.
 
 ### Support Selection Options
 
@@ -508,37 +502,43 @@ Then, you can set the preferred settings.
 
 #### Preferred Selection - Preferred Servant
 
-Click on the preferred servants to show the popup dialog. Then you can select the preferred serant that you want.
+Click on the Preferred Servants option to show a dialog where you can select your wanted Servants.
 
 ![Servants](https://i.imgur.com/G2aheeG.png)
 
-Then you can select if you want the preferred servant to be `max ascended`
-
-And the what skills to be `max level`
+Then you can select if you want the preferred servant to be `max ascended` and which skills to be `max level`
 
 ![Servant Settings](https://i.imgur.com/NRpwsuV.png)
 
-Note: We can only reliably detect if the skill level is max level `Lvl. 10` or not. We can't detect the current skill level.
+Note: FGA can only reliably detect if the skill level is max level `Lvl. 10` or not. FGA can't detect the current skill level.
 
 #### Preferred Servant - Preferred CE
 
-Click on the preferred CE to show the popup dialog. Then you can select the preferred CE that you want.
+Click on Preferred CE and select the wanted CEs.
 
 ![CE](https://i.imgur.com/017VHsd.png)
 
-Then you can select if you want the preferred CE to be `max limit broken`
+Then you can select if you want the preferred CE to be `max limit broken`.
 
 ![CE Settings](https://i.imgur.com/SimCcz4.png)
 
+However, for events it's easier to use the in-game CE filter instead of creating event CE images
+with the Support Image Maker.
+
 #### Preferred Servant - Preferred Friends
 
-Enable this option if you want to use your friends as preferred support.
+Enable this option if you want to use Support Servants from specific friends.
 
-If there are no images in the `support` -> `friends` directory, This will be the screen that will show up. You need to manually add via the Support Image Maker.
+This is useful if level 90 NP1 Servants are not strong enough for the farming quest. Since FGA can't detect
+Servant Levels, NP levels and Append Skill levels, this allows you to filter for those using friend names.
+
+Of course, FGA won't be able to select non-friend Servants who would fulfill those criteria.
+
+If there are no images in the `support` -> `friends` directory, it will look like this:
 
 ![Preferred Friends](https://i.imgur.com/GAq5wIK.png)
 
-Once you have added the images, you can now select the preferred friends.
+Once you have created images via the Support Image Maker, you can select your friends.
 
 ![Preferred Friends](https://i.imgur.com/yJGbnsn.png)
 
@@ -546,17 +546,13 @@ Once you have added the images, you can now select the preferred friends.
 
 ![Preferred Selection](https://i.imgur.com/DSjRziN.png)
 
-Note: You can use only one(CE only) or any of the combinations of the preferred settings.
-
 #### Fallback
 
-The script would continue checking the next support if the preferred support is not found, until the specific settings in the fine tuning is met.
-Afterwards, it will then pick the action depending on what is set in the fallback option.
-
-![Fallback](https://i.imgur.com/1z9dP1t.png)
-
-In order to know the limits of searching for the preferred support.
-
-Go to More Options -> Advanced -> Fine-Tune -> Support.
+If the preferred support is not found, FGA will refresh the support list according to the settings in
+More Options -> Advanced -> Fine-Tune -> Support.
 
 ![Battle Configs - Support Selection | Preferred Selection | Fine-Tune](https://i.imgur.com/Ewh6o4r.png "Battle Configs - Support Selection | Preferred Selection | Fine-Tune")
+
+After the limit was reached (e.g. number of refreshes), FGA will act depending on what is set in the fallback option.
+
+![Fallback](https://i.imgur.com/1z9dP1t.png)
