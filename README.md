@@ -4,7 +4,7 @@
 
 [![Discord Banner 2](https://discordapp.com/api/guilds/1117873862500163684/widget.png?style=banner2)](https://discord.gg/H99eUMYuH7)
 
-Auto-battle app for F/GO (Android 7 or later, no need for root on phones).
+Auto-battle app for FGO (Android 7 or later, no need for root on phones).
 
 Download from our [website](https://fate-grand-automata.github.io)
 
