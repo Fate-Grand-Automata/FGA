@@ -147,7 +147,7 @@ jobs:
           custom_tag: ${{ env.VERSION_CODE }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Create release
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           generateReleaseNotes: true
           artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
