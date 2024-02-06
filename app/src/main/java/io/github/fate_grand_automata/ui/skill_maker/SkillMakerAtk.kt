@@ -56,10 +56,10 @@ private fun SelectNps(
 
             val canSelect = numberOfCardsSelected + numberOfNPs + 1 <= 3
 
-            val selectedColor = when (servantNumber) {
-                1 -> R.color.colorServant1
-                2 -> R.color.colorServant2
-                3 -> R.color.colorServant3
+            val selectedColor = when (npSequence.indexOf("$servantNumber")) {
+                0 -> R.color.colorServant1
+                1 -> R.color.colorServant2
+                2 -> R.color.colorServant3
                 else -> R.color.colorAccent
             }
 
