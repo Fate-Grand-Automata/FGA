@@ -2,6 +2,8 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("com.google.devtools.ksp")
+
+    kotlin("plugin.serialization") version libs.versions.kotlin.version.get()
 }
 
 android {
@@ -39,4 +41,7 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
 
     api(libs.fredporciuncula.flow.preferences)
+
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization)
 }
