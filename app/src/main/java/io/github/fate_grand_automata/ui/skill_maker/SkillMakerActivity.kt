@@ -84,7 +84,8 @@ fun SkillMakerUI(
 
     Crossfade(
         current,
-        animationSpec = spring()
+        animationSpec = spring(),
+        label = "SkillMaker"
     ) { nav ->
         when (nav) {
             SkillMakerNav.Atk -> {

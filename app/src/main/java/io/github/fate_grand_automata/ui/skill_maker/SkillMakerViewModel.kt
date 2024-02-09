@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
+import io.github.fate_grand_automata.scripts.models.EnemyFormation
 import io.github.fate_grand_automata.scripts.models.EnemyTarget
 import io.github.fate_grand_automata.scripts.models.OrderChangeMember
 import io.github.fate_grand_automata.scripts.models.ServantTarget
@@ -124,6 +125,26 @@ class SkillMakerViewModel @Inject constructor(
             .take(currentIndex.value + 1)
             .reversed()
 
+    private val _enemyFormation = mutableStateOf(EnemyFormation.THREE)
+
+    val enemyFormation: State<EnemyFormation> = _enemyFormation
+
+    fun changeEnemyFormation() {
+        _enemyFormation.value = when (_enemyFormation.value) {
+            EnemyFormation.THREE -> EnemyFormation.SIX
+            EnemyFormation.SIX -> EnemyFormation.THREE
+        }
+
+        _enemyTarget.value?.let {
+            when (it) {
+                in 1..3 -> setEnemyTarget(it + 3)
+                in 4..6 -> setEnemyTarget(it - 3)
+                else -> setEnemyTarget(it - 6)
+            }
+        }
+
+    }
+
     private val _enemyTarget = mutableStateOf(state.enemyTarget)
 
     val enemyTarget: State<Int?> = _enemyTarget
@@ -148,6 +169,35 @@ class SkillMakerViewModel @Inject constructor(
             last = targetCmd
         } else {
             add(targetCmd)
+        }
+    }
+
+    fun deleteIfLastActionIsTarget(target: Int?) {
+        if (target == null) {
+            return
+        }
+        if (!isEmpty()) {
+            // Un-select target
+            when (val last = last) {
+                // Battle/Turn change
+                is SkillMakerEntry.Next -> {
+                    // Do nothing
+                }
+
+                is SkillMakerEntry.Action -> {
+                    if (
+                        last.action is AutoSkillAction.TargetEnemy &&
+                        last.action.enemy.autoSkillCode == target.toString().first()
+                    ) {
+                        deleteSelected()
+                        revertToPreviousEnemyTarget()
+                    }
+                }
+
+                is SkillMakerEntry.Start -> {
+                    // Do nothing
+                }
+            }
         }
     }
 
@@ -267,7 +317,18 @@ class SkillMakerViewModel @Inject constructor(
             '1' -> 1
             '2' -> 2
             '3' -> 3
+            '4' -> 4
+            '5' -> 5
+            '6' -> 6
+            '7' -> 7
+            '8' -> 8
+            '9' -> 9
             else -> return
+        }
+        if (previousTarget.enemy.autoSkillCode in EnemyTarget.sixEnemyFormationCharList) {
+            _enemyFormation.value = EnemyFormation.SIX
+        } else {
+            _enemyFormation.value = EnemyFormation.THREE
         }
 
         _enemyTarget.value = target

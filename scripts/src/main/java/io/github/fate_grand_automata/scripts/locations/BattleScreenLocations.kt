@@ -49,17 +49,43 @@ class BattleScreenLocations @Inject constructor(
         Skill.Servant.C3 -> 1770
     }.let { x -> Location(x + if (isWide) 108 else 0, if (isWide) 1117 else 1158) }
 
+    private fun Location.threeEnemyFormation() = this + Location(x = if (isWide) 183 else 0, y = 0)
+
+    private fun Location.sixEnemyFormation() = this + Location(x = if (isWide) 155 else 0, y = 0)
+
     fun locate(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A -> 90
-        EnemyTarget.B -> 570
-        EnemyTarget.C -> 1050
-    }.let { x -> Location(x + if (isWide) 183 else 0, 80) }
+        EnemyTarget.A3 -> Location(90, 80).threeEnemyFormation()
+        EnemyTarget.B3 -> Location(570, 80).threeEnemyFormation()
+        EnemyTarget.C3 -> Location(1050, 80).threeEnemyFormation()
+
+        EnemyTarget.A6 -> Location(281, 64).sixEnemyFormation()
+        EnemyTarget.B6 -> Location(681, 64).sixEnemyFormation()
+        EnemyTarget.C6 -> Location(1081, 64).sixEnemyFormation()
+
+        EnemyTarget.D6 -> Location(82, 261).sixEnemyFormation()
+        EnemyTarget.E6 -> Location(482, 261).sixEnemyFormation()
+        EnemyTarget.F6 -> Location(882, 261).sixEnemyFormation()
+    }
+
+    private fun Region.threeEnemyFormation() = this + Location(if (isWide) 150 else 0, 0)
+
+    private fun Region.sixEnemyFormationUpper() = this + Location(x = if (isWide) 155 else 0, y = 0)
+
+    private fun Region.sixEnemyFormationLower() = this + Location(x = if (isWide) 153 else 0, y = if (isWide) -1 else 0)
 
     fun dangerRegion(enemy: EnemyTarget) = when (enemy) {
-        EnemyTarget.A -> Region(0, 0, 485, 220)
-        EnemyTarget.B -> Region(485, 0, 482, 220)
-        EnemyTarget.C -> Region(967, 0, 476, 220)
-    } + Location(if (isWide) 150 else 0, 0)
+        EnemyTarget.A3 -> Region(0, 0, 485, 220).threeEnemyFormation()
+        EnemyTarget.B3 -> Region(485, 0, 482, 220).threeEnemyFormation()
+        EnemyTarget.C3 -> Region(967, 0, 476, 220).threeEnemyFormation()
+
+        EnemyTarget.A6 -> Region(220, 136, 112, 22).sixEnemyFormationUpper()
+        EnemyTarget.B6 -> Region(620, 136, 112, 22).sixEnemyFormationUpper()
+        EnemyTarget.C6 -> Region(1020, 136, 112, 22).sixEnemyFormationUpper()
+
+        EnemyTarget.D6 -> Region(24, 334, 112, 22).sixEnemyFormationLower()
+        EnemyTarget.E6 -> Region(424, 334, 112, 22).sixEnemyFormationLower()
+        EnemyTarget.F6 -> Region(824, 334, 112, 22).sixEnemyFormationLower()
+    }
 
     val screenCheckRegion =
         (if (isWide)

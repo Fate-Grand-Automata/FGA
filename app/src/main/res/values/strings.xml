@@ -23,4 +23,7 @@
     <string name="language_zhTW" translatable="false">中文（台湾）</string>
     <string name="language_ko" translatable="false">한국어</string>
     <string name="language_vi" translatable="false">Tiếng Việt</string>
+
+    <string name="enemy_formation_three" translatable="false">3</string>
+    <string name="enemy_formation_six" translatable="false">6</string>
 </resources>
