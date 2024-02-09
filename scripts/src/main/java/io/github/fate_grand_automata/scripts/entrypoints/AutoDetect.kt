@@ -3,12 +3,14 @@ package io.github.fate_grand_automata.scripts.entrypoints
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
+import io.github.fate_grand_automata.scripts.modules.AutoSetup
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
 class AutoDetect @Inject constructor(
     api: IFgoAutomataApi,
+    private val autoSetup: AutoSetup
 ) : IFgoAutomataApi by api {
     fun get() = useSameSnapIn {
         val emberSearchRegion = locations.scriptArea.let {
@@ -30,15 +32,22 @@ class AutoDetect @Inject constructor(
             locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
                 ScriptModeEnum.SupportImageMaker
 
+
+            mapOf(
+                images[Images.CraftEssenceBannerOn] to locations.ceBomb.ceBannerOnRegion,
+                images[Images.CraftEssenceBannerOff] to locations.ceBomb.ceBannerOffRegion
+            ).exists() -> {
+                autoSetup.checkIfEmptyEnhance()
+                autoSetup.checkIfCanAutomaticDisplayChangeInCE()
+                ScriptModeEnum.CEBomb
+            }
+
             mapOf(
                 images[Images.ServantAutoSelect] to locations.servant.servantAutoSelectRegion,
                 images[Images.ServantAutoSelectOff] to locations.servant.servantAutoSelectRegion,
                 images[Images.ServantAscensionBanner] to locations.enhancementBannerRegion
             ).exists()->
                 ScriptModeEnum.ServantLevel
-
-            images[Images.EmptyEnhance] in locations.emptyEnhanceRegion ->
-                ScriptModeEnum.CEBomb
 
             else -> ScriptModeEnum.Battle
         }

@@ -7,6 +7,8 @@ class StandardAutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
     private val highlight: Highlighter,
     private val click: Clicker,
+    private val longPress: LongPress,
+    private val longPressAndSwipeOrMultipleClicks: LongPressAndSwipeOrMultipleClicks,
     private val imageMatcher: ImageMatcher,
     private val transform: Transformer,
     private val colorManager: ColorManager,
@@ -71,13 +73,24 @@ class StandardAutomataApi @Inject constructor(
             }
     }
 
+
+    override fun Location.longPress(duration: Int) = longPress(this, duration)
+
+    override fun Region.longPress(duration: Int) = longPress(center, duration)
+
     override fun Map<Pattern, Region>.exists(
         timeout: Duration, similarity: Double?, requireAll: Boolean,
     ) = imageMatcher.exists(
+
         items = this,
         timeout = timeout,
         similarity = similarity,
         requireAll = requireAll
     )
+
+
+    override fun longPressAndSwipe(clicksArray: List<List<Location>>, chunked: Int) {
+        longPressAndSwipeOrMultipleClicks(clicksArray, chunked)
+    }
 }
 

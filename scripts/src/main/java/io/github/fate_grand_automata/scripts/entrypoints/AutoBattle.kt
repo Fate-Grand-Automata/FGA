@@ -35,8 +35,8 @@ fun IFgoAutomataApi.isInSupport(): Boolean {
 }
 
 fun IFgoAutomataApi.isInventoryFull() =
-    // We only have images for JP, NA and KR
-    (prefs.gameServer is GameServer.En || prefs.gameServer is GameServer.Jp || prefs.gameServer is GameServer.Kr)
+    // We only have images for JP, NA, TW and KR
+    (prefs.gameServer !is GameServer.Cn)
             && images[Images.InventoryFull] in locations.inventoryFullRegion
 
 /**

@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.prefs
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.PlatformPrefs
+import io.github.lib_automata.Region
 import kotlin.time.Duration
 
 interface IPreferences {
@@ -31,8 +32,6 @@ interface IPreferences {
     val skipServantFaceCardCheck: Boolean
     val treatSupportLikeOwnServant: Boolean
 
-    var shouldLimitFP: Boolean
-    var limitFP: Int
     var receiveEmbersWhenGiftBoxFull: Boolean
 
     val stageCounterSimilarity: Double
@@ -44,9 +43,14 @@ interface IPreferences {
     val platformPrefs: PlatformPrefs
     val gestures: IGesturesPreferences
 
-    var ceBombTargetRarity: Int
+    val craftEssence: ICraftEssencePreferences
+    val friendGacha: IFriendGachaPreferences
+
+    val playButtonRegion: Region
 
     val servant: IServantEnhancementPreferences
+
+    var emptyEnhance: Boolean
 
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
