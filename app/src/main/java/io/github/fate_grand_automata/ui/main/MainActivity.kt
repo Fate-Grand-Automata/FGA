@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             FgaApp(
+                windowSizeClass = calculateWindowSizeClass(this),
                 vm = vm,
                 supportVm = supportVm
             )
