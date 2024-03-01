@@ -309,13 +309,17 @@ class AutoBattle @Inject constructor(
             .count { it.exists(images[Images.ServantExist], similarity = 0.70) } in 1..2
 
     private fun ceRewardDetails() {
-        if (prefs.stopOnCEGet) {
-            // Count the current run
-            state.nextRun()
+        if (isCommandCodeReward){
+            isCommandCodeReward = false
+        } else {
+            if (prefs.stopOnCEGet) {
+                // Count the current run
+                state.nextRun()
 
-            throw BattleExitException(ExitReason.CEGet)
-        } else messages.notify(ScriptNotify.CEGet)
-
+                throw BattleExitException(ExitReason.CEGet)
+            } else messages.notify(ScriptNotify.CEGet)
+        }
+        
         locations.resultCeRewardCloseClick.click()
     }
 
