@@ -92,6 +92,8 @@ class AutoBattle @Inject constructor(
 
     private var canScreenshotBondCE = false
 
+    private var isCommandCodeReward = false
+
     override fun script(): Nothing {
         try {
             loop()
@@ -193,6 +195,7 @@ class AutoBattle @Inject constructor(
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
+            { isCommandCodeReward() } to { commandCodeReward() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
             { isDeathAnimation() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
@@ -271,6 +274,14 @@ class AutoBattle @Inject constructor(
         }
 
         result()
+    }
+
+    private fun isCommandCodeReward() =
+        locations.commandCodeRegion.exists(images[Images.CommandCodeReward], similarity = 0.75)
+
+    private fun commandCodeReward() {
+        locations.scriptArea.center.click()
+        isCommandCodeReward = true
     }
 
     private fun isBond10CEReward() =
