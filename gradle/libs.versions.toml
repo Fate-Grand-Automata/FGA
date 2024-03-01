@@ -33,7 +33,7 @@ compose_bom_version = "2024.01.00"
 kotlinCompilerExtensionVersion = "1.5.8"
 ksp_version = "1.9.22-1.0.17"
 
-junit_bom_version = "5.10.1"
+junit_bom_version = "5.10.2"
 
 
 [libraries]
