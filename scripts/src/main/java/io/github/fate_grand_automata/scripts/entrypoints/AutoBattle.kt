@@ -348,6 +348,8 @@ class AutoBattle @Inject constructor(
 
     private fun ordealCallOutOfPods() {
         locations.ordealCallOutOfPodsClick.click()
+
+        isQuestClose = true
         // Count the current run
         state.nextRun()
     }
