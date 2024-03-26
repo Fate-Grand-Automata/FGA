@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.scripts.supportSelection
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
+import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
 import io.github.lib_automata.Region
@@ -40,8 +41,22 @@ class PreferredSupportSelection @Inject constructor(
                 matched.click()
                 SupportSelectionResult.Done
             } else {
-                // nope, not found this time. keep scrolling
-                SupportSelectionResult.ScrollDown
+                var topScrollbar = false
+                var movedSrollBar = false
+                var bottomScrollbar = false
+                useSameSnapIn {
+                    topScrollbar = images[Images.SupportScrollBarTop] in locations.support.topScrollbarRegion
+                    if (!topScrollbar) {
+                        movedSrollBar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion
+                        bottomScrollbar = images[Images.SupportScrollBarBottom] in
+                                locations.support.bottomScrollbarRegion
+                    }
+                }
+                when {
+                    topScrollbar -> SupportSelectionResult.ScrollDown
+                    movedSrollBar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
+                    else -> SupportSelectionResult.EarlyRefresh
+                }
             }
         }
     }
