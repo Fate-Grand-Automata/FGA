@@ -68,12 +68,28 @@ class AutoLottery @Inject constructor(
 
     private fun isTransition() = images[Images.LotteryTransition] in locations.lottery.transitionRegion
 
+
+    private fun isLotteryDone() = locations.lottery.doneRegion.exists(
+        images[Images.LotteryBoxFinished],
+        similarity = 0.85
+    )
+
+    private fun confirmIfLotteryDone() {
+        spin()
+
+        val exist = isLotteryDone()
+        if (exist) {
+            throw ExitException(ExitReason.RanOutOfCurrency)
+        }
+    }
+
     override fun script(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { isNewLineup() } to { confirmNewLineup() },
             { isOutOfCurrency() } to { ranOutOfCurrency() },
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() },
+            { isLotteryDone() } to { confirmIfLotteryDone() },
             { isTransition() } to { locations.lottery.transitionRegion.click() }
         )
 
