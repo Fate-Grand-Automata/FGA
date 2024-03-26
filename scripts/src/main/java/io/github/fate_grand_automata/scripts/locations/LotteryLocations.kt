@@ -15,4 +15,7 @@ class LotteryLocations @Inject constructor(
 
     // center of screen
     val confirmNewLineupClick = Location(1280, 720)
+
+    // when changing from 10 spin to 100 spin there would be a popup
+    val transitionRegion = Region(1180, 30, 65, 70).xFromCenter()
 }

@@ -66,12 +66,15 @@ class AutoLottery @Inject constructor(
         locations.lottery.confirmNewLineupClick.click()
     }
 
+    private fun isTransition() = images[Images.LotteryTransition] in locations.lottery.transitionRegion
+
     override fun script(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { isNewLineup() } to { confirmNewLineup() },
             { isOutOfCurrency() } to { ranOutOfCurrency() },
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
-            { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() }
+            { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() },
+            { isTransition() } to { locations.lottery.transitionRegion.click() }
         )
 
         while (true) {
