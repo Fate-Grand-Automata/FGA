@@ -27,6 +27,7 @@ class PerServerConfigPrefsCore(
 
     val waitAPRegen = maker.bool("wait_for_ap_regeneration")
 
+    val staminaOverRecharge = maker.bool("stamina_over_recharge")
 
     val selectedApple = maker.serialized(
         "selected_apple",

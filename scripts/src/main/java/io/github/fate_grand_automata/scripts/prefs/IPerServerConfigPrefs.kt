@@ -16,6 +16,8 @@ interface IPerServerConfigPrefs {
 
     var waitForAPRegen: Boolean
 
+    var staminaOverRecharge: Boolean
+
     var selectedApple: RefillResourceEnum
 
     var currentAppleCount: Int
