@@ -37,6 +37,7 @@ class Refill @Inject constructor(
 
             val staminaRefill = when {
                 resource == RefillResourceEnum.Gold -> 1
+                resource == RefillResourceEnum.SQ -> 1
                 perServerConfigPref.staminaOverRecharge -> {
                     var refill = checkMaxRefillAmount()
                     // If the refill amount is more than the current apple count,
