@@ -80,6 +80,10 @@ fun battleLauncher(
     if (!bronzeApplesEnabled) {
         refillResources = refillResources.minus(RefillResourceEnum.Bronze)
     }
+    val hideSQInAPResources = prefs.hideSQInAPResources
+    if (hideSQInAPResources) {
+        refillResources = refillResources.minus(RefillResourceEnum.SQ)
+    }
     //TODO remove
     if (refillResources.size > 1) {
         refillResources = setOf(refillResources.first())
