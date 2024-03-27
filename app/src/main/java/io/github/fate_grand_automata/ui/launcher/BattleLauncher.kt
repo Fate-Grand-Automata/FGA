@@ -115,6 +115,7 @@ fun battleLauncher(
     var shouldLimitCEs by remember { mutableStateOf(perServerConfigPref.shouldLimitCEs) }
     var limitCEs by remember { mutableIntStateOf(perServerConfigPref.limitCEs) }
     var waitApRegen by remember { mutableStateOf(perServerConfigPref.waitForAPRegen) }
+    var staminaOverRecharge by remember { mutableStateOf(perServerConfigPref.staminaOverRecharge) }
 
     var resetAllButton by remember { mutableStateOf(false) }
 
@@ -132,6 +133,7 @@ fun battleLauncher(
             perServerConfigPref.goldApple = goldApple
             perServerConfigPref.rainbowApple = rainbowApple
             perServerConfigPref.waitForAPRegen = waitApRegen
+            perServerConfigPref.staminaOverRecharge = staminaOverRecharge
             if (refillResources.isNotEmpty()) {
                 perServerConfigPref.selectedApple = refillResources.first()
             }
@@ -282,7 +284,30 @@ fun battleLauncher(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+            }
 
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clickable { staminaOverRecharge = !staminaOverRecharge }
+                ) {
+                    Checkbox(
+                        checked = staminaOverRecharge,
+                        onCheckedChange = { staminaOverRecharge = it },
+                        modifier = Modifier
+                            .alpha(if (staminaOverRecharge) 1f else 0.7f)
+                            .padding(end = 5.dp)
+                    )
+
+                    Text(
+                        stringResource(R.string.p_stamina_over_recharge),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+
+            item {
                 Divider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
             }
 
