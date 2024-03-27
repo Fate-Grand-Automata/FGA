@@ -80,12 +80,17 @@ fun battleLauncher(
     if (!bronzeApplesEnabled) {
         refillResources = refillResources.minus(RefillResourceEnum.Bronze)
     }
+    val hideSQInAPResources by remember { mutableStateOf(prefs.hideSQInAPResources) }
+    if (hideSQInAPResources) {
+        refillResources = refillResources.minus(RefillResourceEnum.SQ)
+    }
     //TODO remove
     if (refillResources.size > 1) {
         refillResources = setOf(refillResources.first())
     }
     val availableRefills = RefillResourceEnum.values()
         .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+        .filterNot { it == RefillResourceEnum.SQ && hideSQInAPResources }
 
     var copperApple by remember { mutableIntStateOf(perServerConfigPref.copperApple) }
     var blueApple by remember { mutableIntStateOf(perServerConfigPref.blueApple) }
