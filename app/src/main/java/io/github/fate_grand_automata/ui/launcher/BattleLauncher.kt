@@ -19,7 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -308,7 +308,7 @@ fun battleLauncher(
             }
 
             item {
-                HorizontalDivider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
+                Divider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
             }
 
             item {
