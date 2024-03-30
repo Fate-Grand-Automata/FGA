@@ -9,7 +9,6 @@
     "enabled": true
   },
   "github-actions": {
-    "extends": ["group:all"],
     "enabled": true,
     "automerge": true,
     "groupName": "github-actions"
