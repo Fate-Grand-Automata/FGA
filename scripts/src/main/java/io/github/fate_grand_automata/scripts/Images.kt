@@ -29,6 +29,7 @@ enum class Images {
     Withdraw,
     LotteryBoxFinished,
     LotteryLineupUpdated,
+    LotteryTransition,
     PresentBoxFull,
     MasterExp,
     MasterLevelUp,
@@ -52,7 +53,7 @@ enum class Images {
     Support,
     ServantCheckSupport,
     BattleMenu,
-    CEEnhance,
+    EmptyEnhance,
     CEGloomLv1,
     CEStarvationLv1,
     CEAwakeningLv1,
@@ -65,5 +66,19 @@ enum class Images {
     CESynchronizationLv1,
     SkillUse,
     RankUp,
-    Close
+    Close,
+    ServantAutoSelect,
+    ServantAutoSelectOff,
+    ServantMaxLevel,
+    ServantGrailRedirectFromMenu,
+    ServantAscensionRedirectFromMenu,
+    ServantGrailBanner,
+    ServantAscensionBanner,
+    ServantAscensionReturnToLevel,
+    Ok,
+    /**
+     * 2nd OK button for FGO KR
+     */
+    OkKR,
+    Execute
 }

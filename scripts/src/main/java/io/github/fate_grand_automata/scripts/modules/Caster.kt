@@ -43,7 +43,7 @@ class Caster @Inject constructor(
 
     private fun confirmSkillUse() {
         if (skillConfirmation == null) {
-            skillConfirmation = images[Images.SkillUse] in locations.battle.skillUseRegion
+            skillConfirmation = locations.battle.skillUseRegion.exists(images[Images.SkillUse], 0.5.seconds)
         }
         if (skillConfirmation == true) {
             locations.battle.skillOkClick.click()

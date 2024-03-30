@@ -10,6 +10,7 @@ on:
       - '*.md'
       - 'LICENSE'
       - 'custom-game-area/**'
+      - 'wiki/**'
   push:
     branches:
       - master
@@ -23,7 +24,13 @@ on:
       - 'renovate.json'
       - 'custom-game-area/**'
       - 'FUNDING.yml'
+      - 'wiki/**'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   JAVA_VERSION: 17
   JAVA_DISTRO: 'temurin'
@@ -31,7 +38,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     if: github.ref != 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
@@ -65,7 +72,7 @@ jobs:
           path: app/build/outputs/mapping/ci/mapping.txt
 
   play_store:
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
@@ -140,10 +147,10 @@ jobs:
           custom_tag: ${{ env.VERSION_CODE }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Create release
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           generateReleaseNotes: true
           artifacts: 'FGA-apk-${{ env.VERSION_CODE }}.zip'
-          tag: ${{ env.VERSION_CODE }}
+          tag: 'v${{ env.VERSION_CODE }}'
           name: 'FGA ${{ env.VERSION_CODE }}'
           prerelease: true

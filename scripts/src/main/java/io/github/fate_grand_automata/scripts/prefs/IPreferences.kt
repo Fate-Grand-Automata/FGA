@@ -50,6 +50,8 @@ interface IPreferences {
 
     var ceBombTargetRarity: Int
 
+    val servant: IServantEnhancementPreferences
+
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
     fun addPerServerConfigPref(server: GameServer): IPerServerConfigPrefs

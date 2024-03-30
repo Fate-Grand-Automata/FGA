@@ -70,7 +70,6 @@ class AutoBattle @Inject constructor(
         object InventoryFull : ExitReason()
         class LimitRuns(val count: Int) : ExitReason()
         object SupportSelectionManual : ExitReason()
-        object SupportSelectionFriendNotSet : ExitReason()
         object SupportSelectionPreferredNotSet : ExitReason()
         class SkillCommandParseError(cause: Exception) : ExitReason(cause)
         class CardPriorityParseError(val msg: String) : ExitReason()
@@ -187,10 +186,10 @@ class AutoBattle @Inject constructor(
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
-            { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
+            { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },

@@ -243,7 +243,6 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="present_box_full_and_have_pick_at_least_embers">"Present Box is full and Embers are overflowing. Have pick at least %d Gold embers"</string>
     <string name="support_img_maker_not_found">"No support images were found on the current screen. Are you on Support selection or Friend list screen?"</string>
     <string name="support_selection_manual">"Support selection set to Manual"</string>
-    <string name="support_selection_friend_not_set">"When using 'friend' support selection mode, specify at least one friend name."</string>
     <string name="support_selection_preferred_not_set">"When using 'preferred' support selection mode, specify at least one Servant or Craft Essence."</string>
     <string name="ce_dropped">"CE Dropped!"</string>
     <string name="ce_get">"CE GET!"</string>
@@ -402,12 +401,24 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="aborted">Aborted</string>
 
-
     <string name="p_script_mode_gift_box_warning">Please ensure you have set the filters to Embers only.</string>
-
 
     <string name="p_screenshot_bond">"Screenshot Bond"</string>
     <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
     <string name="bond_level_up">Bond Level up!</string>
 
+    <string name="servant_enhancement">Servant Enhancement</string>
+    <string name="servant_enhancement_no_embers_or_qp_left">Insufficient Embers or QP</string>
+    <string name="servert_enhancement_warning_notice">This script will use the auto-select feature to select the embers.</string>
+    <string name="servant_enhancement_redirect_ascension_question">Redirect to Ascension upon reaching the level cap</string>
+    <string name="servant_enhancement_perform_ascension_question">Perform Ascension</string>
+    <string name="servant_enhancement_perform_ascension_warning">Ascension of duplicate Servants is not supported.</string>
+    <string name="servant_enhancement_redirect_grail">Redirect to Palingenesis upon reaching the level cap</string>
+    <string name="servant_enhancement_redirect_ascension_success">Redirected to Ascension</string>
+    <string name="servant_enhancement_redirect_grail_success">Redirected to Palingenesis</string>
+    <string name="servant_enhancement_perform_ascension_failed">Unable to perform Ascension</string>
+    <string name="servant_enhancement_max_level">Max Level Achieved</string>
+    <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
+    <string name="servant_enhancement_aborted">Enhancement was aborted</string>
+    <string name="note">"Note:"</string>
 </resources>

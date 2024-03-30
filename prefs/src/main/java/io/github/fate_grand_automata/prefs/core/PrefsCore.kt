@@ -149,5 +149,6 @@ class PrefsCore @Inject constructor(
             )
         }
 
+    val servantEnhancement = ServantEnhancementPrefsCore(maker)
 
 }
