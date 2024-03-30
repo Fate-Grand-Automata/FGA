@@ -12,7 +12,6 @@
     "extends": ["group:all"],
     "enabled": true,
     "automerge": true,
-    "branchTopic": "github-actions",
-    "commitMessageTopic": "github-actions"
+    "groupName": "github-actions"
   }
 }
