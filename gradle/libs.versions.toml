@@ -31,7 +31,7 @@ timber_version = "5.0.1"
 compose_bom_version = "2024.01.00"
 
 kotlinCompilerExtensionVersion = "1.5.8"
-ksp_version = "1.9.22-1.0.17"
+ksp_version = "1.9.23-1.0.19"
 
 junit_bom_version = "5.10.2"
 
