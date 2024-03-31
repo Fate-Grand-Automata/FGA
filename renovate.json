@@ -12,5 +12,15 @@
     "enabled": true,
     "automerge": true,
     "groupName": "github-actions"
-  }
+  },
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+          "^org.jetbrains.kotlin",
+          "^com.google.devtools.ksp",
+          "^androidx.compose.compiler"
+      ],
+      "groupName": "kotlin"
+    }
+  ]
 }
