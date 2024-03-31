@@ -8,7 +8,7 @@ flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.1.0"
 kotlinx_coroutines_core_version = "1.7.3"
 lifecycle_version = "2.7.0"
-kotlin_version = "1.9.22"
+kotlin_version = "1.9.23"
 hilt_version = "2.50"
 gson_version = "2.10.1"
 
