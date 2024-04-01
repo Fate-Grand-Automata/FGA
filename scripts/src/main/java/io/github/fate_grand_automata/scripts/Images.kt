@@ -42,6 +42,7 @@ enum class Images {
     SelectedParty,
     SilverXP,
     GoldXP,
+    Gold5StarXP,
     GiftBoxCheck,
     GiftBoxScrollEnd,
     DropCE,

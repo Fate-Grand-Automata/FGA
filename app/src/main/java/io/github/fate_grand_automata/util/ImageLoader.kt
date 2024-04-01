@@ -90,6 +90,7 @@ class ImageLoader @Inject constructor(
         Images.SelectedParty -> "selected_party.png"
         Images.SilverXP -> "SilverXP.png"
         Images.GoldXP -> "GoldXP.png"
+        Images.Gold5StarXP -> "Gold5StarXP.png"
         Images.GiftBoxCheck -> "gift_box_check.png"
         Images.GiftBoxScrollEnd -> "gift_box_scroll_end.png"
         Images.DropCE -> "drop_ce.png"
