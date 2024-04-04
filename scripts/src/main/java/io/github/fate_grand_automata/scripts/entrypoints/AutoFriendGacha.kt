@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
+import io.github.lib_automata.Location
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -45,14 +46,14 @@ class AutoFriendGacha @Inject constructor(
     }
 
     override fun script(): Nothing {
-        if (images[Images.FriendSummon] in locations.fp.initialSummonCheck) {
-            locations.fp.initialSummonClick.click()
-            0.3.seconds.wait()
-            locations.fp.initialSummonContinueClick.click()
-
-            countNext()
+        val initialClickLocation: Location? = if (images[Images.FriendSummon] in locations.fp.initialSummonCheck) {
+            locations.fp.initialSummonClick
         } else if (!isSummonButtonVisible()) {
-            locations.fp.first10SummonClick.click()
+            locations.fp.first10SummonClick
+        } else null
+
+        initialClickLocation?.let {
+            it.click()
             0.3.seconds.wait()
             locations.fp.okClick.click()
 
