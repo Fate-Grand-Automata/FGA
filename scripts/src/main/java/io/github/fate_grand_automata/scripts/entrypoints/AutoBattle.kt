@@ -439,7 +439,15 @@ class AutoBattle @Inject constructor(
             // Wait timer till battle starts.
             // Uses less battery to wait than to search for images for a few seconds.
             // Adjust according to device.
-            5.seconds.wait()
+            // 5.seconds.wait()
+            val partyVanish = locations.selectedPartyRegion.waitVanish(
+                images[Images.SelectedParty],
+                timeout = 5.seconds
+            )
+            if (partyVanish){
+                1.seconds.wait()
+                locations.animationSkipLocation.click()
+            }
         }
     }
 
