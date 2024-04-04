@@ -39,7 +39,7 @@ class AutoLottery @Inject constructor(
 
             moveToPresentBox?.region?.click()
 
-            1.seconds.wait()
+            3.seconds.wait()
             giftBox.script()
         }
 
