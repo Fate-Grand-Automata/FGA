@@ -9,12 +9,8 @@ class LotteryLocations @Inject constructor(
 ) : IScriptAreaTransforms by scriptAreaTransforms {
     val finishedRegion = Region(-510, 700, 55, 100).xFromCenter()
     val checkRegion = Region(-1130, 700, 675, 330).xFromCenter()
-    val spinClick = Location(-446, 860).xFromCenter()
+    val spinClick = Location(-646, 860).xFromCenter()
     val fullPresentBoxRegion = Region(20, 860, 1000, 500).xFromCenter()
-    val lineupUpdatedRegion = Region(-320, 360, 640, 100).xFromCenter()
-
-    // center of screen
-    val confirmNewLineupClick = Location(1280, 720)
 
     val doneRegion = Region(-510, 700, 60, 90).xFromCenter()
 
