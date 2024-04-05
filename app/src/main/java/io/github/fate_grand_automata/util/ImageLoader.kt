@@ -76,7 +76,6 @@ class ImageLoader @Inject constructor(
         Images.Retry -> "retry.png"
         Images.Withdraw -> "withdraw.png"
         Images.LotteryBoxFinished -> "lottery.png"
-        Images.LotteryLineupUpdated -> "lottery_lineup_updated.png"
         Images.LotteryTransition -> "lottery_transition.png"
         Images.PresentBoxFull -> "StopGifts.png"
         Images.MasterExp -> "master_exp.png"
