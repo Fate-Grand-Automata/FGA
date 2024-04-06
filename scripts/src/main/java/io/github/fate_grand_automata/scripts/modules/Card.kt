@@ -28,7 +28,7 @@ class Card @Inject constructor(
 
     fun readCommandCards(): List<ParsedCard> = useSameSnapIn {
         parser.parse(
-            readCriticalStarPercentage = battleConfig.useCriticalStarPriority
+            readCriticalStar = battleConfig.useCriticalStarPriority
         )
     }
 

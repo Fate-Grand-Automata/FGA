@@ -87,7 +87,7 @@ class CardParser @Inject constructor(
         return CardTypeEnum.Unknown
     }
 
-    fun parse(readCriticalStarPercentage: Boolean = false): List<ParsedCard> {
+    fun parse(readCriticalStar: Boolean = false): List<ParsedCard> {
         val cardsGroupedByServant = servantTracker.faceCardsGroupedByServant()
 
         val cards = CommandCard.Face.list
@@ -103,7 +103,7 @@ class CardParser @Inject constructor(
                 val hasCriticalStar = it.hasCriticalStar()
 
                 val starPercentage = when {
-                    hasCriticalStar && readCriticalStarPercentage -> it.readCriticalStarPercentage()
+                    hasCriticalStar && readCriticalStar -> it.readCriticalStarPercentage()
                     hasCriticalStar -> 1
                     else -> 0
                 }
