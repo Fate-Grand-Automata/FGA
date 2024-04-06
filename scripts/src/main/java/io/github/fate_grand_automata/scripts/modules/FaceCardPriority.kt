@@ -18,8 +18,16 @@ class FaceCardPriority @Inject constructor(
     private fun applyCardPriority(
         cards: List<ParsedCard>,
         stage: Int
-    ): List<ParsedCard> {
-        val sortedCards = cards
+    ): List<ParsedCard> {           
+
+        val groupedByScore = sortcardsedCards.groupBy { CardScore(it.type, it.affinity) }
+
+        return cardPriority
+            .atWave(wave = stage)
+            .mapNotNull { cardScore ->
+                groupedByScore[cardScore]
+            }
+            .flatten()
             .sortedWith(
                 compareByDescending<ParsedCard> { parsedCard ->
                     /**
@@ -28,23 +36,12 @@ class FaceCardPriority @Inject constructor(
                      */
                     when {
                         parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage > 7 -> 4
-                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage in 1..7 -> 3
+                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage in 0..7 -> 3
                         parsedCard.affinity == CardAffinityEnum.Normal && parsedCard.criticalPercentage > 0 -> 2
                         else -> 1
                     }
-                }.thenBy {
-                    it.type
                 }
             )
-
-        val groupedByScore = sortedCards.groupBy { CardScore(it.type, it.affinity) }
-
-        return cardPriority
-            .atWave(wave = stage)
-            .mapNotNull { cardScore ->
-                groupedByScore[cardScore]
-            }
-            .flatten()
     }
 
     private fun applyServantPriority(

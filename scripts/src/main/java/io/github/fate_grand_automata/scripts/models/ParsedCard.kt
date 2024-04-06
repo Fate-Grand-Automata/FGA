@@ -10,7 +10,7 @@ data class ParsedCard(
     val type: CardTypeEnum,
     val affinity: CardAffinityEnum = CardAffinityEnum.Normal,
     val isStunned: Boolean = false,
-    val criticalPercentage: Int = -1
+    val criticalPercentage: Int = 0
 ) {
     override fun equals(other: Any?) =
         other is ParsedCard && card == other.card
