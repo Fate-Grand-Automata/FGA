@@ -74,13 +74,13 @@ class SupportScreenLocations @Inject constructor(
     }.let { x -> Location(x, 256) + headerOffset }
 
     val topScrollbarRegion = when(isWide) {
-        true -> Region(1305, 335, 70, 35).xFromCenter()
-        false -> Region(1195, 335, 70, 35).xFromCenter()
+        true -> Region(1305, 325, 140, 55).xFromCenter()
+        false -> Region(1195, 325, 100, 55).xFromCenter()
     }
 
     val bottomScrollbarRegion = when(isWide) {
-        true -> Region(1305, 1400, 70, 35).xFromCenter()
-        false -> Region(1195, 1400, 70, 35).xFromCenter()
+        true -> Region(1305, 1390, 140, 55).xFromCenter()
+        false -> Region(1195, 1390, 100, 55).xFromCenter()
     }
 
     val refreshRegion = when(isWide){
