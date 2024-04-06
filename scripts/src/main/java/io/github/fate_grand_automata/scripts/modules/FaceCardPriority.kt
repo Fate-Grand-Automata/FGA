@@ -20,7 +20,7 @@ class FaceCardPriority @Inject constructor(
         stage: Int
     ): List<ParsedCard> {           
 
-        val groupedByScore = sortcardsedCards.groupBy { CardScore(it.type, it.affinity) }
+        val groupedByScore = cards.groupBy { CardScore(it.type, it.affinity) }
 
         return cardPriority
             .atWave(wave = stage)
