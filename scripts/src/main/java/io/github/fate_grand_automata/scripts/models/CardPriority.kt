@@ -35,19 +35,23 @@ class CardPriority private constructor(scores: List<CardScore>) : List<CardScore
                         'B' -> CardTypeEnum.Buster
                         'A' -> CardTypeEnum.Arts
                         'Q' -> CardTypeEnum.Quick
-                        else -> raiseParseError("$cardPriorityErrorString${it[1]}': Only 'B', 'A' and 'Q' are valid card types.")
+                        else -> raiseParseError(
+                            "$cardPriorityErrorString${it[1]}': Only 'B', 'A' and 'Q' are valid card types."
+                        )
                     }
 
                     val cardAffinity = when (it[0]) {
                         'W' -> CardAffinityEnum.Weak
                         'R' -> CardAffinityEnum.Resist
                         dummyNormalAffinityChar -> CardAffinityEnum.Normal
-                        else -> raiseParseError("$cardPriorityErrorString${it[0]}': Only 'W', and 'R' are valid card affinities.")
+                        else -> raiseParseError(
+                            "$cardPriorityErrorString${it[0]}': Only 'W', and 'R' are valid card affinities."
+                        )
                     }
 
                     CardScore(
-                        cardType,
-                        cardAffinity
+                        type = cardType,
+                        affinity = cardAffinity
                     )
                 }
                 .toList()

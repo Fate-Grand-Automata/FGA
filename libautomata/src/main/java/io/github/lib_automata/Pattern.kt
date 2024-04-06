@@ -54,6 +54,8 @@ interface Pattern : AutoCloseable {
 
     fun threshold(value: Double): Pattern
 
+    fun dynamic(): Pattern
+
     fun isWhite(): Boolean
 
     fun isBlack(): Boolean

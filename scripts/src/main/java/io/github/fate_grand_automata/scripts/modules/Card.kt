@@ -27,7 +27,9 @@ class Card @Inject constructor(
 ) : IFgoAutomataApi by api {
 
     fun readCommandCards(): List<ParsedCard> = useSameSnapIn {
-        parser.parse()
+        parser.parse(
+            readCriticalStarPercentage = battleConfig.useCriticalStarPriority
+        )
     }
 
     private val spamNps: Set<CommandCard.NP>
@@ -49,20 +51,28 @@ class Card @Inject constructor(
     ): List<CommandCard.Face> {
         val cardsOrderedByPriority = priority.sort(cards, state.stage)
 
-        fun <T> List<T>.inCurrentWave(default: T) =
-            if (isNotEmpty())
-                this[state.stage.coerceIn(indices)]
-            else default
+        /**
+         * Returns the element at the current wave index in the list, or the default value if the list is empty.
+         *
+         * @param default The default value to return if the list is empty.
+         * @return The element at the current wave index in the list, or the default value if the list is empty.
+         */
+        fun <T> List<T>.inCurrentWave(default: T): T = when (isNotEmpty()) {
+            true -> this[state.stage.coerceIn(indices)]
+            false -> default
+        }
 
-        val braveChainsPerWave = battleConfig.braveChains
-        val rearrangeCardsPerWave = battleConfig.rearrangeCards
+        val braveChainsThisWave = battleConfig.braveChains.inCurrentWave(default = BraveChainEnum.None)
+        val rearrangeCardsThisWave = battleConfig.rearrangeCards.inCurrentWave(default = false)
 
         return braveChains.pick(
             cards = cardsOrderedByPriority,
             npUsage = npUsage,
-            braveChains = braveChainsPerWave.inCurrentWave(BraveChainEnum.None),
-            rearrange = rearrangeCardsPerWave.inCurrentWave(false)
-        ).map { it.card }
+            braveChains = braveChainsThisWave,
+            rearrange = rearrangeCardsThisWave
+        ).map { parsedCard ->
+            parsedCard.card
+        }
     }
 
     fun clickCommandCards(

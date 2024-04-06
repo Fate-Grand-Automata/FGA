@@ -168,6 +168,48 @@ class DroidCvPattern(
         return DroidCvPattern(result, tag = "$tag[threshold=$value]")
     }
 
+    override fun dynamic(): Pattern {
+        try {
+            val hsv = Mat()
+
+            if (mat.channels() < 3) {
+                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2BGR)
+            }
+
+            Imgproc.cvtColor(mat, hsv, Imgproc.COLOR_BGR2HSV)
+
+            val lowerWhite = Scalar(0.0, 0.0, 50.0)
+            val upperWhite = Scalar(0.0, 0.0, 255.0)
+
+            val mask = Mat()
+            Core.inRange(hsv, lowerWhite, upperWhite, mask)
+
+            val res = Mat()
+            Core.bitwise_and(mat, mat, res, mask)
+
+            val gray = Mat()
+            Imgproc.cvtColor(res, gray, Imgproc.COLOR_BGR2GRAY)
+
+            val threshold = Mat()
+            Imgproc.threshold(
+                gray,
+                threshold,
+                0.0,
+                255.0,
+                Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU
+            )
+
+            val inverted = Mat()
+            Core.bitwise_not(threshold, inverted)
+
+            return DroidCvPattern(inverted, tag = "$tag[dynamic]")
+        } catch (e: Exception) {
+            Timber.d("Failed to apply dynamic thresholding")
+            Timber.e(e)
+            return DroidCvPattern(mat, tag = "$tag[dynamic]")
+        }
+    }
+
     override fun isWhite(): Boolean {
         val minMaxLocResult = Core.minMaxLoc(mat)
         // 0 = black, 255 = white

@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.modules
 
+import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
@@ -18,11 +19,31 @@ class FaceCardPriority @Inject constructor(
         cards: List<ParsedCard>,
         stage: Int
     ): List<ParsedCard> {
-        val groupedByScore = cards.groupBy { CardScore(it.type, it.affinity) }
+        val sortedCards = cards
+            .sortedWith(
+                compareByDescending<ParsedCard> { parsedCard ->
+                    /**
+                     * Added sorting criteria for critical stars.
+                     * Cards with critical stars and has affinity of Weak are prioritized.
+                     */
+                    when {
+                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage > 7 -> 4
+                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage in 1..7 -> 3
+                        parsedCard.affinity == CardAffinityEnum.Normal && parsedCard.criticalPercentage > 0 -> 2
+                        else -> 1
+                    }
+                }.thenBy {
+                    it.type
+                }
+            )
+
+        val groupedByScore = sortedCards.groupBy { CardScore(it.type, it.affinity) }
 
         return cardPriority
-            .atWave(stage)
-            .mapNotNull { groupedByScore[it] }
+            .atWave(wave = stage)
+            .mapNotNull { cardScore ->
+                groupedByScore[cardScore]
+            }
             .flatten()
     }
 
@@ -52,6 +73,13 @@ class FaceCardPriority @Inject constructor(
             }
     }
 
+    /**
+     * Sorts the given list of [ParsedCard] objects based on the specified stage.
+     *
+     * @param cards The list of [ParsedCard] objects to be sorted.
+     * @param stage The Wave number to determine the sorting criteria.
+     * @return The sorted list of [ParsedCard] objects.
+     */
     fun sort(
         cards: List<ParsedCard>,
         stage: Int

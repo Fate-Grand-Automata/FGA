@@ -71,6 +71,23 @@ class StandardAutomataApi @Inject constructor(
             }
     }
 
+    override fun Region.detectNumVarBg(outlinedText: Boolean): String {
+        screenshotManager.getScreenshot()
+            .crop(transform.toImage(this))
+            .dynamic()
+            .let {
+                if (outlinedText) {
+                    it.use {
+                        it.fillText()
+                    }
+                } else it
+            }
+            .also { highlight(this, HighlightColor.Info) }
+            .use {
+                return ocrService.detectNumVarBg(it)
+            }
+    }
+
     override fun Map<Pattern, Region>.exists(
         timeout: Duration, similarity: Double?, requireAll: Boolean,
     ) = imageMatcher.exists(

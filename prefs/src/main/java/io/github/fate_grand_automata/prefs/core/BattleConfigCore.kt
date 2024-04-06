@@ -94,6 +94,8 @@ class BattleConfigCore(
     val shuffleCards = maker.enum("shuffle_cards", ShuffleCardsEnum.None)
     val shuffleCardsWave = maker.int("shuffle_cards_wave", 3)
 
+    val useCriticalStarPriority = maker.bool("use_critical_star_priority")
+
     val useServantPriority = maker.bool("use_servant_priority")
     val servantPriority = maker.serialized(
         "servant_priority",

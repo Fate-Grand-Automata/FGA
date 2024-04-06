@@ -57,6 +57,8 @@ interface AutomataApi {
 
     fun Region.detectText(outlinedText: Boolean = false): String
 
+    fun Region.detectNumVarBg(outlinedText: Boolean = false): String
+
     fun Map<Pattern, Region>.exists(
         timeout: Duration = Duration.ZERO,
         similarity: Double? = null,

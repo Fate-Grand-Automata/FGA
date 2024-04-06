@@ -31,6 +31,28 @@ class CardParser @Inject constructor(
         return CardAffinityEnum.Normal
     }
 
+    private fun CommandCard.Face.hasCriticalStar(): Boolean {
+        val starRegion = locations.attack.starRegion(this)
+
+        return starRegion.exists(
+            images[Images.CriticalStarExist],
+            similarity = 0.7
+        )
+    }
+
+    private fun CommandCard.Face.readCriticalStarPercentage(): Int {
+        var percentage = ""
+        useColor {
+            val starPercentageRegion = locations.attack.starPercentageRegion(this)
+            percentage = starPercentageRegion.detectNumVarBg()
+        }
+
+        val regex = "\\d".toRegex()
+        val matchResult = regex.find(percentage)
+        val digit = matchResult?.value?.toInt()
+        return if (digit == 0) 10 else digit ?: -1
+    }
+
     private fun CommandCard.Face.isStunned(): Boolean {
         val stunRegion = locations.attack.typeRegion(this).copy(
             y = 930,
@@ -65,7 +87,7 @@ class CardParser @Inject constructor(
         return CardTypeEnum.Unknown
     }
 
-    fun parse(): List<ParsedCard> {
+    fun parse(readCriticalStarPercentage: Boolean = false): List<ParsedCard> {
         val cardsGroupedByServant = servantTracker.faceCardsGroupedByServant()
 
         val cards = CommandCard.Face.list
@@ -77,6 +99,14 @@ class CardParser @Inject constructor(
                 val affinity = if (type == CardTypeEnum.Unknown)
                     CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
                 else it.affinity()
+
+                val hasCriticalStar = it.hasCriticalStar()
+
+                val starPercentage = when {
+                    hasCriticalStar && readCriticalStarPercentage -> it.readCriticalStarPercentage()
+                    hasCriticalStar -> 1
+                    else -> -1
+                }
 
                 val servant = cardsGroupedByServant
                     .filterValues { cards -> it in cards }
@@ -95,7 +125,8 @@ class CardParser @Inject constructor(
                     type = type,
                     affinity = affinity,
                     servant = servant,
-                    fieldSlot = fieldSlot
+                    fieldSlot = fieldSlot,
+                    criticalPercentage = starPercentage
                 )
             }
 

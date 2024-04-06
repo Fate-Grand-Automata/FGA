@@ -11,7 +11,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +31,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun CardPriorityView(
     items: SnapshotStateList<CardPriorityListItem>,
-    useServantPriority: Pref<Boolean>
+    useServantPriority: Pref<Boolean>,
+    useCriticalStarPriority: Pref<Boolean>
 ) {
     val pagerState = rememberPagerState(pageCount = {items.size},)
     val scope = rememberCoroutineScope()
@@ -54,13 +55,19 @@ fun CardPriorityView(
                     .padding(bottom = 16.dp)
             )
 
+            useCriticalStarPriority.SwitchPreference(
+                title = stringResource(R.string.p_battle_config_use_critical_star_priority),
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+            )
+
             CardPriorityWaveSelector(
                 items = items,
                 selectedWave = pagerState.currentPage,
                 onSelectedWaveChange = { scope.launch { pagerState.animateScrollToPage(it) } },
             )
 
-            Divider()
+            HorizontalDivider()
 
             HorizontalPager(
                 state = pagerState,

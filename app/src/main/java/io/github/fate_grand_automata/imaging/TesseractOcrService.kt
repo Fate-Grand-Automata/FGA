@@ -7,6 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.lib_automata.OcrService
 import io.github.lib_automata.Pattern
 import io.github.lib_automata.dagger.ScriptScope
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -30,6 +31,26 @@ class TesseractOcrService @Inject constructor(
                 tessApi.setImage(bmp)
                 tessApi.getHOCRText(0)
                 val text = tessApi.utF8Text
+                Timber.d("text $text")
+                tessApi.clear()
+                return text
+            }
+        }
+    }
+
+    override fun detectNumVarBg(pattern: Pattern): String {
+        synchronized(tessApi) {
+            (pattern as DroidCvPattern).asBitmap().use { bmp ->
+                tessApi.pageSegMode = TessBaseAPI.PageSegMode.PSM_SINGLE_LINE
+                tessApi.setVariable(
+                    TessBaseAPI.VAR_CHAR_BLACKLIST,
+                    "-!@#\\$%^&*().,[]ABCDEFGHIJKLMNOPQRSTUVWXYZ{}abcdefghijklmnopqrstuvwxyz"
+                )
+                tessApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "0123456789")
+                tessApi.setImage(bmp)
+                tessApi.getHOCRText(0)
+                val text = tessApi.utF8Text
+                Timber.d("NumVarBg text: $text")
                 tessApi.clear()
                 return text
             }
