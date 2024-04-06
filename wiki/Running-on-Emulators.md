@@ -17,7 +17,7 @@ These settings are tested, some other may also work:
 - Change to High Performance mode:
   - Open Bluestack's settings
   - Go to `Performance` tab.
-  - Set `Performancer mode` to `High Performance`
+  - Set `Performancer mode` to `High Performance` (For some installations, this breaks Bluestacks as soon as you start the FGA service and you need to enable `Compatibility` mode instead)
   - Save settings and Restart Bluestacks.
 - Install FGA from the Play Store, not from Github
 - In order to start the FGA service, rotate the screen to portrait mode first. See [this comment](https://github.com/Fate-Grand-Automata/FGA/issues/967#issuecomment-974652785) for more details.
