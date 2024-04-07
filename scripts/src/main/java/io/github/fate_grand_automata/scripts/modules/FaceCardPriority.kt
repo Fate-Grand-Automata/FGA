@@ -35,9 +35,10 @@ class FaceCardPriority @Inject constructor(
                      * Cards with critical stars and has affinity of Weak are prioritized.
                      */
                     when {
-                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage > 7 -> 4
-                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage in 0..7 -> 3
-                        parsedCard.affinity == CardAffinityEnum.Normal && parsedCard.criticalPercentage > 0 -> 2
+                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage > 7 -> 5
+                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage in 0..7 -> 4
+                        parsedCard.affinity == CardAffinityEnum.Normal && parsedCard.criticalPercentage > 7 -> 3
+                        parsedCard.affinity == CardAffinityEnum.Normal && parsedCard.criticalPercentage in 0..7 -> 2
                         else -> 1
                     }
                 }
