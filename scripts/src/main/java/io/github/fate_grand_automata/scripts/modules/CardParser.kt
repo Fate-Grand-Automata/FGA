@@ -50,7 +50,7 @@ class CardParser @Inject constructor(
         val regex = "\\d".toRegex()
         val matchResult = regex.find(percentage)
         val digit = matchResult?.value?.toInt()
-        return if (digit == 0) 10 else digit ?: 0
+        return if (digit == 0) 10 else digit ?: 1
     }
 
     private fun CommandCard.Face.isStunned(): Boolean {
