@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -95,7 +95,7 @@ fun fpLauncher(
             style = MaterialTheme.typography.titleLarge
         )
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .padding(5.dp)
                 .padding(bottom = 16.dp)

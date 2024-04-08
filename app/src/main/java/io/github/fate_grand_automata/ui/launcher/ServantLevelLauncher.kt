@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -56,7 +56,7 @@ fun servantLevelLauncher(
                     text = stringResource(id = R.string.servant_enhancement),
                     style = MaterialTheme.typography.headlineSmall
                 )
-                Divider()
+                HorizontalDivider()
             }
         }
         item {
@@ -74,7 +74,7 @@ fun servantLevelLauncher(
             )
         }
         item {
-            Divider()
+            HorizontalDivider()
         }
 
         item {
@@ -115,7 +115,7 @@ fun servantLevelLauncher(
             }
         }
         item {
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(vertical = 5.dp)
             )
         }

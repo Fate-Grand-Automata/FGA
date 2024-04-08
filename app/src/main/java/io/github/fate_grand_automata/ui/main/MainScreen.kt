@@ -19,7 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -270,7 +270,7 @@ private fun MainScreenContent(
                             onClick = { navigate(MainScreenDestinations.BattleConfigs) }
                         )
 
-                        Divider()
+                        HorizontalDivider()
 
                         languagePref.ListPreference(
                             title = stringResource(R.string.p_app_language),
@@ -278,7 +278,7 @@ private fun MainScreenContent(
                             entries = LanguagePref.availableLanguages()
                         )
 
-                        Divider()
+                        HorizontalDivider()
 
                         Preference(
                             title = stringResource(R.string.p_more_options),

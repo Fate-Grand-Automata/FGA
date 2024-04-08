@@ -9,10 +9,18 @@
     "enabled": true
   },
   "github-actions": {
-    "extends": ["group:all"],
     "enabled": true,
     "automerge": true,
-    "branchTopic": "github-actions",
-    "commitMessageTopic": "github-actions"
-  }
+    "groupName": "github-actions"
+  },
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+          "^org.jetbrains.kotlin",
+          "^com.google.devtools.ksp",
+          "^androidx.compose.compiler"
+      ],
+      "groupName": "kotlin"
+    }
+  ]
 }

@@ -58,23 +58,22 @@ class AutoBattle @Inject constructor(
     private val ceDropsTracker: CEDropsTracker
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason(val cause: Exception? = null) {
-        object Abort : ExitReason()
+        data object Abort : ExitReason()
         class Unexpected(cause: Exception) : ExitReason(cause)
-        object CEGet : ExitReason()
+        data object CEGet : ExitReason()
         class LimitCEs(val count: Int) : ExitReason()
-        object FirstClearRewards : ExitReason()
+        data object FirstClearRewards : ExitReason()
         class LimitMaterials(val count: Int) : ExitReason()
-        object WithdrawDisabled : ExitReason()
-        object APRanOut : ExitReason()
-        object StormPodRanOut : ExitReason()
-        object InventoryFull : ExitReason()
+        data object WithdrawDisabled : ExitReason()
+        data object APRanOut : ExitReason()
+        data object InventoryFull : ExitReason()
         class LimitRuns(val count: Int) : ExitReason()
-        object SupportSelectionManual : ExitReason()
-        object SupportSelectionPreferredNotSet : ExitReason()
+        data object SupportSelectionManual : ExitReason()
+        data object SupportSelectionPreferredNotSet : ExitReason()
         class SkillCommandParseError(cause: Exception) : ExitReason(cause)
         class CardPriorityParseError(val msg: String) : ExitReason()
-        object Paused : ExitReason()
-        object StopAfterThisRun : ExitReason()
+        data object Paused : ExitReason()
+        data object StopAfterThisRun : ExitReason()
     }
 
     internal class BattleExitException(val reason: ExitReason) : Exception(reason.cause)
@@ -91,6 +90,8 @@ class AutoBattle @Inject constructor(
 
 
     private var canScreenshotBondCE = false
+
+    private var isQuestClose = false
 
     override fun script(): Nothing {
         try {
@@ -186,10 +187,10 @@ class AutoBattle @Inject constructor(
             { isInResult() } to { result() },
             { isInDropsScreen() } to { dropScreen() },
             { isInOrdealCallOutOfPodsScreen() } to { ordealCallOutOfPods() },
-            { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { isInQuestRewardScreen() } to { questReward() },
             { isInSupport() } to { support() },
             { isRepeatScreen() } to { repeatQuest() },
+            { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
             { isFriendRequestScreen() } to { skipFriendRequestScreen() },
@@ -227,6 +228,12 @@ class AutoBattle @Inject constructor(
     private fun menu() {
         // In case the repeat loop breaks and we end up in menu (like withdrawing from quests)
         isContinuing = false
+
+        if (isQuestClose){
+            // Ordeal Call
+            isQuestClose = false
+            throw BattleExitException(ExitReason.LimitRuns(state.runs))
+        }
 
         battle.resetState()
 
@@ -341,19 +348,10 @@ class AutoBattle @Inject constructor(
 
     private fun ordealCallOutOfPods() {
         locations.ordealCallOutOfPodsClick.click()
+
+        isQuestClose = true
         // Count the current run
         state.nextRun()
-
-        2.seconds.wait()
-        val isBlackScreen = locations.npStartedRegion.isBlack()
-        if (isBlackScreen){
-            locations.menuScreenRegion.exists(
-                images[Images.Menu],
-                similarity = 0.7,
-                timeout = 15.seconds
-            )
-        }
-        throw BattleExitException(ExitReason.StormPodRanOut)
     }
 
     private fun findRepeatButton(): Match? {
@@ -518,8 +516,17 @@ class AutoBattle @Inject constructor(
         // delay so refill with copper is not disturbed
         2.5.seconds.wait()
 
-        if (isInventoryFull()) {
-            throw BattleExitException(ExitReason.InventoryFull)
+        var closeScreen = false
+        var inventoryFull = false
+
+        useSameSnapIn {
+            closeScreen = isInOrdealCallOutOfPodsScreen()
+            inventoryFull = isInventoryFull()
+        }
+
+        when {
+            closeScreen -> throw BattleExitException(ExitReason.LimitRuns(state.runs))
+            inventoryFull -> throw BattleExitException(ExitReason.InventoryFull)
         }
 
         refill.refill()
