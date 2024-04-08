@@ -39,7 +39,7 @@ fun ShuffleCardsGroup(config: BattleConfigCore) {
             ) {
                 config.shuffleCards.ListPreference(
                     title = stringResource(R.string.p_shuffle_cards_when),
-                    entries = ShuffleCardsEnum.values()
+                    entries = ShuffleCardsEnum.entries
                         .associateWith { stringResource(it.stringRes) },
                     modifier = Modifier.weight(1f)
                 )
