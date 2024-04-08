@@ -47,7 +47,8 @@ class SupportSelectionLoop @Inject constructor(
                     result = null
                 }
                 // Refresh support list if not exceeded max refreshes
-                numberOfUpdates < commonSupportPrefs.maxUpdates -> {
+                // or if Early Refresh due to lack of scrollbar
+                result is SupportSelectionResult.EarlyRefresh || numberOfUpdates < commonSupportPrefs.maxUpdates -> {
                     refresher.refreshSupportList()
                     onAllList = false
 
