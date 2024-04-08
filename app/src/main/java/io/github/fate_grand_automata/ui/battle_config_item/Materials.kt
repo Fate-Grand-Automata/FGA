@@ -73,7 +73,7 @@ fun Pref<Set<MaterialEnum>>.Materials() {
             selected = current,
             onSelectedChange = { current = it },
             prioritySelected = true,
-            items = MaterialEnum.values().toList()
+            items = MaterialEnum.entries.toList()
         ) { mat ->
             Material(mat)
 
