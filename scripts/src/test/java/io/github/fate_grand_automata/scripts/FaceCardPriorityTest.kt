@@ -57,6 +57,51 @@ class FaceCardPriorityTest {
         val lineup1 = listOf(scathach1WB, kama2Q, nero3RA, nero4RA, scathach5WQ)
 
         val lineup2 = listOf(scathach1WB, scathach5WQ, kama2Q, nero3RA, nero4RA)
+
+        val superOrion1B = ParsedCard(
+            card = CommandCard.Face.A,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.Weak,
+            criticalPercentage = 10
+        )
+
+        val superOrion2B = ParsedCard(
+            card = CommandCard.Face.B,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.Weak,
+            criticalPercentage = 2
+        )
+
+        val superOrion3B = ParsedCard(
+            card = CommandCard.Face.C,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.Weak,
+            criticalPercentage = 8
+        )
+
+        val superOrion1A = ParsedCard(
+            card = CommandCard.Face.D,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Arts,
+            affinity = CardAffinityEnum.Weak
+        )
+
+        val superOrion1Q = ParsedCard(
+            card = CommandCard.Face.E,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Quick,
+            affinity = CardAffinityEnum.Weak
+        )
+
+        val lineup3 = listOf(superOrion1B, superOrion2B, superOrion3B, superOrion1A, superOrion1Q)
     }
 
     @Test
@@ -65,7 +110,13 @@ class FaceCardPriorityTest {
 
         val sorted = priority.sort(lineup1, 0).map { it.card }
 
-        assertThat(sorted).containsExactly(CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.B, CommandCard.Face.C, CommandCard.Face.D)
+        assertThat(sorted).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.E,
+            CommandCard.Face.B,
+            CommandCard.Face.C,
+            CommandCard.Face.D
+        )
     }
 
     @Test
@@ -74,6 +125,106 @@ class FaceCardPriorityTest {
 
         val sorted = priority.sort(lineup1, 0).map { it.card }
 
-        assertThat(sorted).containsExactly(CommandCard.Face.B, CommandCard.Face.A, CommandCard.Face.E, CommandCard.Face.C, CommandCard.Face.D)
+        assertThat(sorted).containsExactly(
+            CommandCard.Face.B,
+            CommandCard.Face.A,
+            CommandCard.Face.E,
+            CommandCard.Face.C,
+            CommandCard.Face.D
+        )
+    }
+
+    @Test
+    fun defaultCardPriorityWithCritStars() {
+        val priority = FaceCardPriority(CardPriorityPerWave.default, null)
+
+        val sorted = priority.sort(lineup3, 0).map { it.card }
+
+        assertThat(sorted).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.C,
+            CommandCard.Face.B,
+            CommandCard.Face.D,
+            CommandCard.Face.E
+        )
+    }
+
+    @Test
+    fun customCardPriorityWithDefaultCritStars() {
+        val priority = FaceCardPriority(
+            CardPriorityPerWave.of("WA, WB, WQ, A, B, Q, RA, RB, RQ"),
+            ServantPriorityPerWave.default
+        )
+
+        val sorted = priority.sort(lineup3, 0).map { it.card }
+
+        assertThat(sorted).containsExactly(
+            CommandCard.Face.D,
+            CommandCard.Face.A,
+            CommandCard.Face.C,
+            CommandCard.Face.B,
+            CommandCard.Face.E
+        )
+    }
+
+    @Test
+    fun customCardPriorityWithCritStars() {
+        val superOrion1B = ParsedCard(
+            card = CommandCard.Face.A,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.WeakCritical,
+            criticalPercentage = 10
+        )
+
+        val superOrion2B = ParsedCard(
+            card = CommandCard.Face.B,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.Weak,
+            criticalPercentage = 2
+        )
+
+        val superOrion3B = ParsedCard(
+            card = CommandCard.Face.C,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Buster,
+            affinity = CardAffinityEnum.WeakCritical,
+            criticalPercentage = 8
+        )
+
+        val superOrion1A = ParsedCard(
+            card = CommandCard.Face.D,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Arts,
+            affinity = CardAffinityEnum.Weak
+        )
+
+        val superOrion1Q = ParsedCard(
+            card = CommandCard.Face.E,
+            servant = TeamSlot.A,
+            fieldSlot = FieldSlot.A,
+            type = CardTypeEnum.Quick,
+            affinity = CardAffinityEnum.Weak
+        )
+        val lineup4 = listOf(superOrion1B, superOrion2B, superOrion3B, superOrion1A, superOrion1Q)
+        val priority = FaceCardPriority(
+            CardPriorityPerWave.of("WBC, WAC, WQC, WA, WB, WQ,AC,BC, QC, A, B, Q, RA, RB, RQ"),
+            ServantPriorityPerWave.default
+        )
+
+        val sorted = priority.sort(lineup4, 0).map { it.card }
+
+        assertThat(sorted).containsExactly(
+            CommandCard.Face.A,
+            CommandCard.Face.C,
+            CommandCard.Face.D,
+            CommandCard.Face.B,
+            CommandCard.Face.E
+        )
     }
 }
