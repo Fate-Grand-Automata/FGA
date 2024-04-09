@@ -11,7 +11,7 @@ fun CardPriorityScreen(
     CardPriorityView(
         items = vm.cardPriorityItems,
         useServantPriority = vm.useServantPriority,
-        useCriticalStarPriority = vm.useCriticalStarPriority
+        readCriticalStarPriority = vm.readCriticalStarPriority
     )
 
     DisposableEffect(vm) {

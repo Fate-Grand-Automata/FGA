@@ -87,25 +87,40 @@ class CardParser @Inject constructor(
         return CardTypeEnum.Unknown
     }
 
-    fun parse(readCriticalStar: Boolean = false): List<ParsedCard> {
+    fun parseCommandCards(readCriticalStar: Boolean = false): List<ParsedCard> {
         val cardsGroupedByServant = servantTracker.faceCardsGroupedByServant()
 
         val cards = CommandCard.Face.list
             .map {
                 val stunned = it.isStunned()
-                val type = if (stunned)
-                    CardTypeEnum.Unknown
-                else it.type()
-                val affinity = if (type == CardTypeEnum.Unknown)
-                    CardAffinityEnum.Normal // Couldn't detect card type, so don't care about affinity
-                else it.affinity()
 
                 val hasCriticalStar = it.hasCriticalStar()
-
                 val starPercentage = when {
+                    stunned -> 0
                     hasCriticalStar && readCriticalStar -> it.readCriticalStarPercentage()
                     hasCriticalStar -> 1
                     else -> 0
+                }
+
+                val type = when {
+                    stunned -> CardTypeEnum.Unknown
+                    else -> it.type()
+                }
+
+                val affinity = when (type) {
+                    CardTypeEnum.Unknown -> CardAffinityEnum.Normal
+                    else -> {
+                        val currentAffinity = it.affinity()
+                        when {
+                            currentAffinity == CardAffinityEnum.Normal && starPercentage > 7 ->
+                                CardAffinityEnum.NormalCritical
+
+                            currentAffinity == CardAffinityEnum.Weak && starPercentage > 7 ->
+                                CardAffinityEnum.WeakCritical
+
+                            else -> currentAffinity
+                        }
+                    }
                 }
 
                 val servant = cardsGroupedByServant

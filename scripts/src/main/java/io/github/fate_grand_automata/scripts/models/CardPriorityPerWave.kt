@@ -6,25 +6,25 @@ import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 class CardPriorityPerWave private constructor(
     private val scoresPerWave: List<CardPriority>
 ) : List<CardPriority> by scoresPerWave {
-    fun atWave(wave: Int) =
-        scoresPerWave[wave.coerceIn(scoresPerWave.indices)]
-            // Give minimum priority to unknown
-            .plus(
-                CardScore(
-                    CardTypeEnum.Unknown,
-                    CardAffinityEnum.Normal
-                )
+    fun atWave(wave: Int) = scoresPerWave[wave.coerceIn(scoresPerWave.indices)]
+        .plus(
+            // Give minimum priority to unknown cards
+            CardScore(
+                CardTypeEnum.Unknown,
+                CardAffinityEnum.Normal
             )
+        )
 
     override fun toString() =
         scoresPerWave.joinToString(cardPriorityStageSeparator)
 
     companion object {
-        private const val defaultCardPriority = "WB, WA, WQ, B, A, Q, RB, RA, RQ"
+        private const val defaultCardPriority = "WBC, WAC, WQC, WB, WA, WQ, BC, AC, QC, B, A, Q, RB, RA, RQ"
         private const val cardPriorityStageSeparator = "\n"
 
-        val default get() =
-            of(defaultCardPriority)
+        val default
+            get() =
+                of(defaultCardPriority)
 
         fun from(scoresPerWave: List<CardPriority>) =
             CardPriorityPerWave(scoresPerWave)

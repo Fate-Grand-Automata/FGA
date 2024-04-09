@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,7 +33,7 @@ import kotlinx.coroutines.launch
 fun CardPriorityView(
     items: SnapshotStateList<CardPriorityListItem>,
     useServantPriority: Pref<Boolean>,
-    useCriticalStarPriority: Pref<Boolean>
+    readCriticalStarPriority: Pref<Boolean>
 ) {
     val pagerState = rememberPagerState(pageCount = {items.size},)
     val scope = rememberCoroutineScope()
@@ -51,15 +52,15 @@ fun CardPriorityView(
             val servantPriority by useServantPriority.remember()
             useServantPriority.SwitchPreference(
                 title = stringResource(R.string.p_battle_config_use_servant_priority),
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
             )
 
-            useCriticalStarPriority.SwitchPreference(
-                title = stringResource(R.string.p_battle_config_use_critical_star_priority),
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
+            val readCriticalStar by readCriticalStarPriority.remember()
+            readCriticalStarPriority.SwitchPreference(
+                title = stringResource(R.string.p_battle_config_read_critical_star_priority),
+                summary = stringResource(R.string.p_battle_config_read_critical_star_priority_summary)
             )
+
+            Spacer(modifier = Modifier.padding(bottom = 16.dp))
 
             CardPriorityWaveSelector(
                 items = items,
@@ -88,7 +89,8 @@ fun CardPriorityView(
                     }
 
                     items.getOrNull(it)?.Render(
-                        useServantPriority = servantPriority
+                        useServantPriority = servantPriority,
+                        readCriticalStar = readCriticalStar
                     )
                 }
             }

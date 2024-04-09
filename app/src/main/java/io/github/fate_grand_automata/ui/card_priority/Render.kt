@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
+import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.models.TeamSlot
 import io.github.fate_grand_automata.ui.FGAListItemColors
 import io.github.fate_grand_automata.ui.drag_sort.DragSort
@@ -28,12 +29,23 @@ import io.github.fate_grand_automata.util.stringRes
 
 @Composable
 fun CardPriorityListItem.Render(
-    useServantPriority: Boolean
+    useServantPriority: Boolean,
+    readCriticalStar: Boolean
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CardPriorityDragSort(scores)
+        CardPriorityDragSort(
+            scores = scores
+                .filterNot {
+                    if (!readCriticalStar) {
+                        it.affinity in listOf(CardAffinityEnum.NormalCritical, CardAffinityEnum.WeakCritical)
+                    } else {
+                        false
+                    }
+                }
+                .toMutableList()
+        )
 
         Card(
             modifier = Modifier

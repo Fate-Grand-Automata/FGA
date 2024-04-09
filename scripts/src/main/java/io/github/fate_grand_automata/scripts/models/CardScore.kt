@@ -14,11 +14,23 @@ data class CardScore(val type: CardTypeEnum, val affinity: CardAffinityEnum) {
     override fun toString(): String {
         var result = ""
 
-        if (affinity != CardAffinityEnum.Normal) {
+        if (affinity != CardAffinityEnum.Normal && affinity != CardAffinityEnum.NormalCritical) {
             result += "$affinity "
         }
 
+        var criticalExist = false
+        if ("$affinity".contains('C', ignoreCase = true)) {
+            criticalExist = true
+            result = result.filterNot {
+                it.equals('C', ignoreCase = true)
+            }
+        }
+
         result += type
+
+        if (criticalExist) {
+            result += "C"
+        }
 
         return result.filterCapitals()
     }

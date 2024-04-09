@@ -1,6 +1,5 @@
 package io.github.fate_grand_automata.scripts.modules
 
-import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.enums.CardTypeEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
@@ -18,9 +17,15 @@ class FaceCardPriority @Inject constructor(
     private fun applyCardPriority(
         cards: List<ParsedCard>,
         stage: Int
-    ): List<ParsedCard> {           
+    ): List<ParsedCard> {
 
-        val groupedByScore = cards.groupBy { CardScore(it.type, it.affinity) }
+        val sortedCards = cards.sortedByDescending {
+            it.criticalPercentage
+        }
+
+        val groupedByScore = sortedCards.groupBy {
+            CardScore(it.type, it.affinity)
+        }
 
         return cardPriority
             .atWave(wave = stage)
@@ -28,21 +33,6 @@ class FaceCardPriority @Inject constructor(
                 groupedByScore[cardScore]
             }
             .flatten()
-            .sortedWith(
-                compareByDescending<ParsedCard> { parsedCard ->
-                    /**
-                     * Added sorting criteria for critical stars.
-                     * Cards with critical stars and has affinity of Weak are prioritized.
-                     */
-                    when {
-                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage > 7 -> 5
-                        parsedCard.affinity == CardAffinityEnum.Weak && parsedCard.criticalPercentage in 0..7 -> 4
-                        parsedCard.affinity == CardAffinityEnum.Normal && parsedCard.criticalPercentage > 7 -> 3
-                        parsedCard.affinity == CardAffinityEnum.Normal && parsedCard.criticalPercentage in 0..7 -> 2
-                        else -> 1
-                    }
-                }
-            )
     }
 
     private fun applyServantPriority(

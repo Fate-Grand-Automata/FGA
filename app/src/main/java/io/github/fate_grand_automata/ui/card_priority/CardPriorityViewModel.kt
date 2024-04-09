@@ -42,7 +42,7 @@ class CardPriorityViewModel @Inject constructor(
 
     val useServantPriority = battleConfig.useServantPriority
 
-    val useCriticalStarPriority = battleConfig.useCriticalStarPriority
+    val readCriticalStarPriority = battleConfig.readCriticalStarPriority
 
     fun save() {
         battleConfig.cardPriority.set(

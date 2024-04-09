@@ -29,6 +29,8 @@ class BattleConfigScreenViewModel @Inject constructor(
         battleConfigCore.cardPriority
             .asFlow()
 
+    val readCriticalStar = battleConfigCore.readCriticalStarPriority.asFlow()
+
     val skillCommand =
         battleConfigCore.skillCommand
             .asFlow()

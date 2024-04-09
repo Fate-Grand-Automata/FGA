@@ -16,7 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
+import io.github.fate_grand_automata.scripts.enums.CardAffinityEnum
 import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
 import io.github.fate_grand_automata.ui.Heading
@@ -150,7 +151,7 @@ private fun BattleConfigContent(
                                 singleLine = true
                             )
 
-                            Divider()
+                            HorizontalDivider()
 
                             config.notes.EditTextPreference(
                                 title = stringResource(R.string.p_battle_config_notes)
@@ -217,14 +218,19 @@ private fun BattleConfigContent(
                                 PartySelection(config)
                             }
 
-                            Divider()
+                            HorizontalDivider()
 
                             val cardPriority by vm.cardPriority.collectAsState(null)
-
-                            cardPriority?.let {
+                            val readCriticalStar by vm.readCriticalStar.collectAsState(initial = false)
+                            cardPriority?.let { cardPriorityPerWave ->
                                 Preference(
                                     title = { Text(stringResource(R.string.p_battle_config_card_priority)) },
-                                    summary = { CardPrioritySummary(it) },
+                                    summary = {
+                                        CardPrioritySummary(
+                                            cardPriority = cardPriorityPerWave,
+                                            readCriticalStar = readCriticalStar
+                                        )
+                                    },
                                     onClick = { navigate(BattleConfigDestination.CardPriority) }
                                 )
                             }
@@ -256,7 +262,10 @@ private val CardScore.color: Color
     }
 
 @Composable
-private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
+private fun CardPrioritySummary(
+    cardPriority: CardPriorityPerWave,
+    readCriticalStar: Boolean
+) {
     Column(
         modifier = Modifier
             .padding(vertical = 5.dp)
@@ -276,43 +285,54 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
 
                 Card {
                     val priorityString = buildAnnotatedString {
-                        priorities.forEachIndexed { index, it ->
-                            if (index != 0) {
+                        priorities
+                            .filterNot {
+                                if (!readCriticalStar) {
+                                    it.affinity in listOf(
+                                        CardAffinityEnum.NormalCritical,
+                                        CardAffinityEnum.WeakCritical
+                                    )
+                                } else {
+                                    false
+                                }
+                            }
+                            .forEachIndexed { index, cardScore ->
+                                if (index != 0) {
+                                    withStyle(
+                                        style = SpanStyle(
+                                            fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                                            fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
+                                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                            letterSpacing = MaterialTheme.typography.bodyMedium.letterSpacing,
+                                        )
+                                    ) {
+                                        append(",")
+                                    }
+                                    withStyle(
+                                        style = SpanStyle(
+                                            letterSpacing = 4.dp.toSp()
+                                        )
+                                    ) {
+                                        append(" ")
+                                    }
+                                }
                                 withStyle(
                                     style = SpanStyle(
                                         fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
                                         fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
                                         fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                                         letterSpacing = MaterialTheme.typography.bodyMedium.letterSpacing,
+                                        color = cardScore.color,
+                                        shadow = Shadow(
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            offset = Offset(1f, 1f),
+                                            blurRadius = 0f
+                                        )
                                     )
                                 ) {
-                                    append(",")
-                                }
-                                withStyle(
-                                    style = SpanStyle(
-                                        letterSpacing = 4.dp.toSp()
-                                    )
-                                ) {
-                                    append(" ")
+                                    append(cardScore.toString())
                                 }
                             }
-                            withStyle(
-                                style = SpanStyle(
-                                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                                    fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
-                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                                    letterSpacing = MaterialTheme.typography.bodyMedium.letterSpacing,
-                                    color = it.color,
-                                    shadow = Shadow(
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        offset = Offset(1f, 1f),
-                                        blurRadius = 0f
-                                    )
-                                )
-                            ) {
-                                append(it.toString())
-                            }
-                        }
                     }
                     Text(
                         text = priorityString,
