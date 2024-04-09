@@ -18,7 +18,7 @@ internal class BattleConfig(
     override val rearrangeCards by prefs.rearrangeCards
     override val braveChains by prefs.braveChains
 
-    override val useCriticalStarPriority by prefs.readCriticalStarPriority
+    override val readCriticalStarPriority by prefs.readCriticalStarPriority
 
     override val servantPriority by prefs.servantPriority
     override val useServantPriority by prefs.useServantPriority
