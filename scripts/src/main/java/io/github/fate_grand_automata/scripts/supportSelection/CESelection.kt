@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.supportSelection
 
 import io.github.fate_grand_automata.SupportImageKind
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
+import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
@@ -17,8 +18,13 @@ class CESelection @Inject constructor(
         // TODO: Only check the lower part (excluding Servant)
         val searchRegion = bounds.region.clip(locations.support.listRegion)
 
-        if (ces.isEmpty())
-            return true
+        // servant must not have blank ce
+        val blankCE = searchRegion.exists(images[Images.SupportBlankCE])
+
+        when {
+            ces.isEmpty() && !blankCE -> return true
+            ces.isEmpty() -> return false
+        }
 
         val matched = ces
             .flatMap { entry -> images.loadSupportPattern(SupportImageKind.CE, entry) }
