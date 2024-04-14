@@ -113,7 +113,12 @@ class BattleScreenLocations @Inject constructor(
         Region(22, 28, 30, 30) + locate(skill)
 
     val servantDetailsInfoClick = Location(-660, 110).xFromCenter()
-    val servantDetailsFaceCardRegion = Region(-685, 330, 110, 60).xFromCenter()
+    
+    val servantDetailsFaceCardRegion = when (gameServer) {
+        // FGO JP 2024-04-12 updated the UI resulting in the bricking of the face card detection
+        is GameServer.Jp -> Region(-685, 410, 110, 60).xFromCenter()
+        else -> Region(-685, 330, 110, 60).xFromCenter()
+    }
 
     val battleSafeMiddleOfScreenClick = Location(0, 550).xFromCenter()
 }
