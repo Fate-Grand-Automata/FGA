@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">FGA (Debug)</string>
 
+    <string name="game_server_all" translatable="false">All</string>
+    <string name="game_server_any" translatable="false">Any</string>
     <string name="game_server_na" translatable="false">NA</string>
     <string name="game_server_jp" translatable="false">JP</string>
     <string name="game_server_cn" translatable="false">CN</string>

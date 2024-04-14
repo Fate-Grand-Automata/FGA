@@ -80,7 +80,7 @@ fun BattleConfigListScreen(
         )
     }
 
-    val configs by vm.battleConfigItems.collectAsState(emptyList())
+    val configs by vm.battleConfigItems.collectAsState()
 
     BattleConfigListContent(
         configs = configs,
@@ -123,7 +123,7 @@ private sealed class BattleConfigListAction {
 @SuppressLint("UnrememberedMutableState")
 @Composable
 private fun BattleConfigListContent(
-    configs: List<BattleConfigCore>,
+    configs: Map<BattleConfigCore.Server?, List<BattleConfigCore>>,
     selectionMode: Boolean,
     selectedConfigs: Set<String>,
     action: (BattleConfigListAction) -> Unit
@@ -168,15 +168,13 @@ private fun BattleConfigListContent(
                     }
                 }
 
-                val servers by derivedStateOf {
-                    configs
-                        .mapNotNull { it.server.get().asGameServer() }
-                        .distinct()
-                }
+                val servers = configs.keys
+                    .filterIsInstance<BattleConfigCore.Server.Set>()
+                    .map { it.server }
 
                 if (servers.isEmpty()) {
                     ConfigList(
-                        configs = configs,
+                        configs = configs.values.flatten(),
                         selectionMode = selectionMode,
                         action = action,
                         selectedConfigs = selectedConfigs,
@@ -185,24 +183,19 @@ private fun BattleConfigListContent(
                     )
                 } else {
                     Tabbed(
-                        items = listOf<BattleConfigCore.Server>(BattleConfigCore.Server.NotSet) + servers.map { BattleConfigCore.Server.Set(it) },
+                        items = configs.keys.map { it },
                         heading = {
                             Text(
                                 when (it) {
-                                    BattleConfigCore.Server.NotSet -> "ALL"
+                                    null -> stringResource(R.string.game_server_all)
+                                    BattleConfigCore.Server.NotSet -> stringResource(R.string.game_server_any)
                                     is BattleConfigCore.Server.Set -> stringResource(it.server.stringRes)
                                 }
                             )
                         },
                         content = { current ->
                             val filteredConfigs by derivedStateOf {
-                                configs
-                                    .filter {
-                                        val server = it.server.get().asGameServer()
-
-                                        current is BattleConfigCore.Server.NotSet
-                                                || server == current.asGameServer()
-                                    }
+                                configs.getOrDefault(current, emptyList())
                             }
 
                             ConfigList(

@@ -33,9 +33,9 @@ class BattleConfigListViewModel @Inject constructor(
     val battleConfigItems = prefsCore
         .battleConfigList
         .asFlow()
+        .map {  key -> prefsCore.forBattleConfig(key) }
         .map { list ->
             list
-                .map { key -> prefsCore.forBattleConfig(key) }
                 .sortedWith(
                     compareBy<BattleConfigCore, Int?>((nullsFirst())) {
                         // sort by null, NA, JP, CN, TW, KR
@@ -47,6 +47,39 @@ class BattleConfigListViewModel @Inject constructor(
                     }
                 )
         }
+        .map { configList ->
+            val servers = configList
+                .mapNotNull { it.server.get().asGameServer() }
+                .distinct()
+            
+            val serverItems = listOf(BattleConfigCore.Server.NotSet) + servers.map { BattleConfigCore.Server.Set(it) }
+
+            val serverToConfigMap = serverItems
+                .associateWith { server ->
+                    if (server is BattleConfigCore.Server.Set) {
+                        val serverConfigs = configList.filter {
+                            it.server.get().asGameServer() == server.server
+                        }
+                        serverConfigs
+                    } else {
+                        val serverConfigs = configList.filter {
+                            it.server.get() == BattleConfigCore.Server.NotSet
+                        }
+                        serverConfigs
+                    }
+                }
+                .let {
+                    (mapOf(null to configList) + it)
+                }
+
+            serverToConfigMap
+                .filter { it.value.isNotEmpty() }
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            emptyMap()
+        )
 
     private val _selectedConfigs = MutableStateFlow(emptySet<String>())
     val selectedConfigs: StateFlow<Set<String>> = _selectedConfigs
