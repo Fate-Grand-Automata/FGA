@@ -304,7 +304,7 @@ private fun ConfigList(
                                 .padding(10.dp, 5.dp),
                         ) {
                             Text(
-                                text = stringResource(entry.key?.simpleStringRes ?: R.string.p_not_set),
+                                text = stringResource(entry.key?.simpleStringRes ?: R.string.game_server_any),
                                 modifier = Modifier.fillMaxWidth(),
                                 style = MaterialTheme.typography.titleLarge,
                                 textAlign = TextAlign.Left,
