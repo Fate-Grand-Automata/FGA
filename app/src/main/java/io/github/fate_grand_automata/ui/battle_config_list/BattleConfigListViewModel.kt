@@ -17,8 +17,10 @@ import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.util.toggle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -33,10 +35,13 @@ class BattleConfigListViewModel @Inject constructor(
     val battleConfigItems = prefsCore
         .battleConfigList
         .asFlow()
-        .map {  key -> prefsCore.forBattleConfig(key) }
+        .map {
+            it.map { key ->
+                prefsCore.forBattleConfig(key)
+            }
+        }
         .map { list ->
-            list
-                .sortedWith(
+            list.sortedWith(
                     compareBy<BattleConfigCore, Int?>((nullsFirst())) {
                         // sort by null, NA, JP, CN, TW, KR
                         it.server.get().asGameServer()?.let { server ->
