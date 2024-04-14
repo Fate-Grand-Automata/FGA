@@ -201,7 +201,7 @@ fun ceBombLauncher(
                         )
                     }
                     item {
-                        Divider()
+                        HorizontalDivider()
                     }
 
                     item {
@@ -233,7 +233,7 @@ fun ceBombLauncher(
                         }
                     }
                     item{
-                        Divider()
+                        HorizontalDivider()
                     }
                 }
 
@@ -286,7 +286,7 @@ fun ceBombLauncher(
                     }
                 }
                 item {
-                    Divider()
+                    HorizontalDivider()
                 }
 
                 item {
@@ -304,7 +304,7 @@ fun ceBombLauncher(
                     )
                 }
                 item {
-                    Divider()
+                    HorizontalDivider()
                 }
 
                 item {
