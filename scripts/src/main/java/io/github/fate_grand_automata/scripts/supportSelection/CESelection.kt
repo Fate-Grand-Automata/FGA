@@ -18,12 +18,9 @@ class CESelection @Inject constructor(
         // TODO: Only check the lower part (excluding Servant)
         val searchRegion = bounds.region.clip(locations.support.listRegion)
 
-        // servant must not have blank ce
-        val blankCE = searchRegion.exists(images[Images.SupportBlankCE])
-
-        when {
-            ces.isEmpty() && !blankCE -> return true
-            ces.isEmpty() -> return false
+        if (ces.isEmpty()) {
+            // servant must not have blank ce
+            return !searchRegion.exists(images[Images.SupportBlankCE])
         }
 
         val matched = ces
