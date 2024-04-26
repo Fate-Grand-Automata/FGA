@@ -75,11 +75,6 @@ fun battleLauncher(
 
     var refillResources by remember { mutableStateOf(perServerConfigPref.resources.toSet()) }
 
-    // hide bronze option for NA
-    val bronzeApplesEnabled = prefs.gameServer !is GameServer.En
-    if (!bronzeApplesEnabled) {
-        refillResources = refillResources.minus(RefillResourceEnum.Bronze)
-    }
     //TODO remove
     if (refillResources.size > 1) {
         refillResources = setOf(refillResources.first())
