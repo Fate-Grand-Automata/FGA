@@ -80,7 +80,6 @@ fun battleLauncher(
         refillResources = setOf(refillResources.first())
     }
     val availableRefills = RefillResourceEnum.entries
-        .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
 
     var copperApple by remember { mutableIntStateOf(perServerConfigPref.copperApple) }
     var blueApple by remember { mutableIntStateOf(perServerConfigPref.blueApple) }
