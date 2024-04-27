@@ -448,6 +448,7 @@ class AutoBattle @Inject constructor(
             if (partyVanish){
                 1.seconds.wait()
                 locations.animationSkipLocation.click()
+                5.seconds.wait()
             }
         }
     }
