@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Coffee
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -92,6 +94,23 @@ private fun Refill(
     }
 }
 
+@Composable
+private fun TeapotUse(
+    limit: Int,
+) {
+    if (limit > 0) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(16.dp, 5.dp)
+        ) {
+            SmallChip(
+                text = stringResource(id = R.string.teapots_used, limit),
+                icon = icon(Icons.Default.Coffee),
+            )
+        }
+    }
+}
+
 private fun LazyListScope.battleExitContent(
     reason: AutoBattle.ExitReason,
     state: AutoBattle.ExitState,
@@ -130,6 +149,11 @@ private fun LazyListScope.battleExitContent(
                 timesRan = state.timesRan
             )
         }
+    }
+    item {
+        TeapotUse(
+            limit = state.teapotsUsed
+        )
     }
 
     if (reason !is AutoBattle.ExitReason.LimitCEs && state.ceDropCount > 0) {
@@ -386,6 +410,7 @@ fun PreviewBattleExitContent() {
 //                        MaterialEnum.AmnestyBell to 1,
 //                        MaterialEnum.AuroraSteel to 10
 //                    ),
+                    teapotsUsed = 1,
                     withdrawCount = 1,
                     totalTime = 1880.seconds,
                     averageTimePerRun = 75.seconds,

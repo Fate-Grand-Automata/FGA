@@ -263,6 +263,8 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="mats_farmed">"Farmed %d material(s)"</string>
     <string name="p_ces">"CEs"</string>
     <string name="ces_dropped">"%d CE(s) dropped"</string>
+    <string name="p_teapots">"Teapots"</string>
+    <string name="teapots_used">"%d Teapot(s) used"</string>
     <string name="times_rolled">"Rolled %d time(s)"</string>
     <string name="mat_proof">"Proof of Hero"</string>
     <string name="mat_bone">"Evil Bone"</string>

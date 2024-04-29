@@ -148,4 +148,11 @@ class Locations @Inject constructor(
     val enhancementSkipRapidClick = Location(0, 1400).xFromCenter()
 
     val tempServantEnhancementLocation = Location(402, 1124).xFromCenter()
+
+    val teapotsPartyRegion = when (isWide) {
+        true -> Region(340, 1274, 72, 52).xFromCenter()
+        false -> Region(450, 1334, 72, 52).xFromCenter()
+    }
+
+    val teapotsRepeatRegion = Region(55, 938, 72, 52).xFromCenter()
 }

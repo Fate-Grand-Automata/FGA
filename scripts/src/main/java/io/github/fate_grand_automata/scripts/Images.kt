@@ -87,5 +87,7 @@ enum class Images {
      * 2nd OK button for FGO KR
      */
     OkKR,
-    Execute
+    Execute,
+    TeapotsOn,
+    TeapotsOff,
 }

@@ -16,6 +16,7 @@ import io.github.fate_grand_automata.scripts.modules.PartySelection
 import io.github.fate_grand_automata.scripts.modules.Refill
 import io.github.fate_grand_automata.scripts.modules.ScreenshotDrops
 import io.github.fate_grand_automata.scripts.modules.Support
+import io.github.fate_grand_automata.scripts.modules.Teapots
 import io.github.fate_grand_automata.scripts.modules.Withdraw
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.lib_automata.EntryPoint
@@ -55,7 +56,8 @@ class AutoBattle @Inject constructor(
     private val connectionRetry: ConnectionRetry,
     private val refill: Refill,
     private val matTracker: MaterialsTracker,
-    private val ceDropsTracker: CEDropsTracker
+    private val ceDropsTracker: CEDropsTracker,
+    private val teapots: Teapots
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
     sealed class ExitReason(val cause: Exception? = null) {
         data object Abort : ExitReason()
@@ -146,6 +148,7 @@ class AutoBattle @Inject constructor(
         val refillLimit: Int,
         val ceDropCount: Int,
         val materials: Map<MaterialEnum, Int>,
+        val teapotsUsed: Int,
         val withdrawCount: Int,
         val totalTime: Duration,
         val averageTimePerRun: Duration,
@@ -162,6 +165,7 @@ class AutoBattle @Inject constructor(
             refillLimit = prefs.selectedServerConfigPref.currentAppleCount,
             ceDropCount = ceDropsTracker.count,
             materials = matTracker.farmed,
+            teapotsUsed = teapots.teapotsUsed,
             withdrawCount = withdraw.count,
             totalTime = state.totalBattleTime,
             averageTimePerRun = state.averageTimePerRun,
@@ -488,6 +492,8 @@ class AutoBattle @Inject constructor(
     private
 
     fun startQuest() {
+        teapots.manageTeapotsAtParty()
+
         partySelection.selectParty()
 
         locations.menuStartQuestClick.click()
@@ -507,7 +513,8 @@ class AutoBattle @Inject constructor(
             ScriptNotify.BetweenRuns(
                 refills = refill.timesRefilled,
                 runs = state.runs,
-                ceDrops = ceDropsTracker.count
+                ceDrops = ceDropsTracker.count,
+                teapotsCount = teapots.teapotsUsed
             )
         )
     }

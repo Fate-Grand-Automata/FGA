@@ -24,7 +24,8 @@ class Battle @Inject constructor(
     private val skillSpam: SkillSpam,
     private val shuffleChecker: ShuffleChecker,
     private val stageTracker: StageTracker,
-    private val autoChooseTarget: AutoChooseTarget
+    private val autoChooseTarget: AutoChooseTarget,
+    private val teapots: Teapots
 ) : IFgoAutomataApi by api {
     init {
         prefs.stopAfterThisRun = false
@@ -40,6 +41,8 @@ class Battle @Inject constructor(
             state.nextRun()
 
             servantTracker.nextRun()
+
+            teapots.manageTeapotsAtState(state.runs)
         }
 
         if (prefs.stopAfterThisRun) {
