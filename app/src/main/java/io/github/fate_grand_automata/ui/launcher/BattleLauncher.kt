@@ -373,6 +373,9 @@ fun battleLauncher(
                 )
             }
             item {
+                HorizontalDivider()
+            }
+            item {
                 LimitItem(
                     shouldLimit = shouldUseTeaPots,
                     onShouldLimitChange = { shouldUseTeaPots = it },
