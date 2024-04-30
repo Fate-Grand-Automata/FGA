@@ -41,9 +41,8 @@ class Battle @Inject constructor(
             state.nextRun()
 
             servantTracker.nextRun()
-
-            teapots.manageTeapotsAtState(state.runs)
         }
+        teapots.manageTeapotsAtState(state.runs)
 
         if (prefs.stopAfterThisRun) {
             prefs.stopAfterThisRun = false

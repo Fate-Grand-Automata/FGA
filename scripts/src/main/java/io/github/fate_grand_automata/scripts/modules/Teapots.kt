@@ -14,22 +14,37 @@ class Teapots @Inject constructor(
 
     var teapotsUsed = 0
 
+    private var isTeapotsOn = false
+
 
     fun manageTeapotsAtParty() {
         val region = locations.teapotsPartyRegion
         var teapotsAvailable = false
         var teapotsOn = false
         useSameSnapIn {
-            teapotsAvailable = checkTeapotAvailability(region)
+            teapotsAvailable = checkTeapotsAtRegion(region)
             teapotsOn = images[Images.TeapotsOn] in region
         }
+        // If either teapots on or off is not available, return
         if (!teapotsAvailable) return
+
+        val shouldUseTeapots = prefs.selectedServerConfigPref.shouldUseTeapots
         val limitTeapots = prefs.selectedServerConfigPref.limitTeapots
 
-        if (limitTeapots > 0 && !teapotsOn) {
-            region.click()
-            0.5.seconds.wait()
+        when {
+            // Teapots is turn off and we still need to use teapots
+            !teapotsOn && limitTeapots > 0 && shouldUseTeapots -> {
+                region.click()
+                isTeapotsOn = true
+            }
+            // Teapots is turn on and we still have teapots to use or we don't need to use teapots
+            // turn off the teapots
+            teapotsOn && (limitTeapots <= 0 || !shouldUseTeapots) -> {
+                isTeapotsOn = false
+                region.click()
+            }
         }
+        0.5.seconds.wait()
 
     }
 
@@ -38,44 +53,39 @@ class Teapots @Inject constructor(
         var teapotsAvailable = false
         var teapotsOn = false
         useSameSnapIn {
-            teapotsAvailable = checkTeapotAvailability(region)
+            teapotsAvailable = checkTeapotsAtRegion(region)
             teapotsOn = images[Images.TeapotsOn] in region
         }
-        if (!teapotsAvailable) return
 
+        val shouldUseTeapots = prefs.selectedServerConfigPref.shouldUseTeapots
         val limitTeapots = prefs.selectedServerConfigPref.limitTeapots
 
-        when {
-            // Teapots is turn off and we still have teapots to use
-            !teapotsOn && limitTeapots > 0 -> {
-                region.click()
+        if (teapotsAvailable) {
+            when {
+                // Teapots is turn off and we still have teapots to use
+                !teapotsOn && limitTeapots > 0 && shouldUseTeapots -> {
+                    isTeapotsOn = true
+                    region.click()
+                }
+                // Teapots is turn on and we still have teapots to use
+                // Need to also limit with the number of runs
+                // to ensure that the teapots was used
+                teapotsOn && limitTeapots > 0 && runs > 0 && shouldUseTeapots -> {
+                    isTeapotsOn = true
+                    teapotsUsed++
+                    prefs.selectedServerConfigPref.limitTeapots--
+                }
+                // Teapots is turn on and we don't have teapots to use
+                teapotsOn && (limitTeapots <= 0 || !shouldUseTeapots) -> {
+                    isTeapotsOn = false
+                    region.click()
+                }
             }
-            // Teapots is turn on and we still have teapots to use
-            // Need to also limit with the number of runs
-            // to ensure that the teapots was ueed
-            teapotsOn && limitTeapots > 0 && runs > 0 -> {
-                teapotsUsed++
-                prefs.selectedServerConfigPref.limitTeapots--
-            }
-            // Teapots is turn on and we don't have teapots to use
-            teapotsOn && limitTeapots <= 0 && runs > 0 -> {
-                region.click()
-            }
+        } else if (isTeapotsOn) {
+            teapotsUsed++
+            prefs.selectedServerConfigPref.limitTeapots--
         }
-    }
 
-    private fun checkTeapotAvailability(region: Region): Boolean {
-        val shouldUseTeapots = prefs.selectedServerConfigPref.shouldUseTeapots
-
-        if (!shouldUseTeapots) return false
-
-        val isTeapotsPresent = checkTeapotsAtRegion(region)
-
-        if (!isTeapotsPresent) return false
-
-        0.25.seconds.wait()
-
-        return true
     }
 
 
@@ -83,5 +93,12 @@ class Teapots @Inject constructor(
         images[Images.TeapotsOn] to region,
         images[Images.TeapotsOff] to region
     ).exists()
+
+    fun resetTeapots() {
+        if (prefs.selectedServerConfigPref.limitTeapots == 0 && prefs.selectedServerConfigPref.shouldUseTeapots){
+            prefs.selectedServerConfigPref.shouldUseTeapots = false
+            prefs.selectedServerConfigPref.limitTeapots = 1
+        }
+    }
 
 }

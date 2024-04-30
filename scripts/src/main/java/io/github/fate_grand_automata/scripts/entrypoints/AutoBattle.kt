@@ -110,6 +110,7 @@ class AutoBattle @Inject constructor(
             refill.autoDecrement()
             matTracker.autoDecrement()
             ceDropsTracker.autoDecrement()
+            teapots.resetTeapots()
 
             val perServerConfigPref = prefs.selectedServerConfigPref
 
