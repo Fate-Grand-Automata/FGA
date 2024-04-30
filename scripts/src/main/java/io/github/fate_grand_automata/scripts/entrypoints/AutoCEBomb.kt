@@ -348,6 +348,14 @@ class AutoCEBomb @Inject constructor(
         locations.ceBomb.changeFilterButtonLocation.click()
         2.seconds.wait()
 
+        // return everything to default at the filter
+        locations.ceBomb.filterDefaultLocation.click()
+        0.1.seconds.wait()
+
+        // scroll all the way to the top of the filter
+        locations.ceBomb.filterTopScrollbarLocation.click(2)
+        0.5.seconds.wait()
+
         useSameSnapIn {
             for (rarity in 5 downTo 1) {
                 val filterStarRegion = locations.ceBomb.filterByRarityRegion(rarity = rarity)
@@ -397,6 +405,14 @@ class AutoCEBomb @Inject constructor(
 
         locations.ceBomb.changeFilterButtonLocation.click()
         2.seconds.wait()
+
+        // return everything to default at the filter
+        locations.ceBomb.filterDefaultLocation.click()
+        0.1.seconds.wait()
+
+        // scroll all the way to the top of the filter
+        locations.ceBomb.filterTopScrollbarLocation.click(2)
+        0.5.seconds.wait()
 
         useSameSnapIn {
             for (rarity in 5 downTo 1) {

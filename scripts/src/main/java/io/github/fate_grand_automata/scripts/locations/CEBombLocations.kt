@@ -132,4 +132,10 @@ class CEBombLocations @Inject constructor(
         true -> Region(-1318, 16, 63, 130).xFromCenter()
         false -> Region(-1208, 19, 64, 126).xFromCenter()
     }
+
+    // Location for the top of the scrollbar of the filter
+    val filterTopScrollbarLocation = Location(991, 209).xFromCenter()
+
+    // Location at filter default
+    val filterDefaultLocation = Location(-829, 1270).xFromCenter()
 }
