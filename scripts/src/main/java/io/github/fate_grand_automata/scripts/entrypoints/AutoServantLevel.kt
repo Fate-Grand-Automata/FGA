@@ -245,7 +245,7 @@ class AutoServantLevel @Inject constructor(
      * @see isAutoSelectVisible
      */
     private fun performAutoSelect() {
-        locations.servant.autoSelectLocation.click()
+        locations.servant.servantAutoSelectRegion.click()
     }
 
     /**

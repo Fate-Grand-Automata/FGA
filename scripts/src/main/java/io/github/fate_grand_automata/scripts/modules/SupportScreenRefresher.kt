@@ -20,7 +20,12 @@ class SupportScreenRefresher @Inject constructor(
     private val supportRefreshThreshold = 10.seconds
 
     fun refreshSupportList() {
-        performRefresh()
+        val refreshAvailable = screen.refreshAvailable()
+        if (refreshAvailable){
+            screen.refresh()
+        } else {
+            performRefresh()
+        }
 
         waitForSupportScreenToLoad()
     }
