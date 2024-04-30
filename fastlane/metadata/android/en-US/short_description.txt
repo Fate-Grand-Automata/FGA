@@ -1,1 +1,1 @@
-Auto-battle app for F/GO
+Auto-battle app for FGO

@@ -175,7 +175,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="card_priority">"Card Priority"</string>
     <string name="p_refill_type_gold">"Gold"</string>
     <string name="p_refill_type_silver">"Silver"</string>
-    <string name="p_refill_type_bronze">"Bronze"</string>
+    <string name="p_refill_type_bronze">"Blue"</string>
     <string name="p_refill_type_copper">"Copper"</string>
     <string name="p_refill_type_sq">"SQ"</string>
     <string name="p_brave_chains_don_t_care">"Don't care"</string>
@@ -385,7 +385,6 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
     <string name="skill_maker_melusine">"Mélusine"</string>
 
-    <string name="script_msg_storm_pods_ran_out">"Ran out of Storm Pods"</string>
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>
 
