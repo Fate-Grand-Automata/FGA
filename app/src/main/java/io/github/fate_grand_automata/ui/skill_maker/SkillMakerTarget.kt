@@ -125,7 +125,17 @@ fun TestSkillMakerTargetIshtar() = TestSkillMaker(showSpaceIshtar = true)
 fun TestSkillMakerOnlyKukulkan() = TestSkillMaker()
 
 @Composable
-private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean = false, showMelusine: Boolean = showEmiya) {
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun TestSkillMakerTargetSoujuurou() = TestSkillMaker(showSoujuurou = true)
+
+@Composable
+private fun TestSkillMaker(
+    showEmiya: Boolean = false,
+    showSpaceIshtar: Boolean = false,
+    showMelusine: Boolean = showEmiya,
+    showSoujuurou: Boolean = false
+) {
     FGATheme {
         SkillMakerTarget(
             onSkillTarget = {},
@@ -135,7 +145,9 @@ private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean 
             onSpaceIshtar = {},
             onKukulkan = {},
             showMelusine = showMelusine,
-            onMelusine = {}
+            onMelusine = {},
+            showSoujuurou = showSoujuurou,
+            onSoujuurou = {}
         )
     }
 }
