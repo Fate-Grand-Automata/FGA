@@ -221,6 +221,8 @@ use of his third skill.
 
 `Soujuurou`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Shizuki_S%C5%8Dj%C5%ABr%C5%8D#Third_Skill) can change the command cards after one turn
 
+![Soujuurou option](https://i.imgur.com/sKsXMlM.gif)
+
 ![Soujuurou](https://i.imgur.com/Dg3k6jM.gif)
 
 ---
