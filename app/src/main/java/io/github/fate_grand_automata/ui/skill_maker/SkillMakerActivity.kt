@@ -164,9 +164,9 @@ fun SkillMakerUI(
                         vm.targetSkill(ServantTarget.Melusine)
                     },
                     showSoujuurou = nav.skill in listOf(
-                        Skill.Servant.AS3,
-                        Skill.Servant.BS3,
-                        Skill.Servant.CS3
+                        Skill.Servant.A3,
+                        Skill.Servant.B3,
+                        Skill.Servant.C3
                     ),
                     onSoujuurou = {
                         navigate(SkillMakerNav.Soujuurou(nav.skill))
