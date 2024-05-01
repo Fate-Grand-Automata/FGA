@@ -234,13 +234,13 @@ class AutoBattle @Inject constructor(
         // In case the repeat loop breaks and we end up in menu (like withdrawing from quests)
         isContinuing = false
 
+        battle.resetState()
+
         if (isQuestClose){
             // Ordeal Call
             isQuestClose = false
             throw BattleExitException(ExitReason.LimitRuns(state.runs))
         }
-
-        battle.resetState()
 
         showRefillsAndRunsMessage()
 
@@ -355,8 +355,6 @@ class AutoBattle @Inject constructor(
         locations.ordealCallOutOfPodsClick.click()
 
         isQuestClose = true
-        // Count the current run
-        state.nextRun()
     }
 
     private fun findRepeatButton(): Match? {
