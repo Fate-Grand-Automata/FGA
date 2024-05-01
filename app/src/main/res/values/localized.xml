@@ -384,6 +384,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_max_gold_ember_total_count">"Max Gold ember total count"</string>
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
     <string name="skill_maker_melusine">"Mélusine"</string>
+    <string name="skill_maker_soujuurou">"Soujuurou"</string>
 
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>

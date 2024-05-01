@@ -1,22 +1,35 @@
 package io.github.fate_grand_automata.scripts.models
 
 sealed class ServantTarget(val autoSkillCode: Char) {
-    object A : ServantTarget('1')
-    object B : ServantTarget('2')
-    object C : ServantTarget('3')
+    data object A : ServantTarget('1')
+    data object B : ServantTarget('2')
+    data object C : ServantTarget('3')
 
     // Emiya
-    object Left : ServantTarget('7')
-    object Right : ServantTarget('8')
+    data object Left : ServantTarget('7')
+    data object Right : ServantTarget('8')
 
     // Kukulkan
-    object Option1 : ServantTarget('K')
-    object Option2 : ServantTarget('U')
+    data object Option1 : ServantTarget('K')
+    data object Option2 : ServantTarget('U')
 
     // Mélusine
-    object Melusine : ServantTarget('M')
+    data object Melusine : ServantTarget('M')
+
+    // Soujuurou
+    data object ChangeQuick : ServantTarget('Q')
+    data object ChangeArts : ServantTarget('A')
+    data object ChangeBuster : ServantTarget('B')
 
     companion object {
-        val list by lazy { listOf(A, B, C, Left, Right, Option1, Option2, Melusine) }
+        val list by lazy {
+            listOf(
+                A, B, C,
+                Left, Right,
+                Option1, Option2,
+                Melusine,
+                ChangeQuick, ChangeBuster, ChangeArts
+            )
+        }
     }
 }

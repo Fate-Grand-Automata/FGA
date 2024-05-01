@@ -30,7 +30,9 @@ fun SkillMakerTarget(
     onSpaceIshtar: () -> Unit,
     onKukulkan: () -> Unit,
     showMelusine: Boolean,
-    onMelusine: () -> Unit
+    onMelusine: () -> Unit,
+    showSoujuurou: Boolean,
+    onSoujuurou: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -92,6 +94,11 @@ fun SkillMakerTarget(
             if (showMelusine) {
                 Button(onClick = onMelusine) {
                     Text(stringResource(R.string.skill_maker_melusine))
+                }
+            }
+            if (showSoujuurou) {
+                Button(onClick = onSoujuurou) {
+                    Text(stringResource(R.string.skill_maker_soujuurou))
                 }
             }
 
