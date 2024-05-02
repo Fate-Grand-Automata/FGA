@@ -388,4 +388,5 @@
     <string name="p_max_gold_ember_total_count">"受け取った種火の総数"</string>
     <string name="update_download_success">"ダウンロード成功。5秒後に再起動します。"</string>
     <string name="skill_maker_melusine">"メリュジーヌ"</string>
+    <string name="skill_maker_soujuurou">"静希草十郎"</string>
 </resources>
