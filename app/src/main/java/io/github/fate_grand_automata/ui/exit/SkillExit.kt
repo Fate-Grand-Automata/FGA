@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -61,7 +61,7 @@ fun SkillExit(
                 )
             }
 
-            Divider()
+            HorizontalDivider()
 
 
             Row(
@@ -124,7 +124,7 @@ private fun SkillUpgradeExitContent(
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Divider(
+                HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
                 )
                 SkillUpgradeSummary(
