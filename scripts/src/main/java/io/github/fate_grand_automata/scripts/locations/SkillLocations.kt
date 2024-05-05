@@ -43,6 +43,6 @@ class SkillLocations @Inject constructor(
      * skill 3 x = 958
      */
     fun skillTextRegion(skillNumber: Int) =
-        Region(-192, if (isWide) 545 else 585, 155, 56).xFromCenter() +
+        Region(-192, if (isWide) 540 else 580, 225, 100).xFromCenter() +
                 Location(575 * (skillNumber - 1), 0)
 }

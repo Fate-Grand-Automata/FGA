@@ -303,7 +303,7 @@ class AutoSkillUpgrade @Inject constructor(
     ): Boolean {
         if (isConfirmationDialogVisible()) return false
 
-        val currentLevel = region.findNumberInText() ?: return false
+        val currentLevel = region.findNumberInText(regexPattern = """([1-9]|10)(?:/1|/10|710|71)?""") ?: return false
 
         updateCurrentSkillLevel(level = currentLevel, skillNumber = skillNumber)
         val checkIfIsInSkillEnhancementMenu = isInSkillEnhancementMenu()
