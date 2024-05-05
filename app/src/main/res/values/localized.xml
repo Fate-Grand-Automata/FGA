@@ -411,8 +411,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="append_lag">Possible Network Lag. Unable to proceed.</string>
 
     <string name="mute_notifications">Mute Notifications?</string>
-    <string name="append_upgrade_all_question">Upgrade all available append?</string>
-
+    
     <string name="enhancement_error_out_of_qp">Insufficient QP</string>
     <string name="enhancement_error_out_of_mats">Insufficient mats</string>
     <string name="enhancement_error_exit_early_out_of_qp">Exit early due to Insufficient QP</string>
