@@ -59,6 +59,7 @@ interface AutomataApi {
 
 
     fun Region.findNumberInText(
+        regexPattern: String = """(\d+)""",
         replace: List<Pair<String, String>> = emptyList()
     ): Int?
 

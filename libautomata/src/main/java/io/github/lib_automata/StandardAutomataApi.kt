@@ -73,6 +73,7 @@ class StandardAutomataApi @Inject constructor(
 
 
     override fun Region.findNumberInText(
+        regexPattern: String,
         replace: List<Pair<String, String>>,
     ): Int? {
         var text = this
@@ -84,7 +85,7 @@ class StandardAutomataApi @Inject constructor(
         replace.forEach {
             text = text.replace(it.first, it.second)
         }
-        val regex = Regex("""(\d+)""")
+        val regex = Regex(regexPattern)
         return regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
     }
 
