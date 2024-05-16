@@ -60,7 +60,7 @@ interface AutomataApi {
 
     fun Region.findNumberInText(
         regexPattern: String = """(\d+)""",
-        replace: List<Pair<String, String>> = emptyList()
+        replace: Map<String, String> = emptyMap()
     ): Int?
 
     fun Map<Pattern, Region>.exists(

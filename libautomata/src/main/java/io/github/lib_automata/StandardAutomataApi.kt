@@ -74,7 +74,7 @@ class StandardAutomataApi @Inject constructor(
 
     override fun Region.findNumberInText(
         regexPattern: String,
-        replace: List<Pair<String, String>>,
+        replace: Map<String, String>
     ): Int? {
         var text = this
             .detectText(false) // replace common OCR mistakes
@@ -82,8 +82,8 @@ class StandardAutomataApi @Inject constructor(
             .replace("S", "5")
             .replace("O", "0")
             .lowercase()
-        replace.forEach {
-            text = text.replace(it.first, it.second)
+        replace.forEach { (key, value) ->
+            text = text.replace(key, value)
         }
         val regex = Regex(regexPattern)
         return regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
