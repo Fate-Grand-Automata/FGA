@@ -219,6 +219,8 @@ class AutoSkillUpgrade @Inject constructor(
             { isServantEmpty() } to {
                 terminateEnhancementWhenSkillsMaxed(skillNumber = skillNumber)
             },
+            { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
+            { isConfirmationDialogVisible() } to { executeUpgradeSkill() },
             {
                 isTheTargetLevelConditionMet(
                     region = skillRegion,
@@ -226,8 +228,6 @@ class AutoSkillUpgrade @Inject constructor(
                     skillNumber = skillNumber
                 )
             } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet) },
-            { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
-            { isConfirmationDialogVisible() } to { executeUpgradeSkill() },
             { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
             { isOutOfQP() } to { throw EnhancementException(EnhancementExitReason.OutOfQPException) },
             {
