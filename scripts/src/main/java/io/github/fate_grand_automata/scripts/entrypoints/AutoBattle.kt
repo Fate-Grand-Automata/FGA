@@ -193,7 +193,7 @@ class AutoBattle @Inject constructor(
             { isInInterludeEndScreen() } to { locations.interludeCloseClick.click() },
             { withdraw.needsToWithdraw() } to { withdraw.withdraw() },
             { needsToStorySkip() } to { skipStory() },
-            { isFriendRequestScreen() } to { skipFriendRequestScreen() },
+            { isFriendRequestScreen() } to { handleFriendRequestScreen() },
             { isBond10CEReward() } to { bond10CEReward() },
             { isCeRewardDetails() } to { ceRewardDetails() },
             { isDeathAnimation() } to { locations.battle.battleSafeMiddleOfScreenClick.click() },
@@ -398,9 +398,27 @@ class AutoBattle @Inject constructor(
     private fun isFriendRequestScreen() =
         images[Images.SupportExtra] in locations.resultFriendRequestRegion
 
-    private fun skipFriendRequestScreen() {
-        // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
-        locations.resultFriendRequestRejectClick.click()
+    private fun handleFriendRequestScreen() {
+        if (prefs.selectedServerConfigPref.autoAcceptFriendRequest) {
+            locations.resultFriendRequestAcceptClick.click()
+            val didFriendRequestResultExit = locations.resultFriendRequestRegion.waitVanish(
+                images[Images.SupportExtra],
+                timeout = 5.seconds,
+                similarity = 0.85
+            )
+            if (!didFriendRequestResultExit) {
+                // still checking the when you got max friend list and you send a friend request
+                // once you can't send friend request, it will auto reject
+                // any succeeding friend request.
+                // prefs.selectedServerConfigPref.isFriendListFull = true
+
+                // If didn't exit, probably full friend list.
+                locations.resultFriendRequestRejectClick.click()
+            }
+        } else {
+            // Friend request dialogue. Appears when non-friend support was selected this battle. Ofc it's defaulted not sending request.
+            locations.resultFriendRequestRejectClick.click()
+        }
     }
 
     private fun isInInterludeEndScreen() =
