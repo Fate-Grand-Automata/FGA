@@ -59,70 +59,82 @@ class BattleConfigListViewModel @Inject constructor(
                     0L
                 }
             }
-            sortBattleConfigs(
-                battleConfigList = list,
-                sort = sort,
-                nameGetter = nameGetter,
-                usageCountGetter = usageCountGetter,
-                lastUsageGetter = lastUsageGetter
-            )
+            list
+                .sortedWith(
+                    when (sort) {
+                        BattleConfigListSortEnum.DEFAULT_SORT -> {
+                            compareByDescending<BattleConfigCore, Int?>((nullsFirst())) {
+                                it.server.get().asGameServer()?.let { server ->
+                                    GameServer.values.indexOf(server)
+                                }
+                            }.thenBy(String.CASE_INSENSITIVE_ORDER) {
+                                nameGetter(it)
+                            }
+                        }
+
+                        BattleConfigListSortEnum.SORT_BY_NAME_DESC -> {
+                            compareByDescending<BattleConfigCore, Int?>((nullsFirst())) {
+                                it.server.get().asGameServer()?.let { server ->
+                                    GameServer.values.indexOf(server)
+                                }
+                            }.thenByDescending(String.CASE_INSENSITIVE_ORDER) {
+                                nameGetter(it)
+                            }
+                        }
+
+                        BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_ASC -> {
+                            compareBy(usageCountGetter)
+                                .thenBy((nullsFirst())){
+                                    it.server.get().asGameServer()?.let { server ->
+                                        GameServer.values.indexOf(server)
+                                    }
+                                }
+                                .thenBy(String.CASE_INSENSITIVE_ORDER) {
+                                    nameGetter(it)
+                                }
+                        }
+
+                        BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_DESC -> {
+                            compareByDescending(usageCountGetter)
+                                .thenBy((nullsFirst())){
+                                    it.server.get().asGameServer()?.let { server ->
+                                        GameServer.values.indexOf(server)
+                                    }
+                                }
+                                .thenBy(String.CASE_INSENSITIVE_ORDER) {
+                                    nameGetter(it)
+                                }
+                        }
+
+                        BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_ASC -> {
+                            compareBy(lastUsageGetter)
+                                .thenBy((nullsFirst())){
+                                    it.server.get().asGameServer()?.let { server ->
+                                        GameServer.values.indexOf(server)
+                                    }
+                                }
+                                .thenBy(String.CASE_INSENSITIVE_ORDER) {
+                                    nameGetter(it)
+                                }
+                        }
+
+                        BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_DESC -> {
+                            compareByDescending(lastUsageGetter)
+                                .thenBy((nullsFirst())){
+                                    it.server.get().asGameServer()?.let { server ->
+                                        GameServer.values.indexOf(server)
+                                    }
+                                }
+                                .thenBy(String.CASE_INSENSITIVE_ORDER) {
+                                    nameGetter(it)
+                                }
+                        }
+                    }
+                )
+
+
         }
-    
-    private fun sortBattleConfigs(
-        battleConfigList: List<BattleConfigCore>,
-        sort: BattleConfigListSortEnum,
-        nameGetter: (BattleConfigCore) -> String,
-        usageCountGetter: (BattleConfigCore) -> Int,
-        lastUsageGetter: (BattleConfigCore) -> Long
-    ): List<BattleConfigCore> {
-        val serverIndexGetter = { battleConfigCore: BattleConfigCore ->
-            battleConfigCore.server.get().asGameServer()?.let { server ->
-                GameServer.values.indexOf(server)
-            }
-        }
 
-        return when (sort) {
-            BattleConfigListSortEnum.DEFAULT_SORT -> battleConfigList.sortedWith(
-                compareBy(nullsFirst(), serverIndexGetter)
-                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
-            )
-
-            BattleConfigListSortEnum.SORT_BY_NAME_DESC -> battleConfigList.sortedWith(
-                compareByDescending(nullsLast(), serverIndexGetter)
-                    .thenByDescending(String.CASE_INSENSITIVE_ORDER, nameGetter)
-            )
-
-            BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_ASC -> battleConfigList.sortedWith(
-                compareBy(usageCountGetter)
-                    .thenBy(nullsFirst(), serverIndexGetter)
-                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
-            )
-
-            BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_DESC -> battleConfigList.sortedWith(
-                compareByDescending(usageCountGetter)
-                    .thenBy(nullsLast(), serverIndexGetter)
-                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
-            )
-
-            BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_ASC -> battleConfigList.sortedWith(
-                compareBy(lastUsageGetter)
-                    .thenBy(nullsFirst(), serverIndexGetter)
-                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
-            )
-
-            BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_DESC -> battleConfigList.sortedWith(
-                compareByDescending(lastUsageGetter)
-                    .thenBy(nullsLast(), serverIndexGetter)
-                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
-            )
-        }
-    }
-
-    fun setConfigListSort(sort: BattleConfigListSortEnum) {
-        viewModelScope.launch {
-            prefs.configListSort = sort
-        }
-    }
 
     private val _selectedConfigs = MutableStateFlow(emptySet<String>())
     val selectedConfigs: StateFlow<Set<String>> = _selectedConfigs
