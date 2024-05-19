@@ -95,7 +95,7 @@ fun LazyListScope.advancedGroup(
             prefs.gameAreaMode.ListPreference(
                 title = stringResource(R.string.p_game_area_mode),
                 icon = icon(Icons.Default.Fullscreen),
-                entries = GameAreaMode.values()
+                entries = GameAreaMode.entries
                     .associateWith { stringResource(it.stringRes) }
             )
 

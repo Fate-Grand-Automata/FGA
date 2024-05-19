@@ -49,7 +49,7 @@ private fun MoreOptionsContent(
         Heading(stringResource(R.string.p_more_options))
 
         Tabbed(
-            items = MoreSettingsGroup.values().toList(),
+            items = MoreSettingsGroup.entries.toList(),
             heading = { Text(stringResource(it.stringRes)) },
             content = {
                 Card(
