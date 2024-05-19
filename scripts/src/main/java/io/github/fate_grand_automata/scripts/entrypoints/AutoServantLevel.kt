@@ -71,11 +71,6 @@ class AutoServantLevel @Inject constructor(
          * The script exited because it was redirected to the grail menu.
          */
         data object RedirectGrail : ExitReason()
-
-        /**
-         * The script exited because it the function doesn't work yet for the selected server.
-         */
-        data object NotImplementedForServer : ExitReason()
     }
 
     class ServantUpgradeException(val reason: ExitReason) : Exception()
@@ -84,10 +79,6 @@ class AutoServantLevel @Inject constructor(
 
 
     override fun script(): Nothing {
-        if (prefs.gameServer is GameServer.Cn || prefs.gameServer is GameServer.Kr) {
-            throw ExitException(ExitReason.NotImplementedForServer)
-        }
-
         try {
             loop()
         } catch (e: ServantUpgradeException) {
@@ -108,13 +99,13 @@ class AutoServantLevel @Inject constructor(
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { isMaxLevel() } to { checkMaxLevelRedirectOrExit() },
-            { isAutoSelectMinimumEmberForLowQP() } to { performMinimumEmberForLowQPEnhancement() },
+            { isAutoSelectMinimumEmberForLowQP(prefs.gameServer) } to { performMinimumEmberForLowQPEnhancement() },
             { isEmberSelectionDialogVisible() } to { performEnhancement() },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
             { isEmptyEmberOrQPDialogVisible() } to {
                 throw ServantUpgradeException(ExitReason.NoEmbersOrQPLeft)
             },
-            { isFinalConfirmDialogVisible() } to { confirmEnhancement() },
+            { isFinalConfirmDialogVisible(prefs.gameServer) } to { confirmEnhancement() },
             { isAutoSelectVisible() } to { performAutoSelect() },
             { isAutoSelectOff() } to { throw ServantUpgradeException(ExitReason.MaxLevelAchieved) },
             { isInAscensionMenu() } to { handlePerformedAscension() },
@@ -213,7 +204,7 @@ class AutoServantLevel @Inject constructor(
                 ).exists(
                     timeout = 3.seconds
                 )
-                
+
                 if (confirmationVisible) {
                     return@ascension
                 }
@@ -254,7 +245,7 @@ class AutoServantLevel @Inject constructor(
      * @see isAutoSelectVisible
      */
     private fun performAutoSelect() {
-        locations.servant.autoSelectLocation.click()
+        locations.servant.servantAutoSelectRegion.click()
     }
 
     /**
@@ -317,14 +308,15 @@ class AutoServantLevel @Inject constructor(
     /**
      * This function will check if the empty ember or QP dialog is visible.
      */
-    private fun isEmptyEmberOrQPDialogVisible() = images[Images.Close] in
-            locations.servant.emptyEmberOrQPDialogRegion(prefs.gameServer)
+    private fun isEmptyEmberOrQPDialogVisible() =
+        images[Images.Close] in locations.servant.emptyEmberOrQPDialogRegion
 
     /**
      * This function will check if the final confirmation dialog is visible.
      * After clicking the button, it would then perform the enhancement.
      */
-    private fun isFinalConfirmDialogVisible() = images[Images.Ok] in locations.servant.finalConfirmRegion
+    private fun isFinalConfirmDialogVisible(gameServer: GameServer) =
+        okButtonPatterns(gameServer) in locations.servant.finalConfirmRegion
 
     /**
      * This function will check if the servant is max level.
@@ -345,8 +337,8 @@ class AutoServantLevel @Inject constructor(
     /**
      * This function will check if the servant can auto select the minimum ember for low QP.
      */
-    private fun isAutoSelectMinimumEmberForLowQP() = images[Images.Ok] in
-            locations.servant.autoSelectMinEmberLowQPRegion
+    private fun isAutoSelectMinimumEmberForLowQP(gameServer: GameServer) =
+        okButtonPatterns(gameServer) in locations.servant.autoSelectMinEmberLowQPRegion
 
 
     /**
@@ -403,4 +395,10 @@ class AutoServantLevel @Inject constructor(
      */
     private fun isReturnToLevel() = images[Images.ServantAscensionReturnToLevel] in
             locations.servant.ascensionReturnToLevelRegion
+
+    private fun okButtonPatterns(gameServer: GameServer) = when (gameServer) {
+        // KR has 2 OK buttons
+        is GameServer.Kr -> listOf(images[Images.Ok], images[Images.OkKR])
+        else -> listOf(images[Images.Ok])
+    }
 }

@@ -10,50 +10,43 @@ import io.github.lib_automata.Pattern
 import io.github.lib_automata.Region
 import io.github.lib_automata.Size
 import io.github.lib_automata.dagger.ScriptScope
-import java.util.stream.Collectors
 import javax.inject.Inject
 
 @ScriptScope
 class ServantSelection @Inject constructor(
     api: IFgoAutomataApi,
     private val supportPrefs: ISupportPreferences,
-    private val starChecker: SupportSelectionStarChecker,
-    private val boundsFinder: SupportBoundsFinder
+    private val starChecker: SupportSelectionStarChecker
 ) : IFgoAutomataApi by api {
-    fun findServants(servants: List<String>): List<SpecificSupportSearchResult.Found> =
-        servants
+    fun check(servants: List<String>, bounds: SupportBounds): Boolean {
+        // TODO: Only check the upper part (excluding CE)
+        val searchRegion = bounds.region.clip(locations.support.listRegion)
+
+        if (servants.isEmpty())
+            return true
+
+        val matched = servants
             .flatMap { entry -> images.loadSupportPattern(SupportImageKind.Servant, entry) }
-            .parallelStream()
-            .flatMap { pattern ->
+            .mapNotNull {
+                cropFriendLock(it).use { cropped ->
+                    searchRegion.find(cropped)
+                }
+            }
+            .filter {
+                !supportPrefs.maxAscended || isMaxAscended(it.region)
+            }
+            .filter {
                 val needMaxedSkills = listOf(
                     supportPrefs.skill1Max,
                     supportPrefs.skill2Max,
                     supportPrefs.skill3Max
                 )
                 val skillCheckNeeded = needMaxedSkills.any { it }
-
-                cropFriendLock(pattern).use { cropped ->
-                    locations.support.listRegion
-                        .findAll(cropped)
-                        .filter { !supportPrefs.maxAscended || isMaxAscended(it.region) }
-                        .map {
-                            if (skillCheckNeeded)
-                                SpecificSupportSearchResult.FoundWithBounds(
-                                    it.region,
-                                    boundsFinder.findSupportBounds(it.region)
-                                )
-                            else SpecificSupportSearchResult.Found(it.region)
-                        }
-                        .filter {
-                            it !is SpecificSupportSearchResult.FoundWithBounds || checkMaxedSkills(it.Bounds, needMaxedSkills)
-                        }
-                        // We want the processing to be finished before cropped pattern is released
-                        .toList()
-                        .stream()
-                }
+                !skillCheckNeeded || checkMaxedSkills(needMaxedSkills, whichSkillsAreMaxed(bounds.region))
             }
-            .collect(Collectors.toList())
-            .sortedBy { it.Support }
+
+        return matched.isNotEmpty()
+    }
 
     /**
      * If you lock your friends, a lock icon shows on the left of servant image,
@@ -79,7 +72,7 @@ class ServantSelection @Inject constructor(
         return starChecker.isStarPresent(maxAscendedRegion)
     }
 
-    private fun checkMaxedSkills(bounds: Region, needMaxedSkills: List<Boolean>): Boolean {
+    private fun whichSkillsAreMaxed(bounds: Region): List<Boolean> {
         val y = bounds.y + 325
         val x = bounds.x + 1610
 
@@ -91,21 +84,23 @@ class ServantSelection @Inject constructor(
             Location(x + 2 * skillMargin, y)
         )
 
-        val result = skillLoc
-            .zip(needMaxedSkills)
-            .map { (location, shouldBeMaxed) ->
-                if (!shouldBeMaxed)
-                    true
-                else {
-                    val skillRegion = Region(location, Size(60, 50))
+        return skillLoc
+            .map {
+                val skillRegion = Region(it, Size(60, 50))
 
-                    skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
-                }
+                skillRegion.exists(images[Images.SkillTen], similarity = 0.68)
+            }
+    }
+
+    private fun checkMaxedSkills(expectedSkills: List<Boolean>, actualSkills: List<Boolean>): Boolean {
+        val result = expectedSkills
+            .zip(actualSkills) { expected, actual ->
+                !expected || actual
             }
 
         messages.log(
             ScriptLog.MaxSkills(
-                needMaxedSkills = needMaxedSkills,
+                needMaxedSkills = expectedSkills,
                 isSkillMaxed = result
             )
         )

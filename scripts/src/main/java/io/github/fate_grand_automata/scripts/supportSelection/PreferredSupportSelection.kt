@@ -1,67 +1,77 @@
 package io.github.fate_grand_automata.scripts.supportSelection
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
+import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
-import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
 class PreferredSupportSelection @Inject constructor(
-    supportPrefs: ISupportPreferences,
+    private val supportPrefs: ISupportPreferences,
     api: IFgoAutomataApi,
-    boundsFinder: SupportBoundsFinder,
-    friendChecker: SupportFriendChecker,
+    private val boundsFinder: SupportBoundsFinder,
+    private val friendChecker: SupportFriendChecker,
     private val servantSelection: ServantSelection,
-    private val ceSelection: CESelection
-): SpecificSupportSelection(supportPrefs, boundsFinder, friendChecker, api) {
+    private val ceSelection: CESelection,
+    private val friendSelection: FriendSelection
+) : SupportSelectionProvider, IFgoAutomataApi by api {
     private val servants = supportPrefs.preferredServants
     private val ces = supportPrefs.preferredCEs
+    private val friendNames = supportPrefs.friendNames
 
-    private enum class Mode {
-        Servants, CEs, Both, None
-    }
-
-    private fun detectMode(): Mode {
-        val hasServants = servants.isNotEmpty()
-        val hasCEs = ces.isNotEmpty()
-
-        return when {
-            hasServants && hasCEs -> Mode.Both
-            hasServants -> Mode.Servants
-            hasCEs -> Mode.CEs
-            else -> Mode.None
+    override fun select(): SupportSelectionResult {
+        if (servants.isEmpty() && ces.isEmpty()) {
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionPreferredNotSet)
         }
-    }
 
-    override fun search() = when (detectMode()) {
-        Mode.Servants -> servantSelection.findServants(servants).firstOrNull() ?: SpecificSupportSearchResult.NotFound
-        Mode.CEs -> {
-            ceSelection.findCraftEssences(ces, locations.support.listRegion)
-                .map { SpecificSupportSearchResult.Found(it.region) }
-                .firstOrNull() ?: SpecificSupportSearchResult.NotFound
-        }
-        Mode.Both -> searchServantAndCE()
-        Mode.None -> throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionPreferredNotSet)
-    }
-
-    private fun searchServantAndCE(): SpecificSupportSearchResult =
-        servantSelection.findServants(servants)
-            .mapNotNull {
-                val supportBounds = when (it) {
-                    is SpecificSupportSearchResult.FoundWithBounds -> it.Bounds
-                    else -> boundsFinder.findSupportBounds(it.Support)
-                }
-
-                val ceBounds = locations.support.defaultCeBounds + Location(0, supportBounds.y)
-                ceSelection.findCraftEssences(ces, ceBounds).firstOrNull()
-                    ?.let { ce -> FoundServantAndCE(supportBounds, ce) }
+        return useSameSnapIn {
+            if (supportPrefs.friendsOnly && !friendChecker.isFriend()) {
+                // no friends on screen, so there's no point in scrolling anymore
+                return@useSameSnapIn SupportSelectionResult.Refresh
             }
-            .sortedBy { it.ce }
-            .map { SpecificSupportSearchResult.FoundWithBounds(it.ce.region, it.supportBounds) }
-            .firstOrNull() ?: SpecificSupportSearchResult.NotFound
 
-    private data class FoundServantAndCE(val supportBounds: Region, val ce: CESelection.FoundCE)
+            val matched = boundsFinder.all()
+                .toList()
+                .firstNotNullOfOrNull { isMatch(it) }
+
+            if (matched != null) {
+                matched.click()
+                SupportSelectionResult.Done
+            } else {
+                var topScrollbar = false
+                var movedSrollBar = false
+                var bottomScrollbar = false
+                useSameSnapIn {
+                    topScrollbar = images[Images.SupportScrollBarTop] in locations.support.topScrollbarRegion
+                    if (!topScrollbar) {
+                        movedSrollBar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion
+                        bottomScrollbar = images[Images.SupportScrollBarBottom] in
+                                locations.support.bottomScrollbarRegion
+                    }
+                }
+                when {
+                    topScrollbar -> SupportSelectionResult.ScrollDown
+                    movedSrollBar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
+                    else -> SupportSelectionResult.EarlyRefresh
+                }
+            }
+        }
+    }
+
+    private fun isMatch(bounds: SupportBounds): Region? {
+        if (supportPrefs.friendsOnly && !friendChecker.isFriend(bounds)) {
+            return null
+        }
+
+        return if (
+            servantSelection.check(servants, bounds) &&
+            ceSelection.check(ces, bounds) &&
+            (!supportPrefs.friendsOnly || friendSelection.check(friendNames, bounds))
+        ) {
+            bounds.region
+        } else null
+    }
 }

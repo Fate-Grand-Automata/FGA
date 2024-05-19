@@ -16,13 +16,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -43,22 +42,17 @@ import io.github.fate_grand_automata.scripts.models.CardPriorityPerWave
 import io.github.fate_grand_automata.scripts.models.CardScore
 import io.github.fate_grand_automata.ui.Heading
 import io.github.fate_grand_automata.ui.HeadingButton
-import io.github.fate_grand_automata.ui.OnResume
 import io.github.fate_grand_automata.ui.VerticalDivider
 import io.github.fate_grand_automata.ui.card_priority.getColorRes
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.icon
-import io.github.fate_grand_automata.ui.pref_support.SupportViewModel
 import io.github.fate_grand_automata.ui.prefs.EditTextPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.util.toSp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun BattleConfigScreen(
     vm: BattleConfigScreenViewModel = viewModel(),
-    supportVm: SupportViewModel = viewModel(),
     navigate: (BattleConfigDestination) -> Unit
 ) {
     val context = LocalContext.current
@@ -69,7 +63,6 @@ fun BattleConfigScreen(
 
     BattleConfigContent(
         config = vm.battleConfigCore,
-        friendEntries = supportVm.friends,
         onExport = { battleConfigExport.launch("${vm.battleConfig.name}.fga") },
         onCopy = {
             val id = vm.createCopyAndReturnId(context)
@@ -81,16 +74,6 @@ fun BattleConfigScreen(
         },
         navigate = navigate
     )
-
-    val scope = rememberCoroutineScope()
-
-    OnResume {
-        scope.launch(Dispatchers.IO) {
-            if (supportVm.shouldExtractSupportImages) {
-                supportVm.performSupportImageExtraction(context)
-            } else supportVm.refresh(context)
-        }
-    }
 }
 
 sealed class BattleConfigDestination {
@@ -105,7 +88,6 @@ sealed class BattleConfigDestination {
 @Composable
 private fun BattleConfigContent(
     config: BattleConfigCore,
-    friendEntries: Map<String, String>,
     onExport: () -> Unit,
     onCopy: () -> Unit,
     onDelete: () -> Unit,
@@ -168,7 +150,7 @@ private fun BattleConfigContent(
                                 singleLine = true
                             )
 
-                            Divider()
+                            HorizontalDivider()
 
                             config.notes.EditTextPreference(
                                 title = stringResource(R.string.p_battle_config_notes)
@@ -235,7 +217,7 @@ private fun BattleConfigContent(
                                 PartySelection(config)
                             }
 
-                            Divider()
+                            HorizontalDivider()
 
                             val cardPriority by vm.cardPriority.collectAsState(null)
 
@@ -254,10 +236,9 @@ private fun BattleConfigContent(
                     val maxSkillText by vm.maxSkillText.collectAsState("")
 
                     SupportGroup(
-                        config = config,
+                        config = config.support,
                         goToPreferred = { navigate(BattleConfigDestination.PreferredSupport) },
-                        maxSkillText = maxSkillText,
-                        friendEntries = friendEntries
+                        maxSkillText = maxSkillText
                     )
                 }
 

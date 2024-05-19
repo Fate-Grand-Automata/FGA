@@ -19,7 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -164,17 +164,11 @@ fun battleLauncher(
 
     var refillResources by remember { mutableStateOf(perServerConfigPref.resources.toSet()) }
 
-    // hide bronze option for NA
-    val bronzeApplesEnabled = prefs.gameServer !is GameServer.En
-    if (!bronzeApplesEnabled) {
-        refillResources = refillResources.minus(RefillResourceEnum.Bronze)
-    }
     //TODO remove
     if (refillResources.size > 1) {
         refillResources = setOf(refillResources.first())
     }
-    val availableRefills = RefillResourceEnum.values()
-        .filter { it != RefillResourceEnum.Bronze || bronzeApplesEnabled }
+    val availableRefills = RefillResourceEnum.entries
 
     var copperApple by remember { mutableIntStateOf(perServerConfigPref.copperApple) }
     var blueApple by remember { mutableIntStateOf(perServerConfigPref.blueApple) }
@@ -400,7 +394,7 @@ fun battleLauncher(
                     )
                 }
 
-                Divider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
+                HorizontalDivider(modifier = Modifier.padding(top = 10.dp, bottom = 16.dp))
             }
 
             item {

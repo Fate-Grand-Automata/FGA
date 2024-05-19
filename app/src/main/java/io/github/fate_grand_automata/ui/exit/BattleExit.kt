@@ -14,7 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -71,14 +71,12 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.InventoryFull -> stringResource(R.string.inventory_full)
     is AutoBattle.ExitReason.LimitRuns -> stringResource(R.string.times_ran, count)
     AutoBattle.ExitReason.SupportSelectionManual -> stringResource(R.string.support_selection_manual)
-    AutoBattle.ExitReason.SupportSelectionFriendNotSet -> stringResource(R.string.support_selection_friend_not_set)
     AutoBattle.ExitReason.SupportSelectionPreferredNotSet -> stringResource(R.string.support_selection_preferred_not_set)
     is AutoBattle.ExitReason.SkillCommandParseError -> "AutoSkill Parse error:\n\n${cause?.message}"
     is AutoBattle.ExitReason.CardPriorityParseError -> msg
     AutoBattle.ExitReason.FirstClearRewards -> stringResource(R.string.first_clear_rewards)
     AutoBattle.ExitReason.Paused -> stringResource(R.string.script_paused)
     AutoBattle.ExitReason.StopAfterThisRun -> stringResource(R.string.stop_after_this_run)
-    AutoBattle.ExitReason.StormPodRanOut -> stringResource(R.string.script_msg_storm_pods_ran_out)
 }
 
 @Composable
@@ -313,7 +311,7 @@ fun BattleExit(
             }
 
             if (exception.reason is AutoBattle.ExitReason.Paused) {
-                Divider()
+                HorizontalDivider()
 
                 Row(
                     modifier = Modifier
@@ -337,7 +335,7 @@ fun BattleExit(
                 }
             }
 
-            Divider()
+            HorizontalDivider()
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
