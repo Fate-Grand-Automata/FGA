@@ -444,11 +444,11 @@ class AutoBattle @Inject constructor(
                 images[Images.SelectedParty],
                 timeout = 5.seconds
             )
-            if (partyVanish){
+            if (partyVanish && prefs.storySkip){
                 1.seconds.wait()
                 locations.animationSkipLocation.click()
-                5.seconds.wait()
             }
+            5.seconds.wait()
         }
     }
 
