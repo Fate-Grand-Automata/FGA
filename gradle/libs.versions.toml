@@ -8,9 +8,11 @@ flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.2.0"
 kotlinx_coroutines_core_version = "1.8.0"
 lifecycle_version = "2.7.0"
-kotlin_version = "1.9.23"
 hilt_version = "2.51.1"
 gson_version = "2.10.1"
+
+kotlin_version = "2.0.0-RC3"
+ksp_version = "2.0.0-RC3-1.0.19"
 
 gradle_version = "8.3.1"
 
@@ -30,8 +32,7 @@ timber_version = "5.0.1"
 
 compose_bom_version = "2024.03.00"
 
-kotlinCompilerExtensionVersion = "1.5.11"
-ksp_version = "1.9.23-1.0.19"
+
 
 junit_bom_version = "5.10.2"
 
@@ -107,3 +108,6 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
+
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
