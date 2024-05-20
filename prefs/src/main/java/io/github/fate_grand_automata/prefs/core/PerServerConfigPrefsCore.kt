@@ -45,4 +45,6 @@ class PerServerConfigPrefsCore(
 
 
     val refill = RefillPrefsCore(maker)
+
+    val exitOnPresetQuest = maker.bool("exit_on_preset_quest")
 }

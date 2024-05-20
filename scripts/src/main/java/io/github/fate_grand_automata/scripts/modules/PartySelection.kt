@@ -65,4 +65,13 @@ class PartySelection @Inject constructor(
             partySelected = true
         }
     }
+
+    fun checkIfPresetQuest() {
+        val partyExist = images[Images.SelectedParty] in locations.selectedPartyRegion
+        val exitOnPresetQuest = prefs.selectedServerConfigPref.exitOnPresetQuest
+        if (!partyExist && exitOnPresetQuest) {
+            messages.log(ScriptLog.PresetQuestDetected)
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.PresetQuest)
+        }
+    }
 }
