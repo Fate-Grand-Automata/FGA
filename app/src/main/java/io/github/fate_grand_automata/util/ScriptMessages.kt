@@ -97,6 +97,9 @@ class ScriptMessages @Inject constructor(
                 val supportText = if (item.isSupport) "Support " else ""
                 Timber.d("${item.cards} belong to ${supportText}${item.servant}")
             }
+            ScriptLog.PresetQuestDetected -> {
+                Timber.d("Preset Quest Detected")
+            }
         }
 
     override fun notify(action: ScriptNotify) =
