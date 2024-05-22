@@ -29,6 +29,9 @@ android {
         freeCompilerArgs += "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi"
         freeCompilerArgs += "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi"
     }
+    composeCompiler {
+        enableStrongSkippingMode = true
+    }
 
     androidResources {
         generateLocaleConfig = true
