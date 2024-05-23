@@ -146,6 +146,8 @@ fun battleLauncher(
             if (selectedConfigIndex > -1) {
                 prefs.selectedBattleConfig = configs[selectedConfigIndex]
             }
+
+            prefs.updateCompletedRuns()
         }
     }
 
