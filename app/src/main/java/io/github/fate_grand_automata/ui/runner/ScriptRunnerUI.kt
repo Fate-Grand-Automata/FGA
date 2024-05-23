@@ -40,6 +40,8 @@ fun ScriptRunnerUI(
     val hidePlayButton by prefsCore.hidePlayButton.remember()
     val script by prefsCore.scriptMode.remember()
 
+    val completedRuns by prefsCore.completedRuns.remember()
+
     FGATheme(
         darkTheme = true,
         background = Color.Transparent
@@ -87,19 +89,30 @@ fun ScriptRunnerUI(
                 enabled = enabled,
                 modifier = dragModifier
             ) {
-                Icon(
-                    painter = when (state) {
-                        ScriptRunnerUIState.Idle, is ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
-                        ScriptRunnerUIState.Running -> painterResource(R.drawable.ic_pause)
-                    },
-                    contentDescription = when (state) {
-                        ScriptRunnerUIState.Idle -> "start"
-                        is ScriptRunnerUIState.Paused -> "resume"
-                        ScriptRunnerUIState.Running -> "pause"
-                    },
-                    modifier = Modifier
-                        .padding(18.dp, 10.dp)
-                )
+                if (script == ScriptModeEnum.Battle && state == ScriptRunnerUIState.Running) {
+                    Text(
+                        text = "$completedRuns",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(18.dp, 10.dp),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1
+                    )
+                } else {
+                    Icon(
+                        painter = when (state) {
+                            ScriptRunnerUIState.Idle, is ScriptRunnerUIState.Paused -> painterResource(R.drawable.ic_play)
+                            ScriptRunnerUIState.Running -> painterResource(R.drawable.ic_pause)
+                        },
+                        contentDescription = when (state) {
+                            ScriptRunnerUIState.Idle -> "start"
+                            is ScriptRunnerUIState.Paused -> "resume"
+                            ScriptRunnerUIState.Running -> "pause"
+                        },
+                        modifier = Modifier
+                            .padding(18.dp, 10.dp)
+                    )
+                }
+                
             }
 
             AnimatedVisibility(
