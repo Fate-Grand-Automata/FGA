@@ -152,4 +152,5 @@ class PrefsCore @Inject constructor(
 
     val servantEnhancement = ServantEnhancementPrefsCore(maker)
 
+    var completedRuns = maker.int("completed_runs", 0)
 }
