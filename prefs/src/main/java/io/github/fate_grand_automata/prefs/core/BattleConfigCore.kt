@@ -196,7 +196,7 @@ class BattleConfigCore(
         "last_usage",
         serializer = object : Serializer<LocalDateTime>{
             override fun deserialize(serialized: String) =
-                serialized.toLocalDateTime()
+                LocalDateTime.parse(serialized)
 
             override fun serialize(value: LocalDateTime) =
                 value.toString()
