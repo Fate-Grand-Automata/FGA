@@ -12,7 +12,7 @@ kotlin_version = "1.9.23"
 hilt_version = "2.51.1"
 gson_version = "2.10.1"
 
-gradle_version = "8.3.1"
+gradle_version = "8.4.0"
 
 ben-manes_versions = "0.51.0"
 accompanist_version = "0.34.0"
