@@ -145,6 +145,5 @@ dependencies {
     implementation(libs.google.android.play.update.ktx)
 
     implementation(libs.kotlinx.datetime)
-    implementation(libs.kotlinx.serialization)
 
 }

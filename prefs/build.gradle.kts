@@ -43,5 +43,4 @@ dependencies {
     api(libs.fredporciuncula.flow.preferences)
 
     implementation(libs.kotlinx.datetime)
-    implementation(libs.kotlinx.serialization)
 }

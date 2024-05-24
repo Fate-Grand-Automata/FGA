@@ -17,7 +17,6 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
 
     implementation(libs.kotlinx.datetime)
-    implementation(libs.kotlinx.serialization)
 
     testImplementation(platform(libs.junit.bom)) {
         because("kotlin-test comes with conflicting junit versions")
