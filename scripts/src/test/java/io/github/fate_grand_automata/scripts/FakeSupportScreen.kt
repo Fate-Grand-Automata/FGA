@@ -47,6 +47,8 @@ class FakeSupportScreen(
         onRefresh(this)
     }
 
+    override fun refreshAvailable() = true
+
     override fun isAnyDialogOpen() =
         state == State.ConnectionFailed
 

@@ -46,7 +46,7 @@ class AutoGiftBox @Inject constructor(
 
     override fun script(): Nothing {
         var totalSelected = IterationResult()
-        val xpOffsetX = (locations.scriptArea.find(images[Images.GoldXP]) ?: locations.scriptArea.find(images[Images.SilverXP]))
+        val xpOffsetX = locations.scriptArea.find(listOf(images[Images.GoldXP], images[Images.SilverXP], images[Images.Gold5StarXP]))
             ?.region?.center?.x
             ?: throw ExitException(ExitReason.NoEmbersFound)
 
