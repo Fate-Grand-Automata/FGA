@@ -14,7 +14,12 @@ interface AutomataApi {
 
     fun <T> useColor(block: () -> T): T
 
-    fun Duration.wait()
+    /**
+     * Waits for the specified duration.
+     *
+     * @param applyMultiplier whether to apply the wait multiplier or not
+     */
+    fun Duration.wait(applyMultiplier: Boolean = true)
 
     fun Location.click(times: Int = 1)
 
@@ -28,6 +33,11 @@ interface AutomataApi {
         pattern: Pattern,
         similarity: Double? = null
     ): Match? = findAll(pattern, similarity).firstOrNull()
+
+    fun Region.find(
+        patterns: Collection<Pattern>,
+        similarity: Double? = null
+    ): Match? = patterns.firstNotNullOfOrNull { find(it, similarity) }
 
     fun Region.exists(
         image: Pattern,

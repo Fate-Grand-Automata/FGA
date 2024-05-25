@@ -16,7 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -151,7 +151,7 @@ private fun BattleConfigContent(
                                 singleLine = true
                             )
 
-                            Divider()
+                            HorizontalDivider()
 
                             config.notes.EditTextPreference(
                                 title = stringResource(R.string.p_battle_config_notes)
@@ -221,7 +221,7 @@ private fun BattleConfigContent(
                                 PartySelection(config)
                             }
 
-                            Divider()
+                            HorizontalDivider()
 
                             val cardPriority by vm.cardPriority.collectAsState(null)
 

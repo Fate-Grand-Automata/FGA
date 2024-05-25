@@ -14,7 +14,7 @@ class HighlightView(
     Context: Context,
     val regionsToHighlight: Map<Region, HighlightColor>
 ) : View(Context) {
-    private val colors = HighlightColor.values().associateWith {
+    private val colors = HighlightColor.entries.associateWith {
         Paint().apply {
             color = when (it) {
                 HighlightColor.Error -> Color.RED

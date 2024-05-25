@@ -39,39 +39,50 @@ class AutoLottery @Inject constructor(
 
             moveToPresentBox?.region?.click()
 
-            1.seconds.wait()
+            3.seconds.wait()
             giftBox.script()
         }
 
         throw ExitException(ExitReason.PresentBoxFull)
     }
 
-    private fun isOutOfCurrency() = images[Images.LotteryBoxFinished] in locations.lottery.finishedRegion
+    private fun isTransition() = images[Images.LotteryTransition] in locations.lottery.transitionRegion
 
-    private fun ranOutOfCurrency() {
-        // this can also be triggered before the notification about a new box happens
-        // tap any dialog away, then check for the message
-        spin()
-        if (isNewLineup()) {
-            confirmNewLineup()
-        } else if (isOutOfCurrency()) {
-            throw ExitException(ExitReason.RanOutOfCurrency)
+
+    private fun isLotteryDone() = locations.lottery.doneRegion.exists(
+        images[Images.LotteryBoxFinished],
+        similarity = 0.85
+    )
+
+    private fun confirmIfLotteryDone() {
+        run verify@{
+            repeat(2) {
+                if (connectionRetry.needsToRetry()) {
+                    connectionRetry.retry()
+                }
+                spin()
+                val falseDetection = locations.lottery.doneRegion.waitVanish(
+                    images[Images.LotteryBoxFinished],
+                    timeout = 5.seconds,
+                    similarity = 0.85
+                )
+                if (falseDetection) {
+                    return@verify
+                }
+            }
+            val exist = isLotteryDone()
+            if (exist) {
+                throw ExitException(ExitReason.RanOutOfCurrency)
+            }
         }
-    }
-
-    private fun isNewLineup() =
-        images[Images.LotteryLineupUpdated] in locations.lottery.lineupUpdatedRegion
-
-    private fun confirmNewLineup() {
-        locations.lottery.confirmNewLineupClick.click()
     }
 
     override fun script(): Nothing {
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
-            { isNewLineup() } to { confirmNewLineup() },
-            { isOutOfCurrency() } to { ranOutOfCurrency() },
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
-            { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() }
+            { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() },
+            { isLotteryDone() } to { confirmIfLotteryDone() },
+            { isTransition() } to { locations.lottery.transitionRegion.click() }
         )
 
         while (true) {

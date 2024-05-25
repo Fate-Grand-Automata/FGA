@@ -13,7 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -64,7 +64,7 @@ fun SpamScreen(
                 summary = stringResource(R.string.p_spam_summary)
             )
 
-            Divider()
+            HorizontalDivider()
         }
 
         item {
@@ -97,7 +97,7 @@ fun SpamScreen(
                 }
             }
 
-            Divider()
+            HorizontalDivider()
         }
 
         item {
@@ -112,7 +112,7 @@ fun SpamScreen(
         }
 
         item {
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(vertical = 16.dp)
             )
 
@@ -225,7 +225,7 @@ private fun SpamView(
             Column {
                 selectedConfig.skills.mapIndexed { index, skillConfig ->
                     if (index != 0) {
-                        Divider()
+                        HorizontalDivider()
                     }
 
                     SkillSpamView(
@@ -247,7 +247,7 @@ private fun SelectSpamMode(
     val dialog = listDialog(
         selected = selected,
         onSelectedChange = onSelectChange,
-        entries = SpamEnum.values().associateWith { stringResource(it.stringRes) },
+        entries = SpamEnum.entries.associateWith { stringResource(it.stringRes) },
         title = stringResource(R.string.spam)
     )
 
@@ -269,7 +269,7 @@ private fun SelectTarget(
     val dialog = listDialog(
         selected = selected,
         onSelectedChange = onSelectChange,
-        entries = SkillSpamTarget.values().associateWith { it.toString() },
+        entries = SkillSpamTarget.entries.associateWith { it.toString() },
         title = stringResource(R.string.spam_target)
     )
 
