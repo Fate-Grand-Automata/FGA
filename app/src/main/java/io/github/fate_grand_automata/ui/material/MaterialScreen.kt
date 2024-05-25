@@ -39,15 +39,15 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -167,7 +167,7 @@ fun MaterialScreen(
                         onClick = onNavigateBack
                     ) {
                         Icon(
-                            Icons.Default.ArrowBack,
+                            Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null
                         )
                     }
@@ -196,7 +196,7 @@ fun MaterialScreen(
             modifier = Modifier
                 .padding(padding)
         ) {
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(bottom = 4.dp)
             )
 
@@ -461,7 +461,7 @@ private fun UndoButton(
     iconOrTextVariableButton(
         windowSizeClass = windowSizeClass,
         enabled = materialListTracker.isNotEmpty(),
-        icon = Icons.Default.Undo,
+        icon = Icons.AutoMirrored.Filled.Undo,
         text = stringResource(R.string.undo).uppercase(),
         action = onUndo
     )
