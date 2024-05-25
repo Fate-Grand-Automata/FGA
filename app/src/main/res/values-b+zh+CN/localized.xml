@@ -254,7 +254,7 @@ Order Change"</string>
     <string name="avg_time_per_run">"平均一场时间：%s"</string>
     <string name="turns_count">"回合 %d"</string>
     <string name="turns_stats">"回合: %1$d（最少）, %2$.02f（平均）, %3$d（最多）"</string>
-    <string name="picked_exp_stacks">"已挑选 %d 堆种火，共挑选 %d 枚种火"</string>
+    <string name="picked_exp_stacks">"已挑选 %1$d 堆种火，共挑选 %2$d 枚种火"</string>
     <string name="no_embers_found">"无法在屏幕上找到种火，请确保经验卡的筛选已打开"</string>
     <string name="root_failed">"Root权限获取失败"</string>
     <string name="p_mats">"追踪掉落素材"</string>

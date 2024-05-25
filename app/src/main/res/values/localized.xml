@@ -177,7 +177,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="card_priority">"Card Priority"</string>
     <string name="p_refill_type_gold">"Gold"</string>
     <string name="p_refill_type_silver">"Silver"</string>
-    <string name="p_refill_type_bronze">"Bronze"</string>
+    <string name="p_refill_type_bronze">"Blue"</string>
     <string name="p_refill_type_copper">"Copper"</string>
     <string name="p_refill_type_sq">"SQ"</string>
     <string name="p_brave_chains_don_t_care">"Don't care"</string>
@@ -260,8 +260,10 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="avg_time_per_run">"Average time per run: %s"</string>
     <string name="turns_count">"Turns: %d"</string>
     <string name="turns_stats">"Turns: %1$d (min), %2$.02f (avg), %3$d (max)"</string>
-    <string name="picked_exp_stacks">"Picked %d EXP stacks, resulting in a total amount of %d Gold embers"</string>
+
+    <string name="picked_exp_stacks">"Picked %1$d EXP stacks, resulting in a total amount of %2$d Gold embers"</string>
     <string name="picked_exp_stacks_return_to_lottery">"Picked %d EXP stacks, resulting in a total amount of %d Gold embers. Returning to lottery."</string>
+
     <string name="no_embers_found">"Couldn't find Embers on screen. Make sure that you've filtered for EXP cards."</string>
     <string name="root_failed">"Failed to get root access"</string>
     <string name="p_mats">"Materials"</string>

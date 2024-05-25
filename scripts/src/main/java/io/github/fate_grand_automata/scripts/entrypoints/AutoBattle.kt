@@ -503,6 +503,8 @@ class AutoBattle @Inject constructor(
      * Also shows CE drop count (if any have dropped).
      */
     private fun showRefillsAndRunsMessage() {
+        if (state.runs < 1) return
+        
         messages.notify(
             ScriptNotify.BetweenRuns(
                 refills = refill.timesRefilled,
