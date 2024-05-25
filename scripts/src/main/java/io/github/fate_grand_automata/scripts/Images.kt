@@ -99,4 +99,5 @@ enum class Images {
      */
     OkKR,
     Execute,
+    SupportBlankCE,
 }

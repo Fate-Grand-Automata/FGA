@@ -31,7 +31,7 @@ class StandardAutomataApi @Inject constructor(
     override fun <T> useColor(block: () -> T): T =
         colorManager.useColor(block)
 
-    override fun Duration.wait() = wait(this)
+    override fun Duration.wait(applyMultiplier: Boolean) = wait(this, applyMultiplier)
 
     override fun Location.click(times: Int) = click(this, times)
 
