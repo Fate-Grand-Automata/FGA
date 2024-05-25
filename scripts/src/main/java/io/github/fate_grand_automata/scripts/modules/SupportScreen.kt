@@ -41,7 +41,7 @@ class RealSupportScreen @Inject constructor(
     override fun click(supportClass: SupportClass) =
         locations.support.locate(supportClass).click()
 
-    override fun delay(duration: Duration) = duration.wait()
+    override fun delay(duration: Duration) = duration.wait(false)
 
     override fun refresh() {
         locations.support.updateClick.click()
