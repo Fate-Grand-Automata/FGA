@@ -53,14 +53,16 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -519,15 +521,25 @@ private fun TopbarIconButtonWithTooltip(
     icon: ImageVector,
     action: () -> Unit,
 ) {
-    PlainTooltipBox(
-        tooltip = {
-            Text(text = text)
-        },
-        modifier = Modifier.padding(top = 24.dp)
+    val state = rememberTooltipState()
+    val scope = rememberCoroutineScope()
+    Box(
+        modifier = Modifier.clickable { scope.launch { state.show() } }
     ) {
-        Box(
-            modifier = Modifier
-                .tooltipAnchor()
+        TooltipBox(
+            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+            tooltip = {
+                Surface(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                ) {
+                    Text(
+                        text = text,
+                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                    )
+                }
+            },
+            modifier = Modifier.padding(top = 24.dp),
+            state = state
         ) {
             IconButton(
                 onClick = action,
