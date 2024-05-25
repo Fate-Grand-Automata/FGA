@@ -8,11 +8,15 @@ flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.2.0"
 kotlinx_coroutines_core_version = "1.8.0"
 lifecycle_version = "2.7.0"
-kotlin_version = "1.9.23"
 hilt_version = "2.51.1"
 gson_version = "2.10.1"
 
+
+kotlin_version = "2.0.0"
+ksp_version = "2.0.0-1.0.21"
+
 gradle_version = "8.3.1"
+
 
 ben-manes_versions = "0.51.0"
 accompanist_version = "0.34.0"
@@ -30,8 +34,7 @@ timber_version = "5.0.1"
 
 compose_bom_version = "2024.03.00"
 
-kotlinCompilerExtensionVersion = "1.5.11"
-ksp_version = "1.9.23-1.0.19"
+
 
 junit_bom_version = "5.10.2"
 
@@ -41,9 +44,6 @@ android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin_version" }
 hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt_version" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp_version" }
-
-# Workaround so renovate updates the version of the compiler extension
-android-compose-compiler = {module="androidx.compose.compiler:compiler", version.ref ="kotlinCompilerExtensionVersion"}
 
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin_version" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines_core_version" }
@@ -107,3 +107,6 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
+
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
