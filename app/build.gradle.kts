@@ -5,6 +5,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp")
     alias(libs.plugins.compose.compiler)
+
 }
 
 android {
@@ -141,5 +142,7 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)
+
+    implementation(libs.kotlinx.datetime)
 
 }

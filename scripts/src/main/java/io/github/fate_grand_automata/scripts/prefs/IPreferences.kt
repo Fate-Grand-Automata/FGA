@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.scripts.prefs
 
+import io.github.fate_grand_automata.scripts.enums.BattleConfigListSortEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
 import io.github.lib_automata.PlatformPrefs
@@ -46,7 +47,11 @@ interface IPreferences {
 
     var ceBombTargetRarity: Int
 
+
+    var configListSort: BattleConfigListSortEnum
+
     val servant: IServantEnhancementPreferences
+
 
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 

@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.prefs.core.PrefsCore
+import io.github.fate_grand_automata.scripts.enums.BattleConfigListSortEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
@@ -18,9 +19,12 @@ import io.github.fate_grand_automata.util.toggle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
@@ -30,23 +34,99 @@ class BattleConfigListViewModel @Inject constructor(
     prefsCore: PrefsCore,
     val prefs: IPreferences
 ) : ViewModel() {
+
+    val configListSort = prefsCore
+        .configListSort
+        .asFlow()
+
+
     val battleConfigItems = prefsCore
         .battleConfigList
         .asFlow()
-        .map { list ->
-            list
-                .map { key -> prefsCore.forBattleConfig(key) }
-                .sortedWith(
-                    compareBy<BattleConfigCore, Int?>((nullsFirst())) {
-                        // sort by null, NA, JP, CN, TW, KR
-                        it.server.get().asGameServer()?.let { server ->
-                            GameServer.values.indexOf(server)
-                        }
-                    }.thenBy(String.CASE_INSENSITIVE_ORDER) {
-                        it.name.get()
-                    }
-                )
+        .map {
+            it.map { key -> prefsCore.forBattleConfig(key) }
         }
+        .combine(configListSort) { battleConfigs, sort ->
+            val nameGetter = { battleConfigCore: BattleConfigCore ->
+                battleConfigCore.name.get()
+            }
+            val usageCountGetter = { battleConfigCore: BattleConfigCore ->
+                battleConfigCore.usageCount.get()
+            }
+            val lastUsageGetter = { battleConfigCore: BattleConfigCore ->
+                if (battleConfigCore.usageCount.get() > 0) {
+                    battleConfigCore.lastUsage.get().toInstant(TimeZone.UTC).epochSeconds
+                } else {
+                    0L
+                }
+            }
+            
+            sortBattleConfigs(
+                battleConfigList = battleConfigs,
+                sort = sort,
+                nameGetter = nameGetter,
+                usageCountGetter = usageCountGetter,
+                lastUsageGetter = lastUsageGetter
+            )
+
+        }
+    
+    private fun sortBattleConfigs(
+        battleConfigList: List<BattleConfigCore>,
+        sort: BattleConfigListSortEnum,
+        nameGetter: (BattleConfigCore) -> String,
+        usageCountGetter: (BattleConfigCore) -> Int,
+        lastUsageGetter: (BattleConfigCore) -> Long
+    ): List<BattleConfigCore> {
+        val serverIndexGetter = { battleConfigCore: BattleConfigCore ->
+            battleConfigCore.server.get().asGameServer()?.let { server ->
+                GameServer.values.indexOf(server)
+            }
+        }
+
+        return when (sort) {
+            BattleConfigListSortEnum.DEFAULT_SORT -> battleConfigList.sortedWith(
+                compareBy(nullsFirst(), serverIndexGetter)
+                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
+            )
+
+            BattleConfigListSortEnum.SORT_BY_NAME_DESC -> battleConfigList.sortedWith(
+                compareByDescending(nullsLast(), serverIndexGetter)
+                    .thenByDescending(String.CASE_INSENSITIVE_ORDER, nameGetter)
+            )
+
+            BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_ASC -> battleConfigList.sortedWith(
+                compareBy(usageCountGetter)
+                    .thenBy(nullsFirst(), serverIndexGetter)
+                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
+            )
+
+            BattleConfigListSortEnum.SORT_BY_USAGE_COUNT_DESC -> battleConfigList.sortedWith(
+                compareByDescending(usageCountGetter)
+                    .thenBy(nullsLast(), serverIndexGetter)
+                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
+            )
+
+            BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_ASC -> battleConfigList.sortedWith(
+                compareBy(lastUsageGetter)
+                    .thenBy(nullsFirst(), serverIndexGetter)
+                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
+            )
+
+            BattleConfigListSortEnum.SORT_BY_LAST_USAGE_TIME_DESC -> battleConfigList.sortedWith(
+                compareByDescending(lastUsageGetter)
+                    .thenBy(nullsLast(), serverIndexGetter)
+                    .thenBy(String.CASE_INSENSITIVE_ORDER, nameGetter)
+            )
+        }
+    }
+    
+    fun setConfigListSort(sort: BattleConfigListSortEnum) {
+        viewModelScope.launch {
+            prefs.configListSort = sort
+        }
+    }
+
 
     private val _selectedConfigs = MutableStateFlow(emptySet<String>())
     val selectedConfigs: StateFlow<Set<String>> = _selectedConfigs
