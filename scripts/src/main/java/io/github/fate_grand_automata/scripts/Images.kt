@@ -90,4 +90,5 @@ enum class Images {
     Execute,
     TeapotsOn,
     TeapotsOff,
+    SupportBlankCE
 }
