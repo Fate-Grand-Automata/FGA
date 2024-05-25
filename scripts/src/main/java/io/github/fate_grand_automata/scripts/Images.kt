@@ -28,7 +28,7 @@ enum class Images {
     Retry,
     Withdraw,
     LotteryBoxFinished,
-    LotteryLineupUpdated,
+    LotteryTransition,
     PresentBoxFull,
     MasterExp,
     MasterLevelUp,
@@ -37,10 +37,14 @@ enum class Images {
     FPSummonContinue,
     SkillTen,
     Stun,
+    StunBuster,
+    StunArts,
+    StunQuick,
     Immobilized,
     SelectedParty,
     SilverXP,
     GoldXP,
+    Gold5StarXP,
     GiftBoxCheck,
     GiftBoxScrollEnd,
     DropCE,
@@ -50,6 +54,10 @@ enum class Images {
     SupportExtra,
     SupportNotFound,
     Support,
+    SupportScrollBarTop,
+    SupportScrollBarMoved,
+    SupportScrollBarBottom,
+    SupportRefresh,
     ServantCheckSupport,
     BattleMenu,
     EmptyEnhance,
@@ -79,5 +87,6 @@ enum class Images {
      * 2nd OK button for FGO KR
      */
     OkKR,
-    Execute
+    Execute,
+    SupportBlankCE
 }

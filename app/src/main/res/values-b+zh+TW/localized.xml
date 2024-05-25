@@ -243,7 +243,7 @@
     <string name="avg_time_per_run">平均一場時間：%s</string>
     <string name="turns_count">回合 %d</string>
     <string name="turns_stats">回合：%1$d（最少）, %2$.02f（平均）, %3$d（最多）</string>
-    <string name="picked_exp_stacks">已挑選 %d 堆種火，總共挑選 %d 枚金種火</string>
+    <string name="picked_exp_stacks">已挑選 %1$d 堆種火，總共挑選 %2$d 枚金種火</string>
 
     <string name="p_mats">追縱掉落素材</string>
     <string name="mats_farmed">已獲得 %d 個素材</string>
@@ -329,7 +329,6 @@
     <string name="skill_maker_option_2">選項 2</string>
     <string name="p_receive_embers">領取種火</string>
     <string name="p_thresholded_stage_counter">以二質化影像偵測戰鬥場次</string>
-    <string name="p_script_mode_ce_bomb">製作禮裝堆肥</string>
     <string name="accessibility_service">無障礙服務：</string>
     <string name="accessibility_enabled">已開啟</string>
     <string name="accessibility_disabled">已關閉</string>
@@ -395,10 +394,6 @@
     <string name="p_game_area_custom_top">下（像素）</string>
     <string name="p_game_area_custom_right">右（像素）</string>
     <string name="p_game_area_custom_bottom">上（像素）</string>
-    <string name="p_ce_bomb_explanation">此腳本將無差別地使用所有可以做為強化素材的概念禮裝，執行前請再三確認希望保留的概念禮裝已經上鎖或放至靈基保管室\n\n為了最佳化此腳本的執行，請將「想要強化的概念禮裝」清單以最小集合過濾、以稀有度順序「升序」排列、關閉智慧過濾，並將「強化用素材」以稀有度順序「升序」排列、開啟智慧過濾</string>
-    <string name="ce_bomb_no_suitable_ces">無法選擇作為強化素材的概念禮裝</string>
-    <string name="ce_bomb_max_iterations">已達到最大執行次數</string>
-    <string name="ce_bomb_ce_fully_upgraded">概念禮裝已達到等級上限，請鎖定或放置於靈基保管室</string>
     <string name="p_welcome">歡迎使用 FGA！</string>
     <string name="p_welcome_description">以下將介紹幾個最重要的初始化設定</string>
     <string name="p_battery_optimization">電池效能最佳化</string>
