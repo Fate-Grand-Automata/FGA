@@ -20,7 +20,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
 //            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt")
-            consumerProguardFiles("proguard-rules.pro")
+            proguardFiles("proguard-rules.pro")
         }
         create("ci") {
             initWith(getByName("release"))
