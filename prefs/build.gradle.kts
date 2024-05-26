@@ -16,13 +16,6 @@ android {
         minSdk = 24
     }
 
-    buildTypes {
-        getByName("release") {
-        }
-        create("ci") {
-            initWith(getByName("release"))
-        }
-    }
     namespace = "io.github.fate_grand_automata.prefs"
 }
 
