@@ -112,6 +112,8 @@ fun battleLauncher(
 
     var resetAllButton by remember { mutableStateOf(false) }
 
+    var exitOnPresetQuest by remember { mutableStateOf(perServerConfigPref.exitOnPresetQuest) }
+
     DisposableEffect(Unit) {
         onDispose {
             perServerConfigPref.shouldLimitRuns = shouldLimitRuns
@@ -130,6 +132,8 @@ fun battleLauncher(
                 perServerConfigPref.selectedApple = refillResources.first()
             }
             perServerConfigPref.updateResources(refillResources)
+
+            perServerConfigPref.exitOnPresetQuest = exitOnPresetQuest
 
             if (selectedConfigIndex > -1) {
                 prefs.selectedBattleConfig = configs[selectedConfigIndex]
@@ -363,6 +367,18 @@ fun battleLauncher(
                     onCountChange = { limitCEs = it }
                 )
             }
+
+            item {
+                HorizontalDivider()
+            }
+
+            item {
+                SettingsCheckBox(
+                    settings = exitOnPresetQuest,
+                    text = stringResource(R.string.p_exit_on_preset_quest),
+                    onSettingsChange = { exitOnPresetQuest = it }
+                )
+            }
         }
     }
 
@@ -372,6 +388,36 @@ fun battleLauncher(
             ScriptLauncherResponse.Battle
         }
     )
+}
+
+@Composable
+private fun SettingsCheckBox(
+    settings: Boolean,
+    text: String,
+    onSettingsChange: (Boolean) -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onSettingsChange(!settings)
+            }
+    ) {
+        Checkbox(
+            checked = settings,
+            onCheckedChange = {
+                onSettingsChange(it)
+            },
+            modifier = Modifier
+        )
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(1f)
+        )
+    }
 }
 
 @Composable

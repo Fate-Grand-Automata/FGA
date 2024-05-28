@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.scripts.modules
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptLog
+import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
@@ -63,6 +64,15 @@ class PartySelection @Inject constructor(
             /* If we select the party once, the same party will be used by the game for next fight.
                So, we don't have to select it again. */
             partySelected = true
+        }
+    }
+
+    fun checkIfPresetQuest() {
+        val partyExist = images[Images.SelectedParty] in locations.selectedPartyRegion
+        val exitOnPresetQuest = prefs.selectedServerConfigPref.exitOnPresetQuest
+        if (!partyExist && exitOnPresetQuest) {
+            messages.log(ScriptLog.PresetQuestDetected)
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.PresetQuest)
         }
     }
 }

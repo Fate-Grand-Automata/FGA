@@ -411,4 +411,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="p_exit_on_preset_quest">Exit on Preset Quest</string>
+    <string name="p_stop_on_preset_quest">Preset Quest Detected. Might cause the script to fail.</string>
 </resources>

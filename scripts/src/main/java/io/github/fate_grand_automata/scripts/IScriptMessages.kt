@@ -40,6 +40,8 @@ sealed class ScriptLog {
         val servant: TeamSlot,
         val isSupport: Boolean = false
     ) : ScriptLog()
+
+    data object PresetQuestDetected : ScriptLog()
 }
 
 interface IScriptMessages {

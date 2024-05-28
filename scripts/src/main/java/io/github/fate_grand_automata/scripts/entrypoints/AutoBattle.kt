@@ -74,6 +74,7 @@ class AutoBattle @Inject constructor(
         class CardPriorityParseError(val msg: String) : ExitReason()
         data object Paused : ExitReason()
         data object StopAfterThisRun : ExitReason()
+        data object PresetQuest : ExitReason()
     }
 
     internal class BattleExitException(val reason: ExitReason) : Exception(reason.cause)
@@ -488,6 +489,8 @@ class AutoBattle @Inject constructor(
     private
 
     fun startQuest() {
+        partySelection.checkIfPresetQuest()
+        
         partySelection.selectParty()
 
         locations.menuStartQuestClick.click()
