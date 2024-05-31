@@ -1,5 +1,5 @@
 [versions]
-appcompat_version = "1.6.1"
+appcompat_version = "1.7.0"
 assertk_version = "0.28.0"
 constraintlayout_version = "2.1.4"
 core_ktx_version = "1.12.0"
