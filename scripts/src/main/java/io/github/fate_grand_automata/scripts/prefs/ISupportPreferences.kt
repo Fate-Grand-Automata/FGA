@@ -19,4 +19,10 @@ interface ISupportPreferences {
     val skill1Max: Boolean
     val skill2Max: Boolean
     val skill3Max: Boolean
+
+    val checkAppend: Boolean
+
+    val append1Max: Boolean
+    val append2Max: Boolean
+    val append3Max: Boolean
 }

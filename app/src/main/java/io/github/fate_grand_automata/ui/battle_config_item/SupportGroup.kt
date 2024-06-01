@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -38,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.SupportPrefsCore
@@ -46,6 +49,7 @@ import io.github.fate_grand_automata.scripts.enums.SupportSelectionModeEnum
 import io.github.fate_grand_automata.scripts.enums.canAlsoCheckAll
 import io.github.fate_grand_automata.ui.DimmedIcon
 import io.github.fate_grand_automata.ui.icon
+import io.github.fate_grand_automata.ui.padding
 import io.github.fate_grand_automata.ui.prefs.ListPreference
 import io.github.fate_grand_automata.ui.prefs.Preference
 import io.github.fate_grand_automata.ui.prefs.PreferenceGroupHeader
@@ -59,6 +63,7 @@ import java.io.File
 fun SupportGroup(
     config: SupportPrefsCore,
     maxSkillText: String,
+    maxAppendText: String,
     goToPreferred: () -> Unit
 ) {
     val supportMode by config.selectionMode.remember()
@@ -116,6 +121,7 @@ fun SupportGroup(
             AnimatedVisibility(preferredMode) {
                 Column {
                     val servants by config.preferredServants.remember()
+                    val checkAppend by config.checkAppend.remember()
                     val ces by config.preferredCEs.remember()
                     val cesFormatted by remember {
                         derivedStateOf {
@@ -139,6 +145,8 @@ fun SupportGroup(
                             PreferredSummary(
                                 config = config,
                                 maxSkillText = maxSkillText,
+                                checkAppend = checkAppend,
+                                maxAppendText = maxAppendText,
                                 servants = servants,
                                 ces = cesFormatted,
                                 friendNames = friendNamesFormatted
@@ -230,6 +238,8 @@ val DiamondShape = CutCornerShape(50)
 fun PreferredSummary(
     config: SupportPrefsCore,
     maxSkillText: String,
+    checkAppend: Boolean,
+    maxAppendText: String,
     servants: Set<String>,
     ces: Set<String>,
     friendNames: Set<String>
@@ -260,15 +270,22 @@ fun PreferredSummary(
             )
 
             if (servants.isNotEmpty()) {
-                Card(
-                    elevation = cardElevation(2.dp)
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        maxSkillText,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier
-                            .padding(5.dp, 1.dp)
+                    SkillDisplay(
+                        title = stringResource(id = R.string.p_support_skills),
+                        maxText = maxSkillText
                     )
+                    if (checkAppend) {
+                        Spacer(modifier = Modifier.height(MaterialTheme.padding.extraSmall))
+                        SkillDisplay(
+                            title = stringResource(id = R.string.p_support_appends),
+                            maxText = maxAppendText
+                        )
+                    }
+
                 }
             }
         }
@@ -332,6 +349,31 @@ fun PreferredSummary(
                         .padding(start = 16.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun SkillDisplay(
+    title: String,
+    maxText: String
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title.uppercase(),
+            fontWeight = FontWeight.Bold
+        )
+        Card(
+            elevation = cardElevation(2.dp)
+        ) {
+            Text(
+                text = maxText,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .padding(5.dp, 1.dp)
+            )
         }
     }
 }

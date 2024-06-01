@@ -11,6 +11,7 @@ import io.github.lib_automata.Region
 import io.github.lib_automata.Size
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
 class ServantSelection @Inject constructor(

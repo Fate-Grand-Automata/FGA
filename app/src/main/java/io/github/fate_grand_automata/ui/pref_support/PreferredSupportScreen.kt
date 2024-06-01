@@ -113,6 +113,32 @@ private fun PreferredSupport(
                                 )
                             )
                         }
+
+                        config.checkAppend.SwitchPreference(
+                            title = stringResource(R.string.p_check_appends)
+                        )
+
+                        val checkAppend by config.checkAppend.remember()
+
+                        AnimatedVisibility (checkAppend) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Text(
+                                    stringResource(R.string.p_max_appends),
+                                    modifier = Modifier.weight(1f)
+                                )
+
+                                MaxSkills(
+                                    skills = listOf(
+                                        config.append1Max,
+                                        config.append2Max,
+                                        config.append3Max
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }

@@ -33,4 +33,10 @@ internal class SupportPreferences(
     override val skill1Max by prefs.skill1Max
     override val skill2Max by prefs.skill2Max
     override val skill3Max by prefs.skill3Max
+
+    override val checkAppend by prefs.checkAppend
+
+    override val append1Max by prefs.append1Max
+    override val append2Max by prefs.append2Max
+    override val append3Max by prefs.append3Max
 }

@@ -414,4 +414,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="p_check_appends">"Also Check Appends"</string>
+    <string name="p_max_appends">"Max Appends"</string>
+    <string name="p_support_skills">"Skills"</string>
+    <string name="p_support_appends">"Appends"</string>
 </resources>

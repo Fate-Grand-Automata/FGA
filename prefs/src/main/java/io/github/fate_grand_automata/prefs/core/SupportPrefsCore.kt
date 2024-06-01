@@ -34,4 +34,10 @@ class SupportPrefsCore(
     val skill1Max = maker.bool("support_skill_max_1")
     val skill2Max = maker.bool("support_skill_max_2")
     val skill3Max = maker.bool("support_skill_max_3")
+
+    val checkAppend = maker.bool("support_check_append")
+
+    val append1Max = maker.bool("support_append_skill_max_1")
+    val append2Max = maker.bool("support_append_skill_max_2")
+    val append3Max = maker.bool("support_append_skill_max_3")
 }

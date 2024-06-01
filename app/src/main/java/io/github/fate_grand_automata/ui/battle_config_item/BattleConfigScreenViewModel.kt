@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.fate_grand_automata.R
@@ -11,8 +12,10 @@ import io.github.fate_grand_automata.prefs.core.BattleConfigCore
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.skill_maker.SkillMakerModel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 import java.io.OutputStream
 import java.util.UUID
@@ -41,18 +44,42 @@ class BattleConfigScreenViewModel @Inject constructor(
                     .skillCommand
                     .drop(1)
             }
-
-    val maxSkillText =
-        combine(
-            battleConfigCore.support.skill1Max.asFlow(),
-            battleConfigCore.support.skill2Max.asFlow(),
-            battleConfigCore.support.skill3Max.asFlow()
-        ) { s1, s2, s3 -> listOf(s1, s2, s3) }
-            .map { skills ->
-                skills.joinToString("/") {
-                    if (it) "10" else "x"
-                }
+    
+    val maxSkillText = combine(
+        battleConfigCore.support.skill1Max.asFlow(),
+        battleConfigCore.support.skill2Max.asFlow(),
+        battleConfigCore.support.skill3Max.asFlow()
+    ) { s1, s2, s3 ->
+        listOf(s1, s2, s3)
+    }
+        .map { skills ->
+            skills.joinToString("/") {
+                if (it) "10" else "x"
             }
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            ""
+        )
+
+    val maxAppendText = combine(
+        battleConfigCore.support.append1Max.asFlow(),
+        battleConfigCore.support.append2Max.asFlow(),
+        battleConfigCore.support.append3Max.asFlow()
+    ) { a1, a2, a3 ->
+        listOf(a1, a2, a3)
+    }
+        .map { skills ->
+            skills.joinToString("/") {
+                if (it) "10" else "x"
+            }
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            ""
+        )
 
     private fun export(stream: OutputStream) {
         val values = battleConfig.export()

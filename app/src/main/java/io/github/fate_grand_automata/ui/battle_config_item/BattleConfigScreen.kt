@@ -233,11 +233,13 @@ private fun BattleConfigContent(
                 }
 
                 item {
-                    val maxSkillText by vm.maxSkillText.collectAsState("")
+                    val maxSkillText by vm.maxSkillText.collectAsState()
+                    val maxAppendText by vm.maxAppendText.collectAsState()
 
                     SupportGroup(
                         config = config.support,
                         goToPreferred = { navigate(BattleConfigDestination.PreferredSupport) },
+                        maxAppendText = maxAppendText,
                         maxSkillText = maxSkillText
                     )
                 }

@@ -84,4 +84,6 @@ class SupportScreenLocations @Inject constructor(
     }
 
     val refreshRegion = Region(1770, 195, 175, 165) + headerOffset
+
+    val skillDisplayRegion = Region(1628, 201, 128, 112) + headerOffset
 }
