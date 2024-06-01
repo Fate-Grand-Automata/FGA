@@ -279,7 +279,7 @@ fun PreferredSummary(
                         maxText = maxSkillText
                     )
                     if (checkAppend) {
-                        Spacer(modifier = Modifier.height(MaterialTheme.padding.extraSmall))
+                        Spacer(modifier = Modifier.height(4.dp))
                         SkillDisplay(
                             title = stringResource(id = R.string.p_support_appends),
                             maxText = maxAppendText
