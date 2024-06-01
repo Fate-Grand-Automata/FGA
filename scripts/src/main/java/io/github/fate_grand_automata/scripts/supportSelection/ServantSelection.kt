@@ -49,6 +49,48 @@ class ServantSelection @Inject constructor(
         return matched.isNotEmpty()
     }
 
+    fun checkForAppends(bounds: List<Region>): List<Region> {
+        if (bounds.isEmpty()) return emptyList()
+
+        var matched: List<Region> = emptyList()
+
+        // Don't need to check all just the first available one
+        checkIfSkillsAreToggled(bounds.first())
+
+        useSameSnapIn {
+            matched = bounds
+                .filter { bound ->
+                    val followRegion = locations.support.friendRegion.copy(
+                        y = bound.y + 70,
+                        height = 350
+                    )
+                    val isFollow = images[Images.Follow] in followRegion
+
+                    if (isFollow) {
+                        true
+                    } else {
+                        val needMaxedAppends = listOf(
+                            supportPrefs.append1Max,
+                            supportPrefs.append2Max,
+                            supportPrefs.append3Max
+                        )
+                        val appendCheckNeeded = needMaxedAppends.any { it }
+                        !appendCheckNeeded ||
+                                checkMaxedSkills(needMaxedAppends, whichSkillsAreMaxed(bound), isSkill = false)
+                    }
+                }
+        }
+
+        // return to the skill display
+        repeat(2) {
+            locations.support.skillDisplayRegion.click()
+            0.2.seconds.wait()
+        }
+
+        return matched
+
+    }
+
     /**
      * If you lock your friends, a lock icon shows on the left of servant image,
      * which can cause matching to fail.
@@ -73,6 +115,22 @@ class ServantSelection @Inject constructor(
         return starChecker.isStarPresent(maxAscendedRegion)
     }
 
+    private fun checkIfSkillsAreToggled(bounds: Region) {
+        val y = bounds.y + 225
+        val skillMargin = 90
+        val x = bounds.x + 1610
+        val width = 3 * skillMargin
+
+        val skillRegion = Region(x, y, width, 100)
+
+        val isInServantSkills = skillRegion.exists(images[Images.SupportServantSkill], similarity = 0.70)
+
+        if (isInServantSkills) {
+            locations.support.skillDisplayRegion.click()
+            0.25.seconds.wait()
+        }
+    }
+
     private fun whichSkillsAreMaxed(bounds: Region): List<Boolean> {
         val y = bounds.y + 325
         val x = bounds.x + 1610
@@ -93,18 +151,31 @@ class ServantSelection @Inject constructor(
             }
     }
 
-    private fun checkMaxedSkills(expectedSkills: List<Boolean>, actualSkills: List<Boolean>): Boolean {
+    private fun checkMaxedSkills(
+        expectedSkills: List<Boolean>,
+        actualSkills: List<Boolean>,
+        isSkill: Boolean = true
+    ): Boolean {
         val result = expectedSkills
             .zip(actualSkills) { expected, actual ->
                 !expected || actual
             }
 
-        messages.log(
-            ScriptLog.MaxSkills(
-                needMaxedSkills = expectedSkills,
-                isSkillMaxed = result
+        if (isSkill) {
+            messages.log(
+                ScriptLog.MaxSkills(
+                    needMaxedSkills = expectedSkills,
+                    isSkillMaxed = result
+                )
             )
-        )
+        } else {
+            messages.log(
+                ScriptLog.MaxAppends(
+                    needMaxedAppend = expectedSkills,
+                    isAppendMaxed = result
+                )
+            )
+        }
 
         return result.all { it }
     }

@@ -88,5 +88,6 @@ enum class Images {
      */
     OkKR,
     Execute,
-    SupportBlankCE
+    SupportBlankCE,
+    SupportServantSkill
 }

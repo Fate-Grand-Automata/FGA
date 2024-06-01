@@ -25,6 +25,11 @@ sealed class ScriptLog {
         val isSkillMaxed: List<Boolean>
     ) : ScriptLog()
 
+    class MaxAppends(
+        val needMaxedAppend: List<Boolean>,
+        val isAppendMaxed: List<Boolean>
+    ) : ScriptLog()
+
     class ClickingNPs(val nps: Iterable<CommandCard.NP>) : ScriptLog()
     class ClickingCards(val cards: Iterable<CommandCard.Face>) : ScriptLog()
     class NPsGroupedByFaceCards(val groups: Map<CommandCard.NP, List<CommandCard.Face>>) : ScriptLog()

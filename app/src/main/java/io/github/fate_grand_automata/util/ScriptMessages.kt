@@ -51,10 +51,26 @@ class ScriptMessages @Inject constructor(
             }
 
             is ScriptLog.MaxSkills -> {
+                Timber.d("Skills")
                 Timber.d(
                     // Detected skill levels as string for debugging
                     item.isSkillMaxed
                         .zip(item.needMaxedSkills)
+                        .joinToString("/") { (success, shouldBeMaxed) ->
+                            when {
+                                !shouldBeMaxed -> "x"
+                                success -> "10"
+                                else -> "f"
+                            }
+                        }
+                )
+            }
+            is ScriptLog.MaxAppends -> {
+                Timber.d("Append")
+                Timber.d(
+                    // Detected append levels as string for debugging
+                    item.isAppendMaxed
+                        .zip(item.needMaxedAppend)
                         .joinToString("/") { (success, shouldBeMaxed) ->
                             when {
                                 !shouldBeMaxed -> "x"

@@ -27,36 +27,55 @@ class PreferredSupportSelection @Inject constructor(
             throw AutoBattle.BattleExitException(AutoBattle.ExitReason.SupportSelectionPreferredNotSet)
         }
 
-        return useSameSnapIn {
+        var matched: List<Region> = emptyList()
+
+        var topScrollbar = false
+        var movedScrollBar = false
+        var bottomScrollbar = false
+
+        useSameSnapIn {
             if (supportPrefs.friendsOnly && !friendChecker.isFriend()) {
                 // no friends on screen, so there's no point in scrolling anymore
                 return@useSameSnapIn SupportSelectionResult.Refresh
             }
 
-            val matched = boundsFinder.all()
+            matched = boundsFinder.all()
                 .toList()
-                .firstNotNullOfOrNull { isMatch(it) }
+                .mapNotNull {
+                    isMatch(it)
+                }
 
-            if (matched != null) {
-                matched.click()
-                SupportSelectionResult.Done
-            } else {
-                var topScrollbar = false
-                var movedSrollBar = false
-                var bottomScrollbar = false
-                useSameSnapIn {
-                    topScrollbar = images[Images.SupportScrollBarTop] in locations.support.topScrollbarRegion
-                    if (!topScrollbar) {
-                        movedSrollBar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion
-                        bottomScrollbar = images[Images.SupportScrollBarBottom] in
-                                locations.support.bottomScrollbarRegion
-                    }
-                }
-                when {
-                    topScrollbar -> SupportSelectionResult.ScrollDown
-                    movedSrollBar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
-                    else -> SupportSelectionResult.EarlyRefresh
-                }
+            topScrollbar = images[Images.SupportScrollBarTop] in locations.support.topScrollbarRegion
+
+            if (!topScrollbar) {
+                movedScrollBar = images[Images.SupportScrollBarMoved] in locations.support.topScrollbarRegion
+                bottomScrollbar = images[Images.SupportScrollBarBottom] in
+                        locations.support.bottomScrollbarRegion
+            }
+
+        }
+        if (matched.isEmpty()) {
+            return when {
+                topScrollbar -> SupportSelectionResult.ScrollDown
+                movedScrollBar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
+                else -> SupportSelectionResult.EarlyRefresh
+            }
+        }
+
+        if (supportPrefs.checkAppend) {
+            matched = servantSelection.checkForAppends(matched)
+        }
+
+        val selectedMatched: Region? = matched.firstNotNullOfOrNull { it }
+
+        return if (selectedMatched != null) {
+            selectedMatched.click()
+            SupportSelectionResult.Done
+        } else {
+            when {
+                topScrollbar -> SupportSelectionResult.ScrollDown
+                movedScrollBar && !bottomScrollbar -> SupportSelectionResult.ScrollDown
+                else -> SupportSelectionResult.EarlyRefresh
             }
         }
     }
