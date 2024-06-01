@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.SupportImageKind
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.ScriptLog
+import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.scripts.prefs.ISupportPreferences
 import io.github.lib_automata.Location
 import io.github.lib_automata.Pattern
@@ -116,6 +117,11 @@ class ServantSelection @Inject constructor(
     }
 
     private fun checkIfSkillsAreToggled(bounds: Region) {
+        if (prefs.gameServer in listOf(GameServer.Tw, GameServer.Kr, GameServer.Cn)) {
+            locations.support.skillDisplayRegion.click()
+            0.25.seconds.wait()
+            return
+        }
         val y = bounds.y + 225
         val skillMargin = 90
         val x = bounds.x + 1610
