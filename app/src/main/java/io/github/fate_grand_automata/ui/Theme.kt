@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 val md_theme_light_primary = Color(0xFF006495)
@@ -179,7 +180,7 @@ class Padding {
 
 val MaterialTheme.padding: Padding
     get() = Padding()
-    
+
 
 @Composable
 fun FGATheme(
