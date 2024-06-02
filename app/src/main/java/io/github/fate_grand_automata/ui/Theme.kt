@@ -160,6 +160,27 @@ fun FGAListItemColors() = ListItemDefaults.colors(
     containerColor = MaterialTheme.colorScheme.surfaceVariant
 )
 
+class Padding {
+
+    val extraLarge = 32.dp
+
+    val large = 24.dp
+
+    val medium = 16.dp
+
+    val small = 8.dp
+
+    val extraSmall = 4.dp
+
+    val smallest = 2.dp
+
+    val none = 0.dp
+}
+
+val MaterialTheme.padding: Padding
+    get() = Padding()
+    
+
 @Composable
 fun FGATheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
