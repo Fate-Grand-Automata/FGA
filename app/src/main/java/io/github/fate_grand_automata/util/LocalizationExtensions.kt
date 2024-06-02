@@ -192,4 +192,4 @@ val SupportImageKind.title
         SupportImageKind.CE -> R.string.support_img_namer_ce
         SupportImageKind.Friend -> R.string.support_img_namer_friend_names
     }
-    }
+    
