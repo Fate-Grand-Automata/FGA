@@ -30,7 +30,7 @@ import io.github.fate_grand_automata.ui.launcher.ScriptLauncher
 import io.github.fate_grand_automata.ui.launcher.ScriptLauncherResponse
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIState
 import io.github.fate_grand_automata.ui.runner.ScriptRunnerUIStateHolder
-import io.github.fate_grand_automata.ui.support_img_namer.showSupportImageNamer
+import io.github.fate_grand_automata.ui.support_img_namer.showSupportImageMaker
 import io.github.fate_grand_automata.util.FakedComposeView
 import io.github.fate_grand_automata.util.ImageLoader
 import io.github.fate_grand_automata.util.KnownException
@@ -155,7 +155,12 @@ class ScriptManager @Inject constructor(
                         messageBox.show(scriptExitedString, msg)
                     }
 
-                    SupportImageMaker.ExitReason.Success -> showSupportImageNamer(context, storageProvider)
+                    SupportImageMaker.ExitReason.Success -> {
+                        showSupportImageMaker(
+                            context = service,
+                            storageProvider = storageProvider
+                        )
+                    }
                 }
             }
 

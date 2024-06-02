@@ -184,3 +184,11 @@ val GameServer.simpleStringRes
         is GameServer.En -> R.string.game_server_na
         is GameServer.Jp -> R.string.game_server_jp
     }
+
+val SupportImageKind.title
+    get() = when (this) {
+        SupportImageKind.Servant -> R.string.support_img_namer_servants
+        SupportImageKind.CE -> R.string.support_img_namer_ce
+        SupportImageKind.Friend -> R.string.support_img_namer_friend_names
+    }
+    }

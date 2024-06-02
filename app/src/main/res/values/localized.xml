@@ -414,4 +414,10 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="p_support_image_maker_servant">Servant</string>
+    <string name="p_support_image_maker_servant_ascension">asc1/asc2/asc3/costume1</string>
+    <string name="p_support_image_maker_ce">Craft Essence</string>
+    <string name="p_support_image_maker_friend">Friend</string>
+    
 </resources>
