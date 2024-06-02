@@ -419,5 +419,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_support_image_maker_servant_ascension">asc1/asc2/asc3/costume1</string>
     <string name="p_support_image_maker_ce">Craft Essence</string>
     <string name="p_support_image_maker_friend">Friend</string>
-    
+
+    <string name="support_img_namer_text_blank">"Text is empty."</string>
+    <string name="support_img_namer_invalid_name">"Invalid name."</string>
+    <string name="save">Save</string>    
 </resources>
