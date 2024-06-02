@@ -38,6 +38,7 @@ compose_bom_version = "2024.03.00"
 
 junit_bom_version = "5.10.2"
 
+coil_version = "2.6.0"
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle_version" }
@@ -103,6 +104,7 @@ compose-material3-window-size = { group = "androidx.compose.material3", name = "
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil_version" }
 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }
