@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.util
 
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.SupportImageKind
 import io.github.fate_grand_automata.prefs.core.GameAreaMode
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
