@@ -26,7 +26,7 @@ google_android_play_version = "2.1.0"
 activity_version = "1.9.1"
 mockk_version = "1.13.12"
 navigation_compose_version = "2.7.7"
-opencv_android_version = "4.8.1r2"
+opencv_android_version = "4.9.0"
 recyclerview_version = "1.3.2"
 tesseract4android_version = "4.7.0"
 
@@ -87,7 +87,7 @@ androidx-documentfile = { module = "androidx.documentfile:documentfile", version
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview_version" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout_version" }
 
-opencv-android = { module = "com.github.animeavi:opencv-android", version.ref = "opencv_android_version" }
+opencv-android = { group = "org.opencv", name = "opencv", version.ref = "opencv_android_version" }
 tesseract4android = { module = "cz.adaptech.tesseract4android:tesseract4android", version.ref = "tesseract4android_version" }
 
 junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit_bom_version" }
