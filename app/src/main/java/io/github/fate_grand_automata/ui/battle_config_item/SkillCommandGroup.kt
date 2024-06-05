@@ -60,7 +60,7 @@ fun SkillCommandGroup(
                         errorMessage = ""
                     } catch (e: Exception) {
                         // TODO: Localize
-                        errorMessage = "Invalid skill command"
+                        errorMessage = "Invalid skill command $e"
                     }
                 },
                 onCancel = { editing = false },
