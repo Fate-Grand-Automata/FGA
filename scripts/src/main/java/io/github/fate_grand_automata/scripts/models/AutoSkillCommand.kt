@@ -21,13 +21,51 @@ class AutoSkillCommand private constructor(
     }
 
     companion object {
-        private fun getTarget(queue: Queue<Char>): ServantTarget? {
-            val peekTarget = queue.peek()
-            val target = ServantTarget.list.firstOrNull { it.autoSkillCode == peekTarget }
-            if (target != null) {
-                queue.remove()
+
+        // Prepare the list of special targets
+        private val specialTargetList = ServantTarget
+            .list
+            .filter {
+                it.specialTarget.isNotEmpty()
             }
 
+        private fun getTarget(queue: Queue<Char>): ServantTarget? {
+            val peekTarget = queue.peek()
+            var target: ServantTarget? = null
+            if (peekTarget == '[') {
+                // remove initial [
+                queue.remove()
+
+                var special = ""
+                var char: Char? = null
+
+                while (queue.isNotEmpty()) {
+                    char = queue.remove()
+                    if (char == ']') break
+
+                    if (char != '[') {
+                        special += char
+                    }
+                    target = specialTargetList
+                        .firstOrNull {
+                            it.specialTarget == special
+                        }
+                }
+                if (char != ']') {
+                    throw Exception("Found [ but no matching ] in Skill Command")
+                }
+                if (special.isEmpty()) {
+                    throw Exception("Command Can't be empty")
+                }
+                if (target == null) {
+                    throw Exception("Special target \"$special\" not found")
+                }
+            } else {
+                target = ServantTarget.list.firstOrNull { it.autoSkillCode == peekTarget }
+                if (target != null) {
+                    queue.remove()
+                }
+            }
             return target
         }
 
@@ -37,14 +75,47 @@ class AutoSkillCommand private constructor(
             if (nextChar == '(') {
                 queue.remove()
                 var char: Char? = null
+                var specialFound = false
+                var special = ""
                 while (queue.isNotEmpty()) {
                     char = queue.remove()
                     if (char == ')') break
-                    val target = ServantTarget.list.firstOrNull { it.autoSkillCode == char }
-                    target?.let(targets::add)
+
+                    if (char == '[') {
+                        specialFound = true
+                    } else if (char == ']') {
+                        specialFound = false
+                        val target = specialTargetList.firstOrNull {
+                            it.specialTarget == special
+                        }
+                        target?.let {
+                            targets.add(it)
+
+                            // reset
+                            special = ""
+                        } ?: run {
+                            if (special.isEmpty()) {
+                                throw Exception("Command Can't be empty")
+                            } else {
+                                throw Exception("Special target \"$special\" not found")
+                            }
+                        }
+                    }
+
+                    if (specialFound) {
+                        if (char != '[') {
+                            special += char
+                        }
+                    } else {
+                        val target = ServantTarget.list.firstOrNull { it.autoSkillCode == char }
+                        target?.let(targets::add)
+                    }
                 }
                 if (char != ')') {
                     throw Exception("Found ( but no matching ) in Skill Command")
+                }
+                if (specialFound) {
+                    throw Exception("Found [ but no matching ] in Skill Command")
                 }
             } else {
                 getTarget(queue)?.let(targets::add)

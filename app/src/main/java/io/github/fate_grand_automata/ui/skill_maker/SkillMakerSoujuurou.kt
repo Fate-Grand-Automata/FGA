@@ -41,19 +41,19 @@ fun SkillMakerSoujuurou(
                 .fillMaxWidth()
         ) {
             TargetButton(
-                onClick = { onSkillTarget(ServantTarget.ChangeQuick) },
+                onClick = { onSkillTarget(ServantTarget.SpecialTarget.SoujuurouChangeQuick) },
                 color = colorResource(R.color.colorQuickResist),
                 text = stringResource(R.string.skill_maker_quick)
             )
 
             TargetButton(
-                onClick = { onSkillTarget(ServantTarget.ChangeArts) },
+                onClick = { onSkillTarget(ServantTarget.SpecialTarget.SoujuurouChangeArts) },
                 color = colorResource(R.color.colorArtsResist),
                 text = stringResource(R.string.skill_maker_arts)
             )
 
             TargetButton(
-                onClick = { onSkillTarget(ServantTarget.ChangeBuster) },
+                onClick = { onSkillTarget(ServantTarget.SpecialTarget.SoujuurouChangeBuster) },
                 color = colorResource(R.color.colorBuster),
                 text = stringResource(R.string.skill_maker_buster)
             )

@@ -6,15 +6,42 @@ import io.github.fate_grand_automata.scripts.models.Skill
 
 sealed class SkillMakerEntry {
     class Action(val action: AutoSkillAction) : SkillMakerEntry() {
-        private fun toString(skill: Skill, target: ServantTarget?) =
-            if (target == null)
-                "${skill.autoSkillCode}"
-            else "${skill.autoSkillCode}${target.autoSkillCode}"
+        private fun toString(skill: Skill, target: ServantTarget?) = when (target) {
+            null -> "${skill.autoSkillCode}"
+            else -> {
+                if (target.specialTarget.isNotEmpty()) {
+                    "${skill.autoSkillCode}${target.autoSkillCode}${target.specialTarget}]"
+                } else {
+                    "${skill.autoSkillCode}${target.autoSkillCode}"
+                }
+            }
+        }
 
-        private fun toString(skill: Skill, targets: List<ServantTarget>) =
-            if (targets.isEmpty()) "${skill.autoSkillCode}"
-            else if (targets.size == 1) "${skill.autoSkillCode}${targets[0].autoSkillCode}"
-            else "${skill.autoSkillCode}(${targets.map(ServantTarget::autoSkillCode).joinToString("")})"
+        private fun toString(skill: Skill, targets: List<ServantTarget>) = when {
+            targets.isEmpty() -> "${skill.autoSkillCode}"
+            targets.size == 1 -> {
+                if (targets[0].specialTarget.isNotEmpty()) {
+                    "${skill.autoSkillCode}${targets[0].autoSkillCode}${targets[0].specialTarget}]"
+                } else {
+                    "${skill.autoSkillCode}${targets[0].autoSkillCode}"
+                }
+            }
+
+            else -> {
+                val start = "${skill.autoSkillCode}("
+                val end = ")"
+
+                val middle = targets.joinToString("") { target ->
+                    if (target.specialTarget.isNotEmpty()) {
+                        "${target.autoSkillCode}${target.specialTarget}]"
+                    } else {
+                        "${target.autoSkillCode}"
+                    }
+                }
+
+                start + middle + end
+            }
+        }
 
         override fun toString() = when (action) {
             is AutoSkillAction.Atk -> {

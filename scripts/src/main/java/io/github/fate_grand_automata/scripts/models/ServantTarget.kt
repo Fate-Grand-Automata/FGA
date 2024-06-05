@@ -1,6 +1,9 @@
 package io.github.fate_grand_automata.scripts.models
 
-sealed class ServantTarget(val autoSkillCode: Char) {
+sealed class ServantTarget(
+    val autoSkillCode: Char,
+    val specialTarget: String = ""
+) {
     data object A : ServantTarget('1')
     data object B : ServantTarget('2')
     data object C : ServantTarget('3')
@@ -16,10 +19,34 @@ sealed class ServantTarget(val autoSkillCode: Char) {
     // Mélusine
     data object Melusine : ServantTarget('M')
 
-    // Soujuurou
-    data object ChangeQuick : ServantTarget('Q')
-    data object ChangeArts : ServantTarget('A')
-    data object ChangeBuster : ServantTarget('B')
+    sealed class SpecialTarget(
+        targetCode: String
+    ) : ServantTarget(autoSkillCode = '[', specialTarget = targetCode) {
+
+        companion object {
+            private val codes = mutableSetOf<String>()
+
+            private fun validateString(targetCode: String) {
+                for (existingCode in codes) {
+                    require(!(targetCode.startsWith(existingCode) || existingCode.startsWith(targetCode))) {
+                        "Special target code " +
+                                "$targetCode conflicts with existing code $existingCode"
+
+                    }
+                }
+                codes.add(targetCode)
+            }
+        }
+
+        init {
+            validateString(targetCode)
+        }
+
+        // Soujuurou
+        data object SoujuurouChangeQuick : SpecialTarget("SCQ")
+        data object SoujuurouChangeArts : SpecialTarget("SCA")
+        data object SoujuurouChangeBuster : SpecialTarget("SCB")
+    }
 
     companion object {
         val list by lazy {
@@ -28,7 +55,9 @@ sealed class ServantTarget(val autoSkillCode: Char) {
                 Left, Right,
                 Option1, Option2,
                 Melusine,
-                ChangeQuick, ChangeBuster, ChangeArts
+                SpecialTarget.SoujuurouChangeQuick,
+                SpecialTarget.SoujuurouChangeArts,
+                SpecialTarget.SoujuurouChangeBuster
             )
         }
     }
