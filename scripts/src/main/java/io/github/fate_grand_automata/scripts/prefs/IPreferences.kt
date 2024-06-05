@@ -7,6 +7,7 @@ import kotlin.time.Duration
 
 interface IPreferences {
     var scriptMode: ScriptModeEnum
+    var debugMode: Boolean
     var gameServer: GameServer
     val battleConfigs: List<IBattleConfig>
     var showGameServers: List<GameServer>
@@ -49,7 +50,6 @@ interface IPreferences {
     var ceBombTargetRarity: Int
 
     val servant: IServantEnhancementPreferences
-
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
     fun addPerServerConfigPref(server: GameServer): IPerServerConfigPrefs

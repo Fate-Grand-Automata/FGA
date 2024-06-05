@@ -143,6 +143,9 @@ class ScriptMessages @Inject constructor(
                     context.getString(R.string.bond_level_up)
                 )
             }
+            is ScriptLog.TurnTrackingAtNewStage -> {
+                Timber.d("Wave: ${item.wave + 1}, Current Turn: ${item.currentTurn}, Skip Turns: ${item.skipTurn}")
+            }
         }
 
     private fun makeRefillAndRunsMessage(

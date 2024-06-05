@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -10,6 +11,7 @@ import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.math.max
 import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
@@ -122,9 +124,11 @@ class Battle @Inject constructor(
         trackSkipTurns()
 
         val outOfCommands = isOutOfCommand()
-        // if (outOfCommands && battleSettings.exitOnOutOfCommands) {
-        //    throw AutoBattle.BattleExitException(AutoBattle.ExitReason.ExitOnOutOfCommands)
-        // }
+        val perServerConfigPrefs = prefs.selectedServerConfigPref
+
+        if (outOfCommands && perServerConfigPrefs.exitOnOutOfCommands) {
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.ExitOnOutOfCommands)
+        }
     }
 
     private fun trackSkipTurns() {

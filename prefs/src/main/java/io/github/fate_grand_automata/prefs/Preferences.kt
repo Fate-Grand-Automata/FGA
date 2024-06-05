@@ -18,6 +18,8 @@ class PreferencesImpl @Inject constructor(
 ) : IPreferences {
     override var scriptMode by prefs.scriptMode
 
+    override var debugMode by prefs.debugMode
+
     override var gameServer = GameServer.default
 
     private var battleConfigList by prefs.battleConfigList

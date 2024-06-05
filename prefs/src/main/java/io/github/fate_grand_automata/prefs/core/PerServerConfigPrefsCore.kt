@@ -45,4 +45,6 @@ class PerServerConfigPrefsCore(
 
 
     val refill = RefillPrefsCore(maker)
+
+    val exitOnOutOfCommands = maker.bool("exit_on_out_of_commands")
 }

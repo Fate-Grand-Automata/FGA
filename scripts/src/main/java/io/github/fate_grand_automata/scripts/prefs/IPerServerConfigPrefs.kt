@@ -30,4 +30,6 @@ interface IPerServerConfigPrefs {
 
     var shouldLimitCEs: Boolean
     var limitCEs: Int
+
+    var exitOnOutOfCommands: Boolean
 }

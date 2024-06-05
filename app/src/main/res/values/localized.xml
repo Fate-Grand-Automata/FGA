@@ -246,7 +246,7 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="withdraw_disabled">"All servants have been defeated and auto-withdrawing is disabled."</string>
     <string name="stop_after_this_run">"Stop after this run"</string>
     <string name="p_stop_on_out_of_commands">Out of Commands. Exiting Early for manual override.</string>
-    
+
     <string name="times_ran">"Ran %d time(s)"</string>
     <string name="times_ran_out_of">"Ran %1$d out of %2$d time(s)"</string>
     <string name="refills_used_out_of">"%1$d refills used out of %2$d"</string>
@@ -416,4 +416,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="p_battle_launcher_pager_run_options">Run</string>
+    <string name="p_battle_launcher_pager_more_settings">More Settings</string>
+    <string name="p_exit_on_out_of_commands">"Out of Commands Exit"</string>
+    <string name="p_exit_on_out_of_commands_summary">"Exit Battle when ran out of commands"</string>
 </resources>

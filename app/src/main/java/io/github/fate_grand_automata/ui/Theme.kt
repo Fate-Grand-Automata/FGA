@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 val md_theme_light_primary = Color(0xFF006495)
@@ -159,6 +160,26 @@ private val DarkColors = darkColorScheme(
 fun FGAListItemColors() = ListItemDefaults.colors(
     containerColor = MaterialTheme.colorScheme.surfaceVariant
 )
+
+class Padding {
+
+    val extraLarge = 32.dp
+
+    val large = 24.dp
+
+    val medium = 16.dp
+
+    val small = 8.dp
+
+    val extraSmall = 4.dp
+
+    val smallest = 2.dp
+
+    val none = 0.dp
+}
+
+val MaterialTheme.padding: Padding
+    get() = Padding()
 
 @Composable
 fun FGATheme(

@@ -40,6 +40,12 @@ sealed class ScriptLog {
         val servant: TeamSlot,
         val isSupport: Boolean = false
     ) : ScriptLog()
+
+    class TurnTrackingAtNewStage(
+        val wave: Int,
+        val currentTurn: Int,
+        val skipTurn: Int
+    ) : ScriptLog()
 }
 
 interface IScriptMessages {
