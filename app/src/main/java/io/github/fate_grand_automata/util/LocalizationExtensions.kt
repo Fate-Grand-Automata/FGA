@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.util
 
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.SupportImageKind
 import io.github.fate_grand_automata.prefs.core.GameAreaMode
 import io.github.fate_grand_automata.scripts.enums.BraveChainEnum
 import io.github.fate_grand_automata.scripts.enums.GameServer
@@ -184,3 +185,11 @@ val GameServer.simpleStringRes
         is GameServer.En -> R.string.game_server_na
         is GameServer.Jp -> R.string.game_server_jp
     }
+
+val SupportImageKind.title
+    get() = when (this) {
+        SupportImageKind.Servant -> R.string.support_img_namer_servants
+        SupportImageKind.CE -> R.string.support_img_namer_ce
+        SupportImageKind.Friend -> R.string.support_img_namer_friend_names
+    }
+    

@@ -142,4 +142,5 @@ dependencies {
 
     implementation(libs.google.android.play.update.ktx)
 
+    implementation(libs.coil.compose)
 }
