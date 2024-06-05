@@ -13,7 +13,7 @@ interface IPreferences {
     var showGameServers: List<GameServer>
     var selectedServerConfigPref: IPerServerConfigPrefs
     var selectedBattleConfig: IBattleConfig
-    val storySkip: Boolean
+    var storySkip: Boolean
     val withdrawEnabled: Boolean
     val stopOnCEGet: Boolean
     val stopOnFirstClearRewards: Boolean

@@ -389,11 +389,13 @@ private fun BattleConfigSettings(
 ) {
     var debugMode by remember { mutableStateOf(prefs.debugMode) }
     var exitOnOutOfCommands by remember { mutableStateOf(perServerConfigPref.exitOnOutOfCommands) }
+    var storySkip by remember { mutableStateOf(prefs.storySkip) }
 
     DisposableEffect(Unit) {
         onDispose {
             prefs.debugMode = debugMode
             perServerConfigPref.exitOnOutOfCommands = exitOnOutOfCommands
+            prefs.storySkip = storySkip
         }
     }
 
@@ -413,18 +415,27 @@ private fun BattleConfigSettings(
     ) {
         item {
             SettingsCheckBox(
-                settings = debugMode,
-                text = stringResource(R.string.p_debug_mode),
-                onSettingsChange = { debugMode = it }
-            )
-        }
-
-        item {
-            SettingsCheckBox(
                 settings = exitOnOutOfCommands,
                 text = stringResource(R.string.p_exit_on_out_of_commands),
                 supportingText = stringResource(R.string.p_exit_on_out_of_commands_summary),
                 onSettingsChange = { exitOnOutOfCommands = it }
+            )
+        }
+        item {
+            HorizontalDivider()
+        }
+        item {
+            SettingsCheckBox(
+                settings = storySkip,
+                text = stringResource(R.string.p_story_skip),
+                onSettingsChange = { storySkip = it }
+            )
+        }
+        item {
+            SettingsCheckBox(
+                settings = debugMode,
+                text = stringResource(R.string.p_debug_mode),
+                onSettingsChange = { debugMode = it }
             )
         }
     }

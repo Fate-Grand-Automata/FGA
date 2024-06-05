@@ -65,7 +65,7 @@ class PreferencesImpl @Inject constructor(
             selectedServerConfigPref.selectedAutoSkillKey = value.id
         }
 
-    override val storySkip by prefs.storySkip
+    override var storySkip by prefs.storySkip
 
     override val withdrawEnabled by prefs.withdrawEnabled
 
