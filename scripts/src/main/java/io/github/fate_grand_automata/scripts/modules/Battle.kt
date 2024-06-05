@@ -118,5 +118,40 @@ class Battle @Inject constructor(
         if (battleConfig.autoChooseTarget) {
             autoChooseTarget.choose()
         }
+
+        trackSkipTurns()
+
+        val outOfCommands = isOutOfCommand()
+        // if (outOfCommands && battleSettings.exitOnOutOfCommands) {
+        //    throw AutoBattle.BattleExitException(AutoBattle.ExitReason.ExitOnOutOfCommands)
+        // }
     }
+
+    private fun trackSkipTurns() {
+        if (!(state.stage > 0 && state.turn < 1)) return
+
+        var commandTurnsUntilStage = autoSkill.commandTurnsUntilStage(state.stage)
+
+        // add additional turn since it is checking at next stage/wave
+        commandTurnsUntilStage += 1
+
+        val skipTurns = max(0, commandTurnsUntilStage - (state.currentTurn + state.skipCommandTurns))
+
+        messages.log(
+            ScriptLog.TurnTrackingAtNewStage(
+                wave = state.stage,
+                currentTurn = state.currentTurn,
+                skipTurn = state.skipCommandTurns
+            )
+        )
+
+        state.addSkipCommandTurns(skipTurns)
+    }
+
+    private fun isOutOfCommand(): Boolean {
+        val totalCommandTurns = autoSkill.getTotalCommandTurns
+
+        return (state.currentTurn + state.skipCommandTurns) > totalCommandTurns
+    }
+
 }

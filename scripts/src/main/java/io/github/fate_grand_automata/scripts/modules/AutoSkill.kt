@@ -21,6 +21,11 @@ class AutoSkill @Inject constructor(
         is AutoSkillAction.OrderChange -> caster.orderChange(action)
     }
 
+    val getTotalCommandTurns
+        get() = skillCommand.getTotalCommandTurns
+
+    fun commandTurnsUntilStage(stage: Int) = skillCommand.commandTurnsUntilStage(stage)
+
     fun execute(stage: Int, turn: Int): NPUsage {
         val commandList = skillCommand[stage, turn]
         var npUsage = NPUsage.none

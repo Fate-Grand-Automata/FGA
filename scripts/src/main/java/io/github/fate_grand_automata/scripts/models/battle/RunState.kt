@@ -7,6 +7,9 @@ class RunState {
     val runTime get() = timestamp.elapsedNow()
     var totalTurns = 0
         private set
+    
+    var skipCommandTurns = 0
+        private set
 
     var stage = -1
         private set(value) {
@@ -38,4 +41,8 @@ class RunState {
     fun nextTurn() = ++turn
 
     var shuffled = false
+
+    fun addSkipCommandTurns(skip: Int) {
+        skipCommandTurns += skip
+    }
 }
