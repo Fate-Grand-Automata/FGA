@@ -28,6 +28,7 @@ fun SkillMakerTarget(
     onEmiya: () -> Unit,
     showSpaceIshtar: Boolean,
     onSpaceIshtar: () -> Unit,
+    showKukulkan: Boolean,
     onKukulkan: () -> Unit,
     showMelusine: Boolean,
     onMelusine: () -> Unit
@@ -72,8 +73,10 @@ fun SkillMakerTarget(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Button(onClick = onKukulkan) {
-                Text(stringResource(R.string.skill_maker_kukulkan))
+            if (showKukulkan) {
+                Button(onClick = onKukulkan) {
+                    Text(stringResource(R.string.skill_maker_kukulkan))
+                }
             }
 
             if (
@@ -118,7 +121,12 @@ fun TestSkillMakerTargetIshtar() = TestSkillMaker(showSpaceIshtar = true)
 fun TestSkillMakerOnlyKukulkan() = TestSkillMaker()
 
 @Composable
-private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean = false, showMelusine: Boolean = showEmiya) {
+private fun TestSkillMaker(
+    showEmiya: Boolean = false,
+    showKukulkan: Boolean = false, 
+    showSpaceIshtar: Boolean = false, 
+    showMelusine: Boolean = showEmiya
+) {
     FGATheme {
         SkillMakerTarget(
             onSkillTarget = {},
@@ -126,6 +134,7 @@ private fun TestSkillMaker(showEmiya: Boolean = false, showSpaceIshtar: Boolean 
             onEmiya = {},
             showSpaceIshtar = showSpaceIshtar,
             onSpaceIshtar = {},
+            showKukulkan = showKukulkan,
             onKukulkan = {},
             showMelusine = showMelusine,
             onMelusine = {}

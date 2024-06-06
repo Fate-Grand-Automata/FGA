@@ -152,6 +152,7 @@ fun SkillMakerUI(
                     onSpaceIshtar = {
                         navigate(SkillMakerNav.SpaceIshtar(nav.skill))
                     },
+                    showKukulkan = nav.skill !is Skill.Master,
                     onKukulkan = {
                         navigate(SkillMakerNav.Kukulkan(nav.skill))
                     },
