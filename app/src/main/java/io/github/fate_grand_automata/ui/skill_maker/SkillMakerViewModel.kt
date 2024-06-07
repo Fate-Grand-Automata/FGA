@@ -58,7 +58,7 @@ class SkillMakerViewModel @Inject constructor(
         }
     )
     private val _turn = mutableIntStateOf(
-        if (state.skillString != null){
+        if (state.skillString != null) {
             state.turn
         } else {
             model.skillCommand.count { it is SkillMakerEntry.Next } + 1
@@ -287,7 +287,7 @@ class SkillMakerViewModel @Inject constructor(
             prevStage()
             prevTurn()
         }
-        if (last is SkillMakerEntry.Next.Turn){
+        if (last is SkillMakerEntry.Next.Turn) {
             prevTurn()
         }
 
@@ -303,6 +303,10 @@ class SkillMakerViewModel @Inject constructor(
         while (!isEmpty()) {
             onDeleteSelected()
         }
+    }
+
+    fun clearSelection() {
+        _currentIndex.value = model.skillCommand.lastIndex
     }
 
     fun onDeleteSelected() {
