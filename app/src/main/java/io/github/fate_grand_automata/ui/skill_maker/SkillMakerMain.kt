@@ -78,7 +78,13 @@ fun SkillMakerMain(
 
             EnemyTarget(
                 selected = enemyTarget,
-                onSelectedChange = { vm.setEnemyTarget(it) }
+                onSelectedChange = { target ->
+                    if (enemyTarget == target) {
+                        vm.deleteIfLastActionIsTarget(target)
+                    } else {
+                        vm.setEnemyTarget(target)
+                    }
+                }
             )
 
             Column(
