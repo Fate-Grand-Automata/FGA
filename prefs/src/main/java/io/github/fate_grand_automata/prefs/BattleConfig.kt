@@ -31,6 +31,8 @@ internal class BattleConfig(
 
     override val autoChooseTarget by prefs.autoChooseTarget
 
+    override var exitOnOutOfCommands by prefs.exitOnOutOfCommands
+
     override val server by prefs.server.map(
         defaultValue = null,
         convert = { it.asGameServer() },

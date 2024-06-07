@@ -414,4 +414,10 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="p_stop_on_out_of_commands">Out of Commands. Exiting Early for manual override.</string>
+    <string name="p_exit_on_out_of_commands">"Out of Commands Exit"</string>
+    <string name="p_exit_on_out_of_commands_summary">"Exit Battle when ran out of commands"</string>
+    <string name="state_on">On</string>
+    <string name="state_off">Off</string>
 </resources>

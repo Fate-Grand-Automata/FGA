@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -10,6 +11,7 @@ import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.math.max
 import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
@@ -118,5 +120,40 @@ class Battle @Inject constructor(
         if (battleConfig.autoChooseTarget) {
             autoChooseTarget.choose()
         }
+
+        trackSkipTurns()
+
+        val outOfCommands = isOutOfCommand()
+
+        if (outOfCommands && battleConfig.exitOnOutOfCommands) {
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.ExitOnOutOfCommands)
+        }
+    }
+
+    private fun trackSkipTurns() {
+        if (!(state.stage > 0 && state.turn < 1)) return
+
+        var commandTurnsUntilStage = autoSkill.commandTurnsUntilStage(state.stage)
+
+        // add additional turn since it is checking at next stage/wave
+        commandTurnsUntilStage += 1
+
+        val skipTurns = max(0, commandTurnsUntilStage - (state.currentTurn + state.skipCommandTurns))
+
+        messages.log(
+            ScriptLog.TurnTrackingAtNewStage(
+                wave = state.stage,
+                currentTurn = state.currentTurn,
+                skipTurn = state.skipCommandTurns
+            )
+        )
+
+        state.addSkipCommandTurns(skipTurns)
+    }
+
+    private fun isOutOfCommand(): Boolean {
+        val totalCommandTurns = autoSkill.getTotalCommandTurns
+
+        return (state.currentTurn + state.skipCommandTurns) > totalCommandTurns
     }
 }

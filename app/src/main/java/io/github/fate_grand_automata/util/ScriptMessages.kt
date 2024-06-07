@@ -97,6 +97,10 @@ class ScriptMessages @Inject constructor(
                 val supportText = if (item.isSupport) "Support " else ""
                 Timber.d("${item.cards} belong to ${supportText}${item.servant}")
             }
+
+            is ScriptLog.TurnTrackingAtNewStage -> {
+                Timber.d("Wave: ${item.wave + 1}, Current Turn: ${item.currentTurn}, Skip Turns: ${item.skipTurn}")
+            }
         }
 
     override fun notify(action: ScriptNotify) =
@@ -138,6 +142,7 @@ class ScriptMessages @Inject constructor(
 
                 toast(msg)
             }
+
             is ScriptNotify.BondLevelUp -> {
                 notify(
                     context.getString(R.string.bond_level_up)

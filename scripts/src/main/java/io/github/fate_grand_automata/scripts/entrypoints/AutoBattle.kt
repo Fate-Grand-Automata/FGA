@@ -74,6 +74,7 @@ class AutoBattle @Inject constructor(
         class CardPriorityParseError(val msg: String) : ExitReason()
         data object Paused : ExitReason()
         data object StopAfterThisRun : ExitReason()
+        data object ExitOnOutOfCommands : ExitReason()
     }
 
     internal class BattleExitException(val reason: ExitReason) : Exception(reason.cause)
@@ -229,7 +230,7 @@ class AutoBattle @Inject constructor(
         // In case the repeat loop breaks and we end up in menu (like withdrawing from quests)
         isContinuing = false
 
-        if (isQuestClose){
+        if (isQuestClose) {
             // Ordeal Call
             isQuestClose = false
             throw BattleExitException(ExitReason.LimitRuns(state.runs))
@@ -268,10 +269,10 @@ class AutoBattle @Inject constructor(
 
     private fun isInBondScreen() = images[Images.Bond] in locations.resultBondRegion
 
-    private fun handleBondScreen(){
+    private fun handleBondScreen() {
         canScreenshotBondCE = true
 
-        if (prefs.screenshotBond){
+        if (prefs.screenshotBond) {
             screenshotDrops.screenshotBond()
             messages.notify(ScriptNotify.BondLevelUp)
             0.5.seconds.wait()
@@ -286,8 +287,8 @@ class AutoBattle @Inject constructor(
     /**
      * It seems like we need to click on CE (center of screen) to accept them
      */
-    private fun bond10CEReward(){
-        if (prefs.screenshotBond && canScreenshotBondCE){
+    private fun bond10CEReward() {
+        if (prefs.screenshotBond && canScreenshotBondCE) {
             screenshotDrops.screenshotBond()
             0.5.seconds.wait()
             canScreenshotBondCE = false
@@ -504,7 +505,7 @@ class AutoBattle @Inject constructor(
      */
     private fun showRefillsAndRunsMessage() {
         if (state.runs < 1) return
-        
+
         messages.notify(
             ScriptNotify.BetweenRuns(
                 refills = refill.timesRefilled,
