@@ -153,6 +153,36 @@ class SkillMakerViewModel @Inject constructor(
         }
     }
 
+    fun deleteIfLastActionIsTarget(target: Int?) {
+        if (target == null) {
+            return
+        }
+
+        if (!isEmpty()) {
+            // Un-select target
+            when (val last = last) {
+                // Battle/Turn change
+                is SkillMakerEntry.Next -> {
+                    // Do nothing
+                }
+
+                is SkillMakerEntry.Action -> {
+                    if (
+                        last.action is AutoSkillAction.TargetEnemy &&
+                        last.action.enemy.autoSkillCode == EnemyTarget.list[target - 1].autoSkillCode
+                    ) {
+                        deleteSelected()
+                        revertToPreviousEnemyTarget()
+                    }
+                }
+
+                is SkillMakerEntry.Start -> {
+                    // Do nothing
+                }
+            }
+        }
+    }
+
     fun unSelectTargets() = setEnemyTarget(null)
 
     val wave: State<Int> = _wave
