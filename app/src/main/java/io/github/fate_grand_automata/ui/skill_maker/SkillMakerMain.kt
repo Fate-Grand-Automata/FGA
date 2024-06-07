@@ -27,7 +27,9 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,6 +41,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
@@ -327,13 +330,25 @@ fun EnemyTarget(
             ) {
                 RadioButton(
                     selected = isSelected,
-                    onClick = onClick
+                    onClick = onClick,
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = MaterialTheme.colorScheme.error,
+                        unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 )
 
                 Text(
                     stringResource(R.string.skill_maker_main_enemy, it),
                     modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = 5.dp),
+                    textDecoration = when (isSelected) {
+                        true -> TextDecoration.Underline
+                        false -> null
+                    },
+                    color = when (isSelected) {
+                        true -> MaterialTheme.colorScheme.error
+                        false -> Color.Unspecified
+                    }
                 )
             }
         }
