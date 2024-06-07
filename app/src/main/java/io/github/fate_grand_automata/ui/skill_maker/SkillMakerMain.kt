@@ -295,7 +295,7 @@ fun SkillHistory(vm: SkillMakerViewModel) {
                     .let {
                         if (isSelected) {
                             it.border(
-                                2.dp,
+                                width = 2.dp,
                                 color = colorResource(android.R.color.darker_gray),
                                 shape = shape
                             )
@@ -311,7 +311,10 @@ fun SkillHistory(vm: SkillMakerViewModel) {
 
                 Text(
                     text,
-                    color = Color.White
+                    color = Color.White,
+                    modifier = Modifier.padding(
+                        all = 4.dp
+                    )
                 )
             }
         }
