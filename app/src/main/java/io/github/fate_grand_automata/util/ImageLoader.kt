@@ -108,7 +108,6 @@ class ImageLoader @Inject constructor(
         Images.SupportRefresh -> "support_refresh.png"
         Images.ServantCheckSupport -> "servant_check_support.png"
         Images.BattleMenu -> "battle_menu.png"
-        Images.EmptyEnhance -> "empty_enhance.png"
         Images.CEGloomLv1 -> "gloom_0.png"
         Images.CEStarvationLv1 -> "starvation_0.png"
         Images.CEAwakeningLv1 -> "awakening_0.png"
@@ -122,6 +121,14 @@ class ImageLoader @Inject constructor(
         Images.SkillUse -> "skill_use.png"
         Images.RankUp -> "rank_up.png"
         Images.Close -> "close.png"
+
+        Images.EmptyEnhance -> "empty_enhance.png"
+        Images.Ok -> "ok.png"
+        Images.Execute -> "execute.png"
+        Images.SkillMenuBanner -> "skill_menu_banner.png"
+        Images.SkillInsufficientMaterials -> "skill_insufficient_mats.png"
+        Images.SkillInsufficientQP -> "skill_insufficient_qp.png"
+
         Images.ServantAutoSelect -> "servant_auto_select.png"
         Images.ServantAutoSelectOff -> "servant_auto_select_off.png"
         Images.ServantMaxLevel -> "servant_max_level.png"
@@ -130,9 +137,7 @@ class ImageLoader @Inject constructor(
         Images.ServantGrailBanner -> "servant_palingenesis_banner.png"
         Images.ServantAscensionBanner -> "servant_ascension_banner.png"
         Images.ServantAscensionReturnToLevel -> "servant_ascension_return_to_level.png"
-        Images.Ok -> "ok.png"
         Images.OkKR -> "ok-kr.png"
-        Images.Execute -> "execute.png"
         Images.SupportBlankCE -> "support_blank_ce.png"
     }
 

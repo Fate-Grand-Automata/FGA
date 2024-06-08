@@ -50,6 +50,7 @@ interface IPreferences {
 
     val servant: IServantEnhancementPreferences
 
+    var emptyEnhance: Boolean
     fun getPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
 
     fun addPerServerConfigPref(server: GameServer): IPerServerConfigPrefs
@@ -59,6 +60,8 @@ interface IPreferences {
     fun removeBattleConfig(id: String)
     fun isOnboardingRequired(): Boolean
     fun completedOnboarding()
+
+    val skill: ISkillPreferences
 }
 
 val IPreferences.wantsMediaProjectionToken get() = !useRootForScreenshots

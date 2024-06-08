@@ -71,6 +71,24 @@ class StandardAutomataApi @Inject constructor(
             }
     }
 
+
+    override fun Region.findNumberInText(
+        regexPattern: String,
+        replace: Map<String, String>
+    ): Int? {
+        var text = this
+            .detectText(false) // replace common OCR mistakes
+            .replace("%", "x")
+            .replace("S", "5")
+            .replace("O", "0")
+            .lowercase()
+        replace.forEach { (key, value) ->
+            text = text.replace(key, value)
+        }
+        val regex = Regex(regexPattern)
+        return regex.find(text)?.groupValues?.getOrNull(1)?.toInt()
+    }
+
     override fun Map<Pattern, Region>.exists(
         timeout: Duration, similarity: Double?, requireAll: Boolean,
     ) = imageMatcher.exists(
