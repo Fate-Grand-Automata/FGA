@@ -116,6 +116,10 @@ fun battleLauncher(
     var limitMats by remember { mutableIntStateOf(perServerConfigPref.limitMats) }
     var shouldLimitCEs by remember { mutableStateOf(perServerConfigPref.shouldLimitCEs) }
     var limitCEs by remember { mutableIntStateOf(perServerConfigPref.limitCEs) }
+
+    var shouldUseTeaPots by remember { mutableStateOf(perServerConfigPref.shouldUseTeapots) }
+    var limitTeapots by remember { mutableIntStateOf(perServerConfigPref.limitTeapots) }
+
     var waitApRegen by remember { mutableStateOf(perServerConfigPref.waitForAPRegen) }
 
     var resetAllButton by remember { mutableStateOf(false) }
@@ -128,6 +132,9 @@ fun battleLauncher(
             perServerConfigPref.limitMats = limitMats
             perServerConfigPref.shouldLimitCEs = shouldLimitCEs
             perServerConfigPref.limitCEs = limitCEs
+            perServerConfigPref.shouldUseTeapots = shouldUseTeaPots
+            perServerConfigPref.limitTeapots = limitTeapots
+
             perServerConfigPref.copperApple = copperApple
             perServerConfigPref.blueApple = blueApple
             perServerConfigPref.silverApple = silverApple
@@ -320,6 +327,8 @@ fun battleLauncher(
                                 limitCEs = 1
                                 shouldLimitMats = false
                                 limitMats = 1
+                                shouldUseTeaPots = false
+                                limitTeapots = 1
                             }
                         ) {
                             Box(
@@ -369,6 +378,18 @@ fun battleLauncher(
                     text = stringResource(R.string.p_ces),
                     count = limitCEs,
                     onCountChange = { limitCEs = it }
+                )
+            }
+            item {
+                HorizontalDivider()
+            }
+            item {
+                LimitItem(
+                    shouldLimit = shouldUseTeaPots,
+                    onShouldLimitChange = { shouldUseTeaPots = it },
+                    text = stringResource(R.string.p_teapots),
+                    count = limitTeapots,
+                    onCountChange = { limitTeapots = it }
                 )
             }
         }

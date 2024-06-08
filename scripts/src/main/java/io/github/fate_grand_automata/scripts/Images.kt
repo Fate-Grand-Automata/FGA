@@ -88,5 +88,7 @@ enum class Images {
      */
     OkKR,
     Execute,
+    TeapotsOn,
+    TeapotsOff,
     SupportBlankCE
 }

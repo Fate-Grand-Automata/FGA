@@ -12,13 +12,13 @@ sealed class ScriptNotify {
     class FailedToDetermineCards(val cards: List<CommandCard.Face>,
                                  val unknownCardTypes: Boolean, val unknownServants: Boolean) : ScriptNotify()
     class SupportListUpdatingIn(val time: Duration) : ScriptNotify()
-    class BetweenRuns(val refills: Int, val runs: Int, val ceDrops: Int) : ScriptNotify()
+    class BetweenRuns(val refills: Int, val runs: Int, val ceDrops: Int, val teapotsCount: Int = 0) : ScriptNotify()
     data object BondLevelUp : ScriptNotify()
 }
 
 sealed class ScriptLog {
-    object DefaultSupportBounds : ScriptLog()
-    object DefaultMasterOffset : ScriptLog()
+    data object DefaultSupportBounds : ScriptLog()
+    data object DefaultMasterOffset : ScriptLog()
     class CurrentParty(val party: Int?) : ScriptLog()
     class MaxSkills(
         val needMaxedSkills: List<Boolean>,
