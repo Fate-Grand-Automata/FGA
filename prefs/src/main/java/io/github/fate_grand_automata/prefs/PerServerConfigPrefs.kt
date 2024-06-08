@@ -57,4 +57,6 @@ internal class PerServerConfigPrefs(
     override var limitMats: Int by prefs.refill.limitMats
     override var shouldLimitCEs: Boolean by prefs.refill.shouldLimitCEs
     override var limitCEs: Int by prefs.refill.limitCEs
+
+    override var autoAcceptFriendRequest by prefs.autoAcceptFriendRequest
 }

@@ -98,7 +98,10 @@ class Locations @Inject constructor(
     val menuStorySkipClick = Location(1080, 80).xFromCenter()
 
     val resultFriendRequestRegion = Region(600, 150, 100, 94).xFromCenter()
+    
+    val resultFriendRequestAcceptClick = Location(680, 1200).xFromCenter()
     val resultFriendRequestRejectClick = Location(-680, 1200).xFromCenter()
+
     val resultMatRewardsRegion = Region(800, 1220, 280, 130).xFromCenter()
     val resultClick = Location(320, 1350).xFromCenter()
     val resultQuestRewardRegion = Region(350, 140, 370, 250).xFromCenter()
