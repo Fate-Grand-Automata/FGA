@@ -74,6 +74,18 @@ enum class Images {
     SkillUse,
     RankUp,
     Close,
+
+    CraftEssenceBannerOn,
+    CraftEssenceBannerOff,
+    CraftEssenceDisplaySmall,
+    CraftEssenceStar,
+    CraftEssenceFodderCEFilterOff,
+    CraftEssenceFodderSelectedCELocked,
+    CraftEssenceLock,
+    CraftEssenceOn,
+    Ok,
+    FPCENotice,
+
     ServantAutoSelect,
     ServantAutoSelectOff,
     ServantMaxLevel,
@@ -82,11 +94,10 @@ enum class Images {
     ServantGrailBanner,
     ServantAscensionBanner,
     ServantAscensionReturnToLevel,
-    Ok,
     /**
      * 2nd OK button for FGO KR
      */
     OkKR,
     Execute,
-    SupportBlankCE
+    SupportBlankCE,
 }

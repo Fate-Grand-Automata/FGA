@@ -19,6 +19,7 @@ import io.github.fate_grand_automata.util.FakedComposeView
 import io.github.fate_grand_automata.util.ScriptState
 import io.github.fate_grand_automata.util.overlayType
 import io.github.lib_automata.Location
+import io.github.lib_automata.Region
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -60,7 +61,9 @@ class ScriptRunnerOverlay @Inject constructor(
                 updateState = { act(it) },
                 isRecording = uiStateHolder.isRecording,
                 enabled = uiStateHolder.isPlayButtonEnabled,
-                onDrag = { x, y -> onDrag(x, y) }
+                onDrag = { x, y -> onDrag(x, y) },
+                onDragEnd = { savePlayButtonRegion() },
+                onPosition = { savePlayButtonRegion(initial = true) }
             )
         }.view
 
@@ -83,6 +86,30 @@ class ScriptRunnerOverlay @Inject constructor(
         setPlayBtnLocation(targetX, targetY)
 
         windowManager.updateViewLayout(layout, scriptCtrlBtnLayoutParams)
+    }
+
+    private fun savePlayButtonRegion(initial: Boolean = false) {
+        prefsCore.playButtonRegion.let {
+            if (initial && prefsCore.playBtnLocation.get() == Location()) {
+                it.set(
+                    Region(
+                        0,
+                        minOf(display.metrics.heightPixels, display.metrics.widthPixels),
+                        layout.measuredWidth,
+                        layout.measuredHeight
+                    )
+                )
+            } else {
+                it.set(
+                    Region(
+                        scriptCtrlBtnLayoutParams.x,
+                        scriptCtrlBtnLayoutParams.y,
+                        layout.measuredWidth,
+                        layout.measuredHeight
+                    )
+                )
+            }
+        }
     }
 
     private fun restorePlayButtonLocation() {

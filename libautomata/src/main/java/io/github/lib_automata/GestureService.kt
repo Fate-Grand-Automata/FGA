@@ -19,4 +19,20 @@ interface GestureService : AutoCloseable {
      * @param times the number of times to click
      */
     fun click(location: Location, times: Int = 1)
+
+    /**
+     * If the system is Android 8.0 or above
+     * Long presses and Swipes from one [Location] to another [Location].
+     *
+     * Otherwise, it will perform multiple clicks.
+     *
+     * Warning: This optimized for CE bomb, it may not work for other cases.
+     *
+     * @param clicks the [Location]s where the swipe should start and end
+     * @param chunked the number of rows to be chunked
+     */
+    fun longPressAndDragOrMultipleClicks(clicks: List<List<Location>>, chunked: Int)
+
+
+    fun longPress(location: Location, duration: Int = 2000)
 }

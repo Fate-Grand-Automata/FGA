@@ -14,7 +14,12 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.roundToInt
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 /**
  * Class to perform gestures using Android's [AccessibilityService].
@@ -161,6 +166,150 @@ class AccessibilityGestures @Inject constructor(
 
         TapperService.instance?.dispatchGesture(gestureDesc, callback, null)
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun longPressAndDrag8(
+        clicks: List<List<Location>>,
+        chunked: Int = 1
+    ) {
+
+        val firstChunked = clicks.first()
+
+        /**
+         * Creating fastest path possible
+         */
+        val clicksArrays = if (clicks.size > 1) {
+            val lastChunked = clicks.last()
+            listOfNotNull(
+                firstChunked.first(),
+                if (firstChunked.size == 1) null else {
+                    firstChunked.last()
+                },
+                if (lastChunked.size == chunked) null else {
+                    Location(
+                        x = firstChunked.last().x,
+                        y = lastChunked.last().y
+                    )
+                },
+                lastChunked.last(),
+            )
+        } else {
+            listOf(firstChunked.first(), firstChunked.last())
+        }
+        val start = clicksArrays.first()
+        val end = clicksArrays.last()
+
+        /**
+         * Turns out that you need to have a delay to make the
+         * strokes sequential. Otherwise, they will be executed
+         * at the same time or depending on when start time is.
+         */
+        var gestureDelay = 0L
+        val longPressDuration = gesturePrefs.longPressDuration.inWholeMilliseconds
+        val dragDuration = gesturePrefs.dragDuration.inWholeMilliseconds
+        val dragReleaseDuration = 50L
+
+        val mouseDownPath = Path().moveTo(start)
+
+        /**
+         * Long Pressed
+         */
+        var lastStroke = GestureDescription.StrokeDescription(
+            mouseDownPath,
+            gestureDelay,
+            longPressDuration,
+            true
+        ).also {
+            performGesture(it)
+            gestureDelay += longPressDuration
+        }
+        Timber.d("Long Pressed")
+
+        clicksArrays.windowed(2).forEach { (from, to) ->
+            val swipePath = Path()
+                .moveTo(from)
+                .lineTo(to)
+            lastStroke = lastStroke.continueStroke(
+                swipePath,
+                gestureDelay,
+                dragDuration,
+                true
+            ).also {
+                performGesture(it)
+            }
+            Timber.d("Drag From $from to $to  ")
+            gestureDelay += dragDuration
+        }
+
+        val mouseUpPath = Path().moveTo(end)
+        lastStroke.continueStroke(
+            mouseUpPath,
+            gestureDelay,
+            dragReleaseDuration,
+            false
+        ).also {
+            performGesture(it)
+        }
+        Timber.d("End the stroke")
+
+    }
+
+    override fun longPressAndDragOrMultipleClicks(
+        clicks: List<List<Location>>,
+        chunked: Int
+    ) = runBlocking {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            longPressAndDrag8(
+                clicks = clicks,
+                chunked = chunked
+            )
+        } else {
+            clicks.forEach { row ->
+                row.forEach { column ->
+                    click(column)
+                }
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun longPress8(location: Location, duration: Int = 2000){
+        val longPressPath = Path().moveTo(location)
+
+        val longPressDuration = duration.toLong()
+        var gestureDelay = 0L
+        val dragReleaseDuration = 50L
+
+        val lastStroke = GestureDescription.StrokeDescription(
+            longPressPath,
+            0L,
+            longPressDuration,
+            true
+        ).also {
+            performGesture(it)
+            gestureDelay += longPressDuration
+        }
+
+        lastStroke.continueStroke(
+            longPressPath,
+            gestureDelay,
+            dragReleaseDuration,
+            false
+        ).also {
+            performGesture(it)
+        }
+
+        Timber.d("long pressed $location")
+    }
+
+    override fun longPress(location: Location, duration: Int) = runBlocking {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            longPress8(location, duration)
+        } else {
+            click(location, 2)
+        }
+    }
+
 
     override fun close() {}
 }
