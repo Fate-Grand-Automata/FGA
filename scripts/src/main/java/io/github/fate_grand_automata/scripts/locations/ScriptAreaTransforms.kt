@@ -23,6 +23,11 @@ class ScriptAreaTransforms @Inject constructor(
             gameAreaManager.gameArea.size * (1 / scale.scriptToScreen)
         )
 
+    override val scriptAreaRaw: Region = Region(
+        Location(),
+        gameAreaManager.gameArea.size
+    )
+
     override val isWide = scriptArea.size.isWide()
 
     override val gameServer = prefs.gameServer

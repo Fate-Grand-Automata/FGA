@@ -20,6 +20,7 @@ import io.github.fate_grand_automata.scripts.entrypoints.AutoCEBomb
 import io.github.fate_grand_automata.scripts.entrypoints.AutoFriendGacha
 import io.github.fate_grand_automata.scripts.entrypoints.AutoGiftBox
 import io.github.fate_grand_automata.scripts.entrypoints.AutoLottery
+import io.github.fate_grand_automata.scripts.entrypoints.AutoNotifyError
 import io.github.fate_grand_automata.scripts.entrypoints.AutoServantLevel
 import io.github.fate_grand_automata.scripts.entrypoints.SupportImageMaker
 import io.github.fate_grand_automata.scripts.enums.GameServer
@@ -203,6 +204,10 @@ class ScriptManager @Inject constructor(
 
                 showBattleExit(service, e)
             }
+
+            is AutoNotifyError.ExitException -> {
+                // do nothing
+            }
             is AutoServantLevel.ExitException -> {
                 val msg = when (val reason = e.reason) {
                     AutoServantLevel.ExitReason.NoServantSelected ->
@@ -232,6 +237,7 @@ class ScriptManager @Inject constructor(
                         context.getString(R.string.servant_enhancement_perform_ascension_failed)
                 }
                 messageBox.show(scriptExitedString, msg)
+
             }
 
             is ScriptAbortException -> {
@@ -276,6 +282,7 @@ class ScriptManager @Inject constructor(
             ScriptModeEnum.PresentBox -> entryPoint.giftBox()
             ScriptModeEnum.SupportImageMaker -> entryPoint.supportImageMaker()
             ScriptModeEnum.CEBomb -> entryPoint.ceBomb()
+            ScriptModeEnum.PlayButtonDetection -> entryPoint.playButtonDetection()
             ScriptModeEnum.ServantLevel -> entryPoint.servantLevel()
         }
 
