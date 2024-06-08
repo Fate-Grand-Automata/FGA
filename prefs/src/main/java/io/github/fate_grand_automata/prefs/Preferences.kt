@@ -90,6 +90,8 @@ class PreferencesImpl @Inject constructor(
 
     override var hidePlayButton by prefs.hidePlayButton
 
+    override val hideSQInAPResources by prefs.hideSQInAPResources
+
     override val stageCounterSimilarity by prefs.stageCounterSimilarity.map { it / 100.0 }
 
     override val stageCounterNew by prefs.stageCounterNew
