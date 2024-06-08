@@ -20,6 +20,12 @@ class AutoFriendGacha @Inject constructor(
     sealed class ExitReason {
         object InventoryFull : ExitReason()
         class Limit(val count: Int) : ExitReason()
+
+        data object RunOutOfFP : ExitReason()
+
+        data class SellBannerNotVisible(val count: Int = 0, val inventoryFull: Boolean = false) : ExitReason()
+
+        data class ReachedSellBanner(val count: Int = 0, val inventoryFull: Boolean = false) : ExitReason()
     }
 
     class ExitException(val reason: ExitReason) : Exception()
@@ -27,8 +33,13 @@ class AutoFriendGacha @Inject constructor(
     private var count = 0
 
     private fun countNext() {
-        if (prefs.shouldLimitFP && count >= prefs.limitFP) {
-            throw ExitException(ExitReason.Limit(count))
+        if (prefs.friendGacha.shouldLimitFP && count >= prefs.friendGacha.limitFP) {
+            if (prefs.friendGacha.shouldRedirectToSell) {
+                locations.fp.fpSellRegion.click()
+                waitForSellBanner(count)
+            } else {
+                throw ExitException(ExitReason.Limit(count))
+            }
         }
 
         ++count
@@ -49,21 +60,71 @@ class AutoFriendGacha @Inject constructor(
             countNext()
         }
 
+        val screens: Map<() -> Boolean, () -> Unit> = mapOf(
+            { isInventoryFull() } to {
+                performActionsOnInventoryFull()
+            },
+            { isSummonButtonVisible() } to {
+                rollFPAgain()
+            },
+            { isFPSellVisible() } to {
+                if (prefs.friendGacha.shouldRedirectToSell) {
+                    locations.fp.fpSellRegion.click()
+                    waitForSellBanner()
+                } else {
+                    throw ExitException(ExitReason.RunOutOfFP)
+                }
+            },
+        )
+
         while (true) {
-            if (isInventoryFull()) {
-                throw ExitException(ExitReason.InventoryFull)
+            val actor = useSameSnapIn {
+                screens
+                    .asSequence()
+                    .filter { (validator, _) -> validator() }
+                    .map { (_, actor) -> actor }
+                    .firstOrNull()
+            } ?: { locations.fp.skipRapidClick.click(15) }
+            actor.invoke()
+            0.5.seconds.wait()
+        }
+    }
+
+    private fun rollFPAgain() {
+        countNext()
+
+        locations.fp.continueSummonClick.click()
+        0.3.seconds.wait()
+        locations.fp.okClick.click()
+        3.seconds.wait()
+    }
+
+    private fun performActionsOnInventoryFull() {
+
+        when {
+            prefs.friendGacha.shouldRedirectToSell -> {
+                locations.fp.inventoryFullSellRegion.click()
+                waitForSellBanner(inventoryFull = true)
             }
 
-            if (isSummonButtonVisible()) {
-                countNext()
+            else -> throw ExitException(ExitReason.InventoryFull)
+        }
 
-                locations.fp.continueSummonClick.click()
-                0.3.seconds.wait()
-                locations.fp.okClick.click()
-                3.seconds.wait()
-            } else locations.fp.skipRapidClick.click(15)
+    }
+
+    private fun waitForSellBanner(count: Int = 0, inventoryFull: Boolean = false) {
+        when (waitUntilSellBannerExist()) {
+            true -> throw ExitException(ExitReason.ReachedSellBanner(count, inventoryFull))
+            false -> throw ExitException(ExitReason.SellBannerNotVisible(count, inventoryFull))
         }
     }
 
     private fun isSummonButtonVisible() = findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue)
+
+    private fun isFPSellVisible() = images[Images.FPSell] in locations.fp.fpSellRegion
+
+    private fun waitUntilSellBannerExist() = locations.fp.sellBannerRegion.exists(
+        image = images[Images.CEDetails],
+        timeout = 30.seconds,
+    )
 }

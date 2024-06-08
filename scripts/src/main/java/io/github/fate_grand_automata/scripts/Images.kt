@@ -74,6 +74,9 @@ enum class Images {
     SkillUse,
     RankUp,
     Close,
+
+    FPSell,
+
     ServantAutoSelect,
     ServantAutoSelectOff,
     ServantMaxLevel,
