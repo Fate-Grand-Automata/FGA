@@ -74,6 +74,9 @@ class FakedComposeView(
             it.setViewTreeViewModelStoreOwner(viewModelStoreOwner)
             it.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
 
+            lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_START)
+            lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+
             it.compositionContext = recomposer
             runRecomposeScope.launch {
                 recomposer.runRecomposeAndApplyChanges()
