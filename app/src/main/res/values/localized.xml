@@ -401,6 +401,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
 
     <string name="p_screenshot_bond">"Screenshot Bond"</string>
     <string name="p_screenshot_bond_summary">"Experimental screenshot of bond level up regardless of level to 'bond' folder\nNote: Auto-click on another results screen might cause occasional missed screenshots, potentially skipping the bond level-up."</string>
+    <string name="p_hide_sq_in_resource">Hide SQ in AP Resources</string>
+    <string name="p_hide_sq_in_resource_summary">Enable this option to hide the SQ in order to not accidentally click the SQ</string>
+
     <string name="bond_level_up">Bond Level up!</string>
 
     <string name="servant_enhancement">Servant Enhancement</string>

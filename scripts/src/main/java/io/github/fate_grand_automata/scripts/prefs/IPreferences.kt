@@ -27,6 +27,8 @@ interface IPreferences {
     val screenshotDropsUnmodified: Boolean
     val screenshotBond: Boolean
     var hidePlayButton: Boolean
+    val hideSQInAPResources: Boolean
+
     var maxGoldEmberStackSize: Int
     var maxGoldEmberTotalCount: Int
     var stopAfterThisRun: Boolean
