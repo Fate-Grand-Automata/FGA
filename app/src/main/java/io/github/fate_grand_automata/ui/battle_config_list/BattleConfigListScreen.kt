@@ -390,7 +390,8 @@ private fun BattleConfigListItem(
             modifier = Modifier
                 .combinedClickable(
                     onClick = onClick,
-                    onLongClick = { longClickState.value.invoke() }
+                    onLongClick = { longClickState.value.invoke() },
+                    onDoubleClick = { longClickState.value.invoke() },
                 )
                 .padding(16.dp, 5.dp)
         ) {
