@@ -124,7 +124,7 @@ class Battle @Inject constructor(
         }
 
         // It is already verified out of commands, no need to check further
-        if (outOfCommands) return
+        if (outOfCommands) return@useSameSnapIn
 
         trackSkipTurns()
 
