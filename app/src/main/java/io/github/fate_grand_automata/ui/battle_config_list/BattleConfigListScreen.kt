@@ -6,27 +6,46 @@ import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -36,9 +55,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.BattleConfigCore
-import io.github.fate_grand_automata.ui.*
+import io.github.fate_grand_automata.ui.Heading
+import io.github.fate_grand_automata.ui.HeadingButton
+import io.github.fate_grand_automata.ui.Tabbed
 import io.github.fate_grand_automata.ui.battle_config_item.Material
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
+import io.github.fate_grand_automata.ui.icon
 import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.simpleStringRes
 import io.github.fate_grand_automata.util.stringRes
@@ -314,7 +336,6 @@ private fun ConfigList(
                                 action(BattleConfigListAction.StartSelection(it.id))
                             }
                         },
-                        isSelectionMode = selectionMode,
                         isSelected = selectionMode && it.id in selectedConfigs
                     )
                 }
@@ -332,43 +353,8 @@ private fun ConfigList(
 }
 
 @Composable
-private fun BattleConfigItemSelected(
-    isSelectionMode: Boolean,
-    isSelected: Boolean
-) {
-    AnimatedVisibility(isSelectionMode) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .border(
-                    1.dp,
-                    if (isSelected) Color.Transparent else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
-                    CircleShape
-                )
-                .background(
-                    shape = CircleShape,
-                    color = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent
-                )
-                .size(15.dp)
-        ) {
-            AnimatedVisibility(isSelected) {
-                Icon(
-                    rememberVectorPainter(Icons.Default.Check),
-                    contentDescription = "Select",
-                    tint = MaterialTheme.colorScheme.onSecondary,
-                    modifier = Modifier
-                        .size(10.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
 private fun BattleConfigListItem(
     it: BattleConfigCore,
-    isSelectionMode: Boolean,
     isSelected: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit
@@ -384,7 +370,20 @@ private fun BattleConfigListItem(
         shape = RoundedCornerShape(25),
         elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 5.dp else 1.dp),
         modifier = Modifier
-            .padding(5.dp)
+            .padding(5.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = when (isSelected) {
+                true -> MaterialTheme.colorScheme.primaryContainer
+                false -> MaterialTheme.colorScheme.surfaceVariant
+            }
+        ),
+        border = BorderStroke(
+            width = 1.dp,
+            color = when (isSelected) {
+                true -> Color.Transparent
+                false -> MaterialTheme.colorScheme.onSurfaceVariant
+            }
+        )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -395,10 +394,6 @@ private fun BattleConfigListItem(
                 )
                 .padding(16.dp, 5.dp)
         ) {
-            BattleConfigItemSelected(
-                isSelectionMode = isSelectionMode,
-                isSelected = isSelected
-            )
 
             Text(
                 name,
