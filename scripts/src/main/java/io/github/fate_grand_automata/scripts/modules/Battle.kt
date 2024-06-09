@@ -35,6 +35,8 @@ class Battle @Inject constructor(
         resetState()
     }
 
+    var outOfCommands = false
+
     fun resetState() {
         // Don't increment no. of runs if we're just clicking on quest again and again
         // This can happen due to lags introduced during some events
@@ -121,9 +123,12 @@ class Battle @Inject constructor(
             autoChooseTarget.choose()
         }
 
+        // It is already verified out of commands, no need to check further
+        if (outOfCommands) return
+
         trackSkipTurns()
 
-        val outOfCommands = isOutOfCommand()
+        outOfCommands = isOutOfCommand()
 
         if (outOfCommands && battleConfig.exitOnOutOfCommands) {
             throw AutoBattle.BattleExitException(AutoBattle.ExitReason.ExitOnOutOfCommands)
