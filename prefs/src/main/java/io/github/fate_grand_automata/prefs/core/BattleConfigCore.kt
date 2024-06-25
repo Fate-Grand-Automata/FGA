@@ -185,4 +185,9 @@ class BattleConfigCore(
     val support = SupportPrefsCore(maker)
 
     val autoChooseTarget = maker.bool("auto_choose_target")
+
+    val exitOnOutOfCommands = maker.bool("exit_on_out_of_commands")
+
+
+    val exitOnOffScript = maker.bool("exit_on_off_script")
 }

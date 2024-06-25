@@ -28,6 +28,9 @@ interface IBattleConfig {
 
     val server: GameServer?
 
+    var exitOnOutOfCommands: Boolean
+    var exitOnOffScript: Boolean
+
     fun export(): Map<String, *>
 
     fun import(map: Map<String, *>)

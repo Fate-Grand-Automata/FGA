@@ -207,14 +207,44 @@ private fun BattleConfigContent(
                                             .padding(16.dp, 5.dp)
                                     )
                                 }
+                            }
+
+                            HorizontalDivider()
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
+                                PartySelection(
+                                    config = config,
+                                    modifier = Modifier.weight(1f)
+                                )
 
                                 VerticalDivider()
 
-                                ServerSelection(config)
+                                ServerSelection(
+                                    config = config,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                            HorizontalDivider()
 
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
+                                ExitOffScriptScreen(
+                                    config = config,
+                                    modifier = Modifier.weight(1f)
+                                )
                                 VerticalDivider()
 
-                                PartySelection(config)
+                                OutOfCommandsExitScreen(
+                                    config = config,
+                                    modifier = Modifier.weight(1f)
+                                )
                             }
 
                             HorizontalDivider()

@@ -20,6 +20,18 @@ class AutoSkillCommand private constructor(
         return emptyList()
     }
 
+    val getTotalCommandTurns
+        get() = stages.flatten().size
+
+    fun commandTurnsUntilStage(stage: Int): Int = when (stage) {
+        0 -> stages[stage].flatten().size
+        else -> try {
+            stages.subList(0, stage).flatten().size
+        } catch (e: IndexOutOfBoundsException) {
+            stages.flatten().size
+        }
+    }
+
     companion object {
         private fun getTarget(queue: Queue<Char>): ServantTarget? {
             val peekTarget = queue.peek()

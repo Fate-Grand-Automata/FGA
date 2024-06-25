@@ -26,7 +26,10 @@ import io.github.fate_grand_automata.ui.prefs.remember
 import io.github.fate_grand_automata.util.stringRes
 
 @Composable
-fun ServerSelection(config: BattleConfigCore) {
+fun ServerSelection(
+    modifier: Modifier = Modifier,
+    config: BattleConfigCore
+) {
     var server by config.server.remember()
 
     val dialog = FgaDialog()
@@ -65,7 +68,7 @@ fun ServerSelection(config: BattleConfigCore) {
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxHeight()
             .clickable(onClick = { dialog.show() })
             .padding(16.dp, 5.dp),

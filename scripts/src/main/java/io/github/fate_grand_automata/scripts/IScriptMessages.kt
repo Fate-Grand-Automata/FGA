@@ -9,8 +9,11 @@ sealed class ScriptNotify {
     data object CEGet : ScriptNotify()
     data object CEDropped : ScriptNotify()
     class WaitForAPRegen(val minutes: Int = 1) : ScriptNotify()
-    class FailedToDetermineCards(val cards: List<CommandCard.Face>,
-                                 val unknownCardTypes: Boolean, val unknownServants: Boolean) : ScriptNotify()
+    class FailedToDetermineCards(
+        val cards: List<CommandCard.Face>,
+        val unknownCardTypes: Boolean, val unknownServants: Boolean
+    ) : ScriptNotify()
+
     class SupportListUpdatingIn(val time: Duration) : ScriptNotify()
     class BetweenRuns(val refills: Int, val runs: Int, val ceDrops: Int) : ScriptNotify()
     data object BondLevelUp : ScriptNotify()
@@ -39,6 +42,12 @@ sealed class ScriptLog {
         val cards: Iterable<CommandCard.Face>,
         val servant: TeamSlot,
         val isSupport: Boolean = false
+    ) : ScriptLog()
+
+    class TurnTrackingAtNewStage(
+        val wave: Int,
+        val currentTurn: Int,
+        val skipTurn: Int
     ) : ScriptLog()
 }
 

@@ -70,8 +70,16 @@ class BattleState @Inject constructor() {
     val stage get() = runState.stage
     val turn get() = runState.turn
 
+    val currentTurn
+        get() = runState.totalTurns
+
+    val skipCommandTurns
+        get() = runState.skipCommandTurns
+
     fun nextTurn() = runState.nextTurn()
     fun nextStage() = runState.nextStage()
 
     fun nextRun() = ++runs
+
+    fun addSkipCommandTurns(skip: Int) = runState.addSkipCommandTurns(skip)
 }

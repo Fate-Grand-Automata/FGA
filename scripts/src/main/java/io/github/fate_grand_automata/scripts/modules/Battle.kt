@@ -24,7 +24,8 @@ class Battle @Inject constructor(
     private val skillSpam: SkillSpam,
     private val shuffleChecker: ShuffleChecker,
     private val stageTracker: StageTracker,
-    private val autoChooseTarget: AutoChooseTarget
+    private val autoChooseTarget: AutoChooseTarget,
+    private val commandTurnsTracker: CommandTurnsTracker
 ) : IFgoAutomataApi by api {
     init {
         prefs.stopAfterThisRun = false
@@ -118,5 +119,8 @@ class Battle @Inject constructor(
         if (battleConfig.autoChooseTarget) {
             autoChooseTarget.choose()
         }
+
+        commandTurnsTracker.trackTurns()
     }
+
 }
