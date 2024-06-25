@@ -32,6 +32,10 @@ class SupportImageExtractor(
 
             // This is a folder
             if (subFiles.isNotEmpty()) {
+                storageProvider.createNoMediaFileOnSupportDir(
+                    kind = kind,
+                    name = assetPath
+                )
                 for (subFileName in subFiles) {
                     val subAssetPath = "${assetPath}/$subFileName"
                     val subOutName = "$assetFileName/$subFileName"
@@ -44,6 +48,10 @@ class SupportImageExtractor(
                     )
                 }
             } else {
+                storageProvider.createNoMediaFileOnSupportDir(
+                    kind = kind,
+                    name = assetFileName
+                )
                 copyAssetToFile(
                     assets,
                     assetPath,
