@@ -193,6 +193,8 @@ class StorageProvider @Inject constructor(
 
         val dropFileName = "bond-${server.simple.uppercase()}-${timeString}.png"
 
+        bondFolder.getOrCreateFile(".nomedia")
+
         pattern.use {
             val file = bondFolder.createFile(mimePng, dropFileName)
                 ?: throw KnownException(KnownException.Reason.CouldNotCreateDropScreenshotFile)
@@ -206,9 +208,12 @@ class StorageProvider @Inject constructor(
     override fun dump(name: String, image: Pattern) {
         image.use {
             if (BuildConfig.DEBUG) {
-                val file = dirRoot
+                val dir = dirRoot
                     .getOrCreateDir("dump")
-                    .getOrCreateFile(name)
+
+                dir.getOrCreateFile(".nomedia")
+
+                val file = dir.getOrCreateFile(name)
 
                 resolver.openOutputStream(file.uri)?.use { stream ->
                     image.save(stream)
