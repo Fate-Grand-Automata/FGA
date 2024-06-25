@@ -225,4 +225,19 @@ class StorageProvider @Inject constructor(
     override fun createNoMediaFile() {
         supportImageFolder.getOrCreateFile(".nomedia")
     }
+
+    override fun createNoMediaFileOnSupportDir(kind: SupportImageKind, name: String) {
+        val folder = kind.imageFolder
+
+        val indexOfSlash = name.lastIndexOf('/')
+
+        if (indexOfSlash == -1) {
+            folder.getOrCreateFile(".nomedia")
+        } else {
+            val fileName = name.substring(indexOfSlash + 1)
+            folder
+                .getOrCreateDir(fileName)
+                .getOrCreateFile(".nomedia")
+        }
+    }
 }
