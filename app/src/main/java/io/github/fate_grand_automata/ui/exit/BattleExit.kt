@@ -78,6 +78,7 @@ private fun AutoBattle.ExitReason.text(): String = when (this) {
     AutoBattle.ExitReason.Paused -> stringResource(R.string.script_paused)
     AutoBattle.ExitReason.StopAfterThisRun -> stringResource(R.string.stop_after_this_run)
     AutoBattle.ExitReason.ExitOnOutOfCommands -> stringResource(R.string.p_stop_on_out_of_commands)
+    AutoBattle.ExitReason.ExitOnOffScript -> stringResource(id = R.string.p_stop_on_off_script)
 }
 
 @Composable

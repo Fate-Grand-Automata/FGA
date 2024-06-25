@@ -75,6 +75,7 @@ class AutoBattle @Inject constructor(
         data object Paused : ExitReason()
         data object StopAfterThisRun : ExitReason()
         data object ExitOnOutOfCommands : ExitReason()
+        data object ExitOnOffScript : ExitReason()
     }
 
     internal class BattleExitException(val reason: ExitReason) : Exception(reason.cause)

@@ -2,7 +2,6 @@ package io.github.fate_grand_automata.scripts.modules
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
-import io.github.fate_grand_automata.scripts.ScriptLog
 import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.models.NPUsage
 import io.github.fate_grand_automata.scripts.models.ParsedCard
@@ -11,7 +10,6 @@ import io.github.fate_grand_automata.scripts.models.battle.BattleState
 import io.github.fate_grand_automata.scripts.prefs.IBattleConfig
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
-import kotlin.math.max
 import kotlin.time.Duration.Companion.seconds
 
 @ScriptScope
@@ -26,7 +24,8 @@ class Battle @Inject constructor(
     private val skillSpam: SkillSpam,
     private val shuffleChecker: ShuffleChecker,
     private val stageTracker: StageTracker,
-    private val autoChooseTarget: AutoChooseTarget
+    private val autoChooseTarget: AutoChooseTarget,
+    private val commandTurnsTracker: CommandTurnsTracker
 ) : IFgoAutomataApi by api {
     init {
         prefs.stopAfterThisRun = false
@@ -34,8 +33,6 @@ class Battle @Inject constructor(
 
         resetState()
     }
-
-    var outOfCommands = false
 
     fun resetState() {
         // Don't increment no. of runs if we're just clicking on quest again and again
@@ -123,42 +120,7 @@ class Battle @Inject constructor(
             autoChooseTarget.choose()
         }
 
-        // It is already verified out of commands, no need to check further
-        if (outOfCommands) return@useSameSnapIn
-
-        trackSkipTurns()
-
-        outOfCommands = isOutOfCommand()
-
-        if (outOfCommands && battleConfig.exitOnOutOfCommands) {
-            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.ExitOnOutOfCommands)
-        }
+        commandTurnsTracker.trackTurns()
     }
 
-    private fun trackSkipTurns() {
-        if (!(state.stage > 0 && state.turn < 1)) return
-
-        var commandTurnsUntilStage = autoSkill.commandTurnsUntilStage(state.stage)
-
-        // add additional turn since it is checking at next stage/wave
-        commandTurnsUntilStage += 1
-
-        val skipTurns = max(0, commandTurnsUntilStage - (state.currentTurn + state.skipCommandTurns))
-
-        messages.log(
-            ScriptLog.TurnTrackingAtNewStage(
-                wave = state.stage,
-                currentTurn = state.currentTurn,
-                skipTurn = state.skipCommandTurns
-            )
-        )
-
-        state.addSkipCommandTurns(skipTurns)
-    }
-
-    private fun isOutOfCommand(): Boolean {
-        val totalCommandTurns = autoSkill.getTotalCommandTurns
-
-        return (state.currentTurn + state.skipCommandTurns) > totalCommandTurns
-    }
 }

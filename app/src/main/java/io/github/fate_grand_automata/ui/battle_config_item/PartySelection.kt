@@ -28,7 +28,10 @@ import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
-fun PartySelection(config: BattleConfigCore) {
+fun PartySelection(
+    modifier: Modifier = Modifier,
+    config: BattleConfigCore,
+) {
     var party by config.party.remember()
 
     val dialog = FgaDialog()
@@ -55,7 +58,7 @@ fun PartySelection(config: BattleConfigCore) {
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxHeight()
             .clickable(onClick = { dialog.show() })
             .padding(16.dp, 5.dp),

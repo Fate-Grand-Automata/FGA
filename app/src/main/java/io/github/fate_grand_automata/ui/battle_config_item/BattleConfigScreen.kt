@@ -217,20 +217,33 @@ private fun BattleConfigContent(
                                     .height(IntrinsicSize.Min)
                             ) {
                                 PartySelection(
-                                    config = config
+                                    config = config,
+                                    modifier = Modifier.weight(1f)
                                 )
 
                                 VerticalDivider()
 
                                 ServerSelection(
-                                    config = config
+                                    config = config,
+                                    modifier = Modifier.weight(1f)
                                 )
+                            }
+                            HorizontalDivider()
 
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
+                                ExitOffScriptScreen(
+                                    config = config,
+                                    modifier = Modifier.weight(1f)
+                                )
                                 VerticalDivider()
 
                                 OutOfCommandsExitScreen(
                                     config = config,
-                                    modifier = Modifier.weight(2f)
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
 

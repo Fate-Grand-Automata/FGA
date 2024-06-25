@@ -25,7 +25,11 @@ class AutoSkillCommand private constructor(
 
     fun commandTurnsUntilStage(stage: Int): Int = when (stage) {
         0 -> stages[stage].flatten().size
-        else -> stages.subList(0, stage).flatten().size
+        else -> try {
+            stages.subList(0, stage).flatten().size
+        } catch (e: IndexOutOfBoundsException) {
+            stages.flatten().size
+        }
     }
 
     companion object {

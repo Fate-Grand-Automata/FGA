@@ -418,6 +418,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_stop_on_out_of_commands">Out of Commands. Exiting Early for manual override.</string>
     <string name="p_exit_on_out_of_commands">"Out of Commands Exit"</string>
     <string name="p_exit_on_out_of_commands_summary">"Exit Battle when ran out of commands"</string>
+    <string name="p_battle_config_exit_on_off_script">"Off-script Exit"</string>
+    <string name="p_battle_config_exit_on_off_script_message">"Exit Battle when a turn/wave that is not part of the script have been reached."</string>
+    <string name="p_stop_on_off_script">Off-script. Exiting Early for manual override.</string>
     <string name="state_on">On</string>
     <string name="state_off">Off</string>
 </resources>
