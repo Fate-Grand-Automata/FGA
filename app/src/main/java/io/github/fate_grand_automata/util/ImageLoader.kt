@@ -263,6 +263,8 @@ val MaterialEnum.drawable
         MaterialEnum.VestigeOfMadness -> R.drawable.mat_vestige
         MaterialEnum.Sunscale -> R.drawable.mat_sunscale
         MaterialEnum.Converger -> R.drawable.mat_converger
+        MaterialEnum.FlowerOfTheEnd -> R.drawable.mat_flower_of_the_end
+        MaterialEnum.GoldenCauldron -> R.drawable.mat_golden_cauldron
 
         MaterialEnum.MonumentSaber -> R.drawable.mat_monument_saber
         MaterialEnum.MonumentArcher -> R.drawable.mat_monument_archer
