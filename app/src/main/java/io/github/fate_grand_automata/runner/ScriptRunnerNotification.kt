@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -112,7 +113,18 @@ class ScriptRunnerNotification @Inject constructor(
     fun show() {
         val builder = startBuildNotification()
 
-        service.startForeground(Ids.foregroundNotification, builder.build())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            service.startForeground(
+                Ids.foregroundNotification,
+                builder.build(),
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION
+            )
+        } else {
+            service.startForeground(
+                Ids.foregroundNotification,
+                builder.build()
+            )
+        }
     }
 
     fun message(msg: String) {
@@ -135,17 +147,17 @@ class ScriptRunnerNotification @Inject constructor(
         vibrate(100.milliseconds)
     }
 
-    private fun vibrate(Duration: Duration) {
+    private fun vibrate(duration: Duration) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(
                 VibrationEffect.createOneShot(
-                    Duration.inWholeMilliseconds,
+                    duration.inWholeMilliseconds,
                     VibrationEffect.DEFAULT_AMPLITUDE
                 )
             )
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(Duration.inWholeMilliseconds)
+            vibrator.vibrate(duration.inWholeMilliseconds)
         }
     }
 
