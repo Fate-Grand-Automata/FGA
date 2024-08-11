@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.imaging
 
 import android.annotation.SuppressLint
 import android.graphics.PixelFormat
+import android.hardware.display.VirtualDisplay
 import android.media.ImageReader
 import android.media.projection.MediaProjection
 import io.github.fate_grand_automata.util.StorageProvider
@@ -31,7 +32,13 @@ class MediaProjectionScreenshotService(
 
     @SuppressLint("WrongConstant")
     private val imageReader = ImageReader.newInstance(imageSize.width, imageSize.height, PixelFormat.RGBA_8888, 2)
-    private val virtualDisplay = mediaProjection.createVirtualDisplay(
+    private val virtualDisplay = mediaProjection.apply {
+        this.registerCallback(object : MediaProjection.Callback() {
+            override fun onStop() {
+                close()
+            }
+        }, null)
+    }.createVirtualDisplay(
         "ScreenCapture",
         imageSize.width, imageSize.height, screenDensity,
         0, imageReader.surface, null, null
