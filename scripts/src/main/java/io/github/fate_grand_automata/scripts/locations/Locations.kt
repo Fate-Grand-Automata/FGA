@@ -7,6 +7,7 @@ import io.github.lib_automata.Location
 import io.github.lib_automata.Region
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 @ScriptScope
@@ -101,20 +102,12 @@ class Locations @Inject constructor(
             Location(x, 100).xFromCenter()
         }
 
-        else -> {
-            (0..9).map {
-                // Party indicators are center-aligned
-                val x = ((it - 4.5) * 50).roundToInt()
+        else -> (0..14).map {
+            // Party indicators are center-aligned
+            // Party 11-15 are going to be on party 10 just in case
+            val x = ((min(it, 9) - 4.5) * 50).roundToInt()
 
-                Location(x, 100).xFromCenter()
-            }.let {
-                it + (0..4).map {
-                    // Party 11-15 are going to be on party 10 just in case
-                    val x = ((9 - 4.5) * 50).roundToInt()
-
-                    Location(x, 100).xFromCenter()
-                }
-            }
+            Location(x, 100).xFromCenter()
         }
     }
 

@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,19 +37,15 @@ fun PartySelection(config: BattleConfigCore) {
     var party by config.party.remember()
     val server by config.server.remember()
 
-    var isSelectionExtended by remember {
-        mutableStateOf(
+    val isSelectionExtended by remember {
+        derivedStateOf {
             when (server.asGameServer()) {
-                null -> true
-                else -> server.asGameServer() is GameServer.Jp
+                null, is GameServer.Jp -> true
+                else -> false
             }
-        )
+        }
     }
     LaunchedEffect(key1 = server) {
-        isSelectionExtended = when (server.asGameServer()) {
-            null -> true
-            else -> server.asGameServer() is GameServer.Jp
-        }
         if (!isSelectionExtended && party > 9) {
             party = 9
         }
