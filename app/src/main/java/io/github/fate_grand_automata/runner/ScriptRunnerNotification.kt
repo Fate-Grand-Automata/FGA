@@ -103,6 +103,9 @@ class ScriptRunnerNotification @Inject constructor(
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
             .setContentText(service.getString(R.string.overlay_notification_text))
+            // show full message on expand
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText(service.getString(R.string.overlay_notification_text)))
             .setSmallIcon(R.mipmap.notification_icon)
             .setColor(service.getColor(R.color.colorBusterWeak))
             .setPriority(NotificationManager.IMPORTANCE_LOW)
@@ -117,7 +120,7 @@ class ScriptRunnerNotification @Inject constructor(
             service.startForeground(
                 Ids.foregroundNotification,
                 builder.build(),
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE or ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION
             )
         } else {
             service.startForeground(

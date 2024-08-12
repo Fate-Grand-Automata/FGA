@@ -32,7 +32,7 @@ class MediaProjectionScreenshotService(
 
     @SuppressLint("WrongConstant")
     private val imageReader = ImageReader.newInstance(imageSize.width, imageSize.height, PixelFormat.RGBA_8888, 2)
-    private val virtualDisplay = mediaProjection.apply {
+    private val virtualDisplay: VirtualDisplay? = mediaProjection.apply {
         this.registerCallback(object : MediaProjection.Callback() {
             override fun onStop() {
                 close()
@@ -74,13 +74,16 @@ class MediaProjectionScreenshotService(
     }
 
     override fun close() {
+        if (virtualDisplay == null) {
+            return
+        }
         bufferMat.release()
         grayscaleMat.release()
         grayscalePattern.close()
         colorMat.release()
         colorPattern.close()
 
-        virtualDisplay.release()
+        virtualDisplay?.release()
 
         imageReader.close()
 
