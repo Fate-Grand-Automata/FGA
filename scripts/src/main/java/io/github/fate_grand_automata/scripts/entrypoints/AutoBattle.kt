@@ -427,7 +427,7 @@ class AutoBattle @Inject constructor(
         support.selectSupport()
 
         if (!isContinuing) {
-            4.seconds.wait()
+            7.seconds.wait()
             startQuest()
 
             // Wait timer till battle starts.
