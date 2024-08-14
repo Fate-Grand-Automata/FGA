@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.IBinder
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -66,7 +67,7 @@ class ScriptRunnerService: Service() {
 
         // maybe fixes crashes on Android 14
         // TODO remove once https://issuetracker.google.com/issues/307329994 is fixed
-        return START_NOT_STICKY
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) START_NOT_STICKY else START_STICKY
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
