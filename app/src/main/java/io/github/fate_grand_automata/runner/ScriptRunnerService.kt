@@ -62,14 +62,6 @@ class ScriptRunnerService: Service() {
         controller.onCreate()
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
-
-        // maybe fixes crashes on Android 14
-        // TODO remove once https://issuetracker.google.com/issues/307329994 is fixed
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) START_NOT_STICKY else START_STICKY
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         controller.onScreenConfigChanged()
     }
