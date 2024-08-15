@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.compose.runtime.collectAsState
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill

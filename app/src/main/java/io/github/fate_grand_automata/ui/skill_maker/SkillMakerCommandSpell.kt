@@ -48,7 +48,7 @@ fun SkillMakerCommandSpells(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Skill.CommandSpell.list.forEach {
-                SkillButton(
+                CommandSpellButton(
                     skill = it,
                     color = colorResource(R.color.colorCommandSpell)
                 ) {
@@ -60,7 +60,7 @@ fun SkillMakerCommandSpells(
 }
 
 @Composable
-fun RowScope.SkillButton(
+private fun RowScope.CommandSpellButton(
     skill: Skill,
     color: Color,
     onClick: () -> Unit
