@@ -117,6 +117,7 @@ Skills"</string>
     <string name="p_stop_on_ce_get">"Stop on CE GET"</string>
     <string name="p_stop_on_first_clear_rewards">"Stop on first-clear rewards"</string>
     <string name="p_stop_on_ce_get_summary">"First-time quest completion rewards and Bond CEs (Experimental)"</string>
+    <string name="p_stop_on_out_of_command_spell">Ran out of Command Spell(s).</string>
     <string name="p_screenshot_drops">"Screenshot Drops"</string>
     <string name="p_screenshot_drops_summary">"Saved to 'drops' folder"</string>
     <string name="p_screenshot_drops_unmodified">"Save unmodified screenshots"</string>
@@ -386,6 +387,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="p_max_gold_ember_total_count">"Max Gold ember total count"</string>
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
     <string name="skill_maker_melusine">"Mélusine"</string>
+
+    <string name="skill_maker_command_spell">Command Spell</string>
+    <string name="skill_maker_command_spell_title_short">"CS (%d)"</string>
+    <string name="skill_maker_command_spell_warning">Ran out of Command Spell(s)</string>
+    <string name="skill_maker_command_spell_full_np">Full NP</string>
+    <string name="skill_maker_command_spell_full_hp">Full HP</string>
 
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>

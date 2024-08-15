@@ -31,7 +31,8 @@ fun SkillMakerTarget(
     showKukulkan: Boolean,
     onKukulkan: () -> Unit,
     showMelusine: Boolean,
-    onMelusine: () -> Unit
+    onMelusine: () -> Unit,
+    showTargetNone: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -98,8 +99,10 @@ fun SkillMakerTarget(
                 }
             }
 
-            Button(onClick = { onSkillTarget(null) }) {
-                Text(stringResource(R.string.skill_maker_target_none))
+            if (showTargetNone) {
+                Button(onClick = { onSkillTarget(null) }) {
+                    Text(stringResource(R.string.skill_maker_target_none))
+                }
             }
         }
     }

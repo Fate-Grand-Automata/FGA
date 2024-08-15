@@ -70,6 +70,16 @@ class AutoSkillCommand private constructor(
                         AutoSkillAction.MasterSkill(skill, target)
                     }
 
+                    in Skill.CommandSpell.list.map { it.autoSkillCode } -> {
+                        val spell = Skill.CommandSpell.list.first { it.autoSkillCode == c }
+                        val target = getTarget(queue)
+
+                        AutoSkillAction.CommandSpell(
+                            skill = spell,
+                            target = target
+                        )
+                    }
+
                     in CommandCard.NP.list.map { it.autoSkillCode } -> {
                         val np = CommandCard.NP.list.first { it.autoSkillCode == c }
 
