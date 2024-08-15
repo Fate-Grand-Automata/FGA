@@ -85,9 +85,10 @@ class MainScreenViewModel @Inject constructor(
     fun onStartMediaProjectionResult(context: Context, intent: Intent?) {
         if (intent == null) {
             Timber.i("MediaProjection cancelled by user")
-            ScriptRunnerService.stopService(context)
+            //ScriptRunnerService.stopService(context)
         } else {
             ScriptRunnerService.mediaProjectionToken = intent
+            ScriptRunnerService.startService(context)
         }
     }
 }

@@ -87,6 +87,8 @@ class ScreenshotServiceHolder @Inject constructor(
             }
         } catch (e: Exception) {
             Timber.e(e, "Error preparing screenshot service")
+            // Clear the token if there was an error
+            ScriptRunnerService.mediaProjectionToken = null
             null
         }
     }

@@ -56,7 +56,6 @@ class ScriptRunnerServiceController @Inject constructor(
 
     fun onCreate() {
         Timber.i("Script runner service created")
-        notification.show(prefs.useRootForScreenshots)
 
         screenOffReceiver.register(service) {
             Timber.v("SCREEN OFF")
@@ -84,6 +83,12 @@ class ScriptRunnerServiceController @Inject constructor(
 
             screenshotServiceHolder.prepareScreenshotService()
         }
+    }
+
+    fun onStart() {
+        Timber.i("Script runner service started")
+
+        notification.show(prefs.useRootForScreenshots)
     }
 
     fun onScreenConfigChanged() {

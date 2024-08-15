@@ -62,6 +62,12 @@ class ScriptRunnerService: Service() {
         controller.onCreate()
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
+        controller.onStart()
+        return START_NOT_STICKY
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         controller.onScreenConfigChanged()
     }
