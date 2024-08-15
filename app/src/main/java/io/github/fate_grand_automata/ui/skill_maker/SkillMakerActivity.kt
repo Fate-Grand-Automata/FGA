@@ -87,6 +87,8 @@ fun SkillMakerUI(
     val turn by vm.turn
     val wave by vm.wave
 
+    val commandSpellRemaining by vm.commandSpell.collectAsState()
+
     Crossfade(
         current,
         animationSpec = spring()
@@ -111,6 +113,13 @@ fun SkillMakerUI(
             SkillMakerNav.Main -> {
                 SkillMakerMain(
                     vm = vm,
+                    onCommandSpell = { 
+                        if (commandSpellRemaining <=0) {
+                            navigate(SkillMakerNav.CommandSpellWarning) 
+                        } else {
+                            navigate(SkillMakerNav.CommandSpell) 
+                        }
+                    }, 
                     onMasterSkills = { navigate(SkillMakerNav.MasterSkills) },
                     onAtk = { navigate(SkillMakerNav.Atk) },
                     onSkill = { vm.initSkill(it) },
@@ -129,6 +138,14 @@ fun SkillMakerUI(
                     onMasterSkillNoTarget = { vm.noTargetSkill(it) },
                     onOrderChange = { navigate(SkillMakerNav.OrderChange) }
                 )
+            }
+            SkillMakerNav.CommandSpell -> {
+                SkillMakerCommandSpells(
+                    onCommandSpell = { vm.initSkill(it) },
+                )
+            }
+            SkillMakerNav.CommandSpellWarning -> {
+                SkillMakerCommandSpellWarning()
             }
 
             SkillMakerNav.OrderChange -> {
