@@ -125,7 +125,7 @@ fun SkillMakerMain(
                 Skills(onSkill = onSkill)
             }
 
-            val commandSpellRemaining by vm.commandSpell.collectAsState()
+            val commandSpellRemaining by vm.commandSpell
 
             Column(
                 verticalArrangement = Arrangement.Bottom,
