@@ -56,7 +56,7 @@ class SkillMakerViewModel @Inject constructor(
 
     private var _commandSpell: MutableStateFlow<Int> =
         MutableStateFlow(
-            skillCommand.value.count {
+            skillCommand.count {
                 it is SkillMakerEntry.Action && it.action is AutoSkillAction.CommandSpell
             }
         )
