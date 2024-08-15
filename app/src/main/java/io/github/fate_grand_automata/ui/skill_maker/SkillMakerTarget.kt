@@ -129,6 +129,7 @@ private fun TestSkillMaker(
     showKukulkan: Boolean = false, 
     showSpaceIshtar: Boolean = false, 
     showMelusine: Boolean = showEmiya
+    showTargetNone: Boolean = false
 ) {
     FGATheme {
         SkillMakerTarget(
@@ -140,7 +141,8 @@ private fun TestSkillMaker(
             showKukulkan = showKukulkan,
             onKukulkan = {},
             showMelusine = showMelusine,
-            onMelusine = {}
+            onMelusine = {},
+            showTargetNone = showTargetNone
         )
     }
 }

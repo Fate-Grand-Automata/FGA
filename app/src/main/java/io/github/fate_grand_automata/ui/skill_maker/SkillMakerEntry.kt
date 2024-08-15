@@ -33,6 +33,7 @@ sealed class SkillMakerEntry {
 
             is AutoSkillAction.ServantSkill -> toString(action.skill, action.targets)
             is AutoSkillAction.MasterSkill -> toString(action.skill, action.target)
+            is AutoSkillAction.CommandSpell -> toString(action.skill, action.target)
             is AutoSkillAction.TargetEnemy -> "t${action.enemy.autoSkillCode}"
             is AutoSkillAction.OrderChange -> "x${action.starting.autoSkillCode}${action.sub.autoSkillCode}"
         }
