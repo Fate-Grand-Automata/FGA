@@ -128,7 +128,7 @@ private fun TestSkillMaker(
     showEmiya: Boolean = false,
     showKukulkan: Boolean = false, 
     showSpaceIshtar: Boolean = false, 
-    showMelusine: Boolean = showEmiya
+    showMelusine: Boolean = showEmiya,
     showTargetNone: Boolean = false
 ) {
     FGATheme {
