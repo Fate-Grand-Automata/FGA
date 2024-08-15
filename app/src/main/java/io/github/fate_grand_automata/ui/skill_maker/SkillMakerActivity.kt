@@ -83,7 +83,7 @@ fun SkillMakerUI(
     val turn by vm.turn
     val wave by vm.wave
 
-    val commandSpellRemaining by vm.commandSpell.collectAsState()
+    val commandSpellRemaining by vm.commandSpell
 
     Crossfade(
         current,

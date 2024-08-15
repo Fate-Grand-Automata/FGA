@@ -54,20 +54,15 @@ class SkillMakerViewModel @Inject constructor(
         m
     }
 
-    private var _commandSpell: MutableStateFlow<Int> =
-        MutableStateFlow(
+    private var _commandSpell =
+        mutableIntStateOf(
             skillCommand.count {
                 it is SkillMakerEntry.Action && it.action is AutoSkillAction.CommandSpell
             }
         )
 
-    val commandSpell: StateFlow<Int> = _commandSpell
+    val commandSpell: State<Int> = _commandSpell
         .map { it.coerceIn(0..3) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = 0
-        )
 
     private val _wave = mutableIntStateOf(
         if (state.skillString != null) {
