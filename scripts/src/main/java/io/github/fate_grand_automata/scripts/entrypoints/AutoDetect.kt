@@ -3,12 +3,14 @@ package io.github.fate_grand_automata.scripts.entrypoints
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
 import io.github.fate_grand_automata.scripts.enums.ScriptModeEnum
+import io.github.fate_grand_automata.scripts.modules.AutoSkillSetup
 import io.github.lib_automata.dagger.ScriptScope
 import javax.inject.Inject
 
 @ScriptScope
 class AutoDetect @Inject constructor(
     api: IFgoAutomataApi,
+    private val autoSkillSetup: AutoSkillSetup
 ) : IFgoAutomataApi by api {
     fun get() = useSameSnapIn {
         val emberSearchRegion = locations.scriptArea.let {
@@ -30,11 +32,18 @@ class AutoDetect @Inject constructor(
             locations.support.confirmSetupButtonRegion.exists(images[Images.SupportConfirmSetupButton], similarity = 0.75) ->
                 ScriptModeEnum.SupportImageMaker
 
+
+            images[Images.SkillMenuBanner] in locations.enhancementBannerRegion -> {
+                autoSkillSetup.checkIfEmptyEnhance()
+                autoSkillSetup.getMinimumSkillLevel()
+                ScriptModeEnum.Skill
+            }
+
             mapOf(
                 images[Images.ServantAutoSelect] to locations.servant.servantAutoSelectRegion,
                 images[Images.ServantAutoSelectOff] to locations.servant.servantAutoSelectRegion,
                 images[Images.ServantAscensionBanner] to locations.enhancementBannerRegion
-            ).exists()->
+            ).exists() ->
                 ScriptModeEnum.ServantLevel
 
             images[Images.EmptyEnhance] in locations.emptyEnhanceRegion ->

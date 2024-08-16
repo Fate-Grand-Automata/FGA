@@ -57,7 +57,7 @@ jobs:
           echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
 
       - name: Build Android Package
-        run: ./gradlew assembleCi --scan --parallel --no-daemon
+        run: ./gradlew assembleCi --parallel --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

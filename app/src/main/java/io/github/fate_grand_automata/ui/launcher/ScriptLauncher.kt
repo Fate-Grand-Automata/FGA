@@ -22,7 +22,7 @@ fun ScriptLauncher(
     scriptMode: ScriptModeEnum,
     onResponse: (ScriptLauncherResponse) -> Unit,
     prefs: IPreferences,
-    prefsCore: PrefsCore
+    prefsCore: PrefsCore,
 ) {
     FgaScreen {
         Column(
@@ -39,6 +39,7 @@ fun ScriptLauncher(
                 ScriptModeEnum.Lottery -> lotteryLauncher(prefs, modifier)
                 ScriptModeEnum.PresentBox -> giftBoxLauncher(prefs, modifier)
                 ScriptModeEnum.CEBomb -> ceBombLauncher(prefs, modifier)
+                ScriptModeEnum.Skill -> skillLauncher(prefs, modifier)
                 ScriptModeEnum.ServantLevel -> servantLevelLauncher(prefsCore.servantEnhancement, modifier)
             }
 
