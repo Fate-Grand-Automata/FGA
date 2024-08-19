@@ -17,12 +17,9 @@ sealed class ScriptLauncherResponse {
     data object Battle : ScriptLauncherResponse()
 
     data class Skill(
-        val shouldUpgradeSkillOne: Boolean,
-        val skillOneUpgradeValue: Int,
-        val shouldUpgradeSkillTwo: Boolean,
-        val skillTwoUpgradeValue: Int,
-        val shouldUpgradeSkillThree: Boolean,
-        val skillThreeUpgradeValue: Int,
+        val skillOneTargetLevel: Int,
+        val skillTwoTargetLevel: Int,
+        val skillThreeTargetLevel: Int,
     ) : ScriptLauncherResponse()
 
     data object ServantEnhancement : ScriptLauncherResponse()

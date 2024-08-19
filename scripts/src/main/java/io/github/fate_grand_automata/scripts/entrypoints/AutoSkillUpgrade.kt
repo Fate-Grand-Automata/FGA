@@ -102,7 +102,6 @@ class AutoSkillUpgrade @Inject constructor(
 
     /**
      * The summary of the skill upgrade.
-     * @param isCheckToUpgrade whether the skill is checked to upgrade
      * @param isAvailable whether the skill is available
      * This is applicable to skill two and three only. While skill one is always available.
      *
@@ -120,7 +119,6 @@ class AutoSkillUpgrade @Inject constructor(
      * @param targetLevel the target level of the skill
      */
     class Summary(
-        val isCheckToUpgrade: Boolean,
         val isAvailable: Boolean,
         val enhancementExitReason: EnhancementException? = null,
         val startingLevel: Int? = null,
@@ -171,29 +169,21 @@ class AutoSkillUpgrade @Inject constructor(
         val skillUpgrade = prefs.skill
 
         for (skillNumber in 1..3) {
-            val shouldUpgrade = when (skillNumber) {
-                1 -> skillUpgrade.shouldUpgradeSkillOne
-                2 -> skillUpgrade.shouldUpgradeSkillTwo
-                3 -> skillUpgrade.shouldUpgradeSkillThree
-                else -> false
-            }
             val canUpgrade = when (skillNumber) {
-                1 -> skillUpgrade.skillOneUpgradeValue > 0
-                2 -> skillUpgrade.skillTwoUpgradeValue > 0
-                3 -> skillUpgrade.skillThreeUpgradeValue > 0
+                1 -> skillUpgrade.skillOneTargetLevel > skillUpgrade.skillOneCurrentLevel
+                2 -> skillUpgrade.skillTwoTargetLevel > skillUpgrade.skillTwoCurrentLevel
+                3 -> skillUpgrade.skillThreeTargetLevel > skillUpgrade.skillThreeCurrentLevel
                 else -> false
             }
-            if (shouldUpgrade) {
-                if (canUpgrade) {
-                    setupSkillUpgradeLoop(skillNumber = skillNumber)
-                } else {
-                    setSkillUpgradeException(EnhancementExitReason.NoSkillUpgradeError, skillNumber)
-                }
-                ifRanOfQPEarlyException(
-                    e = upgradeResultList[skillNumber - 1]?.reason,
-                    skillNumber = skillNumber - 1
-                )
+            if (canUpgrade) {
+                setupSkillUpgradeLoop(skillNumber = skillNumber)
+            } else {
+                setSkillUpgradeException(EnhancementExitReason.NoSkillUpgradeError, skillNumber)
             }
+            ifRanOfQPEarlyException(
+                e = upgradeResultList[skillNumber - 1]?.reason,
+                skillNumber = skillNumber - 1
+            )
         }
 
         throw SkillUpgradeException(ExitReason.Done)
@@ -223,7 +213,7 @@ class AutoSkillUpgrade @Inject constructor(
                 )
             } to { throw EnhancementException(EnhancementExitReason.TargetLevelMet) },
             { isTemporaryServant() } to { locations.tempServantEnhancementLocation.click() },
-            { isConfirmationDialogVisible() } to { executeUpgradeSkill() },
+            { isConfirmationDialogVisible() } to { executeUpgradeSkill(skillNumber = skillNumber) },
             { isOutOfMats() } to { throw EnhancementException(EnhancementExitReason.OutOfMatsException) },
             { isOutOfQP() } to { throw EnhancementException(EnhancementExitReason.OutOfQPException) },
             {
@@ -310,9 +300,12 @@ class AutoSkillUpgrade @Inject constructor(
     /**
      * This function is used to execute the skill upgrade
      */
-    private fun executeUpgradeSkill() {
+    private fun executeUpgradeSkill(skillNumber: Int) {
         locations.skill.confirmationDialogRegion.click()
         1.0.seconds.wait()
+        // increment by one
+        val index = skillNumber - 1
+        skillCountList[index] = skillCountList[index]?.inc()
     }
 
     /**
@@ -330,14 +323,14 @@ class AutoSkillUpgrade @Inject constructor(
      * @return the current skill level
      */
     private fun determineTargetSkillLevel(skillNumber: Int) = when (skillNumber) {
-        1 -> prefs.skill.minimumSkillOne + prefs.skill.skillOneUpgradeValue
-        2 -> prefs.skill.minimumSkillTwo + prefs.skill.skillTwoUpgradeValue
-        3 -> prefs.skill.minimumSkillThree + prefs.skill.skillThreeUpgradeValue
-        else -> prefs.skill.minimumSkillOne + prefs.skill.skillOneUpgradeValue
+        1 -> prefs.skill.skillOneTargetLevel
+        2 -> prefs.skill.skillTwoTargetLevel
+        3 -> prefs.skill.skillThreeTargetLevel
+        else -> prefs.skill.skillOneTargetLevel
     }
 
     /**
-     * This function is used to update the skill upgrade result if the skill upgrade is ran out of QP early
+     * This function is used to update the skill upgrade result if the skill upgrade ran out of QP early
      * @param e the exception that is thrown
      * @param skillNumber the index of the skill
      */
@@ -347,11 +340,11 @@ class AutoSkillUpgrade @Inject constructor(
         val exitEarlyException = EnhancementException(EnhancementExitReason.ExitEarlyOutOfQPException)
         when (skillNumber) {
             1 -> {
-                if (skillUpgrade.shouldUpgradeSkillTwo) upgradeResultList[1] = exitEarlyException
-                if (skillUpgrade.shouldUpgradeSkillThree) upgradeResultList[2] = exitEarlyException
+                if (skillUpgrade.skillTwoTargetLevel > skillUpgrade.skillTwoCurrentLevel) upgradeResultList[1] = exitEarlyException
+                if (skillUpgrade.skillThreeTargetLevel > skillUpgrade.skillThreeCurrentLevel) upgradeResultList[2] = exitEarlyException
             }
 
-            2 -> if (skillUpgrade.shouldUpgradeSkillThree) upgradeResultList[2] = exitEarlyException
+            2 -> if (skillUpgrade.skillThreeTargetLevel > skillUpgrade.skillThreeCurrentLevel) upgradeResultList[2] = exitEarlyException
         }
         throw SkillUpgradeException(ExitReason.RanOutOfQP)
     }
@@ -436,39 +429,27 @@ class AutoSkillUpgrade @Inject constructor(
         return ExitState(
             skillSummaryList = listOf(
                 Summary(
-                    isCheckToUpgrade = prefs.skill.shouldUpgradeSkillOne,
                     isAvailable = skill1Available,
                     enhancementExitReason = upgradeResultList[0],
-                    startingLevel = prefs.skill.minimumSkillOne,
+                    startingLevel = prefs.skill.skillOneCurrentLevel,
                     endLevel = skillCountList[0],
-                    targetLevel = when (prefs.skill.skillOneUpgradeValue > 0) {
-                        true -> prefs.skill.minimumSkillOne + prefs.skill.skillOneUpgradeValue
-                        false -> null
-                    }
+                    targetLevel = prefs.skill.skillOneTargetLevel
                 ),
                 Summary(
-                    isCheckToUpgrade = prefs.skill.shouldUpgradeSkillTwo,
                     isAvailable = prefs.skill.isSkillTwoAvailable,
                     enhancementExitReason = upgradeResultList[1],
                     startingLevel = if (prefs.skill.isSkillTwoAvailable)
-                        prefs.skill.minimumSkillTwo else null,
+                        prefs.skill.skillTwoCurrentLevel else null,
                     endLevel = skillCountList[1],
-                    targetLevel = when (prefs.skill.skillTwoUpgradeValue > 0) {
-                        true -> prefs.skill.minimumSkillTwo + prefs.skill.skillTwoUpgradeValue
-                        false -> null
-                    },
+                    targetLevel = prefs.skill.skillTwoTargetLevel,
                 ),
                 Summary(
-                    isCheckToUpgrade = prefs.skill.shouldUpgradeSkillThree,
                     isAvailable = prefs.skill.isSkillThreeAvailable,
                     enhancementExitReason = upgradeResultList[2],
                     startingLevel = if (prefs.skill.isSkillThreeAvailable)
-                        prefs.skill.minimumSkillThree else null,
+                        prefs.skill.skillThreeCurrentLevel else null,
                     endLevel = skillCountList[2],
-                    targetLevel = when (prefs.skill.skillThreeUpgradeValue > 0) {
-                        true -> prefs.skill.minimumSkillThree + prefs.skill.skillThreeUpgradeValue
-                        false -> null
-                    }
+                    targetLevel = prefs.skill.skillThreeTargetLevel
                 )
             )
         )

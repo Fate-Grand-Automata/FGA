@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.ui.exit
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -19,18 +21,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.scripts.entrypoints.AutoBattle
 import io.github.fate_grand_automata.scripts.entrypoints.AutoSkillUpgrade
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.util.KnownException
+import kotlin.time.Duration.Companion.seconds
 
 
 @Composable
 fun SkillExit(
     exception: AutoSkillUpgrade.ExitException,
-    prefs: IPreferences,
     onClose: () -> Unit,
     onCopy: () -> Unit
 ) {
@@ -48,7 +53,7 @@ fun SkillExit(
                 )
             }
 
-            Divider()
+            HorizontalDivider()
 
 
             Row(
@@ -86,7 +91,7 @@ private fun SkillUpgradeExitContent(
     state: AutoSkillUpgrade.ExitState
 ) {
     Text(
-        text = reason.text().uppercase(),
+        text = reason.text(),
         style = MaterialTheme.typography.titleLarge,
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -107,11 +112,11 @@ private fun SkillUpgradeExitContent(
                 verticalArrangement = Arrangement.Top
             ) {
                 Text(
-                    text = stringResource(id = R.string.skill_number, index + 1).uppercase(),
+                    text = stringResource(id = R.string.skill_number, index + 1),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Divider(
+                HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
                 )
                 SkillUpgradeSummary(
@@ -137,35 +142,37 @@ private fun SkillUpgradeSummary(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        val upgraded = summary.endLevel != null && summary.startingLevel != null && summary.endLevel!! > summary.startingLevel!!
         when {
             summary.startingLevel == 10 -> {
                 item {
                     Text(
-                        text = stringResource(id = R.string.skill_max_level).uppercase(),
+                        text = stringResource(id = R.string.skill_max_level),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
             }
 
-            summary.isAvailable && summary.isCheckToUpgrade -> {
-                summaryLevelUp(reason = reason, summary = summary)
-            }
 
-            summary.isAvailable && !summary.isCheckToUpgrade -> {
-                item {
-                    Text(
-                        text = stringResource(id = R.string.skill_not_selected_for_enhancement).uppercase(),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
+            summary.isAvailable -> {
+                if (upgraded) {
+                    summaryLevelUp(reason = reason, summary = summary)
+                } else {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.skill_not_selected_for_enhancement),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
                 }
             }
 
             else -> {
                 item {
                     Text(
-                        text = stringResource(id = R.string.skill_not_available).uppercase(),
+                        text = stringResource(id = R.string.skill_not_available),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium,
                     )
@@ -194,14 +201,6 @@ private fun LazyListScope.summaryLevelUp(
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
-            item {
-                val difference = summary.endLevel!! - summary.startingLevel!!
-                Text(
-                    text = stringResource(id = R.string.skill_enhancement_level_up_by, difference).uppercase(),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
         }
     }
     if (reason == AutoSkillUpgrade.ExitReason.Abort) {
@@ -211,7 +210,7 @@ private fun LazyListScope.summaryLevelUp(
         ) {
             item {
                 Text(
-                    text = stringResource(id = R.string.enhancement_halt_aborted).uppercase(),
+                    text = stringResource(id = R.string.enhancement_halt_aborted),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -221,9 +220,12 @@ private fun LazyListScope.summaryLevelUp(
 
 
     summary.enhancementExitReason?.let {
+        if (it.reason is AutoSkillUpgrade.EnhancementExitReason.TargetLevelMet) {
+            return
+        }
         item {
             Text(
-                text = it.reason.text().uppercase(),
+                text = it.reason.text(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium,
             )
@@ -233,7 +235,7 @@ private fun LazyListScope.summaryLevelUp(
                 Text(
                     text = stringResource(id = R.string.skill_enhancement_error_target_not_met,
                         summary.targetLevel!!
-                    ).uppercase(),
+                    ),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -265,10 +267,54 @@ private fun AutoSkillUpgrade.EnhancementExitReason.text(): String = when (this) 
         stringResource(id = R.string.enhancement_error_out_of_qp)
 
     AutoSkillUpgrade.EnhancementExitReason.ExitEarlyOutOfQPException ->
-        stringResource(id = R.string.enhancement_error_exit_early_out_of_qp)
+        stringResource(id = R.string.ran_out_of_qp)
 
     AutoSkillUpgrade.EnhancementExitReason.NoSkillUpgradeError ->
         stringResource(id = R.string.enhancement_error_no_enhancement)
 
     AutoSkillUpgrade.EnhancementExitReason.TargetLevelMet -> stringResource(id = R.string.success)
+}
+
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Composable
+fun PreviewSkillExitContent() {
+    val reason = AutoSkillUpgrade.ExitReason.Done
+    FGATheme {
+        SkillExit(
+            exception = AutoSkillUpgrade.ExitException(
+                reason = AutoSkillUpgrade.ExitReason.Done,
+                state = AutoSkillUpgrade.ExitState(
+                    skillSummaryList = listOf(
+                        AutoSkillUpgrade.Summary(
+                            isAvailable = true,
+                            startingLevel = 1,
+                            endLevel = 2,
+                            targetLevel = 2,
+                            enhancementExitReason = AutoSkillUpgrade.EnhancementException(
+                                AutoSkillUpgrade.EnhancementExitReason.TargetLevelMet
+                            )
+                        ),
+                        AutoSkillUpgrade.Summary(
+                            isAvailable = true,
+                            startingLevel = 1,
+                            endLevel = 2,
+                            targetLevel = 2,
+                            enhancementExitReason = AutoSkillUpgrade.EnhancementException(
+                                AutoSkillUpgrade.EnhancementExitReason.TargetLevelMet
+                            )
+                        ),
+                        AutoSkillUpgrade.Summary(
+                            isAvailable = true,
+                            startingLevel = 1,
+                            endLevel = 2,
+                            targetLevel = 2,
+                            enhancementExitReason = null
+                        )
+                    )
+                )
+            ),
+            onClose = {},
+            onCopy = {}
+        )
+    }
 }

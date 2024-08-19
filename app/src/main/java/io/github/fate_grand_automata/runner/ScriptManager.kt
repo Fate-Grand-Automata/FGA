@@ -115,7 +115,6 @@ class ScriptManager @Inject constructor(
             val composeView = FakedComposeView(context) {
                 SkillExit(
                     exception = exception,
-                    prefs = preferences,
                     onClose = { dialog?.dismiss() },
                     onCopy = { clipboardManager.set(context, exception) }
                 )

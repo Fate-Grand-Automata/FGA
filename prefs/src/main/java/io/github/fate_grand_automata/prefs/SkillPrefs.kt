@@ -6,18 +6,15 @@ import io.github.fate_grand_automata.scripts.prefs.ISkillPreferences
 internal class SkillPrefs(
     val prefs: SkillPrefsCore
 ): ISkillPreferences {
-    override var shouldUpgradeSkillOne: Boolean by prefs.shouldUpgradeSkillOne
-    override var minimumSkillOne: Int by prefs.minimumSkillOne
-    override var skillOneUpgradeValue: Int by prefs.skillOneUpgradeValue
+    override var skillOneCurrentLevel: Int = 1
+    override var skillOneTargetLevel: Int by prefs.skillOneTargetLevel
 
-    override var shouldUpgradeSkillTwo: Boolean by prefs.shouldUpgradeSkillTwo
-    override var minimumSkillTwo: Int by prefs.minimumSkillTwo
-    override var skillTwoUpgradeValue: Int by prefs.skillTwoUpgradeValue
+    override var skillTwoCurrentLevel: Int = 1
+    override var skillTwoTargetLevel: Int by prefs.skillTwoTargetLevel
     override var isSkillTwoAvailable: Boolean = false
 
-    override var shouldUpgradeSkillThree: Boolean by prefs.shouldUpgradeSkillThree
-    override var minimumSkillThree: Int by prefs.minimumSkillThree
-    override var skillThreeUpgradeValue: Int by prefs.skillThreeUpgradeValue
+    override var skillThreeCurrentLevel: Int = 1
+    override var skillThreeTargetLevel: Int by prefs.skillThreeTargetLevel
     override var isSkillThreeAvailable: Boolean = false
 
     override var isEmptyEnhance: Boolean = false
