@@ -36,15 +36,13 @@ If you still want to use FGA, run it on an emulator or use normal auto-clickers.
 Video guide for creating auto-clicker rules with voice controls: https://www.youtube.com/watch?v=JSFiys-j0JM
 
 ## Why are newer FGA versions a different app on my phone?
-From now on, the canary APK is published under the package io.github.fate_grand_automata.debug on Github.
+Starting with June 2023, the app is published under the package io.github.fate_grand_automata on Github and the Play Store.
 
-This means you'll have to transfer your settings from the old app manually.
+This means you'll have to transfer your settings from the old com.mathewsachin.fategrandautomata app manually.
 
 The package change was required so I can publish the app as beta-only in the play store. Google doesn't allow me to publish the old app as beta unless I also make it publicly available, which attracts users who refuse to read instructions and leave 1-2 star ratings.
 
-If Google accepts the play store submission for the new app, it will be published with the package io.github.fate_grand_automata (no .debug at the end), which will fix problems with restricted accessibility permissions and will install new builds through the play store.
-
-Installing it through the play store is the only way to use FGA on Android 14 right now, that's the main reason why I had to trigger these major changes.
+The Play Store version allows user to use the Accessibility Service feature without restrictions and to update FGA automatically.
 
 ## I'm trying to use FGA for the first time and I can't click OK after clicking on the PLAY button
 You need to select a battle config on the left to use.

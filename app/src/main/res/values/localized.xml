@@ -211,7 +211,7 @@ Copy or rename it if you want to keep it."</string>
     <string name="p_support_class_berserker">"Berserker"</string>
     <string name="p_support_class_extra">"Extra"</string>
     <string name="p_support_class_mix">"Mix"</string>
-    <string name="overlay_notification_text">"Overlay service running"</string>
+    <string name="overlay_notification_text">"The FGA service is currently running to show the Play button and to take screenshots if needed."</string>
     <string name="notification_stop">"Stop"</string>
     <string name="accessibility_service">"Accessibility Service: "</string>
     <string name="accessibility_enabled">"ENABLED"</string>
@@ -319,6 +319,8 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="mat_vestige_of_madness">"Vestige of Madness"</string>
     <string name="mat_sunscale">"Sunscale"</string>
     <string name="mat_converger">"Ether Proton Converger"</string>
+    <string name="mat_flower_of_the_end">Flower of the End</string>
+    <string name="mat_golden_cauldron">Golden Cauldron</string>
     <string name="mat_monument_saber">"Saber Monument"</string>
     <string name="mat_monument_archer">"Archer Monument"</string>
     <string name="mat_monument_lancer">"Lancer Monument"</string>

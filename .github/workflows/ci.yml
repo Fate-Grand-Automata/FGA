@@ -114,12 +114,14 @@ jobs:
         with:
           name: bundle
           path: app/build/outputs/bundle/release/app-release.aab
+        if: ${{ !cancelled() }}
 
       - name: Upload De-obfuscation mapping file
         uses: actions/upload-artifact@v4
         with:
           name: mapping-release
           path: app/build/outputs/mapping/release/mapping.txt
+        if: ${{ !cancelled() }}
 
   # Release master branch
   github_release:
