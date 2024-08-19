@@ -9,6 +9,15 @@
 /.idea/assetWizardSettings.xml
 /.idea/jarRepositories.xml
 /.idea/misc.xml
+/.idea/codeStyles/*
+/.idea/compiler.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/gradle.xml
+/.idea/inspectionProfiles/*
+/.idea/kotlinc.xml
+/.idea/misc.xml
+/.idea/saveactions_settings.xml
+/.idea/vcs.xml
 .DS_Store
 /build
 /captures
