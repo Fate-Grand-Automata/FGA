@@ -332,7 +332,7 @@ fun BattleExit(
 
                     Switch(
                         checked = stopAfterThisRun,
-                        onCheckedChange = { stopAfterThisRun = true }
+                        onCheckedChange = { stopAfterThisRun = it }
                     )
                 }
             }
