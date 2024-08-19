@@ -15,7 +15,7 @@
     - [Space Ishtar](#space-ishtar)
     - [Mélusine/Ptolemy](#mlusineptolemy)
       - [Warning about Mélusine option.](#warning-about-mlusine-option)
-    - [Soujuurou](#soujuurou)
+    - [Soujuurou/Charlotte](#soujuuroucharlotte)
   - [Enemy Targeting](#enemy-targeting)
   - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
     - [Cards before NP](#cards-before-np)
@@ -217,9 +217,11 @@ the `Mélusine` option since she won't change forms.
 With Ptolemy you will need to keep using the `Mélusine` option as he changes forms on every
 use of his third skill.
 
-### Soujuurou
+### Soujuurou/Charlotte
 
 `Soujuurou`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Shizuki_S%C5%8Dj%C5%ABr%C5%8D#Third_Skill) can change the command cards after one turn
+
+`Charlotte` [Upgraded 3rd skill](https://fategrandorder.fandom.com/wiki/Charlotte_Corday#Third_Skill) can have different effects depending on the choice you choose.
 
 ![Soujuurou option](https://i.imgur.com/sKsXMlM.gif)
 

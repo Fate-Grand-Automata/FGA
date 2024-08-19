@@ -58,9 +58,9 @@ Skills"</string>
 %d"</string>
     <string name="skill_maker_space_ishtar">"Space Ishtar"</string>
     <string name="skill_maker_emiya">"Emiya"</string>
-    <string name="skill_maker_quick">"Quick"</string>
-    <string name="skill_maker_arts">"Arts"</string>
-    <string name="skill_maker_buster">"Buster"</string>
+    <string name="skill_maker_tri_choice_1">"Choice 1"</string>
+    <string name="skill_maker_tri_choice_2">"Choice 2"</string>
+    <string name="skill_maker_tri_choice_3">"Choice 3"</string>
     <string name="skill_maker_kukulkan">"Kukulkan"</string>
     <string name="skill_maker_option_1">"Option 1"</string>
     <string name="skill_maker_option_2">"Option 2"</string>
