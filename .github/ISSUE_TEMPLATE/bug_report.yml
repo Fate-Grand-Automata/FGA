@@ -105,7 +105,6 @@ body:
         - 12
         - 13
         - 14
-        - 15
     validations:
       required: true
   - type: input
