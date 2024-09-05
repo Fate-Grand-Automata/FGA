@@ -113,7 +113,7 @@ body:
       placeholder: 3GB
       description: |
         As of 2024-06-25, the minimum ram for FGO to run is 3GB. 
-        Ensure that your ram is higher than the minimum RAM specification to ensure the best experience.
+        Ensure that your ram is equal or higher than the minimum RAM specification to ensure the best experience.
         https://webview.fate-go.us/iframe/2024/0519_supported_env/
   - type: markdown
     attributes:
