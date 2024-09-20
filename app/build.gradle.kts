@@ -105,7 +105,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.constraintlayout)
 
-    implementation(libs.opencv.android)
+    implementation(libs.opencv)
     implementation(libs.tesseract4android)
 
     implementation(libs.lifecycle.viewmodel.ktx)
