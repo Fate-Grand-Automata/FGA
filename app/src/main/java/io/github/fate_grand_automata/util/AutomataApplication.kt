@@ -14,7 +14,7 @@ class AutomataApplication : Application() {
 
         initLogging()
 
-        OpenCVLoader.initDebug()
+        OpenCVLoader.initLocal()
     }
 
     private fun initLogging() {
