@@ -71,13 +71,6 @@ body:
         If the video is too large for Github, upload it to youtube.com or something similar.
     validations:
       required: true
-  - type: checkboxes
-    id: debug-mode
-    attributes:
-      label: Turning the debug mode on helps the developers fix the bug.
-      options:
-        - label: I have turn on the debug mode before recording the video.
-          required: true
   - type: markdown
     attributes:
       value: "Now please tell us about your device"
