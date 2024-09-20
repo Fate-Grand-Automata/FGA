@@ -6,14 +6,14 @@ core_ktx_version = "1.13.1"
 documentfile_version = "1.0.1"
 flow_preferences_version = "1.9.1"
 hilt_navigation_compose_version = "1.2.0"
-kotlinx_coroutines_core_version = "1.8.1"
+kotlinx_coroutines_core_version = "1.9.0"
 lifecycle_version = "2.8.4"
 hilt_version = "2.51.1"
 gson_version = "2.11.0"
 
 
-kotlin_version = "2.0.10"
-ksp_version = "2.0.10-1.0.24"
+kotlin_version = "2.0.20"
+ksp_version = "2.0.20-1.0.25"
 
 gradle_version = "8.5.2"
 
@@ -32,7 +32,7 @@ tesseract4android_version = "4.7.0"
 
 timber_version = "5.0.1"
 
-compose_bom_version = "2024.06.00"
+compose_bom_version = "2024.09.00"
 
 
 

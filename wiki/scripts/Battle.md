@@ -69,17 +69,17 @@ This in-depth tutorial will cover on creating scripts that will use 'Skills', 'N
 
 Find the below icon and label and select it.
 
-![Battle Configs image](https://cdn.discordapp.com/attachments/1127606706420068372/1127616861782147154/20230709_100604.jpg "Battle Configs")
+![Battle Configs image](https://i.imgur.com/gHvukdq.jpeg "Battle Configs")
 
 ## Step 2 - Create new script with the floating action button.
 
 Create new script by tapping this icon
 
-![Battle Configs - Create New Script](https://cdn.discordapp.com/attachments/1127606706420068372/1127617402792837150/20230709_100808.jpg "Battle Configs - Create New Script")
+![Battle Configs - Create New Script](https://i.imgur.com/9zUDLWf.jpeg "Battle Configs - Create New Script")
 
 ## Step 3 - Give your script a name
 
-![Battle Configs - Name Script](https://cdn.discordapp.com/attachments/1127606706420068372/1127618080370073690/20230709_101031.jpg "Battle Configs - Name Script")
+![Battle Configs - Name Script](https://i.imgur.com/O108gg6.jpeg "Battle Configs - Name Script")
 
 You can also add a special note (optional) to your script.
 
@@ -89,7 +89,7 @@ The note can be anything like which servants are apart the team you use this scr
 
 This is where you'll create your commands that FGA will use in battle.
 
-![Battle Configs - Command](https://cdn.discordapp.com/attachments/1127606706420068372/1127619924370665552/20230709_101515.jpg "Command")
+![Battle Configs - Command](https://i.imgur.com/2pzGUNp.jpeg "Command")
 
 # Commands
 
@@ -98,23 +98,23 @@ This is where you'll create your commands that FGA will use in battle.
 When creating a battle script, you have to remember that servant positions are important.
 
 Each servant in your party will be given a number from 1 to 6, first to last.
-![Battle Configs - Servant Position in FGO ](https://cdn.discordapp.com/attachments/1127606706420068372/1127622383767916625/Screenshot_20200116-225324_Video_Player.jpg "Servant Position in FGO ")
-![Battle Configs - Servant Position Reference in FGA](https://cdn.discordapp.com/attachments/1127606706420068372/1127622384229306449/20230709_102808.jpg "Servant Position Reference in FGA")
+![Battle Configs - Servant Position in FGO ](https://i.imgur.com/w14U3rm.jpeg "Servant Position in FGO ")
+![Battle Configs - Servant Position Reference in FGA](https://i.imgur.com/v0Bllrk.jpeg "Servant Position Reference in FGA")
 
 ## Skills mapping
 
 When creating scripts 'Skills' and 'NP', you create by basing on your servant positions with each skill is represented by a letter on the command
 creator.
 
-![Battle Configs - FGO to FGA Command mapping | Servant skills](https://cdn.discordapp.com/attachments/1127606706420068372/1127625668465807371/20230709_103946.jpg "FGO to FGA Command mapping | Servant skills")
-![Battle Configs - FGO to FGA Command mapping | Servant skills](https://cdn.discordapp.com/attachments/1127606706420068372/1127625668746813460/20230709_104022.jpg "FGA Command | Servant skills")
+![Battle Configs - FGO to FGA Command mapping | Servant skills](https://i.imgur.com/qsYHZBi.jpeg "FGO to FGA Command mapping | Servant skills")
+![Battle Configs - FGO to FGA Command mapping | Servant skills](https://i.imgur.com/O3WlnEK.jpeg "FGA Command | Servant skills")
 
 ## Targeting
 
 Skills that are targetable will use the servants position number to apply the skill to them
 
-![Battle Configs - FGA Command | Servant skills - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127627494963556362/Screenshot_20230709-104541_FGA_CI.jpg "FGA Command | Servant skills - targetable")
-![Battle Configs - FGO to FGA Command mapping | Servant skills - targetable](https://cdn.discordapp.com/attachments/1127606706420068372/1127627495294894121/20230709_104707.jpg "FGO to FGA Command mapping | Servant skills - targetable")
+![Battle Configs - FGA Command | Servant skills - targetable](https://i.imgur.com/CSwxJbX.jpeg "FGA Command | Servant skills - targetable")
+![Battle Configs - FGO to FGA Command mapping | Servant skills - targetable](https://i.imgur.com/48SRqqX.jpeg "FGO to FGA Command mapping | Servant skills - targetable")
 
 ## Special Skills
 
@@ -233,7 +233,7 @@ use of his third skill.
 
 Like your servants, enemies also have a number and can be targeted too.
 
-![Battle Configs - FGO to FGA Command mapping | Enemy Targeting](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553186447443/20230709_105236.jpg "FGO to FGA Command mapping | Enemy Targeting")![Battle Configs - FGA Command | Enemy Targeting](https://cdn.discordapp.com/attachments/1127606706420068372/1127628553484247100/20230709_105306.jpg "FGA Command | Enemy Targeting")
+![Battle Configs - FGO to FGA Command mapping | Enemy Targeting](https://i.imgur.com/bWmlZxc.jpeg "FGO to FGA Command mapping | Enemy Targeting")![Battle Configs - FGA Command | Enemy Targeting](https://i.imgur.com/obg3W9d.jpeg "FGA Command | Enemy Targeting")
 
 Like in FGO, you can only select one enemy at a time.
 
@@ -246,8 +246,8 @@ Noble Phantasm (NP) use your servants position.
 **Note:** NP can be used in any order.
 Keep in mind, they will be __*used in the order you choose*__ them.
 
-![Battle Configs - FGO to FGA Command mapping | Noble Phantasm](https://cdn.discordapp.com/attachments/1127606706420068372/1127629873721135235/20230709_105703.jpg "FGO to FGA Command mapping | Noble Phantasm")
-![Battle Configs - FGA Command | Noble Phantasm](https://cdn.discordapp.com/attachments/1127606706420068372/1127629874018914344/20230709_105818.jpg "FGA Command | Noble Phantasm")
+![Battle Configs - FGO to FGA Command mapping | Noble Phantasm](https://i.imgur.com/QqAdwQO.jpeg "FGO to FGA Command mapping | Noble Phantasm")
+![Battle Configs - FGA Command | Noble Phantasm](https://i.imgur.com/wGC1mDx.jpeg "FGA Command | Noble Phantasm")
 
 ### Cards before NP
 
@@ -259,9 +259,9 @@ If you ever need to use cards before NP, you can select the following options.
 
 Master skills is handled the same way for all 'Mystic Codes' with an exception to the Plugsuit.
 
-![Battle Configs - FGO to FGA Command mapping | Mystic Codes](https://cdn.discordapp.com/attachments/1127606706420068372/1127632299337453689/20230709_110424.jpg "FGO to FGA Command mapping | Mystic Codes")
+![Battle Configs - FGO to FGA Command mapping | Mystic Codes](https://i.imgur.com/2FTn2rj.jpeg "FGO to FGA Command mapping | Mystic Codes")
 
-![Battle Configs - FGA Command | Mystic Code](https://cdn.discordapp.com/attachments/1127606706420068372/1127632299568136342/20230709_110454.jpg "FGA Command | Mystic Code")
+![Battle Configs - FGA Command | Mystic Code](https://i.imgur.com/c97pPEU.jpeg "FGA Command | Mystic Code")
 
 ## Master skills - Plugsuit
 
@@ -277,17 +277,17 @@ This will trigger the Plugsuit order change menu.
 
 This step will cover both wave and turn options.
 
-![Battle Configs - FGA Command | Wave and Turn options](https://cdn.discordapp.com/attachments/1127606706420068372/1127635393924300943/20230709_111920.jpg "FGA Command | Wave and Turn options")
+![Battle Configs - FGA Command | Wave and Turn options](https://i.imgur.com/L1PhUKr.jpeg "FGA Command | Wave and Turn options")
 
 ### Next Wave
 
 A wave or battle that's displayed in the top right corner
 
-![Battle Configs - FGA Command | Wave](https://cdn.discordapp.com/attachments/1127606706420068372/1127637782043566090/20230709_112240.jpg)
+![Battle Configs - FGA Command | Wave](https://i.imgur.com/2AKqyb4.jpeg)
 
 After settings your skills or NPs for a wave you can switch to the next wave by pressing this "Next Wave" button.
 
-![Battle Configs - FGA Command | Next Wave Symbol](https://cdn.discordapp.com/attachments/1127606706420068372/1127642577462628433/20230709_111816.jpg "Next Wave Symbol")
+![Battle Configs - FGA Command | Next Wave Symbol](https://i.imgur.com/1oxfjxB.jpeg "Next Wave Symbol")
 
 Take note of the symbol above. This will indicate that you've skipped to the next wave.
 
@@ -300,11 +300,11 @@ ___
 
 ### Next Turn in the same wave
 
-![Battle Configs - FGA Command | Next Turn Symbol](https://cdn.discordapp.com/attachments/1127606706420068372/1127644007313461249/20230709_112155.jpg "Next Turn Symbol")
+![Battle Configs - FGA Command | Next Turn Symbol](https://i.imgur.com/oLEXWYG.jpeg "Next Turn Symbol")
 
 Turns are indicated by this symbol
 
-![Battle Configs - FGA Command | Next Turn Symbol](https://cdn.discordapp.com/attachments/1127606706420068372/1127644007611248680/20230709_111757.jpg "Next Turn Symbol")
+![Battle Configs - FGA Command | Next Turn Symbol](https://i.imgur.com/YuEz0sl.jpeg "Next Turn Symbol")
 
 ---
 
@@ -337,7 +337,7 @@ ___
 
 Materials can be used when you want to farm a specific material.
 
-![Battle Configs - Material](https://cdn.discordapp.com/attachments/1127606706420068372/1127664742601850931/20230709_130905.jpg "Battle Configs - Material")
+![Battle Configs - Material](https://i.imgur.com/ctteami.jpeg "Battle Configs - Material")
 
 ![Material Selection](https://i.imgur.com/2IQKvSj.png)
 
@@ -359,21 +359,21 @@ How the spam option works
 
 If you play in multiple servers you can make your scripts only show up only for that specific server in the pop up menu when you're in-game.
 
-![Battle Configs - Server Selection](https://cdn.discordapp.com/attachments/1127606706420068372/1127690674284798032/20230709_145949.jpg "Battle Configs - Server Selection")
+![Battle Configs - Server Selection](https://i.imgur.com/ihEg1WS.jpeg "Battle Configs - Server Selection")
 
 ## Party Selection
 
 You can assign one of the party slots to your scripts so that whenever you start FGA, it will check if your last use party is on the right slot and
 switch to the right one if it's not.
 
-![Battle Configs - Party Selection](https://cdn.discordapp.com/attachments/1127606706420068372/1127690720606691338/20230709_145513.jpg "Battle Configs - Party Selection")
+![Battle Configs - Party Selection](https://i.imgur.com/ACFI8kc.jpeg "Battle Configs - Party Selection")
 
 ## Card Priority (optional)
 
 Card Priority is an optional feature.
 Please note, you do not have to set them everytime you're making a new script.
 
-![Battle Configs - Card Priority](https://cdn.discordapp.com/attachments/1127606706420068372/1127694004822225007/20230709_151143.jpg "Battle Configs - Card Priority")
+![Battle Configs - Card Priority](https://i.imgur.com/XbdSqhZ.jpeg "Battle Configs - Card Priority")
 
 ___
 
@@ -383,7 +383,7 @@ Card Priority is used to tell FGA how to handle face cards.
 
 With cards in the high will have priority usage over cards on the low end
 
-![Battle Configs - Card Priority Interface](https://cdn.discordapp.com/attachments/1127606706420068372/1127696989459591208/20230709_152209.jpg)
+![Battle Configs - Card Priority Interface](https://i.imgur.com/VGszBHI.jpeg)
 
 #### Symbols used in Card Priority
 
@@ -401,15 +401,15 @@ Cards can be changed around for different use case eg:
 
 - For Buster cards priority:
 
-  ![Battle Configs - Card Priority | Buster](https://cdn.discordapp.com/attachments/1127606706420068372/1127705166628540427/20230709_153937.jpg "Battle Configs - Card Priority | Buster")
+  ![Battle Configs - Card Priority | Buster](https://i.imgur.com/0I1BRzp.jpeg "Battle Configs - Card Priority | Buster")
 
 - For charging NP with face cards (Arts cards priority):
 
-  ![Battle Configs - Card Priority | Art](https://cdn.discordapp.com/attachments/1127606706420068372/1127713422881063013/20230709_154002.jpg "Battle Configs - Card Priority | Art")
+  ![Battle Configs - Card Priority | Art](https://i.imgur.com/c0IRnTr.jpeg "Battle Configs - Card Priority | Art")
 
 - For stars (Quick cards priority):
 
-  ![Battle Configs - Card Priority | Quick](https://cdn.discordapp.com/attachments/1127606706420068372/1127713500937076927/20230709_154016.jpg "Battle Configs - Card Priority | Quick")
+  ![Battle Configs - Card Priority | Quick](https://i.imgur.com/2a483et.jpeg "Battle Configs - Card Priority | Quick")
 
 If you want to have different card priority for different waves, then you can add more waves and rearrange the card priority to your liking.
 
@@ -417,7 +417,7 @@ Otherwise, the default will be used throughout all waves, so if you want the sam
 option OR leave it as it is.
 
 Hence, there is no reason to add more if you're not gonna use it for something different.
-![Battle Configs - Card Priority | Default](https://cdn.discordapp.com/attachments/1127606706420068372/1127718272234696774/20230709_164455.jpg "Battle Configs - Card Priority | Default")
+![Battle Configs - Card Priority | Default](https://i.imgur.com/N6WfLVB.jpeg "Battle Configs - Card Priority | Default")
 ___
 
 ### Servant Priority
@@ -440,7 +440,7 @@ ___
 
 There are only 3 options for brace chains unless you use Servant Priority.
 
-![Battle Configs - Card Priority | Brave Chain options](https://cdn.discordapp.com/attachments/1127606706420068372/1127719287168180314/20230709_165137.jpg "Battle Configs - Card Priority | Brave Chain options")
+![Battle Configs - Card Priority | Brave Chain options](https://i.imgur.com/nhPPIM0.jpeg "Battle Configs - Card Priority | Brave Chain options")
 ___
 
 ### Rearrange Cards
