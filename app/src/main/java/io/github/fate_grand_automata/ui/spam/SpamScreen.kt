@@ -2,10 +2,12 @@ package io.github.fate_grand_automata.ui.spam
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -125,7 +127,9 @@ fun SpamScreen(
 
         item {
             LazyRow(
-                contentPadding = PaddingValues(16.dp, 5.dp)
+                contentPadding = PaddingValues(10.dp, 5.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 items(vm.presets) { preset ->
                     HeadingButton(

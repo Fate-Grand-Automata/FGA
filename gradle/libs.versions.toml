@@ -32,7 +32,7 @@ tesseract4android_version = "4.7.0"
 
 timber_version = "5.0.1"
 
-compose_bom_version = "2024.06.00"
+compose_bom_version = "2024.09.02"
 
 
 

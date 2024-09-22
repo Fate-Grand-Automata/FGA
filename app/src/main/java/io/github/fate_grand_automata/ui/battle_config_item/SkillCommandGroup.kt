@@ -1,6 +1,8 @@
 package io.github.fate_grand_automata.ui.battle_config_item
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -99,6 +101,8 @@ fun SkillCommandSummary(skillCommand: List<SkillMakerEntry>) {
     LazyRow(
         modifier = Modifier
             .padding(vertical = 2.dp)
+            .height(25.dp) // without this, the app crashes when opening battle configs
+            .fillMaxWidth()
     ) {
         items(skillCommand) {
             Card(
