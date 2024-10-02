@@ -287,7 +287,12 @@ private fun CardPrioritySummary(cardPriority: CardPriorityPerWave) {
                     style = MaterialTheme.typography.bodyMedium
                 )
 
-                Card {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
                     val priorityString = buildAnnotatedString {
                         priorities.forEachIndexed { index, it ->
                             if (index != 0) {
