@@ -256,7 +256,7 @@ private fun MaxSkills(
 
             Card(
                 elevation = cardElevation(5.dp),
-                colors = CardDefaults.cardColors((
+                colors = CardDefaults.cardColors(
                     containerColor = backgroundColor,
                     contentColor = foregroundColor
                 )
