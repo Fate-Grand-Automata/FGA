@@ -31,7 +31,9 @@ fun SkillMakerTarget(
     showKukulkan: Boolean,
     onKukulkan: () -> Unit,
     showMelusine: Boolean,
-    onMelusine: () -> Unit
+    onMelusine: () -> Unit,
+    showSoujuurou: Boolean,
+    onSoujuurou: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -97,6 +99,11 @@ fun SkillMakerTarget(
                     Text(stringResource(R.string.skill_maker_melusine))
                 }
             }
+            if (showSoujuurou) {
+                Button(onClick = onSoujuurou) {
+                    Text(stringResource(R.string.skill_maker_soujuurou))
+                }
+            }
 
             Button(onClick = { onSkillTarget(null) }) {
                 Text(stringResource(R.string.skill_maker_target_none))
@@ -121,11 +128,17 @@ fun TestSkillMakerTargetIshtar() = TestSkillMaker(showSpaceIshtar = true)
 fun TestSkillMakerOnlyKukulkan() = TestSkillMaker()
 
 @Composable
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun TestSkillMakerTargetSoujuurou() = TestSkillMaker(showSoujuurou = true)
+
+@Composable
 private fun TestSkillMaker(
     showEmiya: Boolean = false,
     showKukulkan: Boolean = false, 
-    showSpaceIshtar: Boolean = false, 
-    showMelusine: Boolean = showEmiya
+    showSpaceIshtar: Boolean = false,
+    showMelusine: Boolean = showEmiya,
+    showSoujuurou: Boolean = false
 ) {
     FGATheme {
         SkillMakerTarget(
@@ -137,7 +150,9 @@ private fun TestSkillMaker(
             showKukulkan = showKukulkan,
             onKukulkan = {},
             showMelusine = showMelusine,
-            onMelusine = {}
+            onMelusine = {},
+            showSoujuurou = showSoujuurou,
+            onSoujuurou = {}
         )
     }
 }
