@@ -531,6 +531,11 @@ class AutoBattle @Inject constructor(
             inventoryFull -> throw BattleExitException(ExitReason.InventoryFull)
         }
 
-        refill.refill()
+        val isLastRun = prefs.selectedServerConfigPref.shouldLimitRuns &&
+                (prefs.selectedServerConfigPref.limitRuns - state.runs) <= 1
+
+        refill.refill(
+            isLastRun = isLastRun
+        )
     }
 }
