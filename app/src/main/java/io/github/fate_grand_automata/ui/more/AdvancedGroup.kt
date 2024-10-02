@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -96,7 +97,11 @@ fun LazyListScope.advancedGroup(
             AnimatedVisibility(gameAreaMode == GameAreaMode.Custom) {
                 Card(
                     modifier = Modifier.padding(5.dp),
-                    elevation = cardElevation(5.dp)
+                    elevation = cardElevation(5.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 ) {
                     Column(
                         modifier = Modifier.scale(0.9f)
