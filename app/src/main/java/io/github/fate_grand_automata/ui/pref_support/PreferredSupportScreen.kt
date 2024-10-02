@@ -76,7 +76,11 @@ private fun PreferredSupport(
         item {
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             ) {
                 Column(
                     modifier = Modifier
@@ -121,7 +125,11 @@ private fun PreferredSupport(
         item {
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             ) {
                 Column(
                     modifier = Modifier
@@ -148,7 +156,11 @@ private fun PreferredSupport(
         item {
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             ) {
                 Column {
                     PreferenceGroupHeader(
@@ -182,7 +194,11 @@ private fun PreferredSupport(
         item {
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             ) {
                 PreferredSupportHelp()
             }
