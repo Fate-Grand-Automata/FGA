@@ -91,7 +91,6 @@ Master"</string>
     <string name="p_battle_config_party">"Tổ đội"</string>
     <string name="p_battle_config_server">"Máy chủ"</string>
     <string name="p_battle_config_card_priority">"Ưu tiên thẻ"</string>
-    <string name="p_battle_config_use_servant_priority">"Sử dụng ưu tiên Servant"</string>
     <string name="p_battle_config_support">"Hỗ trợ"</string>
     <string name="p_battle_config_support_selection_mode">"Lựa chọn chế độ"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"Dự phòng"</string>
@@ -171,6 +170,8 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="card_priority">"Ưu tiên thẻ"</string>
     <string name="p_refill_type_gold">"Vàng"</string>
     <string name="p_refill_type_silver">"Bạc"</string>
+
+    <!-- Fuzzy -->
     <string name="p_refill_type_bronze">"Xanh"</string>
     <string name="p_refill_type_copper">"Đồng"</string>
     <string name="p_refill_type_sq">"SQ"</string>
@@ -207,6 +208,8 @@ Sao chép hoặc đổi tên nó nếu bạn muốn giữ nó."</string>
     <string name="p_support_class_berserker">"Berseker"</string>
     <string name="p_support_class_extra">"Extra"</string>
     <string name="p_support_class_mix">"Trộn"</string>
+
+    <!-- Fuzzy -->
     <string name="overlay_notification_text">"Dịch vụ đang chạy"</string>
     <string name="notification_stop">"Dừng lại"</string>
     <string name="accessibility_service">"Dịch vụ tiếp cận: "</string>
@@ -251,8 +254,12 @@ Vui lòng bật khả năng truy cập cho ứng dụng này từ cài đặt H�
     <string name="times_withdrew">"Đã đầu hàng %d lần"</string>
     <string name="avg_time_per_run">"Thời gian trung bình mỗi lần chạy: %s"</string>
     <string name="turns_count">"Lượt: %d"</string>
+
+    <!-- Fuzzy -->
     <string name="turns_stats">"Lượt: %1$d (phút), %2$.02f (trung bình), %3$d (tối đa)"</string>
-    <string name="picked_exp_stacks">"Đã chọn %1$d EXP, tạo ra tổng số %2$d Embers vàng"</string>
+
+    <!-- Fuzzy -->
+    <string name="picked_exp_stacks">"Đã chọn %d EXP, tạo ra tổng số %d Embers vàng"</string>
     <string name="no_embers_found">"Không thể tìm thấy Embers trên màn hình. Đảm bảo rằng bạn đã lọc thẻ EXP."</string>
     <string name="root_failed">"Không thể truy cập quyền root"</string>
     <string name="p_mats">"Nguyên vật liệu"</string>
@@ -380,4 +387,35 @@ Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không đượ
     <string name="p_max_gold_ember_total_count">"Tổng số lượng than hồng vàng tối đa"</string>
     <string name="update_download_success">"Tải xuống thành công. Khởi động lại ứng dụng sau 5 giây."</string>
     <string name="skill_maker_melusine">"Mélusine"</string>
+    <string name="p_battle_config_use_servant_priority"></string>
+    <string name="reset_all"></string>
+    <string name="reset_to_default"></string>
+    <string name="p_choose_app_language"></string>
+    <string name="p_app_language"></string>
+    <string name="p_treat_support_like_own_servant"></string>
+    <string name="p_treat_support_like_own_servant_summary"></string>
+    <string name="skill_maker_main_delete_selected"></string>
+    <string name="skill_maker_main_wave"></string>
+    <string name="skill_maker_main_turn"></string>
+    <string name="p_screenshot_bond"></string>
+    <string name="p_screenshot_bond_summary"></string>
+    <string name="bond_level_up"></string>
+    <string name="servant_enhancement"></string>
+    <string name="servant_enhancement_no_embers_or_qp_left"></string>
+    <string name="servert_enhancement_warning_notice"></string>
+    <string name="servant_enhancement_redirect_ascension_question"></string>
+    <string name="servant_enhancement_perform_ascension_question"></string>
+    <string name="servant_enhancement_perform_ascension_warning"></string>
+    <string name="servant_enhancement_redirect_grail"></string>
+    <string name="servant_enhancement_redirect_ascension_success"></string>
+    <string name="servant_enhancement_redirect_grail_success"></string>
+    <string name="servant_enhancement_perform_ascension_failed"></string>
+    <string name="servant_enhancement_max_level"></string>
+    <string name="servant_enhancement_none_selected"></string>
+    <string name="servant_enhancement_aborted"></string>
+    <string name="note"></string>
+    <string name="p_hide_sq_in_resource"></string>
+    <string name="p_hide_sq_in_resource_summary"></string>
+    <string name="mat_flower_of_the_end"></string>
+    <string name="mat_golden_cauldron"></string>
 </resources>
