@@ -414,6 +414,6 @@ Order Change"</string>
     <string name="note"></string>
     <string name="p_hide_sq_in_resource"></string>
     <string name="p_hide_sq_in_resource_summary"></string>
-    <string name="mat_flower_of_the_end"></string>
-    <string name="mat_golden_cauldron"></string>
+    <string name="mat_flower_of_the_end">"終之花"</string>
+    <string name="mat_golden_cauldron">"黃金釜"</string>
 </resources>
