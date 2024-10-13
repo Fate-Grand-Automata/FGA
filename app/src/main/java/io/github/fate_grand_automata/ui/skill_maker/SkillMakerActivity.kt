@@ -163,6 +163,14 @@ fun SkillMakerUI(
                     ),
                     onMelusine = {
                         vm.targetSkill(ServantTarget.Melusine)
+                    },
+                    showSoujuurou = nav.skill in listOf(
+                        Skill.Servant.A3,
+                        Skill.Servant.B3,
+                        Skill.Servant.C3
+                    ),
+                    onSoujuurou = {
+                        navigate(SkillMakerNav.Soujuurou(nav.skill))
                     }
                 )
             }
@@ -188,6 +196,13 @@ fun SkillMakerUI(
 
             is SkillMakerNav.KukulkanTarget -> {
                 SkillMakerKukulkanTarget(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
+            }
+            is SkillMakerNav.Soujuurou -> {
+                SkillMakerSoujuurou(
+                    onSkillTarget = { servantTarget ->
+                        vm.targetSkill(servantTarget)
+                    },
+                )
             }
         }
     }

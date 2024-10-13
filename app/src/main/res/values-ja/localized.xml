@@ -394,6 +394,9 @@
     <string name="p_max_gold_ember_total_count">"受け取った種火の総数"</string>
     <string name="update_download_success">"ダウンロード成功。5秒後に再起動します。"</string>
     <string name="skill_maker_melusine">"メリュジーヌ"</string>
+
+    <string name="skill_maker_soujuurou">"静希草十郎"</string>
+
     <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
     <string name="reset_all"></string>
     <string name="reset_to_default"></string>
@@ -425,4 +428,5 @@
     <string name="p_hide_sq_in_resource_summary"></string>
     <string name="mat_flower_of_the_end">"終の花"</string>
     <string name="mat_golden_cauldron">"黄金釜"</string>
+
 </resources>
