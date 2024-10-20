@@ -50,7 +50,6 @@ If you want to contribute, read the [Contribution Guide](CONTRIBUTING.md).
 ## Acknowledgements
 
 - [FGO-Lua][FGOLua] developers are the real deal. Without them this app won't exist.
-- We're using OpenCV Android package from: https://github.com/iamareebjamal/opencv-android
 - The icons are from https://materialdesignicons.com/
 - Drag-sort logic on Card Priority screen is thanks to https://medium.com/@ipaulpro/drag-and-swipe-with-recyclerview-6a6f0c422efd
 
