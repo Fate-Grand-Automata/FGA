@@ -177,7 +177,7 @@ private fun BattleConfigContent(
                     Card(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
-                            .padding(bottom = 16.dp)
+                            .padding(bottom = 5.dp)
                     ) {
                         Column {
                             Row(

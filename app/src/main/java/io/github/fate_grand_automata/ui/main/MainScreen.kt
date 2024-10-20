@@ -197,10 +197,12 @@ private fun toggleOverlayService(
         if (vm.prefs.wantsMediaProjectionToken) {
             if (ScriptRunnerService.mediaProjectionToken == null) {
                 startMediaProjection()
+                return
             }
-        } else {
-            ScriptRunnerService.startService(context)
         }
+
+        // if we already have a token or are using root mode
+        ScriptRunnerService.startService(context)
     }
 }
 

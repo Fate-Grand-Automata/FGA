@@ -56,7 +56,7 @@ class ScreenshotServiceHolder @Inject constructor(
                 val mediaProjection =
                     mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, token)
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                     // not allowed to reuse tokens on Android 14
                     ScriptRunnerService.mediaProjectionToken = null
                 }
