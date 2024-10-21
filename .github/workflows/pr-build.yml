@@ -44,15 +44,23 @@ jobs:
 
       - name: Build Android Package
         run: ./gradlew assembleCi --scan --parallel --no-daemon
+    
+      - name: Rename Artifacts
+        run: |
+          mv app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-${{ github.run_number }}.apk
+          mv app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-${{ github.run_number }}.txt
+
+          echo "FGA_APK_PATH=app/build/outputs/apk/ci/fga-pr-${{ github.run_number }}.apk" >>${GITHUB_ENV}
+          echo "FGA_MAPPING_PATH=app/build/outputs/apk/ci/fga-mapping-${{ github.run_number }}.txt" >>${GITHUB_ENV}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: apk
-          path: app/build/outputs/apk/ci/app-ci.apk
+          name: FGA-pr-${{ github.run_number }}
+          path: ${{ env.FGA_APK_PATH }}
 
       - name: Upload De-obfuscation mapping file
         uses: actions/upload-artifact@v4
         with:
-          name: mapping-ci
-          path: app/build/outputs/mapping/ci/mapping.txt
+          name: FGA-mapping-pr-${{ github.run_number }}
+          path: ${{ env.FGA_MAPPING_PATH }}
