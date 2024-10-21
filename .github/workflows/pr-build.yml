@@ -25,7 +25,7 @@ env:
 jobs:
   build:
     runs-on: macos-14
-    if: github.ref != 'refs/heads/master'
+    if: github.ref != 'refs/heads/master' && github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -47,11 +47,57 @@ jobs:
     
       - name: Rename Artifacts
         run: |
-          mv app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-${{ github.run_number }}.apk
-          mv app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-${{ github.run_number }}.txt
+          build_name=${{ github.event.pull_request.number }}-build-${{ github.run_number }}
 
-          echo "FGA_APK_PATH=app/build/outputs/apk/ci/fga-pr-${{ github.run_number }}.apk" >>${GITHUB_ENV}
-          echo "FGA_MAPPING_PATH=app/build/outputs/apk/ci/fga-mapping-${{ github.run_number }}.txt" >>${GITHUB_ENV}
+          mv app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-$build_name.apk
+          mv app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-$build_name.txt
+
+          echo "FGA_APK_PATH=app/build/outputs/apk/ci/fga-pr-$build_name.apk" >>${GITHUB_ENV}
+          echo "FGA_MAPPING_PATH=app/build/outputs/apk/ci/fga-mapping-$build_name.txt" >>${GITHUB_ENV}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FGA-PR-${{ github.event.pull_request.number }}-build-${{ github.run_number }}
+          path: ${{ env.FGA_APK_PATH }}
+
+      - name: Upload De-obfuscation mapping file
+        uses: actions/upload-artifact@v4
+        with:
+          name: FGA-PR-mapping-${{ github.event.pull_request.number }}-build-${{ github.run_number }}
+          path: ${{ env.FGA_MAPPING_PATH }}
+  
+  build-workflow:
+    runs-on: macos-14
+    if: github.ref != 'refs/heads/master' && github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRO }}
+          cache: 'gradle'
+
+      - name: Determine Version Name
+        shell: bash
+        run: |
+          VERSION_NAME=$VERSION_CODE
+          echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
+          echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
+
+      - name: Build Android Package
+        run: ./gradlew assembleCi --scan --parallel --no-daemon
+    
+      - name: Rename Artifacts
+        run: |
+          build_name=${{ github.run_number }}
+
+          mv app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-$build_name.apk
+          mv app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-$build_name.txt
+
+          echo "FGA_APK_PATH=app/build/outputs/apk/ci/fga-pr-$build_name.apk" >>${GITHUB_ENV}
+          echo "FGA_MAPPING_PATH=app/build/outputs/apk/ci/fga-mapping-$build_name.txt" >>${GITHUB_ENV}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
