@@ -1,16 +1,6 @@
 name: CI
 
 on:
-  pull_request:
-    paths-ignore:
-      - '.idea/**'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.gitattributes'
-      - '.gitignore'
-      - '*.md'
-      - 'LICENSE'
-      - 'custom-game-area/**'
-      - 'wiki/**'
   push:
     branches:
       - master
@@ -37,40 +27,6 @@ env:
   VERSION_CODE: '${{ github.run_number }}'
 
 jobs:
-  build:
-    runs-on: macos-14
-    if: github.ref != 'refs/heads/master'
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRO }}
-          cache: 'gradle'
-
-      - name: Determine Version Name
-        shell: bash
-        run: |
-          VERSION_NAME=$VERSION_CODE
-          echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
-          echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
-
-      - name: Build Android Package
-        run: ./gradlew assembleCi --scan --parallel --no-daemon
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: apk
-          path: app/build/outputs/apk/ci/app-ci.apk
-
-      - name: Upload De-obfuscation mapping file
-        uses: actions/upload-artifact@v4
-        with:
-          name: mapping-ci
-          path: app/build/outputs/mapping/ci/mapping.txt
-
   play_store:
     runs-on: macos-14
     if: github.ref == 'refs/heads/master'

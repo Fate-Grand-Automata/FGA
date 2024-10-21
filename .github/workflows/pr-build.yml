@@ -1,0 +1,75 @@
+name: PR Build
+
+on:
+  pull_request:
+    paths-ignore:
+      - '.idea/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.gitattributes'
+      - '.gitignore'
+      - '*.md'
+      - 'LICENSE'
+      - 'custom-game-area/**'
+      - 'wiki/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: 17
+  JAVA_DISTRO: 'temurin'
+  VERSION_CODE: '${{ github.run_number }}'
+
+jobs:
+  build:
+    runs-on: macos-14
+    if: github.ref != 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRO }}
+          cache: 'gradle'
+
+      - name: Determine Version Name
+        shell: bash
+        run: |
+          VERSION_NAME=$VERSION_CODE
+          echo "FGA_VERSION_CODE=$VERSION_CODE" >>${GITHUB_ENV}
+          echo "FGA_VERSION_NAME=$VERSION_NAME" >>${GITHUB_ENV}
+
+      - name: Build Android Package
+        run: ./gradlew assembleCi --scan --parallel --no-daemon
+    
+      - name: Rename Artifacts
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            build_name="${{ github.run_number }}"
+          else
+            build_name="${{ github.event.pull_request.number }}-build-${{ github.run_number }}"
+          fi
+
+          mv app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-$build_name.apk
+          mv app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-$build_name.txt
+
+          echo "FGA_APK_PATH=app/build/outputs/apk/ci/fga-pr-$build_name.apk" >>${GITHUB_ENV}
+          echo "FGA_MAPPING_PATH=app/build/outputs/apk/ci/fga-mapping-$build_name.txt" >>${GITHUB_ENV}
+
+          echo "FGA_APK_ARTIFACT_NAME=FGA-PR-apk-$build_name" >>${GITHUB_ENV}
+          echo "FGA_MAPPING_ARTIFACT_NAME=FGA-PR-mapping-$build_name" >>${GITHUB_ENV}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.FGA_APK_ARTIFACT_NAME }}
+          path: ${{ env.FGA_APK_PATH }}
+
+      - name: Upload De-obfuscation mapping file
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
+          path: ${{ env.FGA_MAPPING_PATH }}
