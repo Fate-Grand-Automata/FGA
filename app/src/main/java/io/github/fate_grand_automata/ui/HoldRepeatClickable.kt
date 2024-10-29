@@ -50,6 +50,7 @@ fun Modifier.holdRepeatClickable(
                             var increment = 0
                             var totalRepeatInterval = 0.milliseconds
                             var lastIncrementTime = 0.milliseconds
+                            val adjustmentFactor = 1.5
 
                             try {
                                 delay(longPressTimeout)
@@ -68,7 +69,7 @@ fun Modifier.holdRepeatClickable(
                                             increment =
                                                 (totalRepeatInterval.inWholeSeconds
                                                     .toFloat()
-                                                    .pow(2) * 1.1).toInt()
+                                                    .pow(2) * adjustmentFactor).toInt()
                                             lastIncrementTime = totalRepeatInterval
                                         } else {
                                             increment = 0
@@ -78,7 +79,7 @@ fun Modifier.holdRepeatClickable(
                                             increment =
                                                 (totalRepeatInterval.inWholeSeconds
                                                     .toFloat()
-                                                    .pow(2) * 1.5).toInt()
+                                                    .pow(2) * 3 * adjustmentFactor).toInt()
                                             lastIncrementTime = totalRepeatInterval
                                         } else {
                                             increment = 0
