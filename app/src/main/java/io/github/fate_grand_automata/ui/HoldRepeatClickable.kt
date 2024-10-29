@@ -21,7 +21,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 fun Modifier.holdRepeatClickable(
-    onRepeat: (Int) -> Unit = { 0 },
+    onRepeat: (Int) -> Unit,
     onEnd: () -> Unit,
     enabled: Boolean = true
 ) = composed {
