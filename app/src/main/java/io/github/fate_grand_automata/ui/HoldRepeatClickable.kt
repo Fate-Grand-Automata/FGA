@@ -64,17 +64,14 @@ fun Modifier.holdRepeatClickable(
 
                                     totalRepeatInterval += repeatInterval
 
-                                    if (totalRepeatInterval in 1.seconds..3.seconds || totalRepeatInterval > 3.seconds) {
-                                        if (totalRepeatInterval - lastIncrementTime >= 1.seconds) {
-                                            val factor = if (totalRepeatInterval > 3.seconds) 3 else 1
-                                            increment =
-                                                (totalRepeatInterval.inWholeSeconds
-                                                    .toFloat()
-                                                    .pow(2) * factor * adjustmentFactor).toInt()
-                                            lastIncrementTime = totalRepeatInterval
-                                        } else {
-                                            increment = 0
-                                        }
+                                    if (totalRepeatInterval >= 1.seconds && totalRepeatInterval - lastIncrementTime >= 1.seconds) {
+                                        val factor = if (totalRepeatInterval > 3.seconds) 3 else 1
+                                        increment = (totalRepeatInterval.inWholeSeconds
+                                            .toFloat()
+                                            .pow(2) * factor * adjustmentFactor).toInt()
+                                        lastIncrementTime = totalRepeatInterval
+                                    } else {
+                                        increment = 0
                                     }
 
                                     repeatInterval = (repeatInterval - repeatIntervalDelta)
