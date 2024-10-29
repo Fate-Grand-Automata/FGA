@@ -70,6 +70,8 @@ fun Modifier.holdRepeatClickable(
                                                     .toFloat()
                                                     .pow(2) * 1.1).toInt()
                                             lastIncrementTime = totalRepeatInterval
+                                        } else {
+                                            increment = 0
                                         }
                                     } else if (totalRepeatInterval > 3.seconds) {
                                         if (totalRepeatInterval - lastIncrementTime >= 1.seconds) {
@@ -78,6 +80,8 @@ fun Modifier.holdRepeatClickable(
                                                     .toFloat()
                                                     .pow(2) * 1.5).toInt()
                                             lastIncrementTime = totalRepeatInterval
+                                        } else {
+                                            increment = 0
                                         }
                                     }
 
