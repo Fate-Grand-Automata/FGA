@@ -164,12 +164,12 @@ fun SkillMakerUI(
                     onMelusine = {
                         vm.targetSkill(ServantTarget.Melusine)
                     },
-                    showSoujuurou = nav.skill in listOf(
+                    showChoice3 = nav.skill in listOf(
                         Skill.Servant.A3,
                         Skill.Servant.B3,
                         Skill.Servant.C3
                     ),
-                    onSoujuurou = {
+                    onChoice3 = {
                         navigate(SkillMakerNav.Choice3(nav.skill))
                     }
                 )

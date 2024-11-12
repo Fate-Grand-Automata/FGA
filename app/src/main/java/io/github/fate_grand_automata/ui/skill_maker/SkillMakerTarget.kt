@@ -2,17 +2,30 @@ package io.github.fate_grand_automata.ui.skill_maker
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,6 +33,8 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SkillMakerTarget(
@@ -32,8 +47,8 @@ fun SkillMakerTarget(
     onKukulkan: () -> Unit,
     showMelusine: Boolean,
     onMelusine: () -> Unit,
-    showSoujuurou: Boolean,
-    onSoujuurou: () -> Unit
+    showChoice3: Boolean,
+    onChoice3: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -99,10 +114,14 @@ fun SkillMakerTarget(
                     Text(stringResource(R.string.skill_maker_melusine))
                 }
             }
-            if (showSoujuurou) {
-                Button(onClick = onSoujuurou) {
-                    Text(stringResource(R.string.skill_maker_soujuurou))
-                }
+            if (showChoice3) {
+                ButtonWithHint(
+                    onClick = onChoice3,
+                    text = stringResource(R.string.skill_maker_tri_choice),
+                    hint = stringArrayResource(R.array.skill_maker_tri_choice_array).joinToString(
+                        "\n"
+                    )
+                )
             }
 
             Button(onClick = { onSkillTarget(null) }) {
@@ -110,6 +129,69 @@ fun SkillMakerTarget(
             }
         }
     }
+}
+
+@Composable
+private fun ButtonWithHint(
+    onClick: () -> Unit,
+    text: String,
+    hint: String
+) {
+    val state = rememberTooltipState(isPersistent = true)
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(state.isVisible) {
+        if (state.isVisible) {
+            delay(5000)
+            if (state.isVisible) {
+                state.dismiss()
+            }
+        }
+    }
+
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Button(
+            onClick = onClick
+        ) {
+            Text(text)
+        }
+        Box {
+            TooltipBox(
+                positionProvider = TooltipDefaults.rememberRichTooltipPositionProvider(),
+                tooltip = {
+                    PlainTooltip(
+                        content = {
+                            Text(
+                                text = hint,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        },
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+
+                    )
+                },
+                state = state
+            ) {
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            state.show()
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Info"
+                    )
+                }
+            }
+        }
+    }
+
 }
 
 @Composable
@@ -130,15 +212,15 @@ fun TestSkillMakerOnlyKukulkan() = TestSkillMaker()
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerTargetSoujuurou() = TestSkillMaker(showSoujuurou = true)
+fun TestSkillMakerTargetChoice3() = TestSkillMaker(showChoice3 = true)
 
 @Composable
 private fun TestSkillMaker(
     showEmiya: Boolean = false,
-    showKukulkan: Boolean = false, 
+    showKukulkan: Boolean = false,
     showSpaceIshtar: Boolean = false,
     showMelusine: Boolean = showEmiya,
-    showSoujuurou: Boolean = false
+    showChoice3: Boolean = false
 ) {
     FGATheme {
         SkillMakerTarget(
@@ -151,8 +233,8 @@ private fun TestSkillMaker(
             onKukulkan = {},
             showMelusine = showMelusine,
             onMelusine = {},
-            showSoujuurou = showSoujuurou,
-            onSoujuurou = {}
+            showChoice3 = showChoice3,
+            onChoice3 = {}
         )
     }
 }
