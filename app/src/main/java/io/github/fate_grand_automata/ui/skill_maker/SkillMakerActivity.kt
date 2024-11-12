@@ -170,7 +170,7 @@ fun SkillMakerUI(
                         Skill.Servant.C3
                     ),
                     onSoujuurou = {
-                        navigate(SkillMakerNav.Soujuurou(nav.skill))
+                        navigate(SkillMakerNav.Choice3(nav.skill))
                     }
                 )
             }
@@ -197,8 +197,8 @@ fun SkillMakerUI(
             is SkillMakerNav.KukulkanTarget -> {
                 SkillMakerKukulkanTarget(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
             }
-            is SkillMakerNav.Soujuurou -> {
-                SkillMakerSoujuurou(
+            is SkillMakerNav.Choice3 -> {
+                SkillMakerChoice3(
                     onSkillTarget = { servantTarget ->
                         vm.targetSkill(servantTarget)
                     },
