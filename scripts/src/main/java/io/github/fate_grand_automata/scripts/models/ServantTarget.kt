@@ -42,10 +42,10 @@ sealed class ServantTarget(
             validateString(targetCode)
         }
 
-        // Soujuurou or Charlotte
-        data object TriChoice1 : SpecialTarget("TCh1")
-        data object TriChoice2 : SpecialTarget("TCh2")
-        data object TriChoice3 : SpecialTarget("TCh3")
+        // Soujuurou/Charlotte/Hakunon
+        data object Choice3OptionA : SpecialTarget("Ch3A")
+        data object Choice3OptionB : SpecialTarget("Ch3B")
+        data object Choice3OptionC : SpecialTarget("Ch3C")
     }
 
     companion object {
@@ -55,9 +55,9 @@ sealed class ServantTarget(
                 Left, Right,
                 Option1, Option2,
                 Melusine,
-                SpecialTarget.TriChoice1,
-                SpecialTarget.TriChoice2,
-                SpecialTarget.TriChoice3
+                SpecialTarget.Choice3OptionA,
+                SpecialTarget.Choice3OptionB,
+                SpecialTarget.Choice3OptionC
             )
         }
     }

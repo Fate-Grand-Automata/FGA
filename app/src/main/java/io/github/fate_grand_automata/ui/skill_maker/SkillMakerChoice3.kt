@@ -41,19 +41,19 @@ fun SkillMakerChoice3(
                 .fillMaxWidth()
         ) {
             TargetButton(
-                onClick = { onSkillTarget(ServantTarget.SpecialTarget.TriChoice1) },
+                onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionA) },
                 color = colorResource(R.color.colorQuickResist),
                 text = stringResource(R.string.skill_maker_tri_choice_1)
             )
 
             TargetButton(
-                onClick = { onSkillTarget(ServantTarget.SpecialTarget.TriChoice2) },
+                onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionB) },
                 color = colorResource(R.color.colorArtsResist),
                 text = stringResource(R.string.skill_maker_tri_choice_2)
             )
 
             TargetButton(
-                onClick = { onSkillTarget(ServantTarget.SpecialTarget.TriChoice3) },
+                onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionC) },
                 color = colorResource(R.color.colorBuster),
                 text = stringResource(R.string.skill_maker_tri_choice_3)
             )
