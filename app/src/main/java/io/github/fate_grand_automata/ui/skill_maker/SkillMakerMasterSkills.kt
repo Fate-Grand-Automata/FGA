@@ -24,6 +24,7 @@ import io.github.fate_grand_automata.ui.FGATitle
 @Composable
 fun SkillMakerMasterSkills(
     onMasterSkill: (Skill.Master) -> Unit,
+    onMasterSkillNoTarget: (Skill.Master) -> Unit,
     onOrderChange: () -> Unit
 ) {
     Column(
@@ -58,10 +59,10 @@ fun SkillMakerMasterSkills(
                 Skill.Master.list.forEach {
                     SkillButton(
                         skill = it,
-                        color = colorResource(R.color.colorMasterSkill)
-                    ) {
-                        onMasterSkill(it)
-                    }
+                        color = colorResource(R.color.colorMasterSkill),
+                        onClick = { onMasterSkill(it) },
+                        onDoubleClick = { onMasterSkillNoTarget(it) }
+                    )
                 }
             }
         }
@@ -73,6 +74,10 @@ fun SkillMakerMasterSkills(
 @Composable
 fun TestMasterSkills() {
     FGATheme {
-        SkillMakerMasterSkills(onMasterSkill = { }, onOrderChange = { })
+        SkillMakerMasterSkills(
+            onMasterSkill = { },
+            onMasterSkillNoTarget = { },
+            onOrderChange = { }
+        )
     }
 }

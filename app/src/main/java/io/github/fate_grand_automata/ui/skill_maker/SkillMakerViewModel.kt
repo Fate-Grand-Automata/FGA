@@ -166,6 +166,12 @@ class SkillMakerViewModel @Inject constructor(
         navigation.value = SkillMakerNav.SkillTarget(skill)
     }
 
+    fun noTargetSkill(skill: Skill) {
+        currentSkill = skill.autoSkillCode
+
+        targetSkill(null)
+    }
+
     fun back() {
         navigation.value = SkillMakerNav.Main
     }

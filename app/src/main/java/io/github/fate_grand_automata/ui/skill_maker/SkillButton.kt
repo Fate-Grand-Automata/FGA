@@ -1,5 +1,6 @@
 package io.github.fate_grand_automata.ui.skill_maker
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
@@ -20,7 +21,8 @@ import io.github.fate_grand_automata.scripts.models.Skill
 fun RowScope.SkillButton(
     skill: Skill,
     color: Color,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onDoubleClick: () -> Unit
 ) {
     Surface(
         color = color,
@@ -30,8 +32,11 @@ fun RowScope.SkillButton(
             .sizeIn(maxWidth = 45.dp)
             .aspectRatio(1f)
             .fillMaxSize()
-            .weight(1f, false),
-        onClick = onClick
+            .weight(1f, false)
+            .combinedClickable(
+                onClick = onClick,
+                onDoubleClick = onDoubleClick
+            ),
     ) {
         Box {
             Text(
