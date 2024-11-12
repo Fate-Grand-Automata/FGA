@@ -56,19 +56,19 @@ fun SkillMakerChoice3(
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionA) },
                 color = colorResource(R.color.colorQuickResist),
-                text = stringResource(choice3Type.targetAStringRes)
+                text = stringResource(choice3Type.choice1StringRes)
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionB) },
                 color = colorResource(R.color.colorArtsResist),
-                text = stringResource(choice3Type.targetBStringRes)
+                text = stringResource(choice3Type.choice2StringRes)
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.SpecialTarget.Choice3OptionC) },
                 color = colorResource(R.color.colorBuster),
-                text = stringResource(choice3Type.targetCStringRes)
+                text = stringResource(choice3Type.choice3StringRes)
             )
         }
 
@@ -133,21 +133,21 @@ private val Choice3Type.stringRes
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte
     }
 
-private val Choice3Type.targetAStringRes
+private val Choice3Type.choice1StringRes
     get() = when (this) {
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_1
         Choice3Type.Soujuurou -> R.string.skill_maker_quick
         Choice3Type.Charlotte -> R.string.skill_maker_arts
     }
 
-private val Choice3Type.targetBStringRes
+private val Choice3Type.choice2StringRes
     get() = when (this) {
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_2
         Choice3Type.Soujuurou -> R.string.skill_maker_arts
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte_choice_2
     }
 
-private val Choice3Type.targetCStringRes
+private val Choice3Type.choice3StringRes
     get() = when (this) {
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_3
         Choice3Type.Soujuurou -> R.string.skill_maker_buster
