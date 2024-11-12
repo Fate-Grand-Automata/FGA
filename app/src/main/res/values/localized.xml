@@ -390,6 +390,21 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
     <string name="skill_maker_melusine">"Mélusine"</string>
     <string name="skill_maker_soujuurou">"Soujuurou"</string>
+    <string name="skill_maker_tri_choice">"Tri-Choice"</string>
+    <string-array name="skill_maker_tri_choice_array">
+        <item>"Soujuurou"</item>
+        <item>"Charlotte"</item>
+        <item>"Hakunon"</item>
+    </string-array>
+    <string name="skill_maker_update_hints">"Update hints"</string>
+    <string name="skill_maker_hakunon">Hakunon</string>
+    <string name="skill_maker_soujuurou">Soujuurou</string>
+    <string name="skill_maker_charlotte">Charlotte</string>
+    <string name="skill_maker_hakunon_choice_1">"Sky"</string>
+    <string name="skill_maker_hakunon_choice_2">"Earth"</string>
+    <string name="skill_maker_hakunon_choice_3">"Man"</string>
+    <string name="skill_maker_charlotte_choice_2">"Crit Damage"</string>
+    <string name="skill_maker_charlotte_choice_3">"NP Damage"</string>
 
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>
