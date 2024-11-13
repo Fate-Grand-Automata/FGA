@@ -8,11 +8,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowLeft
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
@@ -21,9 +28,15 @@ import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -87,54 +100,131 @@ fun SkillMakerTarget(
             )
         }
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+        val state = rememberLazyListState()
+
+        var firstItemVisible by remember{
+            mutableStateOf(true)
+        }
+        var lastItemVisible by remember{
+            mutableStateOf(false)
+        }
+        val scope = rememberCoroutineScope()
+
+        LaunchedEffect(state) {
+            snapshotFlow { state.layoutInfo.visibleItemsInfo }
+                .collect {
+                    firstItemVisible = it.firstOrNull()?.index == 0
+                    lastItemVisible = it.lastOrNull()?.index == state.layoutInfo.totalItemsCount - 1
+                }
+        }
+
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-        ) {
-            if (showKukulkan) {
-                Button(onClick = onKukulkan) {
-                    Text(stringResource(R.string.skill_maker_kukulkan))
+        ){
+            LazyRow(
+                state = state,
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                if (showKukulkan) {
+                    item {
+                        Button(onClick = onKukulkan) {
+                            Text(stringResource(R.string.skill_maker_kukulkan))
+                        }
+                    }
+                }
+
+                if (showTwoTargets) {
+                    item {
+                        ButtonWithHint(
+                            onClick = onTwoTargets,
+                            text = stringResource(R.string.skill_maker_two_targets),
+                            hint = stringArrayResource(R.array.skill_maker_two_targets_array).joinToString("\n")
+                        )
+                    }
+                }
+
+                if (showSpaceIshtar) {
+                    item {
+                        Button(onClick = onSpaceIshtar) {
+                            Text(stringResource(R.string.skill_maker_space_ishtar))
+                        }
+                    }
+                }
+
+                if (showTransform) {
+                    item {
+                        ButtonWithHint(
+                            onClick = onTransform,
+                            text = stringResource(R.string.skill_maker_transform),
+                            hint = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
+                        )
+                    }
+                }
+                if (showChoice3Slot1 || showChoice3Slot3) {
+                    item {
+                        ButtonWithHint(
+                            onClick = {
+                                val slot = if (showChoice3Slot1) SkillSlot.First else SkillSlot.Third
+                                onChoice3(slot)
+                            },
+                            text = stringResource(R.string.skill_maker_tri_choice),
+                            hint = stringArrayResource(
+                                if (showChoice3Slot1) R.array.skill_maker_tri_choice_array_slot_1
+                                else R.array.skill_maker_tri_choice_array_slot_3
+                            ).joinToString("\n")
+                        )
+                    }
+                }
+                item {
+                    Button(onClick = { onSkillTarget(null) }) {
+                        Text(stringResource(R.string.skill_maker_target_none))
+                    }
                 }
             }
 
-            if (showTwoTargets) {
-                ButtonWithHint(
-                    onClick = onTwoTargets,
-                    text = stringResource(R.string.skill_maker_two_targets),
-                    hint = stringArrayResource(R.array.skill_maker_two_targets_array).joinToString("\n")
-                )
-            }
-
-            if (showSpaceIshtar) {
-                Button(onClick = onSpaceIshtar) {
-                    Text(stringResource(R.string.skill_maker_space_ishtar))
-                }
-            }
-
-            if (showTransform) {
-                ButtonWithHint(
-                    onClick = onTransform,
-                    text = stringResource(R.string.skill_maker_transform),
-                    hint = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
-                )
-            }
-            if (showChoice3Slot1 || showChoice3Slot3) {
-                ButtonWithHint(
+            if(!firstItemVisible) {
+                FilledIconButton(
                     onClick = {
-                        val slot = if (showChoice3Slot1) SkillSlot.First else SkillSlot.Third
-                        onChoice3(slot)
+                        scope.launch {
+                            state.animateScrollToItem(0)
+                        }
                     },
-                    text = stringResource(R.string.skill_maker_tri_choice),
-                    hint = stringArrayResource(
-                        if (showChoice3Slot1) R.array.skill_maker_tri_choice_array_slot_1
-                        else R.array.skill_maker_tri_choice_array_slot_3
-                    ).joinToString("\n")
-                )
+                    modifier = Modifier
+                        .align(Alignment.CenterStart),
+                    colors= IconButtonDefaults.filledIconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardDoubleArrowLeft,
+                        contentDescription = "Go to the first item"
+                    )
+                }
             }
 
-            Button(onClick = { onSkillTarget(null) }) {
-                Text(stringResource(R.string.skill_maker_target_none))
+            if(!lastItemVisible) {
+                FilledIconButton (
+                    onClick = {
+                        scope.launch {
+                            state.animateScrollToItem(state.layoutInfo.totalItemsCount - 1)
+                        }
+                    },
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd),
+                    colors= IconButtonDefaults.filledIconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardDoubleArrowRight,
+                        contentDescription = "Go to the last item"
+                    )
+                }
             }
         }
     }
