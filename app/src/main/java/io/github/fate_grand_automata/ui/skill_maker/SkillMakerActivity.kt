@@ -150,7 +150,7 @@ fun SkillMakerUI(
                     },
                     showTransform = nav.skill in Skill.Servant.skill3,
                     onTransform = {
-                        vm.targetSkill(ServantTarget.Melusine)
+                        vm.targetSkill(ServantTarget.Transform)
                     },
                     showChoice3Slot1 = nav.skill in Skill.Servant.skill1,
                     showChoice3Slot3 = nav.skill in Skill.Servant.skill3,

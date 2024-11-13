@@ -17,7 +17,7 @@ sealed class ServantTarget(
     data object Option2 : ServantTarget('U')
 
     // Mélusine
-    data object Melusine : ServantTarget('M')
+    data object Transform : ServantTarget('M')
 
     sealed class SpecialTarget(
         targetCode: String
@@ -54,7 +54,7 @@ sealed class ServantTarget(
                 A, B, C,
                 Left, Right,
                 Option1, Option2,
-                Melusine,
+                Transform,
                 SpecialTarget.Choice3OptionA,
                 SpecialTarget.Choice3OptionB,
                 SpecialTarget.Choice3OptionC

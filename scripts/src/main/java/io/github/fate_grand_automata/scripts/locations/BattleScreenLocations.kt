@@ -35,7 +35,7 @@ class BattleScreenLocations @Inject constructor(
         ServantTarget.Right -> 330
         ServantTarget.Option1 -> 0
         ServantTarget.Option2 -> 470
-        ServantTarget.Melusine -> null
+        ServantTarget.Transform -> null
         ServantTarget.SpecialTarget.Choice3OptionA -> -200
         ServantTarget.SpecialTarget.Choice3OptionB -> 300
         ServantTarget.SpecialTarget.Choice3OptionC -> 670
