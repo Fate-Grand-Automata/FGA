@@ -45,8 +45,8 @@ fun SkillMakerTarget(
     onSpaceIshtar: () -> Unit,
     showKukulkan: Boolean,
     onKukulkan: () -> Unit,
-    showMelusine: Boolean,
-    onMelusine: () -> Unit,
+    showTransform: Boolean,
+    onTransform: () -> Unit,
     showChoice3Slot1: Boolean,
     showChoice3Slot3: Boolean,
     onChoice3: (SkillSlot) -> Unit
@@ -111,10 +111,12 @@ fun SkillMakerTarget(
                 }
             }
 
-            if (showMelusine) {
-                Button(onClick = onMelusine) {
-                    Text(stringResource(R.string.skill_maker_melusine))
-                }
+            if (showTransform) {
+                ButtonWithHint(
+                    onClick = onTransform,
+                    text = stringResource(R.string.skill_maker_transform),
+                    hint = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
+                )
             }
             if (showChoice3Slot1 || showChoice3Slot3) {
                 ButtonWithHint(
@@ -243,8 +245,8 @@ private fun TestSkillMaker(
             onSpaceIshtar = {},
             showKukulkan = showKukulkan,
             onKukulkan = {},
-            showMelusine = showMelusine,
-            onMelusine = {},
+            showTransform = showMelusine,
+            onTransform = {},
             showChoice3Slot1 = showChoice3Slot1,
             showChoice3Slot3 = showChoice3Slot3,
             onChoice3 = {}

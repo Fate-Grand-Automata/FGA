@@ -148,8 +148,8 @@ fun SkillMakerUI(
                     onKukulkan = {
                         navigate(SkillMakerNav.Kukulkan(nav.skill))
                     },
-                    showMelusine = nav.skill in Skill.Servant.skill3,
-                    onMelusine = {
+                    showTransform = nav.skill in Skill.Servant.skill3,
+                    onTransform = {
                         vm.targetSkill(ServantTarget.Melusine)
                     },
                     showChoice3Slot1 = nav.skill in Skill.Servant.skill1,

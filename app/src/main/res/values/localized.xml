@@ -401,6 +401,11 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
         <item>"Emiya"</item>
         <item>"BB Dubai"</item>
     </string-array>
+    <string name="skill_maker_transform">"Transform"</string>
+    <string-array name="skill_maker_transform_array">
+        <item>"Mélusine"</item>
+        <item>"Ptolemy"</item>
+    </string-array>
     <string name="skill_maker_update_hints">"Update hints"</string>
     <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>
     <string name="skill_maker_hakunon">Hakunon</string>
