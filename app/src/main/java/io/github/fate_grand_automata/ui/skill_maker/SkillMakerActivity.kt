@@ -144,7 +144,7 @@ fun SkillMakerUI(
                     onSpaceIshtar = {
                         navigate(SkillMakerNav.SpaceIshtar(nav.skill))
                     },
-                    showKukulkan = nav.skill !is Skill.Master,
+                    showKukulkan = nav.skill in Skill.Servant.list,
                     onKukulkan = {
                         navigate(SkillMakerNav.Kukulkan(nav.skill))
                     },
@@ -170,11 +170,7 @@ fun SkillMakerUI(
                 SkillMakerKukulkan(
                     onOption1 = { vm.targetSkill(ServantTarget.Option1) },
                     onOption2 = { vm.targetSkill(ServantTarget.Option2) },
-                    goToTarget = nav.skill in listOf(
-                        Skill.Servant.A2,
-                        Skill.Servant.B2,
-                        Skill.Servant.C2
-                    ),
+                    goToTarget = nav.skill in Skill.Servant.skill2,
                     onTarget = { firstTarget -> navigate(SkillMakerNav.KukulkanTarget(nav.skill, firstTarget)) }
                 )
             }
