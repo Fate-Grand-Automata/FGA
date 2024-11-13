@@ -396,10 +396,18 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
         <item>"Charlotte"</item>
         <item>"Hakunon"</item>
     </string-array>
+    <string name="skill_maker_target_2">"Two Targets"</string>
+    <string-array name="skill_maker_target_2_array">
+        <item>"Emiya"</item>
+        <item>"BB Dubai"</item>
+    </string-array>
     <string name="skill_maker_update_hints">"Update hints"</string>
     <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>
     <string name="skill_maker_hakunon">Hakunon</string>
     <string name="skill_maker_charlotte">Charlotte</string>
+    <string name="skill_maker_bb_dubai">"BB Dubai"</string>
+    <string name="skill_maker_bb_dubai_target_1">"C.C.C."</string>
+    <string name="skill_maker_bb_dubai_target_2">"G.G.G."</string>
     <string name="skill_maker_hakunon_choice_1">"Sky"</string>
     <string name="skill_maker_hakunon_choice_2">"Earth"</string>
     <string name="skill_maker_hakunon_choice_3">"Man"</string>

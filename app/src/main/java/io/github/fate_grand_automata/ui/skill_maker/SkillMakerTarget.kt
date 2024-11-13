@@ -39,8 +39,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SkillMakerTarget(
     onSkillTarget: (ServantTarget?) -> Unit,
-    showEmiya: Boolean,
-    onEmiya: () -> Unit,
+    showTarget2: Boolean,
+    onTarget2: () -> Unit,
     showSpaceIshtar: Boolean,
     onSpaceIshtar: () -> Unit,
     showKukulkan: Boolean,
@@ -97,11 +97,12 @@ fun SkillMakerTarget(
                 }
             }
 
-            if (
-                showEmiya) {
-                Button(onClick = onEmiya) {
-                    Text(stringResource(R.string.skill_maker_emiya))
-                }
+            if (showTarget2) {
+                ButtonWithHint(
+                    onClick = onTarget2,
+                    text = stringResource(R.string.skill_maker_target_2),
+                    hint = stringArrayResource(R.array.skill_maker_target_2_array).joinToString("\n")
+                )
             }
 
             if (showSpaceIshtar) {
@@ -236,8 +237,8 @@ private fun TestSkillMaker(
     FGATheme {
         SkillMakerTarget(
             onSkillTarget = {},
-            showEmiya = showEmiya,
-            onEmiya = {},
+            showTarget2 = showEmiya,
+            onTarget2 = {},
             showSpaceIshtar = showSpaceIshtar,
             onSpaceIshtar = {},
             showKukulkan = showKukulkan,

@@ -96,10 +96,10 @@ fun SkillMakerUI(
                 )
             }
 
-            is SkillMakerNav.Emiya -> {
-                SkillMakerEmiya(
-                    onArts = { vm.targetSkill(ServantTarget.Left) },
-                    onBuster = { vm.targetSkill(ServantTarget.Right) }
+            is SkillMakerNav.Target2 -> {
+                SkillMakerTarget2(
+                    onTargetLeft = { vm.targetSkill(ServantTarget.Left) },
+                    onTargetRight = { vm.targetSkill(ServantTarget.Right) }
                 )
             }
 
@@ -136,9 +136,9 @@ fun SkillMakerUI(
             is SkillMakerNav.SkillTarget -> {
                 SkillMakerTarget(
                     onSkillTarget = { vm.targetSkill(it) },
-                    showEmiya = nav.skill in Skill.Servant.skill3,
-                    onEmiya = {
-                        navigate(SkillMakerNav.Emiya(nav.skill))
+                    showTarget2 = nav.skill in Skill.Servant.skill3,
+                    onTarget2 = {
+                        navigate(SkillMakerNav.Target2(nav.skill))
                     },
                     showSpaceIshtar = nav.skill in Skill.Servant.skill2,
                     onSpaceIshtar = {
