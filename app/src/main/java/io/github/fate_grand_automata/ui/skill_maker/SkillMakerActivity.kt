@@ -23,7 +23,7 @@ import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerKukulkan
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerKukulkanTarget
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerSpaceIshtar
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerTarget2
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerTwoTargets
 
 @AndroidEntryPoint
 class SkillMakerActivity : AppCompatActivity() {
@@ -101,8 +101,8 @@ fun SkillMakerUI(
                 )
             }
 
-            is SkillMakerNav.Target2 -> {
-                SkillMakerTarget2(
+            is SkillMakerNav.TwoTargets -> {
+                SkillMakerTwoTargets(
                     onTargetLeft = { vm.targetSkill(ServantTarget.Left) },
                     onTargetRight = { vm.targetSkill(ServantTarget.Right) }
                 )
@@ -141,9 +141,9 @@ fun SkillMakerUI(
             is SkillMakerNav.SkillTarget -> {
                 SkillMakerTarget(
                     onSkillTarget = { vm.targetSkill(it) },
-                    showTarget2 = nav.skill in Skill.Servant.skill3,
-                    onTarget2 = {
-                        navigate(SkillMakerNav.Target2(nav.skill))
+                    showTwoTargets = nav.skill in Skill.Servant.skill3,
+                    onTwoTargets = {
+                        navigate(SkillMakerNav.TwoTargets(nav.skill))
                     },
                     showSpaceIshtar = nav.skill in Skill.Servant.skill2,
                     onSpaceIshtar = {

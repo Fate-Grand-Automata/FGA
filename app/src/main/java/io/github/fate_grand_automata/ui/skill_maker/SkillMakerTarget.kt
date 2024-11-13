@@ -40,8 +40,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SkillMakerTarget(
     onSkillTarget: (ServantTarget?) -> Unit,
-    showTarget2: Boolean,
-    onTarget2: () -> Unit,
+    showTwoTargets: Boolean,
+    onTwoTargets: () -> Unit,
     showSpaceIshtar: Boolean,
     onSpaceIshtar: () -> Unit,
     showKukulkan: Boolean,
@@ -98,11 +98,11 @@ fun SkillMakerTarget(
                 }
             }
 
-            if (showTarget2) {
+            if (showTwoTargets) {
                 ButtonWithHint(
-                    onClick = onTarget2,
-                    text = stringResource(R.string.skill_maker_target_2),
-                    hint = stringArrayResource(R.array.skill_maker_target_2_array).joinToString("\n")
+                    onClick = onTwoTargets,
+                    text = stringResource(R.string.skill_maker_two_targets),
+                    hint = stringArrayResource(R.array.skill_maker_two_targets_array).joinToString("\n")
                 )
             }
 
@@ -240,8 +240,8 @@ private fun TestSkillMaker(
     FGATheme {
         SkillMakerTarget(
             onSkillTarget = {},
-            showTarget2 = showEmiya,
-            onTarget2 = {},
+            showTwoTargets = showEmiya,
+            onTwoTargets = {},
             showSpaceIshtar = showSpaceIshtar,
             onSpaceIshtar = {},
             showKukulkan = showKukulkan,

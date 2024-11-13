@@ -396,8 +396,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
         <item>"Charlotte"</item>
         <item>"Hakunon"</item>
     </string-array>
-    <string name="skill_maker_target_2">"Two Targets"</string>
-    <string-array name="skill_maker_target_2_array">
+    <string name="skill_maker_two_targets">"Two Targets"</string>
+    <string-array name="skill_maker_two_targets_array">
         <item>"Emiya"</item>
         <item>"BB Dubai"</item>
     </string-array>

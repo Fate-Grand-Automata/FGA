@@ -9,7 +9,7 @@ sealed class SkillMakerNav {
     data object Atk : SkillMakerNav()
     data object OrderChange : SkillMakerNav()
     data class SkillTarget(val skill: Skill) : SkillMakerNav()
-    data class Target2(val skill: Skill) : SkillMakerNav()
+    data class TwoTargets(val skill: Skill) : SkillMakerNav()
     data class SpaceIshtar(val skill: Skill) : SkillMakerNav()
     data class Kukulkan(val skill: Skill) : SkillMakerNav()
     data class KukulkanTarget(val skill: Skill, val firstTarget: ServantTarget) : SkillMakerNav()

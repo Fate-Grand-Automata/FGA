@@ -33,11 +33,11 @@ import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 
 @Composable
-fun SkillMakerTarget2(
+fun SkillMakerTwoTargets(
     onTargetLeft: () -> Unit,
     onTargetRight: () -> Unit
 ) {
-    var target2Type by remember { mutableStateOf(Target2Type.Emiya) }
+    var twoTargetsType by remember { mutableStateOf(TwoTargetsType.Emiya) }
 
     Column(
         modifier = Modifier
@@ -45,7 +45,7 @@ fun SkillMakerTarget2(
             .padding(16.dp)
     ) {
         FGATitle(
-            stringResource(target2Type.stringRes),
+            stringResource(twoTargetsType.stringRes),
         )
 
         Row(
@@ -58,13 +58,13 @@ fun SkillMakerTarget2(
             TargetButton(
                 onClick = onTargetLeft,
                 color = colorResource(R.color.colorArtsResist),
-                text = stringResource(target2Type.targetAStringRes)
+                text = stringResource(twoTargetsType.targetAStringRes)
             )
 
             TargetButton(
                 onClick = onTargetRight,
                 color = colorResource(R.color.colorBuster),
-                text = stringResource(target2Type.targetBStringRes)
+                text = stringResource(twoTargetsType.targetBStringRes)
             )
         }
 
@@ -85,13 +85,13 @@ fun SkillMakerTarget2(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Target2Type.entries.forEach { entry ->
+            TwoTargetsType.entries.forEach { entry ->
                 Button(
                     onClick = {
-                        target2Type = entry
+                        twoTargetsType = entry
                     },
-                    enabled = target2Type != entry,
-                    border = if (target2Type == entry) {
+                    enabled = twoTargetsType != entry,
+                    border = if (twoTargetsType == entry) {
                         BorderStroke(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
@@ -127,31 +127,31 @@ fun TargetButton(
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestEmiya() {
+fun TestTwoTargets() {
     FGATheme {
-        SkillMakerTarget2(onTargetLeft = { }, onTargetRight = { })
+        SkillMakerTwoTargets(onTargetLeft = { }, onTargetRight = { })
     }
 }
 
-private enum class Target2Type {
+private enum class TwoTargetsType {
     Emiya,
     BBDubai
 }
 
-private val Target2Type.stringRes
+private val TwoTargetsType.stringRes
     get() = when (this) {
-        Target2Type.Emiya -> R.string.skill_maker_emiya
-        Target2Type.BBDubai -> R.string.skill_maker_bb_dubai
+        TwoTargetsType.Emiya -> R.string.skill_maker_emiya
+        TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai
     }
 
-private val Target2Type.targetAStringRes
+private val TwoTargetsType.targetAStringRes
     get() = when (this) {
-        Target2Type.Emiya -> R.string.skill_maker_arts
-        Target2Type.BBDubai -> R.string.skill_maker_bb_dubai_target_1
+        TwoTargetsType.Emiya -> R.string.skill_maker_arts
+        TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai_target_1
     }
 
-private val Target2Type.targetBStringRes
+private val TwoTargetsType.targetBStringRes
     get() = when (this) {
-        Target2Type.Emiya -> R.string.skill_maker_buster
-        Target2Type.BBDubai -> R.string.skill_maker_bb_dubai_target_2
+        TwoTargetsType.Emiya -> R.string.skill_maker_buster
+        TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai_target_2
     }
