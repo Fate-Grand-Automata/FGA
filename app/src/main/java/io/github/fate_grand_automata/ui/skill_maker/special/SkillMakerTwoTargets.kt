@@ -74,7 +74,7 @@ fun SkillMakerTwoTargets(
                 .fillMaxWidth()
         ) {
             Text(
-                stringResource(R.string.skill_maker_update_hints).uppercase(),
+                stringResource(R.string.skill_maker_update_button_labels).uppercase(),
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 textDecoration = TextDecoration.Underline
