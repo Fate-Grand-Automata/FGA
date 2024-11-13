@@ -128,13 +128,17 @@ fun SkillMakerTarget(
         ){
             LazyRow(
                 state = state,
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .align(Alignment.Center)
             ) {
                 if (showKukulkan) {
                     item {
-                        Button(onClick = onKukulkan) {
+                        Button(
+                            onClick = onKukulkan,
+                            modifier = Modifier.padding(horizontal = 4.dp)
+                        ) {
                             Text(stringResource(R.string.skill_maker_kukulkan))
                         }
                     }
@@ -183,7 +187,10 @@ fun SkillMakerTarget(
                     }
                 }
                 item {
-                    Button(onClick = { onSkillTarget(null) }) {
+                    Button(
+                        onClick = { onSkillTarget(null) },
+                        modifier = Modifier.padding(horizontal = 4.dp)
+                    ) {
                         Text(stringResource(R.string.skill_maker_target_none))
                     }
                 }
