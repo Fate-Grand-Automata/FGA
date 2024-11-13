@@ -1,6 +1,11 @@
 package io.github.fate_grand_automata.ui.skill_maker
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +20,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowLeft
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,15 +32,12 @@ import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -102,21 +103,17 @@ fun SkillMakerTarget(
 
         val state = rememberLazyListState()
 
-        var firstItemVisible by remember{
-            mutableStateOf(true)
+        val showInitialButton by remember{
+            derivedStateOf {
+                state.firstVisibleItemIndex > 0
+            }
         }
-        var lastItemVisible by remember{
-            mutableStateOf(false)
+        val showLastButton by remember{
+            derivedStateOf {
+                state.layoutInfo.visibleItemsInfo.lastOrNull()?.index != state.layoutInfo.totalItemsCount - 1
+            }
         }
         val scope = rememberCoroutineScope()
-
-        LaunchedEffect(state) {
-            snapshotFlow { state.layoutInfo.visibleItemsInfo }
-                .collect {
-                    firstItemVisible = it.firstOrNull()?.index == 0
-                    lastItemVisible = it.lastOrNull()?.index == state.layoutInfo.totalItemsCount - 1
-                }
-        }
 
         Box(
             modifier = Modifier
@@ -185,15 +182,21 @@ fun SkillMakerTarget(
                 }
             }
 
-            if(!firstItemVisible) {
+            // fully qualified name for box and AnimatedVisibility, don't know why
+            // https://stackoverflow.com/a/69669445/14859274
+            androidx.compose.animation.AnimatedVisibility(
+                visible = showInitialButton,
+                enter = fadeIn() + slideInHorizontally { -it },
+                exit = fadeOut() + slideOutHorizontally { -it },
+                modifier = Modifier
+                    .align(Alignment.CenterStart),
+            ) {
                 FilledIconButton(
                     onClick = {
                         scope.launch {
                             state.animateScrollToItem(0)
                         }
                     },
-                    modifier = Modifier
-                        .align(Alignment.CenterStart),
                     colors= IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                         contentColor = MaterialTheme.colorScheme.onSurface
@@ -205,16 +208,19 @@ fun SkillMakerTarget(
                     )
                 }
             }
-
-            if(!lastItemVisible) {
+            androidx.compose.animation.AnimatedVisibility(
+                visible = showLastButton,
+                enter = fadeIn() + slideInHorizontally { it },
+                exit = fadeOut() + slideOutHorizontally { it },
+                modifier = Modifier
+                    .align(Alignment.CenterEnd),
+            ){
                 FilledIconButton (
                     onClick = {
                         scope.launch {
                             state.animateScrollToItem(state.layoutInfo.totalItemsCount - 1)
                         }
                     },
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd),
                     colors= IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                         contentColor = MaterialTheme.colorScheme.onSurface
