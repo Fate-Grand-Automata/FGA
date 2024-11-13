@@ -34,8 +34,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -108,10 +111,14 @@ fun SkillMakerTarget(
                 state.firstVisibleItemIndex > 0
             }
         }
-        val showLastButton by remember{
-            derivedStateOf {
-                state.layoutInfo.visibleItemsInfo.lastOrNull()?.index != state.layoutInfo.totalItemsCount - 1
-            }
+        var showLastButton by remember{
+            mutableStateOf(false)
+        }
+        LaunchedEffect(state){
+            snapshotFlow { state.layoutInfo.visibleItemsInfo }
+                .collect {
+                    showLastButton = it.lastOrNull()?.index != state.layoutInfo.totalItemsCount - 1
+                }
         }
         val scope = rememberCoroutineScope()
 
