@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,9 +34,17 @@ import io.github.fate_grand_automata.ui.FGATitle
 
 @Composable
 fun SkillMakerChoice3(
+    slot: SkillSlot,
     onSkillTarget: (ServantTarget) -> Unit
 ) {
-    var choice3Type by remember { mutableStateOf(Choice3Type.Hakunon) }
+    val entries by remember {
+        derivedStateOf {
+            Choice3Type.entries.filter {
+                it.slot == slot
+            }
+        }
+    }
+    var choice3Type by remember { mutableStateOf(entries.first()) }
 
     Column(
         modifier = Modifier
@@ -89,7 +98,7 @@ fun SkillMakerChoice3(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Choice3Type.entries.forEach { entry ->
+            entries.forEach { entry ->
                 Button(
                     onClick = {
                         choice3Type = entry
@@ -113,17 +122,34 @@ fun SkillMakerChoice3(
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestChoice3() {
+fun TestChoice3Slot1() {
     FGATheme {
-        SkillMakerChoice3(onSkillTarget = { })
+        SkillMakerChoice3(
+            slot = SkillSlot.First,
+            onSkillTarget = { }
+        )
+    }
+}
+
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun TestChoice3Slot3() {
+    FGATheme {
+        SkillMakerChoice3(
+            slot = SkillSlot.Third,
+            onSkillTarget = { }
+        )
     }
 }
 
 
-private enum class Choice3Type {
-    Hakunon,
-    Soujuurou,
-    Charlotte
+private enum class Choice3Type(val slot: SkillSlot) {
+    VanGogh(SkillSlot.First),
+    // Third slot
+    Hakunon(SkillSlot.Third),
+    Soujuurou(SkillSlot.Third),
+    Charlotte(SkillSlot.Third),
 }
 
 private val Choice3Type.stringRes
@@ -131,25 +157,26 @@ private val Choice3Type.stringRes
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon
         Choice3Type.Soujuurou -> R.string.skill_maker_soujuurou
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte
+        Choice3Type.VanGogh -> R.string.skill_maker_van_gogh
     }
 
 private val Choice3Type.choice1StringRes
     get() = when (this) {
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_1
-        Choice3Type.Soujuurou -> R.string.skill_maker_quick
+        Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_quick
         Choice3Type.Charlotte -> R.string.skill_maker_arts
     }
 
 private val Choice3Type.choice2StringRes
     get() = when (this) {
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_2
-        Choice3Type.Soujuurou -> R.string.skill_maker_arts
+        Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_arts
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte_choice_2
     }
 
 private val Choice3Type.choice3StringRes
     get() = when (this) {
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_3
-        Choice3Type.Soujuurou -> R.string.skill_maker_buster
+        Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_buster
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte_choice_3
     }

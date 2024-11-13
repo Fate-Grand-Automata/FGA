@@ -47,8 +47,9 @@ fun SkillMakerTarget(
     onKukulkan: () -> Unit,
     showMelusine: Boolean,
     onMelusine: () -> Unit,
-    showChoice3: Boolean,
-    onChoice3: () -> Unit
+    showChoice3Slot1: Boolean,
+    showChoice3Slot3: Boolean,
+    onChoice3: (SkillSlot) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -114,13 +115,17 @@ fun SkillMakerTarget(
                     Text(stringResource(R.string.skill_maker_melusine))
                 }
             }
-            if (showChoice3) {
+            if (showChoice3Slot1 || showChoice3Slot3) {
                 ButtonWithHint(
-                    onClick = onChoice3,
+                    onClick = {
+                        val slot = if (showChoice3Slot1) SkillSlot.First else SkillSlot.Third
+                        onChoice3(slot)
+                    },
                     text = stringResource(R.string.skill_maker_tri_choice),
-                    hint = stringArrayResource(R.array.skill_maker_tri_choice_array).joinToString(
-                        "\n"
-                    )
+                    hint = stringArrayResource(
+                        if (showChoice3Slot1) R.array.skill_maker_tri_choice_array_slot_1
+                        else R.array.skill_maker_tri_choice_array_slot_3
+                    ).joinToString("\n")
                 )
             }
 
@@ -212,7 +217,12 @@ fun TestSkillMakerOnlyKukulkan() = TestSkillMaker()
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerTargetChoice3() = TestSkillMaker(showChoice3 = true)
+fun TestSkillMakerTargetChoice3Slot1() = TestSkillMaker(showChoice3Slot1 = true)
+
+@Composable
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+fun TestSkillMakerTargetChoice3Slot3() = TestSkillMaker(showChoice3Slot3 = true)
 
 @Composable
 private fun TestSkillMaker(
@@ -220,7 +230,8 @@ private fun TestSkillMaker(
     showKukulkan: Boolean = false,
     showSpaceIshtar: Boolean = false,
     showMelusine: Boolean = showEmiya,
-    showChoice3: Boolean = false
+    showChoice3Slot1: Boolean = false,
+    showChoice3Slot3: Boolean = false
 ) {
     FGATheme {
         SkillMakerTarget(
@@ -233,7 +244,8 @@ private fun TestSkillMaker(
             onKukulkan = {},
             showMelusine = showMelusine,
             onMelusine = {},
-            showChoice3 = showChoice3,
+            showChoice3Slot1 = showChoice3Slot1,
+            showChoice3Slot3 = showChoice3Slot3,
             onChoice3 = {}
         )
     }

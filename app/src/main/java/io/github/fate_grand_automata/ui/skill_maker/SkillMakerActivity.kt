@@ -164,13 +164,18 @@ fun SkillMakerUI(
                     onMelusine = {
                         vm.targetSkill(ServantTarget.Melusine)
                     },
-                    showChoice3 = nav.skill in listOf(
+                    showChoice3Slot1 = nav.skill in listOf(
+                        Skill.Servant.A1,
+                        Skill.Servant.B1,
+                        Skill.Servant.C1
+                    ),
+                    showChoice3Slot3 = nav.skill in listOf(
                         Skill.Servant.A3,
                         Skill.Servant.B3,
                         Skill.Servant.C3
                     ),
-                    onChoice3 = {
-                        navigate(SkillMakerNav.Choice3(nav.skill))
+                    onChoice3 = { slot ->
+                        navigate(SkillMakerNav.Choice3(nav.skill, slot))
                     }
                 )
             }
@@ -199,6 +204,7 @@ fun SkillMakerUI(
             }
             is SkillMakerNav.Choice3 -> {
                 SkillMakerChoice3(
+                    slot = nav.slot,
                     onSkillTarget = { servantTarget ->
                         vm.targetSkill(servantTarget)
                     },

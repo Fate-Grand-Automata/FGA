@@ -13,5 +13,5 @@ sealed class SkillMakerNav {
     data class SpaceIshtar(val skill: Skill) : SkillMakerNav()
     data class Kukulkan(val skill: Skill) : SkillMakerNav()
     data class KukulkanTarget(val skill: Skill, val firstTarget: ServantTarget) : SkillMakerNav()
-    data class Choice3(val skill: Skill) : SkillMakerNav()
+    data class Choice3(val skill: Skill, val slot: SkillSlot) : SkillMakerNav()
 }

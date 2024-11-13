@@ -388,12 +388,16 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_melusine">"Mélusine"</string>
     <string name="skill_maker_soujuurou">"Soujuurou"</string>
     <string name="skill_maker_tri_choice">"Tri-Choice"</string>
-    <string-array name="skill_maker_tri_choice_array">
+    <string-array name="skill_maker_tri_choice_array_slot_1">
+        <item>"Van Gogh (Miner)"</item>
+    </string-array>
+    <string-array name="skill_maker_tri_choice_array_slot_3">
         <item>"Soujuurou"</item>
         <item>"Charlotte"</item>
         <item>"Hakunon"</item>
     </string-array>
     <string name="skill_maker_update_hints">"Update hints"</string>
+    <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>
     <string name="skill_maker_hakunon">Hakunon</string>
     <string name="skill_maker_charlotte">Charlotte</string>
     <string name="skill_maker_hakunon_choice_1">"Sky"</string>
