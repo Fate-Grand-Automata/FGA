@@ -19,6 +19,11 @@ import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.ui.OnPause
 import io.github.fate_grand_automata.ui.PreventRtl
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerKukulkan
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerKukulkanTarget
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerSpaceIshtar
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerTarget2
 
 @AndroidEntryPoint
 class SkillMakerActivity : AppCompatActivity() {

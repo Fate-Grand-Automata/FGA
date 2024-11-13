@@ -1,4 +1,4 @@
-package io.github.fate_grand_automata.ui.skill_maker
+package io.github.fate_grand_automata.ui.skill_maker.special
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -30,6 +30,7 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
+import io.github.fate_grand_automata.ui.skill_maker.SkillSlot
 
 
 @Composable
