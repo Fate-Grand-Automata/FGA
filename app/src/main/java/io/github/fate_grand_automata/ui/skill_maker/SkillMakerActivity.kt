@@ -136,19 +136,11 @@ fun SkillMakerUI(
             is SkillMakerNav.SkillTarget -> {
                 SkillMakerTarget(
                     onSkillTarget = { vm.targetSkill(it) },
-                    showEmiya = nav.skill in listOf(
-                        Skill.Servant.A3,
-                        Skill.Servant.B3,
-                        Skill.Servant.C3
-                    ),
+                    showEmiya = nav.skill in Skill.Servant.skill3,
                     onEmiya = {
                         navigate(SkillMakerNav.Emiya(nav.skill))
                     },
-                    showSpaceIshtar = nav.skill in listOf(
-                        Skill.Servant.A2,
-                        Skill.Servant.B2,
-                        Skill.Servant.C2
-                    ),
+                    showSpaceIshtar = nav.skill in Skill.Servant.skill2,
                     onSpaceIshtar = {
                         navigate(SkillMakerNav.SpaceIshtar(nav.skill))
                     },
@@ -156,24 +148,12 @@ fun SkillMakerUI(
                     onKukulkan = {
                         navigate(SkillMakerNav.Kukulkan(nav.skill))
                     },
-                    showMelusine = nav.skill in listOf(
-                        Skill.Servant.A3,
-                        Skill.Servant.B3,
-                        Skill.Servant.C3
-                    ),
+                    showMelusine = nav.skill in Skill.Servant.skill3,
                     onMelusine = {
                         vm.targetSkill(ServantTarget.Melusine)
                     },
-                    showChoice3Slot1 = nav.skill in listOf(
-                        Skill.Servant.A1,
-                        Skill.Servant.B1,
-                        Skill.Servant.C1
-                    ),
-                    showChoice3Slot3 = nav.skill in listOf(
-                        Skill.Servant.A3,
-                        Skill.Servant.B3,
-                        Skill.Servant.C3
-                    ),
+                    showChoice3Slot1 = nav.skill in Skill.Servant.skill1,
+                    showChoice3Slot3 = nav.skill in Skill.Servant.skill3,
                     onChoice3 = { slot ->
                         navigate(SkillMakerNav.Choice3(nav.skill, slot))
                     }
