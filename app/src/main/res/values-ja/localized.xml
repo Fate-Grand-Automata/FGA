@@ -395,8 +395,9 @@
     <string name="p_max_gold_ember_total_count">"受け取った種火の総数"</string>
     <string name="update_download_success">"ダウンロード成功。5秒後に再起動します。"</string>
     <string name="skill_maker_melusine">"メリュジーヌ"</string>
-
     <string name="skill_maker_soujuurou">"静希草十郎"</string>
+    <string name="skill_maker_kukulcan_choice_1">"スター消費しない"</string>
+    <string name="skill_maker_kukulcan_choice_2">"10個消費する"</string>
 
     <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
     <string name="reset_all"></string>
