@@ -419,7 +419,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_hakunon_choice_3">"Man"</string>
     <string name="skill_maker_charlotte_choice_2">"Crit Damage"</string>
     <string name="skill_maker_charlotte_choice_3">"NP Damage"</string>
-
+    <string name="skill_maker_bi_choice">"Bi-Choice"</string>
+    <string-array name="skill_maker_bi_choice_array">
+        <item>"Kukulcan"</item>
+    </string-array>
+    <string name="skill_maker_kukulcan_choice_1">"Don't consume stars"</string>
+    <string name="skill_maker_kukulcan_choice_2">"Consume stars"</string>
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>
 

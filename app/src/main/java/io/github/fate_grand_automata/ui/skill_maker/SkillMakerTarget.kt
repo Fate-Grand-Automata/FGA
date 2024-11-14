@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.ui.skill_maker
 
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -61,8 +60,8 @@ fun SkillMakerTarget(
     onTwoTargets: () -> Unit,
     showSpaceIshtar: Boolean,
     onSpaceIshtar: () -> Unit,
-    showKukulkan: Boolean,
-    onKukulkan: () -> Unit,
+    showChoice2: Boolean,
+    onChoice2: () -> Unit,
     showTransform: Boolean,
     onTransform: () -> Unit,
     showChoice3Slot1: Boolean,
@@ -133,14 +132,13 @@ fun SkillMakerTarget(
                     .fillMaxWidth()
                     .align(Alignment.Center)
             ) {
-                if (showKukulkan) {
+                if (showChoice2) {
                     item {
-                        Button(
-                            onClick = onKukulkan,
-                            modifier = Modifier.padding(horizontal = 4.dp)
-                        ) {
-                            Text(stringResource(R.string.skill_maker_kukulkan))
-                        }
+                        ButtonWithHint(
+                            onClick = onChoice2,
+                            text = stringResource(R.string.skill_maker_bi_choice),
+                            hint = stringArrayResource(R.array.skill_maker_bi_choice_array).joinToString("\n")
+                        )
                     }
                 }
 
@@ -326,7 +324,7 @@ fun TestSkillMakerTargetIshtar() = TestSkillMaker(showSpaceIshtar = true)
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerOnlyKukulkan() = TestSkillMaker()
+fun TestSkillMakerChoice2() = TestSkillMaker(showChoice2 = true)
 
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
@@ -341,7 +339,7 @@ fun TestSkillMakerTargetChoice3Slot3() = TestSkillMaker(showChoice3Slot3 = true)
 @Composable
 private fun TestSkillMaker(
     showEmiya: Boolean = false,
-    showKukulkan: Boolean = false,
+    showChoice2: Boolean = false,
     showSpaceIshtar: Boolean = false,
     showMelusine: Boolean = showEmiya,
     showChoice3Slot1: Boolean = false,
@@ -354,8 +352,8 @@ private fun TestSkillMaker(
             onTwoTargets = {},
             showSpaceIshtar = showSpaceIshtar,
             onSpaceIshtar = {},
-            showKukulkan = showKukulkan,
-            onKukulkan = {},
+            showChoice2 = showChoice2,
+            onChoice2 = {},
             showTransform = showMelusine,
             onTransform = {},
             showChoice3Slot1 = showChoice3Slot1,

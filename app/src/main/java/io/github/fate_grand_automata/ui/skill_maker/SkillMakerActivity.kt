@@ -20,8 +20,8 @@ import io.github.fate_grand_automata.ui.OnPause
 import io.github.fate_grand_automata.ui.PreventRtl
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerKukulkan
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerKukulkanTarget
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2Target
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerSpaceIshtar
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerTwoTargets
 
@@ -149,9 +149,9 @@ fun SkillMakerUI(
                     onSpaceIshtar = {
                         navigate(SkillMakerNav.SpaceIshtar(nav.skill))
                     },
-                    showKukulkan = nav.skill in Skill.Servant.list,
-                    onKukulkan = {
-                        navigate(SkillMakerNav.Kukulkan(nav.skill))
+                    showChoice2 = nav.skill in Skill.Servant.list,
+                    onChoice2 = {
+                        navigate(SkillMakerNav.Choice2(nav.skill))
                     },
                     showTransform = nav.skill in Skill.Servant.skill3,
                     onTransform = {
@@ -171,17 +171,17 @@ fun SkillMakerUI(
                 )
             }
 
-            is SkillMakerNav.Kukulkan -> {
-                SkillMakerKukulkan(
+            is SkillMakerNav.Choice2 -> {
+                SkillMakerChoice2(
                     onOption1 = { vm.targetSkill(ServantTarget.Option1) },
                     onOption2 = { vm.targetSkill(ServantTarget.Option2) },
                     goToTarget = nav.skill in Skill.Servant.skill2,
-                    onTarget = { firstTarget -> navigate(SkillMakerNav.KukulkanTarget(nav.skill, firstTarget)) }
+                    onTarget = { firstTarget -> navigate(SkillMakerNav.Choice2Target(nav.skill, firstTarget)) }
                 )
             }
 
-            is SkillMakerNav.KukulkanTarget -> {
-                SkillMakerKukulkanTarget(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
+            is SkillMakerNav.Choice2Target -> {
+                SkillMakerChoice2Target(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
             }
             is SkillMakerNav.Choice3 -> {
                 SkillMakerChoice3(
