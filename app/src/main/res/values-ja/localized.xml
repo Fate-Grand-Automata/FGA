@@ -59,8 +59,9 @@
     <string name="skill_maker_arts">"Arts"</string>
     <string name="skill_maker_buster">"Buster"</string>
     <string name="skill_maker_kukulkan">"ククルカン"</string>
-    <string name="skill_maker_option_1">"スター消費しない"</string>
-    <string name="skill_maker_option_2">"10個消費する"</string>
+    <string name="skill_maker_option_1">"第一選択"</string>
+    <string name="skill_maker_option_2">"2番目の選択肢"</string>
+    <string name="skill_maker_option_3">"3番目の選択肢"</string>
     <string name="card_priority_wave_number">"ウェーブ %d"</string>
     <string name="card_priority_high">"高い"</string>
     <string name="card_priority_low">"低い"</string>

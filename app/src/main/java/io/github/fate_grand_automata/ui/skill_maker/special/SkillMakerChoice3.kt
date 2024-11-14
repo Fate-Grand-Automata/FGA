@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.ui.skill_maker.special
 
 import android.content.res.Configuration
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,7 +47,7 @@ fun SkillMakerChoice3(
             }
         }
     }
-    var choice3Type by remember { mutableStateOf(entries.first()) }
+    var choice3Type by remember { mutableStateOf(Choice3Type.Generic) }
 
     Column(
         modifier = Modifier
@@ -100,17 +102,40 @@ fun SkillMakerChoice3(
                 .fillMaxWidth()
         ) {
             entries.forEach { entry ->
+                val containerColor by animateColorAsState(
+                    targetValue = if (choice3Type == entry) {
+                        MaterialTheme.colorScheme.onSurface.copy(0.12f)
+                    } else {
+                        MaterialTheme.colorScheme.primary
+                    },
+                    label = "Container Color, if ${entry.name} is selected"
+                )
+                val contentColor by animateColorAsState(
+                    targetValue = if (choice3Type == entry) {
+                        MaterialTheme.colorScheme.onSurface.copy(0.38f)
+                    } else {
+                        MaterialTheme.colorScheme.onPrimary
+                    },
+                    label = "Container Color, if ${entry.name} is selected"
+                )
                 Button(
                     onClick = {
-                        choice3Type = entry
+                        choice3Type = if (choice3Type != entry) {
+                            entry
+                        } else {
+                            Choice3Type.Generic
+                        }
                     },
-                    enabled = choice3Type != entry,
                     border = if (choice3Type == entry) {
                         BorderStroke(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
                         )
-                    } else null
+                    } else null,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = containerColor,
+                        contentColor = contentColor
+                    )
                 ) {
                     Text(stringResource(entry.stringRes))
                 }
@@ -146,6 +171,8 @@ fun TestChoice3Slot3() {
 
 
 private enum class Choice3Type(val slot: SkillSlot) {
+    Generic(SkillSlot.ANY),
+    // First slot
     VanGogh(SkillSlot.First),
     // Third slot
     Hakunon(SkillSlot.Third),
@@ -155,6 +182,7 @@ private enum class Choice3Type(val slot: SkillSlot) {
 
 private val Choice3Type.stringRes
     get() = when (this) {
+        Choice3Type.Generic -> R.string.skill_maker_tri_choice
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon
         Choice3Type.Soujuurou -> R.string.skill_maker_soujuurou
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte
@@ -163,6 +191,7 @@ private val Choice3Type.stringRes
 
 private val Choice3Type.choice1StringRes
     get() = when (this) {
+        Choice3Type.Generic -> R.string.skill_maker_option_1
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_1
         Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_quick
         Choice3Type.Charlotte -> R.string.skill_maker_arts
@@ -170,6 +199,7 @@ private val Choice3Type.choice1StringRes
 
 private val Choice3Type.choice2StringRes
     get() = when (this) {
+        Choice3Type.Generic -> R.string.skill_maker_option_2
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_2
         Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_arts
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte_choice_2
@@ -177,6 +207,7 @@ private val Choice3Type.choice2StringRes
 
 private val Choice3Type.choice3StringRes
     get() = when (this) {
+        Choice3Type.Generic -> R.string.skill_maker_option_3
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon_choice_3
         Choice3Type.Soujuurou, Choice3Type.VanGogh -> R.string.skill_maker_buster
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte_choice_3

@@ -1,6 +1,7 @@
 package io.github.fate_grand_automata.ui.skill_maker.special
 
 import android.content.res.Configuration
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,7 @@ fun SkillMakerTwoTargets(
     onTargetLeft: () -> Unit,
     onTargetRight: () -> Unit
 ) {
-    var twoTargetsType by remember { mutableStateOf(TwoTargetsType.Emiya) }
+    var twoTargetsType by remember { mutableStateOf(TwoTargetsType.Generic) }
 
     Column(
         modifier = Modifier
@@ -85,18 +86,44 @@ fun SkillMakerTwoTargets(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            TwoTargetsType.entries.forEach { entry ->
+            TwoTargetsType.entries.filterNot {
+                it == TwoTargetsType.Generic
+            }.forEach { entry ->
+
+                val containerColor by animateColorAsState(
+                    targetValue = if (twoTargetsType == entry) {
+                        MaterialTheme.colorScheme.onSurface.copy(0.12f)
+                    } else {
+                        MaterialTheme.colorScheme.primary
+                    },
+                    label = "Container Color, if ${entry.name} is selected"
+                )
+                val contentColor by animateColorAsState(
+                    targetValue = if (twoTargetsType == entry) {
+                        MaterialTheme.colorScheme.onSurface.copy(0.38f)
+                    } else {
+                        MaterialTheme.colorScheme.onPrimary
+                    },
+                    label = "Container Color, if ${entry.name} is selected"
+                )
                 Button(
                     onClick = {
-                        twoTargetsType = entry
+                        twoTargetsType = if (twoTargetsType != entry) {
+                            entry
+                        } else {
+                            TwoTargetsType.Generic
+                        }
                     },
-                    enabled = twoTargetsType != entry,
                     border = if (twoTargetsType == entry) {
                         BorderStroke(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
                         )
-                    } else null
+                    } else null,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = containerColor,
+                        contentColor = contentColor
+                    )
                 ) {
                     Text(stringResource(entry.stringRes))
                 }
@@ -134,24 +161,28 @@ fun TestTwoTargets() {
 }
 
 private enum class TwoTargetsType {
+    Generic,
     Emiya,
     BBDubai
 }
 
 private val TwoTargetsType.stringRes
     get() = when (this) {
+        TwoTargetsType.Generic -> R.string.skill_maker_two_targets
         TwoTargetsType.Emiya -> R.string.skill_maker_emiya
         TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai
     }
 
 private val TwoTargetsType.targetAStringRes
     get() = when (this) {
+        TwoTargetsType.Generic -> R.string.skill_maker_option_1
         TwoTargetsType.Emiya -> R.string.skill_maker_arts
         TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai_target_1
     }
 
 private val TwoTargetsType.targetBStringRes
     get() = when (this) {
+        TwoTargetsType.Generic -> R.string.skill_maker_option_2
         TwoTargetsType.Emiya -> R.string.skill_maker_buster
         TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai_target_2
     }
