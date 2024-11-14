@@ -182,7 +182,7 @@ private enum class Choice3Type(val slot: SkillSlot) {
 
 private val Choice3Type.stringRes
     get() = when (this) {
-        Choice3Type.Generic -> R.string.skill_maker_tri_choice
+        Choice3Type.Generic -> R.string.skill_maker_choices_3
         Choice3Type.Hakunon -> R.string.skill_maker_hakunon
         Choice3Type.Soujuurou -> R.string.skill_maker_soujuurou
         Choice3Type.Charlotte -> R.string.skill_maker_charlotte

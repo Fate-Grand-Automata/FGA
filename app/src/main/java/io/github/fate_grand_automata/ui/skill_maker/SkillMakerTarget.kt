@@ -136,8 +136,8 @@ fun SkillMakerTarget(
                     item {
                         ButtonWithHint(
                             onClick = onChoice2,
-                            text = stringResource(R.string.skill_maker_bi_choice),
-                            hint = stringArrayResource(R.array.skill_maker_bi_choice_array).joinToString("\n")
+                            text = stringResource(R.string.skill_maker_choices_2),
+                            hint = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
                         )
                     }
                 }
@@ -176,10 +176,10 @@ fun SkillMakerTarget(
                                 val slot = if (showChoice3Slot1) SkillSlot.First else SkillSlot.Third
                                 onChoice3(slot)
                             },
-                            text = stringResource(R.string.skill_maker_tri_choice),
+                            text = stringResource(R.string.skill_maker_choices_3),
                             hint = stringArrayResource(
-                                if (showChoice3Slot1) R.array.skill_maker_tri_choice_array_slot_1
-                                else R.array.skill_maker_tri_choice_array_slot_3
+                                if (showChoice3Slot1) R.array.skill_maker_choices_3_array_slot_1
+                                else R.array.skill_maker_choices_3_array_slot_3
                             ).joinToString("\n")
                         )
                     }

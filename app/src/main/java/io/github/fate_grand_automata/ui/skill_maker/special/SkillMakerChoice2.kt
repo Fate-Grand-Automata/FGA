@@ -202,7 +202,7 @@ private enum class Choice2Type {
 
 private val Choice2Type.stringRes
     get() = when (this) {
-        Choice2Type.Generic -> R.string.skill_maker_bi_choice
+        Choice2Type.Generic -> R.string.skill_maker_choices_2
         Choice2Type.Kukulcan -> R.string.skill_maker_kukulkan
     }
 
