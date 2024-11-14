@@ -146,7 +146,7 @@ fun SkillMakerChoice2Target(
             .padding(16.dp)
     ) {
         FGATitle(
-            stringResource(R.string.skill_maker_kukulkan)
+            stringResource(R.string.skill_maker_target_header)
         )
 
         Row(
