@@ -407,7 +407,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
         <item>"Mélusine"</item>
         <item>"Ptolemy"</item>
     </string-array>
-    <string name="skill_maker_update_button_labels">"Button Labels"</string>
+    <string name="skill_maker_update_button_labels">"Update Button Labels"</string>
     <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>
     <string name="skill_maker_hakunon">Hakunon</string>
     <string name="skill_maker_charlotte">Charlotte</string>
