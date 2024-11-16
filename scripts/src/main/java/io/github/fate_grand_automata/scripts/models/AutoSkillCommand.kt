@@ -182,11 +182,11 @@ class AutoSkillCommand private constructor(
 
         fun parse(command: String): AutoSkillCommand {
             val waves = command
-                .split(",#,")
+                .split(WaveTurn.Wave.code)
 
             val commandTable = waves
                 .map {
-                    val turns = it.split(',')
+                    val turns = it.split(WaveTurn.Turn.code)
                     turns.map { cmd ->
                         val queue: Deque<Char> = ArrayDeque(cmd.length)
                         queue.addAll(cmd.asIterable())

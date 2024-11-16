@@ -4,6 +4,7 @@ import io.github.fate_grand_automata.scripts.models.AutoSkillAction
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
 import io.github.fate_grand_automata.scripts.models.SpecialCommand
+import io.github.fate_grand_automata.scripts.models.WaveTurn
 
 sealed class SkillMakerEntry {
     class Action(val action: AutoSkillAction) : SkillMakerEntry() {
@@ -75,11 +76,11 @@ sealed class SkillMakerEntry {
         else Action(this).toString()
 
         class Wave(action: AutoSkillAction.Atk) : Next(action) {
-            override fun toString() = "${action.str()},#,"
+            override fun toString() = "${action.str()}${WaveTurn.Wave.code}"
         }
 
         class Turn(action: AutoSkillAction.Atk) : Next(action) {
-            override fun toString() = "${action.str()},"
+            override fun toString() = "${action.str()}${WaveTurn.Turn.code}"
         }
     }
 }
