@@ -41,7 +41,7 @@ class AutoSkillCommand private constructor(
 
                 while (queue.isNotEmpty()) {
                     char = queue.remove()
-                    if (char == ServantTarget.SpecialTarget.endChar()) break
+                    if (char == SpecialCommand.EndSpecialTarget.autoSkillCode) break
 
                     if (char != SpecialCommand.StartSpecialTarget.autoSkillCode) {
                         special += char
@@ -51,7 +51,7 @@ class AutoSkillCommand private constructor(
                             it.specialTarget == special
                         }
                 }
-                if (char != ServantTarget.SpecialTarget.endChar()) {
+                if (char != SpecialCommand.EndSpecialTarget.autoSkillCode) {
                     throw Exception("Found [ but no matching ] in Skill Command")
                 }
                 if (special.isEmpty()) {
@@ -83,7 +83,7 @@ class AutoSkillCommand private constructor(
 
                     if (char == SpecialCommand.StartSpecialTarget.autoSkillCode) {
                         specialFound = true
-                    } else if (char == ServantTarget.SpecialTarget.endChar()) {
+                    } else if (char == SpecialCommand.EndSpecialTarget.autoSkillCode) {
                         specialFound = false
                         val target = specialTargetList.firstOrNull {
                             it.specialTarget == special
