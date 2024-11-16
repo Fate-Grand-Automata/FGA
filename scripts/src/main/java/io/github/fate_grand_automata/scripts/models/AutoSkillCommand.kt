@@ -84,7 +84,6 @@ class AutoSkillCommand private constructor(
                     if (char == SpecialCommand.StartSpecialTarget.autoSkillCode) {
                         specialFound = true
                     } else if (char == SpecialCommand.EndSpecialTarget.autoSkillCode) {
-                        specialFound = false
                         val target = specialTargetList.firstOrNull {
                             it.specialTarget == special
                         }
@@ -100,6 +99,7 @@ class AutoSkillCommand private constructor(
                                 throw Exception("Special target \"$special\" not found")
                             }
                         }
+                        specialFound = false
                     }
 
                     if (specialFound) {
