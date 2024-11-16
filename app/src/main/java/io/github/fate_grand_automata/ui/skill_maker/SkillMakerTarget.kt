@@ -43,6 +43,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
@@ -100,6 +102,19 @@ fun SkillMakerTarget(
                 onClick = { onSkillTarget(ServantTarget.C) },
                 color = colorResource(R.color.colorServant3),
                 text = stringResource(R.string.skill_maker_target_servant, 3)
+            )
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                stringResource(R.string.skill_maker_special_targets_warning).uppercase(),
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center,
+                textDecoration = TextDecoration.Underline
             )
         }
 
