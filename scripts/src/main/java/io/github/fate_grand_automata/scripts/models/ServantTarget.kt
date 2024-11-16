@@ -24,6 +24,16 @@ sealed class ServantTarget(
     ) : ServantTarget(autoSkillCode = '[', specialTarget = targetCode) {
 
         companion object {
+            /**
+             * The "[" character that starts a special target code.
+             */
+            fun startChar(): Char = '['
+
+            /**
+             * The "]" character that ends a special target code.
+             */
+            fun endChar(): Char = ']'
+
             private val codes = mutableSetOf<String>()
 
             private fun validateString(targetCode: String) {

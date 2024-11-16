@@ -33,7 +33,7 @@ sealed class SkillMakerEntry {
 
                 val middle = targets.joinToString("") { target ->
                     if (target.specialTarget.isNotEmpty()) {
-                        "${target.autoSkillCode}${target.specialTarget}]"
+                        "${target.autoSkillCode}${target.specialTarget}${ServantTarget.SpecialTarget.endChar()}"
                     } else {
                         "${target.autoSkillCode}"
                     }

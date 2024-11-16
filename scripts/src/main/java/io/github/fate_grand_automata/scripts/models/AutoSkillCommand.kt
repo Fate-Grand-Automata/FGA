@@ -32,7 +32,7 @@ class AutoSkillCommand private constructor(
         private fun getTarget(queue: Queue<Char>): ServantTarget? {
             val peekTarget = queue.peek()
             var target: ServantTarget? = null
-            if (peekTarget == '[') {
+            if (peekTarget == ServantTarget.SpecialTarget.startChar()) {
                 // remove initial [
                 queue.remove()
 
@@ -41,9 +41,9 @@ class AutoSkillCommand private constructor(
 
                 while (queue.isNotEmpty()) {
                     char = queue.remove()
-                    if (char == ']') break
+                    if (char == ServantTarget.SpecialTarget.endChar()) break
 
-                    if (char != '[') {
+                    if (char != ServantTarget.SpecialTarget.startChar()) {
                         special += char
                     }
                     target = specialTargetList
@@ -51,7 +51,7 @@ class AutoSkillCommand private constructor(
                             it.specialTarget == special
                         }
                 }
-                if (char != ']') {
+                if (char != ServantTarget.SpecialTarget.endChar()) {
                     throw Exception("Found [ but no matching ] in Skill Command")
                 }
                 if (special.isEmpty()) {
@@ -81,9 +81,9 @@ class AutoSkillCommand private constructor(
                     char = queue.remove()
                     if (char == ')') break
 
-                    if (char == '[') {
+                    if (char == ServantTarget.SpecialTarget.startChar()) {
                         specialFound = true
-                    } else if (char == ']') {
+                    } else if (char == ServantTarget.SpecialTarget.endChar()) {
                         specialFound = false
                         val target = specialTargetList.firstOrNull {
                             it.specialTarget == special
