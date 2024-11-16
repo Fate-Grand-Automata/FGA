@@ -79,44 +79,46 @@ fun SkillMakerTarget(
             stringResource(R.string.skill_maker_target_header)
         )
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
+        Box(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-        ) {
-            TargetButton(
-                onClick = { onSkillTarget(ServantTarget.A) },
-                color = colorResource(R.color.colorServant1),
-                text = stringResource(R.string.skill_maker_target_servant, 1)
-            )
+        ){
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
+            ) {
+                TargetButton(
+                    onClick = { onSkillTarget(ServantTarget.A) },
+                    color = colorResource(R.color.colorServant1),
+                    text = stringResource(R.string.skill_maker_target_servant, 1)
+                )
 
-            TargetButton(
-                onClick = { onSkillTarget(ServantTarget.B) },
-                color = colorResource(R.color.colorServant2),
-                text = stringResource(R.string.skill_maker_target_servant, 2)
-            )
+                TargetButton(
+                    onClick = { onSkillTarget(ServantTarget.B) },
+                    color = colorResource(R.color.colorServant2),
+                    text = stringResource(R.string.skill_maker_target_servant, 2)
+                )
 
-            TargetButton(
-                onClick = { onSkillTarget(ServantTarget.C) },
-                color = colorResource(R.color.colorServant3),
-                text = stringResource(R.string.skill_maker_target_servant, 3)
-            )
+                TargetButton(
+                    onClick = { onSkillTarget(ServantTarget.C) },
+                    color = colorResource(R.color.colorServant3),
+                    text = stringResource(R.string.skill_maker_target_servant, 3)
+                )
+            }
+
+            Button(
+                onClick = { onSkillTarget(null) },
+                modifier = Modifier.padding(horizontal = 4.dp)
+                    .align(Alignment.BottomCenter)
+            ) {
+                Text(stringResource(R.string.skill_maker_target_none))
+            }
         }
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text(
-                stringResource(R.string.skill_maker_special_targets_warning).uppercase(),
-                style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Center,
-                textDecoration = TextDecoration.Underline
-            )
-        }
 
         val state = rememberLazyListState()
 
@@ -135,6 +137,27 @@ fun SkillMakerTarget(
                 }
         }
         val scope = rememberCoroutineScope()
+
+        val listIsNotEmpty by remember {
+            derivedStateOf {
+                state.layoutInfo.visibleItemsInfo.isNotEmpty()
+            }
+        }
+
+        if (listIsNotEmpty) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    stringResource(R.string.skill_maker_special_targets_warning).uppercase(),
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center,
+                    textDecoration = TextDecoration.Underline
+                )
+            }
+        }
 
         Box(
             modifier = Modifier
@@ -199,14 +222,6 @@ fun SkillMakerTarget(
                         )
                     }
                 }
-                item {
-                    Button(
-                        onClick = { onSkillTarget(null) },
-                        modifier = Modifier.padding(horizontal = 4.dp)
-                    ) {
-                        Text(stringResource(R.string.skill_maker_target_none))
-                    }
-                }
             }
 
             // fully qualified name for box and AnimatedVisibility, don't know why
@@ -236,7 +251,7 @@ fun SkillMakerTarget(
                 }
             }
             androidx.compose.animation.AnimatedVisibility(
-                visible = showLastButton,
+                visible = showLastButton && listIsNotEmpty,
                 enter = fadeIn() + slideInHorizontally { it },
                 exit = fadeOut() + slideOutHorizontally { it },
                 modifier = Modifier
