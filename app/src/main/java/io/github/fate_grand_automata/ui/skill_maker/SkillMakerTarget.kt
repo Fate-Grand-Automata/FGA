@@ -329,6 +329,7 @@ private fun ButtonWithHint(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight(0.4f)
+                        .padding(horizontal = 4.dp)
                 )
             }
         }
