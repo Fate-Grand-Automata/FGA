@@ -437,6 +437,12 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_three_targets_image_path">"file:///android_asset/images/skill_maker_target_3.png"</string>
     <string name="skill_maker_transform_image_path">"file:///android_asset/images/skill_maker_transform.gif"</string>
 
+    <string name="skill_maker_choices_3_hint">"Servants with 3 choice dialog"</string>
+    <string name="skill_maker_choices_2_hint">"Servants with 2 choice dialog"</string>
+    <string name="skill_maker_two_targets_hint">"Servants with 2 Servant targets-like dialog"</string>
+    <string name="skill_maker_three_targets_hint">"Servants with 3 Servant targets-like dialog"</string>
+    <string name="skill_maker_transform_hint">"Servants that transform"</string>
+
     <string name="dismiss">"Dismiss"</string>
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>

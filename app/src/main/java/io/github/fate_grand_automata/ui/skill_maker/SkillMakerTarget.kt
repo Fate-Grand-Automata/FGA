@@ -174,6 +174,7 @@ fun SkillMakerTarget(
                         ButtonWithHint(
                             onClick = onChoice2,
                             text = stringResource(R.string.skill_maker_choices_2),
+                            hint = stringResource(R.string.skill_maker_choices_2_hint),
                             imagePath = stringResource(R.string.skill_maker_choices_2_image_path),
                             servants = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
                         )
@@ -185,6 +186,7 @@ fun SkillMakerTarget(
                         ButtonWithHint(
                             onClick = onTwoTargets,
                             text = stringResource(R.string.skill_maker_two_targets),
+                            hint = stringResource(R.string.skill_maker_two_targets_hint),
                             imagePath = stringResource(R.string.skill_maker_two_targets_image_path),
                             servants = stringArrayResource(R.array.skill_maker_two_targets_array).joinToString("\n")
                         )
@@ -196,6 +198,7 @@ fun SkillMakerTarget(
                         ButtonWithHint(
                             onClick = onThreeTargets,
                             text = stringResource(R.string.skill_maker_three_targets),
+                            hint = stringResource(R.string.skill_maker_three_targets_hint),
                             imagePath = stringResource(R.string.skill_maker_three_targets_image_path),
                             servants = stringArrayResource(R.array.skill_maker_three_targets_array).joinToString("\n")
                         )
@@ -209,6 +212,7 @@ fun SkillMakerTarget(
                                 onChoice3(slot)
                             },
                             text = stringResource(R.string.skill_maker_choices_3),
+                            hint = stringResource(R.string.skill_maker_choices_3_hint),
                             imagePath = stringResource(R.string.skill_maker_choices_3_image_path),
                             servants = stringArrayResource(
                                 if (showChoice3Slot1) R.array.skill_maker_choices_3_array_slot_1
@@ -222,6 +226,7 @@ fun SkillMakerTarget(
                         ButtonWithHint(
                             onClick = onTransform,
                             text = stringResource(R.string.skill_maker_transform),
+                            hint = stringResource(R.string.skill_maker_transform_hint),
                             imagePath = stringResource(R.string.skill_maker_transform_image_path),
                             servants = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
                         )
@@ -287,6 +292,7 @@ fun SkillMakerTarget(
 private fun ButtonWithHint(
     onClick: () -> Unit,
     text: String,
+    hint: String,
     imagePath: String,
     servants: String
 ) {
@@ -295,23 +301,36 @@ private fun ButtonWithHint(
     dialog.build(
         color = MaterialTheme.colorScheme.background,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(servants)
-
-            AsyncImage(
-                model = imagePath,
-                contentDescription = "Special Skill Target Image",
-                contentScale = ContentScale.Fit,
+            Text(
+                text = hint.uppercase(),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(0.4f)
+                    .fillMaxWidth()
             )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(servants)
+
+                AsyncImage(
+                    model = imagePath,
+                    contentDescription = "Special Skill Target Image",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(0.4f)
+                )
+            }
         }
 
         buttons(
