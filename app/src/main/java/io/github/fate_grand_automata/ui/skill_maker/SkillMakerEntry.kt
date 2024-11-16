@@ -3,6 +3,7 @@ package io.github.fate_grand_automata.ui.skill_maker
 import io.github.fate_grand_automata.scripts.models.AutoSkillAction
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.scripts.models.Skill
+import io.github.fate_grand_automata.scripts.models.SpecialCommand
 
 sealed class SkillMakerEntry {
     class Action(val action: AutoSkillAction) : SkillMakerEntry() {
@@ -10,7 +11,7 @@ sealed class SkillMakerEntry {
             null -> "${skill.autoSkillCode}"
             else -> {
                 if (target.specialTarget.isNotEmpty()) {
-                    "${skill.autoSkillCode}${target.autoSkillCode}${target.specialTarget}]"
+                    "${skill.autoSkillCode}${target.autoSkillCode}${target.specialTarget}${ServantTarget.SpecialTarget.endChar()}"
                 } else {
                     "${skill.autoSkillCode}${target.autoSkillCode}"
                 }
@@ -21,15 +22,15 @@ sealed class SkillMakerEntry {
             targets.isEmpty() -> "${skill.autoSkillCode}"
             targets.size == 1 -> {
                 if (targets[0].specialTarget.isNotEmpty()) {
-                    "${skill.autoSkillCode}${targets[0].autoSkillCode}${targets[0].specialTarget}]"
+                    "${skill.autoSkillCode}${targets[0].autoSkillCode}${targets[0].specialTarget}${ServantTarget.SpecialTarget.endChar()}"
                 } else {
                     "${skill.autoSkillCode}${targets[0].autoSkillCode}"
                 }
             }
 
             else -> {
-                val start = "${skill.autoSkillCode}("
-                val end = ")"
+                val start = "${skill.autoSkillCode}${ServantTarget.multiTargetStartChar()}"
+                val end = "${ServantTarget.multiTargetEndChar()}"
 
                 val middle = targets.joinToString("") { target ->
                     if (target.specialTarget.isNotEmpty()) {
@@ -49,7 +50,7 @@ sealed class SkillMakerEntry {
                     "0"
                 } else {
                     val cardsBeforeNP = if (action.cardsBeforeNP > 0) {
-                        "n${action.cardsBeforeNP}"
+                        "${SpecialCommand.CardsBeforeNP}${action.cardsBeforeNP}"
                     } else ""
 
                     cardsBeforeNP + action.nps.joinToString("") {
@@ -60,8 +61,8 @@ sealed class SkillMakerEntry {
 
             is AutoSkillAction.ServantSkill -> toString(action.skill, action.targets)
             is AutoSkillAction.MasterSkill -> toString(action.skill, action.target)
-            is AutoSkillAction.TargetEnemy -> "t${action.enemy.autoSkillCode}"
-            is AutoSkillAction.OrderChange -> "x${action.starting.autoSkillCode}${action.sub.autoSkillCode}"
+            is AutoSkillAction.TargetEnemy -> "${SpecialCommand.EnemyTarget}${action.enemy.autoSkillCode}"
+            is AutoSkillAction.OrderChange -> "${SpecialCommand.OrderChange}${action.starting.autoSkillCode}${action.sub.autoSkillCode}"
         }
     }
 

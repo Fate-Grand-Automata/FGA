@@ -72,14 +72,14 @@ class AutoSkillCommand private constructor(
         private fun getTargets(queue: Queue<Char>): List<ServantTarget> {
             val targets = mutableListOf<ServantTarget>()
             val nextChar = queue.peek()
-            if (nextChar == '(') {
+            if (nextChar == ServantTarget.multiTargetStartChar()) {
                 queue.remove()
                 var char: Char? = null
                 var specialFound = false
                 var special = ""
                 while (queue.isNotEmpty()) {
                     char = queue.remove()
-                    if (char == ')') break
+                    if (char == ServantTarget.multiTargetEndChar()) break
 
                     if (char == ServantTarget.SpecialTarget.startChar()) {
                         specialFound = true
@@ -103,7 +103,7 @@ class AutoSkillCommand private constructor(
                     }
 
                     if (specialFound) {
-                        if (char != '[') {
+                        if (char != ServantTarget.SpecialTarget.startChar()) {
                             special += char
                         }
                     } else {
@@ -111,7 +111,7 @@ class AutoSkillCommand private constructor(
                         target?.let(targets::add)
                     }
                 }
-                if (char != ')') {
+                if (char != ServantTarget.multiTargetEndChar()) {
                     throw Exception("Found ( but no matching ) in Skill Command")
                 }
                 if (specialFound) {

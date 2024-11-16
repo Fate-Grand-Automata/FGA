@@ -70,5 +70,15 @@ sealed class ServantTarget(
                 SpecialTarget.Choice3OptionC
             )
         }
+
+        /**
+         * The "(" character that starts a multi-target code.
+         */
+        fun multiTargetStartChar(): Char = '('
+
+        /**
+         * The ")" character that ends a multi-target code.
+         */
+        fun multiTargetEndChar(): Char = ')'
     }
 }
