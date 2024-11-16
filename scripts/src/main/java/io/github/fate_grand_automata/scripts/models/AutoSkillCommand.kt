@@ -193,7 +193,7 @@ class AutoSkillCommand private constructor(
 
                         val actions = mutableListOf<AutoSkillAction>()
 
-                        while (!queue.isEmpty()) {
+                        while (queue.isNotEmpty()) {
                             val action = parseAction(queue)
 
                             // merge NPs and cards before NPs
