@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -24,11 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -40,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -47,12 +45,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
+import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.skill_maker.special.TargetButton
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -175,7 +174,8 @@ fun SkillMakerTarget(
                         ButtonWithHint(
                             onClick = onChoice2,
                             text = stringResource(R.string.skill_maker_choices_2),
-                            hint = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
+                            imagePath = stringResource(R.string.skill_maker_choices_2_image_path),
+                            servants = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
                         )
                     }
                 }
@@ -185,7 +185,8 @@ fun SkillMakerTarget(
                         ButtonWithHint(
                             onClick = onTwoTargets,
                             text = stringResource(R.string.skill_maker_two_targets),
-                            hint = stringArrayResource(R.array.skill_maker_two_targets_array).joinToString("\n")
+                            imagePath = stringResource(R.string.skill_maker_two_targets_image_path),
+                            servants = stringArrayResource(R.array.skill_maker_two_targets_array).joinToString("\n")
                         )
                     }
                 }
@@ -195,17 +196,8 @@ fun SkillMakerTarget(
                         ButtonWithHint(
                             onClick = onThreeTargets,
                             text = stringResource(R.string.skill_maker_three_targets),
-                            hint = stringArrayResource(R.array.skill_maker_three_targets_array).joinToString("\n")
-                        )
-                    }
-                }
-
-                if (showTransform) {
-                    item {
-                        ButtonWithHint(
-                            onClick = onTransform,
-                            text = stringResource(R.string.skill_maker_transform),
-                            hint = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
+                            imagePath = stringResource(R.string.skill_maker_three_targets_image_path),
+                            servants = stringArrayResource(R.array.skill_maker_three_targets_array).joinToString("\n")
                         )
                     }
                 }
@@ -217,10 +209,21 @@ fun SkillMakerTarget(
                                 onChoice3(slot)
                             },
                             text = stringResource(R.string.skill_maker_choices_3),
-                            hint = stringArrayResource(
+                            imagePath = stringResource(R.string.skill_maker_choices_3_image_path),
+                            servants = stringArrayResource(
                                 if (showChoice3Slot1) R.array.skill_maker_choices_3_array_slot_1
                                 else R.array.skill_maker_choices_3_array_slot_3
                             ).joinToString("\n")
+                        )
+                    }
+                }
+                if (showTransform) {
+                    item {
+                        ButtonWithHint(
+                            onClick = onTransform,
+                            text = stringResource(R.string.skill_maker_transform),
+                            imagePath = stringResource(R.string.skill_maker_transform_image_path),
+                            servants = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
                         )
                     }
                 }
@@ -284,19 +287,43 @@ fun SkillMakerTarget(
 private fun ButtonWithHint(
     onClick: () -> Unit,
     text: String,
-    hint: String
+    imagePath: String,
+    servants: String
 ) {
-    val state = rememberTooltipState(isPersistent = true)
-    val scope = rememberCoroutineScope()
+    val dialog = FgaDialog()
 
-    LaunchedEffect(state.isVisible) {
-        if (state.isVisible) {
-            delay(5000)
-            if (state.isVisible) {
-                state.dismiss()
-            }
+    dialog.build(
+        color = MaterialTheme.colorScheme.background,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(servants)
+
+            AsyncImage(
+                model = imagePath,
+                contentDescription = "Special Skill Target Image",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(0.4f)
+            )
         }
+
+        buttons(
+            okLabel = stringResource(R.string.dismiss),
+            showCancel = false,
+            onSubmit = {
+                dialog.hide()
+            }
+        )
+
     }
+
 
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -307,37 +334,16 @@ private fun ButtonWithHint(
         ) {
             Text(text)
         }
-        Box {
-            TooltipBox(
-                positionProvider = TooltipDefaults.rememberRichTooltipPositionProvider(),
-                tooltip = {
-                    PlainTooltip(
-                        content = {
-                            Text(
-                                text = hint,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        },
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
 
-                    )
-                },
-                state = state
-            ) {
-                IconButton(
-                    onClick = {
-                        scope.launch {
-                            state.show()
-                        }
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = "Info"
-                    )
-                }
+        IconButton(
+            onClick = {
+                dialog.show()
             }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = "Info"
+            )
         }
     }
 

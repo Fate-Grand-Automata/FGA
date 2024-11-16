@@ -430,6 +430,14 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     </string-array>
     <string name="skill_maker_kukulcan_choice_1">"Don't consume stars"</string>
     <string name="skill_maker_kukulcan_choice_2">"Consume stars"</string>
+
+    <string name="skill_maker_choices_3_image_path">"file:///android_asset/images/skill_maker_choices_3.png"</string>
+    <string name="skill_maker_choices_2_image_path">"file:///android_asset/images/skill_maker_choices_2.png"</string>
+    <string name="skill_maker_two_targets_image_path">"file:///android_asset/images/skill_maker_target_2.png"</string>
+    <string name="skill_maker_three_targets_image_path">"file:///android_asset/images/skill_maker_target_3.png"</string>
+    <string name="skill_maker_transform_image_path">"file:///android_asset/images/skill_maker_transform.gif"</string>
+
+    <string name="dismiss">"Dismiss"</string>
     <string name="reset_all">"Reset all"</string>
     <string name="reset_to_default">"Reset to default"</string>
 
