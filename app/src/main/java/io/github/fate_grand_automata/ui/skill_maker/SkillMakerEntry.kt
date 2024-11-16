@@ -11,7 +11,7 @@ sealed class SkillMakerEntry {
             null -> "${skill.autoSkillCode}"
             else -> {
                 if (target.specialTarget.isNotEmpty()) {
-                    "${skill.autoSkillCode}${target.autoSkillCode}${target.specialTarget}${ServantTarget.SpecialTarget.endChar()}"
+                    "${skill.autoSkillCode}${target.autoSkillCode}${target.specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
                 } else {
                     "${skill.autoSkillCode}${target.autoSkillCode}"
                 }
@@ -22,19 +22,19 @@ sealed class SkillMakerEntry {
             targets.isEmpty() -> "${skill.autoSkillCode}"
             targets.size == 1 -> {
                 if (targets[0].specialTarget.isNotEmpty()) {
-                    "${skill.autoSkillCode}${targets[0].autoSkillCode}${targets[0].specialTarget}${ServantTarget.SpecialTarget.endChar()}"
+                    "${skill.autoSkillCode}${targets[0].autoSkillCode}${targets[0].specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
                 } else {
                     "${skill.autoSkillCode}${targets[0].autoSkillCode}"
                 }
             }
 
             else -> {
-                val start = "${skill.autoSkillCode}${ServantTarget.multiTargetStartChar()}"
-                val end = "${ServantTarget.multiTargetEndChar()}"
+                val start = "${skill.autoSkillCode}${SpecialCommand.StartMultiTarget.autoSkillCode}"
+                val end = "${SpecialCommand.EndMultiTarget.autoSkillCode}"
 
                 val middle = targets.joinToString("") { target ->
                     if (target.specialTarget.isNotEmpty()) {
-                        "${target.autoSkillCode}${target.specialTarget}${ServantTarget.SpecialTarget.endChar()}"
+                        "${target.autoSkillCode}${target.specialTarget}${SpecialCommand.EndSpecialTarget.autoSkillCode}"
                     } else {
                         "${target.autoSkillCode}"
                     }

@@ -21,14 +21,9 @@ sealed class ServantTarget(
 
     sealed class SpecialTarget(
         targetCode: String
-    ) : ServantTarget(autoSkillCode = '[', specialTarget = targetCode) {
+    ) : ServantTarget(autoSkillCode = SpecialCommand.StartSpecialTarget.autoSkillCode, specialTarget = targetCode) {
 
         companion object {
-            /**
-             * The "[" character that starts a special target code.
-             */
-            fun startChar(): Char = '['
-
             /**
              * The "]" character that ends a special target code.
              */
@@ -70,15 +65,5 @@ sealed class ServantTarget(
                 SpecialTarget.Choice3OptionC
             )
         }
-
-        /**
-         * The "(" character that starts a multi-target code.
-         */
-        fun multiTargetStartChar(): Char = '('
-
-        /**
-         * The ")" character that ends a multi-target code.
-         */
-        fun multiTargetEndChar(): Char = ')'
     }
 }

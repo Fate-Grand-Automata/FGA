@@ -28,4 +28,26 @@ sealed class SpecialCommand(
      * No operation this turn is performed.
      */
     data object NoOp : SpecialCommand('0')
+
+    /**
+     * The "(" character that starts a multi-target.
+     */
+    data object StartMultiTarget : SpecialCommand('(')
+
+    /**
+     * The ")" character that ends a multi-target.
+     */
+    data object EndMultiTarget : SpecialCommand(')')
+
+    /**
+     * The "[" character that starts a special
+     * @see io.github.fate_grand_automata.scripts.models.ServantTarget.SpecialTarget
+     */
+    data object StartSpecialTarget : SpecialCommand('[')
+
+    /**
+     * The "]" character that ends a special target code.
+     * @see io.github.fate_grand_automata.scripts.models.ServantTarget.SpecialTarget
+     */
+    data object EndSpecialTarget : SpecialCommand(']')
 }

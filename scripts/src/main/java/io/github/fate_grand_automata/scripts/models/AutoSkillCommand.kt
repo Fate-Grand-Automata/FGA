@@ -32,7 +32,7 @@ class AutoSkillCommand private constructor(
         private fun getTarget(queue: Queue<Char>): ServantTarget? {
             val peekTarget = queue.peek()
             var target: ServantTarget? = null
-            if (peekTarget == ServantTarget.SpecialTarget.startChar()) {
+            if (peekTarget == SpecialCommand.StartSpecialTarget.autoSkillCode) {
                 // remove initial [
                 queue.remove()
 
@@ -43,7 +43,7 @@ class AutoSkillCommand private constructor(
                     char = queue.remove()
                     if (char == ServantTarget.SpecialTarget.endChar()) break
 
-                    if (char != ServantTarget.SpecialTarget.startChar()) {
+                    if (char != SpecialCommand.StartSpecialTarget.autoSkillCode) {
                         special += char
                     }
                     target = specialTargetList
@@ -72,16 +72,16 @@ class AutoSkillCommand private constructor(
         private fun getTargets(queue: Queue<Char>): List<ServantTarget> {
             val targets = mutableListOf<ServantTarget>()
             val nextChar = queue.peek()
-            if (nextChar == ServantTarget.multiTargetStartChar()) {
+            if (nextChar == SpecialCommand.StartMultiTarget.autoSkillCode) {
                 queue.remove()
                 var char: Char? = null
                 var specialFound = false
                 var special = ""
                 while (queue.isNotEmpty()) {
                     char = queue.remove()
-                    if (char == ServantTarget.multiTargetEndChar()) break
+                    if (char == SpecialCommand.EndMultiTarget.autoSkillCode) break
 
-                    if (char == ServantTarget.SpecialTarget.startChar()) {
+                    if (char == SpecialCommand.StartSpecialTarget.autoSkillCode) {
                         specialFound = true
                     } else if (char == ServantTarget.SpecialTarget.endChar()) {
                         specialFound = false
@@ -103,7 +103,7 @@ class AutoSkillCommand private constructor(
                     }
 
                     if (specialFound) {
-                        if (char != ServantTarget.SpecialTarget.startChar()) {
+                        if (char != SpecialCommand.StartSpecialTarget.autoSkillCode) {
                             special += char
                         }
                     } else {
@@ -111,7 +111,7 @@ class AutoSkillCommand private constructor(
                         target?.let(targets::add)
                     }
                 }
-                if (char != ServantTarget.multiTargetEndChar()) {
+                if (char != SpecialCommand.EndMultiTarget.autoSkillCode) {
                     throw Exception("Found ( but no matching ) in Skill Command")
                 }
                 if (specialFound) {
