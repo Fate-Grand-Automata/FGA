@@ -22,7 +22,7 @@ import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2Target
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerSpaceIshtar
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerThreeTargets
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerTwoTargets
 
 @AndroidEntryPoint
@@ -145,9 +145,9 @@ fun SkillMakerUI(
                     onTwoTargets = {
                         navigate(SkillMakerNav.TwoTargets(nav.skill))
                     },
-                    showSpaceIshtar = nav.skill in Skill.Servant.skill2,
-                    onSpaceIshtar = {
-                        navigate(SkillMakerNav.SpaceIshtar(nav.skill))
+                    showThreeTargets = nav.skill in Skill.Servant.skill2,
+                    onThreeTargets = {
+                        navigate(SkillMakerNav.ThreeTargets(nav.skill))
                     },
                     showChoice2 = nav.skill in Skill.Servant.list,
                     onChoice2 = {
@@ -165,8 +165,8 @@ fun SkillMakerUI(
                 )
             }
 
-            is SkillMakerNav.SpaceIshtar -> {
-                SkillMakerSpaceIshtar(
+            is SkillMakerNav.ThreeTargets -> {
+                SkillMakerThreeTargets(
                     onSkillTarget = { vm.targetSkill(it) }
                 )
             }

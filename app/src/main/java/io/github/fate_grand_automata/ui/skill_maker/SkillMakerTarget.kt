@@ -60,8 +60,8 @@ fun SkillMakerTarget(
     onSkillTarget: (ServantTarget?) -> Unit,
     showTwoTargets: Boolean,
     onTwoTargets: () -> Unit,
-    showSpaceIshtar: Boolean,
-    onSpaceIshtar: () -> Unit,
+    showThreeTargets: Boolean,
+    onThreeTargets: () -> Unit,
     showChoice2: Boolean,
     onChoice2: () -> Unit,
     showTransform: Boolean,
@@ -190,11 +190,13 @@ fun SkillMakerTarget(
                     }
                 }
 
-                if (showSpaceIshtar) {
+                if (showThreeTargets) {
                     item {
-                        Button(onClick = onSpaceIshtar) {
-                            Text(stringResource(R.string.skill_maker_space_ishtar))
-                        }
+                        ButtonWithHint(
+                            onClick = onThreeTargets,
+                            text = stringResource(R.string.skill_maker_three_targets),
+                            hint = stringArrayResource(R.array.skill_maker_three_targets_array).joinToString("\n")
+                        )
                     }
                 }
 
@@ -380,8 +382,8 @@ private fun TestSkillMaker(
             onSkillTarget = {},
             showTwoTargets = showEmiya,
             onTwoTargets = {},
-            showSpaceIshtar = showSpaceIshtar,
-            onSpaceIshtar = {},
+            showThreeTargets = showSpaceIshtar,
+            onThreeTargets = {},
             showChoice2 = showChoice2,
             onChoice2 = {},
             showTransform = showMelusine,
