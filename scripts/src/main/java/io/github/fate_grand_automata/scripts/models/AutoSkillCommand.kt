@@ -147,19 +147,19 @@ class AutoSkillCommand private constructor(
                         AutoSkillAction.Atk.np(np)
                     }
 
-                    't' -> {
+                    SpecialCommand.EnemyTarget.autoSkillCode -> {
                         val code = queue.remove()
                         val target = EnemyTarget.list.first { it.autoSkillCode == code }
                         AutoSkillAction.TargetEnemy(target)
                     }
 
-                    'n' -> {
+                    SpecialCommand.CardsBeforeNP.autoSkillCode -> {
                         val code = queue.remove()
                         val count = code.toString().toInt()
                         AutoSkillAction.Atk.cardsBeforeNP(count)
                     }
 
-                    'x' -> {
+                    SpecialCommand.OrderChange.autoSkillCode -> {
                         val startingCode = queue.remove()
                         val starting = OrderChangeMember.Starting.list
                             .first { it.autoSkillCode == startingCode }
@@ -171,7 +171,8 @@ class AutoSkillCommand private constructor(
                         AutoSkillAction.OrderChange(starting, sub)
                     }
 
-                    '0' -> AutoSkillAction.Atk.noOp()
+                    SpecialCommand.NoOp.autoSkillCode -> AutoSkillAction.Atk.noOp()
+
                     else -> throw Exception("Unknown character: $c")
                 }
             } catch (e: Exception) {
