@@ -11,11 +11,11 @@
   - [Targeting](#targeting)
   - [Special Skills](#special-skills)
     - [Kukulkan](#kukulkan)
-    - [Emiya](#emiya)
+    - [Emiya](#emiyabb-dubai)
     - [Space Ishtar](#space-ishtar)
-    - [Mélusine/Ptolemy](#mlusineptolemy)
-      - [Warning about Mélusine option.](#warning-about-mlusine-option)
-    - [Soujuurou/Charlotte](#soujuuroucharlotte)
+    - [Mélusine/Ptolemy](#melusineptolemy)
+      - [Warning about Mélusine option.](#warning-about-the-mélusine-option)
+    - [Soujuurou/Charlotte](#soujuuroucharlottehakunonvan-gogh-miner)
   - [Enemy Targeting](#enemy-targeting)
   - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
     - [Cards before NP](#cards-before-np)
@@ -170,11 +170,11 @@ Battle
 
 ---
 
-### Emiya
+### Emiya/BB Dubai
 
 Emiya's [Third Skill](https://fategrandorder.fandom.com/wiki/EMIYA#Third_Skill) can select an NP card type after its second upgrade.
 
-Only use the `"Emiya"` option if you've fully upgraded the third skill.
+Only use the `"Two Targets"` option if you've fully upgraded the third skill.
 
 ![Emiya's Third Skill Max Upgrade](https://i.imgur.com/ZKH1qSV.png)
 
@@ -225,13 +225,13 @@ Battle
 
 ---
 
-### Mélusine/Ptolemy
+### Melusine/Ptolemy
 
 Mélusine's [Third Skill at Ascension 1 and 2](https://fategrandorder.fandom.com/wiki/M%C3%A9lusine#Third_Skill) and
 Ptolemy's [Third Skill](https://fategrandorder.fandom.com/wiki/Ptolemaios#Third_Skill) change the Servant's Ascension
 forms in the middle of the battle.
 
-Use the `Mélusine` option to both account for the long animation and for the changed face cards. Otherwise, Servant
+Use the `Transform` option to both account for the long animation and for the changed face cards. Otherwise, Servant
 Priority will be broken for the rest of the battle.
 
 ![Mélusine/Ptolemy Option](https://github.com/user-attachments/assets/2b224ce2-48a6-4a21-9753-c328b207c7a2)
@@ -246,9 +246,9 @@ After using Mélusine's third skill at ascension 1 and 2, any succeeding use of 
 should use the normal third skill. So if Mélusine is in the 1st position, use `c`.
 
 If you're already starting the battle with Mélusine in Ascension 3, there's no need to use
-the `Mélusine` option since she won't change forms.
+the `Transform` option since she won't change forms.
 
-With Ptolemy you will need to keep using the `Mélusine` option as he changes forms on every
+With Ptolemy you will need to keep using the `Transform` option as he changes forms on every
 use of his third skill.
 
 ### Soujuurou/Charlotte/Hakunon/Van Gogh Miner
@@ -256,6 +256,10 @@ use of his third skill.
 `Soujuurou`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Shizuki_S%C5%8Dj%C5%ABr%C5%8D#Third_Skill) can change the command cards after one turn
 
 `Charlotte` [Upgraded 3rd skill](https://fategrandorder.fandom.com/wiki/Charlotte_Corday#Third_Skill) can have different effects depending on the choice you choose.
+
+`Hakunon`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Kishinami_Hakuno_(Female)#Third_Skill) can increase damage for 3 turns.
+
+`Van Gogh Miner`'s [1st skill](https://fategrandorder.fandom.com/wiki/Van_Gogh_(Miner)#First_Skill) can increase card effectiveness for 3 turns.
 
 ![Choice Three Option](https://github.com/user-attachments/assets/3eedd53f-d7ab-40ea-9e08-bc7dd1d55033)
 
