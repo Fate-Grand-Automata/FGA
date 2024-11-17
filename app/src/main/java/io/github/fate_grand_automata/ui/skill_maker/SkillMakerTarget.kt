@@ -320,14 +320,18 @@ private fun ButtonWithHint(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(servants)
+                Text(
+                    servants,
+                    modifier = Modifier
+                        .weight(1f)
+                )
 
                 AsyncImage(
                     model = imagePath,
                     contentDescription = "Special Skill Target Image",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(3f)
                         .fillMaxHeight(0.4f)
                         .padding(horizontal = 4.dp)
                 )
