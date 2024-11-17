@@ -128,11 +128,19 @@ more effects.
 
 Use `Option 1` if you don't plan to use critical stars.
 
-![Kukulkan use option 1](https://i.imgur.com/rwUpGpH.gif)
+![Kukulkan use option 1](https://github.com/user-attachments/assets/5b25221d-98d9-49a4-ade6-9c59ed6ae4f5)
 
 Use `Option 2` if you plan to use critical stars.
 
-![Kukulkan use option 2](https://i.imgur.com/d7AYeJ3.gif)
+![Kukulkan use option 2](https://github.com/user-attachments/assets/51091fab-ac7f-4bd3-86d4-2c27087d4405)
+
+You can check what would the skill at that option do by pressing the buttons below.
+
+Note: You don't have to always click it when using certain servants, this is only for visual purpose.
+
+![Updating Button labels for choices 2 option](https://github.com/user-attachments/assets/53f7d44b-9af8-4a49-a9ea-525e00eff1da)
+
+Battle
 
 ![Kuku s1/s3](https://i.imgur.com/JwD0rAe.gif)
 
@@ -143,11 +151,20 @@ effects.
 
 Use `Option 1` if you don't plan to use critical stars.
 
-![Kukulkan use option 1](https://i.imgur.com/TvOxKOR.gif)
+![Kukulkan use option 1](https://github.com/user-attachments/assets/b3426718-f633-48b9-b065-7b80d69c2e2c)
+
 
 Use `Option 2` if you plan to use critical stars.
 
-![Kukulkan use option 2](https://i.imgur.com/DVQ65aN.gif)
+![Kukulkan use option 2](https://github.com/user-attachments/assets/093b07a3-dc69-4afd-9b09-64ccf7ac2e76)
+
+You can check what would the skill at that option do by pressing the buttons below.
+
+Note: You don't have to always click it when using certain servants, this is only for visual purpose.
+
+![Updating Button labels for choices 2 option](https://github.com/user-attachments/assets/187cb965-3a32-4ead-be07-d1e05bf2e07e)
+
+Battle
 
 ![kuku s2](https://i.imgur.com/b7Pdy4E.gif)
 
@@ -168,13 +185,19 @@ or the support you'll borrow have it fully upgraded.
 Note: FGA doesn't have the capability to detect if the skill is fully upgraded or not, but you can use preferred friends to ensure that you get
 the right support.
 
-Using Arts option
+Using option 1
 
-![Emiya use Arts](https://i.imgur.com/hlknb1L.gif)
+![Emiya use Arts](https://github.com/user-attachments/assets/394b9e3f-3233-4186-bf5a-ed36c2ba6d7c)
 
 Using Buster option
 
-![Emiya use Buster](https://i.imgur.com/1oDpuav.gif)
+![Emiya option 2](https://github.com/user-attachments/assets/410467fb-d01d-4640-8ce7-f22f345cd1ed)
+
+You can check what would the skill at that option do by pressing the buttons below.
+
+Note: You don't have to always click it when using certain servants, this is only for visual purpose.
+
+![Updating Button labels for two targets option](https://github.com/user-attachments/assets/69aa976d-50c7-4a68-9f25-24987753e48b)
 
 Battle
 
@@ -187,7 +210,16 @@ Battle
 For convenience's sake, Space Ishtar's [Second Skill](https://fategrandorder.fandom.com/wiki/Space_Ishtar#Second_Skill) has her option also explicitly
 shown.
 
-![Space Ishtar Option](https://i.imgur.com/CoNfanB.gif)
+![Space Ishtar Option](https://github.com/user-attachments/assets/b6578ffe-6c7a-43ed-8925-44f3dcc6e3c7)
+
+You can check what would the skill at that option do by pressing the buttons below.
+
+Note: You don't have to always click it when using certain servants, this is only for visual purpose.
+
+![Updating Button labels for three targets option](https://github.com/user-attachments/assets/a4d87ea1-0e5a-4bbf-acdb-5fc0ff08f7a4)
+
+
+Battle
 
 ![Ishtar](https://i.imgur.com/CuBYrDT.gif)
 
@@ -202,7 +234,9 @@ forms in the middle of the battle.
 Use the `Mélusine` option to both account for the long animation and for the changed face cards. Otherwise, Servant
 Priority will be broken for the rest of the battle.
 
-![Mélusine/Ptolemy Option](https://i.imgur.com/Uij44bW.gif)
+![Mélusine/Ptolemy Option](https://github.com/user-attachments/assets/2b224ce2-48a6-4a21-9753-c328b207c7a2)
+
+Battle
 
 ![Mélusine option](https://i.imgur.com/hX2mGjA.gif)
 
@@ -217,13 +251,23 @@ the `Mélusine` option since she won't change forms.
 With Ptolemy you will need to keep using the `Mélusine` option as he changes forms on every
 use of his third skill.
 
-### Soujuurou/Charlotte
+### Soujuurou/Charlotte/Hakunon/Van Gogh Miner
 
 `Soujuurou`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Shizuki_S%C5%8Dj%C5%ABr%C5%8D#Third_Skill) can change the command cards after one turn
 
 `Charlotte` [Upgraded 3rd skill](https://fategrandorder.fandom.com/wiki/Charlotte_Corday#Third_Skill) can have different effects depending on the choice you choose.
 
-![Soujuurou option](https://i.imgur.com/sKsXMlM.gif)
+![Choice Three Option](https://github.com/user-attachments/assets/3eedd53f-d7ab-40ea-9e08-bc7dd1d55033)
+
+You can check what would the skill at that option do by pressing the buttons below.
+
+Note: You don't have to always click it when using certain servants, this is only for visual purpose.
+
+![Updating Button labels for choice three option slot 1](https://github.com/user-attachments/assets/3514c367-2170-4063-9f15-7fe923b479a4)
+
+![Updating Button labels for choice three option slot 3](https://github.com/user-attachments/assets/efff0a9c-ad4c-40e8-af36-40139a8269ca)
+
+Battle
 
 ![Soujuurou](https://i.imgur.com/Dg3k6jM.gif)
 
