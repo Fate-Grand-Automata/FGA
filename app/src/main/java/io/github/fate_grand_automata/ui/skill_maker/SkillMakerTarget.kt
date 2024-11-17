@@ -113,6 +113,7 @@ fun SkillMakerTarget(
                 onClick = { onSkillTarget(null) },
                 modifier = Modifier.padding(horizontal = 4.dp)
                     .align(Alignment.BottomCenter)
+                    .padding(bottom = 4.dp)
             ) {
                 Text(stringResource(R.string.skill_maker_target_none))
             }
