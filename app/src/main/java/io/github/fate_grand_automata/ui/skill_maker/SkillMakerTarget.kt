@@ -8,10 +8,10 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -56,17 +56,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SkillMakerTarget(
+    slot: SkillSlot,
     onSkillTarget: (ServantTarget?) -> Unit,
-    showTwoTargets: Boolean,
     onTwoTargets: () -> Unit,
-    showThreeTargets: Boolean,
     onThreeTargets: () -> Unit,
-    showChoice2: Boolean,
-    onChoice2: () -> Unit,
-    showTransform: Boolean,
+    onChoice2: (SkillSlot) -> Unit,
     onTransform: () -> Unit,
-    showChoice3Slot1: Boolean,
-    showChoice3Slot3: Boolean,
     onChoice3: (SkillSlot) -> Unit
 ) {
     Column(
@@ -108,15 +103,6 @@ fun SkillMakerTarget(
                     text = stringResource(R.string.skill_maker_target_servant, 3)
                 )
             }
-
-            Button(
-                onClick = { onSkillTarget(null) },
-                modifier = Modifier.padding(horizontal = 4.dp)
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 4.dp)
-            ) {
-                Text(stringResource(R.string.skill_maker_target_none))
-            }
         }
 
 
@@ -144,7 +130,25 @@ fun SkillMakerTarget(
             }
         }
 
-        if (listIsNotEmpty) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ){
+            Column {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Button(
+                    onClick = { onSkillTarget(null) },
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                        .padding(bottom = 4.dp)
+                ) {
+                    Text(stringResource(R.string.skill_maker_target_none))
+                }
+            }
+
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
@@ -157,32 +161,14 @@ fun SkillMakerTarget(
                     textDecoration = TextDecoration.Underline
                 )
             }
-        }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ){
             LazyRow(
                 state = state,
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.Center)
             ) {
-                if (showChoice2) {
-                    item {
-                        ButtonWithHint(
-                            onClick = onChoice2,
-                            text = stringResource(R.string.skill_maker_choices_2),
-                            hint = stringResource(R.string.skill_maker_choices_2_hint),
-                            imagePath = stringResource(R.string.skill_maker_choices_2_image_path),
-                            servants = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
-                        )
-                    }
-                }
-
-                if (showTwoTargets) {
+                if (slot == SkillSlot.Third) {
                     item {
                         ButtonWithHint(
                             onClick = onTwoTargets,
@@ -194,7 +180,7 @@ fun SkillMakerTarget(
                     }
                 }
 
-                if (showThreeTargets) {
+                if (slot == SkillSlot.Second) {
                     item {
                         ButtonWithHint(
                             onClick = onThreeTargets,
@@ -205,24 +191,36 @@ fun SkillMakerTarget(
                         )
                     }
                 }
-                if (showChoice3Slot1 || showChoice3Slot3) {
+
+                item {
+                    ButtonWithHint(
+                        onClick = {
+                            onChoice2(slot)
+                        },
+                        text = stringResource(R.string.skill_maker_choices_2),
+                        hint = stringResource(R.string.skill_maker_choices_2_hint),
+                        imagePath = stringResource(R.string.skill_maker_choices_2_image_path),
+                        servants = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
+                    )
+                }
+
+                if (slot == SkillSlot.First || slot == SkillSlot.Third) {
                     item {
                         ButtonWithHint(
                             onClick = {
-                                val slot = if (showChoice3Slot1) SkillSlot.First else SkillSlot.Third
                                 onChoice3(slot)
                             },
                             text = stringResource(R.string.skill_maker_choices_3),
                             hint = stringResource(R.string.skill_maker_choices_3_hint),
                             imagePath = stringResource(R.string.skill_maker_choices_3_image_path),
                             servants = stringArrayResource(
-                                if (showChoice3Slot1) R.array.skill_maker_choices_3_array_slot_1
+                                if (slot == SkillSlot.First) R.array.skill_maker_choices_3_array_slot_1
                                 else R.array.skill_maker_choices_3_array_slot_3
                             ).joinToString("\n")
                         )
                     }
                 }
-                if (showTransform) {
+                if (slot == SkillSlot.Third) {
                     item {
                         ButtonWithHint(
                             onClick = onTransform,
@@ -233,6 +231,7 @@ fun SkillMakerTarget(
                         )
                     }
                 }
+            }
             }
 
             // fully qualified name for box and AnimatedVisibility, don't know why
@@ -355,9 +354,12 @@ private fun ButtonWithHint(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Button(
-            onClick = onClick
+            onClick = onClick,
+            contentPadding = PaddingValues(7.dp)
         ) {
-            Text(text)
+            Text(
+                text = text
+            )
         }
 
         IconButton(
@@ -377,50 +379,28 @@ private fun ButtonWithHint(
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerTargetEmiya() = TestSkillMaker(showEmiya = true)
+fun TestSkillMakerTargetChoice3Slot1() = TestSkillMaker(slot = SkillSlot.First)
 
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
-@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerTargetIshtar() = TestSkillMaker(showSpaceIshtar = true)
+fun TestSkillMakerTargetSlot2() = TestSkillMaker(slot = SkillSlot.Second)
 
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
-@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerChoice2() = TestSkillMaker(showChoice2 = true)
-
-@Composable
-@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
-@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerTargetChoice3Slot1() = TestSkillMaker(showChoice3Slot1 = true)
-
-@Composable
-@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
-@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerTargetChoice3Slot3() = TestSkillMaker(showChoice3Slot3 = true)
+fun TestSkillMakerTargetChoice3Slot3() = TestSkillMaker(slot = SkillSlot.Third)
 
 @Composable
 private fun TestSkillMaker(
-    showEmiya: Boolean = false,
-    showChoice2: Boolean = false,
-    showSpaceIshtar: Boolean = false,
-    showMelusine: Boolean = showEmiya,
-    showChoice3Slot1: Boolean = false,
-    showChoice3Slot3: Boolean = false
+    slot: SkillSlot
 ) {
     FGATheme {
         SkillMakerTarget(
+            slot = slot,
             onSkillTarget = {},
-            showTwoTargets = showEmiya,
             onTwoTargets = {},
-            showThreeTargets = showSpaceIshtar,
             onThreeTargets = {},
-            showChoice2 = showChoice2,
             onChoice2 = {},
-            showTransform = showMelusine,
             onTransform = {},
-            showChoice3Slot1 = showChoice3Slot1,
-            showChoice3Slot3 = showChoice3Slot3,
             onChoice3 = {}
         )
     }

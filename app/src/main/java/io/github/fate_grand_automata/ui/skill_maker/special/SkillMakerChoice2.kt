@@ -14,6 +14,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,14 +32,23 @@ import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.scripts.models.ServantTarget
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
+import io.github.fate_grand_automata.ui.skill_maker.SkillSlot
 
 @Composable
 fun SkillMakerChoice2(
+    slot: SkillSlot,
     onOption1: () -> Unit,
     onOption2: () -> Unit,
     goToTarget: Boolean,
     onTarget: (firstTarget: ServantTarget) -> Unit
 ) {
+    val entries by remember {
+        derivedStateOf {
+            Choice2Type.entries.filter {
+                it != Choice2Type.Generic && it.slot.matches(slot)
+            }
+        }
+    }
     var choice2Type by remember { mutableStateOf(Choice2Type.Generic) }
 
     Column(
@@ -59,7 +69,7 @@ fun SkillMakerChoice2(
         ) {
             TargetButton(
                 onClick = if (goToTarget) (
-                        { onTarget(ServantTarget.Option1) }
+                        { onTarget(ServantTarget.SpecialTarget.Choice2OptionA) }
                         ) else onOption1,
                 color = MaterialTheme.colorScheme.primary,
                 text = stringResource(choice2Type.targetAStringRes)
@@ -67,7 +77,7 @@ fun SkillMakerChoice2(
 
             TargetButton(
                 onClick = if (goToTarget) (
-                        { onTarget(ServantTarget.Option2) }
+                        { onTarget(ServantTarget.SpecialTarget.Choice2OptionB) }
                         ) else onOption2,
                 color = MaterialTheme.colorScheme.tertiary,
                 text = stringResource(choice2Type.targetBStringRes)
@@ -91,7 +101,7 @@ fun SkillMakerChoice2(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Choice2Type.entries.filterNot {
+            entries.filterNot {
                 it == Choice2Type.Generic
             }.forEach { entry ->
                 val containerColor by animateColorAsState(
@@ -180,9 +190,18 @@ fun SkillMakerChoice2Target(
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestChoice2() {
+fun TestChoice2Slot2() {
     FGATheme {
-        SkillMakerChoice2(onOption1 = { }, onOption2 = { }, goToTarget = true, onTarget = { })
+        SkillMakerChoice2(slot = SkillSlot.Second, onOption1 = { }, onOption2 = { }, goToTarget = true, onTarget = { })
+    }
+}
+
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun TestChoice2Slot3() {
+    FGATheme {
+        SkillMakerChoice2(slot = SkillSlot.Third, onOption1 = { }, onOption2 = { }, goToTarget = true, onTarget = { })
     }
 }
 
@@ -195,25 +214,29 @@ fun TestChoice2Target() {
     }
 }
 
-private enum class Choice2Type {
-    Generic,
-    Kukulcan
+private enum class Choice2Type(val slot: SkillSlot) {
+    Generic(SkillSlot.ANY),
+    Kukulkan(SkillSlot.ANY),
+    UDKBarghest(SkillSlot.Third)
 }
 
 private val Choice2Type.stringRes
     get() = when (this) {
         Choice2Type.Generic -> R.string.skill_maker_choices_2
-        Choice2Type.Kukulcan -> R.string.skill_maker_kukulkan
+        Choice2Type.Kukulkan -> R.string.skill_maker_kukulkan
+        Choice2Type.UDKBarghest -> R.string.skill_maker_udk_barghest
     }
 
 private val Choice2Type.targetAStringRes
     get() = when (this) {
         Choice2Type.Generic -> R.string.skill_maker_option_1
-        Choice2Type.Kukulcan -> R.string.skill_maker_kukulcan_choice_1
+        Choice2Type.Kukulkan -> R.string.skill_maker_kukulkan_choice_1
+        Choice2Type.UDKBarghest -> R.string.skill_maker_udk_barghest_choice_1
     }
 
 private val Choice2Type.targetBStringRes
     get() = when (this) {
         Choice2Type.Generic -> R.string.skill_maker_option_2
-        Choice2Type.Kukulcan -> R.string.skill_maker_kukulcan_choice_2
+        Choice2Type.Kukulkan -> R.string.skill_maker_kukulkan_choice_2
+        Choice2Type.UDKBarghest -> R.string.skill_maker_udk_barghest_choice_2
     }

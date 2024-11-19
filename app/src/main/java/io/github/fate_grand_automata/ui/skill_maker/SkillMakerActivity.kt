@@ -140,25 +140,20 @@ fun SkillMakerUI(
 
             is SkillMakerNav.SkillTarget -> {
                 SkillMakerTarget(
+                    slot = nav.skill.slot(),
                     onSkillTarget = { vm.targetSkill(it) },
-                    showTwoTargets = nav.skill in Skill.Servant.skill3,
                     onTwoTargets = {
                         navigate(SkillMakerNav.TwoTargets(nav.skill))
                     },
-                    showThreeTargets = nav.skill in Skill.Servant.skill2,
                     onThreeTargets = {
                         navigate(SkillMakerNav.ThreeTargets(nav.skill))
                     },
-                    showChoice2 = nav.skill in Skill.Servant.list,
-                    onChoice2 = {
-                        navigate(SkillMakerNav.Choice2(nav.skill))
+                    onChoice2 = { slot ->
+                        navigate(SkillMakerNav.Choice2(nav.skill, slot))
                     },
-                    showTransform = nav.skill in Skill.Servant.skill3,
                     onTransform = {
                         vm.targetSkill(ServantTarget.Transform)
                     },
-                    showChoice3Slot1 = nav.skill in Skill.Servant.skill1,
-                    showChoice3Slot3 = nav.skill in Skill.Servant.skill3,
                     onChoice3 = { slot ->
                         navigate(SkillMakerNav.Choice3(nav.skill, slot))
                     }
@@ -173,8 +168,9 @@ fun SkillMakerUI(
 
             is SkillMakerNav.Choice2 -> {
                 SkillMakerChoice2(
-                    onOption1 = { vm.targetSkill(ServantTarget.Option1) },
-                    onOption2 = { vm.targetSkill(ServantTarget.Option2) },
+                    slot = nav.slot,
+                    onOption1 = { vm.targetSkill(ServantTarget.SpecialTarget.Choice2OptionA) },
+                    onOption2 = { vm.targetSkill(ServantTarget.SpecialTarget.Choice2OptionB) },
                     goToTarget = nav.skill in Skill.Servant.skill2,
                     onTarget = { firstTarget -> navigate(SkillMakerNav.Choice2Target(nav.skill, firstTarget)) }
                 )

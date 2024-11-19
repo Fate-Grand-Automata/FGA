@@ -15,7 +15,7 @@
     - [Space Ishtar](#space-ishtar)
     - [Mélusine/Ptolemy](#melusineptolemy)
       - [Warning about Mélusine option.](#warning-about-the-mélusine-option)
-    - [Soujuurou/Charlotte](#soujuuroucharlottehakunonvan-gogh-miner)
+    - [Soujuurou/Charlotte](#soujuuroucharlottehakunovan-gogh-miner)
   - [Enemy Targeting](#enemy-targeting)
   - [Noble Phantasm (NP) Order](#noble-phantasm-np-order)
     - [Cards before NP](#cards-before-np)
@@ -120,23 +120,21 @@ Skills that are targetable will use the servants position number to apply the sk
 
 Due to the nature of some skills, they will have a different/additional command mapping to accommodate them.
 
-### Kukulkan
+### Kukulkan/UKD-Barghest
 
-[First Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#First_Skill)
-and [Third Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Third_Skill) is a self targetable skill that has option to use critical stars for
-more effects.
+Kukulkan's [First Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#First_Skill) and [Third Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Third_Skill) are self-targeting skills which can gain optional effects by paying crit stars.
 
-Use `Option 1` if you don't plan to use critical stars.
+Use `Option 1` if you don't want to use critical stars.
 
 ![Kukulkan use option 1](https://github.com/user-attachments/assets/5b25221d-98d9-49a4-ade6-9c59ed6ae4f5)
 
-Use `Option 2` if you plan to use critical stars.
+Use `Option 2` if you want to use critical stars.
 
 ![Kukulkan use option 2](https://github.com/user-attachments/assets/51091fab-ac7f-4bd3-86d4-2c27087d4405)
 
-You can check what would the skill at that option do by pressing the buttons below.
+You can click on the Kukulkan button below to replace the button labels with more helpful ones.
 
-Note: You don't have to always click it when using certain servants, this is only for visual purpose.
+Note: You don't have to always click it when using certain servants, this is only for visual purposes.
 
 ![Updating Button labels for choices 2 option](https://github.com/user-attachments/assets/53f7d44b-9af8-4a49-a9ea-525e00eff1da)
 
@@ -149,12 +147,12 @@ Battle
 [Second Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Second_Skill) is a targetable skill that has option to use critical stars for more
 effects.
 
-Use `Option 1` if you don't plan to use critical stars.
+Use `Option 1` if you don't want to use critical stars.
 
 ![Kukulkan use option 1](https://github.com/user-attachments/assets/b3426718-f633-48b9-b065-7b80d69c2e2c)
 
 
-Use `Option 2` if you plan to use critical stars.
+Use `Option 2` if you want to use critical stars.
 
 ![Kukulkan use option 2](https://github.com/user-attachments/assets/093b07a3-dc69-4afd-9b09-64ccf7ac2e76)
 
@@ -251,13 +249,13 @@ the `Transform` option since she won't change forms.
 With Ptolemy you will need to keep using the `Transform` option as he changes forms on every
 use of his third skill.
 
-### Soujuurou/Charlotte/Hakunon/Van Gogh Miner
+### Soujuurou/Charlotte/Hakuno/Van Gogh Miner
 
 `Soujuurou`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Shizuki_S%C5%8Dj%C5%ABr%C5%8D#Third_Skill) can change the command cards after one turn
 
 `Charlotte` [Upgraded 3rd skill](https://fategrandorder.fandom.com/wiki/Charlotte_Corday#Third_Skill) can have different effects depending on the choice you choose.
 
-`Hakunon`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Kishinami_Hakuno_(Female)#Third_Skill) can increase damage for 3 turns.
+`Hakuno`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Kishinami_Hakuno_(Female)#Third_Skill) can increase damage for 3 turns.
 
 `Van Gogh Miner`'s [1st skill](https://fategrandorder.fandom.com/wiki/Van_Gogh_(Miner)#First_Skill) can increase card effectiveness for 3 turns.
 

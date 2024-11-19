@@ -49,12 +49,10 @@ Skills"</string>
     <string name="skill_maker_order_change_starting_member">"Starting Member"</string>
     <string name="skill_maker_order_change_sub_member">"Sub Member"</string>
     <string name="skill_maker_order_change_servant">"Servant
-
 %d"</string>
     <string name="skill_maker_target_header">"Choose Target"</string>
     <string name="skill_maker_target_none">"No Target"</string>
     <string name="skill_maker_target_servant">"Servant
-
 %d"</string>
     <string name="skill_maker_space_ishtar">"Space Ishtar"</string>
     <string name="skill_maker_emiya">"Emiya"</string>
@@ -62,6 +60,7 @@ Skills"</string>
     <string name="skill_maker_arts">"Arts"</string>
     <string name="skill_maker_buster">"Buster"</string>
     <string name="skill_maker_kukulkan">"Kukulkan"</string>
+    <string name="skill_maker_udk_barghest">"UDK-Barghest"</string>
     <string name="skill_maker_option_1">"Option 1"</string>
     <string name="skill_maker_option_2">"Option 2"</string>
     <string name="skill_maker_option_3">"Option 3"</string>
@@ -386,7 +385,6 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="support_imgs_extracting">"Extracting support images"</string>
     <string name="p_max_gold_ember_total_count">"Max Gold ember total count"</string>
     <string name="update_download_success">"Download successful. Restarting app in 5 seconds."</string>
-    <string name="skill_maker_melusine">"Mélusine"</string>
     <string name="skill_maker_soujuurou">"Soujuurou"</string>
     <string name="skill_maker_choices_3">"Choices (3)"</string>
     <string-array name="skill_maker_choices_3_array_slot_1">
@@ -395,14 +393,14 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string-array name="skill_maker_choices_3_array_slot_3">
         <item>"Soujuurou"</item>
         <item>"Charlotte"</item>
-        <item>"Hakunon"</item>
+        <item>"Hakuno"</item>
     </string-array>
-    <string name="skill_maker_two_targets">"Two Targets"</string>
+    <string name="skill_maker_two_targets">"NP Type (2)"</string>
     <string-array name="skill_maker_two_targets_array">
         <item>"Emiya"</item>
         <item>"BB Dubai"</item>
     </string-array>
-    <string name="skill_maker_three_targets">"Three Targets"</string>
+    <string name="skill_maker_three_targets">"NP Type (3)"</string>
     <string-array name="skill_maker_three_targets_array">
         <item>"Space Ishtar"</item>
     </string-array>
@@ -414,22 +412,25 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_update_button_labels">"Update Button Labels"</string>
     <string name="skill_maker_special_targets_warning">Servants with special skills</string>
     <string name="skill_maker_van_gogh">Van Gogh (Miner)</string>
-    <string name="skill_maker_hakunon">Hakunon</string>
+    <string name="skill_maker_hakuno">Hakuno</string>
     <string name="skill_maker_charlotte">Charlotte</string>
     <string name="skill_maker_bb_dubai">"BB Dubai"</string>
     <string name="skill_maker_bb_dubai_target_1">"C.C.C."</string>
     <string name="skill_maker_bb_dubai_target_2">"G.G.G."</string>
-    <string name="skill_maker_hakunon_choice_1">"Sky"</string>
-    <string name="skill_maker_hakunon_choice_2">"Earth"</string>
-    <string name="skill_maker_hakunon_choice_3">"Man"</string>
+    <string name="skill_maker_hakuno_choice_1">"Sky"</string>
+    <string name="skill_maker_hakuno_choice_2">"Earth"</string>
+    <string name="skill_maker_hakuno_choice_3">"Man"</string>
     <string name="skill_maker_charlotte_choice_2">"Crit Damage"</string>
     <string name="skill_maker_charlotte_choice_3">"NP Damage"</string>
     <string name="skill_maker_choices_2">"Choices (2)"</string>
     <string-array name="skill_maker_choices_2_array">
-        <item>"Kukulcan"</item>
+        <item>"Kukulkan"</item>
+        <item>"UDK-Barghest"</item>
     </string-array>
-    <string name="skill_maker_kukulcan_choice_1">"Don't consume stars"</string>
-    <string name="skill_maker_kukulcan_choice_2">"Consume stars"</string>
+    <string name="skill_maker_kukulkan_choice_1">"Don't consume stars"</string>
+    <string name="skill_maker_kukulkan_choice_2">"Consume stars"</string>
+    <string name="skill_maker_udk_barghest_choice_1">"AoE"</string>
+    <string name="skill_maker_udk_barghest_choice_2">"Single Target"</string>
 
     <string name="skill_maker_choices_3_image_path">"file:///android_asset/images/skill_maker_choices_3.png"</string>
     <string name="skill_maker_choices_2_image_path">"file:///android_asset/images/skill_maker_choices_2.png"</string>
