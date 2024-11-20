@@ -202,7 +202,10 @@ fun SkillMakerTarget(
                                 text = stringResource(R.string.skill_maker_choices_2),
                                 hint = stringResource(R.string.skill_maker_choices_2_hint),
                                 image = R.drawable.skill_maker_choices_2,
-                                servants = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
+                                servants = stringArrayResource(when(slot) {
+                                    SkillSlot.Third -> R.array.skill_maker_choices_2_array_slot_3
+                                    else -> R.array.skill_maker_choices_2_array_slot_1and2
+                                }).joinToString("\n")
                             )
                         }
 
@@ -215,10 +218,10 @@ fun SkillMakerTarget(
                                     text = stringResource(R.string.skill_maker_choices_3),
                                     hint = stringResource(R.string.skill_maker_choices_3_hint),
                                     image = R.drawable.skill_maker_choices_3,
-                                    servants = stringArrayResource(
-                                        if (slot == SkillSlot.First) R.array.skill_maker_choices_3_array_slot_1
-                                        else R.array.skill_maker_choices_3_array_slot_3
-                                    ).joinToString("\n")
+                                    servants = stringArrayResource(when(slot) {
+                                        SkillSlot.First -> R.array.skill_maker_choices_3_array_slot_1
+                                        else -> R.array.skill_maker_choices_3_array_slot_3
+                                    }).joinToString("\n")
                                 )
                             }
                         }

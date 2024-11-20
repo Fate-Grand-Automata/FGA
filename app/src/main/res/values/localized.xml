@@ -395,6 +395,17 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
         <item>"Charlotte"</item>
         <item>"Hakuno"</item>
     </string-array>
+    <string-array name="skill_maker_choices_2_array_slot_1and2">
+        <item>"Kukulkan"</item>
+    </string-array>
+    <string-array name="skill_maker_choices_2_array_slot_3">
+        <item>"Kukulkan"</item>
+        <item>"UDK-Barghest"</item>
+    </string-array>
+    <string name="skill_maker_kukulkan_choice_1">"Don't consume stars"</string>
+    <string name="skill_maker_kukulkan_choice_2">"Consume stars"</string>
+    <string name="skill_maker_udk_barghest_choice_1">"AoE"</string>
+    <string name="skill_maker_udk_barghest_choice_2">"Single Target"</string>
     <string name="skill_maker_change_np_type_2">"NP Type (2)"</string>
     <string-array name="skill_maker_change_np_type_2_array">
         <item>"Emiya"</item>
@@ -423,14 +434,6 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_charlotte_choice_2">"Crit Damage"</string>
     <string name="skill_maker_charlotte_choice_3">"NP Damage"</string>
     <string name="skill_maker_choices_2">"Choices (2)"</string>
-    <string-array name="skill_maker_choices_2_array">
-        <item>"Kukulkan"</item>
-        <item>"UDK-Barghest"</item>
-    </string-array>
-    <string name="skill_maker_kukulkan_choice_1">"Don't consume stars"</string>
-    <string name="skill_maker_kukulkan_choice_2">"Consume stars"</string>
-    <string name="skill_maker_udk_barghest_choice_1">"AoE"</string>
-    <string name="skill_maker_udk_barghest_choice_2">"Single Target"</string>
 
     <string name="skill_maker_choices_3_hint">"Servants with 3 choices dialog"</string>
     <string name="skill_maker_choices_2_hint">"Servants with 2 choices dialog"</string>
