@@ -11,10 +11,12 @@
   - [Skills mapping](#skills-mapping)
   - [Targeting](#targeting)
   - [Special Skills](#special-skills)
-    - [Kukulkan](#kukulkanudkbarghest)
+    - [Kukulkan/UDK-Barghest](#kukulkanudk-barghest)
+      - [Kukulkan](#kukulkan)
+      - [UDK-Barghest](#udk-barghest)
     - [Emiya](#emiyabb-dubai)
     - [Space Ishtar](#space-ishtar)
-    - [Mélusine/Ptolemaios](#melusineptolemaios)
+    - [Mélusine/Ptolemaios](#mélusineptolemaios)
       - [Warning about Mélusine option.](#warning-about-the-mélusine-option)
     - [Soujuurou/Charlotte](#soujuuroucharlottehakunovan-gogh-miner)
   - [Enemy Targeting](#enemy-targeting)
@@ -122,6 +124,7 @@ Skills that are targetable will use the servants position number to apply the sk
 Due to the nature of some skills, they will have a different/additional command mapping to accommodate them.
 
 After clicking on a skill in the command builder, FGA will show buttons at the bottom to deal with the special skills.
+![Special Skill Buttons](https://github.com/user-attachments/assets/2a0c7d82-44a7-4add-9c7d-60cb49b56977)
 
 ### Kukulkan/UDK-Barghest
 #### Kukulkan
@@ -141,7 +144,7 @@ Note: You don't have to always click it when using certain servants, this is onl
 
 ![Updating Button labels for choices 2 option](https://github.com/user-attachments/assets/53f7d44b-9af8-4a49-a9ea-525e00eff1da)
 
-**Battle**
+**Battle**  
 ![Kuku s1/s3](https://i.imgur.com/JwD0rAe.gif)
   
 ---  
@@ -158,6 +161,7 @@ UDK-Barghest's [Third Skill](https://fategrandorder.fandom.com/wiki/UDK-Barghest
 To choose between AoE and Single Target, first click `Choices (2)` and then click `Option 1` for AoE or `Option 2` for Single Target.
 
 You can click the `UDK-Barghest` button at the bottom to change the button descriptions to more fitting ones.
+![Barghest s3](https://github.com/user-attachments/assets/d8cfd999-d6b8-493e-b967-ec9751db1477)
 
 ### Emiya/BB Dubai
 Emiya and BB Dubai can change their NP to 1 of 2 variants with their skills. After clicking on a 3rd skill in the command builder, `NP Type (2)` will appear at the bottom and needs to be picked for those Servants.
@@ -171,25 +175,24 @@ After clicking, `NP Type (2)`, you'll see 2 Options. Click on the buttons at the
 
 Note: You don't have to always click it when using certain servants, this is only for visual purposes.
 
-![Updating Button labels for two targets option](https://github.com/user-attachments/assets/69aa976d-50c7-4a68-9f25-24987753e48b)
+![Emiya and BB Dubai Options](https://github.com/user-attachments/assets/3c608461-9809-4c8d-851c-9c8bdcb5e0f1)
 
 **Battle**  
 ![Emiya](https://i.imgur.com/sYxXXO2.gif)
 ### Space Ishtar
 
-Space Ishtar's [Second Skill](https://fategrandorder.fandom.com/wiki/Space_Ishtar#Second_Skill) can also change her NP type, but she has options for Quick, Arts and Buster.
+Space Ishtar's [Second Skill](https://fategrandorder.fandom.com/wiki/Space_Ishtar#Second_Skill) can also change her NP type, but she has 3 options to choose from: Quick, Arts and Buster
 
 After clicking on a 2nd Servant Skill, `NP Type (3)` will appear at the bottom, which will lead you to a new screen where you can select one of 3 options. You can check what would the skill at that option do by pressing the buttons below.
 
 Note: You don't have to always click it when using certain servants, this is only for visual purposes.
 
-![Updating Button labels for three targets option](https://github.com/user-attachments/assets/a4d87ea1-0e5a-4bbf-acdb-5fc0ff08f7a4)
+![Updating Button labels for three targets option](https://github.com/user-attachments/assets/43997d9f-154b-4c7c-89e7-a2d405c154df)
 
-
-**Battle**
+**Battle**  
 ![Ishtar](https://i.imgur.com/CuBYrDT.gif)
 
-### Melusine/Ptolemaios
+### Mélusine/Ptolemaios
 Mélusine's [Third Skill at Ascension 1 and 2](https://fategrandorder.fandom.com/wiki/M%C3%A9lusine#Third_Skill) and Ptolemaios's [Third Skill](https://fategrandorder.fandom.com/wiki/Ptolemaios#Third_Skill) change the Servant's Ascension  
 forms in the middle of the battle.
 
@@ -227,7 +230,7 @@ Note: You don't have to always click it when using certain servants, this is onl
 
 ![Updating Button labels for choice three option slot 3](https://github.com/user-attachments/assets/efff0a9c-ad4c-40e8-af36-40139a8269ca)
 
-**Battle**
+**Battle**  
 ![Soujuurou](https://i.imgur.com/Dg3k6jM.gif)
 ## Enemy Targeting
 
