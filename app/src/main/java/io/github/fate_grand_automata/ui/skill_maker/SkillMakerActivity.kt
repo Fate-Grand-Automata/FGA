@@ -22,8 +22,8 @@ import io.github.fate_grand_automata.ui.dialog.FgaDialog
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2
 import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2Target
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerThreeTargets
-import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerTwoTargets
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpType3
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpType2
 
 @AndroidEntryPoint
 class SkillMakerActivity : AppCompatActivity() {
@@ -101,8 +101,8 @@ fun SkillMakerUI(
                 )
             }
 
-            is SkillMakerNav.TwoTargets -> {
-                SkillMakerTwoTargets(
+            is SkillMakerNav.ChangeNpType2 -> {
+                SkillMakerChangeNpType2(
                     onTargetLeft = { vm.targetSkill(ServantTarget.Left) },
                     onTargetRight = { vm.targetSkill(ServantTarget.Right) }
                 )
@@ -142,11 +142,11 @@ fun SkillMakerUI(
                 SkillMakerTarget(
                     slot = nav.skill.slot(),
                     onSkillTarget = { vm.targetSkill(it) },
-                    onTwoTargets = {
-                        navigate(SkillMakerNav.TwoTargets(nav.skill))
+                    onNpType2 = {
+                        navigate(SkillMakerNav.ChangeNpType2(nav.skill))
                     },
-                    onThreeTargets = {
-                        navigate(SkillMakerNav.ThreeTargets(nav.skill))
+                    onNpType3 = {
+                        navigate(SkillMakerNav.ChangeNpType3(nav.skill))
                     },
                     onChoice2 = { slot ->
                         navigate(SkillMakerNav.Choice2(nav.skill, slot))
@@ -160,8 +160,8 @@ fun SkillMakerUI(
                 )
             }
 
-            is SkillMakerNav.ThreeTargets -> {
-                SkillMakerThreeTargets(
+            is SkillMakerNav.ChangeNpType3 -> {
+                SkillMakerChangeNpType3(
                     onSkillTarget = { vm.targetSkill(it) }
                 )
             }

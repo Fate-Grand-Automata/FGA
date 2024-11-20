@@ -31,17 +31,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 
 @Composable
-fun SkillMakerTwoTargets(
+fun SkillMakerChangeNpType2(
     onTargetLeft: () -> Unit,
     onTargetRight: () -> Unit
 ) {
-    var twoTargetsType by remember { mutableStateOf(TwoTargetsType.Generic) }
+    var changeNp2Type by remember { mutableStateOf(ChangeNp2Type.Generic) }
 
     Column(
         modifier = Modifier
@@ -49,7 +48,7 @@ fun SkillMakerTwoTargets(
             .padding(16.dp)
     ) {
         FGATitle(
-            stringResource(twoTargetsType.stringRes),
+            stringResource(changeNp2Type.stringRes),
         )
 
         Row(
@@ -62,13 +61,13 @@ fun SkillMakerTwoTargets(
             TargetButton(
                 onClick = onTargetLeft,
                 color = colorResource(R.color.colorArtsResist),
-                text = stringResource(twoTargetsType.targetAStringRes)
+                text = stringResource(changeNp2Type.targetAStringRes)
             )
 
             TargetButton(
                 onClick = onTargetRight,
                 color = colorResource(R.color.colorBuster),
-                text = stringResource(twoTargetsType.targetBStringRes)
+                text = stringResource(changeNp2Type.targetBStringRes)
             )
         }
 
@@ -89,12 +88,12 @@ fun SkillMakerTwoTargets(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            TwoTargetsType.entries.filterNot {
-                it == TwoTargetsType.Generic
+            ChangeNp2Type.entries.filterNot {
+                it == ChangeNp2Type.Generic
             }.forEach { entry ->
 
                 val containerColor by animateColorAsState(
-                    targetValue = if (twoTargetsType == entry) {
+                    targetValue = if (changeNp2Type == entry) {
                         MaterialTheme.colorScheme.onSurface.copy(0.12f)
                     } else {
                         MaterialTheme.colorScheme.primary
@@ -102,7 +101,7 @@ fun SkillMakerTwoTargets(
                     label = "Container Color, if ${entry.name} is selected"
                 )
                 val contentColor by animateColorAsState(
-                    targetValue = if (twoTargetsType == entry) {
+                    targetValue = if (changeNp2Type == entry) {
                         MaterialTheme.colorScheme.onSurface.copy(0.38f)
                     } else {
                         MaterialTheme.colorScheme.onPrimary
@@ -111,13 +110,13 @@ fun SkillMakerTwoTargets(
                 )
                 Button(
                     onClick = {
-                        twoTargetsType = if (twoTargetsType != entry) {
+                        changeNp2Type = if (changeNp2Type != entry) {
                             entry
                         } else {
-                            TwoTargetsType.Generic
+                            ChangeNp2Type.Generic
                         }
                     },
-                    border = if (twoTargetsType == entry) {
+                    border = if (changeNp2Type == entry) {
                         BorderStroke(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
@@ -151,7 +150,6 @@ fun TargetButton(
             text,
             color = Color.White,
             textAlign = TextAlign.Center,
-            softWrap = false,
             overflow = TextOverflow.Clip
         )
     }
@@ -160,35 +158,35 @@ fun TargetButton(
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestTwoTargets() {
+fun TestChangeNpType2() {
     FGATheme {
-        SkillMakerTwoTargets(onTargetLeft = { }, onTargetRight = { })
+        SkillMakerChangeNpType2(onTargetLeft = { }, onTargetRight = { })
     }
 }
 
-private enum class TwoTargetsType {
+private enum class ChangeNp2Type {
     Generic,
     Emiya,
     BBDubai
 }
 
-private val TwoTargetsType.stringRes
+private val ChangeNp2Type.stringRes
     get() = when (this) {
-        TwoTargetsType.Generic -> R.string.skill_maker_two_targets
-        TwoTargetsType.Emiya -> R.string.skill_maker_emiya
-        TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai
+        ChangeNp2Type.Generic -> R.string.skill_maker_change_np_type_2
+        ChangeNp2Type.Emiya -> R.string.skill_maker_emiya
+        ChangeNp2Type.BBDubai -> R.string.skill_maker_bb_dubai
     }
 
-private val TwoTargetsType.targetAStringRes
+private val ChangeNp2Type.targetAStringRes
     get() = when (this) {
-        TwoTargetsType.Generic -> R.string.skill_maker_option_1
-        TwoTargetsType.Emiya -> R.string.skill_maker_arts
-        TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai_target_1
+        ChangeNp2Type.Generic -> R.string.skill_maker_option_1
+        ChangeNp2Type.Emiya -> R.string.skill_maker_arts
+        ChangeNp2Type.BBDubai -> R.string.skill_maker_bb_dubai_target_1
     }
 
-private val TwoTargetsType.targetBStringRes
+private val ChangeNp2Type.targetBStringRes
     get() = when (this) {
-        TwoTargetsType.Generic -> R.string.skill_maker_option_2
-        TwoTargetsType.Emiya -> R.string.skill_maker_buster
-        TwoTargetsType.BBDubai -> R.string.skill_maker_bb_dubai_target_2
+        ChangeNp2Type.Generic -> R.string.skill_maker_option_2
+        ChangeNp2Type.Emiya -> R.string.skill_maker_buster
+        ChangeNp2Type.BBDubai -> R.string.skill_maker_bb_dubai_target_2
     }

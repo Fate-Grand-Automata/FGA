@@ -18,7 +18,7 @@ sealed class ServantTarget(
     data object Option2 : ServantTarget('U')
 
     // Mélusine/Ptolemaios
-    object Transform : ServantTarget('M')
+    data object Transform : ServantTarget('M')
 
     sealed class SpecialTarget(
         targetCode: String

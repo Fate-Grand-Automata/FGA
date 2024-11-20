@@ -26,5 +26,6 @@ enum class SkillSlot {
 fun Skill.slot() = when(this) {
     in Skill.Servant.skill1 -> First
     in Skill.Servant.skill2 -> Second
-    else -> Third
+    in Skill.Servant.skill3 -> Third
+    else -> null
 }

@@ -158,7 +158,6 @@ fun TestChoice3Slot1() {
 }
 
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
-@Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun TestChoice3Slot3() {
     FGATheme {

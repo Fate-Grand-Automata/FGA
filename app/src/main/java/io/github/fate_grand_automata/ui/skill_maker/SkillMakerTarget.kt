@@ -56,13 +56,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SkillMakerTarget(
-    slot: SkillSlot,
+    slot: SkillSlot?,
     onSkillTarget: (ServantTarget?) -> Unit,
-    onTwoTargets: () -> Unit,
-    onThreeTargets: () -> Unit,
+    onNpType2: () -> Unit,
+    onNpType3: () -> Unit,
     onChoice2: (SkillSlot) -> Unit,
-    onTransform: () -> Unit,
-    onChoice3: (SkillSlot) -> Unit
+    onChoice3: (SkillSlot) -> Unit,
+    onTransform: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -77,7 +77,7 @@ fun SkillMakerTarget(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-        ){
+        ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
@@ -108,15 +108,15 @@ fun SkillMakerTarget(
 
         val state = rememberLazyListState()
 
-        val showInitialButton by remember{
+        val showInitialButton by remember {
             derivedStateOf {
                 state.firstVisibleItemIndex > 0
             }
         }
-        var showLastButton by remember{
+        var showLastButton by remember {
             mutableStateOf(false)
         }
-        LaunchedEffect(state){
+        LaunchedEffect(state) {
             snapshotFlow { state.layoutInfo.visibleItemsInfo }
                 .collect {
                     showLastButton = it.lastOrNull()?.index != state.layoutInfo.totalItemsCount - 1
@@ -133,105 +133,108 @@ fun SkillMakerTarget(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-        ){
+        ) {
             Column {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Button(
-                    onClick = { onSkillTarget(null) },
-                    modifier = Modifier.padding(horizontal = 4.dp)
-                        .padding(bottom = 4.dp)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier
+                        .fillMaxWidth()
                 ) {
-                    Text(stringResource(R.string.skill_maker_target_none))
-                }
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    stringResource(R.string.skill_maker_special_targets_warning).uppercase(),
-                    style = MaterialTheme.typography.bodySmall,
-                    textAlign = TextAlign.Center,
-                    textDecoration = TextDecoration.Underline
-                )
-            }
-
-            LazyRow(
-                state = state,
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                if (slot == SkillSlot.Third) {
-                    item {
-                        ButtonWithHint(
-                            onClick = onTwoTargets,
-                            text = stringResource(R.string.skill_maker_two_targets),
-                            hint = stringResource(R.string.skill_maker_two_targets_hint),
-                            imagePath = stringResource(R.string.skill_maker_two_targets_image_path),
-                            servants = stringArrayResource(R.array.skill_maker_two_targets_array).joinToString("\n")
-                        )
+                    Button(
+                        onClick = { onSkillTarget(null) },
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .padding(bottom = 4.dp)
+                    ) {
+                        Text(stringResource(R.string.skill_maker_target_none))
                     }
                 }
 
-                if (slot == SkillSlot.Second) {
-                    item {
-                        ButtonWithHint(
-                            onClick = onThreeTargets,
-                            text = stringResource(R.string.skill_maker_three_targets),
-                            hint = stringResource(R.string.skill_maker_three_targets_hint),
-                            imagePath = stringResource(R.string.skill_maker_three_targets_image_path),
-                            servants = stringArrayResource(R.array.skill_maker_three_targets_array).joinToString("\n")
+                if (slot != null) {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            stringResource(R.string.skill_maker_special_targets_warning).uppercase(),
+                            style = MaterialTheme.typography.bodySmall,
+                            textAlign = TextAlign.Center,
+                            textDecoration = TextDecoration.Underline
                         )
                     }
-                }
 
-                item {
-                    ButtonWithHint(
-                        onClick = {
-                            onChoice2(slot)
-                        },
-                        text = stringResource(R.string.skill_maker_choices_2),
-                        hint = stringResource(R.string.skill_maker_choices_2_hint),
-                        imagePath = stringResource(R.string.skill_maker_choices_2_image_path),
-                        servants = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
-                    )
-                }
+                    LazyRow(
+                        state = state,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        if (slot == SkillSlot.Third) {
+                            item {
+                                ButtonWithHint(
+                                    onClick = onNpType2,
+                                    text = stringResource(R.string.skill_maker_change_np_type_2),
+                                    hint = stringResource(R.string.skill_maker_change_np_type_2_hint),
+                                    image = R.drawable.skill_maker_np_type_2,
+                                    servants = stringArrayResource(R.array.skill_maker_change_np_type_2_array).joinToString("\n")
+                                )
+                            }
+                        }
 
-                if (slot == SkillSlot.First || slot == SkillSlot.Third) {
-                    item {
-                        ButtonWithHint(
-                            onClick = {
-                                onChoice3(slot)
-                            },
-                            text = stringResource(R.string.skill_maker_choices_3),
-                            hint = stringResource(R.string.skill_maker_choices_3_hint),
-                            imagePath = stringResource(R.string.skill_maker_choices_3_image_path),
-                            servants = stringArrayResource(
-                                if (slot == SkillSlot.First) R.array.skill_maker_choices_3_array_slot_1
-                                else R.array.skill_maker_choices_3_array_slot_3
-                            ).joinToString("\n")
-                        )
+                        if (slot == SkillSlot.Second) {
+                            item {
+                                ButtonWithHint(
+                                    onClick = onNpType3,
+                                    text = stringResource(R.string.skill_maker_change_np_type_3),
+                                    hint = stringResource(R.string.skill_maker_change_np_type_3_hint),
+                                    image = R.drawable.skill_maker_np_type_3,
+                                    servants = stringArrayResource(R.array.skill_maker_change_np_type_3_array).joinToString("\n")
+                                )
+                            }
+                        }
+
+                        item {
+                            ButtonWithHint(
+                                onClick = {
+                                    onChoice2(slot)
+                                },
+                                text = stringResource(R.string.skill_maker_choices_2),
+                                hint = stringResource(R.string.skill_maker_choices_2_hint),
+                                image = R.drawable.skill_maker_choices_2,
+                                servants = stringArrayResource(R.array.skill_maker_choices_2_array).joinToString("\n")
+                            )
+                        }
+
+                        if (slot == SkillSlot.First || slot == SkillSlot.Third) {
+                            item {
+                                ButtonWithHint(
+                                    onClick = {
+                                        onChoice3(slot)
+                                    },
+                                    text = stringResource(R.string.skill_maker_choices_3),
+                                    hint = stringResource(R.string.skill_maker_choices_3_hint),
+                                    image = R.drawable.skill_maker_choices_3,
+                                    servants = stringArrayResource(
+                                        if (slot == SkillSlot.First) R.array.skill_maker_choices_3_array_slot_1
+                                        else R.array.skill_maker_choices_3_array_slot_3
+                                    ).joinToString("\n")
+                                )
+                            }
+                        }
+                        if (slot == SkillSlot.Third) {
+                            item {
+                                ButtonWithHint(
+                                    onClick = onTransform,
+                                    text = stringResource(R.string.skill_maker_transform),
+                                    hint = stringResource(R.string.skill_maker_transform_hint),
+                                    image = R.drawable.skill_maker_transform,
+                                    servants = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
+                                )
+                            }
+                        }
                     }
                 }
-                if (slot == SkillSlot.Third) {
-                    item {
-                        ButtonWithHint(
-                            onClick = onTransform,
-                            text = stringResource(R.string.skill_maker_transform),
-                            hint = stringResource(R.string.skill_maker_transform_hint),
-                            imagePath = stringResource(R.string.skill_maker_transform_image_path),
-                            servants = stringArrayResource(R.array.skill_maker_transform_array).joinToString("\n")
-                        )
-                    }
-                }
-            }
             }
 
             // fully qualified name for box and AnimatedVisibility, don't know why
@@ -249,7 +252,7 @@ fun SkillMakerTarget(
                             state.animateScrollToItem(0)
                         }
                     },
-                    colors= IconButtonDefaults.filledIconButtonColors(
+                    colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                         contentColor = MaterialTheme.colorScheme.onSurface
                     ),
@@ -266,14 +269,14 @@ fun SkillMakerTarget(
                 exit = fadeOut() + slideOutHorizontally { it },
                 modifier = Modifier
                     .align(Alignment.CenterEnd),
-            ){
-                FilledIconButton (
+            ) {
+                FilledIconButton(
                     onClick = {
                         scope.launch {
                             state.animateScrollToItem(state.layoutInfo.totalItemsCount - 1)
                         }
                     },
-                    colors= IconButtonDefaults.filledIconButtonColors(
+                    colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                         contentColor = MaterialTheme.colorScheme.onSurface
                     ),
@@ -293,7 +296,7 @@ private fun ButtonWithHint(
     onClick: () -> Unit,
     text: String,
     hint: String,
-    imagePath: String,
+    image: Int,
     servants: String
 ) {
     val dialog = FgaDialog()
@@ -321,19 +324,17 @@ private fun ButtonWithHint(
                     .fillMaxWidth()
             ) {
                 Text(
-                    servants,
-                    modifier = Modifier
-                        .weight(1f)
+                    servants
                 )
 
                 AsyncImage(
-                    model = imagePath,
+                    model = image,
                     contentDescription = "Special Skill Target Image",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .weight(3f)
-                        .fillMaxHeight(0.4f)
-                        .padding(horizontal = 4.dp)
+                        .padding(4.dp)
+                        .weight(1f)
+                        .fillMaxHeight(0.7f)
                 )
             }
         }
@@ -379,7 +380,7 @@ private fun ButtonWithHint(
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
-fun TestSkillMakerTargetChoice3Slot1() = TestSkillMaker(slot = SkillSlot.First)
+fun TestSkillMakerTargetSlot1() = TestSkillMaker(slot = SkillSlot.First)
 
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
@@ -387,18 +388,22 @@ fun TestSkillMakerTargetSlot2() = TestSkillMaker(slot = SkillSlot.Second)
 
 @Composable
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
-fun TestSkillMakerTargetChoice3Slot3() = TestSkillMaker(slot = SkillSlot.Third)
+fun TestSkillMakerTargetSlot3() = TestSkillMaker(slot = SkillSlot.Third)
+
+@Composable
+@Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
+fun TestSkillMakerNoSlot() = TestSkillMaker(slot = null)
 
 @Composable
 private fun TestSkillMaker(
-    slot: SkillSlot
+    slot: SkillSlot?
 ) {
     FGATheme {
         SkillMakerTarget(
             slot = slot,
             onSkillTarget = {},
-            onTwoTargets = {},
-            onThreeTargets = {},
+            onNpType2 = {},
+            onNpType3 = {},
             onChoice2 = {},
             onTransform = {},
             onChoice3 = {}

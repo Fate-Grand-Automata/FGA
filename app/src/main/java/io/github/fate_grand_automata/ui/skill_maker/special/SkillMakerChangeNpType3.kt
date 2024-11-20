@@ -33,10 +33,10 @@ import io.github.fate_grand_automata.ui.FGATheme
 import io.github.fate_grand_automata.ui.FGATitle
 
 @Composable
-fun SkillMakerThreeTargets(
+fun SkillMakerChangeNpType3(
     onSkillTarget: (ServantTarget) -> Unit
 ) {
-    var threeTargetsType by remember { mutableStateOf(ThreeTargetsType.Generic) }
+    var changeNp3Type by remember { mutableStateOf(ChangeNp3Type.Generic) }
 
     Column(
         modifier = Modifier
@@ -44,7 +44,7 @@ fun SkillMakerThreeTargets(
             .padding(16.dp)
     ) {
         FGATitle(
-            stringResource(threeTargetsType.stringRes)
+            stringResource(changeNp3Type.stringRes)
         )
 
         Row(
@@ -57,19 +57,19 @@ fun SkillMakerThreeTargets(
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.A) },
                 color = colorResource(R.color.colorQuickResist),
-                text = stringResource(threeTargetsType.targetAStringRes)
+                text = stringResource(changeNp3Type.targetAStringRes)
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.B) },
                 color = colorResource(R.color.colorArtsResist),
-                text = stringResource(threeTargetsType.targetBStringRes)
+                text = stringResource(changeNp3Type.targetBStringRes)
             )
 
             TargetButton(
                 onClick = { onSkillTarget(ServantTarget.C) },
                 color = colorResource(R.color.colorBuster),
-                text = stringResource(threeTargetsType.targetCStringRes)
+                text = stringResource(changeNp3Type.targetCStringRes)
             )
         }
 
@@ -90,12 +90,12 @@ fun SkillMakerThreeTargets(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            ThreeTargetsType.entries.filterNot {
-                it == ThreeTargetsType.Generic
+            ChangeNp3Type.entries.filterNot {
+                it == ChangeNp3Type.Generic
             }.forEach { entry ->
 
                 val containerColor by animateColorAsState(
-                    targetValue = if (threeTargetsType == entry) {
+                    targetValue = if (changeNp3Type == entry) {
                         MaterialTheme.colorScheme.onSurface.copy(0.12f)
                     } else {
                         MaterialTheme.colorScheme.primary
@@ -103,7 +103,7 @@ fun SkillMakerThreeTargets(
                     label = "Container Color, if ${entry.name} is selected"
                 )
                 val contentColor by animateColorAsState(
-                    targetValue = if (threeTargetsType == entry) {
+                    targetValue = if (changeNp3Type == entry) {
                         MaterialTheme.colorScheme.onSurface.copy(0.38f)
                     } else {
                         MaterialTheme.colorScheme.onPrimary
@@ -112,13 +112,13 @@ fun SkillMakerThreeTargets(
                 )
                 Button(
                     onClick = {
-                        threeTargetsType = if (threeTargetsType != entry) {
+                        changeNp3Type = if (changeNp3Type != entry) {
                             entry
                         } else {
-                            ThreeTargetsType.Generic
+                            ChangeNp3Type.Generic
                         }
                     },
-                    border = if (threeTargetsType == entry) {
+                    border = if (changeNp3Type == entry) {
                         BorderStroke(
                             width = Dp.Hairline,
                             color = MaterialTheme.colorScheme.primary,
@@ -139,38 +139,38 @@ fun SkillMakerThreeTargets(
 @Preview(name = "Light Mode", widthDp = 600, heightDp = 300)
 @Preview(name = "Dark Mode", widthDp = 600, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestThreeTargets() {
+fun TestChangeNpType3() {
     FGATheme {
-        SkillMakerThreeTargets(onSkillTarget = { })
+        SkillMakerChangeNpType3(onSkillTarget = { })
     }
 }
 
 
-private enum class ThreeTargetsType {
+private enum class ChangeNp3Type {
     Generic,
     SpaceIshtar,
 }
 
-private val ThreeTargetsType.stringRes
+private val ChangeNp3Type.stringRes
     get() = when (this) {
-        ThreeTargetsType.Generic -> R.string.skill_maker_three_targets
-        ThreeTargetsType.SpaceIshtar -> R.string.skill_maker_space_ishtar
+        ChangeNp3Type.Generic -> R.string.skill_maker_change_np_type_3
+        ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_space_ishtar
     }
 
-private val ThreeTargetsType.targetAStringRes
+private val ChangeNp3Type.targetAStringRes
     get() = when (this) {
-        ThreeTargetsType.Generic -> R.string.skill_maker_option_1
-        ThreeTargetsType.SpaceIshtar -> R.string.skill_maker_quick
+        ChangeNp3Type.Generic -> R.string.skill_maker_option_1
+        ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_quick
     }
 
-private val ThreeTargetsType.targetBStringRes
+private val ChangeNp3Type.targetBStringRes
     get() = when (this) {
-        ThreeTargetsType.Generic -> R.string.skill_maker_option_2
-        ThreeTargetsType.SpaceIshtar -> R.string.skill_maker_arts
+        ChangeNp3Type.Generic -> R.string.skill_maker_option_2
+        ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_arts
     }
 
-private val ThreeTargetsType.targetCStringRes
+private val ChangeNp3Type.targetCStringRes
     get() = when (this) {
-        ThreeTargetsType.Generic -> R.string.skill_maker_option_2
-        ThreeTargetsType.SpaceIshtar -> R.string.skill_maker_buster
+        ChangeNp3Type.Generic -> R.string.skill_maker_option_2
+        ChangeNp3Type.SpaceIshtar -> R.string.skill_maker_buster
     }

@@ -1,3 +1,4 @@
+
 - [Introduction](#introduction)
 - [Video Introduction](#video-introduction)
 - [Battle Configs](#battle-configs)
@@ -10,10 +11,10 @@
   - [Skills mapping](#skills-mapping)
   - [Targeting](#targeting)
   - [Special Skills](#special-skills)
-    - [Kukulkan](#kukulkan)
+    - [Kukulkan](#kukulkanudkbarghest)
     - [Emiya](#emiyabb-dubai)
     - [Space Ishtar](#space-ishtar)
-    - [Mélusine/Ptolemy](#melusineptolemy)
+    - [Mélusine/Ptolemaios](#melusineptolemaios)
       - [Warning about Mélusine option.](#warning-about-the-mélusine-option)
     - [Soujuurou/Charlotte](#soujuuroucharlottehakunovan-gogh-miner)
   - [Enemy Targeting](#enemy-targeting)
@@ -57,7 +58,7 @@ This battle section is strictly for FGA Battle Configuration.
 
 Please be warned it is a bit outdated, but it should give you a general idea of how to setup FGA for yourself.
 
-<a href="https://youtube.com/watch?v=JOwupZ4W8AQ&feature=youtu.be" target="_blank"> FGA Tutorial - Build 1437 </a>
+<a href="https://youtube.com/watch?v=JOwupZ4W8AQ&feature=youtu.be" target="_blank"> FGA Tutorial - Build 1437 </a>  
 
 # Battle Configs
 
@@ -97,31 +98,33 @@ This is where you'll create your commands that FGA will use in battle.
 
 When creating a battle script, you have to remember that servant positions are important.
 
-Each servant in your party will be given a number from 1 to 6, first to last.
-![Battle Configs - Servant Position in FGO ](https://i.imgur.com/w14U3rm.jpeg "Servant Position in FGO ")
+Each servant in your party will be given a number from 1 to 6, first to last.  
+![Battle Configs - Servant Position in FGO ](https://i.imgur.com/w14U3rm.jpeg "Servant Position in FGO ")  
 ![Battle Configs - Servant Position Reference in FGA](https://i.imgur.com/v0Bllrk.jpeg "Servant Position Reference in FGA")
 
 ## Skills mapping
 
-When creating scripts 'Skills' and 'NP', you create by basing on your servant positions with each skill is represented by a letter on the command
+When creating scripts 'Skills' and 'NP', you create by basing on your servant positions with each skill is represented by a letter on the command  
 creator.
 
-![Battle Configs - FGO to FGA Command mapping | Servant skills](https://i.imgur.com/qsYHZBi.jpeg "FGO to FGA Command mapping | Servant skills")
+![Battle Configs - FGO to FGA Command mapping | Servant skills](https://i.imgur.com/qsYHZBi.jpeg "FGO to FGA Command mapping | Servant skills")  
 ![Battle Configs - FGO to FGA Command mapping | Servant skills](https://i.imgur.com/O3WlnEK.jpeg "FGA Command | Servant skills")
 
 ## Targeting
 
 Skills that are targetable will use the servants position number to apply the skill to them
 
-![Battle Configs - FGA Command | Servant skills - targetable](https://i.imgur.com/CSwxJbX.jpeg "FGA Command | Servant skills - targetable")
+![Battle Configs - FGA Command | Servant skills - targetable](https://i.imgur.com/CSwxJbX.jpeg "FGA Command | Servant skills - targetable")  
 ![Battle Configs - FGO to FGA Command mapping | Servant skills - targetable](https://i.imgur.com/48SRqqX.jpeg "FGO to FGA Command mapping | Servant skills - targetable")
 
 ## Special Skills
 
 Due to the nature of some skills, they will have a different/additional command mapping to accommodate them.
 
-### Kukulkan/UKD-Barghest
+After clicking on a skill in the command builder, FGA will show buttons at the bottom to deal with the special skills.
 
+### Kukulkan/UDK-Barghest
+#### Kukulkan
 Kukulkan's [First Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#First_Skill) and [Third Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Third_Skill) are self-targeting skills which can gain optional effects by paying crit stars.
 
 Use `Option 1` if you don't want to use critical stars.
@@ -138,143 +141,94 @@ Note: You don't have to always click it when using certain servants, this is onl
 
 ![Updating Button labels for choices 2 option](https://github.com/user-attachments/assets/53f7d44b-9af8-4a49-a9ea-525e00eff1da)
 
-Battle
-
+**Battle**
 ![Kuku s1/s3](https://i.imgur.com/JwD0rAe.gif)
+  
+---  
+The [Second Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Second_Skill) is a targetable skill which can also gain an additional effect by paying crit stars.
 
----
+Use `Option 1` if you don't want to use critical stars or `Option 2` if you want to. Afterwards, choose a Servant to target.
 
-[Second Skill](https://fategrandorder.fandom.com/wiki/Kukulkan#Second_Skill) is a targetable skill that has option to use critical stars for more
-effects.
-
-Use `Option 1` if you don't want to use critical stars.
-
-![Kukulkan use option 1](https://github.com/user-attachments/assets/b3426718-f633-48b9-b065-7b80d69c2e2c)
-
-
-Use `Option 2` if you want to use critical stars.
-
-![Kukulkan use option 2](https://github.com/user-attachments/assets/093b07a3-dc69-4afd-9b09-64ccf7ac2e76)
-
-You can check what would the skill at that option do by pressing the buttons below.
-
-Note: You don't have to always click it when using certain servants, this is only for visual purpose.
-
-![Updating Button labels for choices 2 option](https://github.com/user-attachments/assets/187cb965-3a32-4ead-be07-d1e05bf2e07e)
-
-Battle
-
+**Battle**  
 ![kuku s2](https://i.imgur.com/b7Pdy4E.gif)
 
----
+#### UDK-Barghest
+UDK-Barghest's [Third Skill](https://fategrandorder.fandom.com/wiki/UDK-Barghest#Third_Skill) can optionally turn her NP from an AoE to a Single Target Noble Phantasm.
+
+To choose between AoE and Single Target, first click `Choices (2)` and then click `Option 1` for AoE or `Option 2` for Single Target.
+
+You can click the `UDK-Barghest` button at the bottom to change the button descriptions to more fitting ones.
 
 ### Emiya/BB Dubai
+Emiya and BB Dubai can change their NP to 1 of 2 variants with their skills. After clicking on a 3rd skill in the command builder, `NP Type (2)` will appear at the bottom and needs to be picked for those Servants.
 
-Emiya's [Third Skill](https://fategrandorder.fandom.com/wiki/EMIYA#Third_Skill) can select an NP card type after its second upgrade.
+Only use the `"NP Type(2)"` option if you're using an Emiya with a fully upgraded third skill.  
+![Emiya's Third Skill Max Upgrade](https://i.imgur.com/ZKH1qSV.png)  
+![Emiya's Support Third Skill Max Upgrade](https://i.imgur.com/sFI8IQx.png)  
+Note: FGA doesn't have the capability to detect if the skill is fully upgraded or not, but you can use preferred friends to ensure that you get  the right support.
 
-Only use the `"Two Targets"` option if you've fully upgraded the third skill.
+After clicking, `NP Type (2)`, you'll see 2 Options. Click on the buttons at the bottom to see the effects of each Option for Emiya and BB Dubai.
 
-![Emiya's Third Skill Max Upgrade](https://i.imgur.com/ZKH1qSV.png)
-
-or the support you'll borrow have it fully upgraded.
-
-![Emiya's Support Third Skill Max Upgrade](https://i.imgur.com/sFI8IQx.png)
-
-Note: FGA doesn't have the capability to detect if the skill is fully upgraded or not, but you can use preferred friends to ensure that you get
-the right support.
-
-Using option 1
-
-![Emiya use Arts](https://github.com/user-attachments/assets/394b9e3f-3233-4186-bf5a-ed36c2ba6d7c)
-
-Using Buster option
-
-![Emiya option 2](https://github.com/user-attachments/assets/410467fb-d01d-4640-8ce7-f22f345cd1ed)
-
-You can check what would the skill at that option do by pressing the buttons below.
-
-Note: You don't have to always click it when using certain servants, this is only for visual purpose.
+Note: You don't have to always click it when using certain servants, this is only for visual purposes.
 
 ![Updating Button labels for two targets option](https://github.com/user-attachments/assets/69aa976d-50c7-4a68-9f25-24987753e48b)
 
-Battle
-
+**Battle**  
 ![Emiya](https://i.imgur.com/sYxXXO2.gif)
-
----
-
 ### Space Ishtar
 
-For convenience's sake, Space Ishtar's [Second Skill](https://fategrandorder.fandom.com/wiki/Space_Ishtar#Second_Skill) has her option also explicitly
-shown.
+Space Ishtar's [Second Skill](https://fategrandorder.fandom.com/wiki/Space_Ishtar#Second_Skill) can also change her NP type, but she has options for Quick, Arts and Buster.
 
-![Space Ishtar Option](https://github.com/user-attachments/assets/b6578ffe-6c7a-43ed-8925-44f3dcc6e3c7)
+After clicking on a 2nd Servant Skill, `NP Type (3)` will appear at the bottom, which will lead you to a new screen where you can select one of 3 options. You can check what would the skill at that option do by pressing the buttons below.
 
-You can check what would the skill at that option do by pressing the buttons below.
-
-Note: You don't have to always click it when using certain servants, this is only for visual purpose.
+Note: You don't have to always click it when using certain servants, this is only for visual purposes.
 
 ![Updating Button labels for three targets option](https://github.com/user-attachments/assets/a4d87ea1-0e5a-4bbf-acdb-5fc0ff08f7a4)
 
 
-Battle
-
+**Battle**
 ![Ishtar](https://i.imgur.com/CuBYrDT.gif)
 
----
-
-### Melusine/Ptolemy
-
-Mélusine's [Third Skill at Ascension 1 and 2](https://fategrandorder.fandom.com/wiki/M%C3%A9lusine#Third_Skill) and
-Ptolemy's [Third Skill](https://fategrandorder.fandom.com/wiki/Ptolemaios#Third_Skill) change the Servant's Ascension
+### Melusine/Ptolemaios
+Mélusine's [Third Skill at Ascension 1 and 2](https://fategrandorder.fandom.com/wiki/M%C3%A9lusine#Third_Skill) and Ptolemaios's [Third Skill](https://fategrandorder.fandom.com/wiki/Ptolemaios#Third_Skill) change the Servant's Ascension  
 forms in the middle of the battle.
 
-Use the `Transform` option to both account for the long animation and for the changed face cards. Otherwise, Servant
-Priority will be broken for the rest of the battle.
-
-![Mélusine/Ptolemy Option](https://github.com/user-attachments/assets/2b224ce2-48a6-4a21-9753-c328b207c7a2)
+Use the `Transform` option to both account for the long animation and for the changed face cards. Otherwise, Servant Priority will be broken for the rest of the battle.
+![Mélusine/Ptolemaios Option](https://github.com/user-attachments/assets/2b224ce2-48a6-4a21-9753-c328b207c7a2)
 
 Battle
 
 ![Mélusine option](https://i.imgur.com/hX2mGjA.gif)
 
 #### Warning about the Mélusine option.
-
-After using Mélusine's third skill at ascension 1 and 2, any succeeding use of third skill
+After using Mélusine's third skill at ascension 1 and 2, any succeeding use of third skill  
 should use the normal third skill. So if Mélusine is in the 1st position, use `c`.
 
-If you're already starting the battle with Mélusine in Ascension 3, there's no need to use
+If you're already starting the battle with Mélusine in Ascension 3, there's no need to use  
 the `Transform` option since she won't change forms.
 
-With Ptolemy you will need to keep using the `Transform` option as he changes forms on every
+With Ptolemaios you will need to keep using the `Transform` option as he changes forms on every  
 use of his third skill.
 
 ### Soujuurou/Charlotte/Hakuno/Van Gogh Miner
+Some Servants have special skills with 3 choices, which requires clicking the `Choices (3)` button in FGA.
 
-`Soujuurou`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Shizuki_S%C5%8Dj%C5%ABr%C5%8D#Third_Skill) can change the command cards after one turn
-
-`Charlotte` [Upgraded 3rd skill](https://fategrandorder.fandom.com/wiki/Charlotte_Corday#Third_Skill) can have different effects depending on the choice you choose.
-
-`Hakuno`'s [3rd skill](https://fategrandorder.fandom.com/wiki/Kishinami_Hakuno_(Female)#Third_Skill) can increase damage for 3 turns.
-
-`Van Gogh Miner`'s [1st skill](https://fategrandorder.fandom.com/wiki/Van_Gogh_(Miner)#First_Skill) can increase card effectiveness for 3 turns.
+- Soujuurou's [3rd skill](https://fategrandorder.fandom.com/wiki/Shizuki_S%C5%8Dj%C5%ABr%C5%8D#Third_Skill) can change the command cards after one turn
+- Charlotte's [Upgraded 3rd skill](https://fategrandorder.fandom.com/wiki/Charlotte_Corday#Third_Skill) can have different effects depending on the choice you choose.
+- Hakuno's [3rd skill](https://fategrandorder.fandom.com/wiki/Kishinami_Hakuno_(Female)#Third_Skill) can increase damage for 3 turns.
+- Van Gogh Miner's [1st skill](https://fategrandorder.fandom.com/wiki/Van_Gogh_(Miner)#First_Skill) can increase card effectiveness for 3 turns.
 
 ![Choice Three Option](https://github.com/user-attachments/assets/3eedd53f-d7ab-40ea-9e08-bc7dd1d55033)
 
 You can check what would the skill at that option do by pressing the buttons below.
 
-Note: You don't have to always click it when using certain servants, this is only for visual purpose.
-
+Note: You don't have to always click it when using certain servants, this is only for visual purposes.
 ![Updating Button labels for choice three option slot 1](https://github.com/user-attachments/assets/3514c367-2170-4063-9f15-7fe923b479a4)
 
 ![Updating Button labels for choice three option slot 3](https://github.com/user-attachments/assets/efff0a9c-ad4c-40e8-af36-40139a8269ca)
 
-Battle
-
+**Battle**
 ![Soujuurou](https://i.imgur.com/Dg3k6jM.gif)
-
----
-
 ## Enemy Targeting
 
 Like your servants, enemies also have a number and can be targeted too.
@@ -289,10 +243,10 @@ Like in FGO, you can only select one enemy at a time.
 
 Noble Phantasm (NP) use your servants position.
 
-**Note:** NP can be used in any order.
+**Note:** NP can be used in any order.  
 Keep in mind, they will be __*used in the order you choose*__ them.
 
-![Battle Configs - FGO to FGA Command mapping | Noble Phantasm](https://i.imgur.com/QqAdwQO.jpeg "FGO to FGA Command mapping | Noble Phantasm")
+![Battle Configs - FGO to FGA Command mapping | Noble Phantasm](https://i.imgur.com/QqAdwQO.jpeg "FGO to FGA Command mapping | Noble Phantasm")  
 ![Battle Configs - FGA Command | Noble Phantasm](https://i.imgur.com/wGC1mDx.jpeg "FGA Command | Noble Phantasm")
 
 ### Cards before NP
@@ -339,10 +293,10 @@ Take note of the symbol above. This will indicate that you've skipped to the nex
 
 By wave skipping, you're telling FGA that you don't want do anything else until you're on the next wave.
 
-**Be warned** that if you use the next wave button then any skill you use after that will only activate during the next wave so make sure you
+**Be warned** that if you use the next wave button then any skill you use after that will only activate during the next wave so make sure you  
 double-check your script to see if you have made any mistakes.
 
-___
+___  
 
 ### Next Turn in the same wave
 
@@ -351,19 +305,19 @@ ___
 Turns are indicated by this symbol
 
 ![Battle Configs - FGA Command | Next Turn Symbol](https://i.imgur.com/YuEz0sl.jpeg "Next Turn Symbol")
-
----
+  
+---  
 
 ### Wave and Turn Indicator
 
-With the recent update as of FGA [Build 2382](https://github.com/Fate-Grand-Automata/FGA/releases/tag/2382). You're now able to track the current
+With the recent update as of FGA [Build 2382](https://github.com/Fate-Grand-Automata/FGA/releases/tag/2382). You're now able to track the current  
 wave and turn in your command.
 
 ![Main menu](https://i.imgur.com/yvcme5d.png)
 
 ![Attack Menu](https://i.imgur.com/x9Jzjxg.png)
-
----
+  
+---  
 
 ### Raid Battle
 
@@ -375,7 +329,7 @@ In those cases, you must select the `Next turn in the same wave` option.
 
 ![Raid Option](https://i.imgur.com/oBUJcqJ.png)
 
-___
+___  
 
 # Additional Battle Config (optional)
 
@@ -409,19 +363,19 @@ If you play in multiple servers you can make your scripts only show up only for 
 
 ## Party Selection
 
-You can assign one of the party slots to your scripts so that whenever you start FGA, it will check if your last use party is on the right slot and
+You can assign one of the party slots to your scripts so that whenever you start FGA, it will check if your last use party is on the right slot and  
 switch to the right one if it's not.
 
 ![Battle Configs - Party Selection](https://i.imgur.com/ACFI8kc.jpeg "Battle Configs - Party Selection")
 
 ## Card Priority (optional)
 
-Card Priority is an optional feature.
+Card Priority is an optional feature.  
 Please note, you do not have to set them everytime you're making a new script.
 
 ![Battle Configs - Card Priority](https://i.imgur.com/XbdSqhZ.jpeg "Battle Configs - Card Priority")
 
-___
+___  
 
 ### Card Priority explanation
 
@@ -459,12 +413,12 @@ Cards can be changed around for different use case eg:
 
 If you want to have different card priority for different waves, then you can add more waves and rearrange the card priority to your liking.
 
-Otherwise, the default will be used throughout all waves, so if you want the same priority, you will only need to just setup the wave 1 priority
+Otherwise, the default will be used throughout all waves, so if you want the same priority, you will only need to just setup the wave 1 priority  
 option OR leave it as it is.
 
-Hence, there is no reason to add more if you're not gonna use it for something different.
+Hence, there is no reason to add more if you're not gonna use it for something different.  
 ![Battle Configs - Card Priority | Default](https://i.imgur.com/N6WfLVB.jpeg "Battle Configs - Card Priority | Default")
-___
+___  
 
 ### Servant Priority
 
@@ -480,21 +434,21 @@ Then you can now select the servant you want to prioritize.
 
 Follow the positioning on the [Party Mapping](#party-mapping)
 
-___
+___  
 
 ### Brave Chain
 
 There are only 3 options for brace chains unless you use Servant Priority.
 
 ![Battle Configs - Card Priority | Brave Chain options](https://i.imgur.com/nhPPIM0.jpeg "Battle Configs - Card Priority | Brave Chain options")
-___
+___  
 
 ### Rearrange Cards
 
-When you pick 3 face cards in FGO, the position of the card determines the damage and effect of the card.
-For example, Quick cards generate more stars, Arts cards generate more NP, and Buster cards deal more damage. 
+When you pick 3 face cards in FGO, the position of the card determines the damage and effect of the card.  
+For example, Quick cards generate more stars, Arts cards generate more NP, and Buster cards deal more damage.
 
-At the same time, the 1st card will determine the bonus effect applied to all face cards. For example, if a
+At the same time, the 1st card will determine the bonus effect applied to all face cards. For example, if a  
 Buster card is picked first, all face cards get a damage boost.
 
 The Rearrange Cards feature orders the 3 strongest cards so the 2nd strongest is used last.
@@ -506,7 +460,7 @@ If default card priority is used, FGA will pick these 3 cards:
 - Castoria Buster (3rd strongest card)
 - Jeanne Archer Arts (2nd strongest card)
 
-___
+___  
 
 ## Support Selection
 
@@ -524,12 +478,12 @@ If you want to check the `All` option toggle this button.
 
 ![All](https://i.imgur.com/rKsjhgd.png)
 
-:warn: This feature does not work reliably for users who have not cleared Solomon. The "Start Quest" button
+:warn: This feature does not work reliably for users who have not cleared Solomon. The "Start Quest" button  
 will become unresponsive until you manually click the Back button in the top left.
 
 ### Support Selection Options
 
-There is 3 ways to select support.
+There are 3 ways to select support.
 
 ![Battle Configs - Support Selection](https://i.imgur.com/ZAJsjDK.png "Battle Configs - Support Selection")
 
@@ -579,14 +533,14 @@ Then you can select if you want the preferred CE to be `max limit broken`.
 
 ![CE Settings](https://i.imgur.com/SimCcz4.png)
 
-However, for events it's easier to use the in-game CE filter instead of creating event CE images
+However, for events it's easier to use the in-game CE filter instead of creating event CE images  
 with the Support Image Maker.
 
 #### Preferred Servant - Preferred Friends
 
 Enable this option if you want to use Support Servants from specific friends.
 
-This is useful if level 90 NP1 Servants are not strong enough for the farming quest. Since FGA can't detect
+This is useful if level 90 NP1 Servants are not strong enough for the farming quest. Since FGA can't detect  
 Servant Levels, NP levels and Append Skill levels, this allows you to filter for those using friend names.
 
 Of course, FGA won't be able to select non-friend Servants who would fulfill those criteria.
@@ -605,7 +559,7 @@ Once you have created images via the Support Image Maker, you can select your fr
 
 #### Fallback
 
-If the preferred support is not found, FGA will refresh the support list according to the settings in
+If the preferred support is not found, FGA will refresh the support list according to the settings in  
 More Options -> Advanced -> Fine-Tune -> Support.
 
 ![Battle Configs - Support Selection | Preferred Selection | Fine-Tune](https://i.imgur.com/Ewh6o4r.png "Battle Configs - Support Selection | Preferred Selection | Fine-Tune")
