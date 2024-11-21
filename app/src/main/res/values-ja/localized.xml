@@ -35,7 +35,6 @@
     <string name="skill_maker_atk_next_turn">"次のターン
 同じウェーブ"</string>
     <string name="skill_maker_main_enemy">"敵 %d"</string>
-    <string name="skill_maker_main_wave">"Battle: %d"</string>
     <string name="skill_maker_main_master_skills">"マスター
 スキル"</string>
     <string name="skill_maker_main_clear">"全削除"</string>
@@ -95,7 +94,6 @@
     <string name="p_battle_config_party">"パーティー"</string>
     <string name="p_battle_config_server">"ゲームサーバー"</string>
     <string name="p_battle_config_card_priority">"カードの優先順位"</string>
-    <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
     <string name="p_battle_config_support">"サポート"</string>
     <string name="p_battle_config_support_selection_mode">"選択モード"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"フォールバック"</string>
@@ -175,6 +173,8 @@
     <string name="card_priority">"カードの優先順位"</string>
     <string name="p_refill_type_gold">"黄金の果実"</string>
     <string name="p_refill_type_silver">"白銀の果実"</string>
+
+    <!-- Fuzzy -->
     <string name="p_refill_type_bronze">"青銅の果実"</string>
     <string name="p_refill_type_copper">"赤銅の果実"</string>
     <string name="p_refill_type_sq">"聖晶石"</string>
@@ -213,6 +213,8 @@
     <string name="p_support_class_berserker">"Berserker"</string>
     <string name="p_support_class_extra">"Extra"</string>
     <string name="p_support_class_mix">"Mix"</string>
+
+    <!-- Fuzzy -->
     <string name="overlay_notification_text">"オーバーレイサービスの開始"</string>
     <string name="notification_stop">"停止"</string>
     <string name="accessibility_service">"ユーザー補助: "</string>
@@ -259,7 +261,11 @@
     <string name="times_withdrew">"%d 回撤退しました"</string>
     <string name="avg_time_per_run">"1回あたりの平均時間: %s"</string>
     <string name="turns_count">"ターン数: %d"</string>
+
+    <!-- Fuzzy -->
     <string name="turns_stats">"ターン数: %1$d (最小), %2$.02f (平均), %3$d (最大)"</string>
+
+    <!-- Fuzzy -->
     <string name="picked_exp_stacks">"%d 個の種火を選び受け取りました。"</string>
     <string name="no_embers_found">"画面上に「種火」が見つかりません。サーヴァント(経験値)のフィルタリングを確認してください。"</string>
     <string name="root_failed">"ルート権限の取得に失敗"</string>
@@ -392,4 +398,35 @@
     <string name="p_max_gold_ember_total_count">"受け取った種火の総数"</string>
     <string name="update_download_success">"ダウンロード成功。5秒後に再起動します。"</string>
     <string name="skill_maker_melusine">"メリュジーヌ"</string>
+    <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
+    <string name="reset_all"></string>
+    <string name="reset_to_default"></string>
+    <string name="p_choose_app_language"></string>
+    <string name="p_app_language"></string>
+    <string name="p_treat_support_like_own_servant"></string>
+    <string name="p_treat_support_like_own_servant_summary"></string>
+    <string name="skill_maker_main_delete_selected"></string>
+    <string name="skill_maker_main_wave"></string>
+    <string name="skill_maker_main_turn"></string>
+    <string name="p_screenshot_bond"></string>
+    <string name="p_screenshot_bond_summary"></string>
+    <string name="bond_level_up"></string>
+    <string name="servant_enhancement"></string>
+    <string name="servant_enhancement_no_embers_or_qp_left"></string>
+    <string name="servert_enhancement_warning_notice"></string>
+    <string name="servant_enhancement_redirect_ascension_question"></string>
+    <string name="servant_enhancement_perform_ascension_question"></string>
+    <string name="servant_enhancement_perform_ascension_warning"></string>
+    <string name="servant_enhancement_redirect_grail"></string>
+    <string name="servant_enhancement_redirect_ascension_success"></string>
+    <string name="servant_enhancement_redirect_grail_success"></string>
+    <string name="servant_enhancement_perform_ascension_failed"></string>
+    <string name="servant_enhancement_max_level"></string>
+    <string name="servant_enhancement_none_selected"></string>
+    <string name="servant_enhancement_aborted"></string>
+    <string name="note"></string>
+    <string name="p_hide_sq_in_resource"></string>
+    <string name="p_hide_sq_in_resource_summary"></string>
+    <string name="mat_flower_of_the_end">"終の花"</string>
+    <string name="mat_golden_cauldron">"黄金釜"</string>
 </resources>
