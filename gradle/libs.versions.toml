@@ -35,7 +35,7 @@ timber_version = "5.0.1"
 compose_bom_version = "2024.09.02"
 
 
-
+coil_version = "3.0.3"
 junit_bom_version = "5.11.0"
 
 
@@ -103,6 +103,8 @@ compose-material3-window-size = { group = "androidx.compose.material3", name = "
 compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
+coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil_version" }
+coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil_version" }
 
 [plugins]
 ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "ben-manes_versions" }

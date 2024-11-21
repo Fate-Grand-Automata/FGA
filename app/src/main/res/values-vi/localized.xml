@@ -60,6 +60,7 @@ Master"</string>
     <string name="skill_maker_kukulkan">"Kukulkan"</string>
     <string name="skill_maker_option_1">"Lựa chọn 1"</string>
     <string name="skill_maker_option_2">"Lựa chọn 2"</string>
+    <string name="skill_maker_option_3">"Lựa chọn 3"</string>
     <string name="card_priority_wave_number">"LƯỢT QUÁI %d"</string>
     <string name="card_priority_high">"LỚN"</string>
     <string name="card_priority_low">"BÉ"</string>
@@ -386,7 +387,6 @@ Sau khi nhấn nút, hãy chuyển bộ lọc ứng dụng từ \"Không đượ
     <string name="support_imgs_extracting">"Trích xuất hình ảnh hỗ trợ"</string>
     <string name="p_max_gold_ember_total_count">"Tổng số lượng than hồng vàng tối đa"</string>
     <string name="update_download_success">"Tải xuống thành công. Khởi động lại ứng dụng sau 5 giây."</string>
-    <string name="skill_maker_melusine">"Mélusine"</string>
     <string name="p_battle_config_use_servant_priority">"Sử dụng ưu tiên Servant"</string>
     <string name="reset_all"></string>
     <string name="reset_to_default"></string>

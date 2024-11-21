@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -384,7 +385,11 @@ private fun BattleConfigListItem(
         shape = RoundedCornerShape(25),
         elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 5.dp else 1.dp),
         modifier = Modifier
-            .padding(5.dp)
+            .padding(5.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
