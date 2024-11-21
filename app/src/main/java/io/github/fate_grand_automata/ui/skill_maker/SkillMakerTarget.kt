@@ -75,7 +75,7 @@ fun SkillMakerTarget(
 
         Box(
             modifier = Modifier
-                .weight(1f)
+                .weight(2f)
                 .fillMaxWidth()
         ) {
             Row(
@@ -102,6 +102,22 @@ fun SkillMakerTarget(
                     color = colorResource(R.color.colorServant3),
                     text = stringResource(R.string.skill_maker_target_servant, 3)
                 )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            Button(
+                onClick = { onSkillTarget(null) },
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .padding(bottom = 4.dp)
+                    .align(Alignment.TopCenter)
+            ) {
+                Text(stringResource(R.string.skill_maker_target_none))
             }
         }
 
@@ -135,21 +151,6 @@ fun SkillMakerTarget(
                 .fillMaxWidth()
         ) {
             Column {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = { onSkillTarget(null) },
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                            .padding(bottom = 4.dp)
-                    ) {
-                        Text(stringResource(R.string.skill_maker_target_none))
-                    }
-                }
-
                 if (slot != null) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,

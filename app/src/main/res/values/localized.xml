@@ -402,8 +402,8 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
         <item>"Kukulkan"</item>
         <item>"UDK-Barghest"</item>
     </string-array>
-    <string name="skill_maker_kukulkan_choice_1">"Don't consume stars"</string>
-    <string name="skill_maker_kukulkan_choice_2">"Consume stars"</string>
+    <string name="skill_maker_kukulkan_choice_1">"Don't use stars"</string>
+    <string name="skill_maker_kukulkan_choice_2">"Use stars"</string>
     <string name="skill_maker_udk_barghest_choice_1">"AoE"</string>
     <string name="skill_maker_udk_barghest_choice_2">"Single Target"</string>
     <string name="skill_maker_change_np_type_2">"NP Type (2)"</string>
