@@ -59,8 +59,10 @@
     <string name="skill_maker_arts">"Arts"</string>
     <string name="skill_maker_buster">"Buster"</string>
     <string name="skill_maker_kukulkan">"ククルカン"</string>
-    <string name="skill_maker_option_1">"スター消費しない"</string>
-    <string name="skill_maker_option_2">"10個消費する"</string>
+    <string name="skill_maker_udk_barghest">"ＵＤＫ－バーゲスト"</string>
+    <string name="skill_maker_option_1">"第一選択"</string>
+    <string name="skill_maker_option_2">"2番目の選択肢"</string>
+    <string name="skill_maker_option_3">"3番目の選択肢"</string>
     <string name="card_priority_wave_number">"ウェーブ %d"</string>
     <string name="card_priority_high">"高い"</string>
     <string name="card_priority_low">"低い"</string>
@@ -393,7 +395,10 @@
     <string name="support_imgs_extracting">"サポート画像を抽出"</string>
     <string name="p_max_gold_ember_total_count">"受け取った種火の総数"</string>
     <string name="update_download_success">"ダウンロード成功。5秒後に再起動します。"</string>
-    <string name="skill_maker_melusine">"メリュジーヌ"</string>
+    <string name="skill_maker_soujuurou">"静希草十郎"</string>
+    <string name="skill_maker_kukulkan_choice_1">"スター消費しない"</string>
+    <string name="skill_maker_kukulkan_choice_2">"10個消費する"</string>
+
     <string name="p_battle_config_use_servant_priority">"サーヴァントの優先順位を設定する"</string>
     <string name="reset_all"></string>
     <string name="reset_to_default"></string>
@@ -425,4 +430,5 @@
     <string name="p_hide_sq_in_resource_summary"></string>
     <string name="mat_flower_of_the_end">"終の花"</string>
     <string name="mat_golden_cauldron">"黄金釜"</string>
+
 </resources>

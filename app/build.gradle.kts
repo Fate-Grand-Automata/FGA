@@ -141,5 +141,7 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
 
 }

@@ -19,6 +19,11 @@ import io.github.fate_grand_automata.ui.FgaScreen
 import io.github.fate_grand_automata.ui.OnPause
 import io.github.fate_grand_automata.ui.PreventRtl
 import io.github.fate_grand_automata.ui.dialog.FgaDialog
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice3
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChoice2Target
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpType3
+import io.github.fate_grand_automata.ui.skill_maker.special.SkillMakerChangeNpType2
 
 @AndroidEntryPoint
 class SkillMakerActivity : AppCompatActivity() {
@@ -96,10 +101,10 @@ fun SkillMakerUI(
                 )
             }
 
-            is SkillMakerNav.Emiya -> {
-                SkillMakerEmiya(
-                    onArts = { vm.targetSkill(ServantTarget.Left) },
-                    onBuster = { vm.targetSkill(ServantTarget.Right) }
+            is SkillMakerNav.ChangeNpType2 -> {
+                SkillMakerChangeNpType2(
+                    onTargetLeft = { vm.targetSkill(ServantTarget.Left) },
+                    onTargetRight = { vm.targetSkill(ServantTarget.Right) }
                 )
             }
 
@@ -135,59 +140,52 @@ fun SkillMakerUI(
 
             is SkillMakerNav.SkillTarget -> {
                 SkillMakerTarget(
+                    slot = nav.skill.slot(),
                     onSkillTarget = { vm.targetSkill(it) },
-                    showEmiya = nav.skill in listOf(
-                        Skill.Servant.A3,
-                        Skill.Servant.B3,
-                        Skill.Servant.C3
-                    ),
-                    onEmiya = {
-                        navigate(SkillMakerNav.Emiya(nav.skill))
+                    onNpType2 = {
+                        navigate(SkillMakerNav.ChangeNpType2(nav.skill))
                     },
-                    showSpaceIshtar = nav.skill in listOf(
-                        Skill.Servant.A2,
-                        Skill.Servant.B2,
-                        Skill.Servant.C2
-                    ),
-                    onSpaceIshtar = {
-                        navigate(SkillMakerNav.SpaceIshtar(nav.skill))
+                    onNpType3 = {
+                        navigate(SkillMakerNav.ChangeNpType3(nav.skill))
                     },
-                    showKukulkan = nav.skill !is Skill.Master,
-                    onKukulkan = {
-                        navigate(SkillMakerNav.Kukulkan(nav.skill))
+                    onChoice2 = { slot ->
+                        navigate(SkillMakerNav.Choice2(nav.skill, slot))
                     },
-                    showMelusine = nav.skill in listOf(
-                        Skill.Servant.A3,
-                        Skill.Servant.B3,
-                        Skill.Servant.C3
-                    ),
-                    onMelusine = {
-                        vm.targetSkill(ServantTarget.Melusine)
+                    onTransform = {
+                        vm.targetSkill(ServantTarget.Transform)
+                    },
+                    onChoice3 = { slot ->
+                        navigate(SkillMakerNav.Choice3(nav.skill, slot))
                     }
                 )
             }
 
-            is SkillMakerNav.SpaceIshtar -> {
-                SkillMakerSpaceIshtar(
+            is SkillMakerNav.ChangeNpType3 -> {
+                SkillMakerChangeNpType3(
                     onSkillTarget = { vm.targetSkill(it) }
                 )
             }
 
-            is SkillMakerNav.Kukulkan -> {
-                SkillMakerKukulkan(
-                    onOption1 = { vm.targetSkill(ServantTarget.Option1) },
-                    onOption2 = { vm.targetSkill(ServantTarget.Option2) },
-                    goToTarget = nav.skill in listOf(
-                        Skill.Servant.A2,
-                        Skill.Servant.B2,
-                        Skill.Servant.C2
-                    ),
-                    onTarget = { firstTarget -> navigate(SkillMakerNav.KukulkanTarget(nav.skill, firstTarget)) }
+            is SkillMakerNav.Choice2 -> {
+                SkillMakerChoice2(
+                    slot = nav.slot,
+                    onOption1 = { vm.targetSkill(ServantTarget.SpecialTarget.Choice2OptionA) },
+                    onOption2 = { vm.targetSkill(ServantTarget.SpecialTarget.Choice2OptionB) },
+                    goToTarget = nav.skill in Skill.Servant.skill2,
+                    onTarget = { firstTarget -> navigate(SkillMakerNav.Choice2Target(nav.skill, firstTarget)) }
                 )
             }
 
-            is SkillMakerNav.KukulkanTarget -> {
-                SkillMakerKukulkanTarget(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
+            is SkillMakerNav.Choice2Target -> {
+                SkillMakerChoice2Target(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
+            }
+            is SkillMakerNav.Choice3 -> {
+                SkillMakerChoice3(
+                    slot = nav.slot,
+                    onSkillTarget = { servantTarget ->
+                        vm.targetSkill(servantTarget)
+                    },
+                )
             }
         }
     }

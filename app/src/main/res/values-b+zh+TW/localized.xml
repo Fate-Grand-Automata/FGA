@@ -61,6 +61,7 @@ Order Change"</string>
     <string name="skill_maker_kukulkan">"庫庫爾坎"</string>
     <string name="skill_maker_option_1">"選項 1"</string>
     <string name="skill_maker_option_2">"選項 2"</string>
+    <string name="skill_maker_option_3">"選項 3"</string>
     <string name="card_priority_wave_number">"BATTLE %d"</string>
     <string name="card_priority_high">"優先選出"</string>
     <string name="card_priority_low">"盡量不選出"</string>
@@ -384,7 +385,6 @@ Order Change"</string>
     <string name="support_imgs_extracting">"支援圖片擷取中"</string>
     <string name="p_max_gold_ember_total_count">"金種火最大領取數（總枚數）"</string>
     <string name="update_download_success">"更新已下載完成，於 5 秒鐘後重啟"</string>
-    <string name="skill_maker_melusine"></string>
     <string name="p_battle_config_use_servant_priority">"偏好從者"</string>
     <string name="reset_all"></string>
     <string name="reset_to_default"></string>

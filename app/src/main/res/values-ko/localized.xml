@@ -61,6 +61,7 @@
     <string name="skill_maker_kukulkan">"쿠쿨칸"</string>
     <string name="skill_maker_option_1">"옵션 1"</string>
     <string name="skill_maker_option_2">"옵션 2"</string>
+    <string name="skill_maker_option_3">"옵션 3"</string>
     <string name="card_priority_wave_number">"웨이브 %d"</string>
     <string name="card_priority_high">"높음"</string>
     <string name="card_priority_low">"낮음"</string>
@@ -385,7 +386,6 @@
     <string name="support_imgs_extracting">"서포트 이미지 추출"</string>
     <string name="p_max_gold_ember_total_count">"종화 획득 총량"</string>
     <string name="update_download_success">"다운로드가 완료되었습니다. 5초 내로 재시작됩니다."</string>
-    <string name="skill_maker_melusine">"멜뤼진"</string>
     <string name="p_battle_config_use_servant_priority">"서번트 우선순위 사용"</string>
     <string name="reset_all">"모두 초기화"</string>
     <string name="reset_to_default">"기본값으로 초기화"</string>
