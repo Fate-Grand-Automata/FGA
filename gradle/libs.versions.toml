@@ -38,7 +38,7 @@ compose_bom_version = "2024.09.02"
 
 
 coil_version = "3.0.3"
-junit_bom_version = "5.11.0"
+junit_bom_version = "5.11.3"
 
 
 [libraries]
