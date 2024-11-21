@@ -258,7 +258,7 @@ Order Change"</string>
     <string name="turns_stats">"回合：%1$d（最少）, %2$.02f（平均）, %3$d（最多）"</string>
 
     <!-- Fuzzy -->
-    <string name="picked_exp_stacks">"已挑選 %d 堆種火，總共挑選 %d 枚金種火"</string>
+    <string name="picked_exp_stacks">已挑選 %1$d 堆種火，總共挑選 %2$d 枚金種火</string>
     <string name="no_embers_found">"未找到種火，請確認是否已將經驗值列為篩選條件"</string>
     <string name="root_failed">"無法取得 Root 權限"</string>
     <string name="p_mats">"追縱掉落素材"</string>

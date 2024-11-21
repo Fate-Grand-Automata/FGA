@@ -268,7 +268,7 @@
     <string name="turns_stats">"ターン数: %1$d (最小), %2$.02f (平均), %3$d (最大)"</string>
 
     <!-- Fuzzy -->
-    <string name="picked_exp_stacks">"%d 個の種火を選び受け取りました。"</string>
+    <string name="picked_exp_stacks">%1$d 個の種火を選び受け取りました。</string>
     <string name="no_embers_found">"画面上に「種火」が見つかりません。サーヴァント(経験値)のフィルタリングを確認してください。"</string>
     <string name="root_failed">"ルート権限の取得に失敗"</string>
     <string name="p_mats">"素材"</string>
