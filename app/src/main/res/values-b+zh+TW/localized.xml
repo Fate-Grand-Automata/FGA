@@ -321,6 +321,10 @@ Order Change"</string>
     <string name="mat_vestige_of_madness">"瘋狂的殘渣（暫譯）"</string>
     <string name="mat_sunscale">"太陽皮（暫譯）"</string>
     <string name="mat_converger">"乙太蓄光體（暫譯）"</string>
+    <string name="mat_flower_of_the_end">"終之花"</string>
+    <string name="mat_golden_cauldron">"黃金釜"</string>
+    <string name="mat_universal_cube">"宇宙立方體"</string>
+    <string name="mat_moonlight_nucleus">"月光核"</string>
     <string name="mat_monument_saber">"劍階金像"</string>
     <string name="mat_monument_archer">"弓階金像"</string>
     <string name="mat_monument_lancer">"槍階金像"</string>
@@ -414,6 +418,4 @@ Order Change"</string>
     <string name="note"></string>
     <string name="p_hide_sq_in_resource"></string>
     <string name="p_hide_sq_in_resource_summary"></string>
-    <string name="mat_flower_of_the_end">"終之花"</string>
-    <string name="mat_golden_cauldron">"黃金釜"</string>
 </resources>

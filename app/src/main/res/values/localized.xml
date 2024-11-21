@@ -321,6 +321,8 @@ Please turn on accessibility for this app from System settings. If it is already
     <string name="mat_converger">"Ether Proton Converger"</string>
     <string name="mat_flower_of_the_end">Flower of the End</string>
     <string name="mat_golden_cauldron">Golden Cauldron</string>
+    <string name="mat_universal_cube">Universal Cube</string>
+    <string name="mat_moonlight_nucleus">Moonlight Nucleus</string>
     <string name="mat_monument_saber">"Saber Monument"</string>
     <string name="mat_monument_archer">"Archer Monument"</string>
     <string name="mat_monument_lancer">"Lancer Monument"</string>
