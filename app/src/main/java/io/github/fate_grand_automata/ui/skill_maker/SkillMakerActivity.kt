@@ -114,6 +114,7 @@ fun SkillMakerUI(
                     onMasterSkills = { navigate(SkillMakerNav.MasterSkills) },
                     onAtk = { navigate(SkillMakerNav.Atk) },
                     onSkill = { vm.initSkill(it) },
+                    onSkillNoTarget = { vm.noTargetSkill(it) },
                     onClear = { clearConfirmDialog.show() },
                     onDone = {
                         vm.battleConfig.skillCommand = vm.finish()
@@ -125,6 +126,7 @@ fun SkillMakerUI(
             SkillMakerNav.MasterSkills -> {
                 SkillMakerMasterSkills(
                     onMasterSkill = { vm.initSkill(it) },
+                    onMasterSkillNoTarget = { vm.noTargetSkill(it) },
                     onOrderChange = { navigate(SkillMakerNav.OrderChange) }
                 )
             }
