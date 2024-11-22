@@ -1,11 +1,15 @@
 {
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-  "ignorePresets": [":prHourlyLimit2"],
+  "ignorePresets": [
+    ":prHourlyLimit2"
+  ],
   "timezone": "Europe/Berlin",
   "gradle": {
-    "extends": ["schedule:monthly"],
+    "extends": [
+      "schedule:monthly"
+    ],
     "enabled": true
   },
   "github-actions": {
@@ -15,12 +19,12 @@
   },
   "packageRules": [
     {
-      "matchPackagePatterns": [
-          "^org.jetbrains.kotlin",
-          "^com.google.devtools.ksp",
-          "^androidx.compose.compiler"
-      ],
-      "groupName": "kotlin"
+      "groupName": "kotlin",
+      "matchPackageNames": [
+        "/^org.jetbrains.kotlin/",
+        "/^com.google.devtools.ksp/",
+        "/^androidx.compose.compiler/"
+      ]
     }
   ]
 }
