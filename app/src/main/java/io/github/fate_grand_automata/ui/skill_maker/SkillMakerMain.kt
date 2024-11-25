@@ -130,7 +130,7 @@ fun SkillMakerMain(
                 )
             }
 
-            val commandSpellRemaining by vm.commandSpell.collectAsState()
+            val commandSpellRemaining by vm.commandSpellRemaining.collectAsState()
 
             Column(
                 verticalArrangement = Arrangement.Bottom,
@@ -148,7 +148,7 @@ fun SkillMakerMain(
                     }
                 ) {
                     Text(
-                        stringResource(R.string.skill_maker_command_spell_title_short, 3 - commandSpellRemaining),
+                        stringResource(R.string.skill_maker_command_spell_title_short, commandSpellRemaining),
                         textAlign = TextAlign.Center,
                         color = Color.White
                     )
