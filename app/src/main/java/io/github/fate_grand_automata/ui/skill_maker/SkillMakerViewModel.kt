@@ -344,14 +344,14 @@ class SkillMakerViewModel @Inject constructor(
                             revertToPreviousEnemyTarget()
                         }
                         is AutoSkillAction.CommandSpell -> {
-                            --_commandSpellRemaining.value
+                            ++_commandSpellRemaining.value
                             deleteSelected()
                         }
                         else -> deleteSelected()
                     }
                 }
-                // Do nothing
                 is SkillMakerEntry.Start -> {
+                    // Do nothing
                 }
             }
         }
