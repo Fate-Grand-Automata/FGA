@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
@@ -140,11 +139,16 @@ fun SkillMakerUI(
                 SkillMakerCommandSpells(
                     remaining = nav.cs,
                     onCommandSpell = {
-                        vm.initSkill(it)
+                        vm.initCommandSpell(it)
                     },
                     onBack = {
                         navigate(SkillMakerNav.Main)
                     }
+                )
+            }
+            is SkillMakerNav.CommandSpellTarget -> {
+                SkillMakerCommandSpellTarget(
+                    onServantTarget = { vm.targetSkill(it) }
                 )
             }
 
