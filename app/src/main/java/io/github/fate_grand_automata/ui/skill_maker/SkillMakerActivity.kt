@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.view.WindowCompat
@@ -87,11 +88,10 @@ fun SkillMakerUI(
     val turn by vm.turn
     val wave by vm.wave
 
-    val commandSpellRemaining by vm.commandSpell
-
     Crossfade(
-        current,
-        animationSpec = spring()
+        targetState = current,
+        animationSpec = spring(),
+        label = "Skill Maker Navigation Animation"
     ) { nav ->
         when (nav) {
             SkillMakerNav.Atk -> {
@@ -113,13 +113,9 @@ fun SkillMakerUI(
             SkillMakerNav.Main -> {
                 SkillMakerMain(
                     vm = vm,
-                    onCommandSpell = { 
-                        if (commandSpellRemaining <=0) {
-                            navigate(SkillMakerNav.CommandSpellWarning) 
-                        } else {
-                            navigate(SkillMakerNav.CommandSpell) 
-                        }
-                    }, 
+                    onCommandSpell = {
+                        navigate(SkillMakerNav.CommandSpell(it))
+                    },
                     onMasterSkills = { navigate(SkillMakerNav.MasterSkills) },
                     onAtk = { navigate(SkillMakerNav.Atk) },
                     onSkill = { vm.initSkill(it) },
@@ -139,13 +135,17 @@ fun SkillMakerUI(
                     onOrderChange = { navigate(SkillMakerNav.OrderChange) }
                 )
             }
-            SkillMakerNav.CommandSpell -> {
+
+            is SkillMakerNav.CommandSpell -> {
                 SkillMakerCommandSpells(
-                    onCommandSpell = { vm.initSkill(it) },
+                    remaining = nav.cs,
+                    onCommandSpell = {
+                        vm.initSkill(it)
+                    },
+                    onBack = {
+                        navigate(SkillMakerNav.Main)
+                    }
                 )
-            }
-            SkillMakerNav.CommandSpellWarning -> {
-                SkillMakerCommandSpellWarning()
             }
 
             SkillMakerNav.OrderChange -> {
@@ -198,6 +198,7 @@ fun SkillMakerUI(
             is SkillMakerNav.Choice2Target -> {
                 SkillMakerChoice2Target(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
             }
+
             is SkillMakerNav.Choice3 -> {
                 SkillMakerChoice3(
                     slot = nav.slot,

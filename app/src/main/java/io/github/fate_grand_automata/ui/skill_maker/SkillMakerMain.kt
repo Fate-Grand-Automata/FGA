@@ -29,6 +29,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +47,7 @@ import io.github.fate_grand_automata.ui.icon
 @Composable
 fun SkillMakerMain(
     vm: SkillMakerViewModel,
-    onCommandSpell: () -> Unit,
+    onCommandSpell: (Int) -> Unit,
     onMasterSkills: () -> Unit,
     onAtk: () -> Unit,
     onSkill: (Skill.Servant) -> Unit,
@@ -129,7 +130,7 @@ fun SkillMakerMain(
                 )
             }
 
-            val commandSpellRemaining by vm.commandSpell
+            val commandSpellRemaining by vm.commandSpell.collectAsState()
 
             Column(
                 verticalArrangement = Arrangement.Bottom,
@@ -142,7 +143,9 @@ fun SkillMakerMain(
 
                 Button(
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorCommandSpell)),
-                    onClick = onCommandSpell
+                    onClick = {
+                        onCommandSpell(commandSpellRemaining)
+                    }
                 ) {
                     Text(
                         stringResource(R.string.skill_maker_command_spell_title_short, 3 - commandSpellRemaining),
