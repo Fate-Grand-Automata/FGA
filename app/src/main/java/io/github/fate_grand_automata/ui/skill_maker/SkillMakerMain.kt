@@ -50,6 +50,7 @@ fun SkillMakerMain(
     onMasterSkills: () -> Unit,
     onAtk: () -> Unit,
     onSkill: (Skill.Servant) -> Unit,
+    onSkillNoTarget: (Skill.Servant) -> Unit,
     onClear: () -> Unit,
     onDone: () -> Unit
 ) {
@@ -122,7 +123,10 @@ fun SkillMakerMain(
                     )
                 }
 
-                Skills(onSkill = onSkill)
+                Skills(
+                    onSkill = onSkill,
+                    onSkillNoTarget = onSkillNoTarget
+                )
             }
 
             val commandSpellRemaining by vm.commandSpell
@@ -185,7 +189,8 @@ fun SkillMakerMain(
 fun ColumnScope.SkillButtons(
     list: List<Skill.Servant>,
     color: Color,
-    onSkill: (Skill.Servant) -> Unit
+    onSkill: (Skill.Servant) -> Unit,
+    onSkillNoTarget: (Skill.Servant) -> Unit
 ) {
     Row(
         modifier = Modifier.weight(1f, false)
@@ -194,14 +199,18 @@ fun ColumnScope.SkillButtons(
             SkillButton(
                 skill = skill,
                 color = color,
-                onClick = { onSkill(skill) }
+                onClick = { onSkill(skill) },
+                onDoubleClick = { onSkillNoTarget(skill) }
             )
         }
     }
 }
 
 @Composable
-fun Skills(onSkill: (Skill.Servant) -> Unit) {
+fun Skills(
+    onSkill: (Skill.Servant) -> Unit,
+    onSkillNoTarget: (Skill.Servant) -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom,
@@ -224,7 +233,8 @@ fun Skills(onSkill: (Skill.Servant) -> Unit) {
                     SkillButtons(
                         list = list,
                         color = colorResource(color),
-                        onSkill = onSkill
+                        onSkill = onSkill,
+                        onSkillNoTarget = onSkillNoTarget
                     )
 
                     Text(stringResource(R.string.skill_maker_main_servant, index + 1))

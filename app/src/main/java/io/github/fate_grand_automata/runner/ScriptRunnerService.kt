@@ -41,7 +41,9 @@ class ScriptRunnerService: Service() {
         var mediaProjectionToken: Intent? = null
             set(value) {
                 field = value
-                instance?.controller?.onNewMediaProjectionToken()
+                if (value != null) {
+                    instance?.controller?.onNewMediaProjectionToken()
+                }
             }
     }
 

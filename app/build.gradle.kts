@@ -105,7 +105,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.constraintlayout)
 
-    implementation(libs.opencv.android)
+    implementation(libs.opencv)
     implementation(libs.tesseract4android)
 
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -141,5 +141,7 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.android.play.update.ktx)
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
 
 }

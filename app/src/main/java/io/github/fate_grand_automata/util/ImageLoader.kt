@@ -219,6 +219,8 @@ val MaterialEnum.drawable
         MaterialEnum.AmnestyBell -> R.drawable.mat_amnesty_bell
         MaterialEnum.CeremonialBlade -> R.drawable.mat_ceremonial_blade
         MaterialEnum.UnforgettableAshes -> R.drawable.mat_ashes
+        MaterialEnum.ObsidianEdge -> R.drawable.mat_obsidian_edge
+        MaterialEnum.VestigeOfMadness -> R.drawable.mat_vestige
 
         MaterialEnum.Seed -> R.drawable.mat_seed
         MaterialEnum.GhostLantern -> R.drawable.mat_ghost_lantern
@@ -241,6 +243,10 @@ val MaterialEnum.drawable
         MaterialEnum.DivineSpiritParticle -> R.drawable.mat_particle
         MaterialEnum.RainbowThreadBall -> R.drawable.mat_thread
         MaterialEnum.FantasyScales -> R.drawable.mat_fantasy_scales
+        MaterialEnum.Sunscale -> R.drawable.mat_sunscale
+        MaterialEnum.Converger -> R.drawable.mat_converger
+        MaterialEnum.FlowerOfTheEnd -> R.drawable.mat_flower_of_the_end
+        MaterialEnum.UniversalCube -> R.drawable.mat_universal_cube
 
         MaterialEnum.Claw -> R.drawable.mat_claw
         MaterialEnum.Heart -> R.drawable.mat_heart
@@ -260,12 +266,8 @@ val MaterialEnum.drawable
         MaterialEnum.StarShard -> R.drawable.mat_star_shard
         MaterialEnum.FruitOfEternity -> R.drawable.mat_fruit
         MaterialEnum.DemonFlameLantern -> R.drawable.mat_demon_lantern
-        MaterialEnum.ObsidianEdge -> R.drawable.mat_obsidian_edge
-        MaterialEnum.VestigeOfMadness -> R.drawable.mat_vestige
-        MaterialEnum.Sunscale -> R.drawable.mat_sunscale
-        MaterialEnum.Converger -> R.drawable.mat_converger
-        MaterialEnum.FlowerOfTheEnd -> R.drawable.mat_flower_of_the_end
         MaterialEnum.GoldenCauldron -> R.drawable.mat_golden_cauldron
+        MaterialEnum.MoonlightNucleus -> R.drawable.mat_moonlight_nucleus
 
         MaterialEnum.MonumentSaber -> R.drawable.mat_monument_saber
         MaterialEnum.MonumentArcher -> R.drawable.mat_monument_archer

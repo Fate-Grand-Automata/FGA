@@ -87,6 +87,7 @@ class MainScreenViewModel @Inject constructor(
             Timber.i("MediaProjection cancelled by user")
             ScriptRunnerService.stopService(context)
         } else {
+            ScriptRunnerService.startService(context)
             ScriptRunnerService.mediaProjectionToken = intent
         }
     }

@@ -21,30 +21,101 @@ class AutoSkillCommand private constructor(
     }
 
     companion object {
-        private fun getTarget(queue: Queue<Char>): ServantTarget? {
-            val peekTarget = queue.peek()
-            val target = ServantTarget.list.firstOrNull { it.autoSkillCode == peekTarget }
-            if (target != null) {
-                queue.remove()
+
+        // Prepare the list of special targets
+        private val specialTargetList = ServantTarget
+            .list
+            .filter {
+                it.specialTarget.isNotEmpty()
             }
 
+        private fun getTarget(queue: Queue<Char>): ServantTarget? {
+            val peekTarget = queue.peek()
+            var target: ServantTarget? = null
+            if (peekTarget == SpecialCommand.StartSpecialTarget.autoSkillCode) {
+                // remove initial [
+                queue.remove()
+
+                var special = ""
+                var char: Char? = null
+
+                while (queue.isNotEmpty()) {
+                    char = queue.remove()
+                    if (char == SpecialCommand.EndSpecialTarget.autoSkillCode) break
+
+                    if (char != SpecialCommand.StartSpecialTarget.autoSkillCode) {
+                        special += char
+                    }
+                    target = specialTargetList
+                        .firstOrNull {
+                            it.specialTarget == special
+                        }
+                }
+                if (char != SpecialCommand.EndSpecialTarget.autoSkillCode) {
+                    throw Exception("Found [ but no matching ] in Skill Command")
+                }
+                if (special.isEmpty()) {
+                    throw Exception("Command Can't be empty")
+                }
+                if (target == null) {
+                    throw Exception("Special target \"$special\" not found")
+                }
+            } else {
+                target = ServantTarget.list.firstOrNull { it.autoSkillCode == peekTarget }
+                if (target != null) {
+                    queue.remove()
+                }
+            }
             return target
         }
 
         private fun getTargets(queue: Queue<Char>): List<ServantTarget> {
             val targets = mutableListOf<ServantTarget>()
             val nextChar = queue.peek()
-            if (nextChar == '(') {
+            if (nextChar == SpecialCommand.StartMultiTarget.autoSkillCode) {
                 queue.remove()
                 var char: Char? = null
+                var specialFound = false
+                var special = ""
                 while (queue.isNotEmpty()) {
                     char = queue.remove()
-                    if (char == ')') break
-                    val target = ServantTarget.list.firstOrNull { it.autoSkillCode == char }
-                    target?.let(targets::add)
+                    if (char == SpecialCommand.EndMultiTarget.autoSkillCode) break
+
+                    if (char == SpecialCommand.StartSpecialTarget.autoSkillCode) {
+                        specialFound = true
+                    } else if (char == SpecialCommand.EndSpecialTarget.autoSkillCode) {
+                        val target = specialTargetList.firstOrNull {
+                            it.specialTarget == special
+                        }
+                        target?.let {
+                            targets.add(it)
+
+                            // reset
+                            special = ""
+                        } ?: run {
+                            if (special.isEmpty()) {
+                                throw Exception("Command Can't be empty")
+                            } else {
+                                throw Exception("Special target \"$special\" not found")
+                            }
+                        }
+                        specialFound = false
+                    }
+
+                    if (specialFound) {
+                        if (char != SpecialCommand.StartSpecialTarget.autoSkillCode) {
+                            special += char
+                        }
+                    } else {
+                        val target = ServantTarget.list.firstOrNull { it.autoSkillCode == char }
+                        target?.let(targets::add)
+                    }
                 }
-                if (char != ')') {
+                if (char != SpecialCommand.EndMultiTarget.autoSkillCode) {
                     throw Exception("Found ( but no matching ) in Skill Command")
+                }
+                if (specialFound) {
+                    throw Exception("Found [ but no matching ] in Skill Command")
                 }
             } else {
                 getTarget(queue)?.let(targets::add)
@@ -86,19 +157,19 @@ class AutoSkillCommand private constructor(
                         AutoSkillAction.Atk.np(np)
                     }
 
-                    't' -> {
+                    SpecialCommand.EnemyTarget.autoSkillCode -> {
                         val code = queue.remove()
                         val target = EnemyTarget.list.first { it.autoSkillCode == code }
                         AutoSkillAction.TargetEnemy(target)
                     }
 
-                    'n' -> {
+                    SpecialCommand.CardsBeforeNP.autoSkillCode -> {
                         val code = queue.remove()
                         val count = code.toString().toInt()
                         AutoSkillAction.Atk.cardsBeforeNP(count)
                     }
 
-                    'x' -> {
+                    SpecialCommand.OrderChange.autoSkillCode -> {
                         val startingCode = queue.remove()
                         val starting = OrderChangeMember.Starting.list
                             .first { it.autoSkillCode == startingCode }
@@ -110,7 +181,8 @@ class AutoSkillCommand private constructor(
                         AutoSkillAction.OrderChange(starting, sub)
                     }
 
-                    '0' -> AutoSkillAction.Atk.noOp()
+                    SpecialCommand.NoOp.autoSkillCode -> AutoSkillAction.Atk.noOp()
+
                     else -> throw Exception("Unknown character: $c")
                 }
             } catch (e: Exception) {
@@ -120,18 +192,18 @@ class AutoSkillCommand private constructor(
 
         fun parse(command: String): AutoSkillCommand {
             val waves = command
-                .split(",#,")
+                .split(WaveTurn.Wave.code)
 
             val commandTable = waves
                 .map {
-                    val turns = it.split(',')
+                    val turns = it.split(WaveTurn.Turn.code)
                     turns.map { cmd ->
                         val queue: Deque<Char> = ArrayDeque(cmd.length)
                         queue.addAll(cmd.asIterable())
 
                         val actions = mutableListOf<AutoSkillAction>()
 
-                        while (!queue.isEmpty()) {
+                        while (queue.isNotEmpty()) {
                             val action = parseAction(queue)
 
                             // merge NPs and cards before NPs
