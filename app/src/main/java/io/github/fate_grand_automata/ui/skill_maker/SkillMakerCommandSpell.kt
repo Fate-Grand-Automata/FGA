@@ -82,7 +82,7 @@ fun SkillMakerCommandSpells(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                 ) {
-                    Text(stringResource(R.string.skill_maker_target_none))
+                    Text(stringResource(R.string.dismiss))
                 }
             }
         }
