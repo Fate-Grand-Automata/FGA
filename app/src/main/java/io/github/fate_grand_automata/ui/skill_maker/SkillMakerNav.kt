@@ -9,11 +9,11 @@ sealed class SkillMakerNav {
     data object Atk : SkillMakerNav()
     data object OrderChange : SkillMakerNav()
     data class SkillTarget(val skill: Skill) : SkillMakerNav()
+    data class CommandSpell(val cs: Int) : SkillMakerNav()
     data class ChangeNpType2(val skill: Skill) : SkillMakerNav()
     data class ChangeNpType3(val skill: Skill) : SkillMakerNav()
     data class Choice2(val skill: Skill, val slot: SkillSlot) : SkillMakerNav()
     data class Choice2Target(val skill: Skill, val firstTarget: ServantTarget) : SkillMakerNav()
     data class Choice3(val skill: Skill, val slot: SkillSlot) : SkillMakerNav()
-    data object CommandSpell : SkillMakerNav()
     data object CommandSpellWarning : SkillMakerNav()
 }
