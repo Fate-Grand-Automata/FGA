@@ -444,7 +444,7 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="skill_maker_change_np_type_3_hint">"Servants with 3 NP Types"</string>
     <string name="skill_maker_transform_hint">"Servants which transform"</string>
 
-    <string name="skill_maker_command_spell">Command Spell</string>
+    <string name="skill_maker_command_spell">Command Spell (%d)</string>
     <string name="skill_maker_command_spell_title_short">"CS (%d)"</string>
     <string name="skill_maker_command_spell_warning">Ran out of Command Spell(s)</string>
     <string name="skill_maker_command_spell_full_np">Full NP</string>
