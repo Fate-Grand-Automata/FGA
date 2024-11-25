@@ -54,19 +54,19 @@ class SkillMakerViewModel @Inject constructor(
         m
     }
 
-    private var _commandSpell: MutableStateFlow<Int> =
+    private var _commandSpellRemaining: MutableStateFlow<Int> =
         MutableStateFlow(
-            skillCommand.count {
+            value = 3 - skillCommand.count {
                 it is SkillMakerEntry.Action && it.action is AutoSkillAction.CommandSpell
             }
         )
 
-    val commandSpell: StateFlow<Int> = _commandSpell
+    val commandSpellRemaining: StateFlow<Int> = _commandSpellRemaining
         .map { it.coerceIn(0..3) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = 0
+            initialValue = 3
         )
 
     private val _wave = mutableIntStateOf(
@@ -211,7 +211,7 @@ class SkillMakerViewModel @Inject constructor(
                     is Skill.Servant -> AutoSkillAction.ServantSkill(skill, targets)
                     is Skill.Master -> AutoSkillAction.MasterSkill(skill, targets.firstOrNull())
                     is Skill.CommandSpell -> {
-                        ++_commandSpell.value
+                        --_commandSpellRemaining.value
                         AutoSkillAction.CommandSpell(skill, targets.firstOrNull())
                     }
                 }
@@ -344,7 +344,7 @@ class SkillMakerViewModel @Inject constructor(
                             revertToPreviousEnemyTarget()
                         }
                         is AutoSkillAction.CommandSpell -> {
-                            --_commandSpell.value
+                            --_commandSpellRemaining.value
                             deleteSelected()
                         }
                         else -> deleteSelected()
