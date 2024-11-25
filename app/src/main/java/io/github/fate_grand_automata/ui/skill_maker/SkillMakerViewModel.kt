@@ -69,6 +69,12 @@ class SkillMakerViewModel @Inject constructor(
             initialValue = 3
         )
 
+    fun initCommandSpell(skill: Skill) {
+        currentSkill = skill.autoSkillCode
+
+        navigation.value = SkillMakerNav.CommandSpellTarget(skill)
+    }
+
     private val _wave = mutableIntStateOf(
         if (state.skillString != null) {
             state.wave
