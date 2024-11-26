@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
@@ -65,20 +66,28 @@ fun SkillMakerCommandSpells(
                 )
             }
         } else {
-            Box(
+            Row(
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxWidth()
-            ) {
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
                 Text(
                     stringResource(R.string.skill_maker_command_spell_warning),
-                    modifier = Modifier
-                        .align(Alignment.Center),
+                    modifier = Modifier,
+                    textAlign = TextAlign.Center
                 )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
                 Button(
                     onClick = onBack,
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
                 ) {
                     Text(stringResource(R.string.dismiss))
                 }
