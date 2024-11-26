@@ -48,15 +48,21 @@ fun SkillMakerCommandSpells(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Skill.CommandSpell.list.forEach {
-                    TargetButton(
-                        onClick = {
-                            onCommandSpell(it)
-                        },
-                        color = colorResource(R.color.colorCommandSpell),
-                        text = stringResource(it.stringRes)
-                    )
-                }
+                TargetButton(
+                    onClick = {
+                        onCommandSpell(Skill.CommandSpell.CS1)
+                    },
+                    color = colorResource(R.color.colorServant1),
+                    text = stringResource(Skill.CommandSpell.CS1.stringRes)
+                )
+
+                TargetButton(
+                    onClick = {
+                        onCommandSpell(Skill.CommandSpell.CS2)
+                    },
+                    color = colorResource(R.color.colorServant2),
+                    text = stringResource(Skill.CommandSpell.CS2.stringRes)
+                )
             }
         } else {
             Box(
