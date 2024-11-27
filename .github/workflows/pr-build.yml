@@ -59,8 +59,8 @@ jobs:
           echo "FGA_APK_PATH=app/build/outputs/apk/ci/fga-pr-$build_name.apk" >>${GITHUB_ENV}
           echo "FGA_MAPPING_PATH=app/build/outputs/apk/ci/fga-mapping-$build_name.txt" >>${GITHUB_ENV}
 
-          echo "FGA_APK_ARTIFACT_NAME=FGA-PR-apk-$build_name" >>${GITHUB_ENV}
-          echo "FGA_MAPPING_ARTIFACT_NAME=FGA-PR-mapping-$build_name" >>${GITHUB_ENV}
+          echo "FGA_APK_ARTIFACT_NAME=FGA-apk-PR-$build_name" >>${GITHUB_ENV}
+          echo "FGA_MAPPING_ARTIFACT_NAME=FGA-mapping-PR-$build_name" >>${GITHUB_ENV}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
