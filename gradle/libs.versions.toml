@@ -12,8 +12,8 @@ hilt_version = "2.52"
 gson_version = "2.11.0"
 
 
-kotlin_version = "2.0.21"
-ksp_version = "2.0.21-1.0.28"
+kotlin_version = "2.1.0"
+ksp_version = "2.1.0-1.0.29"
 
 gradle_version = "8.7.2"
 
