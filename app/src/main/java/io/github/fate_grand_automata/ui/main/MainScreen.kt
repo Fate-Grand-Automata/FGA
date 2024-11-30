@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -197,10 +198,12 @@ private fun toggleOverlayService(
         if (vm.prefs.wantsMediaProjectionToken) {
             if (ScriptRunnerService.mediaProjectionToken == null) {
                 startMediaProjection()
+                return
             }
-        } else {
-            ScriptRunnerService.startService(context)
         }
+
+        // if we already have a token or are using root mode
+        ScriptRunnerService.startService(context)
     }
 }
 
@@ -260,7 +263,11 @@ private fun MainScreenContent(
             item {
                 Card(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 ) {
                     Column {
                         Preference(
@@ -354,7 +361,11 @@ private fun AccessibilityServiceBlock(
     Card(
         modifier = Modifier
             .padding(horizontal = 16.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     ) {
         Column(
             modifier = Modifier

@@ -116,7 +116,7 @@ class ScriptRunnerNotification @Inject constructor(
     fun show(useRootForScreenshots: Boolean) {
         val builder = startBuildNotification()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             var foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
             if (!useRootForScreenshots) {
                 foregroundServiceType = foregroundServiceType.or(ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)

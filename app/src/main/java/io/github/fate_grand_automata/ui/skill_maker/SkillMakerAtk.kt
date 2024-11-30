@@ -149,7 +149,7 @@ private fun CardsBeforeNp(
                     shape = MaterialTheme.shapes.medium,
                     color = animatedColorState,
                     modifier = Modifier
-                        .padding(5.dp),
+                        .padding(0.dp, 5.dp, 10.dp, 5.dp),
                     enabled = canSelect,
                     onClick = {
                         if (canSelect) {
@@ -227,6 +227,7 @@ fun SkillMakerAtk(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(40.dp, 0.dp)
         ) {
 
 
