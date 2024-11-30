@@ -61,6 +61,7 @@
     <string name="skill_maker_kukulkan">"쿠쿨칸"</string>
     <string name="skill_maker_option_1">"옵션 1"</string>
     <string name="skill_maker_option_2">"옵션 2"</string>
+    <string name="skill_maker_option_3">"옵션 3"</string>
     <string name="card_priority_wave_number">"웨이브 %d"</string>
     <string name="card_priority_high">"높음"</string>
     <string name="card_priority_low">"낮음"</string>
@@ -92,7 +93,6 @@
     <string name="p_battle_config_party">"파티"</string>
     <string name="p_battle_config_server">"서버"</string>
     <string name="p_battle_config_card_priority">"카드 우선"</string>
-    <string name="p_battle_config_use_servant_priority">"서번트 우선"</string>
     <string name="p_battle_config_support">"서포트"</string>
     <string name="p_battle_config_support_selection_mode">"선택 모드"</string>
     <string name="p_battle_config_support_fallback_selection_mode">"실패시 선택 모드"</string>
@@ -123,7 +123,9 @@
     <string name="p_rearrange_cards">"카드 재배열"</string>
     <string name="p_skip_servant_face_checks">"서번트 카드 아이콘 확인 생략"</string>
     <string name="p_skip_servant_face_checks_summary">"활성화시 브레이브 체인, 서번트 우선순위, 보구에 맞는 카드 셔플 등의 기능을 사용할 수 없습니다."</string>
-    <string name="p_wait_ap_regen_text">"AP 회복 대기중"</string>
+
+    <!-- old translation 'AP 회복 대기중' is not correct for describe purpose of checkbox -->
+    <string name="p_wait_ap_regen_text">"AP 회복 기다리기"</string>
     <string name="wait_ap_regen_toast_message">"AP 회복을 기다리고 있습니다. %d분 후 재확인합니다."</string>
     <string name="p_storage">"저장소"</string>
     <string name="p_folder">"서포트 이미지, 드롭 이미지 등의 폴더를 변경합니다."</string>
@@ -182,7 +184,7 @@
     <string name="spam_target">"대상"</string>
     <string name="spam_np">"보구:"</string>
     <string name="p_spam_none">"사용 안 함"</string>
-    <string name="p_spam_spam">"사용 가능할 때 바로"</string>
+    <string name="p_spam_spam">"스팸 모드"</string>
     <string name="p_spam_danger">"위협적인 적에게"</string>
     <string name="p_support_mode_first">"첫번째"</string>
     <string name="p_support_mode_manual">"수동"</string>
@@ -206,6 +208,8 @@
     <string name="p_support_class_berserker">"버서커"</string>
     <string name="p_support_class_extra">"엑스트라"</string>
     <string name="p_support_class_mix">"혼합"</string>
+
+    <!-- Fuzzy -->
     <string name="overlay_notification_text">"오버레이 서비스 실행중"</string>
     <string name="notification_stop">"멈춤"</string>
     <string name="accessibility_service">"접근성 서비스: "</string>
@@ -250,8 +254,12 @@
     <string name="times_withdrew">"%d번 철수함"</string>
     <string name="avg_time_per_run">"반복 평균 시간: %s"</string>
     <string name="turns_count">"턴: %d"</string>
+
+    <!-- Fuzzy -->
     <string name="turns_stats">"턴: %1$d (최단), %2$.02f (평균), %3$d (최장)"</string>
-    <string name="picked_exp_stacks">"%d개의 종화 묶음 획득"</string>
+
+    <!-- Fuzzy -->
+    <string name="picked_exp_stacks">%1$d개의 종화 묶음 획득</string>
     <string name="no_embers_found">"화면에서 종화를 찾을 수 없습니다. 종화를 필터하지 않았는지 확인바랍니다."</string>
     <string name="root_failed">"루트 권한을 얻는데 실패했습니다."</string>
     <string name="p_mats">"재료"</string>
@@ -378,5 +386,41 @@
     <string name="support_imgs_extracting">"서포트 이미지 추출"</string>
     <string name="p_max_gold_ember_total_count">"종화 획득 총량"</string>
     <string name="update_download_success">"다운로드가 완료되었습니다. 5초 내로 재시작됩니다."</string>
-    <string name="skill_maker_melusine">"멜뤼진"</string>
+    <string name="p_battle_config_use_servant_priority">"서번트 우선순위 사용"</string>
+    <string name="reset_all">"모두 초기화"</string>
+    <string name="reset_to_default">"기본값으로 초기화"</string>
+    <string name="p_choose_app_language">"사용할 언어를 선택하세요"</string>
+    <string name="p_app_language">"언어 선택"</string>
+    <string name="p_treat_support_like_own_servant">"서포트를 자신의 서번트처럼 취급합니다"</string>
+    <string name="p_treat_support_like_own_servant_summary">"페이스 카드에서 서포트 아이콘을 찾는 대신 일반적인 페이스 카드 검사를 수행합니다. 이렇게 하면 슈퍼 버프 서포트 서번트에 대한 문제가 해결되지만 파티에 같은 서번트가 2명 있는 경우 카드 우선순위 기능이 깨집니다."</string>
+    <string name="skill_maker_main_delete_selected">"선택 삭제"</string>
+
+    <!-- in game, that write like 'BATTLE 1/3' but i think 라운드('round') is better for understanding purpose and much community call that as round also -->
+    <string name="skill_maker_main_wave">"라운드: %d"</string>
+    <string name="skill_maker_main_turn">"턴: %d"</string>
+    <string name="p_screenshot_bond">"인연 스크린샷"</string>
+    <string name="p_screenshot_bond_summary">"실험적 기능으로, 인연 레벨 상승시 'bond' 폴더에 스크린샷을 저장합니다.\n참고: 다른 결과 화면의 자동클릭으로 인해 인연 레벨 상승을 스킵하여 스크린샷을 찍지 못 할 수 있습니다."</string>
+    <string name="bond_level_up">"인연 레벨 상승!"</string>
+    <string name="servant_enhancement">"서번트 강화"</string>
+    <string name="servant_enhancement_no_embers_or_qp_left">"종화 또는 QP가 부족합니다"</string>
+    <string name="servert_enhancement_warning_notice">"이 스크립트는 자동 선택 기능을 사용하여 종화를 선택합니다."</string>
+    <string name="servant_enhancement_redirect_ascension_question">"레벨 상한에 도달하면 영기재림으로 이동됩니다"</string>
+    <string name="servant_enhancement_perform_ascension_question">"영기재림"</string>
+    <string name="servant_enhancement_perform_ascension_warning">"중복된 서번트의 영기재림은 지원되지 않습니다."</string>
+    <string name="servant_enhancement_redirect_grail">"레벨 상한에 도달하면 성배전림으로 이동됩니다."</string>
+    <string name="servant_enhancement_redirect_ascension_success">"영기재림으로 이동"</string>
+    <string name="servant_enhancement_redirect_grail_success">"성배전림으로 이동"</string>
+    <string name="servant_enhancement_perform_ascension_failed">"영기재림을 수행할 수 없습니다"</string>
+    <string name="servant_enhancement_max_level">"최대 레벨 달성"</string>
+    <string name="servant_enhancement_none_selected">"선택된 서번트가 없습니다. 계속하기 전에 서번트를 선택해주세요."</string>
+    <string name="servant_enhancement_aborted">"강화가 중단되었습니다"</string>
+    <string name="note">"메모:"</string>
+    <string name="p_hide_sq_in_resource">"AP 회복수단에서 성정석 제외"</string>
+    <string name="p_hide_sq_in_resource_summary">"이 설정을 활성화하면 실수로 성정석을 터치하여 AP 회복에 사용하지 않도록 성정석을 회복수단에서 제외합니다."</string>
+
+    <!-- NOTE: '최후의 꽃' is not official translation (from community) -->
+    <string name="mat_flower_of_the_end">"최후의 꽃"</string>
+
+    <!-- NOTE: '황금 가마' is not official translation (from community) -->
+    <string name="mat_golden_cauldron">"황금 가마"</string>
 </resources>

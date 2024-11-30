@@ -1,10 +1,10 @@
 plugins {
-    id("com.gradle.enterprise") version("3.17.6")
+    id("com.gradle.develocity") version("3.18.2")
 }
-gradleEnterprise {
+develocity {
     buildScan {
-        termsOfServiceUrl = "https://gradle.com/terms-of-service"
-        termsOfServiceAgree = "yes"
+        termsOfUseUrl = "https://gradle.com/terms-of-service"
+        termsOfUseAgree = "yes"
     }
 }
 include(":prefs")
