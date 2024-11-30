@@ -51,8 +51,20 @@ class ScriptLauncherResponseHandler @Inject constructor(
                 ScriptModeEnum.Battle
             }
 
+            is ScriptLauncherResponse.Skill -> {
+                // Do not remove this, we need this to only be updated once the user has pressed the "Ok" button
+                // otherwise, the config will carry over if the user selected new servant which the config does not
+                // match (e.g. skill 3 can be upgraded to servant A but not to servant B)
+                prefs.skill.skillOneTargetLevel = resp.skillOneTargetLevel
+                prefs.skill.skillTwoTargetLevel = resp.skillTwoTargetLevel
+                prefs.skill.skillThreeTargetLevel = resp.skillThreeTargetLevel
+
+                ScriptModeEnum.Skill
+            }
+
             is ScriptLauncherResponse.ServantEnhancement -> {
                 ScriptModeEnum.ServantLevel
+
             }
         }
     }
