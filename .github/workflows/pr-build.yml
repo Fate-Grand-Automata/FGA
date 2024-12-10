@@ -55,8 +55,8 @@ jobs:
             build_name="${{ github.event.pull_request.number }}-build-${{ github.run_number }}"
           fi
 
-          mv app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-$build_name.apk
-          mv app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-$build_name.txt
+          cp app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-$build_name.apk
+          cp app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-$build_name.txt
 
           echo "FGA_APK_PATH=app/build/outputs/apk/ci/fga-pr-$build_name.apk" >>${GITHUB_ENV}
           echo "FGA_MAPPING_PATH=app/build/outputs/apk/ci/fga-mapping-$build_name.txt" >>${GITHUB_ENV}
@@ -80,6 +80,6 @@ jobs:
         if: ${{ github.event_name != 'workflow_dispatch' }}
         uses: thollander/actions-comment-pull-request@v3
         with:
-          file-path: ${{ env.FGA_APK_PATH }}
+          file-path: app/build/outputs/apk/ci/app-ci.apk
           message: |
             Generated APK for PR #${{ github.event.pull_request.number }}.
