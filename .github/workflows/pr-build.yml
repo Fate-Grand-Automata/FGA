@@ -26,6 +26,8 @@ jobs:
   build:
     runs-on: macos-14
     if: github.ref != 'refs/heads/master'
+    permissions: 
+      pull-requests: write 
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -73,3 +75,11 @@ jobs:
         with:
           name: ${{ env.FGA_MAPPING_ARTIFACT_NAME }}
           path: ${{ env.FGA_MAPPING_PATH }}
+      
+      - name: Comment the APK
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          file-path: ${{ env.FGA_APK_PATH }}
+          message: |
+            Generated APK for PR #${{ github.event.pull_request.number }}.
