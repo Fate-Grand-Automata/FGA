@@ -84,4 +84,8 @@ jobs:
           message: |
             APK for this PR is ready for testing.
 
-            ${{ steps.upload-apk.outputs.artifact-url }}
+            Build Number: ${{ github.run_number }}
+
+            APK - ${{ steps.upload-apk.outputs.artifact-url }}
+
+            Note: Need a GitHub account to download the APK.
