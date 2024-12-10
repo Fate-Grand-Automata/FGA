@@ -65,6 +65,7 @@ jobs:
           echo "FGA_MAPPING_ARTIFACT_NAME=FGA-mapping-PR-$build_name" >>${GITHUB_ENV}
 
       - name: Upload APK
+        id: upload-apk
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}
@@ -80,4 +81,7 @@ jobs:
         if: ${{ github.event_name != 'workflow_dispatch' }}
         uses: thollander/actions-comment-pull-request@v3
         with:
-          file-path: ${{ env.FGA_APK_PATH }}
+          message: |
+            APK for this PR is ready for testing.
+
+            ${{ steps.upload-apk.outputs.artifact-url }}
