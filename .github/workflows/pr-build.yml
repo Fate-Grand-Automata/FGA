@@ -82,13 +82,13 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3
         with:
           message: |
+            # [Build ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
             APK for this PR is ready for testing.
 
-            Build Number: ${{ github.run_number }}
+            APK URL - ${{ steps.upload-apk.outputs.artifact-url }}
 
-            APK - ${{ steps.upload-apk.outputs.artifact-url }}
-
-            Note:
-              Need a GitHub account to download the APK.
-
-              This URL is valid as long as the artifact has not expired
+            > [!NOTE] 
+            > You need a GitHub account to download the APK.
+            >
+            > This URL is valid as long as the artifact has not expired
