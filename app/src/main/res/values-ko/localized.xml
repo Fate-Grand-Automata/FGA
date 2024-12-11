@@ -264,7 +264,7 @@
     <string name="turns_stats">"턴: %1$d (최단), %2$.02f (평균), %3$d (최장)"</string>
 
     <!-- Fuzzy -->
-    <string name="picked_exp_stacks">%1$d개의 종화 묶음 획득</string>
+    <string name="picked_exp_stacks">"%1$d을 선택하고 %2$d를 받았습니다."</string>
     <string name="no_embers_found">"화면에서 종화를 찾을 수 없습니다. 종화를 필터하지 않았는지 확인바랍니다."</string>
     <string name="root_failed">"루트 권한을 얻는데 실패했습니다."</string>
     <string name="p_mats">"재료"</string>
