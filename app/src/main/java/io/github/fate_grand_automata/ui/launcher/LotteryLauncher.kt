@@ -25,6 +25,7 @@ import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.scripts.enums.GameServer
 import io.github.fate_grand_automata.ui.Stepper
+import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
 fun lotteryLauncher(
