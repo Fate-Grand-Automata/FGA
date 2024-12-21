@@ -37,16 +37,14 @@ class AutoLottery @Inject constructor(
 
     private fun spinLongClick() {
         locations.lottery.spinClick.longPress(lottoLongPress * 1_000)
+        2.seconds
     }
 
     /**
      * Switch between the two different spin methods depending on the server
      */
     private fun spinGameServer() = when (prefs.gameServer) {
-        is GameServer.Jp -> {
-            spinLongClick()
-            spin()
-        }
+        is GameServer.Jp -> spinLongClick()
         else -> spin()
     }
 
