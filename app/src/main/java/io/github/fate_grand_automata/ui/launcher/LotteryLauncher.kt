@@ -73,7 +73,6 @@ fun lotteryLauncher(
                     value = lottoLongPress,
                     onValueChange = { lottoLongPress = it },
                     valueRange = 10..30,
-                    textStyle = MaterialTheme.typography.bodyMedium,
                 )
             }
         }
