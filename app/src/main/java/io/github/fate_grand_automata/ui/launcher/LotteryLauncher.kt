@@ -31,6 +31,8 @@ fun lotteryLauncher(
     var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberStackSize) }
     var maxGoldEmberTotalCount by remember { mutableStateOf(prefs.maxGoldEmberTotalCount) }
 
+    var lottoLongPress by prefsCore.lottoLongPress.remember()
+
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
@@ -46,6 +48,29 @@ fun lotteryLauncher(
                 .padding(5.dp)
                 .padding(bottom = 16.dp)
         )
+
+        if (prefs.gameServer is GameServer.Jp) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    stringResource(R.string.p_fine_tune_lotto_long_press),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Justify
+                )
+                Stepper(
+                    value = lottoLongPress,
+                    onValueChange = { lottoLongPress = it },
+                    valueRange = 10..30,
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,

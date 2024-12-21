@@ -25,6 +25,10 @@ interface AutomataApi {
 
     fun Region.click(times: Int = 1) = center.click(times)
 
+    fun Location.longPress(duration: Int = 2_000)
+
+    fun Region.longPress(duration: Int = 2_000)
+
     operator fun Region.contains(image: Pattern) = exists(image)
 
     operator fun Region.contains(images: Collection<Pattern>) = images.any { contains(it) }

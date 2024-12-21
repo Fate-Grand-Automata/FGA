@@ -19,4 +19,7 @@ interface GestureService : AutoCloseable {
      * @param times the number of times to click
      */
     fun click(location: Location, times: Int = 1)
+
+
+    fun longPress(location: Location, duration: Int = 2_000)
 }

@@ -37,6 +37,8 @@ interface IPreferences {
     var limitFP: Int
     var receiveEmbersWhenGiftBoxFull: Boolean
 
+    var lottoLongPress: Int
+
     val stageCounterSimilarity: Double
     val stageCounterNew: Boolean
     val waitBeforeTurn: Duration
