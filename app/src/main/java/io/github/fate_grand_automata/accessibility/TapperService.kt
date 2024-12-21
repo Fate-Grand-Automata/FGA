@@ -28,8 +28,8 @@ class TapperService : AccessibilityService() {
 
         // We only want events from FGO
         serviceInfo = serviceInfo.apply {
-            packageNames = GameServer.packageNames.keys.toTypedArray(),
-            flags = AccessibilityServiceInfo.DEFAULT or AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_MODE,
+            packageNames = GameServer.packageNames.keys.toTypedArray()
+            flags = AccessibilityServiceInfo.DEFAULT or AccessibilityServiceInfo.FLAG_REQUEST_TOUCH_EXPLORATION_MODE
             eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         }
 
