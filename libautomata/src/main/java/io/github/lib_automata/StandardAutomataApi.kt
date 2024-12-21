@@ -7,6 +7,7 @@ class StandardAutomataApi @Inject constructor(
     private val screenshotManager: ScreenshotManager,
     private val highlight: Highlighter,
     private val click: Clicker,
+    private val longPress: LongPress,
     private val imageMatcher: ImageMatcher,
     private val transform: Transformer,
     private val colorManager: ColorManager,
@@ -32,6 +33,10 @@ class StandardAutomataApi @Inject constructor(
     override fun Duration.wait(applyMultiplier: Boolean) = wait(this, applyMultiplier)
 
     override fun Location.click(times: Int) = click(this, times)
+
+    override fun Location.longPress(duration: Int) = longPress(this, duration)
+
+    override fun Region.longPress(duration: Int) = longPress(center, duration)
 
     override fun Region.exists(
         image: Pattern,

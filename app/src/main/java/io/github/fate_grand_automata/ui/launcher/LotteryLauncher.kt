@@ -18,18 +18,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.prefs.core.PrefsCore
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
+import io.github.fate_grand_automata.scripts.enums.GameServer
+import io.github.fate_grand_automata.ui.Stepper
+import io.github.fate_grand_automata.ui.prefs.remember
 
 @Composable
 fun lotteryLauncher(
     prefs: IPreferences,
+    prefsCore: PrefsCore,
     modifier: Modifier = Modifier
 ): ScriptLauncherResponseBuilder {
     var receiveEmbers by remember { mutableStateOf(prefs.receiveEmbersWhenGiftBoxFull) }
     var maxGoldEmberStackSize by remember { mutableStateOf(prefs.maxGoldEmberStackSize) }
     var maxGoldEmberTotalCount by remember { mutableStateOf(prefs.maxGoldEmberTotalCount) }
+
+    var lottoLongPress by prefsCore.lottoLongPress.remember()
 
     Column(
         modifier = modifier
@@ -46,6 +54,28 @@ fun lotteryLauncher(
                 .padding(5.dp)
                 .padding(bottom = 16.dp)
         )
+
+        if (prefs.gameServer is GameServer.Jp) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    stringResource(R.string.p_fine_tune_lotto_long_press),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Justify
+                )
+                Stepper(
+                    value = lottoLongPress,
+                    onValueChange = { lottoLongPress = it },
+                    valueRange = 10..30,
+                )
+            }
+        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
