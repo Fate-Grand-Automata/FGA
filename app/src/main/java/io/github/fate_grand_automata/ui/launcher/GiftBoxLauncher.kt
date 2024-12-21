@@ -61,7 +61,7 @@ fun ColumnScope.GiftBoxLauncherContent(
         Stepper(
             value = maxGoldEmberTotalCount,
             onValueChange = changeMaxGoldEmberTotalCount,
-            valueRange = 1..600
+            valueRange = 1..900
         )
     }
 }
