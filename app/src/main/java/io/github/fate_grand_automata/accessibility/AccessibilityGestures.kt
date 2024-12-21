@@ -170,6 +170,8 @@ class AccessibilityGestures @Inject constructor(
         var gestureDelay = 0L
         val dragReleaseDuration = 50L
 
+        Timber.d("long pressed $location started")
+
         val lastStroke = GestureDescription.StrokeDescription(
             longPressPath,
             0L,
@@ -189,7 +191,7 @@ class AccessibilityGestures @Inject constructor(
             performGesture(it)
         }
 
-        Timber.d("long pressed $location")
+        Timber.d("long pressed $location stopped")
     }
 
     override fun longPress(location: Location, duration: Int) = runBlocking {
