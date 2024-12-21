@@ -55,7 +55,7 @@ class PrefsCore @Inject constructor(
     val limitFP = maker.int("fp_limit", 1)
     val receiveEmbersWhenGiftBoxFull = maker.bool("receive_embers_when_gift_box_full")
 
-    val lottoLongPress = preferenceStore.stringAsInt("lotto_spin", 20)
+    val lottoLongPress = maker.stringAsInt("lotto_spin", 20)
 
     val supportSwipesPerUpdate = maker.int("support_swipes_per_update_x", 10)
     val supportMaxUpdates = maker.int("support_max_updates_x", 5)
