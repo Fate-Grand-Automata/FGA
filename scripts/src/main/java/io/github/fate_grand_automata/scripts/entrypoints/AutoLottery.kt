@@ -37,7 +37,7 @@ class AutoLottery @Inject constructor(
 
     private fun spinLongClick() {
         locations.lottery.spinClick.longPress(lottoLongPress * 1_000)
-        2.seconds.wait()
+        1.seconds.wait()
     }
 
     /**
