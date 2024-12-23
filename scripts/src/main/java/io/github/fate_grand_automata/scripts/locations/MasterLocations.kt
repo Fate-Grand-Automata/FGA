@@ -48,8 +48,10 @@ class MasterLocations @Inject constructor(
     val masterSkillOpenClick
         get() = Location(0, 640) + masterOffsetNewUI
 
-    val commandSpellOpenClick
-        get() = Region(if (isWide) -360 else -260, 100, 33, 53) + masterOffsetNewUI
+    val commandSpellSearchRegion = when (isWide) {
+        true -> Region(-590, 180, 190, 120).xFromRight()
+        false -> Region(-520, 210, 190, 120).xFromRight()
+    }
 
     val cancelCommandSpellRegion = Region(-202, 764, 95, 174).xFromCenter()
 
