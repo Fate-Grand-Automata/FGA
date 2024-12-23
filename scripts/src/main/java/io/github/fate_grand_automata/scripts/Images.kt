@@ -89,5 +89,6 @@ enum class Images {
     OkKR,
     Execute,
     SupportBlankCE,
-    Cancel
+    Cancel,
+    CommandSpell
 }

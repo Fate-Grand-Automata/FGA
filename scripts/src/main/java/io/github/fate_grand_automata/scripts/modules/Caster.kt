@@ -148,7 +148,14 @@ class Caster @Inject constructor(
     }
 
     private fun openCommandSpellMenu() {
-        locations.battle.master.commandSpellOpenClick.click()
+        val commandSpellMatch = locations.battle.master.commandSpellSearchRegion.find(
+            images[Images.CommandSpell]
+        )
+        if (commandSpellMatch != null) {
+            Location(commandSpellMatch.region.x, 150).click()
+        } else {
+            throw AutoBattle.BattleExitException(AutoBattle.ExitReason.OutOfCommandSpells)
+        }
 
         0.5.seconds.wait()
     }
