@@ -60,7 +60,7 @@ fun lotteryLauncher(
                     .fillMaxWidth()
             ) {
                 Text(
-                    stringResource(R.string.p_fine_tune_lotto_long_press),
+                    stringResource(R.string.p_lotto_long_press_duration),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.weight(1f),
@@ -70,6 +70,7 @@ fun lotteryLauncher(
                     value = lottoLongPressSeconds,
                     onValueChange = { lottoLongPressSeconds = it },
                     valueRange = 10..30,
+                    valueRepresentation = { "${it}s" }
                 )
             }
         }
