@@ -109,7 +109,7 @@ class PreferencesImpl @Inject constructor(
 
     override var treatSupportLikeOwnServant by prefs.treatSupportLikeOwnServant
 
-    override var lottoLongPress by prefs.lottoLongPress
+    override var lottoLongPressSeconds by prefs.lottoLongPressSeconds
 
     override var shouldLimitFP by prefs.shouldLimitFP
     override var limitFP by prefs.limitFP

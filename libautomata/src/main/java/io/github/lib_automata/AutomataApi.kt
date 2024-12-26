@@ -1,6 +1,7 @@
 package io.github.lib_automata
 
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 interface AutomataApi {
     /**
@@ -25,9 +26,9 @@ interface AutomataApi {
 
     fun Region.click(times: Int = 1) = center.click(times)
 
-    fun Location.longPress(duration: Int = 2_000)
+    fun Location.longPress(duration: Duration = 2.seconds)
 
-    fun Region.longPress(duration: Int = 2_000)
+    fun Region.longPress(duration: Duration = 2.seconds) = center.longPress(duration)
 
     operator fun Region.contains(image: Pattern) = exists(image)
 

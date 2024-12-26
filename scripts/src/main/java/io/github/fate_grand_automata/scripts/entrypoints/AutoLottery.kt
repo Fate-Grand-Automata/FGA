@@ -27,8 +27,6 @@ class AutoLottery @Inject constructor(
 
     class ExitException(val reason: ExitReason) : Exception()
 
-    var lottoLongPress = 20
-
     private fun spin() {
         // Don't increase this too much or you'll regret when you're not able to stop the script
         // And your phone won't let you press anything
@@ -36,7 +34,7 @@ class AutoLottery @Inject constructor(
     }
 
     private fun spinLongClick() {
-        locations.lottery.spinClick.longPress(lottoLongPress * 1_000)
+        locations.lottery.spinClick.longPress(prefs.lottoLongPressSeconds.seconds)
         1.seconds.wait()
     }
 
@@ -94,8 +92,6 @@ class AutoLottery @Inject constructor(
     }
 
     override fun script(): Nothing {
-        lottoLongPress = prefs.lottoLongPress
-
         val screens: Map<() -> Boolean, () -> Unit> = mapOf(
             { connectionRetry.needsToRetry() } to { connectionRetry.retry() },
             { images[Images.PresentBoxFull] in locations.lottery.fullPresentBoxRegion } to { presentBoxFull() },

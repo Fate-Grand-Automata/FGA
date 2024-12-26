@@ -1,5 +1,8 @@
 package io.github.lib_automata
 
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+
 /**
  * Interface for classes which can perform gestures.
  */
@@ -21,5 +24,5 @@ interface GestureService : AutoCloseable {
     fun click(location: Location, times: Int = 1)
 
 
-    fun longPress(location: Location, duration: Int = 2_000)
+    fun longPress(location: Location, duration: Duration = 2.seconds)
 }
