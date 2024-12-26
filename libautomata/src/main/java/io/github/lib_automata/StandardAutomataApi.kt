@@ -34,9 +34,7 @@ class StandardAutomataApi @Inject constructor(
 
     override fun Location.click(times: Int) = click(this, times)
 
-    override fun Location.longPress(duration: Int) = longPress(this, duration)
-
-    override fun Region.longPress(duration: Int) = longPress(center, duration)
+    override fun Location.longPress(duration: Duration) = longPress(this, duration)
 
     override fun Region.exists(
         image: Pattern,
