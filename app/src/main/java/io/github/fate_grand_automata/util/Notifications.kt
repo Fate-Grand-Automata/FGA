@@ -49,14 +49,14 @@ object Notifications {
      * Notification channel for the script service
      * @see io.github.fate_grand_automata.runner.ScriptRunnerNotification
      */
-    const val SCRIPT_SERVICE_CHANNEL = "Service"
+    const val SCRIPT_SERVICE_CHANNEL = "service"
     const val SCRIPT_SERVICE_ID = 1
 
     /**
      * Notification channel for the script messages
      * @see io.github.fate_grand_automata.runner.ScriptRunnerNotification
      */
-    const val SCRIPT_MESSAGE_CHANNEL = "Message"
+    const val SCRIPT_MESSAGE_CHANNEL = "message"
     const val SCRIPT_MESSAGE_ID = 2
 
     private val deprecatedChannels = listOf("fategrandautomata-notifications")
