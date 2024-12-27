@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.R
+import io.github.fate_grand_automata.util.Notifications
 import io.github.fate_grand_automata.scripts.prefs.IPreferences
 import io.github.fate_grand_automata.ui.main.MainActivity
 import javax.inject.Inject
@@ -28,52 +29,6 @@ class ScriptRunnerNotification @Inject constructor(
     private val service: Service,
     private val vibrator: Vibrator
 ) {
-
-    private object Channels {
-        const val service = "service"
-        const val old = "fategrandautomata-notifications"
-        const val message = "message"
-    }
-
-    private object Ids {
-        const val foregroundNotification = 1
-
-        const val messageNotification = 2
-    }
-
-    init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notifyManager = NotificationManagerCompat.from(service)
-
-            NotificationChannel(
-                Channels.service,
-                "Service Running",
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                description = "Ongoing notification that the service is running in the background"
-
-                setShowBadge(false)
-                notifyManager.createNotificationChannel(this)
-            }
-
-            NotificationChannel(
-                Channels.message,
-                "Messages",
-                NotificationManager.IMPORTANCE_DEFAULT
-            ).apply {
-                description = "Plays sound on Script exit and other events"
-
-                setShowBadge(false)
-                notifyManager.createNotificationChannel(this)
-            }
-
-            try {
-                // Delete the old channel
-                notifyManager.deleteNotificationChannel(Channels.old)
-            } catch (e: Exception) {
-            }
-        }
-    }
 
     private fun startBuildNotification(): NotificationCompat.Builder {
         val activityIntent = PendingIntent
@@ -99,7 +54,7 @@ class ScriptRunnerNotification @Inject constructor(
             stopIntent
         ).build()
 
-        return NotificationCompat.Builder(service, Channels.service)
+        return NotificationCompat.Builder(service, Notifications.SCRIPT_SERVICE_CHANNEL)
             .setOngoing(true)
             .setContentTitle(service.getString(R.string.app_name))
             .setContentText(service.getString(R.string.overlay_notification_text))
@@ -123,20 +78,20 @@ class ScriptRunnerNotification @Inject constructor(
             }
 
             service.startForeground(
-                Ids.foregroundNotification,
+                Notifications.SCRIPT_SERVICE_ID,
                 builder.build(),
                 foregroundServiceType
             )
         } else {
             service.startForeground(
-                Ids.foregroundNotification,
+                Notifications.SCRIPT_SERVICE_ID,
                 builder.build()
             )
         }
     }
 
     fun message(msg: String) {
-        val notification = NotificationCompat.Builder(service, Channels.message)
+        val notification = NotificationCompat.Builder(service, Notifications.SCRIPT_MESSAGE_CHANNEL)
             .setContentTitle(service.getString(R.string.app_name))
             .setContentText(msg)
             .setSmallIcon(R.mipmap.notification_icon)
@@ -149,7 +104,7 @@ class ScriptRunnerNotification @Inject constructor(
             || ContextCompat.checkSelfPermission(service, POST_NOTIFICATIONS) == PERMISSION_GRANTED
         ) {
             // only show notification if allowed
-            NotificationManagerCompat.from(service).notify(Ids.messageNotification, notification)
+            NotificationManagerCompat.from(service).notify(Notifications.SCRIPT_MESSAGE_ID, notification)
         }
 
         vibrate(100.milliseconds)
@@ -171,7 +126,7 @@ class ScriptRunnerNotification @Inject constructor(
 
     fun hideMessage() {
         NotificationManagerCompat.from(service)
-            .cancel(Ids.messageNotification)
+            .cancel(Notifications.SCRIPT_MESSAGE_ID)
     }
 
     companion object {

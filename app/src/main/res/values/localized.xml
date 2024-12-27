@@ -480,4 +480,9 @@ After pressing on the button, switch the app filter from \"Not optimized\" to \"
     <string name="servant_enhancement_none_selected">No Servant Selected. Please select a Servant before proceeding.</string>
     <string name="servant_enhancement_aborted">Enhancement was aborted</string>
     <string name="note">"Note:"</string>
+
+    <string name="notification_script_service">"Service Running"</string>
+    <string name="notification_script_service_desc">"Ongoing notification that the service is running in the background"</string>
+    <string name="notification_script_message">"Messages"</string>
+    <string name="notification_script_message_desc">"Plays sound on Script exit and other events"</string>
 </resources>
