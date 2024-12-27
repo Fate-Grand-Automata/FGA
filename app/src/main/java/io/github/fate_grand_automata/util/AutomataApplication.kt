@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import dagger.hilt.android.HiltAndroidApp
 import io.github.fate_grand_automata.BuildConfig
+import io.github.fate_grand_automata.util.Notifications
 import org.opencv.android.OpenCVLoader
 import timber.log.Timber
 
@@ -15,10 +16,20 @@ class AutomataApplication : Application() {
         initLogging()
 
         OpenCVLoader.initLocal()
+
+        setupNotificationChannels()
     }
 
     private fun initLogging() {
         Timber.plant(FgaTree())
+    }
+
+    private fun setupNotificationChannels() {
+        try {
+            Notifications.createChannels(this)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to create notification channels")
+        }
     }
 
     private class FgaTree : Timber.DebugTree() {
