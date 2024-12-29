@@ -16,7 +16,14 @@ sealed class ScriptLauncherResponse {
     data object SupportImageMaker : ScriptLauncherResponse()
     data object Battle : ScriptLauncherResponse()
 
+    data class Skill(
+        val skillOneTargetLevel: Int,
+        val skillTwoTargetLevel: Int,
+        val skillThreeTargetLevel: Int,
+    ) : ScriptLauncherResponse()
+
     data object ServantEnhancement : ScriptLauncherResponse()
+
 }
 
 class ScriptLauncherResponseBuilder(
