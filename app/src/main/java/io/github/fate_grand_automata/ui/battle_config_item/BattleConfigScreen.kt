@@ -219,7 +219,15 @@ private fun BattleConfigContent(
                                         modifier = Modifier
                                             .padding(16.dp, 5.dp)
                                     )
-                                }
+                                }                            
+                            }
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .height(IntrinsicSize.Min)
+                            ) {
+                                RaidDelay(config=config)
 
                                 VerticalDivider()
 
