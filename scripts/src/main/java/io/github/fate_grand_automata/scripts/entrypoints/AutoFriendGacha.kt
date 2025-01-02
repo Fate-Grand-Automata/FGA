@@ -37,6 +37,8 @@ class AutoFriendGacha @Inject constructor(
     override fun script(): Nothing {
         val initialClickLocation: Location? = if (images[Images.FriendSummon] in locations.fp.initialSummonCheck) {
             locations.fp.initialSummonClick
+        } else if (images[Images.FriendSummon] in locations.fp.initial100SummonCheck) {
+            locations.fp.initial100SummonClick
         } else if (!isSummonButtonVisible()) {
             locations.fp.first10SummonClick
         } else null
