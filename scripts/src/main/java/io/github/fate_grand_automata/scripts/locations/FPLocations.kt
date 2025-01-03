@@ -15,7 +15,7 @@ class FPLocations @Inject constructor(
         else -> Region(100, 1152, 75, 143).xFromCenter()
     }
 
-    val initialSummonCheck = Region(-265, 1131, 75, 143).xFromCenter()
+    val initialSummonCheck = Region(-305, 1121, 240, 183).xFromCenter()
     val initialSummonClick = when (gameServer) {
         is GameServer.Jp -> Location(2, 977).xFromCenter()
         else -> Location(2, 1052).xFromCenter()
