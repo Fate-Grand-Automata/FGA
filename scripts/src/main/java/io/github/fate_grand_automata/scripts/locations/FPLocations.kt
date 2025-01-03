@@ -16,16 +16,21 @@ class FPLocations @Inject constructor(
     }
 
     val initialSummonCheck = Region(-265, 1131, 75, 143).xFromCenter()
-    val initialSummonClick = Location(2, 1052).xFromCenter()
+    val initialSummonClick = when (gameServer) {
+        is GameServer.Jp -> Location(2, 977).xFromCenter()
+        else -> Location(2, 1052).xFromCenter()
+    }
 
-    // temporary need to be separate from initialSummonCheck due to pop-up
-    // warning about the next summon being 100x
-    // it only happens once though
+    // temporary need to be separate from initialSummonCheck due to 
+    // the new image for JP having smaller than usual.
     val initial100SummonCheck = Region(-225, 1121, 100, 143).xFromCenter()
-    val initial100SummonClick = Location(400, 1052).xFromCenter()
 
     val continueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
-    val first10SummonClick = Location(120, 1062).xFromCenter()
+    val first10SummonClick = when (gameServer) {
+        // the old location is still valid but only for 10x FP
+        is GameServer.Jp -> Location(400, 1062).xFromCenter()
+        else -> Location(120, 1062).xFromCenter()
+    }
     val okClick = Location(320, 1120).xFromCenter()
     val continueSummonClick = Location(320, 1325).xFromCenter()
     val skipRapidClick = Location(1240, 1400).xFromCenter()
