@@ -21,10 +21,6 @@ class FPLocations @Inject constructor(
         else -> Location(2, 1052).xFromCenter()
     }
 
-    // temporary need to be separate from initialSummonCheck due to 
-    // the new image for JP having smaller than usual.
-    val initial100SummonCheck = Region(-225, 1121, 100, 143).xFromCenter()
-
     val continueSummonRegion = Region(-36, 1264, 580, 170).xFromCenter()
     val first10SummonClick = when (gameServer) {
         // the old location is still valid but only for 10x FP
