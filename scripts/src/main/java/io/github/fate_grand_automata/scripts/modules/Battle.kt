@@ -55,10 +55,20 @@ class Battle @Inject constructor(
     fun isIdle() = images[Images.BattleScreen] in locations.battle.screenCheckRegion
 
     fun clickAttack(): List<ParsedCard> {
-        locations.battle.attackClick.click()
+        run verifyClick@{
+            repeat(5){
+                locations.battle.attackClick.click()
 
-        // Wait for Attack button to disappear
-        locations.battle.screenCheckRegion.waitVanish(images[Images.BattleScreen], 5.seconds)
+                // Wait for Attack button to disappear
+                val isAttackScreenVisible = locations.battle.screenCheckRegion.waitVanish(
+                    images[Images.BattleScreen], 
+                    5.seconds
+                )
+                if (isAttackScreenVisible) {
+                    return@verifyClick
+                }
+            }
+        }
 
         prefs.waitBeforeCards.wait()
 
