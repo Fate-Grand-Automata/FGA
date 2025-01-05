@@ -82,7 +82,6 @@ jobs:
         uses: thollander/actions-comment-pull-request@v3
         with:
           comment-tag: apk
-          mode: recreate
           message: |
             # [Build ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
