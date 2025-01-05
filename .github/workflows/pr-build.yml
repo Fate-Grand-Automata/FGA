@@ -55,8 +55,8 @@ jobs:
             build_name="${{ github.event.pull_request.number }}-build-${{ github.run_number }}"
           fi
 
-          cp app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-$build_name.apk
-          cp app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-$build_name.txt
+          mv app/build/outputs/apk/ci/app-ci.apk app/build/outputs/apk/ci/fga-pr-$build_name.apk
+          mv app/build/outputs/mapping/ci/mapping.txt app/build/outputs/apk/ci/fga-mapping-$build_name.txt
 
           echo "FGA_APK_PATH=app/build/outputs/apk/ci/fga-pr-$build_name.apk" >>${GITHUB_ENV}
           echo "FGA_MAPPING_PATH=app/build/outputs/apk/ci/fga-mapping-$build_name.txt" >>${GITHUB_ENV}
@@ -65,7 +65,6 @@ jobs:
           echo "FGA_MAPPING_ARTIFACT_NAME=FGA-mapping-PR-$build_name" >>${GITHUB_ENV}
 
       - name: Upload APK
-        id: upload-apk
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.FGA_APK_ARTIFACT_NAME }}
@@ -81,14 +80,14 @@ jobs:
         if: ${{ github.event_name != 'workflow_dispatch' }}
         uses: thollander/actions-comment-pull-request@v3
         with:
+          comment-tag: apk
+          mode: recreate
           message: |
             # [Build ${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-            APK for this PR is ready for testing.
-
-            APK URL - ${{ steps.upload-apk.outputs.artifact-url }}
+            Download the latest APK for testing [here](${{ steps.upload-apk.outputs.artifact-url }})
 
             > [!NOTE] 
             > You need a GitHub account to download the APK.
             >
-            > This URL is valid as long as the artifact has not expired
+            > This URL is valid as long as the artifact has not expired yet.
