@@ -88,8 +88,9 @@ fun SkillMakerUI(
     val wave by vm.wave
 
     Crossfade(
-        current,
-        animationSpec = spring()
+        targetState = current,
+        animationSpec = spring(),
+        label = "Skill Maker Navigation Animation"
     ) { nav ->
         when (nav) {
             SkillMakerNav.Atk -> {
@@ -111,6 +112,9 @@ fun SkillMakerUI(
             SkillMakerNav.Main -> {
                 SkillMakerMain(
                     vm = vm,
+                    onCommandSpell = {
+                        navigate(SkillMakerNav.CommandSpell(it))
+                    },
                     onMasterSkills = { navigate(SkillMakerNav.MasterSkills) },
                     onAtk = { navigate(SkillMakerNav.Atk) },
                     onSkill = { vm.initSkill(it) },
@@ -128,6 +132,23 @@ fun SkillMakerUI(
                     onMasterSkill = { vm.initSkill(it) },
                     onMasterSkillNoTarget = { vm.noTargetSkill(it) },
                     onOrderChange = { navigate(SkillMakerNav.OrderChange) }
+                )
+            }
+
+            is SkillMakerNav.CommandSpell -> {
+                SkillMakerCommandSpells(
+                    remaining = nav.cs,
+                    onCommandSpell = {
+                        vm.initCommandSpell(it)
+                    },
+                    onBack = {
+                        navigate(SkillMakerNav.Main)
+                    }
+                )
+            }
+            is SkillMakerNav.CommandSpellTarget -> {
+                SkillMakerCommandSpellTarget(
+                    onServantTarget = { vm.targetSkill(it) }
                 )
             }
 
@@ -181,6 +202,7 @@ fun SkillMakerUI(
             is SkillMakerNav.Choice2Target -> {
                 SkillMakerChoice2Target(onSkillTarget = { vm.targetSkill(listOf(nav.firstTarget, it)) })
             }
+
             is SkillMakerNav.Choice3 -> {
                 SkillMakerChoice3(
                     slot = nav.slot,
