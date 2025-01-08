@@ -1,7 +1,8 @@
 package io.github.fate_grand_automata.runner
 
-import android.app.Service
+import android.content.Context
 import android.content.ClipboardManager
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.util.set
@@ -14,7 +15,7 @@ import kotlin.coroutines.resume
 
 @ServiceScoped
 class ScriptRunnerMessageBox @Inject constructor(
-    private val service: Service,
+    @ApplicationContext private val context: Context,
     private val clipboardManager: ClipboardManager,
     private val notification: ScriptRunnerNotification
 ) {
@@ -25,7 +26,7 @@ class ScriptRunnerMessageBox @Inject constructor(
     ) {
         withContext(Dispatchers.Main) {
             suspendCancellableCoroutine { continuation ->
-                showOverlayDialog(service) {
+                showOverlayDialog(context) {
                     setTitle(title)
                         .setMessage(message)
                         .setPositiveButton(android.R.string.ok) { _, _ -> }

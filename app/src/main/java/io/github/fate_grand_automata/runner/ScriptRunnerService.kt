@@ -61,7 +61,7 @@ class ScriptRunnerService: Service() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        controller.onCreate()
+        controller.onCreate(this)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

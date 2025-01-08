@@ -1,12 +1,13 @@
 package io.github.fate_grand_automata.runner
 
 import android.annotation.SuppressLint
-import android.app.Service
+import android.content.Context
 import android.graphics.PixelFormat
 import android.provider.Settings
 import android.view.Gravity
 import android.view.WindowManager
 import androidx.compose.ui.platform.ComposeView
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ServiceScoped
 import io.github.fate_grand_automata.di.script.ScriptComponentBuilder
 import io.github.fate_grand_automata.prefs.core.PrefsCore
@@ -24,7 +25,7 @@ import kotlin.math.roundToInt
 
 @ServiceScoped
 class ScriptRunnerOverlay @Inject constructor(
-    private val service: Service,
+    @ApplicationContext private val context: Context,
     private val display: DisplayHelper,
     private val windowManager: WindowManager,
     private val highlightManager: HighlightManager,
@@ -51,9 +52,7 @@ class ScriptRunnerOverlay @Inject constructor(
     }
 
     init {
-        require(service is ScriptRunnerService)
-
-        layout = FakedComposeView(service) {
+        layout = FakedComposeView(context) {
             ScriptRunnerUI(
                 state = uiStateHolder.uiState,
                 prefsCore = prefsCore,
@@ -103,7 +102,7 @@ class ScriptRunnerOverlay @Inject constructor(
     private var shown = false
 
     fun show() {
-        if (!shown && Settings.canDrawOverlays(service)) {
+        if (!shown && Settings.canDrawOverlays(context)) {
             restorePlayButtonLocation()
 
             highlightManager.show()
@@ -114,7 +113,7 @@ class ScriptRunnerOverlay @Inject constructor(
     }
 
     fun hide() {
-        if (shown && Settings.canDrawOverlays(service)) {
+        if (shown && Settings.canDrawOverlays(context)) {
             savePlayButtonLocation()
 
             windowManager.removeView(layout)
@@ -145,7 +144,7 @@ class ScriptRunnerOverlay @Inject constructor(
             ScriptRunnerUIAction.Start -> {
                 if (scriptManager.scriptState is ScriptState.Stopped) {
                     screenshotServiceHolder.screenshotService?.let {
-                        scriptManager.startScript(service, it, scriptComponentBuilder)
+                        scriptManager.startScript(context, it, scriptComponentBuilder)
                     }
                 }
             }

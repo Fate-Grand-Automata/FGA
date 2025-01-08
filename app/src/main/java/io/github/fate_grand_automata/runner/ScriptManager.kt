@@ -1,7 +1,6 @@
 package io.github.fate_grand_automata.runner
 
 import android.annotation.SuppressLint
-import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
@@ -57,7 +56,6 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @ServiceScoped
 class ScriptManager @Inject constructor(
-    private val service: Service,
     @ApplicationContext private val context: Context,
     private val imageLoader: ImageLoader,
     private val preferences: IPreferences,
@@ -134,7 +132,7 @@ class ScriptManager @Inject constructor(
                         val msg = context.getString(R.string.cannot_stop_recording)
                         Timber.e(e, msg)
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -201,7 +199,7 @@ class ScriptManager @Inject constructor(
                     messages.notify(scriptExitedString)
                 }
 
-                showBattleExit(service, e)
+                showBattleExit(context, e)
             }
             is AutoServantLevel.ExitException -> {
                 val msg = when (val reason = e.reason) {
@@ -387,7 +385,7 @@ class ScriptManager @Inject constructor(
             val msg = context.getString(R.string.cannot_start_recording)
             Timber.e(e, msg)
             withContext(Dispatchers.Main) {
-                Toast.makeText(service, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "${msg}: ${e.message}", Toast.LENGTH_SHORT).show()
             }
 
             null
@@ -445,7 +443,7 @@ class ScriptManager @Inject constructor(
 
     fun showStatus(status: Exception) {
         if (status is AutoBattle.ExitException) {
-            scope.launch { showBattleExit(service, status) }
+            scope.launch { showBattleExit(context, status) }
         }
     }
 }
