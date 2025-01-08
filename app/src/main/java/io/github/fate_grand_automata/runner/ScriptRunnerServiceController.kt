@@ -24,7 +24,6 @@ import kotlin.time.Duration.Companion.seconds
 
 @ServiceScoped
 class ScriptRunnerServiceController @Inject constructor(
-    private val service: Service,
     @ApplicationContext private val context: Context,
     private val scriptManager: ScriptManager,
     private val screenshotServiceHolder: ScreenshotServiceHolder,
@@ -51,14 +50,14 @@ class ScriptRunnerServiceController @Inject constructor(
         overlay.hide()
         scope.cancel()
 
-        screenOffReceiver.unregister(service)
+        screenOffReceiver.unregister(context)
     }
 
-    fun onCreate() {
+    fun onCreate(service: Service) {
         Timber.i("Script runner service created")
-        notification.show(prefs.useRootForScreenshots)
+        notification.show(service, prefs.useRootForScreenshots)
 
-        screenOffReceiver.register(service) {
+        screenOffReceiver.register(context) {
             Timber.v("SCREEN OFF")
 
             scriptManager.pause(ScriptManager.PauseAction.Pause).let { success ->
