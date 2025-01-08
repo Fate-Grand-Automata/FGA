@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationChannelGroupCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.NotificationManagerCompat.IMPORTANCE_DEFAULT
 import androidx.core.app.NotificationManagerCompat.IMPORTANCE_LOW
 import io.github.fate_grand_automata.R
 
@@ -81,7 +80,7 @@ object Notifications {
                     setDescription(context.getString(R.string.notification_script_service_desc))
                     setShowBadge(false)
                 },
-                buildNotificationChannel(SCRIPT_MESSAGE_CHANNEL, IMPORTANCE_DEFAULT) {
+                buildNotificationChannel(SCRIPT_MESSAGE_CHANNEL, IMPORTANCE_LOW) {
                     setName(context.getString(R.string.notification_script_message))
                     setDescription(context.getString(R.string.notification_script_message_desc))
                     setShowBadge(false)
