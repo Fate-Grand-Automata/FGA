@@ -9,7 +9,7 @@ body:
       label: Preparation
       description: "Before you open a bug report, you should check the following:"
       options:
-        - label: I tested the [latest release](https://github.com/Fate-Grand-Automata/FGA/releases/tag/canary)
+        - label: I tested the [latest release](https://github.com/Fate-Grand-Automata/FGA/releases/latest)
           required: true
         - label: I looked at other issues (even the [closed ones](https://github.com/Fate-Grand-Automata/FGA/issues?q=is%3Aissue+is%3Aclosed))
           required: true
