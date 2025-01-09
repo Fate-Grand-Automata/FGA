@@ -73,7 +73,8 @@ body:
       required: true
   - type: markdown
     attributes:
-      value: "Now please tell us about your device"
+      value: |
+        ## Now please tell us about your device
   - type: input
     id: device-model
     attributes:
