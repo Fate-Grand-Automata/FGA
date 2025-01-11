@@ -25,7 +25,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @ServiceScoped
 class ScriptRunnerNotification @Inject constructor(
-    private val service: Service,
+    @ApplicationContext private val context: Context,
     private val vibrator: Vibrator
 ) {
 
@@ -43,7 +43,7 @@ class ScriptRunnerNotification @Inject constructor(
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notifyManager = NotificationManagerCompat.from(service)
+            val notifyManager = NotificationManagerCompat.from(context)
 
             NotificationChannel(
                 Channels.service,
@@ -78,16 +78,16 @@ class ScriptRunnerNotification @Inject constructor(
     private fun startBuildNotification(): NotificationCompat.Builder {
         val activityIntent = PendingIntent
             .getActivity(
-                service,
+                context,
                 0,
-                Intent(service, MainActivity::class.java),
+                Intent(context, MainActivity::class.java),
                 PendingIntent.FLAG_IMMUTABLE
             )
 
         val stopIntent = PendingIntent.getBroadcast(
-            service,
+            context,
             1,
-            Intent(service, NotificationReceiver::class.java).apply {
+            Intent(context, NotificationReceiver::class.java).apply {
                 putExtra(keyAction, actionStop)
             },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
@@ -95,25 +95,28 @@ class ScriptRunnerNotification @Inject constructor(
 
         val stopAction = NotificationCompat.Action.Builder(
             R.drawable.ic_close,
-            service.getString(R.string.notification_stop),
+            context.getString(R.string.notification_stop),
             stopIntent
         ).build()
 
-        return NotificationCompat.Builder(service, Channels.service)
+        return NotificationCompat.Builder(context, Channels.service)
             .setOngoing(true)
-            .setContentTitle(service.getString(R.string.app_name))
-            .setContentText(service.getString(R.string.overlay_notification_text))
+            .setContentTitle(context.getString(R.string.app_name))
+            .setContentText(context.getString(R.string.overlay_notification_text))
             // show full message on expand
             .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(service.getString(R.string.overlay_notification_text)))
+                .bigText(context.getString(R.string.overlay_notification_text)))
             .setSmallIcon(R.mipmap.notification_icon)
-            .setColor(service.getColor(R.color.colorBusterWeak))
+            .setColor(context.getColor(R.color.colorBusterWeak))
             .setPriority(NotificationManager.IMPORTANCE_LOW)
             .setContentIntent(activityIntent)
             .addAction(stopAction)
     }
 
-    fun show(useRootForScreenshots: Boolean) {
+    fun show(
+        service: Service,
+        useRootForScreenshots: Boolean
+    ) {
         val builder = startBuildNotification()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -136,8 +139,8 @@ class ScriptRunnerNotification @Inject constructor(
     }
 
     fun message(msg: String) {
-        val notification = NotificationCompat.Builder(service, Channels.message)
-            .setContentTitle(service.getString(R.string.app_name))
+        val notification = NotificationCompat.Builder(context, Channels.message)
+            .setContentTitle(context.getString(R.string.app_name))
             .setContentText(msg)
             .setSmallIcon(R.mipmap.notification_icon)
             .setDefaults(Notification.DEFAULT_SOUND)
@@ -146,10 +149,10 @@ class ScriptRunnerNotification @Inject constructor(
 
         // Android 13+ needs a notification permission
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-            || ContextCompat.checkSelfPermission(service, POST_NOTIFICATIONS) == PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(context, POST_NOTIFICATIONS) == PERMISSION_GRANTED
         ) {
             // only show notification if allowed
-            NotificationManagerCompat.from(service).notify(Ids.messageNotification, notification)
+            NotificationManagerCompat.from(context).notify(Ids.messageNotification, notification)
         }
 
         vibrate(100.milliseconds)
@@ -170,7 +173,7 @@ class ScriptRunnerNotification @Inject constructor(
     }
 
     fun hideMessage() {
-        NotificationManagerCompat.from(service)
+        NotificationManagerCompat.from(context)
             .cancel(Ids.messageNotification)
     }
 
