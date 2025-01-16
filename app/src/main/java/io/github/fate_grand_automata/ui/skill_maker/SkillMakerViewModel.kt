@@ -39,7 +39,9 @@ class SkillMakerViewModel @Inject constructor(
         if (skillString.isNotEmpty()) {
             m.skillCommand.last().let { l ->
                 if (l is SkillMakerEntry.Action && l.action is AutoSkillAction.Atk) {
-                    m.skillCommand.removeLast()
+                    // openjdk problem with android 15
+                    // https://developer.android.com/about/versions/15/behavior-changes-15#openjdk-api-changes
+                    m.skillCommand.removeAt(m.skillCommand.lastIndex)
                     m.skillCommand.add(SkillMakerEntry.Next.Wave(l.action))
                 }
             }
