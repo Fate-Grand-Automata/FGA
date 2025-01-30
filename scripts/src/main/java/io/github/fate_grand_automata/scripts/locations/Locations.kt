@@ -21,7 +21,10 @@ class Locations @Inject constructor(
     val servant: ServantLevelLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
-    val continueRegion = Region(120, 1000, 800, 200).xFromCenter()
+    val continueRegion = when (gameServer) {
+        is GameServer.Jp -> Region(120, 1100, 800, 200).xFromCenter()
+        else -> Region(120, 1000, 800, 200).xFromCenter()
+    }
     val continueBoostClick = Location(-20, 1120).xFromCenter()
 
     val inventoryFullRegion = Region(-280, 860, 560, 190).xFromCenter()
