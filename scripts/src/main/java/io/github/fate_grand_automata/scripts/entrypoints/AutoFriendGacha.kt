@@ -14,6 +14,7 @@ import kotlin.time.Duration.Companion.seconds
  */
 @ScriptScope
 class AutoFriendGacha @Inject constructor(
+    private val connectionRetry: ConnectionRetry,
     exitManager: ExitManager,
     api: IFgoAutomataApi
 ) : EntryPoint(exitManager), IFgoAutomataApi by api {
