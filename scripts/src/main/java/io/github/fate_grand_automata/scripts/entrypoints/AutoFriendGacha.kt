@@ -43,7 +43,7 @@ class AutoFriendGacha @Inject constructor(
                     connectionRetry.retry()
                 }
                 initialFpRoll()
-                val falseDetection = locations.menuScreenRegion(
+                val falseDetection = locations.menuScreenRegion.waitVanish(
                     images[Images.Menu],
                     timeout = 5.seconds,
                 )
