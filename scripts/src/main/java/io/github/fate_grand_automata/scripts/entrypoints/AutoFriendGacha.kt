@@ -2,6 +2,7 @@ package io.github.fate_grand_automata.scripts.entrypoints
 
 import io.github.fate_grand_automata.scripts.IFgoAutomataApi
 import io.github.fate_grand_automata.scripts.Images
+import io.github.fate_grand_automata.scripts.modules.ConnectionRetry
 import io.github.lib_automata.EntryPoint
 import io.github.lib_automata.ExitManager
 import io.github.lib_automata.Location
