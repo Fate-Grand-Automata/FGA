@@ -34,7 +34,30 @@ class AutoFriendGacha @Inject constructor(
         ++count
     }
 
-    override fun script(): Nothing {
+    private fun confirmInventoryFull() {
+        run verify@{
+            repeat(2) {
+                if (connectionRetry.needsToRetry()) {
+                    connectionRetry.retry()
+                }
+                initialFpRoll()
+                val falseDetection = locations.menuScreenRegion(
+                    images[Images.Menu],
+                    timeout = 5.seconds,
+                )
+                if (falseDetection) {
+                    return@verify
+                }
+
+            }
+            val exist = isInMenu()
+            if (exist) {
+                throw ExitException(ExitReason.InventoryFull)
+            }
+        }
+    }
+
+    private fun initialFpRoll() {
         val initialClickLocation: Location? = if (images[Images.FriendSummon] in locations.fp.initialSummonCheck) {
             locations.fp.initialSummonClick
         } else if (!isSummonButtonVisible()) {
@@ -48,22 +71,44 @@ class AutoFriendGacha @Inject constructor(
 
             countNext()
         }
+    }
 
-        while (true) {
-            if (isInventoryFull()) {
+    override fun script(): Nothing {
+        initialFpRoll()
+
+        val screens: Map<() -> Boolean, () -> Unit> = mapOf(
+            { isInventoryFull() } to {
                 throw ExitException(ExitReason.InventoryFull)
-            }
-
-            if (isSummonButtonVisible()) {
+            },
+            { isSummonButtonVisible() } to {
                 countNext()
-
                 locations.fp.continueSummonClick.click()
                 0.3.seconds.wait()
                 locations.fp.okClick.click()
                 3.seconds.wait()
-            } else locations.fp.skipRapidClick.click(15)
+            },
+            { isInMenu() } to {
+
+            }
+        )
+
+        while (true) {
+            val actor = useSameSnapIn {
+                screens
+                    .asSequence()
+                    .filter { (validator, _) -> validator() }
+                    .map { (_, actor) -> actor }
+                    .firstOrNull()
+            } ?: { locations.fp.skipRapidClick.click(15) }
+            actor.invoke()
+            0.5.seconds.wait()
         }
     }
 
     private fun isSummonButtonVisible() = findImage(locations.fp.continueSummonRegion, Images.FPSummonContinue)
+
+    /**
+     *  Checks if in menu.png is on the screen, indicating that a quest can be chosen.
+     */
+    private fun isInMenu() = images[Images.Menu] in locations.menuScreenRegion
 }
