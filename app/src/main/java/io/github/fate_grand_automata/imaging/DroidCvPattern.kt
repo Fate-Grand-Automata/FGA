@@ -112,13 +112,19 @@ class DroidCvPattern(
 
                     val match = Match(region, score)
 
-                    Timber.d("Matched $template with a score of ${match.score}")
+                    Timber.d("Matched %s with a score of (%.4f)".format(template, match.score))
                     yield(match)
 
                     // Flood fill eliminates the problem of nearby points to a high similarity point also having high similarity
                     result.floodFill(loc, 0.3, 0.0)
                 } else {
-                    Timber.v("Stopped matching $template at score ($score) < similarity ($similarity)")
+                    Timber.v(
+                        "Stopped matching %s at score (%.4f) < similarity (%.4f)".format(
+                            template,
+                            score,
+                            similarity
+                        )
+                    )
                     break
                 }
             }
