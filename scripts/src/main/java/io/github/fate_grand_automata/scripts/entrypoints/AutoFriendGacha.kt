@@ -88,7 +88,7 @@ class AutoFriendGacha @Inject constructor(
                 3.seconds.wait()
             },
             { isInMenu() } to {
-
+                confirmInventoryFull()
             }
         )
 
