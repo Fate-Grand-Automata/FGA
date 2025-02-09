@@ -40,6 +40,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import io.github.fate_grand_automata.R
 import io.github.fate_grand_automata.prefs.core.SupportPrefsCore
 import io.github.fate_grand_automata.scripts.enums.SupportClass
@@ -196,13 +197,13 @@ fun SupportClassPicker(
                     else Color.Transparent
                 }
 
-                Image(
-                    painterResource(it.drawable),
+                AsyncImage(
+                    it.drawable,
                     contentDescription = it.name,
                     contentScale = ContentScale.Crop,
+                    alpha = alpha,
                     modifier = Modifier
                         .size(25.dp)
-                        .alpha(alpha)
                         .border(2.dp, borderClass, DiamondShape)
                         .clip(DiamondShape)
                         .clickable {
