@@ -18,6 +18,7 @@ class Locations @Inject constructor(
     val support: SupportScreenLocations,
     val attack: AttackScreenLocations,
     val battle: BattleScreenLocations,
+    val skill: SkillLocations,
     val servant: ServantLevelLocations,
 ) : IScriptAreaTransforms by scriptAreaTransforms {
 
@@ -136,10 +137,6 @@ class Locations @Inject constructor(
     val giftBoxSwipeStart = Location(120, if (canLongSwipe) 1200 else 1050).xFromCenter()
     val giftBoxSwipeEnd = Location(120, if (canLongSwipe) 350 else 575).xFromCenter()
 
-    val emptyEnhanceRegion = when (isWide) {
-        true -> Region(-1100, 600, 400, 400).xFromCenter()
-        false -> Region(200, 600, 400, 400)
-    }
     val ceEnhanceClick = Location(200, 600)
     val levelOneCERegion = Region(160, 380, 1840, 900)
 
@@ -149,6 +146,7 @@ class Locations @Inject constructor(
 
     val middleOfScreenClick = Location(0, 720).xFromCenter()
 
+
     /**
      * The following region are used for the various enhancement screen listed below:
      * Skill Upgrade, Ascension, Append Upgrade and Grail
@@ -156,6 +154,24 @@ class Locations @Inject constructor(
     val enhancementBannerRegion = when(isWide) {
         true -> Region(-412, 282, 241, 37).xFromCenter()
         false -> Region(-413, 324, 241, 37).xFromCenter()
+    }
+
+
+    val getInsufficientQPRegion = when (gameServer) {
+        is GameServer.En -> when (isWide) {
+            true -> Region(-500, 195, 405, 44).xFromCenter()
+            false -> Region(-499, 222, 405, 44).xFromCenter()
+        }
+        // JP option
+        else -> when (isWide) {
+            true -> Region(-502, 195, 397, 47).xFromCenter()
+            false -> Region(-500, 222, 397, 47).xFromCenter()
+        }
+    }
+
+    val emptyEnhanceRegion = when (isWide) {
+        true -> Region(-1100, 600, 400, 400).xFromCenter()
+        false -> Region(200, 600, 400, 400)
     }
 
     val enhancementClick = when (isWide) {

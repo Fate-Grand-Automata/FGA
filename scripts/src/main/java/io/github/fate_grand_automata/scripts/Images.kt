@@ -74,6 +74,11 @@ enum class Images {
     SkillUse,
     RankUp,
     Close,
+
+    SkillInsufficientQP,
+    SkillInsufficientMaterials,
+    SkillMenuBanner,
+
     ServantAutoSelect,
     ServantAutoSelectOff,
     ServantMaxLevel,
